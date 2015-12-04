@@ -29,23 +29,6 @@ require(['jquery', 'mustache', 'text!/tpl/user-bill-table.mustache', 'moment', '
                 dataPickerElement.val('');
         }
     };
-
-    $(".date-filter .select-item").click(function () {
-        $(this).addClass("current").siblings(".select-item").removeClass("current");
-        changeDatePicker();
-        loadLoanData();
-    });
-
-    $(".status-filter .select-item").click(function () {
-        $(this).addClass("current").siblings(".select-item").removeClass("current");
-        loadLoanData();
-    });
-
-    //define calendar
-    $('.apply-btn').click(function () {
-        loadLoanData();
-    });
-
     var loadLoanData = function (currentPage) {
         var dates = dataPickerElement.val().split('~');
         var startTime = $.trim(dates[0]) || '';
@@ -59,6 +42,23 @@ require(['jquery', 'mustache', 'text!/tpl/user-bill-table.mustache', 'moment', '
             $('.user-bill-list').html(html);
         });
     };
+
+    $(".date-filter .select-item").click(function () {
+        $(this).addClass("current").siblings(".select-item").removeClass("current");
+        changeDatePicker();
+        loadLoanData();
+    });
+    $(".date-filter .select-item").eq(2).trigger('click');
+    $(".status-filter .select-item").click(function () {
+
+        $(this).addClass("current").siblings(".select-item").removeClass("current");
+        loadLoanData();
+    });
+
+    //define calendar
+    $('.apply-btn').click(function () {
+        loadLoanData();
+    });
 
     loadLoanData();
 

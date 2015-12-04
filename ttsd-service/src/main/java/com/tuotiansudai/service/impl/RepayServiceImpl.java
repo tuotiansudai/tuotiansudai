@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -61,20 +62,25 @@ public class RepayServiceImpl implements RepayService {
 
         this.resetExpiredLoanRepay(loanRepayModels);
 
-
-        dataDto.setHasConfirmingLoanRepay(Iterators.any(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
+        dataDto.setHasWaitPayLoanRepay(Iterators.any(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
             @Override
             public boolean apply(LoanRepayModel input) {
-                return input.getStatus() == RepayStatus.CONFIRMING;
+                return input.getStatus() == RepayStatus.WAIT_PAY;
             }
         }));
 
-        if (loanModel.getStatus() == LoanStatus.REPAYING) {
+        if (Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE).contains(loanModel.getStatus()) ) {
             DateTime now = new DateTime();
             List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
             DateTime lastSuccessRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, now);
             long interest = InterestCalculator.calculateLoanRepayInterest(loanModel, investModels, lastSuccessRepayDate, now);
-            dataDto.setExpectedAdvanceRepayAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount() + interest));
+            long defaultInterest = 0;
+            long corpus = 0;
+            for (LoanRepayModel loanRepayModel : loanRepayModels) {
+                defaultInterest += loanRepayModel.getDefaultInterest();
+                corpus += loanRepayModel.getCorpus();
+            }
+            dataDto.setExpectedAdvanceRepayAmount(AmountConverter.convertCentToString(corpus + interest + defaultInterest));
         }
 
         if (CollectionUtils.isNotEmpty(loanRepayModels)) {
@@ -104,7 +110,7 @@ public class RepayServiceImpl implements RepayService {
 
         DateTime now = new DateTime();
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
-            if (loanRepayModel.getStatus() == RepayStatus.CONFIRMING) {
+            if (loanRepayModel.getStatus() == RepayStatus.WAIT_PAY) {
                 DateTime actualRepayDate = new DateTime(loanRepayModel.getActualRepayDate());
                 if (actualRepayDate.plusMinutes(30).isBefore(now)) {
                     loanRepayModel.setStatus(RepayStatus.REPAYING);

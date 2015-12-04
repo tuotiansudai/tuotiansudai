@@ -51,7 +51,7 @@ class NewVersionDeployment(object):
 
     def _remove_old_container(self):
         sh('sudo /usr/local/bin/docker-compose -f dev.yml stop')
-        sh('sudo /usr/local/bin/docker-compose -f dev.yml rm -f')
+        sh('sudo /bin/bash -c "export COMPOSE_HTTP_TIMEOUT=300 && /usr/local/bin/docker-compose -f dev.yml rm -f"')
 
     def _start_new_container(self):
         sh('sudo /usr/local/bin/docker-compose -f dev.yml up -d')

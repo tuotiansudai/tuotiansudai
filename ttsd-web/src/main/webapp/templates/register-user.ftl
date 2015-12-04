@@ -10,21 +10,29 @@
     <div class="clear-blank"></div>
     <div class="register-box">
         <ul class="reg-list tl register-step-one">
-            <form class="register-user-form" action="/register/user" method="post">
+            <form class="register-user-form" action="/register/user" method="post" autocomplete="off" >
                 <li>
+                    <label for="" class="reg-title">用户名:</label>
                     <input type="text" class="login-name" name="loginName" placeholder="请输入用户名" maxlength="25" value="${(originalFormData.loginName)!}" />
                 </li>
                 <li>
+                    <label for="" class="reg-title">手机号:</label>
                     <input type="text" name="mobile" class="mobile" placeholder="请输入手机号" maxlength="11" value="${(originalFormData.mobile)!}" />
                 </li>
-                <li class="captcha-tag">
-                    <input type="text" name="captcha" class="captcha" placeholder="请输入验证码"  maxlength="6" value="${(originalFormData.captcha)!}"/>
-                    <button class="fetch-captcha btn-normal" disabled="disabled">获取验证码</button>
+                <li>
+                    <label for="" class="reg-title">验证码:</label>
+                    <span class="captcha-tag">
+                        <input type="text" name="captcha" class="captcha" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="请输入验证码"  maxlength="6" value="${(originalFormData.captcha)!}"/>
+                        <button class="fetch-captcha btn-normal" disabled="disabled">获取验证码</button>
+                    </span>
+
                 </li>
                 <li>
+                    <label for="" class="reg-title">重复密码:</label>
                     <input type="password" name="password" placeholder="请输入密码" maxlength="20" class="password" value="${(originalFormData.password)!}"/>
                 </li>
                 <li>
+                    <label for="" class="reg-title">推荐人:</label>
                     <input type="text" name="referrer" placeholder="请输入推荐人（选填）" maxlength="25" class="referrer" value="${(referrer)!(originalFormData.referrer)!}"/>
                 </li>
                 <li>
@@ -123,14 +131,17 @@
     <p>12.4本网站对本协议享有最终解释权。本协议及本网站有关页面的相关名词可互相引用参照，如有不同理解，则以本协议条款为准。</p>
 </div>
 
-<div class="image-captcha-dialog pad-m" style="display: none;">
-    <form class="image-captcha-form" action="/register/user/send-register-captcha" method="post">
+<div class="image-captcha-dialog" style="display: none;">
+    <div class="pad-s">
+        <form class="image-captcha-form" action="/register/user/send-register-captcha" method="post">
             <img src="/register/user/image-captcha" alt="" class="image-captcha"/>
             <input type="text" class="image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
-        <div class="tc">
-            <input type="submit" class="image-captcha-confirm btn-normal" value="确定"/>
-        </div>
+            <div class="tc">
+                <input type="submit" class="image-captcha-confirm btn-normal" value="确定"/>
+            </div>
 
-    </form>
+        </form>
+    </div>
+
 </div>
 </@global.main>

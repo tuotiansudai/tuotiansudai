@@ -36,7 +36,7 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
         changeDatePicker();
         loadLoanData();
     });
-
+    $(".date-filter .select-item").eq(2).trigger('click');
     $(".status-filter .select-item").click(function () {
         $(this).addClass("current").siblings(".select-item").removeClass("current");
         loadLoanData();
@@ -89,8 +89,11 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
                                 case 'CANCEL':
                                     item.status = '流标';
                                     break;
-                                case 'CONFIRMING':
-                                    item.status = '确认中';
+                                case 'WAIT_PAY':
+                                    item.status = '等待支付';
+                                    break;
+                                case 'OVERDUE':
+                                    item.status = item.isEnabled ? '待还' : '逾期';
                                     break;
                             }
                         });
@@ -112,7 +115,7 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
                         });
 
                         $('a.advanced-repay').click(function () {
-                            if (!data.hasConfirmingLoanRepay) {
+                            if (!data.hasWaitPayLoanRepay) {
                                 $("#advanced-repay-form").submit();
                                 layer.closeAll();
                             }

@@ -16,15 +16,12 @@ require(['jquery', 'bootstrap','bootstrapDatetimepicker'], function ($) {
 
     $(".search").on("click",function(){
         var status = $(".status").val();
-        var loanId;
-        if ($(".loanId").val() == "") {
-            loanId = 0;
-        } else {
-            loanId = $(".loanId").val();
+        if ($(".loanId").val() != "" && !$(".loanId").val().match("^[0-9]*$")) {
+            $(".loanId").val('0');
         }
         var formData=$("#formLoanList").serialize(),
             allData=formData+'&currentPageNo=1&pageSize=10';
-        window.location.href = "/loanList/console?"+allData;
+        window.location.href = "/project-manage/loan-list?"+allData;
 
     });
 

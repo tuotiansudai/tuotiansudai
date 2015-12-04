@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/loan")
+@RequestMapping(value = "/project-manage/loan")
 public class LoanController {
 
     private static final String DEFAULT_CONTRACT_ID = "789098123"; // 四方合同
@@ -32,7 +32,7 @@ public class LoanController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView createLoan() {
-        ModelAndView modelAndView = new ModelAndView("/create-loan");
+        ModelAndView modelAndView = new ModelAndView("/loan-create");
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
@@ -51,7 +51,7 @@ public class LoanController {
         return loanService.createTitle(loanTitleDto);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> createLoan(@RequestBody LoanDto loanDto) {
         return loanService.createLoan(loanDto);
@@ -63,7 +63,7 @@ public class LoanController {
         if (!loanService.loanIsExist(loanId)) {
             return new ModelAndView("/index");
         }
-        ModelAndView modelAndView = new ModelAndView("/edit-loan");
+        ModelAndView modelAndView = new ModelAndView("/loan-edit");
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);

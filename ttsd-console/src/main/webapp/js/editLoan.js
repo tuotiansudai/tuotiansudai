@@ -170,21 +170,13 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
         var autoValue = '';
         $(".jq-agent").autocomplete({
             source: function (query, process) {
-                $.get('/account/' + query.term + '/search', function (respData) {
+                $.get('/user-manage/account/' + query.term + '/search', function (respData) {
                     autoValue = respData;
                     return process(respData);
                 });
             }
         });
-        $(".jq-loaner").autocomplete({
-            source: function (query, process) {
-                $.get('/user/' + query.term + '/search', function (respData) {
-                    autoValue = respData;
-                    return process(respData);
-                });
-            }
-        });
-        $(".jq-agent, .jq-loaner").blur(function () {
+        $(".jq-agent").blur(function () {
             for(var i = 0; i< autoValue.length; i++){
                 if($(this).val()== autoValue[i]){
                     $(this).removeClass('Validform_error');
@@ -231,6 +223,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             },
             //beforeSubmit
             beforeCheck: function(curform){
+                $('.form-error').html('');
                 var periods = parseInt($('.jq-timer',curform).val());
                 if(periods <= 0){
                     showErrorMessage('借款期限最小为1',$('.jq-timer',curform));
@@ -239,6 +232,11 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 var loanAmount = parseInt($('.jq-pay',curform).val());
                 if(loanAmount <= 0){
                     showErrorMessage('预计出借金额应大于0',$('.jq-pay',curform));
+                    return false;
+                }
+                var increasingPay = parseFloat($('.jq-add-pay', curform).val());
+                if (increasingPay <= 0) {
+                    showErrorMessage('投资递增金额应大于0', $('.jq-add-pay', curform));
                     return false;
                 }
                 var minPay = parseInt($('.jq-min-pay',curform).val());
@@ -295,8 +293,10 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     "id":$('.jq-loanId').val().replace(/\,/g,""),
                     "loanStatus":$('.jq-status').val(),
                     "projectName": $('.jq-user').val(),
-                    "agentLoginName": $('#tags_1').val(),
-                    "loanerLoginName": $('#tags').val(),
+                    "agentLoginName": $('.jq-agent').val(),
+                    "loanerLoginName": $('.jq-loaner-login-name').val(),
+                    "loanerUserName": $('.jq-loaner-user-name').val(),
+                    "loanerIdentityNumber": $('.jq-loaner-identity-number').val(),
                     "type": $('.jq-mark-type').val(),
                     "periods": $('.jq-timer').val(),
                     "descriptionText": getContentTxt(),
@@ -325,7 +325,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     .done(function (res) {
                         if(res.data.status){
                             formFlag =true;
-                            location.href='/loanList/console';
+                            location.href='/project-manage/loan-list';
                         }else{
                             formFlag =false;
                             var msg = res.data.message || '服务端校验失败';

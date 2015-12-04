@@ -9,7 +9,7 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker', 'jqu
         //    autoclose: true
         //});
         $('form button[type="reset"]').click(function () {
-            window.location.href = "/referrerManage";
+            window.location.href = "/user-manage/referrer";
         });
         $('#investDateBegin,#investDateEnd').datetimepicker({format: 'YYYY-MM-DD'});
         $('#investDateEnd').datetimepicker({
@@ -39,7 +39,7 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker', 'jqu
         var autoValue = '';
         $(".referrerLoginName, .investLoginName").autocomplete({
             source: function (query, process) {
-                $.get('/user/' + query.term + '/search', function (respData) {
+                $.get('/user-manage/user/' + query.term + '/search', function (respData) {
                     autoValue = respData;
                     return process(respData);
                 });
@@ -64,12 +64,17 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker', 'jqu
             var investLoginName = $('.investLoginName').val();
             var investStartTime = $('.investStartTime').val();
             var investEndTime = $('.investEndTime').val();
+
+            if ($('.level').val() != "" && !$('.level').val().match("^[0-9]*$")) {
+                $('.level').val('');
+            }
+
             var level = $('.level').val();
             var rewardStartTime = $('.rewardStartTime').val();
             var rewardEndTime = $('.rewardEndTime').val();
             var role = $('.role').val();
-
-            window.location.href = '/referrerManage?referrerLoginName='+referrerLoginName+'&investLoginName='+investLoginName+'&investStartTime='+investStartTime+'&investEndTime='+investEndTime+'&level='+level+'&rewardStartTime='+rewardStartTime+'&rewardEndTime='+rewardEndTime+'&role='+role+'&currentPageNo=1&pageSize=10';
+            var source = $('.source').val();
+            window.location.href = '/user-manage/referrer?referrerLoginName='+referrerLoginName+'&investLoginName='+investLoginName+'&investStartTime='+investStartTime+'&investEndTime='+investEndTime+'&level='+level+'&rewardStartTime='+rewardStartTime+'&rewardEndTime='+rewardEndTime+'&role='+role+'&source='+source+'&currentPageNo=1&pageSize=10';
         });
 
         $('.down-load').on('click',function(){
@@ -81,7 +86,8 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker', 'jqu
             var rewardStartTime = $('.rewardStartTime').val();
             var rewardEndTime = $('.rewardEndTime').val();
             var role = $('.role').val();
-            window.location.href = '/referrerManage?referrerLoginName='+referrerLoginName+'&investLoginName='+investLoginName+'&investStartTime='+investStartTime+'&investEndTime='+investEndTime+'&level='+level+'&rewardStartTime='+rewardStartTime+'&rewardEndTime='+rewardEndTime+'&role='+role+'&export=csv';
+            var source = $('.source').val();
+            window.location.href = '/user-manage/referrer?referrerLoginName='+referrerLoginName+'&investLoginName='+investLoginName+'&investStartTime='+investStartTime+'&investEndTime='+investEndTime+'&level='+level+'&rewardStartTime='+rewardStartTime+'&rewardEndTime='+rewardEndTime+'&role='+role+'&source='+source+'&export=csv';
         });
     });
 })

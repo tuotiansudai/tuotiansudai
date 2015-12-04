@@ -197,13 +197,13 @@
                                 text-align: center;
                                 em {
                                     color: #ff3333;
-                                    font-size: 16px;
+                                    font-size: 14px;
                                     line-height: 1;
                                     font-weight: bold;
                                     padding-top: 40px;
                                     display: inline-block;
                                     b {
-                                        font-size:28px;
+                                        font-size:26px;
                                         line-height:0.5;
                                     }
                                 }
@@ -219,13 +219,14 @@
                             text-align: center;
                             font-size: 0;
                             dd {
-                                width:48%;
+
                                 display: inline-block;
                                 font-size: 14px;
                                 line-height: 1.2;
                                 color: #666;
                                 &.dl-month {
                                     border-right:1px solid #ffceb4;
+                                    width:48%;
                                     i {
                                         color: #ff3333;
                                         font-weight: bold;
@@ -234,12 +235,14 @@
 
                                 }
                                 &.dl-amount {
+                                    width:50%;
                                     i{
                                         font-size: 18px;
                                     }
                                 }
                                 span {
                                     color: #999;
+                                    display: block;
                                 }
 
                             }
@@ -250,8 +253,12 @@
                         .btn-normal {
                             padding: 8px 0;
                             width: 100%;
+                            border-bottom-left-radius:10px;
+                            border-bottom-right-radius:10px;
                             border-top-left-radius: 0;
                             border-top-right-radius: 0;
+
+                          border:0!important;
                             &:hover {
                                 background: #ff9e69;
                                 border-color: #ff9e69;
@@ -690,4 +697,198 @@
 
     }
   }
+}
+
+@media (max-width:700px) {
+    .home-page-container   {
+        .main-advantage {
+            display: none;
+        }
+        .banner-box {
+height:150px;
+            .banner-img-list {
+                a {
+                    display: block;
+                    img {
+                        width:100%;
+                        height:150px;
+                    }
+                }
+            }
+        }
+        .home-content {
+            background: #fafafa;
+            margin-top: 10px!important;
+            .page-width {
+                padding: 15px;
+                .product-box-list {
+                    width:100%!important;
+                    .product-box-inner {
+                        width:100%!important;;
+                        .product-box {
+                            width: 100%!important;
+                            margin-right: 0;
+                            border-radius: 5px;
+                            position: relative;
+                            padding-bottom:22px;
+                            text-align: left;
+                            .pad-m {
+                                padding-left:20px;
+                            }
+                            .pr-title {
+                                font-size: 15px;
+                                text-overflow: ellipsis;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                width: 100%;
+                                margin-left: 15px;
+                                color: #4c4c4c;
+                            }
+                            .pr-square {
+                                width: 54%;
+                                height: 50px;
+                                border-radius: 0;
+                                position: relative;
+                                background: none;
+                                margin: 5px auto 8px auto;
+                                float: left;
+                                .pr-square-in {
+                                    width:auto;
+                                    height:auto;
+                                    border-radius:0;
+                                    border-width: 0;
+                                    background: none;
+                                    margin: auto;
+                                    position: absolute;
+                                    left: 10px;
+                                    right: auto;
+                                    top: 0;
+                                    bottom: auto;
+                                    text-align: left;
+                                    em {
+                                        color: #ff3333;
+                                        font-size: 14px;
+                                        line-height: 1;
+                                        font-weight: bold;
+                                        padding-top: 10px;
+                                        display: inline-block;
+                                        b {
+                                            font-size:26px;
+                                            line-height:0.5;
+                                        }
+                                    }
+                                    i {
+                                        color: #999;
+                                        clear: none;
+                                        display: inline-block;
+                                        margin-top: -6px;
+                                    }
+                                }
+                            }
+                            dl.pr-info {
+                                text-align: center;
+                                font-size: 0;
+                                float: left;
+                                dd {
+
+                                    display: inline-block;
+                                    font-size: 14px;
+                                    line-height: 1.2;
+                                    color: #666;
+                                    &.dl-month {
+                                        padding-top:10px;
+                                        border-right-width:0;
+                                        width:60px;
+                                        text-align: left;
+                                        i {
+                                            color: #ff3333;
+                                            font-weight: bold;
+                                            font-size: 22px;
+                                        }
+                                        span {
+                                            display: none;
+                                        }
+
+                                    }
+                                    &.dl-amount {
+                                        position: absolute;
+                                        left: 21px;
+                                        top: 90px;
+                                        width:auto;
+                                        i{
+                                            font-size: 15px;
+                                            float: right;
+                                            color: #f33;
+                                            padding-left: 5px;
+                                        }
+                                        span {
+                                            float: left;
+                                        }
+                                    }
+                                    span {
+
+                                        display: inline-block;
+                                    }
+
+                                }
+                            }
+                            .pad-m {
+                                padding:10px;
+                            }
+                            .btn-normal {
+                                width:auto;
+                                border:1px solid #ff6400!important;
+                                background: #fff!important;
+                                color: #ff6400!important;
+                                letter-spacing:0;
+                                padding: 7px 11px;
+                                position: absolute;
+                                right: 11px;
+                                top: 38px;
+                                border-radius:5px;
+                                &:hover {
+                                    background: #ff9e69;
+                                    border-color: #ff9e69;
+                                }
+                                &:disabled {
+                                    background: #fff!important;
+                                    border-color: #b3b3b3!important;
+                                    color: #b3b3b3!important;
+                                }
+                                &.wait-invest {
+                                    background: #fff!important;
+                                    color: #ff6400!important;
+                                }
+                            }
+                        }
+                    }
+                    &.fl {
+                        float: none!important;
+                    }
+                }
+                .home-ad {
+
+                    display: none;
+                }
+            }
+        }
+    }
+    /* project schedule progress */
+    .project-schedule {
+        width: 35%;
+        top: 65px;
+        left: 160px;
+        position: absolute;
+        .p-title {
+
+            span.fl {
+                display: none;
+            }
+            .point {
+                color: #ff752a;
+            }
+        }
+
+    }
+
 }

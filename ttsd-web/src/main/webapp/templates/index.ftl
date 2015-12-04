@@ -10,7 +10,7 @@
                 <img src="${staticServer}/images/sign/activities/grand/ad2.jpg" alt="累计收益兑大奖">
             </a>
              <a href="/activity/recruit" target="_blank">
-                 <img src="${staticServer}//images/sign/activities/daili/ad.jpg" alt="招募代理">
+                 <img src="${staticServer}/images/banner/banner-home03.png" alt="招募代理">
              </a>
         </div>
         <ul class="scroll-num">
@@ -22,7 +22,7 @@
         <div class="page-width">
             <@global.isAnonymous>
             <div class="register-ad-box fr tc">
-                <em class="percent clearfix">16%</em>
+                <em class="percent clearfix">14%</em>
                 <b class="h-title clear-blank">最高年化收益率</b>
                 <a class="btn-normal" href="/register/user">免费注册 </a>
                 <i class="clearfix tr">已有账户？<a href="/login"> 立即登录</a></i>
@@ -64,7 +64,7 @@
             </dd>
         </dl>
     </div>
-    <div class="home-content">
+    <div class="home-content" id="productFrame">
         <div class="clearfix page-width">
             <section class="product-box-list fl">
                 <div class="product-box-inner">
@@ -75,15 +75,17 @@
                             <h2 class="pr-title">${loan.name}</h2>
                             <div class="pr-square tc">
                                 <div class="pr-square-in">
-                                    <em><b>${loan.baseRateInteger}</b><#if loan.baseRateFraction??>.<@percentFraction>${loan.baseRateFraction}</@percentFraction></#if><#if loan.activityRateInteger??>+${loan.activityRateInteger}</#if><#if loan.activityRateFraction??>.<@percentFraction>${loan.activityRateFraction}</@percentFraction></#if>%</em>
+                                    <em><b><@percentInteger>${loan.baseRate}</@percentInteger></b><@percentFraction>${loan.baseRate}</@percentFraction>
+                                        <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
+                                            <@percentFraction>${loan.activityRate}</@percentFraction></#if>%</em>
                                     <i>年化收益</i>
                                 </div>
                             </div>
                             <dl class="pr-info">
-                                <dd class="dl-month"><i>${loan.periods}</i>个月<br/><span>项目期限</span></dd>
-                                <dd class="dl-amount"><i><@amount>${loan.amount}</@amount>元</i><br/><span>项目金额</span></dd>
+                                <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")} <span>项目期限</span></dd>
+                                <dd class="dl-amount"><i><@amount>${loan.amount}</@amount>元</i><span>项目金额</span></dd>
                             </dl>
-                            <div class="project-schedule clear-blank">
+                            <div class="project-schedule clear-blank clearfix">
                                 <div class="p-title">
                                     <span class="fl">项目进度</span>
                                     <span class="point fr">${loan.progress}%</span>

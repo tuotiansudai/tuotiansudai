@@ -17,12 +17,12 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/loan-repay")
+@RequestMapping(value = "/project-manage")
 public class LoanRepayController {
     @Autowired
     private LoanRepayService loanRepayService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/loan-repay",method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView findLoanRepayPagination(@RequestParam(value = "index",defaultValue = "1",required = false) int index,
                                                 @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize,

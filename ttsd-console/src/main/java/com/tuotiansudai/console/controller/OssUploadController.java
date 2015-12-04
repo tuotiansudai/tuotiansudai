@@ -62,7 +62,8 @@ public class OssUploadController {
             fileName = dfi.getOriginalFilename();
             String ossPath = "";
             try {
-                ossPath = ossWrapperClient.upload(FilenameUtils.getExtension(fileName), dfi.getInputStream(), rootPath);
+                String url = request.getRequestURL().toString();
+                ossPath = ossWrapperClient.upload(FilenameUtils.getExtension(fileName), dfi.getInputStream(), rootPath, url.substring(0,url.lastIndexOf("/")+1));
                 jsonArray.put(MessageFormat.format(imgTemplate, ossPath, fileName, fileName));
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
@@ -114,7 +115,11 @@ public class OssUploadController {
         String fileExtName = FilenameUtils.getExtension(originalName);
         String rootPath = request.getSession().getServletContext().getRealPath("/");
         try {
-            String absoluteUrl = ossWrapperClient.upload(fileExtName, dfi.getInputStream(), rootPath);
+            String url = request.getRequestURL().toString();
+            String absoluteUrl = ossWrapperClient.upload(fileExtName, dfi.getInputStream(), rootPath, url.substring(0,url.lastIndexOf("/")+1));
+            if (absoluteUrl.indexOf(":") > 0 ) {
+                absoluteUrl = absoluteUrl.substring(absoluteUrl.indexOf("upload"), absoluteUrl.length());
+            }
             String relativeUrl = absoluteUrl.substring(absoluteUrl.indexOf("/"), absoluteUrl.length());
             return buildUploadFileResult("SUCCESS", originalName, relativeUrl, absoluteUrl);
         } catch (Exception e) {

@@ -58,11 +58,11 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     @Autowired
     private IdGenerator idGenerator;
 
-    @Value("${pay.user.reward}")
-    private String referrerUserRoleReward;
+    @Value("#{'${pay.user.reward}'.split('\\|')}")
+    private List<Double> referrerUserRoleReward;
 
-    @Value("${pay.staff.reward}")
-    private String referrerStaffRoleReward;
+    @Value("#{'${pay.staff.reward}'.split('\\|')}")
+    private List<Double> referrerStaffRoleReward;
 
     @Override
     public void rewardReferrer(LoanModel loanModel, List<InvestModel> successInvestList) {
@@ -144,10 +144,10 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
             }
         } catch (PayException e) {
             logger.error(MessageFormat.format("referrer reward is failed, investId={0} referrerLoginName={1} referrerRole={2} amount={3}",
-                            String.valueOf(model.getInvestId()),
-                            model.getReferrerLoginName(),
-                            model.getReferrerRole().name(),
-                            String.valueOf(model.getAmount())));
+                    String.valueOf(model.getInvestId()),
+                    model.getReferrerLoginName(),
+                    model.getReferrerRole().name(),
+                    String.valueOf(model.getAmount())));
             logger.error(e.getLocalizedMessage(), e);
         }
         investReferrerRewardMapper.create(model);
@@ -218,17 +218,10 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     }
 
     private double getRewardRate(int level, boolean isStaff) {
-        try {
-            if (isStaff) {
-                String[] split = this.referrerStaffRoleReward.split("\\|");
-                return level > split.length ? 0 : Double.parseDouble(split[level - 1]);
-            } else {
-                String[] split = this.referrerUserRoleReward.split("\\|");
-                return level > split.length ? 0 : Double.parseDouble(split[level - 1]);
-            }
-        } catch (NumberFormatException e) {
-            logger.error(e.getLocalizedMessage(), e);
+        if (isStaff) {
+            return level > this.referrerStaffRoleReward.size() ? 0 : this.referrerStaffRoleReward.get(level - 1);
         }
-        return 0;
+
+        return level > this.referrerUserRoleReward.size() ? 0 : this.referrerUserRoleReward.get(level - 1);
     }
 }

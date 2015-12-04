@@ -8,24 +8,32 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
     var $verificationForm=$('.verification-code-main'),
         $imageCaptchaSubmit = $('.image-captcha-confirm',$verificationForm);
 
+    /* form blank validate */
     $retrieveForm.validate({
         focusInvalid: false,
+        onkeyup:false,
         rules: {
             mobile: {
                 required: true,
                 digits: true,
                 minlength: 11,
                 maxlength: 11,
-                isExist: '/mobile-retrieve-password/mobile/{0}/is-exist?random=' + new Date().getTime()
+                isNotExist: '/mobile-retrieve-password/mobile/{0}/is-exist?random=' + new Date().getTime()
             },
             captcha: {
                 required: true,
                 digits: true,
-                maxlength: 6,
+                minlength: 6,
+                maxlength:6,
                 captchaVerify: {
                     param: function () {
-                        var _phone = $('input[name="mobile"]').val();
-                        return '/mobile-retrieve-password/mobile/' + _phone + '/captcha/{0}/verify?random=' + new Date().getTime()
+                        var _phone = $('input[name="mobile"]').val(),
+                            _captcha=$('input[name="captcha"]').val();
+                        if(_captcha.length==6) {
+                            $btnSend.prop('disabled',false);
+                            return '/mobile-retrieve-password/mobile/' + _phone + '/captcha/{0}/verify?random=' + new Date().getTime();
+                        }
+
                     }
                 }
             }
@@ -36,11 +44,12 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                 digits: '必须是数字',
                 minlength: '手机格式不正确',
                 maxlength: '手机格式不正确',
-                isExist: '手机号已存在'
+                isNotExist: '手机号不存在'
             },
             captcha: {
                 required: '请输入验证码',
                 digits: '验证码格式不正确',
+                minlength: '验证码格式不正确',
                 maxlength: '验证码格式不正确',
                 captchaVerify: '验证码不正确'
             }
@@ -48,14 +57,15 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
         showErrors: function (errorMap, errorList) {
             this.__proto__.defaultShowErrors.call(this);
             if (errorMap['mobile']) {
-                $('.fetch-captcha').prop('disabled', true);
+                $getCaptcha.prop('disabled', true);
             }
         },success: function (error, element) {
             if (element.name === 'mobile') {
-                $('.fetch-captcha').prop('disabled', false);
+                $getCaptcha.prop('disabled', false);
             }
         },
         submitHandler:function(form) {
+
             var _mobile = $('.phone-txt').val(),
                 _captcha = $('.yzm-txt').val();
             window.location.href = '/mobile-retrieve-password/mobile/'+_mobile+'/captcha/'+_captcha+'/new-password-page';
@@ -95,19 +105,19 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                     contentType: 'application/json; charset=UTF-8'
                 }).done(function (response) {
                     if (response.data.status) {
-                        var num = 30;
-                        // 倒计时
-                        function countdown() {
-                            $('.fetch-captcha').html(num + '秒后重新发送').prop('disabled',true);
-                            if (num == 0) {
+                        layer.closeAll();
+                        var seconds = 30;
+                        var count = setInterval(function () {
+                            $getCaptcha.html(seconds + '秒后重新发送').addClass('btn').removeClass('btn-normal');
+                            if (seconds == 0) {
                                 clearInterval(count);
-                                $('.fetch-captcha').html('重新发送').prop('disabled',false);
+                                $getCaptcha.html('重新发送').removeClass('btn').addClass('btn-normal');
                                 $('.verification-code-text').val('');
                             }
-                            num--;
-                        }
-                        var count = setInterval(countdown, 1000);
-                        layer.closeAll();
+                            seconds--;
+                        }, 1000);
+                        return;
+
                     }else{
                         if (response.data.isRestricted) {
                             $('.verification-code-main b').html('短信发送频繁，请稍后再试').show();
@@ -132,7 +142,5 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
         $('.verification-code-img').click(function () {
             refreshCaptcha();
         });
-
-
 
     })

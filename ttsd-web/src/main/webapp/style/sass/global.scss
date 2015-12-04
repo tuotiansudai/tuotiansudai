@@ -1,12 +1,7 @@
 @import 'font_awesome';
 @import 'reset', 'btn','table';
 @import 'page_frame','pagination';
-
-.page-width {
-  width:1000px;
-  @include center-block;
-  box-sizing: border-box;
-}
+@import 'media';
 
 .page-col-title,.column-title {
   border-bottom:1px solid #ccc;
@@ -38,11 +33,7 @@
 .hide {
   display: none;
 }
-.layui-layer-content {
-  .pad-m {
-    padding:15px 20px 10px 20px;
-  }
-}
+
 .table-out-border {
   border:1px solid #ff7200;
   background: #fff;

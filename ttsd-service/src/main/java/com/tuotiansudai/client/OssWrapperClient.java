@@ -5,6 +5,7 @@ import com.aliyun.oss.model.ObjectMetadata;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import org.apache.commons.fileupload.util.Streams;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -53,16 +54,19 @@ public class OssWrapperClient {
     @Value("${common.oss.upload.folder}")
     private String sitePath;
 
+    @Value("${common.environment}")
+    private String environment;
+
     public OSSClient getOSSClient() {
         return new OSSClient(ossEndpoint, accessKeyId, accessKeySecret);
     }
 
-    public String upload(String suffix, InputStream inputStream, String rootPath) throws Exception {
+    public String upload(String suffix, InputStream inputStream, String rootPath, String address) throws Exception {
         if (!isAllowedFileExtName(suffix)) {
             throw new Exception("不允许的文件格式");
         }
         String newFileName = generateRandomFileName(suffix);
-        return uploadFileBlur(newFileName, inputStream, rootPath);
+        return uploadFileBlur(newFileName, inputStream, rootPath, address);
     }
 
     private boolean isAllowedFileExtName(final String suffix) {
@@ -79,8 +83,19 @@ public class OssWrapperClient {
         return MessageFormat.format("{0}{1}.{2}", String.valueOf(random.nextInt(10000)), String.valueOf(System.currentTimeMillis()), suffix);
     }
 
+    private String mkdir(final String path) {
+        File dir = new File(path);
+        if (!dir.exists()) {
+            try {
+                dir.mkdirs();
+            } catch (Exception e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
+        }
+        return path;
+    }
 
-    private String uploadFileBlur(String fileName, InputStream inputStream, String rootPath) {
+    private String uploadFileBlur(String fileName, InputStream inputStream, String rootPath, String address) {
         ObjectMetadata objectMeta = new ObjectMetadata();
         String waterPath = rootPath + "images" + File.separator + "watermark.png";
         ByteArrayInputStream in = new ByteArrayInputStream(pressImage(waterPath, inputStream).toByteArray());
@@ -89,9 +104,17 @@ public class OssWrapperClient {
             objectMeta.setContentType("image/jpeg");
             String sitePath = this.sitePath + new SimpleDateFormat("yyyyMMdd").format(new Date()) + File.separator;
             String filePath = sitePath + fileName;
-            OSSClient client = getOSSClient();
-            client.putObject(bucketName, fileName, in, objectMeta);
-            return filePath;
+            if (environment != null && environment.equals("dev")) {
+                String savefile = mkdir(rootPath + sitePath) + fileName;
+                FileOutputStream out = new FileOutputStream(new File(savefile));
+                BufferedOutputStream output = new BufferedOutputStream(out);
+                Streams.copy(in, output, true);
+                return address + filePath;
+            } else {
+                OSSClient client = getOSSClient();
+                client.putObject(bucketName, fileName, in, objectMeta);
+                return filePath;
+            }
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         } finally {

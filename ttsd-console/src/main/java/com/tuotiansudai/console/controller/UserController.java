@@ -10,6 +10,7 @@ import com.tuotiansudai.dto.UserItemDataDto;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.UserService;
@@ -35,6 +36,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/user-manage")
 public class UserController {
 
     @Autowired
@@ -43,32 +45,10 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
-    @RequestMapping(value = "/user/create", method = RequestMethod.GET)
-    public ModelAndView newUser(){
-        ModelAndView modelAndView = new ModelAndView("/create-user");
-        modelAndView.addObject("roles", Role.values());
-        return modelAndView;
-    }
 
-    @RequestMapping(value = "/user/create", method = RequestMethod.POST)
-    public ModelAndView createUser(@ModelAttribute EditUserDto editUserDto, HttpServletRequest request, RedirectAttributes redirectAttributes){
-        String ip = RequestIPParser.parse(request);
-        ModelAndView modelAndView = new ModelAndView();
-        try {
-            userService.createUser(LoginUserInfo.getLoginName(), editUserDto, ip);
-            modelAndView.setViewName("redirect:/users");
-            return modelAndView;
-        } catch (BaseException e) {
-            modelAndView.setViewName("redirect:/user/create");
-            redirectAttributes.addFlashAttribute("user", editUserDto);
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-        }
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/user/{loginName}/edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/{loginName}", method = RequestMethod.GET)
     public ModelAndView editUser(@PathVariable String loginName, Model model) {
-        ModelAndView modelAndView = new ModelAndView("/edit-user");
+        ModelAndView modelAndView = new ModelAndView("/user-edit");
         if (!model.containsAttribute("user")) {
             EditUserDto editUserDto = userService.getEditUser(loginName);
             modelAndView.addObject("user", editUserDto);
@@ -97,11 +77,12 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView();
         try {
             userService.editUser(LoginUserInfo.getLoginName(), editUserDto, ip);
-            modelAndView.setViewName("redirect:/users");
+            modelAndView.setViewName("redirect:/user-manage/users");
             return modelAndView;
         } catch (BaseException e) {
-            modelAndView.setViewName(MessageFormat.format("redirect:/user/{0}/edit", editUserDto.getLoginName()));
+            modelAndView.setViewName(MessageFormat.format("redirect:/user-manage/user/{0}", editUserDto.getLoginName()));
             redirectAttributes.addFlashAttribute("user", editUserDto);
+            redirectAttributes.addFlashAttribute("roles", Role.values());
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
         return modelAndView;
@@ -112,6 +93,7 @@ public class UserController {
                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date beginTime,
                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
                                     Role role, String referrer, String channel, @RequestParam(value = "index", defaultValue = "1", required = false) int index,
+                                    @RequestParam(value = "source", required = false) Source source,
                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
                                     @RequestParam(value = "export", required = false) String export,
                                     HttpServletResponse response) throws IOException{
@@ -123,8 +105,8 @@ public class UserController {
                 e.printStackTrace();
             }
             response.setContentType("application/csv");
-            int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, role, referrer, channel);
-            BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, role, referrer, channel, 1, count);
+            int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel);
+            BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel, 1, count);
             List<List<String>> data = Lists.newArrayList();
             List<UserItemDataDto> userItemDataDtos = baseDto.getData().getRecords();
             for (int i = 0 ;i < userItemDataDtos.size(); i++) {
@@ -134,6 +116,7 @@ public class UserController {
                 dataModel.add(userItemDataDtos.get(i).getMobile());
                 dataModel.add(userItemDataDtos.get(i).getEmail());
                 dataModel.add(userItemDataDtos.get(i).getReferrer());
+                dataModel.add(userItemDataDtos.get(i).getSource().name());
                 dataModel.add(userItemDataDtos.get(i).getChannel());
                 dataModel.add(new DateTime(userItemDataDtos.get(i).getRegisterTime()).toString("yyyy-MM-dd HH:mm"));
 
@@ -152,7 +135,7 @@ public class UserController {
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUsers, data, response.getOutputStream());
             return null;
         } else {
-            BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, role, referrer, channel, index, pageSize);
+            BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel, index, pageSize);
             ModelAndView mv = new ModelAndView("/user-list");
             mv.addObject("baseDto", baseDto);
             mv.addObject("loginName", loginName);
@@ -163,12 +146,14 @@ public class UserController {
             mv.addObject("role", role);
             mv.addObject("referrer", referrer);
             mv.addObject("channel", channel);
+            mv.addObject("source", source);
             mv.addObject("pageIndex", index);
             mv.addObject("pageSize", pageSize);
             List<Role> roleList = Lists.newArrayList(Role.values());
             List<String> channelList = userService.findAllChannels();
             mv.addObject("roleList", roleList);
             mv.addObject("channelList", channelList);
+            mv.addObject("sourceList", Source.values());
             return mv;
         }
     }

@@ -1,9 +1,11 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.exception.CreateUserException;
 import com.tuotiansudai.exception.EditUserException;
+import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 
 import java.util.Date;
@@ -15,7 +17,7 @@ public interface UserService {
 
     boolean mobileIsExist(String mobile);
 
-    boolean registerUser(RegisterUserDto dto);
+    boolean registerUser(RegisterUserDto dto) throws ReferrerRelationException;
 
     boolean loginNameIsExist(String loginName);
 
@@ -34,9 +36,7 @@ public interface UserService {
      */
     boolean changePassword(String loginName, String mobile, String originalPassword, String newPassword);
 
-    void createUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws CreateUserException;
-
-    void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException;
+    void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException, ReferrerRelationException;
 
     void updateUserStatus(String loginName, UserStatus userStatus, String ip, String operatorLoginName);
 
@@ -44,6 +44,7 @@ public interface UserService {
 
     BaseDto<BasePaginationDataDto> findAllUser(String loginName, String email,
                 String mobile, Date beginTime, Date endTime,
+                Source source,
                 Role role, String referrer, String channel, Integer pageIndex, Integer pageSize);
 
 
@@ -56,4 +57,8 @@ public interface UserService {
     List<String> findAllChannels();
 
     int findUserCount();
+
+    void refreshAreaByMobile(List<UserModel> userModels) ;
+
+    void refreshAreaByMobileInJob() ;
 }

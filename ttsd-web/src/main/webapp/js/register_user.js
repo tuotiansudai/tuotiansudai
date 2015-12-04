@@ -135,12 +135,13 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
             },
             password: {
                 required: true,
-                regex: /^(?=.*[^\d])(.{6,20})$/,
+                regex: /^(?=.*[^\d])(.{6,20})$/
             },
             captcha: {
                 required: true,
                 digits: true,
                 maxlength: 6,
+                minlength: 6,
                 captchaVerify: {
                     param: function () {
                         var mobile = $('input[name="mobile"]').val();
@@ -176,6 +177,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
                 required: '请输入验证码',
                 digits: '验证码格式不正确',
                 maxlength: '验证码格式不正确',
+                minlength: '验证码格式不正确',
                 captchaVerify: '验证码不正确'
             },
             referrer: {
@@ -200,7 +202,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         showErrors: function (errorMap, errorList) {
             this.__proto__.defaultShowErrors.call(this);
             if (errorMap['mobile']) {
-                $('.fetch-captcha').prop('disabled', true);
+                fetchCaptchaElement.prop('disabled', true);
             }
             if (errorMap['agreement']) {
                 var $agreementBox = $agreement.parent('label');
@@ -210,7 +212,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         },
         success: function (error, element) {
             if (element.name === 'mobile') {
-                $('.fetch-captcha').prop('disabled', false);
+                fetchCaptchaElement.prop('disabled', false);
             }
             if (element.name === 'agreement') {
                 var $agreementBox = $agreement.parent('label');

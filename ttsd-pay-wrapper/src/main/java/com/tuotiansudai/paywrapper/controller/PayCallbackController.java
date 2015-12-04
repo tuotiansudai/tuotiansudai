@@ -114,10 +114,38 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
+    @RequestMapping(value = "/repay_payback_notify", method = RequestMethod.GET)
+    public ModelAndView repayPaybackNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.normalRepayService.investPaybackCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/repay_invest_fee_notify", method = RequestMethod.GET)
+    public ModelAndView repayInvestFeeNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.normalRepayService.investFeeCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
     @RequestMapping(value = "/advance_repay_notify", method = RequestMethod.GET)
     public ModelAndView advanceRepayNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.advanceRepayService.repayCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/advance_repay_payback_notify", method = RequestMethod.GET)
+    public ModelAndView advanceRepayPaybackNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.advanceRepayService.investPaybackCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/advance_repay_invest_fee_notify", method = RequestMethod.GET)
+    public ModelAndView advanceRepayInvestFeeNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.advanceRepayService.investFeeCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
