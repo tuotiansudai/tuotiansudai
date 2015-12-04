@@ -8,6 +8,7 @@ import com.tuotiansudai.repository.mapper.LoginLogMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.LoginLogModel;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.LoginLogService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,10 @@ public class LoginLogServiceImpl implements LoginLogService {
     @Transactional
     @Override
     public void generateLoginLog(String loginNameOrMobile, Source source, String ip, String device, boolean loginSuccess) {
-        LoginLogModel model = new LoginLogModel(userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName(), source, ip, device, loginSuccess);
+        UserModel userModel = userMapper.findByLoginNameOrMobile(loginNameOrMobile);
+        if(userModel == null)
+            return;
+        LoginLogModel model = new LoginLogModel(userModel.getLoginName(), source, ip, device, loginSuccess);
         DateTime now = new DateTime();
         loginLogMapper.create(model, MessageFormat.format(LOGIN_LOG_TABLE_TEMPLATE, String.valueOf(now.getYear()), String.valueOf(now.getMonthOfYear())));
     }

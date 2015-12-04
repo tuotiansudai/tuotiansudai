@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class RepayGeneratorServiceImpl implements RepayGeneratorService {
 
-    static Logger logger = Logger.getLogger(NormalRepayServiceImpl.class);
+    static Logger logger = Logger.getLogger(RepayGeneratorServiceImpl.class);
 
 
     @Autowired
@@ -47,12 +47,12 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList();
         List<InvestRepayModel> investRepayModels = Lists.newArrayList();
 
-        DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).minusDays(1).withTimeAtStartOfDay();
+        DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().minusSeconds(1);
         for (int index = 0; index < totalPeriods; index++) {
             int period = index + 1;
 
             int currentPeriodDuration = isPeriodUnitDay ? loanModel.getPeriods() : lastRepayDate.plusDays(1).dayOfMonth().getMaximumValue();
-            DateTime currentRepayDate = lastRepayDate.plusDays(currentPeriodDuration).withTimeAtStartOfDay();
+            DateTime currentRepayDate = lastRepayDate.plusDays(currentPeriodDuration);
 
             long expectedLoanInterest = InterestCalculator.calculateLoanRepayInterest(loanModel, successInvestModels, lastRepayDate, currentRepayDate);
 

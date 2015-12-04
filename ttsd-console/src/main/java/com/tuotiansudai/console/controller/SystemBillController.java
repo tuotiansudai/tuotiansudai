@@ -18,12 +18,13 @@ import java.util.Date;
 
 
 @Controller
+@RequestMapping(value = "/finance-manage")
 public class SystemBillController {
 
     @Autowired
     SystemBillService systemBillService;
 
-    @RequestMapping(value = "/systemBill", method = RequestMethod.GET)
+    @RequestMapping(value = "/system-bill", method = RequestMethod.GET)
     public ModelAndView getSystemBillList(@RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
                                           @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
                                           @RequestParam(value = "operationType", required = false) SystemBillOperationType operationType,
@@ -31,7 +32,7 @@ public class SystemBillController {
                                           @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                           @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
-        ModelAndView modelAndView = new ModelAndView("/systemBill");
+        ModelAndView modelAndView = new ModelAndView("/system-bill");
         BaseDto<BasePaginationDataDto> baseDto = systemBillService.findSystemBillPagination(
                 startTime,
                 endTime,

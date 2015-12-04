@@ -5,17 +5,17 @@
             <a href="/"> 首页</a> > <a href="/about/company">关于我们</a> > 拓天公告
         </div>
         <h2 class="column-title article">
-            <em class="title">${announcement.title}</em>
-            <time class="tr">发表时间：<i>${(announcement.updateTime?string("yyyy-MM-dd"))!}</i></time>
+            <em class="title">${announce.title}</em>
+            <time class="tr">发表时间：<i>${(announce.updateTime?string("yyyy-MM-dd"))!}</i></time>
         </h2>
         <div class="detail-content">
-            ${announcement.content}
+            ${announce.content}
         </div>
 
     <footer class="fr">
         拓天速贷客服中心
         <br/>
-        <span class="update-time"> ${(announcement.updateTime?string("yyyy年MM月dd日"))!}</span></footer>
+        <span class="update-time"> ${(announce.updateTime?string("yyyy年MM月dd日"))!}</span></footer>
     </div>
 
 </@global.main>

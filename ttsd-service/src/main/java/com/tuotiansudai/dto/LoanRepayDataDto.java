@@ -9,7 +9,7 @@ public class LoanRepayDataDto extends BaseDataDto {
 
     private String expectedAdvanceRepayAmount;
 
-    private boolean hasConfirmingLoanRepay;
+    private boolean hasWaitPayLoanRepay;
 
     private List<LoanRepayDataItemDto> records = Lists.newArrayList();
 
@@ -21,13 +21,13 @@ public class LoanRepayDataDto extends BaseDataDto {
         this.expectedAdvanceRepayAmount = expectedAdvanceRepayAmount;
     }
 
-    @JsonProperty(value = "hasConfirmingLoanRepay")
-    public boolean isHasConfirmingLoanRepay() {
-        return hasConfirmingLoanRepay;
+    @JsonProperty(value = "hasWaitPayLoanRepay")
+    public boolean isHasWaitPayLoanRepay() {
+        return hasWaitPayLoanRepay;
     }
 
-    public void setHasConfirmingLoanRepay(boolean hasConfirmingLoanRepay) {
-        this.hasConfirmingLoanRepay = hasConfirmingLoanRepay;
+    public void setHasWaitPayLoanRepay(boolean hasWaitPayLoanRepay) {
+        this.hasWaitPayLoanRepay = hasWaitPayLoanRepay;
     }
 
     public List<LoanRepayDataItemDto> getRecords() {

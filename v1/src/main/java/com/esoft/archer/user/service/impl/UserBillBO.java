@@ -368,7 +368,11 @@ public class UserBillBO {
 		lb.setType(UserBillConstants.Type.TI_BALANCE);
 		lb.setTypeInfo(operatorInfo);
 		lb.setUser(new User(userId));
-		lb.setOperator(String.valueOf(FacesUtil.getExpressionValue("#{loginUserInfo.loginUserId}")));
+		if(FacesUtil.getCurrentInstance() != null){
+			lb.setOperator(String.valueOf(FacesUtil.getExpressionValue("#{loginUserInfo.loginUserId}")));
+		}else{
+			lb.setOperator(null);
+		}
 
 		if (ibLastest == null) {
 			lb.setSeqNum(1L);

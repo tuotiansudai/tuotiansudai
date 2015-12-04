@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@RequestMapping(value = "/finance-manage")
 public class DebtRepaymentPlanController {
 
     @Autowired
     private DebtRepaymentPlanService debtRepaymentPlanService;
 
-    @RequestMapping(value = "/debtRepaymentPlan", method = RequestMethod.GET)
+    @RequestMapping(value = "/debt-repayment-plan", method = RequestMethod.GET)
     public ModelAndView debtRepaymentPlan(@RequestParam(value = "repayStatus",required = false) RepayStatus repayStatus) {
         ModelAndView modelAndView = new ModelAndView("/debt-repayment-plan");
         modelAndView.addObject("debtRepaymentPlans", this.debtRepaymentPlanService.findDebtRepaymentPlan(repayStatus));
@@ -23,7 +24,7 @@ public class DebtRepaymentPlanController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/debtRepaymentDetail", method = RequestMethod.GET)
+    @RequestMapping(value = "/debt-repayment-detail", method = RequestMethod.GET)
     public ModelAndView debtRepaymentPlanDetail(@RequestParam(value = "repayStatus",required = false) RepayStatus repayStatus,@RequestParam("date") String date) {
         ModelAndView modelAndView = new ModelAndView("/debt-repayment-detail");
         modelAndView.addObject("debtRepaymentPlanDetails",this.debtRepaymentPlanService.findDebtRepaymentPlanDetail(repayStatus,date));

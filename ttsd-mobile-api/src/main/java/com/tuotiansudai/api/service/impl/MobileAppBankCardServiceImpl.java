@@ -28,7 +28,7 @@ import java.io.UnsupportedEncodingException;
 @Service
 public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
 
-    static Logger log = Logger.getLogger(MobileAppLoanDetailServiceImpl.class);
+    static Logger log = Logger.getLogger(MobileAppBankCardServiceImpl.class);
 
     @Autowired
     private BindBankCardService bindBankCardService;

@@ -1,4 +1,4 @@
-$CK2: #333 #666 #ccc rgba(230, 230, 230, 1) rgba(0, 0, 0, 1) rgba(121, 121, 121, 1);
+@import 'variables';
 
 table {
   border-collapse: collapse;
@@ -14,13 +14,22 @@ table {
   }
   th {
     background: #ddd;
+    padding: 10px 0 10px 6px;
     text-align: center;
-    padding: 10px;
   }
   td {
-    padding: 8px;
-    text-align: center;
+    padding: 8px 0 8px 6px;
     color: #666;
+    text-align: center;
+    &.tl {
+      text-align: left;
+    }
+    &.tc {
+      text-align: center;
+    }
+    &.tr {
+      text-align: right;
+    }
   }
   &.table {
     th {
@@ -33,6 +42,11 @@ table {
   &.table-border {
     th, td {
       border: 1px solid nth($CK2, 3);
+    }
+  }
+  &.table-center {
+    th,td {
+      text-align: center;
     }
   }
   &.table-striped {

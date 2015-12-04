@@ -5,9 +5,11 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.web.util.AmountDirective;
+import com.tuotiansudai.web.freemarker.directive.AmountDirective;
+import com.tuotiansudai.web.freemarker.directive.PercentIntegerDirective;
+
 import com.tuotiansudai.web.util.LoginUserInfo;
-import com.tuotiansudai.web.util.PercentFractionDirective;
+import com.tuotiansudai.web.freemarker.directive.PercentFractionDirective;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +29,11 @@ public class LoanController {
     public ModelAndView getLoanDetail(@PathVariable long loanId) {
         ModelAndView modelAndView = new ModelAndView("/loan");
         BaseDto<LoanDto> dto = loanService.getLoanDetail(LoginUserInfo.getLoginName(), loanId);
+        if(dto.getData() == null){
+            return new ModelAndView("/error/404");
+        }
         modelAndView.addObject("percentFraction",new PercentFractionDirective());
+        modelAndView.addObject("percentInteger",new PercentIntegerDirective());
         modelAndView.addObject("amount",new AmountDirective());
         modelAndView.addObject("loan",dto.getData());
         return modelAndView;
@@ -38,7 +44,7 @@ public class LoanController {
     public BaseDto<BasePaginationDataDto> getInvestList(@PathVariable long loanId,
                                  @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                  @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return loanService.getInvests(loanId, index, pageSize);
+        return loanService.getInvests(LoginUserInfo.getLoginName(), loanId, index, pageSize);
     }
 
 }

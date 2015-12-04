@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.exceptions.JedisException;
 
+import java.util.Set;
+
 @Component
 public class MybatisRedisCacheWrapperClient extends AbstractRedisWrapperClient{
 
@@ -82,32 +84,22 @@ public class MybatisRedisCacheWrapperClient extends AbstractRedisWrapperClient{
         });
     }
 
-    public void flushDB() {
-        this.setJedisPool(getPool());
-        execute(new JedisActionNoResult() {
-            @Override
-            public void action(Jedis jedis) {
-                jedis.flushDB();
-            }
-        });
-    }
-
-    public Long dbSize() {
-        this.setJedisPool(getPool());
-        return execute(new JedisAction<Long>() {
-            @Override
-            public Long action(Jedis jedis) {
-                return jedis.dbSize();
-            }
-        });
-    }
-
     public void set(final byte[] key, final byte[] value) {
         this.setJedisPool(getPool());
         execute(new JedisActionNoResult() {
             @Override
             public void action(Jedis jedis) {
                 jedis.set(key, value);
+            }
+        });
+    }
+
+    public Set<byte[]> keys(final byte[] key) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Set<byte[]>>() {
+            @Override
+            public Set<byte[]> action(Jedis jedis) {
+                return jedis.keys(key);
             }
         });
     }

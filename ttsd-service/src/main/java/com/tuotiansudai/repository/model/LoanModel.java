@@ -22,9 +22,17 @@ public class LoanModel implements Serializable {
      ***/
     private String agentLoginName;
     /***
-     * 借款用户
+     * 借款人ID
      ***/
     private String loanerLoginName;
+    /***
+     * 借款人
+     ***/
+    private String loanerUserName;
+    /***
+     * 借款人身份证号
+     ***/
+    private String loanerIdentityNumber;
     /***
      * 标的类型
      ***/
@@ -154,6 +162,8 @@ public class LoanModel implements Serializable {
         this.activityType = loanDto.getActivityType();
         this.agentLoginName = loanDto.getAgentLoginName();
         this.loanerLoginName = loanDto.getLoanerLoginName();
+        this.loanerUserName = loanDto.getLoanerUserName();
+        this.loanerIdentityNumber = loanDto.getLoanerIdentityNumber();
         this.contractId = loanDto.getContractId();
         this.descriptionHtml = loanDto.getDescriptionHtml();
         this.descriptionText = loanDto.getDescriptionText();
@@ -201,6 +211,22 @@ public class LoanModel implements Serializable {
 
     public void setLoanerLoginName(String loanerLoginName) {
         this.loanerLoginName = loanerLoginName;
+    }
+
+    public String getLoanerUserName() {
+        return loanerUserName;
+    }
+
+    public void setLoanerUserName(String loanerUserName) {
+        this.loanerUserName = loanerUserName;
+    }
+
+    public String getLoanerIdentityNumber() {
+        return loanerIdentityNumber;
+    }
+
+    public void setLoanerIdentityNumber(String loanerIdentityNumber) {
+        this.loanerIdentityNumber = loanerIdentityNumber;
     }
 
     public LoanType getType() {

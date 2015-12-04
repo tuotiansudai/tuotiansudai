@@ -1,7 +1,7 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.my_account}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
 <div class="loan-detail-content">
-    <div class="borderBox bg-w">
+    <div class="borderBox bg-w clearfix">
         <div class="news-share fl">
             <h2 class="hd">
                 <#if loan.activityType == "NEWBIE">
@@ -18,8 +18,8 @@
                     <div class="rount"></div>
                     <div class="bg2"></div>
                     <div class="rount2" style="display: none;"></div>
-                    <span class="sub-percent"><#if loan.activityRateInteger??>+${loan.activityRateInteger}</#if><#if loan.activityRateFraction??>.<@percentFraction>${loan.activityRateFraction}</@percentFraction>%</#if></span>
-                    <div id="num" class="num">${loan.baseRateInteger}<#if loan.baseRateFraction??>.<@percentFraction>${loan.baseRateFraction}</@percentFraction></#if>%</div>
+                    <span class="sub-percent"><#if loan.activityRate??>+<@percentInteger>${loan.activityRate}</@percentInteger><@percentFraction>${loan.activityRate}</@percentFraction>%</#if></span>
+                    <div id="num" class="num"><@percentInteger>${loan.basicRate}</@percentInteger><@percentFraction>${loan.basicRate}</@percentFraction>%</div>
                     <span class="title">年化收益率</span>
                 </div>
             </div>
@@ -38,10 +38,11 @@
                 <a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_Blank">借款协议样本</a>
             </div>
         </div>
-        <h5 class="account-info fl">
+        <div class="account-info fl">
+            <h5 class="l-title">拓天速贷提醒您：理财非存款，投资需谨慎！</h5>
             <#if loan.loanStatus == "RAISING">
                 <form action="/invest" method="post">
-                    <h5 class="l-title">拓天速贷提醒您：理财非存款，投资需谨慎！</h5>
+
                     <dl class="account-list">
                         <dd><span class="fl">可投金额：</span><em class="fr"><i class="amountNeedRaised-i">${loan.amountNeedRaised?string("0.00")}</i> 元</em></dd>
                         <dd><span class="fl">账户余额：</span><em class="fr account-amount">${loan.balance?string("0.00")} 元</em></dd>
@@ -71,10 +72,8 @@
             </#if>
             <#if loan.loanStatus == "PREHEAT">
                 <form action="/invest" method="post">
-
-                    <h5 class="l-title">拓天速贷提醒您：理财非存款，投资需谨慎！</h5>
                     <dl class="account-list">
-                        <dd><span class="fl">可投金额：</span><em class="fr"><i class="amountNeedRaised-i">${loan.amountNeedRaised?string("0.00")}<i>元</em>
+                        <dd><span class="fl">可投金额：</span><em class="fr"><i class="amountNeedRaised-i">${loan.amountNeedRaised?string("0.00")}</i>元</em>
                      <dd><span class="fl">账户余额：</span><em class="fr"><i class="account-amount">${loan.balance?string("0.00")}</i>元</em></dd>
                     <dd><span class="fl">每人限投：</span><em class="fr">${loan.maxInvestAmount}元</em></dd>
                    <dd class="invest-amount tl">
@@ -91,19 +90,20 @@
                        </#if>
                    </dd>
                     <dd class="time-item">
-
                         <#if loan.preheatSeconds lte 1800>
-                            <strong id="minute_show">00分</strong>
-                            <strong>：</strong>
-                            <strong id="second_show">00秒</strong>
+                            <i class="time-clock"></i>
+                            <strong id="minute_show">00</strong>
+                            <em>:</em>
+                            <strong id="second_show">00</strong>
                             以后可投资
                         <#else >
                         ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
                         </#if>
                     </dd>
                         <dd><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string("0")}"/></dd>
-                        <button class="btn-pay btn-normal" type="submit" disabled="disabled">预热中</button>
+                            <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string("0")}"/>
+                            <button class="btn-pay btn-normal" type="submit" disabled="disabled">预热中</button>
+                        </dd>
                     </dl>
 
                 </form>
@@ -112,7 +112,7 @@
             <form action="/loan-list" method="get">
                 <dl class="account-list">
                     <dd class="img-status">
- <img src="${staticServer}/images/sign/loan/repaying.png" width="200" height="200" alt=""/>
+ <img src="${staticServer}/images/sign/loan/repaying.png"  alt=""/>
                     </dd>
                     <dd>
                         <button class="btn-pay btn-normal" type="submit">查看其他项目</button>
@@ -124,7 +124,7 @@
             <form action="/loan-list" method="get">
                 <dl class="account-list">
                     <dd class="img-status">
-                    <img src="${staticServer}/images/sign/loan/recheck.png" width="200" height="200" alt=""/>
+                    <img src="${staticServer}/images/sign/loan/recheck.png"  alt=""/>
                     </dd>
                     <dd>
                         <button class="btn-pay btn-normal" type="submit">查看其他项目</button>
@@ -136,7 +136,7 @@
             <form action="/loan-list" method="get">
                 <dl class="account-list">
                     <dd class="img-status">
-                     <img src="${staticServer}/images/sign/loan/cancel.png" width="200" height="200" alt=""/>
+                     <img src="${staticServer}/images/sign/loan/cancel.png"  alt=""/>
                     </dd>
                     <dd>
                         <button class="btn-pay btn-normal" type="submit">查看其他项目</button>
@@ -148,7 +148,7 @@
             <form action="/loan-list" method="get">
                 <dl class="account-list">
                     <dd class="img-status">
-                    <img src="${staticServer}/images/sign/loan/overdue.png" width="200" height="200" alt=""/>
+                    <img src="${staticServer}/images/sign/loan/overdue.png" alt=""/>
                     </dd>
                     <dd>
                         <button class="btn-pay btn-normal" type="submit">查看其他项目</button>
@@ -160,7 +160,7 @@
             <form action="/loan-list" method="get">
                 <dl class="account-list">
                     <dd class="img-status">
-                      <img src="${staticServer}/images/sign/loan/complete.png" width="200" height="200" alt=""/>
+                      <img src="${staticServer}/images/sign/loan/complete.png"  alt=""/>
                     </dd>
                     <dd>
                         <button class="btn-pay btn-normal" type="submit">查看其他项目</button>
@@ -169,11 +169,11 @@
             </form>
             </#if>
     </div>
-    <div class="borderBox bg-w clear-blank">
+    <div class="bg-w clear-blank">
             <div class="loan-nav">
                 <ul>
                     <li class="active">借款详情<i class="fa fa-caret-up"></i> </li>
-                    <li>出借纪录<i class="fa fa-caret-up"></i></li>
+                    <li>出借记录<i class="fa fa-caret-up"></i></li>
                 </ul>
             </div>
             <div class="loan-list pad-s">
@@ -186,6 +186,7 @@
                     <div class="loan-material">
                         <h3>申请材料：</h3>
                         <div class="pic-list" id="picListBox">
+
                             <#list loan.loanTitleDto as loanTitle>
                                     <#list loan.loanTitles as loanTitleRelation >
                                         <#if loanTitle.id == loanTitleRelation.titleId>
@@ -207,6 +208,7 @@
                     </div>
                 </div>
             </div>
+    </div>
     </div>
 </div>
 <script>

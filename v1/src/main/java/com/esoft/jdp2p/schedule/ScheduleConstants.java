@@ -31,6 +31,7 @@ public class ScheduleConstants {
 		public static final String AUTO_REFERRER_FAIL_REWARD = "auto_referrer_fail_reward";
 
 
+		public static final String CONFERENCE_SALE_REWARD = "conference_sale_reward";
 	}
 
 	/**
@@ -78,6 +79,7 @@ public class ScheduleConstants {
 
 		public static final String AUTO_REFERRER_FAIL_REWARD = "auto_referrer_fail_reward";
 
+		public static final String CONFERENCE_SALE_REWARD = "conference_sale_reward";
 	}
 
 	/**
@@ -105,6 +107,7 @@ public class ScheduleConstants {
 		 */
 		public static final String AUTO_ACTIVITY_REWARD = "auto_activity_reward";
 		public static final String AUTO_REFERRER_FAIL_REWARD = "auto_referrer_fail_reward";
+		public static final String CONFERENCE_SALE_REWARD = "conference_sale_reward";
 	}
 
 	/**
@@ -153,5 +156,6 @@ public class ScheduleConstants {
 		 * 注册邮箱验证
 		 */
 		public static final String REGISTER_VERIFICATION_EMAIL = "register_verification_email";
+		public static final String CONFERENCE_SALE_REWARD = "conference_sale_reward";
 	}
 }

@@ -304,7 +304,7 @@
 
     li.active {
       border-bottom: #fff 1px solid;
-      border-top: #e06b0c 1px solid;
+      border-top: #ff7200 1px solid;
     }
     .hot-flag {
       position: absolute;
@@ -387,7 +387,7 @@
     }
     .e-bank-recharge {
       ol {
-        width: 798px;
+
         z-index: 1;
         float: left;
         overflow: hidden;
@@ -400,7 +400,7 @@
         }
         li {
           float: left;
-          margin: 10px 0px 10px 10px;
+          margin: 10px 15px 5px 10px;
           cursor: pointer;
           label {
             width: 123px;
@@ -718,6 +718,20 @@
   }
 
 }
+  table.invest-list {
+    td {
+      font-size: 12px;
+      .loan-name-col {
+        display: inline-block;
+        width: 170px;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+
 }
 /* loan detail */
 .loan-detail-content {
@@ -761,7 +775,7 @@
           color: #f24712;
           font-size: 12px;
           right: 23px;
-          top: 66px;
+          top: 56px;
           position: absolute;
           z-index: 33;
         }
@@ -804,10 +818,10 @@
           display: none
         }
         & .num {
-          font: bold 20px/180px tahoma;
+          font: bold 25px/180px tahoma;
           text-align: center;
           color: #f24712;
-          top: 5px;
+          top: 10px;
           left: 10px;
           z-index: 9;
         }
@@ -849,7 +863,32 @@
           overflow: hidden;
         }
         &.img-status {
-          padding:20px;
+          padding:30px 10px;
+        }
+        &.time-item {
+          display: inline-block;
+          border-radius: 10px;
+          border: 1px dashed red;
+          margin-top: -8px;
+          padding: 1px 40px;
+          font-size: 13px;
+          .time-clock {
+            background: url(/images/icons/time-clock.png) center -1px no-repeat;
+            display: inline-block;
+            width: 29px;
+            height: 27px;
+            vertical-align: middle;
+            margin-top: -3px;
+          }
+          strong,em {
+            display: inline-block;
+          }
+          strong {
+            color:#f24713;
+            font-size:18px;
+            font-weight: bold;
+          }
+
         }
         .btn-normal {
           width: 100%;
@@ -858,23 +897,16 @@
         .account-amount{
           color: #f24712;
         }
-        .time-item {
-          text-align: right;
-          padding-right: 31px;
-          line-height: 38px;
-          font-size: 12px;
-          color: #ccc;
-        }
       }
     }
   }
   .loan-nav {
     overflow: hidden;
     border-bottom: 1px solid #ccc;
-    padding-top:10px;
+    border-top: 1px solid #ccc;
     li {
       float: left;
-      padding: 5px 30px;
+      padding: 8px 30px;
       border-right: 1px solid #ccc;
       position: relative;
       cursor: pointer;
@@ -927,6 +959,27 @@
 
         }
       }
+    }
+    .invest-WEB {
+      display: inline-block;
+      vertical-align: middle;
+      width:18px;
+      height:18px;
+      background: url("/images/icons/ico_loan.png") 0 0 no-repeat;
+    }
+    .invest-ANDROID {
+      display: inline-block;
+      vertical-align: middle;
+      width:18px;
+      height:22px;
+      background: url("/images/icons/ico_loan.png") 0px -32px no-repeat;
+    }
+    .invest-IOS {
+      display: inline-block;
+      vertical-align: middle;
+      width:18px;
+      height:20px;
+      background: url("/images/icons/ico_loan.png") 0px -65px no-repeat;
     }
   }
 }

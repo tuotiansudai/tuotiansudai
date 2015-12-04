@@ -18,6 +18,7 @@ import java.util.Date;
 
 
 @Controller
+@RequestMapping(value = "/finance-manage", method = RequestMethod.GET)
 public class WithdrawController {
 
     @Autowired

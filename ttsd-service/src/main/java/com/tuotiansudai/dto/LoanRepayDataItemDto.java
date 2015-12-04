@@ -51,11 +51,11 @@ public class LoanRepayDataItemDto {
         this.defaultInterest = AmountConverter.convertCentToString(loanRepayModel.getDefaultInterest());
         this.expectedRepayAmount = AmountConverter.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest());
         this.repayDate = loanRepayModel.getRepayDate();
+        this.actualRepayDate = loanRepayModel.getActualRepayDate();
         this.actualInterest = AmountConverter.convertCentToString(loanRepayModel.getActualInterest());
         if (loanRepayModel.getStatus() == RepayStatus.COMPLETE) {
             this.actualRepayAmount = AmountConverter.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getActualInterest() + loanRepayModel.getDefaultInterest());
         }
-        this.actualRepayDate = loanRepayModel.getActualRepayDate();
         this.loanRepayStatus = loanRepayModel.getStatus();
         this.totalAmount = AmountConverter.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest());
         this.isEnabled = isEnabled;
@@ -77,7 +77,7 @@ public class LoanRepayDataItemDto {
         }
         this.loanRepayStatus = loanRepayModel.getStatus();
         this.totalAmount = AmountConverter.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest());
-        this.agentLoginName = loanRepayModel.getLoan().getLoanerLoginName();
+        this.agentLoginName = loanRepayModel.getLoan().getAgentLoginName();
         this.loanName = loanRepayModel.getLoan().getName();
     }
 

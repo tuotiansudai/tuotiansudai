@@ -2,6 +2,7 @@ package com.tuotiansudai.web.controller;
 
 
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
@@ -38,6 +39,7 @@ public class RegisterUserController {
         String referrer = request.getParameter("referrer");
         ModelAndView modelAndView = new ModelAndView("/register-user");
         modelAndView.addObject("referrer", referrer);
+        modelAndView.addObject("responsive", true);
         return modelAndView;
     }
 
@@ -45,7 +47,12 @@ public class RegisterUserController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView registerUser(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes) {
-        boolean isRegisterSuccess = this.userService.registerUser(registerUserDto);
+        boolean isRegisterSuccess;
+        try {
+            isRegisterSuccess = this.userService.registerUser(registerUserDto);
+        } catch (ReferrerRelationException e) {
+            isRegisterSuccess = false;
+        }
         if (!isRegisterSuccess) {
             redirectAttributes.addFlashAttribute("originalFormData", registerUserDto);
             redirectAttributes.addFlashAttribute("success", false);

@@ -53,7 +53,7 @@ import java.util.Map;
 @Service
 public class LoanServiceImpl implements LoanService {
 
-    static Logger logger = Logger.getLogger(RegisterServiceImpl.class);
+    static Logger logger = Logger.getLogger(LoanServiceImpl.class);
 
     private final static String CANCEL_INVEST_PAY_BACK_ORDER_ID_SEPARATOR = "P";
 
@@ -97,7 +97,7 @@ public class LoanServiceImpl implements LoanService {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         LoanModel loanModel = loanMapper.findById(loanId);
-        String loanerId = accountMapper.findByLoginName(loanModel.getLoanerLoginName()).getPayUserId();
+        String loanerId = accountMapper.findByLoginName(loanModel.getAgentLoginName()).getPayUserId();
         MerBindProjectRequestModel merBindProjectRequestModel = new MerBindProjectRequestModel(
                 loanerId,
                 String.valueOf(loanModel.getLoanAmount()),
@@ -209,7 +209,7 @@ public class LoanServiceImpl implements LoanService {
         if (LoanStatus.RECHECK != loan.getStatus()){
             throw new PayException("loan is not ready for recheck [" + loanId + "]");
         }
-        String loanerPayUserId = accountMapper.findByLoginName(loan.getLoanerLoginName()).getPayUserId();
+        String agentPayUserId = accountMapper.findByLoginName(loan.getAgentLoginName()).getPayUserId();
 
 
         // 查找所有投资成功的记录
@@ -222,8 +222,8 @@ public class LoanServiceImpl implements LoanService {
             throw new PayException("invest amount should great than 0");
         }
 
-        logger.debug("标的放款：发起联动优势放款请求，标的ID:" + loanId + "，借款人:" + loanerPayUserId + "，放款金额:" + investAmountTotal);
-        ProjectTransferResponseModel resp = doPayRequest(loanId, loanerPayUserId, investAmountTotal);
+        logger.debug("标的放款：发起联动优势放款请求，标的ID:" + loanId + "，代理人:" + agentPayUserId + "，放款金额:" + investAmountTotal);
+        ProjectTransferResponseModel resp = doPayRequest(loanId, agentPayUserId, investAmountTotal);
 
         if (resp.isSuccess()) {
             logger.debug("标的放款：更新标的状态，标的ID:" + loanId);
@@ -232,7 +232,7 @@ public class LoanServiceImpl implements LoanService {
             logger.debug("标的放款：处理该标的的所有投资的账务信息，标的ID:" + loanId);
             processInvestForLoanOut(successInvestList);
 
-            logger.debug("标的放款：把借款转给借款人账户，标的ID:" + loanId);
+            logger.debug("标的放款：把借款转给代理人账户，标的ID:" + loanId);
             processLoanAccountForLoanOut(loan, investAmountTotal);
 
             // loanOutSuccessHandle(loanId);
@@ -318,11 +318,11 @@ public class LoanServiceImpl implements LoanService {
         }
     }
 
-    // 把借款转给借款人账户
+    // 把借款转给代理人账户
     private void processLoanAccountForLoanOut(LoanModel loan, long amount) {
         try {
             long orderId = loan.getId();
-            amountTransfer.transferInBalance(loan.getLoanerLoginName(), orderId, amount, UserBillBusinessType.LOAN_SUCCESS, null, null);
+            amountTransfer.transferInBalance(loan.getAgentLoginName(), orderId, amount, UserBillBusinessType.LOAN_SUCCESS, null, null);
         } catch (Exception e) {
             logger.error("transferInBalance Fail while loan out, loan[" + loan.getId() + "]", e);
         }

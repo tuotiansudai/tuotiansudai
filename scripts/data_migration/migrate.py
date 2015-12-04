@@ -11,6 +11,9 @@ if __name__ == '__main__':
     old_db = DBWrapper(host=HOST, user=USERNAME, password=PASSWORD, db_name=ORIGINAL_DB)
     new_db = DBWrapper(host=HOST, user=USERNAME, password=PASSWORD, db_name=AA_DB)
 
+    # tables = ['user', 'account', 'announce', 'audit_log', 'bank_card', 'loan', 'loan_title_relation', 'invest', 'invest_referrer_reward', 'invest_repay', 'loan_repay', 'recharge system_bill', 'user_bill', 'user_role', 'withdraw']
+
+    # for table in tables:
     cls = getattr(importlib.import_module(args.table), '{0}Migrate'.format(args.table.title().replace('_', '')))
     cls(old_db, new_db).migrate()
 

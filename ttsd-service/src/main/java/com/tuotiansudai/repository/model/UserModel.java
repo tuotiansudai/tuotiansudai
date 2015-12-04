@@ -30,7 +30,13 @@ public class UserModel implements Cloneable, Serializable {
 
     private String salt;
 
+    private Source source;
+
     private String channel;
+
+    private String province;
+
+    private String city;
 
     private AccountModel account;
 
@@ -148,6 +154,30 @@ public class UserModel implements Cloneable, Serializable {
 
     public void setChannel(String channel) {
         this.channel = channel;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     @Override

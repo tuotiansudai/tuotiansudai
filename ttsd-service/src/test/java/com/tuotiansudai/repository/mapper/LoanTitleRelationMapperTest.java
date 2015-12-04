@@ -60,6 +60,8 @@ public class LoanTitleRelationMapperTest {
         loanTitleMapper.create(loanTitleModel);
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName("xiangjie");
+        loanDto.setLoanerUserName("借款人");
+        loanDto.setLoanerIdentityNumber("111111111111111111");
         loanDto.setAgentLoginName("xiangjie");
         loanDto.setBasicRate("16.00");
         long loanId = idGenerator.generate();
@@ -108,6 +110,8 @@ public class LoanTitleRelationMapperTest {
         loanTitleMapper.create(loanTitleModel);
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName("xiangjie");
+        loanDto.setLoanerUserName("借款人");
+        loanDto.setLoanerIdentityNumber("111111111111111111");
         loanDto.setAgentLoginName("xiangjie");
         loanDto.setBasicRate("16.00");
         long loanId = idGenerator.generate();
@@ -158,6 +162,8 @@ public class LoanTitleRelationMapperTest {
         loanTitleMapper.create(loanTitleModel);
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName("xiangjie");
+        loanDto.setLoanerUserName("借款人");
+        loanDto.setLoanerIdentityNumber("111111111111111111");
         loanDto.setAgentLoginName("xiangjie");
         loanDto.setBasicRate("16.00");
         long loanId = idGenerator.generate();

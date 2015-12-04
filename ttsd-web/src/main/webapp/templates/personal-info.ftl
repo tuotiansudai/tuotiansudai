@@ -95,7 +95,7 @@
 </div>
 
 <div id="change-email-success" class="pad-m popLayer" style="display: none;">
-    验证邮箱已发送到 <span class="color-info email"></span> 请进入邮箱进行验证完成
+    验证邮件已发送至您的邮箱，请登录邮箱完成验证。
 </div>
 
 </@global.main>

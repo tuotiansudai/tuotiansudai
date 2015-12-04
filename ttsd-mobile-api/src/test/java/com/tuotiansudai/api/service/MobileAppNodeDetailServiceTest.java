@@ -4,8 +4,8 @@ import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.NodeDetailRequestDto;
 import com.tuotiansudai.api.dto.NodeDetailResponseDataDto;
 import com.tuotiansudai.api.service.impl.MobileAppNodeDetailServiceImpl;
-import com.tuotiansudai.repository.mapper.AnnouncementManagementMapper;
-import com.tuotiansudai.repository.model.AnnouncementManagementModel;
+import com.tuotiansudai.repository.mapper.AnnounceMapper;
+import com.tuotiansudai.repository.model.AnnounceModel;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +28,7 @@ public class MobileAppNodeDetailServiceTest extends ServiceTestBase{
     @InjectMocks
     private MobileAppNodeDetailServiceImpl mobileAppNodeDetailService;
     @Mock
-    private AnnouncementManagementMapper announcementManagementMapper;
+    private AnnounceMapper announceMapper;
     @Autowired
     private IdGenerator idGenerator;
 
@@ -36,25 +36,25 @@ public class MobileAppNodeDetailServiceTest extends ServiceTestBase{
     public void shouldGenerateNodeDetailIsOk(){
         ReflectionTestUtils.setField(mobileAppNodeDetailService, "urlPattern", "(\\\\/upload\\\\/).*?(.jpg|.gif|.jpeg|.png)");
         ReflectionTestUtils.setField(mobileAppNodeDetailService, "domainName", "http://localhost:8080");
-        AnnouncementManagementModel announcementManagementModel1 = fakeAnnouncementManagementModel();
-        when(announcementManagementMapper.findById(anyLong())).thenReturn(announcementManagementModel1);
+        AnnounceModel announceModel1 = fakeAnnounceModel();
+        when(announceMapper.findById(anyLong())).thenReturn(announceModel1);
         NodeDetailRequestDto nodeListRequestDto = new NodeDetailRequestDto();
-        nodeListRequestDto.setNodeId("" + announcementManagementModel1.getId());
+        nodeListRequestDto.setNodeId("" + announceModel1.getId());
 
         BaseResponseDto<NodeDetailResponseDataDto> baseDto = mobileAppNodeDetailService.generateNodeDetail(nodeListRequestDto);
         assertTrue(baseDto.isSuccess());
 
     }
 
-    private AnnouncementManagementModel fakeAnnouncementManagementModel(){
-        AnnouncementManagementModel announcementManagementModel = new AnnouncementManagementModel();
-        announcementManagementModel.setId(idGenerator.generate());
-        announcementManagementModel.setTitle("tile");
-        announcementManagementModel.setContent("content");
-        announcementManagementModel.setCreatedTime(new Date());
-        announcementManagementModel.setUpdateTime(new Date());
-        announcementManagementModel.setShowOnHome(false);
-        return announcementManagementModel;
+    private AnnounceModel fakeAnnounceModel(){
+        AnnounceModel announceModel = new AnnounceModel();
+        announceModel.setId(idGenerator.generate());
+        announceModel.setTitle("tile");
+        announceModel.setContent("content");
+        announceModel.setCreatedTime(new Date());
+        announceModel.setUpdateTime(new Date());
+        announceModel.setShowOnHome(false);
+        return announceModel;
     }
 
 

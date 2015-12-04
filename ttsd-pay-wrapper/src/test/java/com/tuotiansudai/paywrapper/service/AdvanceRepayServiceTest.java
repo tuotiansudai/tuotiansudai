@@ -120,7 +120,7 @@ public class AdvanceRepayServiceTest {
 
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
 
-        assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.CONFIRMING));
+        assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.WAIT_PAY));
         assertThat(loanRepayModels.get(0).getActualInterest(), is(36L));
         assertThat(new DateTime(loanRepayModels.get(0).getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(today.withTimeAtStartOfDay().getMillis()));
         assertThat(loanRepayModels.get(1).getStatus(), is(RepayStatus.REPAYING));
@@ -152,7 +152,7 @@ public class AdvanceRepayServiceTest {
 
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
 
-        assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.CONFIRMING));
+        assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.WAIT_PAY));
         assertThat(loanRepayModels.get(0).getActualInterest(), is(3L));
         assertThat(new DateTime(loanRepayModels.get(0).getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(today.withTimeAtStartOfDay().getMillis()));
         assertThat(loanRepayModels.get(1).getStatus(), is(RepayStatus.REPAYING));
@@ -188,7 +188,7 @@ public class AdvanceRepayServiceTest {
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
 
         assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.COMPLETE));
-        assertThat(loanRepayModels.get(1).getStatus(), is(RepayStatus.CONFIRMING));
+        assertThat(loanRepayModels.get(1).getStatus(), is(RepayStatus.WAIT_PAY));
         assertThat(loanRepayModels.get(1).getActualInterest(), is(65L));
         assertThat(new DateTime(loanRepayModels.get(1).getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(today.withTimeAtStartOfDay().getMillis()));
     }
@@ -211,7 +211,7 @@ public class AdvanceRepayServiceTest {
         investMapper.create(fakeInvestModel);
 
         LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 0, 0, today.minusDays(10).toDate(), today.minusDays(20).toDate(), RepayStatus.COMPLETE);
-        LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 1, 0, today.toDate(), null, RepayStatus.REPAYING);
+        LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 1, 0, today.plusDays(1).toDate(), null, RepayStatus.REPAYING);
         LoanRepayModel fakeLoanRepayModel3 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 2, loanAmount, today.plusDays(10).toDate(), null, RepayStatus.REPAYING);
         loanRepayMapper.create(Lists.newArrayList(fakeLoanRepayModel1, fakeLoanRepayModel2, fakeLoanRepayModel3));
 
@@ -223,7 +223,7 @@ public class AdvanceRepayServiceTest {
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
 
         assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.COMPLETE));
-        assertThat(loanRepayModels.get(1).getStatus(), is(RepayStatus.CONFIRMING));
+        assertThat(loanRepayModels.get(1).getStatus(), is(RepayStatus.WAIT_PAY));
         assertThat(loanRepayModels.get(1).getActualInterest(), is(65L));
         assertThat(new DateTime(loanRepayModels.get(1).getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(today.withTimeAtStartOfDay().getMillis()));
     }
@@ -257,7 +257,7 @@ public class AdvanceRepayServiceTest {
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
 
         assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.COMPLETE));
-        assertThat(loanRepayModels.get(1).getStatus(), is(RepayStatus.CONFIRMING));
+        assertThat(loanRepayModels.get(1).getStatus(), is(RepayStatus.WAIT_PAY));
         assertThat(loanRepayModels.get(1).getActualInterest(), is(32L));
         assertThat(new DateTime(loanRepayModels.get(1).getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(today.withTimeAtStartOfDay().getMillis()));
     }
@@ -279,7 +279,7 @@ public class AdvanceRepayServiceTest {
         InvestModel fakeInvestModel = getFakeInvestModel(fakeNormalLoan.getId(), loanAmount, fakeInvestor.getLoginName(), today.minusDays(30).toDate());
         investMapper.create(fakeInvestModel);
 
-        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 0, 0, today.plusDays(10).toDate(), today.toDate(), RepayStatus.COMPLETE);
+        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 0, 0, today.plusDays(10).toDate(), today.withTimeAtStartOfDay().toDate(), RepayStatus.COMPLETE);
         LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 1, loanAmount, today.plusDays(10).toDate(), null, RepayStatus.REPAYING);
         loanRepayMapper.create(Lists.newArrayList(fakeLoanRepayModel1, fakeLoanRepayModel2));
 
@@ -291,7 +291,7 @@ public class AdvanceRepayServiceTest {
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
 
         assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.COMPLETE));
-        assertThat(loanRepayModels.get(1).getStatus(), is(RepayStatus.CONFIRMING));
+        assertThat(loanRepayModels.get(1).getStatus(), is(RepayStatus.WAIT_PAY));
         assertThat(loanRepayModels.get(1).getActualInterest(), is(0L));
         assertThat(new DateTime(loanRepayModels.get(1).getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(today.withTimeAtStartOfDay().getMillis()));
     }
@@ -319,11 +319,17 @@ public class AdvanceRepayServiceTest {
         investMapper.create(fakeInvestModel1);
         investMapper.create(fakeInvestModel2);
         repayGeneratorService.generateRepay(fakeNormalLoan.getId());
-        BaseDto<PayFormDataDto> dto = advanceRepayService.repay(fakeNormalLoan.getId());
+        advanceRepayService.repay(fakeNormalLoan.getId());
 
         this.generateMockResponse(10);
 
-        advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        advanceRepayService.postRepayCallback(loanRepayMapper.findByLoanIdAndPeriod(fakeNormalLoan.getId(), 1).getId());
+
+        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel1.getId(), 1).getId() + "X"), "");
+        advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel1.getId(), 1).getId() + "X"), "");
+
+        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel2.getId(), 1).getId() + "X"), "");
+        advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel2.getId(), 1).getId() + "X"), "");
 
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
         assertThat(loanRepayModels.get(0).getPeriod(), is(1));
@@ -333,8 +339,8 @@ public class AdvanceRepayServiceTest {
         assertThat(loanRepayModels.get(2).getPeriod(), is(3));
         assertThat(loanRepayModels.get(2).getStatus(), is(RepayStatus.COMPLETE));
 
-        List<InvestRepayModel> investRepayModels1 = investRepayMapper.findByInvestId(fakeInvestModel1.getId());
-        List<InvestRepayModel> investRepayModels2 = investRepayMapper.findByInvestId(fakeInvestModel2.getId());
+        List<InvestRepayModel> investRepayModels1 = investRepayMapper.findByInvestIdAndPeriodAsc(fakeInvestModel1.getId());
+        List<InvestRepayModel> investRepayModels2 = investRepayMapper.findByInvestIdAndPeriodAsc(fakeInvestModel2.getId());
 
         assertThat(investRepayModels1.get(0).getPeriod(), is(1));
         assertThat(investRepayModels1.get(0).getActualRepayDate().getTime(), is(loanRepayModels.get(0).getActualRepayDate().getTime()));
@@ -391,17 +397,17 @@ public class AdvanceRepayServiceTest {
         assertThat(investorUserBills2.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
         assertThat(investorUserBills2.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
 
-        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(String.valueOf(investRepayModels1.get(0).getId()));
+        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(0).getId());
         assertThat(systemBillModel1.getAmount(), is(investRepayModels1.get(0).getActualFee()));
         assertThat(systemBillModel1.getOperationType(), is(SystemBillOperationType.IN));
         assertThat(systemBillModel1.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
 
-        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(String.valueOf(investRepayModels2.get(0).getId()));
+        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(investRepayModels2.get(0).getId());
         assertThat(systemBillModel2.getAmount(), is(investRepayModels2.get(0).getActualFee()));
         assertThat(systemBillModel2.getOperationType(), is(SystemBillOperationType.IN));
         assertThat(systemBillModel2.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
 
-        SystemBillModel systemBillModel3 = systemBillMapper.findByOrderId(String.valueOf(fakeNormalLoan.getId()));
+        SystemBillModel systemBillModel3 = systemBillMapper.findByOrderId(loanRepayModels.get(0).getId());
         assertThat(systemBillModel3.getAmount(), is(1L));
         assertThat(systemBillModel3.getOperationType(), is(SystemBillOperationType.IN));
         assertThat(systemBillModel3.getBusinessType(), is(SystemBillBusinessType.LOAN_REMAINING_INTEREST));
@@ -432,11 +438,15 @@ public class AdvanceRepayServiceTest {
         investMapper.create(fakeInvestModel1);
         investMapper.create(fakeInvestModel2);
         repayGeneratorService.generateRepay(fakeNormalLoan.getId());
-        BaseDto<PayFormDataDto> dto = advanceRepayService.repay(fakeNormalLoan.getId());
+        advanceRepayService.repay(fakeNormalLoan.getId());
 
-        this.generateMockResponse(4);
+        this.generateMockResponse(10);
 
-        advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        advanceRepayService.postRepayCallback(loanRepayMapper.findByLoanIdAndPeriod(fakeNormalLoan.getId(), 1).getId());
+        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel1.getId(), 1).getId()) + "X"), "");
+
+        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel2.getId(), 1).getId()) + "X"), "");
+        advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(String.valueOf(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel2.getId(), 1).getId()) + "X"), "");
 
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
         assertThat(loanRepayModels.get(0).getPeriod(), is(1));
@@ -446,8 +456,8 @@ public class AdvanceRepayServiceTest {
         assertThat(loanRepayModels.get(2).getPeriod(), is(3));
         assertThat(loanRepayModels.get(2).getStatus(), is(RepayStatus.COMPLETE));
 
-        List<InvestRepayModel> investRepayModels1 = investRepayMapper.findByInvestId(fakeInvestModel1.getId());
-        List<InvestRepayModel> investRepayModels2 = investRepayMapper.findByInvestId(fakeInvestModel2.getId());
+        List<InvestRepayModel> investRepayModels1 = investRepayMapper.findByInvestIdAndPeriodAsc(fakeInvestModel1.getId());
+        List<InvestRepayModel> investRepayModels2 = investRepayMapper.findByInvestIdAndPeriodAsc(fakeInvestModel2.getId());
 
         assertThat(investRepayModels1.get(0).getPeriod(), is(1));
         assertThat(investRepayModels1.get(0).getActualRepayDate().getTime(), is(loanRepayModels.get(0).getActualRepayDate().getTime()));
@@ -490,12 +500,12 @@ public class AdvanceRepayServiceTest {
         assertThat(investorUserBills2.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
         assertThat(investorUserBills2.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
 
-        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(String.valueOf(investRepayModels1.get(0).getId()));
+        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(0).getId());
         assertThat(systemBillModel1.getAmount(), is(investRepayModels1.get(0).getActualFee()));
         assertThat(systemBillModel1.getOperationType(), is(SystemBillOperationType.IN));
         assertThat(systemBillModel1.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
 
-        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(String.valueOf(investRepayModels2.get(0).getId()));
+        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(investRepayModels2.get(0).getId());
         assertThat(systemBillModel2.getAmount(), is(investRepayModels2.get(0).getActualFee()));
         assertThat(systemBillModel2.getOperationType(), is(SystemBillOperationType.IN));
         assertThat(systemBillModel2.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
@@ -538,13 +548,17 @@ public class AdvanceRepayServiceTest {
 
         BaseDto<PayFormDataDto> dto = advanceRepayService.repay(fakeNormalLoan.getId());
 
-        this.generateMockResponse(4);
+        this.generateMockResponse(10);
 
-        advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        advanceRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
+        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel1.getId(), 2).getId()) + "X"), "");
+
+        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel2.getId(), 2).getId()) + "X"), "");
+        advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(String.valueOf(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel2.getId(), 2).getId()) + "X"), "");
 
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
-        List<InvestRepayModel> investRepayModels1 = investRepayMapper.findByInvestId(fakeInvestModel1.getId());
-        List<InvestRepayModel> investRepayModels2 = investRepayMapper.findByInvestId(fakeInvestModel2.getId());
+        List<InvestRepayModel> investRepayModels1 = investRepayMapper.findByInvestIdAndPeriodAsc(fakeInvestModel1.getId());
+        List<InvestRepayModel> investRepayModels2 = investRepayMapper.findByInvestIdAndPeriodAsc(fakeInvestModel2.getId());
 
         assertThat(investRepayModels1.get(1).getPeriod(), is(2));
         assertThat(investRepayModels1.get(1).getActualRepayDate().getTime(), is(loanRepayModels.get(1).getActualRepayDate().getTime()));
@@ -579,15 +593,138 @@ public class AdvanceRepayServiceTest {
         assertThat(investorUserBills2.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
         assertThat(investorUserBills2.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
 
-        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(String.valueOf(investRepayModels1.get(1).getId()));
+        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(1).getId());
         assertThat(systemBillModel1.getAmount(), is(investRepayModels1.get(1).getActualFee()));
         assertThat(systemBillModel1.getOperationType(), is(SystemBillOperationType.IN));
         assertThat(systemBillModel1.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
 
-        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(String.valueOf(investRepayModels2.get(1).getId()));
+        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(investRepayModels2.get(1).getId());
         assertThat(systemBillModel2.getAmount(), is(investRepayModels2.get(1).getActualFee()));
         assertThat(systemBillModel2.getOperationType(), is(SystemBillOperationType.IN));
         assertThat(systemBillModel2.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
+
+        assertThat(loanMapper.findById(fakeNormalLoan.getId()).getStatus(), is(LoanStatus.COMPLETE));
+    }
+
+    @Test
+    public void shouldOverdueAdvanceRepayCallbackLastPeriod() throws Exception {
+        DateTime today = new DateTime();
+        UserModel loaner = this.getFakeUser("loaner");
+        UserModel investor1 = this.getFakeUser("investor1");
+        UserModel investor2 = this.getFakeUser("investor2");
+        userMapper.create(loaner);
+        userMapper.create(investor1);
+        userMapper.create(investor2);
+        AccountModel loanerAccount = getFakeAccount(loaner);
+        AccountModel investAccount1 = getFakeAccount(investor1);
+        AccountModel investAccount2 = getFakeAccount(investor2);
+        accountMapper.create(loanerAccount);
+        accountMapper.create(investAccount1);
+        accountMapper.create(investAccount2);
+        long loanAmount = 10000;
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.INVEST_INTEREST_MONTHLY_REPAY, loanAmount, 2, 0.09, 0.03, 0.1, loaner.getLoginName(), today.minusDays(10).toDate());
+        fakeNormalLoan.setStatus(LoanStatus.OVERDUE);
+        loanMapper.create(fakeNormalLoan);
+        InvestModel fakeInvestModel1 = getFakeInvestModel(fakeNormalLoan.getId(), 1000, investor1.getLoginName(), today.minusDays(20).toDate());
+        InvestModel fakeInvestModel2 = getFakeInvestModel(fakeNormalLoan.getId(), 9000, investor2.getLoginName(), today.minusDays(10).toDate());
+        investMapper.create(fakeInvestModel1);
+        investMapper.create(fakeInvestModel2);
+
+        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 1, 0, today.minusDays(5).toDate(), null, RepayStatus.OVERDUE);
+        fakeLoanRepayModel1.setDefaultInterest(3L);
+        LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 2, loanAmount, today.plusDays(10).toDate(), null, RepayStatus.REPAYING);
+        loanRepayMapper.create(Lists.newArrayList(fakeLoanRepayModel1, fakeLoanRepayModel2));
+
+        InvestRepayModel fakeInvest1RepayModel1 = this.getFakeInvestRepayModel(fakeInvestModel1.getId(), 1, 0, fakeLoanRepayModel1.getRepayDate(), fakeLoanRepayModel1.getActualRepayDate(), RepayStatus.OVERDUE);
+        fakeInvest1RepayModel1.setDefaultInterest(1L);
+        InvestRepayModel fakeInvest1RepayModel2 = this.getFakeInvestRepayModel(fakeInvestModel1.getId(), 2, fakeInvestModel1.getAmount(), fakeLoanRepayModel2.getRepayDate(), null, RepayStatus.REPAYING);
+        InvestRepayModel fakeInvest2RepayModel1 = this.getFakeInvestRepayModel(fakeInvestModel2.getId(), 1, 0, fakeLoanRepayModel1.getRepayDate(), fakeLoanRepayModel1.getActualRepayDate(), RepayStatus.OVERDUE);
+        fakeInvest2RepayModel1.setDefaultInterest(1L);
+        InvestRepayModel fakeInvest2RepayModel2 = this.getFakeInvestRepayModel(fakeInvestModel2.getId(), 2, fakeInvestModel2.getAmount(), fakeLoanRepayModel2.getRepayDate(), null, RepayStatus.REPAYING);
+        investRepayMapper.create(Lists.newArrayList(fakeInvest1RepayModel1, fakeInvest1RepayModel2, fakeInvest2RepayModel1, fakeInvest2RepayModel2));
+
+        BaseDto<PayFormDataDto> dto = advanceRepayService.repay(fakeNormalLoan.getId());
+
+        this.generateMockResponse(10);
+
+        advanceRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
+        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest1RepayModel2.getId()) + "X"), "");
+
+        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest2RepayModel2.getId()) + "X"), "");
+        advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest2RepayModel2.getId()) + "X"), "");
+
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
+        assertThat(loanRepayModels.get(0).getPeriod(), is(1));
+        assertThat(loanRepayModels.get(0).getActualRepayDate().getTime(), is(loanRepayModels.get(1).getActualRepayDate().getTime()));
+        assertThat(loanRepayModels.get(0).getActualInterest(), is(0L));
+        assertThat(loanRepayModels.get(0).getDefaultInterest(), is(3L));
+        assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.COMPLETE));
+        assertThat(loanRepayModels.get(1).getPeriod(), is(2));
+        assertThat(loanRepayModels.get(1).getActualRepayDate().getTime(), is(loanRepayModels.get(1).getActualRepayDate().getTime()));
+        assertThat(loanRepayModels.get(1).getActualInterest(), is(39L));
+        assertThat(loanRepayModels.get(1).getDefaultInterest(), is(0L));
+        assertThat(loanRepayModels.get(1).getStatus(), is(RepayStatus.COMPLETE));
+
+        List<InvestRepayModel> investRepayModels1 = investRepayMapper.findByInvestIdAndPeriodAsc(fakeInvestModel1.getId());
+        List<InvestRepayModel> investRepayModels2 = investRepayMapper.findByInvestIdAndPeriodAsc(fakeInvestModel2.getId());
+
+        assertThat(investRepayModels1.get(0).getPeriod(), is(1));
+        assertThat(investRepayModels1.get(0).getActualRepayDate().getTime(), is(loanRepayModels.get(1).getActualRepayDate().getTime()));
+        assertThat(investRepayModels1.get(0).getActualInterest(), is(0L));
+        assertThat(investRepayModels1.get(0).getActualFee(), is(0L));
+        assertThat(investRepayModels1.get(0).getStatus(), is(RepayStatus.COMPLETE));
+        assertThat(investRepayModels1.get(1).getPeriod(), is(2));
+        assertThat(investRepayModels1.get(1).getActualRepayDate().getTime(), is(loanRepayModels.get(1).getActualRepayDate().getTime()));
+        assertThat(investRepayModels1.get(1).getActualInterest(), is(6L));
+        assertThat(investRepayModels1.get(1).getActualFee(), is(0L));
+        assertThat(investRepayModels1.get(1).getStatus(), is(RepayStatus.COMPLETE));
+
+        assertThat(investRepayModels2.get(0).getPeriod(), is(1));
+        assertThat(investRepayModels2.get(0).getActualRepayDate().getTime(), is(loanRepayModels.get(1).getActualRepayDate().getTime()));
+        assertThat(investRepayModels2.get(0).getActualInterest(), is(0L));
+        assertThat(investRepayModels2.get(0).getActualFee(), is(0L));
+        assertThat(investRepayModels2.get(0).getStatus(), is(RepayStatus.COMPLETE));
+        assertThat(investRepayModels2.get(1).getPeriod(), is(2));
+        assertThat(investRepayModels2.get(1).getActualRepayDate().getTime(), is(loanRepayModels.get(1).getActualRepayDate().getTime()));
+        assertThat(investRepayModels2.get(1).getActualInterest(), is(32L));
+        assertThat(investRepayModels2.get(1).getActualFee(), is(3L));
+        assertThat(investRepayModels2.get(1).getStatus(), is(RepayStatus.COMPLETE));
+
+        List<UserBillModel> loanerUserBills = userBillMapper.findByLoginName(loaner.getLoginName());
+        assertThat(loanerUserBills.get(0).getAmount(), is(loanRepayModels.get(1).getActualInterest() + loanRepayModels.get(0).getDefaultInterest() +loanRepayModels.get(1).getCorpus()));
+        assertThat(loanerUserBills.get(0).getBusinessType(), is(UserBillBusinessType.OVERDUE_REPAY));
+        assertThat(loanerUserBills.get(0).getOperationType(), is(UserBillOperationType.TO_BALANCE));
+
+        List<UserBillModel> investorUserBills1 = userBillMapper.findByLoginName(investor1.getLoginName());
+        assertThat(investorUserBills1.get(0).getAmount(), is(investRepayModels1.get(1).getActualInterest() + investRepayModels1.get(0).getDefaultInterest() + investRepayModels1.get(1).getCorpus()));
+        assertThat(investorUserBills1.get(0).getBusinessType(), is(UserBillBusinessType.OVERDUE_REPAY));
+        assertThat(investorUserBills1.get(0).getOperationType(), is(UserBillOperationType.TI_BALANCE));
+        assertThat(investorUserBills1.get(1).getAmount(), is(investRepayModels1.get(1).getActualFee()));
+        assertThat(investorUserBills1.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
+        assertThat(investorUserBills1.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
+
+        List<UserBillModel> investorUserBills2 = userBillMapper.findByLoginName(investor2.getLoginName());
+        assertThat(investorUserBills2.get(0).getAmount(), is(investRepayModels2.get(1).getActualInterest() + investRepayModels2.get(0).getDefaultInterest() + investRepayModels2.get(1).getCorpus()));
+        assertThat(investorUserBills2.get(0).getBusinessType(), is(UserBillBusinessType.OVERDUE_REPAY));
+        assertThat(investorUserBills2.get(0).getOperationType(), is(UserBillOperationType.TI_BALANCE));
+        assertThat(investorUserBills2.get(1).getAmount(), is(investRepayModels2.get(1).getActualFee()));
+        assertThat(investorUserBills2.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
+        assertThat(investorUserBills2.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
+
+        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(1).getId());
+        assertThat(systemBillModel1.getAmount(), is(investRepayModels1.get(1).getActualFee()));
+        assertThat(systemBillModel1.getOperationType(), is(SystemBillOperationType.IN));
+        assertThat(systemBillModel1.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
+
+        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(investRepayModels2.get(1).getId());
+        assertThat(systemBillModel2.getAmount(), is(investRepayModels2.get(1).getActualFee()));
+        assertThat(systemBillModel2.getOperationType(), is(SystemBillOperationType.IN));
+        assertThat(systemBillModel2.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
+
+        SystemBillModel systemBillModel3 = systemBillMapper.findByOrderId(loanRepayModels.get(1).getId());
+        assertThat(systemBillModel3.getAmount(), is(2L));
+        assertThat(systemBillModel3.getOperationType(), is(SystemBillOperationType.IN));
+        assertThat(systemBillModel3.getBusinessType(), is(SystemBillBusinessType.LOAN_REMAINING_INTEREST));
 
         assertThat(loanMapper.findById(fakeNormalLoan.getId()).getStatus(), is(LoanStatus.COMPLETE));
     }
@@ -628,11 +765,16 @@ public class AdvanceRepayServiceTest {
         InvestRepayModel fakeInvest2RepayModel3 = this.getFakeInvestRepayModel(fakeInvestModel2.getId(), 3, fakeInvestModel2.getAmount(), fakeLoanRepayModel3.getRepayDate(), null, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(fakeInvest1RepayModel1, fakeInvest1RepayModel2, fakeInvest1RepayModel3, fakeInvest2RepayModel1, fakeInvest2RepayModel2, fakeInvest2RepayModel3));
 
-        BaseDto<PayFormDataDto> dto = advanceRepayService.repay(fakeNormalLoan.getId());
+        advanceRepayService.repay(fakeNormalLoan.getId());
 
-        this.generateMockResponse(4);
+        this.generateMockResponse(10);
 
-        advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        advanceRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
+        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest1RepayModel2.getId()) + "X"), "");
+        advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest1RepayModel2.getId()) + "X"), "");
+        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest2RepayModel2.getId()) + "X"), "");
+        advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest2RepayModel2.getId()) + "X"), "");
+
 
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
         assertThat(loanRepayModels.get(0).getPeriod(), is(1));
@@ -642,8 +784,8 @@ public class AdvanceRepayServiceTest {
         assertThat(loanRepayModels.get(2).getPeriod(), is(3));
         assertThat(loanRepayModels.get(2).getStatus(), is(RepayStatus.COMPLETE));
 
-        List<InvestRepayModel> investRepayModels1 = investRepayMapper.findByInvestId(fakeInvestModel1.getId());
-        List<InvestRepayModel> investRepayModels2 = investRepayMapper.findByInvestId(fakeInvestModel2.getId());
+        List<InvestRepayModel> investRepayModels1 = investRepayMapper.findByInvestIdAndPeriodAsc(fakeInvestModel1.getId());
+        List<InvestRepayModel> investRepayModels2 = investRepayMapper.findByInvestIdAndPeriodAsc(fakeInvestModel2.getId());
 
         assertThat(investRepayModels1.get(1).getPeriod(), is(2));
         assertThat(investRepayModels1.get(1).getActualRepayDate().getTime(), is(loanRepayModels.get(1).getActualRepayDate().getTime()));
@@ -686,12 +828,12 @@ public class AdvanceRepayServiceTest {
         assertThat(investorUserBills2.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
         assertThat(investorUserBills2.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
 
-        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(String.valueOf(investRepayModels1.get(1).getId()));
+        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(1).getId());
         assertThat(systemBillModel1.getAmount(), is(investRepayModels1.get(1).getActualFee()));
         assertThat(systemBillModel1.getOperationType(), is(SystemBillOperationType.IN));
         assertThat(systemBillModel1.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
 
-        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(String.valueOf(investRepayModels2.get(1).getId()));
+        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(investRepayModels2.get(1).getId());
         assertThat(systemBillModel2.getAmount(), is(investRepayModels2.get(1).getActualFee()));
         assertThat(systemBillModel2.getOperationType(), is(SystemBillOperationType.IN));
         assertThat(systemBillModel2.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
@@ -726,9 +868,13 @@ public class AdvanceRepayServiceTest {
 
         BaseDto<PayFormDataDto> dto = advanceRepayService.repay(fakeNormalLoan.getId());
 
-        this.generateMockResponse(4);
+        this.generateMockResponse(10);
 
-        advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        advanceRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
+
+        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvestRepayModel2.getId()) + "X"), "");
+        advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvestRepayModel2.getId()) + "X"), "");
+
 
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
         assertThat(loanRepayModels.get(0).getPeriod(), is(1));
@@ -736,7 +882,7 @@ public class AdvanceRepayServiceTest {
         assertThat(loanRepayModels.get(1).getPeriod(), is(2));
         assertThat(loanRepayModels.get(1).getStatus(), is(RepayStatus.COMPLETE));
 
-        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestId(fakeInvestModel.getId());
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(fakeInvestModel.getId());
         assertThat(investRepayModels.get(1).getPeriod(), is(2));
         assertThat(investRepayModels.get(1).getActualRepayDate().getTime(), is(loanRepayModels.get(1).getActualRepayDate().getTime()));
         assertThat(investRepayModels.get(1).getActualInterest(), is(32L));
@@ -756,7 +902,7 @@ public class AdvanceRepayServiceTest {
         assertThat(investorUserBills1.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
         assertThat(investorUserBills1.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
 
-        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(String.valueOf(investRepayModels.get(1).getId()));
+        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels.get(1).getId());
         assertThat(systemBillModel1.getAmount(), is(investRepayModels.get(1).getActualFee()));
         assertThat(systemBillModel1.getOperationType(), is(SystemBillOperationType.IN));
         assertThat(systemBillModel1.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
@@ -781,7 +927,7 @@ public class AdvanceRepayServiceTest {
         InvestModel fakeInvestModel = getFakeInvestModel(fakeNormalLoan.getId(), loanAmount, investor.getLoginName(), today.minusDays(10).toDate());
         investMapper.create(fakeInvestModel);
 
-        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 1, 0, today.plusDays(10).toDate(), today.toDate(), RepayStatus.COMPLETE);
+        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 1, 0, today.plusDays(10).toDate(), today.withTimeAtStartOfDay().toDate(), RepayStatus.COMPLETE);
         LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 2, loanAmount, today.plusDays(20).toDate(), null, RepayStatus.REPAYING);
         loanRepayMapper.create(Lists.newArrayList(fakeLoanRepayModel1, fakeLoanRepayModel2));
 
@@ -789,19 +935,21 @@ public class AdvanceRepayServiceTest {
         InvestRepayModel fakeInvestRepayModel2 = this.getFakeInvestRepayModel(fakeInvestModel.getId(), 2, fakeInvestModel.getAmount(), fakeLoanRepayModel2.getRepayDate(), null, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(fakeInvestRepayModel1, fakeInvestRepayModel2));
 
-        BaseDto<PayFormDataDto> dto = advanceRepayService.repay(fakeNormalLoan.getId());
+        advanceRepayService.repay(fakeNormalLoan.getId());
 
-        this.generateMockResponse(4);
+        this.generateMockResponse(10);
 
-        advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        advanceRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
+        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvestRepayModel2.getId()) + "X"), "");
 
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
         assertThat(loanRepayModels.get(0).getPeriod(), is(1));
         assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.COMPLETE));
         assertThat(loanRepayModels.get(1).getPeriod(), is(2));
+        assertThat(loanRepayModels.get(1).getActualInterest(), is(0L));
         assertThat(loanRepayModels.get(1).getStatus(), is(RepayStatus.COMPLETE));
 
-        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestId(fakeInvestModel.getId());
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(fakeInvestModel.getId());
         assertThat(investRepayModels.get(1).getPeriod(), is(2));
         assertThat(investRepayModels.get(1).getActualRepayDate().getTime(), is(loanRepayModels.get(1).getActualRepayDate().getTime()));
         assertThat(investRepayModels.get(1).getActualInterest(), is(0L));
@@ -821,7 +969,7 @@ public class AdvanceRepayServiceTest {
         assertThat(investorUserBills1.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
         assertThat(investorUserBills1.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
 
-        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(String.valueOf(investRepayModels.get(1).getId()));
+        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels.get(1).getId());
         assertThat(systemBillModel1.getAmount(), is(investRepayModels.get(1).getActualFee()));
         assertThat(systemBillModel1.getOperationType(), is(SystemBillOperationType.IN));
         assertThat(systemBillModel1.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
@@ -852,6 +1000,8 @@ public class AdvanceRepayServiceTest {
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanAmount(amount);
         fakeLoanModel.setLoanerLoginName(loginName);
+        fakeLoanModel.setLoanerUserName("借款人");
+        fakeLoanModel.setLoanerIdentityNumber("111111111111111111");
         fakeLoanModel.setAgentLoginName(loginName);
         fakeLoanModel.setType(loanType);
         fakeLoanModel.setPeriods(periods);

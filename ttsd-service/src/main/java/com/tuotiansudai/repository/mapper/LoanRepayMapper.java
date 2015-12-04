@@ -31,7 +31,7 @@ public interface LoanRepayMapper {
 
     List<LoanRepayModel> findByLoanIdOrderByPeriodAsc(long loanId);
 
-    List<LoanRepayModel> findByAgentAndLoanId(@Param(value = "agentLoginName") String loanerLoginName,
+    List<LoanRepayModel> findByAgentAndLoanId(@Param(value = "agentLoginName") String agentLoginName,
                                               @Param(value = "loanId") long loanId);
 
     LoanRepayModel findEnabledLoanRepayByLoanId(long loanId);
@@ -43,7 +43,7 @@ public interface LoanRepayMapper {
 
     long sumSuccessLoanRepayMaxPeriod(@Param(value = "loanId") long loanId);
 
-    LoanRepayModel findConfirmingLoanRepayByLoanId(long loanId);
+    LoanRepayModel findWaitPayLoanRepayByLoanId(long loanId);
 
     LoanRepayModel findCurrentLoanRepayByLoanId(long loanId);
 

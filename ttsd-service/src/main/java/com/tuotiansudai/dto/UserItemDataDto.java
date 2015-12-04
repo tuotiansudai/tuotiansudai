@@ -1,5 +1,6 @@
 package com.tuotiansudai.dto;
 
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -18,6 +19,7 @@ public class UserItemDataDto implements Serializable {
     private Date registerTime;
     private List<UserRoleModel> userRoles;
     private UserStatus status;
+    private Source source;
 
     public String getLoginName() {
         return loginName;
@@ -91,11 +93,20 @@ public class UserItemDataDto implements Serializable {
         this.status = status;
     }
 
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
+    }
+
     public UserItemDataDto(UserModel userModel) {
         this.loginName = userModel.getLoginName();
         this.email = userModel.getEmail();
         this.referrer = userModel.getReferrer();
         this.channel = userModel.getChannel();
+        this.source = userModel.getSource();
         this.mobile = userModel.getMobile();
         this.registerTime = userModel.getRegisterTime();
         if (userModel.getAccount() != null) {
