@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(path = "/about")
 public class AboutController {
 
-    @Value("${withdraw.fee}")
+    @Value("${pay.withdraw.fee}")
     private long withdrawFee;
 
     @RequestMapping(path = "/{item:^assurance|company|contact|guide|notice|notice-detail|service-fee|team$}", method = RequestMethod.GET)

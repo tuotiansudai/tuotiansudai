@@ -32,7 +32,7 @@ public class WithdrawController {
     @Autowired
     private BindBankCardService bindBankCardService;
 
-    @Value("${withdraw.fee}")
+    @Value("${pay.withdraw.fee}")
     private long withdrawFee;
 
     @RequestMapping(method = RequestMethod.GET)
