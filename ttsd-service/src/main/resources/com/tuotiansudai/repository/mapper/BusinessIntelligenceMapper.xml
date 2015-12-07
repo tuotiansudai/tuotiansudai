@@ -5,8 +5,9 @@
 <mapper namespace="com.tuotiansudai.repository.mapper.BusinessIntelligenceMapper">
 
     <resultMap id="keyValueMap" type="KeyValueModel">
-        <result column="bi_key" property="key"></result>
-        <result column="bi_value" property="value"></result>
+        <result column="name" property="name"></result>
+        <result column="value" property="value"></result>
+        <result column="group" property="group"></result>
     </resultMap>
 
     <select id="queryUserRegisterTrendDaily" parameterType="map" resultMap="keyValueMap">

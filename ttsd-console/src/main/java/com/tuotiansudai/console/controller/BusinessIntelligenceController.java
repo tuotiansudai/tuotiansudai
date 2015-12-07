@@ -1,7 +1,6 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.dto.Granularity;
-import com.tuotiansudai.repository.model.KeyValueListsDto;
 import com.tuotiansudai.repository.model.KeyValueModel;
 import com.tuotiansudai.service.BusinessIntelligenceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ public class BusinessIntelligenceController {
 
     @ResponseBody
     @RequestMapping(value = "user-recharge-trend", method = RequestMethod.GET)
-    public List<KeyValueListsDto> queryUserRechargeTrend(
+    public List<KeyValueModel> queryUserRechargeTrend(
             @RequestParam(name = "granularity") Granularity granularity,
             @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
             @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime){
