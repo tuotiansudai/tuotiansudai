@@ -25,6 +25,12 @@ public class BusinessIntelligenceController {
             "湖北","湖南","江西","福建","云南","海南","四川","贵州","广东","内蒙古","新疆","广西","西藏","宁夏","香港","澳门","台湾");
 
     @ResponseBody
+    @RequestMapping(value = "/province", method = RequestMethod.GET)
+    public List<String> queryProvinces() {
+        return PROVINCES;
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/user-register-trend", method = RequestMethod.GET)
     public List<KeyValueModel> queryUserRegisterTrend(
             @RequestParam(name = "granularity") Granularity granularity,
