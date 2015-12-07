@@ -203,8 +203,8 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setDescriptionHtml(loanModel.getDescriptionHtml());
         loanDto.setDescriptionText(loanModel.getDescriptionText());
         loanDto.setLoanAmount(new BigDecimal(loanModel.getLoanAmount()).toString());
-        loanDto.setInvestIncreasingAmount(AmountConverter.convertCentToString(loanModel.getInvestIncreasingAmount()));
-        loanDto.setMinInvestAmount(AmountConverter.convertCentToString(loanModel.getMinInvestAmount()));
+        loanDto.setInvestIncreasingAmount("" + loanModel.getInvestIncreasingAmount());
+        loanDto.setMinInvestAmount("" + loanModel.getMinInvestAmount());
         loanDto.setActivityType(loanModel.getActivityType());
         loanDto.setBasicRate(new BigDecimal(String.valueOf(loanModel.getBaseRate())).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).toString());
         if (loanModel.getActivityRate() > 0) {
