@@ -11,7 +11,7 @@ public class WithdrawModel implements Serializable {
     /**
      * 联动优势提现手续费3元(300分)
      */
-    private static final long WITHDRAW_FEE = 300;
+    private static final long WITHDRAW_FEE = 200;
 
     private long id;
 

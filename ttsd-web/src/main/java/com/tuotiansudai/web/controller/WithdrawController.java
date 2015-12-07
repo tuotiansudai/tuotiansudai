@@ -10,6 +10,7 @@ import com.tuotiansudai.service.WithdrawService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,9 @@ public class WithdrawController {
     @Autowired
     private BindBankCardService bindBankCardService;
 
+    @Value("${withdraw.fee}")
+    private long withdrawFee;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView withdraw() {
         BankCardModel bankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
@@ -38,7 +42,10 @@ public class WithdrawController {
             return new ModelAndView("redirect:/bind-card");
         }
         long balance = accountService.getBalance(LoginUserInfo.getLoginName());
-        return new ModelAndView("/withdraw", "balance", AmountConverter.convertCentToString(balance));
+        ModelAndView modelAndView = new ModelAndView("/withdraw");
+        modelAndView.addObject("balance",AmountConverter.convertCentToString(balance));
+        modelAndView.addObject("withdrawFee",AmountConverter.convertCentToString(withdrawFee));
+        return modelAndView;
     }
 
 
