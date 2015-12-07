@@ -77,6 +77,10 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
             for (ReferrerRelationModel referrerRelationModel : referrerRelationList) {
                 try {
                     String referrerLoginName = referrerRelationModel.getReferrerLoginName();
+                    long investReferrerRewardCount = investReferrerRewardMapper.findCountByInvestReferrer(invest.getId(), referrerLoginName);
+                    if (investReferrerRewardCount > 0) {
+                        continue;
+                    }
                     Role role = this.getReferrerPriorityRole(referrerLoginName);
                     if (role != null) {
                         long reward = this.calculateReferrerReward(invest.getAmount(), loanDuration, referrerRelationModel.getLevel(), role);
