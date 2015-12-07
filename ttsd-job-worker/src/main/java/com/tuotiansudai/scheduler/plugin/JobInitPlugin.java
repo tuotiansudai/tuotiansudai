@@ -1,10 +1,15 @@
 package com.tuotiansudai.scheduler.plugin;
 
-import com.tuotiansudai.job.*;
+import com.tuotiansudai.job.AutoReFreshAreaByMobileJob;
+import com.tuotiansudai.job.CalculateDefaultInterestJob;
+import com.tuotiansudai.job.InvestCallback;
+import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
-import org.quartz.*;
+import org.quartz.CronScheduleBuilder;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.SimpleScheduleBuilder;
 import org.quartz.spi.ClassLoadHelper;
 import org.quartz.spi.SchedulerPlugin;
 
@@ -38,9 +43,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
         if (JobType.AutoReFreshAreaByMobile.name().equalsIgnoreCase(schedulerName)) {
             createRefreshAreaByMobile();
-        }
-        if (JobType.Default.name().equalsIgnoreCase(schedulerName)) {
-            testJob();
         }
     }
 
@@ -81,32 +83,6 @@ public class JobInitPlugin implements SchedulerPlugin {
             jobManager.newJob(JobType.AutoReFreshAreaByMobile, AutoReFreshAreaByMobileJob.class).replaceExistingJob(true)
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 2 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
                     .withIdentity(JobType.AutoReFreshAreaByMobile.name(), JobType.AutoReFreshAreaByMobile.name()).submit();
-        } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void testJob() {
-        try {
-            String jobName = "test";
-            JobDetail jd = jobManager.findJobDetail(jobName, jobName);
-            if (jd == null) {
-                jobManager.newJob(TestJob.class)
-//                        .runWithSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(10).repeatForever())
-                        .runOnceAt(new DateTime().plusSeconds(10).toDate())
-                        .withIdentity(jobName, jobName)
-                        .addJobData("loanId", "fjkalll")
-                        .submit();
-            }
-            String jobName2 = "test2";
-            JobDetail jd2 = jobManager.findJobDetail(jobName2, jobName2);
-            if (jd2 == null) {
-                jobManager.newJob(TestJob2.class)
-//                        .runWithSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(10).repeatForever())
-                        .runOnceAt(new DateTime().plusSeconds(10).toDate())
-                        .withIdentity(jobName2, jobName2)
-                        .submit();
-            }
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }
