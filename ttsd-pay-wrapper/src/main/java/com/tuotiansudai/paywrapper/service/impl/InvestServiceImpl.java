@@ -2,7 +2,6 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -27,7 +26,6 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +35,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class InvestServiceImpl implements InvestService {
@@ -101,7 +102,7 @@ public class InvestServiceImpl implements InvestService {
                 dto.getLoanId(),
                 String.valueOf(investModel.getId()),
                 accountModel.getPayUserId(),
-                String.valueOf(investModel.getAmount()),dto.getSource());
+                String.valueOf(investModel.getAmount()), dto.getSource());
         try {
             checkLoanInvestAccountAmount(dto.getLoginName(), investModel.getLoanId(), investModel.getAmount());
             investMapper.create(investModel);
@@ -350,6 +351,11 @@ public class InvestServiceImpl implements InvestService {
                     logger.info("auto invest was stop, because loan was full , loanId : " + loanId);
                     return;
                 }
+                long autoInvestCount = investMapper.countAutoInvest(loanId, autoInvestPlanModel.getLoginName());
+                if (autoInvestCount >= 1) {
+                    logger.info("auto invest was skip, because user [" + autoInvestPlanModel.getLoginName() + "] has auto-invest-ed on this loan : " + loanId);
+                    continue;
+                }
                 long availableSelfLoanAmount = loanModel.getMaxInvestAmount() - investMapper.sumSuccessInvestAmountByLoginName(loanId, autoInvestPlanModel.getLoginName());
                 if (availableSelfLoanAmount <= 0) {
                     logger.info("auto invest was skip, because amount that user [" + autoInvestPlanModel.getLoginName() + "] has invested was reach max-invest-amount , loanId : " + loanId);
@@ -369,7 +375,7 @@ public class InvestServiceImpl implements InvestService {
                 continue;
             }
 
-            if(autoInvestIntervalMilliseconds >= 0) {
+            if (autoInvestIntervalMilliseconds >= 0) {
                 try { Thread.sleep(autoInvestIntervalMilliseconds); } catch (InterruptedException e) { }
             }
         }
