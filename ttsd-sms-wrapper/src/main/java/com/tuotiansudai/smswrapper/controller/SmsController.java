@@ -43,4 +43,10 @@ public class SmsController {
     public BaseDto<SmsDataDto> investFatalNotify(@Valid @RequestBody SmsInvestFatalNotifyDto notifyDto) {
         return smsService.investFatalNotify(notifyDto.getMobile(), notifyDto.getErrMsg());
     }
+
+    @RequestMapping(value = "/job-fatal-notify", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> jobFatalNotify(@Valid @RequestBody SmsJobFatalNotifyDto notifyDto) {
+        return smsService.jobFatalNotify(notifyDto.getMobile(), notifyDto.getErrMsg());
+    }
 }
