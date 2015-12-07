@@ -39,13 +39,13 @@
 
     <select id="queryUserRechargeTrend" parameterType="map" resultMap="keyValueMap">
         SELECT
-        <if test="province.name() == 'Daily'">
+        <if test="granularity.name() == 'Daily'">
             DATE(r.`created_time`) AS `name`,
         </if>
-        <if test="province.name() == 'Weekly'">
+        <if test="granularity.name() == 'Weekly'">
             CONCAT(YEAR(r.`created_time`), '-', WEEK(r.`created_time`)) AS `name`,
         </if>
-        <if test="province.name() == 'Monthly'">
+        <if test="granularity.name() == 'Monthly'">
             CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`)) AS `name`,
         </if>
         ROUND(SUM(r.`amount`), 2) AS `value`,
@@ -86,26 +86,26 @@
         WHERE r.`created_time` BETWEEN #{startTime} AND #{endTime}
         AND r.`status` = 'SUCCESS'
         GROUP BY u.`province`,
-        <if test="province.name() == 'Daily'">
-            DATE(r.`created_time`) AS `name`
+        <if test="granularity.name() == 'Daily'">
+            DATE(r.`created_time`)
         </if>
-        <if test="province.name() == 'Weekly'">
-            CONCAT(YEAR(r.`created_time`), '-', WEEK(r.`created_time`)) AS `name`
+        <if test="granularity.name() == 'Weekly'">
+            CONCAT(YEAR(r.`created_time`), '-', WEEK(r.`created_time`))
         </if>
-        <if test="province.name() == 'Monthly'">
-            CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`)) AS `name`
+        <if test="granularity.name() == 'Monthly'">
+            CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`))
         </if>
         <if test="province == null or province ==''">
             UNION
             ALL
             SELECT
-            <if test="province.name() == 'Daily'">
+            <if test="granularity.name() == 'Daily'">
                 DATE(a.`created_time`) AS `name`,
             </if>
-            <if test="province.name() == 'Weekly'">
+            <if test="granularity.name() == 'Weekly'">
                 CONCAT(YEAR(a.`created_time`), '-', WEEK(a.`created_time`)) AS `name`,
             </if>
-            <if test="province.name() == 'Monthly'">
+            <if test="granularity.name() == 'Monthly'">
                 CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`)) AS `name`,
             </if>
             ROUND(SUM(a.`amount`), 2) AS `value`,
@@ -137,27 +137,27 @@
             WHERE a.`created_time` BETWEEN #{startTime} AND #{endTime}
             AND a.`status` = 'SUCCESS'
             GROUP BY
-            <if test="province.name() == 'Daily'">
-                DATE(a.`created_time`) AS `name`
+            <if test="granularity.name() == 'Daily'">
+                DATE(a.`created_time`)
             </if>
-            <if test="province.name() == 'Weekly'">
-                CONCAT(YEAR(a.`created_time`), '-', WEEK(a.`created_time`)) AS `name`
+            <if test="granularity.name() == 'Weekly'">
+                CONCAT(YEAR(a.`created_time`), '-', WEEK(a.`created_time`))
             </if>
-            <if test="province.name() == 'Monthly'">
-                CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`)) AS `name`
+            <if test="granularity.name() == 'Monthly'">
+                CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`))
             </if>
         </if>
     </select>
 
     <select id="queryUserWithdrawTrend" parameterType="map" resultMap="keyValueMap">
         SELECT
-        <if test="province.name() == 'Daily'">
+        <if test="granularity.name() == 'Daily'">
             DATE(r.`created_time`) AS `name`,
         </if>
-        <if test="province.name() == 'Weekly'">
+        <if test="granularity.name() == 'Weekly'">
             CONCAT(YEAR(r.`created_time`), '-', WEEK(r.`created_time`)) AS `name`,
         </if>
-        <if test="province.name() == 'Monthly'">
+        <if test="granularity.name() == 'Monthly'">
             CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`)) AS `name`,
         </if>
         ROUND(SUM(r.`amount`), 2) AS `value`,
@@ -198,26 +198,26 @@
         WHERE r.`created_time` BETWEEN #{startTime} AND #{endTime}
         AND r.`status` = 'SUCCESS'
         GROUP BY u.`province`,
-        <if test="province.name() == 'Daily'">
-            DATE(r.`created_time`) AS `name`
+        <if test="granularity.name() == 'Daily'">
+            DATE(r.`created_time`)
         </if>
-        <if test="province.name() == 'Weekly'">
-            CONCAT(YEAR(r.`created_time`), '-', WEEK(r.`created_time`)) AS `name`
+        <if test="granularity.name() == 'Weekly'">
+            CONCAT(YEAR(r.`created_time`), '-', WEEK(r.`created_time`))
         </if>
-        <if test="province.name() == 'Monthly'">
-            CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`)) AS `name`
+        <if test="granularity.name() == 'Monthly'">
+            CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`))
         </if>
         <if test="province == null or province ==''">
             UNION
             ALL
             SELECT
-            <if test="province.name() == 'Daily'">
+            <if test="granularity.name() == 'Daily'">
                 DATE(a.`created_time`) AS `name`,
             </if>
-            <if test="province.name() == 'Weekly'">
+            <if test="granularity.name() == 'Weekly'">
                 CONCAT(YEAR(a.`created_time`), '-', WEEK(a.`created_time`)) AS `name`,
             </if>
-            <if test="province.name() == 'Monthly'">
+            <if test="granularity.name() == 'Monthly'">
                 CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`)) AS `name`,
             </if>
             ROUND(SUM(a.`amount`), 2) AS `value`,
@@ -249,27 +249,27 @@
             WHERE a.`created_time` BETWEEN #{startTime} AND #{endTime}
             AND a.`status` = 'SUCCESS'
             GROUP BY
-            <if test="province.name() == 'Daily'">
-                DATE(a.`created_time`) AS `name`
+            <if test="granularity.name() == 'Daily'">
+                DATE(a.`created_time`)
             </if>
-            <if test="province.name() == 'Weekly'">
-                CONCAT(YEAR(a.`created_time`), '-', WEEK(a.`created_time`)) AS `name`
+            <if test="granularity.name() == 'Weekly'">
+                CONCAT(YEAR(a.`created_time`), '-', WEEK(a.`created_time`))
             </if>
-            <if test="province.name() == 'Monthly'">
-                CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`)) AS `name`
+            <if test="granularity.name() == 'Monthly'">
+                CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`))
             </if>
         </if>
     </select>
 
     <select id="queryUserAccountTrend" parameterType="map" resultMap="keyValueMap">
         SELECT
-        <if test="province.name() == 'Daily'">
+        <if test="granularity.name() == 'Daily'">
             DATE(r.`created_time`) AS `name`,
         </if>
-        <if test="province.name() == 'Weekly'">
+        <if test="granularity.name() == 'Weekly'">
             CONCAT(YEAR(r.`created_time`), '-', WEEK(r.`created_time`)) AS `name`,
         </if>
-        <if test="province.name() == 'Monthly'">
+        <if test="granularity.name() == 'Monthly'">
             CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`)) AS `name`,
         </if>
         ROUND(SUM(r.`balance`), 2) AS `value`,
@@ -308,26 +308,26 @@
         </choose>
         WHERE r.`created_time` BETWEEN #{startTime} AND #{endTime}
         GROUP BY u.`province`,
-        <if test="province.name() == 'Daily'">
-            DATE(r.`created_time`) AS `name`
+        <if test="granularity.name() == 'Daily'">
+            DATE(r.`created_time`)
         </if>
-        <if test="province.name() == 'Weekly'">
-            CONCAT(YEAR(r.`created_time`), '-', WEEK(r.`created_time`)) AS `name`
+        <if test="granularity.name() == 'Weekly'">
+            CONCAT(YEAR(r.`created_time`), '-', WEEK(r.`created_time`))
         </if>
-        <if test="province.name() == 'Monthly'">
-            CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`)) AS `name`
+        <if test="granularity.name() == 'Monthly'">
+            CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`))
         </if>
         <if test="province == null or province ==''">
             UNION
             ALL
             SELECT
-            <if test="province.name() == 'Daily'">
+            <if test="granularity.name() == 'Daily'">
                 DATE(a.`created_time`) AS `name`,
             </if>
-            <if test="province.name() == 'Weekly'">
+            <if test="granularity.name() == 'Weekly'">
                 CONCAT(YEAR(a.`created_time`), '-', WEEK(a.`created_time`)) AS `name`,
             </if>
-            <if test="province.name() == 'Monthly'">
+            <if test="granularity.name() == 'Monthly'">
                 CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`)) AS `name`,
             </if>
             ROUND(SUM(a.`balance`), 2) AS `value`,
@@ -357,14 +357,14 @@
             ON a.`login_name` = e.`login_name`
             WHERE a.`created_time` BETWEEN #{startTime} AND #{endTime}
             GROUP BY
-            <if test="province.name() == 'Daily'">
-                DATE(a.`created_time`) AS `name`
+            <if test="granularity.name() == 'Daily'">
+                DATE(a.`created_time`)
             </if>
-            <if test="province.name() == 'Weekly'">
-                CONCAT(YEAR(a.`created_time`), '-', WEEK(a.`created_time`)) AS `name`
+            <if test="granularity.name() == 'Weekly'">
+                CONCAT(YEAR(a.`created_time`), '-', WEEK(a.`created_time`))
             </if>
-            <if test="province.name() == 'Monthly'">
-                CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`)) AS `name`
+            <if test="granularity.name() == 'Monthly'">
+                CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`))
             </if>
         </if>
     </select>
