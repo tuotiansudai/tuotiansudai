@@ -34,27 +34,24 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     }
 
     @Override
-    public List<KeyValueModel> queryUserRechargeTrend(Granularity granularity, Date startTime, Date endTime) {
+    public List<KeyValueModel> queryUserRechargeTrend(Granularity granularity, Date startTime, Date endTime, String province) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-
-        return null;
+        return businessIntelligenceMapper.queryUserRechargeTrend(queryStartTime, queryEndTime, granularity, province);
     }
 
     @Override
-    public List<KeyValueModel> queryUserWithdrawTrend(Granularity granularity, Date startTime, Date endTime) {
+    public List<KeyValueModel> queryUserWithdrawTrend(Granularity granularity, Date startTime, Date endTime, String province) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-
-        return null;
+        return businessIntelligenceMapper.queryUserWithdrawTrend(queryStartTime, queryEndTime, granularity, province);
     }
 
     @Override
-    public List<KeyValueModel> queryUserAccountTrend(Granularity granularity, Date startTime, Date endTime) {
+    public List<KeyValueModel> queryUserAccountTrend(Granularity granularity, Date startTime, Date endTime, String province) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-
-        return null;
+        return businessIntelligenceMapper.queryUserAccountTrend(queryStartTime, queryEndTime, granularity, province);
     }
 
 }
