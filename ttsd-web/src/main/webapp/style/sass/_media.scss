@@ -361,4 +361,98 @@
       }
     }
   }
+  .assurance-container{
+    .money-safety{
+      padding:10px 20px!important;
+      .safety-info{
+        width:100%!important;
+        margin-top: 0!important;
+      }
+    }
+    .data-safety{
+      padding:10px 20px!important;
+      .safety-info{
+        width:100%!important;
+        margin-top: 0!important;
+        dt{
+          text-align: left!important;
+        }
+        dd{
+          text-align: left;
+        }
+      }
+    }
+    .secret-safety{
+      padding:10px 20px!important;
+      .safety-info{
+        width:100%!important;
+        margin-top: 0!important;
+        dt{
+          text-align: left;
+        }
+      }
+    }
+    .credit-safety{
+      padding:10px 20px!important;
+      .page-width{
+        background: #FFFFF7!important;
+        .safety-info{
+          width:100%!important;
+          margin-top: 0!important;
+          p{
+            width:100%!important;
+            margin:0!important;
+            padding:0!important;
+          }
+        }
+      }
+    }
+  }
+  .main-frame{
+    .ad-guide-img{
+      height: 150px!important;
+      background: url(/images/banner/ph-guide.jpg) center top no-repeat!important;
+      background-size: cover!important;
+    }
+    .content-info{
+      h3{
+        margin:10px 0!important;
+        font-size: 16px!important;
+      }
+      p{
+        font-size:14px!important;
+      }
+    }
+    .content-a{
+      img{
+        width:100%;
+        margin:0!important;
+      }
+    }
+    .intro-list{
+      display: none;
+      .invest-category{
+        li{
+          width:33.333333%!important;
+          margin-left: 0!important;
+          height:auto!important;
+        }
+      }
+      .invest-example{
+        li{
+          width:33.333333%!important;
+          margin-left: 0!important;
+          height:auto!important;
+        }
+      }
+      .register-flow-box{
+        .step-register-tab{
+          li{
+            width:33.333333%!important;
+            padding-right: 0!important;
+          }
+        }
+      }
+    }
+  }
 }
