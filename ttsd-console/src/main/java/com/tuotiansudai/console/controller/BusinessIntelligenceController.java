@@ -34,7 +34,7 @@ public class BusinessIntelligenceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "user-recharge-trend", method = RequestMethod.GET)
+    @RequestMapping(value = "/user-recharge-trend", method = RequestMethod.GET)
     public List<KeyValueModel> queryUserRechargeTrend(
             @RequestParam(name = "granularity") Granularity granularity,
             @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
@@ -44,7 +44,7 @@ public class BusinessIntelligenceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "user-withdraw-trend", method = RequestMethod.GET)
+    @RequestMapping(value = "/user-withdraw-trend", method = RequestMethod.GET)
     public List<KeyValueModel> queryUserWithdrawTrend(
             @RequestParam(name = "granularity") Granularity granularity,
             @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
@@ -54,7 +54,7 @@ public class BusinessIntelligenceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "user-account-trend", method = RequestMethod.GET)
+    @RequestMapping(value = "/user-account-trend", method = RequestMethod.GET)
     public List<KeyValueModel> queryUserAccountTrend(
             @RequestParam(name = "granularity") Granularity granularity,
             @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
