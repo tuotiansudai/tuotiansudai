@@ -8,7 +8,7 @@ class UserMigrate(BaseMigrate):
     Class Naming Convention: `NewTableNameMigrate(BaseMigrate)`
     """
     # select sql which is executed on original db (edxapp, tuotiansudai etc)
-    SELECT_SQL = "SELECT id, password, email, mobile_number, register_time, referrer, channel, source FROM user"
+    SELECT_SQL = "SELECT id, password, email, mobile_number, register_time, referrer, channel, source FROM user limit %s, %s"
     # insert sql which is executed on aa db
     INSERT_SQL = "INSERT INTO user(`login_name`, `password`, `email`, `mobile`, `register_time`, `referrer`, `status`, `salt`, `channel`, `source`) VALUES(%s, %s, %s,%s, %s, %s,%s, %s, %s, %s)"
 

@@ -7,8 +7,8 @@ class AccountMigrate(BaseMigrate):
     """
     # select sql which is executed on original db (edxapp, tuotiansudai etc)
     SELECT_SQL = '''SELECT trusteeship_account.user_id AS login_name,
-                            user.realname AS user_name,
-                            user.id_card AS identity_number,
+                            IFNULL(user.realname, '') AS user_name,
+                            IFNULL(user.id_card, '') AS identity_number,
                             trusteeship_account.id AS pay_user_id,
                             trusteeship_account.account_id AS pay_account_id,
                             IFNULL(user_bill.balance,0) AS balance,
@@ -16,7 +16,8 @@ class AccountMigrate(BaseMigrate):
                             trusteeship_account.create_time AS register_time
                     FROM trusteeship_account
                     JOIN user ON trusteeship_account.user_id=user.id
-                    LEFT JOIN user_bill ON user_bill.user_id=user.id AND user_bill.seq_num=(SELECT max(seq_num) FROM user_bill WHERE user_id=user.id)
+                    LEFT JOIN user_bill_seq_temp ubst ON ubst.user_id=user.id
+                    LEFT JOIN user_bill ON user_bill.user_id=user.id AND user_bill.seq_num=ubst.max_seq LIMIT %s, %s
      '''
     # insert sql which is executed on aa db
     INSERT_SQL = "INSERT INTO account(`login_name`, `user_name`, `identity_number`, `pay_user_id`, `pay_account_id`, `balance`, `freeze`, `register_time`) " \

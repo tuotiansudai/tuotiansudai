@@ -44,18 +44,27 @@ class DBWrapper(object):
 class BaseMigrate(object):
     SELECT_SQL = ""
     INSERT_SQL = ""
+    START = None
+    COUNT = None
 
-    def __init__(self, old_db, new_db):
+    def __init__(self, old_db, new_db, start=None, count=None):
         self.new_db = new_db
         self.old_db = old_db
+        if start:
+            self.START = int(start)
+        if count:
+            self.COUNT = int(count)
 
     def migrate(self):
         logger.info("Start migrate {0}".format(self.__class__.__name__))
         self.before()
         rows = self.fetch_old_data()
+        if self.START:
+            self._index=self.START
         for row in rows:
-            params = self.generate_params(row)
-            self.insert_data(params)
+            if row:
+                params = self.generate_params(row)
+                self.insert_data(params)
         self.new_db.commit()
         self.new_db.close()
         self.old_db.close()
@@ -63,7 +72,11 @@ class BaseMigrate(object):
         logger.info("Done for {0}".format(self.__class__.__name__))
 
     def fetch_old_data(self):
-        _, cursor = self.old_db.execute(self.SELECT_SQL)
+        if self.COUNT:
+            _, cursor = self.old_db.execute(self.SELECT_SQL, (self.START, self.COUNT))
+        else:
+            _, cursor = self.old_db.execute(self.SELECT_SQL)
+
         row = cursor.fetchone()
         while row:
             yield row

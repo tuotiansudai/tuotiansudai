@@ -6,7 +6,7 @@ class SystemBillMigrate(BaseMigrate):
     Class Naming Convention: `NewTableNameMigrate(BaseMigrate)`
     """
     # select sql which is executed on original db (edxapp, tuotiansudai etc)
-    SELECT_SQL = "SELECT money, type, reason, detail, time FROM system_bill WHERE reason IN ('activity_reward', 'binding_card', 'invest_fee', 'replace_card', 'referrer_reward')"
+    SELECT_SQL = "SELECT money, type, reason, detail, time FROM system_bill WHERE reason IN ('activity_reward', 'binding_card', 'invest_fee', 'replace_card', 'referrer_reward') limit %s, %s"
     # insert sql which is executed on aa db
     INSERT_SQL = '''INSERT INTO system_bill(`amount`, `operation_type`, `business_type`, `detail`, `created_time`)
                     VALUES(%s, %s, %s, %s, %s)'''
