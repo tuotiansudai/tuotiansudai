@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.BusinessIntelligenceMapper">
+
+    <resultMap id="keyValueMap" type="KeyValueModel">
+        <result column="name" property="name"></result>
+        <result column="value" property="value"></result>
+        <result column="group" property="group"></result>
+    </resultMap>
+
+    <select id="queryUserRegisterTrendDaily" parameterType="map" resultMap="keyValueMap">
+        select
+          date(register_time) as bi_key,
+          count(*) as bi_value
+        from user
+        where register_time between #{startTime} and #{endTime}
+        group by date(register_time);
+    </select>
+
+    <select id="queryUserRegisterTrendWeekly" parameterType="map" resultMap="keyValueMap">
+        select
+          concat(year(register_time), ' W', week(register_time)) as bi_key,
+          count(*) as bi_value
+        from user
+        where register_time between #{startTime} and #{endTime}
+        group by year(register_time), week(register_time);
+    </select>
+
+    <select id="queryUserRegisterTrendMonthly" parameterType="map" resultMap="keyValueMap">
+        select
+          concat(year(register_time), ' M', week(register_time)) as bi_key,
+          count(*) as bi_value
+        from user
+        where register_time between #{startTime} and #{endTime}
+        group by year(register_time), month(register_time);
+    </select>
+
+    <select id="queryUserRechargeTrend" parameterType="map" resultMap="keyValueMap">
+        SELECT
+        <if test="province.name() == 'Daily'">
+            DATE(r.`created_time`) AS `name`,
+        </if>
+        <if test="province.name() == 'Weekly'">
+            CONCAT(YEAR(r.`created_time`), '-', WEEK(r.`created_time`)) AS `name`,
+        </if>
+        <if test="province.name() == 'Monthly'">
+            CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`)) AS `name`,
+        </if>
+        ROUND(SUM(r.`amount`), 2) AS `value`,
+        u.`province` AS `group`
+        FROM
+        `recharge` r
+        JOIN
+        <choose>
+            <when test="province != null and province!= ''">
+                `user` u
+                ON r.`login_name` = u.`login_name`
+                AND u.`province` = #{province}
+            </when>
+            <otherwise>
+                (SELECT
+                *
+                FROM
+                `user` t
+                WHERE EXISTS
+                (SELECT
+                1
+                FROM
+                (SELECT
+                n.`province`
+                FROM
+                `recharge` m
+                JOIN `user` n
+                ON m.`login_name` = n.`login_name`
+                WHERE m.`created_time` BETWEEN #{startTime} AND #{endTime}
+                AND m.`status` = 'SUCCESS'
+                GROUP BY n.`province`
+                ORDER BY ROUND(SUM(m.`amount`), 2) DESC
+                LIMIT 1, 5) temp
+                WHERE t.`province` = temp.`province`)) u
+                ON r.`login_name` = u.`login_name`
+            </otherwise>
+        </choose>
+        WHERE r.`created_time` BETWEEN #{startTime} AND #{endTime}
+        AND r.`status` = 'SUCCESS'
+        GROUP BY u.`province`,
+        <if test="province.name() == 'Daily'">
+            DATE(r.`created_time`) AS `name`
+        </if>
+        <if test="province.name() == 'Weekly'">
+            CONCAT(YEAR(r.`created_time`), '-', WEEK(r.`created_time`)) AS `name`
+        </if>
+        <if test="province.name() == 'Monthly'">
+            CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`)) AS `name`
+        </if>
+        <if test="province == null or province ==''">
+            UNION
+            ALL
+            SELECT
+            <if test="province.name() == 'Daily'">
+                DATE(a.`created_time`) AS `name`,
+            </if>
+            <if test="province.name() == 'Weekly'">
+                CONCAT(YEAR(a.`created_time`), '-', WEEK(a.`created_time`)) AS `name`,
+            </if>
+            <if test="province.name() == 'Monthly'">
+                CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`)) AS `name`,
+            </if>
+            ROUND(SUM(a.`amount`), 2) AS `value`,
+            '其他' AS `group`
+            FROM
+            `recharge` a
+            JOIN
+            (SELECT
+            *
+            FROM
+            `user` b
+            WHERE NOT EXISTS
+            (SELECT
+            1
+            FROM
+            (SELECT
+            d.`province`
+            FROM
+            `recharge` c
+            JOIN `user` d
+            ON c.`login_name` = d.`login_name`
+            WHERE c.`created_time` BETWEEN #{startTime} AND #{endTime}
+            AND c.`status` = 'SUCCESS'
+            GROUP BY d.`province`
+            ORDER BY ROUND(SUM(c.`amount`), 2) DESC
+            LIMIT 1, 5) temp1
+            WHERE b.`province` = temp1.`province`)) e
+            ON a.`login_name` = e.`login_name`
+            WHERE a.`created_time` BETWEEN #{startTime} AND #{endTime}
+            AND a.`status` = 'SUCCESS'
+            GROUP BY
+            <if test="province.name() == 'Daily'">
+                DATE(a.`created_time`) AS `name`
+            </if>
+            <if test="province.name() == 'Weekly'">
+                CONCAT(YEAR(a.`created_time`), '-', WEEK(a.`created_time`)) AS `name`
+            </if>
+            <if test="province.name() == 'Monthly'">
+                CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`)) AS `name`
+            </if>
+        </if>
+    </select>
+
+    <select id="queryUserWithdrawTrend" parameterType="map" resultMap="keyValueMap">
+        SELECT
+        <if test="province.name() == 'Daily'">
+            DATE(r.`created_time`) AS `name`,
+        </if>
+        <if test="province.name() == 'Weekly'">
+            CONCAT(YEAR(r.`created_time`), '-', WEEK(r.`created_time`)) AS `name`,
+        </if>
+        <if test="province.name() == 'Monthly'">
+            CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`)) AS `name`,
+        </if>
+        ROUND(SUM(r.`amount`), 2) AS `value`,
+        u.`province` AS `group`
+        FROM
+        `withdraw` r
+        JOIN
+        <choose>
+            <when test="province != null and province!= ''">
+                `user` u
+                ON r.`login_name` = u.`login_name`
+                AND u.`province` = #{province}
+            </when>
+            <otherwise>
+                (SELECT
+                *
+                FROM
+                `user` t
+                WHERE EXISTS
+                (SELECT
+                1
+                FROM
+                (SELECT
+                n.`province`
+                FROM
+                `withdraw` m
+                JOIN `user` n
+                ON m.`login_name` = n.`login_name`
+                WHERE m.`created_time` BETWEEN #{startTime} AND #{endTime}
+                AND m.`status` = 'SUCCESS'
+                GROUP BY n.`province`
+                ORDER BY ROUND(SUM(m.`amount`), 2) DESC
+                LIMIT 1, 5) temp
+                WHERE t.`province` = temp.`province`)) u
+                ON r.`login_name` = u.`login_name`
+            </otherwise>
+        </choose>
+        WHERE r.`created_time` BETWEEN #{startTime} AND #{endTime}
+        AND r.`status` = 'SUCCESS'
+        GROUP BY u.`province`,
+        <if test="province.name() == 'Daily'">
+            DATE(r.`created_time`) AS `name`
+        </if>
+        <if test="province.name() == 'Weekly'">
+            CONCAT(YEAR(r.`created_time`), '-', WEEK(r.`created_time`)) AS `name`
+        </if>
+        <if test="province.name() == 'Monthly'">
+            CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`)) AS `name`
+        </if>
+        <if test="province == null or province ==''">
+            UNION
+            ALL
+            SELECT
+            <if test="province.name() == 'Daily'">
+                DATE(a.`created_time`) AS `name`,
+            </if>
+            <if test="province.name() == 'Weekly'">
+                CONCAT(YEAR(a.`created_time`), '-', WEEK(a.`created_time`)) AS `name`,
+            </if>
+            <if test="province.name() == 'Monthly'">
+                CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`)) AS `name`,
+            </if>
+            ROUND(SUM(a.`amount`), 2) AS `value`,
+            '其他' AS `group`
+            FROM
+            `withdraw` a
+            JOIN
+            (SELECT
+            *
+            FROM
+            `user` b
+            WHERE NOT EXISTS
+            (SELECT
+            1
+            FROM
+            (SELECT
+            d.`province`
+            FROM
+            `withdraw` c
+            JOIN `user` d
+            ON c.`login_name` = d.`login_name`
+            WHERE c.`created_time` BETWEEN #{startTime} AND #{endTime}
+            AND c.`status` = 'SUCCESS'
+            GROUP BY d.`province`
+            ORDER BY ROUND(SUM(c.`amount`), 2) DESC
+            LIMIT 1, 5) temp1
+            WHERE b.`province` = temp1.`province`)) e
+            ON a.`login_name` = e.`login_name`
+            WHERE a.`created_time` BETWEEN #{startTime} AND #{endTime}
+            AND a.`status` = 'SUCCESS'
+            GROUP BY
+            <if test="province.name() == 'Daily'">
+                DATE(a.`created_time`) AS `name`
+            </if>
+            <if test="province.name() == 'Weekly'">
+                CONCAT(YEAR(a.`created_time`), '-', WEEK(a.`created_time`)) AS `name`
+            </if>
+            <if test="province.name() == 'Monthly'">
+                CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`)) AS `name`
+            </if>
+        </if>
+    </select>
+
+    <select id="queryUserAccountTrend" parameterType="map" resultMap="keyValueMap">
+        SELECT
+        <if test="province.name() == 'Daily'">
+            DATE(r.`created_time`) AS `name`,
+        </if>
+        <if test="province.name() == 'Weekly'">
+            CONCAT(YEAR(r.`created_time`), '-', WEEK(r.`created_time`)) AS `name`,
+        </if>
+        <if test="province.name() == 'Monthly'">
+            CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`)) AS `name`,
+        </if>
+        ROUND(SUM(r.`balance`), 2) AS `value`,
+        u.`province` AS `group`
+        FROM
+        `user_bill` r
+        JOIN
+        <choose>
+            <when test="province != null and province!= ''">
+                `user` u
+                ON r.`login_name` = u.`login_name`
+                AND u.`province` = #{province}
+            </when>
+            <otherwise>
+                (SELECT
+                *
+                FROM
+                `user` t
+                WHERE EXISTS
+                (SELECT
+                1
+                FROM
+                (SELECT
+                n.`province`
+                FROM
+                `user_bill` m
+                JOIN `user` n
+                ON m.`login_name` = n.`login_name`
+                WHERE m.`created_time` BETWEEN #{startTime} AND #{endTime}
+                GROUP BY n.`province`
+                ORDER BY ROUND(SUM(m.`balance`), 2) DESC
+                LIMIT 1, 5) temp
+                WHERE t.`province` = temp.`province`)) u
+                ON r.`login_name` = u.`login_name`
+            </otherwise>
+        </choose>
+        WHERE r.`created_time` BETWEEN #{startTime} AND #{endTime}
+        GROUP BY u.`province`,
+        <if test="province.name() == 'Daily'">
+            DATE(r.`created_time`) AS `name`
+        </if>
+        <if test="province.name() == 'Weekly'">
+            CONCAT(YEAR(r.`created_time`), '-', WEEK(r.`created_time`)) AS `name`
+        </if>
+        <if test="province.name() == 'Monthly'">
+            CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`)) AS `name`
+        </if>
+        <if test="province == null or province ==''">
+            UNION
+            ALL
+            SELECT
+            <if test="province.name() == 'Daily'">
+                DATE(a.`created_time`) AS `name`,
+            </if>
+            <if test="province.name() == 'Weekly'">
+                CONCAT(YEAR(a.`created_time`), '-', WEEK(a.`created_time`)) AS `name`,
+            </if>
+            <if test="province.name() == 'Monthly'">
+                CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`)) AS `name`,
+            </if>
+            ROUND(SUM(a.`balance`), 2) AS `value`,
+            '其他' AS `group`
+            FROM
+            `user_bill` a
+            JOIN
+            (SELECT
+            *
+            FROM
+            `user` b
+            WHERE NOT EXISTS
+            (SELECT
+            1
+            FROM
+            (SELECT
+            d.`province`
+            FROM
+            `user_bill` c
+            JOIN `user` d
+            ON c.`login_name` = d.`login_name`
+            WHERE c.`created_time` BETWEEN #{startTime} AND #{endTime}
+            GROUP BY d.`province`
+            ORDER BY ROUND(SUM(c.`balance`), 2) DESC
+            LIMIT 1, 5) temp1
+            WHERE b.`province` = temp1.`province`)) e
+            ON a.`login_name` = e.`login_name`
+            WHERE a.`created_time` BETWEEN #{startTime} AND #{endTime}
+            GROUP BY
+            <if test="province.name() == 'Daily'">
+                DATE(a.`created_time`) AS `name`
+            </if>
+            <if test="province.name() == 'Weekly'">
+                CONCAT(YEAR(a.`created_time`), '-', WEEK(a.`created_time`)) AS `name`
+            </if>
+            <if test="province.name() == 'Monthly'">
+                CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`)) AS `name`
+            </if>
+        </if>
+    </select>
+
+</mapper>

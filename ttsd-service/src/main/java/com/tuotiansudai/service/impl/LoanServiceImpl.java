@@ -66,6 +66,9 @@ public class LoanServiceImpl implements LoanService {
     private LoanRepayMapper loanRepayMapper;
 
     @Autowired
+    private InvestRepayMapper investRepayMapper;
+
+    @Autowired
     private UserRoleMapper userRoleMapper;
 
     @Autowired
@@ -200,8 +203,8 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setDescriptionHtml(loanModel.getDescriptionHtml());
         loanDto.setDescriptionText(loanModel.getDescriptionText());
         loanDto.setLoanAmount(new BigDecimal(loanModel.getLoanAmount()).toString());
-        loanDto.setInvestIncreasingAmount(AmountConverter.convertCentToString(loanModel.getInvestIncreasingAmount()));
-        loanDto.setMinInvestAmount(AmountConverter.convertCentToString(loanModel.getMinInvestAmount()));
+        loanDto.setInvestIncreasingAmount("" + loanModel.getInvestIncreasingAmount());
+        loanDto.setMinInvestAmount("" + loanModel.getMinInvestAmount());
         loanDto.setActivityType(loanModel.getActivityType());
         loanDto.setBasicRate(new BigDecimal(String.valueOf(loanModel.getBaseRate())).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).toString());
         if (loanModel.getActivityRate() > 0) {
@@ -480,7 +483,18 @@ public class LoanServiceImpl implements LoanService {
                     item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
                     item.setSource(input.getSource());
                     item.setAutoInvest(input.isAutoInvest());
-                    item.setExpectedInterest(AmountConverter.convertCentToString(investService.calculateExpectedInterest(input.getLoanId(), input.getAmount())));
+
+                    long amount = 0;
+                    List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(input.getId());
+                    for (InvestRepayModel investRepayModel : investRepayModels) {
+                        amount += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
+                    }
+
+                    if (CollectionUtils.isEmpty(investRepayModels)) {
+                        amount = investService.estimateInvestIncome(input.getLoanId(), input.getAmount());
+                    }
+
+                    item.setExpectedInterest(AmountConverter.convertCentToString(amount));
                     item.setCreatedTime(input.getCreatedTime());
                     return item;
                 }

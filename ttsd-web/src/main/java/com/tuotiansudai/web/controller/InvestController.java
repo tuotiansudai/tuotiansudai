@@ -52,7 +52,7 @@ public class InvestController {
     @RequestMapping(value = "/calculate-expected-interest/loan/{loanId}/amount/{amount:^\\d+\\.\\d{2}$}", method = RequestMethod.GET)
     @ResponseBody
     public String calculateExpectedInterest(@PathVariable long loanId, @PathVariable String amount) {
-        long expectedInterest = investService.calculateExpectedInterest(loanId, AmountConverter.convertStringToCent(amount));
+        long expectedInterest = investService.estimateInvestIncome(loanId, AmountConverter.convertStringToCent(amount));
         return AmountConverter.convertCentToString(expectedInterest);
     }
 
