@@ -12,6 +12,6 @@ public class AboutController {
 
     @RequestMapping(path = "/{item:^assurance|company|contact|guide|notice|notice-detail|service-fee|team$}", method = RequestMethod.GET)
     public ModelAndView about(@PathVariable String item){
-        return new ModelAndView("/about/" + item);
+        return new ModelAndView("/about/" + item, "responsive", true);
     }
 }
