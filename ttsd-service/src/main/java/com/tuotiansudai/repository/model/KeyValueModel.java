@@ -1,15 +1,17 @@
 package com.tuotiansudai.repository.model;
 
 public class KeyValueModel {
-    private String key;
-    private String value;
 
-    public String getKey() {
-        return key;
+    private String name;
+    private String value;
+    private String group;
+
+    public String getName() {
+        return name;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getValue() {
@@ -19,4 +21,13 @@ public class KeyValueModel {
     public void setValue(String value) {
         this.value = value;
     }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
 }
