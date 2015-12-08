@@ -4,7 +4,7 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric'], function ($,layer) {
          submitElement = $('.withdraw-submit',$withdraw),
          formElement = $('form',$withdraw),
          errorElement = $('.error',$withdraw),
-         actualAmountElement = $('.actual-amount',$withdraw);
+         actualAmountElement = $('.actual-amount',$withdraw),
          withdrawFeeElement = $('.withdraw-fee',$withdraw);
 
         amountInputElement.autoNumeric("init");
