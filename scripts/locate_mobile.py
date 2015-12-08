@@ -10,7 +10,12 @@ MYSQL_HOST = '192.168.33.10'
 MYSQL_USER = 'root'
 MYSQL_PASS = ''
 MYSQL_DB = 'tuotiansudai'
-MYSQL_QUERY = 'select username, mobile_number, realname, register_time from user order by register_time desc'
+
+SEARCH_TIME_BEGIN = '2015-12-08 00:00:00'
+SEARCH_TIME_END = '2015-12-09 00:00:00'
+
+#MYSQL_QUERY = 'select username, mobile_number, realname, register_time from user order by register_time desc'
+MYSQL_QUERY = 'select username, mobile_number, realname, register_time from user where register_time between \''+SEARCH_TIME_BEGIN+'\' and \''+SEARCH_TIME_END+'\' order by register_time asc'
 
 SEARCH_PROVINCE = '河北'
 SEARCH_CITY = '石家庄'
@@ -50,6 +55,7 @@ def e(s):
 
 def print_if_match(hit_index, (user_name, phone, realname, register_time), (province, city)):
     if is_match_city(province, city):
+        print hit_index,user_name,phone,register_time
         output_matched_data((hit_index+1, e(phone), e(province), e(city), e(realname), user_name, register_time))
         return True
     else:
