@@ -340,7 +340,7 @@
       .notice-list{
         li{
           a{
-            width:50%;
+            width:65%;
           }
         }
       }
@@ -364,31 +364,83 @@
   .assurance-container{
     .money-safety{
       padding:10px 20px!important;
-      .safety-info{
-        width:100%!important;
-        margin-top: 0!important;
+      .page-width{
+        background: transparent!important;
       }
-    }
-    .data-safety{
-      padding:10px 20px!important;
+      .as-title{
+        dt{
+          font-size:24px!important;
+        }
+        dd{
+          em{
+            width:100px!important;
+          }
+        }
+      }
       .safety-info{
         width:100%!important;
         margin-top: 0!important;
         dt{
-          text-align: left!important;
+          padding-left:0!important;
         }
         dd{
-          text-align: left;
+          margin-bottom:10px!important;
+        }
+      }
+    }
+    .data-safety{
+      padding:10px 20px!important;
+      .page-width{
+        background: transparent!important;
+        .as-title{
+          dt{
+            font-size:24px!important;
+          }
+          dd{
+            em{
+              width:100px!important;
+            }
+          }
+        }
+        .safety-info{
+          width:100%!important;
+          margin-top: 0!important;
+          text-align: left!important;
+          dt{
+            padding-left:0!important;
+          }
+          dd{
+            text-align: left;
+            margin-bottom:10px!important;
+          }
         }
       }
     }
     .secret-safety{
       padding:10px 20px!important;
-      .safety-info{
-        width:100%!important;
-        margin-top: 0!important;
-        dt{
-          text-align: left;
+      .page-width{
+        background: transparent!important;
+        .as-title{
+          dt{
+            font-size:24px!important;
+          }
+          dd{
+            em{
+              width:100px!important;
+            }
+          }
+        }
+        .safety-info{
+          width:100%!important;
+          margin-top: 0!important;
+          text-align: left!important;
+          dt{
+            text-align: left;
+            padding-left:0!important;
+          }
+          dd{
+            margin-bottom: 10px!important;
+          }
         }
       }
     }
@@ -396,6 +448,16 @@
       padding:10px 20px!important;
       .page-width{
         background: #FFFFF7!important;
+        .as-title{
+          dt{
+            font-size:24px!important;
+          }
+          dd{
+            em{
+              width:100px!important;
+            }
+          }
+        }
         .safety-info{
           width:100%!important;
           margin-top: 0!important;
