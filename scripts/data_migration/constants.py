@@ -1,4 +1,5 @@
-HOST = '192.168.100.85'
+OLD_HOST = '192.168.100.85'
+NEW_HOST = '192.168.1.249'
 AA_DB = 'aa'
 ORIGINAL_DB = 'tuotiansudai'
 
