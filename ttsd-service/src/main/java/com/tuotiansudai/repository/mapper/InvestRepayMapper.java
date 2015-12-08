@@ -56,4 +56,6 @@ public interface InvestRepayMapper {
     List<InvestRepayModel> findInvestRepayByLoanIdAndPeriod(@Param(value = "loanId") long loanId, @Param(value = "period") int period);
 
     List<InvestRepayModel> findByLoanId(long loanId);
+
+    long findCountByLoanId(@Param(value = "loanId") long loanId);
 }

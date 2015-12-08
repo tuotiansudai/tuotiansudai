@@ -394,4 +394,11 @@
             inner join loan on loan.id = invest.loan_id
         where loan.id = #{loanId}
     </select>
+
+    <select id="findCountByLoanId" parameterType="long" resultType="long">
+        select count(*)
+        from invest_repay
+        inner join invest on invest_repay.invest_id = invest.id
+        where invest.loan_id = #{loanId}
+    </select>
 </mapper>

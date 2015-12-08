@@ -12,11 +12,13 @@ import com.tuotiansudai.paywrapper.service.ReferrerRewardService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -77,13 +79,17 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
             for (ReferrerRelationModel referrerRelationModel : referrerRelationList) {
                 try {
                     String referrerLoginName = referrerRelationModel.getReferrerLoginName();
+                    long investReferrerRewardCount = investReferrerRewardMapper.findCountByInvestReferrer(invest.getId(), referrerLoginName);
+                    if (investReferrerRewardCount > 0) {
+                        continue;
+                    }
                     Role role = this.getReferrerPriorityRole(referrerLoginName);
                     if (role != null) {
                         long reward = this.calculateReferrerReward(invest.getAmount(), loanDuration, referrerRelationModel.getLevel(), role);
 
                         InvestReferrerRewardModel model = new InvestReferrerRewardModel(idGenerator.generate(), invest.getId(), reward, referrerLoginName, role);
 
-                        this.transferReferrerReward(model);
+                        ((ReferrerRewardService) AopContext.currentProxy()).transferReferrerReward(model);
                     }
                 } catch (Exception e) {
                     logger.error(e.getLocalizedMessage(), e);
@@ -93,7 +99,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     }
 
     @Transactional
-    private void transferReferrerReward(InvestReferrerRewardModel model) {
+    public void transferReferrerReward(InvestReferrerRewardModel model) {
         String referrerLoginName = model.getReferrerLoginName();
         long orderId = model.getId();
         long amount = model.getAmount();
