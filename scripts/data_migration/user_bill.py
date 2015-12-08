@@ -6,7 +6,7 @@ class UserBillMigrate(BaseMigrate):
     Class Naming Convention: `NewTableNameMigrate(BaseMigrate)`
     """
     # select sql which is executed on original db (edxapp, tuotiansudai etc)
-    SELECT_SQL = "SELECT user_id, money, balance, frozen_money, type, type_info, time FROM user_bill limit %s, %s"
+    SELECT_SQL = "SELECT user_id, money, balance, frozen_money, type, type_info, time FROM user_bill where detail not in ('未在联动优势开通账户,交易失败','未在联动优势绑定借记卡,交易失败') limit %s, %s"
     # insert sql which is executed on aa db
     INSERT_SQL = "INSERT INTO user_bill(`login_name`, `amount`, `balance`, `freeze`, `operation_type`, `business_type`, `created_time`) VALUES(%s, %s, %s, %s, %s, %s, %s)"
 
