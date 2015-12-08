@@ -37,13 +37,13 @@
         group by year(register_time), month(register_time);
     </select>
 
-    <select id="queryUserDistribution" parameterMap="map" resultMap="keyValueMap">
+    <select id="queryUserDistribution" parameterType="map" resultMap="keyValueMap">
         select
           province as `name`,
           count(*) as `value`
         from user
         where register_time between #{startTime} and #{endTime}
-        group province;
+        group by province;
     </select>
 
     <select id="queryUserRechargeTrend" parameterType="map" resultMap="keyValueMap">
