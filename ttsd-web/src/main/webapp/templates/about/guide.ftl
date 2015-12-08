@@ -13,10 +13,10 @@
         <img src="${staticServer}/images/sign/aboutus/invest-process.png" alt="拓天速贷投资流程">
     </div>
 
-    <div class="page-width intro-list">
+    <div class="page-width">
         <div class="our-advantage-content">
-            <h3 class="tc">我们的优势</h3>
-            <ul class="advantage-list">
+            <h3 class="tc hide-dom">我们的优势</h3>
+            <ul class="advantage-list hide-dom">
                 <li>
                     <img src="${staticServer}/images/icons/about/help-n01.png" alt="投资优势" />
                     <b>1元起投，项目期限1月起，年化收益率最高14%。</b>
@@ -31,7 +31,7 @@
                 </li>
             </ul>
 
-            <ul class="invest-category">
+            <ul class="invest-category hide-dom">
                 <li>
 
                     <h3>
@@ -61,7 +61,7 @@
                 </li>
             </ul>
 
-            <ul class="invest-example clear-blank-m">
+            <ul class="invest-example clear-blank-m hide-dom">
                 <li>
                     <img class="responsive-width" src="${staticServer}/images/sign/aboutus/example01.png"/>
                 </li>
@@ -73,7 +73,7 @@
                 </li>
             </ul>
 
-            <div class="register-flow-box clear-blank-m" id="registerFlowStep">
+            <div class="register-flow-box clear-blank-m hide-dom" id="registerFlowStep">
                 <ul class="step-register-tab clearfix">
                     <li class="first on"><s></s>1 注册<g></g></li>
                     <li class="second"><s></s>2 实名验证<g></g></li>

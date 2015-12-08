@@ -429,28 +429,13 @@
         margin:0!important;
       }
     }
-    .intro-list{
-      display: none;
-      .invest-category{
-        li{
-          width:33.333333%!important;
-          margin-left: 0!important;
-          height:auto!important;
+    .page-width{
+      .our-advantage-content{
+        .hide-dom{
+          display: none;
         }
-      }
-      .invest-example{
-        li{
-          width:33.333333%!important;
-          margin-left: 0!important;
-          height:auto!important;
-        }
-      }
-      .register-flow-box{
-        .step-register-tab{
-          li{
-            width:33.333333%!important;
-            padding-right: 0!important;
-          }
+        .action-invest{
+          font-size:14px!important;
         }
       }
     }
