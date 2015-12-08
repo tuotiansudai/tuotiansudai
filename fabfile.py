@@ -5,6 +5,7 @@ from fabric.contrib.project import upload_project
 
 
 env.use_ssh_config = True
+env.ssh_config_path = '/workspace/v2config/config'
 env.roledefs = {
     'db': ['web1'],
     'web': ['web1', 'web2'],
@@ -145,6 +146,8 @@ def deploy_worker():
     with cd('/workspace'):
         sudo('rm -rf ttsd-job-worker-all/')
         sudo('rm -rf ttsd-job-worker-invest/')
+        sudo('unzip ttsd-job-worker-all.zip -d ttsd-job-worker-all')
+        sudo('unzip ttsd-job-worker-invest.zip -d ttsd-job-worker-invest')
         sudo('./ttsd-job-worker-all/bin/ttsd-job-worker&')
         sudo('./ttsd-job-worker-invest/bin/ttsd-job-worker&')
 
