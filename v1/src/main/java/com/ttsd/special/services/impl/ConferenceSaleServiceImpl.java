@@ -85,6 +85,7 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
     @Transactional
     @Override
     public void processIfInActivityForBindCard(String cardNo, String userId) {
+        if(REWARD_BIND_CARD <= 0){return;}
         try {
             User user = ht.get(User.class, userId);
             if (isInActivity(user) && (!hasBindCardRewardRecord(user.getId()))) {
@@ -102,6 +103,7 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
     @Transactional
     @Override
     public void processIfInActivityForInvest(Invest invest) {
+        if(REWARD_INVEST <= 0){return;}
         try {
             User user = invest.getUser();
             if (isInActivity(user) && (!hasInvestRewardRecord(user.getId())) && hasMatchRewardCondition(invest)) {

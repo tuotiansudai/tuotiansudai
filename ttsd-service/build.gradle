@@ -98,6 +98,10 @@ flyway {
         properties.load(new FileInputStream(buildFile))
     }
 
+    if (project.hasProperty("configPath") && new File("${configPath}/ttsd-env.properties").isFile()) {
+        properties.load(new FileInputStream(new File("${configPath}/ttsd-env.properties")))
+    }
+
     def defaultDatabase = 'aa'
     def defaultHost = properties.getProperty("common.jdbc.host")
     def defaultPort = properties.getProperty("common.jdbc.port")
