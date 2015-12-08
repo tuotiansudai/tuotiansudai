@@ -37,6 +37,15 @@
         group by year(register_time), month(register_time);
     </select>
 
+    <select id="queryUserDistribution" parameterType="map" resultMap="keyValueMap">
+        select
+          province as `name`,
+          count(*) as `value`
+        from user
+        where register_time between #{startTime} and #{endTime}
+        group by province;
+    </select>
+
     <select id="queryUserRechargeTrend" parameterType="map" resultMap="keyValueMap">
         SELECT
         <if test="granularity.name() == 'Daily'">
