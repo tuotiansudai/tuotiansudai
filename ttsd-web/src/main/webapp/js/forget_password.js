@@ -130,7 +130,6 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                             refreshCaptcha();
                         }
                     }
-
                 });
 
             }
