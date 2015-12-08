@@ -10,13 +10,7 @@ import java.util.List;
 
 @Repository
 public interface BusinessIntelligenceMapper {
-    List<KeyValueModel> queryUserRegisterTrendDaily(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
-
-    List<KeyValueModel> queryUserRegisterTrendWeekly(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
-
-    List<KeyValueModel> queryUserRegisterTrendMonthly(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
-
-    List<KeyValueModel> queryUserDistribution(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
+    List<KeyValueModel> queryUserRegisterTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("granularity") Granularity granularity, @Param("province") String province);
 
     List<KeyValueModel> queryUserRechargeTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("granularity") Granularity granularity, @Param("province") String province);
 
