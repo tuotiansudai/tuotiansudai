@@ -5,7 +5,7 @@
             <th>交易详情</th>
             <th>交易状态</th>
             <th>下次回款</th>
-            <th>我的投资</th>
+            <th class="tr">我的投资(元)</th>
             <th>操作</th>
         </tr>
     </thead>
@@ -19,7 +19,7 @@
             {{#nextRepayDay}}{{nextRepayDay}} / {{nextRepayAmount}}元{{/nextRepayDay}}
             {{^nextRepayDay}}- / -{{/nextRepayDay}}
             </td>
-            <td>{{amount}}元</td>
+            <td class="tr">{{amount}}</td>
             <td>
             {{#hasContract}}
             <span class="plan" data-repay="/investor/query-invest-repay?investId={{id}}">回款记录</span> |

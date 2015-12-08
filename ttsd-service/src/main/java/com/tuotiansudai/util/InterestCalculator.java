@@ -3,11 +3,14 @@ package com.tuotiansudai.util;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Ordering;
+import com.google.common.primitives.Ints;
 import com.tuotiansudai.repository.model.*;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public class InterestCalculator {
@@ -30,7 +33,7 @@ public class InterestCalculator {
                 lastInvestRepayDate = new DateTime(successInvest.getCreatedTime()).withTimeAtStartOfDay().minusDays(1);
             }
             // 2015-01-01 ~ 2015-01-31: 30
-            int periodDuration = Days.daysBetween(lastInvestRepayDate, currentRepayDate.withTimeAtStartOfDay()).getDays();
+            int periodDuration = Days.daysBetween(lastInvestRepayDate.withTimeAtStartOfDay(), currentRepayDate.withTimeAtStartOfDay()).getDays();
             corpusMultiplyPeriodDays += successInvest.getAmount() * periodDuration;
         }
 
@@ -52,17 +55,31 @@ public class InterestCalculator {
     }
 
     public static DateTime getLastSuccessRepayDate(LoanModel loanModel, List<LoanRepayModel> loanRepayModels, final DateTime currentRepayDate) {
-        DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).minusDays(1).withTimeAtStartOfDay();
+        DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).minusDays(1);
 
-        Optional<LoanRepayModel> optional = Iterators.tryFind(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
+        Ordering<LoanRepayModel> ordering = new Ordering<LoanRepayModel>() {
+            @Override
+            public int compare(LoanRepayModel left, LoanRepayModel right) {
+                return Ints.compare(right.getPeriod(), left.getPeriod());
+            }
+        };
+
+        List<LoanRepayModel> orderingLoanRepayModels = ordering.sortedCopy(loanRepayModels);
+
+        Optional<LoanRepayModel> optional = Iterators.tryFind(orderingLoanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
             @Override
             public boolean apply(LoanRepayModel input) {
-                return input.getStatus() == RepayStatus.COMPLETE && new DateTime(input.getActualRepayDate()).withTimeAtStartOfDay().getMillis() <= currentRepayDate.withTimeAtStartOfDay().getMillis();
+                if (input.getStatus() == RepayStatus.COMPLETE) {
+                    DateTime expectedRepayDate = new DateTime(input.getRepayDate());
+                    DateTime actualRepayDate = new DateTime(input.getActualRepayDate());
+                    return actualRepayDate.isBefore(expectedRepayDate) && actualRepayDate.isBefore(currentRepayDate);
+                }
+                return false;
             }
         });
 
         if (optional.isPresent()) {
-            lastRepayDate = new DateTime(optional.get().getActualRepayDate()).withTimeAtStartOfDay();
+            lastRepayDate = new DateTime(optional.get().getActualRepayDate());
         }
 
         return lastRepayDate;

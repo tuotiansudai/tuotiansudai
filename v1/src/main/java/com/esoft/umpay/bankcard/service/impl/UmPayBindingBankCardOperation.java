@@ -6,7 +6,6 @@ import com.esoft.core.jsf.util.FacesUtil;
 import com.esoft.core.util.DateStyle;
 import com.esoft.core.util.DateUtil;
 import com.esoft.core.util.GsonUtil;
-import com.esoft.core.util.IdGenerator;
 import com.esoft.jdp2p.bankcard.model.BankCard;
 import com.esoft.jdp2p.bankcard.service.BankCardService;
 import com.esoft.jdp2p.loan.exception.InsufficientBalance;
@@ -24,12 +23,14 @@ import com.ttsd.api.dto.BankCardResponseDto;
 import com.ttsd.api.dto.BaseResponseDto;
 import com.ttsd.api.dto.ReturnMessage;
 import com.ttsd.api.util.CommonUtils;
+import com.ttsd.special.services.ConferenceSaleService;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
 import com.umpay.api.paygate.v40.Mer2Plat_v40;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -65,6 +66,8 @@ public class UmPayBindingBankCardOperation extends
 	private BankCardService bankCardService;
 	@Resource
 	private SystemBillService systemBillService;
+	@Autowired
+	private ConferenceSaleService conferenceSaleService;
 	@Logger
 	Log log;
 
@@ -292,6 +295,9 @@ public class UmPayBindingBankCardOperation extends
 										log.error(insufficientBalance);
 									}
 								}
+
+								// 如果满足会销活动条件则发放奖励
+								conferenceSaleService.processIfInActivityForBindCard(bankCardId, user.getId());
 							}
 							if (userWillBindingBankCard.size() > 0){
 								log.debug(("用户:"

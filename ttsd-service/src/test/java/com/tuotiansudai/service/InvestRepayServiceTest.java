@@ -23,6 +23,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
@@ -49,6 +53,8 @@ public class InvestRepayServiceTest {
     private void createLoanByUserId(String userId, long loanId) {
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName(userId);
+        loanDto.setLoanerUserName("借款人");
+        loanDto.setLoanerIdentityNumber("111111111111111111");
         loanDto.setAgentLoginName(userId);
         loanDto.setBasicRate("16.00");
         loanDto.setId(loanId);

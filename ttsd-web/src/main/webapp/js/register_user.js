@@ -29,7 +29,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         layer.open({
             type: 1,
             title: '手机验证',
-            area: ['350px', '210px'],
+            area: ['300px', '190px'],
             shadeClose: true,
             content: $('.image-captcha-dialog'),
             success: function (layero, index) {
@@ -65,7 +65,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
                 dataType: 'json',
                 beforeSubmit: function (arr, $form, options) {
                     imageCaptchaSubmitElement.addClass("loading");
-                    imageCaptchaSubmitElement.attr("disabled", true);
+
                 },
                 success: function (response) {
                     var data = response.data;
@@ -73,16 +73,10 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
                         layer.closeAll();
                         var seconds = 60;
                         var count = setInterval(function () {
-                            fetchCaptchaElement.html(seconds + '秒后重新发送').css({
-                                'background': '#666',
-                                'pointer-events': 'none'
-                            });
+                            fetchCaptchaElement.html(seconds + '秒后重新发送').addClass('btn').removeClass('btn-normal');
                             if (seconds == 0) {
                                 clearInterval(count);
-                                fetchCaptchaElement.html('重新发送').css({
-                                    'background': '#f68e3a',
-                                    'pointer-events': 'auto'
-                                });
+                                fetchCaptchaElement.html('重新发送').removeClass('btn').addClass('btn-normal');
                             }
                             seconds--;
                         }, 1000);
@@ -106,7 +100,6 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
                 },
                 complete: function () {
                     imageCaptchaSubmitElement.removeClass("loading");
-                    imageCaptchaSubmitElement.prop("disabled", false);
 
                 }
             });
@@ -120,7 +113,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         messages: {
             imageCaptcha: {
                 required: "请输入图形验证码",
-                regex: "图形验证码不正确",
+                regex: "图形验证码位数不对"
             }
         }
     });
@@ -142,12 +135,13 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
             },
             password: {
                 required: true,
-                regex: /^(?=.*[^\d])(.{6,20})$/,
+                regex: /^(?=.*[^\d])(.{6,20})$/
             },
             captcha: {
                 required: true,
                 digits: true,
                 maxlength: 6,
+                minlength: 6,
                 captchaVerify: {
                     param: function () {
                         var mobile = $('input[name="mobile"]').val();
@@ -183,6 +177,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
                 required: '请输入验证码',
                 digits: '验证码格式不正确',
                 maxlength: '验证码格式不正确',
+                minlength: '验证码格式不正确',
                 captchaVerify: '验证码不正确'
             },
             referrer: {
@@ -207,7 +202,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         showErrors: function (errorMap, errorList) {
             this.__proto__.defaultShowErrors.call(this);
             if (errorMap['mobile']) {
-                $('.fetch-captcha').prop('disabled', true);
+                fetchCaptchaElement.prop('disabled', true);
             }
             if (errorMap['agreement']) {
                 var $agreementBox = $agreement.parent('label');
@@ -217,7 +212,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         },
         success: function (error, element) {
             if (element.name === 'mobile') {
-                $('.fetch-captcha').prop('disabled', false);
+                fetchCaptchaElement.prop('disabled', false);
             }
             if (element.name === 'agreement') {
                 var $agreementBox = $agreement.parent('label');

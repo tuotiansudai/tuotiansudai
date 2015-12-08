@@ -74,6 +74,10 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
 
     @Transactional
     private void updateUserStatus(String loginName) {
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        if (userModel == null) {
+            return;
+        }
         String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", loginName);
         if (redisWrapperClient.exists(redisKey)) {
             int loginFailedTime = Integer.parseInt(redisWrapperClient.get(redisKey)) + 1;
@@ -84,7 +88,6 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
 
             if (loginFailedTime >= loginMaxTimes) {
                 redisWrapperClient.setex(redisKey, second, String.valueOf(loginMaxTimes));
-                UserModel userModel = userMapper.findByLoginName(loginName);
                 userModel.setStatus(UserStatus.INACTIVE);
                 userMapper.updateUser(userModel);
             }

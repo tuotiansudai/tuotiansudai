@@ -9,13 +9,10 @@ require(['jquery', 'jquery-ui',
             style: 'btn-default',
             size: 8
         });
-        var api_url = '/loan/loaner';
         var autoValue = '';
         $("#loginName").autocomplete({
-
             source: function (query, process) {
-                //var matchCount = this.options.items;//返回结果集最大数量
-                $.get(api_url+'/'+query.term, function (respData) {
+                $.get('/user/' + query.term + '/search', function (respData) {
                     autoValue = respData;
                     return process(respData);
                 });
@@ -35,13 +32,18 @@ require(['jquery', 'jquery-ui',
         });
         $("#btnRepayReset").click(function(){
 
-            location.href="/loan-repay";
+            location.href="/project-manage/loan-repay";
         });
 
 
 
         function pageinationView(e){
             var index = $(e.target).attr("pageIndex");
+
+            if ($('#loanId').val() != "" && !$('#loanId').val().match("^[0-9]*$")) {
+                $('#loanId').val('0');
+            }
+
             var loanId =  $('#loanId').val();
             var loginName =  $('#loginName').val();
             var startTime =  $('#startTime').val();
@@ -49,7 +51,7 @@ require(['jquery', 'jquery-ui',
             var repayStatus = $('#repayStatus').val()
             var pageSize = 10;
 
-            location.href="/loan-repay?loanId="+loanId
+            location.href="/project-manage/loan-repay?loanId="+loanId
             +"&loginName="+loginName
             +"&startTime="+startTime
             +"&endTime="+endTime

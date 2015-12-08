@@ -1,0 +1,1 @@
+ALTER TABLE `aa`.user ADD COLUMN source VARCHAR(16);

@@ -1,4 +1,4 @@
-require(['jquery', 'csrf', 'jquery-ui'], function ($) {
+require(['jquery', 'csrf', 'jquery-ui', 'bootstrap'], function ($) {
 
     $('.btn-submit').click(function(){
         var mobile = $('#mobile').val();
@@ -9,16 +9,19 @@ require(['jquery', 'csrf', 'jquery-ui'], function ($) {
             $('.console-error-message').hide();
             $('.message').html('手机号码应为11位数字！');
             return false;
-        }else{
-            $('.web-error-message').hide();
         }
+
+        $('.web-error-message').hide();
+        $('#confirm-modal').modal('show');
+        return false;
     });
 
     $('#referrer').autocomplete({
-        minLength: 0,
+        minLength: 3,
         source: function (query, process) {
             //var matchCount = this.options.items;//返回结果集最大数量
-            $.get('/user/' + query.term + '/search', function (respData) {
+            $.get('/user-manage/user/' + query.term + '/search', function (respData) {
+
                 return process(respData);
             });
         },
@@ -27,6 +30,10 @@ require(['jquery', 'csrf', 'jquery-ui'], function ($) {
                 this.value = '';
             }
         }
+    });
+
+    $('#confirm-modal .btn-submit').click(function () {
+        $("form").submit();
     });
 
     $("input[type='reset']").click(function() {

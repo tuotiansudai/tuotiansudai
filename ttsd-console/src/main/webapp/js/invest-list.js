@@ -12,6 +12,9 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
     });
     $('form button[type="submit"]').click(function (event) {
         var queryParams = '';
+        if ($('form input[name="loanId"]').val() != "" && !$('form input[name="loanId"]').val().match("^[0-9]*$")) {
+            $('form input[name="loanId"]').val('0');
+        }
         if ($('form input[name="loanId"]').val()) {
             queryParams += "loanId=" + $('form input[name="loanId"]').val() + "&";
         }
@@ -42,11 +45,9 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
 
     //自动完成提示
     var autoValue = '';
-    var api_url = '/loan/loaner';
     $("#tags").autocomplete({
         source: function (query, process) {
-            //var matchCount = this.options.items;//返回结果集最大数量
-            $.get(api_url + '/' + query.term, function (respData) {
+            $.get('/user-manage/account/' + query.term + '/search', function (respData) {
                 autoValue = respData;
                 return process(respData);
             });
@@ -66,7 +67,7 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
     });
 
     $('.down-load').click(function () {
-        location.href = "/invests?"+$('form').serialize()+"&export=csv";
+        location.href = "/finance-manage/invests?"+$('form').serialize()+"&export=csv";
     });
 
 });

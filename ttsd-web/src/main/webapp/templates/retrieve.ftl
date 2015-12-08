@@ -1,50 +1,42 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.forget_password}" pageJavascript="${js.forget_password}" activeNav="" activeLeftNav="" title="忘记密码">
-<div class="main">
-    <div class="forget-phone-box">
-        <div class="hd">
-            通过认证手机找回密码
-        </div>
+<@global.main pageCss="${css.register}" pageJavascript="${js.forget_password}" activeNav="" activeLeftNav="" title="忘记密码">
+
+    <div class="forget-phone-box tc" id="retrievePasswordBox">
         <form class="retrieve-form" action="">
-            <div class="item-block">
-                <label for="">手机号：</label>
-                <input class="phone-txt" name="mobile" type="text" maxlength="11" value="${mobile}" placeholder="请输入手机号"/>
-            </div>
-            <div class="item-block">
-                <label for="">验证码：</label>
+       <ul class="retrieve-box">
+           <li class="re-title">通过认证手机找回密码</li>
+           <li>
+               <label for="">手机号：</label>
+               <input class="phone-txt" name="mobile" type="text" maxlength="11" value="${mobile}" placeholder="请输入手机号"/>
+           </li>
+           <li class="get-captcha">
+               <label for="">验证码：</label>
+                   <input type="text" name="captcha" class="yzm-txt" minlength="6" maxlength="6" placeholder="请输入验证码"/>
+                   <button type="button" class="fetch-captcha btn-normal" disabled="disabled">获取验证码</button>
+           </li>
+           <li class="clear-blank-m">
 
-                <div class="yzm">
-                    <input type="text" name="captcha" class="yzm-txt" placeholder="请输入验证码"/>
-                    <button type="button" class="send-yzm fetch-captcha btn-success" disabled="disabled">获取验证码</button>
-                </div>
-            </div>
-            <div class="item-block">
-                <div class="error"></div>
-            </div>
-            <div class="item-block">
-                <button type="button" class="btn-send-form btn-success" disabled="disabled">提交</button>
-            </div>
+               <input type="submit" class="btn-send-form btn-success"  value="提交"/>
+
+           </li>
+       </ul>
         </form>
-
+        <div class="pad-m tips_message">找回密码过程中如有问题，请致电拓天速贷客服：400-169-1188 （服务时间：9:00－21:00）</div>
     </div>
-    <p class="txtc tips tips_message">找回密码过程中如有问题，请致电拓天速贷客服：400-169-1188 （工作日 9:00-22:00）</p>
-</div>
 
+    <div class="verification-code-main" style="display: none;">
+        <div class="pad-m">
+            <div class="image-code-check">
+                <label for="">图形验证码：</label>
+                <input type="text" class="verification-code-text input-control" maxlength="5" placeholder="请输入图形验证码"/>
+                <img src="/mobile-retrieve-password/image-captcha" alt="" class="verification-code-img"/>
 
-<div class="layer-box">
-
-    <div class="verification-code-main">
-        <div>
-            <label for="">图形验证码：</label>
-            <input type="text" class="verification-code-text" maxlength="5" placeholder="请输入图形验证码"/>
-            <img src="/mobile-retrieve-password/image-captcha" alt="" class="verification-code-img"/>
-
-        </div>
-        <b>验证码输入错误</b>
-        <div class="btn_complete">
-            <button class="complete btn-success" >确认</button>
+            </div>
+            <b class="error">验证码输入错误</b>
+            <div class="tc pad-m">
+                <button class="image-captcha-confirm btn-success" >确认</button>
+            </div>
         </div>
     </div>
 
-</div>
 </@global.main>

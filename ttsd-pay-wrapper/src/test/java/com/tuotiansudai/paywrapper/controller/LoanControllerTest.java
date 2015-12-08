@@ -172,7 +172,7 @@ public class LoanControllerTest {
 
 
     @Test
-    public void shouldLoanout() throws Exception {
+    public void shouldLoanOut() throws Exception {
         long mockLoanId = 123451234512345L;
         long mockInitAmount = 1000000;
         String loanerLoginName = "mock_loaner1";
@@ -255,6 +255,8 @@ public class LoanControllerTest {
         lm.setMaxInvestAmount(1000000);
         lm.setLoanAmount(1000000000);
         lm.setLoanerLoginName(loanerLoginName);
+        lm.setLoanerUserName("借款人");
+        lm.setLoanerIdentityNumber("111111111111111111");
         lm.setAgentLoginName(loanerLoginName);
         lm.setBaseRate(0.2);
         lm.setActivityType(ActivityType.NORMAL);

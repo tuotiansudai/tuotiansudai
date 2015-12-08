@@ -54,7 +54,7 @@ public class InvestRepayMapperTest {
         investRepayModels.add(investRepayModel);
         investRepayMapper.create(investRepayModels);
 
-        List<InvestRepayModel> actualInvestRepayModels = investRepayMapper.findByInvestId(investModel.getId());
+        List<InvestRepayModel> actualInvestRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
 
         assertTrue(CollectionUtils.isNotEmpty(actualInvestRepayModels));
     }
@@ -96,13 +96,13 @@ public class InvestRepayMapperTest {
         investRepayModel.setPeriod(1);
         investRepayModel.setStatus(RepayStatus.COMPLETE);
         investRepayModel.setRepayDate(new Date());
-        investRepayModel.setCorpus(1000l);
+        investRepayModel.setCorpus(1000L);
         List<InvestRepayModel> investRepayModels = Lists.newArrayList(investRepayModel);
         investRepayMapper.create(investRepayModels);
 
         long corpus = investRepayMapper.findSumRepaidCorpusByLoginName("loginName");
 
-        assertEquals(1000l, corpus);
+        assertEquals(1000L, corpus);
     }
 
     @Test
@@ -211,6 +211,8 @@ public class InvestRepayMapperTest {
         fakeLoanModel.setName("name");
         fakeLoanModel.setAgentLoginName(fakeUserModel.getLoginName());
         fakeLoanModel.setLoanerLoginName(fakeUserModel.getLoginName());
+        fakeLoanModel.setLoanerUserName("借款人");
+        fakeLoanModel.setLoanerIdentityNumber("128347111111111111");
         fakeLoanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         fakeLoanModel.setPeriods(1);
         fakeLoanModel.setDescriptionText("text");

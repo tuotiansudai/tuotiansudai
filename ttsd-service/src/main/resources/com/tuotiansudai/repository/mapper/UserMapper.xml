@@ -21,6 +21,9 @@
         <result column="status" property="status"></result>
         <result column="salt" property="salt"></result>
         <result column="channel" property="channel"></result>
+        <result column="source" property="source"></result>
+        <result column="province" property="province"></result>
+        <result column="city" property="city"></result>
         <association property="account" javaType="com.tuotiansudai.repository.model.AccountModel">
             <id column="id" property="id"></id>
             <result column="login_name" property="loginName"></result>
@@ -52,8 +55,8 @@
     </select>
 
     <insert id="create" parameterType="UserModel" useGeneratedKeys="true" keyProperty="id">
-      insert into user (login_name, password, mobile, email, register_time, referrer, status, salt, channel)
-      value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{referrer}, #{status}, #{salt}, #{channel})
+      insert into user (login_name, password, mobile, email, register_time, referrer, status, salt, channel, source)
+      value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source})
     </insert>
 
     <update id="updatePasswordByLoginName" parameterType="map">
@@ -66,12 +69,14 @@
                         last_modified_time = #{lastModifiedTime},
                         last_modified_user = #{lastModifiedUser},
                         status = #{status},
-                        referrer = #{referrer}
+                        referrer = #{referrer},
+                        province = #{province},
+                        city = #{city}
                         where id = #{id}
     </update>
 
     <select id="findAllUser" parameterType="map" resultMap="userResultMap">
-        select * from user u join account a on u.login_name = a.login_name
+        select * from user u left join account a on u.login_name = a.login_name
 
         <if test="role !=null" >
             join user_role r on u.login_name = r.login_name
@@ -101,14 +106,17 @@
             <if test="channel !=null and channel != '' ">
                 and u.channel = #{channel}
             </if>
+            <if test="source !=null">
+                and u.source = #{source}
+            </if>
 
         </where>
-        order by a.register_time asc
+        order by u.register_time desc
         limit #{index},#{pageSize}
     </select>
 
     <select id="findAllUserCount" parameterType="map" resultType="int">
-        select count(1) from user u join account a on u.login_name = a.login_name
+        select count(1) from user u
 
         <if test="role !=null" >
             join user_role r on u.login_name = r.login_name
@@ -139,7 +147,9 @@
             <if test="channel !=null and channel != '' ">
                 and u.channel = #{channel}
             </if>
-
+            <if test="source !=null">
+                and u.source = #{source}
+            </if>
         </where>
     </select>
 
@@ -149,6 +159,10 @@
 
     <select id="findAllChannels" resultType="java.lang.String">
         select distinct channel from user where channel is not NULL
+    </select>
+
+    <select id="findUserByProvince" resultMap="userResultMap">
+        select * from user where province is NULL or province = '' order by register_time DESC limit 0,10
     </select>
 
     <select id="findUserCount" resultType="int">

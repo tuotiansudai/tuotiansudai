@@ -3,6 +3,7 @@ package com.tuotiansudai.console.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.WithdrawStatus;
 import com.tuotiansudai.service.WithdrawService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import java.util.Date;
 
 
 @Controller
+@RequestMapping(value = "/finance-manage", method = RequestMethod.GET)
 public class WithdrawController {
 
     @Autowired
@@ -28,6 +30,7 @@ public class WithdrawController {
                                         @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
                                         @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
                                         @RequestParam(value = "status", required = false) WithdrawStatus status,
+                                        @RequestParam(value = "source", required = false) Source source,
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                         @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
@@ -35,6 +38,7 @@ public class WithdrawController {
         BaseDto<BasePaginationDataDto> baseDto = withdrawService.findWithdrawPagination(withdrawId,
                 loginName,
                 status,
+                source,
                 index,
                 pageSize,
                 startTime,
@@ -49,6 +53,8 @@ public class WithdrawController {
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
         modelAndView.addObject("status", status);
+        modelAndView.addObject("source", source);
+        modelAndView.addObject("withdrawSourceList", Source.values());
         if (status != null) {
             modelAndView.addObject("withdrawStatus", status);
         }

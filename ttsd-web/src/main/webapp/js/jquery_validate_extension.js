@@ -168,4 +168,6 @@ require(['jquery', 'jquery.validate'], function ($) {
     $.validator.addMethod("imageCaptchaVerify", function (value, element, urlTemplate) {
         return imageCaptchaVerifyFun.call(this, value, element, urlTemplate);
     }, $.validator.format("图形验证码不正确"));
+
+
 });

@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -115,22 +116,18 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public long calculateExpectedInterest(long loanId, long amount) {
+    public long estimateInvestIncome(long loanId, long amount) {
         LoanModel loanModel = loanMapper.findById(loanId);
-        return calculateExpectedInterest(loanModel, amount);
-    }
-
-    @Override
-    public long calculateExpectedInterest(LoanModel loanModel, long amount) {
         int repayTimes = loanModel.calculateLoanRepayTimes();
-        LoanType loanType = loanModel.getType();
 
         int daysOfMonth = 30;
         int duration = loanModel.getPeriods();
-        if (loanType.getLoanPeriodUnit() == LoanPeriodUnit.MONTH) {
+        if (loanModel.getType().getLoanPeriodUnit() == LoanPeriodUnit.MONTH) {
             duration = repayTimes * daysOfMonth;
         }
-        return InterestCalculator.calculateInterest(loanModel, amount * duration);
+        long expectedInterest = InterestCalculator.calculateInterest(loanModel, amount * duration);
+        long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        return expectedInterest - expectedFee;
     }
 
     @Override

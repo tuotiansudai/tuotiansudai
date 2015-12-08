@@ -21,6 +21,7 @@ public class LoanOutSuccessHandleJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        logger.info("trigger loan out success handle job, prepare do job");
         String strLoanId = context.getJobDetail().getJobDataMap()
                 .get(LOAN_ID_KEY).toString();
 

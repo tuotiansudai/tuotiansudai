@@ -5,8 +5,16 @@ $(function() {
     };
     $('.verification-console-img').click(function () {
         refreshCaptcha();
+        $('.captcha').val('');
     });
-    $('.btn-block').click(function () {
+
+    var login = function () {
+        if ($('input[name="username"]').val().trim() === ''
+            || $('input[name="password"]').val().trim() === ''
+            || $('input[name="captcha"]').val().trim() === '') {
+            return false;
+        }
+
         $.ajax({
             url: '/loginHandler',
             type: 'post',
@@ -16,13 +24,21 @@ $(function() {
                 window.location.href = '/';
             } else {
                 refreshCaptcha();
-                $('.captcha').val('');
                 if (response.data.isCaptchaNotMatch) {
-                    $('.error').text('验证码不正确').show();
+                    $('.error').text('验证码不正确').css('visibility', 'visible');
                 } else {
-                    $('.error').text('用户名或密码不正确').show();
+                    $('.error').text('用户名或密码不正确').css('visibility', 'visible');
                 }
             }
         });
-    });
+    };
+
+    $('.btn-block').click(login);
+
+    $(document).keypress(function (event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode === 13) {
+            login();
+        }
+    })
 });

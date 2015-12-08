@@ -1,14 +1,12 @@
 package com.tuotiansudai.web.controller;
 
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.InvestException;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.AutoInvestMonthPeriod;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,9 +20,6 @@ public class InvestController {
 
     @Autowired
     private InvestService investService;
-
-    @Autowired
-    private AccountService accountService;
 
     @Autowired
     private LoanController loanController;
@@ -57,88 +52,8 @@ public class InvestController {
     @RequestMapping(value = "/calculate-expected-interest/loan/{loanId}/amount/{amount:^\\d+\\.\\d{2}$}", method = RequestMethod.GET)
     @ResponseBody
     public String calculateExpectedInterest(@PathVariable long loanId, @PathVariable String amount) {
-        long expectedInterest = investService.calculateExpectedInterest(loanId, AmountConverter.convertStringToCent(amount));
+        long expectedInterest = investService.estimateInvestIncome(loanId, AmountConverter.convertStringToCent(amount));
         return AmountConverter.convertCentToString(expectedInterest);
     }
 
-    @RequestMapping(value = "/investor/auto-invest", method = RequestMethod.GET)
-    public String autoInvest() {
-        String loginName = LoginUserInfo.getLoginName();
-        AccountModel accountModel = accountService.findByLoginName(loginName);
-        if (accountModel.isAutoInvest()) {
-            AutoInvestPlanModel autoInvestPlan = investService.findUserAutoInvestPlan(loginName);
-            if (autoInvestPlan == null || (!autoInvestPlan.isEnabled())) {
-                return "redirect:/investor/auto-invest/plan";
-            } else {
-                return "redirect:/investor/auto-invest/plan-detail";
-            }
-        } else {
-            return "redirect:/investor/auto-invest/agreement";
-        }
-    }
-
-    @RequestMapping(value = "/investor/auto-invest/agreement", method = RequestMethod.GET)
-    private ModelAndView autoInvestAgreement() {
-        String loginName = LoginUserInfo.getLoginName();
-        AccountModel accountModel = accountService.findByLoginName(loginName);
-        if (!accountModel.isAutoInvest()) {
-            return new ModelAndView("/auto-invest-agreement");
-        } else {
-            return new ModelAndView("redirect:/investor/auto-invest");
-        }
-    }
-
-    @RequestMapping(value = "/investor/auto-invest/plan", method = RequestMethod.GET)
-    public ModelAndView autoInvestPlan() {
-        AutoInvestPlanModel model = investService.findUserAutoInvestPlan(LoginUserInfo.getLoginName());
-        ModelAndView mv = new ModelAndView("/auto-invest-plan");
-        if (model != null) {
-            AutoInvestPlanDto dto = new AutoInvestPlanDto(model);
-            mv.addObject("model", dto);
-        }
-        mv.addObject("periods", AutoInvestMonthPeriod.AllPeriods);
-        return mv;
-    }
-
-    @RequestMapping(value = "/investor/auto-invest/plan-detail", method = RequestMethod.GET)
-    public ModelAndView autoInvestPlanDetail() {
-        AutoInvestPlanModel model = investService.findUserAutoInvestPlan(LoginUserInfo.getLoginName());
-        if (model != null && model.isEnabled()) {
-            ModelAndView mv = new ModelAndView("/auto-invest-plan-detail");
-            AutoInvestPlanDto dto = new AutoInvestPlanDto(model);
-            mv.addObject("model", dto);
-            mv.addObject("periods", AutoInvestMonthPeriod.split(model.getAutoInvestPeriods()));
-            return mv;
-        } else {
-            return new ModelAndView("redirect:/investor/auto-invest");
-        }
-    }
-
-    @RequestMapping(value = "/investor/auto-invest/turn-on", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto turnOnAutoInvestPlan(@RequestBody AutoInvestPlanDto autoInvestPlanDto) {
-        BaseDto baseDto = new BaseDto();
-        BaseDataDto dataDto = new BaseDataDto();
-        baseDto.setData(dataDto);
-        dataDto.setStatus(true);
-
-        AutoInvestPlanModel model = new AutoInvestPlanModel();
-        model.setLoginName(LoginUserInfo.getLoginName());
-        model.setMinInvestAmount(AmountConverter.convertStringToCent(autoInvestPlanDto.getMinInvestAmount()));
-        model.setMaxInvestAmount(AmountConverter.convertStringToCent(autoInvestPlanDto.getMaxInvestAmount()));
-        model.setRetentionAmount(AmountConverter.convertStringToCent(autoInvestPlanDto.getRetentionAmount()));
-        model.setAutoInvestPeriods(autoInvestPlanDto.getAutoInvestPeriods());
-        if (model.getMaxInvestAmount() < model.getMaxInvestAmount()) {
-            dataDto.setStatus(false);
-        }
-        investService.turnOnAutoInvest(model);
-        return baseDto;
-    }
-
-    @RequestMapping(value = "/investor/auto-invest/turn-off", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto turnOffAutoInvestPlan() {
-        investService.turnOffAutoInvest(LoginUserInfo.getLoginName());
-        return new BaseDto();
-    }
 }

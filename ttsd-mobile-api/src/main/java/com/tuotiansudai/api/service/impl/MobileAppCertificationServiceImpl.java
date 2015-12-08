@@ -8,6 +8,8 @@ import com.tuotiansudai.api.service.MobileAppCertificationService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,10 +18,23 @@ import org.springframework.stereotype.Service;
 public class MobileAppCertificationServiceImpl implements MobileAppCertificationService {
     @Autowired
     private UserService userService;
+    @Autowired
+   private AccountMapper accountMapper;
 
     @Override
     public BaseResponseDto validateUserCertificationInfo(CertificationRequestDto certificationRequestDto) {
         RegisterAccountDto registerAccountDto = certificationRequestDto.convertToRegisterAccountDto();
+        AccountModel accountModel = accountMapper.findByLoginName(registerAccountDto.getLoginName());
+        if(accountModel != null){
+            CertificationResponseDataDto certificationResponseDataDto = new CertificationResponseDataDto();
+            certificationResponseDataDto.setUserIdCardNumber(accountModel.getIdentityNumber());
+            certificationResponseDataDto.setUserRealName(accountModel.getUserName());
+            BaseResponseDto<CertificationResponseDataDto> baseResponseDto = new BaseResponseDto();
+            baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
+            baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+            baseResponseDto.setData(certificationResponseDataDto);
+            return baseResponseDto;
+        }
         BaseDto<PayDataDto> dto = userService.registerAccount(registerAccountDto);
         if(dto.getData().getStatus()){
             CertificationResponseDataDto certificationResponseDataDto = new CertificationResponseDataDto();

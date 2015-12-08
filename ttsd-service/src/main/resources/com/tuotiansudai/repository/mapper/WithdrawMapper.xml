@@ -35,7 +35,7 @@
         withdraw.amount as withdraw_amount,
         withdraw.fee as withdraw_fee,
         withdraw.apply_notify_message as withdraw_apply_notify_message,
-        withdraw.apply_notify_time as withdraw_notify_time,
+        withdraw.apply_notify_time as withdraw_apply_notify_time,
         withdraw.notify_message as withdraw_notify_message,
         withdraw.notify_time as withdraw_notify_time,
         withdraw.status as withdraw_status,
@@ -83,7 +83,7 @@
                 and withdraw.id = #{withdrawId}
             </if>
             <if test="loginName != null and loginName != ''">
-                and withdraw.login_name = ${loginName}
+                and withdraw.login_name = #{loginName }
             </if>
             <if test="startTime !=null" >
                 and withdraw.created_time >= #{startTime}
@@ -93,6 +93,9 @@
             </if>
             <if test="status !=null">
                 and withdraw.status = #{status}
+            </if>
+            <if test="source !=null">
+                and withdraw.source = #{source}
             </if>
         </where>
         order by withdraw.created_time desc, withdraw.id asc
@@ -100,13 +103,13 @@
     </select>
 
     <select id="findWithdrawCount" parameterType="map" resultType="long">
-        select count(1) from withdraw
+        select count(1) from withdraw join bank_card on withdraw.bank_card_id = bank_card.id
         <where>
             <if test="withdrawId != null and withdrawId != '' ">
                 and withdraw.id = #{withdrawId}
             </if>
             <if test="loginName != null and loginName != '' ">
-                and withdraw.login_name = ${loginName}
+                and withdraw.login_name = #{loginName}
             </if>
             <if test="startTime !=null" >
                 and withdraw.created_time >= #{startTime}
@@ -116,6 +119,9 @@
             </if>
             <if test="status !=null">
                 and withdraw.status = #{status}
+            </if>
+            <if test="source !=null">
+                and withdraw.source = #{source}
             </if>
         </where>
     </select>

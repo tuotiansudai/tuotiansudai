@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/loan")
+@RequestMapping(value = "/project-manage/loan")
 public class LoanController {
 
     private static final String DEFAULT_CONTRACT_ID = "789098123"; // 四方合同
@@ -32,17 +32,11 @@ public class LoanController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView createLoan() {
-        ModelAndView modelAndView = new ModelAndView("/create-loan");
+        ModelAndView modelAndView = new ModelAndView("/loan-create");
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
         return modelAndView;
-    }
-
-    @RequestMapping(value = "/loaner/{loaner}", method = RequestMethod.GET)
-    @ResponseBody
-    public List<String> findLoginNames(@PathVariable String loaner) {
-        return loanService.getLoginNames(loaner);
     }
 
     @RequestMapping(value = "/titles", method = RequestMethod.GET)
@@ -57,19 +51,19 @@ public class LoanController {
         return loanService.createTitle(loanTitleDto);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> createLoan(@RequestBody LoanDto loanDto) {
         return loanService.createLoan(loanDto);
     }
 
-    @RequestMapping(value = "/{loanId:^[0-9]{15}$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView loanInfo(@PathVariable long loanId) {
         if (!loanService.loanIsExist(loanId)) {
             return new ModelAndView("/index");
         }
-        ModelAndView modelAndView = new ModelAndView("/edit-loan");
+        ModelAndView modelAndView = new ModelAndView("/loan-edit");
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);

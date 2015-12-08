@@ -1,6 +1,8 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -24,6 +26,7 @@ import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.*;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
@@ -77,8 +80,8 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
-    @Value(value = "${pay.invest.notify.fatal.mobile}")
-    private String fatalNotifyMobiles;
+    @Value("#{'${pay.invest.notify.fatal.mobile}'.split('\\|')}")
+    private List<String> fatalNotifyMobiles;
 
     @Value(value = "${pay.invest.notify.process.batch.size}")
     private int investProcessListSize;
@@ -395,31 +398,26 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public void notifyInvestorRepaySuccessfulByEmail(long loanId, int period) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
+        List<InvestNotifyInfo> notifyList = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
 
-        for (InvestNotifyInfo investNotifyInfo : notifyInfos) {
-            long investId = investNotifyInfo.getInvestId();
-            String email = investNotifyInfo.getEmail();
-            String loanName = investNotifyInfo.getLoanName();
-            int periods = investNotifyInfo.getPeriods();
-            InvestRepayModel investRepay = investRepayMapper.findCompletedInvestRepayByIdAndPeriod(investId, period);
-            if (investRepay != null) {
-                Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
-                        .put("loanName", loanName)
-                        .put("periods", investRepay.getPeriod() + "/" + periods)
-                        .put("repayDate", simpleDateFormat.format(investRepay.getActualRepayDate()))
-                        .put("amount", AmountConverter.convertCentToString(calculateProfit(investRepay.getCorpus(), investRepay.getActualInterest(),
-                                investRepay.getDefaultInterest(), investRepay.getActualFee())))
-                        .build());
-                if (StringUtils.isNotEmpty(email)) {
-                    sendCloudMailUtil.sendMailByRepayCompleted(email, emailParameters);
+        for (InvestNotifyInfo notify : notifyList) {
+            String email = notify.getEmail();
+            InvestRepayModel investRepay = investRepayMapper.findCompletedInvestRepayByIdAndPeriod(notify.getInvestId(), period);
+            if (investRepay != null && !Strings.isNullOrEmpty(email)) {
+                long defaultInterest = 0;
+                List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(notify.getInvestId());
+                for (InvestRepayModel investRepayModel : investRepayModels) {
+                    defaultInterest += investRepayModel.getDefaultInterest();
                 }
+                Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
+                        .put("loanName", notify.getLoanName())
+                        .put("periods", MessageFormat.format("{0} / {1}", String.valueOf(investRepay.getPeriod()), String.valueOf(notify.getPeriods())))
+                        .put("repayDate", simpleDateFormat.format(investRepay.getActualRepayDate()))
+                        .put("amount", AmountConverter.convertCentToString(investRepay.getCorpus() + investRepay.getActualInterest() + defaultInterest - investRepay.getActualFee()))
+                        .build());
+                sendCloudMailUtil.sendMailByRepayCompleted(email, emailParameters);
             }
         }
-    }
-
-    private long calculateProfit(long corpus, long actualInterest, long defaultInterest, long actualFee) {
-        return corpus + actualInterest + defaultInterest - actualFee;
     }
 
 
@@ -519,8 +517,8 @@ public class InvestServiceImpl implements InvestService {
 
     private void fatalLog(String errMsg, Throwable e) {
         logger.fatal(errMsg, e);
-        if (StringUtils.isNotEmpty(fatalNotifyMobiles)) {
-            sendSmsErrNotify(Arrays.asList(fatalNotifyMobiles.split("\\|")), errMsg);
+        if (CollectionUtils.isNotEmpty(fatalNotifyMobiles)) {
+            sendSmsErrNotify(fatalNotifyMobiles, errMsg);
         }
     }
 

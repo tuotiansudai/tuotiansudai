@@ -183,6 +183,8 @@ public class InvestServiceTest {
 
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName("testLoan");
+        loanDto.setLoanerUserName("借款人");
+        loanDto.setLoanerIdentityNumber("111111111111111111");
         loanDto.setAgentLoginName("testLoan");
         loanDto.setBasicRate("16.00");
         loanDto.setId(loanId);

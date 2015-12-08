@@ -89,7 +89,11 @@
         </foreach>
     </insert>
 
-    <select id="findByInvestId" parameterType="long" resultMap="investRepayResultMap">
+    <select id="findById" parameterType="long" resultMap="investRepayResultMap">
+        select <include refid="columns"></include> from invest_repay where id = #{id}
+    </select>
+
+    <select id="findByInvestIdAndPeriodAsc" parameterType="long" resultMap="investRepayResultMap">
         select <include refid="columns"></include> from invest_repay where invest_id = #{investId} order by period asc
     </select>
 
@@ -178,7 +182,8 @@
           t.activity_rate,
           t.base_rate,
           t.periods,
-          t.`loan_id`
+          t.`loan_id`,
+          t.type
         FROM
           invest_repay ir
           JOIN
@@ -188,7 +193,8 @@
               l.`activity_rate`,
               l.`base_rate`,
               l.`periods`,
-              l.`id` as loan_id
+              l.`id` as loan_id,
+              l.`type`
             FROM
               invest i
               JOIN loan l
@@ -210,7 +216,8 @@
           t.activity_rate,
           t.base_rate,
           t.periods,
-          t.`loan_id`
+          t.`loan_id`,
+          t.type
         FROM
           invest_repay ir
           JOIN
@@ -220,7 +227,8 @@
               l.`activity_rate`,
               l.`base_rate`,
               l.`periods`,
-              l.`id` as `loan_id`
+              l.`id` as `loan_id`,
+              l.type
             FROM
               invest i
               JOIN loan l
@@ -258,7 +266,7 @@
             invest i
             JOIN loan l
               ON i.`loan_id` = l.`id`
-              AND l.`status` IN ('COMPLETE', 'REPAYING')
+              AND l.`status` != 'WAITING_VERIFY'
           WHERE i.`status` = 'SUCCESS'
             AND i.`login_name` = #{loginName}) temp
           LEFT JOIN

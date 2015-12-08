@@ -8,15 +8,15 @@
         <tr>
             <th>期数</th>
             <th>应回款时间</th>
-            <th>应回款金额</th>
-            <th>应收本金</th>
-            <th>应收利息</th>
-            <th>利息管理费</th>
+            <th class="tr">应回款金额(元)</th>
+            <th class="tr">应收本金(元)</th>
+            <th class="tr">应收利息(元)</th>
+            <th class="tr">利息管理费(元)</th>
             <th>回款时间</th>
-            <th>实收金额</th>
-            <th>实收利息</th>
-            <th>实收罚息</th>
-            <th>实扣利息管理费</th>
+            <th class="tr">实收金额(元)</th>
+            <th class="tr">实收利息(元)</th>
+            <th class="tr">实收罚息(元)</th>
+            <th class="tr">实扣利息管理费(元)</th>
             <th>状态</th>
         </tr>
         </thead>
@@ -26,28 +26,28 @@
             <tr>
                 <td>{{period}}</td>
                 <td>{{repayDate}}</td>
-                <td>{{amount}} 元</td>
-                <td>{{corpus}} 元</td>
-                <td>{{expectedInterest}} 元</td>
-                <td>{{expectedFee}} 元</td>
+                <td class="tr">{{amount}}</td>
+                <td class="tr">{{corpus}}</td>
+                <td class="tr">{{expectedInterest}}</td>
+                <td class="tr">{{expectedFee}}</td>
                 <td>
                     {{#actualRepayDate}}{{.}}{{/actualRepayDate}}
                     {{^actualRepayDate}}--{{/actualRepayDate}}
                 </td>
-                <td>
-                    {{#actualAmount}}{{.}} 元{{/actualAmount}}
+                <td class="tr">
+                    {{#actualAmount}}{{.}}{{/actualAmount}}
                     {{^actualAmount}}--{{/actualAmount}}
                 </td>
-                <td>
-                    {{#actualInterest}}{{.}} 元{{/actualInterest}}
+                <td class="tr">
+                    {{#actualInterest}}{{.}}{{/actualInterest}}
                     {{^actualInterest}}--{{/actualInterest}}
                 </td>
-                <td>
-                    {{#defaultInterest}}{{.}} 元{{/defaultInterest}}
+                <td class="tr">
+                    {{#defaultInterest}}{{.}}{{/defaultInterest}}
                     {{^defaultInterest}}--{{/defaultInterest}}
                 </td>
-                <td>
-                    {{#actualFee}}{{.}} 元{{/actualFee}}
+                <td class="tr">
+                    {{#actualFee}}{{.}}{{/actualFee}}
                     {{^actualFee}}--{{/actualFee}}
                 </td>
                 <td>

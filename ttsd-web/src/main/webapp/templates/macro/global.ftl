@@ -1,4 +1,5 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
+<#assign applicationContext=requestContext.getContextPath() />
 
 <#macro role hasRole>
     <@security.authorize access="hasAnyAuthority(${hasRole})">
@@ -44,7 +45,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+
+    <#if responsive??>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </#if>
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <title>${title}</title>
@@ -58,9 +62,9 @@
 <#include "../header.ftl"/>
 <div class="nav-container">
     <div class="nav">
-        <a href="${requestContext.getContextPath()}/" class="logo"></a>
+        <a href="${applicationContext}/" class="logo"></a> <i class="fa fa-navicon show-main-menu fr" id="showMainMenu"></i>
         <#if activeNav??>
-            <ul>
+            <ul id="TopMainMenuList">
                 <#list menus as menu>
                     <li><a <#if menu.title==activeNav>class="active"</#if> href="${menu.url}">${menu.title}</a></li>
                 </#list>
@@ -96,22 +100,38 @@
     });
     </@security.authorize>
 
-    function stopBubble(e) {
-        if ( e && e.stopPropagation )
-            e.stopPropagation();
-        else
-            window.event.cancelBubble = true;
+    function phoneLoadFun() {
+        document.getElementById('closeDownloadBox').addEventListener('click',function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+            this.parentElement.style.display='none';
+        });
+
+        document.getElementById('btnExperience').addEventListener('click',function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+            var userAgent = navigator.userAgent.toLowerCase();
+            if (userAgent.indexOf('android') > -1) {
+                location.href = "/app/tuotiansudai.apk";
+            } else if (userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
+                location.href = "http://itunes.apple.com/us/app/id1039233966";
+            }
+        });
+
+        document.getElementById('showMainMenu').addEventListener('click',function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+            this.nextElementSibling.style.display='block';
+
+        });
+
     }
-    var imgDom=document.getElementById('iphone-app-img');
-    function stopBubble(e)
-    {
-        if (e && e.stopPropagation)
-            e.stopPropagation()
-        else
-            window.event.cancelBubble=true
-    }
-    document.getElementById('iphone-app-pop').addEventListener('click',function(e) {
-        stopBubble(e);
+    var imgDom=document.getElementById('iphone-app-img'),
+            TopMainMenuList=document.getElementById('TopMainMenuList');
+
+    document.getElementById('iphone-app-pop').addEventListener('click',function(event) {
+        event.stopPropagation();
+        event.preventDefault();
 
         if(imgDom.style.display == "block") {
             imgDom.style.display='none';
@@ -121,8 +141,18 @@
         }
     });
     document.getElementsByTagName("body")[0].addEventListener('click',function() {
+        var userAgent = navigator.userAgent.toLowerCase();
+        if(event.target.tagName=='LI' ) {
+            return;
+        }
         imgDom.style.display='none';
+        if(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
+            TopMainMenuList.style.display='none';
+        }
+
     });
+
+    phoneLoadFun();
 
 </script>
 <script src="${staticServer}/js/dest/${js.config}" type="text/javascript" charset="utf-8"></script>

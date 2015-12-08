@@ -25,11 +25,25 @@ public class LoanDto extends BaseDataDto {
     private String agentLoginName;
 
     /***
-     * 借款用户
+     * 借款人ID
      ***/
     @NotEmpty
     @NotNull
     private String loanerLoginName;
+
+    /***
+     * 借款人
+     ***/
+    @NotEmpty
+    @NotNull
+    private String loanerUserName;
+
+    /***
+     * 借款人身份证
+     ***/
+    @NotEmpty
+    @NotNull
+    private String loanerIdentityNumber;
 
     /***
      * 标的类型
@@ -103,14 +117,6 @@ public class LoanDto extends BaseDataDto {
     @NotEmpty
     @Pattern(regexp = "^[+]?[\\d]+(([\\.]{1}[\\d]+)|([\\d]*))$")
     private String basicRate;
-
-    private Integer baseRateInteger;
-
-    private Integer baseRateFraction;
-
-    private Integer activityRateInteger;
-
-    private Integer activityRateFraction;
 
     /***
      * 合同
@@ -195,9 +201,10 @@ public class LoanDto extends BaseDataDto {
      **/
     private long expectedTotalIncome;
 
-    private BaseDto<BasePaginationDataDto> baseDto;
-
     private long preheatSeconds;
+
+    public LoanDto() {
+    }
 
 
     public long getId() {
@@ -230,6 +237,22 @@ public class LoanDto extends BaseDataDto {
 
     public void setLoanerLoginName(String loanerLoginName) {
         this.loanerLoginName = loanerLoginName;
+    }
+
+    public String getLoanerUserName() {
+        return loanerUserName;
+    }
+
+    public void setLoanerUserName(String loanerUserName) {
+        this.loanerUserName = loanerUserName;
+    }
+
+    public String getLoanerIdentityNumber() {
+        return loanerIdentityNumber;
+    }
+
+    public void setLoanerIdentityNumber(String loanerIdentityNumber) {
+        this.loanerIdentityNumber = loanerIdentityNumber;
     }
 
     public LoanType getType() {
@@ -448,14 +471,6 @@ public class LoanDto extends BaseDataDto {
         this.loanTitleDto = loanTitleDto;
     }
 
-    public BaseDto<BasePaginationDataDto> getBaseDto() {
-        return baseDto;
-    }
-
-    public void setBaseDto(BaseDto<BasePaginationDataDto> baseDto) {
-        this.baseDto = baseDto;
-    }
-
     public long getPreheatSeconds() {
         return preheatSeconds;
     }
@@ -472,35 +487,4 @@ public class LoanDto extends BaseDataDto {
         this.maxAvailableInvestAmount = maxAvailableInvestAmount;
     }
 
-    public Integer getBaseRateInteger() {
-        return baseRateInteger;
-    }
-
-    public void setBaseRateInteger(Integer baseRateInteger) {
-        this.baseRateInteger = baseRateInteger;
-    }
-
-    public Integer getBaseRateFraction() {
-        return baseRateFraction;
-    }
-
-    public void setBaseRateFraction(Integer baseRateFraction) {
-        this.baseRateFraction = baseRateFraction;
-    }
-
-    public Integer getActivityRateInteger() {
-        return activityRateInteger;
-    }
-
-    public void setActivityRateInteger(Integer activityRateInteger) {
-        this.activityRateInteger = activityRateInteger;
-    }
-
-    public Integer getActivityRateFraction() {
-        return activityRateFraction;
-    }
-
-    public void setActivityRateFraction(Integer activityRateFraction) {
-        this.activityRateFraction = activityRateFraction;
-    }
 }

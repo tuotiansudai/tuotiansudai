@@ -10,13 +10,9 @@ public class LoanListWebDto {
 
     private String name;
 
-    private Integer baseRateInteger;
+    private double baseRate;
 
-    private Integer baseRateFraction;
-
-    private Integer activityRateInteger;
-
-    private Integer activityRateFraction;
+    private double activityRate;
 
     private long periods;
 
@@ -104,35 +100,19 @@ public class LoanListWebDto {
         this.rateOfAdvance = rateOfAdvance;
     }
 
-    public Integer getBaseRateInteger() {
-        return baseRateInteger;
+    public double getBaseRate() {
+        return baseRate;
     }
 
-    public void setBaseRateInteger(Integer baseRateInteger) {
-        this.baseRateInteger = baseRateInteger;
+    public void setBaseRate(double baseRate) {
+        this.baseRate = baseRate;
     }
 
-    public Integer getBaseRateFraction() {
-        return baseRateFraction;
+    public double getActivityRate() {
+        return activityRate;
     }
 
-    public void setBaseRateFraction(Integer baseRateFraction) {
-        this.baseRateFraction = baseRateFraction;
-    }
-
-    public Integer getActivityRateInteger() {
-        return activityRateInteger;
-    }
-
-    public void setActivityRateInteger(Integer activityRateInteger) {
-        this.activityRateInteger = activityRateInteger;
-    }
-
-    public Integer getActivityRateFraction() {
-        return activityRateFraction;
-    }
-
-    public void setActivityRateFraction(Integer activityRateFraction) {
-        this.activityRateFraction = activityRateFraction;
+    public void setActivityRate(double activityRate) {
+        this.activityRate = activityRate;
     }
 }

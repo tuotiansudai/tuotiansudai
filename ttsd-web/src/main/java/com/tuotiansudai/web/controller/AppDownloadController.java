@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class AppDownloadController {
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView toAppDownloadPage() {
-        return new ModelAndView("/activity/app-download");
+    public ModelAndView appDownload() {
+        return new ModelAndView("/app-download");
     }
 }

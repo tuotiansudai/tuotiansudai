@@ -37,6 +37,8 @@ public final class UserBillConstants {
 		public final static String NORMAL_REPAY = "normal_repay";
 
 		public final static String INVEST_FEE = "invest_fee";
+		/**活动奖励*/
+		public final static String ACTIVITY_REWARD = "activity_reward";
 
 		/**提前还款*/
 		public final static String ADVANCE_REPAY = "advance_repay";

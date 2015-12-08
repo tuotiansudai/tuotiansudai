@@ -5,6 +5,7 @@
 <mapper namespace="com.tuotiansudai.repository.mapper.ReferrerManageMapper">
 
     <resultMap id="referrerManageMap" type="ReferrerManageView">
+        <result column="loan_id" property="loanId"></result>
         <result column="loan_name" property="loanName"></result>
         <result column="periods" property="periods"></result>
         <result column="invest_login_name" property="investLoginName"></result>
@@ -14,6 +15,7 @@
         <result column="referrer_login_name" property="referrerLoginName"></result>
         <result column="referrer_name" property="referrerName"></result>
         <result column="role" property="role"></result>
+        <result column="source" property="source"></result>
         <result column="level" property="level"></result>
         <result column="reward_amount" property="rewardAmount"></result>
         <result column="status" property="status"></result>
@@ -34,7 +36,8 @@
         n.status,
         n.rewardTime AS reward_time,
         n.investName AS invest_name,
-        n.referrerName AS referrer_name
+        n.referrerName AS referrer_name,
+        n.source
         FROM
         (SELECT
         temp.investLoginName,
@@ -48,6 +51,7 @@
         temp.status,
         temp.investName,
         temp.referrerName,
+        temp.source,
         rr.`level`
         FROM
         referrer_relation rr right
@@ -58,6 +62,7 @@
         i.`created_time` AS investTime,
         i.`loan_id` AS loanId,
         i.investName,
+        i.source,
         irr.`amount` AS rewardAmount,
         irr.`created_time` AS rewardTime,
         irr.`referrer_login_name` AS referrerLoginName,
@@ -107,6 +112,9 @@
             </if>
             <if test="investEndTime != null">
                 <![CDATA[ AND m.`created_time` <= #{investEndTime} ]]>
+            </if>
+            <if test="source != null">
+                AND m.`source` = #{source}
             </if>
         </where>
         AND m.`status` = 'SUCCESS') i
@@ -202,6 +210,9 @@
             <if test="investEndTime != null">
                 <![CDATA[ AND m.`created_time` <= #{investEndTime} ]]>
             </if>
+            <if test="source != null">
+                AND m.`source` = #{source}
+            </if>
         </where>
         AND m.`status` = 'SUCCESS') i
         ON irr.`invest_id` = i.`id`) temp
@@ -285,6 +296,7 @@
 
     <select id="findReferInvestList" parameterType="map" resultMap="referrerManageMap" >
         select
+            i.loan_id AS loan_id,
             i.login_name AS invest_name,
             rr.level,
             l.name AS loan_name,

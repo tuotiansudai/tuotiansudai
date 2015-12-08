@@ -37,13 +37,19 @@ dependencies {
 
 processResources.outputs.upToDateWhen { false }
 
+/**
+ * parameter: configPath
+ * example: gradle ttsd-web:war -PconfigPath=/workspace/new_version_config/ttsd-service
+ */
 processResources {
-    def configFilePath = "${project.projectDir.getPath()}/src/main/resources/ttsd-service.properties"
-    def outerConfigFile = new File('/workspace/new_version_config/ttsd-service/ttsd-service.properties')
-    if (outerConfigFile.isFile()) {
-        configFilePath = outerConfigFile.getPath()
+    def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
+    def outerConfigPath = '/workspace/new_version_config/ttsd-service'
+    if (project.hasProperty("configPath") && new File(configPath).isDirectory()) {
+        innerConfigPath = configPath
+    } else if (new File(outerConfigPath).isDirectory()) {
+        innerConfigPath = outerConfigPath
     }
-    from(configFilePath) {
+    from("${innerConfigPath}/ttsd-env.properties") {
         filter { String line ->
             if (project.hasProperty("dbhost") && line.startsWith("common.jdbc.host=")) {
                 return "common.jdbc.host=${dbhost}"
@@ -64,19 +70,22 @@ processResources {
         }
         into '/'
     }
+    from("${innerConfigPath}/ttsd-biz.properties") {
+        into '/'
+    }
 }
 
 /**
  * parameter: dbhost dbport database
- * dbhost default value: ttsd-service.properties common.jdbc.host
- * dbport default value: ttsd-service.properties common.jdbc.port
+ * dbhost default value: ttsd-env.properties common.jdbc.host
+ * dbport default value: ttsd-env.properties common.jdbc.port
  * database default value: aa
  * example: gradle -Pdbhost=192.168.33.10 -Pdbport=3306 -Pdatabase=aa ttsd-service:flywayMigrate
  *
  */
 flyway {
-    def sourcePropertiesFilePath = "${project.projectDir.getPath()}/src/main/resources/ttsd-service.properties"
-    def buildPropertiesFilePath = "${project.buildDir.getPath()}/resources/main/ttsd-service.properties"
+    def sourcePropertiesFilePath = "${project.projectDir.getPath()}/src/main/resources/ttsd-env.properties"
+    def buildPropertiesFilePath = "${project.buildDir.getPath()}/resources/main/ttsd-env.properties"
     def properties = new Properties()
 
     def sourceFile = new File(sourcePropertiesFilePath)

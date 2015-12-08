@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.ReferrerManageView;
 import com.tuotiansudai.repository.model.ReferrerRewardStatus;
 import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.ReferrerManageService;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
@@ -24,12 +25,13 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/user-manage")
 public class ReferrerManageController {
 
     @Autowired
     private ReferrerManageService referrerManageService;
 
-    @RequestMapping(value = "/referrerManage", method = RequestMethod.GET)
+    @RequestMapping(value = "/referrer", method = RequestMethod.GET)
     public ModelAndView referrerManage(@RequestParam(value = "referrerLoginName",required = false) String referrerLoginName,
                                         @RequestParam(value = "investLoginName",required = false) String investLoginName,
                                         @RequestParam(value = "investStartTime",required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date investStartTime,
@@ -38,6 +40,7 @@ public class ReferrerManageController {
                                         @RequestParam(value = "rewardStartTime",required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date rewardStartTime,
                                         @RequestParam(value = "rewardEndTime",required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date rewardEndTime,
                                         @RequestParam(value = "role",required = false) Role role,
+                                        @RequestParam(value = "source",required = false) Source source,
                                         @RequestParam(value = "currentPageNo",defaultValue = "1",required = false) int currentPageNo,
                                         @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize,
                                         @RequestParam(value = "export", required = false) String export,
@@ -52,8 +55,8 @@ public class ReferrerManageController {
                 e.printStackTrace();
             }
             response.setContentType("application/csv");
-            int referrerManageCount = referrerManageService.findReferrerManageCount(referrerLoginName, investLoginName, investStartTime, investEndTime!=null?investDateTime.plusDays(1).toDate():investEndTime, level, rewardStartTime, rewardEndTime!=null?rewardDateTime.plusDays(1).toDate():rewardEndTime, role);
-            List<ReferrerManageView> referrerManageViews = referrerManageService.findReferrerManage(referrerLoginName,investLoginName,investStartTime,investEndTime!=null?investDateTime.plusDays(1).toDate():investEndTime,level,rewardStartTime,rewardEndTime!=null?rewardDateTime.plusDays(1).toDate():rewardEndTime,role,1,referrerManageCount);
+            int referrerManageCount = referrerManageService.findReferrerManageCount(referrerLoginName, investLoginName, investStartTime, investEndTime!=null?investDateTime.plusDays(1).toDate():investEndTime, level, rewardStartTime, rewardEndTime!=null?rewardDateTime.plusDays(1).toDate():rewardEndTime, role, source);
+            List<ReferrerManageView> referrerManageViews = referrerManageService.findReferrerManage(referrerLoginName,investLoginName,investStartTime,investEndTime!=null?investDateTime.plusDays(1).toDate():investEndTime,level,rewardStartTime,rewardEndTime!=null?rewardDateTime.plusDays(1).toDate():rewardEndTime,role,source,1,referrerManageCount);
             List<List<String>> data = Lists.newArrayList();
             for (ReferrerManageView referrerManageView : referrerManageViews) {
                 List<String> dataModel = Lists.newArrayList();
@@ -63,6 +66,7 @@ public class ReferrerManageController {
                 dataModel.add(referrerManageView.getInvestName());
                 dataModel.add(String.valueOf(new BigDecimal(referrerManageView.getInvestAmount()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
                 dataModel.add(new DateTime(referrerManageView.getInvestTime()).toString("yyyy-MM-dd HH:mm:ss"));
+                dataModel.add(referrerManageView.getSource().name());
                 dataModel.add(referrerManageView.getReferrerLoginName());
                 dataModel.add(referrerManageView.getReferrerName());
                 dataModel.add(referrerManageView.getRole() == Role.STAFF ? "是" : "否");
@@ -76,8 +80,8 @@ public class ReferrerManageController {
             return null;
         } else {
             ModelAndView modelAndView = new ModelAndView("/referrer-manage");
-            List<ReferrerManageView> referrerManageViews = referrerManageService.findReferrerManage(referrerLoginName, investLoginName, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : investEndTime, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : rewardEndTime, role, currentPageNo, pageSize);
-            int referrerManageCount = referrerManageService.findReferrerManageCount(referrerLoginName, investLoginName, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : investEndTime, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : rewardEndTime, role);
+            List<ReferrerManageView> referrerManageViews = referrerManageService.findReferrerManage(referrerLoginName, investLoginName, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : investEndTime, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : rewardEndTime, role, source, currentPageNo, pageSize);
+            int referrerManageCount = referrerManageService.findReferrerManageCount(referrerLoginName, investLoginName, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : investEndTime, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : rewardEndTime, role, source);
             modelAndView.addObject("referrerLoginName", referrerLoginName);
             modelAndView.addObject("investLoginName", investLoginName);
             modelAndView.addObject("investStartTime", investStartTime);
@@ -86,6 +90,7 @@ public class ReferrerManageController {
             modelAndView.addObject("rewardStartTime", rewardStartTime);
             modelAndView.addObject("rewardEndTime", rewardEndTime);
             modelAndView.addObject("role", role);
+            modelAndView.addObject("source", source);
             modelAndView.addObject("currentPageNo", currentPageNo);
             modelAndView.addObject("pageSize", pageSize);
             modelAndView.addObject("referrerManageViews", referrerManageViews);
@@ -95,6 +100,8 @@ public class ReferrerManageController {
             boolean hasNextPage = currentPageNo < totalPages;
             modelAndView.addObject("hasPreviousPage", hasPreviousPage);
             modelAndView.addObject("hasNextPage", hasNextPage);
+            Source[] sources = Source.values();
+            modelAndView.addObject("sources",sources);
             return modelAndView;
         }
     }

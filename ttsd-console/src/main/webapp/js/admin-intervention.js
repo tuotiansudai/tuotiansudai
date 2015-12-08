@@ -7,7 +7,7 @@ require(['jquery', 'csrf', 'jquery-ui', 'autoNumeric', 'bootstrapSelect', 'boots
         minLength: 3,
         source: function (query, process) {
             //var matchCount = this.options.items;//返回结果集最大数量
-            $.get('/user/' + query.term + '/search', function (respData) {
+            $.get('/user-manage/user/' + query.term + '/search', function (respData) {
                 return process(respData);
             });
         },

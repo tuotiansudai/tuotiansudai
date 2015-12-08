@@ -7,7 +7,9 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.exception.CreateUserException;
 import com.tuotiansudai.exception.EditUserException;
+import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
@@ -17,10 +19,12 @@ import com.tuotiansudai.service.ReferrerRelationService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -94,8 +98,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    public boolean registerUser(RegisterUserDto dto) {
+    @Transactional(rollbackFor = Exception.class)
+    public boolean registerUser(RegisterUserDto dto) throws ReferrerRelationException {
         String loginName = dto.getLoginName();
         boolean loginNameIsExist = this.loginNameIsExist(loginName);
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
@@ -108,6 +112,7 @@ public class UserServiceImpl implements UserService {
         UserModel userModel = new UserModel();
         userModel.setLoginName(loginName);
         userModel.setMobile(dto.getMobile());
+        userModel.setSource(dto.getSource());
         if (!Strings.isNullOrEmpty(dto.getReferrer())) {
             userModel.setReferrer(userMapper.findByLoginNameOrMobile(dto.getReferrer()).getLoginName());
         }
@@ -127,7 +132,7 @@ public class UserServiceImpl implements UserService {
         userRoleModels.add(userRoleModel);
         this.userRoleMapper.create(userRoleModels);
 
-        if (StringUtils.isNotEmpty(dto.getReferrer())) {
+        if (!Strings.isNullOrEmpty(dto.getReferrer())) {
             this.referrerRelationService.generateRelation(userMapper.findByLoginNameOrMobile(dto.getReferrer()).getLoginName(), loginName);
         }
 
@@ -164,7 +169,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException {
+    public void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException, ReferrerRelationException {
         this.checkUpdateUserData(editUserDto);
 
         final String loginName = editUserDto.getLoginName();
@@ -179,9 +184,6 @@ public class UserServiceImpl implements UserService {
             return;
         }
 
-        // update referrer
-        this.referrerRelationService.updateRelation(editUserDto.getReferrer(), editUserDto.getLoginName());
-
         // update role
         List<UserRoleModel> beforeUpdateUserRoleModels = userRoleMapper.findByLoginName(loginName);
         userRoleMapper.deleteByLoginName(loginName);
@@ -195,6 +197,9 @@ public class UserServiceImpl implements UserService {
             });
             userRoleMapper.create(afterUpdateUserRoleModels);
         }
+
+        // update referrer
+        this.referrerRelationService.generateRelation(editUserDto.getReferrer(), editUserDto.getLoginName());
 
         userModel.setStatus(editUserDto.getStatus());
         userModel.setMobile(mobile);
@@ -240,7 +245,7 @@ public class UserServiceImpl implements UserService {
         if (userStatus == UserStatus.ACTIVE) {
             redisWrapperClient.del(redisKey);
         } else {
-            redisWrapperClient.set(redisKey,String.valueOf(times));
+            redisWrapperClient.set(redisKey, String.valueOf(times));
         }
         List<UserRoleModel> userRoles = userRoleMapper.findByLoginName(loginName);
 
@@ -256,8 +261,7 @@ public class UserServiceImpl implements UserService {
         }
 
         String newEmail = editUserDto.getEmail();
-        UserModel userModelByEmail = userMapper.findByEmail(newEmail);
-        if (!Strings.isNullOrEmpty(newEmail) && userModelByEmail != null && !editUserModel.getLoginName().equalsIgnoreCase(userModelByEmail.getLoginName())) {
+        if (!Strings.isNullOrEmpty(newEmail) && userMapper.findByEmail(newEmail) != null && !editUserModel.getLoginName().equalsIgnoreCase(userMapper.findByEmail(newEmail).getLoginName())) {
             throw new EditUserException("该邮箱已经存在");
         }
 
@@ -286,9 +290,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BaseDto<BasePaginationDataDto> findAllUser(String loginName, String email, String mobile, Date beginTime, Date endTime, Role role, String referrer, String channel, Integer index, Integer pageSize) {
+    public BaseDto<BasePaginationDataDto> findAllUser(String loginName, String email, String mobile, Date beginTime, Date endTime,
+                                                      Source source,
+                                                      Role role, String referrer, String channel, Integer index, Integer pageSize) {
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
-        List<UserModel> userModels = userMapper.findAllUser(loginName, email, mobile, beginTime, endTime, role, referrer, channel, (index - 1) * pageSize, pageSize);
+        List<UserModel> userModels = userMapper.findAllUser(loginName, email, mobile, beginTime, endTime,
+                source,
+                role, referrer, channel, (index - 1) * pageSize, pageSize);
         List<UserItemDataDto> userItemDataDtos = Lists.newArrayList();
         for (UserModel userModel : userModels) {
 
@@ -296,7 +304,7 @@ public class UserServiceImpl implements UserService {
             userItemDataDto.setUserRoles(userRoleMapper.findByLoginName(userModel.getLoginName()));
             userItemDataDtos.add(userItemDataDto);
         }
-        int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, role, referrer, channel);
+        int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel);
         BasePaginationDataDto<UserItemDataDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, userItemDataDtos);
         basePaginationDataDto.setStatus(true);
         baseDto.setData(basePaginationDataDto);
@@ -307,6 +315,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public int findUserCount() {
         return userMapper.findUserCount();
+    }
+
+    @Override
+    public List<String> findLoginNameFromAccountLike(String loginName) {
+        return accountMapper.findAllLoginNamesByLike(loginName);
     }
 
     @Override
@@ -322,8 +335,37 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<String> findAllChannels() {
-        List<String> channelList = userMapper.findAllChannels();
-        return channelList;
+        return userMapper.findAllChannels();
     }
 
+    @Transactional
+    @Override
+    public void refreshAreaByMobile(List<UserModel> userModels) {
+        for (UserModel userModel : userModels) {
+            String phoneMobile = userModel.getMobile();
+            if (StringUtils.isNotEmpty(phoneMobile)) {
+                String[] provinceAndCity = MobileLocationUtils.locateMobileNumber(phoneMobile);
+                if (StringUtils.isEmpty(provinceAndCity[0])) {
+                    provinceAndCity[0] = "未知";
+                }
+                if (StringUtils.isEmpty(provinceAndCity[1])) {
+                    provinceAndCity[1] = "未知";
+                }
+                userModel.setProvince(provinceAndCity[0]);
+                userModel.setCity(provinceAndCity[1]);
+                userMapper.updateUser(userModel);
+            }
+        }
+    }
+
+    @Override
+    public void refreshAreaByMobileInJob() {
+        while (true) {
+            List<UserModel> userModels = userMapper.findUserByProvince();
+            if (CollectionUtils.isEmpty(userModels)) {
+                break;
+            }
+            ((UserService) AopContext.currentProxy()).refreshAreaByMobile(userModels);
+        }
+    }
 }

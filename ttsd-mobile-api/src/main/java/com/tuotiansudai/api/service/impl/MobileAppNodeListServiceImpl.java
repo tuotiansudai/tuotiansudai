@@ -5,20 +5,17 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppNodeListService;
-import com.tuotiansudai.dto.AnnouncementManagementDto;
-import com.tuotiansudai.repository.mapper.AnnouncementManagementMapper;
-import com.tuotiansudai.repository.model.AnnouncementManagementModel;
-import org.apache.commons.lang3.NotImplementedException;
+import com.tuotiansudai.repository.mapper.AnnounceMapper;
+import com.tuotiansudai.repository.model.AnnounceModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class MobileAppNodeListServiceImpl implements MobileAppNodeListService {
     @Autowired
-    private AnnouncementManagementMapper announcementManagementMapper;
+    private AnnounceMapper announceMapper;
 
     @Override
     public BaseResponseDto generateNodeList(NodeListRequestDto nodeListRequestDto) {
@@ -33,13 +30,13 @@ public class MobileAppNodeListServiceImpl implements MobileAppNodeListService {
         if(pageSize == null || pageSize <= 0){
             pageSize = 10;
         }
-        int count = announcementManagementMapper.findAnnouncementManagementCount(null,null);
+        int count = announceMapper.findAnnounceCount(null,null);
 
-        List<AnnouncementManagementModel> announcementManagementDtos = announcementManagementMapper.findAnnouncementManagement(null, null, (index - 1) * pageSize, pageSize);
+        List<AnnounceModel> announceDtos = announceMapper.findAnnounce(null, null, (index - 1) * pageSize, pageSize);
 
-        List<NodeDetailResponseDataDto> nodeDetailResponseDataDtos = Lists.transform(announcementManagementDtos, new Function<AnnouncementManagementModel, NodeDetailResponseDataDto>() {
+        List<NodeDetailResponseDataDto> nodeDetailResponseDataDtos = Lists.transform(announceDtos, new Function<AnnounceModel, NodeDetailResponseDataDto>() {
             @Override
-            public NodeDetailResponseDataDto apply(AnnouncementManagementModel input) {
+            public NodeDetailResponseDataDto apply(AnnounceModel input) {
                 return new NodeDetailResponseDataDto(input);
             }
         });

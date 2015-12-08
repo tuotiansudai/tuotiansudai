@@ -122,10 +122,10 @@
     </select>
 
     <select id="findSuccessInvestMobileEmailAndAmount" parameterType="long" resultMap="investNotifyInfoMap">
-        select loan.periods,loan.name as loan_name, u.mobile, u.email, invest.amount,invest.id as invest_id
+        select invest.id as invest_id, invest.amount, loan.name as loan_name, loan.periods, user.mobile, user.email
         from invest
         inner join loan on invest.loan_id = loan.id
-        inner join user u on u.login_name = invest.login_name
+        inner join user on user.login_name = invest.login_name
         where loan.id = #{loanId}
         and invest.status = 'SUCCESS'
     </select>
@@ -146,7 +146,7 @@
         u.referrer as referrer_login_name,
         (select group_concat(role order by role separator ", ") from user_role where login_name = invest.login_name) as roles,
         (select min(repay_date) from invest_repay where invest_repay.invest_id = invest.id and invest_repay.status = 'REPAYING') as next_repay_date,
-        (select invest_repay.expected_interest + invest_repay.default_interest + invest_repay.corpus
+        (select invest_repay.expected_interest + invest_repay.corpus - invest_repay.expected_fee
           from invest_repay where invest_repay.invest_id = invest.id and invest_repay.status = 'REPAYING'
           and invest_repay.period = (select min(invest_repay.period) from invest_repay where invest_repay.invest_id = invest.id and invest_repay.status = 'REPAYING')
         ) as next_repay_amount

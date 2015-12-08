@@ -4,3 +4,7 @@ ORIGINAL_DB = 'tuotiansudai'
 
 USERNAME = 'root'
 PASSWORD = ''
+
+REDIS_HOST = '192.168.33.10'
+REDIS_PORT = '6379'
+REDIS_DB = 6

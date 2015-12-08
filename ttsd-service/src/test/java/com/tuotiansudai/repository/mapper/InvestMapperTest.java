@@ -149,6 +149,8 @@ public class InvestMapperTest {
     private void createLoan(String userId, long loanId, ActivityType activityType, LoanStatus loanStatus) {
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName(userId);
+        loanDto.setLoanerUserName("借款人");
+        loanDto.setLoanerIdentityNumber("111111111111111111");
         loanDto.setAgentLoginName(userId);
         loanDto.setBasicRate("16.00");
         loanDto.setId(loanId);

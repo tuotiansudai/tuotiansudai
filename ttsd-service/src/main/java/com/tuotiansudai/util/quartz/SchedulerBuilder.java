@@ -1,5 +1,6 @@
 package com.tuotiansudai.util.quartz;
 
+import org.apache.log4j.Logger;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.spi.JobStore;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SchedulerBuilder {
+    static Logger logger = Logger.getLogger(SchedulerBuilder.class);
     @Autowired
     private JobStoreBuilder jobStoreBuilder;
 
@@ -29,6 +31,7 @@ public class SchedulerBuilder {
         }
         schedulerFactory.createScheduler(
                 schedulerName, "AUTO", threadPool, jobStore, null, null, 0, -1, -1, jmxExport, null);
+        logger.info("create scheduler " + schedulerName + " success");
         return schedulerFactory.getScheduler(schedulerName);
     }
 }

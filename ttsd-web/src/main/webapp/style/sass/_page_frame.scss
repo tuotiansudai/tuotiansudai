@@ -1,11 +1,33 @@
 @import 'variables';
 .header-container {
-  height:30px;
-  line-height:30px;
   background: #333;
   font-size: 12px;
   color: #fff;
+  .header-download {
+    display: none;
+    padding: 10px 4px;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    img.icon-close {
+      margin-right: 10px;
+      width:16px;
+    }
+    span {
+      line-height: 1.6;
+      display: inline-block;
+      font-size: 14px;
+      vertical-align: bottom;
+      text-align: center;
+      margin-left: 5px;
+    }
+    a.btn-normal {
+      padding: 5px 8px;
+      letter-spacing: 0;
+      margin-top:5px;
+    }
+  }
   .header {
+    height:30px;
+    line-height:30px;
     margin: 0 auto;
        time {
           color: #979797;
@@ -94,12 +116,18 @@
     position: relative;
     margin: 0 auto;
     .logo {
-      background: url("/images/icons/logo.png") center center no-repeat;
-      width: 328px;
+      background: url("/images/icons/logo.png") left center no-repeat;
+      width: 365px;
       height: 50px;
       display: block;
       float: left;
       margin-top: 15px;
+    }
+    .show-main-menu {
+      display: none;
+      margin-top: 25px;
+      margin-right: 10px;
+      font-size: 20px;
     }
     ul {
       height: 100%;

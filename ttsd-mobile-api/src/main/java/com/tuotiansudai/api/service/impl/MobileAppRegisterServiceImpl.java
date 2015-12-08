@@ -10,6 +10,7 @@ import com.tuotiansudai.api.service.MobileAppRegisterService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.dto.SmsDataDto;
+import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
@@ -88,7 +89,11 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
             return new BaseResponseDto(ReturnMessage.SMS_CAPTCHA_ERROR.getCode(),ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
         }
 
-        boolean userFlag = userService.registerUser(dto);
+        try {
+            userService.registerUser(dto);
+        } catch (ReferrerRelationException e) {
+            return new BaseResponseDto(ReturnMessage.REFERRER_IS_NOT_EXIST.getCode(), e.getMessage());
+        }
         BaseResponseDto baseResponseDto = new BaseResponseDto(ReturnMessage.SUCCESS.getCode(),ReturnMessage.SUCCESS.getMsg());
         RegisterResponseDataDto registerDataDto = new RegisterResponseDataDto();
         registerDataDto.setUserId(registerRequestDto.getUserName());

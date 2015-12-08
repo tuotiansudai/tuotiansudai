@@ -36,7 +36,7 @@
         select t.login_name from account t JOIN user_role r ON t.`login_name` = r.`login_name` AND r.`role` = 'LOANER' where t.login_name like CONCAT(CONCAT('%', #{loginName}), '%')
     </select>
 
-    <select id="lockByLoginName" parameterType="java.lang.String" resultMap="accountResultMap">
+    <select useCache="false" id="lockByLoginName" parameterType="java.lang.String" resultMap="accountResultMap">
         select * from account where login_name = #{loginName} for update
     </select>
 

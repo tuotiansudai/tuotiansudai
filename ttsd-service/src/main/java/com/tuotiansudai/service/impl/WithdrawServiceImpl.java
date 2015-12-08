@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.WithdrawMapper;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.WithdrawModel;
 import com.tuotiansudai.repository.model.WithdrawStatus;
 import com.tuotiansudai.service.WithdrawService;
@@ -34,7 +35,8 @@ public class WithdrawServiceImpl implements WithdrawService {
 
     @Override
     public BaseDto<BasePaginationDataDto> findWithdrawPagination(String withdrawId, String loginName,
-                                                                 WithdrawStatus status, int index, int pageSize, Date startTime, Date endTime) {
+                                                                 WithdrawStatus status, Source source,
+                                                                 int index, int pageSize, Date startTime, Date endTime) {
         if (index < 1) {
             index = 1;
         }
@@ -45,9 +47,9 @@ public class WithdrawServiceImpl implements WithdrawService {
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
         List<WithdrawPaginationItemDataDto> withdrawPaginationItemDataDtos = Lists.newArrayList();
 
-        long count = withdrawMapper.findWithdrawCount(withdrawId, loginName, status, startTime, endTime);
+        long count = withdrawMapper.findWithdrawCount(withdrawId, loginName, status, source, startTime, endTime);
 
-        List<WithdrawModel> withdrawModelList = withdrawMapper.findWithdrawPagination(withdrawId, loginName, status, (index-1)*pageSize, pageSize, startTime, endTime);
+        List<WithdrawModel> withdrawModelList = withdrawMapper.findWithdrawPagination(withdrawId, loginName, status, source, (index-1)*pageSize, pageSize, startTime, endTime);
 
         for (WithdrawModel model : withdrawModelList) {
             WithdrawPaginationItemDataDto withdrawDto = new WithdrawPaginationItemDataDto(model);

@@ -4,7 +4,7 @@ public enum RepayStatus {
 
     REPAYING("待还"),
 
-    CONFIRMING("确认中"),
+    WAIT_PAY("等待支付"),
 
     COMPLETE("完成"),
 

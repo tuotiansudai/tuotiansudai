@@ -1,0 +1,26 @@
+[
+  {
+    "pictureId": "",
+    "title": "",
+    "url": "/activity/ranking",
+    "seqNum": 1,
+    "picture": "https://api.tuotiansudai.com/upload/2015110609/20151106091535.png",
+    "noticeId": ""
+  },
+  {
+    "pictureId": "",
+    "title": "",
+    "url": "/activity/recruit",
+    "seqNum": 2,
+    "picture": "https://api.tuotiansudai.com/upload/2015113005/20151130050244.png",
+    "noticeId": ""
+  },
+  {
+    "pictureId": "",
+    "title": "",
+    "url": "/activity/grand",
+    "seqNum": 3,
+    "picture": "https://api.tuotiansudai.com/upload/2015110609/20151106091603.png",
+    "noticeId": ""
+  }
+]

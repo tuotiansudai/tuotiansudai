@@ -1,77 +1,89 @@
-require(['jquery', 'layerWrapper','csrf'], function ($,layer) {
+require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension', 'jquery.form','csrf'], function ($,layer) {
 
-    $(function () {
-        //手机号校验
-        var m = /^13[0-9]{9}$|14[0-9]{9}|15[0-9]{9}$|18[0-9]{9}$/;
-        $('.phone-txt').blur(function () {
-            var _this = $(this);
-            if ($(this).val().length == 11 && m.test($(this).val())) {
-                var _phone = $(this).val();
-                $.get('/mobile-retrieve-password/mobile/' + _phone + '/is-exist?random=' + new Date().getTime(), function (data) {
-                    if (data.data.status) {
-                        _this.addClass('valid-ok');
-                        $('.send-yzm').removeAttr('disabled').removeClass('grey');
-                        $('.error').html('');
-                        if ($('.yzm').hasClass('valid-ok')) {
-                            $('.btn-send-form').removeAttr('disabled').removeClass('grey');
-                        } else {
-                            $('.btn-send-form').attr('disabled', 'disabled').addClass('grey');
+    var $retrievePasswordBox=$('#retrievePasswordBox'),
+        $retrieveForm=$('.retrieve-form',$retrievePasswordBox),
+        $btnSend=$('.btn-send-form',$retrievePasswordBox),
+        $getCaptcha = $('.fetch-captcha', $retrievePasswordBox);
+
+    var $verificationForm=$('.verification-code-main'),
+        $imageCaptchaSubmit = $('.image-captcha-confirm',$verificationForm);
+
+    /* form blank validate */
+    $retrieveForm.validate({
+        focusInvalid: false,
+        onkeyup:false,
+        rules: {
+            mobile: {
+                required: true,
+                digits: true,
+                minlength: 11,
+                maxlength: 11,
+                isNotExist: '/mobile-retrieve-password/mobile/{0}/is-exist?random=' + new Date().getTime()
+            },
+            captcha: {
+                required: true,
+                digits: true,
+                minlength: 6,
+                maxlength:6,
+                captchaVerify: {
+                    param: function () {
+                        var _phone = $('input[name="mobile"]').val(),
+                            _captcha=$('input[name="captcha"]').val();
+                        if(_captcha.length==6) {
+                            $btnSend.prop('disabled',false);
+                            return '/mobile-retrieve-password/mobile/' + _phone + '/captcha/{0}/verify?random=' + new Date().getTime();
                         }
-                    } else {
-                        _this.removeClass('valid-ok');
-                        $('.error').html('手机号格式不合法或手机不存在');
-                        $('.send-yzm').attr('disabled', 'disabled').addClass('grey')
+
                     }
-                });
-
-            } else {
-                _this.removeClass('valid-ok');
-                $('.error').html('手机号格式不合法或手机不存在');
-                $('.send-yzm').attr('disabled', 'disabled').addClass('grey');
+                }
             }
-        });
-
-        $('.yzm-txt').blur(function () {
-            var _this = $(this);
-            if ($(this).val().length == 6) {
-                var _phone = $('.phone-txt').val();
-                var _captcha = $(this).val();
-                $.get('/mobile-retrieve-password/mobile/' + _phone + '/captcha/' + _captcha + '/verify?random=' + new Date().getTime(), function (data) {
-                    if (data.data.status) {
-                        _this.closest('.yzm').addClass('valid-ok');
-                        $('.error').html('');
-                        if ($('.phone-txt').hasClass('valid-ok')) {
-                            $('.btn-send-form').removeAttr('disabled').removeClass('grey');
-                        } else {
-                            $('.btn-send-form').attr('disabled', 'disabled').addClass('grey');
-                        }
-                    } else {
-                        _this.closest('.yzm').removeClass('valid-ok');
-                        $('.error').html('验证码不正确');
-                        $('.btn-send-form').attr('disabled', 'disabled').addClass('grey');
-                    }
-                });
-
-            } else {
-                _this.closest('.yzm').removeClass('valid-ok');
-                $('.error').html('验证码不正确');
-                $('.btn-send-form').attr('disabled', 'disabled').addClass('grey');
+        },
+        messages: {
+            mobile: {
+                required: '请输入手机号',
+                digits: '必须是数字',
+                minlength: '手机格式不正确',
+                maxlength: '手机格式不正确',
+                isNotExist: '手机号不存在'
+            },
+            captcha: {
+                required: '请输入验证码',
+                digits: '验证码格式不正确',
+                minlength: '验证码格式不正确',
+                maxlength: '验证码格式不正确',
+                captchaVerify: '验证码不正确'
             }
-        });
+        },
+        showErrors: function (errorMap, errorList) {
+            this.__proto__.defaultShowErrors.call(this);
+            if (errorMap['mobile']) {
+                $getCaptcha.prop('disabled', true);
+            }
+        },success: function (error, element) {
+            if (element.name === 'mobile') {
+                $getCaptcha.prop('disabled', false);
+            }
+        },
+        submitHandler:function(form) {
+
+            var _mobile = $('.phone-txt').val(),
+                _captcha = $('.yzm-txt').val();
+            window.location.href = '/mobile-retrieve-password/mobile/'+_mobile+'/captcha/'+_captcha+'/new-password-page';
+        }
+    });
 
 
-        $('.fetch-captcha').on('click', function () {
+        $getCaptcha.on('click', function () {
             $('.verification-code-main b').hide();
             $('.verification-code-text').val('');
 
             layer.open({
                 type: 1,
                 title: '输入图形验证码',
-                area: ['542px', '244px'],
+                area: ['380px', '200px'],
                 shadeClose: true,
                 offset: '146px',
-                scrollbar: false,
-                content: $('.layer-box'),
+                content: $('.verification-code-main'),
                 success: function (layero, index) {
                     refreshCaptcha();
                 }
@@ -79,7 +91,7 @@ require(['jquery', 'layerWrapper','csrf'], function ($,layer) {
             return false;
         });
 
-        $('.complete').click(function () {
+        $imageCaptchaSubmit.click(function () {
             var phone = $('.phone-txt').val();
             var imageCaptcha = $('.verification-code-text').val();
             if(imageCaptcha.length < 5){
@@ -93,21 +105,19 @@ require(['jquery', 'layerWrapper','csrf'], function ($,layer) {
                     contentType: 'application/json; charset=UTF-8'
                 }).done(function (response) {
                     if (response.data.status) {
-                        var num = 30;
-                        // 倒计时
-                        function countdown() {
-                            $('.fetch-captcha').html(num + '秒后重新发送').addClass('grey');
-                            $('.fetch-captcha').attr('disabled','disabled');
-                            if (num == 0) {
+                        layer.closeAll();
+                        var seconds = 30;
+                        var count = setInterval(function () {
+                            $getCaptcha.html(seconds + '秒后重新发送').addClass('btn').removeClass('btn-normal');
+                            if (seconds == 0) {
                                 clearInterval(count);
-                                $('.fetch-captcha').html('重新发送').removeClass('grey');
-                                $('.fetch-captcha').removeAttr('disabled','disabled');
+                                $getCaptcha.html('重新发送').removeClass('btn').addClass('btn-normal');
                                 $('.verification-code-text').val('');
                             }
-                            num--;
-                        }
-                        var count = setInterval(countdown, 1000);
-                        layer.closeAll();
+                            seconds--;
+                        }, 1000);
+                        return;
+
                     }else{
                         if (response.data.isRestricted) {
                             $('.verification-code-main b').html('短信发送频繁，请稍后再试').show();
@@ -133,13 +143,4 @@ require(['jquery', 'layerWrapper','csrf'], function ($,layer) {
             refreshCaptcha();
         });
 
-        $('.btn-send-form').click(function () {
-            var _mobile = $('.phone-txt').val();
-            var _captcha = $('.yzm-txt').val();
-            window.location.href = '/mobile-retrieve-password/mobile/'+_mobile+'/captcha/'+_captcha+'/new-password-page';
-        });
-
-
     })
-
-});

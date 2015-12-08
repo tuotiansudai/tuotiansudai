@@ -15,13 +15,6 @@ public interface LoanService {
     LoanTitleModel createTitle(LoanTitleDto loanTitleDto);
 
     /**
-     * @param loginName
-     * @return
-     * @function 获取借款人或代理人
-     */
-    List<String> getLoginNames(String loginName);
-
-    /**
      * @return
      * @function 获取所有的标题
      */
@@ -48,16 +41,9 @@ public interface LoanService {
 
     BaseDto<PayDataDto> cancelLoan(LoanDto loanDto);
 
-    /**
-     * @param loanId
-     * @return
-     * @function 通过id查找标的
-     */
-
     List<LoanListWebDto> findLoanListWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd, int currentPageNo);
 
     int findLoanListCountWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd);
-
 
     LoanModel findLoanById(long loanId);
 
@@ -67,7 +53,7 @@ public interface LoanService {
 
     BaseDto<LoanDto> getLoanDetail(String loginName, long loanId);
 
-    BaseDto<BasePaginationDataDto> getInvests(long loanId, int index, int pageSize);
+    BaseDto<BasePaginationDataDto> getInvests(String loginName, long loanId, int index, int pageSize);
 
     BaseDto<BasePaginationDataDto> getLoanerLoanData(String loginName, int index, int pageSize, LoanStatus status, Date startTime, Date endTime);
 

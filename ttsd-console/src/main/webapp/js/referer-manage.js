@@ -9,7 +9,7 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker', 'jqu
         //    autoclose: true
         //});
         $('form button[type="reset"]').click(function () {
-            window.location.href = "/referrerManage";
+            window.location.href = "/user-manage/referrer";
         });
         $('#investDateBegin,#investDateEnd').datetimepicker({format: 'YYYY-MM-DD'});
         $('#investDateEnd').datetimepicker({
@@ -37,16 +37,15 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker', 'jqu
 
         //自动完成提示
         var autoValue = '';
-        $("#tags,#tags_1").autocomplete({
+        $(".referrerLoginName, .investLoginName").autocomplete({
             source: function (query, process) {
-                //var matchCount = this.options.items;//返回结果集最大数量
-                $.get(api_url + '/' + query.term, function (respData) {
+                $.get('/user-manage/user/' + query.term + '/search', function (respData) {
                     autoValue = respData;
                     return process(respData);
                 });
             }
         });
-        $("#tags,#tags_1").blur(function () {
+        $(".referrerLoginName, .investLoginName").blur(function () {
             for (var i = 0; i < autoValue.length; i++) {
                 if ($(this).val() == autoValue[i]) {
                     $(this).removeClass('Validform_error');
@@ -54,9 +53,7 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker', 'jqu
                 } else {
                     $(this).addClass('Validform_error');
                 }
-
             }
-
         });
 
         $('.search').on('click',function(){
@@ -67,12 +64,17 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker', 'jqu
             var investLoginName = $('.investLoginName').val();
             var investStartTime = $('.investStartTime').val();
             var investEndTime = $('.investEndTime').val();
+
+            if ($('.level').val() != "" && !$('.level').val().match("^[0-9]*$")) {
+                $('.level').val('');
+            }
+
             var level = $('.level').val();
             var rewardStartTime = $('.rewardStartTime').val();
             var rewardEndTime = $('.rewardEndTime').val();
             var role = $('.role').val();
-
-            window.location.href = '/referrerManage?referrerLoginName='+referrerLoginName+'&investLoginName='+investLoginName+'&investStartTime='+investStartTime+'&investEndTime='+investEndTime+'&level='+level+'&rewardStartTime='+rewardStartTime+'&rewardEndTime='+rewardEndTime+'&role='+role+'&currentPageNo=1&pageSize=10';
+            var source = $('.source').val();
+            window.location.href = '/user-manage/referrer?referrerLoginName='+referrerLoginName+'&investLoginName='+investLoginName+'&investStartTime='+investStartTime+'&investEndTime='+investEndTime+'&level='+level+'&rewardStartTime='+rewardStartTime+'&rewardEndTime='+rewardEndTime+'&role='+role+'&source='+source+'&currentPageNo=1&pageSize=10';
         });
 
         $('.down-load').on('click',function(){
@@ -84,7 +86,8 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker', 'jqu
             var rewardStartTime = $('.rewardStartTime').val();
             var rewardEndTime = $('.rewardEndTime').val();
             var role = $('.role').val();
-            window.location.href = '/referrerManage?referrerLoginName='+referrerLoginName+'&investLoginName='+investLoginName+'&investStartTime='+investStartTime+'&investEndTime='+investEndTime+'&level='+level+'&rewardStartTime='+rewardStartTime+'&rewardEndTime='+rewardEndTime+'&role='+role+'&export=csv';
+            var source = $('.source').val();
+            window.location.href = '/user-manage/referrer?referrerLoginName='+referrerLoginName+'&investLoginName='+investLoginName+'&investStartTime='+investStartTime+'&investEndTime='+investEndTime+'&level='+level+'&rewardStartTime='+rewardStartTime+'&rewardEndTime='+rewardEndTime+'&role='+role+'&source='+source+'&export=csv';
         });
     });
 })

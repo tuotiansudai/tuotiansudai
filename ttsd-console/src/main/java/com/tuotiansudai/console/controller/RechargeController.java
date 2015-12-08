@@ -28,6 +28,7 @@ import java.util.List;
 
 
 @Controller
+@RequestMapping(value = "/finance-manage")
 public class RechargeController {
 
     @Autowired

@@ -11,7 +11,7 @@
 
   .register-box {
     width: 70%;
-    margin-left: 33%;
+    margin-left: 30%;
     height: auto;
     overflow: auto;
     .register-step-one {
@@ -27,8 +27,28 @@
         margin-bottom: 20px;
         height: auto;
         overflow: auto;
-        &.captcha-tag {
+        .reg-title {
+          width:60px;
+          padding-right: 3px;
+          font-size:14px;
+          color: #333;
+          text-align: right;
+          display: none;
+          *display:block;
+          display:block\9;
+        }
+        .captcha-tag {
           position: relative;
+          display: inline-block;
+          width:100%;
+          .fetch-captcha {
+            padding: 7px;
+            letter-spacing: 0;
+            position: absolute;
+            right: 387px;
+            top: 3px;
+            font-size: 12px;
+          }
         }
         input[type="text"], input[type="password"] {
           color: #999;
@@ -37,7 +57,7 @@
           border-radius: 3px;
           padding: 9px 2px 9px 30px;
           &.mobile {
-            background: url(/images/icons/register.png) no-repeat 6px -362px;
+            background: url(/images/icons/register.png) no-repeat 6px -364px;
           }
           &.captcha {
             background: url(/images/icons/register.png) no-repeat 6px -548px;
@@ -61,14 +81,7 @@
             background: url(/images/icons/register.png) no-repeat 6px -724px;
           }
         }
-        .fetch-captcha {
-          padding: 5px;
-          letter-spacing: 0;
-          position: absolute;
-          right: 390px;
-          top: 5px;
-          font-size: 12px;
-        }
+
         .agreement {
           display: inline-block;
           width:295px;
@@ -79,6 +92,7 @@
             color: nth($checkValid,2);
           }
         }
+
       }
       .register-account {
         display: block;
@@ -104,10 +118,13 @@
 }
 
 .image-captcha-dialog {
-  padding-bottom: 10px !important;
-  padding-right: 10px;
+  .pad-s {
+    padding:20px;
+  }
+  height:100%;
   .image-captcha-form {
     position: relative;
+    height: 135px;
     input.image-captcha-text {
       background: url("/images/icons/register.png") no-repeat 6px -548px;
       width: 156px;
@@ -120,7 +137,7 @@
     }
     img.image-captcha {
       width: 60px;
-      height: 30px;
+      height: 29px;
       border-radius: 3px;
       background: #e4e4e4;
       border: #bababa 1px solid;
@@ -129,11 +146,162 @@
       left: 130px;
       top: 2px;
     }
+    .image-captcha-confirm {
+      position: absolute;
+      bottom: 35px;
+      left: 35%;
+    }
   }
 
   .image-captcha-confirm.loading {
     background: url("/images/icons/loading.gif") no-repeat center center;
     cursor: default;
     text-indent: -9999px;
+    border:0px;
+  }
+}
+
+.forget-phone-box {
+  .re-title {
+    font-size: 18px;
+    color: #e64d0a;
+    font-weight: bold;
+    padding:30px;
+  }
+  .retrieve-box {
+    width:420px;
+    margin:0 auto;
+    text-align: left;
+    &.input-password-box {
+      width:480px;
+    }
+    li {
+      margin-bottom:10px;
+      position: relative;
+        .fetch-captcha {
+          position: absolute;
+          padding: 7px 6px;
+          letter-spacing: 0;
+          font-size: 12px;
+          top: 2px;
+          right: 148px;
+          &:disabled {
+            background: #aaa!important;
+            border:1px solid #aaa!important;
+          }
+        }
+      input[type='text'],input[type='password'] {
+        color: #999;
+        width: 210px;
+        border: #cecece 1px solid;
+        border-radius: 3px;
+        padding: 9px 2px 9px 5px;
+      }
+      input[type="submit"] {
+        margin-left: 100px;
+      }
+
+    }
+  }
+}
+
+.verification-code-main {
+  position: relative;
+  height:100%;
+  .image-code-check {
+    position: relative;
+    .verification-code-img {
+      position: absolute;
+      right: 25px;
+
+    }
+  }
+  .btn-success {
+    position: absolute;
+    bottom: 35px;
+    left: 35%;
+  }
+}
+
+@media (max-width: 700px) {
+  .step-register-tab {
+    font-size: 14px!important;
+    margin:0;
+    width:auto!important;
+    li {
+      width:33%!important;
+      height:40px!important;
+      line-height: 40px!important;
+      padding-right:0!important;
+      s,g {
+        display: none;
+      }
+    }
+  }
+  .register-container {
+    margin:0 auto;
+    border-width: 0;
+    padding:0px 5%;
+    .register-box {
+      margin:0;
+      width:100%;
+      ul.reg-list {
+        li {
+
+          .captcha-tag {
+            position: relative;
+            display: inline-block;
+            width:100%;
+            .fetch-captcha {
+              padding: 7px;
+              letter-spacing: 0;
+              position: absolute;
+              right: 9%;
+              top: 3px;
+              font-size: 12px;
+            }
+          }
+          input[type="text"], input[type="password"] {
+            width: 92%;
+            box-sizing: border-box;
+            border: #cecece 1px solid;
+            border-radius: 3px;
+            padding: 9px 2px 9px 30px;
+
+          }
+
+          .agreement {
+            display: inline-block;
+            width:auto;
+          }
+          input.valid + .agreement + label.error {
+            &:before {
+              content: "\f058";
+              color: nth($checkValid,2);
+            }
+          }
+
+        }
+        .register-account {
+          display: block;
+          &.loading {
+            background: url("/images/icons/loading.gif") no-repeat center center;
+            cursor: default;
+            text-indent: -9999px;
+          }
+        }
+        .register-user, .register-account {
+          width: 150px;
+          background: #fee2cb;
+          border-radius: 3px;
+          text-align: center;
+          margin: 20px 0 20px 85px;
+          font-size: 20px;
+          color: #f68e3a;
+          border: 0;
+          cursor: pointer;
+        }
+      }
+    }
   }
 }

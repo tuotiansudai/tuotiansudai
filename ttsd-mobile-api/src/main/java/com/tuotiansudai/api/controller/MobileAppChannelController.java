@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController()
 public class MobileAppChannelController {
-    static Logger log = Logger.getLogger(MobileAppCheckVersionController.class);
+    static Logger log = Logger.getLogger(MobileAppChannelController.class);
 
     @Autowired
     private MobileAppChannelService mobileAppChannelService;

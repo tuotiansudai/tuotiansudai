@@ -1,20 +1,12 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="" activeLeftNav="">
-<style type="text/css">
-    .full-screen {
-        width:100%!important;
-        margin:0;
-    }
-    .footer-container {
-        margin-top:0;
-    }
-</style>
+<@global.main pageCss="${css.full_screen}" pageJavascript="${js.about_us}" activeNav="" activeLeftNav="">
+
 <div class="new-guide-container bg-w">
     <div class="ad-guide-img"></div>
     <div class="content-info page-width">
         <h3 class="tc">什么是拓天速贷？</h3>
 
-        <p>拓天速贷是基于互联网的金融信息服务平台，由拓天伟业（北京）资产管理有限公司旗下的拓天伟业（北京）金融信息服务有限公司运营。拓天速贷以透明、公平、高效为原则，为有资金需求的小微企业及有出借需求的个人提供规范、安全、专业的信息服务。拓天速贷秉承用心服务，诚信经营的经营理念，坚持以人为本，日事日毕，正道经营，共存共赢的管理理念，以安全、诚信、专业、创新、长远为核心价值观，坚持兴企安国的公司使命，拓天速贷将成为国内一流的互联网金融信息服务平台。</p>
+        <p>拓天速贷是一家以P2P形式为依托，面向个人投资人的理财融资平台。平台主打优质理财，低门槛提供稳健型理财产品。所有投资产品均被融资担保机构实地调查认证。平台由拓天伟业（北京）资产管理有限公司旗下的拓天伟业（北京）金融信息服务有限公司运营。拓天速贷主要是利用了现有互联网信息技术，将有融资需求的借款人与有富余理财资金的投资人进行在线信息配对。帮助投资人寻找到低门槛、低风险、高收益的理财产品。拓天速贷秉承用心服务，诚信经营的经营理念，坚持以人为本，日事日毕，正道经营，共存共赢的管理理念，以安全、诚信、专业、创新、长远为核心价值观，坚持兴企安国的公司使命，拓天速贷将成为国内一流的线上金融服务平台。</p>
     </div>
 
     <div class="contentA tc">
@@ -27,7 +19,7 @@
             <ul class="advantage-list">
                 <li>
                     <img src="${staticServer}/images/icons/about/help-n01.png" alt="投资优势" />
-                    <b>50元起投，项目期限1月起，年化收益率最高14%。</b>
+                    <b>1元起投，项目期限1月起，年化收益率最高14%。</b>
                 </li>
                 <li>
                     <img src="${staticServer}/images/icons/about/help-n02.png" alt="投资优势" />
@@ -88,8 +80,8 @@
                     <li class="last"><s></s>3 充值投资<g></g></li>
                 </ul>
                 <div class="register-slide-out">
-                    <img src="${staticServer}/images/icons/about/icon-arr-01.png" class="fl last">
-                    <img src="${staticServer}/images/icons/about/icon-arr-02.png" class="fr next">
+                    <img src="${staticServer}/images/icons/about/icon-arr-01.png" class="fl last-step">
+                    <img src="${staticServer}/images/icons/about/icon-arr-02.png" class="fr next-step">
                     <ul class="slide-img-box">
                         <li style="display: block;"><img src="${staticServer}/images/sign/aboutus/process-w01.png"></li>
                         <li><img src="${staticServer}/images/sign/aboutus/process-w02.png"></li>
@@ -100,7 +92,7 @@
 
             <div class="action-invest">
 
-                进入我的账户 > 充值体现,充够您想要的投资金额 <br/>
+                进入我的账户 > 充值提现，充够您想要的投资金额 <br/>
 
                 <a href="/register/user" class="btn-normal">免费注册</a>
 

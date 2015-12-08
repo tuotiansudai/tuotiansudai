@@ -5,6 +5,8 @@ import java.util.Date;
 
 public class ReferrerManageView {
 
+    private String loanId;
+
     private String loanName;
 
     private int periods;
@@ -24,6 +26,8 @@ public class ReferrerManageView {
     private String referrerName;
 
     private Role role;
+
+    private Source source;
 
     private int level;
 
@@ -153,5 +157,21 @@ public class ReferrerManageView {
 
     public void setRewardAmountStr(String rewardAmountStr) {
         this.rewardAmountStr = rewardAmountStr;
+    }
+
+    public String getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(String loanId) {
+        this.loanId = loanId;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
     }
 }
