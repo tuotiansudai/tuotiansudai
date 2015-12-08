@@ -167,17 +167,21 @@ def deploy_web():
     sudo('service tomcat start')
 
 
+def deploy_all():
+    execute(deploy_static)
+    execute(deploy_sms)
+    execute(deploy_console)
+    execute(deploy_pay)
+    execute(deploy_worker)
+    execute(deploy_api)
+    execute(deploy_web)
+
+
 def v2deploy():
     v2compile()
     v2migrate()
     v2build()
-    deploy_static()
-    deploy_sms()
-    deploy_console()
-    deploy_pay()
-    deploy_worker()
-    deploy_api()
-    deploy_web()
+    deploy_all()
 
 
 @roles('db')
