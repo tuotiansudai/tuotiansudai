@@ -66,10 +66,10 @@ def deploy():
 
 def v2migrate():
     local('/opt/gradle/latest/bin/gradle clean')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=aa ttsd-service:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=ump_operations ttsd-service:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=sms_operations ttsd-service:flywayMigrate')
-    local('/opt/gradle/latest/bin/gradle -Pdatabase=job_worker ttsd-service:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=aa ttsd-service:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=ump_operations ttsd-service:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=sms_operations ttsd-service:flywayMigrate')
+    local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=job_worker ttsd-service:flywayMigrate')
 
 
 def mk_war():
@@ -105,7 +105,10 @@ def v2compile():
 @roles('static')
 def deploy_static():
     upload_project(local_dir='./ttsd-web/src/main/webapp/static.zip', remote_dir='/workspace')
-    sudo('service nginx restart')
+    with cd('/workspace'):
+        sudo('rm -rf static/')
+        sudo('unzip static.zip -d static')
+        sudo('service nginx restart')
 
 
 @roles('sms')
@@ -137,8 +140,8 @@ def deploy_pay():
 
 @roles('worker')
 def deploy_worker():
-    upload_project(local_dir='./ttsd-job-worker/build/distributions/*.zip', remote_dir='/workspace')
-    sudo('pkill java')
+    put(local_path='./ttsd-job-worker/build/distributions/*.zip', remote_path='/workspace/')
+    sudo('pkill java', warn_only=True)
     with cd('/workspace'):
         sudo('rm -rf ttsd-job-worker-all/')
         sudo('rm -rf ttsd-job-worker-invest/')
@@ -160,7 +163,7 @@ def deploy_api():
 def deploy_web():
     sudo('service tomcat stop')
     sudo('rm -rf /opt/tomcat/webapps/ROOT')
-    upload_project(local_dir='./ttsd-mobile-api/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
+    upload_project(local_dir='./ttsd-web/war/ROOT.war', remote_dir='/opt/tomcat/webapps')
     sudo('service tomcat start')
 
 
