@@ -34,6 +34,13 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     }
 
     @Override
+    public List<KeyValueModel> queryUserDistribution(Date startTime, Date endTime) {
+        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+        return businessIntelligenceMapper.queryUserDistribution(queryStartTime, queryEndTime);
+    }
+
+    @Override
     public List<KeyValueModel> queryUserRechargeTrend(Granularity granularity, Date startTime, Date endTime, String province) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
@@ -53,5 +60,4 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
         return businessIntelligenceMapper.queryUserAccountTrend(queryStartTime, queryEndTime, granularity, province);
     }
-
 }

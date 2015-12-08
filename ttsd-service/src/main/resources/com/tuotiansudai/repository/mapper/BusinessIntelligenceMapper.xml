@@ -12,8 +12,8 @@
 
     <select id="queryUserRegisterTrendDaily" parameterType="map" resultMap="keyValueMap">
         select
-          date(register_time) as bi_key,
-          count(*) as bi_value
+          date(register_time) as `name`,
+          count(*) as `value`
         from user
         where register_time between #{startTime} and #{endTime}
         group by date(register_time);
@@ -21,8 +21,8 @@
 
     <select id="queryUserRegisterTrendWeekly" parameterType="map" resultMap="keyValueMap">
         select
-          concat(year(register_time), ' W', week(register_time)) as bi_key,
-          count(*) as bi_value
+          concat(year(register_time), '-', week(register_time)) as `name`,
+          count(*) as `value`
         from user
         where register_time between #{startTime} and #{endTime}
         group by year(register_time), week(register_time);
@@ -30,11 +30,20 @@
 
     <select id="queryUserRegisterTrendMonthly" parameterType="map" resultMap="keyValueMap">
         select
-          concat(year(register_time), ' M', week(register_time)) as bi_key,
-          count(*) as bi_value
+          concat(year(register_time), '-', month(register_time)) as `name`,
+          count(*) as `value`
         from user
         where register_time between #{startTime} and #{endTime}
         group by year(register_time), month(register_time);
+    </select>
+
+    <select id="queryUserDistribution" parameterType="map" resultMap="keyValueMap">
+        select
+          province as `name`,
+          count(*) as `value`
+        from user
+        where register_time between #{startTime} and #{endTime}
+        group by province;
     </select>
 
     <select id="queryUserRechargeTrend" parameterType="map" resultMap="keyValueMap">
@@ -368,5 +377,4 @@
             </if>
         </if>
     </select>
-
 </mapper>

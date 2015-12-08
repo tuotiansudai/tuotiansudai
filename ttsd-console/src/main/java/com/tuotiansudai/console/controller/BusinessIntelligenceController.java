@@ -40,6 +40,14 @@ public class BusinessIntelligenceController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/user-distribution", method = RequestMethod.GET)
+    public List<KeyValueModel> queryUserDistribution(
+            @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
+        return businessIntelligenceService.queryUserDistribution(startTime, endTime);
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/user-recharge-trend", method = RequestMethod.GET)
     public List<KeyValueModel> queryUserRechargeTrend(
             @RequestParam(name = "granularity") Granularity granularity,
@@ -68,5 +76,4 @@ public class BusinessIntelligenceController {
             @RequestParam(name = "province",required = false) String province){
         return businessIntelligenceService.queryUserAccountTrend(granularity, startTime, endTime, province);
     }
-
 }

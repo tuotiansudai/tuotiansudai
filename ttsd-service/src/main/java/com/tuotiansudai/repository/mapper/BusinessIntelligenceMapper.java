@@ -16,6 +16,8 @@ public interface BusinessIntelligenceMapper {
 
     List<KeyValueModel> queryUserRegisterTrendMonthly(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
+    List<KeyValueModel> queryUserDistribution(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
+
     List<KeyValueModel> queryUserRechargeTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("granularity") Granularity granularity, @Param("province") String province);
 
     List<KeyValueModel> queryUserWithdrawTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("granularity") Granularity granularity, @Param("province") String province);
