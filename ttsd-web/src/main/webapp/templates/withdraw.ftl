@@ -12,9 +12,8 @@
                 提现费用：<em class="withdraw-fee">${withdrawFee}</em> 元（每笔） <br/>
                 实际到账：<em class="actual-amount">0.00</em> 元
             </div>
-            <div class="tc">
-                <button class="withdraw-submit btn-normal" disabled="disabled">确认提现</button>
-            </div>
+            <button class="withdraw-submit btn-normal" type="button" disabled="disabled">确认提现</button>
+
             <div class="clear-blank"></div>
             <form action="/withdraw" method="post" target="_blank">
                 <input name="amount" type="hidden" value=""/>
