@@ -1,8 +1,10 @@
-DB_HOST=192.168.100.85
+OLD_DB_HOST=192.168.100.85
 DB_PORT=3306
 DB_USER=root
-DB_CON_OLD="mysql -h$DB_HOST -P$DB_PORT -u$DB_USER tuotiansudai "
-DB_CON_NEW="mysql -h$DB_HOST -P$DB_PORT -u$DB_USER aa "
+NEW_DB_HOST=192.168.1.249
+
+DB_CON_OLD="mysql -h$OLD_DB_HOST -P$DB_PORT -u$DB_USER tuotiansudai "
+DB_CON_NEW="mysql -h$NEW_DB_HOST -P$DB_PORT -u$DB_USER aa "
 
 SCRIPT_PATH=scripts/data_migration/migrate.py
 LOG_PATH=/tmp/migrate
