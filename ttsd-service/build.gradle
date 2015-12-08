@@ -98,7 +98,7 @@ flyway {
         properties.load(new FileInputStream(buildFile))
     }
 
-    if (project.hasProperty("configPath") && new File("${configPath}/ttsd-env.properties").isDirectory()) {
+    if (project.hasProperty("configPath") && new File("${configPath}/ttsd-env.properties").isFile()) {
         properties.load(new FileInputStream(new File("${configPath}/ttsd-env.properties")))
     }
 
