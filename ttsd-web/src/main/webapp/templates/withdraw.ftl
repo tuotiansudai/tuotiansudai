@@ -6,10 +6,10 @@
         <div class="borderBox withdraw">
             提现额度：<i class="color-note">${balance}</i>元<br/>
             提现金额：<input type="text" class="amount-display" data-d-group="4" data-l-zero="deny" data-v-min="0.00" data-v-max="${balance}" placeholder="0.00"> 元
-                <span class="error" style="display: none;"><i class="fa fa-times-circle"></i> 金额必须大于3.00元</span>
+                <span class="error" style="display: none;"><i class="fa fa-times-circle"></i> 金额必须大于2.00元</span>
 
             <div class="calculate">
-                提现费用：<em>3.00</em> 元（每笔） <br/>
+                提现费用：<em class="withdraw-fee">${withdrawFee}</em> 元（每笔） <br/>
                 实际到账：<em class="actual-amount">0.00</em> 元
             </div>
             <div class="tc">
@@ -25,7 +25,7 @@
         <div class="clear-blank"></div>
         <div class="borderBox">
             <b>温馨提示:</b><br/>
-            1、每笔提现，手续费3.00元。<br/>
+            1、每笔提现，手续费${withdrawFee}元。<br/>
             2、提现操作，T+1日内完成，均受节假日影响。<br/>
             3、提现银行卡姓名应与实名认证身份一致，才可提现。<br/>
         </div>
