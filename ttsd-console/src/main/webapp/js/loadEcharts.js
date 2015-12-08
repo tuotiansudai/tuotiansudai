@@ -106,7 +106,11 @@ define(['jquery','echarts'], function ($) {
             CommonLineOption: {
 
                 tooltip: {
-                    trigger: 'axis'
+                    trigger: 'axis',
+                    //formatter: function(option) {
+                    //    var string=option[0].seriesName +'<br/>'+option[0].name+'<br/>'+option[0].value;
+                    //    return string;
+                    //}
                 },
                 toolbox: {
                     show : true,
@@ -198,7 +202,7 @@ define(['jquery','echarts'], function ($) {
                 var option = {
 
                     legend: {
-                        x: 'center',
+                        x:'center',
                         y:'bottom',
                         data: stackline_datas.category
                     },
@@ -311,7 +315,6 @@ define(['jquery','echarts'], function ($) {
                 return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonLineOption, option);
             }
         },
-
         Charts: {
             RenderChart: function (option) {
                 require(
@@ -341,6 +344,96 @@ define(['jquery','echarts'], function ($) {
                 callback && callback(data);
 
             });
+        },
+        datetimeFun: {
+            /* 获取当前指定的前几天的日期,n=0为当前日期 */
+            getBeforeDate:function(n) {
+                var n = n;
+                var d = new Date();
+                var year = d.getFullYear();
+                var mon=d.getMonth()+1;
+                var day=d.getDate();
+                if(day <= n){
+                    if(mon>1) {
+                        mon=mon-1;
+                    }
+                    else {
+                        year = year-1;
+                        mon = 12;
+                    }
+                }
+                d.setDate(d.getDate()-n);
+                year = d.getFullYear();
+                mon=d.getMonth()+1;
+                day=d.getDate();
+                s = year+"-"+(mon<10?('0'+mon):mon)+"-"+(day<10?('0'+day):day);
+                return s;
+            },
+            /*格式化日期*/
+            getNowFormatDate:function(theDate){
+                 var day = theDate;
+                 var Year = 0;
+                 var Month = 0;
+                 var Day = 0;
+                 var CurrentDate = "";
+
+                 Year= day.getFullYear();
+                 Month= day.getMonth()+1;
+                 Day = day.getDate();
+                 CurrentDate += Year + "-";
+                 if (Month >= 10 )
+                 {
+                     CurrentDate += Month + "-";
+                 }
+                 else
+                 {
+                     CurrentDate += "0" + Month + "-";
+                 }
+                 if (Day >= 10 )
+                 {
+                     CurrentDate += Day ;
+                 }
+                 else
+                 {
+                     CurrentDate += "0" + Day ;
+                 }
+                 return CurrentDate;
+             },
+
+            //这个方法将取得某年(year)第几周(weeks)的星期几(weekDay)的日期
+            getXDate:function(year,weeks,weekDay) {
+                var date = new Date(year,"0","1");
+                var time = date.getTime();
+                time+=(weeks-2)*7*24*3600000;
+                date.setTime(time);
+                return this.getNextDate(date,weekDay);
+            },
+
+            // 这个方法将取得 某日期(nowDate) 所在周的星期几(weekDay)的日期
+            getNextDate:function(nowDate,weekDay){
+                // 0是星期日,1是星期一,...
+                weekDay%=7;
+                var day = nowDate.getDay();
+                var time = nowDate.getTime();
+                var sub = weekDay-day;
+                if(sub <= 0){
+                    sub += 7;
+                }
+                time+=sub*24*3600000;
+                nowDate.setTime(time);
+                return nowDate;
+            },
+            // 获取日期范围显示
+            getDateRange:function(_year,week){
+                var beginDate;
+                var endDate;
+                if(_year == null || _year == '' || _week == null || _week == ''){
+                    return "";
+                }
+                beginDate = this.getXDate(_year,week,1);
+                endDate = this.getXDate(_year,week,7);
+                return this.getNowFormatDate(beginDate) + " 至 "+ this.getNowFormatDate(endDate);
+            }
         }
     };
 

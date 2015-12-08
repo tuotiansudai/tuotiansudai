@@ -18,32 +18,8 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
         });
     });
 
-    var dateFormatFun={
-        formatDate:function(date) {
-            var myyear = date.getFullYear();
-            var mymonth = date.getMonth()+1;
-            var myweekday = date.getDate();
-
-            if(mymonth < 10){
-                mymonth = "0" + mymonth;
-            }
-            if(myweekday < 10){
-                myweekday = "0" + myweekday;
-            }
-            return (myyear+"-"+mymonth + "-" + myweekday);
-        },
-        /*获取当天的前几天的日期时间*/
-        getNextDate:function(nowDate,weekDay) {
-            var day = nowDate.getDay();
-            var time = nowDate.getTime();
-            var sub = weekDay-day;
-            time+=sub*24*3600000;
-            nowDate.setTime(time);
-            return this.formatDate(nowDate);;
-        }
-    };
-    initEndDate=dateFormatFun.formatDate(new Date());
-    initStartDate=dateFormatFun.getNextDate(new Date(),-4);
+    initStartDate=loadEcharts.datetimeFun.getBeforeDate(7);
+    initEndDate=loadEcharts.datetimeFun.getBeforeDate(0);
 
     $('.start-date').val(initStartDate);
     $('.end-date').val(initEndDate);
@@ -68,10 +44,10 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     }
 
     /*用户地域分布*/
-    showReport('#formUserAreaReport','/bi/user-recharge-trend','userAreaDistribution','用户地域');
+    showReport('#formUserAreaReport','/bi/user-distribution','userAreaDistribution','用户地域');
 
-    /*用户时间分布*/
-    showReport('#formUserDateReport','/bi/user-recharge-trend','userDateDistribution','用户(人)');
+    /*用户注册时间分布*/
+    showReport('#formUserDateReport','/bi/user-register-trend','userDateDistribution','用户(人)');
 
     /*用户充值时间分布*/
     showReport('#formUserRechargeReport','/bi/user-recharge-trend','UserRechargeDistribution','用户充值(元)');
