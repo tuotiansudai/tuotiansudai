@@ -4,7 +4,7 @@ DB_USER=root
 DB_CON_OLD="mysql -h$DB_HOST -P$DB_PORT -u$DB_USER tuotiansudai "
 DB_CON_NEW="mysql -h$DB_HOST -P$DB_PORT -u$DB_USER aa "
 
-SCRIPT_PATH=/Users/zhoubx/workspace/ttsd/scripts/data_migration/migrate.py
+SCRIPT_PATH=scripts/data_migration/migrate.py
 LOG_PATH=/tmp/migrate
 
 BATCH_SIZE=30000
