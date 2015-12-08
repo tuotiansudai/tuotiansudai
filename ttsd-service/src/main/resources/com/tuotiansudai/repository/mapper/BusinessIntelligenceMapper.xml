@@ -10,40 +10,83 @@
         <result column="group" property="group"></result>
     </resultMap>
 
-    <select id="queryUserRegisterTrendDaily" parameterType="map" resultMap="keyValueMap">
+    <select id="queryUserRegisterTrend" parameterType="map" resultMap="keyValueMap">
         select
-          date(register_time) as bi_key,
-          count(*) as bi_value
-        from user
-        where register_time between #{startTime} and #{endTime}
-        group by date(register_time);
-    </select>
-
-    <select id="queryUserRegisterTrendWeekly" parameterType="map" resultMap="keyValueMap">
-        select
-          concat(year(register_time), ' W', week(register_time)) as bi_key,
-          count(*) as bi_value
-        from user
-        where register_time between #{startTime} and #{endTime}
-        group by year(register_time), week(register_time);
-    </select>
-
-    <select id="queryUserRegisterTrendMonthly" parameterType="map" resultMap="keyValueMap">
-        select
-          concat(year(register_time), ' M', week(register_time)) as bi_key,
-          count(*) as bi_value
-        from user
-        where register_time between #{startTime} and #{endTime}
-        group by year(register_time), month(register_time);
-    </select>
-
-    <select id="queryUserDistribution" parameterType="map" resultMap="keyValueMap">
-        select
-          province as `name`,
-          count(*) as `value`
-        from user
-        where register_time between #{startTime} and #{endTime}
-        group by province;
+        <if test="granularity.name() == 'Daily'">
+            DATE(u.register_time) AS `name`,
+        </if>
+        <if test="granularity.name() == 'Weekly'">
+            CONCAT(YEAR(u.register_time), '-', WEEK(u.register_time)) AS `name`,
+        </if>
+        <if test="granularity.name() == 'Monthly'">
+            CONCAT(YEAR(u.register_time), '-', MONTH(u.register_time)) AS `name`,
+        </if>
+          count(*) as `value`,
+          u.province as `group`
+        from user u
+        <choose>
+            <when test="province != null and province!= ''">
+                where u.province = #{province}
+            </when>
+            <otherwise>
+                where exists (
+                    select province from (
+                        select province from (
+                            select count(*) as v, a.province from user a
+                            where a.register_time between #{startTime} and #{endTime}
+                            group by province
+                        ) t order by v desc limit 5
+                    ) p where p.province = u.province
+                )
+            </otherwise>
+        </choose>
+        and u.register_time between #{startTime} and #{endTime}
+        group by u.province,
+        <if test="granularity.name() == 'Daily'">
+          date(u.register_time)
+        </if>
+        <if test="granularity.name() == 'Weekly'">
+          year(u.register_time), week(u.register_time)
+        </if>
+        <if test="granularity.name() == 'Monthly'">
+          year(u.register_time), month(u.register_time)
+        </if>
+        <if test="province == null or province ==''">
+            union all
+            select
+            <if test="granularity.name() == 'Daily'">
+                DATE(u.register_time) AS `name`,
+            </if>
+            <if test="granularity.name() == 'Weekly'">
+                CONCAT(YEAR(u.register_time), '-', WEEK(u.register_time)) AS `name`,
+            </if>
+            <if test="granularity.name() == 'Monthly'">
+                CONCAT(YEAR(u.register_time), '-', MONTH(u.register_time)) AS `name`,
+            </if>
+              count(*) as `value`,
+              '其它' as `group`
+            from user u
+            where not exists (
+                select province from (
+                    select province from (
+                        select count(*) as v, a.province from user a
+                        where a.register_time between #{startTime} and #{endTime}
+                        group by province
+                    ) t order by v desc limit 5
+                ) p where p.province = u.province
+            )
+            and u.register_time between #{startTime} and #{endTime}
+            group by
+            <if test="granularity.name() == 'Daily'">
+                date(u.register_time)
+            </if>
+            <if test="granularity.name() == 'Weekly'">
+                year(u.register_time), week(u.register_time)
+            </if>
+            <if test="granularity.name() == 'Monthly'">
+                year(u.register_time), month(u.register_time)
+            </if>
+        </if>
     </select>
 
     <select id="queryUserRechargeTrend" parameterType="map" resultMap="keyValueMap">
