@@ -331,6 +331,16 @@ define(['jquery','echarts'], function ($) {
                         window.onresize = option.chart.resize;
                     });
             }
+        },
+        ChartsProvince:function(callback){
+            $.ajax({
+                type: 'GET',
+                url: '/bi/province',
+                dataType: 'json'
+            }).done(function (data) {
+                callback && callback(data);
+
+            });
         }
     };
 

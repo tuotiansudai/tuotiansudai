@@ -11,24 +11,19 @@
                 <div class="panel-body">
 
                     <form class="form-inline" id="formUserAreaReport">
-                        <div class="form-group">
-                            <select class="form-control search-category">
-                                <option value="">请选择</option>
-                                <option value="D" selected>日</option>
-                                <option value="W">周</option>
-                                <option value="M">月</option>
-                            </select>
-                        </div>
-                        <div class="form-group search-input">
-                           开始时间： <input type="text" class="form-control start-date">
-                           结束时间： <input type="text" class="form-control end-date">
 
-                        </div>
-                        <div class="form-group search-input">
-                            <select>
-                                <option></option>
-                            </select>
-                            </div>
+                        <select class="form-control search-category" name="granularity">
+                            <option value="Daily" selected>日</option>
+                            <option value="Weekly">周</option>
+                            <option value="Monthly">月</option>
+                        </select>
+                        开始时间： <input type="text" class="form-control start-date" name="startTime">
+                        结束时间：<input type="text" class="form-control end-date" name="endTime">
+                        <select class="form-control" name="province">
+                            <option value="">请选择</option>
+                            <option>北京</option>
+                            <option>天津</option>
+                        </select>
 
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
@@ -47,20 +42,18 @@
                 </div>
                 <div class="panel-body">
                     <form class="form-inline" id="formUserDateReport">
-                        <div class="form-group">
-                            <select class="form-control search-category">
-                                <option value="">请选择</option>
-                                <option value="D" selected>日</option>
-                                <option value="W">周</option>
-                                <option value="M">月</option>
-                            </select>
-                        </div>
-                        <div class="form-group search-input">
-                            开始时间： <input type="text" class="form-control start-date">
-                            结束时间：<input type="text" class="form-control end-date">
-
-                        </div>
-
+                                <select class="form-control search-category" name="granularity">
+                                    <option value="Daily" selected>日</option>
+                                    <option value="Weekly">周</option>
+                                    <option value="Monthly">月</option>
+                                </select>
+                                开始时间： <input type="text" class="form-control start-date" name="startTime">
+                                结束时间：<input type="text" class="form-control end-date" name="endTime">
+                                <select class="form-control" name="province">
+                                    <option value="">请选择</option>
+                                    <option>北京</option>
+                                    <option>天津</option>
+                                </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
                     <div  id="userDateDistribution" style="width:100%; height:400px;">
@@ -79,20 +72,19 @@
                 </div>
                 <div class="panel-body">
                     <form class="form-inline" id="formUserRechargeReport">
-
-                        <div class="form-group">
-                            <select class="form-control search-category">
-                                <option value="">请选择</option>
-                                <option value="D" selected>日</option>
-                                <option value="W">周</option>
-                                <option value="M">月</option>
+                            <select class="form-control search-category" name="granularity">
+                                <option value="Daily" selected>日</option>
+                                <option value="Weekly">周</option>
+                                <option value="Monthly">月</option>
                             </select>
-                        </div>
-                        <div class="form-group search-input">
-                            开始时间： <input type="text" class="form-control start-date">
-                            结束时间：<input type="text" class="form-control end-date">
+                            开始时间： <input type="text" class="form-control start-date" name="startTime">
+                            结束时间：<input type="text" class="form-control end-date" name="endTime">
+                        <select class="form-control" name="province">
+                            <option value="">请选择</option>
+                            <option>北京</option>
+                            <option>天津</option>
+                        </select>
 
-                        </div>
 
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
@@ -108,20 +100,19 @@
                 </div>
                 <div class="panel-body">
                     <form class="form-inline" id="formWithdrawReport">
-                        <div class="form-group">
-                            <select class="form-control search-category">
-                                <option value="">请选择</option>
-                                <option value="D" selected>日</option>
-                                <option value="W">周</option>
-                                <option value="M">月</option>
-                            </select>
-                        </div>
-                        <div class="form-group search-input">
-                            开始时间： <input type="text" class="form-control start-date">
-                            结束时间：<input type="text" class="form-control end-date">
+                        <select class="form-control search-category" name="granularity">
+                            <option value="Daily" selected>日</option>
+                            <option value="Weekly">周</option>
+                            <option value="Monthly">月</option>
+                        </select>
 
-                        </div>
-
+                            开始时间： <input type="text" class="form-control start-date" name="startTime">
+                            结束时间：<input type="text" class="form-control end-date" name="endTime">
+                        <select class="form-control" name="province">
+                            <option value="">请选择</option>
+                            <option>北京</option>
+                            <option>天津</option>
+                        </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
 
@@ -136,20 +127,18 @@
                 </div>
                 <div class="panel-body" id="">
                     <form class="form-inline" id="formUserAccountReport">
-                        <div class="form-group">
-                            <select class="form-control search-category">
-                                <option value="">请选择</option>
-                                <option value="D" selected>日</option>
-                                <option value="W">周</option>
-                                <option value="M">月</option>
-                            </select>
-                        </div>
-                        <div class="form-group search-input">
-                            开始时间： <input type="text" class="form-control start-date">
-                            结束时间：<input type="text" class="form-control end-date">
-
-                        </div>
-
+                        <select class="form-control search-category" name="granularity">
+                            <option value="Daily" selected>日</option>
+                            <option value="Weekly">周</option>
+                            <option value="Monthly">月</option>
+                        </select>
+                            开始时间： <input type="text" class="form-control start-date" name="startTime">
+                            结束时间：<input type="text" class="form-control end-date" name="endTime">
+                        <select class="form-control" name="province">
+                            <option value="">请选择</option>
+                            <option>北京</option>
+                            <option>天津</option>
+                        </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
 
