@@ -11,7 +11,7 @@
     </beans:bean>
 
     <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.security.MyAccessDeniedHandler">
-        <beans:property name="errorPage" value="/403"/>
+        <beans:property name="errorPage" value="/error/404"/>
         <beans:property name="onlyUserAccessDeniedRedirect" value="/register/account"/>
         <beans:property name="errorPageMapping">
             <beans:map>

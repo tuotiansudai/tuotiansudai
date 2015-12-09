@@ -2,16 +2,12 @@ package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.WithdrawDto;
 import com.tuotiansudai.util.AmountConverter;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.Serializable;
 import java.util.Date;
 
 public class WithdrawModel implements Serializable {
-
-    /**
-     * 联动优势提现手续费3元(300分)
-     */
-    private static final long WITHDRAW_FEE = 300;
 
     private long id;
 
@@ -46,7 +42,6 @@ public class WithdrawModel implements Serializable {
 
     public WithdrawModel(WithdrawDto dto) {
         this.amount = AmountConverter.convertStringToCent(dto.getAmount());
-        this.fee = WITHDRAW_FEE;
         this.loginName = dto.getLoginName();
         this.createdTime = new Date();
         this.status = WithdrawStatus.WAIT_PAY;

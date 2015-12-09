@@ -23,6 +23,7 @@ import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,6 +54,13 @@ public class WithdrawServiceImpl implements WithdrawService {
     @Autowired
     private AmountTransfer amountTransfer;
 
+    /**
+     * 联动优势提现手续费2元(200分)
+     */
+
+    @Value("${pay.withdraw.fee}")
+    private long withdrawFee;
+
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> withdraw(WithdrawDto withdrawDto) {
@@ -60,6 +68,7 @@ public class WithdrawServiceImpl implements WithdrawService {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(loginName);
         WithdrawModel withdrawModel = new WithdrawModel(withdrawDto);
+        withdrawModel.setFee(withdrawFee);
         withdrawModel.setBankCardId(bankCardModel.getId());
         withdrawModel.setId(idGenerator.generate());
         CustWithdrawalsRequestModel requestModel = new CustWithdrawalsRequestModel(String.valueOf(withdrawModel.getId()),

@@ -118,7 +118,6 @@ public class InvestServiceImpl implements InvestService {
         }
     }
 
-    @Transactional
     private BaseDto<PayDataDto> investNopwd(long loanId, long amount, String loginName) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
