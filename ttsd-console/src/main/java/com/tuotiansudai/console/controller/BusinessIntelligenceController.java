@@ -35,16 +35,9 @@ public class BusinessIntelligenceController {
     public List<KeyValueModel> queryUserRegisterTrend(
             @RequestParam(name = "granularity") Granularity granularity,
             @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
-        return businessIntelligenceService.queryUserRegisterTrend(granularity, startTime, endTime);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/user-distribution", method = RequestMethod.GET)
-    public List<KeyValueModel> queryUserDistribution(
-            @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
-        return businessIntelligenceService.queryUserDistribution(startTime, endTime);
+            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+            @RequestParam(name = "province",required = false) String province){
+        return businessIntelligenceService.queryUserRegisterTrend(granularity, startTime, endTime, province);
     }
 
     @ResponseBody

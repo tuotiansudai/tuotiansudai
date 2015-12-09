@@ -19,25 +19,10 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     private BusinessIntelligenceMapper businessIntelligenceMapper;
 
     @Override
-    public List<KeyValueModel> queryUserRegisterTrend(Granularity granularity, Date startTime, Date endTime) {
+    public List<KeyValueModel> queryUserRegisterTrend(Granularity granularity, Date startTime, Date endTime, String province) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-        switch (granularity) {
-            case Daily:
-                return businessIntelligenceMapper.queryUserRegisterTrendDaily(queryStartTime, queryEndTime);
-            case Weekly:
-                return businessIntelligenceMapper.queryUserRegisterTrendWeekly(queryStartTime, queryEndTime);
-            case Monthly:
-                return businessIntelligenceMapper.queryUserRegisterTrendMonthly(queryStartTime, queryEndTime);
-        }
-        return new ArrayList<>();
-    }
-
-    @Override
-    public List<KeyValueModel> queryUserDistribution(Date startTime, Date endTime) {
-        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
-        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-        return businessIntelligenceMapper.queryUserDistribution(queryStartTime, queryEndTime);
+        return businessIntelligenceMapper.queryUserRegisterTrend(queryStartTime, queryEndTime, granularity, province);
     }
 
     @Override
