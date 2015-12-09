@@ -107,10 +107,19 @@ define(['jquery','echarts'], function ($) {
 
                 tooltip: {
                     trigger: 'axis',
-                    //formatter: function(option) {
-                    //    var string=option[0].seriesName +'<br/>'+option[0].name+'<br/>'+option[0].value;
-                    //    return string;
-                    //}
+                    formatter: function(option) {
+                        var len=option.length,i= 0,stringObj=[],
+                            datetime=option[0].name,
+                            dateFullYear=datetime.split('-')[0],
+                            dateWeek=datetime.split('-')[1];
+                        var dateRange=MyChartsObject.datetimeFun.getDateRange(dateFullYear,dateWeek);
+                        stringObj.push(dateRange+'<br/>');
+                        for(i;i<len;i++) {
+                            stringObj.push(option[i].seriesName+':'+option[i].value+'<br/>');
+                        }
+
+                        return stringObj.join('');
+                    }
                 },
                 toolbox: {
                     show : true,
@@ -424,19 +433,20 @@ define(['jquery','echarts'], function ($) {
                 return nowDate;
             },
             // 获取日期范围显示
-            getDateRange:function(_year,week){
+            getDateRange:function(_year,_week){
                 var beginDate;
                 var endDate;
                 if(_year == null || _year == '' || _week == null || _week == ''){
                     return "";
                 }
-                beginDate = this.getXDate(_year,week,1);
-                endDate = this.getXDate(_year,week,7);
-                return this.getNowFormatDate(beginDate) + " 至 "+ this.getNowFormatDate(endDate);
+                beginDate = this.getXDate(_year,_week,1);
+                endDate = this.getXDate(_year,_week-0+1,0);
+
+                var duration=this.getNowFormatDate(beginDate) + " 至 "+ this.getNowFormatDate(endDate);
+                return duration;
             }
         }
     };
-
     return MyChartsObject;
 });
 
