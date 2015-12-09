@@ -16,10 +16,10 @@
             DATE(u.register_time) AS `name`,
         </if>
         <if test="granularity.name() == 'Weekly'">
-            CONCAT(YEAR(u.register_time), '-W', WEEK(u.register_time)) AS `name`,
+            DATE_FORMAT(u.register_time, '%Y-W%u') AS `name`,
         </if>
         <if test="granularity.name() == 'Monthly'">
-            CONCAT(YEAR(u.register_time), '-', MONTH(u.register_time)) AS `name`,
+            DATE_FORMAT(u.register_time, '%Y-%m') AS `name`,
         </if>
           count(*) as `value`,
           u.province as `group`
@@ -58,10 +58,10 @@
                 DATE(u.register_time) AS `name`,
             </if>
             <if test="granularity.name() == 'Weekly'">
-                CONCAT(YEAR(u.register_time), '-W', WEEK(u.register_time)) AS `name`,
+                DATE_FORMAT(u.register_time, '%Y-W%u') AS `name`,
             </if>
             <if test="granularity.name() == 'Monthly'">
-                CONCAT(YEAR(u.register_time), '-', MONTH(u.register_time)) AS `name`,
+                DATE_FORMAT(u.register_time, '%Y-%m') AS `name`,
             </if>
               count(*) as `value`,
               '其它' as `group`
@@ -95,10 +95,10 @@
             DATE(r.`created_time`) AS `name`,
         </if>
         <if test="granularity.name() == 'Weekly'">
-            CONCAT(YEAR(r.`created_time`), '-W', WEEK(r.`created_time`)) AS `name`,
+            DATE_FORMAT(r.`created_time`, '%Y-W%u') AS `name`,
         </if>
         <if test="granularity.name() == 'Monthly'">
-            CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`)) AS `name`,
+            DATE_FORMAT(r.`created_time`, '%Y-%m') AS `name`,
         </if>
         ROUND(SUM(r.`amount`), 2) AS `value`,
         u.`province` AS `group`
@@ -155,10 +155,10 @@
                 DATE(a.`created_time`) AS `name`,
             </if>
             <if test="granularity.name() == 'Weekly'">
-                CONCAT(YEAR(a.`created_time`), '-W', WEEK(a.`created_time`)) AS `name`,
+                DATE_FORMAT(a.`created_time`, '%Y-W%u') AS `name`,
             </if>
             <if test="granularity.name() == 'Monthly'">
-                CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`)) AS `name`,
+                DATE_FORMAT(a.`created_time`, '%Y-%m') AS `name`,
             </if>
             ROUND(SUM(a.`amount`), 2) AS `value`,
             '其他' AS `group`
@@ -207,10 +207,10 @@
             DATE(r.`created_time`) AS `name`,
         </if>
         <if test="granularity.name() == 'Weekly'">
-            CONCAT(YEAR(r.`created_time`), '-W', WEEK(r.`created_time`)) AS `name`,
+            DATE_FORMAT(r.`created_time`, '%Y-W%u') AS `name`,
         </if>
         <if test="granularity.name() == 'Monthly'">
-            CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`)) AS `name`,
+            DATE_FORMAT(r.`created_time`, '%Y-%m') AS `name`,
         </if>
         ROUND(SUM(r.`amount`), 2) AS `value`,
         u.`province` AS `group`
@@ -267,10 +267,10 @@
                 DATE(a.`created_time`) AS `name`,
             </if>
             <if test="granularity.name() == 'Weekly'">
-                CONCAT(YEAR(a.`created_time`), '-W', WEEK(a.`created_time`)) AS `name`,
+                DATE_FORMAT(a.`created_time`, '%Y-W%u') AS `name`,
             </if>
             <if test="granularity.name() == 'Monthly'">
-                CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`)) AS `name`,
+                DATE_FORMAT(a.`created_time`, '%Y-%m') AS `name`,
             </if>
             ROUND(SUM(a.`amount`), 2) AS `value`,
             '其他' AS `group`
@@ -319,10 +319,10 @@
             DATE(r.`created_time`) AS `name`,
         </if>
         <if test="granularity.name() == 'Weekly'">
-            CONCAT(YEAR(r.`created_time`), '-W', WEEK(r.`created_time`)) AS `name`,
+            DATE_FORMAT(r.`created_time`,'%Y-W%u') AS `name`,
         </if>
         <if test="granularity.name() == 'Monthly'">
-            CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`)) AS `name`,
+            DATE_FORMAT(r.`created_time`,'%Y-%m') AS `name`,
         </if>
         ROUND(SUM(r.`balance`), 2) AS `value`,
         u.`province` AS `group`
@@ -377,10 +377,10 @@
                 DATE(a.`created_time`) AS `name`,
             </if>
             <if test="granularity.name() == 'Weekly'">
-                CONCAT(YEAR(a.`created_time`), '-W', WEEK(a.`created_time`)) AS `name`,
+                DATE_FORMAT(a.`created_time`, '%Y-W%u') AS `name`,
             </if>
             <if test="granularity.name() == 'Monthly'">
-                CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`)) AS `name`,
+                DATE_FORMAT(a.`created_time`, '%Y-%m') AS `name`,
             </if>
             ROUND(SUM(a.`balance`), 2) AS `value`,
             '其他' AS `group`
