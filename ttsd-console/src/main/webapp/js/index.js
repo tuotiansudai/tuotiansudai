@@ -5,7 +5,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
         winScrollTop,
         headerHeight=$('#top').height()+20,
         panelHeight=$('.panel-success').eq(0).height();
-        $('.panel-success').eq(0).height()
+        $('.panel-success').eq(0).height();
 
     $(window).scroll(function() {
 
