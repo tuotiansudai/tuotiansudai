@@ -100,7 +100,7 @@
         <if test="granularity.name() == 'Monthly'">
             DATE_FORMAT(r.`created_time`, '%Y-%m') AS `name`,
         </if>
-        ROUND(SUM(r.`amount`), 2) AS `value`,
+        ROUND(SUM(r.`amount`/100), 2) AS `value`,
         u.`province` AS `group`
         FROM
         `recharge` r
@@ -160,7 +160,7 @@
             <if test="granularity.name() == 'Monthly'">
                 DATE_FORMAT(a.`created_time`, '%Y-%m') AS `name`,
             </if>
-            ROUND(SUM(a.`amount`), 2) AS `value`,
+            ROUND(SUM(a.`amount`/100), 2) AS `value`,
             '其他' AS `group`
             FROM
             `recharge` a
@@ -212,7 +212,7 @@
         <if test="granularity.name() == 'Monthly'">
             DATE_FORMAT(r.`created_time`, '%Y-%m') AS `name`,
         </if>
-        ROUND(SUM(r.`amount`), 2) AS `value`,
+        ROUND(SUM(r.`amount`/100), 2) AS `value`,
         u.`province` AS `group`
         FROM
         `withdraw` r
@@ -272,7 +272,7 @@
             <if test="granularity.name() == 'Monthly'">
                 DATE_FORMAT(a.`created_time`, '%Y-%m') AS `name`,
             </if>
-            ROUND(SUM(a.`amount`), 2) AS `value`,
+            ROUND(SUM(a.`amount`/100), 2) AS `value`,
             '其他' AS `group`
             FROM
             `withdraw` a
@@ -324,7 +324,7 @@
         <if test="granularity.name() == 'Monthly'">
             DATE_FORMAT(r.`created_time`,'%Y-%m') AS `name`,
         </if>
-        ROUND(SUM(r.`balance`), 2) AS `value`,
+        ROUND(SUM(r.`balance`/100), 2) AS `value`,
         u.`province` AS `group`
         FROM
         `user_bill` r
@@ -382,7 +382,7 @@
             <if test="granularity.name() == 'Monthly'">
                 DATE_FORMAT(a.`created_time`, '%Y-%m') AS `name`,
             </if>
-            ROUND(SUM(a.`balance`), 2) AS `value`,
+            ROUND(SUM(a.`balance`/100), 2) AS `value`,
             '其他' AS `group`
             FROM
             `user_bill` a
