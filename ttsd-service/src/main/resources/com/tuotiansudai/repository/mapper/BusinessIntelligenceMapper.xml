@@ -16,7 +16,7 @@
             DATE(u.register_time) AS `name`,
         </if>
         <if test="granularity.name() == 'Weekly'">
-            CONCAT(YEAR(u.register_time), '-', WEEK(u.register_time)) AS `name`,
+            CONCAT(YEAR(u.register_time), '-W', WEEK(u.register_time)) AS `name`,
         </if>
         <if test="granularity.name() == 'Monthly'">
             CONCAT(YEAR(u.register_time), '-', MONTH(u.register_time)) AS `name`,
@@ -58,7 +58,7 @@
                 DATE(u.register_time) AS `name`,
             </if>
             <if test="granularity.name() == 'Weekly'">
-                CONCAT(YEAR(u.register_time), '-', WEEK(u.register_time)) AS `name`,
+                CONCAT(YEAR(u.register_time), '-W', WEEK(u.register_time)) AS `name`,
             </if>
             <if test="granularity.name() == 'Monthly'">
                 CONCAT(YEAR(u.register_time), '-', MONTH(u.register_time)) AS `name`,
@@ -95,7 +95,7 @@
             DATE(r.`created_time`) AS `name`,
         </if>
         <if test="granularity.name() == 'Weekly'">
-            CONCAT(YEAR(r.`created_time`), '-', WEEK(r.`created_time`)) AS `name`,
+            CONCAT(YEAR(r.`created_time`), '-W', WEEK(r.`created_time`)) AS `name`,
         </if>
         <if test="granularity.name() == 'Monthly'">
             CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`)) AS `name`,
@@ -155,7 +155,7 @@
                 DATE(a.`created_time`) AS `name`,
             </if>
             <if test="granularity.name() == 'Weekly'">
-                CONCAT(YEAR(a.`created_time`), '-', WEEK(a.`created_time`)) AS `name`,
+                CONCAT(YEAR(a.`created_time`), '-W', WEEK(a.`created_time`)) AS `name`,
             </if>
             <if test="granularity.name() == 'Monthly'">
                 CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`)) AS `name`,
@@ -207,7 +207,7 @@
             DATE(r.`created_time`) AS `name`,
         </if>
         <if test="granularity.name() == 'Weekly'">
-            CONCAT(YEAR(r.`created_time`), '-', WEEK(r.`created_time`)) AS `name`,
+            CONCAT(YEAR(r.`created_time`), '-W', WEEK(r.`created_time`)) AS `name`,
         </if>
         <if test="granularity.name() == 'Monthly'">
             CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`)) AS `name`,
@@ -267,7 +267,7 @@
                 DATE(a.`created_time`) AS `name`,
             </if>
             <if test="granularity.name() == 'Weekly'">
-                CONCAT(YEAR(a.`created_time`), '-', WEEK(a.`created_time`)) AS `name`,
+                CONCAT(YEAR(a.`created_time`), '-W', WEEK(a.`created_time`)) AS `name`,
             </if>
             <if test="granularity.name() == 'Monthly'">
                 CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`)) AS `name`,
@@ -319,7 +319,7 @@
             DATE(r.`created_time`) AS `name`,
         </if>
         <if test="granularity.name() == 'Weekly'">
-            CONCAT(YEAR(r.`created_time`), '-', WEEK(r.`created_time`)) AS `name`,
+            CONCAT(YEAR(r.`created_time`), '-W', WEEK(r.`created_time`)) AS `name`,
         </if>
         <if test="granularity.name() == 'Monthly'">
             CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`)) AS `name`,
@@ -377,7 +377,7 @@
                 DATE(a.`created_time`) AS `name`,
             </if>
             <if test="granularity.name() == 'Weekly'">
-                CONCAT(YEAR(a.`created_time`), '-', WEEK(a.`created_time`)) AS `name`,
+                CONCAT(YEAR(a.`created_time`), '-W', WEEK(a.`created_time`)) AS `name`,
             </if>
             <if test="granularity.name() == 'Monthly'">
                 CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`)) AS `name`,
