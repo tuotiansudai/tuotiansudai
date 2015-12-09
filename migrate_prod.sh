@@ -256,6 +256,7 @@ main(){
 
 main $1
 `$DB_CON_OLD -e"DROP TABLE IF EXISTS user_bill_seq_temp;"`
+`$DB_CON_NEW -e"ALTER TABLE user_bill AUTO_INCREMENT=$[$COUNT_user_bill+1];"`
 
 : '
 clear_table user

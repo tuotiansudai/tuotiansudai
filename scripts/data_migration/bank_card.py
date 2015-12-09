@@ -22,27 +22,34 @@ class BankCardMigrate(BaseMigrate):
                             FROM
                                 bank_card
                             WHERE
-                                status != 'passed'
+                                status = 'remove'
 
-                            UNION  ALL
+                            UNION ALL
 
                             SELECT
-                                MAX(id) AS id,
-                                user_id,
-                                bank_no,
-                                card_no,
-                                status,
-                                is_open_fastPayment,
-                                MAX(time) AS time
+                                b.id,
+                                b.user_id,
+                                b.bank_no,
+                                b.card_no,
+                                b.status,
+                                b.is_open_fastPayment,
+                                b.time
                             FROM
-                                bank_card
-                            WHERE
-                                status = 'passed'
-                            GROUP BY user_id,
-                                     bank_no,
-                                     card_no,
-                                     status,
-                                     is_open_fastPayment
+                                bank_card b
+                            RIGHT JOIN
+                                (
+                                    SELECT
+                                        bc.user_id,
+                                        MAX(bc.time) AS time
+                                    FROM
+                                        bank_card bc
+                                    WHERE
+                                        bc.status = 'passed'
+                                    GROUP BY bc.user_id
+                                ) bs
+                            ON
+                                b.user_id = bs.user_id
+                                and b.time = bs.time
                         )
                      temp LIMIT %s, %s'''
     

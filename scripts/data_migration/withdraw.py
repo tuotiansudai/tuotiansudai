@@ -29,10 +29,12 @@ class WithdrawMigrate(BaseMigrate):
                                 bank_card b
                             ON
                                 w.`bank_card_id` = b.`id`
-                                AND b.`status` != 'passed'
+                                AND b.`status` = 'remove'
                             WHERE
                                 w.is_withdraw_by_admin IS NULL
+
                             UNION ALL
+
                             SELECT
                                 n.id AS bank_card_id,
                                 m.user_id,
@@ -48,30 +50,36 @@ class WithdrawMigrate(BaseMigrate):
                             FROM
                                 withdraw_cash m
                             JOIN
-                            (
-                                SELECT
-                                    MAX(id) AS id,
-                                    user_id,
-                                    bank_no,
-                                    card_no,
-                                    status,
-                                    is_open_fastPayment,
-                                    MAX(time) AS time
-                                FROM
-                                    bank_card
-                                WHERE
-                                    status = 'passed'
-                                GROUP BY
-                                    user_id,
-                                    bank_no,
-                                    card_no,
-                                    status,
-                                    is_open_fastPayment
-                            ) n
+                                (
+                                    SELECT
+                                        MAX(id) AS id,
+                                        user_id,
+                                        MAX(time) AS time
+                                    FROM
+                                        bank_card
+                                    WHERE
+                                        status = 'passed'
+                                    GROUP BY
+                                        user_id
+                                ) n
                             ON
                                 m.`user_id` = n.`user_id`
                             WHERE
                                 m.is_withdraw_by_admin IS NULL
+                                and m.bank_card_id not in
+                                (
+                                    SELECT
+                                        wi.bank_card_id
+                                    FROM
+                                        withdraw_cash wi
+                                    JOIN
+                                        bank_card ba
+                                    ON
+                                        wi.`bank_card_id` = ba.`id`
+                                        AND ba.`status` = 'remove'
+                                    WHERE
+                                        wi.is_withdraw_by_admin IS NULL
+                                )
                         )
                     temp limit %s, %s'''
 
