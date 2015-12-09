@@ -109,13 +109,20 @@ define(['jquery','echarts'], function ($) {
                     trigger: 'axis',
                     formatter: function(option) {
                         var len=option.length,i= 0,stringObj=[],
-                            datetime=option[0].name,
-                            dateFullYear=datetime.split('-')[0],
-                            dateWeek=datetime.split('-')[1];
-                        var dateRange=MyChartsObject.datetimeFun.getDateRange(dateFullYear,dateWeek);
-                        stringObj.push(dateRange+'<br/>');
+                            datetime=option[0].name,dateRange;
+
+                        if(/W/.test(datetime)) {
+                            var dateFullYear=datetime.split('-W')[0],
+                                dateWeek=datetime.split('-W')[1];
+                            dateRange=MyChartsObject.datetimeFun.getDateRange(dateFullYear,dateWeek);
+                            stringObj.push(dateRange);
+                        }
+                        else {
+                            stringObj.push(datetime);
+                        }
+
                         for(i;i<len;i++) {
-                            stringObj.push(option[i].seriesName+':'+option[i].value+'<br/>');
+                            stringObj.push('<br/>'+option[i].seriesName+':'+option[i].value);
                         }
 
                         return stringObj.join('');

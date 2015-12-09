@@ -69,11 +69,9 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
             }).done(function (data) {
                 /*sort by date*/
                 data.sort(function(a,b){
-                    var a1=a.name.split('-'),
-                        b1= b.name.split('-'),
-                        o1 = new Date().setFullYear(a1[0],a1[1],a1[2]),
-                        o2=new Date().setFullYear(b1[0],b1[1],b1[2]);
-                    return o1- o2;
+                    var a1=a.name.replace(/-|W/g,''),
+                        b1=b.name.replace(/-|W/g,'');
+                    return a1- b1;
                 });
                 var option = loadEcharts.ChartOptionTemplates.Lines(data, name, true),
                     container =document.getElementById(reportbox),
