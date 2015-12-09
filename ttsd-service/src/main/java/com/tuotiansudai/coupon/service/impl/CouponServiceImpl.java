@@ -16,11 +16,6 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public void afterGetLoanDetail(String loginName, long loanId) {
-        logger.info(MessageFormat.format("after user get loan detail , loginName : {0}, loanId : {1}.", loginName, loanId));
-    }
-
-    @Override
     public void afterInvest(String loginName, long loanId) {
         logger.info(MessageFormat.format("after user invest, loginName : {0}, loanId : {1}.", loginName, loanId));
     }

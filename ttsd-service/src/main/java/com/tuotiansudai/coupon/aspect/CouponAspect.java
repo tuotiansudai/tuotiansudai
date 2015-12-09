@@ -24,10 +24,6 @@ public class CouponAspect {
     public void registerUserPointcut() {
     }
 
-    @Pointcut("execution(* com.tuotiansudai.service.LoanService.getLoanDetail(*))")
-    public void getLoanDetailPointcut() {
-    }
-
     @Pointcut("execution(* com.tuotiansudai.service.InvestService.invest(*))")
     public void investPointcut() {
     }
@@ -42,19 +38,6 @@ public class CouponAspect {
         try {
             RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
             couponService.afterUserRegistered(registerUserDto.getLoginName());
-        } catch (Exception e) {
-            logger.error("after user registered aspect fail ", e);
-        }
-    }
-
-    @After("getLoanDetailPointcut()")
-    public void afterGetLoanDetail(JoinPoint joinPoint) {
-        logger.debug("after get loan detail pointcut");
-        try {
-            String loginName = String.valueOf(joinPoint.getArgs()[0]);
-            long loanId = (Long) joinPoint.getArgs()[1];
-
-            couponService.afterGetLoanDetail(loginName, loanId);
         } catch (Exception e) {
             logger.error("after user registered aspect fail ", e);
         }
