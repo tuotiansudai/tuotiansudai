@@ -27,7 +27,7 @@ require(['jquery','echarts','commonFun', 'csrf','layerWrapper'], function ($) {
          * @dom  {[string]}		当前列表的DOM节点
          * @active  {[string]}	触发事件的DOM节点
          * @length  {[number]}	限制文字长度触发提示框
-         * @return {[type]}
+         * @return {[function]}
          */
         function tipshow(dom,active,length){
             $(dom).on('mouseenter',active,function() {
