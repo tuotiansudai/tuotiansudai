@@ -38,6 +38,7 @@
     <mvc:resources mapping="/js/**" location="/js/"/>
     <mvc:resources mapping="/pdf/**" location="/pdf/"/>
     <mvc:resources mapping="/tpl/**" location="/tpl/"/>
+    <mvc:resources mapping="/upload/**" location="/upload/"/>
 
 
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.configuration.FreeMarkerVariablesMap">
@@ -52,6 +53,11 @@
         <property name="templateLoaderPath" value="/templates"/>
         <property name="defaultEncoding" value="utf-8"/>
         <property name="freemarkerVariables" ref="staticResourceVersionMap"/>
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="template_exception_handler">rethrow</prop>
+            </props>
+        </property>
     </bean>
 
     <!--

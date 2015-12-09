@@ -92,8 +92,10 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
         });
 
         $imageCaptchaSubmit.click(function () {
-            var phone = $('.phone-txt').val();
-            var imageCaptcha = $('.verification-code-text').val();
+            var $this=$(this),
+             phone = $('.phone-txt').val(),
+             imageCaptcha = $('.verification-code-text').val();
+            $this.addClass('loading');
             if(imageCaptcha.length < 5){
                 $('.verification-code-main b').html('验证码不正确').show();
                 refreshCaptcha();
@@ -104,14 +106,15 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'
                 }).done(function (response) {
+                    $this.removeClass('loading');
                     if (response.data.status) {
                         layer.closeAll();
                         var seconds = 30;
                         var count = setInterval(function () {
-                            $getCaptcha.html(seconds + '秒后重新发送').addClass('btn').removeClass('btn-normal');
+                            $getCaptcha.html(seconds + '秒后重新发送').addClass('btn').removeClass('btn-normal').prop('disabled',true);
                             if (seconds == 0) {
                                 clearInterval(count);
-                                $getCaptcha.html('重新发送').removeClass('btn').addClass('btn-normal');
+                                $getCaptcha.html('重新发送').removeClass('btn').addClass('btn-normal').prop('disabled',false);
                                 $('.verification-code-text').val('');
                             }
                             seconds--;
@@ -127,7 +130,6 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                             refreshCaptcha();
                         }
                     }
-
                 });
 
             }

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.impl.MobileAppInvestListServiceImpl;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
@@ -38,6 +39,9 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
     @Mock
     private LoanMapper loanMapper;
+
+    @Mock
+    private InvestRepayMapper investRepayMapper;
 
     private static int INVEST_COUNT = 110;
     private static long INTEREST = 1100L;
@@ -134,7 +138,8 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         when(investMapper.findByLoginName(anyString(), anyInt(), anyInt())).thenReturn(generateMockedInvestList());
         when(investMapper.findCountByLoginName(anyString())).thenReturn((long) INVEST_COUNT);
         when(loanMapper.findById(anyLong())).thenReturn(generateMockedLoanModel());
-        when(investService.calculateExpectedInterest(any(LoanModel.class), anyLong())).thenReturn(INTEREST);
+        when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(Lists.<InvestRepayModel>newArrayList());
+        when(investService.estimateInvestIncome(anyLong(), anyLong())).thenReturn(INTEREST);
 
         UserInvestListRequestDto requestDto = new UserInvestListRequestDto();
         requestDto.setBaseParam(BaseParamTest.getInstance());

@@ -11,7 +11,7 @@
     </beans:bean>
 
     <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.security.MyAccessDeniedHandler">
-        <beans:property name="errorPage" value="/403"/>
+        <beans:property name="errorPage" value="/error/404"/>
         <beans:property name="onlyUserAccessDeniedRedirect" value="/register/account"/>
         <beans:property name="errorPageMapping">
             <beans:map>
@@ -61,6 +61,7 @@
         <intercept-url pattern="/images/**" access="permitAll()"/>
         <intercept-url pattern="/js/**" access="permitAll()"/>
         <intercept-url pattern="/tpl/**" access="permitAll()"/>
+        <intercept-url pattern="/upload/**" access="permitAll()"/>
 
         <intercept-url pattern="/" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/login/**" access="isAnonymous()"/>

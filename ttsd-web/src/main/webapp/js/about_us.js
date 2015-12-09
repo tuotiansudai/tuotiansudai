@@ -13,6 +13,7 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
             paginationElement.loadPagination(requestData, function (data) {
                 var html = Mustache.render(ListTemplate, data);
                 $noticeList.html(html);
+                $noticeList.find('time').text($noticeList.find('time').text().substr(0,10));
             });
         }
 

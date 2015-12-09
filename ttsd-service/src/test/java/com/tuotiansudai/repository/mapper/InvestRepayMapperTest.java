@@ -96,13 +96,13 @@ public class InvestRepayMapperTest {
         investRepayModel.setPeriod(1);
         investRepayModel.setStatus(RepayStatus.COMPLETE);
         investRepayModel.setRepayDate(new Date());
-        investRepayModel.setCorpus(1000l);
+        investRepayModel.setCorpus(1000L);
         List<InvestRepayModel> investRepayModels = Lists.newArrayList(investRepayModel);
         investRepayMapper.create(investRepayModels);
 
         long corpus = investRepayMapper.findSumRepaidCorpusByLoginName("loginName");
 
-        assertEquals(1000l, corpus);
+        assertEquals(1000L, corpus);
     }
 
     @Test

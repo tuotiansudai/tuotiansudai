@@ -224,6 +224,7 @@
   }
   .responsive-width{
     width:100%!important;
+    margin:0!important;
   }
   .click-article{
     padding:15px 10px!important;
@@ -306,6 +307,197 @@
               width:100%;
             }
           }
+        }
+      }
+    }
+  }
+  .text-overflow{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .main-frame{
+    .left-nav{
+      width:100%;
+      margin:0;
+      li{
+        float: left;
+        width:20%;
+      }
+    }
+    .about-us-container{
+      padding: 10px 20px!important;
+      .company-info{
+        width:100%!important;
+      }
+      .team-box{
+        padding-top: 0!important;
+        dl{
+          float:left;
+          margin-top: 10px;
+        }
+      }
+      .notice-list{
+        li{
+          a{
+            width:65%;
+          }
+        }
+      }
+      .column-title{
+        em{
+          width:100%;
+          text-align:center;
+          @extend .text-overflow;
+        }
+        time{
+          margin-top:0;
+        }
+      }
+      .detail-content{
+        p{
+          margin-bottom:0;
+        }
+      }
+    }
+  }
+  .assurance-container{
+    .money-safety{
+      padding:10px 20px!important;
+      .page-width{
+        background: transparent!important;
+      }
+      .as-title{
+        dt{
+          font-size:24px!important;
+        }
+        dd{
+          em{
+            width:100px!important;
+          }
+        }
+      }
+      .safety-info{
+        width:100%!important;
+        margin-top: 0!important;
+        dt{
+          padding-left:0!important;
+        }
+        dd{
+          margin-bottom:10px!important;
+        }
+      }
+    }
+    .data-safety{
+      padding:10px 20px!important;
+      .page-width{
+        background: transparent!important;
+        .as-title{
+          dt{
+            font-size:24px!important;
+          }
+          dd{
+            em{
+              width:100px!important;
+            }
+          }
+        }
+        .safety-info{
+          width:100%!important;
+          margin-top: 0!important;
+          text-align: left!important;
+          dt{
+            padding-left:0!important;
+          }
+          dd{
+            text-align: left;
+            margin-bottom:10px!important;
+          }
+        }
+      }
+    }
+    .secret-safety{
+      padding:10px 20px!important;
+      .page-width{
+        background: transparent!important;
+        .as-title{
+          dt{
+            font-size:24px!important;
+          }
+          dd{
+            em{
+              width:100px!important;
+            }
+          }
+        }
+        .safety-info{
+          width:100%!important;
+          margin-top: 0!important;
+          text-align: left!important;
+          dt{
+            text-align: left;
+            padding-left:0!important;
+          }
+          dd{
+            margin-bottom: 10px!important;
+          }
+        }
+      }
+    }
+    .credit-safety{
+      padding:10px 20px!important;
+      .page-width{
+        background: #FFFFF7!important;
+        .as-title{
+          dt{
+            font-size:24px!important;
+          }
+          dd{
+            em{
+              width:100px!important;
+            }
+          }
+        }
+        .safety-info{
+          width:100%!important;
+          margin-top: 0!important;
+          p{
+            width:100%!important;
+            margin:0!important;
+            padding:0!important;
+          }
+        }
+      }
+    }
+  }
+  .main-frame{
+    .ad-guide-img{
+      height: 150px!important;
+      background: url(/images/banner/ph-guide.jpg) center top no-repeat!important;
+      background-size: cover!important;
+    }
+    .content-info{
+      h3{
+        margin:10px 0!important;
+        font-size: 16px!important;
+      }
+      p{
+        font-size:14px!important;
+      }
+    }
+    .content-a{
+      img{
+        width:100%;
+        margin:0!important;
+      }
+    }
+    .page-width{
+      .our-advantage-content{
+        .hide-dom{
+          display: none;
+        }
+        .action-invest{
+          font-size:14px!important;
         }
       }
     }
