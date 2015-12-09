@@ -142,14 +142,12 @@ def deploy_pay():
 @roles('worker')
 def deploy_worker():
     put(local_path='./ttsd-job-worker/build/distributions/*.zip', remote_path='/workspace/')
-    sudo('pkill java', warn_only=True)
+    sudo('supervisorctl stop all')
     with cd('/workspace'):
         sudo('rm -rf ttsd-job-worker-all/')
         sudo('rm -rf ttsd-job-worker-invest/')
-        sudo('unzip ttsd-job-worker-all.zip -d ttsd-job-worker-all')
-        sudo('unzip ttsd-job-worker-invest.zip -d ttsd-job-worker-invest')
-        sudo('./ttsd-job-worker-all/bin/ttsd-job-worker&')
-        sudo('./ttsd-job-worker-invest/bin/ttsd-job-worker&')
+        sudo('unzip \*.zip')
+        sudo('supervisorctl start all')
 
 
 @roles('api')
