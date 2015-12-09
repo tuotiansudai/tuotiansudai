@@ -44,6 +44,7 @@ public class TriggeredJobBuilder {
     private TriggerKey triggerKey;
     private String jobDescription;
     private Date startDate;
+    private boolean shouldRecover;
     private boolean shouldReplaceExistingJob;
     private ScheduleBuilder scheduleBuilder;
 
@@ -55,6 +56,7 @@ public class TriggeredJobBuilder {
         this.scheduler = scheduler;
         this.jobClazz = jobClazz;
         this.jobDataMap = new JobDataMap();
+        this.shouldRecover = true;
         this.shouldReplaceExistingJob = false;
     }
 
@@ -100,6 +102,11 @@ public class TriggeredJobBuilder {
         return this;
     }
 
+    public TriggeredJobBuilder requestRecovery(boolean jobShouldRecover) {
+        this.shouldRecover = jobShouldRecover;
+        return this;
+    }
+
     /**
      * 设置替换同名的Job。使用该功能时，必须使用 withIdentity 指定 Job 的 group 和 name
      *
@@ -112,7 +119,7 @@ public class TriggeredJobBuilder {
     }
 
     private JobDetail getJobDetail() {
-        JobBuilder jobBuilder = JobBuilder.newJob(jobClazz).setJobData(jobDataMap);
+        JobBuilder jobBuilder = JobBuilder.newJob(jobClazz).setJobData(jobDataMap).requestRecovery(shouldRecover);
         if (jobKey != null) {
             jobBuilder.withIdentity(jobKey);
         }

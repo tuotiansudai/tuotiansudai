@@ -13,12 +13,12 @@ public class JobConfig {
 
     static {
         ResourceBundle rb = ResourceBundle.getBundle("job-worker");
-        schedulerNames = rb.getString("org.quartz.scheduler.names");
-        threadCount = Integer.parseInt(rb.getString("org.quartz.threadPool.threadCount"));
-        threadPriority = Integer.parseInt(rb.getString("org.quartz.threadPool.threadPriority"));
-        misfireThreshold = Integer.parseInt(rb.getString("org.quartz.jobStore.misfireThreshold"));
-        maxMisfiresToHandleAtATime = Integer.parseInt(rb.getString("org.quartz.jobStore.maxMisfiresToHandleAtATime"));
-        isClustered = "true".equalsIgnoreCase(rb.getString("org.quartz.jobStore.isClustered"));
-        clusterCheckinInterval = Integer.parseInt(rb.getString("org.quartz.jobStore.clusterCheckinInterval"));
+        schedulerNames = rb.getString("org.quartz.scheduler.names").trim();
+        threadCount = Integer.parseInt(rb.getString("org.quartz.threadPool.threadCount").trim());
+        threadPriority = Integer.parseInt(rb.getString("org.quartz.threadPool.threadPriority").trim());
+        misfireThreshold = Integer.parseInt(rb.getString("org.quartz.jobStore.misfireThreshold").trim());
+        maxMisfiresToHandleAtATime = Integer.parseInt(rb.getString("org.quartz.jobStore.maxMisfiresToHandleAtATime").trim());
+        isClustered = "true".equalsIgnoreCase(rb.getString("org.quartz.jobStore.isClustered").trim());
+        clusterCheckinInterval = Integer.parseInt(rb.getString("org.quartz.jobStore.clusterCheckinInterval").trim());
     }
 }
