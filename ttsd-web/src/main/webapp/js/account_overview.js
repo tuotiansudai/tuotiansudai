@@ -1,4 +1,4 @@
-require(['jquery','echarts','commonFun', 'csrf'], function ($) {
+require(['jquery','echarts','commonFun', 'csrf','layerWrapper'], function ($) {
     $(function () {
     var $tMonthBox=$('#tMonthBox'),
         $switchMenu=$('ul',$tMonthBox);
@@ -19,5 +19,29 @@ require(['jquery','echarts','commonFun', 'csrf'], function ($) {
          opt = MyChartsObject.ChartConfig(container, option);
         MyChartsObject.Charts.RenderChart(opt);
 
+        $('#tMonthBox').on('mouseenter','.month-title',function() {
+            layer.closeAll('tips');
+            if($(this).text().length>6){
+                layer.tips($(this).text(), $(this), {
+                    tips: [1, '#efbf5c'],
+                    time: 2000,
+                    tipsMore: true,
+                    area: 'auto',
+                    maxWidth: '500'
+                });
+            }
+        });
+        $('.newProjects').on('mouseenter','.trade-detail',function() {
+            layer.closeAll('tips');
+            if($(this).text().length>13){
+                layer.tips($(this).text(), $(this), {
+                    tips: [1, '#efbf5c'],
+                    time: 2000,
+                    tipsMore: true,
+                    area: 'auto',
+                    maxWidth: '500'
+                });
+            }
+        });
     });
 });
