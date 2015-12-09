@@ -2,6 +2,7 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.repository.model.ContractType;
 import com.tuotiansudai.service.ContractService;
+import com.tuotiansudai.web.util.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,8 @@ public class ContractController {
 
     @RequestMapping(value = "/investor/loanId/{loanId}", method = RequestMethod.GET)
     public void generateInvestorContract(@PathVariable long loanId, HttpServletResponse response) {
-        String pdfString = contractService.generateInvestorContract(loanId, ContractType.INVEST);
+        String loginName = LoginUserInfo.getLoginName();
+        String pdfString = contractService.generateInvestorContract(loginName,loanId, ContractType.INVEST);
         response.setContentType("application/pdf;charset=UTF-8");
         try {
             contractService.generateContractPdf(pdfString,response.getOutputStream());
@@ -34,7 +36,8 @@ public class ContractController {
 
     @RequestMapping(value = "/loaner/loanId/{loanId}", method = RequestMethod.GET)
     public void generateLoanerContract(@PathVariable long loanId, HttpServletResponse response) {
-        String pdfString = contractService.generateInvestorContract(loanId,ContractType.LOAN);
+        String loginName = LoginUserInfo.getLoginName();
+        String pdfString = contractService.generateInvestorContract(loginName,loanId, ContractType.LOAN);
         response.setContentType("application/pdf;charset=UTF-8");
         try {
             contractService.generateContractPdf(pdfString,response.getOutputStream());
