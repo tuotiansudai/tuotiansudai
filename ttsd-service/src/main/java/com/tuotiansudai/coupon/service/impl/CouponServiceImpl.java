@@ -1,10 +1,18 @@
 package com.tuotiansudai.coupon.service.impl;
 
 import com.tuotiansudai.coupon.dto.CouponDto;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
 import org.apache.log4j.Logger;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 
 @Service
@@ -12,10 +20,66 @@ public class CouponServiceImpl implements CouponService {
 
     static Logger logger = Logger.getLogger(CouponServiceImpl.class);
 
-
+    @Autowired
+    private CouponMapper couponMapper;
     @Override
-    public boolean createCoupon(String loginName,CouponDto couponDto) {
+    @Transactional
+    public BaseDto<PayDataDto> createCoupon(String loginName,CouponDto couponDto) {
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        CouponModel couponModel = new CouponModel(couponDto);
+        long amount = couponModel.getAmount();
+        if(amount <= 0){
+            payDataDto.setMessage("投资体验券金额应大于0!");
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        long totalCount = couponModel.getTotalCount();
+        if(totalCount <= 0){
+            payDataDto.setMessage("发放数量应大于0!");
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        Date startTime = couponModel.getStartTime();
+        Date endTime = couponModel.getEndTime();
 
-        return false;
+        if(startTime == null){
+            payDataDto.setMessage("活动起期不能为空!");
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        if(endTime == null){
+            payDataDto.setMessage("活动止期不能为空!");
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        if(startTime.before(new Date())){
+            payDataDto.setMessage("活动起期不能早于当前日期!");
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        if(endTime.before(new Date())){
+            payDataDto.setMessage("活动止期不能早于当前日期!");
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        if(endTime.before(startTime)){
+            payDataDto.setMessage("活动止期早于活动起期!");
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+
+        couponModel.setCreateUser(loginName);
+        couponMapper.create(couponModel);
+        payDataDto.setStatus(true);
+        baseDto.setData(payDataDto);
+        return baseDto;
     }
 }

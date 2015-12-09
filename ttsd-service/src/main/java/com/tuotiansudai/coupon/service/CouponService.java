@@ -2,8 +2,10 @@ package com.tuotiansudai.coupon.service;
 
 
 import com.tuotiansudai.coupon.dto.CouponDto;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
 
 public interface CouponService {
 
-    boolean createCoupon(String loginName,CouponDto couponDto);
+    BaseDto<PayDataDto> createCoupon(String loginName,CouponDto couponDto);
 }

@@ -19,7 +19,7 @@ public class CouponDto implements Serializable {
     private Date endTime;
     @NotEmpty
     @Pattern(regexp = "^\\d+$")
-    private long totalCount;
+    private String totalCount;
 
     public String getName() {
         return name;
@@ -53,13 +53,11 @@ public class CouponDto implements Serializable {
         this.endTime = endTime;
     }
 
-    public long getTotalCount() {
+    public String getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(long totalCount) {
+    public void setTotalCount(String totalCount) {
         this.totalCount = totalCount;
     }
-
-
 }

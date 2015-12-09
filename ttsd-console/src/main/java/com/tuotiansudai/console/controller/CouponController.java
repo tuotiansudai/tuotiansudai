@@ -1,5 +1,8 @@
 package com.tuotiansudai.console.controller;
 
+import com.tuotiansudai.console.util.LoginUserInfo;
+import com.tuotiansudai.coupon.dto.CouponDto;
+import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +13,18 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(value = "/activity-manage", method = RequestMethod.GET)
 public class CouponController {
-
+    @Autowired
+    private CouponService couponService;
     @RequestMapping(value = "/coupon",method = RequestMethod.GET)
     public ModelAndView coupon(){
         return new ModelAndView("/coupon");
     }
 
     @RequestMapping(value = "/coupon",method = RequestMethod.POST)
-    public ModelAndView createCoupon(){
-        return new ModelAndView("/coupon");
+    @ResponseBody
+    public BaseDto<PayDataDto> createCoupon(@RequestBody CouponDto couponDto){
+        String loginName = LoginUserInfo.getLoginName();
+        return couponService.createCoupon(loginName,couponDto);
     }
 
 
