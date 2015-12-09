@@ -1,7 +1,8 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.CouponStatus;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.CouponStatus;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.junit.Test;
@@ -15,10 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.UUID;
 
-import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-security.xml"})

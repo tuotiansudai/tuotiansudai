@@ -1,4 +1,4 @@
-package com.tuotiansudai.dto;
+package com.tuotiansudai.coupon.dto;
 
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -60,4 +60,6 @@ public class CouponDto implements Serializable {
     public void setTotalCount(long totalCount) {
         this.totalCount = totalCount;
     }
+
+
 }

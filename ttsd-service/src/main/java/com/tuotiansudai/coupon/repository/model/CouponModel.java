@@ -1,5 +1,7 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.coupon.repository.model;
 
+
+import com.tuotiansudai.coupon.dto.CouponDto;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -125,4 +127,5 @@ public class CouponModel implements Serializable {
     public void setActiveTime(String activeTime) {
         this.activeTime = activeTime;
     }
+
 }
