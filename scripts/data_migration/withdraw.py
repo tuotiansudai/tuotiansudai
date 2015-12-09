@@ -7,62 +7,75 @@ class WithdrawMigrate(BaseMigrate):
     Class Naming Convention: `NewTableNameMigrate(BaseMigrate)`
     """
     # select sql which is executed on original db (edxapp, tuotiansudai etc)
-    SELECT_SQL = "SELECT \
-* \
-FROM \
-(SELECT \
-w.bank_card_id, \
-w.user_id, \
-w.money, \
-w.fee, \
-w.verify_message, \
-w.verify_time, \
-w.recheck_message, \
-w.recheck_time, \
-w.time, \
-w.status, \
-w.source \
-FROM \
-withdraw_cash w \
-JOIN bank_card b \
-ON w.`bank_card_id` = b.`id` \
-AND b.`status` != 'passed' \
-WHERE w.is_withdraw_by_admin IS NULL \
-UNION \
-ALL \
-SELECT \
-n.id AS bank_card_id, \
-        m.user_id, \
-        m.money, \
-        m.fee, \
-        m.verify_message, \
-        m.verify_time, \
-        m.recheck_message, \
-        m.recheck_time, \
-        m.time, \
-        m.status, \
-        m.source \
-FROM \
-withdraw_cash m \
-JOIN \
-(SELECT \
-MAX(id) AS id, \
-           user_id, \
-           bank_no, \
-           card_no, \
-           status, \
-           is_open_fastPayment, \
-           MAX(time) AS time \
-FROM \
-bank_card \
-WHERE status = 'passed' \
-GROUP BY user_id, \
-         bank_no, \
-         card_no, \
-         status, \
-         is_open_fastPayment) n \
-ON m.`user_id` = n.`user_id` \
-WHERE m.is_withdraw_by_admin IS NULL) temp limit %s, %s"
+    SELECT_SQL = '''SELECT
+                        *
+                    FROM
+                        (
+                            SELECT
+                                w.bank_card_id,
+                                w.user_id,
+                                w.money,
+                                w.fee,
+                                w.verify_message,
+                                w.verify_time,
+                                w.recheck_message,
+                                w.recheck_time,
+                                w.time,
+                                w.status,
+                                w.source
+                            FROM
+                                withdraw_cash w
+                            JOIN
+                                bank_card b
+                            ON
+                                w.`bank_card_id` = b.`id`
+                                AND b.`status` != 'passed'
+                            WHERE
+                                w.is_withdraw_by_admin IS NULL
+                            UNION ALL
+                            SELECT
+                                n.id AS bank_card_id,
+                                m.user_id,
+                                m.money,
+                                m.fee,
+                                m.verify_message,
+                                m.verify_time,
+                                m.recheck_message,
+                                m.recheck_time,
+                                m.time,
+                                m.status,
+                                m.source
+                            FROM
+                                withdraw_cash m
+                            JOIN
+                            (
+                                SELECT
+                                    MAX(id) AS id,
+                                    user_id,
+                                    bank_no,
+                                    card_no,
+                                    status,
+                                    is_open_fastPayment,
+                                    MAX(time) AS time
+                                FROM
+                                    bank_card
+                                WHERE
+                                    status = 'passed'
+                                GROUP BY
+                                    user_id,
+                                    bank_no,
+                                    card_no,
+                                    status,
+                                    is_open_fastPayment
+                            ) n
+                            ON
+                                m.`user_id` = n.`user_id`
+                            WHERE
+                                m.is_withdraw_by_admin IS NULL
+                        )
+                    temp limit %s, %s'''
+
+
     # insert sql which is executed on aa db
     INSERT_SQL = '''INSERT INTO withdraw(`id`,
                                           `bank_card_id`,

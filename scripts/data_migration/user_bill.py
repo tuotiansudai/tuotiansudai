@@ -1,3 +1,4 @@
+#coding:utf-8
 from scripts.data_migration.base import BaseMigrate
 
 

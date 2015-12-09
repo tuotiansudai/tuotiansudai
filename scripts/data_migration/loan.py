@@ -77,7 +77,7 @@ class LoanMigrate(BaseMigrate):
                           LEFT JOIN loan_node_attr \
                             ON loan.id = loan_node_attr.loan_id  \
                           LEFT JOIN user \
-                            ON loan.user_id = user.id \
+                            ON loan.agent = user.id \
                         WHERE loan.status NOT IN ('test', 'verify_fail') AND loan.type != 'loan_type_2' "
 
     # insert sql which is executed on aa db

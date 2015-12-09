@@ -7,40 +7,47 @@ class BankCardMigrate(BaseMigrate):
     Class Naming Convention: `NewTableNameMigrate(BaseMigrate)`
     """
     # select sql which is executed on original db (edxapp, tuotiansudai etc)
-    SELECT_SQL = "SELECT \
-* \
-FROM \
-(SELECT \
-id, \
-user_id, \
-bank_no, \
-card_no, \
-status, \
-is_open_fastPayment, \
-time \
-FROM \
-bank_card \
-WHERE status != 'passed' \
-UNION \
-ALL \
-SELECT \
-MAX(id) AS id, \
-           user_id, \
-           bank_no, \
-           card_no, \
-           status, \
-           is_open_fastPayment, \
-           MAX(time) AS time \
-FROM \
-bank_card \
-WHERE status = 'passed' \
-GROUP BY user_id, \
-         bank_no, \
-         card_no, \
-         status, \
-         is_open_fastPayment) temp LIMIT %s, %s"
+    SELECT_SQL = '''SELECT 
+                        *
+                    FROM
+                        (
+                            SELECT
+                                id,
+                                user_id,
+                                bank_no,
+                                card_no,
+                                status,
+                                is_open_fastPayment,
+                                time
+                            FROM
+                                bank_card
+                            WHERE
+                                status != 'passed'
+
+                            UNION  ALL
+
+                            SELECT
+                                MAX(id) AS id,
+                                user_id,
+                                bank_no,
+                                card_no,
+                                status,
+                                is_open_fastPayment,
+                                MAX(time) AS time
+                            FROM
+                                bank_card
+                            WHERE
+                                status = 'passed'
+                            GROUP BY user_id,
+                                     bank_no,
+                                     card_no,
+                                     status,
+                                     is_open_fastPayment
+                        )
+                     temp LIMIT %s, %s'''
+    
     # insert sql which is executed on aa db
-    INSERT_SQL = "INSERT INTO bank_card(`id`, `login_name`, `bank_code`, `card_number`, `status`, `is_fast_pay_on`, `created_time`) " \
+    INSERT_SQL = "INSERT INTO bank_card(`id`, `login_name`, `bank_code`, `card_number`, `status`, `is_fast_pay_on`, `created_time`) "\
                  "VALUES(%s, %s, %s, %s, %s, %s, %s);"
 
     STATUS_MAPPING = {'passed': 'PASSED',
