@@ -34,6 +34,8 @@ public class CouponModel implements Serializable {
 
     private String activeTime;
 
+    private long issuedCount;
+
     public long getId() {
         return id;
     }
@@ -128,6 +130,14 @@ public class CouponModel implements Serializable {
 
     public void setActiveTime(String activeTime) {
         this.activeTime = activeTime;
+    }
+
+    public long getIssuedCount() {
+        return issuedCount;
+    }
+
+    public void setIssuedCount(long issuedCount) {
+        this.issuedCount = issuedCount;
     }
 
     public CouponModel(){

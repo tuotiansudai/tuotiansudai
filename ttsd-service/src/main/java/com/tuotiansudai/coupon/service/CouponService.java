@@ -3,10 +3,11 @@ package com.tuotiansudai.coupon.service;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.exception.CreateCouponException;
 
 public interface CouponService {
 
-    BaseDto<PayDataDto> createCoupon(String loginName,CouponDto couponDto);
+    void createCoupon(String loginName,CouponDto couponDto) throws CreateCouponException;
 
     void afterUserRegistered(String loginName);
 
