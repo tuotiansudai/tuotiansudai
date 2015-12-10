@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(value = "/activity-manage")
+@RequestMapping(value = "/activity-manage", method = RequestMethod.GET)
 public class CouponController {
     @Autowired
     private CouponService couponService;
