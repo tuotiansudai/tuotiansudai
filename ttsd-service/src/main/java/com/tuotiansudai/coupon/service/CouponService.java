@@ -14,4 +14,5 @@ public interface CouponService {
 
     void afterRepay(long loanId, boolean isAdvanced);
 
+    void activeCoupon(String loginName,long couponId);
 }

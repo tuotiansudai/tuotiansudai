@@ -10,4 +10,6 @@ public interface CouponMapper {
 
     CouponModel findCouponById(long id);
 
+    void updateCoupon();
+
 }

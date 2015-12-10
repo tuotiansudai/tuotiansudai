@@ -83,6 +83,7 @@ public class CouponServiceImpl implements CouponService {
         baseDto.setData(payDataDto);
         return baseDto;
     }
+
     @Override
     public void afterUserRegistered(String loginName) {
         logger.info(MessageFormat.format("after user registered , loginName : {0}.", loginName));
@@ -97,5 +98,10 @@ public class CouponServiceImpl implements CouponService {
     public void afterRepay(long loanId, boolean isAdvanced) {
         logger.info(MessageFormat.format("after loan repay, loanId : {0}.", loanId));
         // do create job
+    }
+
+    @Override
+    public void activeCoupon(String loginName, long couponId) {
+
     }
 }
