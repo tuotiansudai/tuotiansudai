@@ -1,9 +1,7 @@
 package com.tuotiansudai.coupon.aspect;
 
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.dto.InvestDto;
-import com.tuotiansudai.dto.RegisterUserDto;
-import com.tuotiansudai.dto.RepayDto;
+import com.tuotiansudai.dto.*;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -37,8 +35,11 @@ public class CouponAspect {
     public void afterReturningUserRegistered(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after registerUser pointcut");
         try {
-            RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
-            couponService.afterUserRegistered(registerUserDto.getLoginName());
+            boolean userRegisterFlag = (boolean)returnValue;
+            if(userRegisterFlag){
+                RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
+                couponService.afterUserRegistered(registerUserDto.getLoginName());
+            }
         } catch (Exception e) {
             logger.error("after user registered aspect fail ", e);
         }
@@ -48,8 +49,11 @@ public class CouponAspect {
     public void afterReturningInvest(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after registerUser pointcut");
         try {
-            InvestDto investDto = (InvestDto) joinPoint.getArgs()[0];
-            couponService.afterInvest(investDto.getLoginName(), investDto.getLoanIdLong());
+            BaseDto<PayFormDataDto> baseDto= (BaseDto)returnValue;
+            if(baseDto.getData().getStatus()){
+                InvestDto investDto = (InvestDto) joinPoint.getArgs()[0];
+                couponService.afterInvest(investDto.getLoginName(), investDto.getLoanIdLong());
+            }
         } catch (Exception e) {
             logger.error("after invest aspect fail ", e);
         }
@@ -59,8 +63,11 @@ public class CouponAspect {
     public void afterReturningRepay(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after repay pointcut");
         try {
-            RepayDto repayDto = (RepayDto) joinPoint.getArgs()[0];
-            couponService.afterRepay(repayDto.getLoanId(), repayDto.isAdvanced());
+            BaseDto<PayFormDataDto> baseDto= (BaseDto)returnValue;
+            if(baseDto.getData().getStatus()){
+                RepayDto repayDto = (RepayDto) joinPoint.getArgs()[0];
+                couponService.afterRepay(repayDto.getLoanId(), repayDto.isAdvanced());
+            }
         } catch (Exception e) {
             logger.error("after repay aspect fail ", e);
         }
