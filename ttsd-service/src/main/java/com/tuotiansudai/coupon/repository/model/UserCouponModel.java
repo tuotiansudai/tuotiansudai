@@ -9,6 +9,11 @@ public class UserCouponModel {
     private long loanId;
     private Date createTime;
     private Date usedTime;
+    private long expectedInterest;
+    private long actualInterest;
+    private long defaultInterest;
+    private long expectedFee;
+    private long actualFee;
 
     public long getId() {
         return id;
@@ -56,5 +61,45 @@ public class UserCouponModel {
 
     public void setUsedTime(Date usedTime) {
         this.usedTime = usedTime;
+    }
+
+    public long getExpectedInterest() {
+        return expectedInterest;
+    }
+
+    public void setExpectedInterest(long expectedInterest) {
+        this.expectedInterest = expectedInterest;
+    }
+
+    public long getActualInterest() {
+        return actualInterest;
+    }
+
+    public void setActualInterest(long actualInterest) {
+        this.actualInterest = actualInterest;
+    }
+
+    public long getDefaultInterest() {
+        return defaultInterest;
+    }
+
+    public void setDefaultInterest(long defaultInterest) {
+        this.defaultInterest = defaultInterest;
+    }
+
+    public long getExpectedFee() {
+        return expectedFee;
+    }
+
+    public void setExpectedFee(long expectedFee) {
+        this.expectedFee = expectedFee;
+    }
+
+    public long getActualFee() {
+        return actualFee;
+    }
+
+    public void setActualFee(long actualFee) {
+        this.actualFee = actualFee;
     }
 }

@@ -11,6 +11,11 @@
         <result column="loan_id" property="loanId"/>
         <result column="create_time" property="createTime"/>
         <result column="used_time" property="usedTime"/>
+        <result column="expected_interest" property="expectedInterest"/>
+        <result column="actual_interest" property="actualInterest"/>
+        <result column="default_interest" property="defaultInterest"/>
+        <result column="expected_fee" property="expectedFee"/>
+        <result column="actual_fee" property="actualFee"/>
     </resultMap>
 
     <insert id="create" parameterType="UserCouponModel" useGeneratedKeys="true" keyProperty="id">
