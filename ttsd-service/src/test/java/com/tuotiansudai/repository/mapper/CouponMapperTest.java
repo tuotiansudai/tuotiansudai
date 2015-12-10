@@ -2,7 +2,6 @@ package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.CouponStatus;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.junit.Test;
@@ -43,7 +42,7 @@ public class CouponMapperTest {
         assertNotNull(couponModel1.getId());
         assertEquals("优惠券", couponModel1.getName());
         assertEquals(1000l,couponModel1.getAmount());
-        assertEquals(CouponStatus.ACTIVE,couponModel1.getActive());
+        assertEquals(false,couponModel1.isActive());
         assertNotNull(couponModel1.getStartTime());
 
 
@@ -54,7 +53,7 @@ public class CouponMapperTest {
         couponModel.setName("优惠券");
         couponModel.setAmount(1000l);
         couponModel.setActiveUser("couponTest");
-        couponModel.setActive(CouponStatus.ACTIVE);
+        couponModel.setActive(false);
         couponModel.setCreateTime(new Date());
         couponModel.setEndTime(new Date());
         couponModel.setStartTime(new Date());
