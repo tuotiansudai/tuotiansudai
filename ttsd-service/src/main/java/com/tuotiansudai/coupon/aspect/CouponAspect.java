@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.RepayDto;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,8 @@ public class CouponAspect {
     public void repayPointcut() {
     }
 
-    @After("registerUserPointcut()")
-    public void afterUserRegistered(JoinPoint joinPoint) {
+    @AfterReturning(value = "registerUserPointcut()", returning = "returnValue")
+    public void afterReturningUserRegistered(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after registerUser pointcut");
         try {
             RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
@@ -43,8 +44,8 @@ public class CouponAspect {
         }
     }
 
-    @After("investPointcut()")
-    public void afterInvest(JoinPoint joinPoint) {
+    @AfterReturning(value = "investPointcut()", returning = "returnValue")
+    public void afterReturningInvest(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after registerUser pointcut");
         try {
             InvestDto investDto = (InvestDto) joinPoint.getArgs()[0];
@@ -54,8 +55,8 @@ public class CouponAspect {
         }
     }
 
-    @After("repayPointcut()")
-    public void afterRepay(JoinPoint joinPoint) {
+    @AfterReturning(value = "repayPointcut()", returning = "returnValue")
+    public void afterReturningRepay(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after repay pointcut");
         try {
             RepayDto repayDto = (RepayDto) joinPoint.getArgs()[0];
