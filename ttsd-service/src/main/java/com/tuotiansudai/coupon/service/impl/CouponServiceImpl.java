@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.Date;
 
 
@@ -81,5 +82,20 @@ public class CouponServiceImpl implements CouponService {
         payDataDto.setStatus(true);
         baseDto.setData(payDataDto);
         return baseDto;
+    }
+    @Override
+    public void afterUserRegistered(String loginName) {
+        logger.info(MessageFormat.format("after user registered , loginName : {0}.", loginName));
+    }
+
+    @Override
+    public void afterInvest(String loginName, long loanId) {
+        logger.info(MessageFormat.format("after user invest, loginName : {0}, loanId : {1}.", loginName, loanId));
+    }
+
+    @Override
+    public void afterRepay(long loanId, boolean isAdvanced) {
+        logger.info(MessageFormat.format("after loan repay, loanId : {0}.", loanId));
+        // do create job
     }
 }

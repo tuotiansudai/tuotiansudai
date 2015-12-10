@@ -232,4 +232,12 @@
     <select id="findAllChannels" resultType="java.lang.String">
         select distinct channel from invest where channel is not NULL
     </select>
+
+    <select id="countAutoInvest" parameterType="map" resultType="long">
+        select count(*)
+        from invest
+        where loan_id = #{loanId}
+        and invest.login_name = #{loginName}
+        and source = 'AUTO'
+    </select>
 </mapper>

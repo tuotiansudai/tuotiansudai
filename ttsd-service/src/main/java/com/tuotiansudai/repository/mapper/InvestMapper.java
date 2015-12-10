@@ -143,4 +143,6 @@ public interface InvestMapper {
     long countSuccessInvest(@Param(value = "loanId") Long loanId);
 
     List<String> findAllChannels();
+
+    long countAutoInvest(@Param(value = "loanId") Long loanId, @Param(value = "loginName") String loginName);
 }

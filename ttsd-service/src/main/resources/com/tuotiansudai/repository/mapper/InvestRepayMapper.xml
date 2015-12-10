@@ -292,7 +292,7 @@
                 AND t.`repay_date` = m.`repay_date`
                 AND t.`status` != 'COMPLETE') temp2
             ON temp.`id` = temp2.`invest_id`
-        ORDER BY temp2.`repay_date` DESC
+        ORDER BY temp.`created_time` DESC
         LIMIT #{startLimit}, #{endLimit}
     </select>
 

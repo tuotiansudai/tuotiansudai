@@ -96,7 +96,7 @@ public class DirectSchedulerFactory extends org.quartz.impl.DirectSchedulerFacto
             }
         }
 
-        getLog().info("Quartz scheduler '" + scheduler.getSchedulerName());
+        getLog().info("Quartz scheduler " + scheduler.getSchedulerName());
 
         getLog().info("Quartz scheduler version: " + qs.getVersion());
 
