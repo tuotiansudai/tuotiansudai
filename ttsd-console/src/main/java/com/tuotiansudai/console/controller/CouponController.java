@@ -13,8 +13,10 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(value = "/activity-manage", method = RequestMethod.GET)
 public class CouponController {
+
     @Autowired
     private CouponService couponService;
+
     @RequestMapping(value = "/coupon",method = RequestMethod.GET)
     public ModelAndView coupon(){
         return new ModelAndView("/coupon");
@@ -27,16 +29,22 @@ public class CouponController {
         return couponService.createCoupon(loginName,couponDto);
     }
 
-
     @RequestMapping(value = "/coupon/{couponId}/active",method = RequestMethod.POST)
     @ResponseBody
     public String activeCoupon(@PathVariable String couponId){
         String loginName = LoginUserInfo.getLoginName();
 
-
     }
 
-
-
+    @RequestMapping(value = "/coupons",method = RequestMethod.GET)
+    public ModelAndView coupons(@RequestParam(value = "index",required = false,defaultValue = "1") int index,
+                                 @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize) {
+        ModelAndView modelAndView = new ModelAndView("/coupons");
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+        modelAndView.addObject("coupons", couponService.findCoupons(index, pageSize));
+        modelAndView.addObject("couponsCount", couponService.findCouponsCount());
+        return modelAndView;
+    }
 
 }

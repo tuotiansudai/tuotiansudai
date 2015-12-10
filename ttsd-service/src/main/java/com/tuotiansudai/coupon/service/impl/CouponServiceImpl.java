@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 
 
 @Service
@@ -23,6 +24,7 @@ public class CouponServiceImpl implements CouponService {
 
     @Autowired
     private CouponMapper couponMapper;
+
     @Override
     @Transactional
     public BaseDto<PayDataDto> createCoupon(String loginName,CouponDto couponDto) {
@@ -104,4 +106,15 @@ public class CouponServiceImpl implements CouponService {
     public void activeCoupon(String loginName, long couponId) {
 
     }
+
+    @Override
+    public List<CouponModel> findCoupons(int index, int pageSize) {
+        return couponMapper.findCoupons((index - 1 ) * pageSize, pageSize);
+    }
+
+    @Override
+    public int findCouponsCount() {
+        return couponMapper.findCouponsCount();
+    }
+
 }

@@ -28,5 +28,12 @@
         select * from coupon where id = #{id}
     </select>
 
+    <select id="findCoupons" parameterType="map" resultMap="couponResultMap">
+        select * from coupon order by create_time desc limit #{index},#{pageSize}
+    </select>
+
+    <select id="findCouponsCount"  resultType="int">
+        select count(*) from coupon
+    </select>
 
 </mapper>
