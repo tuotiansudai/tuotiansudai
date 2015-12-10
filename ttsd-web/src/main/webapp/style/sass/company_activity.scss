@@ -279,6 +279,39 @@ img.icon-mark {
 .activity-grand-container{
   background: #fffbd9;
 }
+/*responsive picture*/
+.res-comtainer{
+  display: none;
+  .responsive-title{
+    width:100%;
+    color:#000;
+    text-align: center;
+    background:#f2f2f2;
+  }
+  .responsive-picture{
+    width:100%;
+  }
+  .link-btn{
+    background:#f2f2f2;
+    color:#000;
+    padding:10px 20px;
+    h5{
+      width:100%;
+      font-size:14px;
+    }
+    a{
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      background: #ff752a;
+      color: #fff!important;
+      border-radius: 5px;
+      line-height: 35px;
+      font-size: 16px;
+      margin: 15px 0;
+    }
+  }
+}
 
 
 

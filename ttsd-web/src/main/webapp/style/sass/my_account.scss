@@ -47,6 +47,7 @@
     margin: 20px auto 0 auto;
   }
 }
+
 //Account Overview
 .account-overview {
   padding:0!important;
@@ -186,8 +187,19 @@
         }
       }
     }
+    .trade-detail{
+      width: 170px;
+      display: inline-block;
+      @include text-overflow;
+    }
   }
-
+  .month-title{
+    width: 80px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 //auto invest
@@ -732,6 +744,11 @@
         text-overflow: ellipsis;
         white-space: nowrap;
       }
+      .project-name{
+        width: 175px;
+        display: inline-block;
+        @include text-overflow;
+      }
     }
   }
 
@@ -1181,6 +1198,7 @@
 }
 
 }
+
 /* my treasure*/
 .my-treasure-content {
   .no-treasure-tip {
@@ -1304,5 +1322,6 @@
     }
   }
 }
+
 
 
