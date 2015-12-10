@@ -109,9 +109,17 @@ define(['jquery','echarts'], function ($) {
                     trigger: 'axis',
                     formatter: function(option) {
                         var len=option.length,i= 0,stringObj=[],
-                            datetime=option[0].name,dateRange;
+                            datetime=option[0].name,dateRange,totalMonArr=[],totalMoney=0;
+                        Array.prototype.sum = function(){
+                            var sum = 0;
+                            for(var i = 0;i<this.length;i++)
+                            {
+                                sum += parseFloat(this[i]);
+                            }
+                            return sum;
+                        }
 
-                        if(/W/.test(datetime)) {
+                        if(/W/gi.test(datetime)) {
                             var dateFullYear=datetime.split('-W')[0],
                                 dateWeek=datetime.split('-W')[1];
                             dateRange=MyChartsObject.datetimeFun.getDateRange(dateFullYear,dateWeek);
@@ -123,7 +131,12 @@ define(['jquery','echarts'], function ($) {
 
                         for(i;i<len;i++) {
                             stringObj.push('<br/>'+option[i].seriesName+':'+option[i].value);
+                            if(option[i].value!='-') {
+                                totalMonArr.push(option[i].value);
+                            }
                         }
+                        totalMoney=totalMonArr.sum().toFixed(2);
+                        stringObj.push('<br/>总计:'+totalMoney);
 
                         return stringObj.join('');
                     }
