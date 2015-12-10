@@ -23,19 +23,22 @@ public class ContractController {
     private ContractService contractService;
 
     @RequestMapping(value = "/investor/loanId/{loanId}", method = RequestMethod.GET)
-    public void generateInvestorContract(@PathVariable long loanId, HttpServletResponse response) {
+    public void generateInvestorContract(@PathVariable long loanId, HttpServletResponse response) throws IOException {
         String loginName = LoginUserInfo.getLoginName();
-        String pdfString = contractService.generateInvestorContract(loginName,loanId, ContractType.INVEST);
-        response.setContentType("application/pdf;charset=UTF-8");
         try {
+            String pdfString = contractService.generateInvestorContract(loginName,loanId, ContractType.INVEST);
+            response.setContentType("application/pdf;charset=UTF-8");
             contractService.generateContractPdf(pdfString,response.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
+        }catch (Exception e){
+            logger.error(e.getLocalizedMessage(),e);
+            response.sendRedirect("/error/404");
         }
     }
 
     @RequestMapping(value = "/loaner/loanId/{loanId}", method = RequestMethod.GET)
-    public void generateLoanerContract(@PathVariable long loanId, HttpServletResponse response) {
+    public void generateLoanerContract(@PathVariable long loanId, HttpServletResponse response) throws IOException {
         String loginName = LoginUserInfo.getLoginName();
         String pdfString = contractService.generateInvestorContract(loginName,loanId, ContractType.LOAN);
         response.setContentType("application/pdf;charset=UTF-8");
@@ -43,6 +46,9 @@ public class ContractController {
             contractService.generateContractPdf(pdfString,response.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
+        }catch (Exception e){
+            logger.error(e.getLocalizedMessage(),e);
+            response.sendRedirect("/error/404");
         }
     }
 
