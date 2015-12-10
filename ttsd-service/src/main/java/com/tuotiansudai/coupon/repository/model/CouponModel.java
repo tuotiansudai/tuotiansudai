@@ -24,7 +24,7 @@ public class CouponModel implements Serializable {
 
     private long totalCount;
 
-    private CouponStatus active = CouponStatus.ACTIVE;
+    private boolean active = false;
 
     private Date createTime;
 
@@ -33,6 +33,8 @@ public class CouponModel implements Serializable {
     private String activeUser;
 
     private String activeTime;
+
+    private long issuedCount;
 
     public long getId() {
         return id;
@@ -90,11 +92,11 @@ public class CouponModel implements Serializable {
         this.totalCount = totalCount;
     }
 
-    public CouponStatus getActive() {
+    public boolean isActive() {
         return active;
     }
 
-    public void setActive(CouponStatus active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
@@ -128,6 +130,14 @@ public class CouponModel implements Serializable {
 
     public void setActiveTime(String activeTime) {
         this.activeTime = activeTime;
+    }
+
+    public long getIssuedCount() {
+        return issuedCount;
+    }
+
+    public void setIssuedCount(long issuedCount) {
+        this.issuedCount = issuedCount;
     }
 
     public CouponModel(){
