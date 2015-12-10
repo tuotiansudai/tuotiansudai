@@ -1,6 +1,17 @@
 @import 'variables';
 @import 'daterangepicker';
 
+.layer-confirm-ui {
+  .layui-layer-btn {
+    text-align: center;
+    .layui-layer-btn0 {
+      background: rgba(255,117,42,1)!important;
+      border: 1px solid nth($CK1,3)!important;
+      color: #fff!important;
+    }
+
+  }
+}
 .layui-layer-btn {
   text-align: center;
   .layui-layer-btn0 {
@@ -742,7 +753,7 @@
   color: #8c8c8c;
   .news-share {
     width: 620px;
-    border-right: 1px solid #ccc;
+
     padding-bottom: 15px;
     .hd {
       margin: -3px 10px 0;
@@ -838,7 +849,8 @@
     }
   }
   .account-info {
-    margin: 10px;
+    border-left: 1px solid #ccc;
+    padding: 10px;
     width: 350px;
     text-align: center;
     position: relative;
@@ -856,14 +868,21 @@
       dd {
         overflow: auto;
         height:auto;
-        margin-bottom: 7px;
+        margin-bottom: 5px;
         .text-input-amount {
           width:95%;
           text-align: right;
         }
         &.invest-amount {
-          height:52px;
           overflow: hidden;
+          margin-bottom: 14px;
+        }
+        &.experience-ticket {
+          color: #f24712;
+          line-height: 1;
+        }
+        &.experience-revenue {
+          margin-bottom: 0;
         }
         &.img-status {
           padding:30px 10px;
