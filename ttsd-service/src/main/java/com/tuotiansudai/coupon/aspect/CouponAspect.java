@@ -38,7 +38,7 @@ public class CouponAspect {
             boolean userRegisterFlag = (boolean)returnValue;
             if(userRegisterFlag){
                 RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
-                couponService.afterUserRegistered(registerUserDto.getLoginName());
+                couponService.afterReturningUserRegistered(registerUserDto.getLoginName());
             }
         } catch (Exception e) {
             logger.error("after user registered aspect fail ", e);
@@ -52,7 +52,7 @@ public class CouponAspect {
             BaseDto<PayFormDataDto> baseDto= (BaseDto)returnValue;
             if(baseDto.getData().getStatus()){
                 InvestDto investDto = (InvestDto) joinPoint.getArgs()[0];
-                couponService.afterInvest(investDto.getLoginName(), investDto.getLoanIdLong());
+                couponService.afterReturningInvest(investDto.getLoginName(), investDto.getLoanIdLong());
             }
         } catch (Exception e) {
             logger.error("after invest aspect fail ", e);
@@ -66,7 +66,7 @@ public class CouponAspect {
             BaseDto<PayFormDataDto> baseDto= (BaseDto)returnValue;
             if(baseDto.getData().getStatus()){
                 RepayDto repayDto = (RepayDto) joinPoint.getArgs()[0];
-                couponService.afterRepay(repayDto.getLoanId(), repayDto.isAdvanced());
+                couponService.afterReturningRepay(repayDto.getLoanId(), repayDto.isAdvanced());
             }
         } catch (Exception e) {
             logger.error("after repay aspect fail ", e);

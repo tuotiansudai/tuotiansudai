@@ -9,11 +9,11 @@ public interface CouponService {
 
     void createCoupon(String loginName,CouponDto couponDto) throws CreateCouponException;
 
-    void afterUserRegistered(String loginName);
+    void afterReturningUserRegistered(String loginName);
 
-    void afterInvest(String loginName, long loanId);
+    void afterReturningInvest(String loginName, long loanId);
 
-    void afterRepay(long loanId, boolean isAdvanced);
+    void afterReturningRepay(long loanId, boolean isAdvanced);
 
     void activeCoupon(String loginName,long couponId);
 }
