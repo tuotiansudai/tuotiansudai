@@ -57,23 +57,24 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public void afterUserRegistered(String loginName) {
-        logger.info(MessageFormat.format("after user registered , loginName : {0}.", loginName));
+    public void afterReturningUserRegistered(String loginName) {
+        
     }
 
     @Override
-    public void afterInvest(String loginName, long loanId) {
-        logger.info(MessageFormat.format("after user invest, loginName : {0}, loanId : {1}.", loginName, loanId));
+    public void afterReturningInvest(String loginName, long loanId) {
+
     }
 
     @Override
-    public void afterRepay(long loanId, boolean isAdvanced) {
-        logger.info(MessageFormat.format("after loan repay, loanId : {0}.", loanId));
-        // do create job
+    public void afterReturningRepay(long loanId, boolean isAdvanced) {
+
     }
 
     @Override
     public void activeCoupon(String loginName, long couponId) {
 
     }
+
+
 }
