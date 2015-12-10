@@ -33,7 +33,7 @@ public class CouponController {
     public String activeCoupon(@PathVariable String couponId){
         String loginName = LoginUserInfo.getLoginName();
 
-
+        return "ok";
     }
 
 
