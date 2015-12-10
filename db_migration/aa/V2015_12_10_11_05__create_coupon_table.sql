@@ -6,6 +6,7 @@ CREATE TABLE `aa`.`coupon` (
   `end_time`          DATETIME,
   `used_count`        INT UNSIGNED NOT NULL DEFAULT 0,
   `total_count`       INT UNSIGNED NOT NULL DEFAULT 0,
+  `issued_count`      INT UNSIGNED NOT NULL DEFAULT 0,
   `active`            TINYINT(1) NOT NULL,
   `create_user`       VARCHAR(25) NOT NULL,
   `create_time`       DATETIME NOT NULL,
