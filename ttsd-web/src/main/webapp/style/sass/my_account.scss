@@ -1212,6 +1212,29 @@
     position: relative;
     background: url("/images/icons/logo-transport.png") -14px -20px no-repeat;
     margin-top:12px;
+    .sign-seal {
+      display: none;
+      width: 80px;
+      height: 80px;
+      border: 3px solid #7f7f7f;
+      color: #7f7f7f;
+      text-align: center;
+      line-height: 80px;
+      position: absolute;
+      left: 45%;
+      top: 20%;
+      border-radius: 40px;
+      span {
+        -webkit-transform: rotate(30deg);
+        -moz-transform: rotate(30deg);
+        transform: rotate(-30deg);
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 1.2;
+        padding-top: 16px;
+        display: block;
+      }
+    }
     .vertical-line {
       height:94%;
       width:1px;
@@ -1274,33 +1297,10 @@
     }
     &.ticket-status-used,&.ticket-status-expired {
       .ticket-info dl dd.tc .btn-action {
-        &:disabled {
           background: #ccc!important;
           border-color: #ccc!important;
           color: #808080!important;
-        }
-      }
-      .sign-seal {
-        width: 80px;
-        height: 80px;
-        border: 3px solid #7f7f7f;
-        color: #7f7f7f;
-        text-align: center;
-        line-height: 80px;
-        position: absolute;
-        left: 45%;
-        top: 20%;
-        border-radius: 40px;
-        span {
-          -webkit-transform: rotate(30deg);
-          -moz-transform: rotate(30deg);
-          transform: rotate(-30deg);
-          font-weight: bold;
-          font-size: 20px;
-          line-height: 1.2;
-          padding-top: 16px;
-          display: block;
-        }
+          cursor: not-allowed;
       }
     }
     &.ticket-status-expired {
@@ -1309,6 +1309,9 @@
         background: #989898 url("/images/icons/line-wheel.png") right -162px no-repeat;
       }
       .sign-seal {
+        &.sign-expired {
+          display: block;
+        }
         border: 3px solid #ff752a;
         color: #ff752a;
       }
@@ -1319,6 +1322,13 @@
         color: #b2b2b2;
       }
 
+    }
+    &.ticket-status-used {
+      .sign-seal {
+        &.sign-used {
+          display: block;
+        }
+      }
     }
   }
 }
