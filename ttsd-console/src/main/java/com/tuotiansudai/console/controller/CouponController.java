@@ -28,4 +28,15 @@ public class CouponController {
     }
 
 
+    @RequestMapping(value = "/coupon/{couponId}/active",method = RequestMethod.POST)
+    @ResponseBody
+    public String activeCoupon(@PathVariable String couponId){
+        String loginName = LoginUserInfo.getLoginName();
+
+        return "ok";
+    }
+
+
+
+
 }
