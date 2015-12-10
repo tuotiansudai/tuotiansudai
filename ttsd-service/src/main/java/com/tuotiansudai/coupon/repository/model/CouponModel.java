@@ -36,6 +36,10 @@ public class CouponModel implements Serializable {
 
     private long issuedCount;
 
+    private long expectTotal;
+
+    private long repayTotal;
+
     public long getId() {
         return id;
     }
@@ -138,6 +142,22 @@ public class CouponModel implements Serializable {
 
     public void setIssuedCount(long issuedCount) {
         this.issuedCount = issuedCount;
+    }
+
+    public long getExpectTotal() {
+        return expectTotal;
+    }
+
+    public void setExpectTotal(long expectTotal) {
+        this.expectTotal = expectTotal;
+    }
+
+    public long getRepayTotal() {
+        return repayTotal;
+    }
+
+    public void setRepayTotal(long repayTotal) {
+        this.repayTotal = repayTotal;
     }
 
     public CouponModel(){

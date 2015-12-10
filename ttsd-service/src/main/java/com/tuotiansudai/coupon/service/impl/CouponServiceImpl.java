@@ -24,6 +24,9 @@ public class CouponServiceImpl implements CouponService {
     @Autowired
     private CouponMapper couponMapper;
 
+    @Autowired
+    private UserCouponServiceImpl userCouponService;
+
     @Override
     @Transactional
     public void createCoupon(String loginName,CouponDto couponDto) throws CreateCouponException {
@@ -81,7 +84,12 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public List<CouponModel> findCoupons(int index, int pageSize) {
-        return couponMapper.findCoupons((index - 1 ) * pageSize, pageSize);
+        List<CouponModel> couponModels = couponMapper.findCoupons((index - 1 ) * pageSize, pageSize);
+        for (CouponModel couponModel : couponModels) {
+            couponModel.setExpectTotal(userCouponService.findExpectedTotalByCouponId(couponModel.getId(), couponModel.getAmount()));
+            couponModel.setRepayTotal();
+        }
+        return couponModels;
     }
 
     @Override
