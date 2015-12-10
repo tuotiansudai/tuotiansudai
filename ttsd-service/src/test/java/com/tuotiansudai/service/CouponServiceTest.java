@@ -4,6 +4,7 @@ import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import org.joda.time.DateTime;
@@ -29,12 +30,15 @@ public class CouponServiceTest {
     private UserMapper userMapper;
 
     @Test
-    public void shouldCreateCouponIsSuccess() {
+    public void shouldCreateCouponIsSuccess() throws CreateCouponException {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
         CouponDto couponDto = fakeCouponDto();
-        BaseDto<PayDataDto> baseDto = couponService.createCoupon("couponTest", couponDto);
-        assertEquals(true,baseDto.getData().getStatus());
+        DateTime dateTime = new DateTime().plusDays(1);
+        couponDto.setStartTime(dateTime.toDate());
+        couponDto.setEndTime(dateTime.toDate());
+        couponService.createCoupon("couponTest", couponDto);
+
     }
     @Test
     public void shouldCreateCouponAmountIsInvalid(){
@@ -42,21 +46,26 @@ public class CouponServiceTest {
         userMapper.create(userModel);
         CouponDto couponDto = fakeCouponDto();
         couponDto.setAmount("0.00");
-        BaseDto<PayDataDto> baseDto = couponService.createCoupon("couponTest", couponDto);
-        assertEquals(false,baseDto.getData().getStatus());
-        assertEquals("投资体验券金额应大于0!",baseDto.getData().getMessage());
+        try {
+            couponService.createCoupon("couponTest", couponDto);
+        } catch (CreateCouponException e) {
+            assertEquals("投资体验券金额应大于0!",e.getMessage());
+        }
+
     }
 
     @Test
-    public void shouldCreateCouponStartTimeIsInvalid(){
+    public void shouldCreateCouponStartTimeIsInvalid()  {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
         CouponDto couponDto = fakeCouponDto();
         DateTime dateTime = new DateTime().plusDays(-1);
         couponDto.setStartTime(dateTime.toDate());
-        BaseDto<PayDataDto> baseDto = couponService.createCoupon("couponTest", couponDto);
-        assertEquals(false,baseDto.getData().getStatus());
-        assertEquals("活动起期不能早于当前日期!",baseDto.getData().getMessage());
+        try {
+            couponService.createCoupon("couponTest", couponDto);
+        } catch (CreateCouponException e) {
+            assertEquals("活动起期不能早于当前日期!", e.getMessage());
+        }
     }
 
     private UserModel fakeUserModel() {
