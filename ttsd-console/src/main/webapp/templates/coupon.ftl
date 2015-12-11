@@ -3,13 +3,7 @@
 
 <!-- content area begin -->
 <div class="col-md-10">
-	<form action="" method="get" class="form-horizontal jq-form">
-		<div class="form-group">
-            <label class="col-sm-2 control-label"></label>
-
-            <div class="col-sm-4 form-error">
-            </div>
-        </div>
+	<form action="" method="get" class="form-horizontal form-list">
 		<div class="form-group">
 			<label class="col-sm-2 control-label">投资体验券名称: </label>
 			<div class="col-sm-4">
@@ -19,7 +13,7 @@
 		<div class="form-group">
 			<label  class="col-sm-2 control-label">投资体验券金额(元): </label>
 			<div class="col-sm-4">
-				<input type="text" class="form-control" name="moneyNumber" placeholder="" value="" datatype="*" errormsg="投资体验券金额不能为空">
+				<input type="text" class="form-control coupon-number" name="moneyNumber" placeholder="" value="" datatype="*" errormsg="投资体验券金额不能为空">
 			</div>
 		</div>
 		<div class="form-group">
@@ -65,6 +59,11 @@
 				</select>
 			</div>
 		</div>
+		<div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-4 form-error">
+            </div>
+        </div>
 		<div class="form-group">
 			<label  class="col-sm-2 control-label">操作: </label>
 			<div class="col-sm-4">

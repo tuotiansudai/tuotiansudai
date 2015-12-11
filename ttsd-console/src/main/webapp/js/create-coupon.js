@@ -1,4 +1,4 @@
-require(['jquery', 'template', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstrapSelect', 'moment', 'Validform', 'Validform_Datatype', 'csrf'], function($) {
+require(['jquery', 'template', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstrapSelect', 'moment', 'Validform', 'Validform_Datatype'], function($) {
     $(function() {
         var $selectDom = $('.selectpicker'), //select表单
             $dateStart = $('#startTime'), //开始时间
@@ -72,24 +72,13 @@ require(['jquery', 'template', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-u
                 currentErrorObj.focus();
             }
         });
-        
+
         //提交表单
         $submitBtn.on('click', function(event) {
             event.preventDefault();
-
             var $self = $(this);
             if (boolFlag) {
-                console.log('1');
                 $self.attr('disabled', 'disabled');
-                var dataForm = JSON.stringify({
-                    "projectName": $('.jq-user').val(),
-                    "agentLoginName": $('.jq-agent').val(),
-                    "loanerLoginName": $('.jq-loaner-login-name').val(),
-                    "loanerIdentityNumber": $('.jq-loaner-identity-number').val(),
-                    "loanerUserName": $('.jq-loaner-user-name').val(),
-                    "type": $('.jq-mark-type').val(),
-                    "periods": $('.jq-timer').val()
-                });
                 $.ajax({
                     url: API_FORM,//请求地址
                     type: 'POST',
