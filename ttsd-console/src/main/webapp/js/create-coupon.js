@@ -1,10 +1,11 @@
-require(['jquery', 'template', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstrapSelect', 'moment', 'Validform', 'Validform_Datatype'], function($) {
+require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstrapSelect', 'moment', 'Validform', 'Validform_Datatype'], function($) {
     $(function() {
         var $selectDom = $('.selectpicker'), //select表单
             $dateStart = $('#startTime'), //开始时间
             $dateEnd = $('#endTime'), //结束时间
             $errorDom = $('.form-error'), //错误提示节点
             $submitBtn = $('#btnSave'), //提交按钮
+            $couponForm = $('.form-list'),
             boolFlag = false, //校验布尔变量值
             currentErrorObj = null;
 
@@ -41,6 +42,39 @@ require(['jquery', 'template', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-u
             $errorDom.append(html);
         }
 
+        // 充值金额保留小数点后2位
+        var rep = /^\d+$/;
+        var rep_point = /^([0-9]+\.[0-9]{2})[0-9]*$/;
+        var rep_point1 = /^[0-9]+\.[0-9]$/;
+        $('.coupon-number').blur(function () {
+            var _this = $(this),
+                text = _this.val(),
+                num = text.replace(rep_point, "$1");
+            if (rep.test(text)) {
+                _this.val(text + '.00').removeClass('Validform_error');
+            } else if (rep_point.test(text)) {
+                _this.val(num).removeClass('Validform_error');
+            } else if (rep_point1.test(text)) {
+                _this.val(text + '0').removeClass('Validform_error');
+            } else {
+                _this.val('').addClass('Validform_error');
+            }
+        });
+
+        var rep_point2 = /^[0-9]+\.[0-9]*$/;
+
+        $('.give-number').blur(function () {
+            var _this = $(this),
+                text = _this.val(),
+                num = text.replace(rep, "$1");
+            if (rep.test(text)) {
+                _this.val(text).removeClass('Validform_error');
+            }else if (rep_point2.test(text)) {
+                _this.val(parseInt(text)).removeClass('Validform_error');
+            }else {
+                _this.val('').addClass('Validform_error');
+            }
+        });
         //表单校验初始化参数
         $(".form-list").Validform({
             btnSubmit: '#btnSave',
@@ -57,6 +91,11 @@ require(['jquery', 'template', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-u
                 $errorDom.html('');
                 if (periods <= 0) {
                     showErrorMessage('投资体验券金额最小为1', $('.coupon-number', curform));
+                    return false;
+                }
+                var fivenumber = parseInt($('.give-number', curform).val());
+                if (fivenumber <= 0) {
+                    showErrorMessage('最小为1', $('.coupon-number', curform));
                     return false;
                 }
             },
@@ -79,37 +118,7 @@ require(['jquery', 'template', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-u
             var $self = $(this);
             if (boolFlag) {
                 $self.attr('disabled', 'disabled');
-                $.ajax({
-                    url: API_FORM,//请求地址
-                    type: 'POST',
-                    dataType: 'json',
-                    contentType: 'application/json; charset=UTF-8',
-                    data: {
-                        "name": $('.coupon-name').val(),
-                        "amount": $('.coupon-number').val(),
-                        "startTime": $('.coupon-start').val(),
-                        "endTime": $('.coupon-end').val(),
-                        "totalCount": $('.coupon-total').val()
-                    }
-                })
-                .done(function(res) {
-                    console.log("success");
-                    if (res.data.status) {
-                        boolFlag = true;
-                        location.href = '/project-manage/loan-list';
-                    } else {
-                        boolFlag = false;
-                        var msg = res.data.message || '服务端校验失败';
-                        showErrorMessage(msg);
-                    }
-                })
-                .fail(function() {
-                    console.log("error");
-                    $self.removeAttr('disabled');
-                })
-                .always(function() {
-                    console.log("complete");
-                });
+                $couponForm[0].submit();
             }
         });
 
