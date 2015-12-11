@@ -1,6 +1,8 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.coupon.dto.CouponDto;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -28,6 +30,8 @@ public class CouponServiceTest {
     private CouponService couponService;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private CouponMapper couponMapper;
 
     @Test
     public void shouldCreateCouponIsSuccess() throws CreateCouponException {
@@ -66,6 +70,30 @@ public class CouponServiceTest {
         } catch (CreateCouponException e) {
             assertEquals("活动起期不能早于当前日期!", e.getMessage());
         }
+    }
+    @Test
+    public void shouldAfterReturningUserRegisteredIsSuccess() throws CreateCouponException {
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+        CouponDto couponDto = fakeCouponDto();
+        DateTime startDateTime = new DateTime().plusDays(-1);
+        DateTime endDateTime = new DateTime().plusDays(1);
+        couponDto.setStartTime(startDateTime.toDate());
+        couponDto.setEndTime(endDateTime.toDate());
+        CouponModel couponModel = new CouponModel(couponDto);
+        couponModel.setCreateUser("couponTest");
+        couponModel.setActive(true);
+        System.out.println("start" + couponDto.getStartTime().toString());
+        System.out.println("end" + couponDto.getEndTime().toString());
+        couponMapper.create(couponModel);
+
+        CouponModel couponModel1 = couponMapper.findCouponByName("优惠券");
+        long id = couponModel1.getId();
+        couponService.afterReturningUserRegistered("couponTest");
+        CouponModel couponModel2 = couponMapper.findCouponById(id);
+
+        assertEquals(1,couponModel2.getIssuedCount());
+
     }
 
     private UserModel fakeUserModel() {

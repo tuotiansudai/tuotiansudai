@@ -102,4 +102,13 @@ public class UserCouponModel {
     public void setActualFee(long actualFee) {
         this.actualFee = actualFee;
     }
+
+    public UserCouponModel(){}
+
+    public UserCouponModel(String loginName,long couponId){
+        this.loginName = loginName;
+        this.couponId = couponId;
+        this.createTime = new Date();
+    }
+
 }
