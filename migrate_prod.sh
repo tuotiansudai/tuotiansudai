@@ -21,7 +21,7 @@ echo "###### CREATE user_bill_seq_temp TABLE FOR account "
 
 echo ""
 echo "###### ADD INDEX ON seq_num FIELD IN user_bill "
-`$DB_CON_OLD -e"ALTER TABLE user_bill add index ix_seq_num(seq_num)"` 2>/dev/null
+`$DB_CON_OLD -e"ALTER TABLE user_bill add index ix_seq_num(seq_num)" 2>/dev/null`
 
 echo ""
 echo "####### DELETE WRONG DATA IN bank_card "
@@ -36,6 +36,7 @@ echo "####### CREATE withdraw_cash_temp TABLE "
 python scripts/data_migration/withdraw_pre.py 2>/dev/null
 
 
+echo ""
 echo "###### Search old data count, wait some seconds #####"
 COUNT_account=`$DB_CON_OLD -e"select count(1) from trusteeship_account" | sed -n 2p`
 COUNT_audit_log=`$DB_CON_OLD -e"select count(1) from user_info_log where is_success=1" | sed -n 2p`
@@ -61,7 +62,6 @@ clear_table(){
   if [ -n "$1" ]; then
     tableName=$1
     echo ""
-    echo ""
     echo "###### Clear $tableName table Start ######"
     $DB_CON_NEW -e "set foreign_key_checks=0; truncate table $tableName"
     echo "###### Clear $tableName table Done ######"
@@ -77,24 +77,26 @@ clear_db(){
 
   SQL='set foreign_key_checks=0;'
   for t in $TABLES; do SQL=$SQL'truncate table '$t';';done;
-#echo "SQL: $SQL";
+  #echo "SQL: $SQL";
   $DB_CON_NEW -e"$SQL";
   echo "###### Clear aa DB Done ######"
 }
 
 simple_migrate(){
   tableName=$1
-  echo "##### MIGRATE $tableName TABLE #####"
+  echo "##### MIGRATE $tableName "
   {
-    echo "$tableName start";
+    #echo "$tableName start";
     python $SCRIPT_PATH -t $tableName 2>$LOG_PATH/$tableName.log;
-    echo "$tableName end";
+    #echo "$tableName end";
   }&
+  wait $!
+  echo "$tableName TABLE DONE #####"
 }
 
 batch_migrate() {
   tableName=$1
-  echo "##### MIGRATE $tableName TABLE #####"
+  echo "##### MIGRATE $tableName "
 
   eval specialCount=$(echo \${BATCH_SIZE_$tableName})
 
@@ -120,7 +122,7 @@ batch_migrate() {
   done;
   #echo $tableName"-Pid:"$Pid
   wait $Pid
-  echo "##### MIGRATE $tableName TABLE DONE #####"
+  echo "$tableName TABLE DONE #####"
 }
 
 simple_verify(){
@@ -180,7 +182,7 @@ migrate_all(){
 echo ""
 echo "##### migrate v1 tables into new db #####"
 
-  simple_migrate announce
+  simple_migrate announce &
   batch_migrate user &
   user_pid=$!
 
@@ -193,7 +195,7 @@ echo "##### migrate v1 tables into new db #####"
   batch_migrate user_role &
   batch_migrate user_bill &
 #  wait
-  simple_migrate audit_log
+  simple_migrate audit_log &
   batch_migrate referrer_relation &
 
   batch_migrate recharge &
@@ -206,19 +208,19 @@ echo "##### migrate v1 tables into new db #####"
   batch_migrate withdraw
 }&
 
-  simple_migrate loan
+  simple_migrate loan &
   loan_pid=$!
 
   wait $loan_pid
-  simple_migrate loan_title_relation
-  simple_migrate loan_repay
+  simple_migrate loan_title_relation &
+  simple_migrate loan_repay &
 
-  simple_migrate invest
+  simple_migrate invest &
   invest_pid=$!
 
   wait $invest_pid
-  simple_migrate invest_repay
-  simple_migrate invest_referrer_reward
+  simple_migrate invest_repay &
+  simple_migrate invest_referrer_reward &
   wait
 }
 
@@ -246,7 +248,7 @@ verify(){
   verify_system_bill
   verify_user_bill
   verify_recharge
-  echo "####### Done #######"
+  echo "####### Verify Done #######"
 }
 
 main(){
