@@ -7,40 +7,28 @@ import java.io.Serializable;
 
 public class InvestRepayJobResultDto implements Serializable {
 
-    @JsonProperty(value = "investId")
     private long investId;
 
-    @JsonProperty(value = "investRepayId")
     private long investRepayId;
 
-    @JsonProperty(value = "investorLoginName")
     private String investorLoginName;
 
-    @JsonProperty(value = "corpus")
     private long corpus;
 
-    @JsonProperty(value = "actualInterest")
     private long actualInterest;
 
-    @JsonProperty(value = "actualFee")
     private long actualFee;
 
-    @JsonProperty(value = "defaultInterest")
     private long defaultInterest;
 
-    @JsonProperty(value = "interestStatus")
     private SyncRequestStatus interestStatus;
 
-    @JsonProperty(value = "isUpdateInvestorUserBillSuccess")
     private boolean isUpdateInvestorUserBillSuccess;
 
-    @JsonProperty(value = "isUpdateInvestRepaySuccess")
     private boolean isUpdateInvestRepaySuccess;
 
-    @JsonProperty(value = "feeStatus")
     private SyncRequestStatus feeStatus;
 
-    @JsonProperty(value = "isUpdateSystemBillSuccess")
     private boolean isUpdateSystemBillSuccess;
 
     public InvestRepayJobResultDto() {
@@ -58,50 +46,62 @@ public class InvestRepayJobResultDto implements Serializable {
         this.feeStatus = actualFee == 0 ? SyncRequestStatus.SUCCESS : SyncRequestStatus.READY;
     }
 
+    @JsonProperty(value = "investId")
     public long getInvestId() {
         return investId;
     }
 
+    @JsonProperty(value = "investRepayId")
     public long getInvestRepayId() {
         return investRepayId;
     }
 
+    @JsonProperty(value = "investorLoginName")
     public String getInvestorLoginName() {
         return investorLoginName;
     }
 
+    @JsonProperty(value = "corpus")
     public long getCorpus() {
         return corpus;
     }
 
+    @JsonProperty(value = "actualInterest")
     public long getActualInterest() {
         return actualInterest;
     }
 
+    @JsonProperty(value = "actualFee")
     public long getActualFee() {
         return actualFee;
     }
 
+    @JsonProperty(value = "defaultInterest")
     public long getDefaultInterest() {
         return defaultInterest;
     }
 
+    @JsonProperty(value = "interestStatus")
     public SyncRequestStatus getInterestStatus() {
         return interestStatus;
     }
 
+    @JsonProperty(value = "isUpdateInvestorUserBillSuccess")
     public boolean isUpdateInvestorUserBillSuccess() {
         return isUpdateInvestorUserBillSuccess;
     }
 
+    @JsonProperty(value = "isUpdateInvestRepaySuccess")
     public boolean isUpdateInvestRepaySuccess() {
         return isUpdateInvestRepaySuccess;
     }
 
+    @JsonProperty(value = "feeStatus")
     public SyncRequestStatus getFeeStatus() {
         return feeStatus;
     }
 
+    @JsonProperty(value = "isUpdateSystemBillSuccess")
     public boolean isUpdateSystemBillSuccess() {
         return isUpdateSystemBillSuccess;
     }
