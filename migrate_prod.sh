@@ -257,10 +257,15 @@ main(){
 # delete wrong data in bank_card, delete incorrect bind card of the two users, keep the correct ones
 `$DB_CON_OLD -e"delete from bank_card where user_id = 'susiepo' and card_no = '6212261203009214445';delete from bank_card where user_id = 'zjh1036517331' and card_no = '6228480089814033877';"`
 
+python scripts/data_migration/bank_card_pre.py
+python scripts/data_migration/withdraw_pre.py
+
 main $1
 
 `$DB_CON_OLD -e"DROP TABLE IF EXISTS user_bill_seq_temp;"`
 `$DB_CON_NEW -e"ALTER TABLE user_bill AUTO_INCREMENT=$[$COUNT_user_bill+1];"`
+#`$DB_CON_OLD -e"DROP TABLE IF EXISTS bank_card_temp;"`
+#`$DB_CON_OLD -e"DROP TABLE IF EXISTS withdraw_cash_temp;"`
 
 : '
 clear_table user

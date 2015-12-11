@@ -7,52 +7,7 @@ class BankCardMigrate(BaseMigrate):
     Class Naming Convention: `NewTableNameMigrate(BaseMigrate)`
     """
     # select sql which is executed on original db (edxapp, tuotiansudai etc)
-    SELECT_SQL = '''SELECT 
-                        *
-                    FROM
-                        (
-                            SELECT
-                                id,
-                                user_id,
-                                bank_no,
-                                card_no,
-                                status,
-                                is_open_fastPayment,
-                                time
-                            FROM
-                                bank_card
-                            WHERE
-                                status = 'remove'
-
-                            UNION ALL
-
-                            SELECT
-                                b.id,
-                                b.user_id,
-                                b.bank_no,
-                                b.card_no,
-                                b.status,
-                                b.is_open_fastPayment,
-                                b.time
-                            FROM
-                                bank_card b
-                            JOIN
-                                (
-                                    SELECT
-                                        bc.user_id,
-                                        MAX(bc.time) AS time
-                                    FROM
-                                        bank_card bc
-                                    WHERE
-                                        bc.status = 'passed'
-                                    GROUP BY bc.user_id
-                                ) bs
-                            ON
-                                b.user_id = bs.user_id
-                                and b.time = bs.time
-                            GROUP BY b.user_id, b.time
-                        )
-                     temp LIMIT %s, %s'''
+    SELECT_SQL = "SELECT id, user_id, bank_no, card_no, status, is_open_fastPayment, time FROM bank_card_temp ORDER BY time LIMIT %s, %s "
     
     # insert sql which is executed on aa db
     INSERT_SQL = "INSERT INTO bank_card(`id`, `login_name`, `bank_code`, `card_number`, `status`, `is_fast_pay_on`, `created_time`) "\
@@ -83,3 +38,4 @@ class BankCardMigrate(BaseMigrate):
 
     def before(self):
         pass
+
