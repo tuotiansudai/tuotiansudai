@@ -70,6 +70,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                         $btnLookOther.prop('disabled', false);
                         $btnLookOther.html('马上投资');
                         $accountInfo.find('.time-item').remove();
+                        $accountInfo.find('.expected-interest').parents('dd').removeClass('hide');
                     }
                     if (minute <= 9) minute = '0' + minute;
                     if (second <= 9) second = '0' + second;
@@ -179,7 +180,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     if(isNaN(parseFloat(amount))) {
                         return false;
                     }
-                    var investAmount = parseFloat($('form input[name="amount"]').val());
+                    var investAmount = parseFloat(amount);
                     var accountAmount = parseFloat($('form .account-amount').text());
                     if(investAmount > accountAmount){
                         location.href = '/recharge';

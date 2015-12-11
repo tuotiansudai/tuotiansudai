@@ -7,7 +7,7 @@
     <div class="refer-reward-bg">
         <div class="refer-reward-inner">
             <img src="${staticServer}/images/sign/activities/awards-info.png">
-            <img src="${staticServer}/images/sign/activities/reward.png">
+            <img src="${staticServer}/images/sign/activities/reward.jpg">
             <img src="${staticServer}/images/sign/activities/recommend-note.png">
         </div>
     </div>
