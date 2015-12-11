@@ -33,7 +33,7 @@
     {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'INVESTOR', 'LOANER'"},
     {"title":"我的宝藏", "url":"/my-treasure", "role":"'INVESTOR', 'LOANER'"}
     ]},
-    {"title":"推荐奖励", "url":"/events/refer-reward-instruction"},
+    {"title":"推荐奖励", "url":"/activity/refer-reward"},
     {"title":"关于我们", "url":"/about/company", "leftNavs":[
     {"title":"公司介绍", "url":"/about/company"},
     {"title":"团队介绍", "url":"/about/team"},
@@ -102,7 +102,30 @@
     });
     </@security.authorize>
 
+    adjustMobileHideHack();
+    function adjustMobileHideHack() {
+
+        //this function will be remove when all pages are responsive
+        var bodyDom=document.getElementsByTagName("body")[0],
+            userAgent = navigator.userAgent.toLowerCase(),
+            metaTags=document.getElementsByTagName('meta'),
+            metaLen=metaTags.length,isResponse=false,isPC=false,i=0;
+        if(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
+            isPC=false;
+        }
+        else {
+            isPC=true;
+        }
+        for(;i<metaLen;i++) {
+            if(metaTags[i].getAttribute('name')=='viewport') {
+                isResponse=true;
+            }
+        }
+        bodyDom.className=(!isResponse&&!isPC)?'page-width':'';
+    }
+
     function phoneLoadFun() {
+
         document.getElementById('closeDownloadBox').addEventListener('click',function(event) {
             event.stopPropagation();
             event.preventDefault();
@@ -129,7 +152,7 @@
 
     }
     var imgDom=document.getElementById('iphone-app-img'),
-            TopMainMenuList=document.getElementById('TopMainMenuList');
+        TopMainMenuList=document.getElementById('TopMainMenuList');
 
     document.getElementById('iphone-app-pop').addEventListener('click',function(event) {
         event.stopPropagation();
@@ -149,7 +172,15 @@
         }
         imgDom.style.display='none';
         if(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
-            TopMainMenuList.style.display='none';
+
+            //判断是否为viewport
+            var metaTags=document.getElementsByTagName('meta'),
+                    metaLen=metaTags.length,i=0;
+            for(;i<metaLen;i++) {
+                if(metaTags[i].getAttribute('name')=='viewport') {
+                    TopMainMenuList.style.display='none';
+                }
+            }
         }
 
     });

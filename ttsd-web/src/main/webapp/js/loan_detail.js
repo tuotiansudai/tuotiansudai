@@ -67,6 +67,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     }else{
                         $btnLookOther.prop('disabled', false);
                         $btnLookOther.html('马上投资');
+                        $accountInfo.find('.time-item').remove();
+                        $accountInfo.find('.expected-interest').parents('dd').removeClass('hide');
                     }
                     if (minute <= 9) minute = '0' + minute;
                     if (second <= 9) second = '0' + second;
@@ -77,20 +79,10 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             }, 1000);
         }
 
-            if($('#loanStatus').val() == 'PREHEAT' ){
-                timer(intDiff);
-            }
+        if($('#loanStatus').val() == 'PREHEAT' ){
+            timer(intDiff);
+        }
 
-
-        $btnLookOther.click(function(){
-            var investAmount = parseFloat($('form input[name="amount"]').val());
-            var accountAmount = parseFloat($('form .account-amount').text());
-            if(investAmount > accountAmount){
-                location.href = '/recharge';
-                return false;
-            }
-            return true;
-        });
 
         if(amountInputElement.length) {
             if($experienceTicket.is(':hidden')) {
@@ -147,7 +139,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     $('.expected-interest').html(amount);
                     $btnLookOther.prop('disabled', false);
                 });
-            }
+            };
             calExpectedInterest(true);
             amountInputElement.blur(function(){calExpectedInterest(false);});
 
@@ -162,6 +154,13 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     if(isNaN(parseFloat(amount))) {
                         return false;
                     }
+                    var investAmount = parseFloat(amount);
+                    var accountAmount = parseFloat($('form .account-amount').text());
+                    if(investAmount > accountAmount){
+                        location.href = '/recharge';
+                        return false;
+                    }
+                    return true;
                 }
                 return true;
             });

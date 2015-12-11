@@ -51,7 +51,7 @@
                     <th>年利率</th>
                     <th>贷款周期</th>
                     <th>项目周期</th>
-                    <th>预计还款</th>
+                    <th>预计还款(元)</th>
                     <th>还款日期</th>
                 </tr>
                 </thead>
@@ -64,7 +64,7 @@
                             <td>${(repay.loan.periods?string('0'))!}<#if repay.loan.type == 'INVEST_INTEREST_MONTHLY_REPAY' || repay.loan.type == 'LOAN_INTEREST_MONTHLY_REPAY'>个月<#else>天</#if></td>
                             <td>第${(repay.period?string('0'))!}期/${(repay.loan.periods?string('0'))!}期</td>
                             <td><#if repay.status == 'COMPLETE'>${(((repay.corpus+repay.actualInterest+repay.defaultInterest)/100)?string('0.00'))!}<#else>${(((repay.corpus+repay.expectedInterest+repay.defaultInterest)/100)?string('0.00'))!}</#if>
-                                元
+
                             </td>
                             <td><#if repay.status == 'COMPLETE'>${(repay.actualRepayDate?string('MM月dd日'))!}<#else>${(repay.repayDate?string('MM月dd日'))!}</#if></td>
                         </tr>
@@ -92,7 +92,7 @@
                 <th>年利率</th>
                 <th>贷款周期</th>
                 <th>项目周期</th>
-                <th>预计还款</th>
+                <th>预计还款(元)</th>
                 <th>还款日期</th>
             </tr>
             </thead>
@@ -104,7 +104,7 @@
                         <td>${(((successSumInvestRepay.loan.activityRate+successSumInvestRepay.loan.baseRate)*100)?string('0.00'))!}%</td>
                         <td>${(successSumInvestRepay.loan.periods?string('0'))!}<#if successSumInvestRepay.loan.type == 'INVEST_INTEREST_MONTHLY_REPAY' || successSumInvestRepay.loan.type == 'LOAN_INTEREST_MONTHLY_REPAY'>个月<#else>天</#if></td>
                         <td>第${(successSumInvestRepay.period?string('0'))!}期/${(successSumInvestRepay.loan.periods?string('0'))!}期</td>
-                        <td>${(((successSumInvestRepay.corpus+successSumInvestRepay.defaultInterest+successSumInvestRepay.actualInterest-successSumInvestRepay.actualFee)/100)?string('0.00'))!}元</td>
+                        <td>${(((successSumInvestRepay.corpus+successSumInvestRepay.defaultInterest+successSumInvestRepay.actualInterest-successSumInvestRepay.actualFee)/100)?string('0.00'))!}</td>
                         <td>${(successSumInvestRepay.actualRepayDate?string('MM月dd日'))!}</td>
                     </tr>
                     </#list>
@@ -125,7 +125,7 @@
                 <th>年利率</th>
                 <th>贷款周期</th>
                 <th>项目周期</th>
-                <th>预计还款</th>
+                <th>预计还款(元)</th>
                 <th>还款日期</th>
             </tr>
             </thead>
@@ -138,7 +138,7 @@
                         <td>${(notSuccessSumInvestRepay.loan.periods?string('0'))!}<#if notSuccessSumInvestRepay.loan.type == 'INVEST_INTEREST_MONTHLY_REPAY' || notSuccessSumInvestRepay.loan.type == 'LOAN_INTEREST_MONTHLY_REPAY'>个月<#else>天</#if></td>
                         <td>第${(notSuccessSumInvestRepay.period?string('0'))!}期/${(notSuccessSumInvestRepay.loan.periods?string('0'))!}期</td>
                         <td>${(((notSuccessSumInvestRepay.corpus+notSuccessSumInvestRepay.defaultInterest+notSuccessSumInvestRepay.expectedInterest-notSuccessSumInvestRepay.expectedFee)/100)?string('0.00'))!}
-                            元
+
                         </td>
                         <td>${(notSuccessSumInvestRepay.repayDate?string('MM月dd日'))!}</td>
                     </tr>
@@ -161,8 +161,8 @@
                 <th>交易时间</th>
                 <th>交易详情</th>
                 <th>交易状态</th>
-                <th>下次回款</th>
-                <th>我的投资</th>
+                <th>下次回款(元)</th>
+                <th>我的投资(元)</th>
             </tr>
             </thead>
             <tbody>
@@ -173,9 +173,9 @@
                         <td><a href="/loan/${latestInvest.loanId?string('0')}" class="trade-detail">${latestInvest.loanName!}</a></td>
                         <td>投资成功</td>
                         <td><#if latestInvest.status??>${(latestInvest.repayDate?string('yyyy-MM-dd'))!} /
-                            ${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}元<#else>-/-</#if>
+                            ${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}<#else>-/-</#if>
                         </td>
-                        <td>￥${((latestInvest.investAmount/100)?string('0.00'))!}元</td>
+                        <td>￥${((latestInvest.investAmount/100)?string('0.00'))!}</td>
                     </tr>
                     </#list>
                 <#else>
