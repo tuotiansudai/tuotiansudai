@@ -21,7 +21,7 @@ echo "###### CREATE user_bill_seq_temp TABLE FOR account "
 
 echo ""
 echo "###### ADD INDEX ON seq_num FIELD IN user_bill "
-`$DB_CON_OLD -e"ALTER TABLE user_bill add index ix_seq_num(seq_num)" 2>/dev/null`
+`$DB_CON_OLD -e"ALTER TABLE user_bill add index ix_seq_num(seq_num)"`
 
 echo ""
 echo "####### DELETE WRONG DATA IN bank_card "
@@ -29,11 +29,11 @@ echo "####### DELETE WRONG DATA IN bank_card "
 
 echo ""
 echo "####### CREATE bank_card_temp TABLE "
-python scripts/data_migration/bank_card_pre.py 2>/dev/null
+python scripts/data_migration/bank_card_pre.py
 
 echo ""
 echo "####### CREATE withdraw_cash_temp TABLE "
-python scripts/data_migration/withdraw_pre.py 2>/dev/null
+python scripts/data_migration/withdraw_pre.py
 
 
 echo ""
@@ -55,7 +55,7 @@ COUNT_invest_repay=`$DB_CON_OLD -e"select count(1) FROM invest_repay WHERE statu
 COUNT_invest_referrer_reward=`$DB_CON_OLD -e"select count(1) FROM invest_userreferrer where invest_id not in (select id from invest where status='test')" | sed -n 2p`
 COUNT_referrer_relation=`$DB_CON_OLD -e"select sum(a) from (select count(1) as a from referrer_relation rr where not exists(select 1 from user_role ur where ur.user_id = rr.referrer_id and ur.role_id='ROLE_MERCHANDISER') and level<=2 union select count(1) as a from referrer_relation rr where exists(select 1 from user_role ur where ur.user_id = rr.referrer_id and ur.role_id='ROLE_MERCHANDISER') and level<=4) aa" | sed -n 2p`
 
-echo "###### Search old data count, DONE #####"
+#echo "###### Search old data count, DONE #####"
 
 
 clear_table(){
@@ -64,12 +64,11 @@ clear_table(){
     echo ""
     echo "###### Clear $tableName table Start ######"
     $DB_CON_NEW -e "set foreign_key_checks=0; truncate table $tableName"
-    echo "###### Clear $tableName table Done ######"
+    #echo "###### Clear $tableName table Done ######"
   fi
 }
 
 clear_db(){
-  echo ""
   echo ""
   echo "###### Clear aa DB Start ######"
   sleep 1s
@@ -79,11 +78,12 @@ clear_db(){
   for t in $TABLES; do SQL=$SQL'truncate table '$t';';done;
   #echo "SQL: $SQL";
   $DB_CON_NEW -e"$SQL";
-  echo "###### Clear aa DB Done ######"
+  #echo "###### Clear aa DB Done ######"
 }
 
 simple_migrate(){
   tableName=$1
+  echo ""
   echo "##### MIGRATE $tableName "
   {
     #echo "$tableName start";
@@ -91,17 +91,19 @@ simple_migrate(){
     #echo "$tableName end";
   }&
   wait $!
+  echo ""
   echo "$tableName TABLE DONE #####"
 }
 
 batch_migrate() {
   tableName=$1
+  echo ""
   echo "##### MIGRATE $tableName "
 
   eval specialCount=$(echo \${BATCH_SIZE_$tableName})
 
   if [ ! -z $specialCount ] ; then
-    echo $tableName" special batch size:"$specialCount
+    #echo $tableName" special batch size:"$specialCount
     BATCH_SIZE=$specialCount
   fi
 
@@ -122,7 +124,8 @@ batch_migrate() {
   done;
   #echo $tableName"-Pid:"$Pid
   wait $Pid
-  echo "$tableName TABLE DONE #####"
+  echo ""
+  echo "$tableName  DONE #####"
 }
 
 simple_verify(){
@@ -157,7 +160,7 @@ verify_system_bill(){
 }
 
 verify_user_bill(){
-  oldCount=`$DB_CON_OLD -e"select count(distinct user_id, money, balance, frozen_money, type, type_info, time) from user_bill" | sed -n 2p`
+  oldCount=`$DB_CON_OLD -e"select count(distinct user_id, money, balance, frozen_money, type, type_info, time) from user_bill where detail not in ('未在联动优势开通账户,交易失败','未在联动优势绑定借记卡,交易失败')" | sed -n 2p`
   newCount=`$DB_CON_NEW -e"select count(distinct login_name, amount, balance, freeze, operation_type, business_type, created_time) from user_bill" | sed -n 2p`
   if (( oldCount == newCount)); then
     echo "user_bill migrate success";
