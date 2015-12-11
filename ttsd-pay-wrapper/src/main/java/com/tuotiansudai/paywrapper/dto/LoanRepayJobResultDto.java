@@ -73,7 +73,7 @@ public class LoanRepayJobResultDto implements Serializable {
     }
 
     @JsonIgnore
-    public boolean isSuccess() {
+    public boolean isFail() {
         Optional<InvestRepayJobResultDto> optional = Iterators.tryFind(this.investRepayJobResults.iterator(), new Predicate<InvestRepayJobResultDto>() {
             @Override
             public boolean apply(InvestRepayJobResultDto input) {
@@ -81,7 +81,7 @@ public class LoanRepayJobResultDto implements Serializable {
             }
         });
 
-        return !optional.isPresent() && !(loanRepayBalanceStatus == SyncRequestStatus.FAIL);
+        return optional.isPresent() || loanRepayBalanceStatus == SyncRequestStatus.FAIL;
     }
 
     public long getLoanId() {

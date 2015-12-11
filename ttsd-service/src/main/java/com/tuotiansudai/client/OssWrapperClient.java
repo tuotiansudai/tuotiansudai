@@ -5,6 +5,7 @@ import com.aliyun.oss.model.ObjectMetadata;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.repository.model.Environment;
 import org.apache.commons.fileupload.util.Streams;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,7 +56,7 @@ public class OssWrapperClient {
     private String sitePath;
 
     @Value("${common.environment}")
-    private String environment;
+    private Environment environment;
 
     public OSSClient getOSSClient() {
         return new OSSClient(ossEndpoint, accessKeyId, accessKeySecret);
@@ -104,7 +105,7 @@ public class OssWrapperClient {
             objectMeta.setContentType("image/jpeg");
             String sitePath = this.sitePath + new SimpleDateFormat("yyyyMMdd").format(new Date()) + File.separator;
             String filePath = sitePath + fileName;
-            if (environment != null && environment.equals("dev")) {
+            if (Environment.DEV == environment) {
                 String savefile = mkdir(rootPath + sitePath) + fileName;
                 FileOutputStream out = new FileOutputStream(new File(savefile));
                 BufferedOutputStream output = new BufferedOutputStream(out);

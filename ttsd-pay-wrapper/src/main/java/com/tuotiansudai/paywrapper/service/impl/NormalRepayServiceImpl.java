@@ -57,7 +57,7 @@ public class NormalRepayServiceImpl implements RepayService {
 
     protected final static String LOAN_REPAY_JOB_DATA_KEY_TEMPLATE = "pay:repay:{0}";
 
-    protected final static String REPAY_JOB_NAME_TEMPLATE = "REPAY-{0}";
+    protected final static String REPAY_JOB_NAME_TEMPLATE = "REPAY-{0}-{1}";
 
     @Autowired
     protected AccountMapper accountMapper;
@@ -160,28 +160,6 @@ public class NormalRepayServiceImpl implements RepayService {
         return callbackRequest.getResponseData();
     }
 
-    protected Long parseLoanRepayId(BaseCallbackRequestModel callbackRequest) {
-        if (!callbackRequest.isSuccess()) {
-            logger.error(MessageFormat.format("[Repay] Loan repay callback is not success (loanRepayId = {0})", callbackRequest.getOrderId()));
-            return null;
-        }
-
-        long loanRepayId;
-        try {
-            loanRepayId = Long.parseLong(callbackRequest.getOrderId().split(REPAY_ORDER_ID_SEPARATOR)[0]);
-        } catch (NumberFormatException e) {
-            logger.error(MessageFormat.format("[Repay] Loan repay id is invalid (loanRepayId = {0})", callbackRequest.getOrderId()), e);
-            return null;
-        }
-
-        LoanRepayModel enabledLoanRepay = loanRepayMapper.findById(loanRepayId);
-        if (enabledLoanRepay == null || enabledLoanRepay.getStatus() != RepayStatus.WAIT_PAY) {
-            logger.error(MessageFormat.format("[Repay] Loan repay is not existing or status is not WAIT_PAY (loanRepayId = {0})", String.valueOf(loanRepayId)));
-            return null;
-        }
-        return loanRepayId;
-    }
-
     @Override
     public String investPaybackCallback(Map<String, String> paramsMap, String originalQueryString) {
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, ProjectTransferNotifyMapper.class, ProjectTransferNotifyRequestModel.class);
@@ -238,7 +216,38 @@ public class NormalRepayServiceImpl implements RepayService {
 
         this.storeJobData(jobData);
 
-        return jobData.isSuccess();
+        boolean isFail = jobData.isFail();
+
+        if (isFail) {
+            this.createRepayJob(loanRepayId);
+        }
+
+        String value = redisWrapperClient.get(MessageFormat.format(LOAN_REPAY_JOB_DATA_KEY_TEMPLATE, String.valueOf(loanRepayId)));
+        logger.info(MessageFormat.format("[Normal Repay] repay job jobData : {0}", value));
+
+        return !isFail;
+    }
+
+    protected Long parseLoanRepayId(BaseCallbackRequestModel callbackRequest) {
+        if (!callbackRequest.isSuccess()) {
+            logger.error(MessageFormat.format("[Repay] Loan repay callback is not success (loanRepayId = {0})", callbackRequest.getOrderId()));
+            return null;
+        }
+
+        long loanRepayId;
+        try {
+            loanRepayId = Long.parseLong(callbackRequest.getOrderId().split(REPAY_ORDER_ID_SEPARATOR)[0]);
+        } catch (NumberFormatException e) {
+            logger.error(MessageFormat.format("[Repay] Loan repay id is invalid (loanRepayId = {0})", callbackRequest.getOrderId()), e);
+            return null;
+        }
+
+        LoanRepayModel enabledLoanRepay = loanRepayMapper.findById(loanRepayId);
+        if (enabledLoanRepay == null || enabledLoanRepay.getStatus() != RepayStatus.WAIT_PAY) {
+            logger.error(MessageFormat.format("[Repay] Loan repay is not existing or status is not WAIT_PAY (loanRepayId = {0})", String.valueOf(loanRepayId)));
+            return null;
+        }
+        return loanRepayId;
     }
 
     protected void generateJobData(long loanRepayId, boolean isAdvanceRepay) throws JsonProcessingException {
@@ -293,7 +302,7 @@ public class NormalRepayServiceImpl implements RepayService {
             jobManager.newJob(JobType.NormalRepay, NormalRepayJob.class)
                     .runOnceAt(fiveMinutesLater)
                     .addJobData(NormalRepayJob.LOAN_REPAY_ID, loanRepayId)
-                    .withIdentity(JobType.NormalRepay.name(), MessageFormat.format(REPAY_JOB_NAME_TEMPLATE, String.valueOf(loanRepayId)))
+                    .withIdentity(JobType.NormalRepay.name(), MessageFormat.format(REPAY_JOB_NAME_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new DateTime().getMillis())))
                     .submit();
         } catch (JsonProcessingException e) {
             logger.error(MessageFormat.format("[Normal Repay] Generate normal repay job data failed (loanRepayId = {0})", String.valueOf(loanRepayId)), e);

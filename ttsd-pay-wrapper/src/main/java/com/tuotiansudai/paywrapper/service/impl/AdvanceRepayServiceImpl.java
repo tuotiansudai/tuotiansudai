@@ -91,7 +91,7 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
         try {
             baseDto = payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
         } catch (PayException e) {
-            logger.error(MessageFormat.format("Generate repay form data failed (loanRepayId = {0})", String.valueOf(currentLoanRepay.getId())), e);
+            logger.error(MessageFormat.format("[Advance Repay] Generate repay form data failed (loanRepayId = {0})", String.valueOf(currentLoanRepay.getId())), e);
         }
 
         return baseDto;
@@ -116,7 +116,7 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
             String value = redisWrapperClient.get(MessageFormat.format(LOAN_REPAY_JOB_DATA_KEY_TEMPLATE, String.valueOf(loanRepayId)));
             jobData = objectMapper.readValue(value, LoanRepayJobResultDto.class);
         } catch (Exception e) {
-            logger.error(MessageFormat.format("[Normal Repay] Fetch job data from redis is failed (loanRepayId = {0})", String.valueOf(loanRepayId)));
+            logger.error(MessageFormat.format("[Advance Repay] Fetch job data from redis is failed (loanRepayId = {0})", String.valueOf(loanRepayId)));
             return false;
         }
 
@@ -125,7 +125,7 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
                 this.updateLoanAgentUserBill(jobData, UserBillBusinessType.ADVANCE_REPAY);
                 jobData.setUpdateAgentUserBillSuccess(true);
             } catch (AmountTransferException e) {
-                logger.error(MessageFormat.format("[Normal Repay] Transfer out balance for loan repay interest is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
+                logger.error(MessageFormat.format("[Advance Repay] Transfer out balance for loan repay interest is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
             }
         }
 
@@ -133,7 +133,7 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
             try {
                 this.updateLoanRepayStatus(jobData);
             } catch (Exception e) {
-                logger.error(MessageFormat.format("[Normal Repay] Update loan repay status is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
+                logger.error(MessageFormat.format("[Advance Repay] Update loan repay status is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
             }
         }
 
@@ -142,7 +142,7 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
                 loanService.updateLoanStatus(jobData.getLoanId(), LoanStatus.COMPLETE);
                 jobData.setUpdateLoanStatusSuccess(true);
             } catch (Exception e) {
-                logger.error(MessageFormat.format("[Normal Repay] Update loan status is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
+                logger.error(MessageFormat.format("[Advance Repay] Update loan status is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
             }
         }
 
@@ -152,7 +152,16 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
 
         this.storeJobData(jobData);
 
-        return jobData.isSuccess();
+        boolean isFail = jobData.isFail();
+
+        if (isFail) {
+            this.createRepayJob(loanRepayId);
+        }
+
+        String value = redisWrapperClient.get(MessageFormat.format(LOAN_REPAY_JOB_DATA_KEY_TEMPLATE, String.valueOf(loanRepayId)));
+        logger.info(MessageFormat.format("[Advance Repay] repay job data : {0}", value));
+
+        return !isFail;
     }
 
     @Transactional
@@ -197,7 +206,7 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
             jobManager.newJob(JobType.AdvanceRepay, AdvanceRepayJob.class)
                     .runOnceAt(fiveMinutesLater)
                     .addJobData(NormalRepayJob.LOAN_REPAY_ID, loanRepayId)
-                    .withIdentity(JobType.AdvanceRepay.name(), MessageFormat.format(REPAY_JOB_NAME_TEMPLATE, String.valueOf(loanRepayId)))
+                    .withIdentity(JobType.AdvanceRepay.name(), MessageFormat.format(REPAY_JOB_NAME_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new DateTime().getMillis())))
                     .submit();
         } catch (JsonProcessingException e) {
             logger.error(MessageFormat.format("[Advance Repay] Generate advance repay job data failed (loanRepayId = {0})", String.valueOf(loanRepayId)), e);

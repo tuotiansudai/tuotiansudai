@@ -32,5 +32,9 @@ public class NormalRepayJob implements Job {
         logger.info("trigger normal repay, loanRepayId = " + String.valueOf(loanRepayId));
 
         BaseDto<PayDataDto> dto = payWrapperClient.postNormalRepay(loanRepayId);
+
+        if (!dto.getData().getStatus()) {
+            throw new JobExecutionException();
+        }
     }
 }
