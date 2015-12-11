@@ -5,6 +5,12 @@
 <div class="col-md-10">
 	<form action="" method="get" class="form-horizontal jq-form">
 		<div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+
+            <div class="col-sm-4 form-error">
+            </div>
+        </div>
+		<div class="form-group">
 			<label class="col-sm-2 control-label">投资体验券名称: </label>
 			<div class="col-sm-4">
 				<input type="text" class="form-control" name="couponName" placeholder="" value="" datatype="*" errormsg="投资体验券名称不能为空">
@@ -29,7 +35,7 @@
 			<div class="line-size">-</div>
 			<div class="col-sm-2">
 				<div class='input-group date' id='endTime'>
-					<input type='text' class="form-control" name="endTime" value="" atatype="date" errormsg="请选择活动结束时间"/>
+					<input type='text' class="form-control" name="endTime" value="" datatype="date" errormsg="请选择活动结束时间"/>
 					<span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -39,7 +45,7 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">发放数量(张): </label>
 			<div class="col-sm-4">
-				<input type="text" class="form-control" name="giveNumber" placeholder="" value="" datatype="num" errormsg="发放数量需要填写数字">
+				<input type="text" class="form-control" name="giveNumber" placeholder="" value="" datatype="n" errormsg="发放数量需要填写数字">
 			</div>
 		</div>
 		<div class="form-group">
@@ -62,7 +68,7 @@
 		<div class="form-group">
 			<label  class="col-sm-2 control-label">操作: </label>
 			<div class="col-sm-4">
-				<button type="submit" class="btn btn-sm btn-primary btnSearch">确认创建</button>
+				<button type="button" class="btn btn-sm btn-primary btnSearch" id="btnSave">确认创建</button>
 			</div>
 		</div>
 	</form>

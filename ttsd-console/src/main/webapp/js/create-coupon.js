@@ -1,56 +1,128 @@
-require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstrapSelect', 'moment'], function($) {
-    var $selectDom=$('.selectpicker'),//select表单
-        $dateStart=$('#startTime'),//开始时间
-        $dateEnd=$('#endTime');//结束时间;
-    //渲染select表单
-    $selectDom.selectpicker();
+require(['jquery', 'template', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstrapSelect', 'moment', 'Validform', 'Validform_Datatype', 'csrf'], function($) {
+    $(function() {
+        var $selectDom = $('.selectpicker'), //select表单
+            $dateStart = $('#startTime'), //开始时间
+            $dateEnd = $('#endTime'), //结束时间
+            $errorDom = $('.form-error'), //错误提示节点
+            $submitBtn = $('#btnSave'), //提交按钮
+            boolFlag = false, //校验布尔变量值
+            currentErrorObj = null;
 
-    //起始时间绑定插件
-    $dateStart.datetimepicker({
-        format: 'YYYY-MM-DD'
-    }).on('dp.change', function(e) {
-        $dateEnd.data("DateTimePicker").minDate(e.date);
+
+        //渲染select表单
+        $selectDom.selectpicker();
+
+        //起始时间绑定插件
+        $dateStart.datetimepicker({
+            format: 'YYYY-MM-DD'
+        }).on('dp.change', function(e) {
+            $dateEnd.data("DateTimePicker").minDate(e.date);
+        });
+
+        //结束时间绑定插件
+        $dateEnd.datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+        /**
+         * @msg  {[string]} //文字信息
+         * @obj  {[object]} //传入的dom节点
+         * @return {[html]} //生成html
+         */
+        function showErrorMessage(msg, obj) {
+            currentErrorObj = obj;
+            var html = '';
+            html += '<div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">';
+            html += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+            html += '<span aria-hidden="true">&times;</span>';
+            html += '</button>';
+            html += '<span class="txt">创建失败：' + msg + '</span>';
+            html += '</div>';
+            $errorDom.append(html);
+        }
+
+        //表单校验初始化参数
+        $(".form-list").Validform({
+            btnSubmit: '#btnSave',
+            tipSweep: true, //表单提交时触发显示
+            focusOnError: false,
+            tiptype: function(msg, o, cssctl) {
+                if (o.type == 3) {
+                    var msg = o.obj.attr('errormsg') || msg;
+                    showErrorMessage(msg, o.obj);
+                }
+            },
+            beforeCheck: function(curform) {
+                var periods = parseInt($('.coupon-number', curform).val());
+                $errorDom.html('');
+                if (periods <= 0) {
+                    showErrorMessage('投资体验券金额最小为1', $('.coupon-number', curform));
+                    return false;
+                }
+            },
+            callback: function(form) {
+                boolFlag = true;
+                return false;
+            }
+        });
+        //关闭警告提示
+        $('body').on('click', '.form-error', function () {
+            $submitBtn.removeAttr('disabled');
+            if (!!currentErrorObj) {
+                currentErrorObj.focus();
+            }
+        });
+        
+        //提交表单
+        $submitBtn.on('click', function(event) {
+            event.preventDefault();
+
+            var $self = $(this);
+            if (boolFlag) {
+                console.log('1');
+                $self.attr('disabled', 'disabled');
+                var dataForm = JSON.stringify({
+                    "projectName": $('.jq-user').val(),
+                    "agentLoginName": $('.jq-agent').val(),
+                    "loanerLoginName": $('.jq-loaner-login-name').val(),
+                    "loanerIdentityNumber": $('.jq-loaner-identity-number').val(),
+                    "loanerUserName": $('.jq-loaner-user-name').val(),
+                    "type": $('.jq-mark-type').val(),
+                    "periods": $('.jq-timer').val()
+                });
+                $.ajax({
+                    url: API_FORM,//请求地址
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8',
+                    data: {
+                        "name": $('.coupon-name').val(),
+                        "amount": $('.coupon-number').val(),
+                        "startTime": $('.coupon-start').val(),
+                        "endTime": $('.coupon-end').val(),
+                        "totalCount": $('.coupon-total').val()
+                    }
+                })
+                .done(function(res) {
+                    console.log("success");
+                    if (res.data.status) {
+                        boolFlag = true;
+                        location.href = '/project-manage/loan-list';
+                    } else {
+                        boolFlag = false;
+                        var msg = res.data.message || '服务端校验失败';
+                        showErrorMessage(msg);
+                    }
+                })
+                .fail(function() {
+                    console.log("error");
+                    $self.removeAttr('disabled');
+                })
+                .always(function() {
+                    console.log("complete");
+                });
+            }
+        });
+
     });
-    
-    //结束时间绑定插件
-    $dateEnd.datetimepicker({
-        format: 'YYYY-MM-DD'
-    });
-
-    //提交事件
-    $('form button[type="submit"]').click(function(event) {
-        var queryParams = '';
-        if ($('form input[name="loanId"]').val() != "" && !$('form input[name="loanId"]').val().match("^[0-9]*$")) {
-            $('form input[name="loanId"]').val('0');
-        }
-        if ($('form input[name="loanId"]').val()) {
-            queryParams += "loanId=" + $('form input[name="loanId"]').val() + "&";
-        }
-        if ($('form input[name="loginName"]').val().length > 0) {
-            queryParams += "loginName=" + $('form input[name="loginName"]').val() + "&";
-        }
-        if ($('form input[name="startTime"]').val()) {
-            queryParams += "startTime=" + $('form input[name="startTime"]').val() + "&";
-        }
-        if ($('form input[name="endTime"]').val()) {
-            queryParams += "endTime=" + $('form input[name="endTime"]').val() + "&";
-        }
-        if ($('form select[name="investStatus"]').val()) {
-            queryParams += "investStatus=" + $('form select[name="investStatus"]').val() + "&";
-        }
-        if ($('form select[name="source"]').val()) {
-            queryParams += "source=" + $('form select[name="source"]').val() + "&";
-        }
-        if ($('form select[name="channel"]').val()) {
-            queryParams += "channel=" + $('form select[name="channel"]').val() + "&";
-        }
-        if ($('form select[name="role"]').val()) {
-            queryParams += "role=" + $('form select[name="role"]').val() + "&";
-        }
-        location.href = "?" + queryParams;
-        return false;
-    });
-
-    
-
 });
