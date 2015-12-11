@@ -130,7 +130,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     }
                     var investAmount = parseFloat(amount);
                     var accountAmount = parseFloat($('form .account-amount').text());
-                    console.log(accountAmount);
                     if(investAmount > accountAmount){
                         location.href = '/recharge';
                         return false;
