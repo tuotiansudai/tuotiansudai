@@ -15,22 +15,32 @@ BATCH_SIZE_user=15000
 BATCH_SIZE_system_bill=15000
 BATCH_SIZE_withdraw=10000
 
-COUNT_account=0
-
-
-echo "###### create user_bill_seq_temp temp table for account table migrate Start ######"
+echo ""
+echo "###### CREATE user_bill_seq_temp TABLE FOR account "
 `$DB_CON_OLD -e"DROP TABLE IF EXISTS user_bill_seq_temp; CREATE TABLE user_bill_seq_temp (index ix_user_id (user_id)) as select user_id, max(seq_num) as max_seq from user_bill group by user_id;"`
-echo "###### user_bill_seq_temp table Done ######"
 
-echo "###### add index on seq_num field for user_bill table ######"
-`$DB_CON_OLD -e"ALTER TABLE user_bill add index ix_seq_num(seq_num)"`
-echo "###### add index done ######"
+echo ""
+echo "###### ADD INDEX ON seq_num FIELD IN user_bill "
+`$DB_CON_OLD -e"ALTER TABLE user_bill add index ix_seq_num(seq_num)"` 2>/dev/null
+
+echo ""
+echo "####### DELETE WRONG DATA IN bank_card "
+`$DB_CON_OLD -e"delete from bank_card where user_id = 'susiepo' and card_no = '6212261203009214445';delete from bank_card where user_id = 'zjh1036517331' and card_no = '6228480089814033877';"`
+
+echo ""
+echo "####### CREATE bank_card_temp TABLE "
+python scripts/data_migration/bank_card_pre.py 2>/dev/null
+
+echo ""
+echo "####### CREATE withdraw_cash_temp TABLE "
+python scripts/data_migration/withdraw_pre.py 2>/dev/null
+
 
 echo "###### Search old data count, wait some seconds #####"
 COUNT_account=`$DB_CON_OLD -e"select count(1) from trusteeship_account" | sed -n 2p`
 COUNT_audit_log=`$DB_CON_OLD -e"select count(1) from user_info_log where is_success=1" | sed -n 2p`
 COUNT_announce=`$DB_CON_OLD -e"select count(1) from node n left join node_body nb on n.body=nb.id where n.node_type='article'" | sed -n 2p`
-COUNT_bank_card=`$DB_CON_OLD -e"select count(1) from bank_card" | sed -n 2p`
+COUNT_bank_card=`$DB_CON_OLD -e"select count(1) from bank_card_temp" | sed -n 2p`
 COUNT_loan=`$DB_CON_OLD -e"select count(1) from loan WHERE status NOT IN ('test', 'verify_fail') AND type != 'loan_type_2'" | sed -n 2p`
 COUNT_loan_repay=`$DB_CON_OLD -e"select count(1) from loan_repay WHERE status <> 'test' and loan_id not in (select l.id from loan l where l.status in ('verify_fail','test') or l.type='loan_type_2')" | sed -n 2p`
 COUNT_recharge=`$DB_CON_OLD -e"select count(1) from recharge" | sed -n 2p`
@@ -103,7 +113,7 @@ batch_migrate() {
     command="python $SCRIPT_PATH -t $tableName -s $[i*BATCH_SIZE] -c $BATCH_SIZE 2>$LOG_PATH/${tableName}_$i.log;"
     #echo $command
     eval $command
-    echo $tableName"_"$i" end";
+    #echo $tableName"_"$i" end";
   }&
   Pid=$Pid" "$!
   sleep 0.5;
@@ -165,10 +175,11 @@ verify_recharge(){
 }
 
 
+
+migrate_all(){
 echo ""
 echo "##### migrate v1 tables into new db #####"
 
-migrate_all(){
   simple_migrate announce
   batch_migrate user &
   user_pid=$!
@@ -254,16 +265,16 @@ main(){
   fi
 }
 
-# delete wrong data in bank_card, delete incorrect bind card of the two users, keep the correct ones
-`$DB_CON_OLD -e"delete from bank_card where user_id = 'susiepo' and card_no = '6212261203009214445';delete from bank_card where user_id = 'zjh1036517331' and card_no = '6228480089814033877';"`
-
-python scripts/data_migration/bank_card_pre.py
-python scripts/data_migration/withdraw_pre.py
-
 main $1
 
+echo ""
+echo "####### DROP TABLE IF EXISTS user_bill_seq_temp "
 `$DB_CON_OLD -e"DROP TABLE IF EXISTS user_bill_seq_temp;"`
+
+echo ""
+echo "####### SET AUTO_INCREMENT IN user_bill TABLE"
 `$DB_CON_NEW -e"ALTER TABLE user_bill AUTO_INCREMENT=$[$COUNT_user_bill+1];"`
+
 #`$DB_CON_OLD -e"DROP TABLE IF EXISTS bank_card_temp;"`
 #`$DB_CON_OLD -e"DROP TABLE IF EXISTS withdraw_cash_temp;"`
 
