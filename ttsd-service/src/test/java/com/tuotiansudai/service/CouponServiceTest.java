@@ -2,13 +2,19 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.exception.CreateCouponException;
+import com.tuotiansudai.exception.ReferrerRelationException;
+import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
+import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -32,6 +39,15 @@ public class CouponServiceTest {
     private UserMapper userMapper;
     @Autowired
     private CouponMapper couponMapper;
+
+    @Autowired
+    private SmsCaptchaMapper smsCaptchaMapper;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserCouponMapper userCouponMapper;
 
     @Test
     public void shouldCreateCouponIsSuccess() throws CreateCouponException {
@@ -83,16 +99,48 @@ public class CouponServiceTest {
         CouponModel couponModel = new CouponModel(couponDto);
         couponModel.setCreateUser("couponTest");
         couponModel.setActive(true);
-        System.out.println("start" + couponDto.getStartTime().toString());
-        System.out.println("end" + couponDto.getEndTime().toString());
         couponMapper.create(couponModel);
 
-        CouponModel couponModel1 = couponMapper.findCouponByName("优惠券");
-        long id = couponModel1.getId();
-        couponService.afterReturningUserRegistered("couponTest");
-        CouponModel couponModel2 = couponMapper.findCouponById(id);
+        couponService.afterReturningUserRegistered(userModel.getLoginName());
+        CouponModel couponModel2 = couponMapper.findCouponById(couponModel.getId());
 
-        assertEquals(1,couponModel2.getIssuedCount());
+        assertEquals(1, couponModel2.getIssuedCount());
+
+    }
+
+    @Test
+    public void shouldRegisterUserIsSuccess() throws ReferrerRelationException {
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+
+        RegisterUserDto registerUserDto = fakeRegisterUserDto();
+
+        SmsCaptchaModel smsCaptchaModel = new SmsCaptchaModel();
+        smsCaptchaModel.setMobile("18600000101");
+        smsCaptchaModel.setCaptcha("111111");
+        smsCaptchaModel.setCaptchaType(CaptchaType.REGISTER_CAPTCHA);
+        smsCaptchaModel.setCreatedTime(new Date());
+        DateTime expiredTime = new DateTime().plusDays(1);
+        smsCaptchaModel.setExpiredTime(expiredTime.toDate());
+        smsCaptchaMapper.create(smsCaptchaModel);
+
+        CouponDto couponDto = fakeCouponDto();
+        DateTime startDateTime = new DateTime().plusDays(-1);
+        DateTime endDateTime = new DateTime().plusDays(1);
+        couponDto.setStartTime(startDateTime.toDate());
+        couponDto.setEndTime(endDateTime.toDate());
+        CouponModel couponModel = new CouponModel(couponDto);
+        couponModel.setCreateUser(userModel.getLoginName());
+        couponModel.setActive(true);
+        couponMapper.create(couponModel);
+
+        userService.registerUser(registerUserDto);
+
+
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(registerUserDto.getLoginName());
+        CouponModel couponModel1 = couponMapper.findCouponById(couponModel.getId());
+        assertEquals(true, CollectionUtils.isNotEmpty(userCouponModels));
+        assertEquals(1,couponModel1.getIssuedCount());
 
     }
 
@@ -116,6 +164,15 @@ public class CouponServiceTest {
         couponDto.setStartTime(new Date());
         couponDto.setName("优惠券");
         return couponDto;
+    }
+
+    private RegisterUserDto fakeRegisterUserDto(){
+        RegisterUserDto registerUserDto = new RegisterUserDto();
+        registerUserDto.setCaptcha("111111");
+        registerUserDto.setLoginName("couponTest1");
+        registerUserDto.setMobile("18600000101");
+        registerUserDto.setPassword("123abc");
+        return registerUserDto;
     }
 
 
