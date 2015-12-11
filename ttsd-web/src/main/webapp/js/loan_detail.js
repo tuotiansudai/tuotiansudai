@@ -93,7 +93,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         });
 
         if(amountInputElement.length) {
-
             if($experienceTicket.is(':hidden')) {
                 $('.account-list').find('dd').last().css({'margin-top':'20px'});
             }
@@ -109,7 +108,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     }
                 });
             }
-            var calExpectedInterest = function(){
+            var calExpectedInterest = function(isFirstLoad){
                 var loanId = $('.hid-loan').val(),
                     amount = amountInputElement.val();
                 if(amount=='') {
@@ -142,13 +141,15 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'
                 }).done(function(amount){
-
+                    if(!isFirstLoad){
+                        $errorDom.hide();
+                    }
                     $('.expected-interest').html(amount);
                     $btnLookOther.prop('disabled', false);
                 });
             }
-            calExpectedInterest();
-            amountInputElement.blur(calExpectedInterest);
+            calExpectedInterest(true);
+            amountInputElement.blur(function(){calExpectedInterest(false);});
 
             $('form').submit(function(){
                 var frm = $(this);
