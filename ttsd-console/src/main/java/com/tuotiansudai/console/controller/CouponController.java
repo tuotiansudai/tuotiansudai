@@ -3,18 +3,20 @@ package com.tuotiansudai.console.controller;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.exception.CreateCouponException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping(value = "/activity-manage")
 public class CouponController {
+
     @Autowired
     private CouponService couponService;
+
     @RequestMapping(value = "/coupon",method = RequestMethod.GET)
     public ModelAndView coupon(){
         return new ModelAndView("/coupon");
@@ -22,21 +24,39 @@ public class CouponController {
 
     @RequestMapping(value = "/coupon",method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> createCoupon(@RequestBody CouponDto couponDto){
+    public ModelAndView createCoupon(@ModelAttribute CouponDto couponDto,RedirectAttributes redirectAttributes){
         String loginName = LoginUserInfo.getLoginName();
-        return couponService.createCoupon(loginName,couponDto);
-    }
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            couponService.createCoupon(loginName, couponDto);
+            modelAndView.setViewName("redirect:/activity-manage/coupons");
+            return modelAndView;
+        } catch (CreateCouponException e) {
+            modelAndView.setViewName("redirect:/activity-manage/coupon");
+            redirectAttributes.addFlashAttribute("coupon", couponDto);
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return modelAndView;
+        }
 
+    }
 
     @RequestMapping(value = "/coupon/{couponId}/active",method = RequestMethod.POST)
     @ResponseBody
     public String activeCoupon(@PathVariable String couponId){
         String loginName = LoginUserInfo.getLoginName();
-
+        couponService.updateCoupon(loginName, Integer.parseInt(couponId));
         return "ok";
     }
 
-
-
+    @RequestMapping(value = "/coupons",method = RequestMethod.GET)
+    public ModelAndView coupons(@RequestParam(value = "index",required = false,defaultValue = "1") int index,
+                                 @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize) {
+        ModelAndView modelAndView = new ModelAndView("/coupons");
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+        modelAndView.addObject("coupons", couponService.findCoupons(index, pageSize));
+        modelAndView.addObject("couponsCount", couponService.findCouponsCount());
+        return modelAndView;
+    }
 
 }

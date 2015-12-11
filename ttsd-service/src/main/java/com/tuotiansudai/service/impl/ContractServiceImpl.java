@@ -84,6 +84,9 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public String generateInvestorContract(String loginName,long loanId,ContractType contractType) {
         Map<String, Object> dataModel = this.collectContractModel(loginName,loanId,contractType);
+        if(dataModel.isEmpty()){
+            return "";
+        }
         String content = getContract("contract", dataModel).replace("&nbsp;", "&#160;");
         return content;
 
@@ -111,6 +114,9 @@ public class ContractServiceImpl implements ContractService {
     private Map<String, Object> collectContractModel(String loginName,long loanId,ContractType contractType) {
         Map<String, Object> dataModel = new HashMap<>();
         LoanModel loanModel = loanMapper.findById(loanId);
+        if(loanModel == null){
+            return dataModel;
+        }
         AccountModel agentAccountModel = accountMapper.findByLoginName(loanModel.getAgentLoginName());
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
         dataModel.put("loanId","" + loanId);

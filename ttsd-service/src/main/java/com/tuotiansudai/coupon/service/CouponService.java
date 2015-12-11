@@ -1,18 +1,26 @@
 package com.tuotiansudai.coupon.service;
 
 import com.tuotiansudai.coupon.dto.CouponDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.exception.CreateCouponException;
+
+import java.util.List;
 
 public interface CouponService {
 
-    BaseDto<PayDataDto> createCoupon(String loginName,CouponDto couponDto);
+    void createCoupon(String loginName,CouponDto couponDto) throws CreateCouponException;
 
-    void afterUserRegistered(String loginName);
+    void afterReturningUserRegistered(String loginName);
 
-    void afterInvest(String loginName, long loanId);
+    void afterReturningInvest(String loginName, long loanId);
 
-    void afterRepay(long loanId, boolean isAdvanced);
+    void afterReturningRepay(long loanId, boolean isAdvanced);
 
     void activeCoupon(String loginName,long couponId);
+
+    List<CouponModel> findCoupons(int index, int pageSize);
+
+    int findCouponsCount();
+
+    void updateCoupon(String loginName, long couponId);
 }

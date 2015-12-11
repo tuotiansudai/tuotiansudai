@@ -1,14 +1,15 @@
 require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper','csrf', 'autoNumeric'], function ($, pagination, Mustache, investListTemplate, layer) {
 
         var $loanDetail = $('.loan-detail-content'),
-            amountInputElement = $(".text-input-amount"),
-            $accountInfo = $('.account-info'),
+            amountInputElement = $(".text-input-amount",$loanDetail),
+            $accountInfo = $('.account-info',$loanDetail),
             $btnLookOther = $('.btn-pay', $accountInfo),
-            $errorDom = $('.error', $accountInfo),
             tabs = $('.loan-nav li'),
             $loanlist = $('.loan-list', $loanDetail),
             $imageList=$('#picListBox'),
-            paginationElement = $('.pagination');
+            $experienceTicket=$('.experience-ticket',$loanDetail),
+            paginationElement = $('.pagination',$loanDetail),
+            $error=$('.errorTip');;
         amountInputElement.autoNumeric("init");
         layer.ready(function(){
             layer.photos({
@@ -57,12 +58,10 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 var day = 0,
                     hour = 0,
                     minute = 0,
-                    second = 0;//时间默认值
+                    second = 0;
                 if(intDiff <= 1800){
 
                     if (intDiff > 0) {
-                        // day = Math.floor(intDiff / (60 * 60 * 24));
-                        // hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
                         minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
                         second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
                     }else{
@@ -71,8 +70,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     }
                     if (minute <= 9) minute = '0' + minute;
                     if (second <= 9) second = '0' + second;
-                    // $('#day_show').html(day+"天");
-                    // $('#hour_show').html('<s id="h"></s>'+hour+'时');
                     $('#minute_show').html('<s></s>' + minute + '分');
                     $('#second_show').html('<s></s>' + second + '秒');
                     intDiff--;
@@ -86,8 +83,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
 
         $btnLookOther.click(function(){
-            var investAmount = Number($('form input[name="amount"]').val());
-            var accountAmount = Number($('form .account-amount').text());
+            var investAmount = parseFloat($('form input[name="amount"]').val());
+            var accountAmount = parseFloat($('form .account-amount').text());
             if(investAmount > accountAmount){
                 location.href = '/recharge';
                 return false;
@@ -96,6 +93,22 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         });
 
         if(amountInputElement.length) {
+
+            if($experienceTicket.is(':hidden')) {
+                $('.account-list').find('dd').last().css({'margin-top':'20px'});
+            }
+            else {
+                $experienceTicket.find(':checkbox').on('click',function() {
+                    var $thischeckBox=$(this),isChecked;
+                    isChecked=$thischeckBox.is(':checked');
+                    if(isChecked) {
+                        $experienceTicket.next('dd.experience-revenue').show();
+                    }
+                    else {
+                        $experienceTicket.next('dd.experience-revenue').hide();
+                    }
+                });
+            }
             var calExpectedInterest = function(){
                 var loanId = $('.hid-loan').val(),
                     amount = amountInputElement.val();
@@ -103,10 +116,25 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     amount='0.00';
                 }
                 var amountNeedRaised = $('form .amountNeedRaised-i').text();
-                if(Number(amountNeedRaised) < Number(amount)){
-                    $errorDom.html("<i class='fa fa-times-circle'></i>输入金额不能大于可投金额!").removeAttr("style");
+
+                if(Number(amountNeedRaised) < Number(amount) || amount<=0){
+                    var tipmsg;
+                    if(amount<=0) {
+                        tipmsg='输入金额不能等于0!';
+                    }
+                    else {
+                        tipmsg='输入金额不能大于可投金额!';
+                    }
+                    layer.tips('<i class="fa fa-times-circle"></i>'+tipmsg, '.text-input-amount', {
+                        tips: [1,'#ff7200'] ,
+                        time:0
+                    });
                     $btnLookOther.prop('disabled', true);
                     return;
+                }
+                else {
+                    layer.closeAll('tips');
+                    $btnLookOther.prop('disabled', false);
                 }
                 $.ajax({
                     url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + amount,
@@ -114,7 +142,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'
                 }).done(function(amount){
-                    $errorDom.hide();
+
                     $('.expected-interest').html(amount);
                     $btnLookOther.prop('disabled', false);
                 });
@@ -131,12 +159,16 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     }
                     var amount = $("input[name='amount']",frm).val();
                     if(isNaN(parseFloat(amount))) {
-                        $errorDom.html("<i class='fa fa-times-circle'></i>请正确输入投资金额").removeAttr("style");
                         return false;
                     }
                 }
                 return true;
             });
+        }
+
+        if($error.length) {
+            layer.confirm($error.text(),
+                {icon: 5, title:'温馨提示',btn:['重试'],skin: 'layer-confirm-ui'});
         }
 
 
