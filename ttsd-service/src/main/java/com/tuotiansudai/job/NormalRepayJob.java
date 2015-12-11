@@ -33,8 +33,8 @@ public class NormalRepayJob implements Job {
 
         BaseDto<PayDataDto> dto = payWrapperClient.postNormalRepay(loanRepayId);
 
-        if (!dto.getData().getStatus()) {
-            throw new JobExecutionException();
-        }
+//        if (!dto.getData().getStatus()) {
+//            throw new JobExecutionException();
+//        }
     }
 }
