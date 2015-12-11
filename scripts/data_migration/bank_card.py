@@ -36,7 +36,7 @@ class BankCardMigrate(BaseMigrate):
                                 b.time
                             FROM
                                 bank_card b
-                            RIGHT JOIN
+                            JOIN
                                 (
                                     SELECT
                                         bc.user_id,
@@ -50,6 +50,7 @@ class BankCardMigrate(BaseMigrate):
                             ON
                                 b.user_id = bs.user_id
                                 and b.time = bs.time
+                            GROUP BY b.user_id, b.time
                         )
                      temp LIMIT %s, %s'''
     

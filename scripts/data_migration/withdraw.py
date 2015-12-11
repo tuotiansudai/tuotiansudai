@@ -36,7 +36,7 @@ class WithdrawMigrate(BaseMigrate):
                             UNION ALL
 
                             SELECT
-                                n.id AS bank_card_id,
+                                bc.id AS bank_card_id,
                                 m.user_id,
                                 m.money,
                                 m.fee,
@@ -51,19 +51,26 @@ class WithdrawMigrate(BaseMigrate):
                                 withdraw_cash m
                             JOIN
                                 (
-                                    SELECT
-                                        MAX(id) AS id,
-                                        user_id,
-                                        MAX(time) AS time
-                                    FROM
-                                        bank_card
-                                    WHERE
-                                        status = 'passed'
-                                    GROUP BY
-                                        user_id
-                                ) n
-                            ON
-                                m.`user_id` = n.`user_id`
+                                    select
+                                        bc.id, bc.user_id, bc.time
+                                    from
+                                        bank_card bc
+                                    join
+                                        (
+                                            SELECT
+                                                user_id,
+                                                MAX(time) AS time
+                                            FROM
+                                                bank_card
+                                            WHERE
+                                                status = 'passed'
+                                            GROUP BY
+                                                user_id
+                                        ) n
+                                    ON
+                                        bc.`user_id` = n.`user_id`
+                                        and bc.`time` = n.`time`
+                                )
                             WHERE
                                 m.is_withdraw_by_admin IS NULL
                                 and m.bank_card_id not in

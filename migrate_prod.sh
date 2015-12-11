@@ -254,7 +254,11 @@ main(){
   fi
 }
 
+# delete wrong data in bank_card, delete incorrect bind card of the two users, keep the correct ones
+`$DB_CON_OLD -e"delete from bank_card where user_id = 'susiepo' and card_no = '6212261203009214445';delete from bank_card where user_id = 'zjh1036517331' and card_no = '6228480089814033877';"`
+
 main $1
+
 `$DB_CON_OLD -e"DROP TABLE IF EXISTS user_bill_seq_temp;"`
 `$DB_CON_NEW -e"ALTER TABLE user_bill AUTO_INCREMENT=$[$COUNT_user_bill+1];"`
 
