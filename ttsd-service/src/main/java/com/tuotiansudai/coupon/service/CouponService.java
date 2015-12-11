@@ -16,11 +16,12 @@ public interface CouponService {
 
     void afterReturningRepay(long loanId, boolean isAdvanced);
 
-    void activeCoupon(String loginName,long couponId);
-
     List<CouponModel> findCoupons(int index, int pageSize);
 
     int findCouponsCount();
 
-    void updateCoupon(String loginName, long couponId);
+    void updateCoupon(String loginName, long couponId, boolean active);
+
+    CouponModel findCouponById (long couponId);
+
 }
