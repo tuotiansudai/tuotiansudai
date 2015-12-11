@@ -96,7 +96,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         });
 
         if(amountInputElement.length) {
-            var calExpectedInterest = function(){
+            var calExpectedInterest = function(isFirstLoad){
                 var loanId = $('.hid-loan').val(),
                     amount = amountInputElement.val();
                 if(amount=='') {
@@ -114,13 +114,15 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'
                 }).done(function(amount){
-                    $errorDom.hide();
+                    if(!isFirstLoad){
+                        $errorDom.hide();
+                    }
                     $('.expected-interest').html(amount);
                     $btnLookOther.prop('disabled', false);
                 });
             }
-            calExpectedInterest();
-            amountInputElement.blur(calExpectedInterest);
+            calExpectedInterest(true);
+            amountInputElement.blur(function(){calExpectedInterest(false);});
 
             $('form').submit(function(){
                 var frm = $(this);

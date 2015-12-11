@@ -135,6 +135,16 @@ public interface InvestMapper {
                                                         @Param(value = "investStatus") InvestStatus investStatus,
                                                         @Param(value = "loanStatus") LoanStatus loanStatus);
 
+    long sumInvestAmount(@Param(value = "loanId") Long loanId,
+                         @Param(value = "investorLoginName") String investorLoginName,
+                         @Param(value = "channel") String channel,
+                         @Param(value = "source") String source,
+                         @Param(value = "role") String role,
+                         @Param(value = "startTime") Date startTime,
+                         @Param(value = "endTime") Date endTime,
+                         @Param(value = "investStatus") InvestStatus investStatus,
+                         @Param(value = "loanStatus") LoanStatus loanStatus);
+
 
     long sumSuccessInvestAmountByLoginName(@Param(value = "loanId") long loanId, @Param(value = "loginName") String loginName);
 
@@ -143,4 +153,6 @@ public interface InvestMapper {
     long countSuccessInvest(@Param(value = "loanId") Long loanId);
 
     List<String> findAllChannels();
+
+    long countAutoInvest(@Param(value = "loanId") Long loanId, @Param(value = "loginName") String loginName);
 }

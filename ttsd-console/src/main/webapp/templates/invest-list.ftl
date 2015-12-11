@@ -84,6 +84,9 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
+                <th colspan="12">合计投资金额：${data.sumAmount/100} 元</th>
+            </tr>
+            <tr>
                 <th>项目编号</th>
                 <th>项目名称</th>
                 <th>期数</th>

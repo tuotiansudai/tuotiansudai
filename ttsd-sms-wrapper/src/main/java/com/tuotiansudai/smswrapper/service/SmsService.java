@@ -14,6 +14,7 @@ public interface SmsService {
 
     BaseDto<SmsDataDto> sendPasswordChangedNotify(String mobile);
 
-    public BaseDto<SmsDataDto> investFatalNotify(String mobile, String errMsg);
+    BaseDto<SmsDataDto> investFatalNotify(String mobile, String errMsg);
 
+    BaseDto<SmsDataDto> jobFatalNotify(String mobile, String errMsg);
 }
