@@ -14,43 +14,30 @@ import java.util.List;
 
 public class LoanRepayJobResultDto implements Serializable {
 
-    @JsonProperty(value = "loanId")
     private long loanId;
 
-    @JsonProperty(value = "loanRepayId")
     private long loanRepayId;
 
-    @JsonProperty(value = "isOverdueRepay")
     private boolean isOverdueRepay;
 
-    @JsonProperty(value = "repayAmount")
     private long repayAmount;
 
-    @JsonProperty(value = "loanRepayBalance")
     private long loanRepayBalance;
 
-    @JsonProperty(value = "actualRepayDate")
     private Date actualRepayDate;
 
-    @JsonProperty(value = "isLastPeriod")
     private boolean isLastPeriod;
 
-    @JsonProperty(value = "isUpdateAgentUserBillSuccess")
     private boolean isUpdateAgentUserBillSuccess;
 
-    @JsonProperty(value = "loanRepayBalanceStatus")
     private SyncRequestStatus loanRepayBalanceStatus;
 
-    @JsonProperty(value = "isUpdateSystemBillSuccess")
     private boolean isUpdateSystemBillSuccess;
 
-    @JsonProperty(value = "isUpdateLoanRepayStatusSuccess")
     private boolean isUpdateLoanRepayStatusSuccess;
 
-    @JsonProperty(value = "isUpdateLoanStatusSuccess")
     private boolean isUpdateLoanStatusSuccess;
 
-    @JsonProperty(value = "investRepayJobResults")
     private List<InvestRepayJobResultDto> investRepayJobResults;
 
     public LoanRepayJobResultDto() {
@@ -84,54 +71,67 @@ public class LoanRepayJobResultDto implements Serializable {
         return optional.isPresent() || loanRepayBalanceStatus == SyncRequestStatus.FAIL;
     }
 
+    @JsonProperty(value = "loanId")
     public long getLoanId() {
         return loanId;
     }
 
+    @JsonProperty(value = "loanRepayId")
     public long getLoanRepayId() {
         return loanRepayId;
     }
 
+    @JsonProperty(value = "isOverdueRepay")
     public boolean isOverdueRepay() {
         return isOverdueRepay;
     }
 
+    @JsonProperty(value = "repayAmount")
     public long getRepayAmount() {
         return repayAmount;
     }
 
+    @JsonProperty(value = "loanRepayBalance")
     public long getLoanRepayBalance() {
         return loanRepayBalance;
     }
 
+    @JsonProperty(value = "actualRepayDate")
     public Date getActualRepayDate() {
         return actualRepayDate;
     }
 
+    @JsonProperty(value = "isLastPeriod")
     public boolean isLastPeriod() {
         return isLastPeriod;
     }
 
+    @JsonProperty(value = "isUpdateAgentUserBillSuccess")
     public boolean isUpdateAgentUserBillSuccess() {
         return isUpdateAgentUserBillSuccess;
     }
 
+    @JsonProperty(value = "loanRepayBalanceStatus")
     public SyncRequestStatus getLoanRepayBalanceStatus() {
         return loanRepayBalanceStatus;
     }
 
+    @JsonProperty(value = "isUpdateSystemBillSuccess")
     public boolean isUpdateSystemBillSuccess() {
         return isUpdateSystemBillSuccess;
     }
 
+    @JsonProperty(value = "isUpdateLoanRepayStatusSuccess")
     public boolean isUpdateLoanRepayStatusSuccess() {
         return isUpdateLoanRepayStatusSuccess;
     }
 
+    @JsonProperty(value = "isUpdateLoanStatusSuccess")
     public boolean isUpdateLoanStatusSuccess() {
         return isUpdateLoanStatusSuccess;
     }
 
+    @JsonProperty(value = "investRepayJobResults")
     public List<InvestRepayJobResultDto> getInvestRepayJobResults() {
         return investRepayJobResults;
     }

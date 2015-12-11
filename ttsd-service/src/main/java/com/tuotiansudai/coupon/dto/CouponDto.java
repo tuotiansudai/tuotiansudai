@@ -2,8 +2,8 @@ package com.tuotiansudai.coupon.dto;
 
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,14 +11,12 @@ public class CouponDto implements Serializable {
     @NotEmpty
     private String name;
     @NotEmpty
-    @Pattern(regexp = "^\\d+\\.\\d{2}$")
     private String amount;
-    @NotEmpty
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startTime;
-    @NotEmpty
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endTime;
     @NotEmpty
-    @Pattern(regexp = "^\\d+$")
     private String totalCount;
 
     public String getName() {
