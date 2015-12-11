@@ -223,6 +223,7 @@ td.td {
 .tip-container{
     width:370px;
     height:52px;
+    display: none;
     position: fixed;
     top:50%;
     left:50%;
