@@ -4,6 +4,7 @@ import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.exception.CreateCouponException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,6 @@ public class CouponServiceImpl implements CouponService {
 
     @Autowired
     private CouponMapper couponMapper;
-
-    @Autowired
-    private UserCouponServiceImpl userCouponService;
 
     @Override
     @Transactional
