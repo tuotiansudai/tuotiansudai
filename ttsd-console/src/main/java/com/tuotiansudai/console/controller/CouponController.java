@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping(value = "/activity-manage")
 public class CouponController {
@@ -24,7 +26,7 @@ public class CouponController {
 
     @RequestMapping(value = "/coupon",method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView createCoupon(@ModelAttribute CouponDto couponDto,RedirectAttributes redirectAttributes){
+    public ModelAndView createCoupon(@Valid @ModelAttribute CouponDto couponDto,RedirectAttributes redirectAttributes){
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView();
         try {
