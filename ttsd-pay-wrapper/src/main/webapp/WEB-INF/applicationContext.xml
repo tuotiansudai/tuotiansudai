@@ -17,13 +17,14 @@
     <!-- enable autowire -->
     <context:annotation-config/>
 
-    <context:property-placeholder location="classpath*:ttsd-env.properties, classpath*:ttsd-biz.properties" />
+    <context:property-placeholder location="classpath*:ttsd-env.properties, classpath*:ttsd-biz.properties"/>
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan base-package="com.tuotiansudai.paywrapper, com.tuotiansudai.util, com.tuotiansudai.client"/>
 
+    <aop:aspectj-autoproxy expose-proxy="true"/>
+
     <tx:annotation-driven transaction-manager="transactionManager"/>
-    <aop:aspectj-autoproxy expose-proxy="true" />
     <tx:annotation-driven transaction-manager="payTransactionManager"/>
 
     <bean id="payBoneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
@@ -85,7 +86,7 @@
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
 
-    <bean class="com.tuotiansudai.util.SpringContextUtil" />
+    <bean class="com.tuotiansudai.util.SpringContextUtil"/>
 
     <!-- job -->
     <bean id="jobBoneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">

@@ -146,23 +146,22 @@ public class LoanServiceImpl implements LoanService {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         LoanModel loanModel = loanMapper.findById(loanId);
-        MerUpdateProjectRequestModel merUpdateProjectRequestModel = new MerUpdateProjectRequestModel(
-                loanModel.getLoanAmount(),
+        MerUpdateProjectRequestModel merUpdateProjectRequestModel = new MerUpdateProjectRequestModel(loanModel.getLoanAmount(),
                 loanModel.getId(),
                 loanModel.getName(),
                 loanStatus.getCode(),
-                new SimpleDateFormat("yyyyMMdd").format(loanModel.getFundraisingEndTime())
-        );
+                new SimpleDateFormat("yyyyMMdd").format(loanModel.getFundraisingEndTime()));
         try {
             MerUpdateProjectResponseModel responseModel = paySyncClient.send(MerUpdateProjectMapper.class,
                     merUpdateProjectRequestModel,
                     MerUpdateProjectResponseModel.class);
             if (responseModel.isSuccess()) {
-                loanMapper.updateStatus(loanId, loanStatus);
                 LoanModel loan = loanMapper.findById(loanId);
+                loan.setStatus(loanStatus);
                 if(loanStatus == LoanStatus.CANCEL) {
                     loan.setRecheckTime(new Date());
-                } else if (loanStatus == LoanStatus.REPAYING) {
+                }
+                if (loanStatus == LoanStatus.REPAYING) {
                     loan.setVerifyTime(new Date());
                 }
                 loanMapper.update(loan);
