@@ -92,7 +92,7 @@ simple_migrate(){
   }&
   wait $!
   echo ""
-  echo "$tableName TABLE DONE #####"
+  echo "$tableName  DONE #####"
 }
 
 batch_migrate() {
@@ -280,8 +280,13 @@ echo ""
 echo "####### SET AUTO_INCREMENT IN user_bill TABLE"
 `$DB_CON_NEW -e"ALTER TABLE user_bill AUTO_INCREMENT=$[$COUNT_user_bill+1];"`
 
-#`$DB_CON_OLD -e"DROP TABLE IF EXISTS bank_card_temp;"`
-#`$DB_CON_OLD -e"DROP TABLE IF EXISTS withdraw_cash_temp;"`
+echo ""
+echo "####### DROP TABLE bank_card_temp "
+`$DB_CON_OLD -e"DROP TABLE IF EXISTS bank_card_temp;"`
+
+echo ""
+echo "####### DROP TABLE withdraw_cash_temp "
+`$DB_CON_OLD -e"DROP TABLE IF EXISTS withdraw_cash_temp;"`
 
 : '
 clear_table user
@@ -291,5 +296,3 @@ echo "user_pid:"$user_pid
 wait $user_pid
 echo "done"
 '
-
-
