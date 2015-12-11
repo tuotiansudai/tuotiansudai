@@ -6,7 +6,6 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.exception.CreateCouponException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,11 +93,6 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public void activeCoupon(String loginName, long couponId) {
-
-    }
-
-    @Override
     public List<CouponModel> findCoupons(int index, int pageSize) {
         return couponMapper.findCoupons((index - 1 ) * pageSize, pageSize);
     }
@@ -109,12 +103,17 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public void updateCoupon(String loginName, long couponId) {
+    public void updateCoupon(String loginName, long couponId, boolean active) {
         CouponModel couponModel = couponMapper.findCouponById(couponId);
-        couponModel.setActive(true);
+        couponModel.setActive(active);
         couponModel.setActiveTime(new Date());
         couponModel.setActiveUser(loginName);
         couponMapper.updateCoupon(couponModel);
+    }
+
+    @Override
+    public CouponModel findCouponById (long couponId) {
+        return couponMapper.findCouponById(couponId);
     }
 
 }
