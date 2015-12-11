@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class UserCouponDto implements Serializable {
+    private long id;
     private String name;
     private long amount;
     private Date startTime;
@@ -18,6 +19,7 @@ public class UserCouponDto implements Serializable {
     private boolean valid = true;
 
     public UserCouponDto(CouponModel coupon, UserCouponModel userCoupon) {
+        this.id = userCoupon.getId();
         this.name = coupon.getName();
         this.amount = coupon.getAmount();
         this.startTime = coupon.getStartTime();
@@ -30,6 +32,14 @@ public class UserCouponDto implements Serializable {
             this.expired = new DateTime(this.endTime).plusDays(1).withTimeAtStartOfDay().isBeforeNow();
         }
         this.valid = !(this.used || this.expired);
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
