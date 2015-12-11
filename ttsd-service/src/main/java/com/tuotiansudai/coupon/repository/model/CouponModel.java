@@ -32,13 +32,13 @@ public class CouponModel implements Serializable {
 
     private String activeUser;
 
-    private String activeTime;
+    private Date activeTime;
 
     private long issuedCount;
 
-    private long expectTotal;
+    private long expectedAmount;
 
-    private long repayTotal;
+    private long actualAmount;
 
     public long getId() {
         return id;
@@ -128,11 +128,11 @@ public class CouponModel implements Serializable {
         this.activeUser = activeUser;
     }
 
-    public String getActiveTime() {
+    public Date getActiveTime() {
         return activeTime;
     }
 
-    public void setActiveTime(String activeTime) {
+    public void setActiveTime(Date activeTime) {
         this.activeTime = activeTime;
     }
 
@@ -144,20 +144,20 @@ public class CouponModel implements Serializable {
         this.issuedCount = issuedCount;
     }
 
-    public long getExpectTotal() {
-        return expectTotal;
+    public long getExpectedAmount() {
+        return expectedAmount;
     }
 
-    public void setExpectTotal(long expectTotal) {
-        this.expectTotal = expectTotal;
+    public void setExpectedAmount(long expectedAmount) {
+        this.expectedAmount = expectedAmount;
     }
 
-    public long getRepayTotal() {
-        return repayTotal;
+    public long getActualAmount() {
+        return actualAmount;
     }
 
-    public void setRepayTotal(long repayTotal) {
-        this.repayTotal = repayTotal;
+    public void setActualAmount(long actualAmount) {
+        this.actualAmount = actualAmount;
     }
 
     public CouponModel(){

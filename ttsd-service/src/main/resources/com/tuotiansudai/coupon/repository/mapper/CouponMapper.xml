@@ -18,6 +18,8 @@
         <result column="active_user" property="activeUser"/>
         <result column="active_time" property="activeTime"/>
         <result column="issued_Count" property="issuedCount"/>
+        <result column="expected_amount" property="expectedAmount"/>
+        <result column="actual_amount" property="actualAmount"/>
     </resultMap>
 
     <insert id="create" parameterType="CouponModel" useGeneratedKeys="true" keyProperty="id">
@@ -30,11 +32,35 @@
     </select>
 
     <select id="findCoupons" parameterType="map" resultMap="couponResultMap">
-        select * from coupon order by create_time desc limit #{index},#{pageSize}
+        SELECT
+          c.*,
+          IFNULL(temp.expected_amount, 0) AS expected_amount,
+          IFNULL(temp.actual_amount, 0) AS actual_amount
+        FROM
+          coupon c
+          LEFT JOIN
+            (SELECT
+              t.coupon_id,
+              SUM(
+                t.expected_interest + t.default_interest - t.expected_fee
+              ) AS expected_amount,
+              SUM(
+                t.actual_interest + t.default_interest - t.actual_fee
+              ) AS actual_amount
+            FROM
+              user_coupon t
+            GROUP BY t.coupon_id) temp
+            ON c.id = temp.coupon_id
+        ORDER BY create_time DESC
+        LIMIT #{index},#{pageSize}
     </select>
 
     <select id="findCouponsCount"  resultType="int">
         select count(*) from coupon
     </select>
+
+    <update id="updateCoupon" parameterType="CouponModel">
+        update coupon set issued_Count = #{issuedCount},active_time = #{activeTime},active = #{active},active_user = #{activeUser} where id = #{id}
+    </update>
 
 </mapper>

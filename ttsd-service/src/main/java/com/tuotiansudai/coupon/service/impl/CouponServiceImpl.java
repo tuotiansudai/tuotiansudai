@@ -6,12 +6,10 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.exception.CreateCouponException;
 import org.apache.log4j.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -62,19 +60,18 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public void afterUserRegistered(String loginName) {
-        logger.info(MessageFormat.format("after user registered , loginName : {0}.", loginName));
+    public void afterReturningUserRegistered(String loginName) {
+        
     }
 
     @Override
-    public void afterInvest(String loginName, long loanId) {
-        logger.info(MessageFormat.format("after user invest, loginName : {0}, loanId : {1}.", loginName, loanId));
+    public void afterReturningInvest(String loginName, long loanId) {
+
     }
 
     @Override
-    public void afterRepay(long loanId, boolean isAdvanced) {
-        logger.info(MessageFormat.format("after loan repay, loanId : {0}.", loanId));
-        // do create job
+    public void afterReturningRepay(long loanId, boolean isAdvanced) {
+
     }
 
     @Override
@@ -84,17 +81,21 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public List<CouponModel> findCoupons(int index, int pageSize) {
-        List<CouponModel> couponModels = couponMapper.findCoupons((index - 1 ) * pageSize, pageSize);
-        for (CouponModel couponModel : couponModels) {
-            couponModel.setExpectTotal(userCouponService.findExpectedTotalByCouponId(couponModel.getId(), couponModel.getAmount()));
-            couponModel.setRepayTotal();
-        }
-        return couponModels;
+        return couponMapper.findCoupons((index - 1 ) * pageSize, pageSize);
     }
 
     @Override
     public int findCouponsCount() {
         return couponMapper.findCouponsCount();
+    }
+
+    @Override
+    public void updateCoupon(String loginName, long couponId) {
+        CouponModel couponModel = couponMapper.findCouponById(couponId);
+        couponModel.setActive(true);
+        couponModel.setActiveTime(new Date());
+        couponModel.setActiveUser(loginName);
+        couponMapper.updateCoupon(couponModel);
     }
 
 }

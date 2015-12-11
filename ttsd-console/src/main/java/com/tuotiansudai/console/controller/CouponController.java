@@ -44,7 +44,7 @@ public class CouponController {
     @ResponseBody
     public String activeCoupon(@PathVariable String couponId){
         String loginName = LoginUserInfo.getLoginName();
-
+        couponService.updateCoupon(loginName, Integer.parseInt(couponId));
         return "ok";
     }
 

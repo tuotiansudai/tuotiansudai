@@ -1,7 +1,11 @@
 package com.tuotiansudai.coupon.service;
 
+import com.tuotiansudai.coupon.dto.UserCouponDto;
+
+import java.util.List;
 
 public interface UserCouponService {
 
-    long findExpectedTotalByCouponId(long couponId, long couponAmount);
+    List<UserCouponDto> getUserCouponDtoByLoginName(String loginName);
+
 }
