@@ -210,4 +210,7 @@ td.td {
     margin-right: 40px;
     margin-top: 10px;
 }
-
+.line-size{
+    float:left;
+    line-height: 34px;
+}
