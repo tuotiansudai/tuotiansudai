@@ -73,7 +73,7 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
                         layer.open({
                             type: 1,
                             title: false,
-                            offset: '100px',
+                            offset: '80px',
                             area: ['1000px'],
                             shadeClose: true,
                             content: html
