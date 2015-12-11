@@ -2,6 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.InvestPaginationDataDto;
 import com.tuotiansudai.dto.InvestPaginationItemDataDto;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.Role;
@@ -57,7 +58,7 @@ public class InvestController {
             }
             response.setContentType("application/csv");
             long count = investService.findCountInvestPagination(loanId, investorLoginName, channel, enumSource, role, startTime, endTime, investStatus, null);
-            BasePaginationDataDto<InvestPaginationItemDataDto> dataDto = investService.getInvestPagination(loanId, investorLoginName, channel, enumSource, role, 1, (int)count, startTime, endTime, investStatus, null);
+            InvestPaginationDataDto dataDto = investService.getInvestPagination(loanId, investorLoginName, channel, enumSource, role, 1, (int)count, startTime, endTime, investStatus, null);
             List<List<String>> data = Lists.newArrayList();
             List<InvestPaginationItemDataDto> investPaginationItemDataDtos = dataDto.getRecords();
             for (int i = 0 ;i < investPaginationItemDataDtos.size(); i++) {
@@ -79,7 +80,7 @@ public class InvestController {
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleInvests, data, response.getOutputStream());
             return null;
         } else {
-            BasePaginationDataDto<InvestPaginationItemDataDto> dataDto = investService.getInvestPagination(loanId, investorLoginName, channel, enumSource, role, index, pageSize, startTime, endTime, investStatus, null);
+            InvestPaginationDataDto dataDto = investService.getInvestPagination(loanId, investorLoginName, channel, enumSource, role, index, pageSize, startTime, endTime, investStatus, null);
             List<String> channelList = investService.findAllChannel();
 
             ModelAndView mv = new ModelAndView("/invest-list");
