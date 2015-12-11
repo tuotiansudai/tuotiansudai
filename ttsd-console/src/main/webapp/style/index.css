@@ -214,3 +214,22 @@ td.td {
     float:left;
     line-height: 34px;
 }
+.already-btn{
+    color:#cc0000;
+}
+.confirm-btn{
+    display: inline-block;
+}
+.tip-container{
+    width:370px;
+    height:52px;
+    display: none;
+    position: fixed;
+    top:50%;
+    left:50%;
+    margin-top: -26px;
+    margin-left: -185px;
+}
+.tip-container .alert{
+    margin-bottom: 0;
+}
