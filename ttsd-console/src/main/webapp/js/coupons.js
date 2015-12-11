@@ -1,4 +1,4 @@
-require(['jquery','bootstrap', 'bootstrapDatetimepicker'], function($) {
+require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
     $(function() {
         var $body=$('body'),
             $confirmBtn=$('.confirm-btn'),//conirm button
@@ -14,20 +14,24 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker'], function($) {
                 thisId=$self.attr('data-id');//data id
 
             $.ajax({
-                url: '/path/to/file',
+                url: '/activity-manage/coupon/'+thisId+'/active',
                 type: 'POST',
-                dataType: 'json',
-                data: {id: thisId},
+                dataType: 'json'
             })
             .done(function(data) {
-                $self.text('已生效').addClass('already-btn');
+                if(data == 'success'){
+                    $self.text('已生效').addClass('already-btn')
+                        .siblings('.check-btn').addClass('add-check');
+                }else if(data == 'fail'){
+                    $self.text('确认生效').removeClass('already-btn')
+                        .siblings('.check-btn').removeClass('add-check');
+                }else{
+                    $tipCom.show().find('.txt').text('操作失败！');
+                }
             })
             .fail(function(data) {
-                $self.addClass('confirm-btn').text('确认失败');
+                $self.addClass('confirm-btn').text('操作失败');
                 $tipCom.show().find('.txt').text('请求发送失败，请刷新重试！');
-            })
-            .always(function(data) {
-                $self.removeClass('confirm-btn').text('正在确认中');
             });
             
         });

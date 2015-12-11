@@ -2,6 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.exception.CreateCouponException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,17 @@ public class CouponController {
     @ResponseBody
     public String activeCoupon(@PathVariable String couponId){
         String loginName = LoginUserInfo.getLoginName();
-        couponService.updateCoupon(loginName, Integer.parseInt(couponId));
-        return "ok";
+        try {
+            CouponModel couponModel = couponService.findCouponById(Long.parseLong(couponId));
+            couponService.updateCoupon(loginName, Integer.parseInt(couponId), !couponModel.isActive());
+            if (couponModel.isActive()) {
+                return "fail";
+            } else {
+                return "success";
+            }
+        } catch (Exception e) {
+            return "error";
+        }
     }
 
     @RequestMapping(value = "/coupons",method = RequestMethod.GET)
@@ -55,7 +65,13 @@ public class CouponController {
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("coupons", couponService.findCoupons(index, pageSize));
-        modelAndView.addObject("couponsCount", couponService.findCouponsCount());
+        int couponsCount = couponService.findCouponsCount();
+        modelAndView.addObject("couponsCount", couponsCount);
+        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 ? 1 : 0);
+        boolean hasPreviousPage = index > 1 && index <= totalPages;
+        boolean hasNextPage = index < totalPages;
+        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
+        modelAndView.addObject("hasNextPage", hasNextPage);
         return modelAndView;
     }
 
