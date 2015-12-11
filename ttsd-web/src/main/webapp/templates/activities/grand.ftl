@@ -3,13 +3,19 @@
 <div class="activity-grand-container">
 
     <div class="ad-img ad-grand-img"></div>
-    <div class="grand-content clearfix" style="margin-top: -3px;">
-        <img src="${staticServer}/images/sign/activities/grand/ad-gc-01.png" class="responsive-picture">
+    <div class="grand-content clearfix">
+        <img src="${staticServer}/images/sign/activities/grand/ad-gc-01.png" class="responsive-picture is-show">
 
-        <img src="${staticServer}/images/sign/activities/grand/ad-gc-02.png" class="responsive-rule">
-
+        <img src="${staticServer}/images/sign/activities/grand/ad-gc-02.png" class="responsive-rule is-show">
+        <div class="res-comtainer">
+            <h3 class="responsive-title">累计收益越高,奖励价值越高</h3>
+            <div class="responsive-picture">
+                <img src="${staticServer}/images/sign/activities/grand/all-money.png" width="100%">
+            </div>
+            <h3 class="responsive-title">大奖展示</h3>
+        </div>
         <div class="product-show">
-            <h2 class="p-title"><img src="${staticServer}/images/sign/activities/grand/ad-g-t1.png"> </h2>
+            <h2 class="p-title is-show"><img src="${staticServer}/images/sign/activities/grand/ad-g-t1.png"> </h2>
             <div class="img-big">
                 <img src="${staticServer}/images/sign/activities/grand/s01.png" class="icon-mark">
                 <img src="${staticServer}/images/sign/activities/grand/01.png" class="product-img">

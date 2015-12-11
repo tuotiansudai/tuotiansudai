@@ -69,6 +69,9 @@ p {
   &.notice {
     line-height: 2.4;
   }
+  &.mb-0{
+    margin-bottom: 0;
+  }
 }
 .text-s {
   font-size: nth($fontSize,1); //12px

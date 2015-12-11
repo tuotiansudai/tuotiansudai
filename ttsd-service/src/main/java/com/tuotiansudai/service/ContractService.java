@@ -9,7 +9,7 @@ import java.util.Map;
 public interface ContractService {
     String getContract(String code, Map<String, Object> dataModel);
 
-    String generateInvestorContract(long loanId,ContractType contractType);
+    String generateInvestorContract(String loginName,long loanId,ContractType contractType);
 
     void generateContractPdf(String pdfString, OutputStream outputStream);
 }

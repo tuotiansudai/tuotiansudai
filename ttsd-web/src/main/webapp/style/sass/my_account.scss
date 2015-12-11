@@ -1181,5 +1181,29 @@
 }
 
 }
-
-
+/*ellipsis*/
+.text-overflow{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/*all list*/
+.project-name{
+  width: 175px;
+  display: inline-block;
+  @extend .text-overflow;
+}
+/*over view*/
+.trade-detail{
+  width: 170px;
+  display: inline-block;
+  @extend .text-overflow;
+}
+/*this month money*/
+.month-title{
+  width: 80px;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

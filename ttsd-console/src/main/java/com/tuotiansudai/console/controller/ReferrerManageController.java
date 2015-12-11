@@ -82,6 +82,8 @@ public class ReferrerManageController {
             ModelAndView modelAndView = new ModelAndView("/referrer-manage");
             List<ReferrerManageView> referrerManageViews = referrerManageService.findReferrerManage(referrerLoginName, investLoginName, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : investEndTime, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : rewardEndTime, role, source, currentPageNo, pageSize);
             int referrerManageCount = referrerManageService.findReferrerManageCount(referrerLoginName, investLoginName, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : investEndTime, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : rewardEndTime, role, source);
+            long investAmountSum = referrerManageService.findReferrerManageInvestAmountSum(referrerLoginName, investLoginName, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : investEndTime, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : rewardEndTime, role, source);
+            long rewardAmountSum = referrerManageService.findReferrerManageRewardAmountSum(referrerLoginName, investLoginName, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : investEndTime, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : rewardEndTime, role, source);
             modelAndView.addObject("referrerLoginName", referrerLoginName);
             modelAndView.addObject("investLoginName", investLoginName);
             modelAndView.addObject("investStartTime", investStartTime);
@@ -102,6 +104,8 @@ public class ReferrerManageController {
             modelAndView.addObject("hasNextPage", hasNextPage);
             Source[] sources = Source.values();
             modelAndView.addObject("sources",sources);
+            modelAndView.addObject("investAmountSum",investAmountSum);
+            modelAndView.addObject("rewardAmountSum",rewardAmountSum);
             return modelAndView;
         }
     }

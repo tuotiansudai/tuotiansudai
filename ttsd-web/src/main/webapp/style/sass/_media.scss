@@ -194,6 +194,7 @@
         font-size:14px;
       }
       dd{
+        margin-left:0!important;
         font-size:12px;
         line-height:25px;
       }
@@ -225,6 +226,12 @@
   .responsive-width{
     width:100%!important;
     margin:0!important;
+  }
+  .is-show{
+    display:none!important;
+  }
+  .res-comtainer{
+    display: block!important;
   }
   .click-article{
     padding:15px 10px!important;
@@ -344,11 +351,17 @@
           }
         }
       }
+      .crumb-lead {
+        display: none;
+      }
       .column-title{
+        border-bottom-width: 0px;
+        margin-bottom: 0;
         em{
           width:100%;
           text-align:center;
-          @extend .text-overflow;
+          line-height: 1.5;
+          margin-top: 10px;
         }
         time{
           margin-top:0;

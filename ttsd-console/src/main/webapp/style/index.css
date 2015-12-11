@@ -213,5 +213,18 @@ td.td {
 
 /*search box*/
 .searchbox {
-    margin-bottom:20px;
+    margin-bottom: 20px;
+}
+
+.title-list{
+    text-align: center;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    line-height: 35px;
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+}
+.title-list span{
+    margin:0 20px;
 }
