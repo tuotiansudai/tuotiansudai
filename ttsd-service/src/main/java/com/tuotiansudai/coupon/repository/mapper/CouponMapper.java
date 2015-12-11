@@ -13,6 +13,10 @@ public interface CouponMapper {
 
     CouponModel findCouponById(long id);
 
+    List<CouponModel> findValidCoupon();
+
+    CouponModel lockByCoupon(@Param(value = "id") long id);
+
     void updateCoupon(CouponModel couponModel);
 
     List<CouponModel> findCoupons(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
