@@ -351,11 +351,17 @@
           }
         }
       }
+      .crumb-lead {
+        display: none;
+      }
       .column-title{
+        border-bottom-width: 0px;
+        margin-bottom: 0;
         em{
           width:100%;
           text-align:center;
-          @extend .text-overflow;
+          line-height: 1.5;
+          margin-top: 10px;
         }
         time{
           margin-top:0;

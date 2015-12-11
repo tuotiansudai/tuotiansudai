@@ -323,14 +323,12 @@ public class AdvanceRepayServiceTest {
 
         this.generateMockResponse(10);
 
-        advanceRepayService.postRepayCallback(loanRepayMapper.findByLoanIdAndPeriod(fakeNormalLoan.getId(), 1).getId());
+        long currentLoanRepayId = loanRepayMapper.findByLoanIdAndPeriod(fakeNormalLoan.getId(), 1).getId();
 
-        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel1.getId(), 1).getId() + "X"), "");
-        advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel1.getId(), 1).getId() + "X"), "");
+        advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(currentLoanRepayId), "");
+        boolean isSuccess = advanceRepayService.postRepayCallback(currentLoanRepayId);
 
-        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel2.getId(), 1).getId() + "X"), "");
-        advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel2.getId(), 1).getId() + "X"), "");
-
+        assertTrue(isSuccess);
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
         assertThat(loanRepayModels.get(0).getPeriod(), is(1));
         assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.COMPLETE));
@@ -442,12 +440,11 @@ public class AdvanceRepayServiceTest {
 
         this.generateMockResponse(10);
 
-        advanceRepayService.postRepayCallback(loanRepayMapper.findByLoanIdAndPeriod(fakeNormalLoan.getId(), 1).getId());
-        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel1.getId(), 1).getId()) + "X"), "");
+        long currentLoanRepayId = loanRepayMapper.findByLoanIdAndPeriod(fakeNormalLoan.getId(), 1).getId();
+        advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(currentLoanRepayId), "");
+        boolean isSuccess = advanceRepayService.postRepayCallback(currentLoanRepayId);
 
-        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel2.getId(), 1).getId()) + "X"), "");
-        advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(String.valueOf(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel2.getId(), 1).getId()) + "X"), "");
-
+        assertTrue(isSuccess);
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
         assertThat(loanRepayModels.get(0).getPeriod(), is(1));
         assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.COMPLETE));
@@ -546,16 +543,14 @@ public class AdvanceRepayServiceTest {
         InvestRepayModel fakeInvest2RepayModel2 = this.getFakeInvestRepayModel(fakeInvestModel2.getId(), 2, fakeInvestModel2.getAmount(), fakeLoanRepayModel2.getRepayDate(), null, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(fakeInvest1RepayModel1, fakeInvest1RepayModel2, fakeInvest2RepayModel1, fakeInvest2RepayModel2));
 
-        BaseDto<PayFormDataDto> dto = advanceRepayService.repay(fakeNormalLoan.getId());
+        advanceRepayService.repay(fakeNormalLoan.getId());
 
         this.generateMockResponse(10);
 
-        advanceRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
-        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel1.getId(), 2).getId()) + "X"), "");
+        advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(fakeLoanRepayModel2.getId()), "");
+        boolean isSuccess = advanceRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
 
-        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel2.getId(), 2).getId()) + "X"), "");
-        advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(String.valueOf(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel2.getId(), 2).getId()) + "X"), "");
-
+        assertTrue(isSuccess);
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
         List<InvestRepayModel> investRepayModels1 = investRepayMapper.findByInvestIdAndPeriodAsc(fakeInvestModel1.getId());
         List<InvestRepayModel> investRepayModels2 = investRepayMapper.findByInvestIdAndPeriodAsc(fakeInvestModel2.getId());
@@ -643,16 +638,14 @@ public class AdvanceRepayServiceTest {
         InvestRepayModel fakeInvest2RepayModel2 = this.getFakeInvestRepayModel(fakeInvestModel2.getId(), 2, fakeInvestModel2.getAmount(), fakeLoanRepayModel2.getRepayDate(), null, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(fakeInvest1RepayModel1, fakeInvest1RepayModel2, fakeInvest2RepayModel1, fakeInvest2RepayModel2));
 
-        BaseDto<PayFormDataDto> dto = advanceRepayService.repay(fakeNormalLoan.getId());
+        advanceRepayService.repay(fakeNormalLoan.getId());
 
         this.generateMockResponse(10);
 
-        advanceRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
-        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest1RepayModel2.getId()) + "X"), "");
+        advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(fakeLoanRepayModel2.getId()), "");
+        boolean isSuccess = advanceRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
 
-        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest2RepayModel2.getId()) + "X"), "");
-        advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest2RepayModel2.getId()) + "X"), "");
-
+        assertTrue(isSuccess);
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
         assertThat(loanRepayModels.get(0).getPeriod(), is(1));
         assertThat(loanRepayModels.get(0).getActualRepayDate().getTime(), is(loanRepayModels.get(1).getActualRepayDate().getTime()));
@@ -769,13 +762,10 @@ public class AdvanceRepayServiceTest {
 
         this.generateMockResponse(10);
 
-        advanceRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
-        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest1RepayModel2.getId()) + "X"), "");
-        advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest1RepayModel2.getId()) + "X"), "");
-        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest2RepayModel2.getId()) + "X"), "");
-        advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest2RepayModel2.getId()) + "X"), "");
+        advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(fakeLoanRepayModel2.getId()), "");
+        boolean isSuccess = advanceRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
 
-
+        assertTrue(isSuccess);
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
         assertThat(loanRepayModels.get(0).getPeriod(), is(1));
         assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.COMPLETE));
@@ -866,16 +856,14 @@ public class AdvanceRepayServiceTest {
         InvestRepayModel fakeInvestRepayModel2 = this.getFakeInvestRepayModel(fakeInvestModel.getId(), 2, fakeInvestModel.getAmount(), fakeLoanRepayModel2.getRepayDate(), null, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(fakeInvestRepayModel1, fakeInvestRepayModel2));
 
-        BaseDto<PayFormDataDto> dto = advanceRepayService.repay(fakeNormalLoan.getId());
+        advanceRepayService.repay(fakeNormalLoan.getId());
 
         this.generateMockResponse(10);
 
-        advanceRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
+        advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(fakeLoanRepayModel2.getId()), "");
+        boolean isSuccess = advanceRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
 
-        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvestRepayModel2.getId()) + "X"), "");
-        advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvestRepayModel2.getId()) + "X"), "");
-
-
+        assertTrue(isSuccess);
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
         assertThat(loanRepayModels.get(0).getPeriod(), is(1));
         assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.COMPLETE));
@@ -939,9 +927,10 @@ public class AdvanceRepayServiceTest {
 
         this.generateMockResponse(10);
 
-        advanceRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
-        advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvestRepayModel2.getId()) + "X"), "");
+        advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(fakeLoanRepayModel2.getId()), "");
+        boolean isSuccess = advanceRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
 
+        assertTrue(isSuccess);
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
         assertThat(loanRepayModels.get(0).getPeriod(), is(1));
         assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.COMPLETE));
@@ -1044,7 +1033,7 @@ public class AdvanceRepayServiceTest {
         return fakeInvestRepay;
     }
 
-    private Map<String, String> getFakeCallbackParamsMap(String orderId) {
+    private Map<String, String> getFakeCallbackParamsMap(long orderId) {
         return Maps.newHashMap(ImmutableMap.<String, String>builder()
                 .put("service", "project_transfer_notify")
                 .put("sign_type", "RSA")
@@ -1052,7 +1041,7 @@ public class AdvanceRepayServiceTest {
                 .put("mer_id", "mer_id")
                 .put("version", "1.0")
                 .put("trade_no", "trade_no")
-                .put("order_id", orderId)
+                .put("order_id", String.valueOf(orderId))
                 .put("mer_date", new SimpleDateFormat("yyyyMMdd").format(new Date()))
                 .put("ret_code", "0000")
                 .build());
