@@ -10,7 +10,7 @@ import redis.clients.jedis.exceptions.JedisException;
 import java.util.Set;
 
 @Component
-public class MybatisRedisCacheWrapperClient extends AbstractRedisWrapperClient{
+public class MybatisRedisCacheWrapperClient extends AbstractRedisWrapperClient {
 
     static Logger logger = Logger.getLogger(MybatisRedisCacheWrapperClient.class);
 
