@@ -21,4 +21,9 @@ public interface ReferrerManageService {
     String getUserRewardDisplayLevel(String loginName);
 
     String findReferInvestTotalAmount(String referrerLoginName, String loginName, Date startTime, Date endTime);
+
+    long findReferrerManageInvestAmountSum(String referrerLoginName, String investLoginName, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, Source source);
+
+    long findReferrerManageRewardAmountSum(String referrerLoginName, String investLoginName, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, Source source);
+
 }

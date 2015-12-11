@@ -41,6 +41,16 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
     }
 
     @Override
+    public long findReferrerManageInvestAmountSum(String referrerLoginName, String investLoginName, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, Source source) {
+        return referrerManageMapper.findReferrerManageInvestAmountSum(referrerLoginName, investLoginName, investStartTime, investEndTime, level, rewardStartTime, rewardEndTime, role, source);
+    }
+
+    @Override
+    public long findReferrerManageRewardAmountSum(String referrerLoginName, String investLoginName, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, Source source) {
+        return referrerManageMapper.findReferrerManageRewardAmountSum(referrerLoginName, investLoginName, investStartTime, investEndTime, level, rewardStartTime, rewardEndTime, role, source);
+    }
+
+    @Override
     public BasePaginationDataDto findReferrerRelationList(String referrerLoginName, String loginName, Date referStartTime, Date referEndTime, int index, int pageSize) {
         String level = getUserRewardDisplayLevel(referrerLoginName);
         referEndTime = new DateTime(referEndTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
