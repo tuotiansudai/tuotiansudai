@@ -219,6 +219,7 @@ td.td {
 }
 .confirm-btn{
     display: inline-block;
+    float: left;
 }
 .tip-container{
     width:370px;
@@ -232,4 +233,11 @@ td.td {
 }
 .tip-container .alert{
     margin-bottom: 0;
+}
+.check-btn{
+    float: left;
+    margin-top: 2px;
+}
+.add-check{
+
 }
