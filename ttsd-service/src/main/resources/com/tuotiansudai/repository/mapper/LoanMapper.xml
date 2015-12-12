@@ -190,7 +190,7 @@
         select * from loan where status = #{status}
     </select>
 
-    <select id="findRepayingPaginationByAgentLoginName" parameterType="map" resultMap="loanResultMap">
+    <select useCache="false" id="findRepayingPaginationByAgentLoginName" parameterType="map" resultMap="loanResultMap">
         select *,
         (select min(loan_repay.repay_date)
         from loan_repay
@@ -205,13 +205,13 @@
         limit #{index}, #{pageSize}
     </select>
 
-    <select id="findCountRepayingByAgentLoginName" parameterType="map" resultType="long">
+    <select useCache="false" id="findCountRepayingByAgentLoginName" parameterType="map" resultType="long">
         select count(1) from loan
         where agent_login_name = #{agentLoginName} and status in ('REPAYING', 'OVERDUE')
         and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) between #{startTime} and #{endTime}
     </select>
 
-    <select id="findCompletedPaginationByAgentLoginName" parameterType="map" resultMap="loanResultMap">
+    <select useCache="false" id="findCompletedPaginationByAgentLoginName" parameterType="map" resultMap="loanResultMap">
         select *,
         (select max(loan_repay.actual_repay_date)
         from loan_repay
@@ -229,20 +229,20 @@
         limit #{index}, #{pageSize}
     </select>
 
-    <select id="findCountCompletedByAgentLoginName" parameterType="map" resultType="long">
+    <select useCache="false" id="findCountCompletedByAgentLoginName" parameterType="map" resultType="long">
         select count(1) from loan
         where agent_login_name = #{agentLoginName} and status = 'COMPLETE'
         and (select max(loan_repay.actual_repay_date) from loan_repay where loan.id=loan_repay.loan_id) between #{startTime} and #{endTime}
     </select>
 
-    <select id="findCanceledPaginationByAgentLoginName" parameterType="map" resultMap="loanResultMap">
+    <select useCache="false" id="findCanceledPaginationByAgentLoginName" parameterType="map" resultMap="loanResultMap">
         select * from loan
         where agent_login_name = #{agentLoginName} and status = 'CANCEL' and recheck_time between #{startTime} and #{endTime}
         order by recheck_time desc, id asc
         limit #{index}, #{pageSize}
     </select>
 
-    <select id="findCountCanceledByAgentLoginName" parameterType="map" resultType="long">
+    <select useCache="false" id="findCountCanceledByAgentLoginName" parameterType="map" resultType="long">
         select count(1) from loan
         where agent_login_name = #{agentLoginName} and status = 'CANCEL' and recheck_time between #{startTime} and #{endTime}
     </select>
