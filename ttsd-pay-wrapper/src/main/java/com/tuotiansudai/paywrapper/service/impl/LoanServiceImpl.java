@@ -256,19 +256,35 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void loanOutSuccessHandle(long loanId) {
+    public boolean postLoanOut(long loanId) {
         LoanModel loan = loanMapper.findById(loanId);
 
         List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
 
         logger.debug("标的放款：生成还款计划，标的ID:" + loanId);
-        repayGeneratorService.generateRepay(loanId);
+        try {
+            repayGeneratorService.generateRepay(loanId);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("生成还款计划失败 (loanId = {0})", String.valueOf(loanId)), e);
+            return false;
+        }
 
         logger.debug("标的放款：处理推荐人奖励，标的ID:" + loanId);
-        referrerRewardService.rewardReferrer(loan, successInvestList);
+        try {
+            referrerRewardService.rewardReferrer(loan, successInvestList);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("发放推荐人奖励失败 (loanId = {0})", String.valueOf(loanId)), e);
+            return false;
+        }
 
         logger.debug("标的放款：处理短信和邮件通知，标的ID:" + loanId);
-        processNotifyForLoanOut(loanId);
+        try {
+            processNotifyForLoanOut(loanId);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("放款短信邮件通知失败 (loanId = {0})", String.valueOf(loanId)), e);
+        }
+
+        return true;
     }
 
     private void proProcessWaitingInvest(long loanId) throws PayException {
@@ -328,11 +344,13 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private void processNotifyForLoanOut(long loanId) {
-        List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
+        List<InvestNotifyInfo> notifies = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
+
         logger.debug(MessageFormat.format("标的: {0} 放款短信通知", loanId));
-        notifyInvestorsLoanOutSuccessfulBySMS(notifyInfos);
+        notifyInvestorsLoanOutSuccessfulBySMS(notifies);
+
         logger.debug(MessageFormat.format("标的: {0} 放款邮件通知", loanId));
-        notifyInvestorsLoanOutSuccessfulByEmail(notifyInfos);
+        notifyInvestorsLoanOutSuccessfulByEmail(notifies);
     }
 
     private void notifyInvestorsLoanOutSuccessfulBySMS(List<InvestNotifyInfo> notifyInfos) {

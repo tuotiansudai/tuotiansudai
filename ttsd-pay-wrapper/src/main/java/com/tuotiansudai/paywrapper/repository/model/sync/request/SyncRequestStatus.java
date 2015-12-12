@@ -4,5 +4,5 @@ public enum SyncRequestStatus {
     READY,
     SENT,
     SUCCESS,
-    FAIL
+    FAILURE
 }

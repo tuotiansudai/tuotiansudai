@@ -1,7 +1,6 @@
 package com.tuotiansudai.paywrapper.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -64,11 +63,11 @@ public class LoanRepayJobResultDto implements Serializable {
         Optional<InvestRepayJobResultDto> optional = Iterators.tryFind(this.investRepayJobResults.iterator(), new Predicate<InvestRepayJobResultDto>() {
             @Override
             public boolean apply(InvestRepayJobResultDto input) {
-                return input.getInterestStatus() == SyncRequestStatus.FAIL || input.getFeeStatus() == SyncRequestStatus.FAIL;
+                return input.getInterestStatus() == SyncRequestStatus.FAILURE || input.getFeeStatus() == SyncRequestStatus.FAILURE;
             }
         });
 
-        return optional.isPresent() || loanRepayBalanceStatus == SyncRequestStatus.FAIL;
+        return optional.isPresent() || loanRepayBalanceStatus == SyncRequestStatus.FAILURE;
     }
 
     @JsonProperty(value = "loanId")

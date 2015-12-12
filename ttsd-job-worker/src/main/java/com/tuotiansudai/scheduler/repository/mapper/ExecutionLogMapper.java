@@ -11,6 +11,5 @@ public interface ExecutionLogMapper {
 
     void update(@Param("id") long id,
                 @Param("executeStatus") ExecuteStatus executeStatus,
-                @Param("exception") String exception
-    );
+                @Param("exception") String exception);
 }

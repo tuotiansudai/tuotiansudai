@@ -1,9 +1,9 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.paywrapper.dto.LoanRepayJobResultDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.service.InvestService;
+import com.tuotiansudai.paywrapper.service.LoanService;
 import com.tuotiansudai.paywrapper.service.RepayService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.Map;
 
 
 @Controller
@@ -22,6 +21,9 @@ import java.util.Map;
 public class JobController {
 
     static Logger logger = Logger.getLogger(JobController.class);
+
+    @Autowired
+    private LoanService loanService;
 
     @Autowired
     private InvestService investService;
@@ -57,6 +59,17 @@ public class JobController {
         PayDataDto dataDto = new PayDataDto();
         dataDto.setStatus(isSuccess);
         dto.setData(dataDto);
+        return dto;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/loan-out-success-notify", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> loanOut(@RequestBody long loanId) {
+        boolean isSuccess = loanService.postLoanOut(loanId);
+        BaseDto<PayDataDto> dto = new BaseDto<>();
+        PayDataDto dataDto = new PayDataDto();
+        dto.setData(dataDto);
+        dataDto.setStatus(isSuccess);
         return dto;
     }
 }
