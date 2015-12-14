@@ -98,6 +98,9 @@ public enum ReturnMessage {
     USER_IS_DISABLED("0049", "登录尝试次数过多，用户已被禁用"),
     CANNOT_GET_APK_VERSION("0060", "查找不到版本信息"),
 
+    /******提现******/
+    WITHDRAW_AMOUNT_NOT_REACH_FEE("0050","提现金额需大于手续费"),
+
     BAD_REQUEST("0400", "非法请求"),
     UNAUTHORIZED("0401", "未授权");
 
