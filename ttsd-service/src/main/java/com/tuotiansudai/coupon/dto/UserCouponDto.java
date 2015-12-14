@@ -17,9 +17,11 @@ public class UserCouponDto implements Serializable {
     private boolean used;
     private boolean expired;
     private boolean valid = true;
+    private long couponId;
 
     public UserCouponDto(CouponModel coupon, UserCouponModel userCoupon) {
         this.id = userCoupon.getId();
+        this.couponId = coupon.getId();
         this.name = coupon.getName();
         this.amount = coupon.getAmount();
         this.startTime = coupon.getStartTime();
@@ -104,5 +106,13 @@ public class UserCouponDto implements Serializable {
 
     public void setValid(boolean valid) {
         this.valid = valid;
+    }
+
+    public long getCouponId() {
+        return couponId;
+    }
+
+    public void setCouponId(long couponId) {
+        this.couponId = couponId;
     }
 }
