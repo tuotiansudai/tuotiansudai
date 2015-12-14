@@ -59,7 +59,7 @@
                         <#list coupons as coupon>
                         <dd class="experience-ticket">
                             <span class="fl"><i class="fa fa-money"></i> ${coupon.name}<@amount>${coupon.amount?string(0)}</@amount>元</span>
-                            <em class="fr"><label for="use-experience-ticket"> 使用体验劵</label> <input type="checkbox" id="use-experience-ticket"></em>
+                            <em class="fr"><label for="use-experience-ticket"> 使用体验劵</label> <input type="checkbox" id="use-experience-ticket" name="userCouponId" value="${coupon.id}"></em>
                         </dd>
                         <dd class="experience-revenue hide"><span class="fl">体验劵预期收益：</span><em class="fr"><i class="experience-interest"><@amount>${coupon.interest?string(0)}</@amount></i>元</em></dd>
                         </#list>
@@ -93,7 +93,7 @@
                     <#list coupons as coupon>
                         <dd class="experience-ticket">
                             <span class="fl"><i class="fa fa-money"></i> ${coupon.name}<@amount>${coupon.amount?string(0)}</@amount>元</span>
-                            <em class="fr"><label for="use-experience-ticket"> 使用体验劵</label> <input type="checkbox" id="use-experience-ticket"></em>
+                            <em class="fr"><label for="use-experience-ticket"> 使用体验劵</label> <input type="checkbox" id="use-experience-ticket" name="userCouponId" value="${coupon.id}></em>
                         </dd>
                         <dd class="experience-revenue hide"><span class="fl">体验劵预期收益：</span><em class="fr"><i class="experience-interest"><@amount>${coupon.interest?string(0)}</@amount></i>元</em></dd>
                     </#list>
