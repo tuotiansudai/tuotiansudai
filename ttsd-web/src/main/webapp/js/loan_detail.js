@@ -57,43 +57,31 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 var day = 0,
                     hour = 0,
                     minute = 0,
-                    second = 0;//时间默认值
+                    second = 0;
                 if(intDiff <= 1800){
 
                     if (intDiff > 0) {
-                        // day = Math.floor(intDiff / (60 * 60 * 24));
-                        // hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
                         minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
                         second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
                     }else{
                         $btnLookOther.prop('disabled', false);
                         $btnLookOther.html('马上投资');
+                        $accountInfo.find('.time-item').remove();
+                        $accountInfo.find('.expected-interest').parents('dd').removeClass('hide');
                     }
                     if (minute <= 9) minute = '0' + minute;
                     if (second <= 9) second = '0' + second;
-                    // $('#day_show').html(day+"天");
-                    // $('#hour_show').html('<s id="h"></s>'+hour+'时');
-                    $('#minute_show').html('<s></s>' + minute + '分');
-                    $('#second_show').html('<s></s>' + second + '秒');
+                    $('#minute_show').html(minute + '分');
+                    $('#second_show').html(second + '秒');
                     intDiff--;
                 }
             }, 1000);
         }
 
-            if($('#loanStatus').val() == 'PREHEAT' ){
-                timer(intDiff);
-            }
+        if($('#loanStatus').val() == 'PREHEAT' ){
+            timer(intDiff);
+        }
 
-
-        $btnLookOther.click(function(){
-            var investAmount = Number($('form input[name="amount"]').val());
-            var accountAmount = Number($('form .account-amount').text());
-            if(investAmount > accountAmount){
-                location.href = '/recharge';
-                return false;
-            }
-            return true;
-        });
 
         if(amountInputElement.length) {
             var calExpectedInterest = function(isFirstLoad){
@@ -120,7 +108,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     $('.expected-interest').html(amount);
                     $btnLookOther.prop('disabled', false);
                 });
-            }
+            };
             calExpectedInterest(true);
             amountInputElement.blur(function(){calExpectedInterest(false);});
 
@@ -136,6 +124,13 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                         $errorDom.html("<i class='fa fa-times-circle'></i>请正确输入投资金额").removeAttr("style");
                         return false;
                     }
+                    var investAmount = parseFloat(amount);
+                    var accountAmount = parseFloat($('form .account-amount').text());
+                    if(investAmount > accountAmount){
+                        location.href = '/recharge';
+                        return false;
+                    }
+                    return true;
                 }
                 return true;
             });

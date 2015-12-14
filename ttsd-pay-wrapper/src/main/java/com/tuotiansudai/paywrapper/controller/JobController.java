@@ -39,10 +39,10 @@ public class JobController {
     @RequestMapping(value = "/post_normal_repay", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> postNormalRepay(@RequestBody long loanRepayId) {
-        normalRepayService.postRepayCallback(loanRepayId);
+        boolean isSuccess = normalRepayService.postRepayCallback(loanRepayId);
         BaseDto<PayDataDto> dto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
-        dataDto.setStatus(true);
+        dataDto.setStatus(isSuccess);
         dto.setData(dataDto);
         return dto;
     }
@@ -50,10 +50,10 @@ public class JobController {
     @RequestMapping(value = "/post_advance_repay", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> postAdvanceRepay(@RequestBody long loanRepayId) {
-        advanceRepayService.postRepayCallback(loanRepayId);
+        boolean isSuccess = advanceRepayService.postRepayCallback(loanRepayId);
         BaseDto<PayDataDto> dto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
-        dataDto.setStatus(true);
+        dataDto.setStatus(isSuccess);
         dto.setData(dataDto);
         return dto;
     }

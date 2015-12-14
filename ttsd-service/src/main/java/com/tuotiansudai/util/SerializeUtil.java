@@ -1,5 +1,7 @@
 package com.tuotiansudai.util;
 
+import org.apache.log4j.Logger;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -7,33 +9,33 @@ import java.io.ObjectOutputStream;
 
 public class SerializeUtil {
 
+    static Logger logger = Logger.getLogger(SerializeUtil.class);
+
     public static byte[] serialize(Object object) {
-        ObjectOutputStream oos = null;
-        ByteArrayOutputStream baos = null;
         try {
             //序列化
-            baos = new ByteArrayOutputStream();
-            oos = new ObjectOutputStream(baos);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
             oos.writeObject(object);
-            byte[] bytes = baos.toByteArray();
-            return bytes;
+            return baos.toByteArray();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getLocalizedMessage(), e);
         }
         return null;
     }
 
-    public static Object unserialize(byte[] bytes) {
-        ByteArrayInputStream bais = null;
+    public static Object deserialize(byte[] bytes) {
+        if (bytes == null) {
+            return null;
+        }
         try {
             //反序列化
-            bais = new ByteArrayInputStream(bytes);
+            ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
             ObjectInputStream ois = new ObjectInputStream(bais);
             return ois.readObject();
         } catch (Exception e) {
-
+            logger.error(e.getLocalizedMessage(), e);
         }
         return null;
     }
-
 }

@@ -210,6 +210,12 @@ td.td {
     margin-right: 40px;
     margin-top: 10px;
 }
+
+/*search box*/
+.searchbox {
+    margin-bottom: 20px;
+}
+
 .title-list{
     text-align: center;
     border: 1px solid #ddd;
