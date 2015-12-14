@@ -13,12 +13,11 @@
             </div>
         </div>
 
-        <dl class="r-time">
-            <dt>活动时间：</dt>
-            <dd>11月21 14:00 青岛府新大厦拓天新产品推介会 <br/>
-                12月12 14:00 石家庄凯旋金悦大酒店拓天新产品推介会
-            </dd>
-        </dl>
+        <div class="r-time">
+            <b>活动时间：</b>
+            <p>11月21 14:00 青岛府新大厦拓天新产品推介会 <p/>
+              <p> 12月12 14:00 石家庄凯旋金悦大酒店拓天新产品推介会</p>
+        </div>
 
         <div class="qualifications">
             <a name=Qualifications></a>

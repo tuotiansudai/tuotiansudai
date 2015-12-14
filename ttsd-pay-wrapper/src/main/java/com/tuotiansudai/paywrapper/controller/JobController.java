@@ -1,7 +1,6 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.paywrapper.dto.LoanRepayJobResultDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.paywrapper.service.RepayService;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.Map;
 
 
 @Controller

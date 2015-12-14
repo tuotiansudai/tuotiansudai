@@ -13,7 +13,7 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric'], function ($,layer) {
             var reg=/.\d*$/,
                 amount = parseFloat(amountInputElement.autoNumeric("get")),
                 withdrawFee = Number(withdrawFeeElement.html());
-            if(reg.exec(amount)[0].length>=3) {
+            if(reg.exec(amount)[0].length>3) {
                 return;
             }
             if (isNaN(amount) || amount <= withdrawFee) {
