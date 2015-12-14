@@ -213,9 +213,9 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
         long loanRepayId = loanRepayJobResultDto.getLoanRepayId();
         try {
             if (this.storeJobData(loanRepayJobResultDto) && loanRepayJobResultDto.jobRetry()) {
-                Date oneHourLater = new DateTime().plusMinutes(60).toDate();
+                Date tenMinutes = new DateTime().plusMinutes(5).toDate();
                 jobManager.newJob(JobType.AdvanceRepay, AdvanceRepayJob.class)
-                        .runOnceAt(oneHourLater)
+                        .runOnceAt(tenMinutes)
                         .addJobData(NormalRepayJob.LOAN_REPAY_ID, loanRepayId)
                         .withIdentity(JobType.AdvanceRepay.name(), MessageFormat.format(REPAY_JOB_NAME_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new DateTime().getMillis())))
                         .submit();
