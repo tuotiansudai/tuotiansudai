@@ -353,8 +353,11 @@ public class UserServiceImpl implements UserService {
                 }
                 userModel.setProvince(provinceAndCity[0]);
                 userModel.setCity(provinceAndCity[1]);
-                userMapper.updateUser(userModel);
+            } else {
+                userModel.setProvince("未知");
+                userModel.setCity("未知");
             }
+            userMapper.updateUser(userModel);
         }
     }
 
