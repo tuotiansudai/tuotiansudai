@@ -35,7 +35,7 @@ public class UserCouponServiceImpl implements UserCouponService {
         List<UserCouponDto> dtoList = Lists.transform(modelList, new Function<UserCouponModel, UserCouponDto>() {
             @Override
             public UserCouponDto apply(UserCouponModel userCoupon) {
-                CouponModel coupon = couponMapper.findCouponById(userCoupon.getCouponId());
+                CouponModel coupon = couponMapper.findById(userCoupon.getCouponId());
                 return new UserCouponDto(coupon, userCoupon);
             }
         });

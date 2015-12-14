@@ -9,7 +9,7 @@
         <result column="login_name" property="loginName"/>
         <result column="coupon_id" property="couponId"/>
         <result column="loan_id" property="loanId"/>
-        <result column="create_time" property="createTime"/>
+        <result column="created_time" property="createdTime"/>
         <result column="used_time" property="usedTime"/>
         <result column="expected_interest" property="expectedInterest"/>
         <result column="actual_interest" property="actualInterest"/>
@@ -19,8 +19,8 @@
     </resultMap>
 
     <insert id="create" parameterType="UserCouponModel" useGeneratedKeys="true" keyProperty="id">
-        insert into user_coupon (login_name, coupon_id, create_time)
-        value(#{loginName}, #{couponId}, #{createTime})
+        insert into user_coupon (login_name, coupon_id, created_time)
+        value(#{loginName}, #{couponId}, #{createdTime})
     </insert>
 
     <select id="findByLoginName" resultMap="userCouponResultMap" parameterType="String">
@@ -30,6 +30,7 @@
     <select id="findByCouponId" resultMap="userCouponResultMap" parameterType="long">
         select * from user_coupon where id = #{couponId}
     </select>
+
     <update id="updateUserCoupon" parameterType="UserCouponModel">
         update user_coupon set loan_id = #{loanId},used_time = #{usedTime} where id = #{id}
     </update>
@@ -38,5 +39,7 @@
         update coupon set issued_Count = #{issuedCount},active_time = #{activeTime},active = #{active},active_user = #{activeUser} where id = #{id}
     </update>
 
-
+    <select id="findByLoanId" resultMap="userCouponResultMap" parameterType="long">
+        select * from user_coupon where loan_id = #{loan_id}
+    </select>
 </mapper>

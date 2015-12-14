@@ -58,11 +58,7 @@ public class UserCouponMapperTest {
     }
 
     private UserCouponModel fakeUserCouponModel(long couponId) {
-        UserCouponModel userCouponModel = new UserCouponModel();
-        userCouponModel.setLoginName("couponTest");
-        userCouponModel.setCouponId(couponId);
-        userCouponModel.setCreateTime(new Date());
-        return userCouponModel;
+        return new UserCouponModel("couponTest", couponId);
     }
 
     private CouponModel fakeCouponModel() {

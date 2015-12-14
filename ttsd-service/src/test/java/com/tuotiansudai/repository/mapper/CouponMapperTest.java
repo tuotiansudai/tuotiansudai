@@ -38,7 +38,7 @@ public class CouponMapperTest {
         CouponModel couponModel = fakeCouponModel();
         couponMapper.create(couponModel);
 
-        CouponModel couponModel1 = couponMapper.findCouponById(couponModel.getId());
+        CouponModel couponModel1 = couponMapper.findById(couponModel.getId());
         assertNotNull(couponModel1.getId());
         assertEquals("优惠券", couponModel1.getName());
         assertEquals(1000l,couponModel1.getAmount());

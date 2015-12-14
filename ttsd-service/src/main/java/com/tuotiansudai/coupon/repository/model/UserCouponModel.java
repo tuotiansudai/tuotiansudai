@@ -3,17 +3,37 @@ package com.tuotiansudai.coupon.repository.model;
 import java.util.Date;
 
 public class UserCouponModel {
+
     private long id;
+
     private String loginName;
+
     private long couponId;
+
     private long loanId;
-    private Date createTime;
+
     private Date usedTime;
+
     private long expectedInterest;
+
     private long actualInterest;
+
     private long defaultInterest;
+
     private long expectedFee;
+
     private long actualFee;
+
+    private Date createdTime;
+
+    public UserCouponModel() {
+    }
+
+    public UserCouponModel(String loginName, long couponId) {
+        this.loginName = loginName;
+        this.couponId = couponId;
+        this.createdTime = new Date();
+    }
 
     public long getId() {
         return id;
@@ -45,14 +65,6 @@ public class UserCouponModel {
 
     public void setLoanId(long loanId) {
         this.loanId = loanId;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
     }
 
     public Date getUsedTime() {
@@ -103,12 +115,11 @@ public class UserCouponModel {
         this.actualFee = actualFee;
     }
 
-    public UserCouponModel(){}
-
-    public UserCouponModel(String loginName,long couponId){
-        this.loginName = loginName;
-        this.couponId = couponId;
-        this.createTime = new Date();
+    public Date getCreatedTime() {
+        return createdTime;
     }
 
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
 }

@@ -8,6 +8,7 @@ import java.util.List;
 
 @Repository
 public interface UserCouponMapper {
+
     void create(UserCouponModel userCouponModel);
 
     List<UserCouponModel> findByLoginName(@Param("loginName") String loginName);
@@ -15,4 +16,6 @@ public interface UserCouponMapper {
     UserCouponModel findByCouponId(@Param("couponId") long couponId);
 
     void updateUserCoupon(UserCouponModel userCouponModel);
+
+    List<UserCouponModel> findByLoanId(@Param("loanId") long loanId);
 }

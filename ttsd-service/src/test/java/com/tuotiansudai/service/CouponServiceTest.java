@@ -1,30 +1,24 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.exception.CreateCouponException;
-import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.impl.InvestServiceImpl;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -35,8 +29,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -120,7 +112,7 @@ public class CouponServiceTest {
         couponMapper.create(couponModel);
 
         couponService.afterReturningUserRegistered(userModel.getLoginName());
-        CouponModel couponModel2 = couponMapper.findCouponById(couponModel.getId());
+        CouponModel couponModel2 = couponMapper.findById(couponModel.getId());
 
         assertEquals(1, couponModel2.getIssuedCount());
 
@@ -145,7 +137,7 @@ public class CouponServiceTest {
 
         userCouponModel.setLoginName(userModel.getLoginName());
         userCouponModel.setCouponId(couponModel.getId());
-        userCouponModel.setCreateTime(new Date());
+        userCouponModel.setCreatedTime(new Date());
         userCouponMapper.create(userCouponModel);
 
         LoanModel loanModel = fakeLoanModel(userModel.getLoginName());
@@ -157,7 +149,7 @@ public class CouponServiceTest {
         investDto.setUserCouponId("" + userCouponModel.getId());
         couponService.afterReturningInvest(investDto);
 
-        CouponModel couponModel1 = couponMapper.findCouponById(couponModel.getId());
+        CouponModel couponModel1 = couponMapper.findById(couponModel.getId());
 
         assertEquals(1, couponModel1.getUsedCount());
     }
@@ -183,7 +175,7 @@ public class CouponServiceTest {
 
         userCouponModel.setLoginName(userModel.getLoginName());
         userCouponModel.setCouponId(couponModel.getId());
-        userCouponModel.setCreateTime(new Date());
+        userCouponModel.setCreatedTime(new Date());
 
         userCouponMapper.create(userCouponModel);
 
@@ -195,7 +187,7 @@ public class CouponServiceTest {
         investDto.setUserCouponId("" + userCouponModel.getId());
         couponService.afterReturningInvest(investDto);
 
-        CouponModel couponModel1 = couponMapper.findCouponById(couponModel.getId());
+        CouponModel couponModel1 = couponMapper.findById(couponModel.getId());
 
         assertEquals(0,couponModel1.getUsedCount());
 
@@ -232,7 +224,7 @@ public class CouponServiceTest {
 
 
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(registerUserDto.getLoginName());
-        CouponModel couponModel1 = couponMapper.findCouponById(couponModel.getId());
+        CouponModel couponModel1 = couponMapper.findById(couponModel.getId());
         assertEquals(true, CollectionUtils.isNotEmpty(userCouponModels));
         assertEquals(1,couponModel1.getIssuedCount());
 

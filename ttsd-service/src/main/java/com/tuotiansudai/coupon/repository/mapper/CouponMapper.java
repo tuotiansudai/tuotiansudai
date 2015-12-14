@@ -11,7 +11,7 @@ public interface CouponMapper {
 
     void create(CouponModel couponModel);
 
-    CouponModel findCouponById(long id);
+    CouponModel findById(long id);
 
     List<CouponModel> findValidCoupon();
 

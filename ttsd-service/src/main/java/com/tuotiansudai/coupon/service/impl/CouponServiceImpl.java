@@ -153,7 +153,7 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public void updateCoupon(String loginName, long couponId, boolean active) {
-        CouponModel couponModel = couponMapper.findCouponById(couponId);
+        CouponModel couponModel = couponMapper.findById(couponId);
         couponModel.setActive(active);
         couponModel.setActiveTime(new Date());
         couponModel.setActiveUser(loginName);
@@ -162,7 +162,7 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public CouponModel findCouponById (long couponId) {
-        return couponMapper.findCouponById(couponId);
+        return couponMapper.findById(couponId);
     }
 
 }

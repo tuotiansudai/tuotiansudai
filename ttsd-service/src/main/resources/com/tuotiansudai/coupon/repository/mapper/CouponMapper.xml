@@ -27,7 +27,7 @@
         value(#{name}, #{amount}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{createTime}, #{createUser}, #{activeUser},#{activeTime},#{issuedCount})
     </insert>
 
-    <select id="findCouponById" resultMap="couponResultMap" parameterType="long">
+    <select id="findById" resultMap="couponResultMap" parameterType="long">
         select * from coupon where id = #{id}
     </select>
 
