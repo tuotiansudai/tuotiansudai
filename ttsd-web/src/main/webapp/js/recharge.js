@@ -44,11 +44,14 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric', 'commonFun'], function
         if (fastRechargeInputAmountElement) {
             fastRechargeInputAmountElement.autoNumeric("init");
             fastRechargeInputAmountElement.keyup(function () {
-                var amount = parseFloat(fastRechargeInputAmountElement.autoNumeric("get"));
-                if (isNaN(amount) || amount < 0.01) {
+                var $this=$(this);
+                var amount = parseFloat($this.autoNumeric("get"));
+                if (isNaN(amount) || amount < 1) {
+                    $this.parents('form').find('.error').show();
                     fastRechargeSubmitElement.prop('disabled', true).removeClass('btn-normal');
 
                 } else {
+                    $this.parents('form').find('.error').hide();
                     fastRechargeSubmitElement.prop('disabled', false).addClass('btn-normal');
                 }
             });

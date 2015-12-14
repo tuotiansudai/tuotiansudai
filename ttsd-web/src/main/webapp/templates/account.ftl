@@ -10,7 +10,7 @@
 <div class="content-container account-overview">
     <div class="bRadiusBox spad bg-w clearfix">
         <img src="${staticServer}/images/sign/profile.jpg" class="fl accountImg" >
-        <div class="profileBox">
+        <div class="profile-box">
             <span><em>您好：${loginName!}</em></span>
             <ul class="proList">
                 <li class="fl"><a class="fa fa-envelope-o fa-fw" href="/personal-info"></a></li>
@@ -19,15 +19,14 @@
             </ul>
         </div>
     </div>
-    <div class="clear-blank"></div>
-    <div class="AssetsBox">
-        <div class="AssetsReport bRadiusBox fl bg-w">
+    <div class="assets-box clear-blank">
+        <div class="assets-report bRadiusBox fl bg-w">
             <h3>资产总额：<span>${(((balance+freeze+collectingPrincipal+collectingInterest)/100)?string('0.00'))!}元</span></h3>
 
             <div id="ReportShow" style="width:100%; height:115px; "></div>
         </div>
-        <div class="AssetsDetail bRadiusBox fr bg-w">
-            <ul class="DetailList">
+        <div class="assets-detail bRadiusBox fr bg-w">
+            <ul class="detail-list">
                 <li><b>我的余额：</b><span>${((balance/100)?string('0.00'))!}</span>元</li>
                 <li><b>累计收益：</b><span>${(((collectedReward+collectedInterest)/100)?string('0.00'))!}</span>元</li>
                 <li><b>待收本金：</b><span>${((collectingPrincipal/100)?string('0.00'))!}</span>元</li>
@@ -37,9 +36,8 @@
             </ul>
         </div>
     </div>
-    <div class="clear-blank"></div>
     <#if successSumRepay??>
-        <div class="LastMonth bRadiusBox bg-w">
+        <div class="LastMonth bRadiusBox clear-blank bg-w">
             <ul class="PaymentSwitch">
                 <li class="current"><a href="javascript:void(0);">本月未还款</a></li>
             </ul>
@@ -78,8 +76,7 @@
             </table>
         </div>
     </#if>
-    <div class="clear-blank"></div>
-    <div class="tMonthPayment bRadiusBox bg-w" id="tMonthBox">
+    <div class="tMonthPayment bRadiusBox clear-blank bg-w" id="tMonthBox">
         <ul class="PaymentSwitch">
             <li class="current"><a href="javascript:void(0);"> 本月已收回款</a></li>
             <li><a href="javascript:void(0);">本月待收回款</a></li>
@@ -152,8 +149,7 @@
             </tfoot>
         </table>
     </div>
-    <div class="clear-blank"></div>
-    <div class="newProjects bRadiusBox bg-w">
+    <div class="newProjects bRadiusBox clear-blank bg-w">
         <table class="table">
             <caption>最新投资项目 <a href="/investor/invest-list" class="fr">更多...</a> </caption>
             <thead>

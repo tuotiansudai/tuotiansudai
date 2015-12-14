@@ -733,9 +733,6 @@ height:150px;
                             position: relative;
                             padding-bottom:22px;
                             text-align: left;
-                            .pad-m {
-                                padding-left:20px;
-                            }
                             .pr-title {
                                 font-size: 15px;
                                 text-overflow: ellipsis;
@@ -768,13 +765,13 @@ height:150px;
                                     text-align: left;
                                     em {
                                         color: #ff3333;
-                                        font-size: 14px;
+                                        font-size: 12px;
                                         line-height: 1;
                                         font-weight: bold;
                                         padding-top: 10px;
                                         display: inline-block;
                                         b {
-                                            font-size:26px;
+                                            font-size:20px;
                                             line-height:0.5;
                                         }
                                     }
@@ -804,7 +801,7 @@ height:150px;
                                         i {
                                             color: #ff3333;
                                             font-weight: bold;
-                                            font-size: 22px;
+                                            font-size: 20px;
                                         }
                                         span {
                                             display: none;
@@ -813,7 +810,7 @@ height:150px;
                                     }
                                     &.dl-amount {
                                         position: absolute;
-                                        left: 21px;
+                                        left: 12px;
                                         top: 90px;
                                         width:auto;
                                         i{
@@ -834,7 +831,7 @@ height:150px;
                                 }
                             }
                             .pad-m {
-                                padding:10px;
+                                padding:10px 0px;
                             }
                             .btn-normal {
                                 width:auto;
