@@ -228,3 +228,11 @@ td.td {
 .title-list span{
     margin:0 20px;
 }
+.detail-tool{
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 10px;
+    overflow: hidden;
+    width: 400px;
+}
