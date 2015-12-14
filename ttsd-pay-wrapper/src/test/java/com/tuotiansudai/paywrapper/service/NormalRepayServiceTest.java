@@ -5,6 +5,10 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
@@ -19,7 +23,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,6 +80,12 @@ public class NormalRepayServiceTest {
 
     @Autowired
     private RepayGeneratorService repayGeneratorService;
+
+    @Autowired
+    private CouponMapper couponMapper;
+
+    @Autowired
+    private UserCouponMapper userCouponMapper;
 
     @Resource(name = "normalRepayServiceImpl")
     private RepayService normalRepayService;
@@ -240,6 +249,12 @@ public class NormalRepayServiceTest {
         investMapper.create(fakeInvestModel2);
         repayGeneratorService.generateRepay(fakeNormalLoan.getId());
         normalRepayService.repay(fakeNormalLoan.getId());
+
+        CouponModel coupon = this.getFakeCoupon(1000, "loaner");
+        couponMapper.create(coupon);
+        UserCouponModel userCouponModel = new UserCouponModel(investor1.getLoginName(), coupon.getId());
+        userCouponMapper.create(userCouponModel);
+
 
         this.generateMockResponse(10);
 
@@ -1173,4 +1188,14 @@ public class NormalRepayServiceTest {
         }
     }
 
+    private CouponModel getFakeCoupon(long amount, String loginName) {
+        CouponModel couponModel = new CouponModel();
+        couponModel.setName("couponName");
+        couponModel.setAmount(amount);
+        couponModel.setTotalCount(1);
+        couponModel.setActive(true);
+        couponModel.setActiveUser(loginName);
+        couponModel.setCreateTime(new Date());
+        return couponModel;
+    }
 }

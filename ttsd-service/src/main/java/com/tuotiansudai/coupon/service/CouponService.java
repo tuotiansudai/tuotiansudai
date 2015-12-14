@@ -15,8 +15,6 @@ public interface CouponService {
 
     void afterReturningInvest(InvestDto investDto);
 
-    void afterReturningRepay(long loanId, boolean isAdvanced);
-
     List<CouponModel> findCoupons(int index, int pageSize);
 
     int findCouponsCount();

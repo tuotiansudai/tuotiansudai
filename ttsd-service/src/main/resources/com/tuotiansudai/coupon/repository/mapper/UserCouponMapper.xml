@@ -9,19 +9,34 @@
         <result column="login_name" property="loginName"/>
         <result column="coupon_id" property="couponId"/>
         <result column="loan_id" property="loanId"/>
-        <result column="created_time" property="createdTime"/>
         <result column="used_time" property="usedTime"/>
         <result column="expected_interest" property="expectedInterest"/>
         <result column="actual_interest" property="actualInterest"/>
-        <result column="default_interest" property="defaultInterest"/>
         <result column="expected_fee" property="expectedFee"/>
         <result column="actual_fee" property="actualFee"/>
+        <result column="default_interest" property="defaultInterest"/>
+        <result column="created_time" property="createdTime"/>
     </resultMap>
 
     <insert id="create" parameterType="UserCouponModel" useGeneratedKeys="true" keyProperty="id">
         insert into user_coupon (login_name, coupon_id, created_time)
         value(#{loginName}, #{couponId}, #{createdTime})
     </insert>
+
+    <update id="update" parameterType="UserCouponModel">
+        update user_coupon
+        set login_name = #{loginName},
+            coupon_id = #{couponId},
+            loan_id = #{loanId},
+            used_time = #{usedTime},
+            expected_interest = #{expectedInterest},
+            actual_interest = #{actualInterest},
+            expected_fee = #{expectedFee},
+            actual_fee = #{actualFee},
+            default_interest = #{defaultInterest},
+            created_time = #{createdTime}
+        where id = #{id}
+    </update>
 
     <select id="findByLoginName" resultMap="userCouponResultMap" parameterType="String">
         select * from user_coupon where login_name = #{loginName}

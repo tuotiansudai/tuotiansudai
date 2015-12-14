@@ -170,6 +170,5 @@ public class CouponModel implements Serializable {
         this.endTime = couponDto.getEndTime();
         this.totalCount = StringUtils.isEmpty(couponDto.getTotalCount())?0l:Long.parseLong(couponDto.getTotalCount());
         this.createTime = new Date();
-
     }
 }

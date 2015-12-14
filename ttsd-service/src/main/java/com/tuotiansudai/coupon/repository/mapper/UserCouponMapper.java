@@ -11,6 +11,8 @@ public interface UserCouponMapper {
 
     void create(UserCouponModel userCouponModel);
 
+    void update(UserCouponModel userCouponModel);
+
     List<UserCouponModel> findByLoginName(@Param("loginName") String loginName);
 
     UserCouponModel findByCouponId(@Param("couponId") long couponId);

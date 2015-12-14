@@ -18,7 +18,6 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
-
 @Service
 public class CouponServiceImpl implements CouponService {
 
@@ -70,7 +69,7 @@ public class CouponServiceImpl implements CouponService {
         List<CouponModel> couponModelValid = couponMapper.findValidCoupon();
         for (CouponModel couponModel : couponModelValid) {
             long id = couponModel.getId();
-            UserCouponModel userCouponModel = new UserCouponModel(loginName,id);
+            UserCouponModel userCouponModel = new UserCouponModel(loginName, id);
             userCouponMapper.create(userCouponModel);
             recordIssuedCount(id);
         }
@@ -137,13 +136,8 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public void afterReturningRepay(long loanId, boolean isAdvanced) {
-
-    }
-
-    @Override
     public List<CouponModel> findCoupons(int index, int pageSize) {
-        return couponMapper.findCoupons((index - 1 ) * pageSize, pageSize);
+        return couponMapper.findCoupons((index - 1) * pageSize, pageSize);
     }
 
     @Override
@@ -161,7 +155,7 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public CouponModel findCouponById (long couponId) {
+    public CouponModel findCouponById(long couponId) {
         return couponMapper.findById(couponId);
     }
 
