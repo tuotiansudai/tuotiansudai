@@ -1,11 +1,13 @@
 package com.tuotiansudai.coupon.service.impl;
 
 import com.tuotiansudai.coupon.dto.CouponDto;
+import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.exception.CreateCouponException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -82,9 +85,56 @@ public class CouponServiceImpl implements CouponService {
         couponMapper.updateCoupon(couponModel);
     }
 
-    @Override
-    public void afterReturningInvest(String loginName, long loanId) {
+    @Transactional
+    public void recordUsedCount(long id){
+        CouponModel couponModel = couponMapper.lockByCoupon(id);
+        long usedCount = couponModel.getUsedCount();
+        couponModel.setUsedCount(usedCount + 1);
+        couponMapper.updateCoupon(couponModel);
+    }
 
+    @Override
+    @Transactional
+    public void afterReturningInvest(InvestDto investDto) {
+        if(investDto.getUserCouponId() == null){
+            return;
+        }
+        long userCouponId = investDto.getUserCouponIdLong();
+        UserCouponDto userCouponDto = checkCouponIsValid(userCouponId);
+        if (userCouponDto == null){
+            logger.debug(MessageFormat.format("userCouponId:{0} , is not exist",userCouponId));
+            return;
+        }
+        if(userCouponDto.isExpired()){
+            logger.debug(MessageFormat.format("userCouponId:{0} , is expired",userCouponId));
+
+        }
+        if(userCouponDto.isUsed()){
+            logger.debug(MessageFormat.format("userCouponId:{0} , is used",userCouponId));
+        }
+        if (userCouponDto.isValid()){
+            UserCouponModel userCouponModel = userCouponMapper.findByCouponId(userCouponId);
+            userCouponModel.setLoanId(investDto.getLoanIdLong());
+            userCouponModel.setUsedTime(new Date());
+            userCouponMapper.updateUserCoupon(userCouponModel);
+            recordUsedCount(userCouponDto.getCouponId());
+        }else {
+            logger.debug(MessageFormat.format("userCouponId:{0} , is invalid",userCouponId));
+        }
+
+    }
+
+    private UserCouponDto checkCouponIsValid(long userCouponId){
+        UserCouponModel userCouponModel = userCouponMapper.findByCouponId(userCouponId);
+        if(userCouponModel != null){
+            long couponId = userCouponModel.getCouponId();
+            CouponModel couponModel = couponMapper.findCouponById(couponId);
+            UserCouponDto userCouponDto = new UserCouponDto(couponModel,userCouponModel);
+
+            return userCouponDto;
+        }
+
+        return null;
     }
 
     @Override

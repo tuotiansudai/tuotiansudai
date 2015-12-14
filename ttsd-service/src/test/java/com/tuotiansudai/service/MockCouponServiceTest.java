@@ -15,7 +15,6 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.impl.InvestServiceImpl;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
@@ -41,8 +40,11 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
-public class CouponServiceTest {
-
+public class MockCouponServiceTest {
+    @InjectMocks
+    private InvestService investService;
+    @Mock
+    private PayWrapperClient payWrapperClient;
     @Autowired
     private CouponService couponService;
     @Autowired
@@ -65,6 +67,60 @@ public class CouponServiceTest {
 
     @Autowired
     private IdGenerator idGenerator;
+
+    @Before
+    public void init() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    public void shouldInvestIsSuccess() throws InvestException {
+
+        BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
+        PayFormDataDto dataDto = new PayFormDataDto();
+        dataDto.setStatus(true);
+        baseDto.setData(dataDto);
+
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+
+        CouponDto couponDto = fakeCouponDto();
+        DateTime startDateTime = new DateTime().plusDays(-1);
+        DateTime endDateTime = new DateTime().plusDays(1);
+        couponDto.setStartTime(startDateTime.toDate());
+        couponDto.setEndTime(endDateTime.toDate());
+        CouponModel couponModel = new CouponModel(couponDto);
+        couponModel.setCreateUser("couponTest");
+        couponModel.setActive(true);
+        couponMapper.create(couponModel);
+
+        UserCouponModel userCouponModel = new UserCouponModel();
+
+        userCouponModel.setLoginName(userModel.getLoginName());
+        userCouponModel.setCouponId(couponModel.getId());
+        userCouponModel.setCreateTime(new Date());
+        userCouponMapper.create(userCouponModel);
+
+        LoanModel loanModel = fakeLoanModel(userModel.getLoginName());
+        loanMapper.create(loanModel);
+
+        InvestDto investDto = new InvestDto();
+        investDto.setLoanId("" + loanModel.getId());
+        investDto.setLoginName(userModel.getLoginName());
+        investDto.setAmount("2.00");
+        investDto.setUserCouponId("" + userCouponModel.getId());
+        when(payWrapperClient.invest(any(InvestDto.class))).thenReturn(baseDto);
+
+        investService.invest(investDto);
+
+        CouponModel couponModel1 = couponMapper.findCouponById(couponModel.getId());
+
+        assertEquals(1, couponModel1.getUsedCount());
+
+
+
+
+    }
 
 
     @Test
