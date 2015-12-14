@@ -152,27 +152,15 @@ public class NormalRepayServiceImpl implements RepayService {
                 ProjectTransferNotifyRequestModel.class);
 
         Long loanRepayId = this.parseLoanRepayId(callbackRequest);
-
         if (loanRepayId != null) {
-            this.createRepayJob(loanRepayId);
+            this.createRepayJob(this.generateJobData(loanRepayId, false));
         }
 
         return callbackRequest.getResponseData();
     }
 
     @Override
-    public String investPaybackCallback(Map<String, String> paramsMap, String originalQueryString) {
-        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, ProjectTransferNotifyMapper.class, ProjectTransferNotifyRequestModel.class);
-        return callbackRequest != null ? callbackRequest.getResponseData() : null;
-    }
-
-    @Override
-    public String investFeeCallback(Map<String, String> paramsMap, String originalQueryString) {
-        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, ProjectTransferNotifyMapper.class, ProjectTransferNotifyRequestModel.class);
-        return callbackRequest != null ? callbackRequest.getResponseData() : null;
-    }
-
-    @Override
+    @Transactional
     public boolean postRepayCallback(long loanRepayId) {
         LoanRepayJobResultDto jobData;
         try {
@@ -196,6 +184,7 @@ public class NormalRepayServiceImpl implements RepayService {
         if (!jobData.isUpdateLoanRepayStatusSuccess()) {
             try {
                 this.updateLoanRepayStatus(jobData);
+                jobData.setUpdateLoanRepayStatusSuccess(true);
             } catch (Exception e) {
                 logger.error(MessageFormat.format("[Normal Repay] Update loan repay status is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
             }
@@ -210,22 +199,33 @@ public class NormalRepayServiceImpl implements RepayService {
             }
         }
 
-        this.paybackInvestRepay(jobData);
-
-        this.transferLoanBalance(jobData);
-
-        this.storeJobData(jobData);
-
-        boolean isFail = jobData.isFail();
-
-        if (isFail) {
-            this.createRepayJob(loanRepayId);
+        try {
+            this.paybackInvestRepay(jobData);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[Normal Repay] Payback invest repay is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
         }
 
-        String value = redisWrapperClient.get(MessageFormat.format(LOAN_REPAY_JOB_DATA_KEY_TEMPLATE, String.valueOf(loanRepayId)));
-        logger.info(MessageFormat.format("[Normal Repay] repay job jobData : {0}", value));
+        try {
+            this.transferLoanBalance(jobData);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[Normal Repay] Transfer loan balance is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
+        }
 
-        return !isFail;
+        this.createRepayJob(jobData);
+
+        return !jobData.isFail();
+    }
+
+    @Override
+    public String investPaybackCallback(Map<String, String> paramsMap, String originalQueryString) {
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, ProjectTransferNotifyMapper.class, ProjectTransferNotifyRequestModel.class);
+        return callbackRequest != null ? callbackRequest.getResponseData() : null;
+    }
+
+    @Override
+    public String investFeeCallback(Map<String, String> paramsMap, String originalQueryString) {
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, ProjectTransferNotifyMapper.class, ProjectTransferNotifyRequestModel.class);
+        return callbackRequest != null ? callbackRequest.getResponseData() : null;
     }
 
     protected Long parseLoanRepayId(BaseCallbackRequestModel callbackRequest) {
@@ -250,7 +250,7 @@ public class NormalRepayServiceImpl implements RepayService {
         return loanRepayId;
     }
 
-    protected void generateJobData(long loanRepayId, boolean isAdvanceRepay) throws JsonProcessingException {
+    protected LoanRepayJobResultDto generateJobData(long loanRepayId, boolean isAdvanceRepay) {
         LoanRepayModel loanRepayModel = loanRepayMapper.findById(loanRepayId);
         LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
@@ -284,29 +284,27 @@ public class NormalRepayServiceImpl implements RepayService {
         long defaultInterest = this.calculateLoanRepayDefaultInterest(loanRepayModels);
         long repayAmount = (isAdvanceRepay ? loanRepayModels.get(loanRepayModels.size() - 1).getCorpus() : loanRepayModel.getCorpus()) + loanRepayModel.getActualInterest() + defaultInterest;
 
-        LoanRepayJobResultDto loanRepayJobResultDto = new LoanRepayJobResultDto(loanModel.getId(),
+        return new LoanRepayJobResultDto(loanModel.getId(),
                 loanRepayModel.getId(),
                 loanModel.getStatus() == LoanStatus.OVERDUE,
                 repayAmount,
                 loanRepayModel.getActualRepayDate(),
                 loanModel.calculateLoanRepayTimes() == loanRepayModel.getPeriod(),
                 investRepayJobResults);
-
-        this.storeJobData(loanRepayJobResultDto);
     }
 
-    protected void createRepayJob(long loanRepayId) {
+    protected void createRepayJob(LoanRepayJobResultDto loanRepayJobResultDto) {
+        long loanRepayId = loanRepayJobResultDto.getLoanRepayId();
         try {
-            this.generateJobData(loanRepayId, false);
-            Date fiveMinutesLater = new DateTime().plusMinutes(5).toDate();
-            jobManager.newJob(JobType.NormalRepay, NormalRepayJob.class)
-                    .runOnceAt(fiveMinutesLater)
-                    .addJobData(NormalRepayJob.LOAN_REPAY_ID, loanRepayId)
-                    .withIdentity(JobType.NormalRepay.name(), MessageFormat.format(REPAY_JOB_NAME_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new DateTime().getMillis())))
-                    .submit();
-        } catch (JsonProcessingException e) {
-            logger.error(MessageFormat.format("[Normal Repay] Generate normal repay job data failed (loanRepayId = {0})", String.valueOf(loanRepayId)), e);
-        } catch (SchedulerException e) {
+            if (this.storeJobData(loanRepayJobResultDto) && loanRepayJobResultDto.isFail()) {
+                Date oneHourLater = new DateTime().plusMinutes(60).toDate();
+                jobManager.newJob(JobType.NormalRepay, NormalRepayJob.class)
+                        .runOnceAt(oneHourLater)
+                        .addJobData(NormalRepayJob.LOAN_REPAY_ID, loanRepayId)
+                        .withIdentity(JobType.NormalRepay.name(), MessageFormat.format(REPAY_JOB_NAME_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new DateTime().getMillis())))
+                        .submit();
+            }
+        } catch (Exception e) {
             logger.error(MessageFormat.format("[Normal Repay] Create normal repay job failed (loanRepayId = {0})", String.valueOf(loanRepayId)), e);
         }
     }
@@ -343,7 +341,6 @@ public class NormalRepayServiceImpl implements RepayService {
                 null, null);
     }
 
-    @Transactional
     protected void updateLoanRepayStatus(LoanRepayJobResultDto jobData) {
         long loanId = jobData.getLoanId();
         Date actualRepayDate = jobData.getActualRepayDate();
@@ -425,7 +422,7 @@ public class NormalRepayServiceImpl implements RepayService {
                 try {
                     this.updateInvestorUserBill(isOverdueRepay, investorLoginName, investRepayId, corpus + actualInterest + defaultInterest, actualFee);
                     investRepayJobResult.setUpdateInvestorUserBillSuccess(true);
-                } catch (AmountTransferException e) {
+                } catch (Exception e) {
                     logger.error(MessageFormat.format("[Repay] Update investor user bill failed (investRepayId = {0})", String.valueOf(investRepayId)), e);
                 }
             }
@@ -466,7 +463,6 @@ public class NormalRepayServiceImpl implements RepayService {
         }
     }
 
-    @Transactional
     protected void updateInvestRepay(long investId, long currentInvestRepayId, long actualInterest, long actualFee, Date actualRepayDate) {
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
         final InvestRepayModel currentInvestRepay = investRepayMapper.findById(currentInvestRepayId);
@@ -491,7 +487,6 @@ public class NormalRepayServiceImpl implements RepayService {
         investRepayMapper.update(currentInvestRepay);
     }
 
-    @Transactional(rollbackFor = Exception.class)
     protected void updateInvestorUserBill(boolean isOverdueRepay, String investorLoginName, long investRepayId, long actualPaybackAmount, long actualFee) throws AmountTransferException {
         amountTransfer.transferInBalance(investorLoginName, investRepayId, actualPaybackAmount,
                 isOverdueRepay ? UserBillBusinessType.OVERDUE_REPAY : UserBillBusinessType.NORMAL_REPAY,
@@ -499,14 +494,17 @@ public class NormalRepayServiceImpl implements RepayService {
         amountTransfer.transferOutBalance(investorLoginName, investRepayId, actualFee, UserBillBusinessType.INVEST_FEE, null, null);
     }
 
-    protected void storeJobData(LoanRepayJobResultDto loanRepayJobResultDto) {
+    protected boolean storeJobData(LoanRepayJobResultDto loanRepayJobResultDto) {
         long loanRepayId = loanRepayJobResultDto.getLoanRepayId();
         try {
             String key = MessageFormat.format(LOAN_REPAY_JOB_DATA_KEY_TEMPLATE, String.valueOf(loanRepayId));
             String value = objectMapper.writeValueAsString(loanRepayJobResultDto);
             this.redisWrapperClient.set(key, value);
-        } catch (JsonProcessingException e) {
+            logger.info(MessageFormat.format("[Normal Repay] repay job jobData : {0}", value));
+            return true;
+        } catch (Exception e) {
             logger.error(MessageFormat.format("[Repay]Store repay data in redis is failed (loanRepayId={0})", String.valueOf(loanRepayId)));
         }
+        return false;
     }
 }

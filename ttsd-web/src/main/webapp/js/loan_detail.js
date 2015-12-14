@@ -74,8 +74,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     }
                     if (minute <= 9) minute = '0' + minute;
                     if (second <= 9) second = '0' + second;
-                    $('#minute_show').html('<s></s>' + minute + '分');
-                    $('#second_show').html('<s></s>' + second + '秒');
+                    $('#minute_show').html(minute + '分');
+                    $('#second_show').html(second + '秒');
                     intDiff--;
                 }
             }, 1000);
