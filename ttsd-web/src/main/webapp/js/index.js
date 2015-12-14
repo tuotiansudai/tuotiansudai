@@ -66,7 +66,7 @@ var adjustBanner=function() {
     }
     else {
         $imgScroll.find('img').eq(0).attr('src',staticServer+'/images/sign/activities/ranking/qph.jpg');
-        $imgScroll.find('img').eq(1).attr('src',staticServer+'/images/sign/activities/grand/ad2.jpg');
+        $imgScroll.find('img').eq(1).attr('src',staticServer+'/images/sign/activities/grand/banner-grand.jpg');
         $imgScroll.find('img').eq(2).attr('src',staticServer+'/images/banner/banner-home03.png');
 
         $imgScroll.find('img').css({'margin-left':'-'+leftWid+'px'});
