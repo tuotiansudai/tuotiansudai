@@ -14,10 +14,10 @@
                 "role":"'ADMIN'",
                 "header":{"text":"系统主页","link":"/"},
                 "sidebar":[
-                    {"name":"userDate","text":"用户时间分布","link":"javascript:void(0);","role":"'ADMIN'"},
-                    {"name":"UserRecharge","text":"用户充值时间分布","link":"javascript:void(0);","role":"'ADMIN'"},
-                    {"name":"userWithdraw","text":"用户提现时间分布","link":"javascript:void(0);","role":"'ADMIN'"},
-                    {"name":"userAccount","text":"用户账户余额时间分布","link":"javascript:void(0);","role":"'ADMIN'"}
+                    {"name":"userDate","text":"用户时间分布","link":"/","role":"'ADMIN'"},
+                    {"name":"UserRecharge","text":"用户充值时间分布","link":"/","role":"'ADMIN'"},
+                    {"name":"userWithdraw","text":"用户提现时间分布","link":"/","role":"'ADMIN'"},
+                    {"name":"userAccount","text":"用户账户余额时间分布","link":"/","role":"'ADMIN'"}
                     ]
             },
             {
