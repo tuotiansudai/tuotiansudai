@@ -12,7 +12,9 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
             e.preventDefault();
             var $self=$(this),
                 thisId=$self.attr('data-id');//data id
-
+            if (!confirm("是否确认执行此操作?")) {
+                return;
+            }
             $.ajax({
                 url: '/activity-manage/coupon/'+thisId+'/active',
                 type: 'POST',
