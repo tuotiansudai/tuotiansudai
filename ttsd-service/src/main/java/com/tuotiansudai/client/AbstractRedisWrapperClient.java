@@ -332,12 +332,12 @@ public abstract class AbstractRedisWrapperClient {
         });
     }
 
-    public Long incr(final String key, final long integer) {
+    public Long incr(final String key, final long increasement) {
         this.setJedisPool(getPool());
         return execute(new JedisAction<Long>() {
             @Override
             public Long action(Jedis jedis) {
-                return jedis.incrBy(key, integer);
+                return jedis.incrBy(key, increasement);
             }
         });
     }
