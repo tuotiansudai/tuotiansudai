@@ -282,6 +282,16 @@ img.icon-mark {
 /*responsive picture*/
 .res-comtainer{
   display: none;
+  float:left;
+  color: #000;
+  font-weight: bold;
+  .responsive-tips {
+    width: 100%;
+    color: #000;
+    text-align: left;
+    background: #f2f2f2;
+    line-height: 26px;
+  }
   .responsive-title{
     width:100%;
     color:#000;
@@ -290,6 +300,17 @@ img.icon-mark {
   }
   .responsive-picture{
     width:100%;
+    .text-list{
+      padding:10px;
+      background:#fff;
+      p{
+        font-size:14px;
+        margin-bottom:0;
+        span{
+          font-size:12px;
+        }
+      }
+    }
   }
   .link-btn{
     background:#f2f2f2;
