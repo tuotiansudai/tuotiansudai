@@ -72,7 +72,7 @@
                     <td>${systemBillItem.operationType}</td>
                     <td>${systemBillItem.businessType}</td>
                     <td>${systemBillItem.amount}</td>
-                    <td>${systemBillItem.detail}</td>
+                    <td><span  class="add-tooltip detail-tool" data-placement="top" data-toggle="tooltip" data-original-title="${systemBillItem.detail}">${systemBillItem.detail}</span></td>
                 </tr>
                 </#list>
             <#else>
