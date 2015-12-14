@@ -69,13 +69,13 @@
                 ${coupon.endTime?string('yyyy-MM-dd')}
             </td>
             <td>
-                ${coupon.totalCount}
+                ${coupon.totalCount?string('0')}
             </td>
             <td>
-                ${coupon.issuedCount}
+                ${coupon.issuedCount?string('0')}
             </td>
             <td>
-                ${coupon.usedCount}
+                ${coupon.usedCount?string('0')}
             </td>
             <td>
                 新注册用户
