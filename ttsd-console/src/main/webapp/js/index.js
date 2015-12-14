@@ -32,7 +32,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
                 break;
         }
         $(window).scrollTop(headerHeight+panelHeight*num+heightHack);
-
+        return false;
     });
     $('.start-date,.end-date').datetimepicker({
         format: 'YYYY-MM-DD',
