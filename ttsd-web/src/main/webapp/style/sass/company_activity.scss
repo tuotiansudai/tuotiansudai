@@ -282,6 +282,16 @@ img.icon-mark {
 /*responsive picture*/
 .res-comtainer{
   display: none;
+  float:left;
+  color: #000;
+  font-weight: bold;
+  .responsive-tips {
+    width: 100%;
+    color: #000;
+    text-align: left;
+    background: #f2f2f2;
+    line-height: 26px;
+  }
   .responsive-title{
     width:100%;
     color:#000;

@@ -128,8 +128,10 @@
                 </div>
             </div>
 
-            <img src="${staticServer}/images/sign/activities/grand/ad-g-t2.png" class="responsive-width">
-
+            <img src="${staticServer}/images/sign/activities/grand/ad-g-t2.png" class="responsive-width is-show">
+            <div class="res-comtainer">
+                <h3 class="responsive-tips">注:本活动仅限大陆地区用户参与(港澳台除外)，奖励发放速度以快递速度为准。新疆、青海、西藏、云南获奖用户邮费自理。</h3>
+            </div>
         </div>
     </div>
 </div>
