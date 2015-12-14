@@ -8,13 +8,13 @@ public enum ReturnMessage {
     MOBILE_NUMBER_IS_EXIST("0003","手机号已经存在"),
     SEND_SMS_IS_FAIL("0004","短信验证码发送失败"),
     USER_NAME_IS_NULL("0005","用户名为空"),
-    USER_NAME_IS_INVALID("0006","用户名不允许包含特殊字符，长度为5-16位，请勿使用手机号"),
+    USER_NAME_IS_INVALID("0006","用户名必须为5至25位字母和数字组合"),
     USER_NAME_IS_EXIST("0007","用户名已经存在"),
     REFERRER_IS_NOT_EXIST("0008","推荐人不存在"),
     SMS_CAPTCHA_ERROR("0009","短信验证码不正确"),
     SMS_CAPTCHA_IS_OVERDUE("0010","短信验证码已经过期"),
     USER_IS_ACTIVE("0011","用户已经被激活"),
-    PASSWORD_IS_INVALID("0012","密码是数字和字母的组合，长度为6-16位"),
+    PASSWORD_IS_INVALID("0012","密码是数字和字母的组合，长度为6-20位"),
     LOGIN_FAILED("0019","用户名或密码错误"),
     /******手机端注册返回码******/
 
