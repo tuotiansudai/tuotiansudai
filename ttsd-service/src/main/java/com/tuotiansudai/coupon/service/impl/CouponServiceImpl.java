@@ -12,7 +12,6 @@ import com.tuotiansudai.exception.CreateCouponException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
@@ -100,7 +99,7 @@ public class CouponServiceImpl implements CouponService {
             return;
         }
         long userCouponId = investDto.getUserCouponIdLong();
-        UserCouponDto userCouponDto = checkCouponIsValid(userCouponId);
+        UserCouponDto userCouponDto = convertUserCouponDto(userCouponId);
         if (userCouponDto == null){
             logger.debug(MessageFormat.format("userCouponId:{0} , is not exist",userCouponId));
             return;
@@ -124,7 +123,7 @@ public class CouponServiceImpl implements CouponService {
 
     }
 
-    private UserCouponDto checkCouponIsValid(long userCouponId){
+    private UserCouponDto convertUserCouponDto(long userCouponId){
         UserCouponModel userCouponModel = userCouponMapper.findByCouponId(userCouponId);
         if(userCouponModel != null){
             long couponId = userCouponModel.getCouponId();
