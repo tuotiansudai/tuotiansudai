@@ -6,7 +6,7 @@
 
     <div class="row">
         <div class="col-md-3">
-            <div class="pull-left currentTab"><span> 债权还款计划</span></div>
+            <div class="pull-left currentTab"><span> 债权还款计划（已还款的按照实际还款时间统计，未还款的按照预计还款时间统计。）</span></div></br>
         </div>
         <div class="col-md-9 text-right">
             <form action="" class="form-inline query-build">
