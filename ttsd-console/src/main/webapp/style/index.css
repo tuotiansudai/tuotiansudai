@@ -241,6 +241,12 @@ td.td {
 .add-check{
 
 }
+
+/*search box*/
+.searchbox {
+    margin-bottom: 20px;
+}
+
 .title-list{
     text-align: center;
     border: 1px solid #ddd;

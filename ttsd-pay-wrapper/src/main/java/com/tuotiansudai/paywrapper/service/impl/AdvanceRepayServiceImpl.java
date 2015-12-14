@@ -1,6 +1,5 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
@@ -98,18 +97,22 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
     }
 
     @Override
-    public String investPaybackCallback(Map<String, String> paramsMap, String originalQueryString) {
-        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, ProjectTransferNotifyMapper.class, ProjectTransferNotifyRequestModel.class);
-        return callbackRequest == null ? null : callbackRequest.getResponseData();
+    public String repayCallback(Map<String, String> paramsMap, String originalQueryString) {
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap,
+                originalQueryString,
+                ProjectTransferNotifyMapper.class,
+                ProjectTransferNotifyRequestModel.class);
+
+        Long loanRepayId = this.parseLoanRepayId(callbackRequest);
+        if (loanRepayId != null) {
+            this.createRepayJob(this.generateJobData(loanRepayId, true));
+        }
+
+        return callbackRequest.getResponseData();
     }
 
     @Override
-    public String investFeeCallback(Map<String, String> paramsMap, String originalQueryString) {
-        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, ProjectTransferNotifyMapper.class, ProjectTransferNotifyRequestModel.class);
-        return callbackRequest == null ? null : callbackRequest.getResponseData();
-    }
-
-    @Override
+    @Transactional
     public boolean postRepayCallback(long loanRepayId) {
         LoanRepayJobResultDto jobData;
         try {
@@ -146,25 +149,35 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
             }
         }
 
-        this.paybackInvestRepay(jobData);
-
-        this.transferLoanBalance(jobData);
-
-        this.storeJobData(jobData);
-
-        boolean isFail = jobData.isFail();
-
-        if (isFail) {
-            this.createRepayJob(loanRepayId);
+        try {
+            this.paybackInvestRepay(jobData);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[Advance Repay] Payback invest repay is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
         }
 
-        String value = redisWrapperClient.get(MessageFormat.format(LOAN_REPAY_JOB_DATA_KEY_TEMPLATE, String.valueOf(loanRepayId)));
-        logger.info(MessageFormat.format("[Advance Repay] repay job data : {0}", value));
+        try {
+            this.transferLoanBalance(jobData);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[Advance Repay] Transfer loan balance is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
+        }
 
-        return !isFail;
+        this.createRepayJob(jobData);
+
+        return !jobData.isFail();
     }
 
-    @Transactional
+    @Override
+    public String investPaybackCallback(Map<String, String> paramsMap, String originalQueryString) {
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, ProjectTransferNotifyMapper.class, ProjectTransferNotifyRequestModel.class);
+        return callbackRequest == null ? null : callbackRequest.getResponseData();
+    }
+
+    @Override
+    public String investFeeCallback(Map<String, String> paramsMap, String originalQueryString) {
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, ProjectTransferNotifyMapper.class, ProjectTransferNotifyRequestModel.class);
+        return callbackRequest == null ? null : callbackRequest.getResponseData();
+    }
+
     protected void updateLoanRepayStatus(LoanRepayJobResultDto jobData) {
         long loanId = jobData.getLoanId();
         Date actualRepayDate = jobData.getActualRepayDate();
@@ -176,7 +189,6 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
         }
     }
 
-    @Transactional
     protected void updateInvestRepay(long investId, long currentInvestRepayId, long actualInterest, long actualFee, Date actualRepayDate) {
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
         for (InvestRepayModel investRepayModel : investRepayModels) {
@@ -190,7 +202,6 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
         }
     }
 
-    @Transactional(rollbackFor = Exception.class)
     protected void updateInvestorUserBill(boolean isOverdueRepay, String investorLoginName, long investRepayId, long actualPaybackAmount, long actualFee) throws AmountTransferException {
         amountTransfer.transferInBalance(investorLoginName, investRepayId, actualPaybackAmount,
                 isOverdueRepay ? UserBillBusinessType.OVERDUE_REPAY : UserBillBusinessType.ADVANCE_REPAY,
@@ -199,18 +210,18 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
     }
 
     @Override
-    protected void createRepayJob(long loanRepayId) {
+    protected void createRepayJob(LoanRepayJobResultDto loanRepayJobResultDto) {
+        long loanRepayId = loanRepayJobResultDto.getLoanRepayId();
         try {
-            this.generateJobData(loanRepayId, true);
-            Date fiveMinutesLater = new DateTime().plusMinutes(5).toDate();
-            jobManager.newJob(JobType.AdvanceRepay, AdvanceRepayJob.class)
-                    .runOnceAt(fiveMinutesLater)
-                    .addJobData(NormalRepayJob.LOAN_REPAY_ID, loanRepayId)
-                    .withIdentity(JobType.AdvanceRepay.name(), MessageFormat.format(REPAY_JOB_NAME_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new DateTime().getMillis())))
-                    .submit();
-        } catch (JsonProcessingException e) {
-            logger.error(MessageFormat.format("[Advance Repay] Generate advance repay job data failed (loanRepayId = {0})", String.valueOf(loanRepayId)), e);
-        } catch (SchedulerException e) {
+            if (this.storeJobData(loanRepayJobResultDto) && loanRepayJobResultDto.isFail()) {
+                Date oneHourLater = new DateTime().plusMinutes(60).toDate();
+                jobManager.newJob(JobType.AdvanceRepay, AdvanceRepayJob.class)
+                        .runOnceAt(oneHourLater)
+                        .addJobData(NormalRepayJob.LOAN_REPAY_ID, loanRepayId)
+                        .withIdentity(JobType.AdvanceRepay.name(), MessageFormat.format(REPAY_JOB_NAME_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new DateTime().getMillis())))
+                        .submit();
+            }
+        } catch (Exception e) {
             logger.error(MessageFormat.format("[Advance Repay] Create advance repay job failed (loanRepayId = {0})", String.valueOf(loanRepayId)), e);
         }
     }

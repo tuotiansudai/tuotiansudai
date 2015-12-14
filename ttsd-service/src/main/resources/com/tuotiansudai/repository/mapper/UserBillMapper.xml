@@ -38,12 +38,6 @@
                     #{item}
                 </foreach>
             </if>
-            <if test="userBillBusinessType != null and userBillBusinessType.size != 0 and userBillBusinessType.contains('RECHARGE_SUCCESS') ">
-                and operation_type = 'TI_BALANCE'
-            </if>
-            <if test="userBillBusinessType != null and userBillBusinessType.size != 0 and userBillBusinessType.contains('WITHDRAW_SUCCESS') ">
-                and operation_type = 'TO_BALANCE'
-            </if>
             <if test="startTime != null">
                 and created_time >= #{startTime}
             </if>
@@ -64,12 +58,6 @@
                 <foreach item="item" index="index" collection="userBillBusinessType" open="(" separator="," close=")">
                     #{item}
                 </foreach>
-            </if>
-            <if test="userBillBusinessType != null and userBillBusinessType.size != 0 and userBillBusinessType.contains('RECHARGE_SUCCESS') ">
-                and operation_type = 'TI_BALANCE'
-            </if>
-            <if test="userBillBusinessType != null and userBillBusinessType.size != 0 and userBillBusinessType.contains('WITHDRAW_SUCCESS') ">
-                and operation_type = 'TO_BALANCE'
             </if>
             <if test="startTime != null">
                 and created_time >= #{startTime}

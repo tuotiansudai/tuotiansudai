@@ -14,17 +14,15 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class MybatisRedisCache implements Cache {
 
-    private final static String KEY_PREFIX = "mybatis";
-
-    private final static String COMMON_CACHE_KEY = "{0}:{1}:{2}";
+    private final static String COMMON_CACHE_KEY = "mybatis:{0}:{1}";
 
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
-    private static MybatisRedisCacheWrapperClient mybatisRedisCacheWrapperClient = null;
+    private static MybatisRedisCacheWrapperClient mybatisRedisCacheWrapperClient;
 
     private String id;
 
-    private MybatisRedisCacheWrapperClient getRedisClient() {
+    private static MybatisRedisCacheWrapperClient getRedisClient() {
         if (mybatisRedisCacheWrapperClient == null) {
             mybatisRedisCacheWrapperClient = SpringContextUtil.getBeanByType(MybatisRedisCacheWrapperClient.class);
         }
@@ -84,11 +82,11 @@ public class MybatisRedisCache implements Cache {
     }
 
     private String getKeys() {
-        return MessageFormat.format(COMMON_CACHE_KEY, KEY_PREFIX, this.id, "*");
+        return MessageFormat.format(COMMON_CACHE_KEY, this.id, "*");
     }
 
     private String getKey(Object key) {
-        return MessageFormat.format(COMMON_CACHE_KEY, KEY_PREFIX, this.id, DigestUtils.md5Hex(String.valueOf(key)));
+        return MessageFormat.format(COMMON_CACHE_KEY, this.id, DigestUtils.md5Hex(String.valueOf(key)));
     }
 
 }
