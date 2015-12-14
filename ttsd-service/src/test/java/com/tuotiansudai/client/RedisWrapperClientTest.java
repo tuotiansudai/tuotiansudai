@@ -76,4 +76,13 @@ public class RedisWrapperClientTest {
         assertThat(redisWrapperClient.hget("bitch","cock"), is("3"));
     }
 
+    @Test
+    public void testRedisIncr() {
+        redisWrapperClient.set("incr","100");
+        redisWrapperClient.incr("incr");
+        assertThat(redisWrapperClient.get("incr"),is("101"));
+        redisWrapperClient.incr("incr",5);
+        assertThat(redisWrapperClient.get("incr"),is("106"));
+    }
+
 }
