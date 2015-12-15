@@ -1,6 +1,5 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
@@ -35,7 +34,6 @@ import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -213,7 +211,7 @@ public class NormalRepayServiceImpl implements RepayService {
 
         this.createRepayJob(jobData);
 
-        return !jobData.isFail();
+        return !jobData.jobRetry();
     }
 
     @Override
@@ -296,10 +294,10 @@ public class NormalRepayServiceImpl implements RepayService {
     protected void createRepayJob(LoanRepayJobResultDto loanRepayJobResultDto) {
         long loanRepayId = loanRepayJobResultDto.getLoanRepayId();
         try {
-            if (this.storeJobData(loanRepayJobResultDto) && loanRepayJobResultDto.isFail()) {
-                Date oneHourLater = new DateTime().plusMinutes(60).toDate();
+            if (this.storeJobData(loanRepayJobResultDto) && loanRepayJobResultDto.jobRetry()) {
+                Date temMinutesLater = new DateTime().plusMinutes(10).toDate();
                 jobManager.newJob(JobType.NormalRepay, NormalRepayJob.class)
-                        .runOnceAt(oneHourLater)
+                        .runOnceAt(temMinutesLater)
                         .addJobData(NormalRepayJob.LOAN_REPAY_ID, loanRepayId)
                         .withIdentity(JobType.NormalRepay.name(), MessageFormat.format(REPAY_JOB_NAME_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new DateTime().getMillis())))
                         .submit();

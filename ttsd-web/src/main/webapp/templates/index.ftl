@@ -7,7 +7,7 @@
                 <img src="${staticServer}/images/sign/activities/ranking/qph.jpg" alt="抢排行，送大礼">
             </a>
             <a href="/activity/grand" target="_blank">
-                <img src="${staticServer}/images/sign/activities/grand/ad2.jpg" alt="累计收益兑大奖">
+                <img src="${staticServer}/images/sign/activities/grand/banner-grand.jpg" alt="累计收益兑大奖">
             </a>
              <a href="/activity/recruit" target="_blank">
                  <img src="${staticServer}/images/banner/banner-home03.png" alt="招募代理">

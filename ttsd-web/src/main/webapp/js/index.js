@@ -92,6 +92,7 @@ require(['jquery', 'csrf'], function($) {
         }
 
 
+
         $(window).resize(function() {
             adjustBanner();
         });
