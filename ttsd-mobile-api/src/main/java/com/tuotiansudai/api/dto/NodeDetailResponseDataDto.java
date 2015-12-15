@@ -42,6 +42,8 @@ public class NodeDetailResponseDataDto extends BaseResponseDataDto {
             this.content = sb.toString();
         }
 
+        
+
     }
 
     public void addDomainNameToImageUrl(String urlPattern, String domain) {
