@@ -7,7 +7,6 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.exception.CreateUserException;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -15,10 +14,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyAuthenticationManager;
-import com.tuotiansudai.service.ReferrerRelationService;
-import com.tuotiansudai.service.SmsCaptchaService;
-import com.tuotiansudai.service.AuditLogService;
-import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.service.*;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.commons.collections4.CollectionUtils;
@@ -71,6 +67,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private BindBankCardService bindBankCardService;
 
     @Value("${web.login.max.failed.times}")
     private int times;
@@ -302,6 +301,8 @@ public class UserServiceImpl implements UserService {
 
             UserItemDataDto userItemDataDto = new UserItemDataDto(userModel);
             userItemDataDto.setUserRoles(userRoleMapper.findByLoginName(userModel.getLoginName()));
+            userItemDataDto.setStaff(userRoleMapper.findByLoginName(userModel.getReferrer()).contains(Role.STAFF));
+            userItemDataDto.setBankCard(bindBankCardService.getPassedBankCard(userModel.getLoginName()) != null ? true : false);
             userItemDataDtos.add(userItemDataDto);
         }
         int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel);

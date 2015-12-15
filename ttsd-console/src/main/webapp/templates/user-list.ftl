@@ -100,11 +100,11 @@
             <tbody>
                 <#list userList as userItem>
                 <tr <#if userItem.status!='ACTIVE'> class="bg-warning" </#if> >
-                    <td>${userItem.loginName}</td>
+                    <td>${userItem.loginName}<#if userItem.isBankCard></#if></td>
                     <td>${userItem.userName!}</td>
                     <td>${userItem.mobile}</td>
                     <td>${userItem.email!}</td>
-                    <td>${userItem.referrer!}</td>
+                    <td>${userItem.referrer!}<#if userItem.isStaff></#if></td>
                     <td>${userItem.source!}</td>
                     <td>${userItem.channel!}</td>
                     <td>${userItem.registerTime?string('yyyy-MM-dd HH:mm')}</td>
