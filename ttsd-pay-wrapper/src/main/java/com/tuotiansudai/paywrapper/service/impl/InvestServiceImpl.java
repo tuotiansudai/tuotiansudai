@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.AmountTransferException;
@@ -81,6 +82,9 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
     @Value("#{'${pay.invest.notify.fatal.mobile}'.split('\\|')}")
     private List<String> fatalNotifyMobiles;
 
@@ -89,6 +93,8 @@ public class InvestServiceImpl implements InvestService {
 
     @Value(value = "${pay.auto.invest.interval.milliseconds}")
     private int autoInvestIntervalMilliseconds;
+
+    public static final String JOB_TRIGGER_KEY = "invest_callback_job_trigger";
 
     @Override
     @Transactional
@@ -188,6 +194,8 @@ public class InvestServiceImpl implements InvestService {
                 InvestNotifyRequestMapper.class,
                 InvestNotifyRequestModel.class);
 
+        redisWrapperClient.incr(JOB_TRIGGER_KEY);
+
         if (callbackRequest == null) {
             return null;
         }
@@ -216,6 +224,7 @@ public class InvestServiceImpl implements InvestService {
 
     private boolean updateInvestNotifyRequestStatus(InvestNotifyRequestModel model) {
         try {
+            redisWrapperClient.decr(JOB_TRIGGER_KEY);
             investNotifyRequestMapper.updateStatus(model.getId(), InvestNotifyProcessStatus.DONE);
         } catch (Exception e) {
             fatalLog("update_invest_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId());
