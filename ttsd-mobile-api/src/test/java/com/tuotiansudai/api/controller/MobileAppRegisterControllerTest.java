@@ -37,14 +37,7 @@ public class MobileAppRegisterControllerTest extends ControllerTestBase {
         doRequestWithServiceMockedTest("/register",
                 registerRequestDto);
     }
-    @Test
-    public void shouldRegisterUserMobileIsValid() throws Exception {
-        RegisterRequestDto registerRequestDto = getFakeRegisterRequestDto();
-        registerRequestDto.setPhoneNum("1390000000k");
-        when(service.registerUser(any(RegisterRequestDto.class))).thenReturn(successResponseDto);
-        doRequestWithServiceIsBadRequestMockedTest("/register",
-                registerRequestDto);
-    }
+
     public RegisterRequestDto getFakeRegisterRequestDto(){
         RegisterRequestDto registerRequestDto = new RegisterRequestDto();
         registerRequestDto.setUserName("loginName");

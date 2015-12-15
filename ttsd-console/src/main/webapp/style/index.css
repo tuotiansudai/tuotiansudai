@@ -228,3 +228,8 @@ td.td {
 .title-list span{
     margin:0 20px;
 }
+.detail-tool{
+    display: inline-block;
+    width: 430px;
+    text-align: left;
+}
