@@ -26,6 +26,7 @@ public class MobileAppChangePasswordController extends MobileAppBaseController {
             String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);
             return new BaseResponseDto(errorCode, errorMessage);
         } else {
+            requestDto.getBaseParam().setUserId(getLoginName());
             return service.changePassword(requestDto);
         }
     }
