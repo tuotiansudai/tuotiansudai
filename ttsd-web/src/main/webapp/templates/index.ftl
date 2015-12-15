@@ -116,7 +116,6 @@
         </div>
 
     </div>
-
     <#if showCoupon>
         <div class="activity-coupon-model" id="couponModel">
             <div class="coupon-model-list">
@@ -126,7 +125,7 @@
                     <span class="text-number"><@amount>${(amountCoupon?string('0.00'))!}</@amount></span>
                     <span class="text-unit">元</span>
                 </div>
-                <div>${nameCoupon}</div>
+                <div class="coupon-name">${nameCoupon}</div>
                 <div class="coupon-time">
                     请在${(endTimeCoupon?string('yyyy-MM-dd'))!}前使用
                 </div>
