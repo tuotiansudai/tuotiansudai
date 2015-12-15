@@ -308,7 +308,6 @@
         left:0;
         background:rgba(0,0,0,0.5);
         z-index:999;
-        display:none;
         .coupon-model-list{
             float:left;
             width:590px;
@@ -766,12 +765,12 @@
     }
   }
 }
-@media \0screen\,screen\9 {/* only support IE6、7、8 */
+@media \0screen\,screen\9 {
   .activity-coupon-model{
     background-color:#000000;
     filter:Alpha(opacity=50);
-    position:static; 
-    *zoom:1; 
+    position:static;
+    *zoom:1;
   } 
 }
 @media (max-width:700px) {

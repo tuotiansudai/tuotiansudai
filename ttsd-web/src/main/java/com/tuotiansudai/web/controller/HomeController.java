@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.HomeLoanDto;
 import com.tuotiansudai.service.HomeService;
@@ -49,10 +50,14 @@ public class HomeController {
         modelAndView.addObject("userCount",userCount);
         boolean showCoupon = false;
         if (StringUtils.isNotEmpty(LoginUserInfo.getLoginName())
-                && CollectionUtils.isNotEmpty(userCouponService.getUserCouponDtoByLoginName(MessageFormat.format(KEYTEMPLATE, LoginUserInfo.getLoginName())))
-                && !redisWrapperClient.exists(LoginUserInfo.getLoginName())) {
+                && CollectionUtils.isNotEmpty(userCouponService.getUserCouponDtoByLoginName(LoginUserInfo.getLoginName()))
+                && !redisWrapperClient.exists(MessageFormat.format(KEYTEMPLATE, LoginUserInfo.getLoginName()))) {
             showCoupon = true;
             redisWrapperClient.set(MessageFormat.format(KEYTEMPLATE, LoginUserInfo.getLoginName()),"show");
+            UserCouponDto userCouponDto = userCouponService.getUserCouponDtoByLoginName(LoginUserInfo.getLoginName()).get(0);
+            modelAndView.addObject("amountCoupon",userCouponDto.getAmount());
+            modelAndView.addObject("endTimeCoupon",userCouponDto.getEndTime());
+            modelAndView.addObject("nameCoupon",userCouponDto.getName());
         }
         modelAndView.addObject("showCoupon",showCoupon);
         return modelAndView;
