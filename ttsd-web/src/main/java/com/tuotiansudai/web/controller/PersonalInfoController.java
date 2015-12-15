@@ -81,7 +81,7 @@ public class PersonalInfoController {
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
 
-        dataDto.setStatus(newPassword.equals(newPasswordConfirm) && userService.changePassword(LoginUserInfo.getLoginName(), originalPassword, newPassword));
+        dataDto.setStatus(newPassword.equals(newPasswordConfirm) && userService.changePassword(LoginUserInfo.getLoginName(), LoginUserInfo.getMobile(), originalPassword, newPassword));
 
         return baseDto;
     }

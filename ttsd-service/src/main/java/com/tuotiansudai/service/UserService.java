@@ -29,11 +29,12 @@ public interface UserService {
      * 修改用户密码
      *
      * @param loginName
+     * @param mobile
      * @param originalPassword 用户目前的密码（明文）
      * @param newPassword 新密码（明文）
      * @return 修改成功返回 true , 修改失败返回 false
      */
-    boolean changePassword(String loginName, String originalPassword, String newPassword);
+    boolean changePassword(String loginName, String mobile, String originalPassword, String newPassword);
 
     void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException, ReferrerRelationException;
 
