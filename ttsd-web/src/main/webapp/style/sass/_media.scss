@@ -293,8 +293,12 @@
       .team-box{
         padding-top: 0!important;
         dl{
+          dt {
+            padding-bottom:0px!important;
+          }
           float:left;
-          margin-top: 10px;
+          margin-top: 4px;
+          margin-bottom: 8px;
         }
       }
       .notice-list{
@@ -463,5 +467,14 @@
         }
       }
     }
+  }
+
+  .img-gray {
+    -webkit-filter: grayscale(0%);
+    -moz-filter: grayscale(0%);
+    -ms-filter: grayscale(0%);
+    -o-filter: grayscale(0%);
+    filter: grayscale(0%);
+    filter: none;
   }
 }
