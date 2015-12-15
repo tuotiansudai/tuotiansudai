@@ -37,6 +37,7 @@
     {"title":"团队介绍", "url":"/about/team"},
     {"title":"拓天公告", "url":"/about/notice"},
     {"title":"服务费用", "url":"/about/service-fee"},
+    {"title":"常见问题", "url":"/about/qa"},
     {"title":"联系我们", "url":"/about/contact"}
     ]}]/>
 
