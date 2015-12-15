@@ -6,7 +6,7 @@ class RechargeMigrate(BaseMigrate):
     Class Naming Convention: `NewTableNameMigrate(BaseMigrate)`
     """
     # select sql which is executed on original db (edxapp, tuotiansudai etc)
-    SELECT_SQL = "SELECT user_id, actual_money, fee, recharge_way, status, source, time, channel FROM recharge"
+    SELECT_SQL = "SELECT user_id, actual_money, fee, recharge_way, status, source, time, channel FROM recharge ORDER BY time ASC limit %s, %s"
     # insert sql which is executed on aa db
     INSERT_SQL = "INSERT INTO recharge(`id`, `login_name`, `amount`, `fee`, `bank_code`, `status`, `source`, `fast_pay`, `created_time`, `channel`) " \
                  "VALUES(%s, %s, %s, %s, %s, %s,%s, %s, %s, %s)"
