@@ -236,10 +236,14 @@ td.td {
 }
 .check-btn{
     float: left;
-    margin-top: 2px;
+    width:16px;
+    height:16px;
+    margin: 1px 1px 0 0;
+    background: url(../images/icon-bg.jpg) no-repeat center;
+    background-position: 0 0 ;
 }
 .add-check{
-
+    background-position: -16px 0 ;
 }
 
 /*search box*/
