@@ -37,7 +37,7 @@ public class MobileAppNodeListServiceImpl implements MobileAppNodeListService {
         List<NodeDetailResponseDataDto> nodeDetailResponseDataDtos = Lists.transform(announceDtos, new Function<AnnounceModel, NodeDetailResponseDataDto>() {
             @Override
             public NodeDetailResponseDataDto apply(AnnounceModel input) {
-                return new NodeDetailResponseDataDto(input,false);
+                return new NodeDetailResponseDataDto(input);
             }
         });
 

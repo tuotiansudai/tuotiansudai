@@ -14,7 +14,6 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     private String bankCardNo;
     private String bankId;
     private boolean fastPaymentEnable;
-    private String email;
 
 
     public boolean getCertificationFlag() {
@@ -112,14 +111,4 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     public void setFastPaymentEnable(boolean fastPaymentEnable) {
         this.fastPaymentEnable = fastPaymentEnable;
     }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-
 }
