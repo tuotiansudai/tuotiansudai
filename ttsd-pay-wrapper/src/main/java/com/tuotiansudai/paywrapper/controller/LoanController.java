@@ -37,12 +37,16 @@ public class LoanController {
     @ResponseBody
     @RequestMapping(value = "/loan-out-success-notify", method = RequestMethod.POST)
     public BaseDto<PayDataDto> loanOut(@RequestBody long loanId) {
-        loanService.loanOutSuccessHandle(loanId);
-
         BaseDto<PayDataDto> dto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         dto.setData(dataDto);
-        dataDto.setStatus(true);
+        try {
+            loanService.loanOutSuccessHandle(loanId);
+            dataDto.setStatus(true);
+        }catch (Exception e){
+            dataDto.setStatus(false);
+            dataDto.setMessage(e.getLocalizedMessage());
+        }
         return dto;
     }
 

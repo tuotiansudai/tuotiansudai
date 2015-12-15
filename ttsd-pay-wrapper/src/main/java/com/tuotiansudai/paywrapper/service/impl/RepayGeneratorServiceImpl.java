@@ -39,6 +39,10 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
     @Override
     @Transactional
     public void generateRepay(long loanId) {
+        long investRepayCount = investRepayMapper.findCountByLoanId(loanId);
+        if (investRepayCount > 0){
+            return;
+        }
         LoanModel loanModel = loanMapper.findById(loanId);
         List<InvestModel> successInvestModels = investMapper.findSuccessInvestsByLoanId(loanId);
         boolean isPeriodUnitDay = LoanPeriodUnit.DAY == loanModel.getType().getLoanPeriodUnit();

@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.InvestReferrerRewardModel;
 import com.tuotiansudai.repository.model.LoanModel;
 
 import java.util.List;
@@ -8,5 +9,6 @@ import java.util.List;
 public interface ReferrerRewardService {
 
     void rewardReferrer(LoanModel loanModel, List<InvestModel> investModels);
+    void transferReferrerReward(InvestReferrerRewardModel model);
 
 }
