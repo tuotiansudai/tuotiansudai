@@ -211,7 +211,7 @@ public class NormalRepayServiceImpl implements RepayService {
 
         this.createRepayJob(jobData);
 
-        return !jobData.isFail();
+        return !jobData.jobRetry();
     }
 
     @Override
@@ -294,10 +294,10 @@ public class NormalRepayServiceImpl implements RepayService {
     protected void createRepayJob(LoanRepayJobResultDto loanRepayJobResultDto) {
         long loanRepayId = loanRepayJobResultDto.getLoanRepayId();
         try {
-            if (this.storeJobData(loanRepayJobResultDto) && loanRepayJobResultDto.isFail()) {
-                Date oneHourLater = new DateTime().plusMinutes(60).toDate();
+            if (this.storeJobData(loanRepayJobResultDto) && loanRepayJobResultDto.jobRetry()) {
+                Date temMinutesLater = new DateTime().plusMinutes(10).toDate();
                 jobManager.newJob(JobType.NormalRepay, NormalRepayJob.class)
-                        .runOnceAt(oneHourLater)
+                        .runOnceAt(temMinutesLater)
                         .addJobData(NormalRepayJob.LOAN_REPAY_ID, loanRepayId)
                         .withIdentity(JobType.NormalRepay.name(), MessageFormat.format(REPAY_JOB_NAME_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new DateTime().getMillis())))
                         .submit();

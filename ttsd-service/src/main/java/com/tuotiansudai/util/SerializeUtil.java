@@ -25,6 +25,9 @@ public class SerializeUtil {
     }
 
     public static Object deserialize(byte[] bytes) {
+        if (bytes == null) {
+            return null;
+        }
         try {
             //反序列化
             ByteArrayInputStream bais = new ByteArrayInputStream(bytes);

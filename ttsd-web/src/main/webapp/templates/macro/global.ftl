@@ -37,6 +37,7 @@
     {"title":"团队介绍", "url":"/about/team"},
     {"title":"拓天公告", "url":"/about/notice"},
     {"title":"服务费用", "url":"/about/service-fee"},
+    {"title":"常见问题", "url":"/about/qa"},
     {"title":"联系我们", "url":"/about/contact"}
     ]}]/>
 
@@ -47,7 +48,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 
     <#if responsive??>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     </#if>
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
@@ -122,15 +123,18 @@
         bodyDom.className=(!isResponse&&!isPC)?'page-width':'';
     }
 
+    window.$ = function(id) {
+        return document.getElementById(id);
+    };
+
     function phoneLoadFun() {
 
-        document.getElementById('closeDownloadBox').addEventListener('click',function(event) {
+        window.$('closeDownloadBox').onclick=function(event) {
             event.stopPropagation();
             event.preventDefault();
             this.parentElement.style.display='none';
-        });
-
-        document.getElementById('btnExperience').addEventListener('click',function(event) {
+        };
+        window.$('btnExperience').onclick=function(event) {
             event.stopPropagation();
             event.preventDefault();
             var userAgent = navigator.userAgent.toLowerCase();
@@ -139,20 +143,20 @@
             } else if (userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
                 location.href = "http://itunes.apple.com/us/app/id1039233966";
             }
-        });
+        };
 
-        document.getElementById('showMainMenu').addEventListener('click',function(event) {
+        window.$('showMainMenu').onclick=function(event) {
             event.stopPropagation();
             event.preventDefault();
             this.nextElementSibling.style.display='block';
 
-        });
+        };
 
     }
-    var imgDom=document.getElementById('iphone-app-img'),
-        TopMainMenuList=document.getElementById('TopMainMenuList');
+    var imgDom=window.$('iphone-app-img'),
+        TopMainMenuList=window.$('TopMainMenuList');
 
-    document.getElementById('iphone-app-pop').addEventListener('click',function(event) {
+    window.$('iphone-app-pop').onclick=function(event) {
         event.stopPropagation();
         event.preventDefault();
 
@@ -162,10 +166,12 @@
         else {
             imgDom.style.display='block';
         }
-    });
-    document.getElementsByTagName("body")[0].addEventListener('click',function() {
-        var userAgent = navigator.userAgent.toLowerCase();
-        if(event.target.tagName=='LI' ) {
+    };
+
+    document.getElementsByTagName("body")[0].onclick=function(event) {
+        var userAgent = navigator.userAgent.toLowerCase(),
+            target=event.srcElement || event.target;
+        if(target.tagName=='LI' ) {
             return;
         }
         imgDom.style.display='none';
@@ -181,7 +187,7 @@
             }
         }
 
-    });
+    };
 
     phoneLoadFun();
 
@@ -190,6 +196,7 @@
 <#if pageJavascript??>
 <script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
         data-main="${staticServer}/js/dest/${pageJavascript}">
+    <#--data-main="${staticServer}/js/register_user.js">-->
 </script>
 </#if>
 

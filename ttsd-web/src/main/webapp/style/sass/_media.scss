@@ -166,58 +166,7 @@
     }
   }
 
-  .ad-recruit-img {
-    height: 150px!important;
-    background: url("/images/banner/ph-banner03.jpg") center top no-repeat!important;
-    background-size: cover!important;
-  }
 
-  .recruit-content{
-    width:100%!important;
-    padding:0!important;
-    .hot-link{
-      width: 100%!important;
-      height: auto!important;
-      img{
-        position: relative;
-        width:100%;
-        top: -1px;
-      }
-      .img-hot-link{
-        display: none;
-      }
-    }
-    .r-time{
-      padding:0 20px;
-      margin-top: 10px;
-      dt{
-        font-size:14px;
-      }
-      dd{
-        margin-left:0!important;
-        font-size:12px;
-        line-height:25px;
-      }
-    }
-    .qualifications{
-      padding-top: 10px;
-      img{
-        width:100%;
-      }
-    }
-    .apply{
-      padding-top: 10px;
-      img{
-        width:100%;
-      }
-    }
-    .give-more{
-      padding-top: 10px;
-      img{
-        width:100%;
-      }
-    }
-  }
   .ad-ranking-img {
     height: 150px!important;
     background: url("/images/banner/ph-banner01.jpg") center top no-repeat!important;
@@ -247,6 +196,7 @@
   .grand-content{
     width:100%!important;
     padding-top: 10px!important;
+    background: #f2f2f2!important;
     img{
       &.responsive-picture{
         width:100%!important;
@@ -324,6 +274,9 @@
     white-space: nowrap;
   }
   .main-frame{
+    .content-container {
+      padding: 10px!important;
+    }
     .left-nav{
       width:100%;
       margin:0;
@@ -333,15 +286,19 @@
       }
     }
     .about-us-container{
-      padding: 10px 20px!important;
+      padding: 10px!important;
       .company-info{
         width:100%!important;
       }
       .team-box{
         padding-top: 0!important;
         dl{
+          dt {
+            padding-bottom:0px!important;
+          }
           float:left;
-          margin-top: 10px;
+          margin-top: 4px;
+          margin-bottom: 8px;
         }
       }
       .notice-list{
@@ -355,12 +312,8 @@
         display: none;
       }
       .column-title{
-        border-bottom-width: 0px;
-        margin-bottom: 0;
         em{
-          width:100%;
           text-align:center;
-          line-height: 1.5;
           margin-top: 10px;
         }
         time{
@@ -515,4 +468,16 @@
       }
     }
   }
+
+  .img-gray {
+    -webkit-filter: grayscale(0%);
+    -moz-filter: grayscale(0%);
+    -ms-filter: grayscale(0%);
+    -o-filter: grayscale(0%);
+    filter: grayscale(0%);
+    filter: none;
+  }
 }
+
+
+

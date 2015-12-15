@@ -90,7 +90,9 @@ public class RechargeController {
                     endTime);
             List<String> channelList = rechargeService.findAllChannel();
 
+            long sumAmount = rechargeService.findSumRechargeAmount(rechargeId, loginName, source, status, channel, startTime, endTime);
             modelAndView.addObject("baseDto", baseDto);
+            modelAndView.addObject("sumAmount", sumAmount);
             modelAndView.addObject("rechargeStatusList", Lists.newArrayList(RechargeStatus.values()));
             modelAndView.addObject("rechargeSourceList", Lists.newArrayList(RechargeSource.values()));
             modelAndView.addObject("rechargeChannelList", channelList);

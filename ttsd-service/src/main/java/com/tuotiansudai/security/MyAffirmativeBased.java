@@ -2,6 +2,7 @@ package com.tuotiansudai.security;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.Role;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.AccessDeniedException;
@@ -10,6 +11,7 @@ import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,14 +31,15 @@ public class MyAffirmativeBased extends AffirmativeBased {
             Object principal = authentication.getPrincipal();
             if (principal instanceof MyUser) {
                 Collection<GrantedAuthority> authorities = ((MyUser) principal).getAuthorities();
-                boolean isOnlyUserRole = Iterators.all(authorities.iterator(), new Predicate<GrantedAuthority>() {
+                final List<String> roles = Lists.newArrayList(Role.USER.name(), Role.STAFF.name(), Role.CUSTOMER_SERVICE.name(), Role.ADMIN.name());
+                boolean noAccount = Iterators.all(authorities.iterator(), new Predicate<GrantedAuthority>() {
                     @Override
                     public boolean apply(GrantedAuthority grantedAuthority) {
-                        return Role.USER.name().equals(grantedAuthority.getAuthority());
+                        return roles.contains(grantedAuthority.getAuthority());
                     }
                 });
 
-                if (isOnlyUserRole) {
+                if (noAccount) {
                     throw new UserRoleAccessDeniedException(messages.getMessage(
                             "AbstractAccessDecisionManager.accessDenied", "Access is denied"));
                 }

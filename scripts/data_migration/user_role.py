@@ -5,7 +5,7 @@ class UserRoleMigrate(BaseMigrate):
     Class Naming Convention: `NewTableNameMigrate(BaseMigrate)`
     """
     # select sql which is executed on original db (edxapp, tuotiansudai etc)
-    SELECT_SQL = "SELECT user_id, role_id FROM user_role WHERE user_role.role_id IN ('ADMINISTRATOR', 'custorm-service', 'INVESTOR', 'LOANER', 'MEMBER', 'ROLE_MERCHANDISER');"
+    SELECT_SQL = "SELECT user_id, role_id FROM user_role WHERE user_role.role_id IN ('ADMINISTRATOR', 'custorm-service', 'INVESTOR', 'LOANER', 'MEMBER', 'ROLE_MERCHANDISER') limit %s, %s"
     # insert sql which is executed on aa db
     INSERT_SQL = "INSERT INTO user_role(`login_name`, `role`, `created_time`) VALUES(%s, %s, now())"
 

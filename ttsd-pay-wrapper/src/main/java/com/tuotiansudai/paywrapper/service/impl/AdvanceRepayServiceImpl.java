@@ -20,7 +20,6 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.quartz.SchedulerException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -163,7 +162,7 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
 
         this.createRepayJob(jobData);
 
-        return !jobData.isFail();
+        return !jobData.jobRetry();
     }
 
     @Override
@@ -213,10 +212,10 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
     protected void createRepayJob(LoanRepayJobResultDto loanRepayJobResultDto) {
         long loanRepayId = loanRepayJobResultDto.getLoanRepayId();
         try {
-            if (this.storeJobData(loanRepayJobResultDto) && loanRepayJobResultDto.isFail()) {
-                Date oneHourLater = new DateTime().plusMinutes(60).toDate();
+            if (this.storeJobData(loanRepayJobResultDto) && loanRepayJobResultDto.jobRetry()) {
+                Date tenMinutes = new DateTime().plusMinutes(5).toDate();
                 jobManager.newJob(JobType.AdvanceRepay, AdvanceRepayJob.class)
-                        .runOnceAt(oneHourLater)
+                        .runOnceAt(tenMinutes)
                         .addJobData(NormalRepayJob.LOAN_REPAY_ID, loanRepayId)
                         .withIdentity(JobType.AdvanceRepay.name(), MessageFormat.format(REPAY_JOB_NAME_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new DateTime().getMillis())))
                         .submit();

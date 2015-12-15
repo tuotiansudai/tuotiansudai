@@ -5,9 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -59,15 +61,17 @@ public class LoanRepayJobResultDto implements Serializable {
     }
 
     @JsonIgnore
-    public boolean isFail() {
+    public boolean jobRetry() {
+        final List<SyncRequestStatus> retryStatus = Lists.newArrayList(SyncRequestStatus.FAILURE, SyncRequestStatus.READY);
+
         Optional<InvestRepayJobResultDto> optional = Iterators.tryFind(this.investRepayJobResults.iterator(), new Predicate<InvestRepayJobResultDto>() {
             @Override
             public boolean apply(InvestRepayJobResultDto input) {
-                return input.getInterestStatus() == SyncRequestStatus.FAILURE || input.getFeeStatus() == SyncRequestStatus.FAILURE;
+                return retryStatus.contains(input.getInterestStatus()) || retryStatus.contains(input.getFeeStatus());
             }
         });
 
-        return optional.isPresent() || loanRepayBalanceStatus == SyncRequestStatus.FAILURE;
+        return optional.isPresent() || retryStatus.contains(loanRepayBalanceStatus);
     }
 
     @JsonProperty(value = "loanId")

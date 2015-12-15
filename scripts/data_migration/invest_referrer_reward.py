@@ -6,7 +6,7 @@ class InvestReferrerRewardMigrate(BaseMigrate):
     Class Naming Convention: `NewTableNameMigrate(BaseMigrate)`
     """
     # select sql which is executed on original db (edxapp, tuotiansudai etc)
-    SELECT_SQL = "SELECT invest_id, bonus, referrer_id, status, role_name, time FROM invest_userreferrer where invest_id not in (select id from invest where status='test')"
+    SELECT_SQL = "SELECT invest_id, bonus, referrer_id, status, role_name, time FROM invest_userreferrer where invest_id not in (select id from invest where status='test') order by time ASC "
     # insert sql which is executed on aa db
     INSERT_SQL = '''INSERT INTO invest_referrer_reward(`id`, `invest_id`, `amount`, `referrer_login_name`, `referrer_role`, `status`, `created_time`)
                     VALUES(%s, %s, %s, %s, %s, %s, %s)'''

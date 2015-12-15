@@ -61,7 +61,7 @@ class LoanTitleRelationMigrate(BaseMigrate):
     def generate_params(self, old_row):
         result = []
         title_id_to_imgs = MyHTMLParser().parse(old_row['guarantee_company_description'])
-        logger.info(title_id_to_imgs)
+        # logger.info(title_id_to_imgs)
         for title_id in title_id_to_imgs:
             self._index += 1
             title_id_to_imgs = MyHTMLParser().parse(old_row['guarantee_company_description'])

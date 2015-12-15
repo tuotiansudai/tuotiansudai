@@ -125,4 +125,54 @@
             </if>
         </where>
     </select>
+
+    <select id="findSumWithdrawAmount" parameterType="map" resultType="long">
+        select IFNULL(SUM(withdraw.amount),0) as amount
+        from withdraw join bank_card on withdraw.bank_card_id = bank_card.id
+        <where>
+            <if test="withdrawId != null and withdrawId != ''">
+                and withdraw.id = #{withdrawId}
+            </if>
+            <if test="loginName != null and loginName != ''">
+                and withdraw.login_name = #{loginName }
+            </if>
+            <if test="startTime !=null" >
+                and withdraw.created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and withdraw.created_time &lt;= #{endTime}
+            </if>
+            <if test="status !=null">
+                and withdraw.status = #{status}
+            </if>
+            <if test="source !=null">
+                and withdraw.source = #{source}
+            </if>
+        </where>
+    </select>
+
+    <select id="findSumWithdrawFee" parameterType="map" resultType="long">
+        select IFNULL(SUM(withdraw.fee),0) as amount
+        from withdraw join bank_card on withdraw.bank_card_id = bank_card.id
+        <where>
+            <if test="withdrawId != null and withdrawId != ''">
+                and withdraw.id = #{withdrawId}
+            </if>
+            <if test="loginName != null and loginName != ''">
+                and withdraw.login_name = #{loginName }
+            </if>
+            <if test="startTime !=null" >
+                and withdraw.created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and withdraw.created_time &lt;= #{endTime}
+            </if>
+            <if test="status !=null">
+                and withdraw.status = #{status}
+            </if>
+            <if test="source !=null">
+                and withdraw.source = #{source}
+            </if>
+        </where>
+    </select>
 </mapper>
