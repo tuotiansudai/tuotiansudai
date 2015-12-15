@@ -230,9 +230,6 @@ td.td {
 }
 .detail-tool{
     display: inline-block;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    padding-right: 10px;
-    overflow: hidden;
-    width: 400px;
+    width: 430px;
+    text-align: left;
 }
