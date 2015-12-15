@@ -104,6 +104,48 @@
             </td>
         </tr>
         </#list>
+        <tr>
+            <td>
+                <span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="dfgdfgdfgdfgdfg">dfgdfgdfgdfgdfg</span>
+            </td>
+            <td>
+                dfgdfgdfgdfgdfg
+            </td>
+            <td>
+                dfgdfgdfgdfgdfg
+            </td>
+            <td>
+                dfgdfgdfgdfgdfg
+            </td>
+            <td>
+                dfgdfgdfgdfgdfg
+            </td>
+            <td>
+               dfgdfgdfgdfgdfg
+            </td>
+            <td>
+                dfgdfgdfgdfgdfg
+            </td>
+            <td>
+                新注册用户
+            </td>
+            <td>
+                所有标的
+            </td>
+            <td>
+                dfgdfgdfgdfgdfg
+            </td>
+            <td>
+                dfgdfgdfgdfgdfg
+            </td>
+            <td>
+                <label>
+                    <i class="check-btn"></i>
+                    <a class="loan_repay confirm-btn" href="javascript:void(0)" data-id="12">确认生效</a>
+                </label>
+            </td>
+        </tr>
+
         </tbody>
         </table>
     </div>
