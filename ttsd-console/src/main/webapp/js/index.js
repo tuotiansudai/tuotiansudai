@@ -41,7 +41,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
 
     loadEcharts.ChartsProvince(function(data) {
         var provinceList=[],i= 0,len=data.length;
-        provinceList.push('<option value="">请选择</option>');
+        provinceList.push('<option value="">全部省份</option>');
         for(;i<len;i++) {
             provinceList.push('<option value="'+data[i]+'">'+data[i]+'</option>');
         }
