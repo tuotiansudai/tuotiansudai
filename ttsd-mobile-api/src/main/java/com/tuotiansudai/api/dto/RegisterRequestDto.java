@@ -7,17 +7,17 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 public class RegisterRequestDto extends BaseParamDto {
-    @NotEmpty
-    @Pattern(regexp = "(?!^\\d+$)^\\w{6,20}$")
+    @NotEmpty(message = "0005")
+    @Pattern(regexp = "(?!^\\d+$)^\\w{5,25}$", message = "0006")
     private String userName;
-    @NotEmpty
-    @Pattern(regexp = "^1\\d{10}$")
+    @NotEmpty(message = "0001")
+    @Pattern(regexp = "^1\\d{10}$", message = "0002")
     private String phoneNum;
-    @NotEmpty
-    @Pattern(regexp = "^[0-9]{6}$")
+    @NotEmpty(message = "0009")
+    @Pattern(regexp = "^[0-9]{6}$", message = "0009")
     private String captcha;
-    @NotEmpty
-    @Pattern(regexp = "^(?=.*[^\\d])(.{6,20})$")
+    @NotEmpty(message = "0012")
+    @Pattern(regexp = "^(?=.*[^\\d])(.{6,20})$", message = "0012")
     private String password;
     private String referrer;
 

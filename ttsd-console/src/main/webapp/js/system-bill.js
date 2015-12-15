@@ -13,5 +13,8 @@ require(['jquery', 'jquery-ui',
         $('form button[type="reset"]').click(function () {
             location.href = "/finance-manage/system-bill";
         });
+
+        var tooltip = $('.add-tooltip');
+        tooltip.length?tooltip.tooltip():false;
     });
 });

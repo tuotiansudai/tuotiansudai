@@ -9,8 +9,8 @@
     </ul>
     <div class="clear-blank"></div>
     <div class="register-box">
+        <form class="register-user-form" action="/register/user" method="post" autocomplete="off" >
         <ul class="reg-list tl register-step-one">
-            <form class="register-user-form" action="/register/user" method="post" autocomplete="off" >
                 <li>
                     <label for="" class="reg-title">用户名:</label>
                     <input type="text" class="login-name" name="loginName" placeholder="请输入用户名" maxlength="25" value="${(originalFormData.loginName)!}" />
@@ -38,7 +38,7 @@
                 <li>
                     <label for="agreement">
                         <input type="checkbox" name='agreement' id="agreementInput" class='agreement-check' />
-                        <span class="agreement">同意拓天速贷<a href="javascript:" class="show-agreement">《服务协议》</a></span>
+                        <span class="agreement">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></span>
                     </label>
                 </li>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -48,8 +48,9 @@
                 </#if>
 
                 <input type="submit" class="register-user" value="下一步"/>
-            </form>
         </ul>
+
+        </form>
     </div>
 </div>
 <div id="agreementBox" class="pad-m" style="display: none;">

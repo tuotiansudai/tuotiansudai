@@ -47,12 +47,12 @@ public class CouponAspect {
 
     @AfterReturning(value = "investPointcut()", returning = "returnValue")
     public void afterReturningInvest(JoinPoint joinPoint, Object returnValue) {
-        logger.debug("after registerUser pointcut");
+        logger.debug("after invest aspect");
         try {
             BaseDto<PayFormDataDto> baseDto= (BaseDto)returnValue;
-            if(baseDto.getData().getStatus()){
+            if(baseDto.getData() != null && baseDto.getData().getStatus()){
                 InvestDto investDto = (InvestDto) joinPoint.getArgs()[0];
-                couponService.afterReturningInvest(investDto.getLoginName(), investDto.getLoanIdLong());
+                couponService.afterReturningInvest(investDto);
             }
         } catch (Exception e) {
             logger.error("after invest aspect fail ", e);

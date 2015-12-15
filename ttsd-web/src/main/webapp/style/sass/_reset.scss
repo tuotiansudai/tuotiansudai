@@ -8,6 +8,12 @@ html, ul, li, ol, dl, dd, dt, p, h3, h4, h5, h1, h2, span, i, b, strong, em, inp
   outline: none;
   font-style: normal;
 }
+/*去掉苹果的默认UI来渲染按钮*/
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+button { -webkit-appearance: none; }
+
 article,aside,canvas,details,figcaption,figure,
 footer,header,menu,nav,section,summary {
   display:block;

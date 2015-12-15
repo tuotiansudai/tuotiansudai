@@ -13,9 +13,11 @@ import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.WithdrawModel;
+import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -30,6 +32,8 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
     private PayWrapperClient payWrapperClient;
     @Autowired
     private WithdrawMapper withdrawMapper;
+    @Value("${pay.withdraw.fee}")
+    private long withdrawFee;
 
     @Override
     public BaseResponseDto queryUserWithdrawLogs(WithdrawListRequestDto requestDto) {
@@ -73,6 +77,10 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
     public BaseResponseDto generateWithdrawRequest(WithdrawOperateRequestDto requestDto) {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         WithdrawDto withdrawDto = requestDto.convertToWithdrawDto();
+        long withdrawAmount = AmountConverter.convertStringToCent(withdrawDto.getAmount());
+        if (withdrawAmount <= withdrawFee) {
+            return new BaseResponseDto(ReturnMessage.WITHDRAW_AMOUNT_NOT_REACH_FEE.getCode(), ReturnMessage.WITHDRAW_AMOUNT_NOT_REACH_FEE.getMsg());
+        }
         String loginName = withdrawDto.getLoginName();
         BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(loginName);
         if (bankCardModel == null) {

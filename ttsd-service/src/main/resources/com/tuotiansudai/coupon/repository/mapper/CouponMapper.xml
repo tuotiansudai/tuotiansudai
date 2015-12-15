@@ -69,7 +69,7 @@
     </select>
 
     <update id="updateCoupon" parameterType="CouponModel">
-        update coupon set issued_Count = #{issuedCount},active_time = #{activeTime},active = #{active},active_user = #{activeUser} where id = #{id}
+        update coupon set used_count = #{usedCount},issued_Count = #{issuedCount},active_time = #{activeTime},active = #{active},active_user = #{activeUser} where id = #{id}
     </update>
 
 </mapper>

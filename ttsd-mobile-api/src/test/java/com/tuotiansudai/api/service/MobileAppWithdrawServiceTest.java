@@ -39,6 +39,7 @@ public class MobileAppWithdrawServiceTest extends ServiceTestBase {
     @Test
     public void shouldGenerateWithdrawRequestIsOk() {
         WithdrawOperateRequestDto withdrawOperateRequestDto = new WithdrawOperateRequestDto();
+        withdrawOperateRequestDto.setMoney(10);
         withdrawOperateRequestDto.setBaseParam(BaseParamTest.getInstance());
 
         BankCardModel bankCardModel = new BankCardModel();

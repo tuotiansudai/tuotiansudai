@@ -13,6 +13,7 @@
 .ad-recruit-img,.ad-recruit-img img {
   height:350px;
   background: url("/images/sign/activities/daili/ad.jpg") center top no-repeat;
+  background-size: cover;
 }
 .ad-grand-img {
   height:350px;
@@ -236,19 +237,23 @@ img.icon-mark {
   font-size: 16px;
   line-height: 40px;
   text-align: left;
-  margin-top:45px;
-  dt {
+  padding-top:45px;
+  b {
     font-size: 20px;
+    display: block;
   }
-  dd {
+  p {
     margin-left: 30px;
+    margin-bottom: 0px;
+    line-height: 2;
   }
 }
 
 
 .qualifications,.apply,.give-more { padding-top:30px;}
 
-.hot-link { position: relative;
+.hot-link {
+  position: relative;
   width:752px;
   height:60px;
   margin:0 auto;
@@ -282,6 +287,16 @@ img.icon-mark {
 /*responsive picture*/
 .res-comtainer{
   display: none;
+  float:left;
+  color: #000;
+  font-weight: bold;
+  .responsive-tips {
+    width: 100%;
+    color: #000;
+    text-align: left;
+    background: #f2f2f2;
+    line-height: 26px;
+  }
   .responsive-title{
     width:100%;
     color:#000;
@@ -290,6 +305,17 @@ img.icon-mark {
   }
   .responsive-picture{
     width:100%;
+    .text-list{
+      padding:10px;
+      background:#fff;
+      p{
+        font-size:14px;
+        margin-bottom:0;
+        span{
+          font-size:12px;
+        }
+      }
+    }
   }
   .link-btn{
     background:#f2f2f2;
@@ -313,7 +339,61 @@ img.icon-mark {
   }
 }
 
+@media screen and (max-width: 700px){
 
+  .ad-recruit-img {
+    height: 150px;
+    background: url("/images/banner/ph-banner03.jpg") center top no-repeat!important;
+    background-size: cover!important;
+  }
+
+  .recruit-content{
+
+    width:100%;
+    padding:0;
+    .hot-link{
+      width: 100%;
+      height: auto;
+      background: blue;
+      img{
+        position: absolute;
+        width:100%;
+        top: -4px;
+      }
+      .img-hot-link{
+        display: none;
+      }
+    }
+    .r-time {
+      padding:24px 0px 0 10px;
+      b {
+        font-size: 15px;
+      }
+      p {
+        margin-left: 3px;
+        font-size: 13px;
+      }
+    }
+    .qualifications{
+      padding-top: 10px;
+      img{
+        width:100%;
+      }
+    }
+    .apply{
+      padding-top: 10px;
+      img{
+        width:100%;
+      }
+    }
+    .give-more{
+      padding-top: 10px;
+      img{
+        width:100%;
+      }
+    }
+  }
+}
 
 
 

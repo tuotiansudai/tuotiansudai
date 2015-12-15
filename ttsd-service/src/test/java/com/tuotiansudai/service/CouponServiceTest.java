@@ -1,23 +1,30 @@
 package com.tuotiansudai.service;
 
+import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.CreateCouponException;
+import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.ReferrerRelationException;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.impl.InvestServiceImpl;
+import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -28,11 +35,14 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class CouponServiceTest {
+
     @Autowired
     private CouponService couponService;
     @Autowired
@@ -47,7 +57,15 @@ public class CouponServiceTest {
     private UserService userService;
 
     @Autowired
+    private LoanMapper loanMapper;
+
+    @Autowired
     private UserCouponMapper userCouponMapper;
+
+
+    @Autowired
+    private IdGenerator idGenerator;
+
 
     @Test
     public void shouldCreateCouponIsSuccess() throws CreateCouponException {
@@ -107,6 +125,82 @@ public class CouponServiceTest {
         assertEquals(1, couponModel2.getIssuedCount());
 
     }
+
+    @Test
+    public void shouldAfterReturningInvestIsSuccess() {
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+
+        CouponDto couponDto = fakeCouponDto();
+        DateTime startDateTime = new DateTime().plusDays(-1);
+        DateTime endDateTime = new DateTime().plusDays(1);
+        couponDto.setStartTime(startDateTime.toDate());
+        couponDto.setEndTime(endDateTime.toDate());
+        CouponModel couponModel = new CouponModel(couponDto);
+        couponModel.setCreateUser("couponTest");
+        couponModel.setActive(true);
+        couponMapper.create(couponModel);
+
+        UserCouponModel userCouponModel = new UserCouponModel();
+
+        userCouponModel.setLoginName(userModel.getLoginName());
+        userCouponModel.setCouponId(couponModel.getId());
+        userCouponModel.setCreateTime(new Date());
+        userCouponMapper.create(userCouponModel);
+
+        LoanModel loanModel = fakeLoanModel(userModel.getLoginName());
+        loanMapper.create(loanModel);
+
+        InvestDto investDto = new InvestDto();
+        investDto.setLoanId("" +loanModel.getId());
+        investDto.setLoginName(userModel.getLoginName());
+        investDto.setUserCouponId("" + userCouponModel.getId());
+        couponService.afterReturningInvest(investDto);
+
+        CouponModel couponModel1 = couponMapper.findCouponById(couponModel.getId());
+
+        assertEquals(1, couponModel1.getUsedCount());
+    }
+
+    @Test
+    public void shouldAfterReturningInvestIsExpired() {
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+
+        CouponDto couponDto = fakeCouponDto();
+        DateTime startDateTime = new DateTime().plusDays(-1);
+        DateTime endDateTime = new DateTime().plusDays(-1);
+        couponDto.setStartTime(startDateTime.toDate());
+        couponDto.setEndTime(endDateTime.toDate());
+        CouponModel couponModel = new CouponModel(couponDto);
+        couponModel.setCreateUser("couponTest");
+        couponModel.setActive(true);
+        couponMapper.create(couponModel);
+        LoanModel loanModel = fakeLoanModel(userModel.getLoginName());
+        loanMapper.create(loanModel);
+
+        UserCouponModel userCouponModel = new UserCouponModel();
+
+        userCouponModel.setLoginName(userModel.getLoginName());
+        userCouponModel.setCouponId(couponModel.getId());
+        userCouponModel.setCreateTime(new Date());
+
+        userCouponMapper.create(userCouponModel);
+
+
+
+        InvestDto investDto = new InvestDto();
+        investDto.setLoanId("" + loanModel.getId());
+        investDto.setLoginName(userModel.getLoginName());
+        investDto.setUserCouponId("" + userCouponModel.getId());
+        couponService.afterReturningInvest(investDto);
+
+        CouponModel couponModel1 = couponMapper.findCouponById(couponModel.getId());
+
+        assertEquals(0,couponModel1.getUsedCount());
+
+    }
+
 
     @Test
     public void shouldRegisterUserIsSuccess() throws ReferrerRelationException {
@@ -173,6 +267,36 @@ public class CouponServiceTest {
         registerUserDto.setMobile("18600000101");
         registerUserDto.setPassword("123abc");
         return registerUserDto;
+    }
+
+    private LoanModel fakeLoanModel(String loginName){
+        LoanModel loanModel = new LoanModel();
+        loanModel.setAgentLoginName(loginName);
+        loanModel.setBaseRate(16.00);
+        long id = idGenerator.generate();
+        loanModel.setId(id);
+        loanModel.setName("店铺资金周转");
+        loanModel.setActivityRate(12);
+        loanModel.setShowOnHome(true);
+        loanModel.setPeriods(30);
+        loanModel.setActivityType(ActivityType.EXCLUSIVE);
+        loanModel.setContractId(123);
+        loanModel.setDescriptionHtml("asdfasdf");
+        loanModel.setDescriptionText("asdfasd");
+        loanModel.setFundraisingEndTime(new Date());
+        loanModel.setFundraisingStartTime(new Date());
+        loanModel.setInvestFeeRate(15);
+        loanModel.setInvestIncreasingAmount(1);
+        loanModel.setLoanAmount(10000);
+        loanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        loanModel.setMaxInvestAmount(100000000000l);
+        loanModel.setMinInvestAmount(0);
+        loanModel.setCreatedTime(new Date());
+        loanModel.setStatus(LoanStatus.RAISING);
+        loanModel.setLoanerLoginName(loginName);
+        loanModel.setLoanerUserName("借款人");
+        loanModel.setLoanerIdentityNumber("111111111111111111");
+        return loanModel;
     }
 
 
