@@ -63,7 +63,7 @@ public abstract class ControllerTestBase {
                 .andExpect(jsonPath("$.code").value("0000"));
     }
 
-    protected ResultActions doRequestWithServiceMockedTest(String url, BaseParamDto requestDto) throws Exception {
+    protected ResultActions doRequestWithServiceIsOkMockedTest(String url, BaseParamDto requestDto) throws Exception {
         url = "/v1.0" + url;
         String requestJson = generateRequestJson(requestDto);
 
@@ -71,7 +71,11 @@ public abstract class ControllerTestBase {
                 contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(requestJson))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(content().contentType("application/json;charset=UTF-8"));
+    }
+
+    protected ResultActions doRequestWithServiceMockedTest(String url, BaseParamDto requestDto) throws Exception {
+        return doRequestWithServiceIsOkMockedTest(url, requestDto)
                 .andExpect(jsonPath("$.code").value("0000"));
     }
     protected ResultActions doRequestWithServiceIsBadRequestMockedTest(String url, BaseParamDto requestDto) throws Exception {
