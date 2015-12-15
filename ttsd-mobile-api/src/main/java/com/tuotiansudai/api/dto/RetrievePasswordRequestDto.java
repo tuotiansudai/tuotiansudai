@@ -9,22 +9,22 @@ public class RetrievePasswordRequestDto extends BaseParamDto {
     /**
      * 手机号码
      */
-    @NotEmpty(message = "0001")
-    @Pattern(regexp = "^1\\d{10}$", message = "0002")
+    @NotEmpty
+    @Pattern(regexp = "^1\\d{10}$")
     private String phoneNum;
 
     /**
      * 验证码
      */
-    @NotEmpty(message = "0020")
-    @Pattern(regexp = "^[0-9]{6}$", message = "0009")
+    @NotEmpty
+    @Pattern(regexp = "^[0-9]{6}$")
     private String validateCode;
 
     /**
      * 密码
      */
-    @NotEmpty(message = "0012")
-    @Pattern(regexp = "^(?=.*[^\\d])(.{6,20})$", message = "0012")
+    @NotEmpty
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]{6,20})$")
     private String password;
 
     /**

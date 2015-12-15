@@ -1,7 +1,6 @@
 package com.tuotiansudai.api.controller;
 
 import com.tuotiansudai.api.dto.RetrievePasswordRequestDto;
-import com.tuotiansudai.api.dto.ReturnMessage;
 import com.tuotiansudai.api.service.MobileAppRetrievePasswordService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class MobileAppRetrievePasswordControllerTest extends ControllerTestBase {
 
@@ -36,17 +34,13 @@ public class MobileAppRetrievePasswordControllerTest extends ControllerTestBase 
         doRequestWithServiceMockedTest("/retrievepassword",
                 retrievePasswordRequestDto);
     }
-
     @Test
     public void retrievePasswordIsValid() throws Exception {
         RetrievePasswordRequestDto retrievePasswordRequestDto = new RetrievePasswordRequestDto();
         retrievePasswordRequestDto.setPhoneNum("123");
-        retrievePasswordRequestDto.setValidateCode("111111");
-        retrievePasswordRequestDto.setPassword("123abc");
         when(service.retrievePassword(any(RetrievePasswordRequestDto.class))).thenReturn(successResponseDto);
-        doRequestWithServiceIsOkMockedTest("/retrievepassword",
-                retrievePasswordRequestDto)
-        .andExpect(jsonPath("$.code").value("0002"));
+        doRequestWithServiceIsBadRequestMockedTest("/retrievepassword",
+                new RetrievePasswordRequestDto());
     }
 
     @Test

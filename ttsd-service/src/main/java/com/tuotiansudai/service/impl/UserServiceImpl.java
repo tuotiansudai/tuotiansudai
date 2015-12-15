@@ -151,7 +151,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean changePassword(String loginName, String originalPassword, String newPassword) {
+    public boolean changePassword(String loginName, String mobile, String originalPassword, String newPassword) {
 
         boolean correct = this.verifyPasswordCorrect(loginName, originalPassword);
 
@@ -160,7 +160,6 @@ public class UserServiceImpl implements UserService {
         }
 
         UserModel userModel = userMapper.findByLoginName(loginName);
-        String mobile = userModel.getMobile();
 
         String encodedNewPassword = myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt());
         userMapper.updatePasswordByLoginName(loginName, encodedNewPassword);
