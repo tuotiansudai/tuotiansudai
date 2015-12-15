@@ -23,7 +23,7 @@
                     <label for="" class="reg-title">验证码:</label>
                     <span class="captcha-tag">
                         <input type="text" name="captcha" class="captcha" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="请输入验证码"  maxlength="6" value="${(originalFormData.captcha)!}"/>
-                        <button class="fetch-captcha btn-normal" disabled="disabled">获取验证码</button>
+                        <button class="fetch-captcha btn" disabled="disabled">获取验证码</button>
                     </span>
 
                 </li>
