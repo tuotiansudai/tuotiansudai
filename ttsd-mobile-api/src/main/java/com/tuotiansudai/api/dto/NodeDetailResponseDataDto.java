@@ -24,6 +24,8 @@ public class NodeDetailResponseDataDto extends BaseResponseDataDto {
         this.setTitle(input.getTitle());
         this.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(input.getUpdateTime()));
 
+        
+
     }
 
     public void addDomainNameToImageUrl(String urlPattern, String domain) {
