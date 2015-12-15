@@ -32,7 +32,7 @@ public class NodeDetailResponseDataDto extends BaseResponseDataDto {
         this.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(input.getUpdateTime()));
         if(includeContent){
             StringBuffer sb = new StringBuffer();
-            sb.append("<h1>");
+            sb.append("<h1 style=\"text-align:center;\">");
             sb.append(input.getTitle());
             sb.append("</h1>");
             sb.append("<span style='font-size:14px;color:#666;'>时间：");
