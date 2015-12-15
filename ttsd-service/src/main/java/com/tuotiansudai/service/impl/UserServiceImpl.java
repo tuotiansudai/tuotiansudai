@@ -372,4 +372,14 @@ public class UserServiceImpl implements UserService {
             ((UserService) AopContext.currentProxy()).refreshAreaByMobile(userModels);
         }
     }
+
+    @Override
+    public List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber, Integer index, Integer pageSize) {
+        return userMapper.searchAllUsers(loginName, referrer, mobile, identityNumber, (index - 1 ) * pageSize, pageSize);
+    }
+
+    @Override
+    public int searchAllUsersCount(String loginName, String referrer, String mobile, String identityNumber) {
+        return userMapper.searchAllUsersCount(loginName, referrer, mobile, identityNumber);
+    }
 }

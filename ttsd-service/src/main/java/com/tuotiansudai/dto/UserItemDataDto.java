@@ -20,8 +20,8 @@ public class UserItemDataDto implements Serializable {
     private List<UserRoleModel> userRoles;
     private UserStatus status;
     private Source source;
-    private boolean isStaff;
-    private boolean isBankCard;
+    private boolean staff;
+    private boolean bankCard;
 
     public String getLoginName() {
         return loginName;
@@ -104,19 +104,19 @@ public class UserItemDataDto implements Serializable {
     }
 
     public boolean isStaff() {
-        return isStaff;
+        return staff;
     }
 
-    public void setStaff(boolean isStaff) {
-        this.isStaff = isStaff;
+    public void setStaff(boolean staff) {
+        this.staff = staff;
     }
 
     public boolean isBankCard() {
-        return isBankCard;
+        return bankCard;
     }
 
-    public void setBankCard(boolean isBankCard) {
-        this.isBankCard = isBankCard;
+    public void setBankCard(boolean bankCard) {
+        this.bankCard = bankCard;
     }
 
     public UserItemDataDto(UserModel userModel) {

@@ -88,6 +88,31 @@ public class UserController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/users-search", method = RequestMethod.GET)
+    public ModelAndView searchAllUsers(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
+                                        @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                        String loginName,
+                                        String referrer,
+                                        String mobile,
+                                        String identityNumber) {
+        ModelAndView mv = new ModelAndView("/user-search");
+        mv.addObject("index",index);
+        mv.addObject("pageSize",pageSize);
+        mv.addObject("loginName",loginName);
+        mv.addObject("referrer",referrer);
+        mv.addObject("mobile",mobile);
+        mv.addObject("identityNumber",identityNumber);
+        mv.addObject("userList", userService.searchAllUsers(loginName, referrer, mobile, identityNumber, index, pageSize));
+        int usersCount = userService.searchAllUsersCount(loginName, referrer, mobile, identityNumber);
+        mv.addObject("userCount", usersCount);
+        long totalPages = usersCount / pageSize + (usersCount % pageSize > 0 ? 1 : 0);
+        boolean hasPreviousPage = index > 1 && index <= totalPages;
+        boolean hasNextPage = index < totalPages;
+        mv.addObject("hasPreviousPage", hasPreviousPage);
+        mv.addObject("hasNextPage", hasNextPage);
+        return mv;
+    }
+
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ModelAndView findAllUser(String loginName, String email, String mobile,
                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date beginTime,
@@ -112,10 +137,12 @@ public class UserController {
             for (int i = 0 ;i < userItemDataDtos.size(); i++) {
                 List<String> dataModel = Lists.newArrayList();
                 dataModel.add(userItemDataDtos.get(i).getLoginName());
+                dataModel.add(userItemDataDtos.get(i).isBankCard() ? "是" : "否");
                 dataModel.add(userItemDataDtos.get(i).getUserName());
                 dataModel.add(userItemDataDtos.get(i).getMobile());
                 dataModel.add(userItemDataDtos.get(i).getEmail());
                 dataModel.add(userItemDataDtos.get(i).getReferrer());
+                dataModel.add(userItemDataDtos.get(i).isStaff() ? "是" : "否");
                 dataModel.add(userItemDataDtos.get(i).getSource().name());
                 dataModel.add(userItemDataDtos.get(i).getChannel());
                 dataModel.add(new DateTime(userItemDataDtos.get(i).getRegisterTime()).toString("yyyy-MM-dd HH:mm"));
