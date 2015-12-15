@@ -103,7 +103,7 @@
         <p>充值成功：<a href="/account" class="btn-success"  data-category="确认成功" data-label="recharge">确认成功</a></p>
 
         <p>充值失败：<a href="" class="btn-normal" data-category="重新充值" data-label="recharge">重新充值</a>
-            <span class="help">查看<a href="#" target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
+            <span class="help">查看<a href="/about/common-problem" target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
         </p>
         <span>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</span>
 </div>

@@ -16,7 +16,7 @@
             <li class="f-title">帮助中心</li>
             <li><a href="/about/guide">新手指南</a></li>
             <li><a href="/about/service-fee">服务费用</a></li>
-
+            <li><a href="/about/common-problem">常见问题</a></li>
         </ul>
         <ul>
             <li class="f-title">联系我们</li>
