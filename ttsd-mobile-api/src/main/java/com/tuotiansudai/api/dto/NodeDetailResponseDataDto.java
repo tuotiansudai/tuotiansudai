@@ -17,30 +17,12 @@ public class NodeDetailResponseDataDto extends BaseResponseDataDto {
     public NodeDetailResponseDataDto() {
 
     }
-    public NodeDetailResponseDataDto(AnnounceModel input,boolean includeContent){
+    public NodeDetailResponseDataDto(AnnounceModel input){
 
         this.setNodeId("" + input.getId());
         this.setContent(input.getContent());
         this.setTitle(input.getTitle());
-        if(StringUtils.isNotEmpty(input.getContentText())){
-            if(input.getContentText().length() > 48){
-                this.desc = input.getContentText().substring(0,48);
-            }else{
-                this.desc = input.getContentText();
-            }
-        }
         this.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(input.getUpdateTime()));
-        if(includeContent){
-            StringBuffer sb = new StringBuffer();
-            sb.append("<h1 style=\"text-align:center;\">");
-            sb.append(input.getTitle());
-            sb.append("</h1>");
-            sb.append("<span style='font-size:14px;color:#666;'>时间：");
-            sb.append(this.time);
-            sb.append("</span>");
-            sb.append(input.getContent());
-            this.content = sb.toString();
-        }
 
     }
 
