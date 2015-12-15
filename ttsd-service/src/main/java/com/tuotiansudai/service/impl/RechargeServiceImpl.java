@@ -53,7 +53,7 @@ public class RechargeServiceImpl implements RechargeService {
 
         int count = rechargeMapper.findRechargeCount(rechargeId, loginName, source, status, channel, startTime, endTime);
 
-        List<RechargeModel> rechargeModelList = rechargeMapper.findRechargePagination(rechargeId, loginName, source, status, channel, (index-1)*pageSize, pageSize, startTime, endTime);
+        List<RechargeModel> rechargeModelList = rechargeMapper.findRechargePagination(rechargeId, loginName, source, status, channel, (index - 1) * pageSize, pageSize, startTime, endTime);
 
         for (RechargeModel model : rechargeModelList) {
             RechargePaginationItemDataDto rechargeDto = new RechargePaginationItemDataDto(model);
@@ -65,5 +65,16 @@ public class RechargeServiceImpl implements RechargeService {
         baseDto.setData(basePaginationDataDto);
         return baseDto;
     }
-    
+
+
+    @Override
+    public long findSumRechargeAmount(String rechargeId,
+                                      String loginName,
+                                      RechargeSource source,
+                                      RechargeStatus status,
+                                      String channel,
+                                      Date startTime,
+                                      Date endTime) {
+        return rechargeMapper.findSumRechargeAmount(rechargeId, loginName, source, status, channel, startTime, endTime);
+    }
 }

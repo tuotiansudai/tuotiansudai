@@ -73,6 +73,9 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
+                <th colspan="10">合计提现金额：${sumAmount/100} 元 &nbsp;&nbsp;&nbsp; 合计提现手续费：${sumFee/100} 元</th>
+            </tr>
+            <tr>
                 <th>提现编号</th>
                 <th>申请时间</th>
                 <th>初审时间</th>
