@@ -57,6 +57,7 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
         personalInfoDataDto.setUserName(user.getLoginName());
         personalInfoDataDto.setPhoneNum(user.getMobile());
         personalInfoDataDto.setPhoto(user.getAvatar());
+        personalInfoDataDto.setEmail(user.getEmail());
         if (account != null) {
             personalInfoDataDto.setCertificationFlag(true);
             personalInfoDataDto.setRealName(account.getUserName());
