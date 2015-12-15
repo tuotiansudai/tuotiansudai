@@ -250,17 +250,18 @@ public class NormalRepayServiceTest {
         repayGeneratorService.generateRepay(fakeNormalLoan.getId());
         normalRepayService.repay(fakeNormalLoan.getId());
 
-        CouponModel coupon = this.getFakeCoupon(1000, "loaner");
+        CouponModel coupon = this.getFakeCoupon(1000, loaner.getLoginName());
         couponMapper.create(coupon);
         UserCouponModel userCouponModel = new UserCouponModel(investor1.getLoginName(), coupon.getId());
         userCouponMapper.create(userCouponModel);
-
+        userCouponModel.setLoanId(fakeNormalLoan.getId());
+        userCouponModel.setUsedTime(today.minusDays(10).toDate());
+        userCouponMapper.update(userCouponModel);
 
         this.generateMockResponse(10);
 
         long currentLoanRepayId = loanRepayMapper.findByLoanIdAndPeriod(fakeNormalLoan.getId(), 1).getId();
         normalRepayService.repayCallback(this.getFakeCallbackParamsMap(currentLoanRepayId), "");
-        normalRepayService.postRepayCallback(currentLoanRepayId);
         boolean isSuccess = normalRepayService.postRepayCallback(currentLoanRepayId);
 
         assertTrue(isSuccess);
@@ -315,6 +316,9 @@ public class NormalRepayServiceTest {
         assertThat(systemBillModel2.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
 
         assertThat(loanMapper.findById(fakeNormalLoan.getId()).getStatus(), is(LoanStatus.REPAYING));
+
+
+        assertThat(userCouponMapper.findById(userCouponModel.getId()).getActualInterest(), is(3L));
     }
 
     @Test
@@ -1194,7 +1198,7 @@ public class NormalRepayServiceTest {
         couponModel.setAmount(amount);
         couponModel.setTotalCount(1);
         couponModel.setActive(true);
-        couponModel.setActiveUser(loginName);
+        couponModel.setCreateUser(loginName);
         couponModel.setCreateTime(new Date());
         return couponModel;
     }

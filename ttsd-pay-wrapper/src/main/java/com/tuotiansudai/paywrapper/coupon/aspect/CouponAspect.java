@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 import java.text.MessageFormat;
 import java.util.List;
 
-//@Component
-//@Aspect
+@Component
+@Aspect
 public class CouponAspect {
     static Logger logger = Logger.getLogger(CouponAspect.class);
 

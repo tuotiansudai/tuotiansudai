@@ -23,6 +23,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -57,6 +58,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     private SystemBillService systemBillService;
 
     @Override
+    @Transactional
     public void repay(long loanRepayId) {
         LoanRepayModel currentLoanRepayModel = loanRepayMapper.findById(loanRepayId);
         LoanModel loanModel = loanMapper.findById(currentLoanRepayModel.getLoanId());
@@ -81,8 +83,10 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                                 String.valueOf(currentLoanRepayModel.getId()),
                                 String.valueOf(actualInterest - actualFee));
                         systemBillService.transferOut(userCouponModel.getId(), actualInterest - actualFee, SystemBillBusinessType.NEWBIE_COUPON, detail);
+                        userCouponModel.setActualInterest(userCouponModel.getActualInterest() + actualInterest - actualFee);
+                        userCouponModel.setActualFee(userCouponModel.getActualFee() + actualFee);
+                        userCouponMapper.update(userCouponModel);
                     }
-
                 } catch (PayException e) {
                     logger.error(MessageFormat.format("coupon transfer in balance failed (userCouponId = {0})", String.valueOf(userCouponModel.getId())), e);
                 }

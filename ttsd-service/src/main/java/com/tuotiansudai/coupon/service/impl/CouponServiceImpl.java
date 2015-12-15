@@ -111,10 +111,10 @@ public class CouponServiceImpl implements CouponService {
             logger.debug(MessageFormat.format("userCouponId:{0} , is used",userCouponId));
         }
         if (userCouponDto.isValid()){
-            UserCouponModel userCouponModel = userCouponMapper.findByCouponId(userCouponId);
+            UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
             userCouponModel.setLoanId(investDto.getLoanIdLong());
             userCouponModel.setUsedTime(new Date());
-            userCouponMapper.updateUserCoupon(userCouponModel);
+            userCouponMapper.update(userCouponModel);
             recordUsedCount(userCouponDto.getCouponId());
         }else {
             logger.debug(MessageFormat.format("userCouponId:{0} , is invalid",userCouponId));
@@ -123,10 +123,10 @@ public class CouponServiceImpl implements CouponService {
     }
 
     private UserCouponDto convertUserCouponDto(long userCouponId){
-        UserCouponModel userCouponModel = userCouponMapper.findByCouponId(userCouponId);
+        UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
         if(userCouponModel != null){
             long couponId = userCouponModel.getCouponId();
-            CouponModel couponModel = couponMapper.findCouponById(couponId);
+            CouponModel couponModel = couponMapper.findById(couponId);
             UserCouponDto userCouponDto = new UserCouponDto(couponModel,userCouponModel);
 
             return userCouponDto;

@@ -42,19 +42,11 @@
         select * from user_coupon where login_name = #{loginName}
     </select>
 
-    <select id="findByCouponId" resultMap="userCouponResultMap" parameterType="long">
-        select * from user_coupon where id = #{couponId}
+    <select id="findById" resultMap="userCouponResultMap" parameterType="long">
+        select * from user_coupon where id = #{id}
     </select>
 
-    <update id="updateUserCoupon" parameterType="UserCouponModel">
-        update user_coupon set loan_id = #{loanId},used_time = #{usedTime} where id = #{id}
-    </update>
-
-    <update id="updateCoupon" parameterType="CouponModel">
-        update coupon set issued_Count = #{issuedCount},active_time = #{activeTime},active = #{active},active_user = #{activeUser} where id = #{id}
-    </update>
-
     <select id="findByLoanId" resultMap="userCouponResultMap" parameterType="long">
-        select * from user_coupon where loan_id = #{loan_id}
+        select * from user_coupon where loan_id = #{loanId}
     </select>
 </mapper>
