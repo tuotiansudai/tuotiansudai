@@ -10,7 +10,15 @@
         <div class="res-comtainer">
             <h3 class="responsive-title">累计收益越高,奖励价值越高</h3>
             <div class="responsive-picture">
-                <img src="${staticServer}/images/sign/activities/grand/all-money.png" width="100%">
+                <div class="text-list">
+                    <p>
+                        规则：</br>
+                        投资标满后即可赚取收益，简单三步兑换实物大奖，兑换奖励后扣除相应累计收益。
+                    </p>
+                    <p>第一步：获取收益<span>(用户在拓天进行投资)</span>；</p>
+                    <p>第二步：联系客服<span>(达到奖励目标联系客服)</span>；</p>
+                    <p>第三步：确认发放<span>(客服确认后发放奖励)</span>。</p>
+                </div>
             </div>
             <h3 class="responsive-title">大奖展示</h3>
         </div>
@@ -120,8 +128,10 @@
                 </div>
             </div>
 
-            <img src="${staticServer}/images/sign/activities/grand/ad-g-t2.png" class="responsive-width">
-
+            <img src="${staticServer}/images/sign/activities/grand/ad-g-t2.png" class="responsive-width is-show">
+            <div class="res-comtainer">
+                <h3 class="responsive-tips">注:本活动仅限大陆地区用户参与(港澳台除外)，奖励发放速度以快递速度为准。新疆、青海、西藏、云南获奖用户邮费自理。</h3>
+            </div>
         </div>
     </div>
 </div>
