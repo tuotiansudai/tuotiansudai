@@ -250,12 +250,12 @@ public class NormalRepayServiceTest {
         repayGeneratorService.generateRepay(fakeNormalLoan.getId());
         normalRepayService.repay(fakeNormalLoan.getId());
 
-        CouponModel coupon = this.getFakeCoupon(1000, loaner.getLoginName());
+        CouponModel coupon = this.getFakeCoupon(9000, loaner.getLoginName());
         couponMapper.create(coupon);
         UserCouponModel userCouponModel = new UserCouponModel(investor1.getLoginName(), coupon.getId());
         userCouponMapper.create(userCouponModel);
         userCouponModel.setLoanId(fakeNormalLoan.getId());
-        userCouponModel.setUsedTime(today.minusDays(10).toDate());
+        userCouponModel.setUsedTime(today.minusDays(5).toDate());
         userCouponMapper.update(userCouponModel);
 
         this.generateMockResponse(10);
@@ -296,6 +296,12 @@ public class NormalRepayServiceTest {
         assertThat(investorUserBills1.get(1).getAmount(), is(investRepayModels1.get(0).getActualFee()));
         assertThat(investorUserBills1.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
         assertThat(investorUserBills1.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
+        assertThat(investorUserBills1.get(2).getAmount(), is(17L));
+        assertThat(investorUserBills1.get(2).getBusinessType(), is(UserBillBusinessType.NEWBIE_COUPON));
+        assertThat(investorUserBills1.get(2).getOperationType(), is(UserBillOperationType.TI_BALANCE));
+        assertThat(investorUserBills1.get(3).getAmount(), is(1L));
+        assertThat(investorUserBills1.get(3).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
+        assertThat(investorUserBills1.get(3).getOperationType(), is(UserBillOperationType.TO_BALANCE));
 
         List<UserBillModel> investorUserBills2 = userBillMapper.findByLoginName(investor2.getLoginName());
         assertThat(investorUserBills2.get(0).getAmount(), is(investRepayModels2.get(0).getActualInterest()));
@@ -305,20 +311,21 @@ public class NormalRepayServiceTest {
         assertThat(investorUserBills2.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
         assertThat(investorUserBills2.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
 
-        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(0).getId());
+        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(0).getId(), SystemBillBusinessType.INVEST_FEE);
         assertThat(systemBillModel1.getAmount(), is(investRepayModels1.get(0).getActualFee()));
         assertThat(systemBillModel1.getOperationType(), is(SystemBillOperationType.IN));
-        assertThat(systemBillModel1.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
 
-        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(investRepayModels2.get(0).getId());
+        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(investRepayModels2.get(0).getId(), SystemBillBusinessType.INVEST_FEE);
         assertThat(systemBillModel2.getAmount(), is(investRepayModels2.get(0).getActualFee()));
         assertThat(systemBillModel2.getOperationType(), is(SystemBillOperationType.IN));
-        assertThat(systemBillModel2.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
 
         assertThat(loanMapper.findById(fakeNormalLoan.getId()).getStatus(), is(LoanStatus.REPAYING));
 
-
-        assertThat(userCouponMapper.findById(userCouponModel.getId()).getActualInterest(), is(3L));
+        UserCouponModel actualUserCouponModel = userCouponMapper.findById(userCouponModel.getId());
+        assertThat(actualUserCouponModel.getActualInterest(), is(17L));
+        assertThat(actualUserCouponModel.getActualFee(), is(1L));
+        SystemBillModel systemBillModel3 = systemBillMapper.findByOrderId(userCouponModel.getId(), SystemBillBusinessType.NEWBIE_COUPON);
+        assertThat(systemBillModel3.getAmount(), is(16L));
     }
 
     @Test
@@ -346,7 +353,15 @@ public class NormalRepayServiceTest {
         repayGeneratorService.generateRepay(fakeNormalLoan.getId());
         normalRepayService.repay(fakeNormalLoan.getId());
 
-        this.generateMockResponse(4);
+        CouponModel coupon = this.getFakeCoupon(9000, loaner.getLoginName());
+        couponMapper.create(coupon);
+        UserCouponModel userCouponModel = new UserCouponModel(investor1.getLoginName(), coupon.getId());
+        userCouponMapper.create(userCouponModel);
+        userCouponModel.setLoanId(fakeNormalLoan.getId());
+        userCouponModel.setUsedTime(today.minusDays(5).toDate());
+        userCouponMapper.update(userCouponModel);
+
+        this.generateMockResponse(10);
 
         long currentLoanRepayId = loanRepayMapper.findByLoanIdAndPeriod(fakeNormalLoan.getId(), 1).getId();
         normalRepayService.repayCallback(this.getFakeCallbackParamsMap(currentLoanRepayId), "");
@@ -384,6 +399,12 @@ public class NormalRepayServiceTest {
         assertThat(investorUserBills1.get(1).getAmount(), is(investRepayModels1.get(0).getActualFee()));
         assertThat(investorUserBills1.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
         assertThat(investorUserBills1.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
+        assertThat(investorUserBills1.get(2).getAmount(), is(5L));
+        assertThat(investorUserBills1.get(2).getBusinessType(), is(UserBillBusinessType.NEWBIE_COUPON));
+        assertThat(investorUserBills1.get(2).getOperationType(), is(UserBillOperationType.TI_BALANCE));
+        assertThat(investorUserBills1.get(3).getAmount(), is(2L));
+        assertThat(investorUserBills1.get(3).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
+        assertThat(investorUserBills1.get(3).getOperationType(), is(UserBillOperationType.TO_BALANCE));
 
         List<UserBillModel> investorUserBills2 = userBillMapper.findByLoginName(investor2.getLoginName());
         assertThat(investorUserBills2.get(0).getAmount(), is(investRepayModels2.get(0).getActualInterest()));
@@ -393,17 +414,21 @@ public class NormalRepayServiceTest {
         assertThat(investorUserBills2.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
         assertThat(investorUserBills2.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
 
-        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(0).getId());
+        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(0).getId(), SystemBillBusinessType.INVEST_FEE);
         assertThat(systemBillModel1.getAmount(), is(investRepayModels1.get(0).getActualFee()));
         assertThat(systemBillModel1.getOperationType(), is(SystemBillOperationType.IN));
-        assertThat(systemBillModel1.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
 
-        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(investRepayModels2.get(0).getId());
+        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(investRepayModels2.get(0).getId(), SystemBillBusinessType.INVEST_FEE);
         assertThat(systemBillModel2.getAmount(), is(investRepayModels2.get(0).getActualFee()));
         assertThat(systemBillModel2.getOperationType(), is(SystemBillOperationType.IN));
-        assertThat(systemBillModel2.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
 
         assertThat(loanMapper.findById(fakeNormalLoan.getId()).getStatus(), is(LoanStatus.REPAYING));
+
+        UserCouponModel actualUserCouponModel = userCouponMapper.findById(userCouponModel.getId());
+        assertThat(actualUserCouponModel.getActualInterest(), is(5L));
+        assertThat(actualUserCouponModel.getActualFee(), is(2L));
+        SystemBillModel systemBillModel3 = systemBillMapper.findByOrderId(userCouponModel.getId(), SystemBillBusinessType.NEWBIE_COUPON);
+        assertThat(systemBillModel3.getAmount(), is(3L));
     }
 
     @Test
@@ -488,17 +513,15 @@ public class NormalRepayServiceTest {
         assertThat(investorUserBills2.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
         assertThat(investorUserBills2.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
 
-        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(1).getId());
+        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(1).getId(), SystemBillBusinessType.INVEST_FEE);
         assertThat(systemBillModel1.getAmount(), is(investRepayModels1.get(1).getActualFee()));
         assertThat(systemBillModel1.getOperationType(), is(SystemBillOperationType.IN));
-        assertThat(systemBillModel1.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
 
-        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(investRepayModels2.get(1).getId());
+        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(investRepayModels2.get(1).getId(), SystemBillBusinessType.INVEST_FEE);
         assertThat(systemBillModel2.getAmount(), is(investRepayModels2.get(1).getActualFee()));
         assertThat(systemBillModel2.getOperationType(), is(SystemBillOperationType.IN));
-        assertThat(systemBillModel2.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
 
-        SystemBillModel systemBillModel3 = systemBillMapper.findByOrderId(fakeLoanRepayModel2.getId());
+        SystemBillModel systemBillModel3 = systemBillMapper.findByOrderId(fakeLoanRepayModel2.getId(), SystemBillBusinessType.LOAN_REMAINING_INTEREST);
         assertNull(systemBillModel3);
 
         assertThat(loanMapper.findById(fakeNormalLoan.getId()).getStatus(), is(LoanStatus.COMPLETE));
@@ -589,15 +612,13 @@ public class NormalRepayServiceTest {
         assertThat(investorUserBills2.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
         assertThat(investorUserBills2.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
 
-        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(1).getId());
+        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(1).getId(), SystemBillBusinessType.INVEST_FEE);
         assertThat(systemBillModel1.getAmount(), is(investRepayModels1.get(1).getActualFee()));
         assertThat(systemBillModel1.getOperationType(), is(SystemBillOperationType.IN));
-        assertThat(systemBillModel1.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
 
-        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(investRepayModels2.get(1).getId());
+        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(investRepayModels2.get(1).getId(), SystemBillBusinessType.INVEST_FEE);
         assertThat(systemBillModel2.getAmount(), is(investRepayModels2.get(1).getActualFee()));
         assertThat(systemBillModel2.getOperationType(), is(SystemBillOperationType.IN));
-        assertThat(systemBillModel2.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
 
         assertThat(loanMapper.findById(fakeNormalLoan.getId()).getStatus(), is(LoanStatus.REPAYING));
     }
@@ -748,15 +769,13 @@ public class NormalRepayServiceTest {
         assertThat(investorUserBills2.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
         assertThat(investorUserBills2.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
 
-        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(0).getId());
+        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(0).getId(), SystemBillBusinessType.INVEST_FEE);
         assertThat(systemBillModel1.getAmount(), is(investRepayModels1.get(0).getActualFee()));
         assertThat(systemBillModel1.getOperationType(), is(SystemBillOperationType.IN));
-        assertThat(systemBillModel1.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
 
-        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(investRepayModels2.get(0).getId());
+        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(investRepayModels2.get(0).getId(), SystemBillBusinessType.INVEST_FEE);
         assertThat(systemBillModel2.getAmount(), is(investRepayModels2.get(0).getActualFee()));
         assertThat(systemBillModel2.getOperationType(), is(SystemBillOperationType.IN));
-        assertThat(systemBillModel2.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
 
         assertThat(loanMapper.findById(fakeNormalLoan.getId()).getStatus(), is(LoanStatus.COMPLETE));
     }
@@ -841,15 +860,13 @@ public class NormalRepayServiceTest {
         assertThat(investorUserBills2.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
         assertThat(investorUserBills2.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
 
-        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(0).getId());
+        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(0).getId(), SystemBillBusinessType.INVEST_FEE);
         assertThat(systemBillModel1.getAmount(), is(investRepayModels1.get(0).getActualFee()));
         assertThat(systemBillModel1.getOperationType(), is(SystemBillOperationType.IN));
-        assertThat(systemBillModel1.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
 
-        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(investRepayModels2.get(0).getId());
+        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(investRepayModels2.get(0).getId(), SystemBillBusinessType.INVEST_FEE);
         assertThat(systemBillModel2.getAmount(), is(investRepayModels2.get(0).getActualFee()));
         assertThat(systemBillModel2.getOperationType(), is(SystemBillOperationType.IN));
-        assertThat(systemBillModel2.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
 
         assertThat(loanMapper.findById(fakeNormalLoan.getId()).getStatus(), is(LoanStatus.COMPLETE));
     }
@@ -953,15 +970,13 @@ public class NormalRepayServiceTest {
         assertThat(investorUserBills2.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
         assertThat(investorUserBills2.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
 
-        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(2).getId());
+        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(2).getId(), SystemBillBusinessType.INVEST_FEE);
         assertThat(systemBillModel1.getAmount(), is(investRepayModels1.get(2).getActualFee()));
         assertThat(systemBillModel1.getOperationType(), is(SystemBillOperationType.IN));
-        assertThat(systemBillModel1.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
 
-        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(fakeLoanRepayModel3.getId());
+        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(fakeLoanRepayModel3.getId(), SystemBillBusinessType.LOAN_REMAINING_INTEREST);
         assertThat(systemBillModel2.getAmount(), is(8L));
         assertThat(systemBillModel2.getOperationType(), is(SystemBillOperationType.IN));
-        assertThat(systemBillModel2.getBusinessType(), is(SystemBillBusinessType.LOAN_REMAINING_INTEREST));
 
         assertThat(loanMapper.findById(fakeNormalLoan.getId()).getStatus(), is(LoanStatus.COMPLETE));
     }
@@ -1066,15 +1081,13 @@ public class NormalRepayServiceTest {
         assertThat(investorUserBills2.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
         assertThat(investorUserBills2.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
 
-        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(1).getId());
+        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(investRepayModels1.get(1).getId(), SystemBillBusinessType.INVEST_FEE);
         assertThat(systemBillModel1.getAmount(), is(investRepayModels1.get(1).getActualFee()));
         assertThat(systemBillModel1.getOperationType(), is(SystemBillOperationType.IN));
-        assertThat(systemBillModel1.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
 
-        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(fakeLoanRepayModel2.getId());
+        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(fakeLoanRepayModel2.getId(), SystemBillBusinessType.LOAN_REMAINING_INTEREST);
         assertThat(systemBillModel2.getAmount(), is(1L + 8L));
         assertThat(systemBillModel2.getOperationType(), is(SystemBillOperationType.IN));
-        assertThat(systemBillModel2.getBusinessType(), is(SystemBillBusinessType.LOAN_REMAINING_INTEREST));
 
         assertThat(loanMapper.findById(fakeNormalLoan.getId()).getStatus(), is(LoanStatus.REPAYING));
     }

@@ -19,8 +19,8 @@
         value(#{amount}, #{detail}, #{operationType}, #{createdTime}, #{orderId}, #{businessType})
     </insert>
 
-    <select id="findByOrderId" parameterType="long" resultMap="systemBillResultMap">
-        select * from system_bill where order_id = #{orderId}
+    <select id="findByOrderId" parameterType="map" resultMap="systemBillResultMap">
+        select * from system_bill where order_id = #{orderId} and business_type = #{systemBillBusinessType}
     </select>
 
     <select id="findSystemBillPagination" parameterType="map" resultMap="systemBillResultMap">

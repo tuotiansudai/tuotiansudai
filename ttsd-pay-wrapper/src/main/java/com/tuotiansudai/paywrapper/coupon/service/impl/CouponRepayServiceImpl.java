@@ -69,24 +69,15 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
             long actualInterest = this.calculateActualInterest(couponModel, userCouponModel, loanModel, currentLoanRepayModel, loanRepayModels);
             long actualFee = (long) (actualInterest * loanModel.getInvestFeeRate());
-            boolean isSuccess = actualInterest - actualFee == 0;
-            if (actualInterest - actualFee > 0) {
+            long transferAmount = actualInterest - actualFee;
+            boolean isSuccess = transferAmount == 0;
+            if (transferAmount > 0) {
                 TransferRequestModel requestModel = TransferRequestModel.newCouponRequest(String.valueOf(userCouponModel.getId()),
                         accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayUserId(),
-                        String.valueOf(actualInterest - actualFee));
+                        String.valueOf(transferAmount));
                 try {
                     TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
                     isSuccess = responseModel.isSuccess();
-                    if (isSuccess) {
-                        String detail = MessageFormat.format(SystemBillDetailTemplate.NEWBIE_COUPON_INTEREST_DETAIL_TEMPLATE.getTemplate(),
-                                String.valueOf(userCouponModel.getId()),
-                                String.valueOf(currentLoanRepayModel.getId()),
-                                String.valueOf(actualInterest - actualFee));
-                        systemBillService.transferOut(userCouponModel.getId(), actualInterest - actualFee, SystemBillBusinessType.NEWBIE_COUPON, detail);
-                        userCouponModel.setActualInterest(userCouponModel.getActualInterest() + actualInterest - actualFee);
-                        userCouponModel.setActualFee(userCouponModel.getActualFee() + actualFee);
-                        userCouponMapper.update(userCouponModel);
-                    }
                 } catch (PayException e) {
                     logger.error(MessageFormat.format("coupon transfer in balance failed (userCouponId = {0})", String.valueOf(userCouponModel.getId())), e);
                 }
@@ -94,15 +85,26 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
             if (isSuccess) {
                 try {
+                    userCouponModel.setActualInterest(userCouponModel.getActualInterest() + actualInterest);
+                    userCouponModel.setActualFee(userCouponModel.getActualFee() + actualFee);
+                    userCouponMapper.update(userCouponModel);
+
+                    String detail = MessageFormat.format(SystemBillDetailTemplate.NEWBIE_COUPON_INTEREST_DETAIL_TEMPLATE.getTemplate(),
+                            String.valueOf(userCouponModel.getId()),
+                            String.valueOf(currentLoanRepayModel.getId()),
+                            String.valueOf(transferAmount));
+                    systemBillService.transferOut(userCouponModel.getId(), transferAmount, SystemBillBusinessType.NEWBIE_COUPON, detail);
+
                     amountTransfer.transferInBalance(userCouponModel.getLoginName(),
                             userCouponModel.getId(),
                             actualInterest,
                             UserBillBusinessType.NEWBIE_COUPON, null, null);
+
                     amountTransfer.transferOutBalance(userCouponModel.getLoginName(),
                             userCouponModel.getId(),
                             actualFee,
                             UserBillBusinessType.INVEST_FEE, null, null);
-                } catch (AmountTransferException e) {
+                } catch (Exception e) {
                     logger.error(MessageFormat.format("coupon transfer in balance failed (userCouponId = {0})", String.valueOf(userCouponModel.getId())), e);
                 }
             }
