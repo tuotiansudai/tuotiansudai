@@ -271,3 +271,6 @@ td.td {
     overflow: hidden;
     width: 400px;
 }
+.form-group .form-control{
+    padding:6px;
+}
