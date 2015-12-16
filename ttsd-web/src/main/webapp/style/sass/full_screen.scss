@@ -68,25 +68,44 @@
             padding: 50px 50px 10px;
             background: rgba(255,255,255,0.8);
             border-radius: 10px;
-            .percent {
-                color: #ff7200;
-                font-size: 60px;
-                line-height: 1;
-                font-weight: bold;
+            .num-text{
+                float: left;
+                width: 100%;
+                margin:0;
+                .percent {
+                    color: #ff7200;
+                    font-size: 60px;
+                    line-height: 1;
+                    font-weight: bold;
+                }
+                .num-unit{
+                    font-size:26px;
+                    color:#666;
+                    font-weight: bold;
+                }
             }
             .h-title {
-                color: #4c4c4c;
-                font-size: 26px;
-                font-weight: normal;
+                float: left;
+                text-align: center;
+                width: 100%;
+                color: #666;
+                font-size: 24px;
             }
             .btn-normal {
                 width:100%;
                 padding: 8px 0;
-                margin-top:25px;
             }
             i {
+                float: left;
+                width: 100%;
                 display: block;
                 padding-top:15px;
+            }
+            .welcome-text{
+                float: left;
+                width: 100%;
+                position: relative;
+                margin: 0 0 10px 0;
             }
         }
     }
