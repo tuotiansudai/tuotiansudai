@@ -64,7 +64,7 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
                     $dtDom.find('i').removeClass('fa-toggle-down').addClass('fa-toggle-up');
                 }else{
                     $parents.find('dd').removeClass('active');
-                    $parents.find('i').removeClass('fa-toggle-down');
+                    $parents.find('i').removeClass('fa-toggle-down').addClass('fa-toggle-up');
                     $dtDom.next().addClass('active');
                     $dtDom.find('i').removeClass('fa-toggle-up').addClass('fa-toggle-down');
                 }
