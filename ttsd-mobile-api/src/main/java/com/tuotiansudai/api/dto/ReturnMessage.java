@@ -58,7 +58,7 @@ public enum ReturnMessage {
     NO_MATCH_XS_INVEST_CONDITION("0050","不符合新手标投资条件"),
     ILLEGAL_INVEST_AMOUNT("0051","投资金额不符合递增金额要求"),
     MORE_THAN_MAX_INVEST_AMOUNT("0052","投资金额超过了用户投资限额"),
-    LOAN_IS_FULL("0052","标的已满"),
+    LOAN_IS_FULL("0053","标的已满"),
     LESS_THAN_MIN_INVEST_AMOUNT("0054","投资金额小于标的最小投资金额"),
     OUT_OF_NOVICE_INVEST_LIMIT("0055","新手标投资已超上限"),
     INVEST_FAILED("0056","投资失败"),
@@ -99,7 +99,10 @@ public enum ReturnMessage {
     CANNOT_GET_APK_VERSION("0060", "查找不到版本信息"),
 
     /******提现******/
-    WITHDRAW_AMOUNT_NOT_REACH_FEE("0050","提现金额需大于手续费"),
+    WITHDRAW_AMOUNT_NOT_REACH_FEE("0070","提现金额需大于手续费"),
+
+    /******意见反馈******/
+    FEEDBACK_CAN_NOT_BE_EMPTY("0080", "内容不能为空"),
 
     BAD_REQUEST("0400", "非法请求"),
     UNAUTHORIZED("0401", "未授权");
