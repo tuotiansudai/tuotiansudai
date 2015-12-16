@@ -83,6 +83,12 @@
                     select province from (
                         select count(*) as v, a.province from user a
                         where a.register_time between #{startTime} and #{endTime}
+                        <if test="userStage.name() == 'BindCard'">
+                            and exists (select * from bank_card b where  a.login_name = b.login_name and b.status='PASSED')
+                        </if>
+                        <if test="userStage.name() == 'Certification'">
+                            and exists (select * from account ac where  a.login_name = ac.login_name)
+                        </if>
                         group by province
                     ) t order by v desc limit 5
                 ) p where p.province = u.province
