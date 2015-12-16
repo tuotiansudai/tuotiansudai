@@ -1,5 +1,4 @@
 @import 'variables';
-
 /* if use the css, the page will be show full screen */
 .full-screen {
     width:100%!important;
@@ -8,7 +7,6 @@
 .footer-container {
     margin-top:0;
 }
-//home page
 .home-page-container {
     .banner-box {
         height:350px;
@@ -155,7 +153,6 @@
             box-sizing: border-box;
             .product-box-list {
                 width: 76%;
-                //overflow: hidden;
                 .product-box-inner {
                     width:105%;
                     box-sizing: border-box;
@@ -931,4 +928,119 @@ height:150px;
             }
         }
     }
+}
+
+@media screen\0  {
+    //IE8-10
+    .home-page-container {
+        .main-advantage {
+            dl dd {
+                float: left;
+                margin-bottom:30px;
+            }
+        }
+
+        .home-content {
+            .page-width {
+                .product-box-list {
+                    width:760px!important;
+                    .product-box-inner {
+                        width:105%;
+                        .product-box {
+                            width: 30%;
+                            float: left;
+                            .pr-square {
+                                width: 134px;
+                                height: 134px;
+                                border-radius: 50%;
+                                position: relative;
+                                background: #fee7da;
+                                margin: 5px auto 8px auto;
+                                .pr-square-in {
+                                    width:120px;
+                                    height:120px;
+                                    border-radius: 50%;
+                                    border:2px solid #ff752a;
+                                    background: #fff;
+                                    margin: auto;
+                                    position: absolute;
+                                    left: 0;
+                                    right: 0;
+                                    top: 0;
+                                    bottom: 0;
+                                    text-align: center;
+                                    em {
+                                        color: #ff3333;
+                                        font-size: 14px;
+                                        line-height: 1;
+                                        font-weight: bold;
+                                        padding-top: 40px;
+                                        display: inline-block;
+                                        b {
+                                            font-size:26px;
+                                            line-height:0.5;
+                                        }
+                                    }
+                                    i {
+                                        color: #999;
+                                        clear: both;
+                                        display: block;
+                                        margin-top: -6px;
+                                    }
+                                }
+                            }
+                            dl.pr-info {
+                                text-align: center;
+                                font-size: 0;
+                                dd {
+
+                                    display: inline-block;
+                                    font-size: 14px;
+                                    line-height: 1.2;
+                                    color: #666;
+                                    &.dl-month {
+                                        border-right:1px solid #ffceb4;
+                                        width:48%;
+                                        i {
+                                            color: #ff3333;
+                                            font-weight: bold;
+                                            font-size: 18px;
+                                        }
+
+                                    }
+                                    &.dl-amount {
+                                        width:50%;
+                                        i{
+                                            font-size: 18px;
+                                        }
+                                    }
+                                    span {
+                                        color: #999;
+                                        display: block;
+                                    }
+
+                                }
+                            }
+                            .pad-m {
+                                padding:10px 20px 15px 20px;
+                            }
+
+                        }
+                    }
+
+                }
+                .home-ad {
+                    width: 220px!important;
+                    overflow: hidden;
+                    img {
+                        width: 100%;
+                        border-radius: 10px;
+                        height: 660px;
+                        border: 1px solid #e5e5e5;
+                    }
+                }
+            }
+        }
+    }
+
 }

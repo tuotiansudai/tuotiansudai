@@ -1,4 +1,4 @@
-require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
+require(['jquery', 'csrf', 'jquery.validate', 'jquery.form','commonFun'], function ($) {
 
         var loginFormElement = $('.form-login'),
             loginSubmitElement = $('.login-submit', loginFormElement),
@@ -7,7 +7,10 @@ require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
             captchaElement = $('.captcha', loginFormElement),
             errorElement = $('.error', loginFormElement),
             imageCaptchaElement = $('.image-captcha img', loginFormElement);
-
+        String.prototype.trim = function()
+        {
+            return this.replace(/(^\s*)|(\s*$)/g, "");
+        }
         var refreshCaptcha = function () {
             captchaElement.val('');
             imageCaptchaElement.attr('src', '/login/captcha?' + new Date().getTime().toString());

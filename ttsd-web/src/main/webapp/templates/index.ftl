@@ -72,7 +72,7 @@
     </div>
     <div class="home-content" id="productFrame">
         <div class="clearfix page-width">
-            <section class="product-box-list fl">
+            <div class="product-box-list fl">
                 <div class="product-box-inner">
                     <#list loans as loan>
                     <div class="product-box tc <#if loan.activityType=="NEWBIE">new-standard</#if>">
@@ -115,10 +115,10 @@
                     <span class="fl">投资人数:<i>${(userCount?string('0'))!}</i> 人</span>
                     <a href="/loan-list" class="fr">更多>></a>
                 </div>
-            </section>
-            <aside class="home-ad fr">
+            </div>
+            <div class="home-ad fr">
                 <a href="/activity/ranking" target="_blank"> <img src="${staticServer}/images/sign/ad-h.jpg"></a>
-            </aside>
+            </div>
         </div>
 
     </div>
