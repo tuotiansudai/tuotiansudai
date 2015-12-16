@@ -18,11 +18,8 @@
                                 </select>
                                 开始时间： <input type="text" class="form-control start-date" name="startTime">
                                 结束时间：<input type="text" class="form-control end-date" name="endTime">
-                                <select class="form-control" name="province">
-                                    <option value="">请选择</option>
-                                    <option>北京</option>
-                                    <option>天津</option>
-                                </select>
+                                <select class="form-control" name="province"></select>
+                        <#--<select class="form-control" name=""></select>-->
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
                     <div  id="userDateDistribution" style="width:100%; height:400px;">
