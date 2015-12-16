@@ -139,15 +139,6 @@ simple_verify(){
   fi
 }
 
-verify_user_role(){
-  oldCount=`$DB_CON_OLD -e"select count(distinct user_id,role_id) from user_role" | sed -n 2p`
-  newCount=`$DB_CON_NEW -e"select count(distinct login_name,role) from user_role" | sed -n 2p`
-  if (( oldCount == newCount + 1 )); then
-    echo "user_role migrate success";
-  else
-    echo "user_role migrate fail,oldCount:$oldCount,newCount:$newCount";
-  fi
-}
 
 verify_system_bill(){
   oldCount=`$DB_CON_OLD -e"select count(distinct money, type, reason, time) from system_bill WHERE reason IN ('activity_reward', 'binding_card', 'invest_fee', 'replace_card', 'referrer_reward')" | sed -n 2p`
@@ -156,6 +147,16 @@ verify_system_bill(){
     echo "system_bill migrate success";
   else
     echo "system_bill migrate fail,oldCount:$oldCount,newCount:$newCount";
+  fi
+}
+
+verify_system_bill_amount(){
+  oldAmount=`$DB_CON_OLD -e"select round(sum(money)*100,0) FROM system_bill WHERE reason IN ('activity_reward', 'binding_card', 'invest_fee', 'replace_card', 'referrer_reward')" | sed -n 2p`
+  newAmount=`$DB_CON_NEW -e"select sum(amount) from system_bill" | sed -n 2p`
+  if (( oldAmount == newAmount)); then
+    echo "system_bill amount check passed";
+  else
+    echo "system_bill amount check fail,oldAmount:$oldAmount,newAmount:$newAmount";
   fi
 }
 
@@ -169,6 +170,16 @@ verify_user_bill(){
   fi
 }
 
+verify_user_bill_amount(){
+  oldAmount=`$DB_CON_OLD -e"select round(sum(money)*100,0) FROM user_bill where detail not in ('未在联动优势开通账户,交易失败','未在联动优势绑定借记卡,交易失败')" | sed -n 2p`
+  newAmount=`$DB_CON_NEW -e"select sum(amount) from user_bill" | sed -n 2p`
+  if (( oldAmount == newAmount)); then
+    echo "user_bill amount check passed";
+  else
+    echo "user_bill amount check fail,oldAmount:$oldAmount,newAmount:$newAmount";
+  fi
+}
+
 verify_recharge(){
   oldCount=`$DB_CON_OLD -e"select count(distinct user_id, actual_money, fee, recharge_way, status, source, time, channel) FROM recharge" | sed -n 2p`
   newCount=`$DB_CON_NEW -e"select count(distinct login_name, amount, fee, bank_code, status, source, created_time, channel) from recharge" | sed -n 2p`
@@ -179,6 +190,25 @@ verify_recharge(){
   fi
 }
 
+verify_recharge_amount(){
+  oldAmount=`$DB_CON_OLD -e"select round(sum(actual_money)*100,0) FROM recharge" | sed -n 2p`
+  newAmount=`$DB_CON_NEW -e"select sum(amount) from recharge" | sed -n 2p`
+  if (( oldAmount == newAmount)); then
+    echo "recharge amount check passed";
+  else
+    echo "recharge amount check fail,oldAmount:$oldAmount,newAmount:$newAmount";
+  fi
+}
+
+verify_withdraw_amount(){
+  oldAmount=`$DB_CON_OLD -e"select round(sum(money)*100,0) from withdraw_cash where is_withdraw_by_admin IS NULL;" | sed -n 2p`
+  newAmount=`$DB_CON_NEW -e"select sum(amount) from withdraw" | sed -n 2p`
+  if (( oldAmount == newAmount)); then
+    echo "withdraw amount check pass";
+  else
+    echo "withdraw amount check fail,oldAmount:$oldAmount,newAmount:$newAmount";
+  fi
+}
 
 
 migrate_all(){
@@ -236,21 +266,27 @@ verify(){
   simple_verify user
   simple_verify announce
   simple_verify audit_log
-  simple_verify referrer_relation
   simple_verify account
+  simple_verify referrer_relation
   simple_verify loan
   simple_verify loan_repay
   simple_verify invest
   simple_verify invest_repay
   simple_verify invest_referrer_reward
+  simple_verify user_role
 
   simple_verify bank_card
   simple_verify withdraw
+  verify_withdraw_amount
 
-  verify_user_role
   verify_system_bill
+  verify_system_bill_amount
+
   verify_user_bill
+  verify_user_bill_amount
+
   verify_recharge
+  verify_recharge_amount
   echo "####### Verify Done #######"
 }
 
