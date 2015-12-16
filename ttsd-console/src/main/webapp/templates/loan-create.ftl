@@ -100,7 +100,7 @@
             <label class="col-sm-2 control-label">借款期限: </label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control jq-timer" placeholder="" datatype="num" errormsg="借款期限需要填写数字">
+                <input type="text" class="form-control jq-timer" placeholder="" datatype="num" errormsg="借款期限需要填写数字" disabled="disabled">
 
             </div>
             <div class="col-sm-3">
@@ -186,6 +186,22 @@
                 <input type="hidden" class="jq-impact-type"/>
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">产品线类型: </label>
+            <div class="col-sm-4">
+                <select class="selectpicker">
+                    <option value="">请选择</option>
+                    <#list productLineTypes as productLineType>
+                        <option value="${productLineType.name()}" data-period="${productLineType.getProductLineTypePeriod()}" data-baseRate="${productLineType.getProductLineTypeBaseRate()}">
+                            ${productLineType.getProductLineTypeName()}
+                        </option>
+                    </#list>
+                </select>
+                <input type="hidden" class="jq-product-type" />
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="col-sm-2 control-label">活动利率（%）: </label>
 
@@ -202,7 +218,7 @@
 
             <div class="col-sm-4">
                 <input type="text" class="form-control jq-base-percent jq-money" placeholder="" datatype="money_fl"
-                       errormsg="基本利率需要正确填写">
+                       errormsg="基本利率需要正确填写" disabled="disabled">
             </div>
         </div>
         <div class="form-group input-append">

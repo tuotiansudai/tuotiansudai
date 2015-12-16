@@ -10,6 +10,7 @@ import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.repository.model.LoanType;
+import com.tuotiansudai.repository.model.ProductLineType;
 import com.tuotiansudai.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,6 +35,7 @@ public class LoanController {
     public ModelAndView createLoan() {
         ModelAndView modelAndView = new ModelAndView("/loan-create");
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
+        modelAndView.addObject("productLineTypes",Lists.newArrayList(ProductLineType.values()));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
         return modelAndView;
@@ -65,6 +67,7 @@ public class LoanController {
         }
         ModelAndView modelAndView = new ModelAndView("/loan-edit");
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
+        modelAndView.addObject("productLineTypes",Lists.newArrayList(ProductLineType.values()));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
         modelAndView.addObject("loanInfo", loanService.findLoanById(loanId));

@@ -73,6 +73,8 @@ public class LoanModel implements Serializable {
      * 活动类型
      ***/
     private ActivityType activityType;
+
+    private ProductLineType productLineType;
     /***
      * 活动利率
      ***/
@@ -160,6 +162,7 @@ public class LoanModel implements Serializable {
         this.investFeeRate = Double.parseDouble(rateStrDivideOneHundred(loanDto.getInvestFeeRate()));
         this.baseRate = Double.parseDouble(rateStrDivideOneHundred(loanDto.getBasicRate()));
         this.activityType = loanDto.getActivityType();
+        this.productLineType = loanDto.getProductLineType();
         this.agentLoginName = loanDto.getAgentLoginName();
         this.loanerLoginName = loanDto.getLoanerLoginName();
         this.loanerUserName = loanDto.getLoanerUserName();
@@ -467,5 +470,13 @@ public class LoanModel implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public ProductLineType getProductLineType() {
+        return productLineType;
+    }
+
+    public void setProductLineType(ProductLineType productLineType) {
+        this.productLineType = productLineType;
     }
 }
