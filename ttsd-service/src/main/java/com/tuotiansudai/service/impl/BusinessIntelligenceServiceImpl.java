@@ -1,6 +1,7 @@
 package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.dto.Granularity;
+import com.tuotiansudai.dto.UserStage;
 import com.tuotiansudai.repository.mapper.BusinessIntelligenceMapper;
 import com.tuotiansudai.repository.model.KeyValueModel;
 import com.tuotiansudai.service.BusinessIntelligenceService;
@@ -19,10 +20,10 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     private BusinessIntelligenceMapper businessIntelligenceMapper;
 
     @Override
-    public List<KeyValueModel> queryUserRegisterTrend(Granularity granularity, Date startTime, Date endTime, String province) {
+    public List<KeyValueModel> queryUserRegisterTrend(Granularity granularity, Date startTime, Date endTime, String province,UserStage userStage) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-        return businessIntelligenceMapper.queryUserRegisterTrend(queryStartTime, queryEndTime, granularity, province);
+        return businessIntelligenceMapper.queryUserRegisterTrend(queryStartTime, queryEndTime, granularity, province,userStage);
     }
 
     @Override

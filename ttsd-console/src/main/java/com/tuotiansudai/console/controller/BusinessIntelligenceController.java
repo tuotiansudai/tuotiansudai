@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.dto.Granularity;
+import com.tuotiansudai.dto.UserStage;
 import com.tuotiansudai.repository.model.KeyValueModel;
 import com.tuotiansudai.service.BusinessIntelligenceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,9 @@ public class BusinessIntelligenceController {
             @RequestParam(name = "granularity") Granularity granularity,
             @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
             @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-            @RequestParam(name = "province",required = false) String province){
-        return businessIntelligenceService.queryUserRegisterTrend(granularity, startTime, endTime, province);
+            @RequestParam(name = "province",required = false) String province,
+            @RequestParam(name = "userStage",required = false) UserStage userStage){
+        return businessIntelligenceService.queryUserRegisterTrend(granularity, startTime, endTime, province,userStage);
     }
 
     @ResponseBody
