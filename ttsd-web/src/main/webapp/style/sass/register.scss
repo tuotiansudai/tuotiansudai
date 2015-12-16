@@ -5,7 +5,7 @@
   overflow: hidden;
   background: #fff;
   margin: 12px auto;
-  border: #cecece 1px solid;
+  border: #f2f2f2 1px solid;
   border-radius: 3px;
   position: relative;
   text-align: center;
@@ -33,7 +33,7 @@
           font-size:14px;
           color: #333;
           text-align: right;
-          display: inline-block;
+          display: none;
 
         }
         .captcha-tag {
@@ -91,7 +91,9 @@
             color: nth($checkValid,2);
           }
         }
-
+        &.agree-last {
+          margin-left:155px;
+        }
       }
       .register-account {
         display: block;
@@ -278,6 +280,9 @@
               color: nth($checkValid,2);
             }
           }
+          &.agree-last {
+            margin-left:0px;
+          }
 
         }
         .register-account {
@@ -311,8 +316,16 @@
     .register-box {
       margin-left: 25%;
       ul.reg-list {
-        li .reg-title{
+        li {
+          .reg-title{
             display:inline-block;
+          }
+          &.agree-last {
+            margin-left:222px;
+          }
+        }
+        .register-user {
+          margin-left: 130px;
         }
       }
     }
@@ -336,6 +349,13 @@
 
             }
           }
+          &.agree-last {
+            margin-left:222px;
+          }
+        }
+
+        .register-user {
+          margin-left: 130px;
         }
 
       }
