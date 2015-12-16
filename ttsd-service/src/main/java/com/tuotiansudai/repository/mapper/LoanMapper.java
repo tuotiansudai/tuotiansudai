@@ -1,8 +1,8 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.ProductLineType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,11 +16,11 @@ public interface LoanMapper {
 
     LoanModel findById(@Param(value = "loanId") long loanId);
 
-    List<LoanModel> findLoanListWeb(@Param(value = "activityType") ActivityType activityType, @Param(value = "status") LoanStatus status,
+    List<LoanModel> findLoanListWeb(@Param(value = "productLineType") ProductLineType productLineType, @Param(value = "status") LoanStatus status,
                                     @Param(value = "periodsStart") long periodsStart, @Param(value = "periodsEnd") long periodsEnd,
                                     @Param(value = "rateStart") double rateStart, @Param(value = "rateEnd") double rateEnd, @Param(value = "currentPageNo") int currentPageNo);
 
-    int findLoanListCountWeb(@Param(value = "activityType") ActivityType activityType, @Param(value = "status") LoanStatus status,
+    int findLoanListCountWeb(@Param(value = "productLineType") ProductLineType productLineType, @Param(value = "status") LoanStatus status,
                              @Param(value = "periodsStart") long periodsStart, @Param(value = "periodsEnd") long periodsEnd,
                              @Param(value = "rateStart") double rateStart, @Param(value = "rateEnd") double rateEnd);
 

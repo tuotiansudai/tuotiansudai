@@ -5,18 +5,18 @@
         <ul class="wrapper-list">
             <li>
                 <span>项目类型: </span>
-                <#assign activityUrl = "/loan-list?activityType=activity_type&status=${status!}&periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}">
-                <#assign activityMap = {"":"全部","NEWBIE":"新手专享","NORMAL":"普通投资"}>
-                <#assign activityKeys = activityMap?keys>
-                <#list activityKeys as key>
-                    <a <#if activityType?? && activityType == key>class="active"
-                       <#elseif !(activityType??) && key=="">class="active"</#if>
-                            href=${activityUrl?replace("activity_type",key)}>${activityMap[key]}</a>
+                <#assign productLineUrl = "/loan-list?productLineType=productLine_type&status=${status!}&periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}">
+                <#assign productLineMap = {"":"全部","SYL":"速盈利","WYX":"稳盈绣","JYF":"久盈富"}>
+                <#assign productLineKeys = productLineMap?keys>
+                <#list productLineKeys as key>
+                    <a <#if productLineType?? && productLineType == key>class="active"
+                       <#elseif !(productLineType??) && key=="">class="active"</#if>
+                            href=${productLineUrl?replace("productLine_type",key)}>${productLineMap[key]}</a>
                 </#list>
             </li>
             <li>
                 <span>项目状态: </span>
-                <#assign statusUrl = "/loan-list?status=status_type&activityType=${activityType!}&periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}">
+                <#assign statusUrl = "/loan-list?status=status_type&productLineType=${productLineType!}&periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}">
                 <#assign statusMap = {"":"全部","RAISING":"可投资","REPAYING":"还款中","COMPLETE":"还款完成","PREHEAT":"预热中"}>
                 <#assign statusKeys = statusMap?keys>
                 <#list statusKeys as key>
@@ -27,7 +27,7 @@
             </li>
             <li>
                 <span>借款期限:</span>
-                <#assign periodsUrl = "/loan-list?periods_type&status=${status!}&activityType=${activityType!}&rateStart=${rateStart}&rateEnd=${rateEnd}">
+                <#assign periodsUrl = "/loan-list?periods_type&status=${status!}&productLineType=${productLineType!}&rateStart=${rateStart}&rateEnd=${rateEnd}">
                 <#assign periodsMap = {"":"全部","periodsStart=0&periodsEnd=3":"0-3个月","periodsStart=4&periodsEnd=6":"4-6个月","periodsStart=7&periodsEnd=12":"7-12个月","periodsStart=12&periodsEnd=0":"12个月以上"}>
                 <#assign periodsKeys = periodsMap?keys>
                 <#list periodsKeys as key>
@@ -42,14 +42,14 @@
             </li>
             <li class="laster">
                 <span> 年化收益:</span>
-                <#assign rateUrl = "/loan-list?rate_type&status=${status!}&activityType=${activityType!}&periodsStart=${periodsStart}&periodsEnd=${periodsEnd}">
-                <#assign rateMap = {"":"全部","rateStart=0&rateEnd=0.14":"14%以内","rateStart=0.14&rateEnd=0.16":"14-16%","rateStart=0.16&rateEnd=0":"16%以上"}>
+                <#assign rateUrl = "/loan-list?rate_type&status=${status!}&productLineType=${productLineType!}&periodsStart=${periodsStart}&periodsEnd=${periodsEnd}">
+                <#assign rateMap = {"":"全部","rateStart=0.1&rateEnd=0.12":"10-12%","rateStart=0.12&rateEnd=0.14":"12-14%","rateStart=0.14&rateEnd=0":"14%以上"}>
                 <#assign rateKeys = rateMap?keys>
                 <#list rateKeys as key>
                     <a <#if rateStart == 0 && rateEnd == 0 && key=="">class="active"
-                       <#elseif rateStart == 0 && rateEnd == 0.14 && rateMap[key]=="14%以内">class="active"
-                       <#elseif rateStart == 0.14 && rateEnd == 0.16 && rateMap[key]=="14-16%">class="active"
-                       <#elseif rateStart == 0.16 && rateEnd == 0 && rateMap[key]=="16%以上">class="active"
+                       <#elseif rateStart == 0.1 && rateEnd == 0.12 && rateMap[key]=="10-12%">class="active"
+                       <#elseif rateStart == 0.12 && rateEnd == 0.14 && rateMap[key]=="12-14%">class="active"
+                       <#elseif rateStart == 0.14 && rateEnd == 0 && rateMap[key]=="14%以上">class="active"
                        </#if>
                         href=${rateUrl?replace("rate_type",key)}>${rateMap[key]}</a>
                 </#list>
