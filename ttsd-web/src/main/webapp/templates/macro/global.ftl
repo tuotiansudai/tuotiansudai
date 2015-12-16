@@ -156,7 +156,7 @@
     var imgDom=window.$('iphone-app-img'),
         TopMainMenuList=window.$('TopMainMenuList');
 
-    window.$('iphone-app-pop').onclick=function(event) {
+    window.$('iphone-app-pop').onclick=function(e) {
         event.stopPropagation();
         event.preventDefault();
 
@@ -168,9 +168,10 @@
         }
     };
 
-    document.getElementsByTagName("body")[0].onclick=function(event) {
+    document.getElementsByTagName("body")[0].onclick=function(e) {
         var userAgent = navigator.userAgent.toLowerCase(),
-            target=event.srcElement || event.target;
+                event = e || window.event,
+                target = event.srcElement || event.target;
         if(target.tagName=='LI' ) {
             return;
         }
@@ -196,7 +197,6 @@
 <#if pageJavascript??>
 <script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
         data-main="${staticServer}/js/dest/${pageJavascript}">
-    <#--data-main="${staticServer}/js/register_user.js">-->
 </script>
 </#if>
 

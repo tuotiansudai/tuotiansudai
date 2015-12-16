@@ -13,7 +13,7 @@ require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refe
         var paginationElement = paginationElementRelation;
         var template = referRelationTemplate;
 
-        var today = moment().format('YYYY-MM-DD'); // 今天
+        var today = moment().format('YYYY-MM-DD');
         dataPickerElement.dateRangePicker({separator: ' ~ '});
 
         $(".search-type .select-item").click(function () {
