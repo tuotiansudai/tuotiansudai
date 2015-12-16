@@ -9,7 +9,7 @@
         <div class="ticket-amount fl tc">
             <h3>${coupon.name}</h3>
             <strong><@amount>${coupon.amount?string(0)}</@amount>元</strong>
-            <time>有效期：${coupon.startTime?date} 至 ${coupon.endTime?date}</time>
+            <time>有效期：在${coupon.endTime?date}前使用</time>
         </div>
         <div class="ticket-info fr">
             <dl class="pad-s">
@@ -37,7 +37,7 @@
         <b>体验券使用规则：</b>
         <p>
             1.  体验券仅适用于标的投资；<br/>
-            2.  体验券的可持续时间根据具体标的的投资期限，体验结束后系统自动收回本金，收益转 回用户账户内，详见“我的账号”→“资金管理”；<br/>
+            2.  体验券使用后的期限根据具体标的的投资期限，体验结束后系统自动收回本金，收益转 回用户账户内，详见“我的账号”→“资金管理”；<br/>
             3.  如体验券中有限制条件， 用户必须按照限制条件使用。<br/>
         </p>
     </div>
