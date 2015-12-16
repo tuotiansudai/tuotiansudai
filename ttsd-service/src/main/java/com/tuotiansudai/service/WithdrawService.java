@@ -23,5 +23,19 @@ public interface WithdrawService {
                                                           Date startTime,
                                                           Date endTime);
 
+    long findSumWithdrawAmount(String withdrawId,
+                               String loginName,
+                               WithdrawStatus status,
+                               Source source,
+                               Date startTime,
+                               Date endTime);
+
+    long findSumWithdrawFee(String withdrawId,
+                            String loginName,
+                            WithdrawStatus status,
+                            Source source,
+                            Date startTime,
+                            Date endTime);
+
     long sumSuccessWithdrawAmount(String loginName);
 }

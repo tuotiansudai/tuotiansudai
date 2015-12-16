@@ -16,7 +16,7 @@
             <li class="f-title">帮助中心</li>
             <li><a href="/about/guide">新手指南</a></li>
             <li><a href="/about/service-fee">服务费用</a></li>
-
+            <li><a href="/about/qa">常见问题</a></li>
         </ul>
         <ul>
             <li class="f-title">联系我们</li>
@@ -44,7 +44,7 @@
             <a href="https://ss.knet.cn/verifyseal.dll?sn=e15071011011759427pzmf000000&pa=500267" target="_blank">
                 <img src="${staticServer}/images/sign/advantage/knetSealLogo.png" class="img-gray">
             </a>
-            <a href="https://seal.digicert.com/seals/popup/?tag=dv0vdS8q&url=tuotiansudai.com&lang=en_US" target="_blank">
+            <a href="https://seal.digicert.com/seals/popup/?tag=7MzpfEHK&url=tuotiansudai.com&lang=en" target="_blank">
                 <img src="${staticServer}/images/sign/advantage/digicert.png" class="img-gray">
             </a>
         </div>

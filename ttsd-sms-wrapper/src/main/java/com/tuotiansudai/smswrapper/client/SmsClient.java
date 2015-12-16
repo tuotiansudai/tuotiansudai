@@ -7,7 +7,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.smswrapper.repository.mapper.BaseMapper;
 import com.tuotiansudai.smswrapper.repository.model.SmsModel;
-import com.tuotiansudai.smswrapper.util.SpringContextUtil;
+import com.tuotiansudai.util.SpringContextUtil;
 import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;

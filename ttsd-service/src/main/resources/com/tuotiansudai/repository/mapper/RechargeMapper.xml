@@ -93,4 +93,31 @@
     <select id="findAllChannels" resultType="java.lang.String">
         select distinct channel from recharge where channel is not NULL
     </select>
+
+    <select id="findSumRechargeAmount" parameterType="map" resultType="long">
+        select IFNULL(sum(amount),0) as amount from recharge
+        <where>
+            <if test="rechargeId !=null and rechargeId !='' ">
+                id = #{rechargeId}
+            </if>
+            <if test="loginName !=null and loginName != '' ">
+                <![CDATA[and login_name like '${loginName}%']]>
+            </if>
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+            <if test="status !=null">
+                and status  = #{status}
+            </if>
+            <if test="source !=null">
+                and source  = #{source}
+            </if>
+            <if test="channel !=null and channel != ''">
+                and channel  = #{channel}
+            </if>
+        </where>
+    </select>
 </mapper>

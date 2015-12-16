@@ -41,7 +41,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
 
     loadEcharts.ChartsProvince(function(data) {
         var provinceList=[],i= 0,len=data.length;
-        provinceList.push('<option value="">请选择</option>');
+        provinceList.push('<option value="">全部省份</option>');
         for(;i<len;i++) {
             provinceList.push('<option value="'+data[i]+'">'+data[i]+'</option>');
         }
@@ -67,12 +67,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
                 url: url,
                 dataType: 'json'
             }).done(function (data) {
-                /*sort by date*/
-                data.sort(function(a,b){
-                    var a1=a.name.replace(/-|W/g,''),
-                        b1=b.name.replace(/-|W/g,'');
-                    return a1- b1;
-                });
+
                 var option = loadEcharts.ChartOptionTemplates.Lines(data, name, true),
                     container =document.getElementById(reportbox),
                     opt = loadEcharts.ChartConfig(container, option);
@@ -94,6 +89,10 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     /*用户账户余额时间分布*/
     showReport('#formUserAccountReport','/bi/user-account-trend','userAccountDistribution','用户账户余额(元)');
 
+    /*用户投资金额时间分布*/
+    showReport('#formUserInvestAmountReport','/bi/user-invest-amount-trend','userInvestAmountDistribution','用户投资金额(元)');
 
+    /*用户投资次数时间分布*/
+    showReport('#formUserInvestCountReport','/bi/user-invest-count-trend','userInvestCountDistribution','用户投资次数(次)');
 
 });

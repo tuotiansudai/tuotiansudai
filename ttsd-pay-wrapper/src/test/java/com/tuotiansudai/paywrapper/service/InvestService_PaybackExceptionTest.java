@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service;
 
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -73,6 +74,9 @@ public class InvestService_PaybackExceptionTest {
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
+    @Mock
+    private RedisWrapperClient redisWrapperClient;
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -122,6 +126,7 @@ public class InvestService_PaybackExceptionTest {
 
         when(this.paySyncClient.send(Matchers.<Class<? extends ProjectTransferMapper>>any(), any(ProjectTransferRequestModel.class), Matchers.<Class<ProjectTransferResponseModel>>any())).thenThrow(PayException.class);
 
+        when(this.redisWrapperClient.incr(any(String.class))).thenCallRealMethod();
         investService.asyncInvestCallback();
 
         ArgumentCaptor<Long> accountModelArgumentCaptor1 = ArgumentCaptor.forClass(Long.class);

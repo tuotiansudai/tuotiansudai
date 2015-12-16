@@ -215,7 +215,7 @@
     </select>
 
     <select id="sumInvestAmount" parameterType="map" resultType="long">
-        select sum(invest.amount)
+        select IFNULL(sum(invest.amount), 0) as amount
         from invest join loan on invest.loan_id = loan.id
         <where>
             <if test="loanId != null">

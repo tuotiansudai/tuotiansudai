@@ -342,4 +342,14 @@ public abstract class AbstractRedisWrapperClient {
         });
     }
 
+    public Long decr(final String key) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Long>() {
+            @Override
+            public Long action(Jedis jedis) {
+                return jedis.decr(key);
+            }
+        });
+    }
+
 }

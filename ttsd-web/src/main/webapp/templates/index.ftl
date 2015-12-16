@@ -22,8 +22,14 @@
         <div class="page-width">
             <@global.isAnonymous>
             <div class="register-ad-box fr tc">
-                <em class="percent clearfix">14%</em>
-                <b class="h-title clear-blank">最高年化收益率</b>
+                <p class="num-text clearfix">
+                    <span class="percent">46</span>
+                    <span class="num-unit">倍</span>
+                </p>
+                <b class="h-title">活期存款收益</b>
+                <p class="welcome-text">
+                    <img src="${staticServer}/images/sign/welcome-text.png" width="100%" alt="welcome">
+                </p>
                 <a class="btn-normal" href="/register/user">免费注册 </a>
                 <i class="clearfix tr">已有账户？<a href="/login"> 立即登录</a></i>
             </div>

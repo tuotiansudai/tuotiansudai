@@ -71,7 +71,7 @@
     <div class="ret">
         <p>绑卡成功：<a href="/account" class="btn-success"  data-category="确认成功" data-label="recharge">确认成功</a></p>
         <p>绑卡失败：<a href="/bind-card" class="btn-normal" data-category="重新绑卡" data-label="recharge">重新绑卡</a>
-            <span class="help">查看<a href="#"  target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
+            <span class="help">查看<a href="/about/qa"  target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
         </p>
         <p>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</p>
     </div>
