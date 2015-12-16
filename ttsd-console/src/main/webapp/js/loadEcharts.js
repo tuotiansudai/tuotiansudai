@@ -86,7 +86,7 @@ define(['jquery','underscore','echarts'], function ($,_) {
             },
             Lines: function (data, name, is_stack) {
                 var xAxisdata,legendData,seriesData,seriesDataList=[];
-                xAxisdata=_.uniq(_.pluck(data, 'name'));
+                xAxisdata=_.sortBy(_.uniq(_.pluck(data, 'name')));
                 legendData=_.uniq(_.pluck(data, 'group'));
 
                 $.each(legendData,function(key,option) {
@@ -98,7 +98,8 @@ define(['jquery','underscore','echarts'], function ($,_) {
                             hackList.push({group: option,name: dateOpt,value: "0"});
                         }
                     });
-                    groupData=$.merge(groupData,hackList);
+
+                    groupData=_.union(groupData,hackList);
                     groupDataOrder=_.sortBy(groupData,'name');//sort by time
 
                     var opData=_.pluck(groupDataOrder,'value');

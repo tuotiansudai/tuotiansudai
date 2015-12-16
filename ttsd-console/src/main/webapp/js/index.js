@@ -67,12 +67,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
                 url: url,
                 dataType: 'json'
             }).done(function (data) {
-                /*sort by date*/
-                data.sort(function(a,b){
-                    var a1=a.name.replace(/-|W/g,''),
-                        b1=b.name.replace(/-|W/g,'');
-                    return a1- b1;
-                });
+
                 var option = loadEcharts.ChartOptionTemplates.Lines(data, name, true),
                     container =document.getElementById(reportbox),
                     opt = loadEcharts.ChartConfig(container, option);
