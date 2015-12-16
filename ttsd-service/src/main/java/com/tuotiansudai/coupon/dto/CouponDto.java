@@ -12,9 +12,9 @@ public class CouponDto implements Serializable {
     private String name;
     @NotEmpty
     private String amount;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date startTime;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date endTime;
     @NotEmpty
     private String totalCount;
