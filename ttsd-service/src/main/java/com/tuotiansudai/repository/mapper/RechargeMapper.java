@@ -29,6 +29,14 @@ public interface RechargeMapper {
                                                @Param(value = "endTime") Date endTime);
 
 
+    long findSumRechargeAmount(@Param(value = "rechargeId") String rechargeId,
+                               @Param(value = "loginName") String loginName,
+                               @Param(value = "source") RechargeSource source,
+                               @Param(value = "status") RechargeStatus status,
+                               @Param(value = "channel") String channel,
+                               @Param(value = "startTime") Date startTime,
+                               @Param(value = "endTime") Date endTime);
+
     int findRechargeCount(@Param(value = "rechargeId") String rechargeId,
                           @Param(value = "loginName") String loginName,
                           @Param(value = "source") RechargeSource source,

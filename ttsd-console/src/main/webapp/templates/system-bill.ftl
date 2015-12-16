@@ -56,6 +56,9 @@
     <table class="table table-bordered table-hover">
         <thead>
         <tr>
+            <th colspan="5">收入总额:&nbsp;${sumIncome/100} 元 &nbsp;&nbsp;&nbsp;支出总额:&nbsp;${sumExpend/100} 元 &nbsp;&nbsp;&nbsp;收益(收入-支出):&nbsp;${sumWin/100} 元</th>
+        </tr>
+        <tr>
             <th>时间</th>
             <th>费用类型</th>
             <th>操作类型</th>

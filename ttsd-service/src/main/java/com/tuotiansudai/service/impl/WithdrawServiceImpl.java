@@ -49,7 +49,7 @@ public class WithdrawServiceImpl implements WithdrawService {
 
         long count = withdrawMapper.findWithdrawCount(withdrawId, loginName, status, source, startTime, endTime);
 
-        List<WithdrawModel> withdrawModelList = withdrawMapper.findWithdrawPagination(withdrawId, loginName, status, source, (index-1)*pageSize, pageSize, startTime, endTime);
+        List<WithdrawModel> withdrawModelList = withdrawMapper.findWithdrawPagination(withdrawId, loginName, status, source, (index - 1) * pageSize, pageSize, startTime, endTime);
 
         for (WithdrawModel model : withdrawModelList) {
             WithdrawPaginationItemDataDto withdrawDto = new WithdrawPaginationItemDataDto(model);
@@ -60,6 +60,29 @@ public class WithdrawServiceImpl implements WithdrawService {
         basePaginationDataDto.setStatus(true);
         baseDto.setData(basePaginationDataDto);
         return baseDto;
+    }
+
+
+    @Override
+    public long findSumWithdrawAmount(String withdrawId,
+                                      String loginName,
+                                      WithdrawStatus status,
+                                      Source source,
+                                      Date startTime,
+                                      Date endTime) {
+
+        return withdrawMapper.findSumWithdrawAmount(withdrawId, loginName, status, source, startTime, endTime);
+    }
+
+    @Override
+    public long findSumWithdrawFee(String withdrawId,
+                                   String loginName,
+                                   WithdrawStatus status,
+                                   Source source,
+                                   Date startTime,
+                                   Date endTime) {
+
+        return withdrawMapper.findSumWithdrawFee(withdrawId, loginName, status, source, startTime, endTime);
     }
 
 }

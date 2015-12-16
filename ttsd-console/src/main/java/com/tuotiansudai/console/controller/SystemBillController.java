@@ -41,7 +41,24 @@ public class SystemBillController {
                 index,
                 pageSize);
 
+        long sumIncome = systemBillService.findSumSystemIncome(
+                startTime,
+                endTime,
+                operationType,
+                businessType);
+
+        long sumExpend = systemBillService.findSumSystemExpend(
+                startTime,
+                endTime,
+                operationType,
+                businessType);
+
+        long sumWin = sumIncome - sumExpend;
+
         modelAndView.addObject("baseDto", baseDto);
+        modelAndView.addObject("sumIncome", sumIncome);
+        modelAndView.addObject("sumExpend", sumExpend);
+        modelAndView.addObject("sumWin", sumWin);
         modelAndView.addObject("systemBillOperationTypeList", Lists.newArrayList(SystemBillOperationType.values()));
         modelAndView.addObject("systemBillBusinessTypeList", Lists.newArrayList(SystemBillBusinessType.values()));
         modelAndView.addObject("startTime", startTime);

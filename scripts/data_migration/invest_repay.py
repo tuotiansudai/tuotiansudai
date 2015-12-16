@@ -6,7 +6,7 @@ class InvestRepayMigrate(BaseMigrate):
     Class Naming Convention: `NewTableNameMigrate(BaseMigrate)`
     """
     # select sql which is executed on original db (edxapp, tuotiansudai etc)
-    SELECT_SQL = "SELECT invest_id, period, corpus, interest, default_interest, fee, repay_day, status, IFNULL(time,now()) as time FROM invest_repay WHERE status <> 'test'"
+    SELECT_SQL = "SELECT invest_id, period, corpus, interest, default_interest, fee, repay_day, status, IFNULL(time,now()) as time FROM invest_repay WHERE status <> 'test' order by time ASC "
     # insert sql which is executed on aa db
     INSERT_SQL = '''INSERT INTO invest_repay(`id`,
                                          `invest_id`,

@@ -17,6 +17,17 @@ public interface SystemBillService {
                                                             int index,
                                                             int pageSize);
 
+    long findSumSystemIncome(Date startTime,
+                             Date endTime,
+                             SystemBillOperationType operationType,
+                             SystemBillBusinessType businessType);
+
+
+    long findSumSystemExpend(Date startTime,
+                             Date endTime,
+                             SystemBillOperationType operationType,
+                             SystemBillBusinessType businessType);
+
     int findSystemBillCount(Date startTime,
                             Date endTime,
                             SystemBillOperationType operationType,
