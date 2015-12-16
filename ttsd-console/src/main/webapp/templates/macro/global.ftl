@@ -63,7 +63,8 @@
                 "name":"announce-manage",
                 "header":{"text":"公告管理"},
                 "sidebar":[
-                    {"name":"announceMan","text":"公告管理","link":"/announce-manage/announce","role":"'ADMIN'"}
+                    {"name":"announceMan","text":"公告管理","link":"/announce-manage/announce","role":"'ADMIN'"},
+                    {"name":"feedbackMan","text":"意见反馈","link":"/announce-manage/feedback","role":"'ADMIN'"}
                 ]
             },
             {
