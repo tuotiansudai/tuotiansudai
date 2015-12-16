@@ -84,7 +84,7 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th colspan="12">合计投资金额：${data.sumAmount/100} 元</th>
+                <th colspan="13">合计投资金额：${data.sumAmount/100} 元</th>
             </tr>
             <tr>
                 <th>项目编号</th>
@@ -99,6 +99,7 @@
                 <th>自动投标</th>
                 <th>投资金额</th>
                 <th>投资状态</th>
+                <th>回款记录</th>
             </tr>
             </thead>
             <tbody>
@@ -116,10 +117,11 @@
                     <td>${invest.autoInvest?then('是','否')}</td>
                     <td>${invest.amount}</td>
                     <td>${invest.status}</td>
+                    <td><a href="/finance-manage/invest-repay/${invest.investId?string.computer}">回款记录</a></td>
                 </tr>
                 <#else>
                 <tr>
-                    <td colspan="12">Empty</td>
+                    <td colspan="13">Empty</td>
                 </tr>
                 </#list>
             </tbody>
