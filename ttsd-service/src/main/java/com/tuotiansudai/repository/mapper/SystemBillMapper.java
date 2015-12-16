@@ -14,7 +14,8 @@ public interface SystemBillMapper {
 
     void create(SystemBillModel model);
 
-    SystemBillModel findByOrderId(Long orderId);
+    SystemBillModel findByOrderId(@Param("orderId") Long orderId,
+                                  @Param("systemBillBusinessType")SystemBillBusinessType systemBillBusinessType);
 
     List<SystemBillModel> findSystemBillPagination(@Param(value = "startTime") Date startTime,
                                                    @Param(value = "endTime") Date endTime,

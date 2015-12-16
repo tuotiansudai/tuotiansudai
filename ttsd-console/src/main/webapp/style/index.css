@@ -210,6 +210,41 @@ td.td {
     margin-right: 40px;
     margin-top: 10px;
 }
+.line-size{
+    float:left;
+    line-height: 34px;
+}
+.already-btn{
+    color:#cc0000;
+}
+.confirm-btn{
+    display: inline-block;
+    float: left;
+}
+.tip-container{
+    width:370px;
+    height:52px;
+    display: none;
+    position: fixed;
+    top:50%;
+    left:50%;
+    margin-top: -26px;
+    margin-left: -185px;
+}
+.tip-container .alert{
+    margin-bottom: 0;
+}
+.check-btn{
+    float: left;
+    width:16px;
+    height:16px;
+    margin: 1px 1px 0 0;
+    background: url(../images/icon-bg.jpg) no-repeat center;
+    background-position: 0 0 ;
+}
+.add-check{
+    background-position: -16px 0 ;
+}
 
 /*search box*/
 .searchbox {

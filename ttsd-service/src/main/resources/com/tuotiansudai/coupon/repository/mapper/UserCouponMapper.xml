@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.coupon.repository.mapper.UserCouponMapper">
+
+    <resultMap id="userCouponResultMap" type="UserCouponModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="coupon_id" property="couponId"/>
+        <result column="loan_id" property="loanId"/>
+        <result column="used_time" property="usedTime"/>
+        <result column="expected_interest" property="expectedInterest"/>
+        <result column="actual_interest" property="actualInterest"/>
+        <result column="expected_fee" property="expectedFee"/>
+        <result column="actual_fee" property="actualFee"/>
+        <result column="default_interest" property="defaultInterest"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="UserCouponModel" useGeneratedKeys="true" keyProperty="id">
+        insert into user_coupon (login_name, coupon_id, created_time)
+        value(#{loginName}, #{couponId}, #{createdTime})
+    </insert>
+
+    <update id="update" parameterType="UserCouponModel">
+        update user_coupon
+        set login_name = #{loginName},
+            coupon_id = #{couponId},
+            loan_id = #{loanId},
+            used_time = #{usedTime},
+            expected_interest = #{expectedInterest},
+            actual_interest = #{actualInterest},
+            expected_fee = #{expectedFee},
+            actual_fee = #{actualFee},
+            default_interest = #{defaultInterest},
+            created_time = #{createdTime}
+        where id = #{id}
+    </update>
+
+    <select id="findByLoginName" resultMap="userCouponResultMap" parameterType="String">
+        select * from user_coupon where login_name = #{loginName}
+    </select>
+
+    <select id="findById" resultMap="userCouponResultMap" parameterType="long">
+        select * from user_coupon where id = #{id}
+    </select>
+
+    <select id="findByLoanId" resultMap="userCouponResultMap" parameterType="long">
+        select * from user_coupon where loan_id = #{loanId}
+    </select>
+</mapper>

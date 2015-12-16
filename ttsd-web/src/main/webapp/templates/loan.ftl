@@ -53,12 +53,16 @@
                             </#if>
                             <input type="text" name="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" value="${defaultInvestAmount}" class="text-input-amount"/>
                             <#if errorMessage?has_content>
-
-                                <span class="error"><i class="fa fa-times-circle"></i>${errorMessage!}</span>
-                            <#else>
-                                <span class="error" style="display: none"><i class="fa fa-times-circle"></i></span>
+                                <span class="errorTip hide">${errorMessage!}</span>
                             </#if>
                         </dd>
+                        <#list coupons as coupon>
+                        <dd class="experience-ticket">
+                            <span class="fl"><i class="fa fa-money"></i> ${coupon.name}<@amount>${coupon.amount?string(0)}</@amount>元</span>
+                            <em class="fr"><label for="use-experience-ticket"> 使用体验劵</label> <input type="checkbox" id="use-experience-ticket" name="userCouponId" value="${coupon.id?string('0')}"></em>
+                        </dd>
+                        <dd class="experience-revenue hide"><span class="fl">体验劵预期收益：</span><em class="fr"><i class="experience-interest"><@amount>${coupon.interest?string(0)}</@amount></i>元</em></dd>
+                        </#list>
 
                         <dd><span class="fl">预计总收益：</span><em class="fr"><i class="expected-interest"></i>元</em></dd>
                         <dd>
@@ -83,12 +87,17 @@
                        </#if>
                        <input type="text" name="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" value="${defaultInvestAmount}" class="text-input-amount"/>
                        <#if errorMessage?has_content>
-
-                           <span class="error"><i class="fa fa-times-circle"></i>${errorMessage!}</span>
-                       <#else >
-                           <span class="error" style="display: none"><i class="fa fa-times-circle"></i></span>
+                           <span class="errorTip hide">${errorMessage!}</span>
                        </#if>
-                   </dd>
+                    </dd>
+                    <#list coupons as coupon>
+                        <dd class="experience-ticket">
+                            <span class="fl"><i class="fa fa-money"></i> ${coupon.name}<@amount>${coupon.amount?string(0)}</@amount>元</span>
+                            <em class="fr"><label for="use-experience-ticket"> 使用体验劵</label> <input type="checkbox" id="use-experience-ticket" name="userCouponId" value="${coupon.id?string('0')}"></em>
+                        </dd>
+                        <dd class="experience-revenue hide"><span class="fl">体验劵预期收益：</span><em class="fr"><i class="experience-interest"><@amount>${coupon.interest?string(0)}</@amount></i>元</em></dd>
+                    </#list>
+
                     <dd class="time-item">
                         <#if loan.preheatSeconds lte 1800>
                             <i class="time-clock"></i>
@@ -96,7 +105,7 @@
                             <em>:</em>
                             <strong id="second_show">00</strong>
                             以后可投资
-                        <#else >
+                        <#else>
                         ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
                         </#if>
                     </dd>

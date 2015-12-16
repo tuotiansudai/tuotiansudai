@@ -66,6 +66,12 @@ a{
 .tr {
   text-align: right;
 }
+.hide {
+  display: none;
+}
+.show {
+  display: block;
+}
 p {
   color: #4c4c4c;
   margin-bottom: 15px;
@@ -129,7 +135,8 @@ p {
 // form validation
 .fa:before {
   padding-left: 4px;
-  padding-right: 4px;
+  padding-right: 3px;
+  vertical-align: middle;
 }
 
 form {

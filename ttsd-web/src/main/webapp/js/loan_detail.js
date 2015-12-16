@@ -1,14 +1,17 @@
 require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper','csrf', 'autoNumeric'], function ($, pagination, Mustache, investListTemplate, layer) {
 
         var $loanDetail = $('.loan-detail-content'),
-            amountInputElement = $(".text-input-amount"),
-            $accountInfo = $('.account-info'),
+            amountInputElement = $(".text-input-amount",$loanDetail),
+            $accountInfo = $('.account-info',$loanDetail),
             $btnLookOther = $('.btn-pay', $accountInfo),
-            $errorDom = $('.error', $accountInfo),
             tabs = $('.loan-nav li'),
             $loanlist = $('.loan-list', $loanDetail),
             $imageList=$('#picListBox'),
-            paginationElement = $('.pagination');
+            $expectedInterest=$('.expected-interest'),
+            $experienceTicket=$('.experience-ticket',$loanDetail),
+            $couponInterest=$('.experience-interest',$loanDetail),
+            paginationElement = $('.pagination',$loanDetail),
+            $error=$('.errorTip');
         amountInputElement.autoNumeric("init");
         layer.ready(function(){
             layer.photos({
@@ -82,8 +85,45 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             timer(intDiff);
         }
 
+        function showInterest(interest){
+            $expectedInterest.data("amount",interest);
+            var $checkBox = $experienceTicket.find(':checkbox');
+            if($checkBox.is(':checked')){
+                plusCouponInterest();
+            }else{
+                minusCouponInterest();
+            }
+        }
+
+        function plusCouponInterest(){
+            var couponInterest = parseFloat($couponInterest.html());
+            var amount = parseFloat($expectedInterest.data("amount"));
+            var interest = Math.round((couponInterest + amount)*100);
+            $expectedInterest.html(interest/100);
+        }
+
+        function minusCouponInterest(){
+            var amount = parseFloat($expectedInterest.data("amount"));
+            $expectedInterest.html(amount);
+        }
 
         if(amountInputElement.length) {
+            if($experienceTicket.is(':hidden')) {
+                $('.account-list').find('dd').last().css({'margin-top':'20px'});
+            }
+            else {
+                $experienceTicket.find(':checkbox').on('click',function() {
+                    var $thischeckBox=$(this),isChecked;
+                    isChecked=$thischeckBox.is(':checked');
+                    if(isChecked) {
+                        $experienceTicket.next('dd.experience-revenue').show();
+                        plusCouponInterest();
+                    } else {
+                        $experienceTicket.next('dd.experience-revenue').hide();
+                        minusCouponInterest();
+                    }
+                });
+            }
             var calExpectedInterest = function(isFirstLoad){
                 var loanId = $('.hid-loan').val(),
                     amount = amountInputElement.val();
@@ -91,10 +131,25 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     amount='0.00';
                 }
                 var amountNeedRaised = $('form .amountNeedRaised-i').text();
-                if(Number(amountNeedRaised) < Number(amount)){
-                    $errorDom.html("<i class='fa fa-times-circle'></i>输入金额不能大于可投金额!").removeAttr("style");
+
+                if(Number(amountNeedRaised) < Number(amount) || amount<=0){
+                    var tipmsg;
+                    if(amount<=0) {
+                        tipmsg='输入金额不能等于0!';
+                    }
+                    else {
+                        tipmsg='输入金额不能大于可投金额!';
+                    }
+                    layer.tips('<i class="fa fa-times-circle"></i>'+tipmsg, '.text-input-amount', {
+                        tips: [1,'#ff7200'] ,
+                        time:0
+                    });
                     $btnLookOther.prop('disabled', true);
                     return;
+                }
+                else {
+                    layer.closeAll('tips');
+                    $btnLookOther.prop('disabled', false);
                 }
                 $.ajax({
                     url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + amount,
@@ -103,13 +158,15 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     contentType: 'application/json; charset=UTF-8'
                 }).done(function(amount){
                     if(!isFirstLoad){
-                        $errorDom.hide();
+                        layer.closeAll('tips');
                     }
-                    $('.expected-interest').html(amount);
+                    showInterest(amount);
                     $btnLookOther.prop('disabled', false);
                 });
             };
-            calExpectedInterest(true);
+            if(typeof user_can_invest !== 'undefined') {
+                calExpectedInterest(true);
+            }
             amountInputElement.blur(function(){calExpectedInterest(false);});
 
             $('form').submit(function(){
@@ -121,7 +178,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     }
                     var amount = $("input[name='amount']",frm).val();
                     if(isNaN(parseFloat(amount))) {
-                        $errorDom.html("<i class='fa fa-times-circle'></i>请正确输入投资金额").removeAttr("style");
                         return false;
                     }
                     var investAmount = parseFloat(amount);
@@ -136,5 +192,10 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             });
         }
 
-
+        if($error.length) {
+            layer.tips('<i class="fa fa-times-circle"></i>'+$error.text(), '.text-input-amount', {
+                tips: [1,'#ff7200'] ,
+                time:0
+            });
+        }
 });
