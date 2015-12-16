@@ -17,10 +17,10 @@
     <!-- enable autowire -->
     <context:annotation-config/>
 
-    <context:property-placeholder location="classpath*:ttsd-env.properties, classpath*:ttsd-biz.properties"/>
+    <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties"/>
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.paywrapper, com.tuotiansudai.util, com.tuotiansudai.client"/>
+    <context:component-scan base-package="com.tuotiansudai.paywrapper,com.tuotiansudai.util,com.tuotiansudai.client"/>
 
     <aop:aspectj-autoproxy expose-proxy="true"/>
 
@@ -32,11 +32,10 @@
         <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/ump_operations?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${common.jdbc.username}"/>
         <property name="password" value="${common.jdbc.password}"/>
-        <property name="partitionCount" value="4"/>
-        <property name="minConnectionsPerPartition" value="1"/>
-        <property name="maxConnectionsPerPartition" value="5"/>
-        <property name="acquireIncrement" value="1"/>
-        <property name="idleMaxAgeInSeconds" value="300"/>
+        <property name="minConnectionsPerPartition" value="${pay.ump_operations.minConnectionsPerPartition}"/>
+        <property name="maxConnectionsPerPartition" value="${pay.ump_operations.maxConnectionsPerPartition}"/>
+        <property name="acquireIncrement" value="${pay.ump_operations.acquireIncrement}"/>
+        <property name="idleMaxAgeInSeconds" value="1800"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>
 
@@ -45,11 +44,22 @@
         <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${common.jdbc.username}"/>
         <property name="password" value="${common.jdbc.password}"/>
-        <property name="partitionCount" value="4"/>
-        <property name="minConnectionsPerPartition" value="1"/>
-        <property name="maxConnectionsPerPartition" value="5"/>
-        <property name="acquireIncrement" value="1"/>
-        <property name="idleMaxAgeInSeconds" value="300"/>
+        <property name="minConnectionsPerPartition" value="${pay.aa.minConnectionsPerPartition}"/>
+        <property name="maxConnectionsPerPartition" value="${pay.aa.maxConnectionsPerPartition}"/>
+        <property name="acquireIncrement" value="${pay.aa.acquireIncrement}"/>
+        <property name="idleMaxAgeInSeconds" value="1800"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+
+    <bean id="jobBoneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="username" value="${common.jdbc.username}"/>
+        <property name="password" value="${common.jdbc.password}"/>
+        <property name="minConnectionsPerPartition" value="${pay.job_worker.minConnectionsPerPartition}"/>
+        <property name="maxConnectionsPerPartition" value="${pay.job_worker.maxConnectionsPerPartition}"/>
+        <property name="acquireIncrement" value="${pay.job_worker.acquireIncrement}"/>
+        <property name="idleMaxAgeInSeconds" value="1800"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>
 
@@ -60,6 +70,10 @@
 
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="boneCPDataSource"/>
+    </bean>
+
+    <bean id="jobStoreBuilder" class="com.tuotiansudai.util.quartz.JobStoreBuilder">
+        <property name="dataSource" ref="jobBoneCPDataSource"/>
     </bean>
 
     <bean id="paySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -85,24 +99,4 @@
     </bean>
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
-
-    <bean class="com.tuotiansudai.util.SpringContextUtil"/>
-
-    <!-- job -->
-    <bean id="jobBoneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
-        <property name="username" value="${common.jdbc.username}"/>
-        <property name="password" value="${common.jdbc.password}"/>
-        <property name="partitionCount" value="4"/>
-        <property name="minConnectionsPerPartition" value="1"/>
-        <property name="maxConnectionsPerPartition" value="2"/>
-        <property name="acquireIncrement" value="1"/>
-        <property name="idleMaxAgeInSeconds" value="300"/>
-        <property name="statementsCacheSize" value="100"/>
-    </bean>
-
-    <bean id="jobStoreBuilder" class="com.tuotiansudai.util.quartz.JobStoreBuilder">
-        <property name="dataSource" ref="jobBoneCPDataSource"/>
-    </bean>
 </beans>
