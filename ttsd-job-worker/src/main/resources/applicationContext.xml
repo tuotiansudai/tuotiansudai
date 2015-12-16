@@ -17,7 +17,7 @@
     <!-- enable autowire -->
     <context:annotation-config/>
 
-    <context:property-placeholder location="classpath*:ttsd-env.properties, classpath*:ttsd-biz.properties"/>
+    <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <tx:annotation-driven transaction-manager="jobTransactionManager"/>
@@ -26,7 +26,7 @@
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan
-            base-package="com.tuotiansudai.repository, com.tuotiansudai.service, com.tuotiansudai.client, com.tuotiansudai.security, com.tuotiansudai.scheduler, com.tuotiansudai.util">
+            base-package="com.tuotiansudai.repository,com.tuotiansudai.service,com.tuotiansudai.client,com.tuotiansudai.security,com.tuotiansudai.scheduler,com.tuotiansudai.util,com.tuotiansudai.aspect">
     </context:component-scan>
 
     <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
