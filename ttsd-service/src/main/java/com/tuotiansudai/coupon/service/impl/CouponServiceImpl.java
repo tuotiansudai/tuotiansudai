@@ -50,12 +50,6 @@ public class CouponServiceImpl implements CouponService {
         if (endTime == null) {
             throw new CreateCouponException("活动止期不能为空!");
         }
-        if (startTime.before(new Date())) {
-            throw new CreateCouponException("活动起期不能早于当前日期!");
-        }
-        if (endTime.before(new Date())) {
-            throw new CreateCouponException("活动止期不能早于当前日期!");
-        }
         if (endTime.before(startTime)) {
             throw new CreateCouponException("活动止期早于活动起期!");
         }
