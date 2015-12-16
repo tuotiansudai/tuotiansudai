@@ -44,7 +44,23 @@ public class WithdrawController {
                 startTime,
                 endTime);
 
+        long sumAmount = withdrawService.findSumWithdrawAmount(withdrawId,
+                loginName,
+                status,
+                source,
+                startTime,
+                endTime);
+
+        long sumFee = withdrawService.findSumWithdrawFee(withdrawId,
+                loginName,
+                status,
+                source,
+                startTime,
+                endTime);
+
         modelAndView.addObject("baseDto", baseDto);
+        modelAndView.addObject("sumAmount", sumAmount);
+        modelAndView.addObject("sumFee", sumFee);
         modelAndView.addObject("withdrawStatusList", Lists.newArrayList(WithdrawStatus.values()));
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);

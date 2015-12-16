@@ -60,4 +60,38 @@
             </if>
         </where>
     </select>
+
+    <select id="findSumSystemIncome" parameterType="map" resultType="long">
+        select IFNULL(SUM(amount), 0) as amount from system_bill
+        <where>
+            operation_type = 'IN'
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+
+            <if test="businessType !=null">
+                and business_type = #{businessType}
+            </if>
+        </where>
+    </select>
+
+    <select id="findSumSystemExpend" parameterType="map" resultType="long">
+        select IFNULL(SUM(amount), 0) as amount from system_bill
+        <where>
+            operation_type = 'OUT'
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+            <if test="businessType !=null">
+                and business_type = #{businessType}
+            </if>
+        </where>
+    </select>
+
 </mapper>

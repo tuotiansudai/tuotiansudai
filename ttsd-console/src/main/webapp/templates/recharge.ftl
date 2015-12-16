@@ -81,6 +81,9 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
+                <th colspan="10">合计充值金额：${sumAmount/100} 元</th>
+            </tr>
+            <tr>
                 <th>编号</th>
                 <th>时间</th>
                 <th>用户名</th>

@@ -366,7 +366,7 @@ public class NormalRepayServiceImpl implements RepayService {
                         orderId,
                         String.valueOf(loanRepayBalance));
                 ProjectTransferResponseModel responseModel = this.paySyncClient.send(ProjectTransferMapper.class, projectTransferRequestModel, ProjectTransferResponseModel.class);
-                jobData.setLoanRepayBalanceStatus(responseModel.isSuccess() ? SyncRequestStatus.SUCCESS : SyncRequestStatus.FAIL);
+                jobData.setLoanRepayBalanceStatus(responseModel.isSuccess() ? SyncRequestStatus.SUCCESS : SyncRequestStatus.FAILURE);
             } catch (PayException e) {
                 logger.error(MessageFormat.format("[Repay] Transfer Loan repay balance is failed (loanRepayId = {0} amount = {1})", String.valueOf(loanRepayId), String.valueOf(loanRepayBalance)), e);
             }
@@ -410,7 +410,7 @@ public class NormalRepayServiceImpl implements RepayService {
                             accountModel.getPayUserId(),
                             String.valueOf(corpus + actualInterest + defaultInterest - actualFee));
                     ProjectTransferResponseModel responseModel = this.paySyncClient.send(ProjectTransferMapper.class, projectTransferRequestModel, ProjectTransferResponseModel.class);
-                    investRepayJobResult.setInterestStatus(responseModel.isSuccess() ? SyncRequestStatus.SUCCESS : SyncRequestStatus.FAIL);
+                    investRepayJobResult.setInterestStatus(responseModel.isSuccess() ? SyncRequestStatus.SUCCESS : SyncRequestStatus.FAILURE);
                 } catch (Exception e) {
                     logger.error(MessageFormat.format("[Normal Repay] Transfer invest interest is failed (investRepayId = {0})", String.valueOf(investRepayId)), e);
                 }
@@ -441,7 +441,7 @@ public class NormalRepayServiceImpl implements RepayService {
                             MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(investRepayId), String.valueOf(new Date().getTime())),
                             String.valueOf(actualFee));
                     ProjectTransferResponseModel responseModel = this.paySyncClient.send(ProjectTransferMapper.class, projectTransferRequestModel, ProjectTransferResponseModel.class);
-                    investRepayJobResult.setFeeStatus(responseModel.isSuccess() ? SyncRequestStatus.SUCCESS : SyncRequestStatus.FAIL);
+                    investRepayJobResult.setFeeStatus(responseModel.isSuccess() ? SyncRequestStatus.SUCCESS : SyncRequestStatus.FAILURE);
                 } catch (Exception e) {
                     logger.error(MessageFormat.format("[Repay] Transfer invest fee is failed(investRepayId = {0})", String.valueOf(investRepayId)), e);
                 }

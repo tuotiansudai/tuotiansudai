@@ -202,7 +202,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         showErrors: function (errorMap, errorList) {
             this.__proto__.defaultShowErrors.call(this);
             if (errorMap['mobile']) {
-                fetchCaptchaElement.prop('disabled', true);
+                fetchCaptchaElement.addClass('btn').removeClass('btn-normal').prop('disabled', true)
             }
             if (errorMap['agreement']) {
                 var $agreementBox = $agreement.parent('label');
@@ -212,7 +212,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         },
         success: function (error, element) {
             if (element.name === 'mobile') {
-                fetchCaptchaElement.prop('disabled', false);
+                fetchCaptchaElement.addClass('btn-normal').removeClass('btn').prop('disabled', false);
             }
             if (element.name === 'agreement') {
                 var $agreementBox = $agreement.parent('label');

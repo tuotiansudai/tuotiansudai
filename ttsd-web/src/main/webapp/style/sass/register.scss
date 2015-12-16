@@ -11,7 +11,6 @@
   text-align: center;
 
   .register-box {
-    width: 70%;
     margin-left: 30%;
     height: auto;
     overflow: auto;
@@ -34,19 +33,18 @@
           font-size:14px;
           color: #333;
           text-align: right;
-          display: none;
-          *display:block;
-          display:block\9;
+          display: inline-block;
+
         }
         .captcha-tag {
           position: relative;
           display: inline-block;
-          width:100%;
+          width:90%;
           .fetch-captcha {
             padding: 7px;
             letter-spacing: 0;
             position: absolute;
-            right: 387px;
+            right: 316px;
             top: 3px;
             font-size: 12px;
           }
@@ -85,7 +83,7 @@
 
         .agreement {
           display: inline-block;
-          width:295px;
+          width:361px;
         }
         input.valid + .agreement + label.error {
           &:before {
@@ -304,4 +302,44 @@
       }
     }
   }
+}
+
+
+@media screen\9 {
+//IE6,7
+  .register-container {
+    .register-box {
+      margin-left: 25%;
+      ul.reg-list {
+        li .reg-title{
+            display:inline-block;
+        }
+      }
+    }
+  }
+
+}
+
+@media screen\0 {
+  //IE8-10
+  .register-container {
+    .register-box {
+      margin-left: 25%;
+      ul.reg-list {
+        li {
+          .reg-title{
+            display:inline-block;
+          }
+          .captcha-tag {
+            .fetch-captcha {
+              right: 361px;
+
+            }
+          }
+        }
+
+      }
+    }
+  }
+
 }
