@@ -61,11 +61,8 @@ define(['jquery','underscore','echarts'], function ($,_) {
                         }
 
                         for(i;i<len;i++) {
-
-                            if(option[i].value!='-') {
-                                stringObj.push('<br/>'+option[i].seriesName+':'+option[i].value);
-                                totalMonArr.push(option[i].value);
-                            }
+                            stringObj.push('<br/>'+option[i].seriesName+':'+option[i].value);
+                            totalMonArr.push(option[i].value);
                         }
                         totalMoney=totalMonArr.sum().toFixed(2);
                         stringObj.push('<br/>总计:'+totalMoney);
