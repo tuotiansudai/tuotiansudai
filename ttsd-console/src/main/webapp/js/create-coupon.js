@@ -15,14 +15,14 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
 
         //起始时间绑定插件
         $dateStart.datetimepicker({
-            format: 'YYYY-MM-DD'
+            format: 'YYYY-MM-DD HH:mm'
         }).on('dp.change', function(e) {
             $dateEnd.data("DateTimePicker").minDate(e.date);
         });
 
         //结束时间绑定插件
         $dateEnd.datetimepicker({
-            format: 'YYYY-MM-DD'
+            format: 'YYYY-MM-DD HH:mm'
         });
 
         /**
