@@ -210,6 +210,15 @@ verify_withdraw_amount(){
   fi
 }
 
+verify_withdraw_bank_card_bind(){
+  bindCount=`$DB_CON_NEW -e"select count(1) from withdraw w join bank_card b on w.bank_card_id = b.id" | sed -n 2p`
+  if (( COUNT_withdraw == bindCount)); then
+    echo "withdraw bank_card bind check pass";
+  else
+    echo "withdraw bank_card bind check fail,COUNT_withdraw:$COUNT_withdraw,bindCount:$bindCount";
+  fi
+}
+
 
 migrate_all(){
 echo ""
@@ -278,6 +287,7 @@ verify(){
   simple_verify bank_card
   simple_verify withdraw
   verify_withdraw_amount
+  verify_withdraw_bank_card_bind
 
   verify_system_bill
   verify_system_bill_amount
