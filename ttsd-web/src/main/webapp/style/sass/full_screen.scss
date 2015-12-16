@@ -320,7 +320,25 @@
         }
     }
 }
-
+@media \0screen\,screen\9 {
+  .register-ad-box{
+    background-color:#fff;
+    filter:Alpha(opacity=80);
+    position:static;
+    *zoom:1;
+  }
+  .register-ad-box{
+    p{
+        position: relative;
+    }
+    a{
+        position: relative;
+    }
+    i{
+        position: relative;
+    }
+  }  
+}
 /* user guide page */
 .new-guide-container {
     color: #2f2f2f;
