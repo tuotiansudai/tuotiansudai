@@ -193,7 +193,7 @@
                 <select class="selectpicker">
                     <option value="">请选择</option>
                     <#list productLineTypes as productLineType>
-                        <option value="${productLineType.name()}" data-period="${productLineType.getProductLineTypePeriod()}" data-baseRate="${productLineType.getProductLineTypeBaseRate()}">
+                        <option value="${productLineType.name()}" data-period="${productLineType.getProductLineTypePeriod()}" data-baserate="${productLineType.getProductLineTypeBaseRate()?string('0.00')}">
                             ${productLineType.getProductLineTypeName()}
                         </option>
                     </#list>

@@ -131,9 +131,9 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     }
                     _hidden.val(_options.eq(i).attr('value'));
                     if (_hidden.hasClass('jq-product-type')) {
-                        if (!_options.eq(i).attr('value')) {
+                        if (_options.eq(i).attr('value')) {
                             $('.jq-timer').val(_options.eq(i).data('period'));
-                            $('.jq-base-percent').val(_options.eq(i).data('baseRate'));
+                            $('.jq-base-percent').val(_options.eq(i).data('baserate'));
                         } else {
                             $('.jq-timer').val('');
                             $('.jq-base-percent').val('');
