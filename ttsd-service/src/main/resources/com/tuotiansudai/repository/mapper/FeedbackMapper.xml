@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.FeedbackMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="feedbackResultMap" type="FeedbackModel">
+        <id column="id" property="id"></id>
+        <result column="login_name" property="loginName"></result>
+        <result column="content" property="content"></result>
+        <result column="created_time" property="createdTime"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="FeedbackModel" useGeneratedKeys="true" keyProperty="id">
+        insert into feedback(login_name, content, created_time)
+        value(#{loginName}, #{content}, #{createdTime})
+    </insert>
+
+    <select id="findAll" parameterType="map" resultMap="feedbackResultMap">
+        select * from feedback
+        <where>
+            <if test="loginName != null and loginName != ''">
+                login_name = #{loginName}
+            </if>
+        </where>
+        order by created_time desc
+        limit #{rowLimit}
+        offset #{rowIndex}
+    </select>
+
+    <select id="findAllCount" parameterType="map" resultType="long">
+        select count(*) from feedback
+        <where>
+            <if test="loginName != null and loginName != ''">
+                login_name = #{loginName}
+            </if>
+        </where>
+    </select>
+</mapper>
