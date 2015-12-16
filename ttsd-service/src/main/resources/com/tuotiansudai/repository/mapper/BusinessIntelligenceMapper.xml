@@ -130,7 +130,7 @@
                 AND m.`status` = 'SUCCESS'
                 GROUP BY n.`province`
                 ORDER BY ROUND(SUM(m.`amount`), 2) DESC
-                LIMIT 1, 5) temp
+                LIMIT 5) temp
                 WHERE t.`province` = temp.`province`)) u
                 ON r.`login_name` = u.`login_name`
             </otherwise>
@@ -183,7 +183,7 @@
             AND c.`status` = 'SUCCESS'
             GROUP BY d.`province`
             ORDER BY ROUND(SUM(c.`amount`), 2) DESC
-            LIMIT 1, 5) temp1
+            LIMIT 5) temp1
             WHERE b.`province` = temp1.`province`)) e
             ON a.`login_name` = e.`login_name`
             WHERE a.`created_time` BETWEEN #{startTime} AND #{endTime}
@@ -242,7 +242,7 @@
                 AND m.`status` = 'SUCCESS'
                 GROUP BY n.`province`
                 ORDER BY ROUND(SUM(m.`amount`), 2) DESC
-                LIMIT 1, 5) temp
+                LIMIT 5) temp
                 WHERE t.`province` = temp.`province`)) u
                 ON r.`login_name` = u.`login_name`
             </otherwise>
@@ -295,7 +295,7 @@
             AND c.`status` = 'SUCCESS'
             GROUP BY d.`province`
             ORDER BY ROUND(SUM(c.`amount`), 2) DESC
-            LIMIT 1, 5) temp1
+            LIMIT 5) temp1
             WHERE b.`province` = temp1.`province`)) e
             ON a.`login_name` = e.`login_name`
             WHERE a.`created_time` BETWEEN #{startTime} AND #{endTime}
@@ -353,7 +353,7 @@
                 WHERE m.`created_time` BETWEEN #{startTime} AND #{endTime}
                 GROUP BY n.`province`
                 ORDER BY ROUND(SUM(m.`balance`), 2) DESC
-                LIMIT 1, 5) temp
+                LIMIT 5) temp
                 WHERE t.`province` = temp.`province`)) u
                 ON r.`login_name` = u.`login_name`
             </otherwise>
@@ -404,7 +404,7 @@
             WHERE c.`created_time` BETWEEN #{startTime} AND #{endTime}
             GROUP BY d.`province`
             ORDER BY ROUND(SUM(c.`balance`), 2) DESC
-            LIMIT 1, 5) temp1
+            LIMIT 5) temp1
             WHERE b.`province` = temp1.`province`)) e
             ON a.`login_name` = e.`login_name`
             WHERE a.`created_time` BETWEEN #{startTime} AND #{endTime}
