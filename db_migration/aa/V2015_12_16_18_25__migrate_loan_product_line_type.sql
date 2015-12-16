@@ -10,7 +10,7 @@ SET
     THEN 'WYX'
     WHEN periods = 6
     THEN 'JYF'
-    ELSE ''
+    ELSE NULL
   END ;
 
 COMMIT ;
