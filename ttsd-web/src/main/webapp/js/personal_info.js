@@ -56,7 +56,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                     dataType: 'json',
                     beforeSubmit: function (arr, $form, options) {
                         $('.change-email-success .email').html($('input[name="email"]').val());
-                        self.resetForm();
+                        $form.resetForm();
                         layer.closeAll();
                     },
                     success: function (response) {
