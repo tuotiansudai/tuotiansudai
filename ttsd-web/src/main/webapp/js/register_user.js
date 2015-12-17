@@ -10,7 +10,6 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         imageCaptchaSubmitElement = $('.image-captcha-confirm', $imgCaptchaDialog);
 
     $('input.login-name,input.mobile',registerUserForm).on('focusout',function(option) {
-
         fetchCaptchaElement.removeClass('btn-normal').addClass('btn').prop('disabled', true);
     });
 
@@ -189,7 +188,6 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
             }
         },
         success: function (error, element) {
-
             var loginName = $('input.login-name', registerUserForm),
                 mobile = $('input.mobile', registerUserForm);
             if (element.name === 'mobile' && loginName.hasClass('valid')) {
@@ -198,7 +196,6 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
             if (element.name === 'loginName' && mobile.hasClass('valid')) {
                 fetchCaptchaElement.addClass('btn-normal').removeClass('btn').prop('disabled', false);
             }
-
         }
     });
 
