@@ -73,6 +73,15 @@ public class BusinessIntelligenceController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/user-invest-viscosity", method = RequestMethod.GET)
+    public List<KeyValueModel> queryInvestViscosity(
+            @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+            @RequestParam(name = "province",required = false) String province) {
+        return businessIntelligenceService.queryInvestViscosity(startTime, endTime, province);
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/user-invest-amount-trend", method = RequestMethod.GET)
     public List<KeyValueModel> queryUserInvestAmountTrend(
             @RequestParam(name = "granularity") Granularity granularity,

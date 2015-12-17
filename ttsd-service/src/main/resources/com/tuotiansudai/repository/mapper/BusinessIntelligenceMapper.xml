@@ -445,6 +445,29 @@
         </if>
     </select>
 
+    <select id="queryInvestViscosity" parameterType="map" resultMap="keyValueMap">
+        select
+          a.loan_count as `name`,
+          count(*) as `value`,
+          '续投用户' as `group`
+        from (
+          select
+            count(distinct i.loan_id) as loan_count
+          from invest i
+          <if test="province != null and province !=''">
+          inner join `user` u
+          on i.login_name = u.login_name
+          </if>
+          where
+            i.created_time between #{startTime} and #{endTime}
+            <if test="province != null and province !=''">
+            and u.province = #{province}
+            </if>
+          group by i.login_name
+        ) a
+        group by a.loan_count;
+    </select>
+
 
     <select id="queryUserInvestCountTrend" parameterType="map" resultMap="keyValueMap">
         select

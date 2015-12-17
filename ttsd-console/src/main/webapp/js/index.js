@@ -27,6 +27,9 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
             case 2:
                 heightHack=40;
                 break;
+            case 3:
+                heightHack=60;
+                break;
             default:
                 heightHack=0;
                 break;
@@ -88,6 +91,9 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
 
     /*用户账户余额时间分布*/
     showReport('#formUserAccountReport','/bi/user-account-trend','userAccountDistribution','用户账户余额(元)');
+
+    /*用户续投情况*/
+    showReport('#formUserInvestViscosityReport','/bi/user-invest-viscosity','userInvestViscosity','用户(人)');
 
     /*用户投资金额时间分布*/
     showReport('#formUserInvestAmountReport','/bi/user-invest-amount-trend','userInvestAmountDistribution','用户投资金额(元)');
