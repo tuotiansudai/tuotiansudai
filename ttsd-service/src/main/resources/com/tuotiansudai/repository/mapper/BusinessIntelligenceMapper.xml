@@ -339,7 +339,7 @@
             MONTH(ub.`created_time`),
         </if>
         MAX(ub.`created_time`) AS created_time,
-        MAX(ub.`balance`) AS balance
+        MIN(ub.`balance`) AS balance
         FROM
         user_bill ub
         GROUP BY ub.`login_name`) r
@@ -374,7 +374,7 @@
                     MONTH(ub.`created_time`),
                 </if>
                 MAX(ub.`created_time`) AS created_time,
-                MAX(ub.`balance`) AS balance
+                MIN(ub.`balance`) AS balance
                 FROM
                 user_bill ub
                 GROUP BY ub.`login_name`) m
@@ -427,7 +427,7 @@
             </if>
             WEEK(ub.`created_time`),
             MAX(ub.`created_time`) AS created_time,
-            MAX(ub.`balance`) AS balance
+            MIN(ub.`balance`) AS balance
             FROM
             user_bill ub
             GROUP BY ub.`login_name`) a
@@ -455,7 +455,7 @@
                 MONTH(ub.`created_time`),
             </if>
             MAX(ub.`created_time`) AS created_time,
-            MAX(ub.`balance`) AS balance
+            MIN(ub.`balance`) AS balance
             FROM
             user_bill ub
             GROUP BY ub.`login_name`) c
