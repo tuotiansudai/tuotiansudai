@@ -5,7 +5,7 @@
     <ul class="step-register-tab">
         <li class="first on"><s></s>1 注册<g></g></li>
         <li><s></s>2 实名验证<g></g></li>
-        <li class="last"><s></s>3 充值投资<g></g></li>
+        <li class="last"><s></s>3 开始投资<g></g></li>
     </ul>
     <div class="clear-blank"></div>
     <div class="register-box">
