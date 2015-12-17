@@ -235,6 +235,17 @@
 }
 
 @media (max-width: 700px) {
+  .main-frame.full-screen {
+    width:100%;
+    margin:0 auto!important;
+    .register-skin{
+      width: 100%!important;
+      height:100%!important;
+      top: 0!important;
+      left: 50%!important;
+      margin-left: -50%!important;
+    }
+  }
   .step-register-tab {
     font-size: 14px!important;
     margin:0;
