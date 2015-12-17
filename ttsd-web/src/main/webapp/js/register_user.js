@@ -188,13 +188,14 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
             }
         },
         success: function (error, element) {
-            if (element.name === 'mobile') {
+            var loginName = $('input.login-name', registerUserForm),
+                mobile = $('input.mobile', registerUserForm);
+            if (element.name === 'mobile' && loginName.hasClass('valid')) {
                 fetchCaptchaElement.addClass('btn-normal').removeClass('btn').prop('disabled', false);
             }
-            //if (element.name === 'agreement') {
-            //    var $agreementBox = $agreement.parent('label');
-            //    $agreementBox.append($('#agreement-error'));
-            //}
+            if (element.name === 'loginName' && mobile.hasClass('valid')) {
+                fetchCaptchaElement.addClass('btn-normal').removeClass('btn').prop('disabled', false);
+            }
         }
     });
 
