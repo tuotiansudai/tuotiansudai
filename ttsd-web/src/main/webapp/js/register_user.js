@@ -10,6 +10,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         imageCaptchaSubmitElement = $('.image-captcha-confirm', $imgCaptchaDialog);
 
     $('input.login-name,input.mobile',registerUserForm).on('focusout',function(option) {
+
         fetchCaptchaElement.removeClass('btn-normal').addClass('btn').prop('disabled', true);
     });
 
@@ -188,13 +189,16 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
             }
         },
         success: function (error, element) {
-            if (element.name === 'mobile') {
+
+            var loginName = $('input.login-name', registerUserForm),
+                mobile = $('input.mobile', registerUserForm);
+            if (element.name === 'mobile' && loginName.hasClass('valid')) {
                 fetchCaptchaElement.addClass('btn-normal').removeClass('btn').prop('disabled', false);
             }
-            //if (element.name === 'agreement') {
-            //    var $agreementBox = $agreement.parent('label');
-            //    $agreementBox.append($('#agreement-error'));
-            //}
+            if (element.name === 'loginName' && mobile.hasClass('valid')) {
+                fetchCaptchaElement.addClass('btn-normal').removeClass('btn').prop('disabled', false);
+            }
+
         }
     });
 
