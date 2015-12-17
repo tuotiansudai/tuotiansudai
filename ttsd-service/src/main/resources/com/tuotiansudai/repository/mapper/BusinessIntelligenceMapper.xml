@@ -590,4 +590,35 @@
             group by `name`
         </if>
     </select>
+
+    <select id="queryUserAgeTrend" parameterType="map" resultMap="keyValueMap">
+        select
+            <![CDATA[if(age<20,'20 岁以下',if(age<35,'20~35 岁',if(age<50,'35~50 岁','50 岁以上')))]]> as `name`,
+            count(1) as `value`,
+            <choose>
+                <when test="province != null and province!= ''"> #{province} </when>
+                <otherwise> "全部" </otherwise>
+            </choose> as `group`
+        from
+            (
+                select date_format(now(),'%Y')-if(length(identity_number)=18,substring(identity_number,7,4),1900+substring(identity_number,7,2)) as age
+                from
+                    account a
+                join user u
+                    on a.login_name=u.login_name
+                    <if test="province != null and province !=''">
+                      and u.province=#{province}
+                    </if>
+                where
+                    length(identity_number) in (15,18)
+                    and a.register_time between #{startTime} and #{endTime}
+                    <if test="isInvestor=='true'">
+                    and exists
+                        (
+                            select 1 from invest i where i.login_name=a.login_name
+                        )
+                    </if>
+            ) temp
+        group by `name`;
+    </select>
 </mapper>

@@ -60,4 +60,10 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         return businessIntelligenceMapper.queryUserInvestAmountTrend(queryStartTime, queryEndTime, granularity, province);
     }
 
+    @Override
+    public List<KeyValueModel> queryUserAgeTrend(Date startTime, Date endTime, String province, String isInvestor){
+        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+        return businessIntelligenceMapper.queryUserAgeTrend(queryStartTime, queryEndTime, province, isInvestor);
+    }
 }

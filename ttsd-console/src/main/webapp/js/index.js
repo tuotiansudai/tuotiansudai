@@ -95,4 +95,10 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     /*用户投资次数时间分布*/
     showReport('#formUserInvestCountReport','/bi/user-invest-count-trend','userInvestCountDistribution','用户投资次数(次)');
 
+    /*实名认证用户年龄分布*/
+    showReport('#formRegisterUserAgeReport','/bi/register-user-age-trend','registerUserAgeDistribution','用户(人)');
+
+    /*投资人用户年龄分布*/
+    showReport('#formInvestorUserAgeReport','/bi/investor-user-age-trend','investorUserAgeDistribution','用户(人)');
+
 });

@@ -39,7 +39,7 @@ public class BusinessIntelligenceController {
             @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
             @RequestParam(name = "province",required = false) String province,
             @RequestParam(name = "userStage",required = false) UserStage userStage){
-        return businessIntelligenceService.queryUserRegisterTrend(granularity, startTime, endTime, province,userStage);
+        return businessIntelligenceService.queryUserRegisterTrend(granularity, startTime, endTime, province, userStage);
     }
 
     @ResponseBody
@@ -89,5 +89,23 @@ public class BusinessIntelligenceController {
             @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
             @RequestParam(name = "province",required = false) String province){
         return businessIntelligenceService.queryUserInvestCountTrend(startTime, endTime, province);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/register-user-age-trend", method = RequestMethod.GET)
+    public List<KeyValueModel> queryRegisterUserAgeTrend(
+            @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+            @RequestParam(name = "province",required = false) String province){
+        return businessIntelligenceService.queryUserAgeTrend(startTime, endTime, province, null);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/investor-user-age-trend", method = RequestMethod.GET)
+    public List<KeyValueModel> queryInvestorUserAgeTrend(
+            @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+            @RequestParam(name = "province",required = false) String province){
+        return businessIntelligenceService.queryUserAgeTrend(startTime, endTime, province, "true");
     }
 }
