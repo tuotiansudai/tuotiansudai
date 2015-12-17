@@ -342,7 +342,17 @@
         MIN(ub.`balance`) AS balance
         FROM
         user_bill ub
-        GROUP BY ub.`login_name`) r
+        GROUP BY ub.`login_name`,
+        <if test="granularity.name() == 'Daily'">
+            DATE(ub.`created_time`)
+        </if>
+        <if test="granularity.name() == 'Weekly'">
+            WEEK(ub.`created_time`)
+        </if>
+        <if test="granularity.name() == 'Monthly'">
+            MONTH(ub.`created_time`)
+        </if>
+        ) r
         JOIN
         <choose>
             <when test="province != null and province!= ''">
@@ -377,7 +387,17 @@
                 MIN(ub.`balance`) AS balance
                 FROM
                 user_bill ub
-                GROUP BY ub.`login_name`) m
+                GROUP BY ub.`login_name`,
+                <if test="granularity.name() == 'Daily'">
+                    DATE(ub.`created_time`)
+                </if>
+                <if test="granularity.name() == 'Weekly'">
+                    WEEK(ub.`created_time`)
+                </if>
+                <if test="granularity.name() == 'Monthly'">
+                    MONTH(ub.`created_time`)
+                </if>
+                ) m
                 JOIN `user` n
                 ON m.`login_name` = n.`login_name`
                 WHERE m.`created_time` BETWEEN #{startTime} AND #{endTime}
@@ -430,7 +450,17 @@
             MIN(ub.`balance`) AS balance
             FROM
             user_bill ub
-            GROUP BY ub.`login_name`) a
+            GROUP BY ub.`login_name`,
+            <if test="granularity.name() == 'Daily'">
+                DATE(ub.`created_time`)
+            </if>
+            <if test="granularity.name() == 'Weekly'">
+                WEEK(ub.`created_time`)
+            </if>
+            <if test="granularity.name() == 'Monthly'">
+                MONTH(ub.`created_time`)
+            </if>
+            ) a
             JOIN
             (SELECT
             *
@@ -458,7 +488,17 @@
             MIN(ub.`balance`) AS balance
             FROM
             user_bill ub
-            GROUP BY ub.`login_name`) c
+            GROUP BY ub.`login_name`,
+            <if test="granularity.name() == 'Daily'">
+                DATE(ub.`created_time`)
+            </if>
+            <if test="granularity.name() == 'Weekly'">
+                WEEK(ub.`created_time`)
+            </if>
+            <if test="granularity.name() == 'Monthly'">
+                MONTH(ub.`created_time`)
+            </if>
+            ) c
             JOIN `user` d
             ON c.`login_name` = d.`login_name`
             WHERE c.`created_time` BETWEEN #{startTime} AND #{endTime}
