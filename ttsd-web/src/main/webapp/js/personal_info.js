@@ -49,6 +49,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                     isExist: "邮箱已存在"
                 }
             },
+            success:'valid',
             submitHandler: function (form) {
                 var self = this;
                 $(form).ajaxSubmit({

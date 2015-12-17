@@ -26,7 +26,6 @@
         clear: both;
         margin-bottom: 20px;
         height: auto;
-        overflow: auto;
         .reg-title {
           width:60px;
           padding-right: 3px;
@@ -92,7 +91,16 @@
           }
         }
         &.agree-last {
-          margin-left:155px;
+          position: relative;
+          margin-left: 0;
+          .check-label{
+            position: absolute;
+            top: 1px;
+            left: 20px;
+          }
+          .agreement-check{
+            margin-right: 300px;
+          }
         }
       }
       .register-account {
@@ -320,9 +328,6 @@
           .reg-title{
             display:inline-block;
           }
-          &.agree-last {
-            margin-left:222px;
-          }
         }
         .register-user {
           margin-left: 130px;
@@ -350,7 +355,7 @@
             }
           }
           &.agree-last {
-            margin-left:222px;
+            margin-left:60px;
           }
         }
 

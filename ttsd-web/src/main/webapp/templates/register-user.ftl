@@ -36,7 +36,7 @@
                     <input type="text" name="referrer" placeholder="请输入推荐人（选填）" maxlength="25" class="referrer" value="${(referrer)!(originalFormData.referrer)!}"/>
                 </li>
                 <li class="agree-last">
-                    <label for="agreement">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
+                    <label for="agreement" class="check-label">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
                         <input type="checkbox" name='agreement' id="agreementInput" class='agreement-check' />
 
                 </li>
