@@ -1,11 +1,18 @@
+#!/bin/bash
+
 OLD_DB_HOST=192.168.100.77
+NEW_DB_HOST=192.168.100.77
 DB_PORT=3306
 DB_USER=root
-#NEW_DB_HOST=192.168.1.249
-NEW_DB_HOST=192.168.100.77
+DB_PASSWORD=
 
-DB_CON_OLD="mysql -h$OLD_DB_HOST -P$DB_PORT -u$DB_USER tuotiansudai "
-DB_CON_NEW="mysql -h$NEW_DB_HOST -P$DB_PORT -u$DB_USER aa "
+if [ -z "$DB_PASSWORD" ]; then
+  DB_CON_OLD="mysql -h$OLD_DB_HOST -P$DB_PORT -u$DB_USER tuotiansudai "
+  DB_CON_NEW="mysql -h$NEW_DB_HOST -P$DB_PORT -u$DB_USER aa "
+else
+  DB_CON_OLD="mysql -h$OLD_DB_HOST -P$DB_PORT -u$DB_USER -p$DB_PASSWORD tuotiansudai "
+  DB_CON_NEW="mysql -h$NEW_DB_HOST -P$DB_PORT -u$DB_USER -p$DB_PASSWORD aa "
+fi
 
 SCRIPT_PATH=scripts/data_migration/migrate.py
 LOG_PATH=/tmp/migrate

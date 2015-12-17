@@ -119,7 +119,7 @@ flyway {
     locations = ["filesystem:db_migration/${defaultDatabase}"]
     schemas = ["${defaultDatabase}"]
 
-    url = "jdbc:mysql://${defaultHost}:${defaultPort}"
+    url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/${defaultDatabase}" : "jdbc:mysql://${defaultHost}:${defaultPort}"
     user = properties.getProperty("common.jdbc.username")
     password = properties.getProperty("common.jdbc.password")
 }

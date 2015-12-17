@@ -43,9 +43,9 @@
         <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${common.jdbc.username}"/>
         <property name="password" value="${common.jdbc.password}"/>
-        <property name="minConnectionsPerPartition" value="${web.job_worker.minConnectionsPerPartition}"/>
-        <property name="maxConnectionsPerPartition" value="${web.job_worker.maxConnectionsPerPartition}"/>
-        <property name="acquireIncrement" value="${web.job_worker.acquireIncrement}"/>
+        <property name="minConnectionsPerPartition" value="1"/>
+        <property name="maxConnectionsPerPartition" value="1"/>
+        <property name="acquireIncrement" value="1"/>
         <property name="idleMaxAgeInSeconds" value="1800"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>

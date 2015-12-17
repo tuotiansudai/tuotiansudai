@@ -26,7 +26,7 @@
         <span class="sub-hd">交易状态:</span>
         <span class="select-item current" data-status="">全部</span>
         <span class="select-item" data-status="WITHDRAW_SUCCESS,WITHDRAW_FAIL,APPLY_WITHDRAW">提现</span>
-        <span class="select-item" data-status="RECHARGE_SUCCESS,ADMIN_INTERVENTION">充值</span>
+        <span class="select-item" data-status="RECHARGE_SUCCESS">充值</span>
         <span class="select-item" data-status="ACTIVITY_REWARD,REFERRER_REWARD">奖励</span>
         <span class="select-item" data-status="NORMAL_REPAY,ADVANCE_REPAY">本息</span>
         <span class="select-item" data-status="INVEST_SUCCESS">投标</span>

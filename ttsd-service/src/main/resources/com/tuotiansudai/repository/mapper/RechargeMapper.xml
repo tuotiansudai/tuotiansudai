@@ -31,7 +31,7 @@
     </update>
 
     <select id="findSumSuccessRechargeByLoginName" parameterType="java.lang.String" resultType="long">
-        select IFNULL(sum(amount),0) as amount from recharge where status = 'SUCCESS' and login_name = #{loginName}
+        select IFNULL(sum(amount),0) as amount from recharge where status = 'SUCCESS' and login_name = #{loginName} and bank_code != 'ADMIN'
     </select>
 
     <select id="findRechargePagination" parameterType="map" resultMap="rechargeResultMap">
