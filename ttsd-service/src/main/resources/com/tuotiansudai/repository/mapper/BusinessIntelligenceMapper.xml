@@ -327,7 +327,22 @@
         ROUND(SUM(r.`balance`/100), 2) AS `value`,
         u.`province` AS `group`
         FROM
-        `user_bill` r
+        (SELECT
+        ub.`login_name`,
+        <if test="granularity.name() == 'Daily'">
+            DATE(ub.`created_time`),
+        </if>
+        <if test="granularity.name() == 'Weekly'">
+            WEEK(ub.`created_time`),
+        </if>
+        <if test="granularity.name() == 'Monthly'">
+            MONTH(ub.`created_time`),
+        </if>
+        MAX(ub.`created_time`) AS created_time,
+        MAX(ub.`balance`) AS balance
+        FROM
+        user_bill ub
+        GROUP BY ub.`login_name`) r
         JOIN
         <choose>
             <when test="province != null and province!= ''">
@@ -347,7 +362,22 @@
                 (SELECT
                 n.`province`
                 FROM
-                `user_bill` m
+                (SELECT
+                ub.`login_name`,
+                <if test="granularity.name() == 'Daily'">
+                    DATE(ub.`created_time`),
+                </if>
+                <if test="granularity.name() == 'Weekly'">
+                    WEEK(ub.`created_time`),
+                </if>
+                <if test="granularity.name() == 'Monthly'">
+                    MONTH(ub.`created_time`),
+                </if>
+                MAX(ub.`created_time`) AS created_time,
+                MAX(ub.`balance`) AS balance
+                FROM
+                user_bill ub
+                GROUP BY ub.`login_name`) m
                 JOIN `user` n
                 ON m.`login_name` = n.`login_name`
                 WHERE m.`created_time` BETWEEN #{startTime} AND #{endTime}
@@ -385,7 +415,22 @@
             ROUND(SUM(a.`balance`/100), 2) AS `value`,
             '其他' AS `group`
             FROM
-            `user_bill` a
+            (SELECT
+            <if test="granularity.name() == 'Daily'">
+                DATE(ub.`created_time`),
+            </if>
+            <if test="granularity.name() == 'Weekly'">
+                WEEK(ub.`created_time`),
+            </if>
+            <if test="granularity.name() == 'Monthly'">
+                MONTH(ub.`created_time`),
+            </if>
+            WEEK(ub.`created_time`),
+            MAX(ub.`created_time`) AS created_time,
+            MAX(ub.`balance`) AS balance
+            FROM
+            user_bill ub
+            GROUP BY ub.`login_name`) a
             JOIN
             (SELECT
             *
@@ -398,7 +443,22 @@
             (SELECT
             d.`province`
             FROM
-            `user_bill` c
+            (SELECT
+            ub.`login_name`,
+            <if test="granularity.name() == 'Daily'">
+                DATE(ub.`created_time`),
+            </if>
+            <if test="granularity.name() == 'Weekly'">
+                WEEK(ub.`created_time`),
+            </if>
+            <if test="granularity.name() == 'Monthly'">
+                MONTH(ub.`created_time`),
+            </if>
+            MAX(ub.`created_time`) AS created_time,
+            MAX(ub.`balance`) AS balance
+            FROM
+            user_bill ub
+            GROUP BY ub.`login_name`) c
             JOIN `user` d
             ON c.`login_name` = d.`login_name`
             WHERE c.`created_time` BETWEEN #{startTime} AND #{endTime}
