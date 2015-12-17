@@ -364,13 +364,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void refreshAreaByMobileInJob() {
+        System.out.println("refresh begin");
+        int c = 0;
         while (true) {
+            c += 100;
             List<UserModel> userModels = userMapper.findUserByProvince();
             if (CollectionUtils.isEmpty(userModels)) {
                 break;
             }
             ((UserService) AopContext.currentProxy()).refreshAreaByMobile(userModels);
+            System.out.println(c+"\t complete at " + new Date());
         }
+        System.out.println("refresh end");
     }
 
     @Override
