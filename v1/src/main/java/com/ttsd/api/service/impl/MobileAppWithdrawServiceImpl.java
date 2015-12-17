@@ -103,7 +103,7 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
         WithdrawCash withdrawCash = new WithdrawCash();
         withdrawCash.setUser(new User(userId));
         withdrawCash.setAccount("借款账户");
-        withdrawCash.setFee(0D);
+        withdrawCash.setFee(withdrawCashService.calculateFee(money));
         withdrawCash.setCashFine(0D);
         withdrawCash.setMoney(money);
         withdrawCash.setBankCard(bankCard);

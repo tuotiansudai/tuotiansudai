@@ -82,8 +82,11 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public String generateInvestorContract(long loanId,ContractType contractType) {
-        Map<String, Object> dataModel = this.collectContractModel(loanId,contractType);
+    public String generateInvestorContract(String loginName,long loanId,ContractType contractType) {
+        Map<String, Object> dataModel = this.collectContractModel(loginName,loanId,contractType);
+        if(dataModel.isEmpty()){
+            return "";
+        }
         String content = getContract("contract", dataModel).replace("&nbsp;", "&#160;");
         return content;
 
@@ -108,9 +111,12 @@ public class ContractServiceImpl implements ContractService {
         }
     }
 
-    private Map<String, Object> collectContractModel(long loanId,ContractType contractType) {
+    private Map<String, Object> collectContractModel(String loginName,long loanId,ContractType contractType) {
         Map<String, Object> dataModel = new HashMap<>();
         LoanModel loanModel = loanMapper.findById(loanId);
+        if(loanModel == null){
+            return dataModel;
+        }
         AccountModel agentAccountModel = accountMapper.findByLoginName(loanModel.getAgentLoginName());
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
         dataModel.put("loanId","" + loanId);
@@ -121,7 +127,7 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("agentUserName",Strings.nullToEmpty(agentAccountModel.getUserName()));
         dataModel.put("agentLoginName",Strings.nullToEmpty(loanModel.getAgentLoginName()));
         dataModel.put("agentIdentityNumber",Strings.nullToEmpty(agentAccountModel.getIdentityNumber()));
-        dataModel.put("investList",getInvestListTable(loanId,loanModel,contractType));
+        dataModel.put("investList",getInvestListTable(loginName,loanId,loanModel,contractType));
         dataModel.put("actualMoney", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
 
         dataModel.put("fen", this.getDigitBySerialNo(AmountConverter.convertCentToString(loanModel.getLoanAmount()), 0));
@@ -165,12 +171,9 @@ public class ContractServiceImpl implements ContractService {
         return dataModel;
     }
 
-    //TODO : confirm with zl
-    private String getInvestListTable(long loanId,LoanModel loanModel,ContractType contractType){
 
-        String loginName;
-        //TEST
-        loginName = "hourglass";
+    private String getInvestListTable(String loginName,long loanId,LoanModel loanModel,ContractType contractType){
+
         Element table = Jsoup
                 .parseBodyFragment("<table border='1' style='margin: 0px auto; border-collapse: collapse; border: 1px solid rgb(0, 0, 0); width: 80%; '><tbody><tr class='firstRow'><td style='text-align:center;'>平台账号</td><td style='text-align:center;'>真实姓名</td><td style='text-align:center;'>身份证号</td><td style='text-align:center;'>出借金额</td><td style='text-align:center;'>借款期限</td><td style='text-align:center;'>投资确认日期</td></tr></tbody></table>");
         Element tbody = table.getElementsByTag("tbody").first();

@@ -2,23 +2,23 @@
     <thead>
         <tr>
             <th>项目名称</th>
-            <th class="tr">我的投资</th>
+            <th class="tr">我的投资(元)</th>
             <th>交易时间</th>
             <th>交易状态</th>
-            <th>下次回款</th>
+            <th>下次回款(元)</th>
             <th>操作</th>
         </tr>
     </thead>
     <tbody>
        {{#records}}
         <tr>
-            <td><a href="/loan/{{loanId}}">{{loanName}}</td>
-            <td class="tr">{{amount}}元</td>
+            <td><a href="/loan/{{loanId}}" class="project-name">{{loanName}}</td>
+            <td class="tr">{{amount}}</td>
             <td>{{createdTime}}</td>
             <td>{{status}}</td>
             <td>
             {{#nextRepayDate}}
-                {{nextRepayDate}} / {{nextRepayAmount}} 元
+                {{nextRepayDate}} / {{nextRepayAmount}}
             {{/nextRepayDate}}
             {{^nextRepayDate}} -- {{/nextRepayDate}}
             </td>

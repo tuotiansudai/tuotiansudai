@@ -73,9 +73,9 @@
             <#if loan.loanStatus == "PREHEAT">
                 <form action="/invest" method="post">
                     <dl class="account-list">
-                        <dd><span class="fl">可投金额：</span><em class="fr"><i class="amountNeedRaised-i">${loan.amountNeedRaised?string("0.00")}</i>元</em>
-                     <dd><span class="fl">账户余额：</span><em class="fr"><i class="account-amount">${loan.balance?string("0.00")}</i>元</em></dd>
-                    <dd><span class="fl">每人限投：</span><em class="fr">${loan.maxInvestAmount}元</em></dd>
+                       <dd><span class="fl">可投金额：</span><em class="fr"><i class="amountNeedRaised-i">${loan.amountNeedRaised?string("0.00")}</i>元</em>
+                       <dd><span class="fl">账户余额：</span><em class="fr account-amount">${loan.balance?string("0.00")} 元</em></dd>
+                       <dd><span class="fl">每人限投：</span><em class="fr">${loan.maxInvestAmount}元</em></dd>
                    <dd class="invest-amount tl">
                        <#assign defaultInvestAmount = loan.maxAvailableInvestAmount!>
                        <#if investAmount?has_content>
@@ -100,6 +100,7 @@
                         ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
                         </#if>
                     </dd>
+                        <dd class="hide"><span class="fl">预计总收益：</span><em class="fr"><i class="expected-interest"></i>元</em></dd>
                         <dd><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string("0")}"/>
                             <button class="btn-pay btn-normal" type="submit" disabled="disabled">预热中</button>

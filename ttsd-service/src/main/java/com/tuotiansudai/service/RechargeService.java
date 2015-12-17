@@ -25,6 +25,15 @@ public interface RechargeService {
                                                           Date startTime,
                                                           Date endTime);
 
+
+    long findSumRechargeAmount(String rechargeId,
+                               String loginName,
+                               RechargeSource source,
+                               RechargeStatus status,
+                               String channel,
+                               Date startTime,
+                               Date endTime);
+
     long sumSuccessRechargeAmount(String loginName);
 
     List<String> findAllChannel();

@@ -214,6 +214,37 @@
         </where>
     </select>
 
+    <select id="sumInvestAmount" parameterType="map" resultType="long">
+        select IFNULL(sum(invest.amount), 0) as amount
+        from invest join loan on invest.loan_id = loan.id
+        <where>
+            <if test="loanId != null">
+                and loan.id = #{loanId}
+            </if>
+            <if test="investorLoginName != null and investorLoginName != ''">
+                and invest.login_name = #{investorLoginName}
+            </if>
+            <if test="loanStatus != null">
+                and loan.status = #{loanStatus}
+            </if>
+            <if test="investStatus != null">
+                and invest.status = #{investStatus}
+            </if>
+            <if test="channel != null and channel != ''">
+                and invest.channel = #{channel}
+            </if>
+            <if test="source != null and source != ''">
+                and invest.source = #{source}
+            </if>
+            <if test="role != null and role != ''">
+                and exists (select 1 from user_role where user_role.login_name=invest.login_name and user_role.role= #{role} )
+            </if>
+            <if test="startTime != null &amp;&amp; endTime != null">
+                and invest.created_time between #{startTime} and #{endTime}
+            </if>
+        </where>
+    </select>
+
     <select id="sumSuccessNewbieInvestCountByLoginName" parameterType="String" resultType="int">
         select count(*)
         from invest
@@ -231,5 +262,13 @@
 
     <select id="findAllChannels" resultType="java.lang.String">
         select distinct channel from invest where channel is not NULL
+    </select>
+
+    <select id="countAutoInvest" parameterType="map" resultType="long">
+        select count(*)
+        from invest
+        where loan_id = #{loanId}
+        and invest.login_name = #{loginName}
+        and source = 'AUTO'
     </select>
 </mapper>

@@ -31,12 +31,13 @@
     {"title":"个人资料", "url":"/personal-info", "role":"'INVESTOR', 'LOANER'"},
     {"title":"自动投标", "url":"/investor/auto-invest", "role":"'INVESTOR'"},
     {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'INVESTOR', 'LOANER'"}]},
-    {"title":"推荐奖励", "url":"/events/refer-reward-instruction"},
+    {"title":"推荐奖励", "url":"/activity/refer-reward"},
     {"title":"关于我们", "url":"/about/company", "leftNavs":[
     {"title":"公司介绍", "url":"/about/company"},
     {"title":"团队介绍", "url":"/about/team"},
     {"title":"拓天公告", "url":"/about/notice"},
     {"title":"服务费用", "url":"/about/service-fee"},
+    {"title":"常见问题", "url":"/about/qa"},
     {"title":"联系我们", "url":"/about/contact"}
     ]}]/>
 
@@ -47,7 +48,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 
     <#if responsive??>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     </#if>
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
@@ -94,20 +95,46 @@
 <script type="text/javascript" charset="utf-8">
     var staticServer = '${staticServer}';
     <@security.authorize access="isAuthenticated()">
-    document.getElementById("logout-link").addEventListener('click', function (event) {
+    document.getElementById("logout-link").onclick=function (event) {
         event.preventDefault();
         document.getElementById("logout-form").submit();
-    });
+    };
     </@security.authorize>
 
+    adjustMobileHideHack();
+    function adjustMobileHideHack() {
+
+        //this function will be remove when all pages are responsive
+        var bodyDom=document.getElementsByTagName("body")[0],
+            userAgent = navigator.userAgent.toLowerCase(),
+            metaTags=document.getElementsByTagName('meta'),
+            metaLen=metaTags.length,isResponse=false,isPC=false,i=0;
+        if(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
+            isPC=false;
+        }
+        else {
+            isPC=true;
+        }
+        for(;i<metaLen;i++) {
+            if(metaTags[i].getAttribute('name')=='viewport') {
+                isResponse=true;
+            }
+        }
+        bodyDom.className=(!isResponse&&!isPC)?'page-width':'';
+    }
+
+    window.$ = function(id) {
+        return document.getElementById(id);
+    };
+
     function phoneLoadFun() {
-        document.getElementById('closeDownloadBox').addEventListener('click',function(event) {
+
+        window.$('closeDownloadBox').onclick=function(event) {
             event.stopPropagation();
             event.preventDefault();
             this.parentElement.style.display='none';
-        });
-
-        document.getElementById('btnExperience').addEventListener('click',function(event) {
+        };
+        window.$('btnExperience').onclick=function(event) {
             event.stopPropagation();
             event.preventDefault();
             var userAgent = navigator.userAgent.toLowerCase();
@@ -116,20 +143,20 @@
             } else if (userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
                 location.href = "http://itunes.apple.com/us/app/id1039233966";
             }
-        });
+        };
 
-        document.getElementById('showMainMenu').addEventListener('click',function(event) {
+        window.$('showMainMenu').onclick=function(event) {
             event.stopPropagation();
             event.preventDefault();
             this.nextElementSibling.style.display='block';
 
-        });
+        };
 
     }
-    var imgDom=document.getElementById('iphone-app-img'),
-            TopMainMenuList=document.getElementById('TopMainMenuList');
+    var imgDom=window.$('iphone-app-img'),
+        TopMainMenuList=window.$('TopMainMenuList');
 
-    document.getElementById('iphone-app-pop').addEventListener('click',function(event) {
+    window.$('iphone-app-pop').onclick=function(e) {
         event.stopPropagation();
         event.preventDefault();
 
@@ -139,18 +166,29 @@
         else {
             imgDom.style.display='block';
         }
-    });
-    document.getElementsByTagName("body")[0].addEventListener('click',function() {
-        var userAgent = navigator.userAgent.toLowerCase();
-        if(event.target.tagName=='LI' ) {
+    };
+
+    document.getElementsByTagName("body")[0].onclick=function(e) {
+        var userAgent = navigator.userAgent.toLowerCase(),
+                event = e || window.event,
+                target = event.srcElement || event.target;
+        if(target.tagName=='LI' ) {
             return;
         }
         imgDom.style.display='none';
         if(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
-            TopMainMenuList.style.display='none';
+
+            //判断是否为viewport
+            var metaTags=document.getElementsByTagName('meta'),
+                    metaLen=metaTags.length,i=0;
+            for(;i<metaLen;i++) {
+                if(metaTags[i].getAttribute('name')=='viewport') {
+                    TopMainMenuList.style.display='none';
+                }
+            }
         }
 
-    });
+    };
 
     phoneLoadFun();
 

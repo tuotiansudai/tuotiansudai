@@ -4,14 +4,18 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric'], function ($,layer) {
          submitElement = $('.withdraw-submit',$withdraw),
          formElement = $('form',$withdraw),
          errorElement = $('.error',$withdraw),
-         actualAmountElement = $('.actual-amount',$withdraw);
+         actualAmountElement = $('.actual-amount',$withdraw),
          withdrawFeeElement = $('.withdraw-fee',$withdraw);
 
         amountInputElement.autoNumeric("init");
 
         amountInputElement.keyup(function () {
-            var amount = parseFloat(amountInputElement.autoNumeric("get"));
-            var withdrawFee = Number(withdrawFeeElement.html());
+            var reg=/.\d*$/,
+                amount = parseFloat(amountInputElement.autoNumeric("get")),
+                withdrawFee = Number(withdrawFeeElement.html());
+            if(reg.exec(amount)[0].length>3) {
+                return;
+            }
             if (isNaN(amount) || amount <= withdrawFee) {
                 submitElement.prop('disabled',true);
                 errorElement.show();

@@ -1,5 +1,4 @@
 @import 'variables';
-
 /* if use the css, the page will be show full screen */
 .full-screen {
     width:100%!important;
@@ -8,7 +7,6 @@
 .footer-container {
     margin-top:0;
 }
-//home page
 .home-page-container {
     .banner-box {
         height:350px;
@@ -68,25 +66,44 @@
             padding: 50px 50px 10px;
             background: rgba(255,255,255,0.8);
             border-radius: 10px;
-            .percent {
-                color: #ff7200;
-                font-size: 60px;
-                line-height: 1;
-                font-weight: bold;
+            .num-text{
+                float: left;
+                width: 100%;
+                margin:0;
+                .percent {
+                    color: #ff7200;
+                    font-size: 60px;
+                    line-height: 1;
+                    font-weight: bold;
+                }
+                .num-unit{
+                    font-size:26px;
+                    color:#666;
+                    font-weight: bold;
+                }
             }
             .h-title {
-                color: #4c4c4c;
-                font-size: 26px;
-                font-weight: normal;
+                float: left;
+                text-align: center;
+                width: 100%;
+                color: #666;
+                font-size: 24px;
             }
             .btn-normal {
                 width:100%;
                 padding: 8px 0;
-                margin-top:25px;
             }
             i {
+                float: left;
+                width: 100%;
                 display: block;
                 padding-top:15px;
+            }
+            .welcome-text{
+                float: left;
+                width: 100%;
+                position: relative;
+                margin: 0 0 10px 0;
             }
         }
     }
@@ -136,7 +153,6 @@
             box-sizing: border-box;
             .product-box-list {
                 width: 76%;
-                //overflow: hidden;
                 .product-box-inner {
                     width:105%;
                     box-sizing: border-box;
@@ -301,7 +317,19 @@
         }
     }
 }
-
+@media \0screen\,screen\9 {
+  .register-ad-box{
+    background-color:#fff;
+    filter:Alpha(opacity=80);
+    position:static;
+    *zoom:1;
+  }
+  .register-ad-box{
+    p{
+        position: relative;
+    }
+  }  
+}
 /* user guide page */
 .new-guide-container {
     color: #2f2f2f;
@@ -321,7 +349,7 @@
         }
     }
 
-    .contentA {
+    .content-a {
         background: #f1f1f1;
         img {
             margin:20px auto;
@@ -618,6 +646,7 @@
 
 /* refer reward page */
 .refer-reward-instruction {
+    overflow: hidden;
   .banner-box {
     img {
       width:100%;
@@ -732,9 +761,6 @@ height:150px;
                             position: relative;
                             padding-bottom:22px;
                             text-align: left;
-                            .pad-m {
-                                padding-left:20px;
-                            }
                             .pr-title {
                                 font-size: 15px;
                                 text-overflow: ellipsis;
@@ -767,13 +793,13 @@ height:150px;
                                     text-align: left;
                                     em {
                                         color: #ff3333;
-                                        font-size: 14px;
+                                        font-size: 12px;
                                         line-height: 1;
                                         font-weight: bold;
                                         padding-top: 10px;
                                         display: inline-block;
                                         b {
-                                            font-size:26px;
+                                            font-size:20px;
                                             line-height:0.5;
                                         }
                                     }
@@ -803,7 +829,7 @@ height:150px;
                                         i {
                                             color: #ff3333;
                                             font-weight: bold;
-                                            font-size: 22px;
+                                            font-size: 20px;
                                         }
                                         span {
                                             display: none;
@@ -812,7 +838,7 @@ height:150px;
                                     }
                                     &.dl-amount {
                                         position: absolute;
-                                        left: 21px;
+                                        left: 12px;
                                         top: 90px;
                                         width:auto;
                                         i{
@@ -833,7 +859,7 @@ height:150px;
                                 }
                             }
                             .pad-m {
-                                padding:10px;
+                                padding:10px 0px;
                             }
                             .btn-normal {
                                 width:auto;
@@ -880,12 +906,37 @@ height:150px;
         left: 160px;
         position: absolute;
         .p-title {
-
             span.fl {
                 display: none;
             }
             .point {
                 color: #ff752a;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .refer-reward-instruction {
+        .refer-reward-bg {
+            background: #fff;
+            .refer-reward-inner {
+                width:100%;
+                img {
+                    width:95%;
+                }
+            }
+        }
+    }
+}
+
+@media screen\0  {
+    //IE8-10
+    .home-page-container {
+        .main-advantage {
+            dl dd {
+                float: left;
+                margin-bottom:30px;
             }
         }
 

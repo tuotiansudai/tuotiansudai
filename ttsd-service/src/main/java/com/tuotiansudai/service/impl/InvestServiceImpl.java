@@ -28,10 +28,10 @@ import java.util.List;
 @Service
 public class InvestServiceImpl implements InvestService {
 
+    static Logger logger = Logger.getLogger(InvestServiceImpl.class);
+
     @Autowired
     private PayWrapperClient payWrapperClient;
-
-    static Logger logger = Logger.getLogger(InvestServiceImpl.class);
 
     @Autowired
     private LoanMapper loanMapper;
@@ -156,7 +156,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public BasePaginationDataDto<InvestPaginationItemDataDto> getInvestPagination(Long loanId, String investorLoginName,
+    public InvestPaginationDataDto getInvestPagination(Long loanId, String investorLoginName,
                                                                                   String channel, Source source, String role,
                                                                                   int index, int pageSize,
                                                                                   Date startTime, Date endTime,
@@ -178,12 +178,14 @@ public class InvestServiceImpl implements InvestService {
         String strSource = source == null ? null : source.name();
 
         long count = investMapper.findCountInvestPagination(loanId, investorLoginName, channel, strSource, role, startTime, endTime, investStatus, loanStatus);
-
+        long investAmountSum = 0;
 
         if (count > 0) {
             int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
             items = investMapper.findInvestPagination(loanId, investorLoginName, channel, strSource, role, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus);
+
+            investAmountSum = investMapper.sumInvestAmount(loanId, investorLoginName, channel, strSource, role, startTime, endTime, investStatus, loanStatus);
         }
 
         List<InvestPaginationItemDataDto> records = Lists.transform(items, new Function<InvestPaginationItemView, InvestPaginationItemDataDto>() {
@@ -193,7 +195,8 @@ public class InvestServiceImpl implements InvestService {
             }
         });
 
-        BasePaginationDataDto<InvestPaginationItemDataDto> dto = new BasePaginationDataDto<>(index, pageSize, count, records);
+        InvestPaginationDataDto dto = new InvestPaginationDataDto(index, pageSize, count, records);
+        dto.setSumAmount(investAmountSum);
 
         dto.setStatus(true);
 

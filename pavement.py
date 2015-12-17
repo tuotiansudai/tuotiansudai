@@ -193,6 +193,22 @@ def cideploy():
         print e
 
 
+@task
+def deployall():
+    """
+    Deploy all components to PROD from CI
+    """
+    from paver.shell import sh
+
+    try:
+        ci_file = open('/workspace/ci/def', 'rb')
+        pwd = ci_file.readline().strip()
+        sh("/usr/local/bin/fab v2deploy -p {0} --show=debug".format(pwd))
+        ci_file.close()
+    except IOError as e:
+        print e
+
+
 def generate_git_log_file():
     from paver.shell import sh
 

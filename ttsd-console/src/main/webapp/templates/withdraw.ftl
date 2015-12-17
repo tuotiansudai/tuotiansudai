@@ -73,6 +73,9 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
+                <th colspan="10">合计提现金额：${sumAmount/100} 元 &nbsp;&nbsp;&nbsp; 合计提现手续费：${sumFee/100} 元</th>
+            </tr>
+            <tr>
                 <th>提现编号</th>
                 <th>申请时间</th>
                 <th>初审时间</th>
@@ -120,7 +123,7 @@
             <ul class="pagination">
                 <li>
                     <#if pagination.hasPreviousPage >
-                    <a href="?withdrawId=${withdrawId!}&loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&status=${status!}&pageSize=${pageSize}&index=${index-1}"
+                    <a href="?withdrawId=${withdrawId!}&loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&source=${source!}&status=${status!}&pageSize=${pageSize}&index=${index-1}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -131,7 +134,7 @@
                 <li><a>${pagination.index}</a></li>
                 <li>
                     <#if pagination.hasNextPage >
-                    <a href="?withdrawId=${withdrawId!}&loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&status=${status!}&pageSize=${pageSize}&index=${index+1}"
+                    <a href="?withdrawId=${withdrawId!}&loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&source=${source!}&status=${status!}&pageSize=${pageSize}&index=${index+1}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

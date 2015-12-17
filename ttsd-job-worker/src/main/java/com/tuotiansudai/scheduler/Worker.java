@@ -1,25 +1,24 @@
 package com.tuotiansudai.scheduler;
 
-import com.tuotiansudai.job.AutoReFreshAreaByMobileJob;
-import com.tuotiansudai.job.CalculateDefaultInterestJob;
-import com.tuotiansudai.job.InvestCallback;
-import com.tuotiansudai.job.JobType;
+import com.google.common.collect.Maps;
+import com.tuotiansudai.scheduler.listener.JobMonitorListener;
+import com.tuotiansudai.scheduler.plugin.JobInitPlugin;
+import com.tuotiansudai.scheduler.plugin.JobMonitorPlugIn;
 import com.tuotiansudai.util.JobManager;
 import com.tuotiansudai.util.quartz.AutowiringSpringBeanJobFactory;
 import com.tuotiansudai.util.quartz.JobStoreBuilder;
 import com.tuotiansudai.util.quartz.SchedulerBuilder;
 import com.tuotiansudai.util.quartz.ThreadPoolBuilder;
 import org.apache.log4j.Logger;
-import org.quartz.CronScheduleBuilder;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.SimpleScheduleBuilder;
 import org.quartz.spi.JobStore;
+import org.quartz.spi.SchedulerPlugin;
 import org.quartz.spi.ThreadPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.TimeZone;
+import java.util.Map;
 
 @Component
 public class Worker {
@@ -38,22 +37,16 @@ public class Worker {
     @Autowired
     private JobManager jobManager;
 
+    @Autowired
+    private JobMonitorListener jobMonitorListener;
+
     public void start() {
         logger.info("starting jobs");
-        String[] schedulerNames = JobConfig.schedulerNames.split(",");
+        String[] schedulerNames = JobConfig.schedulerNames.trim().split("\\s*,\\s*");
         ThreadPool threadPool = ThreadPoolBuilder.buildThreadPool(JobConfig.threadCount, JobConfig.threadPriority);
         for (String schedulerName : schedulerNames) {
             logger.info("prepare scheduler for " + schedulerName);
-            if (JobType.OverInvestPayBack.name().equalsIgnoreCase(schedulerName.trim())) {
-                createInvestCallBackJobIfNotExist();
-            }
-            if (JobType.CalculateDefaultInterest.name().equalsIgnoreCase(schedulerName.trim())) {
-                this.createCalculateDefaultInterest();
-            }
-            if (JobType.AutoReFreshAreaByMobile.name().equalsIgnoreCase(schedulerName.trim())){
-                createRefreshAreaByMobile();
-            }
-            String fullSchedulerName = "Scheduler-" + schedulerName.trim();
+            String fullSchedulerName = "Scheduler-" + schedulerName;
             JobStore jobStore = jobStoreBuilder.buildJdbcJobStore(
                     fullSchedulerName,
                     JobConfig.misfireThreshold, JobConfig.maxMisfiresToHandleAtATime,
@@ -67,49 +60,15 @@ public class Worker {
 
     private void startScheduler(String schedulerName, ThreadPool threadPool, JobStore jobStore) {
         try {
-            Scheduler scheduler = schedulerBuilder.buildScheduler(schedulerName, threadPool, jobStore);
+            Map<String, SchedulerPlugin> schedulerPluginMap = Maps.newHashMap();
+            schedulerPluginMap.put(JobMonitorPlugIn.class.getName(), new JobMonitorPlugIn(jobMonitorListener));
+            schedulerPluginMap.put(JobInitPlugin.class.getName(), new JobInitPlugin(jobManager));
+
+            Scheduler scheduler = schedulerBuilder.buildScheduler(schedulerName, threadPool, jobStore, schedulerPluginMap, true);
             scheduler.setJobFactory(jobFactory);
             scheduler.start();
         } catch (SchedulerException e) {
             logger.error("start schedulers : " + schedulerName + " failed", e);
         }
     }
-
-    private void createInvestCallBackJobIfNotExist() {
-        final JobType jobType = JobType.OverInvestPayBack;
-        final String jobGroup = InvestCallback.JOB_GROUP;
-        final String jobName = InvestCallback.JOB_NAME;
-        try {
-            jobManager.newJob(jobType, InvestCallback.class)
-                    .replaceExistingJob(true)
-                    .runWithSchedule(SimpleScheduleBuilder
-                            .repeatSecondlyForever(InvestCallback.RUN_INTERVAL_SECONDS)
-                            .withMisfireHandlingInstructionIgnoreMisfires())
-                    .withIdentity(jobGroup, jobName)
-                    .submit();
-        } catch (SchedulerException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void createCalculateDefaultInterest() {
-        try {
-            jobManager.newJob(JobType.CalculateDefaultInterest, CalculateDefaultInterestJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 1 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
-                    .withIdentity(JobType.CalculateDefaultInterest.name(), JobType.CalculateDefaultInterest.name()).submit();
-        } catch (SchedulerException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void createRefreshAreaByMobile(){
-        try {
-            jobManager.newJob(JobType.AutoReFreshAreaByMobile, AutoReFreshAreaByMobileJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 2 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
-                    .withIdentity(JobType.AutoReFreshAreaByMobile.name(), JobType.AutoReFreshAreaByMobile.name()).submit();
-        } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(),e);
-        }
-    }
-
 }

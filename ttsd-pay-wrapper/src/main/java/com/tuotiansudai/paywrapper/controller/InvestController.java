@@ -40,6 +40,8 @@ public class InvestController {
             payDataDto.setStatus(true);
         } catch (Exception e) {
             payDataDto.setStatus(false);
+            payDataDto.setMessage(e.getLocalizedMessage());
+            logger.error("auto invest failed", e);
         }
         return baseDto;
     }

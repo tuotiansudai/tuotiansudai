@@ -33,6 +33,7 @@ public class PaySyncClient {
     @Autowired
     PayGateWrapper payGateWrapper;
 
+    @SuppressWarnings(value = "unchecked")
     public <T extends BaseSyncResponseModel> T send(Class<? extends BaseSyncMapper> baseMapperClass, BaseSyncRequestModel requestModel, Class<T> responseModelClass) throws PayException {
         ReqData reqData;
         try {
@@ -57,18 +58,22 @@ public class PaySyncClient {
 
         String responseBodyString;
         try {
+            updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.SENT);
             Response response = httpClient.newCall(request).execute();
-            responseBodyString = response.body().string();
             updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.SUCCESS);
+            responseBodyString = response.body().string();
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.FAILURE);
+            throw new PayException(e);
+        }
+
+        try {
             Map<String, String> resData = payGateWrapper.getResData(responseBodyString);
             logger.debug(resData);
             return createResponse(baseMapperClass, resData, responseModelClass, requestModel.getId());
         } catch (RetDataException | InstantiationException | IllegalAccessException e) {
             logger.error(e.getLocalizedMessage(), e);
-            throw new PayException(e);
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
-            updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.FAILED);
             throw new PayException(e);
         }
     }

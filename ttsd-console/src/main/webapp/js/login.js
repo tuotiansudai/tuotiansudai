@@ -8,6 +8,11 @@ $(function() {
         $('.captcha').val('');
     });
 
+    String.prototype.trim = function()
+    {
+        return this.replace(/(^\s*)|(\s*$)/g, "");
+    }
+
     var login = function () {
         if ($('input[name="username"]').val().trim() === ''
             || $('input[name="password"]').val().trim() === ''

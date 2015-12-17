@@ -20,7 +20,10 @@ var require = {
         'ueditor.parse': '/js/libs/ueditor/ueditor.parse.min',
         'Validform': '/js/libs/Validform_v5.3.2_min',
         'Validform_Datatype':'/js/libs/Validform_Datatype',
-        'autoNumeric': '/js/libs/autoNumeric-2.0-BETA'
+        'autoNumeric': '/js/libs/autoNumeric-2.0-BETA',
+        'echarts': '/js/libs/echarts/dist/echarts.min',
+        'loadEcharts':'/js/loadEcharts',
+        'underscore': '/js/libs/underscore-1.8.3.min'
     },
     'waitSeconds':0,
     'shim': {

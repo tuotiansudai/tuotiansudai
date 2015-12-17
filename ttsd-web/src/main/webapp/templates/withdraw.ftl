@@ -12,9 +12,8 @@
                 提现费用：<em class="withdraw-fee">${withdrawFee}</em> 元（每笔） <br/>
                 实际到账：<em class="actual-amount">0.00</em> 元
             </div>
-            <div class="tc">
-                <button class="withdraw-submit btn-normal" disabled="disabled">确认提现</button>
-            </div>
+            <button class="withdraw-submit btn-normal" type="button" disabled="disabled">确认提现</button>
+
             <div class="clear-blank"></div>
             <form action="/withdraw" method="post" target="_blank">
                 <input name="amount" type="hidden" value=""/>
@@ -38,7 +37,7 @@
     <div class="ret">
         <p>充值成功：<a href="/account" class="btn-success"  data-category="确认成功" data-label="withdraw">确认成功</a></p>
         <p>充值失败：<a href="" class="btn-normal" data-category="重新提现" data-label="withdraw">重新提现</a>
-            <span class="help">查看<a href="#"  target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
+            <span class="help">查看<a href="/about/qa"  target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
         </p>
         <span>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</span>
     </div>

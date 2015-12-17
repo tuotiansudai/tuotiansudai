@@ -84,6 +84,9 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
+                <th colspan="12">合计投资金额：${data.sumAmount/100} 元</th>
+            </tr>
+            <tr>
                 <th>项目编号</th>
                 <th>项目名称</th>
                 <th>期数</th>
@@ -133,12 +136,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="?index=${data.index - 1}
-                        <#if loanId??>loanId=${loanId}&</#if>
-                        <#if loginName??>loginName=${loginName}&</#if>
-                        <#if startTime??>startTime=${startTime}&</#if>
-                        <#if endTime??>endTime=${endTime!}&</#if>
-                        <#if investStatus??>investStatus=${investStatus}&</#if>" aria-label="Previous">
+                    <a href="?index=${data.index - 1}&<#if loanId??>loanId=${loanId}&</#if><#if loginName??>loginName=${loginName}&</#if><#if startTime??>startTime=${startTime}&</#if><#if endTime??>endTime=${endTime!}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if>" aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
@@ -148,12 +146,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                    <a href="?index=${data.index + 1}
-                        <#if loanId??>loanId=${loanId}&</#if>
-                        <#if loginName??>loginName=${loginName}&</#if>
-                        <#if startTime??>startTime=${startTime}&</#if>
-                        <#if endTime??>endTime=${endTime!}&</#if>
-                        <#if investStatus??>investStatus=${investStatus}&</#if>" aria-label="Next">
+                    <a href="?index=${data.index + 1}&<#if loanId??>loanId=${loanId}&</#if><#if loginName??>loginName=${loginName}&</#if><#if startTime??>startTime=${startTime}&</#if><#if endTime??>endTime=${endTime!}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if>" aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>

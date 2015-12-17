@@ -29,6 +29,11 @@
     height:30px;
     line-height:30px;
     margin: 0 auto;
+    .service-time {
+      display: inline-block;
+      line-height:2;
+      background: #333;
+    }
        time {
           color: #979797;
           margin-left: 8px;
@@ -188,14 +193,6 @@
         }
       }
     }
-  }
-  .content-container {
-    //width: 833px;
-    //border-radius: 5px;
-    //border: 1px solid #ccc;
-    //background: nth($baseColor,1);
-    //height: auto;
-    //overflow: auto;
   }
 
   .about-us-container,.content-container {

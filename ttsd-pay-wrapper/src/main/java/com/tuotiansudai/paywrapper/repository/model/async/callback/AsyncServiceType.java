@@ -3,7 +3,7 @@ package com.tuotiansudai.paywrapper.repository.model.async.callback;
 public enum AsyncServiceType {
     MER_BIND_CARD_NOTIFY("mer_bind_card_notify","绑卡换卡结果后台通知商户");
 
-    private AsyncServiceType(String code,String description){
+    AsyncServiceType(String code, String description){
         this.code = code;
         this.description = description;
     }

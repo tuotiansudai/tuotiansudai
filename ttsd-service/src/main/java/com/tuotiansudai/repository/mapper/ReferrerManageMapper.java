@@ -18,6 +18,16 @@ public interface ReferrerManageMapper {
                                 @Param("level") Integer level, @Param("rewardStartTime") Date rewardStartTime,
                                 @Param("rewardEndTime") Date rewardEndTime, @Param("role") Role role, @Param("source") Source source);
 
+    long findReferrerManageInvestAmountSum(@Param("referrerLoginName") String referrerLoginName, @Param("investLoginName") String investLoginName,
+                                @Param("investStartTime") Date investStartTime, @Param("investEndTime") Date investEndTime,
+                                @Param("level") Integer level, @Param("rewardStartTime") Date rewardStartTime,
+                                @Param("rewardEndTime") Date rewardEndTime, @Param("role") Role role, @Param("source") Source source);
+
+    long findReferrerManageRewardAmountSum(@Param("referrerLoginName") String referrerLoginName, @Param("investLoginName") String investLoginName,
+                                @Param("investStartTime") Date investStartTime, @Param("investEndTime") Date investEndTime,
+                                @Param("level") Integer level, @Param("rewardStartTime") Date rewardStartTime,
+                                @Param("rewardEndTime") Date rewardEndTime, @Param("role") Role role, @Param("source") Source source);
+
     List<ReferrerManageView> findReferrerManage(@Param("referrerLoginName") String referrerLoginName, @Param("investLoginName") String investLoginName,
                                                 @Param("investStartTime") Date investStartTime, @Param("investEndTime") Date investEndTime,
                                                 @Param("level") Integer level, @Param("rewardStartTime") Date rewardStartTime,

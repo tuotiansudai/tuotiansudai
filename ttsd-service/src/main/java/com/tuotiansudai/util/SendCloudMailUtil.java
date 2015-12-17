@@ -50,6 +50,5 @@ public class SendCloudMailUtil {
             logger.error(e.getLocalizedMessage(), e);
         }
         return false;
-
     }
 }

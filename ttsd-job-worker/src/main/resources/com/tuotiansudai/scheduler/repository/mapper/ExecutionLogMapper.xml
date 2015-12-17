@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.scheduler.repository.mapper.ExecutionLogMapper">
+    <resultMap id="executionLogMap" type="ExecutionLogModel">
+        <result column="ID" property="id"></result>
+        <result column="SCHED_NAME" property="schedName"></result>
+        <result column="TRIGGER_NAME" property="triggerName"></result>
+        <result column="TRIGGER_GROUP" property="triggerGroup"></result>
+        <result column="JOB_NAME" property="jobName"></result>
+        <result column="JOB_GROUP" property="jobGroup"></result>
+        <result column="FIRE_TIME" property="fireTime"></result>
+        <result column="DESCRIPTION" property="description"></result>
+        <result column="JOB_CLASS_NAME" property="jobClassName"></result>
+        <result column="EXECUTE_STATUS" property="executeStatus"></result>
+        <result column="JOB_DATA" property="jobData"></result>
+        <result column="EXCEPTION" property="exception"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="ExecutionLogModel" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO QRTZ_EXECUTION_LOGS (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP, JOB_NAME, JOB_GROUP, FIRE_TIME, DESCRIPTION, JOB_CLASS_NAME, EXECUTE_STATUS, JOB_DATA)
+        VALUES (#{schedName}, #{triggerName}, #{triggerGroup}, #{jobName}, #{jobGroup}, #{fireTime}, #{description}, #{jobClassName}, #{executeStatus}, #{jobData})
+    </insert>
+
+    <update id="update" parameterType="map">
+        UPDATE QRTZ_EXECUTION_LOGS
+        SET EXECUTE_STATUS = #{executeStatus}, EXCEPTION = #{exception}
+        WHERE ID = #{id}
+    </update>
+
+</mapper>

@@ -6,6 +6,7 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.List;
 
 @Service
@@ -37,15 +39,20 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
     private LoanRepayMapper loanRepayMapper;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void generateRepay(long loanId) {
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoanId(loanId);
+
+        if (CollectionUtils.isNotEmpty(loanRepayModels) || CollectionUtils.isNotEmpty(investRepayModels)) {
+            logger.error(MessageFormat.format("Loan Repay is exist (loanId = {0})", String.valueOf(loanId)));
+            return;
+        }
+
         LoanModel loanModel = loanMapper.findById(loanId);
         List<InvestModel> successInvestModels = investMapper.findSuccessInvestsByLoanId(loanId);
         boolean isPeriodUnitDay = LoanPeriodUnit.DAY == loanModel.getType().getLoanPeriodUnit();
         int totalPeriods = loanModel.calculateLoanRepayTimes();
-
-        List<LoanRepayModel> loanRepayModels = Lists.newArrayList();
-        List<InvestRepayModel> investRepayModels = Lists.newArrayList();
 
         DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().minusSeconds(1);
         for (int index = 0; index < totalPeriods; index++) {

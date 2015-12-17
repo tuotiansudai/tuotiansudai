@@ -8,6 +8,12 @@ html, ul, li, ol, dl, dd, dt, p, h3, h4, h5, h1, h2, span, i, b, strong, em, inp
   outline: none;
   font-style: normal;
 }
+/*去掉苹果的默认UI来渲染按钮*/
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+button { -webkit-appearance: none; }
+
 article,aside,canvas,details,figcaption,figure,
 footer,header,menu,nav,section,summary {
   display:block;
@@ -68,6 +74,9 @@ p {
   }
   &.notice {
     line-height: 2.4;
+  }
+  &.mb-0{
+    margin-bottom: 0;
   }
 }
 .text-s {
@@ -165,14 +174,17 @@ form {
   filter: gray;
 }
 
-.layui-layer-page .layui-layer-content {
-  overflow: hidden!important;
-}
-
 .page-width {
   width:1000px;
   @include center-block;
   box-sizing: border-box;
+}
+
+.loading {
+  background: #fff url("/images/icons/loading.gif") no-repeat center center!important;
+  cursor: default!important;
+  border: 0!important;
+  text-indent: -9999px;
 }
 
 

@@ -67,7 +67,7 @@
         <intercept-url pattern="/login/**" access="isAnonymous()"/>
         <intercept-url pattern="/login-handler" access="isAnonymous()"/>
         <intercept-url pattern="/logout" access="not isAnonymous()"/>
-        <intercept-url pattern="/register/account/**" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER', 'ADMIN', 'STAFF')"/>
+        <intercept-url pattern="/register/account/**" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/monitor/**" access="permitAll()"/>
         <intercept-url pattern="/mobile-retrieve-password/**" access="isAnonymous()"/>
         <intercept-url pattern="/user-bill/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
@@ -84,6 +84,9 @@
         <intercept-url pattern="/loan-list/**" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/loan/**" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/referrer/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+
+        <intercept-url pattern="/contract/investor/**" access="hasAuthority('INVESTOR')"/>
+        <intercept-url pattern="/contract/loaner/**" access="hasAuthority('LOANER')"/>
 
         <intercept-url pattern="/**" access="permitAll()"/>
         <csrf/>

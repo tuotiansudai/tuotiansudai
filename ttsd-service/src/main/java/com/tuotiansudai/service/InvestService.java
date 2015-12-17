@@ -33,7 +33,7 @@ public interface InvestService {
                                    Date startTime, Date endTime,
                                    InvestStatus investStatus, LoanStatus loanStatus);
 
-    BasePaginationDataDto<InvestPaginationItemDataDto> getInvestPagination(Long loanId, String investorLoginName,
+    InvestPaginationDataDto getInvestPagination(Long loanId, String investorLoginName,
                                                                            String channel,
                                                                            Source source,
                                                                            String role,

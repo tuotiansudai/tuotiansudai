@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.service.InvestService;
+import com.tuotiansudai.paywrapper.service.LoanService;
 import com.tuotiansudai.paywrapper.service.RepayService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class JobController {
     static Logger logger = Logger.getLogger(JobController.class);
 
     @Autowired
+    private LoanService loanService;
+
+    @Autowired
     private InvestService investService;
 
     @Resource(name = "normalRepayServiceImpl")
@@ -39,10 +43,10 @@ public class JobController {
     @RequestMapping(value = "/post_normal_repay", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> postNormalRepay(@RequestBody long loanRepayId) {
-        normalRepayService.postRepayCallback(loanRepayId);
+        boolean isSuccess = normalRepayService.postRepayCallback(loanRepayId);
         BaseDto<PayDataDto> dto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
-        dataDto.setStatus(true);
+        dataDto.setStatus(isSuccess);
         dto.setData(dataDto);
         return dto;
     }
@@ -50,11 +54,22 @@ public class JobController {
     @RequestMapping(value = "/post_advance_repay", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> postAdvanceRepay(@RequestBody long loanRepayId) {
-        advanceRepayService.postRepayCallback(loanRepayId);
+        boolean isSuccess = advanceRepayService.postRepayCallback(loanRepayId);
         BaseDto<PayDataDto> dto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
-        dataDto.setStatus(true);
+        dataDto.setStatus(isSuccess);
         dto.setData(dataDto);
+        return dto;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/loan-out-success-notify", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> loanOut(@RequestBody long loanId) {
+        boolean isSuccess = loanService.postLoanOut(loanId);
+        BaseDto<PayDataDto> dto = new BaseDto<>();
+        PayDataDto dataDto = new PayDataDto();
+        dto.setData(dataDto);
+        dataDto.setStatus(isSuccess);
         return dto;
     }
 }

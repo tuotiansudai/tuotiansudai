@@ -13,7 +13,7 @@ require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refe
         var paginationElement = paginationElementRelation;
         var template = referRelationTemplate;
 
-        var today = moment().format('YYYY-MM-DD'); // 今天
+        var today = moment().format('YYYY-MM-DD');
         dataPickerElement.dateRangePicker({separator: ' ~ '});
 
         $(".search-type .select-item").click(function () {
@@ -57,16 +57,18 @@ require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refe
 
                 });
             });
-            $('.search-content-tab').delegate('span.loan-name-col','mouseover',function() {
+            $('.search-content-tab').on('mouseenter','span.loan-name-col',function() {
                 layer.closeAll('tips');
-                layer.tips(this.innerHTML, this, {
+                if($(this).text().length>13){
+                    layer.tips($(this).text(), $(this), {
                         tips: [1, '#efbf5c'],
                         time: 2000,
                         tipsMore: true,
                         area: 'auto',
                         maxWidth: '500'
                     });
-            })
+                }
+            });
         };
 
         loadReferData();

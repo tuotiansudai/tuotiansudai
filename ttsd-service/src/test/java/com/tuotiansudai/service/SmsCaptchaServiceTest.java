@@ -78,7 +78,6 @@ public class SmsCaptchaServiceTest {
 
         assertFalse(dto.getData().getStatus());
         assertNotNull(smsCaptchaModel);
-
     }
 
     public SmsCaptchaModel getSmsCaptchaModel() {

@@ -5,6 +5,7 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
             $detailHead=$('h2',$noticeDetail),
             $detailCon=$('.detail-content',$noticeDetail),
             $footer=$('footer',$noticeDetail),
+            $problemList=$('.problem-list dt span'),
             paginationElement = $('.pagination');
 
         /* notice list*/
@@ -13,6 +14,7 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
             paginationElement.loadPagination(requestData, function (data) {
                 var html = Mustache.render(ListTemplate, data);
                 $noticeList.html(html);
+                $noticeList.find('time').text($noticeList.find('time').text().substr(0,10));
             });
         }
 
@@ -50,5 +52,22 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
                 window.location="/";
             },10000);
         }
+
+        $problemList.on('click', function(e) {
+            e.preventDefault();
+            var $self=$(this),
+                $dtDom=$self.parent('dt'),
+                $parents=$dtDom.parent();
+
+                if($dtDom.next().hasClass('active')){
+                    $dtDom.next().removeClass('active');
+                    $dtDom.find('i').removeClass('fa-toggle-down').addClass('fa-toggle-up');
+                }else{
+                    $parents.find('dd').removeClass('active');
+                    $parents.find('i').removeClass('fa-toggle-down').addClass('fa-toggle-up');
+                    $dtDom.next().addClass('active');
+                    $dtDom.find('i').removeClass('fa-toggle-up').addClass('fa-toggle-down');
+                }
+        });
     });
 });

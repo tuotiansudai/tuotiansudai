@@ -29,7 +29,7 @@ class InvestReferrerRewardMigrate(BaseMigrate):
                 int(round(old_row['bonus'] * 100)),
                 old_row['referrer_id'].lower(),
                 self.ROLE_MAPPING[old_row['role_name']],
-                self.STATUS_MAPPING[old_row['status']],
+                self.STATUS_MAPPING[old_row['status']] if old_row['bonus'] > 0 else 'SUCCESS',
                 old_row['time'])
 
     def before(self):

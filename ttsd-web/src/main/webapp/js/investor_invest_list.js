@@ -73,7 +73,7 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
                         layer.open({
                             type: 1,
                             title: false,
-                            offset: '100px',
+                            offset: '80px',
                             area: ['1000px'],
                             shadeClose: true,
                             content: html
@@ -82,6 +82,18 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
                     }
                 });
             });
+        });
+        $('.invest-list').on('mouseenter','.project-name',function() {
+            layer.closeAll('tips');
+            if($(this).text().length>15){
+                layer.tips($(this).text(), $(this), {
+                    tips: [1, '#efbf5c'],
+                    time: 2000,
+                    tipsMore: true,
+                    area: 'auto',
+                    maxWidth: '500'
+                });
+            }
         });
     };
 
