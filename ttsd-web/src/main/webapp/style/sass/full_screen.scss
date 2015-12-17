@@ -194,14 +194,14 @@
                         .pr-square {
                             width: 134px;
                             height: 134px;
-                            border-radius: 67px;
+                            border-radius: 50%;
                             position: relative;
                             background: #fee7da;
                             margin: 5px auto 8px auto;
                             .pr-square-in {
                                 width:120px;
                                 height:120px;
-                                border-radius:60px;
+                                border-radius:50%;
                                 border:2px solid #ff752a;
                                 background: #fff;
                                 margin: auto;
@@ -722,9 +722,6 @@
         font-size: 12px;
       }
     }
-    .email {
-
-    }
   }
 }
 
@@ -941,5 +938,4 @@ height:150px;
         }
 
     }
-
 }

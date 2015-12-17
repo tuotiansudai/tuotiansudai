@@ -8,6 +8,10 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
     var $verificationForm=$('.verification-code-main'),
         $imageCaptchaSubmit = $('.image-captcha-confirm',$verificationForm);
 
+    $('.phone-txt',$retrievePasswordBox).on('focusout',function(option) {
+        $getCaptcha.addClass('btn').removeClass('btn-normal').prop('disabled',true);
+    });
+
     /* form blank validate */
     $retrieveForm.validate({
         focusInvalid: false,
@@ -54,18 +58,12 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                 captchaVerify: '验证码不正确'
             }
         },
-        showErrors: function (errorMap, errorList) {
-            this.__proto__.defaultShowErrors.call(this);
-            if (errorMap['mobile']) {
-                $getCaptcha.prop('disabled', true);
-            }
-        },success: function (error, element) {
+        success: function (error, element) {
             if (element.name === 'mobile') {
-                $getCaptcha.prop('disabled', false);
+                $getCaptcha.addClass('btn-normal').removeClass('btn').prop('disabled',false);
             }
         },
         submitHandler:function(form) {
-
             var _mobile = $('.phone-txt').val(),
                 _captcha = $('.yzm-txt').val();
             window.location.href = '/mobile-retrieve-password/mobile/'+_mobile+'/captcha/'+_captcha+'/new-password-page';
