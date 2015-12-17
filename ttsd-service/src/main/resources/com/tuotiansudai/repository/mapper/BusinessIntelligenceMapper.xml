@@ -416,6 +416,7 @@
             '其他' AS `group`
             FROM
             (SELECT
+            ub.`login_name`,
             <if test="granularity.name() == 'Daily'">
                 DATE(ub.`created_time`),
             </if>
@@ -425,7 +426,6 @@
             <if test="granularity.name() == 'Monthly'">
                 MONTH(ub.`created_time`),
             </if>
-            WEEK(ub.`created_time`),
             MAX(ub.`created_time`) AS created_time,
             MIN(ub.`balance`) AS balance
             FROM
