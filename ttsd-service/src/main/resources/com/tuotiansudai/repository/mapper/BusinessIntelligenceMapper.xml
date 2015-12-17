@@ -329,7 +329,15 @@
         FROM
         (SELECT
         ub.`login_name`,
-        WEEK(ub.`created_time`),
+        <if test="granularity.name() == 'Daily'">
+            DATE(ub.`created_time`),
+        </if>
+        <if test="granularity.name() == 'Weekly'">
+            WEEK(ub.`created_time`),
+        </if>
+        <if test="granularity.name() == 'Monthly'">
+            MONTH(ub.`created_time`),
+        </if>
         MAX(ub.`created_time`) AS created_time,
         MAX(ub.`balance`) AS balance
         FROM
@@ -356,7 +364,15 @@
                 FROM
                 (SELECT
                 ub.`login_name`,
-                WEEK(ub.`created_time`),
+                <if test="granularity.name() == 'Daily'">
+                    DATE(ub.`created_time`),
+                </if>
+                <if test="granularity.name() == 'Weekly'">
+                    WEEK(ub.`created_time`),
+                </if>
+                <if test="granularity.name() == 'Monthly'">
+                    MONTH(ub.`created_time`),
+                </if>
                 MAX(ub.`created_time`) AS created_time,
                 MAX(ub.`balance`) AS balance
                 FROM
@@ -400,7 +416,15 @@
             '其他' AS `group`
             FROM
             (SELECT
-            ub.`login_name`,
+            <if test="granularity.name() == 'Daily'">
+                DATE(ub.`created_time`),
+            </if>
+            <if test="granularity.name() == 'Weekly'">
+                WEEK(ub.`created_time`),
+            </if>
+            <if test="granularity.name() == 'Monthly'">
+                MONTH(ub.`created_time`),
+            </if>
             WEEK(ub.`created_time`),
             MAX(ub.`created_time`) AS created_time,
             MAX(ub.`balance`) AS balance
@@ -421,7 +445,15 @@
             FROM
             (SELECT
             ub.`login_name`,
-            WEEK(ub.`created_time`),
+            <if test="granularity.name() == 'Daily'">
+                DATE(ub.`created_time`),
+            </if>
+            <if test="granularity.name() == 'Weekly'">
+                WEEK(ub.`created_time`),
+            </if>
+            <if test="granularity.name() == 'Monthly'">
+                MONTH(ub.`created_time`),
+            </if>
             MAX(ub.`created_time`) AS created_time,
             MAX(ub.`balance`) AS balance
             FROM
