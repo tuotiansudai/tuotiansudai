@@ -8,7 +8,6 @@ Array.prototype.contains = function (obj) {
     }
     return false;
 };
-
 commonFun={
     /* init radio style */
     initRadio:function($radio,$radioLabel) {

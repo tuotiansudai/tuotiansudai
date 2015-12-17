@@ -1,4 +1,4 @@
-require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
+require(['jquery', 'csrf', 'jquery.validate', 'jquery.form','commonFun'], function ($) {
 
         var loginFormElement = $('.form-login'),
             loginSubmitElement = $('.login-submit', loginFormElement),
@@ -7,10 +7,7 @@ require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
             captchaElement = $('.captcha', loginFormElement),
             errorElement = $('.error', loginFormElement),
             imageCaptchaElement = $('.image-captcha img', loginFormElement);
-        String.prototype.trim = function()
-        {
-            return this.replace(/(^\s*)|(\s*$)/g, "");
-        }
+
         var refreshCaptcha = function () {
             captchaElement.val('');
             imageCaptchaElement.attr('src', '/login/captcha?' + new Date().getTime().toString());
@@ -24,7 +21,7 @@ require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
         loginNameElement.blur(function (event) {
             errorElement.text('').css('visibility', 'hidden');
 
-            if (loginNameElement.val().trim() === '') {
+            if ($.trim(loginNameElement.val()) === '') {
                 errorElement.text("用户名不能为空").css('visibility', 'visible');
                 return false;
             }
@@ -34,7 +31,7 @@ require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
         //密码校验
         passwordElement.blur(function (event) {
             errorElement.text('').css('visibility', 'hidden');
-            if (passwordElement.val().trim() === '') {
+            if ($.trim(passwordElement.val()) === '') {
                 errorElement.text("密码不能为空").css('visibility', 'visible');
             }
             return false;
@@ -43,7 +40,7 @@ require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
         //验证码校验
         captchaElement.blur(function (event) {
             errorElement.text('').css('visibility', 'hidden');
-            if (captchaElement.val().trim() === '') {
+            if ($.trim(captchaElement.val()) === '') {
                 errorElement.text("验证码不能为空").css('visibility', 'visible');
             }
             return false;
@@ -53,17 +50,17 @@ require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
         var loginSubmitVerify = function () {
             errorElement.text('').css('visibility', 'hidden');
 
-            if (loginNameElement.val().trim() === '') {
+            if ($.trim(loginNameElement.val()) === '') {
                 errorElement.text("用户名不能为空").css('visibility', 'visible');
                 return false;
             }
 
-            if (passwordElement.val().trim() === '') {
+            if ($.trim(passwordElement.val()) === '') {
                 errorElement.text("密码不能为空").css('visibility', 'visible');
                 return false;
             }
 
-            if (captchaElement.val().trim() === '') {
+            if ($.trim(captchaElement.val()) === '') {
                 errorElement.text("验证码不能为空").css('visibility', 'visible');
                 return false;
             }
