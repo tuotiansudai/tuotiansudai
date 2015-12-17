@@ -10,7 +10,7 @@
     <div class="clear-blank"></div>
     <div class="register-box">
         <ul class="reg-list tl register-step-two">
-            <form class="register-account-form" action="/loan-list" method="get">
+            <form class="register-account-form" action="/register/account" method="post">
                 <li>
                     <input type="text" name="userName" placeholder="请输入姓名" class="user-name" value = "${(originalFormData.userName)!}" />
                 </li>
