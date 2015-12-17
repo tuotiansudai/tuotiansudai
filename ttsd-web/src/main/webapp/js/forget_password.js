@@ -59,7 +59,8 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
             }
         },
         success: function (error, element) {
-            if (element.name === 'mobile') {
+            var disableButton=$('.disable-button',$retrievePasswordBox);
+            if(!disableButton.length && element.name === 'mobile') {
                 $getCaptcha.addClass('btn-normal').removeClass('btn').prop('disabled',false);
             }
         },
@@ -109,10 +110,10 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                         layer.closeAll();
                         var seconds = 30;
                         var count = setInterval(function () {
-                            $getCaptcha.html(seconds + '秒后重新发送').addClass('btn').removeClass('btn-normal').prop('disabled',true);
+                            $getCaptcha.html(seconds + '秒后重新发送').addClass('btn disable-button').removeClass('btn-normal').prop('disabled',true);
                             if (seconds == 0) {
                                 clearInterval(count);
-                                $getCaptcha.html('重新发送').removeClass('btn').addClass('btn-normal').prop('disabled',false);
+                                $getCaptcha.html('重新发送').removeClass('btn disable-button').addClass('btn-normal').prop('disabled',false);
                                 $('.verification-code-text').val('');
                             }
                             seconds--;

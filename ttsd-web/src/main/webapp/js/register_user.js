@@ -73,10 +73,10 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
                         layer.closeAll();
                         var seconds = 60;
                         var count = setInterval(function () {
-                            fetchCaptchaElement.html(seconds + '秒后重新发送').addClass('btn').removeClass('btn-normal').prop('disabled',true);
+                            fetchCaptchaElement.html(seconds + '秒后重新发送').addClass('btn disable-button').removeClass('btn-normal').prop('disabled',true);
                             if (seconds == 0) {
                                 clearInterval(count);
-                                fetchCaptchaElement.html('重新发送').removeClass('btn').addClass('btn-normal').prop('disabled',false);
+                                fetchCaptchaElement.html('重新发送').removeClass('btn disable-button').addClass('btn-normal').prop('disabled',false);
                             }
                             seconds--;
                         }, 1000);
@@ -189,13 +189,17 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         },
         success: function (error, element) {
             var loginName = $('input.login-name', registerUserForm),
-                mobile = $('input.mobile', registerUserForm);
-            if (element.name === 'mobile' && loginName.hasClass('valid')) {
-                fetchCaptchaElement.addClass('btn-normal').removeClass('btn').prop('disabled', false);
+                mobile = $('input.mobile', registerUserForm),
+                disableButton=$('.disable-button',registerUserForm);
+            if(!disableButton.length) {
+                if (element.name === 'mobile' && loginName.hasClass('valid')) {
+                    fetchCaptchaElement.addClass('btn-normal').removeClass('btn').prop('disabled', false);
+                }
+                if (element.name === 'loginName' && mobile.hasClass('valid')) {
+                    fetchCaptchaElement.addClass('btn-normal').removeClass('btn').prop('disabled', false);
+                }
             }
-            if (element.name === 'loginName' && mobile.hasClass('valid')) {
-                fetchCaptchaElement.addClass('btn-normal').removeClass('btn').prop('disabled', false);
-            }
+
         }
     });
 
