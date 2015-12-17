@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;
@@ -10,6 +11,7 @@ public class ChangePasswordRequestDto extends BaseParamDto {
 
     @NotEmpty(message = "0012")
     @Pattern(regexp = "^(?=.*[^\\d])(.{6,20})$", message = "0012")
+    @JsonProperty("password")
     private String newPassword;
 
     public String getOriginPassword() {
