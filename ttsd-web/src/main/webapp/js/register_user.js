@@ -10,16 +10,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         imageCaptchaSubmitElement = $('.image-captcha-confirm', $imgCaptchaDialog);
 
     $('input.login-name,input.mobile',registerUserForm).on('focusout',function(option) {
-        var boolLogin=false,boolMobile=false;
-        boolLogin=$('input.login-name',registerUserForm).hasClass('valid');
-        boolMobile=$('input.mobile',registerUserForm).hasClass('valid');
-        if(boolLogin && boolMobile) {
-            fetchCaptchaElement.addClass('btn-normal').removeClass('btn').prop('disabled', false);
-        }
-        else {
-            fetchCaptchaElement.removeClass('btn-normal').addClass('btn').prop('disabled', true);
-        }
-
+        fetchCaptchaElement.removeClass('btn-normal').addClass('btn').prop('disabled', true);
     });
 
     showAgreement.click(function () {
@@ -41,6 +32,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
             title: '手机验证',
             area: ['300px', '190px'],
             shadeClose: true,
+            skin:'image-captcha-layer',
             content: $('.image-captcha-dialog'),
             success: function (layero, index) {
                 $('.image-captcha-form label').remove();
@@ -81,10 +73,10 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
                         layer.closeAll();
                         var seconds = 60;
                         var count = setInterval(function () {
-                            fetchCaptchaElement.html(seconds + '秒后重新发送').addClass('btn').removeClass('btn-normal');
+                            fetchCaptchaElement.html(seconds + '秒后重新发送').addClass('btn').removeClass('btn-normal').prop('disabled',true);
                             if (seconds == 0) {
                                 clearInterval(count);
-                                fetchCaptchaElement.html('重新发送').removeClass('btn').addClass('btn-normal');
+                                fetchCaptchaElement.html('重新发送').removeClass('btn').addClass('btn-normal').prop('disabled',false);
                             }
                             seconds--;
                         }, 1000);
