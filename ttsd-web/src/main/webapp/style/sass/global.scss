@@ -3,6 +3,11 @@
 @import 'page_frame','pagination';
 @import 'media';
 
+.image-captcha-layer {
+  .image-captcha-dialog,.verification-code-main {
+    overflow: hidden;
+  }
+}
 .page-col-title,.column-title {
   border-bottom:1px solid #ccc;
   margin-bottom: 20px;
