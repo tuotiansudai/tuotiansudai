@@ -157,6 +157,11 @@
         select login_name from user where login_name like CONCAT(CONCAT('%', #{loginName}), '%')
     </select>
 
+    <select id="findStaffNameFromUserLike" parameterType="java.lang.String" resultType="java.lang.String">
+        select login_name from user u where u.login_name like CONCAT(CONCAT('%', #{loginName}), '%')
+        and exists(select * from user_role r where r.login_name = u.login_name and r.role = 'STAFF')
+    </select>
+
     <select id="findAllChannels" resultType="java.lang.String">
         select distinct channel from user where channel is not NULL
     </select>

@@ -70,6 +70,12 @@ public class UserController {
         return userService.findLoginNameLike(loginName);
     }
 
+    @RequestMapping(value = "/staff/{loginName}/search", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> searchStaffName(@PathVariable String loginName) {
+        return userService.findStaffNameFromUserLike(loginName);
+    }
+
     @RequestMapping(value = "/user/edit", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView editUser(@ModelAttribute EditUserDto editUserDto, HttpServletRequest request, RedirectAttributes redirectAttributes) {
@@ -203,4 +209,6 @@ public class UserController {
         userService.updateUserStatus(loginName, UserStatus.ACTIVE, ip, LoginUserInfo.getLoginName());
         return "OK";
     }
+
+
 }

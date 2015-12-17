@@ -314,6 +314,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<String> findStaffNameFromUserLike(String loginName) {
+        return userMapper.findStaffNameFromUserLike(loginName);
+    }
+
+    @Override
     public int findUserCount() {
         return userMapper.findUserCount();
     }
