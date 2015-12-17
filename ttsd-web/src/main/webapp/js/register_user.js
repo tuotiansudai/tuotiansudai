@@ -29,6 +29,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
             area: ['950px', '600px'],
             shadeClose: true,
             move: false,
+            scrollbar: true,
             content: $('#agreementBox'),
             success: function (layero, index) {
             }

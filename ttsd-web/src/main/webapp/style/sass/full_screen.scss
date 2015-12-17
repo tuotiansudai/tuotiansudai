@@ -1,5 +1,4 @@
 @import 'variables';
-
 /* if use the css, the page will be show full screen */
 .full-screen {
     width:100%!important;
@@ -8,7 +7,6 @@
 .footer-container {
     margin-top:0;
 }
-//home page
 .home-page-container {
     .banner-box {
         height:350px;
@@ -155,7 +153,6 @@
             box-sizing: border-box;
             .product-box-list {
                 width: 76%;
-                //overflow: hidden;
                 .product-box-inner {
                     width:105%;
                     box-sizing: border-box;
@@ -931,4 +928,18 @@ height:150px;
             }
         }
     }
+}
+
+@media screen\0  {
+    //IE8-10
+    .home-page-container {
+        .main-advantage {
+            dl dd {
+                float: left;
+                margin-bottom:30px;
+            }
+        }
+
+    }
+
 }

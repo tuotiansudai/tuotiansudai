@@ -95,10 +95,10 @@
 <script type="text/javascript" charset="utf-8">
     var staticServer = '${staticServer}';
     <@security.authorize access="isAuthenticated()">
-    document.getElementById("logout-link").addEventListener('click', function (event) {
+    document.getElementById("logout-link").onclick=function (event) {
         event.preventDefault();
         document.getElementById("logout-form").submit();
-    });
+    };
     </@security.authorize>
 
     adjustMobileHideHack();
