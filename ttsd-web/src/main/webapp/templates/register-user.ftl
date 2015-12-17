@@ -28,18 +28,17 @@
 
                 </li>
                 <li>
-                    <label for="" class="reg-title">重复密码:</label>
+                    <label for="" class="reg-title">密码:</label>
                     <input type="password" name="password" placeholder="请输入密码" maxlength="20" class="password" value="${(originalFormData.password)!}"/>
                 </li>
                 <li>
                     <label for="" class="reg-title">推荐人:</label>
                     <input type="text" name="referrer" placeholder="请输入推荐人（选填）" maxlength="25" class="referrer" value="${(referrer)!(originalFormData.referrer)!}"/>
                 </li>
-                <li>
-                    <label for="agreement">
+                <li class="agree-last">
+                    <label for="agreement">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
                         <input type="checkbox" name='agreement' id="agreementInput" class='agreement-check' />
-                        <span class="agreement">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></span>
-                    </label>
+
                 </li>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 

@@ -20,4 +20,10 @@ public interface BusinessIntelligenceMapper {
     List<KeyValueModel> queryUserAccountTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("granularity") Granularity granularity, @Param("province") String province);
 
     List<KeyValueModel> queryInvestViscosity(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province);
+
+    List<KeyValueModel> queryUserInvestCountTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province);
+
+    List<KeyValueModel> queryUserInvestAmountTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("granularity") Granularity granularity, @Param("province") String province);
+
+    List<KeyValueModel> queryUserAgeTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province, @Param("isInvestor") String isInvestor);
 }

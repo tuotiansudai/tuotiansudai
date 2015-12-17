@@ -11,7 +11,6 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -80,4 +79,24 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         return top12List;
     }
 
+    @Override
+    public List<KeyValueModel> queryUserInvestCountTrend(Date startTime, Date endTime, String province) {
+        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+        return businessIntelligenceMapper.queryUserInvestCountTrend(queryStartTime, queryEndTime, province);
+    }
+
+    @Override
+    public List<KeyValueModel> queryUserInvestAmountTrend(Granularity granularity, Date startTime, Date endTime, String province) {
+        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+        return businessIntelligenceMapper.queryUserInvestAmountTrend(queryStartTime, queryEndTime, granularity, province);
+    }
+
+    @Override
+    public List<KeyValueModel> queryUserAgeTrend(Date startTime, Date endTime, String province, String isInvestor){
+        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+        return businessIntelligenceMapper.queryUserAgeTrend(queryStartTime, queryEndTime, province, isInvestor);
+    }
 }

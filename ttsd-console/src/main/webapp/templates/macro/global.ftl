@@ -14,11 +14,13 @@
                 "role":"'ADMIN'",
                 "header":{"text":"系统主页","link":"/"},
                 "sidebar":[
-                    {"name":"userDate","text":"用户时间分布","link":"/","role":"'ADMIN'"},
+                    {"name":"userDate","text":"用户注册时间分布","link":"/","role":"'ADMIN'"},
                     {"name":"userRecharge","text":"用户充值时间分布","link":"/","role":"'ADMIN'"},
                     {"name":"userWithdraw","text":"用户提现时间分布","link":"/","role":"'ADMIN'"},
                     {"name":"userAccount","text":"用户账户余额时间分布","link":"/","role":"'ADMIN'"},
-                    {"name":"userInvestViscosity","text":"用户续投情况","link":"/","role":"'ADMIN'"}
+                    {"name":"userInvestViscosity","text":"用户续投情况","link":"/","role":"'ADMIN'"},
+                    {"name":"userInvestAmount","text":"用户投资金额时间分布","link":"/","role":"'ADMIN'"},
+                    {"name":"userInvestCount","text":"用户投资次数时间分布","link":"/","role":"'ADMIN'"}
                 ]
             },
             {

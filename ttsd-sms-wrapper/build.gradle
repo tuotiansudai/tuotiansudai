@@ -11,7 +11,4 @@ dependencies {
 war {
     archiveName "ROOT.war"
     destinationDir = file("war")
-    from('/workspace/new_version_config/ttsd-sms-wrapper/') {
-        into 'WEB-INF/classes/'
-    }
 }

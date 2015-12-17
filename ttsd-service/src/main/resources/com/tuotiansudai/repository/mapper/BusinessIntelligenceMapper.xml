@@ -444,7 +444,7 @@
             </if>
         </if>
     </select>
-    
+
     <select id="queryInvestViscosity" parameterType="map" resultMap="keyValueMap">
         select
           a.loan_count as `name`,
@@ -466,5 +466,182 @@
           group by i.login_name
         ) a
         group by a.loan_count;
+    </select>
+
+
+    <select id="queryUserInvestCountTrend" parameterType="map" resultMap="keyValueMap">
+        select
+            DATE_FORMAT(i.`created_time`,'%H') AS `name`,
+            count(1) as `value`,
+            u.province as `group`
+        from user u
+        join invest i
+        on u.login_name = i.login_name
+        <choose>
+            <when test="province != null and province!= ''">
+                where u.province = #{province}
+            </when>
+            <otherwise>
+                where exists (
+                select 1 from (
+                    select uu.province
+                    from invest ii
+                    join user uu on uu.login_name=ii.login_name
+                    where
+                      ii.status='SUCCESS'
+                      and ii.created_time between #{startTime} and #{endTime}
+                    group by uu.province
+                    order by count(ii.id)
+                    desc limit 5
+                ) temp
+                where temp.province=u.province
+                )
+            </otherwise>
+        </choose>
+        and i.status='SUCCESS'
+        and i.created_time between #{startTime} and #{endTime}
+        group by u.province, `name`
+        <if test="province == null or province ==''">
+            union all
+            select
+                DATE_FORMAT(i.`created_time`,'%H') AS `name`,
+                count(1) as `value`,
+                '其它' as `group`
+            from user u
+            join invest i
+            on u.login_name = i.login_name
+            where not exists (
+                select 1 from (
+                    select uu.province
+                    from invest ii
+                    join user uu on uu.login_name=ii.login_name
+                    where
+                      ii.status='SUCCESS'
+                      and ii.created_time between #{startTime} and #{endTime}
+                    group by uu.province
+                    order by count(ii.id)
+                    desc limit 5
+                ) temp
+                where temp.province=u.province
+            )
+            and i.status='SUCCESS'
+            and i.created_time between #{startTime} and #{endTime}
+            group by `name`
+        </if>
+    </select>
+
+    <select id="queryUserInvestAmountTrend" parameterType="map" resultMap="keyValueMap">
+        select
+            <if test="granularity.name() == 'Daily'">
+                DATE(i.created_time) AS `name`,
+            </if>
+            <if test="granularity.name() == 'Weekly'">
+                DATE_FORMAT(i.created_time,'%Y-W%u') AS `name`,
+            </if>
+            <if test="granularity.name() == 'Monthly'">
+                DATE_FORMAT(i.created_time,'%Y-%m') AS `name`,
+            </if>
+            ROUND(IFNULL(SUM(i.amount), 0)/100, 2) as `value`,
+            u.province as `group`
+        from user u
+        join invest i
+        on u.login_name = i.login_name
+        <choose>
+            <when test="province != null and province!= ''">
+                where u.province = #{province}
+            </when>
+            <otherwise>
+                where exists (
+                    select 1 from (
+                        select
+                          uu.province as province,
+                          IFNULL(SUM(ii.amount), 0) as amount
+                        from invest ii
+                        join user uu on uu.login_name=ii.login_name
+                        where
+                          ii.status='SUCCESS'
+                          and ii.created_time between #{startTime} and #{endTime}
+                        group by province
+                        order by amount desc
+                        limit 5
+                    ) temp
+                    where temp.province=u.province
+                )
+            </otherwise>
+        </choose>
+        and i.status='SUCCESS'
+        and i.created_time between #{startTime} and #{endTime}
+        group by u.province, `name`
+        <if test="province == null or province ==''">
+            union all
+            select
+            <if test="granularity.name() == 'Daily'">
+                DATE(i.created_time) AS `name`,
+            </if>
+            <if test="granularity.name() == 'Weekly'">
+                DATE_FORMAT(i.created_time,'%Y-W%u') AS `name`,
+            </if>
+            <if test="granularity.name() == 'Monthly'">
+                DATE_FORMAT(i.created_time,'%Y-%m') AS `name`,
+            </if>
+            <if test="granularity.name() == 'Hourly'">
+                DATE_FORMAT(i.`created_time`,'%H') AS `name`,
+            </if>
+            ROUND(IFNULL(SUM(i.amount), 0)/100, 2) as `value`,
+            '其它' as `group`
+            from user u
+            join invest i
+            on u.login_name = i.login_name
+            where not exists (
+                select 1 from (
+                    select
+                        uu.province as province,
+                        IFNULL(SUM(ii.amount), 0) as amount
+                    from invest ii
+                    join user uu on uu.login_name=ii.login_name
+                    where
+                        ii.status='SUCCESS'
+                        and ii.created_time between #{startTime} and #{endTime}
+                    group by province
+                    order by amount desc
+                    limit 5
+                ) temp
+                where temp.province=u.province
+            )
+            and i.status='SUCCESS'
+            and i.created_time between #{startTime} and #{endTime}
+            group by `name`
+        </if>
+    </select>
+
+    <select id="queryUserAgeTrend" parameterType="map" resultMap="keyValueMap">
+        select
+            <![CDATA[if(age<20,'20 岁以下',if(age<35,'20~35 岁',if(age<50,'35~50 岁','50 岁以上')))]]> as `name`,
+            count(1) as `value`,
+            <choose>
+                <when test="province != null and province!= ''"> #{province} </when>
+                <otherwise> "全部" </otherwise>
+            </choose> as `group`
+        from
+            (
+                select date_format(now(),'%Y')-if(length(identity_number)=18,substring(identity_number,7,4),1900+substring(identity_number,7,2)) as age
+                from
+                    account a
+                join user u
+                    on a.login_name=u.login_name
+                    <if test="province != null and province !=''">
+                      and u.province=#{province}
+                    </if>
+                where
+                    length(identity_number) in (15,18)
+                    and a.register_time between #{startTime} and #{endTime}
+                    <if test="isInvestor=='true'">
+                    and exists
+                        (
+                            select 1 from invest i where i.login_name=a.login_name
+                        )
+                    </if>
+            ) temp
+        group by `name`;
     </select>
 </mapper>
