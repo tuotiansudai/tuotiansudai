@@ -45,6 +45,6 @@ public class MobileAppChangePasswordServiceTest extends ServiceTestBase {
         BaseResponseDto responseDto = mobileAppChangePasswordService.changePassword(requestDto);
 
         assertEquals(false, responseDto.isSuccess());
-        assertEquals(ReturnMessage.INVALID_PASSWORD.getCode(), responseDto.getCode());
+        assertEquals(ReturnMessage.CHANGEPASSWORD_INVALID_PASSWORD.getCode(), responseDto.getCode());
     }
 }

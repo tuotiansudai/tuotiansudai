@@ -105,7 +105,7 @@ public enum ReturnMessage {
     FEEDBACK_CAN_NOT_BE_EMPTY("0080", "内容不能为空"),
 
     /******手机端修改密码******/
-    INVALID_PASSWORD("0090", "原密码错误"),
+    CHANGEPASSWORD_INVALID_PASSWORD("0090", "原密码错误"),
 
     BAD_REQUEST("0400", "非法请求"),
     UNAUTHORIZED("0401", "未授权");

@@ -23,7 +23,7 @@ public class MobileAppChangePasswordServiceImpl implements MobileAppChangePasswo
         if (success) {
             return new BaseResponseDto(ReturnMessage.SUCCESS);
         } else {
-            return new BaseResponseDto(ReturnMessage.INVALID_PASSWORD);
+            return new BaseResponseDto(ReturnMessage.CHANGEPASSWORD_INVALID_PASSWORD);
         }
     }
 }
