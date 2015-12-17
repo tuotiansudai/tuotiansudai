@@ -627,11 +627,11 @@
                 select date_format(now(),'%Y')-if(length(identity_number)=18,substring(identity_number,7,4),1900+substring(identity_number,7,2)) as age
                 from
                     account a
+                <if test="province != null and province !=''">
                 join user u
                     on a.login_name=u.login_name
-                    <if test="province != null and province !=''">
-                      and u.province=#{province}
-                    </if>
+                    and u.province=#{province}
+                </if>
                 where
                     length(identity_number) in (15,18)
                     and a.register_time between #{startTime} and #{endTime}
