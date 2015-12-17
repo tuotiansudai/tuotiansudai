@@ -5,12 +5,12 @@
     <ul class="step-register-tab">
         <li class="first"><s></s>1 注册<g></g></li>
         <li class="second on"><s></s>2 实名验证<g></g></li>
-        <li class="last"><s></s>3 充值投资<g></g></li>
+        <li class="last"><s></s>3 开始投资<g></g></li>
     </ul>
     <div class="clear-blank"></div>
     <div class="register-box">
         <ul class="reg-list tl register-step-two">
-            <form class="register-account-form" action="/register/account" method="post">
+            <form class="register-account-form" action="/loan-list" method="get">
                 <li>
                     <input type="text" name="userName" placeholder="请输入姓名" class="user-name" value = "${(originalFormData.userName)!}" />
                 </li>
