@@ -4,7 +4,6 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
@@ -21,7 +20,7 @@ public class IdGenerator {
     private final static String ID_GENERATOR_REDIS_KEY = "common:id";
 
     // 纪元开始时间
-    private final static long TW_EPOCH = new DateTime().withDate(2015, 4, 13).withTimeAtStartOfDay().getMillis();
+    private final static long TW_EPOCH = new DateTime().withDate(2015, 12, 17).withTimeAtStartOfDay().getMillis();
 
     // 机器ID所占的位数
     private final static long WORKER_ID_BITS = 10L;
@@ -30,7 +29,7 @@ public class IdGenerator {
     public final static long MAX_WORKER_ID = ~(-1L << WORKER_ID_BITS);
 
     // Sequence所占的位数
-    private final static long SEQUENCE_BITS = 12L;
+    private final static long SEQUENCE_BITS = 10L;
 
     // 机器ID的偏移量
     private final static long WORKER_ID_SHIFT = SEQUENCE_BITS;

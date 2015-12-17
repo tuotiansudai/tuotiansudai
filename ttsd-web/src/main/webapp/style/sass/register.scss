@@ -26,7 +26,6 @@
         clear: both;
         margin-bottom: 20px;
         height: auto;
-        overflow: auto;
         .reg-title {
           width:60px;
           padding-right: 3px;
@@ -92,7 +91,16 @@
           }
         }
         &.agree-last {
-          margin-left:155px;
+          position: relative;
+          margin-left: 0;
+          .check-label{
+            position: absolute;
+            top: 1px;
+            left: 20px;
+          }
+          .agreement-check{
+            margin-right: 300px;
+          }
         }
       }
       .register-account {
@@ -122,7 +130,6 @@
   .pad-s {
     padding:20px;
   }
-  height:100%;
   .image-captcha-form {
     position: relative;
     height: 135px;
@@ -136,6 +143,9 @@
         display: block!important;
       }
     }
+    .image-captcha-inner {
+      padding:20px;
+    }
     img.image-captcha {
       width: 60px;
       height: 29px;
@@ -144,12 +154,12 @@
       border: #bababa 1px solid;
       cursor: pointer;
       position: absolute;
-      left: 130px;
-      top: 2px;
+      left: 150px;
+      top: 22px;
     }
     .image-captcha-confirm {
       position: absolute;
-      bottom: 35px;
+      bottom: 7px;
       left: 35%;
     }
   }
@@ -320,9 +330,6 @@
           .reg-title{
             display:inline-block;
           }
-          &.agree-last {
-            margin-left:222px;
-          }
         }
         .register-user {
           margin-left: 130px;
@@ -350,7 +357,7 @@
             }
           }
           &.agree-last {
-            margin-left:222px;
+            margin-left:60px;
           }
         }
 
