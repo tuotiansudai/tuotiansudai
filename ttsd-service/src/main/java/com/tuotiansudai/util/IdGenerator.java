@@ -1,39 +1,48 @@
 package com.tuotiansudai.util;
 
+import com.tuotiansudai.client.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
+
+/**
+ * https://github.com/killme2008/Metamorphosis/blob/master/metamorphosis-commons/src/main/java/com/taobao/metamorphosis/utils/IdWorker.java
+ * DO NOT MODIFY!!!
+ */
 
 @Component
 public class IdGenerator {
 
     static Logger logger = Logger.getLogger(IdGenerator.class);
 
+    private final static String ID_GENERATOR_REDIS_KEY = "common:id";
+
     // 纪元开始时间
-    private final static long twEpoch = new DateTime().withDate(2015, 4, 13).withTime(8, 0, 0, 0).toDate().getTime();
+    private final static long TW_EPOCH = new DateTime().withDate(2015, 4, 13).withTimeAtStartOfDay().getMillis();
 
     // 机器ID所占的位数
-    private final static long workerIdBits = 4L;
+    private final static long WORKER_ID_BITS = 6L;
 
     // 机器ID的最大值
-    public final static long maxWorkerId = ~(-1L << workerIdBits);
+    public final static long MAX_WORKER_ID = ~(-1L << WORKER_ID_BITS);
 
     // Sequence所占的位数
-    private final static long sequenceBits = 10L;
+    private final static long SEQUENCE_BITS = 4L;
 
     // 机器ID的偏移量
-    private final static long workerIdShift = sequenceBits;
+    private final static long WORKER_ID_SHIFT = SEQUENCE_BITS;
 
     // 时间戳的偏移量
-    private final static long timestampLeftShift = sequenceBits + workerIdBits;
+    private final static long TIMESTAMP_LEFT_SHIFT = SEQUENCE_BITS + WORKER_ID_BITS;
 
     // Sequence的屏蔽位
-    public final static long sequenceMask = ~(-1L << sequenceBits);
+    private final static long SEQUENCE_MASK = ~(-1L << SEQUENCE_BITS);
 
     // 机器ID
-    private final long workerId = 0L;
+    private long workerId;
 
     // Sequence从0开始
     private long sequence = 0L;
@@ -41,19 +50,20 @@ public class IdGenerator {
     // 上一个毫秒数
     private long lastTimestamp = -1L;
 
-    public IdGenerator() {
-        // 最大16个节点
-//        if (workerId > maxWorkerId || workerId < 0) {
-//            throw new IllegalArgumentException(MessageFormat.format("IdGenerator's id can't be greater than {0} or less than 0", String.valueOf(maxWorkerId)));
-//        }
-//        this.workerId = workerId;
+    @Autowired
+    public IdGenerator(RedisWrapperClient redisWrapperClient) {
+        this.workerId = redisWrapperClient.incr(ID_GENERATOR_REDIS_KEY).intValue() % MAX_WORKER_ID;
+        // 最大2^WORKER_ID_BITS个节点
+        if (workerId > MAX_WORKER_ID || workerId < 0) {
+            throw new IllegalArgumentException(MessageFormat.format("IdGenerator's id can't be greater than {0} or less than 0", String.valueOf(MAX_WORKER_ID)));
+        }
     }
 
     public synchronized long generate() {
         long timestamp = System.currentTimeMillis();
         if (this.lastTimestamp == timestamp) {
             // 在统一毫秒内产生
-            this.sequence = (this.sequence + 1) & this.sequenceMask;
+            this.sequence = (this.sequence + 1) & SEQUENCE_MASK;
             if (this.sequence == 0) {
                 // 同一毫秒内的ID已经用光了，等到下一毫秒才能继续产生
                 timestamp = this.tilNextMillis(this.lastTimestamp);
@@ -72,15 +82,19 @@ public class IdGenerator {
         this.lastTimestamp = timestamp;
 
         // 毫秒数 ------> 机器ID ------> 毫秒内的Sequence
-        return ((timestamp - twEpoch << timestampLeftShift)) | (workerId << workerIdShift) | (this.sequence);
+        return  timestamp - TW_EPOCH << TIMESTAMP_LEFT_SHIFT | this.workerId << WORKER_ID_SHIFT | this.sequence;
     }
 
     private long tilNextMillis(final long lastTimestamp) {
         // 等待到下一个毫秒
-        long timestamp = System.currentTimeMillis();
+        long timestamp = this.timeGen();
         while (timestamp <= lastTimestamp) {
-            timestamp = System.currentTimeMillis();
+            timestamp = this.timeGen();
         }
         return timestamp;
+    }
+
+    private long timeGen() {
+        return System.nanoTime() / 1000000;
     }
 }

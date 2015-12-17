@@ -1,5 +1,4 @@
 @import 'variables';
-
 /* if use the css, the page will be show full screen */
 .full-screen {
     width:100%!important;
@@ -8,7 +7,6 @@
 .footer-container {
     margin-top:0;
 }
-//home page
 .home-page-container {
     .banner-box {
         height:350px;
@@ -68,25 +66,44 @@
             padding: 50px 50px 10px;
             background: rgba(255,255,255,0.8);
             border-radius: 10px;
-            .percent {
-                color: #ff7200;
-                font-size: 60px;
-                line-height: 1;
-                font-weight: bold;
+            .num-text{
+                float: left;
+                width: 100%;
+                margin:0;
+                .percent {
+                    color: #ff7200;
+                    font-size: 60px;
+                    line-height: 1;
+                    font-weight: bold;
+                }
+                .num-unit{
+                    font-size:26px;
+                    color:#666;
+                    font-weight: bold;
+                }
             }
             .h-title {
-                color: #4c4c4c;
-                font-size: 26px;
-                font-weight: normal;
+                float: left;
+                text-align: center;
+                width: 100%;
+                color: #666;
+                font-size: 24px;
             }
             .btn-normal {
                 width:100%;
                 padding: 8px 0;
-                margin-top:25px;
             }
             i {
+                float: left;
+                width: 100%;
                 display: block;
                 padding-top:15px;
+            }
+            .welcome-text{
+                float: left;
+                width: 100%;
+                position: relative;
+                margin: 0 0 10px 0;
             }
         }
     }
@@ -136,7 +153,6 @@
             box-sizing: border-box;
             .product-box-list {
                 width: 76%;
-                //overflow: hidden;
                 .product-box-inner {
                     width:105%;
                     box-sizing: border-box;
@@ -178,14 +194,14 @@
                         .pr-square {
                             width: 134px;
                             height: 134px;
-                            border-radius: 67px;
+                            border-radius: 50%;
                             position: relative;
                             background: #fee7da;
                             margin: 5px auto 8px auto;
                             .pr-square-in {
                                 width:120px;
                                 height:120px;
-                                border-radius:60px;
+                                border-radius:50%;
                                 border:2px solid #ff752a;
                                 background: #fff;
                                 margin: auto;
@@ -301,7 +317,19 @@
         }
     }
 }
-
+@media \0screen\,screen\9 {
+  .register-ad-box{
+    background-color:#fff;
+    filter:Alpha(opacity=80);
+    position:static;
+    *zoom:1;
+  }
+  .register-ad-box{
+    p{
+        position: relative;
+    }
+  }  
+}
 /* user guide page */
 .new-guide-container {
     color: #2f2f2f;
@@ -694,9 +722,6 @@
         font-size: 12px;
       }
     }
-    .email {
-
-    }
   }
 }
 
@@ -899,5 +924,18 @@ height:150px;
                 }
             }
         }
+    }
+}
+
+@media screen\0  {
+    //IE8-10
+    .home-page-container {
+        .main-advantage {
+            dl dd {
+                float: left;
+                margin-bottom:30px;
+            }
+        }
+
     }
 }

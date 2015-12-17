@@ -45,8 +45,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
+    <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-
     <#if responsive??>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     </#if>
@@ -95,10 +95,10 @@
 <script type="text/javascript" charset="utf-8">
     var staticServer = '${staticServer}';
     <@security.authorize access="isAuthenticated()">
-    document.getElementById("logout-link").addEventListener('click', function (event) {
+    document.getElementById("logout-link").onclick=function (event) {
         event.preventDefault();
         document.getElementById("logout-form").submit();
-    });
+    };
     </@security.authorize>
 
     adjustMobileHideHack();
@@ -156,7 +156,7 @@
     var imgDom=window.$('iphone-app-img'),
         TopMainMenuList=window.$('TopMainMenuList');
 
-    window.$('iphone-app-pop').onclick=function(event) {
+    window.$('iphone-app-pop').onclick=function(e) {
         event.stopPropagation();
         event.preventDefault();
 
@@ -168,9 +168,10 @@
         }
     };
 
-    document.getElementsByTagName("body")[0].onclick=function(event) {
+    document.getElementsByTagName("body")[0].onclick=function(e) {
         var userAgent = navigator.userAgent.toLowerCase(),
-            target=event.srcElement || event.target;
+                event = e || window.event,
+                target = event.srcElement || event.target;
         if(target.tagName=='LI' ) {
             return;
         }
@@ -196,7 +197,6 @@
 <#if pageJavascript??>
 <script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
         data-main="${staticServer}/js/dest/${pageJavascript}">
-    <#--data-main="${staticServer}/js/register_user.js">-->
 </script>
 </#if>
 
