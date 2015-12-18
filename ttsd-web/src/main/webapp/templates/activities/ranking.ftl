@@ -29,7 +29,7 @@
             </div>
             <div class="link-btn">
                 <h5>活动时间：2015年10月19日-2016年1月16日</h5>
-                <a href="about/notice">查看榜单</a>
+                <a href="/about/notice">查看榜单</a>
             </div>
 
         </div>
