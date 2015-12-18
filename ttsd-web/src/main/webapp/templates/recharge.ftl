@@ -111,7 +111,7 @@
 <div id="openFastRecharge" class="pad-m" style="display: none;">
         <a href="${requestContext.getContextPath()}/recharge" class="btn-normal" data-category="继续充值" data-label="recharge">继续充值</a>
         <div class="clear-blank"></div>
-        <span class="infoTip">遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</span>
+        <span class="infoTip">遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-20:00）</span>
 
 </div>
 </div>

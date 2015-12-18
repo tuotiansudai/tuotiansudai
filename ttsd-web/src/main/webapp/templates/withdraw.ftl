@@ -39,7 +39,7 @@
         <p>充值失败：<a href="/withdraw" class="btn-normal" data-category="重新提现" data-label="withdraw">重新提现</a>
             <span class="help">查看<a href="/about/qa"  target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
         </p>
-        <span>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</span>
+        <span>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-20:00）</span>
     </div>
 </div>
 </@global.main>

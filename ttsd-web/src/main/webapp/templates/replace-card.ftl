@@ -47,7 +47,7 @@
         <p>换卡失败：<a href="/bind-card/replace" class="btn-normal" data-category="重新换卡" data-label="recharge">重新换卡</a>
             <span class="help">查看<a href="#"  target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
         </p>
-        <p>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</p>
+        <p>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-20:00）</p>
     </div>
 </div>
 </@global.main>
