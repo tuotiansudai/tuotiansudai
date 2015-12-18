@@ -113,3 +113,10 @@ class BasePage(object):
     def find_sub_element_by_tag(self, selector, elem):
         return elem.find_element(By.TAG_NAME, selector)
 
+    def get_cookie_by_name(self, name):
+        cookie = self.selenium.get_cookie(name)
+        return cookie['value']
+
+    def get_session_id(self):
+        return self.get_cookie_by_name("SESSION")
+
