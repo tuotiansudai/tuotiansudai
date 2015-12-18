@@ -21,6 +21,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
             shadeClose: true,
             move: false,
             scrollbar: true,
+            skin:'register-skin',
             content: $('#agreementBox'),
             success: function (layero, index) {
             }
