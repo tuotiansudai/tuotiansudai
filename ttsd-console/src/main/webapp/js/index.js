@@ -70,16 +70,23 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
                 url: url,
                 dataType: 'json'
             }).done(function (data) {
-
+                var option;
                 switch(category){
                     case 'Lines':
-
+                         option = loadEcharts.ChartOptionTemplates.Lines(data, name);
                         break;
+                    case 'bar':
+                         option = loadEcharts.ChartOptionTemplates.bar(data, name);
+                        break;
+                    case 'pie':
+                        option = loadEcharts.ChartOptionTemplates.pie(data, name);
+                        break;
+                    default:break;
                 }
-                var option = loadEcharts.ChartOptionTemplates.Lines(data, name, true),
-                    container =document.getElementById(reportbox),
+                var container =document.getElementById(reportbox),
                     opt = loadEcharts.ChartConfig(container, option);
                 loadEcharts.Charts.RenderChart(opt);
+
             });
         }).trigger('click');
 
@@ -101,15 +108,15 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     showReport('#formUserInvestViscosityReport','/bi/user-invest-viscosity','userInvestViscosity','用户(人)','bar');
 
     /*用户投资金额时间分布*/
-    showReport('#formUserInvestAmountReport','/bi/user-invest-amount-trend','userInvestAmountDistribution','用户投资金额(元)');
+    showReport('#formUserInvestAmountReport','/bi/user-invest-amount-trend','userInvestAmountDistribution','用户投资金额(元)','Lines');
 
     /*用户投资次数时间分布*/
-    showReport('#formUserInvestCountReport','/bi/user-invest-count-trend','userInvestCountDistribution','用户投资次数(次)');
+    showReport('#formUserInvestCountReport','/bi/user-invest-count-trend','userInvestCountDistribution','用户投资次数(次)','Lines');
 
     /*实名认证用户年龄分布*/
-    showReport('#formRegisterUserAgeReport','/bi/register-user-age-trend','registerUserAgeDistribution','用户(人)');
+    showReport('#formRegisterUserAgeReport','/bi/register-user-age-trend','registerUserAgeDistribution','用户(人)','pie');
 
     /*投资人用户年龄分布*/
-    showReport('#formInvestorUserAgeReport','/bi/investor-user-age-trend','investorUserAgeDistribution','用户(人)');
+    showReport('#formInvestorUserAgeReport','/bi/investor-user-age-trend','investorUserAgeDistribution','用户(人)','pie');
 
 });
