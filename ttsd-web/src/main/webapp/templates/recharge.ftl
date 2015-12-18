@@ -105,7 +105,7 @@
         <p>充值失败：<a href="/recharge" class="btn-normal" data-category="重新充值" data-label="recharge">重新充值</a>
             <span class="help">查看<a href="/about/qa" target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
         </p>
-        <span>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</span>
+        <span>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-20:00）</span>
 </div>
 
 <div id="openFastRecharge" class="pad-m" style="display: none;">
