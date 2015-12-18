@@ -58,6 +58,14 @@ class BasePage(object):
         return WebDriverWait(self.selenium, wait_time).until(
             expected.presence_of_all_elements_located((By.CSS_SELECTOR, selector)))
 
+    def find_element_by_class_name(self, selector, wait_time=WAIT_TIME):
+        return WebDriverWait(self.selenium, wait_time).until(
+            expected.visibility_of_element_located((By.CLASS_NAME, selector)))
+
+    def find_elements_by_class_name(self, selector, wait_time=WAIT_TIME):
+        return WebDriverWait(self.selenium, wait_time).until(
+            expected.presence_of_all_elements_located((By.CLASS_NAME, selector)))
+
     def find_elements_by_link_text(self, selector, wait_time=WAIT_TIME):
         return WebDriverWait(self.selenium, wait_time).until(
             expected.presence_of_all_elements_located((By.LINK_TEXT, selector)))
@@ -113,3 +121,9 @@ class BasePage(object):
     def find_sub_element_by_tag(self, selector, elem):
         return elem.find_element(By.TAG_NAME, selector)
 
+    def get_cookie_by_name(self, name):
+        cookie = self.selenium.get_cookie(name)
+        return cookie['value']
+
+    def get_session_id(self):
+        return self.get_cookie_by_name("SESSION")
