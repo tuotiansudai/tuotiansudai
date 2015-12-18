@@ -28,7 +28,7 @@
         <ul class="last">
             <li class="tc">
                 <img src="${staticServer}/images/sign/app-weixin.png"> <br/>
-                微信公众号
+                APP下载
 
             </li>
         </ul>
