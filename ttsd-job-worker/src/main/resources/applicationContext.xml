@@ -38,7 +38,7 @@
         <property name="minConnectionsPerPartition" value="${worker.aa.minConnectionsPerPartition}"/>
         <property name="maxConnectionsPerPartition" value="${worker.aa.maxConnectionsPerPartition}"/>
         <property name="acquireIncrement" value="${worker.aa.acquireIncrement}"/>
-        <property name="idleMaxAgeInSeconds" value="1800"/>
+        <property name="idleMaxAgeInSeconds" value="600"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>
 
@@ -51,7 +51,7 @@
         <property name="minConnectionsPerPartition" value="${worker.job_worker.minConnectionsPerPartition}"/>
         <property name="maxConnectionsPerPartition" value="${worker.job_worker.maxConnectionsPerPartition}"/>
         <property name="acquireIncrement" value="${worker.job_worker.acquireIncrement}"/>
-        <property name="idleMaxAgeInSeconds" value="1800"/>
+        <property name="idleMaxAgeInSeconds" value="600"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>
 
