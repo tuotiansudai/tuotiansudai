@@ -131,37 +131,15 @@
   }
 
   form {
-    input{
-      &.error,&.valid {
-        font-size: 14px;
-      }
-    }
     label.error {
-      clear: both;
-      font-size: 12px;
-      color: nth($checkValid,1);
-      padding-left: 5px;
-      vertical-align: middle;
       &:before {
-        padding-right: 5px;
-        content: "\f057";
-        font: normal normal normal 14px/1 FontAwesome;
-        display: inline-block;
-        font-size: 16px;
+        font: normal normal normal 13px/1 FontAwesome;
       }
     }
     input.valid +label.error {
-      clear: both;
+      display: none!important;
       &:before {
-        content: "\f058";
-        color: nth($checkValid,2);
-      }
-    }
-    input.error +label.error {
-      clear: both;
-      &:before {
-        content: "\f057";
-        color: nth($checkValid,1);
+        display: none!important;
       }
     }
   }
