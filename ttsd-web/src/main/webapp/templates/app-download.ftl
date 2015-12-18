@@ -10,7 +10,8 @@
   <div id="wxPic" style="display:none">
 
     <p style="font-size: 40px;">请按照下面的图示操作，下载拓天速贷APP:</p>
-    <img style="width: 100%;" src="${staticServer}/images/sign/activities/wxDownload.png"/>
+      <img style="width: 100%;" src="${staticServer}/images/sign/actor/wxDownload.png"/>
+
   </div>
 
   <#include "statistic.ftl" />
