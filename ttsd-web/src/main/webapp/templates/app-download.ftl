@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>托天速贷APP下载</title>
+    <title>拓天速贷APP下载</title>
     <script src="${staticServer}/js/dest/${js.app_download}" type="text/javascript" charset="utf-8"></script>
 </head>
 
