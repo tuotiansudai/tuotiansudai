@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.AgentDto;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,6 +18,9 @@ public class AgentLevelRateModel implements Serializable {
 
     }
     public AgentLevelRateModel(AgentDto agentDto){
+        if(StringUtils.isNotEmpty(agentDto.getId())){
+            this.id = Long.parseLong(agentDto.getId());
+        }
         this.loginName = agentDto.getLoginName();
         this.level = Integer.parseInt(agentDto.getLevel());
         this.rate = Double.parseDouble(agentDto.getRate());

@@ -26,7 +26,7 @@
 
     <update id="update" parameterType="AgentLevelRateModel">
             update agent_level_rate set login_name = #{loginName},level = #{level},rate = #{rate},update_time = #{updateTime} where id = #{id}
-        </update>
+    </update>
 
     <delete id="delete" parameterType="long">
             delete from agent_level_rate where id = #{id}

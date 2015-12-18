@@ -82,6 +82,16 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
             },
             beforeCheck: function(curform) {
                 $errorDom.html('');
+                var rate = parseFloat($('.jq-rate', curform).val());
+                var level = parseInt($('.jq-level', curform).val())
+                if (level <= 0) {
+                    showErrorMessage('代理层级应大于0!', $('.jq-rate', curform));
+                    return false;
+                }
+                if (rate <= 0) {
+                    showErrorMessage('收益比例应大于0!', $('.jq-level', curform));
+                    return false;
+                }
             },
             callback: function(form) {
                 formFlag = true;
