@@ -34,7 +34,7 @@
         <property name="minConnectionsPerPartition" value="${web.aa.minConnectionsPerPartition}"/>
         <property name="maxConnectionsPerPartition" value="${web.aa.maxConnectionsPerPartition}"/>
         <property name="acquireIncrement" value="${web.aa.acquireIncrement}"/>
-        <property name="idleMaxAgeInSeconds" value="1800"/>
+        <property name="idleMaxAgeInSeconds" value="600"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>
 
@@ -46,7 +46,7 @@
         <property name="minConnectionsPerPartition" value="1"/>
         <property name="maxConnectionsPerPartition" value="1"/>
         <property name="acquireIncrement" value="1"/>
-        <property name="idleMaxAgeInSeconds" value="1800"/>
+        <property name="idleMaxAgeInSeconds" value="600"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>
 
