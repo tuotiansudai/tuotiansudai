@@ -48,6 +48,8 @@ public interface UserService {
                 Role role, String referrer, String channel, Integer pageIndex, Integer pageSize);
 
 
+    List<String> findStaffNameFromUserLike(String loginName);
+
     List<String> findLoginNameFromAccountLike(String loginName);
 
     List<String> findLoginNameLike(String loginName);
