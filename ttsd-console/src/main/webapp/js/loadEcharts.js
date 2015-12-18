@@ -19,6 +19,17 @@ define(['jquery','underscore','echarts'], function ($,_) {
             };
             return this.option;
         },
+        ChartDataFormate:{
+            FormateNOGroupData: function (data) {
+                var categories = [];
+                var datas = [];
+                for (var i = 0; i < data.length; i++) {
+                    categories.push(data[i].name || "");
+                    datas.push({ name: data[i].name, value: data[i].value || 0 });
+                }
+                return { category: categories, data: datas };
+            }
+        },
         ChartOptionTemplates: {
             CommonOption: {
                 tooltip: {
@@ -80,6 +91,39 @@ define(['jquery','underscore','echarts'], function ($,_) {
                         saveAsImage : {show: true}
                     }
                 }
+            },
+            Bar: function (data, name) {
+                var bar_datas = MyChartsObject.ChartDataFormate.FormateNOGroupData(data, 'bar');
+                var option = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{b}:{c}"
+                    },
+                    xAxis: [{
+                        type: 'category',
+                        data: bar_datas.category,
+                        axisLabel: {
+                            show: true,
+                            interval: 'auto',
+                            rotate: 0, //旋转角度
+                            margin: 8//距离X轴的距离
+                        }
+                    }],
+                    yAxis: [{
+                        name: name || '',
+                        type: 'value',
+                        nameLocation: 'end',
+                        boundaryGap: [0, 0.01]
+                    }],
+                    series: [{
+                        name: name || '',
+                        axisLabel: { interval: 0 },
+                        type: 'bar',
+                        data: bar_datas.data
+                    }]
+
+                };
+                return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonLineOption, option);
             },
             Lines: function (data, name, is_stack) {
                 var xAxisdata,legendData,seriesData,seriesDataList=[];

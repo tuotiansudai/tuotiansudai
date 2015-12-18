@@ -60,7 +60,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     $('.start-date').val(initStartDate);
     $('.end-date').val(initEndDate);
 
-    function showReport(form,url,reportbox,name) {
+    function showReport(form,url,reportbox,name,category) {
         var Btn=$(form).find(':button');
         Btn.click(function() {
             var dataFormat=$(form).serialize();
@@ -71,6 +71,11 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
                 dataType: 'json'
             }).done(function (data) {
 
+                switch(category){
+                    case 'Lines':
+
+                        break;
+                }
                 var option = loadEcharts.ChartOptionTemplates.Lines(data, name, true),
                     container =document.getElementById(reportbox),
                     opt = loadEcharts.ChartConfig(container, option);
@@ -81,19 +86,19 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     }
 
     /*用户注册时间分布*/
-    showReport('#formUserDateReport','/bi/user-register-trend','userDateDistribution','用户(人)');
+    showReport('#formUserDateReport','/bi/user-register-trend','userDateDistribution','用户(人)','Lines');
 
     /*用户充值时间分布*/
-    showReport('#formUserRechargeReport','/bi/user-recharge-trend','UserRechargeDistribution','用户充值(元)');
+    showReport('#formUserRechargeReport','/bi/user-recharge-trend','UserRechargeDistribution','用户充值(元)','Lines');
 
     /*用户提现时间分布*/
-    showReport('#formWithdrawReport','/bi/user-withdraw-trend','userWithdrawDistribution','用户提现(元)');
+    showReport('#formWithdrawReport','/bi/user-withdraw-trend','userWithdrawDistribution','用户提现(元)','Lines');
 
     /*用户账户余额时间分布*/
-    showReport('#formUserAccountReport','/bi/user-account-trend','userAccountDistribution','用户账户余额(元)');
+    showReport('#formUserAccountReport','/bi/user-account-trend','userAccountDistribution','用户账户余额(元)','Lines');
 
     /*用户续投情况*/
-    showReport('#formUserInvestViscosityReport','/bi/user-invest-viscosity','userInvestViscosity','用户(人)');
+    showReport('#formUserInvestViscosityReport','/bi/user-invest-viscosity','userInvestViscosity','用户(人)','bar');
 
     /*用户投资金额时间分布*/
     showReport('#formUserInvestAmountReport','/bi/user-invest-amount-trend','userInvestAmountDistribution','用户投资金额(元)');
