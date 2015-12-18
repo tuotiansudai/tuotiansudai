@@ -107,7 +107,17 @@
         JOIN
         <choose>
             <when test="province != null and province!= ''">
-                `user` u
+                (SELECT
+                *
+                FROM
+                user u
+                WHERE NOT EXISTS
+                (SELECT
+                1
+                FROM
+                user_role ur
+                WHERE u.`login_name` = ur.`login_name`
+                AND ur.`role` = 'LOANER')) u
                 ON r.`login_name` = u.`login_name`
                 AND u.`province` = #{province}
             </when>
@@ -115,7 +125,17 @@
                 (SELECT
                 *
                 FROM
-                `user` t
+                (SELECT
+                *
+                FROM
+                user u
+                WHERE NOT EXISTS
+                (SELECT
+                1
+                FROM
+                user_role ur
+                WHERE u.`login_name` = ur.`login_name`
+                AND ur.`role` = 'LOANER')) t
                 WHERE EXISTS
                 (SELECT
                 1
@@ -124,7 +144,17 @@
                 n.`province`
                 FROM
                 `recharge` m
-                JOIN `user` n
+                JOIN (SELECT
+                *
+                FROM
+                user u
+                WHERE NOT EXISTS
+                (SELECT
+                1
+                FROM
+                user_role ur
+                WHERE u.`login_name` = ur.`login_name`
+                AND ur.`role` = 'LOANER')) n
                 ON m.`login_name` = n.`login_name`
                 WHERE m.`created_time` BETWEEN #{startTime} AND #{endTime}
                 AND m.`status` = 'SUCCESS'
@@ -168,7 +198,17 @@
             (SELECT
             *
             FROM
-            `user` b
+            (SELECT
+            *
+            FROM
+            user u
+            WHERE NOT EXISTS
+            (SELECT
+            1
+            FROM
+            user_role ur
+            WHERE u.`login_name` = ur.`login_name`
+            AND ur.`role` = 'LOANER')) b
             WHERE NOT EXISTS
             (SELECT
             1
@@ -177,7 +217,17 @@
             d.`province`
             FROM
             `recharge` c
-            JOIN `user` d
+            JOIN (SELECT
+            *
+            FROM
+            user u
+            WHERE NOT EXISTS
+            (SELECT
+            1
+            FROM
+            user_role ur
+            WHERE u.`login_name` = ur.`login_name`
+            AND ur.`role` = 'LOANER')) d
             ON c.`login_name` = d.`login_name`
             WHERE c.`created_time` BETWEEN #{startTime} AND #{endTime}
             AND c.`status` = 'SUCCESS'
@@ -219,7 +269,17 @@
         JOIN
         <choose>
             <when test="province != null and province!= ''">
-                `user` u
+                (SELECT
+                *
+                FROM
+                user u
+                WHERE NOT EXISTS
+                (SELECT
+                1
+                FROM
+                user_role ur
+                WHERE u.`login_name` = ur.`login_name`
+                AND ur.`role` = 'LOANER')) u
                 ON r.`login_name` = u.`login_name`
                 AND u.`province` = #{province}
             </when>
@@ -227,7 +287,17 @@
                 (SELECT
                 *
                 FROM
-                `user` t
+                (SELECT
+                *
+                FROM
+                user u
+                WHERE NOT EXISTS
+                (SELECT
+                1
+                FROM
+                user_role ur
+                WHERE u.`login_name` = ur.`login_name`
+                AND ur.`role` = 'LOANER')) t
                 WHERE EXISTS
                 (SELECT
                 1
@@ -236,7 +306,17 @@
                 n.`province`
                 FROM
                 `withdraw` m
-                JOIN `user` n
+                JOIN (SELECT
+                *
+                FROM
+                user u
+                WHERE NOT EXISTS
+                (SELECT
+                1
+                FROM
+                user_role ur
+                WHERE u.`login_name` = ur.`login_name`
+                AND ur.`role` = 'LOANER')) n
                 ON m.`login_name` = n.`login_name`
                 WHERE m.`created_time` BETWEEN #{startTime} AND #{endTime}
                 AND m.`status` = 'SUCCESS'
@@ -280,7 +360,17 @@
             (SELECT
             *
             FROM
-            `user` b
+            (SELECT
+            *
+            FROM
+            user u
+            WHERE NOT EXISTS
+            (SELECT
+            1
+            FROM
+            user_role ur
+            WHERE u.`login_name` = ur.`login_name`
+            AND ur.`role` = 'LOANER')) b
             WHERE NOT EXISTS
             (SELECT
             1
@@ -289,7 +379,17 @@
             d.`province`
             FROM
             `withdraw` c
-            JOIN `user` d
+            JOIN (SELECT
+            *
+            FROM
+            user u
+            WHERE NOT EXISTS
+            (SELECT
+            1
+            FROM
+            user_role ur
+            WHERE u.`login_name` = ur.`login_name`
+            AND ur.`role` = 'LOANER')) d
             ON c.`login_name` = d.`login_name`
             WHERE c.`created_time` BETWEEN #{startTime} AND #{endTime}
             AND c.`status` = 'SUCCESS'
@@ -356,7 +456,17 @@
         JOIN
         <choose>
             <when test="province != null and province!= ''">
-                `user` u
+                (SELECT
+                *
+                FROM
+                user u
+                WHERE NOT EXISTS
+                (SELECT
+                1
+                FROM
+                user_role ur
+                WHERE u.`login_name` = ur.`login_name`
+                AND ur.`role` = 'LOANER')) u
                 ON r.`login_name` = u.`login_name`
                 AND u.`province` = #{province}
             </when>
@@ -364,7 +474,17 @@
                 (SELECT
                 *
                 FROM
-                `user` t
+                (SELECT
+                *
+                FROM
+                user u
+                WHERE NOT EXISTS
+                (SELECT
+                1
+                FROM
+                user_role ur
+                WHERE u.`login_name` = ur.`login_name`
+                AND ur.`role` = 'LOANER')) t
                 WHERE EXISTS
                 (SELECT
                 1
@@ -398,7 +518,17 @@
                     MONTH(ub.`created_time`)
                 </if>
                 ) m
-                JOIN `user` n
+                JOIN (SELECT
+                *
+                FROM
+                user u
+                WHERE NOT EXISTS
+                (SELECT
+                1
+                FROM
+                user_role ur
+                WHERE u.`login_name` = ur.`login_name`
+                AND ur.`role` = 'LOANER')) n
                 ON m.`login_name` = n.`login_name`
                 WHERE m.`created_time` BETWEEN #{startTime} AND #{endTime}
                 GROUP BY n.`province`
@@ -465,7 +595,17 @@
             (SELECT
             *
             FROM
-            `user` b
+            (SELECT
+            *
+            FROM
+            user u
+            WHERE NOT EXISTS
+            (SELECT
+            1
+            FROM
+            user_role ur
+            WHERE u.`login_name` = ur.`login_name`
+            AND ur.`role` = 'LOANER')) b
             WHERE NOT EXISTS
             (SELECT
             1
@@ -499,7 +639,17 @@
                 MONTH(ub.`created_time`)
             </if>
             ) c
-            JOIN `user` d
+            JOIN (SELECT
+            *
+            FROM
+            user u
+            WHERE NOT EXISTS
+            (SELECT
+            1
+            FROM
+            user_role ur
+            WHERE u.`login_name` = ur.`login_name`
+            AND ur.`role` = 'LOANER')) d
             ON c.`login_name` = d.`login_name`
             WHERE c.`created_time` BETWEEN #{startTime} AND #{endTime}
             GROUP BY d.`province`
