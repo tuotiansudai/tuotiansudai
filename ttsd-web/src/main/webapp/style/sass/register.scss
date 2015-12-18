@@ -235,6 +235,7 @@
 }
 
 @media (max-width: 700px) {
+
   .main-frame.full-screen {
     .register-skin{
       width: 100%!important;
@@ -275,13 +276,13 @@
               padding: 7px;
               letter-spacing: 0;
               position: absolute;
-              right: 9%;
+              right: 1px;
               top: 3px;
               font-size: 12px;
             }
           }
           input[type="text"], input[type="password"] {
-            width: 92%;
+            width: 100%;
             box-sizing: border-box;
             border: #cecece 1px solid;
             border-radius: 3px;
