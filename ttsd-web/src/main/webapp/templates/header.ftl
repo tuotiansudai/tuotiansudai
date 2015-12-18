@@ -6,7 +6,7 @@
         <a href="#" class="btn-normal fr" id="btnExperience">立即体验</a>
     </div>
     <div class="header page-width">
-            <span class="fl service-time">客服电话：400-169-1188<time>（服务时间：9:00－21:00）</time></span>
+            <span class="fl service-time">客服电话：400-169-1188<time>（服务时间：9:00－20:00）</time></span>
             <ul class="fr">
                 <li class="login-pop-app" id="iphone-app-pop"><a href="javascript:">手机APP</a>
                     <img src="${staticServer}/images/sign/app-pc-top.png" alt="随身理财更轻松" id="iphone-app-img"></li>
