@@ -1,3 +1,4 @@
+import time
 import test.functional.session as session
 from test.functional.pages.base_page import BasePage
 
@@ -25,6 +26,7 @@ class LoginPage(BasePage):
 
     def login(self, username, password):
         self.username(username).password(password).captcha().click_login()
+        time.sleep(0.5)
         return self
 
 
