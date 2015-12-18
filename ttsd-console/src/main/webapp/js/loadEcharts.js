@@ -101,13 +101,7 @@ define(['jquery','underscore','echarts'], function ($,_) {
                     },
                     xAxis: [{
                         type: 'category',
-                        data: bar_datas.category,
-                        axisLabel: {
-                            show: true,
-                            interval: 'auto',
-                            rotate: 0, //旋转角度
-                            margin: 8//距离X轴的距离
-                        }
+                        data: bar_datas.category
                     }],
                     yAxis: [{
                         name: name || '',
@@ -124,6 +118,72 @@ define(['jquery','underscore','echarts'], function ($,_) {
 
                 };
                 return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonLineOption, option);
+            },
+            Pie: function (data, name) {
+                var pie_datas = MyChartsObject.ChartDataFormate.FormateNOGroupData(data);
+                var option = {
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        orient : 'vertical',
+                        x : 'left',
+                        data:[]
+                    },
+                    toolbox: {
+                        show : true,
+                        feature : {
+                            mark : {show: true},
+                            dataView : {show: true, readOnly: false},
+                            magicType : {
+                                show: true,
+                                type: ['pie', 'funnel'],
+                                option: {
+                                    funnel: {
+                                        x: '25%',
+                                        width: '50%',
+                                        funnelAlign: 'center',
+                                        max: 1548
+                                    }
+                                }
+                            },
+                            restore : {show: true},
+                            saveAsImage : {show: true}
+                        }
+                    },
+                    calculable : true,
+                    series : [
+                        {
+                            name:'',
+                            type:'pie',
+                            radius : ['50%', '70%'],
+                            itemStyle : {
+                                normal : {
+                                    label : {
+                                        show : false
+                                    },
+                                    labelLine : {
+                                        show : false
+                                    }
+                                },
+                                emphasis : {
+                                    label : {
+                                        show : true,
+                                        position : 'center',
+                                        textStyle : {
+                                            fontSize : '30',
+                                            fontWeight : 'bold'
+                                        }
+                                    }
+                                }
+                            },
+                            data:[]
+                        }
+                    ]
+                };
+                //return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonOption, option);
+                return option;
             },
             Lines: function (data, name, is_stack) {
                 var xAxisdata,legendData,seriesData,seriesDataList=[];

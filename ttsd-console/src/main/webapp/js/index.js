@@ -76,10 +76,10 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
                          option = loadEcharts.ChartOptionTemplates.Lines(data, name);
                         break;
                     case 'bar':
-                         option = loadEcharts.ChartOptionTemplates.bar(data, name);
+                         option = loadEcharts.ChartOptionTemplates.Bar(data, name);
                         break;
                     case 'pie':
-                        option = loadEcharts.ChartOptionTemplates.pie(data, name);
+                        option = loadEcharts.ChartOptionTemplates.Pie(data, name);
                         break;
                     default:break;
                 }
