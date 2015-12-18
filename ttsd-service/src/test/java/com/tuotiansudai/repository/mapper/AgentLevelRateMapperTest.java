@@ -31,10 +31,10 @@ public class AgentLevelRateMapperTest {
         UserModel userModel = createFakeUser();
         AgentLevelRateModel agentLevelRateModel = new AgentLevelRateModel();
         agentLevelRateModel.setLoginName(userModel.getLoginName());
-        agentLevelRateModel.setInputTime(new Date());
+        agentLevelRateModel.setUpdatedTime(new Date());
         agentLevelRateModel.setLevel(2);
         agentLevelRateModel.setRate(2.0d);
-        agentLevelRateModel.setUpdateTime(new Date());
+        agentLevelRateModel.setCreatedTime(new Date());
         agentLevelRateMapper.create(agentLevelRateModel);
         assertNotNull(agentLevelRateModel.getId());
     }
@@ -44,10 +44,10 @@ public class AgentLevelRateMapperTest {
         UserModel userModel = createFakeUser();
         AgentLevelRateModel agentLevelRateModel = new AgentLevelRateModel();
         agentLevelRateModel.setLoginName(userModel.getLoginName());
-        agentLevelRateModel.setInputTime(new Date());
+        agentLevelRateModel.setCreatedTime(new Date());
         agentLevelRateModel.setLevel(2);
         agentLevelRateModel.setRate(2.0d);
-        agentLevelRateModel.setUpdateTime(new Date());
+        agentLevelRateModel.setUpdatedTime(new Date());
         agentLevelRateMapper.create(agentLevelRateModel);
 
         AgentLevelRateModel agentLevelRateModel1 = agentLevelRateMapper.findAgentLevelRateByLoginNameAndLevel(userModel.getLoginName(),2);
@@ -58,10 +58,10 @@ public class AgentLevelRateMapperTest {
         UserModel userModel = createFakeUser();
         AgentLevelRateModel agentLevelRateModel = new AgentLevelRateModel();
         agentLevelRateModel.setLoginName(userModel.getLoginName());
-        agentLevelRateModel.setInputTime(new Date());
+        agentLevelRateModel.setCreatedTime(new Date());
         agentLevelRateModel.setLevel(2);
         agentLevelRateModel.setRate(2.0d);
-        agentLevelRateModel.setUpdateTime(new Date());
+        agentLevelRateModel.setUpdatedTime(new Date());
         agentLevelRateMapper.create(agentLevelRateModel);
 
         agentLevelRateMapper.delete(agentLevelRateModel.getId());
@@ -76,10 +76,10 @@ public class AgentLevelRateMapperTest {
         UserModel userModel = createFakeUser();
         AgentLevelRateModel agentLevelRateModel = new AgentLevelRateModel();
         agentLevelRateModel.setLoginName(userModel.getLoginName());
-        agentLevelRateModel.setInputTime(new Date());
+        agentLevelRateModel.setUpdatedTime(new Date());
         agentLevelRateModel.setLevel(2);
         agentLevelRateModel.setRate(2.0d);
-        agentLevelRateModel.setUpdateTime(new Date());
+        agentLevelRateModel.setCreatedTime(new Date());
         agentLevelRateMapper.create(agentLevelRateModel);
 
         agentLevelRateModel.setLevel(3);

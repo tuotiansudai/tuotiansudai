@@ -157,7 +157,7 @@
         select login_name from user where login_name like CONCAT(CONCAT('%', #{loginName}), '%')
     </select>
 
-    <select id="findStaffNameFromUserLike" parameterType="java.lang.String" resultType="java.lang.String">
+    <select id="findStaffByLikeLoginName" parameterType="java.lang.String" resultType="java.lang.String">
         select login_name from user u where u.login_name like CONCAT(CONCAT('%', #{loginName}), '%')
         and exists(select * from user_role r where r.login_name = u.login_name and r.role = 'STAFF')
     </select>

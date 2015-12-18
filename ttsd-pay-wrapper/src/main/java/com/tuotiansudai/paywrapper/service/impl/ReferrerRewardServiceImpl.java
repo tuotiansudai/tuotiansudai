@@ -212,7 +212,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         if (isStaff) {
             AgentLevelRateModel agentLevelRateModel = agentLevelRateMapper.findAgentLevelRateByLoginNameAndLevel(referrerLoginName,level);
             if(agentLevelRateModel != null){
-                double agentRewardRate = agentLevelRateModel.getRate()/100;
+                double agentRewardRate = agentLevelRateModel.getRate();
                 if(agentRewardRate > 0){
                     return agentRewardRate;
                 }

@@ -92,7 +92,7 @@ public class MockReferrerRewardServiceTest {
 
         AgentLevelRateModel agentLevelRateModel = new AgentLevelRateModel();
         agentLevelRateModel.setLevel(2);
-        agentLevelRateModel.setRate(3.3);
+        agentLevelRateModel.setRate(0.033);
         agentLevelRateModel.setLoginName(loginNameModel.getLoginName());
         agentLevelRateModel.setId(90000002l);
 

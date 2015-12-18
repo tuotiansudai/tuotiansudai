@@ -233,9 +233,3 @@ td.td {
     width: 430px;
     text-align: left;
 }
-.form-group .hide-int {
-    background-color: #fff!important;
-    border:none;
-    outline: none;
-    box-shadow:none;
-}

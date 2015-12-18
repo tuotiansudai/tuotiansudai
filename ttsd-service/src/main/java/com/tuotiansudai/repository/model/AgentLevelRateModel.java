@@ -11,8 +11,8 @@ public class AgentLevelRateModel implements Serializable {
     private String loginName;
     private int level;
     private double rate;
-    private Date inputTime;
-    private Date updateTime;
+    private Date createdTime;
+    private Date updatedTime;
 
     public AgentLevelRateModel(){
 
@@ -23,9 +23,9 @@ public class AgentLevelRateModel implements Serializable {
         }
         this.loginName = agentDto.getLoginName();
         this.level = Integer.parseInt(agentDto.getLevel());
-        this.rate = Double.parseDouble(agentDto.getRate());
-        this.inputTime = new Date();
-        this.updateTime = new Date();
+        this.rate = Double.parseDouble(agentDto.getRate())/100;
+        this.createdTime = new Date();
+        this.updatedTime = new Date();
     }
 
     public long getId() {
@@ -60,19 +60,19 @@ public class AgentLevelRateModel implements Serializable {
         this.rate = rate;
     }
 
-    public Date getInputTime() {
-        return inputTime;
+    public Date getCreatedTime() {
+        return createdTime;
     }
 
-    public void setInputTime(Date inputTime) {
-        this.inputTime = inputTime;
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public Date getUpdatedTime() {
+        return updatedTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setUpdatedTime(Date updatedTime) {
+        this.updatedTime = updatedTime;
     }
 }

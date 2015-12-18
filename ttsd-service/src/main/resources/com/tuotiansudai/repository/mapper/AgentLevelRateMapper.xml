@@ -8,12 +8,12 @@
         <result column="login_name" property="loginName"></result>
         <result column="level" property="level"></result>
         <result column="rate" property="rate"></result>
-        <result column="update_time" property="updateTime"></result>
-        <result column="input_time" property="inputTime"></result>
+        <result column="updated_time" property="updatedTime"></result>
+        <result column="created_time" property="createdTime"></result>
     </resultMap>
 
     <insert id="create" parameterType="AgentLevelRateModel" useGeneratedKeys="true" keyProperty="id">
-            insert into agent_level_rate(login_name,level,rate,input_time,update_time) values (#{loginName},#{level},#{rate},#{inputTime},#{updateTime})
+            insert into agent_level_rate(login_name,level,rate,created_time,updated_time) values (#{loginName},#{level},#{rate},#{createdTime},#{updatedTime})
         </insert>
 
     <select id="findAgentLevelRateByLoginNameAndLevel" parameterType="map" resultMap="agentLevelRateResultMap">
@@ -25,7 +25,7 @@
         </select>
 
     <update id="update" parameterType="AgentLevelRateModel">
-            update agent_level_rate set login_name = #{loginName},level = #{level},rate = #{rate},update_time = #{updateTime} where id = #{id}
+            update agent_level_rate set login_name = #{loginName},level = #{level},rate = #{rate},updated_time = #{updatedTime} where id = #{id}
     </update>
 
     <delete id="delete" parameterType="long">
@@ -54,7 +54,7 @@
                 AND login_name = #{loginName}
             </if>
         </where>
-        ORDER BY update_time DESC
+        ORDER BY updated_time DESC
         limit #{index},#{pageSize}
     </select>
 
