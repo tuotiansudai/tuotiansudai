@@ -27,6 +27,9 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
             case 2:
                 heightHack=40;
                 break;
+            case 3:
+                heightHack=60;
+                break;
             default:
                 heightHack=0;
                 break;
@@ -89,10 +92,19 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     /*用户账户余额时间分布*/
     showReport('#formUserAccountReport','/bi/user-account-trend','userAccountDistribution','用户账户余额(元)');
 
+    /*用户续投情况*/
+    showReport('#formUserInvestViscosityReport','/bi/user-invest-viscosity','userInvestViscosity','用户(人)');
+
     /*用户投资金额时间分布*/
     showReport('#formUserInvestAmountReport','/bi/user-invest-amount-trend','userInvestAmountDistribution','用户投资金额(元)');
 
     /*用户投资次数时间分布*/
     showReport('#formUserInvestCountReport','/bi/user-invest-count-trend','userInvestCountDistribution','用户投资次数(次)');
+
+    /*实名认证用户年龄分布*/
+    showReport('#formRegisterUserAgeReport','/bi/register-user-age-trend','registerUserAgeDistribution','用户(人)');
+
+    /*投资人用户年龄分布*/
+    showReport('#formInvestorUserAgeReport','/bi/investor-user-age-trend','investorUserAgeDistribution','用户(人)');
 
 });

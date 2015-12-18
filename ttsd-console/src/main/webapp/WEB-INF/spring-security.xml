@@ -46,20 +46,21 @@
         <intercept-url pattern="/js/**" access="permitAll()" />
         <intercept-url pattern="/style/**" access="permitAll()" />
 
-
         <intercept-url pattern="/monitor" access="permitAll()" />
         <intercept-url pattern="/login/**" access="permitAll()"/>
-        <intercept-url pattern="/loginHandler" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
+        <intercept-url pattern="/loginHandler" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
 
-        <intercept-url pattern="/user-manage/account/**/search" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
-        <intercept-url pattern="/user-manage/user/**/search" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
-        <intercept-url pattern="/user-manage/referrer/**" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
-        <intercept-url pattern="/finance-manage/invests/**" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
-        <intercept-url pattern="/finance-manage/recharge/**" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
-        <intercept-url pattern="/finance-manage/withdraw/**" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
-        <intercept-url pattern="/finance-manage/user-funds/**" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
-        <intercept-url pattern="/bi/**" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
-        <intercept-url pattern="/" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
+        <intercept-url pattern="/" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
+        <intercept-url pattern="/bi/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
+        <intercept-url pattern="/user-manage/account/*/search" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
+        <intercept-url pattern="/user-manage/user/*/search" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
+        <intercept-url pattern="/user-manage/users-search" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
+        <intercept-url pattern="/user-manage/user/*" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
+        <intercept-url pattern="/user-manage/referrer/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
+        <intercept-url pattern="/finance-manage/invests/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
+        <intercept-url pattern="/finance-manage/recharge/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
+        <intercept-url pattern="/finance-manage/withdraw/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
+        <intercept-url pattern="/finance-manage/user-funds/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
 
         <intercept-url pattern="/**" access="hasAuthority('ADMIN')"/>
         <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>

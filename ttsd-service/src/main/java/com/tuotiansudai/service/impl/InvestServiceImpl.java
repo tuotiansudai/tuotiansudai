@@ -237,4 +237,8 @@ public class InvestServiceImpl implements InvestService {
         return investMapper.findAllChannels();
     }
 
+    @Override
+    public InvestModel findById(long investId) {
+        return investMapper.findById(investId);
+    }
 }
