@@ -8,6 +8,10 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
     var $verificationForm=$('.verification-code-main'),
         $imageCaptchaSubmit = $('.image-captcha-confirm',$verificationForm);
 
+    $('.phone-txt',$retrievePasswordBox).on('focusout',function(option) {
+        $getCaptcha.addClass('btn').removeClass('btn-normal').prop('disabled',true);
+    });
+
     /* form blank validate */
     $retrieveForm.validate({
         focusInvalid: false,
@@ -54,18 +58,13 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                 captchaVerify: '验证码不正确'
             }
         },
-        showErrors: function (errorMap, errorList) {
-            this.__proto__.defaultShowErrors.call(this);
-            if (errorMap['mobile']) {
-                $getCaptcha.prop('disabled', true);
-            }
-        },success: function (error, element) {
-            if (element.name === 'mobile') {
-                $getCaptcha.prop('disabled', false);
+        success: function (error, element) {
+            var disableButton=$('.disable-button',$retrievePasswordBox);
+            if(!disableButton.length && element.name === 'mobile') {
+                $getCaptcha.addClass('btn-normal').removeClass('btn').prop('disabled',false);
             }
         },
         submitHandler:function(form) {
-
             var _mobile = $('.phone-txt').val(),
                 _captcha = $('.yzm-txt').val();
             window.location.href = '/mobile-retrieve-password/mobile/'+_mobile+'/captcha/'+_captcha+'/new-password-page';
@@ -83,6 +82,7 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                 area: ['380px', '200px'],
                 shadeClose: true,
                 offset: '146px',
+                skin:'image-captcha-layer',
                 content: $('.verification-code-main'),
                 success: function (layero, index) {
                     refreshCaptcha();
@@ -111,10 +111,10 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                         layer.closeAll();
                         var seconds = 30;
                         var count = setInterval(function () {
-                            $getCaptcha.html(seconds + '秒后重新发送').addClass('btn').removeClass('btn-normal').prop('disabled',true);
+                            $getCaptcha.html(seconds + '秒后重新发送').addClass('btn disable-button').removeClass('btn-normal').prop('disabled',true);
                             if (seconds == 0) {
                                 clearInterval(count);
-                                $getCaptcha.html('重新发送').removeClass('btn').addClass('btn-normal').prop('disabled',false);
+                                $getCaptcha.html('重新发送').removeClass('btn disable-button').addClass('btn-normal').prop('disabled',false);
                                 $('.verification-code-text').val('');
                             }
                             seconds--;

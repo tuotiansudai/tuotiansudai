@@ -17,7 +17,7 @@ class LoanMigrate(BaseMigrate):
                       CASE \
                         WHEN loan.type = 'loan_type_1' \
                         THEN 'INVEST_INTEREST_MONTHLY_REPAY' \
-                        WHEN loan.type = 'loan_type_3' \
+                        WHEN loan.type = 'loan_type_3' or loan.type = 'loan_type_2' \
                         THEN 'LOAN_INTEREST_MONTHLY_REPAY' \
                         WHEN loan.type = 'loan_type_4' \
                         THEN 'LOAN_INTEREST_LUMP_SUM_REPAY' \
@@ -78,7 +78,7 @@ class LoanMigrate(BaseMigrate):
                             ON loan.id = loan_node_attr.loan_id  \
                           LEFT JOIN user \
                             ON loan.agent = user.id \
-                        WHERE loan.status NOT IN ('test', 'verify_fail') AND loan.type != 'loan_type_2' "
+                        WHERE loan.status NOT IN ('test', 'verify_fail') "
 
     # insert sql which is executed on aa db
     INSERT_SQL = "INSERT INTO loan VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"

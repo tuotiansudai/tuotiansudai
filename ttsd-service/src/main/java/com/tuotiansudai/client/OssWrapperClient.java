@@ -62,12 +62,12 @@ public class OssWrapperClient {
         return new OSSClient(ossEndpoint, accessKeyId, accessKeySecret);
     }
 
-    public String upload(String suffix, InputStream inputStream, String rootPath, String address) throws Exception {
+    public String upload(String suffix, InputStream inputStream, String rootPath, String address, boolean waterImage) throws Exception {
         if (!isAllowedFileExtName(suffix)) {
             throw new Exception("不允许的文件格式");
         }
         String newFileName = generateRandomFileName(suffix);
-        return uploadFileBlur(newFileName, inputStream, rootPath, address);
+        return uploadFileBlur(newFileName, inputStream, rootPath, address, waterImage);
     }
 
     private boolean isAllowedFileExtName(final String suffix) {
@@ -96,10 +96,10 @@ public class OssWrapperClient {
         return path;
     }
 
-    private String uploadFileBlur(String fileName, InputStream inputStream, String rootPath, String address) {
+    private String uploadFileBlur(String fileName, InputStream inputStream, String rootPath, String address, boolean waterImage) {
         ObjectMetadata objectMeta = new ObjectMetadata();
         String waterPath = rootPath + "images" + File.separator + "watermark.png";
-        ByteArrayInputStream in = new ByteArrayInputStream(pressImage(waterPath, inputStream).toByteArray());
+        ByteArrayInputStream in = new ByteArrayInputStream(pressImage(waterPath, inputStream, waterImage).toByteArray());
         try {
             objectMeta.setContentLength(in.available());
             objectMeta.setContentType("image/jpeg");
@@ -128,7 +128,7 @@ public class OssWrapperClient {
         return null;
     }
 
-    private static ByteArrayOutputStream pressImage(String waterImg, InputStream inStream) {
+    private static ByteArrayOutputStream pressImage(String waterImg, InputStream inStream, boolean water) {
         ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
         try {
             //目标文件
@@ -138,11 +138,13 @@ public class OssWrapperClient {
             BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             Graphics graphics = image.createGraphics();
             graphics.drawImage(srcTarget, 0, 0, width, height, null);
-            //水印文件
-            File waterFile = new File(waterImg);
-            Image waterImage = ImageIO.read(waterFile);
-            graphics.drawImage(waterImage, 0, 0, width, height, null);
-            //水印文件结束
+            if (water) {
+                //水印文件
+                File waterFile = new File(waterImg);
+                Image waterImage = ImageIO.read(waterFile);
+                graphics.drawImage(waterImage, 0, 0, width, height, null);
+                //水印文件结束
+            }
             graphics.dispose();
             ImageIO.write(image, "jpg", swapStream);
         } catch (Exception e) {

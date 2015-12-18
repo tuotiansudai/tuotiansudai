@@ -53,6 +53,6 @@ public class RegisterAccountController {
             redirectAttributes.addFlashAttribute("success", false);
         }
 
-        return new ModelAndView(isRegisterSuccess ? "redirect:/" : "redirect:/register/account");
+        return new ModelAndView(isRegisterSuccess ? "redirect:/loan-list" : "redirect:/register/account");
     }
 }

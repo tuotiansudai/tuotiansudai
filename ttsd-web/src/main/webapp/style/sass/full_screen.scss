@@ -1,5 +1,4 @@
 @import 'variables';
-
 /* if use the css, the page will be show full screen */
 .full-screen {
     width:100%!important;
@@ -8,7 +7,6 @@
 .footer-container {
     margin-top:0;
 }
-//home page
 .home-page-container {
     .banner-box {
         height:350px;
@@ -155,7 +153,6 @@
             box-sizing: border-box;
             .product-box-list {
                 width: 76%;
-                //overflow: hidden;
                 .product-box-inner {
                     width:105%;
                     box-sizing: border-box;
@@ -197,14 +194,14 @@
                         .pr-square {
                             width: 134px;
                             height: 134px;
-                            border-radius: 67px;
+                            border-radius: 50%;
                             position: relative;
                             background: #fee7da;
                             margin: 5px auto 8px auto;
                             .pr-square-in {
                                 width:120px;
                                 height:120px;
-                                border-radius:60px;
+                                border-radius:50%;
                                 border:2px solid #ff752a;
                                 background: #fff;
                                 margin: auto;
@@ -803,9 +800,6 @@
         font-size: 12px;
       }
     }
-    .email {
-
-    }
   }
 }
 @media \0screen\,screen\9 {
@@ -1015,5 +1009,18 @@
                 }
             }
         }
+    }
+}
+
+@media screen\0  {
+    //IE8-10
+    .home-page-container {
+        .main-advantage {
+            dl dd {
+                float: left;
+                margin-bottom:30px;
+            }
+        }
+
     }
 }

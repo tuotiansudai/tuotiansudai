@@ -4,13 +4,13 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 
 /**
  * https://github.com/killme2008/Metamorphosis/blob/master/metamorphosis-commons/src/main/java/com/taobao/metamorphosis/utils/IdWorker.java
+ * DO NOT MODIFY!!!
  */
 
 @Component
@@ -24,13 +24,13 @@ public class IdGenerator {
     private final static long TW_EPOCH = new DateTime().withDate(2015, 4, 13).withTimeAtStartOfDay().getMillis();
 
     // 机器ID所占的位数
-    private final static long WORKER_ID_BITS = 10L;
+    private final static long WORKER_ID_BITS = 6L;
 
     // 机器ID的最大值
     public final static long MAX_WORKER_ID = ~(-1L << WORKER_ID_BITS);
 
     // Sequence所占的位数
-    private final static long SEQUENCE_BITS = 12L;
+    private final static long SEQUENCE_BITS = 4L;
 
     // 机器ID的偏移量
     private final static long WORKER_ID_SHIFT = SEQUENCE_BITS;
@@ -53,7 +53,7 @@ public class IdGenerator {
     @Autowired
     public IdGenerator(RedisWrapperClient redisWrapperClient) {
         this.workerId = redisWrapperClient.incr(ID_GENERATOR_REDIS_KEY).intValue() % MAX_WORKER_ID;
-        // 最大1024个节点
+        // 最大2^WORKER_ID_BITS个节点
         if (workerId > MAX_WORKER_ID || workerId < 0) {
             throw new IllegalArgumentException(MessageFormat.format("IdGenerator's id can't be greater than {0} or less than 0", String.valueOf(MAX_WORKER_ID)));
         }
