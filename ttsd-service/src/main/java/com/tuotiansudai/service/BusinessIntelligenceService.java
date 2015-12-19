@@ -13,8 +13,6 @@ public interface BusinessIntelligenceService {
 
     List<KeyValueModel> queryUserWithdrawTrend(Granularity granularity, Date startTime, Date endTime, String province);
 
-    List<KeyValueModel> queryUserAccountTrend(Granularity granularity, Date startTime, Date endTime, String province);
-
     List<KeyValueModel> queryUserInvestCountTrend(Date startTime, Date endTime, String province);
 
     List<KeyValueModel> queryUserInvestAmountTrend(Granularity granularity, Date startTime, Date endTime, String province);

@@ -86,9 +86,6 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     /*用户提现时间分布*/
     showReport('#formWithdrawReport','/bi/user-withdraw-trend','userWithdrawDistribution','用户提现(元)');
 
-    /*用户账户余额时间分布*/
-    showReport('#formUserAccountReport','/bi/user-account-trend','userAccountDistribution','用户账户余额(元)');
-
     /*用户投资金额时间分布*/
     showReport('#formUserInvestAmountReport','/bi/user-invest-amount-trend','userInvestAmountDistribution','用户投资金额(元)');
 

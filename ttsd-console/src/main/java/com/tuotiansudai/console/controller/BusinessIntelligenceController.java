@@ -61,16 +61,6 @@ public class BusinessIntelligenceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/user-account-trend", method = RequestMethod.GET)
-    public List<KeyValueModel> queryUserAccountTrend(
-            @RequestParam(name = "granularity") Granularity granularity,
-            @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-            @RequestParam(name = "province",required = false) String province){
-        return businessIntelligenceService.queryUserAccountTrend(granularity, startTime, endTime, province);
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/user-invest-amount-trend", method = RequestMethod.GET)
     public List<KeyValueModel> queryUserInvestAmountTrend(
             @RequestParam(name = "granularity") Granularity granularity,
