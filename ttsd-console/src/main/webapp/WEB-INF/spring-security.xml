@@ -58,8 +58,6 @@
         <intercept-url pattern="/finance-manage/recharge/**" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
         <intercept-url pattern="/finance-manage/withdraw/**" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
         <intercept-url pattern="/finance-manage/user-funds/**" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
-        <intercept-url pattern="/bi/**" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
-        <intercept-url pattern="/" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
 
         <intercept-url pattern="/**" access="hasAuthority('ADMIN')"/>
         <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>
