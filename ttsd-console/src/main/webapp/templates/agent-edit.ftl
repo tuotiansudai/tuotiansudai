@@ -33,10 +33,14 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-1 control-label">收益比例: </label>
+                <label class="col-sm-1 control-label agent-rate">收益比例(%): </label>
 
                 <div class="col-sm-4">
-                    <input type="text" name="rate" <#if agent??>value="${(agent.rate * 100)?string('0')!}"</#if> class="form-control jq-rate" placeholder="" datatype="*" errormsg="收益比例不能为空"/>
+                    <#if edit??>
+                        <input type="text" name="rate" <#if agent??>value="${(agent.rate * 100)?string('0.00')!}"</#if> class="form-control jq-rate" placeholder="" datatype="*" errormsg="收益比例不能为空"/>
+                    <#else >
+                        <input type="text" name="rate"  class="form-control jq-rate" placeholder="" datatype="*" errormsg="收益比例不能为空"/>
+                    </#if>
                 </div>
             </div>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
