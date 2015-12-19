@@ -299,10 +299,18 @@ public class UserServiceImpl implements UserService {
         List<UserItemDataDto> userItemDataDtos = Lists.newArrayList();
         for (UserModel userModel : userModels) {
 
+            boolean staff = false;
             UserItemDataDto userItemDataDto = new UserItemDataDto(userModel);
             userItemDataDto.setUserRoles(userRoleMapper.findByLoginName(userModel.getLoginName()));
-            userItemDataDto.setStaff(userRoleMapper.findByLoginName(userModel.getReferrer()).contains(Role.STAFF));
-            userItemDataDto.setBankCard(bindBankCardService.getPassedBankCard(userModel.getLoginName()) != null ? true : false);
+            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(userModel.getReferrer());
+            for (UserRoleModel userRoleModel : userRoleModels) {
+                if (userRoleModel.getRole()==Role.STAFF) {
+                    staff = true;
+                    break;
+                }
+            }
+            userItemDataDto.setStaff(staff);
+            userItemDataDto.setBankCard(bindBankCardService.getPassedBankCard(userModel.getLoginName()) != null);
             userItemDataDtos.add(userItemDataDto);
         }
         int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel);
