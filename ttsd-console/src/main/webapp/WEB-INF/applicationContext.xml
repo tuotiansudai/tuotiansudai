@@ -29,7 +29,7 @@
         <property name="minConnectionsPerPartition" value="${console.aa.minConnectionsPerPartition}"/>
         <property name="maxConnectionsPerPartition" value="${console.aa.maxConnectionsPerPartition}"/>
         <property name="acquireIncrement" value="${console.aa.acquireIncrement}"/>
-        <property name="idleMaxAgeInSeconds" value="1800"/>
+        <property name="idleMaxAgeInSeconds" value="600"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>
 
@@ -41,7 +41,7 @@
         <property name="minConnectionsPerPartition" value="${console.job_worker.minConnectionsPerPartition}"/>
         <property name="maxConnectionsPerPartition" value="${console.job_worker.maxConnectionsPerPartition}"/>
         <property name="acquireIncrement" value="${console.job_worker.acquireIncrement}"/>
-        <property name="idleMaxAgeInSeconds" value="1800"/>
+        <property name="idleMaxAgeInSeconds" value="600"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>
 

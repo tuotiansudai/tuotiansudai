@@ -2,7 +2,7 @@
 <@global.main pageCss="${css.full_screen}" pageJavascript="${js.about_us}" activeNav="" activeLeftNav="">
 
 <div class="new-guide-container bg-w">
-    <div class="ad-guide-img"></div>
+    <div class="new-guide-img"></div>
     <div class="content-info page-width">
         <h3 class="tc">什么是拓天速贷？</h3>
 

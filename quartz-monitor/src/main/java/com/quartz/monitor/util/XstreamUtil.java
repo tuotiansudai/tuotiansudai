@@ -25,7 +25,7 @@ public class XstreamUtil {
 	
 	public static void  object2XML(QuartzConfig config) throws IOException{
 		String path = Tools.getConfigFileBasePath();
-		File file = new File(path + "quartz-config-"+config.getUuid()+".xml");
+		File file = new File(path + "/quartz-config-"+config.getUuid()+".xml");
 		file.createNewFile();
 		FileOutputStream fs = new FileOutputStream(file);
 		log.info("create xml file : "+file.getAbsolutePath());

@@ -6,22 +6,22 @@
   margin-top:0;
 }
 
-.ad-img img{
+.actor-img img{
   margin: 0 auto;
 
 }
-.ad-recruit-img,.ad-recruit-img img {
+.actor-recruit-img,.actor-recruit-img img {
   height:350px;
-  background: url("/images/sign/activities/daili/banner-daili.jpg") center top no-repeat;
+  background: url("/images/sign/actor/daili/ba-daili.jpg") center top no-repeat;
   background-size: cover;
 }
-.ad-grand-img {
+.actor-grand-img {
   height:350px;
-  background: url("/images/sign/activities/grand/banner-grand.jpg") center top no-repeat;
+  background: url("/images/sign/actor/grand/ba-grand.jpg") center top no-repeat;
 }
-.ad-ranking-img {
+.actor-ranking-img {
   height: 439px;
-  background: url("/images/sign/activities/ranking/banner-rank.jpg") center top no-repeat;
+  background: url("/images/sign/actor/ranking/ba-rank.jpg") center top no-repeat;
 }
 .main-width {
   width:1010px;
@@ -342,9 +342,9 @@ img.icon-mark {
 
 @media screen and (max-width: 700px){
 
-  .ad-recruit-img {
+  .actor-recruit-img {
     height: 150px;
-    background: url("/images/banner/ph-banner03.jpg") center top no-repeat!important;
+    background: url("/images/ttimg/ph-a03.jpg") center top no-repeat!important;
     background-size: cover!important;
   }
 
