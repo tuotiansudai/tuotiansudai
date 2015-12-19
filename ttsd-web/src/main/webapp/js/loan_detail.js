@@ -51,7 +51,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             $loanlist.find('.loan-list-con').eq(index).show().siblings('.loan-list-con').hide();
         });
 
-
         function timer(intDiff) {
             window.setInterval(function () {
                 var day = 0,
@@ -82,11 +81,10 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             timer(intDiff);
         }
 
-
         if(amountInputElement.length) {
             var calExpectedInterest = function(isFirstLoad){
                 var loanId = $('.hid-loan').val(),
-                    amount = amountInputElement.val();
+                    amount = parseFloat(amountInputElement.autoNumeric("get"));
                 if(amount=='') {
                     amount='0.00';
                 }
