@@ -63,7 +63,12 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="referrer" class="col-sm-2 control-label">推荐人：</label>
+            <label for="referrer" class="col-sm-2 control-label">
+                <#if user.isReferrerStaff>
+                <span class="glyphicon glyphicon-user"></span>
+                </#if>
+                推荐人：
+            </label>
 
             <div class="col-sm-3">
                 <@global.role hasRole="'ADMIN'">
@@ -74,12 +79,6 @@
                 <p class="form-control-static">${(user.referrer)!}</p>
                 </@global.role>
             </div>
-            <#if user.isReferrerStaff>
-            <div class="col-sm-2">
-                <p class="form-control-static">（业务员）</p>
-            </div>
-            </#if>
-
         </div>
         <div class="form-group">
             <label for="status" class="col-sm-2 control-label">状态：</label>
