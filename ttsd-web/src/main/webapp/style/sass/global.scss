@@ -3,10 +3,13 @@
 @import 'page_frame','pagination';
 
 .layer-style-custom {
-  .image-captcha-dialog,.verification-code-main,.recharge-plat,.layui-layer-wrap{
+  .image-captcha-dialog,.verification-code-main,.recharge-plat{
     overflow: hidden;
   }
+}
 
+.layui-layer-page.layer-style-custom .layui-layer-content {
+  overflow: hidden;
 }
 
 .page-col-title,.column-title {
