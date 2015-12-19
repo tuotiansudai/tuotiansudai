@@ -8,6 +8,7 @@
         <li class="last"><s></s>3 开始投资<g></g></li>
     </ul>
     <div class="clear-blank"></div>
+    <nav></nav>
     <div class="register-box">
         <form class="register-user-form" action="/register/user" method="post" autocomplete="off" >
         <ul class="reg-list tl register-step-one">

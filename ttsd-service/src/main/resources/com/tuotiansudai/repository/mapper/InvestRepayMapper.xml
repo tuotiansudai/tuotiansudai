@@ -6,6 +6,8 @@
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
 
+    <cache-ref namespace="com.tuotiansudai.repository.mapper.InvestMapper"/>
+
     <resultMap id="investRepayInAccountResultMap" type="LatestInvestView">
         <result column="created_time" property="investTime"></result>
         <result column="loanName" property="loanName"></result>

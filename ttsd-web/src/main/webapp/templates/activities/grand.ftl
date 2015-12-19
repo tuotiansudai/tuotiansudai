@@ -1,12 +1,12 @@
 <#import "../macro/global.ftl" as global>
 <@global.main pageCss="${css.company_activity}" pageJavascript="" activeNav="" activeLeftNav="" title="累计收益兑大奖">
 <div class="activity-grand-container">
-
-    <div class="ad-img ad-grand-img"></div>
+    <nav></nav>
+    <div class="actor-img actor-grand-img"></div>
     <div class="grand-content clearfix">
-        <img src="${staticServer}/images/sign/activities/grand/ad-gc-01.png" class="responsive-picture is-show">
+        <img src="${staticServer}/images/sign/actor/grand/gc-01.png" class="responsive-picture is-show">
 
-        <img src="${staticServer}/images/sign/activities/grand/ad-gc-02.png" class="responsive-rule is-show">
+        <img src="${staticServer}/images/sign/actor/grand/gc-02.png" class="responsive-rule is-show">
         <div class="res-comtainer">
             <h3 class="responsive-title">累计收益越高,奖励价值越高</h3>
             <div class="responsive-picture">
@@ -23,10 +23,10 @@
             <h3 class="responsive-title">大奖展示</h3>
         </div>
         <div class="product-show">
-            <h2 class="p-title is-show"><img src="${staticServer}/images/sign/activities/grand/ad-g-t1.png"> </h2>
+            <h2 class="p-title is-show"><img src="${staticServer}/images/sign/actor/grand/g-t1.png"> </h2>
             <div class="img-big">
-                <img src="${staticServer}/images/sign/activities/grand/s01.png" class="icon-mark">
-                <img src="${staticServer}/images/sign/activities/grand/01.png" class="product-img">
+                <img src="${staticServer}/images/sign/actor/grand/s01.png" class="icon-mark">
+                <img src="${staticServer}/images/sign/actor/grand/01.png" class="product-img">
                 <div class="shadow-box">
                  <span>
                 乐视TV Max70 70英寸
@@ -36,8 +36,8 @@
             </div>
             <div class="img-small-box">
                 <div class="small-inner">
-                    <img src="${staticServer}/images/sign/activities/grand/s02.png" class="icon-mark">
-                    <img src="${staticServer}/images/sign/activities/grand/02.png" class="product-img">
+                    <img src="${staticServer}/images/sign/actor/grand/s02.png" class="icon-mark">
+                    <img src="${staticServer}/images/sign/actor/grand/02.png" class="product-img">
                     <div class="shadow-box">
                     <span>
                     Apple MacBook Air
@@ -48,8 +48,8 @@
                 </div>
 
                 <div class="small-inner">
-                    <img src="${staticServer}/images/sign/activities/grand/s03.png" class="icon-mark">
-                    <img src="${staticServer}/images/sign/activities/grand/03.png" class="product-img">
+                    <img src="${staticServer}/images/sign/actor/grand/s03.png" class="icon-mark">
+                    <img src="${staticServer}/images/sign/actor/grand/03.png" class="product-img">
                     <div class="shadow-box">
                      <span>
                     Apple iPhone 6s(A1700)
@@ -59,8 +59,8 @@
                 </div>
 
                 <div class="small-inner">
-                    <img src="${staticServer}/images/sign/activities/grand/s04.png" class="icon-mark">
-                    <img src="${staticServer}/images/sign/activities/grand/04.png" class="product-img">
+                    <img src="${staticServer}/images/sign/actor/grand/s04.png" class="icon-mark">
+                    <img src="${staticServer}/images/sign/actor/grand/04.png" class="product-img">
                     <div class="shadow-box">
                      <span>
                     三星 Galaxy S6 Edge
@@ -71,8 +71,8 @@
                 </div>
 
                 <div class="small-inner">
-                    <img src="${staticServer}/images/sign/activities/grand/s05.png" class="icon-mark">
-                    <img src="${staticServer}/images/sign/activities/grand/05.png" class="product-img">
+                    <img src="${staticServer}/images/sign/actor/grand/s05.png" class="icon-mark">
+                    <img src="${staticServer}/images/sign/actor/grand/05.png" class="product-img">
                     <div class="shadow-box">
                      <span>
                     coolpower3.0 锂电池
@@ -86,8 +86,8 @@
 
             <div class="small-box-out">
                 <div class="small-inner">
-                    <img src="${staticServer}/images/sign/activities/grand/s06.png" class="icon-mark">
-                    <img src="${staticServer}/images/sign/activities/grand/06.png" class="product-img">
+                    <img src="${staticServer}/images/sign/actor/grand/s06.png" class="icon-mark">
+                    <img src="${staticServer}/images/sign/actor/grand/06.png" class="product-img">
                     <div class="shadow-box">
                     <span>
                    E路航 M70+DVR
@@ -96,8 +96,8 @@
                     </div>
                 </div>
                 <div class="small-inner">
-                    <img src="${staticServer}/images/sign/activities/grand/s07.png" class="icon-mark">
-                    <img src="${staticServer}/images/sign/activities/grand/07.png" class="product-img">
+                    <img src="${staticServer}/images/sign/actor/grand/s07.png" class="icon-mark">
+                    <img src="${staticServer}/images/sign/actor/grand/07.png" class="product-img">
                     <div class="shadow-box">
                     <span>
                     飞利浦 AC4025SET
@@ -107,8 +107,8 @@
                     </div>
                 </div>
                 <div class="small-inner">
-                    <img src="${staticServer}/images/sign/activities/grand/s08.png" class="icon-mark">
-                    <img src="${staticServer}/images/sign/activities/grand/08.png" class="product-img">
+                    <img src="${staticServer}/images/sign/actor/grand/s08.png" class="icon-mark">
+                    <img src="${staticServer}/images/sign/actor/grand/08.png" class="product-img">
                     <div class="shadow-box">
                     <span>
                    飞利浦 FC8710/82
@@ -117,8 +117,8 @@
                     </div>
                 </div>
                 <div class="small-inner">
-                    <img src="${staticServer}/images/sign/activities/grand/s09.png" class="icon-mark">
-                    <img src="${staticServer}/images/sign/activities/grand/09.png" class="product-img">
+                    <img src="${staticServer}/images/sign/actor/grand/s09.png" class="icon-mark">
+                    <img src="${staticServer}/images/sign/actor/grand/09.png" class="product-img">
                     <div class="shadow-box">
                     <span>
                     Apple Watch Sport
@@ -128,7 +128,7 @@
                 </div>
             </div>
 
-            <img src="${staticServer}/images/sign/activities/grand/ad-g-t2.png" class="responsive-width is-show">
+            <img src="${staticServer}/images/sign/actor/grand/g-t2.png" class="responsive-width is-show">
             <div class="res-comtainer">
                 <h3 class="responsive-tips">注:本活动仅限大陆地区用户参与(港澳台除外)，奖励发放速度以快递速度为准。新疆、青海、西藏、云南获奖用户邮费自理。</h3>
             </div>
