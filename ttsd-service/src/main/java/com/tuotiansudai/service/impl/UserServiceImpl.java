@@ -10,6 +10,7 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
@@ -285,7 +286,17 @@ public class UserServiceImpl implements UserService {
         }
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
 
-        return new EditUserDto(userModel, accountModel, roles);
+        EditUserDto editUserDto = new EditUserDto(userModel, accountModel, roles);
+
+        BankCardModel bankCard = bindBankCardService.getPassedBankCard(loginName);
+        if (bankCard != null) {
+            editUserDto.setBankCardNumber(bankCard.getCardNumber());
+        }
+
+        if (userRoleMapper.findByLoginNameAndRole(userModel.getReferrer(), Role.STAFF.name()) != null) {
+            editUserDto.setReferrerStaff(true);
+        }
+        return editUserDto;
     }
 
     @Override
