@@ -85,8 +85,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             var calExpectedInterest = function(isFirstLoad){
                 var loanId = $('.hid-loan').val(),
                     amount = parseFloat(amountInputElement.autoNumeric("get"));
-                if(amount=='') {
-                    amount='0.00';
+                if(isNaN(amount)) {
+                    amount='0';
                 }
                 var amountNeedRaised = $('form .amountNeedRaised-i').text();
                 if(Number(amountNeedRaised) < Number(amount)){
