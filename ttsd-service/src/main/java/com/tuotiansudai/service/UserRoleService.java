@@ -9,5 +9,5 @@ public interface UserRoleService {
 
     boolean judgeUserRoleExist(String loginName,Role role);
 
-    List<String> findRoleNameByLoginName(String loginName);
+    List<Role> findRoleNameByLoginName(String loginName);
 }
