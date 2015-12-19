@@ -54,7 +54,7 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
         }
 
         if($('#WhetherApp').length) {
-            if(/id/gi.test(location.search)) {
+            if(/app/gi.test(location.search)) {
                 $('.header-container,.nav-container,.footer-container').hide();
             }
         }
