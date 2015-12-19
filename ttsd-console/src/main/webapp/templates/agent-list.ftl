@@ -29,7 +29,7 @@
                 <tr>
                     <td>${agent.loginName!}</td>
                     <td>${agent.level!}</td>
-                    <td>${(agent.rate * 100)?string('0')!}</td>
+                    <td>${(agent.rate * 100)?string('0.00')!}</td>
                     <td><a href="/user-manage/agent/${(agent.id?string('0'))!}" class="btn btn-link"> 编辑</a>
                         | <a href="/user-manage/agent/delete/${(agent.id?string('0'))!}" class="btn btn-link jq-delete"
                              data-id="${(agent.id?string('0'))!}">删除</a></td>
