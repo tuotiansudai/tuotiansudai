@@ -181,10 +181,10 @@
           user u
           LEFT JOIN account a
             ON u.`login_name` = a.`login_name`
+        <where>
             <if test="identityNumber != null and identityNumber != '' " >
                 AND a.`identity_number` = #{identityNumber}
             </if>
-        <where>
             <if test="loginName != null and loginName != '' ">
                 AND u.`login_name` = #{loginName}
             </if>
@@ -196,30 +196,6 @@
             </if>
         </where>
         ORDER BY u.`register_time` DESC
-        limit #{startLimit},#{endLimit}
-    </select>
-
-    <select id="searchAllUsersCount" parameterType="map" resultType="int">
-        SELECT
-          count(*)
-        FROM
-          user u
-          LEFT JOIN account a
-            ON u.`login_name` = a.`login_name`
-            <if test="identityNumber != null and identityNumber != '' " >
-              AND a.`identity_number` = #{identityNumber}
-            </if>
-        <where>
-            <if test="loginName != null and loginName != '' ">
-                AND u.`login_name` = #{loginName}
-            </if>
-            <if test="referrer != null and referrer != '' ">
-                AND u.`referrer` = #{referrer}
-            </if>
-            <if test="mobile != null and mobile != '' ">
-                AND u.`mobile` = #{mobile}
-            </if>
-        </where>
     </select>
 
 </mapper>

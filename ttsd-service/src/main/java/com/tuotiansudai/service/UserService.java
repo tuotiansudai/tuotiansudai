@@ -64,7 +64,6 @@ public interface UserService {
 
     void refreshAreaByMobileInJob() ;
 
-    List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber, Integer index, Integer pageSize);
+    List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber);
 
-    int searchAllUsersCount(String loginName, String referrer, String mobile, String identityNumber);
 }

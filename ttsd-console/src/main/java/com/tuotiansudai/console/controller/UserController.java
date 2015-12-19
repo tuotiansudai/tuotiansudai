@@ -95,27 +95,18 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users-search", method = RequestMethod.GET)
-    public ModelAndView searchAllUsers(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                        @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-                                        String loginName,
+    public ModelAndView searchAllUsers(String loginName,
                                         String referrer,
                                         String mobile,
-                                        String identityNumber) {
+                                        String identityNumber, HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("/user-search");
-        mv.addObject("index",index);
-        mv.addObject("pageSize",pageSize);
-        mv.addObject("loginName",loginName);
-        mv.addObject("referrer",referrer);
-        mv.addObject("mobile",mobile);
-        mv.addObject("identityNumber",identityNumber);
-        mv.addObject("userList", userService.searchAllUsers(loginName, referrer, mobile, identityNumber, index, pageSize));
-        int usersCount = userService.searchAllUsersCount(loginName, referrer, mobile, identityNumber);
-        mv.addObject("userCount", usersCount);
-        long totalPages = usersCount / pageSize + (usersCount % pageSize > 0 ? 1 : 0);
-        boolean hasPreviousPage = index > 1 && index <= totalPages;
-        boolean hasNextPage = index < totalPages;
-        mv.addObject("hasPreviousPage", hasPreviousPage);
-        mv.addObject("hasNextPage", hasNextPage);
+        if (request.getParameterMap().size() != 0) {
+            mv.addObject("loginName", loginName);
+            mv.addObject("referrer", referrer);
+            mv.addObject("mobile", mobile);
+            mv.addObject("identityNumber", identityNumber);
+            mv.addObject("userList", userService.searchAllUsers(loginName, referrer, mobile, identityNumber));
+        }
         return mv;
     }
 

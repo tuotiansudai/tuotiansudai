@@ -25,9 +25,7 @@ public interface UserMapper {
     void updateUser(UserModel userModel);
 
     List<UserModel> searchAllUsers(@Param(value = "loginName") String loginName,@Param(value = "referrer") String referrer,@Param(value = "mobile") String mobile,
-                                   @Param(value = "identityNumber") String identityNumber,@Param(value = "startLimit") Integer startLimit,@Param(value = "endLimit") Integer endLimit);
-
-    int searchAllUsersCount(@Param(value = "loginName") String loginName,@Param(value = "referrer") String referrer,@Param(value = "mobile") String mobile,@Param(value = "identityNumber") String identityNumber);
+                                   @Param(value = "identityNumber") String identityNumber);
 
     List<UserModel> findAllUser(@Param(value = "loginName") String loginName,
                                 @Param(value = "email") String email,

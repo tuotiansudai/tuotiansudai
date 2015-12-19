@@ -379,12 +379,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber, Integer index, Integer pageSize) {
-        return userMapper.searchAllUsers(loginName, referrer, mobile, identityNumber, (index - 1 ) * pageSize, pageSize);
+    public List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber) {
+        return userMapper.searchAllUsers(loginName, referrer, mobile, identityNumber);
     }
 
-    @Override
-    public int searchAllUsersCount(String loginName, String referrer, String mobile, String identityNumber) {
-        return userMapper.searchAllUsersCount(loginName, referrer, mobile, identityNumber);
-    }
 }
