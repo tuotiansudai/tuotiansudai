@@ -3,9 +3,10 @@
 @import 'page_frame','pagination';
 
 .layer-style-custom {
-  .image-captcha-dialog,.verification-code-main,.recharge-plat {
+  .image-captcha-dialog,.verification-code-main,.recharge-plat,.layui-layer-wrap{
     overflow: hidden;
   }
+
 }
 
 .page-col-title,.column-title {
