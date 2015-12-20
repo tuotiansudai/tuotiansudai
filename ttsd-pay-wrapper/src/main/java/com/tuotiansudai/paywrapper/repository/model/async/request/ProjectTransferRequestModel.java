@@ -96,7 +96,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, UMP_PROPS.getProperty("mer_id"), amount, UmPayParticAccType.MERCHANT);
         model.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
         model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "repay_invest_fee_notify");
-        model.servType = UmPayServType.TRANSFER_OUT_REPAY_PAYBACK.getCode();
+        model.servType = UmPayServType.TRANSFER_OUT_PLATFORM_FEE.getCode();
         model.transAction = UmPayTransAction.OUT.getCode();
         model.particType = UmPayParticType.PLATFORM.getCode();
         return model;
@@ -116,7 +116,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, UMP_PROPS.getProperty("mer_id"), amount, UmPayParticAccType.MERCHANT);
         model.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
         model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "loan_remaining_amount_notify");
-        model.servType = UmPayServType.TRANSFER_OUT_REPAY_PAYBACK.getCode();
+        model.servType = UmPayServType.TRANSFER_OUT_PLATFORM_FEE.getCode();
         model.transAction = UmPayTransAction.OUT.getCode();
         model.particType = UmPayParticType.PLATFORM.getCode();
         return model;
