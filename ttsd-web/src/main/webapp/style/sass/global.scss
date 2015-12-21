@@ -1,13 +1,17 @@
 @import 'font_awesome';
 @import 'reset', 'btn','table';
 @import 'page_frame','pagination';
-@import 'media';
 
-.image-captcha-layer {
-  .image-captcha-dialog,.verification-code-main {
+.layer-style-custom {
+  .image-captcha-dialog,.verification-code-main,.recharge-plat{
     overflow: hidden;
   }
 }
+
+.layui-layer-page.layer-style-custom .layui-layer-content {
+  overflow: hidden;
+}
+
 .page-col-title,.column-title {
   border-bottom:1px solid #ccc;
   margin-bottom: 20px;
@@ -22,6 +26,7 @@
     text-align: center;
     em {
       border-bottom-width: 0px;
+      line-height: 1.3;
     }
     time {
       font-size: nth($fontSize, 1);
@@ -30,13 +35,6 @@
       margin-top:15px;
     }
   }
-}
-
-.show {
-  display: block;
-}
-.hide {
-  display: none;
 }
 
 .table-out-border {
@@ -171,4 +169,76 @@
     border-left-color: #fff;
     margin-left: 20px;
   }
+}
+
+/********************** Responsive Page ****************************/
+
+@media screen and (max-width: 700px) {
+
+  .page-width {
+    width:100%;
+  }
+  .column-title{
+    &.article {
+      em{
+        text-align:center;
+        margin-top: 10px;
+        line-height: 1.3;
+      }
+      time{
+        margin-top:0;
+      }
+    }
+
+  }
+  /* MAKE IMAGE GRAY */
+  .img-gray {
+    -webkit-filter: grayscale(0%);
+    -moz-filter: grayscale(0%);
+    -ms-filter: grayscale(0%);
+    -o-filter: grayscale(0%);
+    filter: grayscale(0%);
+    filter: none;
+  }
+
+  /*RESET FROM ERROR TIP*/
+  form {
+    label.error {
+      &:before {
+        font: normal normal normal 13px/1 FontAwesome;
+      }
+    }
+    input.valid +label.error {
+      display: none!important;
+      &:before {
+        display: none!important;
+      }
+    }
+  }
+
+  .main-frame.full-screen {
+    width:100%;
+    margin:0 auto!important;
+  }
+  .responsive-width{
+    width:100%!important;
+    margin:0!important;
+  }
+  .is-show{
+    display:none!important;
+  }
+
+  .click-article{
+    padding:15px 10px!important;
+  }
+  .title-img{
+    width:30%!important;
+  }
+
+  .text-overflow{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
 }

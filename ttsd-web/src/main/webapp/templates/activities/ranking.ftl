@@ -1,6 +1,6 @@
 <#import "../macro/global.ftl" as global>
-	<@global.main pageCss="${css.company_activity}" pageJavascript="" activeNav="" activeLeftNav="" title="抢排行">
-	<div class="activity-ranking-container">
+	<@global.main pageCss="${css.company_activity}" pageJavascript="${js.about_us}" activeNav="" activeLeftNav="" title="抢排行">
+	<div class="activity-ranking-container" id="WhetherApp">
         <div class="actor-img actor-ranking-img"></div>
         <div class="main-width responsive-width is-show">
             <img src="${staticServer}/images/sign/actor/ranking/c-01.png" class="responsive-width">
@@ -21,11 +21,11 @@
         <div class="res-comtainer">
             <h3 class="responsive-title">投资抢大奖</h3>
             <div class="responsive-picture">
-                <img src="${staticServer}/images/sign/actor/ranking/activity-img1.png" width="100%">
+                <img src="${staticServer}/images/sign/actor/ranking/activity-img1.png">
             </div>
             <h3 class="responsive-title">推荐争红包</h3>
             <div class="responsive-picture">
-                <img src="${staticServer}/images/sign/actor/ranking/get-bag.png" width="100%">
+                <img src="${staticServer}/images/sign/actor/ranking/get-bag.png">
             </div>
             <div class="link-btn">
                 <h5>活动时间：2015年10月19日-2016年1月16日</h5>

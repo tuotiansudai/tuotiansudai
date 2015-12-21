@@ -139,15 +139,6 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
             }
         }
 
-        if (!jobData.isUpdateLoanStatusSuccess()) {
-            try {
-                loanService.updateLoanStatus(jobData.getLoanId(), LoanStatus.COMPLETE);
-                jobData.setUpdateLoanStatusSuccess(true);
-            } catch (Exception e) {
-                logger.error(MessageFormat.format("[Advance Repay] Update loan status is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
-            }
-        }
-
         try {
             this.paybackInvestRepay(jobData);
         } catch (Exception e) {
@@ -158,6 +149,15 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
             this.transferLoanBalance(jobData);
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Advance Repay] Transfer loan balance is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
+        }
+
+        if (!jobData.isUpdateLoanStatusSuccess()) {
+            try {
+                loanService.updateLoanStatus(jobData.getLoanId(), LoanStatus.COMPLETE);
+                jobData.setUpdateLoanStatusSuccess(true);
+            } catch (Exception e) {
+                logger.error(MessageFormat.format("[Advance Repay] Update loan status is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
+            }
         }
 
         this.createRepayJob(jobData);
@@ -213,7 +213,7 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
         long loanRepayId = loanRepayJobResultDto.getLoanRepayId();
         try {
             if (this.storeJobData(loanRepayJobResultDto) && loanRepayJobResultDto.jobRetry()) {
-                Date tenMinutes = new DateTime().plusMinutes(5).toDate();
+                Date tenMinutes = new DateTime().plusMinutes(10).toDate();
                 jobManager.newJob(JobType.AdvanceRepay, AdvanceRepayJob.class)
                         .runOnceAt(tenMinutes)
                         .addJobData(NormalRepayJob.LOAN_REPAY_ID, loanRepayId)
