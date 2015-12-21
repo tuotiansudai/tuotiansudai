@@ -11,7 +11,7 @@
   text-align: center;
 
   .register-box {
-    margin-left: 30%;
+    margin-left: 322px;
     height: auto;
     overflow: auto;
     .register-step-one {
@@ -43,7 +43,7 @@
             padding: 7px;
             letter-spacing: 0;
             position: absolute;
-            right: 316px;
+            right: 300px;
             top: 3px;
             font-size: 12px;
           }
@@ -229,12 +229,22 @@
   }
   .btn-success {
     position: absolute;
-    bottom: 35px;
+    bottom: 25px;
     left: 35%;
   }
 }
 
 @media (max-width: 700px) {
+
+  .main-frame.full-screen {
+    .register-skin{
+      width: 100%!important;
+      height:100%!important;
+      top: 0!important;
+      left: 50%!important;
+      margin-left: -50%!important;
+    }
+  }
   .step-register-tab {
     font-size: 14px!important;
     margin:0;
@@ -266,13 +276,13 @@
               padding: 7px;
               letter-spacing: 0;
               position: absolute;
-              right: 9%;
+              right: 1px;
               top: 3px;
               font-size: 12px;
             }
           }
           input[type="text"], input[type="password"] {
-            width: 92%;
+            width: 100%;
             box-sizing: border-box;
             border: #cecece 1px solid;
             border-radius: 3px;

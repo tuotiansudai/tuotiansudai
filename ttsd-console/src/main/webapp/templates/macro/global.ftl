@@ -48,7 +48,8 @@
                 "sidebar":[
                     {"name":"userMan","text":"用户管理","link":"/user-manage/users","role":"'ADMIN'"},
                     {"name":"userSearchMan","text":"用户查询","link":"/user-manage/users-search","role":"'ADMIN','CUSTOMER_SERVICE'"},
-                    {"name":"referMan","text":"推荐人管理","link":"/user-manage/referrer","role":"'ADMIN','CUSTOMER_SERVICE'"}
+                    {"name":"referMan","text":"推荐人管理","link":"/user-manage/referrer","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"agentMan","text":"代理商管理","link":"/user-manage/agents","role":"'ADMIN'"}
                 ]
             },
             {

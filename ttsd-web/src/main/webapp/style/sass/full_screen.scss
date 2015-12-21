@@ -323,6 +323,7 @@
     filter:Alpha(opacity=80);
     position:static;
     *zoom:1;
+
   }
   .register-ad-box{
     p{
@@ -333,9 +334,9 @@
 /* user guide page */
 .new-guide-container {
     color: #2f2f2f;
-    .ad-guide-img {
+    .new-guide-img {
         height:350px;
-        background: url("/images/banner/banner-guide.jpg") center top no-repeat;
+        background: url("/images/ttimg/ttimg-guide.jpg") center top no-repeat;
     }
     .content-info {
         h3 {

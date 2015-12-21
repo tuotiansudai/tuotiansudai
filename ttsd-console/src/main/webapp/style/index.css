@@ -245,5 +245,9 @@ td.td {
 }
 .home-report .start-date,
 .home-report .end-date {
-    width:100px;
+    width: 100px;
+}
+
+.agent-rate{
+    padding-right: 5px;
 }

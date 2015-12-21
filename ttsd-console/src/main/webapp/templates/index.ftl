@@ -185,7 +185,7 @@
         <div class="col-lg-12 col-sm-12">
             <div class="panel panel-success">
                 <div class="panel-heading">
-                    <h3 class="panel-title">用户投资次数时间分布</h3>
+                    <h3 class="panel-title">用户投资时间分布</h3>
                 </div>
                 <div class="panel-body" id="">
                     <form class="form-inline" id="formUserInvestCountReport">

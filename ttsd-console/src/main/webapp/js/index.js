@@ -116,7 +116,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     showReport('#formUserInvestAmountReport','/bi/user-invest-amount-trend','userInvestAmountDistribution','用户投资金额(元)','Lines');
 
     /*用户投资次数时间分布*/
-    showReport('#formUserInvestCountReport','/bi/user-invest-count-trend','userInvestCountDistribution','用户投资次数(次)','Lines');
+    showReport('#formUserInvestCountReport','/bi/user-invest-count-trend','userInvestCountDistribution','用户投资(人次)','Lines');
 
     /*实名认证用户年龄分布*/
     showReport('#formRegisterUserAgeReport','/bi/register-user-age-trend','registerUserAgeDistribution','实名认证用户(人)','pie');

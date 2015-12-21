@@ -15,7 +15,7 @@
         <div class="bRadiusBox clearfix clear-blank-m pad-m">
 
             <span class="text"> 如果还有问题，请联系客服</span><br/>
-            <span class="phone"><i class="fa fa-phone"></i> 400-169-1188<em> (服务时间：9:00-21:00)</em></span><br/>
+            <span class="phone"><i class="fa fa-phone"></i> 400-169-1188<em> (服务时间：9:00-20:00)</em></span><br/>
             <span class="email"><i class="fa fa-envelope-o fa-fw"></i> kefu@tuotiansudai.com</span>
         </div>
     </div>
