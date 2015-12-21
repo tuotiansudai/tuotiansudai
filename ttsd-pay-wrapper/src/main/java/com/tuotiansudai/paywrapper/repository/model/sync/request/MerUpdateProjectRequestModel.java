@@ -6,15 +6,15 @@ import com.tuotiansudai.repository.model.LoanStatus;
 import java.util.Map;
 
 public class MerUpdateProjectRequestModel extends BaseSyncRequestModel {
-    private long projectId;
+    private String projectId;
     private String projectName;
-    private long projectAmount;
+    private String projectAmount;
     private String changeType;
     private String projectState;
     private String projectExpireDate;
 
 
-    public MerUpdateProjectRequestModel(long loanAmount, long projectId, String projectName, String projectState) {
+    public MerUpdateProjectRequestModel(String loanAmount, String projectId, String projectName, String projectState) {
         this.service = "mer_update_project";
         this.projectId = projectId;
         this.projectName = projectName;
@@ -37,11 +37,11 @@ public class MerUpdateProjectRequestModel extends BaseSyncRequestModel {
         return payRequestData;
     }
 
-    public long getProjectId() {
+    public String getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(long projectId) {
+    public void setProjectId(String projectId) {
         this.projectId = projectId;
     }
 
@@ -53,11 +53,11 @@ public class MerUpdateProjectRequestModel extends BaseSyncRequestModel {
         this.projectName = projectName;
     }
 
-    public long getProjectAmount() {
+    public String getProjectAmount() {
         return projectAmount;
     }
 
-    public void setProjectAmount(long projectAmount) {
+    public void setProjectAmount(String projectAmount) {
         this.projectAmount = projectAmount;
     }
 

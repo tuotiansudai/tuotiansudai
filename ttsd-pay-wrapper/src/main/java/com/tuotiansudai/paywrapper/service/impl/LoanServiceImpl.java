@@ -157,8 +157,8 @@ public class LoanServiceImpl implements LoanService {
         try {
             boolean updateSuccess = Strings.isNullOrEmpty(loanStatus.getCode());
             if (!updateSuccess) {
-                MerUpdateProjectRequestModel merUpdateProjectRequestModel = new MerUpdateProjectRequestModel(loanModel.getLoanAmount(),
-                        loanModel.getId(),
+                MerUpdateProjectRequestModel merUpdateProjectRequestModel = new MerUpdateProjectRequestModel(String.valueOf(loanModel.getLoanAmount()),
+                        String.valueOf(loanModel.getId()),
                         loanModel.getName(),
                         loanStatus.getCode());
 

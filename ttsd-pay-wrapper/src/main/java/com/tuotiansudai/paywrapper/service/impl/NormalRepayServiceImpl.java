@@ -204,7 +204,17 @@ public class NormalRepayServiceImpl implements RepayService {
 
         this.createRepayJob(jobData, 60);
 
-        return !jobData.jobRetry();
+        if (!jobData.jobRetry()) {
+            logger.info(MessageFormat.format("[Normal Repay] Normal repay is success (loanRepayId = {0})", String.valueOf(loanRepayId)));
+            try {
+                redisWrapperClient.del(MessageFormat.format(LOAN_REPAY_JOB_DATA_KEY_TEMPLATE, String.valueOf(loanRepayId)));
+            } catch (Exception e) {
+                logger.error(MessageFormat.format("[Normal Repay] Delete job data is failed (loanRepayId = {0})", String.valueOf(loanRepayId)), e);
+            }
+            return true;
+        }
+
+        return false;
     }
 
     @Override
