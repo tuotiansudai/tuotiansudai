@@ -21,30 +21,15 @@ define(['jquery','underscore','echarts'], function ($,_) {
         },
         ChartDataFormate:{
             FormateNOGroupData: function (data,cate) {
+                var categories = [];
+                var datas = [],
+                    dataLen=data.length;
 
-                switch (cate) {
-                    case 'bar':
-                        var categories = [];
-                        var datas = [],
-                            dataObj= _.sortBy(data,'name'),
-                            dataLen=data.length;
-                        for (var i = 0; i < dataLen; i++) {
-                            categories.push(data[i].name || "");
-                            datas.push({ name: data[i].name, value: data[i].value || 0 });
-                        }
-                        return { category: categories, data: datas };
-                        break;
-                    case 'pie':
-                        var categories = [];
-                        var datas = [],
-                            dataLen=data.length;
-                        for (var i = 0; i < dataLen; i++) {
-                            categories.push(data[i].name || "");
-                            datas.push({ name: data[i].name, value: data[i].value || 0 });
-                        }
-                        return { category: categories, data: datas };
-                        break;
+                for (var i = 0; i < dataLen; i++) {
+                    categories.push(data[i].name || "");
+                    datas.push({ name: data[i].name, value: data[i].value || 0 });
                 }
+                return { category: categories, data: datas };
 
             }
         },
