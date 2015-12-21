@@ -21,15 +21,11 @@ public class LoanRepayJobResultDto implements Serializable {
 
     private boolean isOverdueRepay;
 
-    private long repayAmount;
-
     private long loanRepayBalance;
 
     private Date actualRepayDate;
 
     private boolean isLastPeriod;
-
-    private boolean isUpdateAgentUserBillSuccess;
 
     private SyncRequestStatus loanRepayBalanceStatus;
 
@@ -44,18 +40,14 @@ public class LoanRepayJobResultDto implements Serializable {
     public LoanRepayJobResultDto() {
     }
 
-    public LoanRepayJobResultDto(long loanId, long loanRepayId, boolean isOverdueRepay, long repayAmount, Date actualRepayDate, boolean isLastPeriod, List<InvestRepayJobResultDto> investRepayJobResults) {
+    public LoanRepayJobResultDto(long loanId, long loanRepayId, boolean isOverdueRepay, long loanRepayBalance, Date actualRepayDate, boolean isLastPeriod, List<InvestRepayJobResultDto> investRepayJobResults) {
         this.loanId = loanId;
         this.loanRepayId = loanRepayId;
         this.isOverdueRepay = isOverdueRepay;
-        this.repayAmount = repayAmount;
-        this.loanRepayBalance = repayAmount;
+        this.loanRepayBalance = loanRepayBalance;
         this.actualRepayDate = actualRepayDate;
         this.isLastPeriod = isLastPeriod;
         this.investRepayJobResults = investRepayJobResults;
-        for (InvestRepayJobResultDto investRepayJobResult : investRepayJobResults) {
-            this.loanRepayBalance -= investRepayJobResult.getCorpus() + investRepayJobResult.getActualInterest() + investRepayJobResult.getDefaultInterest();
-        }
         this.loanRepayBalanceStatus = this.loanRepayBalance == 0 ? SyncRequestStatus.SUCCESS : SyncRequestStatus.READY;
         this.isUpdateSystemBillSuccess = this.loanRepayBalance == 0;
     }
@@ -89,11 +81,6 @@ public class LoanRepayJobResultDto implements Serializable {
         return isOverdueRepay;
     }
 
-    @JsonProperty(value = "repayAmount")
-    public long getRepayAmount() {
-        return repayAmount;
-    }
-
     @JsonProperty(value = "loanRepayBalance")
     public long getLoanRepayBalance() {
         return loanRepayBalance;
@@ -107,11 +94,6 @@ public class LoanRepayJobResultDto implements Serializable {
     @JsonProperty(value = "isLastPeriod")
     public boolean isLastPeriod() {
         return isLastPeriod;
-    }
-
-    @JsonProperty(value = "isUpdateAgentUserBillSuccess")
-    public boolean isUpdateAgentUserBillSuccess() {
-        return isUpdateAgentUserBillSuccess;
     }
 
     @JsonProperty(value = "loanRepayBalanceStatus")
@@ -151,10 +133,6 @@ public class LoanRepayJobResultDto implements Serializable {
         isOverdueRepay = overdueRepay;
     }
 
-    public void setRepayAmount(long repayAmount) {
-        this.repayAmount = repayAmount;
-    }
-
     public void setLoanRepayBalance(long loanRepayBalance) {
         this.loanRepayBalance = loanRepayBalance;
     }
@@ -165,10 +143,6 @@ public class LoanRepayJobResultDto implements Serializable {
 
     public void setLastPeriod(boolean lastPeriod) {
         isLastPeriod = lastPeriod;
-    }
-
-    public void setUpdateAgentUserBillSuccess(boolean updateAgentUserBillSuccess) {
-        isUpdateAgentUserBillSuccess = updateAgentUserBillSuccess;
     }
 
     public void setLoanRepayBalanceStatus(SyncRequestStatus loanRepayBalanceStatus) {

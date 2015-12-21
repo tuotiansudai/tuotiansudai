@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.UnmodifiableIterator;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.dto.InvestRepayJobResultDto;
 import com.tuotiansudai.paywrapper.dto.LoanRepayJobResultDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -151,7 +152,8 @@ public class NormalRepayServiceImpl implements RepayService {
 
         Long loanRepayId = this.parseLoanRepayId(callbackRequest);
         if (loanRepayId != null) {
-            this.createRepayJob(this.generateJobData(loanRepayId, false));
+            this.createRepayJob(this.generateJobData(loanRepayId, false), 5);
+            this.updateLoanAgentUserBill(loanRepayId, UserBillBusinessType.NORMAL_REPAY);
         }
 
         return callbackRequest.getResponseData();
@@ -168,15 +170,6 @@ public class NormalRepayServiceImpl implements RepayService {
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Normal Repay] Fetch job data from redis is failed (loanRepayId = {0})", String.valueOf(loanRepayId)));
             return false;
-        }
-
-        if (!jobData.isUpdateAgentUserBillSuccess()) {
-            try {
-                this.updateLoanAgentUserBill(jobData, UserBillBusinessType.NORMAL_REPAY);
-                jobData.setUpdateAgentUserBillSuccess(true);
-            } catch (AmountTransferException e) {
-                logger.error(MessageFormat.format("[Normal Repay] Transfer out balance for loan repay interest is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
-            }
         }
 
         if (!jobData.isUpdateLoanRepayStatusSuccess()) {
@@ -202,16 +195,26 @@ public class NormalRepayServiceImpl implements RepayService {
 
         if (!jobData.isUpdateLoanStatusSuccess()) {
             try {
-                loanService.updateLoanStatus(jobData.getLoanId(), jobData.isLastPeriod() ? LoanStatus.COMPLETE : LoanStatus.REPAYING);
-                jobData.setUpdateLoanStatusSuccess(true);
+                BaseDto<PayDataDto> dto = loanService.updateLoanStatus(jobData.getLoanId(), jobData.isLastPeriod() ? LoanStatus.COMPLETE : LoanStatus.REPAYING);
+                jobData.setUpdateLoanStatusSuccess(dto.getData().getStatus());
             } catch (Exception e) {
                 logger.error(MessageFormat.format("[Normal Repay] Update loan status is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
             }
         }
 
-        this.createRepayJob(jobData);
+        this.createRepayJob(jobData, 60);
 
-        return !jobData.jobRetry();
+        if (!jobData.jobRetry()) {
+            logger.info(MessageFormat.format("[Normal Repay] Normal repay is success (loanRepayId = {0})", String.valueOf(loanRepayId)));
+            try {
+                redisWrapperClient.del(MessageFormat.format(LOAN_REPAY_JOB_DATA_KEY_TEMPLATE, String.valueOf(loanRepayId)));
+            } catch (Exception e) {
+                logger.error(MessageFormat.format("[Normal Repay] Delete job data is failed (loanRepayId = {0})", String.valueOf(loanRepayId)), e);
+            }
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -262,6 +265,8 @@ public class NormalRepayServiceImpl implements RepayService {
 
         List<InvestRepayJobResultDto> investRepayJobResults = Lists.newArrayList();
 
+        long loanRepayBalance = (isAdvanceRepay ? loanRepayModels.get(loanRepayModels.size() - 1).getCorpus() : loanRepayModel.getCorpus()) + loanRepayModel.getActualInterest() + this.calculateLoanRepayDefaultInterest(loanRepayModels);
+
         for (InvestModel investModel : successInvests) {
             List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
             InvestRepayModel investRepayModel = investRepayModels.get(loanRepayModel.getPeriod() - 1);
@@ -269,33 +274,33 @@ public class NormalRepayServiceImpl implements RepayService {
             long actualInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, investModel, lastRepayDate, currentRepayDate);
             long actualFee = new BigDecimal(actualInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).longValue();
             long defaultInterest = this.calculateInvestRepayDefaultInterest(investRepayModels);
+            long corpus = isAdvanceRepay ? investModel.getAmount() : investRepayModel.getCorpus();
 
+            loanRepayBalance -= corpus + actualInterest + defaultInterest;
             investRepayJobResults.add(new InvestRepayJobResultDto(investModel.getId(),
                     investRepayModel.getId(),
                     investModel.getLoginName(),
-                    isAdvanceRepay ? investModel.getAmount() : investRepayModel.getCorpus(),
+                    corpus,
                     actualInterest,
                     actualFee,
                     defaultInterest));
-        }
 
-        long defaultInterest = this.calculateLoanRepayDefaultInterest(loanRepayModels);
-        long repayAmount = (isAdvanceRepay ? loanRepayModels.get(loanRepayModels.size() - 1).getCorpus() : loanRepayModel.getCorpus()) + loanRepayModel.getActualInterest() + defaultInterest;
+        }
 
         return new LoanRepayJobResultDto(loanModel.getId(),
                 loanRepayModel.getId(),
                 loanModel.getStatus() == LoanStatus.OVERDUE,
-                repayAmount,
+                loanRepayBalance,
                 loanRepayModel.getActualRepayDate(),
                 loanModel.calculateLoanRepayTimes() == loanRepayModel.getPeriod(),
                 investRepayJobResults);
     }
 
-    protected void createRepayJob(LoanRepayJobResultDto loanRepayJobResultDto) {
+    protected void createRepayJob(LoanRepayJobResultDto loanRepayJobResultDto, int delayMinutes) {
         long loanRepayId = loanRepayJobResultDto.getLoanRepayId();
         try {
             if (this.storeJobData(loanRepayJobResultDto) && loanRepayJobResultDto.jobRetry()) {
-                Date temMinutesLater = new DateTime().plusMinutes(10).toDate();
+                Date temMinutesLater = new DateTime().plusMinutes(delayMinutes).toDate();
                 jobManager.newJob(JobType.NormalRepay, NormalRepayJob.class)
                         .runOnceAt(temMinutesLater)
                         .addJobData(NormalRepayJob.LOAN_REPAY_ID, loanRepayId)
@@ -327,16 +332,25 @@ public class NormalRepayServiceImpl implements RepayService {
         return defaultInterest;
     }
 
-    protected void updateLoanAgentUserBill(LoanRepayJobResultDto jobData, UserBillBusinessType userBillBusinessType) throws AmountTransferException {
-        long loanId = jobData.getLoanId();
-        long loanRepayId = jobData.getLoanRepayId();
-        long repayAmount = jobData.getRepayAmount();
-        LoanModel loanModel = loanMapper.findById(loanId);
-        amountTransfer.transferOutBalance(loanModel.getAgentLoginName(),
-                loanRepayId,
-                repayAmount,
-                loanModel.getStatus() == LoanStatus.OVERDUE ? UserBillBusinessType.OVERDUE_REPAY : userBillBusinessType,
-                null, null);
+    protected void updateLoanAgentUserBill(long loanRepayId, UserBillBusinessType userBillBusinessType) {
+        LoanRepayModel loanRepayModel = loanRepayMapper.findById(loanRepayId);
+        LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
+
+        long defaultInterest = this.calculateLoanRepayDefaultInterest(loanRepayModels);
+        long repayAmount = (UserBillBusinessType.ADVANCE_REPAY == userBillBusinessType ? loanRepayModels.get(loanRepayModels.size() - 1).getCorpus() : loanRepayModel.getCorpus()) + loanRepayModel.getActualInterest() + defaultInterest;
+
+        try {
+            amountTransfer.transferOutBalance(loanModel.getAgentLoginName(),
+                    loanRepayId,
+                    repayAmount,
+                    loanModel.getStatus() == LoanStatus.OVERDUE ? UserBillBusinessType.OVERDUE_REPAY : userBillBusinessType,
+                    null, null);
+        } catch (AmountTransferException e) {
+            logger.error(MessageFormat.format("[{0} Repay] Transfer out balance for loan repay interest is failed (loanRepayId = {1})",
+                    UserBillBusinessType.ADVANCE_REPAY == userBillBusinessType ? "Advance" : "Normal",
+                    String.valueOf(loanRepayId)), e);
+        }
     }
 
     protected void updateLoanRepayStatus(LoanRepayJobResultDto jobData) {
