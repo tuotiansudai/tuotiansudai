@@ -1,20 +1,20 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.InvestPaginationDataDto;
-import com.tuotiansudai.dto.InvestPaginationItemDataDto;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Min;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +34,15 @@ public class InvestController {
 
     @Autowired
     private InvestService investService;
+
+    @Autowired
+    private LoanService loanService;
+
+    @Autowired
+    private RepayService repayService;
+
+    @Value("${web.server}")
+    private String webServer;
 
     @RequestMapping(value = "/invests", method = RequestMethod.GET)
     public ModelAndView getInvestList(@RequestParam(name = "loanId", required = false) Long loanId,
@@ -99,5 +109,24 @@ public class InvestController {
             mv.addObject("roleList", Role.values());
             return mv;
         }
+    }
+
+    @RequestMapping(value = "/invest-repay/{investId:^\\d+$}", method = RequestMethod.GET)
+    public ModelAndView getInvestRepayList(@PathVariable long investId) {
+        InvestModel investModel = investService.findById(investId);
+        LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
+
+        BaseDto<InvestRepayDataDto> investRepayDto = repayService.findInvestorInvestRepay(investModel.getLoginName(), investModel.getId());
+        List<InvestRepayDataItemDto> repayDataItems = investRepayDto.getData().getRecords();
+        if(repayDataItems == null){
+            repayDataItems = new ArrayList<>(0);
+        }
+
+        ModelAndView mv = new ModelAndView("invest-repay-list");
+        mv.addObject("repayList", repayDataItems);
+        mv.addObject("invest", investModel);
+        mv.addObject("loan", loanModel);
+        mv.addObject("webServer", webServer);
+        return mv;
     }
 }
