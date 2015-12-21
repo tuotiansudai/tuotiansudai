@@ -25,6 +25,7 @@ require(['jquery', 'layerWrapper', 'csrf'], function ($,layer) {
                 area: ['560px', '190px'],
                 closeBtn:0,
                 shadeClose: false,
+                skin:'layer-style-custom',
                 content: $('#pop-fast-pay')
             });
         });
@@ -36,6 +37,7 @@ require(['jquery', 'layerWrapper', 'csrf'], function ($,layer) {
                 title: '登录到联动优势支付平台充值',
                 area: ['520px', '290px'],
                 shadeClose: true,
+                skin:'layer-style-custom',
                 content: $('#pop-bind-card')
             });
         });
@@ -46,6 +48,7 @@ require(['jquery', 'layerWrapper', 'csrf'], function ($,layer) {
                 title: '登录到联动优势支付平台换卡',
                 area: ['520px', '290px'],
                 shadeClose: true,
+                skin:'layer-style-custom',
                 content: $('#pop-replace-card')
             });
         });

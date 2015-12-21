@@ -1,6 +1,6 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.company_activity}" pageJavascript="" activeNav="" activeLeftNav="" title="累计收益兑大奖">
-<div class="activity-grand-container">
+<@global.main pageCss="${css.company_activity}" pageJavascript="${js.about_us}" activeNav="" activeLeftNav="" title="累计收益兑大奖">
+<div class="activity-grand-container" id="WhetherApp">
     <nav></nav>
     <div class="actor-img actor-grand-img"></div>
     <div class="grand-content clearfix">
@@ -121,9 +121,8 @@
                     <img src="${staticServer}/images/sign/actor/grand/09.png" class="product-img">
                     <div class="shadow-box">
                     <span>
-                    Apple Watch Sport
-(42mm 运动版)
-</span>
+                    Apple Watch Sport(42mm 运动版)
+                     </span>
                     </div>
                 </div>
             </div>
