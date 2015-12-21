@@ -26,9 +26,9 @@
                                 </select>
                                 <select class="form-control" name="roleStage">
                                     <option value="ALL" selected>全部用户</option>
-                                    <option value="STAFF" selected>业务员及一级推荐</option>
-                                    <option value="AGENT" selected>代理商</option>
-                                    <option value="OTHERS" selected>其他用户</option>
+                                    <option value="STAFF">业务员及一级推荐</option>
+                                    <option value="AGENT">代理商</option>
+                                    <option value="OTHERS">其他用户</option>
                                 </select>
                         <#--<select class="form-control" name=""></select>-->
                         <button class="btn btn-primary" type="button">查询</button>
@@ -144,9 +144,9 @@
                         </select>
                         <select class="form-control" name="roleStage">
                             <option value="ALL" selected>全部用户</option>
-                            <option value="STAFF" selected>业务员及一级推荐</option>
-                            <option value="AGENT" selected>代理商</option>
-                            <option value="OTHERS" selected>其他用户</option>
+                            <option value="STAFF">业务员及一级推荐</option>
+                            <option value="AGENT">代理商</option>
+                            <option value="OTHERS">其他用户</option>
                         </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>

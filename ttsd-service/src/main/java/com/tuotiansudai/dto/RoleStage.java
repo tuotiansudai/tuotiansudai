@@ -2,7 +2,7 @@ package com.tuotiansudai.dto;
 
 public enum RoleStage {
 
-    All,
+    ALL,
     STAFF,
     AGENT,
     OTHERS;
