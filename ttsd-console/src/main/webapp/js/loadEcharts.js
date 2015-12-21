@@ -20,14 +20,32 @@ define(['jquery','underscore','echarts'], function ($,_) {
             return this.option;
         },
         ChartDataFormate:{
-            FormateNOGroupData: function (data) {
-                var categories = [];
-                var datas = [];
-                for (var i = 0; i < data.length; i++) {
-                    categories.push(data[i].name || "");
-                    datas.push({ name: data[i].name, value: data[i].value || 0 });
+            FormateNOGroupData: function (data,cate) {
+
+                switch (cate) {
+                    case 'bar':
+                        var categories = [];
+                        var datas = [],
+                            dataObj= _.sortBy(data,'name'),
+                            dataLen=data.length;
+                        for (var i = 0; i < dataLen; i++) {
+                            categories.push(data[i].name || "");
+                            datas.push({ name: data[i].name, value: data[i].value || 0 });
+                        }
+                        return { category: categories, data: datas };
+                        break;
+                    case 'pie':
+                        var categories = [];
+                        var datas = [],
+                            dataLen=data.length;
+                        for (var i = 0; i < dataLen; i++) {
+                            categories.push(data[i].name || "");
+                            datas.push({ name: data[i].name, value: data[i].value || 0 });
+                        }
+                        return { category: categories, data: datas };
+                        break;
                 }
-                return { category: categories, data: datas };
+
             }
         },
         ChartOptionTemplates: {
@@ -83,12 +101,11 @@ define(['jquery','underscore','echarts'], function ($,_) {
                 },
                 toolbox: {
                     show : true,
-                    feature : {
-                        mark : {show: false},
-                        dataView : {show: true, readOnly: false},
-                        magicType : {show: true, type: ['line', 'bar']},
-                        restore : {show: true},
-                        saveAsImage : {show: true}
+                    feature: {
+                        mark: true,
+                        dataView: { readOnly: false },
+                        restore: true,
+                        saveAsImage: true
                     }
                 }
             },
@@ -97,10 +114,11 @@ define(['jquery','underscore','echarts'], function ($,_) {
                 var option = {
                     tooltip: {
                         trigger: 'item',
-                        formatter: "{b}:{c}"
+                        formatter: "投资次数{b}:{c}人"
                     },
                     xAxis: [{
                         type: 'category',
+                        name:'投资次数',
                         data: bar_datas.category
                     }],
                     yAxis: [{
@@ -120,44 +138,25 @@ define(['jquery','underscore','echarts'], function ($,_) {
                 return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonLineOption, option);
             },
             Pie: function (data, name) {
-                var pie_datas = MyChartsObject.ChartDataFormate.FormateNOGroupData(data);
+                var pie_datas = MyChartsObject.ChartDataFormate.FormateNOGroupData(data,'pie');
                 var option = {
                     tooltip : {
                         trigger: 'item',
-                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        formatter: "{a} <br/>{b} : {c} 人 ({d}%)"
                     },
                     legend: {
                         orient : 'vertical',
-                        x : 'left',
-                        data:[]
-                    },
-                    toolbox: {
-                        show : true,
-                        feature : {
-                            mark : {show: true},
-                            dataView : {show: true, readOnly: false},
-                            magicType : {
-                                show: true,
-                                type: ['pie', 'funnel'],
-                                option: {
-                                    funnel: {
-                                        x: '25%',
-                                        width: '50%',
-                                        funnelAlign: 'center',
-                                        max: 1548
-                                    }
-                                }
-                            },
-                            restore : {show: true},
-                            saveAsImage : {show: true}
-                        }
+                        x:'left',
+                        y:'center',
+                        data:pie_datas.category
                     },
                     calculable : true,
                     series : [
                         {
-                            name:'',
+                            name:name,
                             type:'pie',
-                            radius : ['50%', '70%'],
+                            radius : ['40%', '60%'],
+                            center: ['60%', '48%'],
                             itemStyle : {
                                 normal : {
                                     label : {
@@ -178,12 +177,12 @@ define(['jquery','underscore','echarts'], function ($,_) {
                                     }
                                 }
                             },
-                            data:[]
+                            data:pie_datas.data
                         }
                     ]
                 };
-                //return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonOption, option);
-                return option;
+                return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonOption, option);
+
             },
             Lines: function (data, name, is_stack) {
                 var xAxisdata,legendData,seriesData,seriesDataList=[];
@@ -247,11 +246,15 @@ define(['jquery','underscore','echarts'], function ($,_) {
                     ],
                     function (ec) {
                         var echarts = ec;
+
                         if (option.chart && option.chart.dispose)
                             option.chart.dispose();
                         option.chart = echarts.init(option.container);
+
                         option.chart.setOption(option.option, true);
                         window.onresize = option.chart.resize;
+
+
                     });
             }
         },
