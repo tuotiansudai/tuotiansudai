@@ -14,6 +14,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                 offset: "200px",
                 title: '绑定邮箱',
                 area: ['490px', '220px'],
+                skin:'layer-style-custom',
                 shadeClose: true,
                 content: $changeEmailDOM,
                 cancel: function () {
@@ -66,6 +67,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                                 type: 1,
                                 title: '验证邮箱',
                                 area: ['500px', '220px'],
+                                skin:'layer-style-custom',
                                 shadeClose: true,
                                 content: $('#change-email-success'),
                                 btn: ['返回'],
@@ -95,6 +97,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                 title: '修改密码',
                 area: ['500px', '300px'],
                 shadeClose: false,
+                skin:'layer-style-custom',
                 content: $changePassDOM,
                 cancel: function () {
                     $passwordForm.validate().resetForm();
