@@ -39,6 +39,7 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric'], function ($,layer) {
                 title: '登录到联动优势支付平台充值',
                 area: ['560px', '270px'],
                 shadeClose: true,
+                skin:'layer-style-custom',
                 content: $('#popWithdraw')
             });
         });

@@ -79,6 +79,9 @@ p {
     margin-bottom: 0;
   }
 }
+
+.show {  display: block;  }
+.hide {  display: none;  }
 .text-s {
   font-size: nth($fontSize,1); //12px
 }

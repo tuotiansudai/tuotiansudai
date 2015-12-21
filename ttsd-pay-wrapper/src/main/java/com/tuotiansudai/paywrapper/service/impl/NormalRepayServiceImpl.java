@@ -188,15 +188,6 @@ public class NormalRepayServiceImpl implements RepayService {
             }
         }
 
-        if (!jobData.isUpdateLoanStatusSuccess()) {
-            try {
-                loanService.updateLoanStatus(jobData.getLoanId(), jobData.isLastPeriod() ? LoanStatus.COMPLETE : LoanStatus.REPAYING);
-                jobData.setUpdateLoanStatusSuccess(true);
-            } catch (Exception e) {
-                logger.error(MessageFormat.format("[Normal Repay] Update loan status is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
-            }
-        }
-
         try {
             this.paybackInvestRepay(jobData);
         } catch (Exception e) {
@@ -207,6 +198,15 @@ public class NormalRepayServiceImpl implements RepayService {
             this.transferLoanBalance(jobData);
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Normal Repay] Transfer loan balance is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
+        }
+
+        if (!jobData.isUpdateLoanStatusSuccess()) {
+            try {
+                loanService.updateLoanStatus(jobData.getLoanId(), jobData.isLastPeriod() ? LoanStatus.COMPLETE : LoanStatus.REPAYING);
+                jobData.setUpdateLoanStatusSuccess(true);
+            } catch (Exception e) {
+                logger.error(MessageFormat.format("[Normal Repay] Update loan status is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
+            }
         }
 
         this.createRepayJob(jobData);

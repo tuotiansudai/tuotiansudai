@@ -341,7 +341,16 @@ img.icon-mark {
 }
 
 @media screen and (max-width: 700px){
-
+  .actor-ranking-img {
+    height: 150px!important;
+    background: url("/images/ttimg/ph-a01.jpg") center top no-repeat!important;
+    background-size: cover!important;
+  }
+  .actor-grand-img{
+    height: 150px!important;
+    background: url("/images/ttimg/ph-a02.jpg") center top no-repeat!important;
+    background-size: cover!important;
+  }
   .actor-recruit-img {
     height: 150px;
     background: url("/images/ttimg/ph-a03.jpg") center top no-repeat!important;
@@ -349,7 +358,6 @@ img.icon-mark {
   }
 
   .recruit-content{
-
     width:100%;
     padding:0;
     .hot-link{
@@ -394,6 +402,92 @@ img.icon-mark {
       }
     }
   }
+
+  .grand-content{
+    width:100%!important;
+    padding-top: 10px!important;
+    background: #f2f2f2!important;
+    img{
+      &.responsive-picture{
+        width:100%!important;
+      }
+      &.responsive-rule{
+        width:100%!important;
+        margin-top:10px!important;
+      }
+    }
+    .product-show{
+      width:100%;
+      padding-bottom: 10px;
+      .p-title{
+        padding:20px 10px;
+      }
+      .img-big{
+        width:100%;
+        height:auto;
+        margin-bottom: 10px;
+        &:hover .shadow-box{
+          display: none;
+        }
+        .icon-mark{
+          width:30%;
+        }
+        .product-img{
+          width:100%;
+          position:static;
+        }
+      }
+      .img-small-box{
+        width:100%;
+        margin-left:0;
+        .small-inner{
+          float:left;
+          width:50%;
+          height:auto;
+          margin: 0 0 10px 0;
+          &:hover .shadow-box{
+            display:none;
+          }
+          img{
+            &.product-img{
+              position: static;
+              width:100%;
+            }
+          }
+        }
+      }
+      .small-box-out{
+        float:left;
+        width:100%;
+        margin-bottom: 10px;
+        .small-inner{
+          float:left;
+          width:50%;
+          height:auto;
+          margin: 0 0 10px 0;
+          &:hover .shadow-box{
+            display:none;
+          }
+          img{
+            &.product-img{
+              position: static;
+              width:100%;
+            }
+          }
+        }
+      }
+    }
+  }
+  .res-comtainer{
+    display: block!important;
+    float: none;
+    .responsive-picture {
+      img {
+        width:100%;
+      }
+    }
+  }
+
 }
 
 
