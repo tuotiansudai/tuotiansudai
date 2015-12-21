@@ -16,7 +16,7 @@ public class BaseCallbackRequestModel {
 
     static Logger logger = Logger.getLogger(BaseCallbackRequestModel.class);
 
-    private static String SUCCESS_CODE = "0000";
+    public static String SUCCESS_CODE = "0000";
 
     private static Properties props = new Properties();
 
