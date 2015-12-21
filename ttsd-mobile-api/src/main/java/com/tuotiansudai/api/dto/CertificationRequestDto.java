@@ -8,13 +8,13 @@ public class CertificationRequestDto extends BaseParamDto {
     /**
      * 用户真实姓名
      */
-    @NotEmpty
+    @NotEmpty(message = "0014")
     private String userRealName;
 
     /**
      * 用户身份证号码
      */
-    @NotEmpty
+    @NotEmpty(message = "0013")
     private String userIdCardNumber;
 
 
