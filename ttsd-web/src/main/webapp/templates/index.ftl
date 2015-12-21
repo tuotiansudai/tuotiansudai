@@ -36,6 +36,16 @@
             </@global.isAnonymous>
         </div>
     </div>
+    <div class="notice-list">
+        <div class="notice-container">
+            <h3>最新公告</h3>
+            <div class="notice-text">
+                <span class="text-title">拓天速贷12月最新投资排名，12月标王揭晓！</span>
+                <span class="text-date">2016-01-01</span>
+                <a href="#" class="text-href">查看更多</a>
+            </div>
+        </div>
+    </div>
     <div class="main-advantage page-width">
         <dl>
             <dd>
@@ -43,8 +53,7 @@
                 <img src="${staticServer}/images/icons/hs01.png" alt="超高收益 最低门槛" >
                 <span class="clearfix">
                      <b class="clearfix">超高收益 最低门槛</b>
-                    最高46倍活期存款收益 <br/>
-                        最低投资门槛1元
+                    最高46倍活期存款收益最低投资门槛1元
                 </span>
                 </a>
             </dd>
@@ -53,8 +62,7 @@
                 <img src="${staticServer}/images/icons/hs02.png" alt="三方托管 放心理财">
                 <span class="clearfix">
                     <b class="clearfix">三方托管 放心理财</b>
-                    第三方银行托管 <br/>
-                    第三方支付
+                    第三方银行托管第三方支付
                 </span>
                     </a>
             </dd>
@@ -63,8 +71,7 @@
                 <img src="${staticServer}/images/icons/hs03.png" alt="实力雄厚 安全保障">
                 <span class="clearfix">
                     <b class="clearfix">实力雄厚 安全保障</b>
-                    上市企业投资 <br/>
-                    稳定安全债权来源
+                    上市企业投资稳定安全债权来源
                 </span>
                     </a>
             </dd>
