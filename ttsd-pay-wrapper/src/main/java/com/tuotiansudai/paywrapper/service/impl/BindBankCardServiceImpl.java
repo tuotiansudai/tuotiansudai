@@ -51,6 +51,8 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     @Autowired
     private SystemBillService systemBillService;
 
+    private static String SUCCESS_CODE = "0000";
+
     @Override
     public BaseDto<PayFormDataDto> bindBankCard(BindBankCardDto dto) {
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
@@ -198,7 +200,9 @@ public class BindBankCardServiceImpl implements BindBankCardService {
                 bankCardModel.setStatus(BankCardStatus.PASSED);
                 String bankCode = callbackRequestModel.getGateId();
                 bankCardModel.setBankCode(bankCode);
-                bankCardModel.setIsFastPayOn(callbackRequestModel.getUserBindAgreementList().contains(AgreementType.ZKJP0700.name()));
+                bankCardModel.setIsFastPayOn(callbackRequestModel.getUserBindAgreementList() != null &&
+                        callbackRequestModel.getUserBindAgreementList().contains(AgreementType.ZKJP0700.name()) &&
+                        callbackRequestModel.getUserBindAgreementList().lastIndexOf(SUCCESS_CODE) != -1);
                 if (BankCardUtil.getBindCardOneCentBanks().contains(bankCode)) {
                     String detail = MessageFormat.format(SystemBillDetailTemplate.BIND_BANK_CARD_DETAIL_TEMPLATE.getTemplate(),
                             bankCardModel.getLoginName(),
