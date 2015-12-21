@@ -14,18 +14,13 @@ public class MerUpdateProjectRequestModel extends BaseSyncRequestModel {
     private String projectExpireDate;
 
 
-    public MerUpdateProjectRequestModel(long loanAmount,
-                                        long projectId,
-                                        String projectName,
-                                        String projectState,
-                                        String projectExpireDate) {
+    public MerUpdateProjectRequestModel(long loanAmount, long projectId, String projectName, String projectState) {
         this.service = "mer_update_project";
         this.projectId = projectId;
         this.projectName = projectName;
         this.projectAmount = loanAmount;
-        this.changeType = "01";//更新标的
+        this.changeType = "01"; //更新标的
         this.projectState = projectState;
-        this.projectExpireDate = projectExpireDate;
     }
 
     public Map<String, String> generatePayRequestData() {
@@ -38,7 +33,6 @@ public class MerUpdateProjectRequestModel extends BaseSyncRequestModel {
         if (Lists.newArrayList(LoanStatus.PREHEAT.getCode(), LoanStatus.RAISING.getCode()).contains(this.projectState)) {
             payRequestData.put("project_name", this.projectName);
             payRequestData.put("project_amount", String.valueOf(this.projectAmount));
-            payRequestData.put("project_expire_date", this.projectExpireDate);
         }
         return payRequestData;
     }
