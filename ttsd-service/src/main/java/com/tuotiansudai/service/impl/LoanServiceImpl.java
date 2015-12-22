@@ -122,8 +122,7 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(dataDto);
             return baseDto;
         } else {
-            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginNameAndRole(loanDto.getAgentLoginName(), Role.LOANER.name());
-            if (CollectionUtils.isEmpty(userRoleModels)) {
+            if (userRoleMapper.findByLoginNameAndRole(loanDto.getAgentLoginName(), Role.LOANER.name()) == null) {
                 dataDto.setMessage("代理用户不具有借款人角色");
                 return baseDto;
             }
@@ -436,8 +435,7 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(payDataDto);
             return baseDto;
         } else {
-            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginNameAndRole(loanDto.getAgentLoginName(), Role.LOANER.name());
-            if (CollectionUtils.isEmpty(userRoleModels)) {
+            if (userRoleMapper.findByLoginNameAndRole(loanDto.getAgentLoginName(), Role.LOANER.name()) == null) {
                 payDataDto.setStatus(false);
                 baseDto.setData(payDataDto);
                 return baseDto;

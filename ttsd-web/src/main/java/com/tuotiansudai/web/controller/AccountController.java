@@ -56,5 +56,4 @@ public class AccountController {
         modelAndView.addObject("latestInvestList", investRepayService.findLatestInvestByLoginName(loginName, 0, 6));
         return modelAndView;
     }
-
 }

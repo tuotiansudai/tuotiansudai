@@ -19,6 +19,20 @@ define(['jquery','underscore','echarts'], function ($,_) {
             };
             return this.option;
         },
+        ChartDataFormate:{
+            FormateNOGroupData: function (data,cate) {
+                var categories = [];
+                var datas = [],
+                    dataLen=data.length;
+
+                for (var i = 0; i < dataLen; i++) {
+                    categories.push(data[i].name || "");
+                    datas.push({ name: data[i].name, value: data[i].value || 0 });
+                }
+                return { category: categories, data: datas };
+
+            }
+        },
         ChartOptionTemplates: {
             CommonOption: {
                 tooltip: {
@@ -72,14 +86,88 @@ define(['jquery','underscore','echarts'], function ($,_) {
                 },
                 toolbox: {
                     show : true,
-                    feature : {
-                        mark : {show: false},
-                        dataView : {show: true, readOnly: false},
-                        magicType : {show: true, type: ['line', 'bar']},
-                        restore : {show: true},
-                        saveAsImage : {show: true}
+                    feature: {
+                        mark: true,
+                        dataView: { readOnly: false },
+                        restore: true,
+                        saveAsImage: true
                     }
                 }
+            },
+            Bar: function (data, name) {
+                var bar_datas = MyChartsObject.ChartDataFormate.FormateNOGroupData(data, 'bar');
+                var option = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "投资次数{b}:{c}人"
+                    },
+                    xAxis: [{
+                        type: 'category',
+                        name:'投资次数',
+                        data: bar_datas.category
+                    }],
+                    yAxis: [{
+                        name: name || '',
+                        type: 'value',
+                        nameLocation: 'end',
+                        boundaryGap: [0, 0.01]
+                    }],
+                    series: [{
+                        name: name || '',
+                        axisLabel: { interval: 0 },
+                        type: 'bar',
+                        data: bar_datas.data
+                    }]
+
+                };
+                return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonLineOption, option);
+            },
+            Pie: function (data, name) {
+                var pie_datas = MyChartsObject.ChartDataFormate.FormateNOGroupData(data,'pie');
+                var option = {
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} 人 ({d}%)"
+                    },
+                    legend: {
+                        orient : 'vertical',
+                        x:'left',
+                        y:'center',
+                        data:pie_datas.category
+                    },
+                    calculable : true,
+                    series : [
+                        {
+                            name:name,
+                            type:'pie',
+                            radius : ['40%', '60%'],
+                            center: ['60%', '48%'],
+                            itemStyle : {
+                                normal : {
+                                    label : {
+                                        show : false
+                                    },
+                                    labelLine : {
+                                        show : false
+                                    }
+                                },
+                                emphasis : {
+                                    label : {
+                                        show : true,
+                                        position : 'center',
+                                        textStyle : {
+                                            fontSize : '30',
+                                            fontWeight : 'bold'
+                                        }
+                                    }
+                                }
+                            },
+                            data:pie_datas.data
+                        }
+                    ]
+                };
+                return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonOption, option);
+
             },
             Lines: function (data, name, is_stack) {
                 var xAxisdata,legendData,seriesData,seriesDataList=[];
@@ -143,11 +231,15 @@ define(['jquery','underscore','echarts'], function ($,_) {
                     ],
                     function (ec) {
                         var echarts = ec;
+
                         if (option.chart && option.chart.dispose)
                             option.chart.dispose();
                         option.chart = echarts.init(option.container);
+
                         option.chart.setOption(option.option, true);
                         window.onresize = option.chart.resize;
+
+
                     });
             }
         },

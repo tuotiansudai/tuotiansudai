@@ -1,11 +1,9 @@
 package com.tuotiansudai.scheduler.plugin;
 
-import com.tuotiansudai.job.AutoReFreshAreaByMobileJob;
-import com.tuotiansudai.job.CalculateDefaultInterestJob;
-import com.tuotiansudai.job.InvestCallback;
-import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.job.*;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -43,6 +41,12 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
         if (JobType.AutoReFreshAreaByMobile.name().equalsIgnoreCase(schedulerName)) {
             createRefreshAreaByMobile();
+        }
+        if (JobType.RepayAmount.name().equalsIgnoreCase(schedulerName)) {
+            createRefreshRepayAmount();
+        }
+        if (JobType.WithdrawAmount.name().equalsIgnoreCase(schedulerName)) {
+            createRefreshWithdrawAmount();
         }
     }
 
@@ -83,6 +87,26 @@ public class JobInitPlugin implements SchedulerPlugin {
             jobManager.newJob(JobType.AutoReFreshAreaByMobile, AutoReFreshAreaByMobileJob.class).replaceExistingJob(true)
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 2 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
                     .withIdentity(JobType.AutoReFreshAreaByMobile.name(), JobType.AutoReFreshAreaByMobile.name()).submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createRefreshRepayAmount() {
+        try {
+            jobManager.newJob(JobType.RepayAmount, RefreshRepayAmountJob.class).replaceExistingJob(true)
+                    .runOnceAt(new DateTime().plusMinutes(5).toDate())
+                    .withIdentity(JobType.RepayAmount.name(), JobType.RepayAmount.name()).submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createRefreshWithdrawAmount() {
+        try {
+            jobManager.newJob(JobType.WithdrawAmount, RefreshWithdrawAmountJob.class).replaceExistingJob(true)
+                    .runOnceAt(new DateTime().plusMinutes(5).toDate())
+                    .withIdentity(JobType.WithdrawAmount.name(), JobType.WithdrawAmount.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }
