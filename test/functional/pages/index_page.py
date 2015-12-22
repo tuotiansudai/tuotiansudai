@@ -12,4 +12,11 @@ class IndexPage(BasePage):
         self.find_element_by_link_text("立即投资").click();
         return self
 
+    def can_loan_detail(self):
+        try:
+            self.find_element_by_link_text("立即投资")
+            return True
+        except:
+            return False
+
 

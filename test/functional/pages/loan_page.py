@@ -17,7 +17,6 @@ class LoanPage(BasePage):
 
     def click_fake_invest(self):
         invest_amount = self.get_invest_amount()
-        print invest_amount
         self.find_element_by_css(".btn-pay").click()
         return invest_amount
 
@@ -30,12 +29,17 @@ class LoanPage(BasePage):
         return self
 
     def get_invest_amount(self):
-        return self.find_element_by_css(".text-input-amount").get_attribute("value");
+        return self.find_element_by_css(".text-input-amount").get_attribute("value")
+
+    def can_invest(self):
+        invest_amount = float(self.get_invest_amount())
+        if invest_amount > 0:
+            return True
+        else:
+            return False
+
 
     def check_invest_is_success(self,login_name,invest_amount,invest_time):
-        print login_name + "==loginName"
-        print invest_amount + "==investAmount"
-        print invest_time + "==investTime"
 
         real_login_name = self.find_element_by_css(".loan-invest-loginName").text
         real_invest_amount = self.find_element_by_css(".loan-invest-amount").text
