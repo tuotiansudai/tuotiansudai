@@ -62,7 +62,7 @@
                 <li data-url="/loan/${(loanListWebDto.id?string('0'))!}" class="clearfix">
                     <#if loanListWebDto.activityType == 'NEWBIE'>
 
-                        <span class="hot"></span>
+                        <span class="hot"></span><!-- 其他产品类型class名为syl,wyx,jyf-->
                     </#if>
                     <div class="loan-info-frame fl">
                         <div class="loan-top">
