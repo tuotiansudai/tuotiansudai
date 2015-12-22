@@ -47,6 +47,7 @@ public class RepayServiceImpl implements RepayService {
     }
 
     @Override
+    @Transactional
     public BaseDto<LoanRepayDataDto> getLoanRepay(String loginName, long loanId) {
         BaseDto<LoanRepayDataDto> baseDto = new BaseDto<>();
         LoanRepayDataDto dataDto = new LoanRepayDataDto();
@@ -100,18 +101,14 @@ public class RepayServiceImpl implements RepayService {
         return baseDto;
     }
 
-    @Transactional
     private void resetExpiredLoanRepay(List<LoanRepayModel> loanRepayModels) {
-        if (CollectionUtils.isEmpty(loanRepayModels)) {
-            return;
-        }
-
         DateTime now = new DateTime();
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
             if (loanRepayModel.getStatus() == RepayStatus.WAIT_PAY) {
                 DateTime actualRepayDate = new DateTime(loanRepayModel.getActualRepayDate());
+                DateTime repayDate = new DateTime(loanRepayModel.getRepayDate());
                 if (actualRepayDate.plusMinutes(30).isBefore(now)) {
-                    loanRepayModel.setStatus(RepayStatus.REPAYING);
+                    loanRepayModel.setStatus(actualRepayDate.isBefore(repayDate) ? RepayStatus.REPAYING : RepayStatus.OVERDUE);
                     loanRepayModel.setActualRepayDate(null);
                     loanRepayModel.setActualInterest(0);
                     loanRepayMapper.update(loanRepayModel);
