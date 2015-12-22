@@ -6,10 +6,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.util.AmountConverter;
@@ -40,6 +37,9 @@ public class RepayServiceImpl implements RepayService {
 
     @Autowired
     private InvestMapper investMapper;
+
+    @Autowired
+    private AccountMapper accountMapper;
 
     @Override
     public BaseDto<PayFormDataDto> repay(RepayDto repayDto) {
@@ -80,7 +80,9 @@ public class RepayServiceImpl implements RepayService {
                 defaultInterest += loanRepayModel.getDefaultInterest();
                 corpus += loanRepayModel.getCorpus();
             }
-            dataDto.setExpectedAdvanceRepayAmount(AmountConverter.convertCentToString(corpus + interest + defaultInterest));
+            dataDto.setLoanAgentBalance(accountMapper.findByLoginName(loginName).getBalance());
+            dataDto.setExpectedNormalRepayAmount(interest + defaultInterest);
+            dataDto.setExpectedAdvanceRepayAmount(corpus + interest + defaultInterest);
         }
 
         if (CollectionUtils.isNotEmpty(loanRepayModels)) {

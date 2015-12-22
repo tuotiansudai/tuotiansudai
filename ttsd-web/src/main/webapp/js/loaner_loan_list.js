@@ -1,4 +1,4 @@
-require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tpl/loaner-loan-repay-table.mustache', 'moment', 'underscore', 'layerWrapper','daterangepicker', 'csrf', 'pagination'], function ($, Mustache, loanListTemplate, loanRepayTemplate, moment, _,layer) {
+require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tpl/loaner-loan-repay-table.mustache', 'moment', 'underscore', 'layerWrapper', 'daterangepicker', 'csrf', 'pagination'], function ($, Mustache, loanListTemplate, loanRepayTemplate, moment, _, layer) {
     //初始化页面
     var today = moment().format('YYYY-MM-DD'); // 今天
     var week = moment().subtract(1, 'week').format('YYYY-MM-DD');
@@ -97,6 +97,7 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
                                     break;
                             }
                         });
+                        data.expectedAdvanceRepayDisplayAmount = data.expectedAdvanceRepayAmount / 100;
                         var html = Mustache.render(loanRepayTemplate, data);
 
                         layer.open({
@@ -109,6 +110,16 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
                         });
 
                         $('a.normal-repay').click(function () {
+                            if (data.loanAgentBalance < data.expectedNormalRepayAmount) {
+                                $(".repay-alert").html(Mustache.render('实际需还金额{{expectedNormalRepayAmount}}元，您的账户余额仅有{{loanAgentBalance}}元',
+                                    {
+                                        'expectedNormalRepayAmount': data.expectedNormalRepayAmount / 100,
+                                        'loanAgentBalance': data.loanAgentBalance / 100
+                                    }
+                                )).show();
+                                return false;
+                            }
+
                             $("#normal-repay-form").submit();
                             layer.closeAll();
                             return false;
@@ -116,6 +127,16 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
 
                         $('a.advanced-repay').click(function () {
                             if (!data.hasWaitPayLoanRepay) {
+                                if (data.loanAgentBalance < data.expectedAdvanceRepayAmount) {
+                                    $(".repay-alert").html(Mustache.render('实际需还金额{{expectedAdvanceRepayAmount}}元，您的账户余额仅有{{loanAgentDisplayBalance}}元',
+                                        {
+                                            'expectedAdvanceRepayAmount': data.expectedAdvanceRepayAmount / 100,
+                                            'loanAgentDisplayBalance': data.loanAgentBalance / 100
+                                        }
+                                    )).show();
+                                    return false;
+                                }
+
                                 $("#advanced-repay-form").submit();
                                 layer.closeAll();
                             }
