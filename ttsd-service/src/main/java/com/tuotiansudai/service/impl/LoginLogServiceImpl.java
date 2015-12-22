@@ -58,7 +58,7 @@ public class LoginLogServiceImpl implements LoginLogService {
         List<LoginLogPaginationItemDataDto> records = Lists.transform(data, new Function<LoginLogModel, LoginLogPaginationItemDataDto>() {
             @Override
             public LoginLogPaginationItemDataDto apply(LoginLogModel input) {
-                return new LoginLogPaginationItemDataDto(input.getLoginName(), input.getSource(), input.getIp(), input.getLoginTime(), input.isSuccess());
+                return new LoginLogPaginationItemDataDto(input.getLoginName(), input.getSource(), input.getIp(), input.getDevice(), input.getLoginTime(), input.isSuccess());
             }
         });
 
