@@ -31,8 +31,6 @@ public class LoanRepayJobResultDto implements Serializable {
 
     private boolean isUpdateSystemBillSuccess;
 
-    private boolean isUpdateLoanRepayStatusSuccess;
-
     private boolean isUpdateLoanStatusSuccess;
 
     private List<InvestRepayJobResultDto> investRepayJobResults;
@@ -106,11 +104,6 @@ public class LoanRepayJobResultDto implements Serializable {
         return isUpdateSystemBillSuccess;
     }
 
-    @JsonProperty(value = "isUpdateLoanRepayStatusSuccess")
-    public boolean isUpdateLoanRepayStatusSuccess() {
-        return isUpdateLoanRepayStatusSuccess;
-    }
-
     @JsonProperty(value = "isUpdateLoanStatusSuccess")
     public boolean isUpdateLoanStatusSuccess() {
         return isUpdateLoanStatusSuccess;
@@ -151,10 +144,6 @@ public class LoanRepayJobResultDto implements Serializable {
 
     public void setUpdateSystemBillSuccess(boolean updateSystemBillSuccess) {
         isUpdateSystemBillSuccess = updateSystemBillSuccess;
-    }
-
-    public void setUpdateLoanRepayStatusSuccess(boolean updateLoanRepayStatusSuccess) {
-        isUpdateLoanRepayStatusSuccess = updateLoanRepayStatusSuccess;
     }
 
     public void setUpdateLoanStatusSuccess(boolean updateLoanStatusSuccess) {

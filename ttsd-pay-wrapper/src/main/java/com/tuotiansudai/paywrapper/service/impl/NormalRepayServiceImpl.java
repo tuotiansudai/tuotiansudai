@@ -153,7 +153,17 @@ public class NormalRepayServiceImpl implements RepayService {
         Long loanRepayId = this.parseLoanRepayId(callbackRequest);
         if (loanRepayId != null) {
             this.createRepayJob(this.generateJobData(loanRepayId, false), 5);
-            this.updateLoanAgentUserBill(loanRepayId, UserBillBusinessType.NORMAL_REPAY);
+            try {
+                this.updateLoanAgentUserBill(loanRepayId, UserBillBusinessType.NORMAL_REPAY);
+            } catch (Exception e) {
+                logger.error(MessageFormat.format("[Normal Repay] Update loan agent bill is failed (loanRepayId = {0})", String.valueOf(loanRepayId)), e);
+            }
+            try {
+                this.updateLoanRepayStatus(loanRepayId);
+            } catch (Exception e) {
+                logger.error(MessageFormat.format("[Normal Repay] Update loan repay status is failed (loanRepayId = {0})", String.valueOf(loanRepayId)), e);
+            }
+
         }
 
         return callbackRequest.getResponseData();
@@ -170,15 +180,6 @@ public class NormalRepayServiceImpl implements RepayService {
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Normal Repay] Fetch job data from redis is failed (loanRepayId = {0})", String.valueOf(loanRepayId)));
             return false;
-        }
-
-        if (!jobData.isUpdateLoanRepayStatusSuccess()) {
-            try {
-                this.updateLoanRepayStatus(jobData);
-                jobData.setUpdateLoanRepayStatusSuccess(true);
-            } catch (Exception e) {
-                logger.error(MessageFormat.format("[Normal Repay] Update loan repay status is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
-            }
         }
 
         try {
@@ -353,9 +354,10 @@ public class NormalRepayServiceImpl implements RepayService {
         }
     }
 
-    protected void updateLoanRepayStatus(LoanRepayJobResultDto jobData) {
-        long loanId = jobData.getLoanId();
-        Date actualRepayDate = jobData.getActualRepayDate();
+    protected void updateLoanRepayStatus(long loanRepayId) {
+        LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
+        long loanId = currentLoanRepay.getLoanId();
+        Date actualRepayDate = currentLoanRepay.getActualRepayDate();
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
             if (Lists.newArrayList(RepayStatus.WAIT_PAY, RepayStatus.OVERDUE).contains(loanRepayModel.getStatus())) {
