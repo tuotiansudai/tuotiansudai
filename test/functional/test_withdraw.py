@@ -5,7 +5,7 @@ from test.functional.pages.account_page import AccountPage
 from time import sleep
 
 class TestWithdraw(BaseSeleniumTestCase):
-    def test_should_navigate_to_umpay_page_after_submit(self):
+    def test_should_reduce_balance_after_withdraw(self):
 
         LoginPage(self.selenium).login('shenjiaojiao', '123abc')
 
