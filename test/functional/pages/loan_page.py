@@ -15,11 +15,15 @@ class LoanPage(BasePage):
         self.url_params = url_params
         BasePage.goto(self)
 
-    def click_invest(self):
+    def click_fake_invest(self):
         invest_amount = self.get_invest_amount()
         print invest_amount
         self.find_element_by_css(".btn-pay").click()
         return invest_amount
+
+    def click_invest(self):
+        self.find_element_by_css(".btn-pay").click()
+        return self
 
     def click_loan_invests(self):
         self.find_element_by_id("loan-invests").click()

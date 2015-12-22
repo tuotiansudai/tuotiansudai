@@ -15,6 +15,8 @@ class TestInvest(BaseSeleniumTestCase):
         currUrl = IndexPage(self.selenium).click_prepare_invest().get_current_page_url()
         ump_url = LoanPage(self.selenium,currUrl).click_invest().get_current_page_url()
 
+        self.assertEqual("http://pay.soopay.net/spay/pay/payservice.do",ump_url)
+
 
 
 
