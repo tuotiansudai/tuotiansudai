@@ -58,14 +58,6 @@ class BasePage(object):
         return WebDriverWait(self.selenium, wait_time).until(
             expected.presence_of_all_elements_located((By.CSS_SELECTOR, selector)))
 
-    def find_element_by_class_name(self, selector, wait_time=WAIT_TIME):
-        return WebDriverWait(self.selenium, wait_time).until(
-            expected.visibility_of_element_located((By.CLASS_NAME, selector)))
-
-    def find_elements_by_class_name(self, selector, wait_time=WAIT_TIME):
-        return WebDriverWait(self.selenium, wait_time).until(
-            expected.presence_of_all_elements_located((By.CLASS_NAME, selector)))
-
     def find_elements_by_link_text(self, selector, wait_time=WAIT_TIME):
         return WebDriverWait(self.selenium, wait_time).until(
             expected.presence_of_all_elements_located((By.LINK_TEXT, selector)))

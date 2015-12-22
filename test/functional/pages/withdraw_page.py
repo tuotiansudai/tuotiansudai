@@ -5,11 +5,11 @@ class WithdrawPage(BasePage):
     url = "/withdraw"
 
     def set_money(self, money):
-        self.find_element_by_class_name("amount-display").send_keys(money)
+        self.find_element_by_css(".amount-display").send_keys(money)
         return self
 
     def click_withdraw(self):
-        self.find_element_by_class_name("withdraw-submit").click()
+        self.find_element_by_css(".withdraw-submit").click()
         return self
 
     def withdraw(self, money):
