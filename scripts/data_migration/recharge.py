@@ -16,8 +16,18 @@ class RechargeMigrate(BaseMigrate):
     def generate_params(self, old_row):
         self._index += 1
 
-        return (self._index, old_row['user_id'].lower(), int(round(old_row['actual_money'] * 100)), int(round(old_row['fee'] * 100)), old_row['recharge_way'].upper(),
-                old_row['status'].upper(), old_row['source'].upper(), 0, old_row['time'], old_row['channel'])
+        if not old_row['source']:
+            old_row['source'] = 'WEB'
+
+        return (self._index,
+                old_row['user_id'].lower(),
+                int(round(old_row['actual_money'] * 100)),
+                int(round(old_row['fee'] * 100)),
+                old_row['recharge_way'].upper(),
+                old_row['status'].upper(),
+                old_row['source'].upper(),
+                0, old_row['time'],
+                old_row['channel'])
 
     def before(self):
         pass

@@ -4,13 +4,13 @@
     <div class="banner-box">
         <div class="banner-img-list">
             <a href="/activity/ranking" target="_blank">
-                <img src="${staticServer}/images/sign/activities/ranking/qph.jpg" alt="抢排行，送大礼">
+                <img src="${staticServer}/images/sign/actor/ranking/qph.jpg" alt="抢排行，送大礼">
             </a>
             <a href="/activity/grand" target="_blank">
-                <img src="${staticServer}/images/sign/activities/grand/banner-grand.jpg" alt="累计收益兑大奖">
+                <img src="${staticServer}/images/sign/actor/grand/ba-grand.jpg" alt="累计收益兑大奖">
             </a>
              <a href="/activity/recruit" target="_blank">
-                 <img src="${staticServer}/images/banner/banner-home03.png" alt="招募代理">
+                 <img src="${staticServer}/images/ttimg/ttimg-home03.png" alt="招募代理">
              </a>
         </div>
         <ul class="scroll-num">
@@ -22,8 +22,14 @@
         <div class="page-width">
             <@global.isAnonymous>
             <div class="register-ad-box fr tc">
-                <em class="percent clearfix">14%</em>
-                <b class="h-title clear-blank">最高年化收益率</b>
+                <p class="num-text clearfix">
+                    <span class="percent">46</span>
+                    <span class="num-unit">倍</span>
+                </p>
+                <b class="h-title">活期存款收益</b>
+                <p class="welcome-text">
+                    <img src="${staticServer}/images/sign/welcome-text.png" width="100%" alt="welcome">
+                </p>
                 <a class="btn-normal" href="/register/user">免费注册 </a>
                 <i class="clearfix tr">已有账户？<a href="/login"> 立即登录</a></i>
             </div>
@@ -66,7 +72,7 @@
     </div>
     <div class="home-content" id="productFrame">
         <div class="clearfix page-width">
-            <section class="product-box-list fl">
+            <div class="product-box-list fl">
                 <div class="product-box-inner">
                     <#list loans as loan>
                     <div class="product-box tc <#if loan.activityType=="NEWBIE">new-standard</#if>">
@@ -109,10 +115,10 @@
                     <span class="fl">投资人数:<i>${(userCount?string('0'))!}</i> 人</span>
                     <a href="/loan-list" class="fr">更多>></a>
                 </div>
-            </section>
-            <aside class="home-ad fr">
-                <a href="/activity/ranking" target="_blank"> <img src="${staticServer}/images/sign/ad-h.jpg"></a>
-            </aside>
+            </div>
+            <div class="home-ad fr">
+                <a href="/activity/ranking" target="_blank"> <img src="${staticServer}/images/sign/side-h.jpg"></a>
+            </div>
         </div>
 
     </div>

@@ -85,7 +85,9 @@ table td, table th {
     height: 400px;
     position: absolute;
     left: 0;
+    *left:300px;
     top: 0;
+    *top:100px;
     right: 0;
     bottom: 0;
     margin: auto;
@@ -93,6 +95,7 @@ table td, table th {
     background: #ccc;
     border-radius: 5px;
     z-index: 9999;
+
 }
 .captcha-column input{
     width:70%;
@@ -150,7 +153,9 @@ table td, table th {
     width: 170px;
     font-size: 13px;
 }
-
+.form-control {
+    *padding-bottom:0px;
+}
 td.projectName {
     width: 25%;
 }

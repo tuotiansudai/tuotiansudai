@@ -2,15 +2,15 @@
   {
     "pictureId": "",
     "title": "",
-    "url": "/activity/ranking",
+    "url": "/activity/ranking?source=app",
     "seqNum": 1,
-    "picture": "https://api.tuotiansudai.com/upload/2015110609/20151106091535.png",
+    "picture": "https://api.tuotiansudai.com/upload/2015121801/20151218012620.png",
     "noticeId": ""
   },
   {
     "pictureId": "",
     "title": "",
-    "url": "/activity/recruit",
+    "url": "/activity/recruit?source=app",
     "seqNum": 2,
     "picture": "https://api.tuotiansudai.com/upload/2015113005/20151130050244.png",
     "noticeId": ""
@@ -18,7 +18,7 @@
   {
     "pictureId": "",
     "title": "",
-    "url": "/activity/grand",
+    "url": "/activity/grand?source=app",
     "seqNum": 3,
     "picture": "https://api.tuotiansudai.com/upload/2015110609/20151106091603.png",
     "noticeId": ""

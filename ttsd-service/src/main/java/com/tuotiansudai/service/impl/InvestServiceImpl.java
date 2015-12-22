@@ -28,10 +28,10 @@ import java.util.List;
 @Service
 public class InvestServiceImpl implements InvestService {
 
+    static Logger logger = Logger.getLogger(InvestServiceImpl.class);
+
     @Autowired
     private PayWrapperClient payWrapperClient;
-
-    static Logger logger = Logger.getLogger(InvestServiceImpl.class);
 
     @Autowired
     private LoanMapper loanMapper;

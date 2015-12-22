@@ -11,7 +11,12 @@ dependencies {
 war {
     archiveName "ROOT.war"
     destinationDir = file("war")
-    from('/workspace/new_version_config/ttsd-pay-wrapper/') {
+    def outerConfigPath = '/workspace/new_version_config/ttsd-pay-wrapper/'
+
+    if (project.hasProperty("configPath") && new File(configPath).isDirectory()) {
+        outerConfigPath = configPath
+    }
+    from("${outerConfigPath}/SignVerProp.properties") {
         into 'WEB-INF/classes/'
     }
 }

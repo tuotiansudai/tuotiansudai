@@ -1,5 +1,4 @@
 @import 'variables';
-
 /* if use the css, the page will be show full screen */
 .full-screen {
     width:100%!important;
@@ -8,7 +7,6 @@
 .footer-container {
     margin-top:0;
 }
-//home page
 .home-page-container {
     .banner-box {
         height:350px;
@@ -68,25 +66,44 @@
             padding: 50px 50px 10px;
             background: rgba(255,255,255,0.8);
             border-radius: 10px;
-            .percent {
-                color: #ff7200;
-                font-size: 60px;
-                line-height: 1;
-                font-weight: bold;
+            .num-text{
+                float: left;
+                width: 100%;
+                margin:0;
+                .percent {
+                    color: #ff7200;
+                    font-size: 60px;
+                    line-height: 1;
+                    font-weight: bold;
+                }
+                .num-unit{
+                    font-size:26px;
+                    color:#666;
+                    font-weight: bold;
+                }
             }
             .h-title {
-                color: #4c4c4c;
-                font-size: 26px;
-                font-weight: normal;
+                float: left;
+                text-align: center;
+                width: 100%;
+                color: #666;
+                font-size: 24px;
             }
             .btn-normal {
                 width:100%;
                 padding: 8px 0;
-                margin-top:25px;
             }
             i {
+                float: left;
+                width: 100%;
                 display: block;
                 padding-top:15px;
+            }
+            .welcome-text{
+                float: left;
+                width: 100%;
+                position: relative;
+                margin: 0 0 10px 0;
             }
         }
     }
@@ -136,7 +153,6 @@
             box-sizing: border-box;
             .product-box-list {
                 width: 76%;
-                //overflow: hidden;
                 .product-box-inner {
                     width:105%;
                     box-sizing: border-box;
@@ -178,14 +194,14 @@
                         .pr-square {
                             width: 134px;
                             height: 134px;
-                            border-radius: 67px;
+                            border-radius: 50%;
                             position: relative;
                             background: #fee7da;
                             margin: 5px auto 8px auto;
                             .pr-square-in {
                                 width:120px;
                                 height:120px;
-                                border-radius:60px;
+                                border-radius:50%;
                                 border:2px solid #ff752a;
                                 background: #fff;
                                 margin: auto;
@@ -305,9 +321,9 @@
 /* user guide page */
 .new-guide-container {
     color: #2f2f2f;
-    .ad-guide-img {
+    .new-guide-img {
         height:350px;
-        background: url("/images/banner/banner-guide.jpg") center top no-repeat;
+        background: url("/images/ttimg/ttimg-guide.jpg") center top no-repeat;
     }
     .content-info {
         h3 {
@@ -694,19 +710,16 @@
         font-size: 12px;
       }
     }
-    .email {
-
-    }
   }
 }
 
-@media (max-width:700px) {
+@media screen and (max-width: 700px) {
     .home-page-container   {
-        .main-advantage {
+        .main-advantage,.register-ad-box {
             display: none;
         }
         .banner-box {
-height:150px;
+            height:150px;
             .banner-img-list {
                 a {
                     display: block;
@@ -871,6 +884,115 @@ height:150px;
             }
         }
     }
+    .assurance-container{
+        .money-safety{
+            padding:10px 20px!important;
+            .page-width{
+                background: transparent!important;
+            }
+            .as-title{
+                dt{
+                    font-size:24px!important;
+                }
+                dd{
+                    em{
+                        width:100px!important;
+                    }
+                }
+            }
+            .safety-info{
+                width:100%!important;
+                margin-top: 0!important;
+                dt{
+                    padding-left:0!important;
+                }
+                dd{
+                    margin-bottom:10px!important;
+                }
+            }
+        }
+        .data-safety{
+            padding:10px 20px!important;
+            .page-width{
+                background: transparent!important;
+                .as-title{
+                    dt{
+                        font-size:24px!important;
+                    }
+                    dd{
+                        em{
+                            width:100px!important;
+                        }
+                    }
+                }
+                .safety-info{
+                    width:100%!important;
+                    margin-top: 0!important;
+                    text-align: left!important;
+                    dt{
+                        padding-left:0!important;
+                    }
+                    dd{
+                        text-align: left;
+                        margin-bottom:10px!important;
+                    }
+                }
+            }
+        }
+        .secret-safety{
+            padding:10px 20px!important;
+            .page-width{
+                background: transparent!important;
+                .as-title{
+                    dt{
+                        font-size:24px!important;
+                    }
+                    dd{
+                        em{
+                            width:100px!important;
+                        }
+                    }
+                }
+                .safety-info{
+                    width:100%!important;
+                    margin-top: 0!important;
+                    text-align: left!important;
+                    dt{
+                        text-align: left;
+                        padding-left:0!important;
+                    }
+                    dd{
+                        margin-bottom: 10px!important;
+                    }
+                }
+            }
+        }
+        .credit-safety{
+            padding:10px 20px!important;
+            .page-width{
+                background: #FFFFF7!important;
+                .as-title{
+                    dt{
+                        font-size:24px!important;
+                    }
+                    dd{
+                        em{
+                            width:100px!important;
+                        }
+                    }
+                }
+                .safety-info{
+                    width:100%!important;
+                    margin-top: 0!important;
+                    p{
+                        width:100%!important;
+                        margin:0!important;
+                        padding:0!important;
+                    }
+                }
+            }
+        }
+    }
     /* project schedule progress */
     .project-schedule {
         width: 35%;
@@ -886,9 +1008,6 @@ height:150px;
             }
         }
     }
-}
-
-@media screen and (max-width: 700px) {
     .refer-reward-instruction {
         .refer-reward-bg {
             background: #fff;
@@ -900,4 +1019,64 @@ height:150px;
             }
         }
     }
+
+    .new-guide-container{
+        .new-guide-img{
+            height: 150px!important;
+            background: url(/images/ttimg/ph-guide.jpg) center top no-repeat!important;
+            background-size: cover!important;
+        }
+        .content-info{
+            box-sizing: border-box;
+            padding:10px;
+            h3{
+                margin:10px 0;
+                font-size: 16px;
+                font-weight: bold;
+            }
+            p{
+                font-size:13px;
+            }
+        }
+        .content-a{
+            box-sizing: border-box;
+            padding:10px;
+            img{
+                width:100%;
+                margin:0!important;
+            }
+        }
+        .page-width{
+            .our-advantage-content{
+                .hide-dom{
+                    display: none;
+                }
+                .action-invest{
+                    font-size:13px!important;
+                }
+            }
+        }
+    }
+}
+
+@media screen\0  {
+    //IE8-10
+    .home-page-container {
+        .main-advantage {
+            dl dd {
+                float: left;
+                margin-bottom:30px;
+            }
+        }
+    }
+    .register-ad-box{
+        background-color:#fff;
+        filter:Alpha(opacity=80);
+        position:static;
+        *zoom:1;
+        p {
+            position: relative;
+        }
+    }
+
 }

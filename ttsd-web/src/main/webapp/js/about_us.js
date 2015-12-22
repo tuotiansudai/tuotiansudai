@@ -53,6 +53,12 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
             },10000);
         }
 
+        if($('#WhetherApp').length) {
+            if(/app/gi.test(location.search)) {
+                $('.header-container,.nav-container,.footer-container').hide();
+            }
+        }
+
         $problemList.on('click', function(e) {
             e.preventDefault();
             var $self=$(this),
@@ -64,7 +70,7 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
                     $dtDom.find('i').removeClass('fa-toggle-down').addClass('fa-toggle-up');
                 }else{
                     $parents.find('dd').removeClass('active');
-                    $parents.find('i').removeClass('fa-toggle-down');
+                    $parents.find('i').removeClass('fa-toggle-down').addClass('fa-toggle-up');
                     $dtDom.next().addClass('active');
                     $dtDom.find('i').removeClass('fa-toggle-up').addClass('fa-toggle-down');
                 }
