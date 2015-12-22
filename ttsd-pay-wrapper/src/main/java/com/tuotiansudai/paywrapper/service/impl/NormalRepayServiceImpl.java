@@ -144,6 +144,7 @@ public class NormalRepayServiceImpl implements RepayService {
     }
 
     @Override
+    @Transactional
     public String repayCallback(Map<String, String> paramsMap, String originalQueryString) {
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap,
                 originalQueryString,
