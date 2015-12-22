@@ -41,9 +41,6 @@ public class InvestController {
     @Autowired
     private RepayService repayService;
 
-    @Value("${web.server}")
-    private String webServer;
-
     @RequestMapping(value = "/invests", method = RequestMethod.GET)
     public ModelAndView getInvestList(@RequestParam(name = "loanId", required = false) Long loanId,
                                       @RequestParam(name = "loginName", required = false) String investorLoginName,
@@ -126,7 +123,6 @@ public class InvestController {
         mv.addObject("repayList", repayDataItems);
         mv.addObject("invest", investModel);
         mv.addObject("loan", loanModel);
-        mv.addObject("webServer", webServer);
         return mv;
     }
 }
