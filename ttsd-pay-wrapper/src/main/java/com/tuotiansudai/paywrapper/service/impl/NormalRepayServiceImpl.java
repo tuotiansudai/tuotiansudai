@@ -327,7 +327,7 @@ public class NormalRepayServiceImpl implements RepayService {
     protected long calculateLoanRepayDefaultInterest(List<LoanRepayModel> loanRepayModels) {
         long defaultInterest = 0;
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
-            if (loanRepayModel.getStatus() == RepayStatus.OVERDUE) {
+            if (Lists.newArrayList(RepayStatus.OVERDUE, RepayStatus.WAIT_PAY).contains(loanRepayModel.getStatus())) {
                 defaultInterest += loanRepayModel.getDefaultInterest();
             }
         }
