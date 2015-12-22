@@ -5,7 +5,12 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             $changeEmailDOM = $('#changeEmailDOM'),
             $changePassDOM = $('#changePassDOM'),
             $EmailForm = $('form', $changeEmailDOM),
-            $passwordForm = $('form', $changePassDOM);
+            $passwordForm = $('form', $changePassDOM),
+            $userNumber=$('#userNumber'),
+            $userTel=$('#userTel');
+
+        $userNumber.text($userNumber.attr('data-user').substr(0,10)+"****"+$userNumber.attr('data-user').substr(14,18));
+        $userTel.text($userTel.attr('data-tel').substr(0,3)+"****"+$userTel.attr('data-tel').substr(7,11));
 
         $changeEmailLayer.on('click', function () {
             layer.open({

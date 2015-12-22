@@ -15,13 +15,13 @@
                     </span>
                 </li>
                 <li><span class="info-title"> 身份认证</span>
-                    <em class="info">${identityNumber}</em>
+                    <em class="info" data-user="${identityNumber}" id="userNumber"></em>
                     <span class="binding-set">
                        <i class="fa fa-check-circle ok"></i> 已认证
                     </span>
                 </li>
                 <li><span class="info-title"> 手机</span>
-                    <em class="info">${mobile}</em>
+                    <em class="info" data-tel="${mobile}" id="userTel"></em>
                     <span class="binding-set">
                        <i class="fa fa-check-circle ok"></i> 已绑定
                     </span>
