@@ -37,6 +37,10 @@
         <result column="referrer_login_name" property="referrerLoginName"></result>
         <result column="next_repay_date" property="nextRepayDate"></result>
         <result column="next_repay_amount" property="nextRepayAmount"></result>
+        <result column="investor_real_name" property="investorRealName"></result>
+        <result column="investor_mobile" property="investorMobile"></result>
+        <result column="referrer_real_name" property="referrerRealName"></result>
+        <result column="referrer_mobile" property="referrerMobile"></result>
     </resultMap>
 
     <sql id="columns">
@@ -143,7 +147,11 @@
         loan.status as loan_status,
         loan.type as loan_type,
         loan.periods as loan_periods,
+        a.user_name as investor_real_name,
+        u.mobile as investor_mobile,
         u.referrer as referrer_login_name,
+        ra.user_name as referrer_real_name,
+        ru.mobile as referrer_mobile,
         (select group_concat(role order by role separator ", ") from user_role where login_name = invest.login_name) as roles,
         (select min(repay_date) from invest_repay where invest_repay.invest_id = invest.id and invest_repay.status = 'REPAYING') as next_repay_date,
         (select invest_repay.expected_interest + invest_repay.corpus - invest_repay.expected_fee
@@ -153,6 +161,9 @@
         from invest
         inner join loan on invest.loan_id = loan.id
         inner join user u on u.login_name = invest.login_name
+        left join account a on a.login_name = u.login_name
+        left join user ru on ru.login_name = u.referrer
+        left join account ra on ra.login_name = u.referrer
         <where>
             <if test="loanId != null">
                 and loan.id = #{loanId}

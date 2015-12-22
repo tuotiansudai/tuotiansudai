@@ -28,7 +28,15 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     private String investorLoginName;
 
+    private String investorRealName;
+
+    private String investorMobile;
+
     private String referrerLoginName;
+
+    private String referrerRealName;
+
+    private String referrerMobile;
 
     private String source;
 
@@ -55,7 +63,11 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.amount = AmountConverter.convertCentToString(view.getAmount());
         this.loanName = view.getLoanName();
         this.investorLoginName = view.getLoginName();
+        this.investorRealName = view.getInvestorRealName();
+        this.investorMobile = view.getInvestorMobile();
         this.referrerLoginName = view.getReferrerLoginName();
+        this.referrerRealName = view.getReferrerRealName();
+        this.referrerMobile = view.getReferrerMobile();
         this.source = view.getSource().name();
         this.channel = view.getChannel();
         this.roles = view.getRoles();
@@ -151,5 +163,37 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     public void setRoles(String roles) {
         this.roles = roles;
+    }
+
+    public String getInvestorRealName() {
+        return investorRealName;
+    }
+
+    public void setInvestorRealName(String investorRealName) {
+        this.investorRealName = investorRealName;
+    }
+
+    public String getInvestorMobile() {
+        return investorMobile;
+    }
+
+    public void setInvestorMobile(String investorMobile) {
+        this.investorMobile = investorMobile;
+    }
+
+    public String getReferrerRealName() {
+        return referrerRealName;
+    }
+
+    public void setReferrerRealName(String referrerRealName) {
+        this.referrerRealName = referrerRealName;
+    }
+
+    public String getReferrerMobile() {
+        return referrerMobile;
+    }
+
+    public void setReferrerMobile(String referrerMobile) {
+        this.referrerMobile = referrerMobile;
     }
 }

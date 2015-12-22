@@ -14,7 +14,15 @@ public class InvestPaginationItemView extends InvestModel {
 
     private String roles;
 
+    private String investorRealName;
+
+    private String investorMobile;
+
     private String referrerLoginName;
+
+    private String referrerRealName;
+
+    private String referrerMobile;
 
     private Date nextRepayDate;
 
@@ -82,5 +90,37 @@ public class InvestPaginationItemView extends InvestModel {
 
     public void setNextRepayAmount(long nextRepayAmount) {
         this.nextRepayAmount = nextRepayAmount;
+    }
+
+    public String getInvestorRealName() {
+        return investorRealName;
+    }
+
+    public void setInvestorRealName(String investorRealName) {
+        this.investorRealName = investorRealName;
+    }
+
+    public String getInvestorMobile() {
+        return investorMobile;
+    }
+
+    public void setInvestorMobile(String investorMobile) {
+        this.investorMobile = investorMobile;
+    }
+
+    public String getReferrerRealName() {
+        return referrerRealName;
+    }
+
+    public void setReferrerRealName(String referrerRealName) {
+        this.referrerRealName = referrerRealName;
+    }
+
+    public String getReferrerMobile() {
+        return referrerMobile;
+    }
+
+    public void setReferrerMobile(String referrerMobile) {
+        this.referrerMobile = referrerMobile;
     }
 }

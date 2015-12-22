@@ -84,15 +84,19 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th colspan="12">合计投资金额：${data.sumAmount/100} 元</th>
+                <th colspan="16">合计投资金额：${data.sumAmount/100} 元</th>
             </tr>
             <tr>
                 <th>项目编号</th>
                 <th>项目名称</th>
                 <th>期数</th>
                 <th>投资人</th>
+                <th>投资人姓名</th>
+                <th>投资人手机号</th>
                 <th>业务员</th>
                 <th>推荐人</th>
+                <th>推荐人姓名</th>
+                <th>推荐人手机号</th>
                 <th>渠道</th>
                 <th>来源</th>
                 <th>投资时间</th>
@@ -108,8 +112,12 @@
                     <td>${invest.loanName}</td>
                     <td>${invest.loanPeriods?string('0')}</td>
                     <td>${invest.investorLoginName!}</td>
+                    <td>${invest.investorRealName!}</td>
+                    <td>${invest.investorMobile!}</td>
                     <td>${invest.isStaff()?string('是','否')}</td>
                     <td>${invest.referrerLoginName!}</td>
+                    <td>${invest.referrerRealName!}</td>
+                    <td>${invest.referrerMobile!}</td>
                     <td>${invest.channel!}</td>
                     <td>${invest.source}</td>
                     <td>${invest.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
@@ -119,7 +127,7 @@
                 </tr>
                 <#else>
                 <tr>
-                    <td colspan="12">Empty</td>
+                    <td colspan="16">Empty</td>
                 </tr>
                 </#list>
             </tbody>
