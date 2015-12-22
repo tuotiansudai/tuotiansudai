@@ -11,8 +11,8 @@
     <tbody>
     {{#records}}
         <tr>
-            <td>{{loginName}}</td>
-            <td class="tr">{{amount}}</td>
+            <td class="loan-invest-loginName">{{loginName}}</td>
+            <td class="tr loan-invest-amount">{{amount}}</td>
             <td>
                 {{#autoInvest}}
                 自动
@@ -23,7 +23,7 @@
                 <span class="invest-{{source}}"></span>
             </td>
             <td class="tr">{{expectedInterest}}</td>
-            <td>{{createdTime}}</td>
+            <td class="tr loan-invest-time">{{createdTime}}</td>
         </tr>
     {{/records}}
     </tbody>
