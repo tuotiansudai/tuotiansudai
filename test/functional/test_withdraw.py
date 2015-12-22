@@ -4,10 +4,6 @@ from test.functional.pages.login_page import LoginPage
 from test.functional.pages.account_page import AccountPage
 from time import sleep
 
-import logging
-
-logger = logging.getLogger(__name__)
-
 class TestWithdraw(BaseSeleniumTestCase):
     def test_should_navigate_to_umpay_page_after_submit(self):
 
