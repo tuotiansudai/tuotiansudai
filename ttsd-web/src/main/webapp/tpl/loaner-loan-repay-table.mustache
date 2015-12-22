@@ -5,7 +5,7 @@
             <span class="repay-total">(还款总额：{{expectedAdvanceRepayDisplayAmount}} 元) </span>
             <span class="repay-alert" style="display: none"></span>
             {{^hasWaitPayLoanRepay}}
-                <form id="advanced-repaReparm" action="/repay" method="post" target="_blank">
+                <form id="advanced-repay-form" action="/repay" method="post" target="_blank">
                     <input type="hidden" name="loanId" value="{{loanId}}"/>
                     <input type="hidden" name="isAdvanced" value="true"/>
                     <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
