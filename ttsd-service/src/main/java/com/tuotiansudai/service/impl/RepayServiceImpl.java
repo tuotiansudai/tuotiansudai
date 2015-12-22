@@ -69,37 +69,33 @@ public class RepayServiceImpl implements RepayService {
             }
         }));
 
-        if (Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE).contains(loanModel.getStatus()) ) {
+        final LoanRepayModel enabledLoanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(loanId);
+
+        if (Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE).contains(loanModel.getStatus())) {
             DateTime now = new DateTime();
-            List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
             DateTime lastSuccessRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, now);
-            long interest = InterestCalculator.calculateLoanRepayInterest(loanModel, investModels, lastSuccessRepayDate, now);
+            long interest = InterestCalculator.calculateLoanRepayInterest(loanModel, investMapper.findSuccessInvestsByLoanId(loanId), lastSuccessRepayDate, now);
             long defaultInterest = 0;
-            long corpus = 0;
             for (LoanRepayModel loanRepayModel : loanRepayModels) {
                 defaultInterest += loanRepayModel.getDefaultInterest();
-                corpus += loanRepayModel.getCorpus();
             }
             dataDto.setLoanAgentBalance(accountMapper.findByLoginName(loginName).getBalance());
-            dataDto.setExpectedNormalRepayAmount(interest + defaultInterest);
-            dataDto.setExpectedAdvanceRepayAmount(corpus + interest + defaultInterest);
+            dataDto.setExpectedNormalRepayAmount(enabledLoanRepayModel.getCorpus() + interest + defaultInterest);
+            dataDto.setExpectedAdvanceRepayAmount(loanRepayModels.get(loanRepayModels.size() - 1).getCorpus() + interest + defaultInterest);
         }
 
-        if (CollectionUtils.isNotEmpty(loanRepayModels)) {
-            final LoanRepayModel enabledLoanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(loanId);
-            List<LoanRepayDataItemDto> records = Lists.transform(loanRepayModels, new Function<LoanRepayModel, LoanRepayDataItemDto>() {
-                @Override
-                public LoanRepayDataItemDto apply(LoanRepayModel loanRepayModel) {
-                    boolean isEnable = false;
-                    if (enabledLoanRepayModel != null) {
-                        isEnable = loanRepayModel.getId() == enabledLoanRepayModel.getId();
-                    }
-                    return new LoanRepayDataItemDto(loanRepayModel, isEnable);
+        List<LoanRepayDataItemDto> records = Lists.transform(loanRepayModels, new Function<LoanRepayModel, LoanRepayDataItemDto>() {
+            @Override
+            public LoanRepayDataItemDto apply(LoanRepayModel loanRepayModel) {
+                boolean isEnable = false;
+                if (enabledLoanRepayModel != null) {
+                    isEnable = loanRepayModel.getId() == enabledLoanRepayModel.getId();
                 }
-            });
-            dataDto.setStatus(true);
-            dataDto.setRecords(records);
-        }
+                return new LoanRepayDataItemDto(loanRepayModel, isEnable);
+            }
+        });
+        dataDto.setStatus(true);
+        dataDto.setRecords(records);
 
         return baseDto;
     }
