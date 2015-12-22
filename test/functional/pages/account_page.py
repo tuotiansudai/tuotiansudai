@@ -1,7 +1,4 @@
 from test.functional.pages.base_page import BasePage
-import logging
-
-logger = logging.getLogger(__name__)
 
 class AccountPage(BasePage):
     url = "/account"
