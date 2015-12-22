@@ -2,14 +2,12 @@
 @import 'reset', 'btn','table';
 @import 'page_frame','pagination';
 
-.layer-style-custom {
-  .image-captcha-dialog,.verification-code-main,.recharge-plat{
-    overflow: hidden;
-  }
+/*layer init scroll bar style */
+.layui-layer-page .layui-layer-content {
+  overflow: hidden!important;
 }
-
-.layui-layer-page.layer-style-custom .layui-layer-content {
-  overflow: hidden;
+.register-skin .layui-layer-content {
+  overflow: auto!important;
 }
 
 .page-col-title,.column-title {

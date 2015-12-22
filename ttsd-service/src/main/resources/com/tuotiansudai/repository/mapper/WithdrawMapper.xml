@@ -175,4 +175,10 @@
             </if>
         </where>
     </select>
+
+    <update id="refreshFee">
+        update withdraw
+        set amount = amount + fee
+        where `created_time` &lt; '2015-12-18 19:00:00';
+    </update>
 </mapper>
