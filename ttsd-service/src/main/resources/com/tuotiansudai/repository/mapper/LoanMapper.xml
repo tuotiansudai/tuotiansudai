@@ -200,7 +200,7 @@
         where loan.id=loan_repay.loan_id and loan_repay.status != 'COMPLETE' ) as unpaid_amount
         from loan
         where agent_login_name = #{agentLoginName} and status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')
-        and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) between #{startTime} and #{endTime}
+        and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id) between #{startTime} and #{endTime}
         order by next_repay_date asc, id asc
         limit #{index}, #{pageSize}
     </select>
