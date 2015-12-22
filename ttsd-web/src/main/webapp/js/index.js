@@ -23,9 +23,9 @@ require(['jquery','underscore','csrf'], function ($,_) {
     leftWid=(picWid-screenWid)/2;
 
     //Traversing the data and formatting output
-    var userCountArray=_.filter($userCount.attr('data-count')),html='';
-    for (i=0;i<userCountArray.length; i++) {
-        html+='<i>'+userCountArray[i]+'</i>';
+    var userCountArray=_.filter($userCount.attr('data-count')),arrayLenth=userCountArray.length,html='';
+    for (i=0;i<arrayLenth; i++) {
+        html+='<i>'+arrayLenth[i]+'</i>';
     };
     $userCount.html(html);
 
