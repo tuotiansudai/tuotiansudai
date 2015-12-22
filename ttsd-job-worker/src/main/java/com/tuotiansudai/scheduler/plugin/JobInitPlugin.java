@@ -42,12 +42,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.AutoReFreshAreaByMobile.name().equalsIgnoreCase(schedulerName)) {
             createRefreshAreaByMobile();
         }
-        if (JobType.RepayAmount.name().equalsIgnoreCase(schedulerName)) {
-            createRefreshRepayAmount();
-        }
-        if (JobType.WithdrawAmount.name().equalsIgnoreCase(schedulerName)) {
-            createRefreshWithdrawAmount();
-        }
     }
 
     @Override
@@ -87,26 +81,6 @@ public class JobInitPlugin implements SchedulerPlugin {
             jobManager.newJob(JobType.AutoReFreshAreaByMobile, AutoReFreshAreaByMobileJob.class).replaceExistingJob(true)
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 2 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
                     .withIdentity(JobType.AutoReFreshAreaByMobile.name(), JobType.AutoReFreshAreaByMobile.name()).submit();
-        } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void createRefreshRepayAmount() {
-        try {
-            jobManager.newJob(JobType.RepayAmount, RefreshRepayAmountJob.class).replaceExistingJob(true)
-                    .runOnceAt(new DateTime().plusMinutes(5).toDate())
-                    .withIdentity(JobType.RepayAmount.name(), JobType.RepayAmount.name()).submit();
-        } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void createRefreshWithdrawAmount() {
-        try {
-            jobManager.newJob(JobType.WithdrawAmount, RefreshWithdrawAmountJob.class).replaceExistingJob(true)
-                    .runOnceAt(new DateTime().plusMinutes(5).toDate())
-                    .withIdentity(JobType.WithdrawAmount.name(), JobType.WithdrawAmount.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }

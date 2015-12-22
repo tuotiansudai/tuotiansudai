@@ -28,9 +28,7 @@ public enum JobType {
     CalculateDefaultInterest("计算逾期罚息"),
     AutoReFreshAreaByMobile("获取手机归属地"),
     NormalRepay("正常还款"),
-    AdvanceRepay("提前还款"),
-    RepayAmount("更新预计还款金额"),
-    WithdrawAmount("更新提现金额");
+    AdvanceRepay("提前还款");
 
 
     private final String description;

@@ -62,9 +62,9 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
         }
 
         if($('#WhetherApp').length) {
-            if($('#WhetherApp').find('.res-no-app').length) {
-                $('#WhetherApp').find('.res-no-app').remove();
-            }
+            //if($('#WhetherApp').find('.res-no-app').length) {
+            //    $('#WhetherApp').find('.res-no-app').remove();
+            //}
             if(/app/gi.test(location.search)) {
                 $('.header-container,.nav-container,.footer-container').hide();
                 if($('.left-nav').length) {

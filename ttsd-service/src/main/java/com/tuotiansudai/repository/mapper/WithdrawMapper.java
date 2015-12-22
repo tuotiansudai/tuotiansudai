@@ -49,6 +49,4 @@ public interface WithdrawMapper {
                            @Param(value = "source") Source source,
                            @Param(value = "startTime") Date startTime,
                            @Param(value = "endTime") Date endTime);
-
-    void refreshFee();
 }
