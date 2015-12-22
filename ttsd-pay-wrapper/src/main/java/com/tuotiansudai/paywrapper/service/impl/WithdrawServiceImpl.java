@@ -121,7 +121,6 @@ public class WithdrawServiceImpl implements WithdrawService {
             if (callbackRequestModel.isSuccess()) {
                 amountTransfer.freeze(loginName, orderId, amount, UserBillBusinessType.APPLY_WITHDRAW, null, null);
                 withdrawModel.setStatus(WithdrawStatus.APPLY_SUCCESS);
-                //TODO update system bill
             } else {
                 withdrawModel.setStatus(WithdrawStatus.APPLY_FAIL);
             }
@@ -153,7 +152,6 @@ public class WithdrawServiceImpl implements WithdrawService {
             if (callbackRequestModel.isSuccess()) {
                 amountTransfer.transferOutFreeze(loginName, orderId, amount, UserBillBusinessType.WITHDRAW_SUCCESS, null, null);
                 withdrawModel.setStatus(WithdrawStatus.SUCCESS);
-                //TODO update system bill
             } else {
                 withdrawModel.setStatus(WithdrawStatus.FAIL);
             }
