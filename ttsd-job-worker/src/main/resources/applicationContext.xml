@@ -17,8 +17,7 @@
     <!-- enable autowire -->
     <context:annotation-config/>
 
-
-    <context:property-placeholder location="classpath*:ttsd-env.properties, classpath*:ttsd-biz.properties"/>
+    <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <tx:annotation-driven transaction-manager="jobTransactionManager"/>
@@ -27,7 +26,7 @@
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan
-            base-package="com.tuotiansudai.repository, com.tuotiansudai.service, com.tuotiansudai.client, com.tuotiansudai.security, com.tuotiansudai.scheduler, com.tuotiansudai.util">
+            base-package="com.tuotiansudai.repository,com.tuotiansudai.service,com.tuotiansudai.client,com.tuotiansudai.security,com.tuotiansudai.scheduler,com.tuotiansudai.util,com.tuotiansudai.aspect">
     </context:component-scan>
 
     <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
@@ -36,11 +35,10 @@
                   value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${common.jdbc.username}"/>
         <property name="password" value="${common.jdbc.password}"/>
-        <property name="partitionCount" value="4"/>
-        <property name="minConnectionsPerPartition" value="1"/>
-        <property name="maxConnectionsPerPartition" value="5"/>
-        <property name="acquireIncrement" value="1"/>
-        <property name="idleMaxAgeInSeconds" value="300"/>
+        <property name="minConnectionsPerPartition" value="${worker.aa.minConnectionsPerPartition}"/>
+        <property name="maxConnectionsPerPartition" value="${worker.aa.maxConnectionsPerPartition}"/>
+        <property name="acquireIncrement" value="${worker.aa.acquireIncrement}"/>
+        <property name="idleMaxAgeInSeconds" value="600"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>
 
@@ -50,14 +48,12 @@
                   value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${common.jdbc.username}"/>
         <property name="password" value="${common.jdbc.password}"/>
-        <property name="partitionCount" value="4"/>
-        <property name="minConnectionsPerPartition" value="1"/>
-        <property name="maxConnectionsPerPartition" value="2"/>
-        <property name="acquireIncrement" value="1"/>
-        <property name="idleMaxAgeInSeconds" value="300"/>
+        <property name="minConnectionsPerPartition" value="${worker.job_worker.minConnectionsPerPartition}"/>
+        <property name="maxConnectionsPerPartition" value="${worker.job_worker.maxConnectionsPerPartition}"/>
+        <property name="acquireIncrement" value="${worker.job_worker.acquireIncrement}"/>
+        <property name="idleMaxAgeInSeconds" value="600"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>
-
 
     <!-- transaction manager, use JtaTransactionManager for global tx -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -96,5 +92,4 @@
     <bean id="jobStoreBuilder" class="com.tuotiansudai.util.quartz.JobStoreBuilder">
         <property name="dataSource" ref="jobBoneCPDataSource"/>
     </bean>
-
 </beans>

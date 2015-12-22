@@ -20,7 +20,7 @@
 
         <div class="form-group">
             <label for="email">身份证号</label>
-            <input type="text" class="form-control" name="identityNumber" placeholder="" value="${email!}">
+            <input type="text" class="form-control" name="identityNumber" placeholder="" value="${identityNumber!}">
         </div>
 
         <button type="submit" class="btn btn-sm btn-primary">查询</button>
@@ -43,6 +43,7 @@
             </tr>
             </thead>
             <tbody>
+                <#if userList?has_content>
                 <#list userList as userItem>
                 <tr <#if userItem.status!='ACTIVE'> class="bg-warning" </#if> >
                     <td>${userItem.loginName}</td>
@@ -54,51 +55,19 @@
                     <td>${userItem.registerTime?string('yyyy-MM-dd HH:mm')}</td>
                     <td>${userItem.account.identityNumber!}</td>
                     <td>${(userItem.status=='ACTIVE')?then('正常','禁用')}</td>
-                    <td><a href="/user-manage/user/${userItem.loginName}">编辑</a></td>
+                    <td><a href="/user-manage/user/${userItem.loginName}">查看</a></td>
                 </tr>
+                </#list>
                 <#else>
                 <tr>
                     <td colspan="10">Empty</td>
                 </tr>
-                </#list>
+                </#if>
             </tbody>
 
         </table>
     </div>
 
-    <!-- pagination  -->
-    <nav class="pagination-control">
-        <#if userList?has_content>
-            <div>
-                <span class="bordern">总共${userCount}条,每页显示${pageSize}条</span>
-            </div>
-            <ul class="pagination pull-left">
-                <li>
-                    <#if hasPreviousPage >
-                    <a href="?loginName=${loginName!}&mobile=${mobile!}&referrer=${referrer!}&identityNumber=${identityNumber!}&pageSize=${pageSize}&index=${index-1}"
-                       aria-label="Previous">
-                    <#else>
-                    <a href="#" aria-label="Previous">
-                    </#if>
-                    <span aria-hidden="true">&laquo; Prev</span>
-                </a>
-                </li>
-                <li><a>${index}</a></li>
-                <li>
-                    <#if hasNextPage >
-                    <a href="?loginName=${loginName!}&mobile=${mobile!}&referrer=${referrer!}&identityNumber=${identityNumber!}&pageSize=${pageSize}&index=${index+1}"
-                       aria-label="Next">
-                    <#else>
-                    <a href="#" aria-label="Next">
-                    </#if>
-                    <span aria-hidden="true">Next &raquo;</span>
-                </a>
-
-                </li>
-            </ul>
-        </#if>
-    </nav>
-    <!-- pagination -->
 </div>
 
 </@global.main>

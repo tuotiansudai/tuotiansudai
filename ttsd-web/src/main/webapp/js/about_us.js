@@ -53,6 +53,12 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
             },10000);
         }
 
+        if($('#WhetherApp').length) {
+            if(/app/gi.test(location.search)) {
+                $('.header-container,.nav-container,.footer-container').hide();
+            }
+        }
+
         $problemList.on('click', function(e) {
             e.preventDefault();
             var $self=$(this),

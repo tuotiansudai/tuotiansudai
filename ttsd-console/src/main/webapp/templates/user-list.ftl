@@ -100,11 +100,19 @@
             <tbody>
                 <#list userList as userItem>
                 <tr <#if userItem.status!='ACTIVE'> class="bg-warning" </#if> >
-                    <td>${userItem.loginName}${userItem.bankCard?string('1','1')}</td>
+                    <td>${userItem.loginName}
+                        <#if userItem.bankCard>
+                        <span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span>
+                        </#if>
+                    </td>
                     <td>${userItem.userName!}</td>
                     <td>${userItem.mobile}</td>
                     <td>${userItem.email!}</td>
-                    <td>${userItem.referrer!}${userItem.staff?string('1','1')}</td>
+                    <td>${userItem.referrer!}
+                        <#if userItem.staff>
+                        <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
+                        </#if>
+                    </td>
                     <td>${userItem.source!}</td>
                     <td>${userItem.channel!}</td>
                     <td>${userItem.registerTime?string('yyyy-MM-dd HH:mm')}</td>

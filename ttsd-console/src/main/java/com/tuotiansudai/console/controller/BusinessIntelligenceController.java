@@ -39,7 +39,7 @@ public class BusinessIntelligenceController {
             @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
             @RequestParam(name = "province",required = false) String province,
             @RequestParam(name = "userStage",required = false) UserStage userStage){
-        return businessIntelligenceService.queryUserRegisterTrend(granularity, startTime, endTime, province,userStage);
+        return businessIntelligenceService.queryUserRegisterTrend(granularity, startTime, endTime, province, userStage);
     }
 
     @ResponseBody
@@ -70,5 +70,51 @@ public class BusinessIntelligenceController {
             @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
             @RequestParam(name = "province",required = false) String province){
         return businessIntelligenceService.queryUserAccountTrend(granularity, startTime, endTime, province);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/user-invest-viscosity", method = RequestMethod.GET)
+    public List<KeyValueModel> queryInvestViscosity(
+            @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+            @RequestParam(name = "province",required = false) String province) {
+        return businessIntelligenceService.queryInvestViscosity(startTime, endTime, province);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/user-invest-amount-trend", method = RequestMethod.GET)
+    public List<KeyValueModel> queryUserInvestAmountTrend(
+            @RequestParam(name = "granularity") Granularity granularity,
+            @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+            @RequestParam(name = "province",required = false) String province){
+        return businessIntelligenceService.queryUserInvestAmountTrend(granularity, startTime, endTime, province);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/user-invest-count-trend", method = RequestMethod.GET)
+    public List<KeyValueModel> queryUserInvestCountTrend(
+            @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+            @RequestParam(name = "province",required = false) String province){
+        return businessIntelligenceService.queryUserInvestCountTrend(startTime, endTime, province);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/register-user-age-trend", method = RequestMethod.GET)
+    public List<KeyValueModel> queryRegisterUserAgeTrend(
+            @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+            @RequestParam(name = "province",required = false) String province){
+        return businessIntelligenceService.queryUserAgeTrend(startTime, endTime, province, null);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/investor-user-age-trend", method = RequestMethod.GET)
+    public List<KeyValueModel> queryInvestorUserAgeTrend(
+            @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+            @RequestParam(name = "province",required = false) String province){
+        return businessIntelligenceService.queryUserAgeTrend(startTime, endTime, province, "true");
     }
 }

@@ -48,6 +48,8 @@ public interface UserService {
                 Role role, String referrer, String channel, Integer pageIndex, Integer pageSize);
 
 
+    List<String> findStaffNameFromUserLike(String loginName);
+
     List<String> findLoginNameFromAccountLike(String loginName);
 
     List<String> findLoginNameLike(String loginName);
@@ -62,7 +64,6 @@ public interface UserService {
 
     void refreshAreaByMobileInJob() ;
 
-    List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber, Integer index, Integer pageSize);
+    List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber);
 
-    int searchAllUsersCount(String loginName, String referrer, String mobile, String identityNumber);
 }

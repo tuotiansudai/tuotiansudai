@@ -63,7 +63,7 @@ public class OssUploadController {
             String ossPath = "";
             try {
                 String url = request.getRequestURL().toString();
-                ossPath = ossWrapperClient.upload(FilenameUtils.getExtension(fileName), dfi.getInputStream(), rootPath, url.substring(0,url.lastIndexOf("/")+1));
+                ossPath = ossWrapperClient.upload(FilenameUtils.getExtension(fileName), dfi.getInputStream(), rootPath, url.substring(0,url.lastIndexOf("/")+1), true);
                 jsonArray.put(MessageFormat.format(imgTemplate, ossPath, fileName, fileName));
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
@@ -116,7 +116,7 @@ public class OssUploadController {
         String rootPath = request.getSession().getServletContext().getRealPath("/");
         try {
             String url = request.getRequestURL().toString();
-            String absoluteUrl = ossWrapperClient.upload(fileExtName, dfi.getInputStream(), rootPath, url.substring(0,url.lastIndexOf("/")+1));
+            String absoluteUrl = ossWrapperClient.upload(fileExtName, dfi.getInputStream(), rootPath, url.substring(0,url.lastIndexOf("/")+1), false);
             if (absoluteUrl.indexOf(":") > 0 ) {
                 absoluteUrl = absoluteUrl.substring(absoluteUrl.indexOf("upload"), absoluteUrl.length());
             }

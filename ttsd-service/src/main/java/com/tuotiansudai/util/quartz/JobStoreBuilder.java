@@ -9,8 +9,11 @@ import org.springframework.beans.factory.InitializingBean;
 import javax.sql.DataSource;
 
 public class JobStoreBuilder implements InitializingBean {
+
     private static final String Default_Data_Source_Name = "DefaultJobDataSourceName";
+
     private static final String Job_Store_Driver_Delegate_Class = "org.quartz.impl.jdbcjobstore.StdJDBCDelegate";
+
     private static final String Job_Store_Table_Prefix = "QRTZ_";
 
     private DataSource dataSource;
@@ -19,13 +22,11 @@ public class JobStoreBuilder implements InitializingBean {
         return buildJdbcJobStore(schedulerName, 60000, 20, true, 15000);
     }
 
-    public JobStore buildJdbcJobStore(
-            String schedulerName,
-            long misfireThreshold,
-            int maxMisfiresToHandleAtATime,
-            boolean isClustered,
-            long clusterCheckinInterval
-    ) {
+    public JobStore buildJdbcJobStore(String schedulerName,
+                                      long misfireThreshold,
+                                      int maxMisfiresToHandleAtATime,
+                                      boolean isClustered,
+                                      long clusterCheckinInterval) {
         JobStoreTX jdbcJobStore = new JobStoreTX();
         jdbcJobStore.setDataSource(Default_Data_Source_Name);
         jdbcJobStore.setTablePrefix(Job_Store_Table_Prefix);
@@ -41,19 +42,16 @@ public class JobStoreBuilder implements InitializingBean {
         return jdbcJobStore;
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        DBConnectionManager.getInstance().addConnectionProvider(Default_Data_Source_Name, new SpringDataSourceConnectionProvider(dataSource));
+    }
+
     public DataSource getDataSource() {
         return dataSource;
     }
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        DBConnectionManager.getInstance().addConnectionProvider(
-                Default_Data_Source_Name,
-                new SpringDataSourceConnectionProvider(dataSource)
-        );
     }
 }

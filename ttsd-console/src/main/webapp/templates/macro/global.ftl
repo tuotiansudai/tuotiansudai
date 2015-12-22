@@ -14,11 +14,16 @@
                 "role":"'ADMIN'",
                 "header":{"text":"系统主页","link":"/"},
                 "sidebar":[
-                    {"name":"userDate","text":"用户时间分布","link":"/","role":"'ADMIN'"},
-                    {"name":"UserRecharge","text":"用户充值时间分布","link":"/","role":"'ADMIN'"},
+                    {"name":"userDate","text":"用户注册时间分布","link":"/","role":"'ADMIN'"},
+                    {"name":"userRecharge","text":"用户充值时间分布","link":"/","role":"'ADMIN'"},
                     {"name":"userWithdraw","text":"用户提现时间分布","link":"/","role":"'ADMIN'"},
-                    {"name":"userAccount","text":"用户账户余额时间分布","link":"/","role":"'ADMIN'"}
-                    ]
+                    {"name":"userAccount","text":"用户账户余额时间分布","link":"/","role":"'ADMIN'"},
+                    {"name":"userInvestViscosity","text":"用户续投情况","link":"/","role":"'ADMIN'"},
+                    {"name":"userInvestAmount","text":"用户投资金额时间分布","link":"/","role":"'ADMIN'"},
+                    {"name":"userInvestCount","text":"用户投资次数时间分布","link":"/","role":"'ADMIN'"},
+                    {"name":"userAge","text":"用户年龄分布","link":"/","role":"'ADMIN'"}
+                ]
+
             },
             {
                 "name":"project-manage",
@@ -43,7 +48,8 @@
                 "sidebar":[
                     {"name":"userMan","text":"用户管理","link":"/user-manage/users","role":"'ADMIN'"},
                     {"name":"userSearchMan","text":"用户查询","link":"/user-manage/users-search","role":"'ADMIN','CUSTOMER_SERVICE'"},
-                    {"name":"referMan","text":"推荐人管理","link":"/user-manage/referrer","role":"'ADMIN','CUSTOMER_SERVICE'"}
+                    {"name":"referMan","text":"推荐人管理","link":"/user-manage/referrer","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"agentMan","text":"代理商管理","link":"/user-manage/agents","role":"'ADMIN'"}
                 ]
             },
             {
