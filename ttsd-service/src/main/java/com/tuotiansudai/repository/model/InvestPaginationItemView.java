@@ -14,13 +14,13 @@ public class InvestPaginationItemView extends InvestModel {
 
     private String roles;
 
-    private String investorRealName;
+    private String investorUserName;
 
     private String investorMobile;
 
     private String referrerLoginName;
 
-    private String referrerRealName;
+    private String referrerUserName;
 
     private String referrerMobile;
 
@@ -92,12 +92,12 @@ public class InvestPaginationItemView extends InvestModel {
         this.nextRepayAmount = nextRepayAmount;
     }
 
-    public String getInvestorRealName() {
-        return investorRealName;
+    public String getInvestorUserName() {
+        return investorUserName;
     }
 
-    public void setInvestorRealName(String investorRealName) {
-        this.investorRealName = investorRealName;
+    public void setInvestorUserName(String investorUserName) {
+        this.investorUserName = investorUserName;
     }
 
     public String getInvestorMobile() {
@@ -108,12 +108,12 @@ public class InvestPaginationItemView extends InvestModel {
         this.investorMobile = investorMobile;
     }
 
-    public String getReferrerRealName() {
-        return referrerRealName;
+    public String getReferrerUserName() {
+        return referrerUserName;
     }
 
-    public void setReferrerRealName(String referrerRealName) {
-        this.referrerRealName = referrerRealName;
+    public void setReferrerUserName(String referrerUserName) {
+        this.referrerUserName = referrerUserName;
     }
 
     public String getReferrerMobile() {

@@ -28,13 +28,13 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     private String investorLoginName;
 
-    private String investorRealName;
+    private String investorUserName;
 
     private String investorMobile;
 
     private String referrerLoginName;
 
-    private String referrerRealName;
+    private String referrerUserName;
 
     private String referrerMobile;
 
@@ -63,10 +63,10 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.amount = AmountConverter.convertCentToString(view.getAmount());
         this.loanName = view.getLoanName();
         this.investorLoginName = view.getLoginName();
-        this.investorRealName = view.getInvestorRealName();
+        this.investorUserName = view.getInvestorUserName();
         this.investorMobile = view.getInvestorMobile();
         this.referrerLoginName = view.getReferrerLoginName();
-        this.referrerRealName = view.getReferrerRealName();
+        this.referrerUserName = view.getReferrerUserName();
         this.referrerMobile = view.getReferrerMobile();
         this.source = view.getSource().name();
         this.channel = view.getChannel();
@@ -165,12 +165,12 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.roles = roles;
     }
 
-    public String getInvestorRealName() {
-        return investorRealName;
+    public String getInvestorUserName() {
+        return investorUserName;
     }
 
-    public void setInvestorRealName(String investorRealName) {
-        this.investorRealName = investorRealName;
+    public void setInvestorUserName(String investorUserName) {
+        this.investorUserName = investorUserName;
     }
 
     public String getInvestorMobile() {
@@ -181,12 +181,12 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.investorMobile = investorMobile;
     }
 
-    public String getReferrerRealName() {
-        return referrerRealName;
+    public String getReferrerUserName() {
+        return referrerUserName;
     }
 
-    public void setReferrerRealName(String referrerRealName) {
-        this.referrerRealName = referrerRealName;
+    public void setReferrerUserName(String referrerUserName) {
+        this.referrerUserName = referrerUserName;
     }
 
     public String getReferrerMobile() {

@@ -112,11 +112,11 @@
                     <td>${invest.loanName}</td>
                     <td>${invest.loanPeriods?string('0')}</td>
                     <td>${invest.investorLoginName!}</td>
-                    <td>${invest.investorRealName!}</td>
+                    <td>${invest.investorUserName!}</td>
                     <td>${invest.investorMobile!}</td>
                     <td>${invest.isStaff()?string('是','否')}</td>
                     <td>${invest.referrerLoginName!}</td>
-                    <td>${invest.referrerRealName!}</td>
+                    <td>${invest.referrerUserName!}</td>
                     <td>${invest.referrerMobile!}</td>
                     <td>${invest.channel!}</td>
                     <td>${invest.source}</td>
