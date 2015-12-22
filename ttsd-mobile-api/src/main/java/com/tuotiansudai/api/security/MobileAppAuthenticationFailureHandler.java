@@ -6,8 +6,12 @@ import com.tuotiansudai.api.dto.LoginResponseDataDto;
 import com.tuotiansudai.api.dto.ReturnMessage;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.service.LoginLogService;
+import com.tuotiansudai.util.RequestIPParser;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.DisabledException;
@@ -32,6 +36,9 @@ public class MobileAppAuthenticationFailureHandler extends SimpleUrlAuthenticati
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
+    private LoginLogService loginLogService;
+
+    @Autowired
     private UserMapper userMapper;
 
     @Value("${web.login.lock.seconds}")
@@ -42,6 +49,7 @@ public class MobileAppAuthenticationFailureHandler extends SimpleUrlAuthenticati
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+        addLoginLog(request);
         String username = request.getParameter("j_username");
         logUserLoginFail(username);
 
@@ -53,6 +61,14 @@ public class MobileAppAuthenticationFailureHandler extends SimpleUrlAuthenticati
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         out.print(jsonBody);
+    }
+
+    private void addLoginLog(HttpServletRequest request){
+        String username = request.getParameter("j_username");
+        String strSource = request.getParameter("j_source");
+        Source source = (StringUtils.isEmpty(strSource))?Source.MOBILE:Source.valueOf(strSource.toUpperCase());
+        String deviceId = request.getParameter("j_deviceId");
+        loginLogService.generateLoginLog(username, source, RequestIPParser.parse(request), deviceId, false);
     }
 
     private void logUserLoginFail(String username) {
