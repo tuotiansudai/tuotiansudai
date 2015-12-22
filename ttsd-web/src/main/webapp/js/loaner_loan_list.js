@@ -74,7 +74,9 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
                     contentType: 'application/json; charset=UTF-8'
                 }).success(function (response) {
                     var data = response.data;
-                    data.isLoanCompleted = status == 'COMPLETE';
+                    data.isLoanCompleted = status == 'COMPLETE' || _.every(data.records, function(item) {
+                            return item.loanRepayStatus === 'COMPLETE';
+                        });
                     data.csrfToken = $("meta[name='_csrf']").attr("content");
                     if (data.status) {
                         _.each(data.records, function (item) {
