@@ -94,7 +94,7 @@ public class InvestServiceImpl implements InvestService {
     @Value(value = "${pay.auto.invest.interval.milliseconds}")
     private int autoInvestIntervalMilliseconds;
 
-    public static final String JOB_TRIGGER_KEY = "invest_callback_job_trigger";
+    public static final String JOB_TRIGGER_KEY = "job:invest:invest_callback_job_trigger";
 
     @Override
     @Transactional
