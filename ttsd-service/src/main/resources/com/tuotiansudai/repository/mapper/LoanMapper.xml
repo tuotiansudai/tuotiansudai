@@ -192,15 +192,15 @@
 
     <select useCache="false" id="findRepayingPaginationByAgentLoginName" parameterType="map" resultMap="loanResultMap">
         select *,
-        (select min(loan_repay.repay_date)
-        from loan_repay
-        where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) as next_repay_date,
-        (select sum(loan_repay.corpus) + sum(loan_repay.expected_interest) + sum(loan_repay.default_interest)
-        from loan_repay
-        where loan.id=loan_repay.loan_id and loan_repay.status != 'COMPLETE' ) as unpaid_amount
+            (select min(loan_repay.repay_date)
+             from loan_repay
+             where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) as next_repay_date,
+            (select sum(loan_repay.corpus) + sum(loan_repay.expected_interest) + sum(loan_repay.default_interest)
+             from loan_repay
+             where loan.id=loan_repay.loan_id and loan_repay.status != 'COMPLETE' ) as unpaid_amount
         from loan
         where agent_login_name = #{agentLoginName} and status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')
-        and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id) between #{startTime} and #{endTime}
+              and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) between #{startTime} and #{endTime}
         order by next_repay_date asc, id asc
         limit #{index}, #{pageSize}
     </select>
@@ -208,7 +208,7 @@
     <select useCache="false" id="findCountRepayingByAgentLoginName" parameterType="map" resultType="long">
         select count(1) from loan
         where agent_login_name = #{agentLoginName} and status in ('REPAYING', 'OVERDUE')
-        and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id) between #{startTime} and #{endTime}
+              and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) between #{startTime} and #{endTime}
     </select>
 
     <select useCache="false" id="findCompletedPaginationByAgentLoginName" parameterType="map" resultMap="loanResultMap">
