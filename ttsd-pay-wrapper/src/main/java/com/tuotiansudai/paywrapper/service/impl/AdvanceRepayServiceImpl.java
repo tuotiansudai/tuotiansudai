@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AdvanceRepayJob;
@@ -96,6 +97,7 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
     }
 
     @Override
+    @Transactional
     public String repayCallback(Map<String, String> paramsMap, String originalQueryString) {
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap,
                 originalQueryString,
@@ -104,11 +106,20 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
 
         Long loanRepayId = this.parseLoanRepayId(callbackRequest);
         if (loanRepayId != null) {
-            this.createRepayJob(this.generateJobData(loanRepayId, true));
+            this.createRepayJob(this.generateJobData(loanRepayId, true), 5);
+            try {
+                this.updateLoanAgentUserBill(loanRepayId, UserBillBusinessType.ADVANCE_REPAY);
+            } catch (Exception e) {
+                logger.error(MessageFormat.format("[Advance Repay] Update loan agent bill is failed (loanRepayId = {0})", String.valueOf(loanRepayId)), e);
+            }
+            try {
+                this.updateLoanRepayStatus(loanRepayId);
+            } catch (Exception e) {
+                logger.error(MessageFormat.format("[Advance Repay] Update loan repay status is failed (loanRepayId = {0})", String.valueOf(loanRepayId)), e);
+            }
         }
-
-        return callbackRequest.getResponseData();
-    }
+    return callbackRequest.getResponseData();
+}
 
     @Override
     @Transactional
@@ -120,23 +131,6 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
         } catch (Exception e) {
             logger.error(MessageFormat.format("[Advance Repay] Fetch job data from redis is failed (loanRepayId = {0})", String.valueOf(loanRepayId)));
             return false;
-        }
-
-        if (!jobData.isUpdateAgentUserBillSuccess()) {
-            try {
-                this.updateLoanAgentUserBill(jobData, UserBillBusinessType.ADVANCE_REPAY);
-                jobData.setUpdateAgentUserBillSuccess(true);
-            } catch (AmountTransferException e) {
-                logger.error(MessageFormat.format("[Advance Repay] Transfer out balance for loan repay interest is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
-            }
-        }
-
-        if (!jobData.isUpdateLoanRepayStatusSuccess()) {
-            try {
-                this.updateLoanRepayStatus(jobData);
-            } catch (Exception e) {
-                logger.error(MessageFormat.format("[Advance Repay] Update loan repay status is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
-            }
         }
 
         try {
@@ -153,16 +147,27 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
 
         if (!jobData.isUpdateLoanStatusSuccess()) {
             try {
-                loanService.updateLoanStatus(jobData.getLoanId(), LoanStatus.COMPLETE);
-                jobData.setUpdateLoanStatusSuccess(true);
+                BaseDto<PayDataDto> dto = loanService.updateLoanStatus(jobData.getLoanId(), LoanStatus.COMPLETE);
+                jobData.setUpdateLoanStatusSuccess(dto.getData().getStatus());
             } catch (Exception e) {
                 logger.error(MessageFormat.format("[Advance Repay] Update loan status is failed (loanRepayId = {0})", String.valueOf(jobData.getLoanRepayId())), e);
             }
         }
 
-        this.createRepayJob(jobData);
+        this.createRepayJob(jobData, 60);
 
-        return !jobData.jobRetry();
+        if (!jobData.jobRetry()) {
+            logger.info(MessageFormat.format("[Advance Repay] Repay is success (loanRepayId = {0})", String.valueOf(loanRepayId)));
+
+            try {
+                redisWrapperClient.del(MessageFormat.format(LOAN_REPAY_JOB_DATA_KEY_TEMPLATE, String.valueOf(loanRepayId)));
+            } catch (Exception e) {
+                logger.error(MessageFormat.format("[Normal Repay] Delete job data is failed (loanRepayId = {0})", String.valueOf(loanRepayId)), e);
+            }
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -177,9 +182,11 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
         return callbackRequest == null ? null : callbackRequest.getResponseData();
     }
 
-    protected void updateLoanRepayStatus(LoanRepayJobResultDto jobData) {
-        long loanId = jobData.getLoanId();
-        Date actualRepayDate = jobData.getActualRepayDate();
+    @Override
+    protected void updateLoanRepayStatus(long loanRepayId) {
+        LoanRepayModel currentLoanRepay = loanRepayMapper.findById(loanRepayId);
+        long loanId = currentLoanRepay.getLoanId();
+        Date actualRepayDate = currentLoanRepay.getActualRepayDate();
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
             loanRepayModel.setStatus(RepayStatus.COMPLETE);
@@ -209,11 +216,11 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
     }
 
     @Override
-    protected void createRepayJob(LoanRepayJobResultDto loanRepayJobResultDto) {
+    protected void createRepayJob(LoanRepayJobResultDto loanRepayJobResultDto, int delayMinutes) {
         long loanRepayId = loanRepayJobResultDto.getLoanRepayId();
         try {
             if (this.storeJobData(loanRepayJobResultDto) && loanRepayJobResultDto.jobRetry()) {
-                Date tenMinutes = new DateTime().plusMinutes(10).toDate();
+                Date tenMinutes = new DateTime().plusMinutes(delayMinutes).toDate();
                 jobManager.newJob(JobType.AdvanceRepay, AdvanceRepayJob.class)
                         .runOnceAt(tenMinutes)
                         .addJobData(NormalRepayJob.LOAN_REPAY_ID, loanRepayId)

@@ -86,7 +86,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 var loanId = $('.hid-loan').val(),
                     amount = parseFloat(amountInputElement.autoNumeric("get"));
                 if(isNaN(amount)) {
-                    amount='0';
+                    amount='0.00';
                 }
                 var amountNeedRaised = $('form .amountNeedRaised-i').text();
                 if(Number(amountNeedRaised) < Number(amount)){

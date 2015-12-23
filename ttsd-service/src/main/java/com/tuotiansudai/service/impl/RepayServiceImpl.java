@@ -6,10 +6,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.util.AmountConverter;
@@ -41,12 +38,16 @@ public class RepayServiceImpl implements RepayService {
     @Autowired
     private InvestMapper investMapper;
 
+    @Autowired
+    private AccountMapper accountMapper;
+
     @Override
     public BaseDto<PayFormDataDto> repay(RepayDto repayDto) {
         return payWrapperClient.repay(repayDto);
     }
 
     @Override
+    @Transactional
     public BaseDto<LoanRepayDataDto> getLoanRepay(String loginName, long loanId) {
         BaseDto<LoanRepayDataDto> baseDto = new BaseDto<>();
         LoanRepayDataDto dataDto = new LoanRepayDataDto();
@@ -69,51 +70,45 @@ public class RepayServiceImpl implements RepayService {
             }
         }));
 
-        if (Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE).contains(loanModel.getStatus()) ) {
+        final LoanRepayModel enabledLoanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(loanId);
+
+        if (enabledLoanRepayModel != null && Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE).contains(loanModel.getStatus())) {
             DateTime now = new DateTime();
-            List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
             DateTime lastSuccessRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, now);
-            long interest = InterestCalculator.calculateLoanRepayInterest(loanModel, investModels, lastSuccessRepayDate, now);
+            long interest = InterestCalculator.calculateLoanRepayInterest(loanModel, investMapper.findSuccessInvestsByLoanId(loanId), lastSuccessRepayDate, now);
             long defaultInterest = 0;
-            long corpus = 0;
             for (LoanRepayModel loanRepayModel : loanRepayModels) {
                 defaultInterest += loanRepayModel.getDefaultInterest();
-                corpus += loanRepayModel.getCorpus();
             }
-            dataDto.setExpectedAdvanceRepayAmount(AmountConverter.convertCentToString(corpus + interest + defaultInterest));
+            dataDto.setLoanAgentBalance(accountMapper.findByLoginName(loginName).getBalance());
+            dataDto.setExpectedNormalRepayAmount(enabledLoanRepayModel.getCorpus() + interest + defaultInterest);
+            dataDto.setExpectedAdvanceRepayAmount(loanRepayModels.get(loanRepayModels.size() - 1).getCorpus() + interest + defaultInterest);
         }
 
-        if (CollectionUtils.isNotEmpty(loanRepayModels)) {
-            final LoanRepayModel enabledLoanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(loanId);
-            List<LoanRepayDataItemDto> records = Lists.transform(loanRepayModels, new Function<LoanRepayModel, LoanRepayDataItemDto>() {
-                @Override
-                public LoanRepayDataItemDto apply(LoanRepayModel loanRepayModel) {
-                    boolean isEnable = false;
-                    if (enabledLoanRepayModel != null) {
-                        isEnable = loanRepayModel.getId() == enabledLoanRepayModel.getId();
-                    }
-                    return new LoanRepayDataItemDto(loanRepayModel, isEnable);
+        List<LoanRepayDataItemDto> records = Lists.transform(loanRepayModels, new Function<LoanRepayModel, LoanRepayDataItemDto>() {
+            @Override
+            public LoanRepayDataItemDto apply(LoanRepayModel loanRepayModel) {
+                boolean isEnable = false;
+                if (enabledLoanRepayModel != null) {
+                    isEnable = loanRepayModel.getId() == enabledLoanRepayModel.getId();
                 }
-            });
-            dataDto.setStatus(true);
-            dataDto.setRecords(records);
-        }
+                return new LoanRepayDataItemDto(loanRepayModel, isEnable);
+            }
+        });
+        dataDto.setStatus(true);
+        dataDto.setRecords(records);
 
         return baseDto;
     }
 
-    @Transactional
     private void resetExpiredLoanRepay(List<LoanRepayModel> loanRepayModels) {
-        if (CollectionUtils.isEmpty(loanRepayModels)) {
-            return;
-        }
-
         DateTime now = new DateTime();
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
             if (loanRepayModel.getStatus() == RepayStatus.WAIT_PAY) {
                 DateTime actualRepayDate = new DateTime(loanRepayModel.getActualRepayDate());
+                DateTime repayDate = new DateTime(loanRepayModel.getRepayDate());
                 if (actualRepayDate.plusMinutes(30).isBefore(now)) {
-                    loanRepayModel.setStatus(RepayStatus.REPAYING);
+                    loanRepayModel.setStatus(actualRepayDate.isBefore(repayDate) ? RepayStatus.REPAYING : RepayStatus.OVERDUE);
                     loanRepayModel.setActualRepayDate(null);
                     loanRepayModel.setActualInterest(0);
                     loanRepayMapper.update(loanRepayModel);

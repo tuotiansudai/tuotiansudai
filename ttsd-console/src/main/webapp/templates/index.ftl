@@ -1,6 +1,6 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="index.js" headLab="sys-manage" sideLab="userDate" title="系统首页">
-<div class="col-md-10">
+<div class="col-md-10 home-report">
 
     <div class="row">
 
@@ -34,7 +34,7 @@
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
                     <div  id="userDateDistribution" style="width:100%; height:400px;">
-
+                        <span class="loading-report">加载中...</span>
                     </div>
                 </div>
             </div>
@@ -66,7 +66,10 @@
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
 
-                   <div id="UserRechargeDistribution" style="width:100%; height:400px;"></div>
+                   <div id="UserRechargeDistribution" style="width:100%; height:400px;">
+
+                       <span class="loading-report">加载中...</span>
+                   </div>
                 </div>
             </div>
         </div>
@@ -95,7 +98,9 @@
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
 
-                    <div id="userWithdrawDistribution" style="width:100%; height:400px;"></div>
+                    <div id="userWithdrawDistribution" style="width:100%; height:400px;">
+                        <span class="loading-report">加载中...</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -117,7 +122,9 @@
                         </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
-                    <div id="userInvestViscosity" style="width:100%; height:400px;"></div>
+                    <div id="userInvestViscosity" style="width:100%; height:400px;">
+                        <span class="loading-report">加载中...</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -150,7 +157,9 @@
                         </select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
-                    <div id="userInvestAmountDistribution" style="width:100%; height:400px;"></div>
+                    <div id="userInvestAmountDistribution" style="width:100%; height:400px;">
+                        <span class="loading-report">加载中...</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -176,13 +185,15 @@
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
 
-                    <div id="userInvestCountDistribution" style="width:100%; height:400px;"></div>
+                    <div id="userInvestCountDistribution" style="width:100%; height:400px;">
+                        <span class="loading-report">加载中...</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12 col-sm-12">
+        <div class="col-lg-6 col-sm-6">
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <h3 class="panel-title">实名认证用户年龄分布</h3>
@@ -199,13 +210,13 @@
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
 
-                    <div id="registerUserAgeDistribution" style="width:100%; height:400px;"></div>
+                    <div id="registerUserAgeDistribution" style="width:100%; height:400px;">
+                        <span class="loading-report">加载中...</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
+        <div class="col-lg-6 col-sm-6">
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <h3 class="panel-title">投资人用户年龄分布</h3>
@@ -222,7 +233,9 @@
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
 
-                    <div id="investorUserAgeDistribution" style="width:100%; height:400px;"></div>
+                    <div id="investorUserAgeDistribution" style="width:100%; height:400px;">
+                        <span class="loading-report">加载中...</span>
+                    </div>
                 </div>
             </div>
         </div>
