@@ -40,13 +40,13 @@ public class MobileAppRetrievePasswordControllerTest extends ControllerTestBase 
     @Test
     public void retrievePasswordIsValid() throws Exception {
         RetrievePasswordRequestDto retrievePasswordRequestDto = new RetrievePasswordRequestDto();
-        retrievePasswordRequestDto.setPhoneNum("123");
-        retrievePasswordRequestDto.setValidateCode("111111");
-        retrievePasswordRequestDto.setPassword("123abc");
+        retrievePasswordRequestDto.setPhoneNum("13800138000");
+        retrievePasswordRequestDto.setValidateCode("123456");
+        retrievePasswordRequestDto.setPassword("000000");
         when(service.retrievePassword(any(RetrievePasswordRequestDto.class))).thenReturn(successResponseDto);
         doRequestWithServiceIsOkMockedTest("/retrievepassword",
                 retrievePasswordRequestDto)
-        .andExpect(jsonPath("$.code").value("0002"));
+                .andExpect(jsonPath("$.code").value("0012"));
     }
 
     @Test

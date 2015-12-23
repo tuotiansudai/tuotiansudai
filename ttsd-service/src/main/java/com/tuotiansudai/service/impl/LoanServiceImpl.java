@@ -516,7 +516,7 @@ public class LoanServiceImpl implements LoanService {
         if (endTime == null) {
             endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
         } else {
-            endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+            endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate();
         }
 
         List<LoanModel> loanModels = Lists.newArrayList();

@@ -78,13 +78,4 @@ public abstract class ControllerTestBase {
         return doRequestWithServiceIsOkMockedTest(url, requestDto)
                 .andExpect(jsonPath("$.code").value("0000"));
     }
-    protected ResultActions doRequestWithServiceIsBadRequestMockedTest(String url, BaseParamDto requestDto) throws Exception {
-        url = "/v1.0" + url;
-        String requestJson = generateRequestJson(requestDto);
-        return mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(requestJson))
-                .andExpect(status().isOk());
-
-    }
-
 }
