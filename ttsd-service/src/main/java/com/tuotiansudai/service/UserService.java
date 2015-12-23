@@ -66,4 +66,9 @@ public interface UserService {
 
     List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber);
 
+    List<UserModel> findUsersAccountBalance(int currentPageNo, int pageSize);
+
+    int findUsersAccountBalanceCount();
+
+    long findUsersAccountBalanceSum();
 }

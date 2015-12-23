@@ -61,4 +61,10 @@ public interface UserMapper {
     List<UserModel> findUserByProvince();
     
     int findUserCount();
+
+    List<UserModel> findUsersAccountBalance(@Param(value = "startLimit") int startLimit, @Param(value = "endLimit") int endLimit);
+
+    long findUsersAccountBalanceSum();
+
+    int findUsersAccountBalanceCount();
 }

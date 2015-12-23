@@ -198,4 +198,54 @@
         ORDER BY u.`register_time` DESC
     </select>
 
+    <select id="findUsersAccountBalance" parameterType="map" resultMap="userResultMap">
+        SELECT
+          *
+        FROM
+          user u
+          LEFT JOIN account a
+            ON u.`login_name` = a.`login_name`
+        WHERE NOT EXISTS
+        (SELECT
+            1
+          FROM
+            user_role r
+          WHERE u.`login_name` = r.`login_name`
+          AND r.`role` = 'LOANER')
+        ORDER BY a.`balance` DESC
+        limit #{startLimit}, #{endLimit}
+    </select>
+
+    <select id="findUsersAccountBalanceSum" resultType="long">
+        SELECT
+          SUM(a.`balance`)
+        FROM
+          user u
+          LEFT JOIN account a
+            ON u.`login_name` = a.`login_name`
+            WHERE NOT EXISTS
+        (SELECT
+            1
+          FROM
+            user_role r
+          WHERE u.`login_name` = r.`login_name`
+          AND r.`role` = 'LOANER')
+    </select>
+
+    <select id="findUsersAccountBalanceCount" resultType="int">
+        SELECT
+          count(*)
+        FROM
+          user u
+          LEFT JOIN account a
+            ON u.`login_name` = a.`login_name`
+            WHERE NOT EXISTS
+        (SELECT
+            1
+          FROM
+            user_role r
+          WHERE u.`login_name` = r.`login_name`
+          AND r.`role` = 'LOANER')
+    </select>
+
 </mapper>
