@@ -51,7 +51,6 @@
         <div class="item-block status-filter">
             <span class="sub-hd">活动券类型:</span>
             <span class="select-item current" data-status="touzi">投资体验券</span>
-            <span class="select-item" data-status="jiaxi">加息券</span>
         </div>
         <div class="clear-blank"></div>
         <div class="invest-list">

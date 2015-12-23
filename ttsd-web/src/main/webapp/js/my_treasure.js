@@ -1,8 +1,7 @@
 require(['jquery', 'layerWrapper', 'moment', 'pagination', 'mustache', 'text!/tpl/my-treasure-table.mustache','csrf'],
 function($, layer, moment, pagination, Mustache, treasureListTemplate) {
     $(function() {
-        var $body = $('body'),
-            $navLi = $('.column-title .title-navli'),
+        var $navLi = $('.column-title .title-navli'),
             $listTab = $('.list-tab');
 
         $navLi.on('click', function(event) {
@@ -14,12 +13,7 @@ function($, layer, moment, pagination, Mustache, treasureListTemplate) {
             $listTab.removeClass('tab-show');
             $('.list-tab:eq(' + index + ')').addClass('tab-show');
         });
-        $body.on('click', '.select-item', function(event) {
-            event.preventDefault();
-            var $self = $(this);
-            $self.addClass('current').siblings('.select-item').removeClass('current');
-            loadLoanData();
-        });
+
 
         $('.invest-list').on('mouseenter', '.project-name', function() {
             layer.closeAll('tips');
