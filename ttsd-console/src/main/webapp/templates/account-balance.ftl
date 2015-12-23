@@ -27,7 +27,11 @@
             <tbody>
                 <#list userAccountList as userAccount>
                 <tr>
-                    <td>${userAccount.loginName!''}</td>
+                    <td>${userAccount.loginName!''}
+                        <#if userAccount.staff>
+                            <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
+                        </#if>
+                    </td>
                     <td>${userAccount.account.userName!''}</td>
                     <td>${userAccount.mobile}</td>
                     <td>${userAccount.province!''}</td>

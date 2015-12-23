@@ -1,7 +1,9 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
@@ -27,6 +29,9 @@ public class AccountBalanceController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRoleService userRoleService;
+
     @RequestMapping(value = "/account-balance")
     public ModelAndView accountBalance(@RequestParam(value = "currentPageNo", defaultValue = "1", required = false) int currentPageNo,
                                         @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
@@ -43,10 +48,14 @@ public class AccountBalanceController {
             response.setContentType("application/csv");
             int count = userService.findUsersAccountBalanceCount(loginName);
             List<UserModel> userModelList = userService.findUsersAccountBalance(loginName, 1, count);
+            for (UserModel userModel : userModelList) {
+                userModel.setStaff(userRoleService.judgeUserRoleExist(userModel.getLoginName(), Role.STAFF));
+            }
             List<List<String>> data = Lists.newArrayList();
             for (UserModel userModel : userModelList) {
                 List<String> dataModel = Lists.newArrayList();
                 dataModel.add(userModel.getLoginName());
+                dataModel.add(userModel.isStaff()?"是":"否");
                 dataModel.add(userModel.getAccount().getUserName());
                 dataModel.add(userModel.getMobile());
                 dataModel.add(userModel.getProvince() != null ? userModel.getProvince() : "");
@@ -59,7 +68,11 @@ public class AccountBalanceController {
             ModelAndView modelAndView = new ModelAndView("/account-balance");
             modelAndView.addObject("currentPageNo", currentPageNo);
             modelAndView.addObject("pageSize", pageSize);
-            modelAndView.addObject("userAccountList", userService.findUsersAccountBalance(loginName, currentPageNo, pageSize));
+            List<UserModel> userModelList = userService.findUsersAccountBalance(loginName, currentPageNo, pageSize);
+            for (UserModel userModel : userModelList) {
+                userModel.setStaff(userRoleService.judgeUserRoleExist(userModel.getLoginName(), Role.STAFF));
+            }
+            modelAndView.addObject("userAccountList", userModelList);
             int count = userService.findUsersAccountBalanceCount(loginName);
             modelAndView.addObject("sumBalance", userService.findUsersAccountBalanceSum(loginName));
             long totalPages = count / pageSize + (count % pageSize > 0 ? 1 : 0);
