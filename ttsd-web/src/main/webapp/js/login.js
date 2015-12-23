@@ -69,7 +69,6 @@ require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
         };
 
         var submitLoginForm = function () {
-            try {
                 loginFormElement.ajaxSubmit({
                     beforeSubmit: function (arr, $form, options) {
                         loginSubmitElement.addClass('loading');
@@ -97,9 +96,6 @@ require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
                         errorElement.text("用户或密码不正确").css('visibility', 'visible');
                     }
                 });
-            } catch(error) {
-                loginSubmitElement.removeClass('loading');
-            }
 
             return false;
         };
