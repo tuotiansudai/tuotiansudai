@@ -94,7 +94,7 @@ public class ReferrerInvestResponseDataDto {
 
     public ReferrerInvestResponseDataDto(ReferrerManageView input) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        this.userId = input.getInvestLoginName();
+        this.userId = input.getInvestName();
         this.level = "" + input.getLevel();
         this.loanName = input.getLoanName();
         this.investMoney = AmountConverter.convertCentToString(input.getInvestAmount());

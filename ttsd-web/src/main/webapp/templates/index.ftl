@@ -4,13 +4,13 @@
     <div class="banner-box">
         <div class="banner-img-list">
             <a href="/activity/ranking" target="_blank">
-                <img src="${staticServer}/images/sign/activities/ranking/qph.jpg" alt="抢排行，送大礼">
+                <img src="${staticServer}/images/sign/actor/ranking/qph.jpg" alt="抢排行，送大礼">
             </a>
             <a href="/activity/grand" target="_blank">
-                <img src="${staticServer}/images/sign/activities/grand/banner-grand.jpg" alt="累计收益兑大奖">
+                <img src="${staticServer}/images/sign/actor/grand/ba-grand.jpg" alt="累计收益兑大奖">
             </a>
              <a href="/activity/recruit" target="_blank">
-                 <img src="${staticServer}/images/banner/banner-home03.png" alt="招募代理">
+                 <img src="${staticServer}/images/ttimg/ttimg-home03.png" alt="招募代理">
              </a>
         </div>
         <ul class="scroll-num">
@@ -285,9 +285,9 @@
                     </div>
                     </#list>
                 </div>
-                
             </div>
         </div>
+
         <div class="page-width clearfix">
             <h3 class="label-title">
                 <span class="report-icon">

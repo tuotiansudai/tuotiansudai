@@ -33,7 +33,7 @@
         <property name="minConnectionsPerPartition" value="${sms.sms_operations.minConnectionsPerPartition}"/>
         <property name="maxConnectionsPerPartition" value="${sms.sms_operations.maxConnectionsPerPartition}"/>
         <property name="acquireIncrement" value="${sms.sms_operations.acquireIncrement}"/>
-        <property name="idleMaxAgeInSeconds" value="1800"/>
+        <property name="idleMaxAgeInSeconds" value="600"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>
 

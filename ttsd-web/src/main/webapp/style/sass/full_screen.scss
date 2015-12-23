@@ -1,7 +1,4 @@
 @import 'variables';
-@import 'jquery_fullpage';
-
-
 #fp-nav ul li {
     width: 25px;
     height: 25px;
@@ -484,14 +481,14 @@ body{
                         .pr-square {
                             width: 134px;
                             height: 134px;
-                            border-radius: 67px;
+                            border-radius: 50%;
                             position: relative;
                             background: #fee7da;
                             margin: 5px auto 8px auto;
                             .pr-square-in {
                                 width:120px;
                                 height:120px;
-                                border-radius:60px;
+                                border-radius:50%;
                                 border:2px solid #ff752a;
                                 background: #fff;
                                 margin: auto;
@@ -593,25 +590,13 @@ body{
         }
     }
 }
-@media \0screen\,screen\9 {
-  .register-ad-box{
-    background-color:#fff;
-    filter:Alpha(opacity=80);
-    position:static;
-    *zoom:1;
-  }
-  .register-ad-box{
-    p{
-        position: relative;
-    }
-  }  
-}
+
 /* user guide page */
 .new-guide-container {
     color: #2f2f2f;
-    .ad-guide-img {
+    .new-guide-img {
         height:350px;
-        background: url("/images/banner/banner-guide.jpg") center top no-repeat;
+        background: url("/images/ttimg/ttimg-guide.jpg") center top no-repeat;
     }
     .content-info {
         h3 {
@@ -752,125 +737,6 @@ body{
     }
 }
 
-/* safety assurance page  */
-.assurance-container {
-    padding-top:10px;
-    color: #fff;
-    font-size: 14px;
-    p {  color: #fff; font-size: 14px;  }
-
-    .section-title {
-        position: relative;
-        width:100%;
-        text-align: center;
-        .line {
-            border-top:1px dashed #fff;
-        }
-        b {
-            font-size: 50px;
-            margin-top:-61px;
-            line-height: 1;
-            display: inline-block;
-            padding:10px 20px;
-        }
-        em {
-            font-size: 30px;
-            display: block;
-        }
-    }
-    .bg1 {
-        background: #d9ac52;
-    }
-    .bg2 {
-        background: #50b281;
-    }
-    .bg3 {
-        background: #9676d6;
-    }
-    .down {
-        position: absolute;
-        width:100%;
-        text-align: center;
-        top: 400px;
-        b {
-            display: block;
-        }
-    }
-    .box-benift {
-        .page-width {
-        position: relative;
-            img.fl { margin-left:-850px; margin-top:50px;}
-            .fr {
-                padding-top: 70px;
-                margin-right: 100px;
-            }
-        }
-
-    }
-    .box-wealth {
-        .wealth-content {
-            position: relative;
-            padding-top:320px;
-            .page-img {
-                position: absolute;
-                left: -360px;
-                top: 35px;
-            }
-            .article-one {
-                width: 40%;
-                position: absolute;
-                left: 0;
-                top: 50px;
-            }
-            .article-two {
-                width: 40%;
-                position: absolute;
-                left: 0;
-                top: 310px;
-            }
-            .article-three {
-                width: 40%;
-                position: absolute;
-                right: 0;
-                top: 265px;
-            }
-            .article-app {
-                display: none;
-            }
-        }
-
-    }
-    .box-insurance  {
-        padding-top:75px;
-        .page-width {
-            position: relative;
-            .page-img {
-                position: absolute;
-                right: 1400px;
-                top: 80px;
-            }
-            .sqr-title {
-                border-radius:17px;
-                border:1px dashed #fff;
-                display: inline-block;
-                padding:4px 10px;
-                line-height: 1.4;
-            }
-            .fl {
-                width:40%;
-            }
-            .fr {
-                width:40%;
-                padding-top:325px;
-            }
-            .article-mobile {
-                display: none;
-            }
-        }
-
-    }
-
-}
 
 /* refer reward page */
 .refer-reward-instruction {
@@ -950,34 +816,13 @@ body{
         font-size: 12px;
       }
     }
-    .email {
-
-    }
   }
 }
 
-@media screen and (max-width: 1280px) {
-    .assurance-container .section-title b { font-size: 44px;}
-    .assurance-container .section-title em { font-size: 20px;}
 
-    .assurance-container .box-wealth p { font-size: 12px; }
-    .assurance-container .box-insurance p  { font-size: 12px; }
-    .box-benift {
-        padding-top:40px;
-    }
-    .box-wealth {
-        padding-top:30px;
-    }
-    .assurance-container .box-insurance .page-width .fr {
-        padding-top:275px;
-    }
-    .assurance-container .down {
-        top: 370px;
-    }
-}
 @media (max-width:700px){
     .home-page-container   {
-        .main-advantage {
+        .main-advantage,.register-ad-box {
             display: none;
         }
         .banner-box {
@@ -1161,100 +1006,6 @@ body{
             }
         }
     }
-
-    .back-home {
-        background: rgba(0,0,0,.6);
-        color: #fff;
-        border-radius: 15px;
-        position: fixed;
-        z-index: 1000;
-        left: 10px;
-        top: 10px;
-        font-size: 12px;
-        padding: 5px 12px;
-    }
-    .assurance-container {
-
-        p {
-            line-height:1.8;
-            font-size:12px;
-        }
-        .section-title {
-            b {
-                font-size: 22px;
-                margin-top: 0;
-                position: absolute;
-                left: 17%;
-                top: -20px;
-            }
-            em {
-                font-size: 16px;
-                margin-top: 15px;
-            }
-        }
-        .down { display: none; }
-        .box-benift {
-            padding-top:10px;
-            .page-width {
-                img.fl { margin-left:70px; margin-top:10px; width:50%; }
-                .fr {
-                    float: none;
-                    clear: both;
-                    padding-top: 10px;
-                    padding-left: 0px;
-                    margin-right: 0;
-                    text-align: center;
-                }
-            }
-        }
-        .box-wealth {
-            padding-top:10px;
-            .section-title { margin-top:20px; }
-            .wealth-content {
-                padding: 0px 10px 10px 10px;
-                .page-img {
-                    position: relative;
-                    left:20%;
-                    width:60%;
-                    margin-bottom: 30px;
-                    top:15px;
-
-                }
-                .article-one,
-                .article-two,
-                .article-three
-                { display: none; }
-                .article-app {
-                    display: block;
-                    font-size: 14px;
-                }
-            }
-        }
-        .box-insurance {
-            padding-top:20px;
-            img {
-                position: relative!important;
-                left: 10%;
-                top: 20px!important;
-                width: 65%;
-            }
-            .fl,.fr {
-                display: none;
-            }
-            .article-mobile {
-                display: block!important;
-                text-align: center;
-                padding-top: 40px;
-                b{
-                    border-radius: 15px;
-                    border: 1px dotted #fff;
-                    display: inline-block;
-                    padding: 5px 14px;
-                    line-height: 1.3;
-                }
-            }
-        }
-    }
 }
 @media screen and (max-width: 700px) {
     .refer-reward-instruction {
@@ -1264,6 +1015,44 @@ body{
                 width:100%;
                 img {
                     width:95%;
+                }
+            }
+        }
+    }
+
+    .new-guide-container{
+        .new-guide-img{
+            height: 150px!important;
+            background: url(/images/ttimg/ph-guide.jpg) center top no-repeat!important;
+            background-size: cover!important;
+        }
+        .content-info{
+            box-sizing: border-box;
+            padding:10px;
+            h3{
+                margin:10px 0;
+                font-size: 16px;
+                font-weight: bold;
+            }
+            p{
+                font-size:13px;
+            }
+        }
+        .content-a{
+            box-sizing: border-box;
+            padding:10px;
+            img{
+                width:100%;
+                margin:0!important;
+            }
+        }
+        .page-width{
+            .our-advantage-content{
+                .hide-dom{
+                    display: none;
+                }
+                .action-invest{
+                    font-size:13px!important;
                 }
             }
         }
@@ -1279,7 +1068,15 @@ body{
                 margin-bottom:30px;
             }
         }
-
+    }
+    .register-ad-box{
+        background-color:#fff;
+        filter:Alpha(opacity=80);
+        position:static;
+        *zoom:1;
+        p {
+            position: relative;
+        }
     }
 
 }

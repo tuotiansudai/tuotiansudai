@@ -19,9 +19,31 @@ public class EditUserDto implements Serializable {
 
     private String referrer;
 
+    private String bankCardNumber;
+
+    private boolean isReferrerStaff;
+
     private UserStatus status;
 
     private List<Role> roles;
+
+    public EditUserDto(UserModel userModel, AccountModel accountModel, List<Role> roles) {
+        this.loginName = userModel.getLoginName();
+        this.email = userModel.getEmail();
+        this.mobile = userModel.getMobile();
+        if (accountModel != null) {
+            this.identityNumber = accountModel.getIdentityNumber();
+            this.userName = accountModel.getUserName();
+        }
+        if (roles != null) {
+            this.roles = roles;
+        }
+        this.referrer = userModel.getReferrer();
+        this.status = userModel.getStatus();
+    }
+
+    public EditUserDto() {
+    }
 
     public String getLoginName() {
         return loginName;
@@ -87,21 +109,19 @@ public class EditUserDto implements Serializable {
         this.roles = roles;
     }
 
-    public EditUserDto(UserModel userModel, AccountModel accountModel, List<Role> roles) {
-        this.loginName = userModel.getLoginName();
-        this.email = userModel.getEmail();
-        this.mobile = userModel.getMobile();
-        if (accountModel != null) {
-            this.identityNumber = accountModel.getIdentityNumber();
-            this.userName = accountModel.getUserName();
-        }
-        if (roles != null) {
-            this.roles = roles;
-        }
-        this.referrer = userModel.getReferrer();
-        this.status = userModel.getStatus();
+    public String getBankCardNumber() {
+        return bankCardNumber;
     }
 
-    public EditUserDto() {
+    public void setBankCardNumber(String bankCardNumber) {
+        this.bankCardNumber = bankCardNumber;
+    }
+
+    public boolean getIsReferrerStaff() {
+        return isReferrerStaff;
+    }
+
+    public void setReferrerStaff(boolean referrerStaff) {
+        isReferrerStaff = referrerStaff;
     }
 }

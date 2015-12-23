@@ -18,8 +18,7 @@ var require = {
         'echarts': staticServer + '/js/libs/echarts/dist/echarts.min',
         'jquery.validate.extension': staticServer + '/js/dest/jquery_validate_extension.min',
         'commonFun': staticServer + '/js/dest/common.min',
-        'layerWrapper': staticServer + '/js/dest/wrapper-layer.min',
-        'fullPage':staticServer+'/js/libs/jquery.fullPage.min'
+        'layerWrapper': staticServer + '/js/dest/wrapper-layer.min'
     },
 
     'shim': {
@@ -32,8 +31,7 @@ var require = {
         'layer-extend': ['jquery','layer'],
         'layerWrapper':['layer','layer-extend'],
         'commonFun': ['jquery.validate'],
-        'jquery.validate.extension': ['jquery', 'jquery.validate'],
-        'fullPage': ['jquery']
+        'jquery.validate.extension': ['jquery', 'jquery.validate']
     }
 };
 

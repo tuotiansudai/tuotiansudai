@@ -15,6 +15,14 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
                 var html = Mustache.render(ListTemplate, data);
                 $noticeList.html(html);
                 $noticeList.find('time').text($noticeList.find('time').text().substr(0,10));
+                if(/app/gi.test(location.search)) {
+                    var noticeList=$('.notice-list');
+                    noticeList.find('li a').each(function(key,option) {
+                       var thisURL= $(option).attr('href')+'?source=app';
+                        $(option).attr('href',thisURL);
+                    });
+                }
+
             });
         }
 
@@ -51,6 +59,18 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
             setTimeout(function(){
                 window.location="/";
             },10000);
+        }
+
+        if($('#WhetherApp').length) {
+            //if($('#WhetherApp').find('.res-no-app').length) {
+            //    $('#WhetherApp').find('.res-no-app').remove();
+            //}
+            if(/app/gi.test(location.search)) {
+                $('.header-container,.nav-container,.footer-container').hide();
+                if($('.left-nav').length) {
+                    $('.left-nav').hide();
+                }
+            }
         }
 
         $problemList.on('click', function(e) {

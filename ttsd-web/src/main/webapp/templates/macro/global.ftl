@@ -45,8 +45,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
+    <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-
     <#if responsive??>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     </#if>
@@ -157,14 +157,18 @@
         TopMainMenuList=window.$('TopMainMenuList');
 
     window.$('iphone-app-pop').onclick=function(e) {
-        event.stopPropagation();
-        event.preventDefault();
 
         if(imgDom.style.display == "block") {
             imgDom.style.display='none';
         }
         else {
             imgDom.style.display='block';
+        }
+        if (event.stopPropagation) {
+            event.stopPropagation();
+        }
+        else if (window.event) {
+            window.event.cancelBubble = true;
         }
     };
 
