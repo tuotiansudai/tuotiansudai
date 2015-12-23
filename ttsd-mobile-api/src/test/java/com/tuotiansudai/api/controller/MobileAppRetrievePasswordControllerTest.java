@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.controller;
 
 import com.tuotiansudai.api.dto.RetrievePasswordRequestDto;
+import com.tuotiansudai.api.dto.ReturnMessage;
 import com.tuotiansudai.api.service.MobileAppRetrievePasswordService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -35,6 +36,7 @@ public class MobileAppRetrievePasswordControllerTest extends ControllerTestBase 
         doRequestWithServiceMockedTest("/retrievepassword",
                 retrievePasswordRequestDto);
     }
+
     @Test
     public void retrievePasswordIsValid() throws Exception {
         RetrievePasswordRequestDto retrievePasswordRequestDto = new RetrievePasswordRequestDto();
