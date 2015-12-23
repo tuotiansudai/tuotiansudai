@@ -55,33 +55,7 @@
         </div>
         <div class="clear-blank"></div>
         <div class="invest-list">
-            <table class="invest-list table-striped">
-                <thead>
-                <tr>
-                    <th>项目名称</th>
-                    <th class="tr">所用券</th>
-                    <th>券额(元)</th>
-                    <th>交易时间</th>
-                    <th>交易状态</th>
-                    <th>下次回款(元)</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td><a href="#" class="project-name">水电费</td>
-                    <td class="tr">12</td>
-                    <td class="tr">12</td>
-                    <td>
-                        2015-11-20 16:30:02
-                    </td>
-                    <td>水电费</td>
-                    <td>水电费</td>
-                </tr>
 
-                <td colspan="6" class="no-data">暂时没有投资记录</td>
-
-                </tbody>
-            </table>
         </div>
     </div>
 </div>

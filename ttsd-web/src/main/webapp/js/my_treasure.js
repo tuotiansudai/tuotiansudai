@@ -1,4 +1,4 @@
-require(['jquery','layerWrapper', 'moment', 'pagination', 'mustache', 'text!/tpl/investor-invest-table.mustache'],
+require(['jquery','layerWrapper', 'moment', 'pagination', 'mustache', 'text!/tpl/my-treasure-table.mustache'],
  function ($, layer, Mustache, moment, pagination, treasureListTemplate) {
     $(function() {
         var $body=$('body'),
@@ -50,6 +50,7 @@ require(['jquery','layerWrapper', 'moment', 'pagination', 'mustache', 'text!/tpl
                 console.log("error");
             });
         }
-        templateData(data);
+        
+        templateData($('.select-item.current').attr('data-status'));
     });
 });
