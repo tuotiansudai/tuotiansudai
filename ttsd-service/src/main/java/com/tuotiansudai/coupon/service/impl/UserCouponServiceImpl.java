@@ -7,9 +7,13 @@ import com.tuotiansudai.coupon.dto.UserInvestingCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.CouponUseRecordView;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.UserCouponService;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.collections4.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +66,24 @@ public class UserCouponServiceImpl implements UserCouponService {
             }
         });
         return investingCouponDtos;
+    }
+
+    @Override
+    public BaseDto<BasePaginationDataDto> findUseRecords(String loginName, int index, int pageSize) {
+        int count = userCouponMapper.findUseRecordsCount(loginName);
+        List<CouponUseRecordView> couponUseRecordList = userCouponMapper.findUseRecords(loginName, (index - 1) * pageSize, pageSize);
+
+        for(CouponUseRecordView curm : couponUseRecordList) {
+            long expectInterest = investService.estimateInvestIncome(curm.getLoanId(),curm.getCouponAmount());
+            curm.setExpectInterest(expectInterest);
+            curm.setExpectInterestStr(AmountConverter.convertCentToString(expectInterest));
+            curm.setCouponAmountStr(AmountConverter.convertCentToString(curm.getCouponAmount()));
+        }
+
+        BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
+        BasePaginationDataDto<CouponUseRecordView> dataDto = new BasePaginationDataDto<>(index, pageSize, count, couponUseRecordList);
+        baseDto.setData(dataDto);
+        dataDto.setStatus(true);
+        return baseDto;
     }
 }
