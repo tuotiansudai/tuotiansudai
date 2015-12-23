@@ -70,6 +70,12 @@ public class UserController {
         return userService.findLoginNameLike(loginName);
     }
 
+    @RequestMapping(value = "/staff/{loginName}/search", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> searchStaffName(@PathVariable String loginName) {
+        return userService.findStaffNameFromUserLike(loginName);
+    }
+
     @RequestMapping(value = "/user/edit", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView editUser(@ModelAttribute EditUserDto editUserDto, HttpServletRequest request, RedirectAttributes redirectAttributes) {
@@ -86,6 +92,22 @@ public class UserController {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/users-search", method = RequestMethod.GET)
+    public ModelAndView searchAllUsers(String loginName,
+                                        String referrer,
+                                        String mobile,
+                                        String identityNumber, HttpServletRequest request) {
+        ModelAndView mv = new ModelAndView("/user-search");
+        if (request.getParameterMap().size() != 0) {
+            mv.addObject("loginName", loginName);
+            mv.addObject("referrer", referrer);
+            mv.addObject("mobile", mobile);
+            mv.addObject("identityNumber", identityNumber);
+            mv.addObject("userList", userService.searchAllUsers(loginName, referrer, mobile, identityNumber));
+        }
+        return mv;
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
@@ -112,10 +134,12 @@ public class UserController {
             for (int i = 0 ;i < userItemDataDtos.size(); i++) {
                 List<String> dataModel = Lists.newArrayList();
                 dataModel.add(userItemDataDtos.get(i).getLoginName());
+                dataModel.add(userItemDataDtos.get(i).isBankCard() ? "是" : "否");
                 dataModel.add(userItemDataDtos.get(i).getUserName());
                 dataModel.add(userItemDataDtos.get(i).getMobile());
                 dataModel.add(userItemDataDtos.get(i).getEmail());
                 dataModel.add(userItemDataDtos.get(i).getReferrer());
+                dataModel.add(userItemDataDtos.get(i).isStaff() ? "是" : "否");
                 dataModel.add(userItemDataDtos.get(i).getSource().name());
                 dataModel.add(userItemDataDtos.get(i).getChannel());
                 dataModel.add(new DateTime(userItemDataDtos.get(i).getRegisterTime()).toString("yyyy-MM-dd HH:mm"));
@@ -176,4 +200,6 @@ public class UserController {
         userService.updateUserStatus(loginName, UserStatus.ACTIVE, ip, LoginUserInfo.getLoginName());
         return "OK";
     }
+
+
 }
