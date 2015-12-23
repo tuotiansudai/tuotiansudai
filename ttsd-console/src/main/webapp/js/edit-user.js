@@ -1,10 +1,9 @@
 require(['jquery', 'csrf', 'jquery-ui', 'bootstrap'], function ($) {
-
-    $('.btn-submit').click(function(){
+    $('.btn-submit').click(function () {
         var mobile = $('#mobile').val();
         var reg = /^\d{11}$/;
 
-        if(!reg.test(mobile)){
+        if (!reg.test(mobile)) {
             $('.web-error-message').show();
             $('.console-error-message').hide();
             $('.message').html('手机号码应为11位数字！');
@@ -32,12 +31,23 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrap'], function ($) {
         }
     });
 
-    $('#confirm-modal .btn-submit').click(function () {
+    $('#confirm-modal').find('.btn-submit').click(function () {
         $("form").submit();
     });
 
-    $("input[type='reset']").click(function() {
+    $('input[type="reset"]').click(function () {
         location.reload();
         return false;
+    });
+
+
+    $('input[name="roles"]').click(function () {
+        var self = $(this);
+        if (self.val() === 'AGENT' && self.prop('checked')) {
+            $('input[name="roles"][value="STAFF"]').prop('checked', true);
+        }
+        if (self.val() === 'STAFF' && !self.prop('checked')) {
+            $('input[name="roles"][value="AGENT"]').prop('checked', false);
+        }
     });
 });

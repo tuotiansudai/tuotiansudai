@@ -245,7 +245,6 @@ public class NormalRepayServiceTest {
 
         long currentLoanRepayId = loanRepayMapper.findByLoanIdAndPeriod(fakeNormalLoan.getId(), 1).getId();
         normalRepayService.repayCallback(this.getFakeCallbackParamsMap(currentLoanRepayId), "");
-        normalRepayService.postRepayCallback(currentLoanRepayId);
         boolean isSuccess = normalRepayService.postRepayCallback(currentLoanRepayId);
 
         assertTrue(isSuccess);
@@ -425,7 +424,6 @@ public class NormalRepayServiceTest {
         this.generateMockResponse(10);
 
         normalRepayService.repayCallback(this.getFakeCallbackParamsMap(fakeLoanRepayModel2.getId()), "");
-        normalRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
         boolean isSuccess = normalRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
 
         assertTrue(isSuccess);

@@ -82,7 +82,6 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                 area: ['380px', '200px'],
                 shadeClose: true,
                 offset: '146px',
-                skin:'layer-style-custom',
                 content: $('.verification-code-main'),
                 success: function (layero, index) {
                     refreshCaptcha();

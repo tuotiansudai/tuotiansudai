@@ -27,7 +27,7 @@
         </div>
         <div class="assets-detail bRadiusBox fr bg-w">
             <ul class="detail-list">
-                <li><b>我的余额：</b><span>${((balance/100)?string('0.00'))!}</span>元</li>
+                <li><b>我的余额：</b><span id="balance">${((balance/100)?string('0.00'))!}</span>元</li>
                 <li><b>累计收益：</b><span>${(((collectedReward+collectedInterest)/100)?string('0.00'))!}</span>元</li>
                 <li><b>待收本金：</b><span>${((collectingPrincipal/100)?string('0.00'))!}</span>元</li>
                 <li><b>待收利息：</b><span>${((collectingInterest/100)?string('0.00'))!}</span>元</li>

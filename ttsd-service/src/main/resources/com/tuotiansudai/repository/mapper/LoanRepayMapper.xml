@@ -199,7 +199,14 @@
     </select>
 
     <update id="update" parameterType="LoanRepayModel">
-        update loan_repay set actual_interest = #{actualInterest}, actual_repay_date = #{actualRepayDate}, status = #{status}, default_interest = #{defaultInterest} where id = #{id}
+        update loan_repay
+        set expected_interest = #{expectedInterest},
+            repay_date = #{repayDate},
+            actual_interest = #{actualInterest},
+            actual_repay_date = #{actualRepayDate},
+            status = #{status},
+            default_interest = #{defaultInterest}
+        where id = #{id}
     </update>
 
     <select id="findByLoginNameAndTimeSuccessRepay" parameterType="map" resultType="long">
