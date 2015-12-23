@@ -39,8 +39,6 @@ require(['jquery','fullPage'], function ($) {
 
                 }
             }
-
-
                 $fpNav.find('li').each(function(key,option) {
                     var $this=$(this);
                    switch(key){

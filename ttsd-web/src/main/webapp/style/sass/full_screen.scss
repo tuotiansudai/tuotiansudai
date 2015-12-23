@@ -686,20 +686,23 @@
     }
   }
 }
-@media screen and (max-width: 1280px) {
+@media screen and (max-width: 1370px) and (max-height:680px){
     .assurance-container .section-title b { font-size: 44px;}
     .assurance-container .section-title em { font-size: 20px;}
 
     .assurance-container .box-wealth p { font-size: 12px; }
     .assurance-container .box-insurance p  { font-size: 12px; }
     .box-benift {
-        padding-top:40px;
+        padding-top:10px;
     }
     .box-wealth {
-        padding-top:30px;
+        padding-top:10px;
     }
-    .assurance-container .box-insurance .page-width .fr {
-        padding-top:275px;
+    .assurance-container .box-insurance {
+        padding-top:45px;
+        .page-width .fr {
+            padding-top:275px;
+        }
     }
     .assurance-container .down {
         top: 370px;
