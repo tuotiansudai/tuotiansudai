@@ -34,6 +34,12 @@
                         select province from (
                             select count(*) as v, a.province from user a
                             where a.register_time between #{startTime} and #{endTime}
+                            <if test="userStage.name() == 'BindCard'">
+                                and exists (select * from bank_card b where  a.login_name = b.login_name and b.status='PASSED')
+                            </if>
+                            <if test="userStage.name() == 'Certification'">
+                                and exists (select * from account ac where  a.login_name = ac.login_name)
+                            </if>
                             group by province
                         ) t order by v desc limit 5
                     ) p where p.province = u.province
@@ -41,6 +47,12 @@
             </otherwise>
         </choose>
         and u.register_time between #{startTime} and #{endTime}
+        <if test="userStage.name() == 'BindCard'">
+          and exists (select * from bank_card b where  u.login_name = b.login_name and b.status='PASSED')
+        </if>
+        <if test="userStage.name() == 'Certification'">
+          and exists (select * from account ac where  u.login_name = ac.login_name)
+        </if>
         group by u.province,
         <if test="granularity.name() == 'Daily'">
           date(u.register_time)
@@ -71,11 +83,23 @@
                     select province from (
                         select count(*) as v, a.province from user a
                         where a.register_time between #{startTime} and #{endTime}
+                        <if test="userStage.name() == 'BindCard'">
+                            and exists (select * from bank_card b where  a.login_name = b.login_name and b.status='PASSED')
+                        </if>
+                        <if test="userStage.name() == 'Certification'">
+                            and exists (select * from account ac where  a.login_name = ac.login_name)
+                        </if>
                         group by province
                     ) t order by v desc limit 5
                 ) p where p.province = u.province
             )
             and u.register_time between #{startTime} and #{endTime}
+            <if test="userStage.name() == 'BindCard'">
+                and exists (select * from bank_card b where  u.login_name = b.login_name and b.status='PASSED')
+            </if>
+            <if test="userStage.name() == 'Certification'">
+                and exists (select * from account ac where  u.login_name = ac.login_name)
+            </if>
             group by
             <if test="granularity.name() == 'Daily'">
                 date(u.register_time)
@@ -671,6 +695,29 @@
         </if>
     </select>
 
+    <select id="queryInvestViscosity" parameterType="map" resultMap="keyValueMap">
+        select
+          a.loan_count as `name`,
+          count(*) as `value`,
+          '续投用户' as `group`
+        from (
+          select
+            count(distinct i.loan_id) as loan_count
+          from invest i
+          <if test="province != null and province !=''">
+          inner join `user` u
+          on i.login_name = u.login_name
+          </if>
+          where
+            i.created_time between #{startTime} and #{endTime}
+            <if test="province != null and province !=''">
+            and u.province = #{province}
+            </if>
+          group by i.login_name
+        ) a
+        group by a.loan_count;
+    </select>
+
 
     <select id="queryUserInvestCountTrend" parameterType="map" resultMap="keyValueMap">
         select
@@ -815,5 +862,36 @@
             and i.created_time between #{startTime} and #{endTime}
             group by `name`
         </if>
+    </select>
+
+    <select id="queryUserAgeTrend" parameterType="map" resultMap="keyValueMap">
+        select
+            <![CDATA[if(age<20,'20 岁以下',if(age<35,'20~35 岁',if(age<50,'35~50 岁','50 岁以上')))]]> as `name`,
+            count(1) as `value`,
+            <choose>
+                <when test="province != null and province!= ''"> #{province} </when>
+                <otherwise> "全部" </otherwise>
+            </choose> as `group`
+        from
+            (
+                select date_format(now(),'%Y')-if(length(identity_number)=18,substring(identity_number,7,4),1900+substring(identity_number,7,2)) as age
+                from
+                    account a
+                <if test="province != null and province !=''">
+                join user u
+                    on a.login_name=u.login_name
+                    and u.province=#{province}
+                </if>
+                where
+                    length(identity_number) in (15,18)
+                    and a.register_time between #{startTime} and #{endTime}
+                    <if test="isInvestor=='true'">
+                    and exists
+                        (
+                            select 1 from invest i where i.login_name=a.login_name
+                        )
+                    </if>
+            ) temp
+        group by `name`;
     </select>
 </mapper>

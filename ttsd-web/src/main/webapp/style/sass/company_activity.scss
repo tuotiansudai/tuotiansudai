@@ -341,6 +341,11 @@ img.icon-mark {
 }
 
 @media screen and (max-width: 700px){
+  .activity-ranking-container {
+    .res-no-app {
+      display: none;
+    }
+  }
   .actor-ranking-img {
     height: 150px!important;
     background: url("/images/ttimg/ph-a01.jpg") center top no-repeat!important;

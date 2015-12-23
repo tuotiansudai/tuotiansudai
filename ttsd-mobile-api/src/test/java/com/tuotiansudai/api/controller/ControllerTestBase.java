@@ -83,7 +83,7 @@ public abstract class ControllerTestBase {
         String requestJson = generateRequestJson(requestDto);
         return mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(requestJson))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isOk());
 
     }
 

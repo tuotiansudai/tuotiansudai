@@ -28,10 +28,10 @@ public class MobileAppRetrievePasswordController extends MobileAppBaseController
      */
     @RequestMapping(value = "/retrievepassword", method = RequestMethod.POST)
     public BaseResponseDto retrievePassword(@Valid @RequestBody RetrievePasswordRequestDto retrievePasswordRequestDto, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             String errorCode = bindingResult.getFieldError().getDefaultMessage();
             String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);
-            return new BaseResponseDto(errorCode,errorMessage);
+            return new BaseResponseDto(errorCode, errorMessage);
         } else {
             return retrievePasswordService.retrievePassword(retrievePasswordRequestDto);
         }

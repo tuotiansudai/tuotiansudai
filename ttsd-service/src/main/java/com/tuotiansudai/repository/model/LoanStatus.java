@@ -6,7 +6,7 @@ public enum LoanStatus {
     RAISING("1", "筹款中"),
     RECHECK("", "等待复核"),
     REPAYING("2", "还款中"),
-    COMPLETE("3", "完成"),
+    COMPLETE("4", "完成"),
     CANCEL("4", "流标"),
     OVERDUE("", "逾期");
 

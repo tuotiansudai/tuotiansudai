@@ -24,6 +24,9 @@ public interface UserMapper {
 
     void updateUser(UserModel userModel);
 
+    List<UserModel> searchAllUsers(@Param(value = "loginName") String loginName,@Param(value = "referrer") String referrer,@Param(value = "mobile") String mobile,
+                                   @Param(value = "identityNumber") String identityNumber);
+
     List<UserModel> findAllUser(@Param(value = "loginName") String loginName,
                                 @Param(value = "email") String email,
                                 @Param(value = "mobile") String mobile,
@@ -48,6 +51,8 @@ public interface UserMapper {
 
 
     void updatePasswordByLoginName(@Param(value = "loginName") String loginName, @Param(value = "password") String password);
+
+    List<String> findStaffByLikeLoginName(String loginName);
 
     List<String> findLoginNameLike(String loginName);
 
