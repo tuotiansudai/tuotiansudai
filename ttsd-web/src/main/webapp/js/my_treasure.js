@@ -37,13 +37,14 @@ require(['jquery','layerWrapper', 'moment', 'pagination', 'mustache', 'text!/tpl
 
         function templateData(data){
             $.ajax({
-                url: '/path/to/file',
+                url: 'http://192.168.100.70:8080/coupon/use-record?loginName=shenjiaojiao&index=1&pageSize=10',
                 type: 'POST',
                 dataType: 'json',
                 data: {param1: data}
             })
             .done(function(json) {
                 var html = Mustache.render(treasureListTemplate, json);
+                console.log(json);
                 $('.invest-list').html(html);
             })
             .fail(function() {
