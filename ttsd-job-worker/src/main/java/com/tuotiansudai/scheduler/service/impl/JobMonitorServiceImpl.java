@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.SmsJobFatalNotifyDto;
 import com.tuotiansudai.job.InvestCallback;
+import com.tuotiansudai.repository.model.Environment;
 import com.tuotiansudai.scheduler.repository.mapper.ExecutionLogMapper;
 import com.tuotiansudai.scheduler.repository.model.ExecuteStatus;
 import com.tuotiansudai.scheduler.repository.model.ExecutionLogModel;
@@ -30,6 +31,9 @@ public class JobMonitorServiceImpl implements JobMonitorService {
 
     @Value("#{'${pay.invest.notify.fatal.mobile}'.split('\\|')}")
     private List<String> fatalNotifyMobiles;
+
+    @Value("${common.environment}")
+    private Environment environment;
 
     @Autowired
     private ExecutionLogMapper executionLogMapper;
@@ -98,7 +102,7 @@ public class JobMonitorServiceImpl implements JobMonitorService {
             } catch (JsonProcessingException e) {
                 logger.warn("cannot parse jobData to json", e);
             }
-            String errorMessage = MessageFormat.format("{0}-{1},params:{2}", jobKey.getGroup(), jobKey.getName(), jobParams);
+            String errorMessage = MessageFormat.format("{0},{1},{2},{3}", environment, jobKey.getGroup(), jobKey.getName(), jobParams);
             sendSmsErrNotify(fatalNotifyMobiles, errorMessage);
         }
     }

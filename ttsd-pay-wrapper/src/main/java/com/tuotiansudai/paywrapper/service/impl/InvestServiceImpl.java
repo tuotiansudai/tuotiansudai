@@ -88,6 +88,9 @@ public class InvestServiceImpl implements InvestService {
     @Value("#{'${pay.invest.notify.fatal.mobile}'.split('\\|')}")
     private List<String> fatalNotifyMobiles;
 
+    @Value("${common.environment}")
+    private Environment environment;
+
     @Value(value = "${pay.invest.notify.process.batch.size}")
     private int investProcessListSize;
 
@@ -532,7 +535,7 @@ public class InvestServiceImpl implements InvestService {
     private void fatalLog(String errMsg, Throwable e) {
         logger.fatal(errMsg, e);
         if (CollectionUtils.isNotEmpty(fatalNotifyMobiles)) {
-            sendSmsErrNotify(fatalNotifyMobiles, errMsg);
+            sendSmsErrNotify(fatalNotifyMobiles, MessageFormat.format("{0},{1}", environment, errMsg));
         }
     }
 
