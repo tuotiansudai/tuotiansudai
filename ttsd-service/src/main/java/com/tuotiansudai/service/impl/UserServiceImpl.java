@@ -402,18 +402,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserModel> findUsersAccountBalance(int currentPageNo, int pageSize) {
-        return userMapper.findUsersAccountBalance((currentPageNo - 1 ) * pageSize, pageSize);
+    public List<UserModel> findUsersAccountBalance(String loginName, int currentPageNo, int pageSize) {
+        return userMapper.findUsersAccountBalance(loginName, (currentPageNo - 1 ) * pageSize, pageSize);
     }
 
     @Override
-    public int findUsersAccountBalanceCount() {
-        return userMapper.findUsersAccountBalanceCount();
+    public int findUsersAccountBalanceCount(String loginName) {
+        return userMapper.findUsersAccountBalanceCount(loginName);
     }
 
     @Override
-    public long findUsersAccountBalanceSum() {
-        return userMapper.findUsersAccountBalanceSum();
+    public long findUsersAccountBalanceSum(String loginName) {
+        return userMapper.findUsersAccountBalanceSum(loginName);
     }
 
 }

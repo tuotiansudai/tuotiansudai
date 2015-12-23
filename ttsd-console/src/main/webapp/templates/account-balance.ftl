@@ -1,8 +1,17 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="" headLab="finance-manage" sideLab="userBalance" title="用户余额">
+<@global.main pageCss="" pageJavascript="account-balance.js" headLab="finance-manage" sideLab="userBalance" title="用户余额">
 
 <!-- content area begin -->
 <div class="col-md-10">
+    <form action="" class="form-inline query-build">
+        <div class="form-group">
+            <label for="control-label">用户名</label>
+            <input type="text" class="form-control jq-loginName" name="loginName" value="${loginName!}">
+        </div>
+
+        <button class="btn btn-primary" type="submit">查询</button>
+        <button class="btn btn-default" type="reset">重置</button>
+    </form>
 
     <div class="row">
         <table class="table table-bordered table-hover">
@@ -36,7 +45,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/finance-manage/account-balance?currentPageNo=${currentPageNo-1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/account-balance?loginName=${loginName!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -45,13 +54,14 @@
                 <li><a>${currentPageNo}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="/finance-manage/account-balance?currentPageNo=${currentPageNo+1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/account-balance?loginName=${loginName!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
                     <span>Next »</span></a>
                 </li>
             </ul>
+            <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
         </nav>
     </div>
 </div>

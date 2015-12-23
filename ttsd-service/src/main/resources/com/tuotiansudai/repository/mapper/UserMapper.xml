@@ -203,8 +203,12 @@
           *
         FROM
           user u
-          LEFT JOIN account a
+           JOIN account a
             ON u.`login_name` = a.`login_name`
+            AND a.`balance` > 0
+            <if test="loginName != null and loginName != '' ">
+            AND a.`login_name` = #{loginName}
+            </if>
         WHERE NOT EXISTS
         (SELECT
             1
@@ -216,13 +220,17 @@
         limit #{startLimit}, #{endLimit}
     </select>
 
-    <select id="findUsersAccountBalanceSum" resultType="long">
+    <select id="findUsersAccountBalanceSum" parameterType="map" resultType="long">
         SELECT
-          SUM(a.`balance`)
+        IFNULL(SUM(a.`balance`), 0)
         FROM
           user u
-          LEFT JOIN account a
+           JOIN account a
             ON u.`login_name` = a.`login_name`
+            AND a.`balance` > 0
+        <if test="loginName != null and loginName != '' ">
+            AND a.`login_name` = #{loginName}
+        </if>
             WHERE NOT EXISTS
         (SELECT
             1
@@ -232,13 +240,17 @@
           AND r.`role` = 'LOANER')
     </select>
 
-    <select id="findUsersAccountBalanceCount" resultType="int">
+    <select id="findUsersAccountBalanceCount" parameterType="map" resultType="int">
         SELECT
-          count(*)
+        IFNULL(count(*), 0)
         FROM
           user u
-          LEFT JOIN account a
+           JOIN account a
             ON u.`login_name` = a.`login_name`
+            AND a.`balance` > 0
+        <if test="loginName != null and loginName != '' ">
+            AND a.`login_name` = #{loginName}
+        </if>
             WHERE NOT EXISTS
         (SELECT
             1
