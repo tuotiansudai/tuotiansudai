@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class MobileAppRetrievePasswordControllerTest extends ControllerTestBase {
 
@@ -37,10 +38,13 @@ public class MobileAppRetrievePasswordControllerTest extends ControllerTestBase 
     @Test
     public void retrievePasswordIsValid() throws Exception {
         RetrievePasswordRequestDto retrievePasswordRequestDto = new RetrievePasswordRequestDto();
-        retrievePasswordRequestDto.setPhoneNum("123");
+        retrievePasswordRequestDto.setPhoneNum("13800138000");
+        retrievePasswordRequestDto.setValidateCode("123456");
+        retrievePasswordRequestDto.setPassword("000000");
         when(service.retrievePassword(any(RetrievePasswordRequestDto.class))).thenReturn(successResponseDto);
-        doRequestWithServiceIsBadRequestMockedTest("/retrievepassword",
-                new RetrievePasswordRequestDto());
+        doRequestWithServiceIsOkMockedTest("/retrievepassword",
+                retrievePasswordRequestDto)
+                .andExpect(jsonPath("$.code").value("0012"));
     }
 
     @Test
