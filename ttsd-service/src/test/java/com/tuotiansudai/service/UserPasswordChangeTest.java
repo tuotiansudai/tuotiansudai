@@ -55,7 +55,7 @@ public class UserPasswordChangeTest {
         UserModel um1 = userMapper.findByLoginName(loginName);
         assertNotNull(um1);
 
-        userService.changePassword(loginName, mobile, password, newPassword);
+        userService.changePassword(loginName, password, newPassword);
 
         UserModel um = userMapper.findByLoginName(loginName);
         assertEquals(

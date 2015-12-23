@@ -34,7 +34,7 @@ public class MobileAppNodeDetailServiceImpl implements MobileAppNodeDetailServic
         }
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
-        NodeDetailResponseDataDto dataDto = new NodeDetailResponseDataDto(announceModel);
+        NodeDetailResponseDataDto dataDto = new NodeDetailResponseDataDto(announceModel,true);
         dataDto.addDomainNameToImageUrl(urlPattern, domainName);
         dto.setData(dataDto);
         return dto;
