@@ -10,7 +10,6 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
@@ -401,6 +400,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber) {
         return userMapper.searchAllUsers(loginName, referrer, mobile, identityNumber);
+    }
+
+    @Override
+    public List<UserModel> findUsersAccountBalance(String loginName, int currentPageNo, int pageSize) {
+        return userMapper.findUsersAccountBalance(loginName, (currentPageNo - 1 ) * pageSize, pageSize);
+    }
+
+    @Override
+    public int findUsersAccountBalanceCount(String loginName) {
+        return userMapper.findUsersAccountBalanceCount(loginName);
+    }
+
+    @Override
+    public long findUsersAccountBalanceSum(String loginName) {
+        return userMapper.findUsersAccountBalanceSum(loginName);
     }
 
 }
