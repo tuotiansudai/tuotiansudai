@@ -46,7 +46,20 @@
             <label class="col-sm-2 control-label">借款项目名称: </label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control jq-user" placeholder="" datatype="*" errormsg="借款项目名称不能为空">
+                <input type="text" class="form-control jq-user" placeholder="" datatype="*" errormsg="借款项目名称不能为空" maxlength="6">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">产品类型: </label>
+
+            <div class="col-sm-4">
+                <select class="selectpicker jq-b-type b-width">
+                    <option value="请选择产品类型">请选择产品类型</option>
+                    <option value="速盈利" data-percent="10%" data-time="1">速盈利</option>
+                    <option value="稳盈绣" data-percent="12%" data-time="3">稳盈绣</option>
+                    <option value="久盈富" data-percent="14%" data-time="6">久盈富</option>
+                </select>
+                <input type="hidden" class="jq-mark-type" value=""/>
             </div>
         </div>
         <div class="form-group">
@@ -85,7 +98,7 @@
             <label class="col-sm-2 control-label">标的类型: </label>
 
             <div class="col-sm-4">
-                <select class="selectpicker jq-b-type">
+                <select class="selectpicker jq-b-type b-width">
                     <#list loanTypes as loanType>
                         <option value="${loanType.name()}" data-repayTimeUnit="${loanType.getLoanPeriodUnit()}"
                                 data-repayTimePeriod="1">
@@ -139,7 +152,7 @@
             <label class="col-sm-2 control-label">投资手续费比例（%）: </label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control jq-fee jq-money" placeholder="" datatype="money_fl"
+                <input type="text" class="form-control jq-fee jq-money" placeholder="" value="10%" datatype="money_fl"
                        errormsg="投资手续费比例需要正确填写">
             </div>
             <div class="col-sm-6">
