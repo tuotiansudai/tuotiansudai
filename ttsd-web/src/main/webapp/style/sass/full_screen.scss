@@ -1196,13 +1196,14 @@ body{
         .box-benift {
             padding-top:10px;
             .page-width {
-                img.fl { margin-left:50px; margin-top:10px; width:50%; }
+                img.fl { margin-left:70px; margin-top:10px; width:50%; }
                 .fr {
                     float: none;
                     clear: both;
                     padding-top: 10px;
-                    padding-left: 30px;
+                    padding-left: 0px;
                     margin-right: 0;
+                    text-align: center;
                 }
             }
         }
