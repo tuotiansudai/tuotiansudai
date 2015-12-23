@@ -19,8 +19,7 @@ var require = {
         'jquery.validate.extension': staticServer + '/js/dest/jquery_validate_extension.min',
         'commonFun': staticServer + '/js/dest/common.min',
         'layerWrapper': staticServer + '/js/dest/wrapper-layer.min',
-        'fullPage':staticServer+'/js/libs/jquery.fullPage.min',
-        'jqueryEasing':staticServer+'/js/libs/jquery.easing.min'
+        'fullPage':staticServer+'/js/libs/jquery.fullPage.min'
     },
 
     'shim': {
@@ -34,8 +33,7 @@ var require = {
         'layerWrapper':['layer','layer-extend'],
         'commonFun': ['jquery.validate'],
         'jquery.validate.extension': ['jquery', 'jquery.validate'],
-        'fullPage': ['jquery'],
-        'jqueryEasing':['jquery']
+        'fullPage': ['jquery']
     }
 };
 
