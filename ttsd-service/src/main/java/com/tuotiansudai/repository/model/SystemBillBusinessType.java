@@ -14,6 +14,8 @@ public enum SystemBillBusinessType {
 
     INVEST_FEE("利息管理费"),
 
+    ADMIN_INTERVENTION("管理员干预"),
+
     REFERRER_REWARD("推荐人奖励"),
 
     LOAN_REMAINING_INTEREST("标的剩余利息");
