@@ -799,7 +799,7 @@ body{
     .box-benift {
         .page-width {
         position: relative;
-            img.fl { margin-left:70px; margin-top:50px;}
+            img.fl { margin-left:-850px; margin-top:50px;}
             .fr {
                 padding-top: 70px;
                 margin-right: 100px;
@@ -813,7 +813,7 @@ body{
             padding-top:320px;
             .page-img {
                 position: absolute;
-                left: 360px;
+                left: -360px;
                 top: 35px;
             }
             .article-one {
@@ -846,7 +846,7 @@ body{
             position: relative;
             .page-img {
                 position: absolute;
-                right: 0;
+                right: 1400px;
                 top: 80px;
             }
             .sqr-title {
@@ -956,7 +956,26 @@ body{
   }
 }
 
-@media (max-width:700px) {
+@media screen and (max-width: 1280px) {
+    .assurance-container .section-title b { font-size: 44px;}
+    .assurance-container .section-title em { font-size: 20px;}
+
+    .assurance-container .box-wealth p { font-size: 12px; }
+    .assurance-container .box-insurance p  { font-size: 12px; }
+    .box-benift {
+        padding-top:40px;
+    }
+    .box-wealth {
+        padding-top:30px;
+    }
+    .assurance-container .box-insurance .page-width .fr {
+        padding-top:275px;
+    }
+    .assurance-container .down {
+        top: 370px;
+    }
+}
+@media (max-width:700px){
     .home-page-container   {
         .main-advantage {
             display: none;
@@ -1143,6 +1162,7 @@ body{
         }
     }
     .assurance-container {
+       .back-home { background: rgba(0,0,0,0.6); color: #fff; border-radius:10px; }
         p {
             line-height:1.8;
             font-size:12px;
@@ -1166,6 +1186,7 @@ body{
                 img.fl { margin-left:50px; margin-top:10px; width:50%; }
                 .fr {
                     float: none;
+                    clear: both;
                     padding-top: 160px;
                     padding-left: 30px;
                     margin-right: 0;
@@ -1219,7 +1240,6 @@ body{
         }
     }
 }
-
 @media screen and (max-width: 700px) {
     .refer-reward-instruction {
         .refer-reward-bg {
@@ -1233,6 +1253,43 @@ body{
         }
     }
 }
+
+@media screen and(max-width:450px) {
+
+    .box-benift {
+        padding-top:10px;
+    }
+    .box-wealth {
+        padding-top:10px;
+    }
+    .assurance-container .box-insurance .page-width .fr {
+        padding-top:10px;
+    }
+    .assurance-container .section-title b {
+        font-size: 25px;
+    }
+    .assurance-container .box-benift .page-width img.fl { width:70%; margin-top: 30px;}
+    .assurance-container .box-benift .page-width .fr {
+        padding-top: 10px;
+    }
+    .assurance-container p,
+    .assurance-container .box-insurance p{ font-size:14px;}
+}
+
+@media screen and(max-width:320px) {
+    .assurance-container .box-wealth .wealth-content .article-app {
+        font-size:12px;
+    }
+    .box-wealth{ padding-top:10px;}
+    .assurance-container .box-insurance .article-mobile { padding-top:32px;}
+
+    .assurance-container .box-benift .page-width .fr {
+
+        padding-top: 30px;
+    }
+}
+
+
 
 @media screen\0  {
     //IE8-10

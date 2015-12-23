@@ -49,7 +49,7 @@
     <div class="main-advantage page-width">
         <dl>
             <dd>
-                <a href="/about/assurance" target="_blank">
+                <a href="/about/assurance?aid=1" target="_blank">
                 <img class="icon-off" src="${staticServer}/images/icons/icon-off-1.png" alt="超高收益 最低门槛" >
                 <img class="icon-on" src="${staticServer}/images/icons/icon-on-1.png" alt="超高收益 最低门槛" >
                 <span class="clearfix">
@@ -59,7 +59,7 @@
                 </a>
             </dd>
             <dd>
-                <a href="/about/assurance" target="_blank">
+                <a href="/about/assurance?aid=2" target="_blank">
                 <img class="icon-off" src="${staticServer}/images/icons/icon-off-2.png" alt="三方监管 放心理财">
                 <img class="icon-on" src="${staticServer}/images/icons/icon-on-2.png" alt="三方监管 放心理财" >
                 <span class="clearfix">
@@ -69,7 +69,7 @@
                     </a>
             </dd>
             <dd>
-                <a href="/about/assurance" target="_blank">
+                <a href="/about/assurance?aid=3" target="_blank">
                 <img class="icon-off" src="${staticServer}/images/icons/icon-off-3.png" alt="实力雄厚 安全保障">
                 <img class="icon-on" src="${staticServer}/images/icons/icon-on-3.png" alt="实力雄厚 安全保障" >
                 <span class="clearfix">

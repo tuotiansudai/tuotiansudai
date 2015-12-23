@@ -25,6 +25,7 @@
 
 </style>
 <div class="assurance-container" id="assuranceEffect">
+    <a href="/" class="back-home">返回首页</a>
     <div class="section box-benift">
         <div class="section-title">
             <div class="line"></div>

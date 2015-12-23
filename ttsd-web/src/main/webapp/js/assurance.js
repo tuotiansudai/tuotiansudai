@@ -1,11 +1,50 @@
 require(['jquery','fullPage'], function ($) {
 
-    $('#assuranceEffect').fullpage({
+    var $assuranceEffect=$('#assuranceEffect'),
+        locationSearch=location.search,
+        locationId,
+        $boxProfit=$assuranceEffect.find('.box-benift'),
+        $boxWealth=$assuranceEffect.find('.box-wealth'),
+        $boxInsurance=$assuranceEffect.find('.box-insurance'),
+        boolHead=$('.header-container').is(':visible');
+    if(!!location.search) {
+        locationId=Number(/\d/.exec(location.search)[0]);
+    }
+        $assuranceEffect.find('.section').eq(locationId-1).addClass('active').siblings('.section').removeClass('active');
+
+    $assuranceEffect.fullpage({
         sectionsColor: ['#d9ac52', '#50b281', '#9676d6'],
-        'navigation': true,
+        navigation: true,
+        resize:true,
+        scrollingSpeed:600,
+        css3: true,
         afterLoad: function(anchorLink, index){
             var $fpNav=$('#fp-nav');
-            if(index==1) {
+
+            if(boolHead) {
+                if(index == 1){
+                    $boxProfit.find('img.fl').animate({
+                        'marginLeft': '50px'
+                    }, 1000);
+                }
+                if(index == 2){
+                    $boxWealth.find('img.page-img').animate({
+                        left: '360px'
+                    }, 1000);
+
+                    $boxWealth.find('p.article-one').fadeIn(2000);
+                    $boxWealth.find('p.article-two').fadeIn(2000);
+                    $boxWealth.find('p.article-three').fadeIn(2000);
+                }
+                if(index == 3){
+                    $boxInsurance.find('img.page-img').animate({
+                        right: '0'
+                    }, 1000);
+
+                }
+            }
+
+
                 $fpNav.find('li').each(function(key,option) {
                     var $this=$(this);
                    switch(key){
@@ -21,6 +60,26 @@ require(['jquery','fullPage'], function ($) {
                    }
 
                 });
+
+        },
+        onLeave: function(index, direction){
+            if(boolHead) {
+                if(index == 1){
+                    $boxProfit.find('img.fl').animate({
+                        'marginLeft': '-850px'
+                    }, 1000);
+                }
+                if(index == 2){
+                    $boxWealth.find('img.page-img').animate({
+                        left: '-360px'
+                    }, 1000);
+                }
+                if(index == 3){
+                    $boxInsurance.find('img.page-img').animate({
+                        right: '1400px'
+                    }, 1000);
+
+                }
             }
         }
     });
