@@ -24,6 +24,9 @@
 }
 
 /* if use the css, the page will be show full screen */
+body{
+    background-color:#fff;
+}
 .full-screen {
     width:100%!important;
     margin:0;
@@ -131,17 +134,85 @@
             }
         }
     }
+    .notice-list{
+        width:100%;
+        height:40px;
+        border-bottom:1px solid #e6e6e6;
+        overflow:hidden;
+        .notice-container{
+            width:1000px;
+            margin:5px auto;
+            color:#999;
+            line-height:30px;
+            &:after{
+                content:"";
+                display:block;
+                clear:both;
+            }
+            h3{
+                float:left;
+                width:134px;
+                font-size:16px;
+                text-align:center;
+                border-right:1px solid #e6e6e6;
+            }
+            .notice-text{
+                float:left;
+                width:825px;
+                color:#b2b2b2;
+                padding-left:40px;
+                span{
+                    float:left;
+                    &.text-title{
+                        width:640px;
+                    }
+                    &.text-date{
+                        width:90px;
+                    }
+                }
+                .text-href{
+                    float: right;
+                    width: 70px;
+                    border-radius: 25px;
+                    border: 1px solid #e5e5e5;
+                    text-align: center;
+                    line-height: 22px;
+                    font-size: 12px;
+                    color: #ccc;
+                    margin-top: 3px;
+                    &:hover{
+                        text-decoration:underline;
+                    }
+                }
+            }
+        }
+    }
     .main-advantage {
-        margin-top:30px!important;
+        margin-top:20px;
+        &:after{
+            content:"";
+            display:block;
+            clear:both;
+        }
         dl {
+            float:left;
+            width:100%;
             text-align: center;
             dd {
-                width:33%;
-                display: inline-block;
+                float:left;
+                width:33.333333%;
                 font-size: 14px;
                 color: #0e050a;
                 line-height:1;
+                &:hover .icon-off{
+                    display:none;
+                }
+                &:hover .icon-on{
+                    display:block;
+                }
                 span {
+                    float:left;
+                    width:100%;
                     b {
                         font-size: 20px;
                         display: block;
@@ -150,20 +221,17 @@
                     }
                 }
                 a {
+                    float:left;
+                    width:100%;
                     color: #666;
                 }
                 img{
-                    -webkit-transition:  0.4s ease 0s;
-                    -moz-transition:  0.4s ease-out 0s;
-                    -ms-transition:  0.4s ease-out 0s;
-                    -o-transition:  0.4s ease-out 0s;
-                    transition:  0.4s ease-out 0s;
-                    &:hover {
-                        -webkit-transform: rotate(360deg) scale(1.2);
-                        -moz-transform: rotate(360deg) scale(1.2);
-                        -ms-transform: rotate(360deg) scale(1.2);
-                        -o-transform: rotate(360deg) scale(1.2);
-                        transform: rotate(360deg) scale(1.2);
+                    margin: 0 auto;
+                    &.icon-off{
+                        display:block;
+                    }
+                    &.icon-on{
+                        display:none;
                     }
                 }
             }
@@ -171,26 +239,199 @@
     }
     .home-content {
         background: #fafafa;
-        margin-top: 50px;
+        margin-top: 35px;
+        padding-top:35px;
         .page-width {
-            padding:10px;
-            box-sizing: border-box;
+            .label-title{
+                float:left;
+                width:100%;
+                height:45px;
+                margin-bottom:10px;
+                span{
+                    float:left;
+                    font-size:20px;
+                    color:#999;
+                    line-height:45px;
+                    &.product-icon{
+                        width:722px;
+                        padding-left:38px;
+                        background:url("/images/icons/index_03.png") no-repeat;
+                    }
+                    &.notice-icon{
+                        width:180px;
+                        margin-left:20px;
+                        padding-left:40px;
+                        background:url("/images/icons/index_05.png") no-repeat;
+                    }
+                    &.hot-product{
+                        width:722px;
+                        padding-left:38px;
+                        background:url("/images/icons/index_09.png") no-repeat;
+                    }
+                    &.report-icon{
+                        width:722px;
+                        padding-left:38px;
+                        background:url("/images/icons/index_11.png") no-repeat;
+                    }
+                }
+                .hot-more{
+                    float:right;
+                    font-size:14px;
+                    color:#ff9c1b;
+                    line-height:45px;
+                }
+            }
+            .product-list{
+                float:left;
+                width:760px;
+                height:340px;
+                margin-bottom:25px;
+                ul{
+                    float:left;
+                    li{
+                        float:left;
+                        width:100%;
+                        margin-bottom:20px;
+                        border:1px solid #e6e6e6;
+                        border-radius:10px;
+                        background-color:#fff;
+                        &.li-last{
+                            margin-bottom:0;
+                        }
+                        &:hover{
+                            -moz-box-shadow:-1px -1px 15px rgba(0,0,0,0.1),1px 1px 15px rgba(0,0,0,0.1);
+                            -webkit-box-shadow:-1px -1px 15px rgba(0,0,0,0.1),1px 1px 15px rgba(0,0,0,0.1);
+                            box-shadow:-1px -1px 15px rgba(0,0,0,0.1),1px 1px 15px rgba(0,0,0,0.1);
+                        }
+                        a{
+                            float:left;
+                            width:558px;
+                            height:98px;
+                            padding-left:200px;
+                            display:inline-block;
+                            position:relative;
+                            .icon-proimg{
+                                width:181px;
+                                height:110px;
+                                position: absolute;
+                                top:-11px;
+                                left:0;
+                            }
+                            .product-intro{
+                                float:left;
+                                width:458px;
+                                height:100px;
+                                span{
+                                    float: left;
+                                    font-size: 22px;
+                                    line-height: 50px;
+                                    margin-top: 20px;
+                                }
+                            }
+                            .product-income{
+                                float:left;
+                                width:100px;
+                                height:85px;
+                                padding-top:25px;
+                                p{
+                                    margin-bottom:0;
+                                    line-height:25px;
+                                    &.income-num-text{
+                                        font-size:20px;
+                                        text-align:center;
+                                        .income-num{
+                                            font-size:40px;
+                                        }
+                                    }
+                                    &.income-text-intro{
+                                        font-size:16px;
+                                        color:#b2b2b2;
+                                        text-align:center;
+                                    }
+                                }
+                            }
+                        }
+                        &.syl-text{
+                            .text-intro{
+                                color:#ffbe0e;
+                                border-bottom:1px dashed #ffbe0e;
+                            }
+                            .income-num-text{
+                                color:#ffbe0e;
+                            }
+                        }
+                        &.wyx-text{
+                            .text-intro{
+                                color: #ff9c1b;
+                                border-bottom: 1px dashed #ff9c1b;
+                            }
+                            .income-num-text{
+                                color: #ff9c1b;
+                            }
+                        }
+                        &.jyf-text{
+                            .text-intro{
+                                color:#ff5908;
+                                border-bottom:1px dashed #ff5908;
+                            }
+                            .income-num-text{
+                                color:#ff5908;
+                            }
+                        }
+                    }
+                }
+            }
+            .company-up{
+                float:left;
+                width:218px;
+                height:338px;
+                margin-left:20px;
+                margin-bottom:25px;
+                border:1px solid #e6e6e6;
+                border-radius:10px;
+                background-color:#fff;
+                overflow:hidden;
+            }
+            .invest-total {
+                float:left;
+                width:100%;
+                color: #666;
+                line-height: 100px;
+                background:#fff;
+                margin:0 0 30px 0;
+                span {
+                    float:left;
+                    font-size:20px;
+                    color:#808080;
+                    margin-left:30px;
+                    i {
+                        color: #808080;
+                        font-size: 18px;
+                        font-weight: 700;
+                        padding: 5px 7px;
+                        border: 1px solid #ff752a;
+                        margin: 0 5px;
+                        border-radius: 5px;
+                    }
+                }
+            }
             .product-box-list {
-                width: 76%;
+                width: 100%;
+                padding:0 10px;
                 .product-box-inner {
-                    width:105%;
+                    margin:0 -20px;
                     box-sizing: border-box;
                     .product-box {
                         box-sizing: border-box;
-                        width: 30%;
-                        margin-right: 1.7%;
+                        width: 318px;
+                        margin:10px;
                         border:1px solid #e5e5e5;
                         border-radius: 10px;
                         position: relative;
                         display: inline-block;
-                        margin-bottom:18px;
                         color: #999;
                         cursor: pointer;
+                        background:#fff;
                         &:hover {
                             -moz-box-shadow:-1px -1px 15px rgba(0,0,0,0.1),1px 1px 15px rgba(0,0,0,0.1);
                             -webkit-box-shadow:-1px -1px 15px rgba(0,0,0,0.1),1px 1px 15px rgba(0,0,0,0.1);
@@ -206,13 +447,38 @@
                                 background: url("/images/icons/hot-n.png") left top no-repeat;
                             }
                         }
+                        &.product-type{
+                            .img-syl{
+                                position: absolute;
+                                left: -4px;
+                                top: -5px;
+                                width:71px;
+                                height: 71px;
+                                background: url("/images/icons/img-syl.png") left top no-repeat;
+                            }
+                            .img-wyx{
+                                position: absolute;
+                                left: -4px;
+                                top: -5px;
+                                width:71px;
+                                height: 71px;
+                                background: url("/images/icons/img-wyx.png") left top no-repeat;
+                            }
+                            .img-jyf{
+                                position: absolute;
+                                left: -4px;
+                                top: -5px;
+                                width:71px;
+                                height: 71px;
+                                background: url("/images/icons/img-jyf.png") left top no-repeat;
+                            }
+                        }
                         .pr-title {
                             font-size: 18px;
                             text-overflow: ellipsis;
                             overflow: hidden;
                             white-space: nowrap;
-                            width: 125px;
-                            margin-left: 35px;
+                            margin: 0 40px;
                             color: #4c4c4c;
                         }
                         .pr-square {
@@ -313,20 +579,6 @@
                             }
                         }
                     }
-                }
-                .invest-total {
-                    color: #666;
-                    line-height: 0;
-                    padding-top: 20px;
-                    padding-bottom: 20px;
-                    span {
-                        i {
-                            color: #ff752a;
-                            font-size: 18px;
-                            font-weight: bold;
-                        }
-                    }
-
                 }
             }
             .home-ad {
