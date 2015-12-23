@@ -38,6 +38,8 @@ public class UserModel implements Cloneable, Serializable {
 
     private String city;
 
+    private boolean staff;
+
     private AccountModel account;
 
     public String getSalt() {
@@ -178,6 +180,14 @@ public class UserModel implements Cloneable, Serializable {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public boolean isStaff() {
+        return staff;
+    }
+
+    public void setStaff(boolean staff) {
+        this.staff = staff;
     }
 
     @Override
