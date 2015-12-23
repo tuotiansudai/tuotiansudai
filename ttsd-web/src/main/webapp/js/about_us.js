@@ -22,7 +22,6 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
                         $(option).attr('href',thisURL);
                     });
                 }
-
             });
         }
 
@@ -62,10 +61,10 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
         }
 
         if($('#WhetherApp').length) {
-            if($('#WhetherApp').find('.res-no-app').length) {
-                $('#WhetherApp').find('.res-no-app').remove();
-            }
             if(/app/gi.test(location.search)) {
+                if($('#WhetherApp').find('.res-no-app').length) {
+                    $('#WhetherApp').find('.res-no-app').remove();
+                }
                 $('.header-container,.nav-container,.footer-container').hide();
                 if($('.left-nav').length) {
                     $('.left-nav').hide();
