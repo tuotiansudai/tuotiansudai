@@ -57,7 +57,7 @@
         <div class="invest-list">
 
         </div>
-        <div class="pagination" data-url="/investor/invest-list-data" data-page-size="10">
+        <div class="pagination" data-url="/coupon/use-record" data-page-size="10">
         </div>
     </div>
 </div>

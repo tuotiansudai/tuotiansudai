@@ -4,24 +4,22 @@
         <th>项目名称</th>
         <th class="tr">所用券</th>
         <th>券额(元)</th>
-        <th>交易时间</th>
-        <th>交易状态</th>
-        <th>下次回款(元)</th>
+        <th>使用时间</th>
+        <th>预计收益(元)</th>
     </tr>
     </thead>
     <tbody>
+    {{#records}}
     <tr>
-        <td><a href="#" class="project-name">水电费</td>
-        <td class="tr">12</td>
-        <td class="tr">12</td>
-        <td>
-            2015-11-20 16:30:02
-        </td>
-        <td>水电费</td>
-        <td>水电费</td>
+        <td><a href="/loan/{{loanId}}" class="project-name">{{loanName}}</td>
+        <td class="tr">{{couponName}}</td>
+        <td class="tr">{{couponAmountStr}}</td>
+        <td>{{usedTime}}</td>
+        <td>{{expectInterestStr}}</td>
     </tr>
-
+    {{/records}}
+    {{^records}}
     <td colspan="6" class="no-data">暂时没有投资记录</td>
-
+    {{/records}}
     </tbody>
 </table>
