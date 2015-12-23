@@ -22,6 +22,19 @@ require(['jquery','layerWrapper', 'moment', 'pagination', 'mustache', 'text!/tpl
             templateData(dataStatus);
         });
 
+        $('.invest-list').on('mouseenter','.project-name',function() {
+            layer.closeAll('tips');
+            if($(this).text().length>15){
+                layer.tips($(this).text(), $(this), {
+                    tips: [1, '#efbf5c'],
+                    time: 2000,
+                    tipsMore: true,
+                    area: 'auto',
+                    maxWidth: '500'
+                });
+            }
+        });
+
         function templateData(data){
             $.ajax({
                 url: '/path/to/file',
