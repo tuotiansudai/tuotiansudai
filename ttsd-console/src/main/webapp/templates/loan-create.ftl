@@ -46,7 +46,23 @@
             <label class="col-sm-2 control-label">借款项目名称: </label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control jq-user" placeholder="" datatype="*" errormsg="借款项目名称不能为空">
+                <input type="text" class="form-control jq-user" placeholder="" datatype="*" errormsg="借款项目名称不能为空" maxlength="6">
+            </div>
+            <div class="col-sm-6">
+                <div class="form-control-static"> 限制6个字以内,不可写标的总额、期数、天数以及标的符号。</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">产品类型: </label>
+
+            <div class="col-sm-4">
+                <select class="selectpicker b-width product-type-name">
+                    <option value="请选择产品类型" data-percent="0%" data-time="">请选择产品类型</option>
+                    <option value="速盈利" data-percent="10%" data-time="1">速盈利</option>
+                    <option value="稳盈绣" data-percent="12%" data-time="3">稳盈绣</option>
+                    <option value="久盈富" data-percent="14%" data-time="6">久盈富</option>
+                </select>
+                <input type="hidden" class="product-type" value=""/>
             </div>
         </div>
         <div class="form-group">
@@ -85,7 +101,7 @@
             <label class="col-sm-2 control-label">标的类型: </label>
 
             <div class="col-sm-4">
-                <select class="selectpicker jq-b-type">
+                <select class="selectpicker jq-b-type b-width">
                     <#list loanTypes as loanType>
                         <option value="${loanType.name()}" data-repayTimeUnit="${loanType.getLoanPeriodUnit()}"
                                 data-repayTimePeriod="1">
@@ -100,12 +116,10 @@
             <label class="col-sm-2 control-label">借款期限: </label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control jq-timer" placeholder="" datatype="num" errormsg="借款期限需要填写数字" disabled="disabled">
-
+                <input type="text" class="form-control jq-timer" placeholder="" datatype="num" errormsg="借款期限需要填写数字" id="loanPeriod" disabled="disabled">
             </div>
             <div class="col-sm-3">
                 <div class="form-control-static">(单位：
-                    <label class="jq-day">1</label>
                     <label class="jq-piex">月</label>
                     )
                 </div>
@@ -139,7 +153,7 @@
             <label class="col-sm-2 control-label">投资手续费比例（%）: </label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control jq-fee jq-money" placeholder="" datatype="money_fl"
+                <input type="text" class="form-control jq-fee jq-money" placeholder="" value="10%" datatype="money_fl"
                        errormsg="投资手续费比例需要正确填写">
             </div>
             <div class="col-sm-6">
@@ -217,8 +231,8 @@
             <label class="col-sm-2 control-label">基本利率（%）: </label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control jq-base-percent jq-money" placeholder="" datatype="money_fl"
-                       errormsg="基本利率需要正确填写" disabled="disabled">
+                <input type="text" class="form-control jq-base-percent jq-money" placeholder="" id="baseRate" datatype="money_fl" disabled="disabled"
+                       errormsg="基本利率需要正确填写">
             </div>
         </div>
         <div class="form-group input-append">

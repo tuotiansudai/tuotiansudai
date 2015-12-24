@@ -7,6 +7,7 @@ require(['jquery', 'csrf'], function ($) {
             $productFrame = $('#productFrame'),
             $dlAmount = $('.dl-amount', $productFrame),
             $imgNum = $('li', $scrollNum),
+            $userCount=$('#userCount'),
             $bannerImg = $imgScroll.find('a'),
             screenWid, picWid, leftWid, adTimer = null, n = 0;
 
@@ -20,6 +21,13 @@ require(['jquery', 'csrf'], function ($) {
         picWid = $bannerImg.first().find('img').width();
 
         leftWid = (picWid - screenWid) / 2;
+
+        //Traversing the data and formatting output
+        var userCountArray=_.filter($userCount.attr('data-count')),html='';
+        for (var i=0,len=userCountArray.length;i<len; i++) {
+            html+='<i>'+userCountArray[i]+'</i>';
+        };
+        $userCount.html(html);
 
         $registerBox.css({'right': (screenWid - 1000) / 2 + 'px'});
         $scrollNum.css({'left': (screenWid - $scrollNum.width()) / 2});

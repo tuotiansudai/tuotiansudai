@@ -22,8 +22,8 @@
             display: none;
         }
     }
-
 </style>
+
 <a href="/" class="back-home">返回首页</a>
 <div class="assurance-container" id="assuranceEffect">
     <div class="section box-benift">
