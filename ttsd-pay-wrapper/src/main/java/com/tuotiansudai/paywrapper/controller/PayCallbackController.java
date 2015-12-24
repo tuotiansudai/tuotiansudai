@@ -59,7 +59,7 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
-    @RequestMapping(value = "/transfer_notify", method = RequestMethod.GET)
+    @RequestMapping(value = "/system_recharge_notify", method = RequestMethod.GET)
     public ModelAndView transferNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.systemRechargeService.systemRechargeCallback(paramsMap, request.getQueryString());

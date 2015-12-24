@@ -18,7 +18,7 @@ public class SystemRechargeModel implements Serializable {
 
     private Date successTime;
 
-    private SystemRechargeStatus status;
+    private RechargeStatus status;
 
     private String remark;
 
@@ -26,7 +26,7 @@ public class SystemRechargeModel implements Serializable {
         this.loginName = dto.getLoginName();
         this.time = new Date();
         this.amount = AmountConverter.convertStringToCent(dto.getAmount());
-        this.status = SystemRechargeStatus.WAIT_PAY;
+        this.status = RechargeStatus.WAIT_PAY;
     }
     public SystemRechargeModel(){
 
@@ -72,11 +72,11 @@ public class SystemRechargeModel implements Serializable {
         this.successTime = successTime;
     }
 
-    public SystemRechargeStatus getStatus() {
+    public RechargeStatus getStatus() {
         return status;
     }
 
-    public void setStatus(SystemRechargeStatus status) {
+    public void setStatus(RechargeStatus status) {
         this.status = status;
     }
 

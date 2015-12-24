@@ -104,7 +104,7 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
                 return;
             }
 
-            if (systemRechargeModel.getStatus() != SystemRechargeStatus.WAIT_PAY) {
+            if (systemRechargeModel.getStatus() != RechargeStatus.WAIT_PAY) {
                 logger.error(MessageFormat.format("System has dealt with the system recharge (orderId = {0})", callbackRequestModel.getOrderId()));
                 return;
             }
@@ -112,18 +112,18 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
             long amount = systemRechargeModel.getAmount();
             if (callbackRequestModel.isSuccess()) {
                 systemRechargeModel.setSuccessTime(new Date());
-                systemRechargeModel.setStatus(SystemRechargeStatus.SUCCESS);
+                systemRechargeModel.setStatus(RechargeStatus.SUCCESS);
                 systemRechargeMapper.updateSystemRecharge(systemRechargeModel);
                 try {
-                    amountTransfer.transferOutBalance(loginName, orderId, amount, UserBillBusinessType.ADMIN_INTERVENTION, null, null);
-                    systemBillService.transferIn(orderId, amount, SystemBillBusinessType.ADMIN_INTERVENTION,
+                    amountTransfer.transferOutBalance(loginName, orderId, amount, UserBillBusinessType.SYSTEM_RECHARGE, null, null);
+                    systemBillService.transferIn(orderId, amount, SystemBillBusinessType.SYSTEM_RECHARGE,
                             MessageFormat.format("{0}充值到平台账户{1}",loginName,amount));
                 } catch (AmountTransferException e) {
                     logger.error(MessageFormat.format("system recharge transfer out balance failed (orderId = {0})", String.valueOf(callbackRequestModel.getOrderId())));
                 }
 
             } else {
-                systemRechargeModel.setStatus(SystemRechargeStatus.FAIL);
+                systemRechargeModel.setStatus(RechargeStatus.FAIL);
                 systemRechargeMapper.updateSystemRecharge(systemRechargeModel);
             }
         } catch (NumberFormatException e) {

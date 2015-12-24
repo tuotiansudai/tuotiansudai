@@ -54,12 +54,12 @@ public class SystemRechargeMapperTest {
 
         systemRechargeMapper.create(systemRechargeModel);
 
-        systemRechargeModel.setStatus(SystemRechargeStatus.SUCCESS);
+        systemRechargeModel.setStatus(RechargeStatus.SUCCESS);
 
         systemRechargeMapper.updateSystemRecharge(systemRechargeModel);
 
         SystemRechargeModel systemRechargeModel1 = systemRechargeMapper.findById(systemRechargeModel.getId());
-        assertEquals(SystemRechargeStatus.SUCCESS, systemRechargeModel1.getStatus());
+        assertEquals(RechargeStatus.SUCCESS, systemRechargeModel1.getStatus());
     }
 
     @Test
@@ -94,7 +94,7 @@ public class SystemRechargeMapperTest {
         systemRechargeModel.setTime(new Date());
         systemRechargeModel.setAmount(10000);
         systemRechargeModel.setSuccessTime(new Date());
-        systemRechargeModel.setStatus(SystemRechargeStatus.SUCCESS);
+        systemRechargeModel.setStatus(RechargeStatus.SUCCESS);
         systemRechargeModel.setRemark("remark");
         return systemRechargeModel;
     }

@@ -67,7 +67,7 @@ public class SystemRechargeServiceTest {
         assertEquals(1,systemRechargeModels.size());
         SystemRechargeModel systemRechargeModel1 = systemRechargeModels.get(0);
         assertEquals(AmountConverter.convertStringToCent(dto.getAmount()),systemRechargeModel1.getAmount());
-        assertEquals(SystemRechargeStatus.WAIT_PAY,systemRechargeModel1.getStatus());
+        assertEquals(RechargeStatus.WAIT_PAY,systemRechargeModel1.getStatus());
 
 
     }
@@ -90,7 +90,7 @@ public class SystemRechargeServiceTest {
         systemRechargeModel.setTime(new Date());
         systemRechargeModel.setAmount(10000);
         systemRechargeModel.setSuccessTime(new Date());
-        systemRechargeModel.setStatus(SystemRechargeStatus.SUCCESS);
+        systemRechargeModel.setStatus(RechargeStatus.SUCCESS);
         systemRechargeModel.setRemark("remark");
         return systemRechargeModel;
     }

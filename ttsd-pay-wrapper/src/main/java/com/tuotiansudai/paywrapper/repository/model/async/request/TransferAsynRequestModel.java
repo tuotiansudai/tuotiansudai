@@ -35,7 +35,7 @@ public class TransferAsynRequestModel extends BaseAsyncRequestModel {
         this.particUserId = payUserId;
         this.amount = amount;
         this.retUrl = MessageFormat.format("{0}/finance-manage/system-bill", CALLBACK_HOST_PROPS.get("pay.callback.console.host"));
-        this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "transfer_notify");
+        this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "system_recharge_notify");
     }
 
 
