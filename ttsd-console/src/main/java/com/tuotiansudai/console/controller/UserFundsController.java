@@ -34,8 +34,8 @@ public class UserFundsController {
     public ModelAndView userFunds(@RequestParam(value = "userBillBusinessType", required = false) UserBillBusinessType userBillBusinessType,
                                   @RequestParam(value = "userBillOperationType", required = false) UserBillOperationType userBillOperationType,
                                   @RequestParam(value = "loginName", required = false) String loginName,
-                                  @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-                                  @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                                  @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
+                                  @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
                                   @RequestParam(value = "currentPageNo", defaultValue = "1", required = false) int currentPageNo,
                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
                                   @RequestParam(value = "export", required = false) String export,
@@ -54,7 +54,7 @@ public class UserFundsController {
             for (UserBillModel userBillModel : userBillModels) {
                 List<String> dataModel = Lists.newArrayList();
                 DateTime dateTime = new DateTime(userBillModel.getCreatedTime());
-                dataModel.add(dateTime != null ? dateTime.toString("yyyy-MM-dd") : "");
+                dataModel.add(dateTime != null ? dateTime.toString("yyyy-MM-dd HH:mm:ss") : "");
                 dataModel.add(String.valueOf(userBillModel.getId()));
                 dataModel.add(userBillModel.getLoginName());
                 dataModel.add(userBillModel.getOperationType().getDescription());
