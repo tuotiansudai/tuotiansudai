@@ -40,6 +40,8 @@ public class UserModel implements Cloneable, Serializable {
 
     private String autoInvestStatus;
 
+    private boolean staff;
+
     private AccountModel account;
 
     public String getSalt() {
@@ -190,6 +192,13 @@ public class UserModel implements Cloneable, Serializable {
         this.autoInvestStatus = autoInvestStatus;
     }
 
+    public boolean isStaff() {
+        return staff;
+    }
+
+    public void setStaff(boolean staff) {
+        this.staff = staff;
+    }
 
     @Override
     public UserModel clone() throws CloneNotSupportedException {

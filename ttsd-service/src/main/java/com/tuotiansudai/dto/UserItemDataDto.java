@@ -21,6 +21,8 @@ public class UserItemDataDto implements Serializable {
     private UserStatus status;
     private Source source;
     private String autoInvestStatus;
+    private boolean staff;
+    private boolean bankCard;
 
     public String getLoginName() {
         return loginName;
@@ -108,6 +110,22 @@ public class UserItemDataDto implements Serializable {
 
     public void setAutoInvestStatus(String autoInvestStatus) {
         this.autoInvestStatus = autoInvestStatus;
+    }
+
+    public boolean isStaff() {
+        return staff;
+    }
+
+    public void setStaff(boolean staff) {
+        this.staff = staff;
+    }
+
+    public boolean isBankCard() {
+        return bankCard;
+    }
+
+    public void setBankCard(boolean bankCard) {
+        this.bankCard = bankCard;
     }
 
     public UserItemDataDto(UserModel userModel) {

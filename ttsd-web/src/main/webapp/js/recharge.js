@@ -39,7 +39,6 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric', 'commonFun'], function
                     title: '登录到联动优势支付平台充值',
                     area: ['560px', '270px'],
                     shadeClose: true,
-                    skin:'layer-style-custom',
                     content: $('#popRecharge')
                 });
             });
@@ -68,7 +67,6 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric', 'commonFun'], function
                     title: '登录到联动优势支付平台充值',
                     area: ['500px', '290px'],
                     shadeClose: true,
-                    skin:'layer-style-custom',
                     content: $('#popRecharge')
                 });
             });
@@ -79,7 +77,6 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric', 'commonFun'], function
                     title: '开通快捷支付功能',
                     area: ['500px', '180px'],
                     shadeClose: true,
-                    skin:'layer-style-custom',
                     content: $('#openFastRecharge')
                 });
             });
