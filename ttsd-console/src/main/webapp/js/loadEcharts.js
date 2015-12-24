@@ -94,16 +94,17 @@ define(['jquery','underscore','echarts'], function ($,_) {
                     }
                 }
             },
-            Bar: function (data, name) {
+            Bar: function (data, name,xAxisName) {
                 var bar_datas = MyChartsObject.ChartDataFormate.FormateNOGroupData(data, 'bar');
                 var option = {
                     tooltip: {
                         trigger: 'item',
-                        formatter: "投资次数{b}:{c}人"
+                        formatter: "{c}"
+                        //formatter: xAxisName+"为{b}:{c}"
                     },
                     xAxis: [{
                         type: 'category',
-                        name:'投资次数',
+                        name:xAxisName,
                         data: bar_datas.category
                     }],
                     yAxis: [{
