@@ -39,6 +39,7 @@
         <result column="next_repay_amount" property="nextRepayAmount"></result>
         <result column="investor_user_name" property="investorUserName"></result>
         <result column="investor_mobile" property="investorMobile"></result>
+        <result column="referrer_roles" property="referrerRoles"></result>
         <result column="referrer_user_name" property="referrerUserName"></result>
         <result column="referrer_mobile" property="referrerMobile"></result>
     </resultMap>
@@ -153,6 +154,7 @@
         ra.user_name as referrer_user_name,
         ru.mobile as referrer_mobile,
         (select group_concat(role order by role separator ", ") from user_role where login_name = invest.login_name) as roles,
+        (select group_concat(role order by role separator ", ") from user_role where login_name = u.referrer) as referrerRoles,
         (select min(repay_date) from invest_repay where invest_repay.invest_id = invest.id and invest_repay.status = 'REPAYING') as next_repay_date,
         (select invest_repay.expected_interest + invest_repay.corpus - invest_repay.expected_fee
           from invest_repay where invest_repay.invest_id = invest.id and invest_repay.status = 'REPAYING'

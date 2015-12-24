@@ -38,6 +38,8 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     private String referrerMobile;
 
+    private String referrerRoles;
+
     private String source;
 
     private String channel;
@@ -68,6 +70,7 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.referrerLoginName = view.getReferrerLoginName();
         this.referrerUserName = view.getReferrerUserName();
         this.referrerMobile = view.getReferrerMobile();
+        this.referrerRoles = view.getReferrerRoles();
         this.source = view.getSource().name();
         this.channel = view.getChannel();
         this.roles = view.getRoles();
@@ -83,6 +86,10 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     public boolean isStaff() {
         return StringUtils.containsIgnoreCase(this.roles, Role.STAFF.name());
+    }
+
+    public boolean isReferrerStaff() {
+        return StringUtils.containsIgnoreCase(this.referrerRoles, Role.STAFF.name());
     }
 
     public long getInvestId() {
@@ -195,5 +202,13 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     public void setReferrerMobile(String referrerMobile) {
         this.referrerMobile = referrerMobile;
+    }
+
+    public String getReferrerRoles() {
+        return referrerRoles;
+    }
+
+    public void setReferrerRoles(String referrerRoles) {
+        this.referrerRoles = referrerRoles;
     }
 }

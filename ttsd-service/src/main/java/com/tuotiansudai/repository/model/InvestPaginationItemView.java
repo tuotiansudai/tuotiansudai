@@ -24,6 +24,8 @@ public class InvestPaginationItemView extends InvestModel {
 
     private String referrerMobile;
 
+    private String referrerRoles;
+
     private Date nextRepayDate;
 
     private long nextRepayAmount;
@@ -122,5 +124,13 @@ public class InvestPaginationItemView extends InvestModel {
 
     public void setReferrerMobile(String referrerMobile) {
         this.referrerMobile = referrerMobile;
+    }
+
+    public String getReferrerRoles() {
+        return referrerRoles;
+    }
+
+    public void setReferrerRoles(String referrerRoles) {
+        this.referrerRoles = referrerRoles;
     }
 }
