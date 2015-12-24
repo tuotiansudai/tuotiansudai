@@ -122,6 +122,16 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         $('#baseRate').val(_options.eq(i).attr('data-percent'));
                     }
                     _hidden.val(_options.eq(i).attr('value'));
+                    if (_hidden.hasClass('jq-product-type')) {
+                        if (_options.eq(i).attr('value')) {
+                            $('.jq-timer').val(_options.eq(i).data('period'));
+                            $('.jq-base-percent').val(_options.eq(i).data('baserate'));
+                        } else {
+                            $('.jq-timer').val('');
+                            $('.jq-base-percent').val('');
+                        }
+                    }
+
                 }
             })
         });
@@ -295,6 +305,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     "maxInvestAmount": $('.jq-max-pay').val(),
                     "investIncreasingAmount": $('.jq-add-pay').val(),
                     "activityType": $('.jq-impact-type').val(),
+                    "productLineType": $('.jq-product-type').val(),
                     "activityRate": $('.jq-percent').val(),
                     "contractId": $('.jq-pact').val(),
                     "basicRate": $('.jq-base-percent').val(),

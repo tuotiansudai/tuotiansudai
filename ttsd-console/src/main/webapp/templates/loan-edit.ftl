@@ -121,7 +121,7 @@
 
             <div class="col-sm-4">
                 <input type="text" class="form-control jq-timer" placeholder="" datatype="num" errormsg="借款期限需要填写数字"
-                       value="${loanInfo.periods}" <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if>>
+                       value="${loanInfo.periods}" disabled="disabled">
 
             </div>
             <div class="col-sm-3">
@@ -216,6 +216,21 @@
                 <input type="hidden" class="jq-impact-type" value="${loanInfo.activityType}"/>
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">产品线类型: </label>
+            <div class="col-sm-4">
+                <select class="selectpicker" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
+                    <#list productLineTypes as productLineType>
+                        <option value="${productLineType.name()}" <#if productLineType.name() == loanInfo.productLineType>selected</#if> data-period="${productLineType.getProductLineTypePeriod()}" data-baserate="${productLineType.getProductLineTypeBaseRate()?string('0.00')}">
+                        ${productLineType.getProductLineTypeName()}
+                        </option>
+                    </#list>
+                </select>
+                <input type="hidden" class="jq-product-type" value="${loanInfo.productLineType}"/>
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="col-sm-2 control-label">活动利率（%）: </label>
 
@@ -234,7 +249,7 @@
             <div class="col-sm-4">
                 <input type="text" class="form-control jq-base-percent jq-money" placeholder="" datatype="money_fl"
                        errormsg="基本利率需要正确填写" value="${(loanInfo.baseRate*100)?string('0.00')}"
-                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
+                       disabled="disabled">
             </div>
         </div>
         <div class="form-group input-append">

@@ -24,6 +24,7 @@
         <result column="invest_increasing_amount" property="investIncreasingAmount"></result>
         <result column="max_invest_amount" property="maxInvestAmount"></result>
         <result column="activity_type" property="activityType"></result>
+        <result column="product_line_type" property="productLineType"></result>
         <result column="activity_rate" property="activityRate"></result>
         <result column="contract_id" property="contractId"></result>
         <result column="fundraising_start_time" property="fundraisingStartTime"></result>
@@ -44,8 +45,8 @@
     </resultMap>
 
     <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanModel">
-        insert into loan(id, name, agent_login_name, loaner_login_name, loaner_user_name, loaner_identity_number, type, periods, description_text, description_html, base_rate, loan_amount, invest_fee_rate, min_invest_amount, invest_increasing_amount, max_invest_amount, activity_type, activity_rate, contract_id, fundraising_start_time, fundraising_end_time, show_on_home, created_time, verify_time, recheck_time, status, update_time)
-        values(#{id}, #{name}, #{agentLoginName}, #{loanerLoginName}, #{loanerUserName}, #{loanerIdentityNumber}, #{type}, #{periods}, #{descriptionText}, #{descriptionHtml}, #{baseRate}, #{loanAmount}, #{investFeeRate}, #{minInvestAmount}, #{investIncreasingAmount}, #{maxInvestAmount}, #{activityType}, #{activityRate}, #{contractId}, #{fundraisingStartTime}, #{fundraisingEndTime}, #{showOnHome}, #{createdTime}, #{verifyTime}, #{recheckTime}, #{status},#{updateTime})
+        insert into loan(id, name, agent_login_name, loaner_login_name, loaner_user_name, loaner_identity_number, type, periods, description_text, description_html, base_rate, loan_amount, invest_fee_rate, min_invest_amount, invest_increasing_amount, max_invest_amount, activity_type, product_line_type, activity_rate, contract_id, fundraising_start_time, fundraising_end_time, show_on_home, created_time, verify_time, recheck_time, status, update_time)
+        values(#{id}, #{name}, #{agentLoginName}, #{loanerLoginName}, #{loanerUserName}, #{loanerIdentityNumber}, #{type}, #{periods}, #{descriptionText}, #{descriptionHtml}, #{baseRate}, #{loanAmount}, #{investFeeRate}, #{minInvestAmount}, #{investIncreasingAmount}, #{maxInvestAmount}, #{activityType}, #{productLineType}, #{activityRate}, #{contractId}, #{fundraisingStartTime}, #{fundraisingEndTime}, #{showOnHome}, #{createdTime}, #{verifyTime}, #{recheckTime}, #{status},#{updateTime})
     </insert>
 
     <select id="findById" parameterType="long" resultMap="loanResultMap">
@@ -60,8 +61,8 @@
         select * from (
         select * from loan t
         where t.type in ('INVEST_INTEREST_MONTHLY_REPAY','LOAN_INTEREST_MONTHLY_REPAY')
-        <if test="activityType !=null">
-            and t.activity_type = #{activityType}
+        <if test="productLineType !=null">
+            and t.product_line_type = #{productLineType}
         </if>
         <if test="status != null">
             and t.status = #{status}
@@ -75,23 +76,23 @@
         <if test="periodsEnd > 0">
             <![CDATA[ and t.periods <= #{periodsEnd} ]]>
         </if>
-        <if test="rateStart > 0 and rateStart != 0.16">
+        <if test="rateStart > 0 and rateStart != 0.14">
             and (t.base_rate + t.activity_rate) >= #{rateStart}
         </if>
-        <if test="rateStart > 0 and rateStart == 0.16">
+        <if test="rateStart > 0 and rateStart == 0.14">
             and (t.base_rate + t.activity_rate) > #{rateStart}
         </if>
-        <if test="rateEnd > 0 and rateEnd != 0.16">
+        <if test="rateEnd > 0 and rateEnd != 0.14">
             <![CDATA[ and (t.base_rate + t.activity_rate) < #{rateEnd} ]]>
         </if>
-        <if test="rateEnd > 0 and rateEnd == 0.16">
+        <if test="rateEnd > 0 and rateEnd == 0.14">
             <![CDATA[ and (t.base_rate + t.activity_rate) <= #{rateEnd} ]]>
         </if>
         union all
         select * from loan l
         where l.type in ('INVEST_INTEREST_LUMP_SUM_REPAY','LOAN_INTEREST_LUMP_SUM_REPAY')
-        <if test="activityType !=null">
-            and l.activity_type = #{activityType}
+        <if test="productLineType !=null">
+            and l.product_line_type = #{productLineType}
         </if>
         <if test="status != null">
             and l.status = #{status}
@@ -105,16 +106,16 @@
         <if test="periodsEnd > 0">
             <![CDATA[ and CEILING(l.periods/30) <= #{periodsEnd} ]]>
         </if>
-        <if test="rateStart > 0 and rateStart != 0.16">
+        <if test="rateStart > 0 and rateStart != 0.14">
             and (l.base_rate + l.activity_rate) >= #{rateStart}
         </if>
-        <if test="rateStart > 0 and rateStart == 0.16">
+        <if test="rateStart > 0 and rateStart == 0.14">
             and (l.base_rate + l.activity_rate) > #{rateStart}
         </if>
-        <if test="rateEnd > 0 and rateEnd != 0.16">
+        <if test="rateEnd > 0 and rateEnd != 0.14">
             <![CDATA[ and (l.base_rate + l.activity_rate) < #{rateEnd} ]]>
         </if>
-        <if test="rateEnd > 0 and rateEnd == 0.16">
+        <if test="rateEnd > 0 and rateEnd == 0.14">
             <![CDATA[ and (l.base_rate + l.activity_rate) <= #{rateEnd} ]]>
         </if>
         ) temp
@@ -126,8 +127,8 @@
         select count(*) from (
         select * from loan t
         where t.type in ('INVEST_INTEREST_MONTHLY_REPAY','LOAN_INTEREST_MONTHLY_REPAY')
-        <if test="activityType !=null">
-            and t.activity_type = #{activityType}
+        <if test="productLineType !=null">
+            and t.product_line_type = #{productLineType}
         </if>
         <if test="status != null">
             and t.status = #{status}
@@ -141,23 +142,23 @@
         <if test="periodsEnd > 0">
             <![CDATA[ and t.periods <= #{periodsEnd} ]]>
         </if>
-        <if test="rateStart > 0 and rateStart != 0.16">
+        <if test="rateStart > 0 and rateStart != 0.14">
             and (t.base_rate + t.activity_rate) >= #{rateStart}
         </if>
-        <if test="rateStart > 0 and rateStart == 0.16">
+        <if test="rateStart > 0 and rateStart == 0.14">
             and (t.base_rate + t.activity_rate) > #{rateStart}
         </if>
-        <if test="rateEnd > 0 and rateEnd != 0.16">
+        <if test="rateEnd > 0 and rateEnd != 0.14">
             <![CDATA[ and (t.base_rate + t.activity_rate) < #{rateEnd} ]]>
         </if>
-        <if test="rateEnd > 0 and rateEnd == 0.16">
+        <if test="rateEnd > 0 and rateEnd == 0.14">
             <![CDATA[ and (t.base_rate + t.activity_rate) <= #{rateEnd} ]]>
         </if>
         union all
         select * from loan l
         where l.type in ('INVEST_INTEREST_LUMP_SUM_REPAY','LOAN_INTEREST_LUMP_SUM_REPAY')
-        <if test="activityType !=null">
-            and l.activity_type = #{activityType}
+        <if test="productLineType !=null">
+            and l.product_line_type = #{productLineType}
         </if>
         <if test="status != null">
             and l.status = #{status}
@@ -171,16 +172,16 @@
         <if test="periodsEnd > 0">
             <![CDATA[ and CEILING(l.periods/30) <= #{periodsEnd} ]]>
         </if>
-        <if test="rateStart > 0 and rateStart != 0.16">
+        <if test="rateStart > 0 and rateStart != 0.14">
             and (l.base_rate + l.activity_rate) >= #{rateStart}
         </if>
-        <if test="rateStart > 0 and rateStart == 0.16">
+        <if test="rateStart > 0 and rateStart == 0.14">
             and (l.base_rate + l.activity_rate) > #{rateStart}
         </if>
-        <if test="rateEnd > 0 and rateEnd != 0.16">
+        <if test="rateEnd > 0 and rateEnd != 0.14">
             <![CDATA[ and (l.base_rate + l.activity_rate) < #{rateEnd} ]]>
         </if>
-        <if test="rateEnd > 0 and rateEnd == 0.16">
+        <if test="rateEnd > 0 and rateEnd == 0.14">
             <![CDATA[ and (l.base_rate + l.activity_rate) <= #{rateEnd} ]]>
         </if>
         ) temp
@@ -294,6 +295,9 @@
             </if>
             <if test="activityType !=null">
                 activity_type = #{activityType},
+            </if>
+            <if test="productLineType != null">
+                product_line_type = #{productLineType},
             </if>
             <if test="activityRate !=null and activityRate!=''">
                 activity_rate = #{activityRate},

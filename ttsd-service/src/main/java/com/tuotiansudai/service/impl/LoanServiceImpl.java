@@ -637,10 +637,10 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public List<LoanListWebDto> findLoanListWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd, int currentPageNo) {
+    public List<LoanListWebDto> findLoanListWeb(ProductLineType productLineType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd, int currentPageNo) {
 
         currentPageNo = (currentPageNo - 1) * 10;
-        List<LoanModel> loanModels = loanMapper.findLoanListWeb(activityType, status, periodsStart, periodsEnd, rateStart,
+        List<LoanModel> loanModels = loanMapper.findLoanListWeb(productLineType, status, periodsStart, periodsEnd, rateStart,
                 rateEnd, currentPageNo);
         List<LoanListWebDto> loanListWebDtos = Lists.newArrayList();
         String added;
@@ -681,8 +681,8 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public int findLoanListCountWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd) {
-        return loanMapper.findLoanListCountWeb(activityType, status, periodsStart, periodsEnd, rateStart, rateEnd);
+    public int findLoanListCountWeb(ProductLineType productLineType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd) {
+        return loanMapper.findLoanListCountWeb(productLineType, status, periodsStart, periodsEnd, rateStart, rateEnd);
     }
 
     private void createDeadLineFundraisingJob(LoanModel loanModel) {

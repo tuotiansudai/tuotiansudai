@@ -1,0 +1,1 @@
+ALTER TABLE `loan` ADD `product_line_type` VARCHAR(10) AFTER `activity_type`;
