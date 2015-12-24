@@ -15,7 +15,7 @@
                     </span>
                 </li>
                 <li><span class="info-title"> 身份认证</span>
-                    <em class="info">${identityNumber?replace("^(\\d{6}).*(\\d{4})$","$1****$2","r")}</em>
+                    <em class="info">${identityNumber?replace("^(\\d{6}).*(\\d{3}(\\d|x))$","$1****$2","r")}</em>
                     <span class="binding-set">
                        <i class="fa fa-check-circle ok"></i> 已认证
                     </span>
