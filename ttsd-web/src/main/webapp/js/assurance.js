@@ -24,7 +24,7 @@ require(['jquery','fullPage'], function ($) {
             if(boolHead) {
                 if(index == 1){
                     $boxProfit.find('img.fl').animate({
-                        'marginLeft': '50px'
+                        'marginLeft': '90px'
                     }, 600);
                 }
                 if(index == 2){
@@ -65,7 +65,7 @@ require(['jquery','fullPage'], function ($) {
                 }
                 if(index == 2){
                     $boxWealth.find('img.page-img').animate({
-                        left: '-360px'
+                        left: '1260px'
                     }, 600);
                 }
                 if(index == 3){

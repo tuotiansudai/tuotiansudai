@@ -75,7 +75,12 @@ public class InvestController {
                 dataModel.add(String.valueOf(investPaginationItemDataDtos.get(i).getLoanPeriods()));
                 dataModel.add(investPaginationItemDataDtos.get(i).getInvestorLoginName());
                 dataModel.add(investPaginationItemDataDtos.get(i).isStaff() ? "是" : "否");
+                dataModel.add(investPaginationItemDataDtos.get(i).getInvestorUserName());
+                dataModel.add(investPaginationItemDataDtos.get(i).getInvestorMobile());
                 dataModel.add(investPaginationItemDataDtos.get(i).getReferrerLoginName());
+                dataModel.add(investPaginationItemDataDtos.get(i).isReferrerStaff() ? "是" : "否");
+                dataModel.add(investPaginationItemDataDtos.get(i).getReferrerUserName());
+                dataModel.add(investPaginationItemDataDtos.get(i).getReferrerMobile());
                 dataModel.add(investPaginationItemDataDtos.get(i).getChannel());
                 dataModel.add(investPaginationItemDataDtos.get(i).getSource());
                 dataModel.add(new DateTime(investPaginationItemDataDtos.get(i).getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));

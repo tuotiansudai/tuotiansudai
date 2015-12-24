@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoginDto;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.LoginLogService;
+import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,20 +30,25 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
     @Autowired
     private LoginLogService loginLogService;
 
+    @Autowired
+    private UserRoleService userRoleService;
+
     @Value("${web.login.max.failed.times}")
     private int times;
 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        loginLogService.generateLoginLog(request.getParameter("username"), Source.WEB, RequestIPParser.parse(request), null, true);
+        String loginName = request.getParameter("username");
+        loginLogService.generateLoginLog(loginName, Source.WEB, RequestIPParser.parse(request), null, true);
 
-        String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", request.getParameter("username"));
+        String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", loginName);
         boolean isAjaxRequest = this.isAjaxRequest(request);
         if (isAjaxRequest) {
             BaseDto<LoginDto> baseDto = new BaseDto<>();
             LoginDto loginDto = new LoginDto();
             loginDto.setStatus(true);
+            loginDto.setRoles(userRoleService.findRoleNameByLoginName(loginName));
             baseDto.setData(loginDto);
             redisWrapperClient.del(redisKey);
             String jsonBody = objectMapper.writeValueAsString(baseDto);
