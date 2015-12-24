@@ -22,7 +22,7 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     private BusinessIntelligenceMapper businessIntelligenceMapper;
 
     @Override
-    public List<KeyValueModel> queryUserRegisterTrend(Granularity granularity, Date startTime, Date endTime, String province,UserStage userStage,RoleStage roleStage) {
+    public List<KeyValueModel> queryUserRegisterTrend(Granularity granularity, Date startTime, Date endTime, String province, UserStage userStage, RoleStage roleStage) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
         return businessIntelligenceMapper.queryUserRegisterTrend(queryStartTime, queryEndTime, granularity, province, userStage, roleStage);
@@ -52,7 +52,7 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
             @Override
             public boolean evaluate(KeyValueModel object) {
                 int loan_count = Integer.valueOf(object.getName());
-                if(loan_count<=12) {
+                if (loan_count <= 12) {
                     return true;
                 } else {
                     keyValueModel.setGroup(object.getGroup());
@@ -66,7 +66,7 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
                 }
             }
         });
-        if(keyValueModel.getGroup() != null) {
+        if (keyValueModel.getGroup() != null) {
             keyValueModel.setName("13+");
             top12List.add(keyValueModel);
         }
@@ -88,9 +88,35 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     }
 
     @Override
-    public List<KeyValueModel> queryUserAgeTrend(Date startTime, Date endTime, String province, String isInvestor){
+    public List<KeyValueModel> queryUserAgeTrend(Date startTime, Date endTime, String province, String isInvestor) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
         return businessIntelligenceMapper.queryUserAgeTrend(queryStartTime, queryEndTime, province, isInvestor);
+    }
+
+    @Override
+    public List<KeyValueModel> queryLoanRaisingTimeCostingTrend(Date startTime, Date endTime) {
+        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+        List<KeyValueModel> loanRaisingTimeCostList = businessIntelligenceMapper.queryLoanRaisingTimeCostingTrend(queryStartTime, queryEndTime);
+
+        for (KeyValueModel kvm : loanRaisingTimeCostList) {
+            String[] timeCostList = kvm.getValue().split(",");
+            int median;
+            int average = Integer.parseInt(kvm.getGroup());
+            int len = timeCostList.length;
+            if (len % 2 == 0) {
+                median = Math.round((Float.parseFloat(timeCostList[len / 2]) + Float.parseFloat(timeCostList[len / 2 - 1])) / 2);
+            } else {
+                median = Integer.parseInt(timeCostList[len / 2]);
+            }
+
+            StringBuffer newValue = new StringBuffer();
+            // low,media,average,high
+            newValue.append(timeCostList[0]).append(",").append(median).append(",").append(average).append(",").append(timeCostList[len - 1]);
+            kvm.setValue(newValue.toString());
+            kvm.setGroup(null);
+        }
+        return loanRaisingTimeCostList;
     }
 }

@@ -956,4 +956,19 @@
             ) temp
         group by `name`;
     </select>
+
+    <select id="queryLoanRaisingTimeCostingTrend" parameterType="map" resultMap="keyValueMap">
+        select
+            periods as `name`,
+            GROUP_CONCAT(TIMESTAMPDIFF(HOUR,fundraising_start_time,raising_complete_time) ORDER BY TIMESTAMPDIFF(HOUR,fundraising_start_time,raising_complete_time) ASC) as `value`,
+            ROUND(SUM(TIMESTAMPDIFF(HOUR,fundraising_start_time,raising_complete_time))/COUNT(1),0) as `group`
+        from
+            loan
+        where
+            fundraising_start_time is not null
+            AND raising_complete_time is not null
+            AND created_time between #{startTime} and #{endTime}
+        group by periods
+        order by `name` asc
+    </select>
 </mapper>

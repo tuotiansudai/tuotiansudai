@@ -22,4 +22,6 @@ public interface BusinessIntelligenceService {
     List<KeyValueModel> queryUserInvestAmountTrend(Granularity granularity, Date startTime, Date endTime, String province, RoleStage roleStage);
 
     List<KeyValueModel> queryUserAgeTrend(Date startTime, Date endTime, String province, String isInvestor);
+
+    List<KeyValueModel> queryLoanRaisingTimeCostingTrend(Date startTime, Date endTime);
 }
