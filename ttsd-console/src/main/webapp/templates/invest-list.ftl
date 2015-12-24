@@ -84,7 +84,7 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th colspan="16">合计投资金额：${data.sumAmount/100} 元</th>
+                <th colspan="15">合计投资金额：${data.sumAmount/100} 元</th>
             </tr>
             <tr>
                 <th>项目编号</th>
@@ -93,7 +93,6 @@
                 <th>投资人</th>
                 <th>投资人姓名</th>
                 <th>投资人手机号</th>
-                <th>业务员</th>
                 <th>推荐人</th>
                 <th>推荐人姓名</th>
                 <th>推荐人手机号</th>
@@ -103,6 +102,7 @@
                 <th>自动投标</th>
                 <th>投资金额</th>
                 <th>投资状态</th>
+                <th>回款记录</th>
             </tr>
             </thead>
             <tbody>
@@ -112,9 +112,13 @@
                     <td>${invest.loanName}</td>
                     <td>${invest.loanPeriods?string('0')}</td>
                     <td>${invest.investorLoginName!}</td>
-                    <td>${invest.investorUserName!}</td>
+                    <td>${invest.investorUserName!}
+                        <#if invest.isStaff()>
+                            <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
+                        </#if>
+                    </td>
                     <td>${invest.investorMobile!}</td>
-                    <td>${invest.isStaff()?string('是','否')}</td>
+                    <#--<td>${invest.isStaff()?string('是','否')}</td>-->
                     <td>${invest.referrerLoginName!}</td>
                     <td>${invest.referrerUserName!}</td>
                     <td>${invest.referrerMobile!}</td>
@@ -124,10 +128,11 @@
                     <td>${invest.autoInvest?then('是','否')}</td>
                     <td>${invest.amount}</td>
                     <td>${invest.status}</td>
+                    <td><a href="/finance-manage/invest-repay/${invest.investId?string.computer}">回款记录</a></td>
                 </tr>
                 <#else>
                 <tr>
-                    <td colspan="16">Empty</td>
+                    <td colspan="15">Empty</td>
                 </tr>
                 </#list>
             </tbody>

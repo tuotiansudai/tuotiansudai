@@ -29,12 +29,11 @@ public interface UserService {
      * 修改用户密码
      *
      * @param loginName
-     * @param mobile
      * @param originalPassword 用户目前的密码（明文）
      * @param newPassword 新密码（明文）
      * @return 修改成功返回 true , 修改失败返回 false
      */
-    boolean changePassword(String loginName, String mobile, String originalPassword, String newPassword);
+    boolean changePassword(String loginName, String originalPassword, String newPassword);
 
     void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException, ReferrerRelationException;
 
@@ -47,6 +46,8 @@ public interface UserService {
                 Source source,
                 Role role, String referrer, String channel, Integer pageIndex, Integer pageSize);
 
+
+    List<String> findStaffNameFromUserLike(String loginName);
 
     List<String> findLoginNameFromAccountLike(String loginName);
 
@@ -61,4 +62,12 @@ public interface UserService {
     void refreshAreaByMobile(List<UserModel> userModels) ;
 
     void refreshAreaByMobileInJob() ;
+
+    List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber);
+
+    List<UserModel> findUsersAccountBalance(String loginName, int currentPageNo, int pageSize);
+
+    int findUsersAccountBalanceCount(String loginName);
+
+    long findUsersAccountBalanceSum(String loginName);
 }

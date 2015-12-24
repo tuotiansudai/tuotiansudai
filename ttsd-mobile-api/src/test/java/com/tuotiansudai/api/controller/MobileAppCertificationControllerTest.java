@@ -9,6 +9,7 @@ import org.mockito.Mock;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class MobileAppCertificationControllerTest extends ControllerTestBase {
 
@@ -35,8 +36,9 @@ public class MobileAppCertificationControllerTest extends ControllerTestBase {
     }
     @Test
     public void shouldUserMobileCertificationIsBadRequest() throws Exception {
-        doRequestWithServiceIsBadRequestMockedTest("/certificate",
-                new CertificationRequestDto()
-        );
+        CertificationRequestDto requestDto = new CertificationRequestDto();
+        requestDto.setUserRealName("拓天");
+        doRequestWithServiceIsOkMockedTest("/certificate",requestDto)
+                .andExpect(jsonPath("$.code").value("0013"));
     }
 }

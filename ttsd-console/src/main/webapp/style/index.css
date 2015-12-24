@@ -238,3 +238,16 @@ td.td {
     width: 430px;
     text-align: left;
 }
+.loading-report {
+    display: block;
+    text-align: center;
+    padding-top: 30px;
+}
+.home-report .start-date,
+.home-report .end-date {
+    width: 100px;
+}
+
+.agent-rate{
+    padding-right: 5px;
+}
