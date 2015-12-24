@@ -15,6 +15,13 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
                 var html = Mustache.render(ListTemplate, data);
                 $noticeList.html(html);
                 $noticeList.find('time').text($noticeList.find('time').text().substr(0,10));
+                if(/app/gi.test(location.search)) {
+                    var noticeList=$('.notice-list');
+                    noticeList.find('li a').each(function(key,option) {
+                       var thisURL= $(option).attr('href')+'?source=app';
+                        $(option).attr('href',thisURL);
+                    });
+                }
             });
         }
 
@@ -55,7 +62,13 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
 
         if($('#WhetherApp').length) {
             if(/app/gi.test(location.search)) {
+                if($('#WhetherApp').find('.res-no-app').length) {
+                    $('#WhetherApp').find('.res-no-app').remove();
+                }
                 $('.header-container,.nav-container,.footer-container').hide();
+                if($('.left-nav').length) {
+                    $('.left-nav').hide();
+                }
             }
         }
 
