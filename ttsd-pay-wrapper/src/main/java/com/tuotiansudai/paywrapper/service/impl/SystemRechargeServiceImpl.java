@@ -60,8 +60,8 @@ public class SystemRechargeServiceImpl implements SystemRechargeService {
         if (accountModel == null){
             logger.debug(systemRechargeModel.getLoginName() + " not certification");
         }
-        TransferAsynRequestModel requestModel = new TransferAsynRequestModel(String.valueOf(systemRechargeModel.getAmount()),
-                accountModel.getPayUserId(),dto.getAmount());
+        TransferAsynRequestModel requestModel = new TransferAsynRequestModel(String.valueOf(systemRechargeModel.getId()),
+                accountModel.getPayUserId(),""+systemRechargeModel.getAmount());
         String remark = MessageFormat.format("{0} 从 {1} 账户为平台账户充值 {2} 元",dto.getOperatorLoginName(),
                 dto.getLoginName(),dto.getAmount());
         systemRechargeModel.setRemark(remark);

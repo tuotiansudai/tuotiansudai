@@ -4,7 +4,7 @@
     <#assign payData = pay.data>
 <head>
     <#if payData.status>
-        <script type="text/javascript" src="${staticServer}/js/libs/jquery-1.11.3.min.js"></script>
+        <script type="text/javascript" src="/js/libs/jquery-1.11.3.min.js"></script>
         <script type="text/javascript">
             $(function () {
                 $("#payForm").submit();

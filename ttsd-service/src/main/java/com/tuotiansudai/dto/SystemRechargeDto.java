@@ -6,7 +6,7 @@ import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 public class SystemRechargeDto implements Serializable {
-    @NotEmpty
+
     private String operatorLoginName;
 
     @NotEmpty

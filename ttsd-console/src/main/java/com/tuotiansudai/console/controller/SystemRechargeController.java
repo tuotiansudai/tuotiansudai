@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 
+import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.SystemRechargeDto;
@@ -15,19 +16,21 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping(value = "/system-recharge")
+@RequestMapping(value = "/finance-manage")
 public class SystemRechargeController {
     @Autowired
     private SystemRechargeService systemRechargeService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/system-recharge",method = RequestMethod.GET)
     public ModelAndView systemRecharge() {
         return new ModelAndView("/system-recharge");
     }
 
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/system-recharge",method = RequestMethod.POST)
     public ModelAndView systemRecharge(@Valid @ModelAttribute SystemRechargeDto systemRechargeDto) {
+        String operatorLoginName = LoginUserInfo.getLoginName();
+        systemRechargeDto.setOperatorLoginName(operatorLoginName);
         BaseDto<PayFormDataDto> baseDto = systemRechargeService.systemRecharge(systemRechargeDto);
         return new ModelAndView("/pay", "pay", baseDto);
     }
