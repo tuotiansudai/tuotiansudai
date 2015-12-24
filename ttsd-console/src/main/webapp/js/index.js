@@ -65,7 +65,12 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
         Btn.click(function() {
             var dataFormat=$(form).serialize(),
             reportBoxDOM=$('#'+reportbox);
-            reportBoxDOM.empty().html('<span class="loading-report">加载中...</span>');
+            reportBoxDOM
+                .empty()
+                .removeAttr('_echarts_instance_')
+                .removeAttr('style')
+                .css({'width':'100%','height':'400px'})
+                .html('<span class="loading-report">加载中...</span>');
             $.ajax({
                 type: 'GET',
                 data:dataFormat,
