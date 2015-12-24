@@ -9,7 +9,7 @@
             <#list loanTitleRelationModel.applicationMaterialUrls?split(",") as title>
             initialPreview.push("<img src='${title}' class='file-preview-image' alt='${title}' title='${title}'>");
             </#list>
-        rereq['${loanTitleRelationModel.titleId?string('0')}'] = initialPreview;
+        rereq['${loanTitleRelationModel.titleId?string.computer}'] = initialPreview;
         </#list>
     </#if>
 </script>
