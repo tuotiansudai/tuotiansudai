@@ -110,4 +110,12 @@ public class BusinessIntelligenceController {
             @RequestParam(name = "province",required = false) String province){
         return businessIntelligenceService.queryUserAgeTrend(startTime, endTime, province, "true");
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/loan-amount-distribution", method = RequestMethod.GET)
+    public List<KeyValueModel> queryLoanAmountDistribution(
+            @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime){
+        return businessIntelligenceService.queryLoanAmountDistribution(startTime, endTime);
+    }
 }

@@ -52,7 +52,7 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
             @Override
             public boolean evaluate(KeyValueModel object) {
                 int loan_count = Integer.valueOf(object.getName());
-                if(loan_count<=12) {
+                if (loan_count <= 12) {
                     return true;
                 } else {
                     keyValueModel.setGroup(object.getGroup());
@@ -92,5 +92,12 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
         return businessIntelligenceMapper.queryUserAgeTrend(queryStartTime, queryEndTime, province, isInvestor);
+    }
+
+    @Override
+    public List<KeyValueModel> queryLoanAmountDistribution(Date startTime, Date endTime){
+        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+        return businessIntelligenceMapper.queryLoanAmountDistribution(queryStartTime, queryEndTime);
     }
 }

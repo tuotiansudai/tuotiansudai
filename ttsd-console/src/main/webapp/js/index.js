@@ -121,4 +121,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     /*投资用户年龄分布*/
     showReport('#formInvestorUserAgeReport','/bi/investor-user-age-trend','investorUserAgeDistribution','投资用户(人)','pie');
 
+    /*标的资金分布*/
+    showReport('#formLoanAmountReport','/bi/loan-amount-distribution','loanAmountDistribution','标的金额(元)','bar');
+
 });

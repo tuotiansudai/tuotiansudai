@@ -20,7 +20,8 @@
                     {"name":"userInvestViscosity","text":"用户续投情况","link":"/","role":"'ADMIN'"},
                     {"name":"userInvestAmount","text":"用户投资金额时间分布","link":"/","role":"'ADMIN'"},
                     {"name":"userInvestCount","text":"用户投资次数时间分布","link":"/","role":"'ADMIN'"},
-                    {"name":"userAge","text":"用户年龄分布","link":"/","role":"'ADMIN'"}
+                    {"name":"userAge","text":"用户年龄分布","link":"/","role":"'ADMIN'"},
+                    {"name":"loanAmount","text":"投资金额分布","link":"/","role":"'ADMIN'"}
                 ]
 
             },

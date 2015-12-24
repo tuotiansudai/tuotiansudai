@@ -956,4 +956,16 @@
             ) temp
         group by `name`;
     </select>
+
+    <select id="queryLoanAmountDistribution" parameterType="map" resultMap="keyValueMap">
+        select
+            periods as `name`,
+            ROUND(SUM(loan_amount/100), 2) AS `value`
+        from
+            loan
+        where
+            created_time between #{startTime} and #{endTime}
+        group by periods
+        ORDER BY `name` ASC;
+    </select>
 </mapper>
