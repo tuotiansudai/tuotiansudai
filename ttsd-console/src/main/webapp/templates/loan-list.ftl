@@ -63,7 +63,7 @@
                     <td>${loanListDto.id?string('0')}</td>
                     <td class="projectName">
                         <span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${loanListDto.name}">
-                            <a href="${webServer}/loan/${loanListDto.id?string('0')}">${loanListDto.name}</a>
+                            <a href="${webServer}/loan/${loanListDto.id?string('0')}" target="_blank">${loanListDto.name}</a>
                         </span>
                     </td>
                     <td>${loanListDto.loanerUserName}</td>
