@@ -20,6 +20,7 @@ public class UserItemDataDto implements Serializable {
     private List<UserRoleModel> userRoles;
     private UserStatus status;
     private Source source;
+    private String autoInvestStatus;
     private boolean staff;
     private boolean bankCard;
 
@@ -103,6 +104,14 @@ public class UserItemDataDto implements Serializable {
         this.source = source;
     }
 
+    public String getAutoInvestStatus() {
+        return autoInvestStatus;
+    }
+
+    public void setAutoInvestStatus(String autoInvestStatus) {
+        this.autoInvestStatus = autoInvestStatus;
+    }
+
     public boolean isStaff() {
         return staff;
     }
@@ -131,6 +140,7 @@ public class UserItemDataDto implements Serializable {
             this.userName = userModel.getAccount().getUserName();
         }
         this.status = userModel.getStatus();
+        this.autoInvestStatus = userModel.getAutoInvestStatus();
 
     }
 }
