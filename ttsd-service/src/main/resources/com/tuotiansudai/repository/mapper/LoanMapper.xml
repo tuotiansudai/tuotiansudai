@@ -328,8 +328,14 @@
             <if test="verifyTime !=null">
                 verify_time = #{verifyTime},
             </if>
+            <if test="verifyLoginName != null">
+                verify_login_name = #{verifyLoginName},
+            </if>
             <if test="recheckTime !=null">
                 recheck_time = #{recheckTime},
+            </if>
+            <if test="recheckLoginName != null">
+                recheck_login_name = #{recheckLoginName},
             </if>
             <if test="status !=null">
                 status = #{status},
@@ -337,6 +343,7 @@
             <if test="updateTime != null">
                 update_time = #{updateTime}
             </if>
+
         </trim>
         where id = #{id}
     </update>
