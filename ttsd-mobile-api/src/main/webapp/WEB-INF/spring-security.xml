@@ -25,7 +25,7 @@
     </beans:bean>
 
     <beans:bean id="mobileAppTokenProvider" class="com.tuotiansudai.api.security.MobileAppTokenProvider">
-        <beans:property name="tokenExpiredSeconds" value="3600"/>
+        <beans:property name="tokenExpiredSeconds" value="${mobile.app.token.expire.seconds}"/>
     </beans:bean>
     <beans:bean id="mobileAppAuthenticationSuccessHandler"
                 class="com.tuotiansudai.api.security.MobileAppAuthenticationSuccessHandler"/>

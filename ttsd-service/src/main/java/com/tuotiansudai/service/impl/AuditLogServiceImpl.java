@@ -29,6 +29,9 @@ public class AuditLogServiceImpl implements AuditLogService {
     @Autowired
     private AuditLogMapper auditLogMapper;
 
+    @Autowired
+    private IdGenerator idGenerator;
+
     @Override
     @Transactional
     public void generateAuditLog(String operatorLoginName, UserModel beforeUpdateUserModel, List<UserRoleModel> beforeUpdateUserRoleModels,
@@ -71,7 +74,7 @@ public class AuditLogServiceImpl implements AuditLogService {
                 })));
 
         AuditLogModel log = new AuditLogModel();
-        log.setId(new IdGenerator().generate());
+        log.setId(idGenerator.generate());
         log.setLoginName(loginName);
         log.setOperatorLoginName(operatorLoginName);
         log.setIp(userIp);

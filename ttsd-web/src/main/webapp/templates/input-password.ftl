@@ -25,7 +25,7 @@
                 </ul>
 
         </form>
-        <div class="pad-m tips_message">找回密码过程中如有问题，请致电拓天速贷客服：400-169-1188 （服务时间：9:00－21:00）</div>
+        <div class="pad-m tips_message">找回密码过程中如有问题，请致电拓天速贷客服：400-169-1188 （服务时间：9:00－20:00）</div>
     </div>
 
 </@global.main>

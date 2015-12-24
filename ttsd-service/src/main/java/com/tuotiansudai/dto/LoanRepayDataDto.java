@@ -7,17 +7,37 @@ import java.util.List;
 
 public class LoanRepayDataDto extends BaseDataDto {
 
-    private String expectedAdvanceRepayAmount;
+    private long loanAgentBalance;
+
+    private long expectedNormalRepayAmount;
+
+    private long expectedAdvanceRepayAmount;
 
     private boolean hasWaitPayLoanRepay;
 
     private List<LoanRepayDataItemDto> records = Lists.newArrayList();
 
-    public String getExpectedAdvanceRepayAmount() {
+    public long getLoanAgentBalance() {
+        return loanAgentBalance;
+    }
+
+    public void setLoanAgentBalance(long loanAgentBalance) {
+        this.loanAgentBalance = loanAgentBalance;
+    }
+
+    public long getExpectedNormalRepayAmount() {
+        return expectedNormalRepayAmount;
+    }
+
+    public void setExpectedNormalRepayAmount(long expectedNormalRepayAmount) {
+        this.expectedNormalRepayAmount = expectedNormalRepayAmount;
+    }
+
+    public long getExpectedAdvanceRepayAmount() {
         return expectedAdvanceRepayAmount;
     }
 
-    public void setExpectedAdvanceRepayAmount(String expectedAdvanceRepayAmount) {
+    public void setExpectedAdvanceRepayAmount(long expectedAdvanceRepayAmount) {
         this.expectedAdvanceRepayAmount = expectedAdvanceRepayAmount;
     }
 
@@ -37,4 +57,6 @@ public class LoanRepayDataDto extends BaseDataDto {
     public void setRecords(List<LoanRepayDataItemDto> records) {
         this.records = records;
     }
+
+
 }

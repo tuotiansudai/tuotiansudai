@@ -20,15 +20,15 @@
         </ul>
         <ul>
             <li class="f-title">联系我们</li>
-            <li>客服电话：400-169-1188（服务时间：9:00－21:00）</li>
+            <li>客服电话：400-169-1188（服务时间：9:00－20:00）</li>
             <li>客服邮箱：kefu@tuotiansudai.com</li>
-            <li>我要合作：010-57167320 <a href="mailto:Amanda.liang@tuotiansudai.com" target="_blank"> Amanda.liang@tuotiansudai.com</a></li>
+            <li>商务合作：010-57167320 <a href="mailto:Amanda.liang@tuotiansudai.com" target="_blank"> Amanda.liang@tuotiansudai.com</a></li>
             <li>地址：北京市丰台区洋桥12号天路蓝图大厦8层</li>
         </ul>
         <ul class="last">
             <li class="tc">
                 <img src="${staticServer}/images/sign/app-weixin.png"> <br/>
-                微信公众号
+                APP下载
 
             </li>
         </ul>
@@ -44,7 +44,7 @@
             <a href="https://ss.knet.cn/verifyseal.dll?sn=e15071011011759427pzmf000000&pa=500267" target="_blank">
                 <img src="${staticServer}/images/sign/advantage/knetSealLogo.png" class="img-gray">
             </a>
-            <a href="https://seal.digicert.com/seals/popup/?tag=dv0vdS8q&url=tuotiansudai.com&lang=en_US" target="_blank">
+            <a href="https://seal.digicert.com/seals/popup/?tag=7MzpfEHK&url=tuotiansudai.com&lang=en" target="_blank">
                 <img src="${staticServer}/images/sign/advantage/digicert.png" class="img-gray">
             </a>
         </div>

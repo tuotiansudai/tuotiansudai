@@ -2,13 +2,13 @@
 <@global.main pageCss="${css.full_screen}" pageJavascript="${js.about_us}" activeNav="" activeLeftNav="">
 
 <div class="new-guide-container bg-w">
-    <div class="ad-guide-img"></div>
+    <div class="new-guide-img"></div>
     <div class="content-info page-width">
         <h3 class="tc">什么是拓天速贷？</h3>
 
         <p>拓天速贷是一家以P2P形式为依托，面向个人投资人的理财融资平台。平台主打优质理财，低门槛提供稳健型理财产品。所有投资产品均被融资担保机构实地调查认证。平台由拓天伟业（北京）资产管理有限公司旗下的拓天伟业（北京）金融信息服务有限公司运营。拓天速贷主要是利用了现有互联网信息技术，将有融资需求的借款人与有富余理财资金的投资人进行在线信息配对。帮助投资人寻找到低门槛、低风险、高收益的理财产品。拓天速贷秉承用心服务，诚信经营的经营理念，坚持以人为本，日事日毕，正道经营，共存共赢的管理理念，以安全、诚信、专业、创新、长远为核心价值观，坚持兴企安国的公司使命，拓天速贷将成为国内一流的线上金融服务平台。</p>
     </div>
-
+<nav></nav>
     <div class="content-a tc">
         <img src="${staticServer}/images/sign/aboutus/invest-process.png" alt="拓天速贷投资流程">
     </div>

@@ -150,7 +150,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean changePassword(String loginName, String mobile, String originalPassword, String newPassword) {
+    public boolean changePassword(String loginName, String originalPassword, String newPassword) {
 
         boolean correct = this.verifyPasswordCorrect(loginName, originalPassword);
 
@@ -159,6 +159,7 @@ public class UserServiceImpl implements UserService {
         }
 
         UserModel userModel = userMapper.findByLoginName(loginName);
+        String mobile = userModel.getMobile();
 
         String encodedNewPassword = myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt());
         userMapper.updatePasswordByLoginName(loginName, encodedNewPassword);
@@ -285,7 +286,17 @@ public class UserServiceImpl implements UserService {
         }
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
 
-        return new EditUserDto(userModel, accountModel, roles);
+        EditUserDto editUserDto = new EditUserDto(userModel, accountModel, roles);
+
+        BankCardModel bankCard = bindBankCardService.getPassedBankCard(loginName);
+        if (bankCard != null) {
+            editUserDto.setBankCardNumber(bankCard.getCardNumber());
+        }
+
+        if (userRoleMapper.findByLoginNameAndRole(userModel.getReferrer(), Role.STAFF.name()) != null) {
+            editUserDto.setReferrerStaff(true);
+        }
+        return editUserDto;
     }
 
     @Override
@@ -299,10 +310,18 @@ public class UserServiceImpl implements UserService {
         List<UserItemDataDto> userItemDataDtos = Lists.newArrayList();
         for (UserModel userModel : userModels) {
 
+            boolean staff = false;
             UserItemDataDto userItemDataDto = new UserItemDataDto(userModel);
             userItemDataDto.setUserRoles(userRoleMapper.findByLoginName(userModel.getLoginName()));
-            userItemDataDto.setStaff(userRoleMapper.findByLoginName(userModel.getReferrer()).contains(Role.STAFF));
-            userItemDataDto.setBankCard(bindBankCardService.getPassedBankCard(userModel.getLoginName()) != null ? true : false);
+            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(userModel.getReferrer());
+            for (UserRoleModel userRoleModel : userRoleModels) {
+                if (userRoleModel.getRole()==Role.STAFF) {
+                    staff = true;
+                    break;
+                }
+            }
+            userItemDataDto.setStaff(staff);
+            userItemDataDto.setBankCard(bindBankCardService.getPassedBankCard(userModel.getLoginName()) != null);
             userItemDataDtos.add(userItemDataDto);
         }
         int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel);
@@ -311,6 +330,11 @@ public class UserServiceImpl implements UserService {
         baseDto.setData(basePaginationDataDto);
         return baseDto;
 
+    }
+
+    @Override
+    public List<String> findStaffNameFromUserLike(String loginName) {
+        return userMapper.findStaffByLikeLoginName(loginName);
     }
 
     @Override
@@ -374,12 +398,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber, Integer index, Integer pageSize) {
-        return userMapper.searchAllUsers(loginName, referrer, mobile, identityNumber, (index - 1 ) * pageSize, pageSize);
+    public List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber) {
+        return userMapper.searchAllUsers(loginName, referrer, mobile, identityNumber);
     }
 
     @Override
-    public int searchAllUsersCount(String loginName, String referrer, String mobile, String identityNumber) {
-        return userMapper.searchAllUsersCount(loginName, referrer, mobile, identityNumber);
+    public List<UserModel> findUsersAccountBalance(String loginName, int currentPageNo, int pageSize) {
+        return userMapper.findUsersAccountBalance(loginName, (currentPageNo - 1 ) * pageSize, pageSize);
     }
+
+    @Override
+    public int findUsersAccountBalanceCount(String loginName) {
+        return userMapper.findUsersAccountBalanceCount(loginName);
+    }
+
+    @Override
+    public long findUsersAccountBalanceSum(String loginName) {
+        return userMapper.findUsersAccountBalanceSum(loginName);
+    }
+
 }

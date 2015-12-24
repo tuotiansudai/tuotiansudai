@@ -5,13 +5,13 @@
   overflow: hidden;
   background: #fff;
   margin: 12px auto;
-  border: #cecece 1px solid;
+  border: #f2f2f2 1px solid;
   border-radius: 3px;
   position: relative;
   text-align: center;
 
   .register-box {
-    margin-left: 30%;
+    margin-left: 322px;
     height: auto;
     overflow: auto;
     .register-step-one {
@@ -26,14 +26,13 @@
         clear: both;
         margin-bottom: 20px;
         height: auto;
-        overflow: auto;
         .reg-title {
           width:60px;
           padding-right: 3px;
           font-size:14px;
           color: #333;
           text-align: right;
-          display: inline-block;
+          display: none;
 
         }
         .captcha-tag {
@@ -44,7 +43,7 @@
             padding: 7px;
             letter-spacing: 0;
             position: absolute;
-            right: 316px;
+            right: 300px;
             top: 3px;
             font-size: 12px;
           }
@@ -91,7 +90,18 @@
             color: nth($checkValid,2);
           }
         }
-
+        &.agree-last {
+          position: relative;
+          margin-left: 0;
+          .check-label{
+            position: absolute;
+            top: 1px;
+            left: 20px;
+          }
+          .agreement-check{
+            margin-right: 300px;
+          }
+        }
       }
       .register-account {
         display: block;
@@ -120,7 +130,6 @@
   .pad-s {
     padding:20px;
   }
-  height:100%;
   .image-captcha-form {
     position: relative;
     height: 135px;
@@ -134,6 +143,9 @@
         display: block!important;
       }
     }
+    .image-captcha-inner {
+      padding:20px;
+    }
     img.image-captcha {
       width: 60px;
       height: 29px;
@@ -142,12 +154,12 @@
       border: #bababa 1px solid;
       cursor: pointer;
       position: absolute;
-      left: 130px;
-      top: 2px;
+      left: 150px;
+      top: 22px;
     }
     .image-captcha-confirm {
       position: absolute;
-      bottom: 35px;
+      bottom: 7px;
       left: 35%;
     }
   }
@@ -217,12 +229,22 @@
   }
   .btn-success {
     position: absolute;
-    bottom: 35px;
+    bottom: 25px;
     left: 35%;
   }
 }
 
 @media (max-width: 700px) {
+
+  .main-frame.full-screen {
+    .register-skin{
+      width: 100%!important;
+      height:100%!important;
+      top: 0!important;
+      left: 50%!important;
+      margin-left: -50%!important;
+    }
+  }
   .step-register-tab {
     font-size: 14px!important;
     margin:0;
@@ -254,13 +276,13 @@
               padding: 7px;
               letter-spacing: 0;
               position: absolute;
-              right: 9%;
+              right: 1px;
               top: 3px;
               font-size: 12px;
             }
           }
           input[type="text"], input[type="password"] {
-            width: 92%;
+            width: 100%;
             box-sizing: border-box;
             border: #cecece 1px solid;
             border-radius: 3px;
@@ -277,6 +299,9 @@
               content: "\f058";
               color: nth($checkValid,2);
             }
+          }
+          &.agree-last {
+            margin-left:0px;
           }
 
         }
@@ -304,15 +329,19 @@
   }
 }
 
-
 @media screen\9 {
 //IE6,7
   .register-container {
     .register-box {
       margin-left: 25%;
       ul.reg-list {
-        li .reg-title{
+        li {
+          .reg-title{
             display:inline-block;
+          }
+        }
+        .register-user {
+          margin-left: 130px;
         }
       }
     }
@@ -336,6 +365,13 @@
 
             }
           }
+          &.agree-last {
+            margin-left:60px;
+          }
+        }
+
+        .register-user {
+          margin-left: 130px;
         }
 
       }

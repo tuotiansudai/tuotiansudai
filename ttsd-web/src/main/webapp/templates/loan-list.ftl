@@ -104,12 +104,12 @@
                         <#if loanListWebDto.status== 'RAISING'>
                             <div class="rest-amount">
                                 <span>可投金额: <i>${loanListWebDto.added}</i>元</span>
-                                <a class="btn-invest btn-normal" href="">马上投资</a>
+                                <i class="btn-invest btn-normal">马上投资</i>
                             </div>
                         <#elseif loanListWebDto.status== 'PREHEAT'>
                             <div class="rest-amount wait-invest">
                                 <span>${loanListWebDto.added} 放标</span>
-                                <a class="btn-wait-invest btn-normal" href="">预热中</a>
+                                <i class="btn-wait-invest btn-normal">预热中</i>
                             </div>
                         <#else>
                             <div class="rest-amount finish-invest">

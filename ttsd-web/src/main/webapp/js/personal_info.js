@@ -49,13 +49,14 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                     isExist: "邮箱已存在"
                 }
             },
+            success:'valid',
             submitHandler: function (form) {
                 var self = this;
                 $(form).ajaxSubmit({
                     dataType: 'json',
                     beforeSubmit: function (arr, $form, options) {
                         $('.change-email-success .email').html($('input[name="email"]').val());
-                        self.resetForm();
+                        $form.resetForm();
                         layer.closeAll();
                     },
                     success: function (response) {

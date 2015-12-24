@@ -79,6 +79,9 @@ p {
     margin-bottom: 0;
   }
 }
+
+.show {  display: block;  }
+.hide {  display: none;  }
 .text-s {
   font-size: nth($fontSize,1); //12px
 }
@@ -118,6 +121,9 @@ p {
 .pad-m {
   padding: 30px;
 }
+.pad-l-15 {
+  padding-left: 15px;
+}
 
 .error {
   color: $required;
@@ -129,6 +135,7 @@ p {
 // form validation
 .fa:before {
   padding-left: 4px;
+  padding-right: 4px;
   padding-right: 4px;
 }
 
@@ -172,10 +179,6 @@ form {
   -o-filter: grayscale(100%);
   filter: grayscale(100%);
   filter: gray;
-}
-
-.layui-layer-page .layui-layer-content {
-  overflow: hidden!important;
 }
 
 .page-width {

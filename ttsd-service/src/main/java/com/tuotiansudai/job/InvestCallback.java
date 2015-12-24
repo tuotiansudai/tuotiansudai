@@ -15,7 +15,7 @@ public class InvestCallback implements Job {
 
     public static final String JOB_NAME = "invest_call_back";
 
-    public static final String JOB_TRIGGER_KEY = "invest_callback_job_trigger";
+    public static final String JOB_TRIGGER_KEY = "job:invest:invest_callback_job_trigger";
 
     @Autowired
     private PayWrapperClient payWrapperClient;

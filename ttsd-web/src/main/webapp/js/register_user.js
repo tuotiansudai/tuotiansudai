@@ -9,7 +9,10 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         imageCaptchaTextElement = $('.image-captcha-text', $imgCaptchaDialog),
         imageCaptchaSubmitElement = $('.image-captcha-confirm', $imgCaptchaDialog);
 
-    //服务协议
+    $('input.login-name,input.mobile',registerUserForm).on('focusout',function(option) {
+        fetchCaptchaElement.removeClass('btn-normal').addClass('btn').prop('disabled', true);
+    });
+
     showAgreement.click(function () {
         layer.open({
             type: 1,
@@ -17,14 +20,13 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
             area: ['950px', '600px'],
             shadeClose: true,
             move: false,
+            scrollbar: true,
+            skin:'register-skin',
             content: $('#agreementBox'),
             success: function (layero, index) {
-
             }
         });
     });
-
-    /*获取验证码*/
     fetchCaptchaElement.on('click', function () {
         layer.open({
             type: 1,
@@ -41,7 +43,6 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         return false;
     });
 
-    // 刷新验证码
     var refreshCaptcha = function () {
         imageCaptchaElement.attr('src', '/register/user/image-captcha?' + new Date().getTime().toString());
     };
@@ -50,7 +51,6 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         refreshCaptcha();
     });
 
-    /*手机验证码*/
     imageCaptchaForm.validate({
         focusInvalid: false,
         onfocusout: function (element) {
@@ -73,10 +73,10 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
                         layer.closeAll();
                         var seconds = 60;
                         var count = setInterval(function () {
-                            fetchCaptchaElement.html(seconds + '秒后重新发送').addClass('btn').removeClass('btn-normal');
+                            fetchCaptchaElement.html(seconds + '秒后重新发送').addClass('btn disable-button').removeClass('btn-normal').prop('disabled',true);
                             if (seconds == 0) {
                                 clearInterval(count);
-                                fetchCaptchaElement.html('重新发送').removeClass('btn').addClass('btn-normal');
+                                fetchCaptchaElement.html('重新发送').removeClass('btn disable-button').addClass('btn-normal').prop('disabled',false);
                             }
                             seconds--;
                         }, 1000);
@@ -187,37 +187,19 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
                 required: "请同意服务协议"
             }
         },
-        onkeyup: function (element, event) {
-            var excludedKeys = [16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225];
-
-            if ((event.which !== 9 || this.elementValue(element) !== "") && $.inArray(event.keyCode, excludedKeys) === -1) {
-                this.element(element);
-            }
-        },
-        onfocusout: function (element) {
-            if (!this.checkable(element) && !this.optional(element)) {
-                this.element(element);
-            }
-        },
-        showErrors: function (errorMap, errorList) {
-            this.__proto__.defaultShowErrors.call(this);
-            if (errorMap['mobile']) {
-                fetchCaptchaElement.addClass('btn').removeClass('btn-normal').prop('disabled', true)
-            }
-            if (errorMap['agreement']) {
-                var $agreementBox = $agreement.parent('label');
-                $agreementBox.append($('#agreement-error'));
-            }
-
-        },
         success: function (error, element) {
-            if (element.name === 'mobile') {
-                fetchCaptchaElement.addClass('btn-normal').removeClass('btn').prop('disabled', false);
+            var loginName = $('input.login-name', registerUserForm),
+                mobile = $('input.mobile', registerUserForm),
+                disableButton=$('.disable-button',registerUserForm);
+            if(!disableButton.length) {
+                if (element.name === 'mobile' && loginName.hasClass('valid')) {
+                    fetchCaptchaElement.addClass('btn-normal').removeClass('btn').prop('disabled', false);
+                }
+                if (element.name === 'loginName' && mobile.hasClass('valid')) {
+                    fetchCaptchaElement.addClass('btn-normal').removeClass('btn').prop('disabled', false);
+                }
             }
-            if (element.name === 'agreement') {
-                var $agreementBox = $agreement.parent('label');
-                $agreementBox.append($('#agreement-error'));
-            }
+
         }
     });
 

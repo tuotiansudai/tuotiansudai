@@ -122,8 +122,7 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(dataDto);
             return baseDto;
         } else {
-            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginNameAndRole(loanDto.getAgentLoginName(), Role.LOANER.name());
-            if (CollectionUtils.isEmpty(userRoleModels)) {
+            if (userRoleMapper.findByLoginNameAndRole(loanDto.getAgentLoginName(), Role.LOANER.name()) == null) {
                 dataDto.setMessage("代理用户不具有借款人角色");
                 return baseDto;
             }
@@ -436,8 +435,7 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(payDataDto);
             return baseDto;
         } else {
-            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginNameAndRole(loanDto.getAgentLoginName(), Role.LOANER.name());
-            if (CollectionUtils.isEmpty(userRoleModels)) {
+            if (userRoleMapper.findByLoginNameAndRole(loanDto.getAgentLoginName(), Role.LOANER.name()) == null) {
                 payDataDto.setStatus(false);
                 baseDto.setData(payDataDto);
                 return baseDto;
@@ -518,7 +516,7 @@ public class LoanServiceImpl implements LoanService {
         if (endTime == null) {
             endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
         } else {
-            endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+            endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate();
         }
 
         List<LoanModel> loanModels = Lists.newArrayList();

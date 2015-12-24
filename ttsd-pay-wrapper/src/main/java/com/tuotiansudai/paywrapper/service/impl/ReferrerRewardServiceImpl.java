@@ -15,6 +15,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,9 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     private ReferrerRelationMapper referrerRelationMapper;
 
     @Autowired
+    private AgentLevelRateMapper agentLevelRateMapper;
+
+    @Autowired
     private InvestReferrerRewardMapper investReferrerRewardMapper;
 
     @Autowired
@@ -77,7 +81,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                     try {
                         Role role = this.getReferrerPriorityRole(referrerLoginName);
                         if (role != null) {
-                            long reward = this.calculateReferrerReward(invest.getAmount(), loanDuration, referrerRelationModel.getLevel(), role);
+                            long reward = this.calculateReferrerReward(invest.getAmount(), loanDuration, referrerRelationModel.getLevel(), role,referrerLoginName);
                             InvestReferrerRewardModel model = new InvestReferrerRewardModel(idGenerator.generate(), invest.getId(), reward, referrerLoginName, role);
                             this.transferReferrerReward(model);
                         }
@@ -110,41 +114,41 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
 
         if (amount == 0) {
             model.setStatus(ReferrerRewardStatus.SUCCESS);
-            investReferrerRewardMapper.create(model);
-            return;
+        }
+
+        if (amount > 0) {
+            try {
+                TransferRequestModel requestModel = TransferRequestModel.newReferrerRewardRequest(String.valueOf(orderId), accountModel.getPayUserId(), String.valueOf(amount));
+                TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
+                model.setStatus(responseModel.isSuccess() ? ReferrerRewardStatus.SUCCESS : ReferrerRewardStatus.FAILURE);
+            } catch (Exception e) {
+                logger.error(MessageFormat.format("referrer reward is failed, investId={0} referrerLoginName={1} referrerRole={2} amount={3}",
+                        String.valueOf(model.getInvestId()),
+                        model.getReferrerLoginName(),
+                        model.getReferrerRole().name(),
+                        String.valueOf(model.getAmount())), e);
+                model.setStatus(ReferrerRewardStatus.FAILURE);
+            }
         }
 
         try {
-            TransferRequestModel requestModel = TransferRequestModel.newReferrerRewardRequest(String.valueOf(orderId), accountModel.getPayUserId(), String.valueOf(amount));
-            TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
-            model.setStatus(responseModel.isSuccess() ? ReferrerRewardStatus.SUCCESS : ReferrerRewardStatus.FAILURE);
-        } catch (Exception e) {
-            logger.error(MessageFormat.format("referrer reward is failed, investId={0} referrerLoginName={1} referrerRole={2} amount={3}",
-                    String.valueOf(model.getInvestId()),
-                    model.getReferrerLoginName(),
-                    model.getReferrerRole().name(),
-                    String.valueOf(model.getAmount())), e);
-            model.setStatus(ReferrerRewardStatus.FAILURE);
-        }
-
-        if (model.getStatus() == ReferrerRewardStatus.SUCCESS) {
-            try {
-                investReferrerRewardMapper.create(model);
+            investReferrerRewardMapper.create(model);
+            if (model.getStatus() == ReferrerRewardStatus.SUCCESS) {
                 amountTransfer.transferInBalance(referrerLoginName, orderId, amount, UserBillBusinessType.REFERRER_REWARD, null, null);
                 InvestModel investModel = investMapper.findById(model.getInvestId());
                 String detail = MessageFormat.format(SystemBillDetailTemplate.REFERRER_REWARD_DETAIL_TEMPLATE.getTemplate(), referrerLoginName, investModel.getLoginName(), String.valueOf(model.getInvestId()));
                 systemBillService.transferOut(orderId, amount, SystemBillBusinessType.REFERRER_REWARD, detail);
-            } catch (Exception e) {
-                logger.error(MessageFormat.format("referrer reward transfer in balance failed (investId = {0})", String.valueOf(model.getInvestId())));
             }
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("referrer reward transfer in balance failed (investId = {0})", String.valueOf(model.getInvestId())));
         }
     }
 
-    private long calculateReferrerReward(long amount, int loanDuration, int level, Role role) {
+    private long calculateReferrerReward(long amount, int loanDuration, int level, Role role,String referrerLoginName) {
         BigDecimal amountBigDecimal = new BigDecimal(amount);
         int daysOfYear = new DateTime().dayOfYear().getMaximumValue();
 
-        double rewardRate = this.getRewardRate(level, Role.STAFF == role);
+        double rewardRate = this.getRewardRate(level, Role.STAFF == role,referrerLoginName);
 
         return amountBigDecimal
                 .multiply(new BigDecimal(rewardRate))
@@ -204,8 +208,15 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         return null;
     }
 
-    private double getRewardRate(int level, boolean isStaff) {
+    private double getRewardRate(int level, boolean isStaff,String referrerLoginName) {
         if (isStaff) {
+            AgentLevelRateModel agentLevelRateModel = agentLevelRateMapper.findAgentLevelRateByLoginNameAndLevel(referrerLoginName,level);
+            if(agentLevelRateModel != null){
+                double agentRewardRate = agentLevelRateModel.getRate();
+                if(agentRewardRate > 0){
+                    return agentRewardRate;
+                }
+            }
             return level > this.referrerStaffRoleReward.size() ? 0 : this.referrerStaffRoleReward.get(level - 1);
         }
 
