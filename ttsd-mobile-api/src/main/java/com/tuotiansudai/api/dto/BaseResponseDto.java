@@ -45,6 +45,12 @@ public class BaseResponseDto<T extends BaseResponseDataDto> {
         this.code = code;
         this.message = message;
     }
+
+    public BaseResponseDto(ReturnMessage returnMessage){
+        this.code = returnMessage.getCode();
+        this.message = returnMessage.getMsg();
+    }
+
     public BaseResponseDto(){
 
     }

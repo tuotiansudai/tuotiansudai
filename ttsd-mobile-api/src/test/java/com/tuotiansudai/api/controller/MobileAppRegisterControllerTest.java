@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class MobileAppRegisterControllerTest extends ControllerTestBase {
     @InjectMocks
@@ -36,6 +37,16 @@ public class MobileAppRegisterControllerTest extends ControllerTestBase {
         when(service.registerUser(any(RegisterRequestDto.class))).thenReturn(successResponseDto);
         doRequestWithServiceMockedTest("/register",
                 registerRequestDto);
+    }
+
+    @Test
+    public void shouldRegisterUserMobileIsValid() throws Exception {
+        RegisterRequestDto registerRequestDto = getFakeRegisterRequestDto();
+        registerRequestDto.setPhoneNum("1390000000k");
+        when(service.registerUser(any(RegisterRequestDto.class))).thenReturn(successResponseDto);
+        doRequestWithServiceIsOkMockedTest("/register",
+                registerRequestDto)
+                .andExpect(jsonPath("$.code").value("0002"));
     }
 
     public RegisterRequestDto getFakeRegisterRequestDto(){

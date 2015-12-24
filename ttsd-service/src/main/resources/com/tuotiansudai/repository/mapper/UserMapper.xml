@@ -198,4 +198,66 @@
         ORDER BY u.`register_time` DESC
     </select>
 
+    <select id="findUsersAccountBalance" parameterType="map" resultMap="userResultMap">
+        SELECT
+          *
+        FROM
+          user u
+           JOIN account a
+            ON u.`login_name` = a.`login_name`
+            AND a.`balance` > 0
+            <if test="loginName != null and loginName != '' ">
+            AND a.`login_name` = #{loginName}
+            </if>
+        WHERE NOT EXISTS
+        (SELECT
+            1
+          FROM
+            user_role r
+          WHERE u.`login_name` = r.`login_name`
+          AND r.`role` = 'LOANER')
+        ORDER BY a.`balance` DESC
+        limit #{startLimit}, #{endLimit}
+    </select>
+
+    <select id="findUsersAccountBalanceSum" parameterType="map" resultType="long">
+        SELECT
+        IFNULL(SUM(a.`balance`), 0)
+        FROM
+          user u
+           JOIN account a
+            ON u.`login_name` = a.`login_name`
+            AND a.`balance` > 0
+        <if test="loginName != null and loginName != '' ">
+            AND a.`login_name` = #{loginName}
+        </if>
+            WHERE NOT EXISTS
+        (SELECT
+            1
+          FROM
+            user_role r
+          WHERE u.`login_name` = r.`login_name`
+          AND r.`role` = 'LOANER')
+    </select>
+
+    <select id="findUsersAccountBalanceCount" parameterType="map" resultType="int">
+        SELECT
+        IFNULL(count(*), 0)
+        FROM
+          user u
+           JOIN account a
+            ON u.`login_name` = a.`login_name`
+            AND a.`balance` > 0
+        <if test="loginName != null and loginName != '' ">
+            AND a.`login_name` = #{loginName}
+        </if>
+            WHERE NOT EXISTS
+        (SELECT
+            1
+          FROM
+            user_role r
+          WHERE u.`login_name` = r.`login_name`
+          AND r.`role` = 'LOANER')
+    </select>
+
 </mapper>

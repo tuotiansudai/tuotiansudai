@@ -9,6 +9,7 @@ import org.mockito.Mock;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
 public class MobileAppLoanDetailControllerTest extends ControllerTestBase {
@@ -37,8 +38,9 @@ public class MobileAppLoanDetailControllerTest extends ControllerTestBase {
         LoanDetailRequestDto loanDetailRequestDto = new LoanDetailRequestDto();
         loanDetailRequestDto.setLoanId("111a");
         when(service.generateLoanDetail(any(LoanDetailRequestDto.class))).thenReturn(successResponseDto);
-        doRequestWithServiceIsBadRequestMockedTest("/get/loan",
-                loanDetailRequestDto);
+        doRequestWithServiceIsOkMockedTest("/get/loan",
+                loanDetailRequestDto)
+                .andExpect(jsonPath("$.code").value("0024"));
     }
 
 }
