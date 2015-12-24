@@ -118,7 +118,6 @@
                         </#if>
                     </td>
                     <td>${invest.investorMobile!}</td>
-                    <#--<td>${invest.isStaff()?string('是','否')}</td>-->
                     <td>${invest.referrerLoginName!}
                         <#if invest.isReferrerStaff()>
                             <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
