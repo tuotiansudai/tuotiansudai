@@ -53,13 +53,13 @@
             <label class="col-sm-2 control-label">产品类型: </label>
 
             <div class="col-sm-4">
-                <select class="selectpicker jq-b-type b-width">
-                    <option value="请选择产品类型">请选择产品类型</option>
+                <select class="selectpicker b-width product-type-name">
+                    <option value="请选择产品类型" data-percent="0%" data-time="">请选择产品类型</option>
                     <option value="速盈利" data-percent="10%" data-time="1">速盈利</option>
                     <option value="稳盈绣" data-percent="12%" data-time="3">稳盈绣</option>
                     <option value="久盈富" data-percent="14%" data-time="6">久盈富</option>
                 </select>
-                <input type="hidden" class="jq-mark-type" value=""/>
+                <input type="hidden" class="product-type" value=""/>
             </div>
         </div>
         <div class="form-group">
@@ -113,12 +113,11 @@
             <label class="col-sm-2 control-label">借款期限: </label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control jq-timer" placeholder="" datatype="num" errormsg="借款期限需要填写数字">
+                <input type="text" class="form-control jq-timer" placeholder="" datatype="num" errormsg="借款期限需要填写数字" id="loanPeriod">
 
             </div>
             <div class="col-sm-3">
                 <div class="form-control-static">(单位：
-                    <label class="jq-day">1</label>
                     <label class="jq-piex">月</label>
                     )
                 </div>
@@ -214,7 +213,7 @@
             <label class="col-sm-2 control-label">基本利率（%）: </label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control jq-base-percent jq-money" placeholder="" datatype="money_fl"
+                <input type="text" class="form-control jq-base-percent jq-money" placeholder="" id="baseRate" datatype="money_fl"
                        errormsg="基本利率需要正确填写">
             </div>
         </div>
