@@ -34,7 +34,7 @@
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
                     <div  id="userDateDistribution" style="width:100%; height:400px;">
-                        <span class="loading-report">加载中...</span>
+
                     </div>
                 </div>
             </div>
@@ -68,7 +68,6 @@
 
                    <div id="UserRechargeDistribution" style="width:100%; height:400px;">
 
-                       <span class="loading-report">加载中...</span>
                    </div>
                 </div>
             </div>
@@ -99,7 +98,6 @@
                     </form>
 
                     <div id="userWithdrawDistribution" style="width:100%; height:400px;">
-                        <span class="loading-report">加载中...</span>
                     </div>
                 </div>
             </div>
@@ -123,7 +121,6 @@
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
                     <div id="userInvestViscosity" style="width:100%; height:400px;">
-                        <span class="loading-report">加载中...</span>
                     </div>
                 </div>
             </div>
@@ -158,7 +155,6 @@
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
                     <div id="userInvestAmountDistribution" style="width:100%; height:400px;">
-                        <span class="loading-report">加载中...</span>
                     </div>
                 </div>
             </div>
@@ -186,7 +182,6 @@
                     </form>
 
                     <div id="userInvestCountDistribution" style="width:100%; height:400px;">
-                        <span class="loading-report">加载中...</span>
                     </div>
                 </div>
             </div>
@@ -211,7 +206,6 @@
                     </form>
 
                     <div id="registerUserAgeDistribution" style="width:100%; height:400px;">
-                        <span class="loading-report">加载中...</span>
                     </div>
                 </div>
             </div>
@@ -234,7 +228,6 @@
                     </form>
 
                     <div id="investorUserAgeDistribution" style="width:100%; height:400px;">
-                        <span class="loading-report">加载中...</span>
                     </div>
                 </div>
             </div>

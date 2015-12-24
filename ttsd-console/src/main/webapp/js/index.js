@@ -63,19 +63,20 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     function showReport(form,url,reportbox,name,category) {
         var Btn=$(form).find(':button');
         Btn.click(function() {
-            var dataFormat=$(form).serialize();
+            var dataFormat=$(form).serialize(),
+            reportBoxDOM=$('#'+reportbox);
+            reportBoxDOM.empty().html('<span class="loading-report">加载中...</span>');
             $.ajax({
                 type: 'GET',
                 data:dataFormat,
                 url: url,
                 dataType: 'json'
             }).done(function (data) {
-                var option,reportBoxDOM=$('#'+reportbox);
+                var option;
                 if(data.length==0) {
-                    reportBoxDOM.find('span.loading-report').text('暂无数据');
+                    reportBoxDOM.html('<span class="loading-report">没有数据</span>');
                     return;
                 }
-                reportBoxDOM.find('span.loading-report').hide();
                 switch(category){
                     case 'Lines':
                          option = loadEcharts.ChartOptionTemplates.Lines(data, name);
