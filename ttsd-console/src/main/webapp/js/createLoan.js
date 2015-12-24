@@ -118,10 +118,6 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             _options.each(function (i) {
                 if ($.trim(_options.eq(i).text()) == $.trim(txt)) {
                     if(type){
-                        _hidden.attr({
-                            'data-percent':_options.eq(i).attr('data-percent'),
-                            'data-time':_options.eq(i).attr('data-time')
-                        });
                         $('#loanPeriod').val(_options.eq(i).attr('data-time'));
                         $('#baseRate').val(_options.eq(i).attr('data-percent'));
                     }
