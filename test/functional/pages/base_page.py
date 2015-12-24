@@ -119,4 +119,3 @@ class BasePage(object):
 
     def get_session_id(self):
         return self.get_cookie_by_name("SESSION")
-

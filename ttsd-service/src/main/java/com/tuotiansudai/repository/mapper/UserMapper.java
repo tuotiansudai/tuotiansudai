@@ -24,6 +24,9 @@ public interface UserMapper {
 
     void updateUser(UserModel userModel);
 
+    List<UserModel> searchAllUsers(@Param(value = "loginName") String loginName,@Param(value = "referrer") String referrer,@Param(value = "mobile") String mobile,
+                                   @Param(value = "identityNumber") String identityNumber);
+
     List<UserModel> findAllUser(@Param(value = "loginName") String loginName,
                                 @Param(value = "email") String email,
                                 @Param(value = "mobile") String mobile,
@@ -49,6 +52,8 @@ public interface UserMapper {
 
     void updatePasswordByLoginName(@Param(value = "loginName") String loginName, @Param(value = "password") String password);
 
+    List<String> findStaffByLikeLoginName(String loginName);
+
     List<String> findLoginNameLike(String loginName);
 
     List<String> findAllChannels();
@@ -56,4 +61,10 @@ public interface UserMapper {
     List<UserModel> findUserByProvince();
     
     int findUserCount();
+
+    List<UserModel> findUsersAccountBalance(@Param(value = "loginName") String loginName, @Param(value = "startLimit") int startLimit, @Param(value = "endLimit") int endLimit);
+
+    long findUsersAccountBalanceSum(@Param(value = "loginName") String loginName);
+
+    int findUsersAccountBalanceCount(@Param(value = "loginName") String loginName);
 }

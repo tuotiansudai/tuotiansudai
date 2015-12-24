@@ -84,7 +84,7 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th colspan="12">合计投资金额：${data.sumAmount/100} 元</th>
+                <th colspan="13">合计投资金额：${data.sumAmount/100} 元</th>
             </tr>
             <tr>
                 <th>项目编号</th>
@@ -99,6 +99,7 @@
                 <th>自动投标</th>
                 <th>投资金额</th>
                 <th>投资状态</th>
+                <th>回款记录</th>
             </tr>
             </thead>
             <tbody>
@@ -116,10 +117,11 @@
                     <td>${invest.autoInvest?then('是','否')}</td>
                     <td>${invest.amount}</td>
                     <td>${invest.status}</td>
+                    <td><a href="/finance-manage/invest-repay/${invest.investId?string.computer}">回款记录</a></td>
                 </tr>
                 <#else>
                 <tr>
-                    <td colspan="12">Empty</td>
+                    <td colspan="13">Empty</td>
                 </tr>
                 </#list>
             </tbody>
@@ -136,7 +138,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="?index=${data.index - 1}&<#if loanId??>loanId=${loanId}&</#if><#if loginName??>loginName=${loginName}&</#if><#if startTime??>startTime=${startTime}&</#if><#if endTime??>endTime=${endTime!}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if>" aria-label="Previous">
+                    <a href="?index=${data.index - 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if loginName??>loginName=${loginName}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if>" aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
@@ -146,7 +148,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                    <a href="?index=${data.index + 1}&<#if loanId??>loanId=${loanId}&</#if><#if loginName??>loginName=${loginName}&</#if><#if startTime??>startTime=${startTime}&</#if><#if endTime??>endTime=${endTime!}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if>" aria-label="Next">
+                    <a href="?index=${data.index + 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if loginName??>loginName=${loginName}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if>" aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>

@@ -33,7 +33,6 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
             title: '手机验证',
             area: ['300px', '190px'],
             shadeClose: true,
-            skin:'image-captcha-layer',
             content: $('.image-captcha-dialog'),
             success: function (layero, index) {
                 $('.image-captcha-form label').remove();
