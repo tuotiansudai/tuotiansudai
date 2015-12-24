@@ -10,7 +10,6 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
@@ -151,7 +150,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean changePassword(String loginName, String mobile, String originalPassword, String newPassword) {
+    public boolean changePassword(String loginName, String originalPassword, String newPassword) {
 
         boolean correct = this.verifyPasswordCorrect(loginName, originalPassword);
 
@@ -160,6 +159,7 @@ public class UserServiceImpl implements UserService {
         }
 
         UserModel userModel = userMapper.findByLoginName(loginName);
+        String mobile = userModel.getMobile();
 
         String encodedNewPassword = myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt());
         userMapper.updatePasswordByLoginName(loginName, encodedNewPassword);
@@ -400,6 +400,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber) {
         return userMapper.searchAllUsers(loginName, referrer, mobile, identityNumber);
+    }
+
+    @Override
+    public List<UserModel> findUsersAccountBalance(String loginName, int currentPageNo, int pageSize) {
+        return userMapper.findUsersAccountBalance(loginName, (currentPageNo - 1 ) * pageSize, pageSize);
+    }
+
+    @Override
+    public int findUsersAccountBalanceCount(String loginName) {
+        return userMapper.findUsersAccountBalanceCount(loginName);
+    }
+
+    @Override
+    public long findUsersAccountBalanceSum(String loginName) {
+        return userMapper.findUsersAccountBalanceSum(loginName);
     }
 
 }
