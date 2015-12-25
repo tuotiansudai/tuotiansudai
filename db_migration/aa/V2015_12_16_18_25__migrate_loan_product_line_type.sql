@@ -1,16 +1,16 @@
-BEGIN ;
+BEGIN;
 UPDATE
-  loan
+  `aa`.`loan`
 SET
-  product_line_type =
+  product_type =
   CASE
-    WHEN periods = 1
+  WHEN periods = 1
     THEN 'SYL'
-    WHEN periods = 3
+  WHEN periods = 3
     THEN 'WYX'
-    WHEN periods = 6
+  WHEN periods = 6
     THEN 'JYF'
-    ELSE NULL
-  END ;
+  ELSE NULL
+  END;
 
-COMMIT ;
+COMMIT;

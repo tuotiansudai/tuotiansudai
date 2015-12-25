@@ -105,7 +105,7 @@ public class LoanDto extends BaseDataDto {
     private ActivityType activityType;
 
     @NotEmpty
-    private ProductLineType productLineType;
+    private ProductType productType;
 
     /***
      * 活动利率
@@ -490,11 +490,11 @@ public class LoanDto extends BaseDataDto {
         this.maxAvailableInvestAmount = maxAvailableInvestAmount;
     }
 
-    public ProductLineType getProductLineType() {
-        return productLineType;
+    public ProductType getProductType() {
+        return productType;
     }
 
-    public void setProductLineType(ProductLineType productLineType) {
-        this.productLineType = productLineType;
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
     }
 }

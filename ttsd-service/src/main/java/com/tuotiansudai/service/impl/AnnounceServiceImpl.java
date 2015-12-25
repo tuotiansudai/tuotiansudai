@@ -1,5 +1,7 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.AnnounceDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
@@ -49,24 +51,25 @@ public class AnnounceServiceImpl implements AnnounceService {
     }
 
     @Override
-    public AnnounceDto getDtoById(long id){
-        AnnounceModel model =  this.findById(id);
+    public AnnounceDto getDtoById(long id) {
+        AnnounceModel model = this.findById(id);
         return new AnnounceDto(model);
     }
 
     @Override
     public BaseDto<BasePaginationDataDto> getAnnouncementList(int index, int pageSize) {
-        List<AnnounceModel> announceList = this.announceMapper.findAnnounce(null, null, (index-1)*pageSize, pageSize);
+        List<AnnounceModel> announceModels = this.announceMapper.findAnnounce(null, null, (index - 1) * pageSize, pageSize);
         int count = this.announceMapper.findAnnounceCount(null, null);
 
-        List<AnnounceDto> announceDtos = new ArrayList<AnnounceDto>();
+        List<AnnounceDto> announceList = Lists.transform(announceModels, new Function<AnnounceModel, AnnounceDto>() {
+            @Override
+            public AnnounceDto apply(AnnounceModel input) {
+                return new AnnounceDto(input);
+            }
+        });
 
-        for (AnnounceModel model : announceList) {
-            AnnounceDto dto = new AnnounceDto(model);
-            announceDtos.add(dto);
-        }
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
-        BasePaginationDataDto<AnnounceDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, announceDtos);
+        BasePaginationDataDto<AnnounceDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, announceList);
         baseDto.setData(dataDto);
         dataDto.setStatus(true);
         return baseDto;
