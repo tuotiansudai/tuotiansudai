@@ -32,7 +32,6 @@ public abstract class BaseClient {
 
     protected String execute(String path, String requestJson, String method) {
         String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", path);
-        logger.debug("=====url===" + url);
         RequestBody requestBody = RequestBody.create(JSON, !Strings.isNullOrEmpty(requestJson) ? requestJson : "");
         if ("GET".equalsIgnoreCase(method)) {
             requestBody = null;
