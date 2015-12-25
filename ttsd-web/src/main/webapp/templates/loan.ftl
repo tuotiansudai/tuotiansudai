@@ -37,6 +37,7 @@
                 投资要求：<@amount>${loan.minInvestAmount}</@amount>元起投,投资金额为<@amount>${loan.investIncreasingAmount}</@amount>的整数倍<br/>
                 <a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_Blank">借款协议样本</a>
             </div>
+            <div class="product-type-text">速盈利</div><!--还有稳盈绣/久盈富-->
         </div>
         <div class="account-info fl">
             <h5 class="l-title">拓天速贷提醒您：理财非存款，投资需谨慎！</h5>

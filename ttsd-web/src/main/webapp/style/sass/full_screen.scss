@@ -161,15 +161,26 @@ body {
       .notice-text {
         float: left;
         width: 825px;
-        color: #b2b2b2;
         padding-left: 40px;
-        span {
-          float: left;
-          &.text-title {
-            width: 640px;
-          }
-          &.text-date {
-            width: 90px;
+        ul{
+          float:left;
+          width:730px;
+          li{
+            float:left;
+            width:100%;
+            &:hover span{
+              color: #ff752a;
+            }
+            span {
+              float: left;
+              color: #b2b2b2;
+              &.text-title {
+                width: 640px;
+              }
+              &.text-date {
+                width: 90px;
+              }
+            }
           }
         }
         .text-href {
@@ -556,10 +567,13 @@ body {
               }
             }
             .pad-m {
-              padding: 10px 20px 15px 20px;
+              padding: 10px 20px 22px 20px;
+              .clear-blank{
+                margin-top:18px;
+              }
             }
             .btn-normal {
-              padding: 8px 0;
+              padding: 13px 0;
               width: 100%;
               border-bottom-left-radius: 10px;
               border-bottom-right-radius: 10px;
@@ -1000,6 +1014,7 @@ body {
     .home-content {
       background: #fafafa;
       margin-top: 10px !important;
+      padding-top:0!important;
       .page-width {
         padding: 15px;
         .product-box-list {
@@ -1013,14 +1028,17 @@ body {
               position: relative;
               padding-bottom: 22px;
               text-align: left;
+              .img-syl,.img-wyx,.img-jyf{
+                background-size:70%!important;
+              }
               .pr-title {
                 font-size: 15px;
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
-                width: 100%;
                 margin-left: 15px;
                 color: #4c4c4c;
+                padding-left:20px;
               }
               .pr-square {
                 width: 54%;
@@ -1144,11 +1162,13 @@ body {
             float: none !important;
           }
         }
-        .home-ad {
-
-          display: none;
+        .invest-total {
+          margin-bottom:0!important;
         }
       }
+    }
+    .media-hide{
+      display:none;
     }
   }
   /* project schedule progress */
@@ -1166,6 +1186,7 @@ body {
       }
     }
   }
+
 }
 
 @media screen and (max-width: 700px) {
