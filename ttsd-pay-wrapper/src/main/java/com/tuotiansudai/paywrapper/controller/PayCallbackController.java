@@ -154,8 +154,6 @@ public class PayCallbackController {
 
     @RequestMapping(value = "/over_invest_payback_notify", method = RequestMethod.GET)
     public ModelAndView overInvestPaybackNotify(HttpServletRequest request) {
-        //TODO:remove this log
-        logger.info("into over_invest_payback_notify");
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.investService.overInvestPaybackCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
