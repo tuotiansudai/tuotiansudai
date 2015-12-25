@@ -16,8 +16,8 @@
     </resultMap>
 
     <insert id="create" parameterType="systemRechargeModel" useGeneratedKeys="true" keyProperty="id">
-        insert into system_recharge ( login_name,time,amount,success_time,status,remark)
-        value( #{loginName}, #{time}, #{amount}, #{successTime}, #{status},#{remark})
+        insert into system_recharge (id, login_name,time,amount,success_time,status,remark)
+        value( #{id},#{loginName}, #{time}, #{amount}, #{successTime}, #{status},#{remark})
     </insert>
 
     <select id="findById" parameterType="long" resultMap="systemRechargeResultMap">
