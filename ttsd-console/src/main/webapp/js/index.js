@@ -83,6 +83,9 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
                     case 'bar':
                          option = loadEcharts.ChartOptionTemplates.Bar(data, name);
                         break;
+                    case 'kBar':
+                        option = loadEcharts.ChartOptionTemplates.kBar(data, name);
+                        break;
                     case 'pie':
                         option = loadEcharts.ChartOptionTemplates.Pie(data, name);
                         break;
@@ -120,5 +123,9 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
 
     /*投资用户年龄分布*/
     showReport('#formInvestorUserAgeReport','/bi/investor-user-age-trend','investorUserAgeDistribution','投资用户(人)','pie');
+
+    /*标的满标周期分布*/
+    showReport('#formLoanRaisingTimeCostingReport','/bi/loan-raising-time-costing-trend','loanRaisingTimeCostingDistribution','天数','kBar');
+
 
 });

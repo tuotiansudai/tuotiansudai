@@ -239,6 +239,29 @@
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-sm-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">标的满标周期分布</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-inline" id="formLoanRaisingTimeCostingReport">
+                            开始时间： <input type="text" class="form-control start-date" name="startTime">
+                            结束时间：<input type="text" class="form-control end-date" name="endTime">
+                            <button class="btn btn-primary" type="button">查询</button>
+                        </form>
+
+                        <div id="loanRaisingTimeCostingDistribution" style="width:100%; height:400px;">
+
+                            <span class="loading-report">加载中...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
