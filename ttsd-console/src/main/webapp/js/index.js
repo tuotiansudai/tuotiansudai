@@ -127,4 +127,6 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     /*投资用户年龄分布*/
     showReport('#formInvestorUserAgeReport','/bi/investor-user-age-trend','investorUserAgeDistribution','投资用户(人)','pie');
 
+    showReport('#formWithdrawUserCountReport','/bi/withdraw-user-count-trend','withdrawUserCountDistribution','提现人数(人)','Lines');
+
 });

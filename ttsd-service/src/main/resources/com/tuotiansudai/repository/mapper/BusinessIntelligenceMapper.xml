@@ -956,4 +956,34 @@
             ) temp
         group by `name`;
     </select>
+    <select id="queryWithdrawUserCountTrend" parameterType="map" resultMap="keyValueMap">
+        select
+        <if test="granularity.name() == 'Daily'">
+            DATE(created_time) AS `name`,
+        </if>
+        <if test="granularity.name() == 'Weekly'">
+            DATE_FORMAT(created_time, '%Y-W%u') AS `name`,
+        </if>
+        <if test="granularity.name() == 'Monthly'">
+            DATE_FORMAT(created_time, '%Y-%m') AS `name`,
+        </if>
+        count(distinct(login_name)) AS `value`,
+        '提现人数' AS `group`
+
+        from withdraw where status = 'SUCCESS'
+
+        and created_time between #{startTime} and #{endTime}
+
+        group by
+        <if test="granularity.name() == 'Daily'">
+            date(created_time)
+        </if>
+        <if test="granularity.name() == 'Weekly'">
+            year(created_time), week(created_time)
+        </if>
+        <if test="granularity.name() == 'Monthly'">
+            year(created_time), month(created_time)
+        </if>
+
+    </select>
 </mapper>
