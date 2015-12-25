@@ -1,5 +1,5 @@
 CREATE TABLE `aa`.`system_recharge` (
-  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` BIGINT UNSIGNED NOT NULL,
   `login_name` varchar(25) NOT NULL,
   `time` datetime NOT NULL,
   `amount` BIGINT UNSIGNED NOT NULL,
