@@ -197,6 +197,7 @@ public class LoanServiceImpl implements LoanService {
         LoanDto loanDto = new LoanDto();
         loanDto.setId(loanModel.getId());
         loanDto.setProjectName(loanModel.getName());
+        loanDto.setProductType(loanModel.getProductType());
         loanDto.setAgentLoginName(loanModel.getAgentLoginName());
         loanDto.setLoanerLoginName(loanModel.getLoanerLoginName());
         loanDto.setLoanerUserName(loanModel.getLoanerUserName());

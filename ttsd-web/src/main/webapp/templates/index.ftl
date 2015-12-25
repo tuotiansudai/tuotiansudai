@@ -41,26 +41,15 @@
             <h3>最新公告</h3>
             <div class="notice-text scroll-top">
                 <ul>
-                    <li>
-                        <a href="#">
-                            <span class="text-title">拓天速贷12月最新投资排名，12月标王揭晓！</span>
-                            <span class="text-date">2016-01-01</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="text-title">拓天速贷12月最新投资排名，12月标王揭晓！</span>
-                            <span class="text-date">2016-01-01</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="text-title">拓天速贷12月最新投资排名，12月标王揭晓！</span>
-                            <span class="text-date">2016-01-01</span>
-                        </a>
-                    </li>
+                    <#list announces as announce>
+                        <li>
+                            <a href="/announce/${announce.id}">
+                                <span class="text-title">${announce.title}</span>
+                                <span class="text-date">${announce.createdTime?string("yyyy-MM-dd")}</span>
+                            </a>
+                        </li>
+                    </#list>
                 </ul>
-                
                 <a href="/about/notice" class="text-href">查看更多</a>
             </div>
         </div>
