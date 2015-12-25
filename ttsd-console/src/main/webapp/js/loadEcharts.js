@@ -122,6 +122,72 @@ define(['jquery','underscore','echarts'], function ($,_) {
                 };
                 return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonLineOption, option);
             },
+            kBar:function(data, name) {
+                var xAxisdata=_.pluck(data, 'name'),
+                    valueOBJ=_.pluck(data, 'value'),
+                    newValueOBJ=[];
+                _.each(valueOBJ,function(value) {
+                    newValueOBJ.push(value.split(','));
+                });
+                var option = {
+                    tooltip : {
+                        trigger: 'axis',
+                        formatter: function (params) {
+                            var res = params[0].seriesName + ' ' + params[0].name;
+                            res += '<br/>  中值 : ' + params[0].value[2] + '天   最高 : ' + params[0].value[3]+'天';
+                            res += '<br/>  中位数 : ' + params[0].value[1] + '天   最低 : ' + params[0].value[0]+'天';
+                            return res;
+                        }
+                    },
+                    xAxis : [
+                        {
+                            type : 'category',
+                            name:'标的期数',
+                            boundaryGap : true,
+                            axisTick: {onGap:false},
+                            splitLine: {show:false},
+                            data : xAxisdata
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            name: name || '',
+                            type : 'value',
+                            scale:false
+                        }
+                    ],
+                    series : [
+                        {
+                            name:'标的满标周期分布',
+                            type:'k',
+                            barMaxWidth: 40,
+                            itemStyle: {
+                                normal: {
+                                    color: 'orange',
+                                    color0: 'orange',
+                                    lineStyle: {
+                                        width: 3,
+                                        color: 'orange',
+                                        color0: 'orange'
+                                    }
+                                },
+                                emphasis: {
+                                    color: '#d0630b',
+                                    color0: '#d0630b',
+                                    lineStyle: {
+                                        width: 2,
+                                        color: '#d0630b',
+                                        color0: '#d0630b'
+                                    }
+                                }
+                            },
+                            data:newValueOBJ
+                        }
+                    ]
+                };
+                return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonLineOption, option);
+
+    },
             Pie: function (data, name) {
                 var pie_datas = MyChartsObject.ChartDataFormate.FormateNOGroupData(data,'pie');
                 var option = {
@@ -227,6 +293,7 @@ define(['jquery','underscore','echarts'], function ($,_) {
                         'echarts/chart/pie',
                         'echarts/chart/bar',
                         'echarts/chart/line',
+                        'echarts/chart/k',
                         'echarts/chart/scatter'
                     ],
                     function (ec) {
