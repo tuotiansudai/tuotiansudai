@@ -1,4 +1,4 @@
-require(['jquery','underscore', 'csrf'], function ($,_) {
+require(['jquery', 'underscore', 'csrf'], function ($, _) {
     $(function () {
         var $bannerBox = $('.banner-box'),
             $imgScroll = $('.banner-img-list', $bannerBox),

@@ -10,7 +10,7 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 
-    <context:property-placeholder location="classpath*:ttsd-env.properties, classpath*:ttsd-biz.properties" />
+    <context:property-placeholder location="classpath*:ttsd-env.properties, classpath*:ttsd-biz.properties"/>
 
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="false">
@@ -47,6 +47,19 @@
         <property name="staticServer" value="${web.static.server}"/>
         <property name="javascriptLocation" value="/js/dest"/>
         <property name="cssLocation" value="/style/dest"/>
+        <property name="sourceMap">
+            <map>
+                <entry key="percentFraction">
+                    <bean class="com.tuotiansudai.web.freemarker.directive.PercentFractionDirective"/>
+                </entry>
+                <entry key="percentInteger">
+                    <bean class="com.tuotiansudai.web.freemarker.directive.PercentIntegerDirective"/>
+                </entry>
+                <entry key="amount">
+                    <bean class="com.tuotiansudai.web.freemarker.directive.AmountDirective"/>
+                </entry>
+            </map>
+        </property>
     </bean>
 
     <!-- freemarker config -->

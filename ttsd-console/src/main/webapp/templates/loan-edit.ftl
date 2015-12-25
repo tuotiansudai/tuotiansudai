@@ -221,13 +221,13 @@
             <label class="col-sm-2 control-label">产品线类型: </label>
             <div class="col-sm-4">
                 <select class="selectpicker" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
-                    <#list productLineTypes as productLineType>
-                        <option value="${productLineType.name()}" <#if productLineType.name() == loanInfo.productLineType>selected</#if> data-period="${productLineType.getProductLineTypePeriod()}" data-baserate="${productLineType.getProductLineTypeBaseRate()?string('0.00')}">
-                        ${productLineType.getProductLineTypeName()}
+                    <#list productTypes as productType>
+                        <option value="${productType.name()}" <#if productType.name() == loanInfo.productType>selected</#if> data-period="${productType.getPeriods()}" data-baserate="${productType.getRate()?string('0.00')}">
+                        ${productType.getName()}
                         </option>
                     </#list>
                 </select>
-                <input type="hidden" class="jq-product-type" value="${loanInfo.productLineType}"/>
+                <input type="hidden" class="jq-product-type" value="${loanInfo.productType}"/>
             </div>
         </div>
 

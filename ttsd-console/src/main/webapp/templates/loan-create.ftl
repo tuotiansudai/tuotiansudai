@@ -206,9 +206,9 @@
             <div class="col-sm-4">
                 <select class="selectpicker">
                     <option value="">请选择</option>
-                    <#list productLineTypes as productLineType>
-                        <option value="${productLineType.name()}" data-period="${productLineType.getProductLineTypePeriod()}" data-baserate="${productLineType.getProductLineTypeBaseRate()?string('0.00')}">
-                            ${productLineType.getProductLineTypeName()}
+                    <#list productTypes as productType>
+                        <option value="${productType.name()}" data-period="${productType.getPeriods()}" data-baserate="${productType.getRate()?string('0.00')}">
+                            ${productType.getName()}
                         </option>
                     </#list>
                 </select>

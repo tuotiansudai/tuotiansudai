@@ -315,7 +315,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     "maxInvestAmount": $('.jq-max-pay').val(),
                     "investIncreasingAmount": $('.jq-add-pay').val(),
                     "activityType": $('.jq-impact-type').val(),
-                    "productLineType": $('.jq-product-type').val(),
+                    "productType": $('.jq-product-type').val(),
                     "activityRate": $('.jq-percent').val(),
                     "contractId": $('.jq-pact').val(),
                     "basicRate": $('.jq-base-percent').val(),

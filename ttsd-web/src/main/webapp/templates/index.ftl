@@ -113,7 +113,7 @@
             <div class="product-list">
                 <ul>
                     <li class="syl-text">
-                        <a href="#">
+                        <a href="/loan-list?productType=SYL">
                             <div class="icon-proimg">
                                 <img class="icon-off" src="${staticServer}/images/icons/syl-icon.png" alt="速盈利 快速高效">
                             </div>
@@ -132,7 +132,7 @@
                         </a>
                     </li>
                     <li class="wyx-text">
-                        <a href="#">
+                        <a href="/loan-list?productType=WYX">
                             <div class="icon-proimg">
                                 <img class="icon-off" src="${staticServer}/images/icons/wyx-icon.png" alt="稳盈绣 稳健灵活">
                             </div>
@@ -151,7 +151,7 @@
                         </a>
                     </li>
                     <li class="jyf-text li-last">
-                        <a href="#">
+                        <a href="/loan-list?productType=JYF">
                             <div class="icon-proimg">
                                 <img class="icon-off" src="${staticServer}/images/icons/jyf-icon.png" alt="久盈富 财富法宝">
                             </div>
@@ -186,91 +186,9 @@
             </h3>
             <div class="product-box-list fl">
                 <div class="product-box-inner">
-
-                    <div class="product-box tc product-type">
-                        <i class="img-syl"></i>
-                        <div class="pad-m">
-                            <h2 class="pr-title">速盈利</h2>
-                            <div class="pr-square tc">
-                                <div class="pr-square-in">
-                                    <em><b>23</b>%</em>
-                                    <i>年化收益</i>
-                                </div>
-                            </div>
-                            <dl class="pr-info">
-                                <dd class="dl-month"><i>2</i>tian <span>项目期限</span></dd>
-                                <dd class="dl-amount"><i>234元</i><span>项目金额</span></dd>
-                            </dl>
-                            <div class="project-schedule clear-blank clearfix">
-                                <div class="p-title">
-                                    <span class="fl">项目进度</span>
-                                    <span class="point fr">34%</span>
-                                </div>
-                                <div class="process-percent">
-                                    <div class="percent" style="width:20%"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#" class="btn-normal">立即投资</a>
-                    </div>
-
-                    <div class="product-box tc product-type">
-                        <i class="img-wyx"></i>
-                        <div class="pad-m">
-                            <h2 class="pr-title">稳盈绣</h2>
-                            <div class="pr-square tc">
-                                <div class="pr-square-in">
-                                    <em><b>23</b>%</em>
-                                    <i>年化收益</i>
-                                </div>
-                            </div>
-                            <dl class="pr-info">
-                                <dd class="dl-month"><i>2</i>tian <span>项目期限</span></dd>
-                                <dd class="dl-amount"><i>234元</i><span>项目金额</span></dd>
-                            </dl>
-                            <div class="project-schedule clear-blank clearfix">
-                                <div class="p-title">
-                                    <span class="fl">项目进度</span>
-                                    <span class="point fr">34%</span>
-                                </div>
-                                <div class="process-percent">
-                                    <div class="percent" style="width:20%"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#" class="btn-normal">立即投资</a>
-                    </div>
-
-                    <div class="product-box tc product-type">
-                        <i class="img-jyf"></i>
-                        <div class="pad-m">
-                            <h2 class="pr-title">久盈富</h2>
-                            <div class="pr-square tc">
-                                <div class="pr-square-in">
-                                    <em><b>23</b>%</em>
-                                    <i>年化收益</i>
-                                </div>
-                            </div>
-                            <dl class="pr-info">
-                                <dd class="dl-month"><i>2</i>tian <span>项目期限</span></dd>
-                                <dd class="dl-amount"><i>234元</i><span>项目金额</span></dd>
-                            </dl>
-                            <div class="project-schedule clear-blank clearfix">
-                                <div class="p-title">
-                                    <span class="fl">项目进度</span>
-                                    <span class="point fr">34%</span>
-                                </div>
-                                <div class="process-percent">
-                                    <div class="percent" style="width:20%"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#" class="btn-normal">立即投资</a>
-                    </div>
-
                     <#list loans as loan>
-                        <div class="product-box tc <#if loan.activityType=="NEWBIE">new-standard</#if>">
-                            <#if loan.activityType=='NEWBIE'><i class="hot-new"></i></#if>
+                        <div class="product-box tc product-type">
+                            <i class="img-${loan.productType?lower_case}"></i>
                             <div class="pad-m" title="${loan.name}" data-url="/loan/${loan.id?string.computer}">
                                 <h2 class="pr-title">${loan.name}</h2>
                                 <div class="pr-square tc">

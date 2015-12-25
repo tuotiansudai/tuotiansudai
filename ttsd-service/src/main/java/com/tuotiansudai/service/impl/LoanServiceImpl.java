@@ -22,6 +22,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +33,8 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+
+import static com.tuotiansudai.repository.model.LoanStatus.RECHECK;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -637,52 +640,57 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public List<LoanListWebDto> findLoanListWeb(ProductLineType productLineType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd, int currentPageNo) {
+    public List<LoanItemDto> findLoanItems(ProductType productType, LoanStatus status, double rateStart, double rateEnd, int index) {
+        index = (index - 1) * 10;
 
-        currentPageNo = (currentPageNo - 1) * 10;
-        List<LoanModel> loanModels = loanMapper.findLoanListWeb(productLineType, status, periodsStart, periodsEnd, rateStart,
-                rateEnd, currentPageNo);
-        List<LoanListWebDto> loanListWebDtos = Lists.newArrayList();
-        String added;
-        for (int i = 0; i < loanModels.size(); i++) {
-            LoanListWebDto loanListWebDto = new LoanListWebDto();
-            loanListWebDto.setId(loanModels.get(i).getId());
-            loanListWebDto.setName(loanModels.get(i).getName());
-            loanListWebDto.setBaseRate(new BigDecimal(String.valueOf(loanModels.get(i).getBaseRate())).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
-            if (loanModels.get(i).getActivityRate() > 0) {
-                loanListWebDto.setActivityRate(new BigDecimal(String.valueOf(loanModels.get(i).getActivityRate())).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
-            }
-            loanListWebDto.setPeriods(loanModels.get(i).getPeriods());
-            loanListWebDto.setType(loanModels.get(i).getType());
-            loanListWebDto.setStatus(loanModels.get(i).getStatus());
-            loanListWebDto.setLoanAmount(new BigDecimal(loanModels.get(i).getLoanAmount()).toString());
-            loanListWebDto.setActivityType(loanModels.get(i).getActivityType());
-            if (loanModels.get(i).getStatus() == LoanStatus.PREHEAT) {
-                if (DateUtil.differenceMinute(new Date(), loanModels.get(i).getFundraisingStartTime()) < 30) {
-                    added = String.valueOf(DateUtil.differenceMinute(new Date(), loanModels.get(i).getFundraisingStartTime())) + " 分钟后";
-                } else {
-                    added = new DateTime(loanModels.get(i).getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm");
+        List<LoanModel> loanModels = loanMapper.findLoanListWeb(productType, status, rateStart, rateEnd, index);
+
+        return Lists.transform(loanModels, new Function<LoanModel, LoanItemDto>() {
+            @Override
+            public LoanItemDto apply(LoanModel loanModel) {
+                LoanItemDto loanItemDto = new LoanItemDto();
+                loanItemDto.setId(loanModel.getId());
+                loanItemDto.setName(loanModel.getName());
+                loanItemDto.setProductType(loanModel.getProductType());
+                loanItemDto.setBaseRate(new BigDecimal(loanModel.getBaseRate() * 100).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
+                loanItemDto.setActivityRate(new BigDecimal(loanModel.getActivityRate() * 100).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
+                loanItemDto.setPeriods(loanModel.getPeriods());
+                loanItemDto.setType(loanModel.getType());
+                loanItemDto.setStatus(loanModel.getStatus());
+                loanItemDto.setLoanAmount(loanModel.getLoanAmount());
+                loanItemDto.setActivityType(loanModel.getActivityType());
+                BigDecimal loanAmountBigDecimal = new BigDecimal(loanModel.getLoanAmount());
+                BigDecimal sumInvestAmountBigDecimal = new BigDecimal(investMapper.sumSuccessInvestAmount(loanModel.getId()));
+                if (LoanStatus.PREHEAT == loanModel.getStatus()) {
+                    long intervalMinutes = new Duration(new Date().getTime(), loanModel.getFundraisingStartTime().getTime()).getStandardMinutes();
+                    if (intervalMinutes < 30) {
+                        loanItemDto.setAlert(MessageFormat.format("{0}分钟后 放标", String.valueOf(intervalMinutes)));
+                    } else {
+                        loanItemDto.setAlert(MessageFormat.format("{0} 放标", new DateTime(loanModel.getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm")));
+                    }
+                    loanItemDto.setProgress(0.0);
                 }
-            } else if (loanModels.get(i).getStatus() == LoanStatus.RAISING || loanModels.get(i).getStatus() == LoanStatus.RECHECK) {
-                added = AmountConverter.convertCentToString(loanModels.get(i).getLoanAmount() - investMapper.sumSuccessInvestAmount(loanModels.get(i).getId()));
-                BigDecimal b1 = new BigDecimal(investMapper.sumSuccessInvestAmount(loanModels.get(i).getId()));
-                BigDecimal b2 = new BigDecimal(loanModels.get(i).getLoanAmount());
-                loanListWebDto.setRateOfAdvance(String.valueOf(b1.divide(b2, 2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue()));
-            } else {
-                added = loanRepayMapper.sumSuccessLoanRepayMaxPeriod(loanModels.get(i).getId()) + "/" + loanModels.get(i).getPeriods();
-                BigDecimal b1 = new BigDecimal(investMapper.sumSuccessInvestAmount(loanModels.get(i).getId()));
-                BigDecimal b2 = new BigDecimal(loanModels.get(i).getLoanAmount());
-                loanListWebDto.setRateOfAdvance(String.valueOf(b1.divide(b2, 2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue()));
+                if (LoanStatus.RAISING == loanModel.getStatus()) {
+                    loanItemDto.setAlert(MessageFormat.format("{0} 元", AmountConverter.convertCentToString(loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanModel.getId()))));
+                    loanItemDto.setProgress(sumInvestAmountBigDecimal.divide(loanAmountBigDecimal, 2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue());
+                }
+                if (LoanStatus.RECHECK == loanModel.getStatus()) {
+                    loanItemDto.setAlert("放款审核");
+                    loanItemDto.setProgress(100);
+                }
+                if (Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.COMPLETE).contains(loanModel.getStatus())) {
+                    loanItemDto.setAlert(MessageFormat.format("还款进度：{0}/{1}期", loanRepayMapper.sumSuccessLoanRepayMaxPeriod(loanModel.getId()), loanModel.calculateLoanRepayTimes()));
+                    loanItemDto.setProgress(100);
+                }
+
+                return loanItemDto;
             }
-            loanListWebDto.setAdded(added);
-            loanListWebDtos.add(loanListWebDto);
-        }
-        return loanListWebDtos;
+        });
     }
 
     @Override
-    public int findLoanListCountWeb(ProductLineType productLineType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd) {
-        return loanMapper.findLoanListCountWeb(productLineType, status, periodsStart, periodsEnd, rateStart, rateEnd);
+    public int findLoanListCountWeb(ProductType productType, LoanStatus status, double rateStart, double rateEnd) {
+        return loanMapper.findLoanListCountWeb(productType, status, rateStart, rateEnd);
     }
 
     private void createDeadLineFundraisingJob(LoanModel loanModel) {
