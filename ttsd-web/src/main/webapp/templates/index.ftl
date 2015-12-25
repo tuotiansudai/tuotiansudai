@@ -36,13 +36,32 @@
             </@global.isAnonymous>
         </div>
     </div>
-    <div class="notice-list">
+    <div class="notice-list media-hide">
         <div class="notice-container">
             <h3>最新公告</h3>
-            <div class="notice-text">
-                <span class="text-title">拓天速贷12月最新投资排名，12月标王揭晓！</span>
-                <span class="text-date">2016-01-01</span>
-                <a href="#" class="text-href">查看更多</a>
+            <div class="notice-text scroll-top">
+                <ul>
+                    <li>
+                        <a href="#">
+                            <span class="text-title">拓天速贷12月最新投资排名，12月标王揭晓！</span>
+                            <span class="text-date">2016-01-01</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="text-title">拓天速贷12月最新投资排名，12月标王揭晓！</span>
+                            <span class="text-date">2016-01-01</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="text-title">拓天速贷12月最新投资排名，12月标王揭晓！</span>
+                            <span class="text-date">2016-01-01</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <a href="/about/notice" class="text-href">查看更多</a>
             </div>
         </div>
     </div>
@@ -82,7 +101,7 @@
         </dl>
     </div>
     <div class="home-content" id="productFrame">
-        <div class="page-width clearfix">
+        <div class="page-width clearfix media-hide">
             <h3 class="label-title">
                 <span class="product-icon">
                     产品介绍
@@ -159,7 +178,7 @@
             </div>
         </div>
         <div class="page-width clearfix">
-            <h3 class="label-title">
+            <h3 class="label-title media-hide">
                 <span class="hot-product">
                     热门产品
                 </span>
@@ -208,7 +227,7 @@
         </div>
 
         <div class="page-width clearfix">
-            <h3 class="label-title">
+            <h3 class="label-title media-hide">
                 <span class="report-icon">
                     运营报告
                 </span>
