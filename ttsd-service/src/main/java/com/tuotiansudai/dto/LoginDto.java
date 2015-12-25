@@ -1,12 +1,17 @@
 package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tuotiansudai.repository.model.Role;
+
+import java.util.List;
 
 public class LoginDto extends BaseDataDto {
 
     private boolean isLocked;
 
     private boolean isCaptchaNotMatch;
+
+    private List<Role> roles;
 
     @JsonProperty(value = "isLocked")
     public boolean isLocked() {
@@ -24,5 +29,14 @@ public class LoginDto extends BaseDataDto {
 
     public void setCaptchaNotMatch(boolean captchaNotMatch) {
         isCaptchaNotMatch = captchaNotMatch;
+    }
+
+    @JsonProperty(value = "roles")
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }

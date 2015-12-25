@@ -45,7 +45,7 @@
                 <tr>
                     <td>${(debtRepaymentPlanDetail.expertRepayDate?string('yyyy-MM-dd'))!}</td>
                     <td>${((debtRepaymentPlanDetail.repayAmount/100)?string('0.00'))!}</td>
-                    <td>${debtRepaymentPlanDetail.loanName!}</td>
+                    <td><a href="${webServer}/loan/${debtRepaymentPlanDetail.loanId?string('0')}" target="_blank">${debtRepaymentPlanDetail.loanName!}</a></td>
                     <td>${debtRepaymentPlanDetail.loginName!}</td>
                     <#if debtRepaymentPlanDetail.status == 'COMPLETE'>
                         <td>还款完成</td>
