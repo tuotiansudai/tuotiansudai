@@ -112,7 +112,7 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
             }
 
             StringBuffer newValue = new StringBuffer();
-            // low,media,average,high
+            // low,median,average,high
             newValue.append(timeCostList[0]).append(",").append(median).append(",").append(average).append(",").append(timeCostList[len - 1]);
             kvm.setValue(newValue.toString());
             kvm.setGroup(null);
