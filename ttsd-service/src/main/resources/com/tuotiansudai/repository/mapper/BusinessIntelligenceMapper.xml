@@ -74,10 +74,13 @@
             (SELECT
             j.*
             FROM
-            USER j
+            user j
             WHERE NOT EXISTS
             (SELECT
             1
+            FROM
+            (SELECT
+            *
             FROM
             (SELECT
             k.`login_name`
@@ -92,7 +95,8 @@
             h.login_name
             FROM
             user_role h
-            WHERE h.role IN ('STAFF', 'AGENT')) gg) u
+            WHERE h.role IN ('STAFF', 'AGENT')) ff) gg
+            WHERE gg.login_name = j.`login_name`)) u
         </if>
 
         <choose>
@@ -205,10 +209,13 @@
                 (SELECT
                 j.*
                 FROM
-                USER j
+                user j
                 WHERE NOT EXISTS
                 (SELECT
                 1
+                FROM
+                (SELECT
+                *
                 FROM
                 (SELECT
                 k.`login_name`
@@ -223,7 +230,8 @@
                 h.login_name
                 FROM
                 user_role h
-                WHERE h.role IN ('STAFF', 'AGENT')) gg) u
+                WHERE h.role IN ('STAFF', 'AGENT')) ff) gg
+                WHERE gg.login_name = j.`login_name`)) u
             </if>
             where not exists (
                 select province from (
@@ -738,10 +746,13 @@
             (SELECT
             j.*
             FROM
-            USER j
+            user j
             WHERE NOT EXISTS
             (SELECT
             1
+            FROM
+            (SELECT
+            *
             FROM
             (SELECT
             k.`login_name`
@@ -756,8 +767,8 @@
             h.login_name
             FROM
             user_role h
-            WHERE h.role IN ('STAFF', 'AGENT')) gg
-            WHERE j.`login_name` = gg.login_name)) u
+            WHERE h.role IN ('STAFF', 'AGENT')) ff) gg
+            WHERE gg.login_name = j.`login_name`)) u
         </if>
         join invest i
         on u.login_name = i.login_name
@@ -823,10 +834,13 @@
                             (SELECT
                             j.*
                             FROM
-                            USER j
+                            user j
                             WHERE NOT EXISTS
                             (SELECT
                             1
+                            FROM
+                            (SELECT
+                            *
                             FROM
                             (SELECT
                             k.`login_name`
@@ -841,8 +855,8 @@
                             h.login_name
                             FROM
                             user_role h
-                            WHERE h.role IN ('STAFF', 'AGENT')) gg
-                            WHERE j.`login_name` = gg.login_name)) uu
+                            WHERE h.role IN ('STAFF', 'AGENT')) ff) gg
+                            WHERE gg.login_name = j.`login_name`)) uu
                         </if>
                           on uu.login_name=ii.login_name
                         where
@@ -933,10 +947,13 @@
                 (SELECT
                 j.*
                 FROM
-                USER j
+                user j
                 WHERE NOT EXISTS
                 (SELECT
                 1
+                FROM
+                (SELECT
+                *
                 FROM
                 (SELECT
                 k.`login_name`
@@ -951,8 +968,8 @@
                 h.login_name
                 FROM
                 user_role h
-                WHERE h.role IN ('STAFF', 'AGENT')) gg
-                WHERE j.`login_name` = gg.login_name)) u
+                WHERE h.role IN ('STAFF', 'AGENT')) ff) gg
+                WHERE gg.login_name = j.`login_name`)) u
             </if>
             join invest i
             on u.login_name = i.login_name
@@ -1013,10 +1030,13 @@
                         (SELECT
                         j.*
                         FROM
-                        USER j
+                        user j
                         WHERE NOT EXISTS
                         (SELECT
                         1
+                        FROM
+                        (SELECT
+                        *
                         FROM
                         (SELECT
                         k.`login_name`
@@ -1031,8 +1051,8 @@
                         h.login_name
                         FROM
                         user_role h
-                        WHERE h.role IN ('STAFF', 'AGENT')) gg
-                        WHERE j.`login_name` = gg.login_name)) uu
+                        WHERE h.role IN ('STAFF', 'AGENT')) ff) gg
+                        WHERE gg.login_name = j.`login_name`)) uu
                     </if>
                     on uu.login_name=ii.login_name
                     where
