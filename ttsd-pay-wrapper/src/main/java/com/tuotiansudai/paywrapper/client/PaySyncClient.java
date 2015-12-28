@@ -64,7 +64,7 @@ public class PaySyncClient {
             responseBodyString = response.body().string();
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
-            updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.FAIL);
+            updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.FAILURE);
             throw new PayException(e);
         }
 

@@ -28,4 +28,16 @@ public interface SystemBillMapper {
                             @Param(value = "endTime") Date endTime,
                             @Param(value = "operationType") SystemBillOperationType operationType,
                             @Param(value = "businessType") SystemBillBusinessType businessType);
+
+
+    long findSumSystemIncome(@Param(value = "startTime") Date startTime,
+                             @Param(value = "endTime") Date endTime,
+                             @Param(value = "operationType") SystemBillOperationType operationType,
+                             @Param(value = "businessType") SystemBillBusinessType businessType);
+
+    long findSumSystemExpend(@Param(value = "startTime") Date startTime,
+                             @Param(value = "endTime") Date endTime,
+                             @Param(value = "operationType") SystemBillOperationType operationType,
+                             @Param(value = "businessType") SystemBillBusinessType businessType);
+
 }

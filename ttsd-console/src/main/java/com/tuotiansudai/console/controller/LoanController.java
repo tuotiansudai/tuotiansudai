@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.LoanTitleDto;
@@ -54,6 +55,7 @@ public class LoanController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> createLoan(@RequestBody LoanDto loanDto) {
+        loanDto.setCreatedLoginName(LoginUserInfo.getLoginName());
         return loanService.createLoan(loanDto);
     }
 
@@ -81,6 +83,7 @@ public class LoanController {
     @RequestMapping(value = "/ok", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> openLoan(@RequestBody LoanDto loanDto) {
+        loanDto.setVerifyLoginName(LoginUserInfo.getLoginName());
         return loanService.openLoan(loanDto);
     }
 
@@ -95,6 +98,7 @@ public class LoanController {
     public BaseDto<PayDataDto> recheckLoan(@RequestBody LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = null;
         try {
+            loanDto.setRecheckLoginName(LoginUserInfo.getLoginName());
             baseDto = loanService.loanOut(loanDto);
         } catch (BaseException e) {
             e.printStackTrace();

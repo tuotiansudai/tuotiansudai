@@ -58,11 +58,20 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             if (obj.length) {
                 obj.remove();
             }
-            var txt = _this.siblings('.files-input').val();
+            var txt = _this.siblings('.files-input').val().replace(/\s+/g,"");
             if (!txt) {
                 _this.parent().append('<i class="error">材料名称不能为空！</i>');
                 return;
             }
+            var duplicate = _this.siblings('.select-box').find('select.selectpicker option').filter(function(key,option){
+                return $(option).text() == txt;
+            });
+
+            if (duplicate.length > 0) {
+                _this.parent().append('<i class="error">材料名称已存在,不能重复添加！</i>');
+                return;
+            }
+
             $.ajax({
                 url: API_POST_TITLE,
                 type: 'POST',

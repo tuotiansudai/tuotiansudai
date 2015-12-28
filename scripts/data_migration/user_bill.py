@@ -1,3 +1,4 @@
+#coding:utf-8
 from scripts.data_migration.base import BaseMigrate
 
 
@@ -6,9 +7,9 @@ class UserBillMigrate(BaseMigrate):
     Class Naming Convention: `NewTableNameMigrate(BaseMigrate)`
     """
     # select sql which is executed on original db (edxapp, tuotiansudai etc)
-    SELECT_SQL = "SELECT user_id, money, balance, frozen_money, type, type_info, time FROM user_bill;"
+    SELECT_SQL = "SELECT user_id, money, balance, frozen_money, type, type_info, time FROM user_bill where detail not in ('未在联动优势开通账户,交易失败','未在联动优势绑定借记卡,交易失败') order by time, seq_num asc limit %s, %s"
     # insert sql which is executed on aa db
-    INSERT_SQL = "INSERT INTO user_bill(`login_name`, `amount`, `balance`, `freeze`, `operation_type`, `business_type`, `created_time`) VALUES(%s, %s, %s, %s, %s, %s, %s)"
+    INSERT_SQL = "INSERT INTO user_bill(`id`, `login_name`, `amount`, `balance`, `freeze`, `operation_type`, `business_type`, `created_time`) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"
 
     OPERATION_TYPE_MAPPING = {'to_balance': 'TO_BALANCE',
                               'ti_balance': 'TI_BALANCE',
@@ -30,9 +31,14 @@ class UserBillMigrate(BaseMigrate):
                              'referrer_reward': 'REFERRER_REWARD',
                              'refuse_apply_withdraw': 'WITHDRAW_FAIL',
                              'withdraw_success': 'WITHDRAW_SUCCESS'}
+    _index = 0
 
     def generate_params(self, old_row):
-        return (old_row['user_id'].lower(),
+
+        self._index += 1
+
+        return (self._index,
+                old_row['user_id'].lower(),
                 int(round(old_row['money'] * 100)),
                 int(round(old_row['balance'] * 100)),
                 int(round(old_row['frozen_money'] * 100)),

@@ -6,7 +6,7 @@ class InvestMigrate(BaseMigrate):
     Class Naming Convention: `NewTableNameMigrate(BaseMigrate)`
     """
     # select sql which is executed on original db (edxapp, tuotiansudai etc)
-    SELECT_SQL = "SELECT id, loan_id, user_id, invest_money, status, source, channel, IF(time='0000-00-00 00:00:00',now(),time) as time FROM invest WHERE status <> 'test'"
+    SELECT_SQL = "SELECT id, loan_id, user_id, invest_money, status, source, channel, IF(time='0000-00-00 00:00:00',now(),time) as time FROM invest WHERE status <> 'test' order by time ASC "
     # insert sql which is executed on aa db
     INSERT_SQL = '''INSERT INTO invest(`id`, `loan_id`, `login_name`, `amount`, `status`, `source`, `channel`, `created_time`)
                     VALUES(%s, %s, %s, %s, %s, %s, %s, %s)'''

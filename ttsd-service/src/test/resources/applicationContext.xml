@@ -31,9 +31,8 @@
         <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${common.jdbc.username}"/>
         <property name="password" value="${common.jdbc.password}"/>
-        <property name="partitionCount" value="4"/>
         <property name="minConnectionsPerPartition" value="1"/>
-        <property name="maxConnectionsPerPartition" value="5"/>
+        <property name="maxConnectionsPerPartition" value="1"/>
         <property name="acquireIncrement" value="1"/>
         <property name="idleMaxAgeInSeconds" value="300"/>
         <property name="statementsCacheSize" value="100"/>
@@ -70,9 +69,8 @@
         <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${common.jdbc.username}"/>
         <property name="password" value="${common.jdbc.password}"/>
-        <property name="partitionCount" value="4"/>
         <property name="minConnectionsPerPartition" value="1"/>
-        <property name="maxConnectionsPerPartition" value="2"/>
+        <property name="maxConnectionsPerPartition" value="1"/>
         <property name="acquireIncrement" value="1"/>
         <property name="idleMaxAgeInSeconds" value="300"/>
         <property name="statementsCacheSize" value="100"/>

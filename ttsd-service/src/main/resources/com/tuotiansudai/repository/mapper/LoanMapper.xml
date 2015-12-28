@@ -31,8 +31,17 @@
         <result column="raising_complete_time" property="raisingCompleteTime"></result>
         <result column="show_on_home" property="showOnHome"></result>
         <result column="created_time" property="createdTime"></result>
+
+        <result column="created_login_name" property="createdLoginName"></result>
+
         <result column="verify_time" property="verifyTime"></result>
+
+        <result column="verify_login_name" property="verifyLoginName"></result>
+
         <result column="recheck_time" property="recheckTime"></result>
+
+        <result column="recheck_login_name" property="recheckLoginName"></result>
+
         <result column="status" property="status"></result>
 
         <result column="next_repay_date" property="nextRepayDate"></result>
@@ -44,8 +53,8 @@
     </resultMap>
 
     <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanModel">
-        insert into loan(id, name, agent_login_name, loaner_login_name, loaner_user_name, loaner_identity_number, type, periods, description_text, description_html, base_rate, loan_amount, invest_fee_rate, min_invest_amount, invest_increasing_amount, max_invest_amount, activity_type, activity_rate, contract_id, fundraising_start_time, fundraising_end_time, show_on_home, created_time, verify_time, recheck_time, status, update_time)
-        values(#{id}, #{name}, #{agentLoginName}, #{loanerLoginName}, #{loanerUserName}, #{loanerIdentityNumber}, #{type}, #{periods}, #{descriptionText}, #{descriptionHtml}, #{baseRate}, #{loanAmount}, #{investFeeRate}, #{minInvestAmount}, #{investIncreasingAmount}, #{maxInvestAmount}, #{activityType}, #{activityRate}, #{contractId}, #{fundraisingStartTime}, #{fundraisingEndTime}, #{showOnHome}, #{createdTime}, #{verifyTime}, #{recheckTime}, #{status},#{updateTime})
+        insert into loan(id, name, agent_login_name, loaner_login_name, loaner_user_name, loaner_identity_number, type, periods, description_text, description_html, base_rate, loan_amount, invest_fee_rate, min_invest_amount, invest_increasing_amount, max_invest_amount, activity_type, activity_rate, contract_id, fundraising_start_time, fundraising_end_time, show_on_home, created_time, created_login_name, verify_time, verify_login_name, recheck_time, recheck_login_name, status, update_time)
+        values(#{id}, #{name}, #{agentLoginName}, #{loanerLoginName}, #{loanerUserName}, #{loanerIdentityNumber}, #{type}, #{periods}, #{descriptionText}, #{descriptionHtml}, #{baseRate}, #{loanAmount}, #{investFeeRate}, #{minInvestAmount}, #{investIncreasingAmount}, #{maxInvestAmount}, #{activityType}, #{activityRate}, #{contractId}, #{fundraisingStartTime}, #{fundraisingEndTime}, #{showOnHome}, #{createdTime}, #{createdLoginName}, #{verifyTime}, #{verifyLoginName}, #{recheckTime}, #{recheckLoginName}, #{status},#{updateTime})
     </insert>
 
     <select id="findById" parameterType="long" resultMap="loanResultMap">
@@ -192,15 +201,15 @@
 
     <select useCache="false" id="findRepayingPaginationByAgentLoginName" parameterType="map" resultMap="loanResultMap">
         select *,
-        (select min(loan_repay.repay_date)
-        from loan_repay
-        where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) as next_repay_date,
-        (select sum(loan_repay.corpus) + sum(loan_repay.expected_interest) + sum(loan_repay.default_interest)
-        from loan_repay
-        where loan.id=loan_repay.loan_id and loan_repay.status != 'COMPLETE' ) as unpaid_amount
+            (select min(loan_repay.repay_date)
+             from loan_repay
+             where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) as next_repay_date,
+            (select sum(loan_repay.corpus) + sum(loan_repay.expected_interest) + sum(loan_repay.default_interest)
+             from loan_repay
+             where loan.id=loan_repay.loan_id and loan_repay.status != 'COMPLETE' ) as unpaid_amount
         from loan
         where agent_login_name = #{agentLoginName} and status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')
-        and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) between #{startTime} and #{endTime}
+              and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE', 'COMPLETE')) between #{startTime} and #{endTime}
         order by next_repay_date asc, id asc
         limit #{index}, #{pageSize}
     </select>
@@ -208,7 +217,7 @@
     <select useCache="false" id="findCountRepayingByAgentLoginName" parameterType="map" resultType="long">
         select count(1) from loan
         where agent_login_name = #{agentLoginName} and status in ('REPAYING', 'OVERDUE')
-        and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) between #{startTime} and #{endTime}
+              and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE', 'COMPLETE')) between #{startTime} and #{endTime}
     </select>
 
     <select useCache="false" id="findCompletedPaginationByAgentLoginName" parameterType="map" resultMap="loanResultMap">
@@ -319,8 +328,14 @@
             <if test="verifyTime !=null">
                 verify_time = #{verifyTime},
             </if>
+            <if test="verifyLoginName != null">
+                verify_login_name = #{verifyLoginName},
+            </if>
             <if test="recheckTime !=null">
                 recheck_time = #{recheckTime},
+            </if>
+            <if test="recheckLoginName != null">
+                recheck_login_name = #{recheckLoginName},
             </if>
             <if test="status !=null">
                 status = #{status},
@@ -328,6 +343,7 @@
             <if test="updateTime != null">
                 update_time = #{updateTime}
             </if>
+
         </trim>
         where id = #{id}
     </update>

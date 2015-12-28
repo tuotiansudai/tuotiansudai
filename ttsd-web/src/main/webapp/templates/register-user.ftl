@@ -5,9 +5,10 @@
     <ul class="step-register-tab">
         <li class="first on"><s></s>1 注册<g></g></li>
         <li><s></s>2 实名验证<g></g></li>
-        <li class="last"><s></s>3 充值投资<g></g></li>
+        <li class="last"><s></s>3 开始投资<g></g></li>
     </ul>
     <div class="clear-blank"></div>
+    <nav></nav>
     <div class="register-box">
         <form class="register-user-form" action="/register/user" method="post" autocomplete="off" >
         <ul class="reg-list tl register-step-one">
@@ -23,23 +24,22 @@
                     <label for="" class="reg-title">验证码:</label>
                     <span class="captcha-tag">
                         <input type="text" name="captcha" class="captcha" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="请输入验证码"  maxlength="6" value="${(originalFormData.captcha)!}"/>
-                        <button class="fetch-captcha btn-normal" disabled="disabled">获取验证码</button>
+                        <button type="button" class="fetch-captcha btn" disabled="disabled">获取验证码</button>
                     </span>
 
                 </li>
                 <li>
-                    <label for="" class="reg-title">重复密码:</label>
+                    <label for="" class="reg-title">密码:</label>
                     <input type="password" name="password" placeholder="请输入密码" maxlength="20" class="password" value="${(originalFormData.password)!}"/>
                 </li>
                 <li>
                     <label for="" class="reg-title">推荐人:</label>
                     <input type="text" name="referrer" placeholder="请输入推荐人（选填）" maxlength="25" class="referrer" value="${(referrer)!(originalFormData.referrer)!}"/>
                 </li>
-                <li>
-                    <label for="agreement">
+                <li class="agree-last">
+                    <label for="agreement" class="check-label">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
                         <input type="checkbox" name='agreement' id="agreementInput" class='agreement-check' />
-                        <span class="agreement">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></span>
-                    </label>
+
                 </li>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
@@ -133,16 +133,14 @@
 </div>
 
 <div class="image-captcha-dialog" style="display: none;">
-    <div class="pad-s">
-        <form class="image-captcha-form" action="/register/user/send-register-captcha" method="post">
+    <form class="image-captcha-form" action="/register/user/send-register-captcha" method="post">
+            <div class="image-captcha-inner">
             <img src="/register/user/image-captcha" alt="" class="image-captcha"/>
             <input type="text" class="image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
             <div class="tc">
                 <input type="submit" class="image-captcha-confirm btn-normal" value="确定"/>
             </div>
-
+            </div>
         </form>
-    </div>
-
 </div>
 </@global.main>

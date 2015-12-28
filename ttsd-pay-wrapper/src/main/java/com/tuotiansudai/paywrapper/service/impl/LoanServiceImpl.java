@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SmsWrapperClient;
@@ -45,7 +46,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -138,41 +138,49 @@ public class LoanServiceImpl implements LoanService {
                 logger.error(e.getLocalizedMessage(),e);
             }
         }
-        return this.updateLoanStatus(loanId,LoanStatus.CANCEL);
+        return  this.updateLoanStatus(loanId,LoanStatus.CANCEL);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> updateLoanStatus(long loanId, LoanStatus loanStatus) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
+        baseDto.setData(payDataDto);
+
         LoanModel loanModel = loanMapper.findById(loanId);
-        MerUpdateProjectRequestModel merUpdateProjectRequestModel = new MerUpdateProjectRequestModel(loanModel.getLoanAmount(),
-                loanModel.getId(),
-                loanModel.getName(),
-                loanStatus.getCode(),
-                new SimpleDateFormat("yyyyMMdd").format(loanModel.getFundraisingEndTime()));
+        if (loanModel.getStatus() == loanStatus) {
+            payDataDto.setStatus(true);
+            return baseDto;
+        }
+
         try {
-            MerUpdateProjectResponseModel responseModel = paySyncClient.send(MerUpdateProjectMapper.class,
-                    merUpdateProjectRequestModel,
-                    MerUpdateProjectResponseModel.class);
-            if (responseModel.isSuccess()) {
-                LoanModel loan = loanMapper.findById(loanId);
-                loan.setStatus(loanStatus);
-                if(loanStatus == LoanStatus.CANCEL) {
-                    loan.setRecheckTime(new Date());
-                }
-                if (loanStatus == LoanStatus.REPAYING) {
-                    loan.setVerifyTime(new Date());
-                }
-                loanMapper.update(loan);
+            boolean updateSuccess = Strings.isNullOrEmpty(loanStatus.getCode());
+            if (!updateSuccess) {
+                MerUpdateProjectRequestModel merUpdateProjectRequestModel = new MerUpdateProjectRequestModel(String.valueOf(loanModel.getLoanAmount()),
+                        String.valueOf(loanModel.getId()),
+                        loanModel.getName(),
+                        loanStatus.getCode());
+
+                MerUpdateProjectResponseModel responseModel = paySyncClient.send(MerUpdateProjectMapper.class,
+                        merUpdateProjectRequestModel,
+                        MerUpdateProjectResponseModel.class);
+                updateSuccess =  responseModel.isSuccess();
+                payDataDto.setCode(responseModel.getRetCode());
+                payDataDto.setMessage(responseModel.getRetMsg());
             }
-            payDataDto.setStatus(responseModel.isSuccess());
-            payDataDto.setCode(responseModel.getRetCode());
-            payDataDto.setMessage(responseModel.getRetMsg());
+
+            if (updateSuccess) {
+                loanModel.setStatus(loanStatus);
+                if(loanStatus == LoanStatus.CANCEL || loanStatus == LoanStatus.REPAYING) {
+                    loanModel.setRecheckTime(new Date());
+                }
+                loanMapper.update(loanModel);
+            }
+            payDataDto.setStatus(updateSuccess);
         } catch (PayException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-        baseDto.setData(payDataDto);
+
         return baseDto;
     }
 
@@ -256,19 +264,35 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void loanOutSuccessHandle(long loanId) {
+    public boolean postLoanOut(long loanId) {
         LoanModel loan = loanMapper.findById(loanId);
 
         List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
 
         logger.debug("标的放款：生成还款计划，标的ID:" + loanId);
-        repayGeneratorService.generateRepay(loanId);
+        try {
+            repayGeneratorService.generateRepay(loanId);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("生成还款计划失败 (loanId = {0})", String.valueOf(loanId)), e);
+            return false;
+        }
 
         logger.debug("标的放款：处理推荐人奖励，标的ID:" + loanId);
-        referrerRewardService.rewardReferrer(loan, successInvestList);
+        try {
+            referrerRewardService.rewardReferrer(loan, successInvestList);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("发放推荐人奖励失败 (loanId = {0})", String.valueOf(loanId)), e);
+            return false;
+        }
 
         logger.debug("标的放款：处理短信和邮件通知，标的ID:" + loanId);
-        processNotifyForLoanOut(loanId);
+        try {
+            processNotifyForLoanOut(loanId);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("放款短信邮件通知失败 (loanId = {0})", String.valueOf(loanId)), e);
+        }
+
+        return true;
     }
 
     private void proProcessWaitingInvest(long loanId) throws PayException {
@@ -328,11 +352,13 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private void processNotifyForLoanOut(long loanId) {
-        List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
+        List<InvestNotifyInfo> notifies = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
+
         logger.debug(MessageFormat.format("标的: {0} 放款短信通知", loanId));
-        notifyInvestorsLoanOutSuccessfulBySMS(notifyInfos);
+        notifyInvestorsLoanOutSuccessfulBySMS(notifies);
+
         logger.debug(MessageFormat.format("标的: {0} 放款邮件通知", loanId));
-        notifyInvestorsLoanOutSuccessfulByEmail(notifyInfos);
+        notifyInvestorsLoanOutSuccessfulByEmail(notifies);
     }
 
     private void notifyInvestorsLoanOutSuccessfulBySMS(List<InvestNotifyInfo> notifyInfos) {

@@ -7,7 +7,6 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.exception.CreateUserException;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -15,10 +14,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyAuthenticationManager;
-import com.tuotiansudai.service.ReferrerRelationService;
-import com.tuotiansudai.service.SmsCaptchaService;
-import com.tuotiansudai.service.AuditLogService;
-import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.service.*;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.commons.collections4.CollectionUtils;
@@ -71,6 +67,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private BindBankCardService bindBankCardService;
 
     @Value("${web.login.max.failed.times}")
     private int times;
@@ -151,7 +150,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean changePassword(String loginName, String mobile, String originalPassword, String newPassword) {
+    public boolean changePassword(String loginName, String originalPassword, String newPassword) {
 
         boolean correct = this.verifyPasswordCorrect(loginName, originalPassword);
 
@@ -160,6 +159,7 @@ public class UserServiceImpl implements UserService {
         }
 
         UserModel userModel = userMapper.findByLoginName(loginName);
+        String mobile = userModel.getMobile();
 
         String encodedNewPassword = myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt());
         userMapper.updatePasswordByLoginName(loginName, encodedNewPassword);
@@ -286,7 +286,17 @@ public class UserServiceImpl implements UserService {
         }
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
 
-        return new EditUserDto(userModel, accountModel, roles);
+        EditUserDto editUserDto = new EditUserDto(userModel, accountModel, roles);
+
+        BankCardModel bankCard = bindBankCardService.getPassedBankCard(loginName);
+        if (bankCard != null) {
+            editUserDto.setBankCardNumber(bankCard.getCardNumber());
+        }
+
+        if (userRoleMapper.findByLoginNameAndRole(userModel.getReferrer(), Role.STAFF.name()) != null) {
+            editUserDto.setReferrerStaff(true);
+        }
+        return editUserDto;
     }
 
     @Override
@@ -300,8 +310,18 @@ public class UserServiceImpl implements UserService {
         List<UserItemDataDto> userItemDataDtos = Lists.newArrayList();
         for (UserModel userModel : userModels) {
 
+            boolean staff = false;
             UserItemDataDto userItemDataDto = new UserItemDataDto(userModel);
             userItemDataDto.setUserRoles(userRoleMapper.findByLoginName(userModel.getLoginName()));
+            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(userModel.getReferrer());
+            for (UserRoleModel userRoleModel : userRoleModels) {
+                if (userRoleModel.getRole()==Role.STAFF) {
+                    staff = true;
+                    break;
+                }
+            }
+            userItemDataDto.setStaff(staff);
+            userItemDataDto.setBankCard(bindBankCardService.getPassedBankCard(userModel.getLoginName()) != null);
             userItemDataDtos.add(userItemDataDto);
         }
         int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel);
@@ -310,6 +330,11 @@ public class UserServiceImpl implements UserService {
         baseDto.setData(basePaginationDataDto);
         return baseDto;
 
+    }
+
+    @Override
+    public List<String> findStaffNameFromUserLike(String loginName) {
+        return userMapper.findStaffByLikeLoginName(loginName);
     }
 
     @Override
@@ -371,4 +396,25 @@ public class UserServiceImpl implements UserService {
             ((UserService) AopContext.currentProxy()).refreshAreaByMobile(userModels);
         }
     }
+
+    @Override
+    public List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber) {
+        return userMapper.searchAllUsers(loginName, referrer, mobile, identityNumber);
+    }
+
+    @Override
+    public List<UserModel> findUsersAccountBalance(String loginName, int currentPageNo, int pageSize) {
+        return userMapper.findUsersAccountBalance(loginName, (currentPageNo - 1 ) * pageSize, pageSize);
+    }
+
+    @Override
+    public int findUsersAccountBalanceCount(String loginName) {
+        return userMapper.findUsersAccountBalanceCount(loginName);
+    }
+
+    @Override
+    public long findUsersAccountBalanceSum(String loginName) {
+        return userMapper.findUsersAccountBalanceSum(loginName);
+    }
+
 }

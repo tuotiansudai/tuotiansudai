@@ -72,12 +72,15 @@
   &:hover {
     background: rgba(255,117,42,0.8);
   }
+<<<<<<< HEAD
   &:disabled, &:disabled:hover {
     background: #ccc !important;
     border:1px solid #ccc!important;
     cursor: default;
     color: #fff;
   }
+=======
+>>>>>>> master
 }
 .btn-success {
   @extend .btn;
@@ -87,11 +90,14 @@
   &:hover {
     background: rgba(244,105,22,0.8);
   }
+<<<<<<< HEAD
   &:disabled, &:disabled:hover {
     background: #ccc;
     border:1px solid #ccc;
     cursor: default;
   }
+=======
+>>>>>>> master
 }
 
 .btn-primary {

@@ -1,5 +1,5 @@
-require(['jquery', 'csrf'], function($) {
-    $(function() {
+require(['jquery', 'csrf'], function ($) {
+    $(function () {
         var $bannerBox = $('.banner-box'),
             $imgScroll = $('.banner-img-list', $bannerBox),
             $registerBox = $('.register-ad-box', $bannerBox),
@@ -38,6 +38,7 @@ require(['jquery', 'csrf'], function($) {
 
 
         $imgNum.click(function() {
+
             var num_nav = $imgNum.index(this);
             $(this).addClass("selected").siblings().removeClass("selected");
             $bannerImg.eq(num_nav).fadeIn(1000).siblings().fadeOut(1000);
@@ -46,6 +47,7 @@ require(['jquery', 'csrf'], function($) {
             clearInterval(adTimer);
         }, function() {
             adTimer = setInterval(function() {
+
                 n = n >= ($bannerImg.length - 1) ? 0 : (n + 1);
                 $imgNum.eq(n).trigger('click');
             }, 3000);
@@ -53,47 +55,38 @@ require(['jquery', 'csrf'], function($) {
 
 
         $(".product-box .pad-m").click(function() {
+
             window.location.href = $(this).data("url");
         });
 
         if (screenWid < 700) {
-            $imgScroll.find('img').eq(0).attr('src', staticServer + '/images/banner/ph-banner01.jpg');
-            $imgScroll.find('img').eq(1).attr('src', staticServer + '/images/banner/ph-banner02.jpg');
-            $imgScroll.find('img').eq(2).attr('src', staticServer + '/images/banner/ph-banner03.jpg');
+            $imgScroll.find('img').eq(0).attr('src', staticServer + '/images/ttimg/ph-a01.jpg');
+            $imgScroll.find('img').eq(1).attr('src', staticServer + '/images/ttimg/ph-a02.jpg');
+            $imgScroll.find('img').eq(2).attr('src', staticServer + '/images/ttimg/ph-a03.jpg');
 
-            $imgScroll.find('img').css({
-                'margin-left': '0px'
-            });
+            $imgScroll.find('img').css({'margin-left': '0px'});
         }
 
-        var adjustBanner = function() {
+        var adjustBanner = function () {
             var screenWidNow = $(window).width();
             if (screenWidNow < 700) {
-                $imgScroll.find('img').eq(0).attr('src', staticServer + '/images/banner/ph-banner01.jpg');
-                $imgScroll.find('img').eq(1).attr('src', staticServer + '/images/banner/ph-banner02.jpg');
-                $imgScroll.find('img').eq(2).attr('src', staticServer + '/images/banner/ph-banner03.jpg');
+                $imgScroll.find('img').eq(0).attr('src', staticServer + '/images/ttimg/ph-a01.jpg');
+                $imgScroll.find('img').eq(1).attr('src', staticServer + '/images/ttimg/ph-a02.jpg');
+                $imgScroll.find('img').eq(2).attr('src', staticServer + '/images/ttimg/ph-a03.jpg');
+                $imgScroll.find('img').css({'margin-left': '0px'});
 
-                $imgScroll.find('img').css({
-                    'margin-left': '0px'
-                });
-
-            } else {
-                $imgScroll.find('img').eq(0).attr('src', staticServer + '/images/sign/activities/ranking/qph.jpg');
-                $imgScroll.find('img').eq(1).attr('src', staticServer + '/images/sign/activities/grand/ad2.jpg');
-                $imgScroll.find('img').eq(2).attr('src', staticServer + '/images/banner/banner-home03.png');
-
-                $imgScroll.find('img').css({
-                    'margin-left': '-' + leftWid + 'px'
-                });
-                $registerBox.css({
-                    'right': (screenWidNow - 1000) / 2 + 'px'
-                });
             }
-        }
+            else {
+                $imgScroll.find('img').eq(0).attr('src', staticServer + '/images/sign/actor/ranking/qph.jpg');
+                $imgScroll.find('img').eq(1).attr('src', staticServer + '/images/sign/actor/grand/ba-grand.jpg');
+                $imgScroll.find('img').eq(2).attr('src', staticServer + '/images/ttimg/ttimg-home03.png');
 
+                $imgScroll.find('img').css({'margin-left': '-' + leftWid + 'px'});
+                $registerBox.css({'right': (screenWidNow - 1000) / 2 + 'px'});
+            }
+        };
 
-
-        $(window).resize(function() {
+        $(window).resize(function () {
             adjustBanner();
         });
 

@@ -21,7 +21,7 @@ require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
         loginNameElement.blur(function (event) {
             errorElement.text('').css('visibility', 'hidden');
 
-            if (loginNameElement.val().trim() === '') {
+            if ($.trim(loginNameElement.val()) === '') {
                 errorElement.text("用户名不能为空").css('visibility', 'visible');
                 return false;
             }
@@ -31,7 +31,7 @@ require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
         //密码校验
         passwordElement.blur(function (event) {
             errorElement.text('').css('visibility', 'hidden');
-            if (passwordElement.val().trim() === '') {
+            if ($.trim(passwordElement.val()) === '') {
                 errorElement.text("密码不能为空").css('visibility', 'visible');
             }
             return false;
@@ -40,7 +40,7 @@ require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
         //验证码校验
         captchaElement.blur(function (event) {
             errorElement.text('').css('visibility', 'hidden');
-            if (captchaElement.val().trim() === '') {
+            if ($.trim(captchaElement.val()) === '') {
                 errorElement.text("验证码不能为空").css('visibility', 'visible');
             }
             return false;
@@ -50,17 +50,17 @@ require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
         var loginSubmitVerify = function () {
             errorElement.text('').css('visibility', 'hidden');
 
-            if (loginNameElement.val().trim() === '') {
+            if ($.trim(loginNameElement.val()) === '') {
                 errorElement.text("用户名不能为空").css('visibility', 'visible');
                 return false;
             }
 
-            if (passwordElement.val().trim() === '') {
+            if ($.trim(passwordElement.val()) === '') {
                 errorElement.text("密码不能为空").css('visibility', 'visible');
                 return false;
             }
 
-            if (captchaElement.val().trim() === '') {
+            if ($.trim(captchaElement.val()) === '') {
                 errorElement.text("验证码不能为空").css('visibility', 'visible');
                 return false;
             }
@@ -69,34 +69,34 @@ require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
         };
 
         var submitLoginForm = function () {
-            loginFormElement.ajaxSubmit({
-                beforeSubmit: function (arr, $form, options) {
-                    loginSubmitElement.toggleClass('loading');
-                },
-                success: function (response) {
-                    if (response.data.status) {
-                        window.location.href = loginFormElement.data('redirect-url');
-                    } else {
+                loginFormElement.ajaxSubmit({
+                    beforeSubmit: function (arr, $form, options) {
+                        loginSubmitElement.addClass('loading');
+                    },
+                    success: function (response) {
+                        if (response.data.status) {
+                            window.location.href = loginFormElement.data('redirect-url');
+                        } else {
+                            refreshCaptcha();
+                            loginSubmitElement.removeClass('loading');
+                            if (response.data.isLocked) {
+                                errorElement.text("用户已被锁定").css('visibility', 'visible');
+                                return;
+                            }
+                            if (response.data.isCaptchaNotMatch) {
+                                errorElement.text("验证码不正确").css('visibility', 'visible');
+                                return;
+                            }
+                            errorElement.text("用户或密码不正确").css('visibility', 'visible');
+                        }
+                    },
+                    error: function () {
+                        loginSubmitElement.removeClass('loading');
                         refreshCaptcha();
-                        if (response.data.isLocked) {
-                            errorElement.text("用户已被锁定").css('visibility', 'visible');
-                            return;
-                        }
-                        if (response.data.isCaptchaNotMatch) {
-                            errorElement.text("验证码不正确").css('visibility', 'visible');
-                            return;
-                        }
                         errorElement.text("用户或密码不正确").css('visibility', 'visible');
                     }
-                },
-                error: function () {
-                    refreshCaptcha();
-                    errorElement.text("用户或密码不正确").css('visibility', 'visible');
-                },
-                complete: function () {
-                    loginSubmitElement.toggleClass('loading');
-                }
-            });
+                });
+
             return false;
         };
 

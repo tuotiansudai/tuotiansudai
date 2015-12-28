@@ -34,18 +34,6 @@ public class LoanController {
         return loanService.loanOut(loanOutDto.getLoanIdLong());
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/loan-out-success-notify", method = RequestMethod.POST)
-    public BaseDto<PayDataDto> loanOut(@RequestBody long loanId) {
-        loanService.loanOutSuccessHandle(loanId);
-
-        BaseDto<PayDataDto> dto = new BaseDto<>();
-        PayDataDto dataDto = new PayDataDto();
-        dto.setData(dataDto);
-        dataDto.setStatus(true);
-        return dto;
-    }
-
     @RequestMapping(value = "/{loanId}/cancel", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> cancelLoan(@PathVariable Long loanId) {

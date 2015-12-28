@@ -55,6 +55,23 @@ public class SystemBillServiceImpl implements SystemBillService {
     }
 
     @Override
+    public long findSumSystemIncome(Date startTime,
+                                    Date endTime,
+                                    SystemBillOperationType operationType,
+                                    SystemBillBusinessType businessType) {
+        return systemBillMapper.findSumSystemIncome(startTime, endTime, operationType, businessType);
+    }
+
+    @Override
+    public long findSumSystemExpend(Date startTime,
+                                    Date endTime,
+                                    SystemBillOperationType operationType,
+                                    SystemBillBusinessType businessType) {
+
+        return systemBillMapper.findSumSystemExpend(startTime, endTime, operationType, businessType);
+    }
+
+    @Override
     public int findSystemBillCount(Date startTime,
                                    Date endTime,
                                    SystemBillOperationType operationType,

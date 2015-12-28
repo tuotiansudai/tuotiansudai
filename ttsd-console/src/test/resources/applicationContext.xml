@@ -14,13 +14,13 @@
     <!-- enable autowire -->
     <context:annotation-config/>
 
-
-    <context:property-placeholder location="classpath*:ttsd-env.properties, classpath*:ttsd-biz.properties" />
+    <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan base-package="com.tuotiansudai.service, com.tuotiansudai.repository, com.tuotiansudai.client, com.tuotiansudai.security, com.tuotiansudai.util,com.tuotiansudai.coupon"/>
+
 
     <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
@@ -28,8 +28,19 @@
         <property name="username" value="${common.jdbc.username}"/>
         <property name="password" value="${common.jdbc.password}"/>
         <property name="minConnectionsPerPartition" value="1"/>
-        <property name="maxConnectionsPerPartition" value="5"/>
-        <property name="partitionCount" value="4"/>
+        <property name="maxConnectionsPerPartition" value="1"/>
+        <property name="acquireIncrement" value="1"/>
+        <property name="idleMaxAgeInSeconds" value="300"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+
+    <bean id="jobBoneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="username" value="${common.jdbc.username}"/>
+        <property name="password" value="${common.jdbc.password}"/>
+        <property name="minConnectionsPerPartition" value="1"/>
+        <property name="maxConnectionsPerPartition" value="1"/>
         <property name="acquireIncrement" value="1"/>
         <property name="idleMaxAgeInSeconds" value="300"/>
         <property name="statementsCacheSize" value="100"/>
@@ -38,6 +49,10 @@
     <!-- transaction manager, use JtaTransactionManager for global tx -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="boneCPDataSource"/>
+    </bean>
+
+    <bean id="jobStoreBuilder" class="com.tuotiansudai.util.quartz.JobStoreBuilder">
+        <property name="dataSource" ref="jobBoneCPDataSource"/>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -55,26 +70,8 @@
         <property name="basePackage" value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper"/>
     </bean>
 
-    <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
+    <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient"/>
 
     <!--for test-->
     <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
-
-    <!-- job -->
-    <bean id="jobBoneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
-        <property name="username" value="${common.jdbc.username}"/>
-        <property name="password" value="${common.jdbc.password}"/>
-        <property name="partitionCount" value="4"/>
-        <property name="minConnectionsPerPartition" value="1"/>
-        <property name="maxConnectionsPerPartition" value="2"/>
-        <property name="acquireIncrement" value="1"/>
-        <property name="idleMaxAgeInSeconds" value="300"/>
-        <property name="statementsCacheSize" value="100"/>
-    </bean>
-
-    <bean id="jobStoreBuilder" class="com.tuotiansudai.util.quartz.JobStoreBuilder">
-        <property name="dataSource" ref="jobBoneCPDataSource"/>
-    </bean>
 </beans>

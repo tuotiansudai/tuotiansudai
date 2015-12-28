@@ -28,7 +28,17 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     private String investorLoginName;
 
+    private String investorUserName;
+
+    private String investorMobile;
+
     private String referrerLoginName;
+
+    private String referrerUserName;
+
+    private String referrerMobile;
+
+    private String referrerRoles;
 
     private String source;
 
@@ -55,7 +65,12 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.amount = AmountConverter.convertCentToString(view.getAmount());
         this.loanName = view.getLoanName();
         this.investorLoginName = view.getLoginName();
+        this.investorUserName = view.getInvestorUserName();
+        this.investorMobile = view.getInvestorMobile();
         this.referrerLoginName = view.getReferrerLoginName();
+        this.referrerUserName = view.getReferrerUserName();
+        this.referrerMobile = view.getReferrerMobile();
+        this.referrerRoles = view.getReferrerRoles();
         this.source = view.getSource().name();
         this.channel = view.getChannel();
         this.roles = view.getRoles();
@@ -71,6 +86,10 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     public boolean isStaff() {
         return StringUtils.containsIgnoreCase(this.roles, Role.STAFF.name());
+    }
+
+    public boolean isReferrerStaff() {
+        return StringUtils.containsIgnoreCase(this.referrerRoles, Role.STAFF.name());
     }
 
     public long getInvestId() {
@@ -151,5 +170,45 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     public void setRoles(String roles) {
         this.roles = roles;
+    }
+
+    public String getInvestorUserName() {
+        return investorUserName;
+    }
+
+    public void setInvestorUserName(String investorUserName) {
+        this.investorUserName = investorUserName;
+    }
+
+    public String getInvestorMobile() {
+        return investorMobile;
+    }
+
+    public void setInvestorMobile(String investorMobile) {
+        this.investorMobile = investorMobile;
+    }
+
+    public String getReferrerUserName() {
+        return referrerUserName;
+    }
+
+    public void setReferrerUserName(String referrerUserName) {
+        this.referrerUserName = referrerUserName;
+    }
+
+    public String getReferrerMobile() {
+        return referrerMobile;
+    }
+
+    public void setReferrerMobile(String referrerMobile) {
+        this.referrerMobile = referrerMobile;
+    }
+
+    public String getReferrerRoles() {
+        return referrerRoles;
+    }
+
+    public void setReferrerRoles(String referrerRoles) {
+        this.referrerRoles = referrerRoles;
     }
 }

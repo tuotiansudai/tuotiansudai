@@ -28,11 +28,25 @@ public interface WithdrawMapper {
                                                @Param(value = "endTime") Date endTime);
 
 
-    long findWithdrawCount(@Param(value = "withdrawId") String withdrawId,
-                          @Param(value = "loginName") String loginName,
-                          @Param(value = "status") WithdrawStatus status,
-                          @Param(value = "source") Source source,
-                          @Param(value = "startTime") Date startTime,
-                          @Param(value = "endTime") Date endTime);
+    long findSumWithdrawAmount(@Param(value = "withdrawId") String withdrawId,
+                               @Param(value = "loginName") String loginName,
+                               @Param(value = "status") WithdrawStatus status,
+                               @Param(value = "source") Source source,
+                               @Param(value = "startTime") Date startTime,
+                               @Param(value = "endTime") Date endTime);
 
+
+    long findSumWithdrawFee(@Param(value = "withdrawId") String withdrawId,
+                            @Param(value = "loginName") String loginName,
+                            @Param(value = "status") WithdrawStatus status,
+                            @Param(value = "source") Source source,
+                            @Param(value = "startTime") Date startTime,
+                            @Param(value = "endTime") Date endTime);
+
+    long findWithdrawCount(@Param(value = "withdrawId") String withdrawId,
+                           @Param(value = "loginName") String loginName,
+                           @Param(value = "status") WithdrawStatus status,
+                           @Param(value = "source") Source source,
+                           @Param(value = "startTime") Date startTime,
+                           @Param(value = "endTime") Date endTime);
 }

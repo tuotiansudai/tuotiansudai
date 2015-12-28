@@ -105,4 +105,9 @@
         <location>/error/404</location>
     </error-page>
 
+    <error-page>
+        <error-code>405</error-code>
+        <location>/</location>
+    </error-page>
+
 </web-app>

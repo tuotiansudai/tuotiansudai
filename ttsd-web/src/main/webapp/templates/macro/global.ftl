@@ -39,6 +39,7 @@
     {"title":"团队介绍", "url":"/about/team"},
     {"title":"拓天公告", "url":"/about/notice"},
     {"title":"服务费用", "url":"/about/service-fee"},
+    {"title":"常见问题", "url":"/about/qa"},
     {"title":"联系我们", "url":"/about/contact"}
     ]}]/>
 
@@ -46,8 +47,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
+    <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-
     <#if responsive??>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     </#if>
@@ -96,10 +97,10 @@
 <script type="text/javascript" charset="utf-8">
     var staticServer = '${staticServer}';
     <@security.authorize access="isAuthenticated()">
-    document.getElementById("logout-link").addEventListener('click', function (event) {
+    document.getElementById("logout-link").onclick=function (event) {
         event.preventDefault();
         document.getElementById("logout-form").submit();
-    });
+    };
     </@security.authorize>
 
     adjustMobileHideHack();
@@ -124,15 +125,18 @@
         bodyDom.className=(!isResponse&&!isPC)?'page-width':'';
     }
 
+    window.$ = function(id) {
+        return document.getElementById(id);
+    };
+
     function phoneLoadFun() {
 
-        document.getElementById('closeDownloadBox').addEventListener('click',function(event) {
+        window.$('closeDownloadBox').onclick=function(event) {
             event.stopPropagation();
             event.preventDefault();
             this.parentElement.style.display='none';
-        });
-
-        document.getElementById('btnExperience').addEventListener('click',function(event) {
+        };
+        window.$('btnExperience').onclick=function(event) {
             event.stopPropagation();
             event.preventDefault();
             var userAgent = navigator.userAgent.toLowerCase();
@@ -141,22 +145,20 @@
             } else if (userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
                 location.href = "http://itunes.apple.com/us/app/id1039233966";
             }
-        });
+        };
 
-        document.getElementById('showMainMenu').addEventListener('click',function(event) {
+        window.$('showMainMenu').onclick=function(event) {
             event.stopPropagation();
             event.preventDefault();
             this.nextElementSibling.style.display='block';
 
-        });
+        };
 
     }
-    var imgDom=document.getElementById('iphone-app-img'),
-        TopMainMenuList=document.getElementById('TopMainMenuList');
+    var imgDom=window.$('iphone-app-img'),
+        TopMainMenuList=window.$('TopMainMenuList');
 
-    document.getElementById('iphone-app-pop').addEventListener('click',function(event) {
-        event.stopPropagation();
-        event.preventDefault();
+    window.$('iphone-app-pop').onclick=function(e) {
 
         if(imgDom.style.display == "block") {
             imgDom.style.display='none';
@@ -164,10 +166,19 @@
         else {
             imgDom.style.display='block';
         }
-    });
-    document.getElementsByTagName("body")[0].addEventListener('click',function() {
-        var userAgent = navigator.userAgent.toLowerCase();
-        if(event.target.tagName=='LI' ) {
+        if (event.stopPropagation) {
+            event.stopPropagation();
+        }
+        else if (window.event) {
+            window.event.cancelBubble = true;
+        }
+    };
+
+    document.getElementsByTagName("body")[0].onclick=function(e) {
+        var userAgent = navigator.userAgent.toLowerCase(),
+                event = e || window.event,
+                target = event.srcElement || event.target;
+        if(target.tagName=='LI' ) {
             return;
         }
         imgDom.style.display='none';
@@ -183,7 +194,7 @@
             }
         }
 
-    });
+    };
 
     phoneLoadFun();
 
