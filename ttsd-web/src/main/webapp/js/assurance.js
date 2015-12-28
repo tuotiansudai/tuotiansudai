@@ -34,7 +34,7 @@ require(['jquery','fullPage'], function ($) {
                 }
                 if(index == 3){
                     $boxInsurance.find('img.page-img').animate({
-                        right: '0'
+                        right: '20px'
                     }, 600);
 
                 }
