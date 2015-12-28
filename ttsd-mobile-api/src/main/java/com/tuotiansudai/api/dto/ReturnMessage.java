@@ -35,7 +35,6 @@ public enum ReturnMessage {
 
     /******手机端投资列表******/
     REQUEST_PARAM_IS_WRONG("0023","请求参数错误"),
-    LOAN_IS_INVALID("0057","标的ID应全为数字"),
     /******手机端投资列表******/
 
     /******手机端标的详情******/
