@@ -28,6 +28,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                 email: {
                     required: true,
                     regex:/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
+                    email: true,
                     isExist: "/personal-info/email/{0}/is-exist"
                 }
             },
@@ -46,7 +47,8 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                 email: {
                     required: "请输入有效邮箱",
                     regex:'请输入有效邮箱',
-                    isExist: "邮箱已存在"
+                    isExist: "邮箱已存在",
+                    email: "请输入有效邮箱",
                 }
             },
             success:'valid',
