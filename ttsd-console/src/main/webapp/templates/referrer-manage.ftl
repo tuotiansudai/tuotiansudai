@@ -84,8 +84,8 @@
 
     <div class="row">
         <div class="title-list">
-            <span>合计投资金额： ${investAmountSum/100} </span>
-            <span>合计推荐奖励金额： ${rewardAmountSum/100} </span>
+            <span>合计投资金额： ${investAmountSum/100} 元</span>
+            <span>合计推荐奖励金额： ${rewardAmountSum/100} 元</span>
         </div>
         <table class="table table-bordered table-hover">
             <thead>
