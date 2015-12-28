@@ -247,7 +247,8 @@ define(['jquery','underscore','echarts'], function ($,_) {
             $.ajax({
                 type: 'GET',
                 url: '/bi/province',
-                dataType: 'json'
+                dataType: 'json',
+                async:false
             }).done(function (data) {
                 callback && callback(data);
 
@@ -257,7 +258,8 @@ define(['jquery','underscore','echarts'], function ($,_) {
             $.ajax({
                 type: 'GET',
                 url: '/bi/channels',
-                dataType: 'json'
+                dataType: 'json',
+                async:false
             }).done(function(data) {
                 callback && callback(data);
             });
