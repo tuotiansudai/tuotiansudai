@@ -13,12 +13,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+
 @Service
 public class MyHandlerExceptionResolver implements HandlerExceptionResolver{
     static Logger log = Logger.getLogger(MyHandlerExceptionResolver.class);
     private ObjectMapper objectMapper = new ObjectMapper();
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+        log.debug(ex.getLocalizedMessage(),ex);
+
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         PrintWriter out = null;
