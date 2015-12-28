@@ -363,6 +363,11 @@ public class UserServiceImpl implements UserService {
         return userMapper.findAllChannels();
     }
 
+    @Override
+    public List<String> findAllUserChannels() {
+        return userMapper.findAllUserChannels();
+    }
+
     @Transactional
     @Override
     public void refreshAreaByMobile(List<UserModel> userModels) {

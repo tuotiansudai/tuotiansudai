@@ -58,6 +58,8 @@ public interface UserMapper {
 
     List<String> findAllChannels();
 
+    List<String> findAllUserChannels();
+
     List<UserModel> findUserByProvince();
     
     int findUserCount();
