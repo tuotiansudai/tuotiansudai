@@ -88,7 +88,7 @@ public class BusinessIntelligenceController {
             @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
             @RequestParam(name = "province",required = false) String province,
             @RequestParam(name = "roleStage",required = false) RoleStage roleStage,
-            @RequestParam(name = "channel") String channel){
+            @RequestParam(name = "channel",required = false) String channel){
         return businessIntelligenceService.queryUserInvestAmountTrend(granularity, startTime, endTime, province, roleStage,channel);
     }
 
