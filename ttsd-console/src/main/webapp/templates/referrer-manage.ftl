@@ -85,7 +85,7 @@
     <div class="row">
         <div class="title-list">
             <span>合计投资金额： ${investAmountSum/100} </span>
-            <span>合计推荐奖励金额： ${rewardAmountSum/100}</span>
+            <span>合计推荐奖励金额： ${rewardAmountSum/100} </span>
         </div>
         <table class="table table-bordered table-hover">
             <thead>
@@ -94,7 +94,7 @@
                 <th>期数</th>
                 <th>投资人</th>
                 <th>投资人姓名</th>
-                <th>投资金额</th>
+                <th>投资金额(元)</th>
                 <th>投资时间</th>
                 <th>来源</th>
                 <th>推荐人</th>
