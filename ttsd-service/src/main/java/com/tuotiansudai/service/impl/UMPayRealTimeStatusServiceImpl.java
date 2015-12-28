@@ -5,6 +5,7 @@ import com.tuotiansudai.service.UMPayRealTimeStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Map;
 
 @Service
@@ -26,5 +27,10 @@ public class UMPayRealTimeStatusServiceImpl implements UMPayRealTimeStatusServic
     @Override
     public Map<String, String> getLoanStatus(long loanId) {
         return payWrapperClient.getLoanStatus(loanId);
+    }
+
+    @Override
+    public Map<String, String> getTransferStatus(String orderId, Date merDate, String businessType) {
+        return payWrapperClient.getTransferStatus(orderId, merDate, businessType);
     }
 }

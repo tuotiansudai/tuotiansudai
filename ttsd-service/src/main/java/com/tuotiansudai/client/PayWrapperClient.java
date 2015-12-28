@@ -6,11 +6,13 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.*;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.Map;
 
 @Component
@@ -129,6 +131,16 @@ public class PayWrapperClient extends BaseClient {
             logger.error(e.getLocalizedMessage(), e);
         }
         return Maps.newHashMap();
+    }
+
+    public Map<String, String> getTransferStatus(String orderId, Date merDate, String businessType) {
+        String json = this.execute(MessageFormat.format("/real-time/transfer/order-id/{0}/mer-date/{1}/business-type/{2}", orderId, new DateTime(merDate).toString("yyyyMMdd"), businessType), null, "GET");
+        try {
+            return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {});
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
     }
 
     public Map<String, String> getPlatformStatus() {
