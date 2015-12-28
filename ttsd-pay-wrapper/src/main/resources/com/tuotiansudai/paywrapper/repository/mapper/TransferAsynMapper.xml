@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.paywrapper.repository.mapper.TransferAsynMapper">
+
+    <resultMap id="requestMap" type="TransferAsynRequestModel">
+        <id property="id" column="id" />
+        <result property="service" column="service"/>
+        <result property="signType" column="sign_type"/>
+        <result property="sign" column="sign"/>
+        <result property="charset" column="charset"/>
+        <result property="merId" column="mer_id"/>
+        <result property="version" column="version"/>
+        <result property="retUrl" column="ret_url"/>
+        <result property="notifyUrl" column="notify_url"/>
+        <result property="orderId" column="order_id"/>
+        <result property="merAccountId" column="mer_account_id"/>
+        <result property="particUserId" column="partic_user_id"/>
+        <result property="particAccountId" column="partic_account_id"/>
+        <result property="particAccType" column="partic_acc_type"/>
+        <result property="amount" column="amount"/>
+        <result property="requestTime" column="request_time"/>
+        <result property="requestUrl" column="request_url"/>
+        <result property="requestData" column="request_data"/>
+    </resultMap>
+
+    <select id="findById" resultMap="requestMap" parameterType="java.lang.Long">
+        select * from transfer_asyn_request where id = #{id}
+    </select>
+
+    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="TransferAsynRequestModel">
+        insert into transfer_asyn_request (service, sign_type, sign, charset, mer_Id, version, ret_url, notify_url, order_id,mer_account_id,partic_user_id, partic_account_id,partic_acc_type, amount,  request_time, request_url, request_data)
+        values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{retUrl}, #{notifyUrl}, #{orderId}, #{merAccountId}, #{particUserId}, #{particAccountId}, #{particAccType}, #{amount}, #{requestTime}, #{requestUrl}, #{requestData})
+    </insert>
+
+</mapper>
