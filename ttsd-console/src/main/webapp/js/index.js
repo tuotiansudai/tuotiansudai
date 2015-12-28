@@ -54,6 +54,17 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
         });
     });
 
+    loadEcharts.ChartsChannels(function(data) {
+        var channelList=[],i= 0,len=data.length;
+        channelList.push('<option value="">全部渠道</option>');
+        for(;i<len;i++) {
+            channelList.push('<option value="'+data[i]+'">'+data[i]+'</option>');
+        }
+        $('select[name="channel"]').each(function(index,option) {
+            $(option).empty().append(channelList.join(''));
+        });
+    });
+
     initStartDate=loadEcharts.datetimeFun.getBeforeDate(6);
     initEndDate=loadEcharts.datetimeFun.getBeforeDate(0);
 

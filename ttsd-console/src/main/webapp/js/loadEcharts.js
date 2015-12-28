@@ -253,6 +253,15 @@ define(['jquery','underscore','echarts'], function ($,_) {
 
             });
         },
+        ChartsChannels:function(callback){
+            $.ajax({
+                type: 'GET',
+                url: '/bi/channels',
+                dataType: 'json'
+            }).done(function(data) {
+                callback && callback(data);
+            });
+        },
         datetimeFun: {
             /* 获取当前指定的前几天的日期,n=0为当前日期 */
             getBeforeDate:function(n) {

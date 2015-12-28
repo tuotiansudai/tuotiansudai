@@ -179,6 +179,10 @@
         select distinct channel from user where channel is not NULL
     </select>
 
+    <select id="findAllUserChannels" resultType="java.lang.String">
+        select IFNULL(channel,'其他') from user group by channel order by channel desc
+    </select>
+
     <select id="findUserByProvince" resultMap="userResultMap">
         select * from user where province is NULL or province = '' order by register_time DESC limit 0,100
     </select>
