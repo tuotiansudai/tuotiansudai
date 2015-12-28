@@ -34,20 +34,27 @@
               user j
               JOIN
               (SELECT
-                k.`login_name`
-               FROM
-                user_role o
-                RIGHT JOIN referrer_relation k
-                  ON o.`login_name` = k.`referrer_login_name`
-                  AND k.`level` = 1
-                WHERE o.`role` = 'STAFF'
-                UNION
-                SELECT
                   h.login_name
                 FROM
                   user_role h
                 WHERE h.role = 'STAFF') gg
               ON j.`login_name` = gg.login_name) u
+        </if>
+        <if test="roleStage.name() == 'RECOMMENDATION' ">
+            (SELECT
+              j.*
+              FROM
+                user j
+                JOIN
+                (SELECT
+                  k.`login_name`
+                  FROM
+                    user_role o
+                  RIGHT JOIN referrer_relation k
+                    ON o.`login_name` = k.`referrer_login_name`
+                    AND k.`level` = 1
+                  WHERE o.`role` = 'STAFF') gg
+                ON j.`login_name` = gg.login_name) u
         </if>
         <if test="roleStage.name() == 'AGENT' ">
             (SELECT
@@ -65,17 +72,27 @@
         </if>
         <if test="roleStage.name() == 'OTHERS' ">
             (SELECT
-              j.*
+            j.*
             FROM
-              user j
-              JOIN
-              (SELECT
-                o.`login_name`
-              FROM
-                user_role o
-              WHERE o.`role` not in ('AGENT','STAFF')
-              GROUP BY o.`login_name`) oo
-            ON j.`login_name` = oo.login_name) u
+            USER j
+            WHERE NOT EXISTS
+            (SELECT
+            1
+            FROM
+            (SELECT
+            k.`login_name`
+            FROM
+            user_role o
+            RIGHT JOIN referrer_relation k
+            ON o.`login_name` = k.`referrer_login_name`
+            AND k.`level` = 1
+            WHERE o.`role` = 'STAFF'
+            UNION
+            SELECT
+            h.login_name
+            FROM
+            user_role h
+            WHERE h.role IN ('STAFF', 'AGENT')) gg) u
         </if>
 
         <choose>
@@ -101,6 +118,12 @@
             </otherwise>
         </choose>
         and u.register_time between #{startTime} and #{endTime}
+        <if test="channel !=null and channel != '' and channel != '其他' ">
+            and u.channel = #{channel}
+        </if>
+        <if test="channel == '其他'" >
+            and u.channel IS NULL
+        </if>
         <if test="userStage.name() == 'BindCard'">
           and exists (select * from bank_card b where  u.login_name = b.login_name and b.status='PASSED')
         </if>
@@ -138,23 +161,30 @@
             <if test="roleStage.name() == 'STAFF' ">
                 (SELECT
                   j.*
-                FROM
+                  FROM
                   user j
                   JOIN
                   (SELECT
-                    k.`login_name`
-                  FROM
-                    user_role o
-                    RIGHT JOIN referrer_relation k
-                    ON o.`login_name` = k.`referrer_login_name`
-                    AND k.`level` = 1
-                  WHERE o.`role` = 'STAFF'
-                  UNION
-                  SELECT
                     h.login_name
                   FROM
                     user_role h
                   WHERE h.role = 'STAFF') gg
+                  ON j.`login_name` = gg.login_name) u
+            </if>
+            <if test="roleStage.name() == 'RECOMMENDATION' ">
+                (SELECT
+                  j.*
+                FROM
+                user j
+                JOIN
+                (SELECT
+                  k.`login_name`
+                FROM
+                  user_role o
+                RIGHT JOIN referrer_relation k
+                  ON o.`login_name` = k.`referrer_login_name`
+                  AND k.`level` = 1
+                WHERE o.`role` = 'STAFF') gg
                 ON j.`login_name` = gg.login_name) u
             </if>
             <if test="roleStage.name() == 'AGENT' ">
@@ -173,17 +203,27 @@
             </if>
             <if test="roleStage.name() == 'OTHERS' ">
                 (SELECT
-                  j.*
+                j.*
                 FROM
-                  user j
-                  JOIN
-                  (SELECT
-                    o.`login_name`
-                  FROM
-                    user_role o
-                  WHERE o.`role` not in ('AGENT','STAFF')
-                  GROUP BY o.`login_name`) oo
-                ON j.`login_name` = oo.login_name) u
+                USER j
+                WHERE NOT EXISTS
+                (SELECT
+                1
+                FROM
+                (SELECT
+                k.`login_name`
+                FROM
+                user_role o
+                RIGHT JOIN referrer_relation k
+                ON o.`login_name` = k.`referrer_login_name`
+                AND k.`level` = 1
+                WHERE o.`role` = 'STAFF'
+                UNION
+                SELECT
+                h.login_name
+                FROM
+                user_role h
+                WHERE h.role IN ('STAFF', 'AGENT')) gg) u
             </if>
             where not exists (
                 select province from (
@@ -201,6 +241,12 @@
                 ) p where p.province = u.province
             )
             and u.register_time between #{startTime} and #{endTime}
+            <if test="channel !=null and channel != '' and channel != '其他' ">
+                and u.channel = #{channel}
+            </if>
+            <if test="channel == '其他'" >
+                and u.channel IS NULL
+            </if>
             <if test="userStage.name() == 'BindCard'">
                 and exists (select * from bank_card b where  u.login_name = b.login_name and b.status='PASSED')
             </if>
@@ -652,19 +698,26 @@
             user j
             JOIN
             (SELECT
+            h.login_name
+            FROM
+            user_role h
+            WHERE h.role = 'STAFF') gg
+            ON j.`login_name` = gg.login_name) u
+        </if>
+        <if test="roleStage.name() == 'RECOMMENDATION' ">
+            (SELECT
+            j.*
+            FROM
+            user j
+            JOIN
+            (SELECT
             k.`login_name`
             FROM
             user_role o
             RIGHT JOIN referrer_relation k
             ON o.`login_name` = k.`referrer_login_name`
             AND k.`level` = 1
-            WHERE o.`role` = 'STAFF'
-            UNION
-            SELECT
-            h.login_name
-            FROM
-            user_role h
-            WHERE h.role = 'STAFF') gg
+            WHERE o.`role` = 'STAFF') gg
             ON j.`login_name` = gg.login_name) u
         </if>
         <if test="roleStage.name() == 'AGENT' ">
@@ -685,15 +738,26 @@
             (SELECT
             j.*
             FROM
-            user j
-            JOIN
+            USER j
+            WHERE NOT EXISTS
             (SELECT
-            o.`login_name`
+            1
+            FROM
+            (SELECT
+            k.`login_name`
             FROM
             user_role o
-            WHERE o.`role` NOT IN ('AGENT','STAFF')
-            GROUP BY o.`login_name`) oo
-            ON j.`login_name` = oo.login_name) u
+            RIGHT JOIN referrer_relation k
+            ON o.`login_name` = k.`referrer_login_name`
+            AND k.`level` = 1
+            WHERE o.`role` = 'STAFF'
+            UNION
+            SELECT
+            h.login_name
+            FROM
+            user_role h
+            WHERE h.role IN ('STAFF', 'AGENT')) gg
+            WHERE j.`login_name` = gg.login_name)) u
         </if>
         join invest i
         on u.login_name = i.login_name
@@ -719,19 +783,26 @@
                             user j
                             JOIN
                             (SELECT
+                            h.login_name
+                            FROM
+                            user_role h
+                            WHERE h.role = 'STAFF') gg
+                            ON j.`login_name` = gg.login_name) uu
+                        </if>
+                        <if test="roleStage.name() == 'RECOMMENDATION' ">
+                            (SELECT
+                            j.*
+                            FROM
+                            user j
+                            JOIN
+                            (SELECT
                             k.`login_name`
                             FROM
                             user_role o
                             RIGHT JOIN referrer_relation k
                             ON o.`login_name` = k.`referrer_login_name`
                             AND k.`level` = 1
-                            WHERE o.`role` = 'STAFF'
-                            UNION
-                            SELECT
-                            h.login_name
-                            FROM
-                            user_role h
-                            WHERE h.role = 'STAFF') gg
+                            WHERE o.`role` = 'STAFF') gg
                             ON j.`login_name` = gg.login_name) uu
                         </if>
                         <if test="roleStage.name() == 'AGENT' ">
@@ -752,15 +823,26 @@
                             (SELECT
                             j.*
                             FROM
-                            user j
-                            JOIN
+                            USER j
+                            WHERE NOT EXISTS
                             (SELECT
-                            o.`login_name`
+                            1
+                            FROM
+                            (SELECT
+                            k.`login_name`
                             FROM
                             user_role o
-                            WHERE o.`role` NOT IN ('AGENT','STAFF')
-                            GROUP BY o.`login_name`) oo
-                            ON j.`login_name` = oo.login_name) uu
+                            RIGHT JOIN referrer_relation k
+                            ON o.`login_name` = k.`referrer_login_name`
+                            AND k.`level` = 1
+                            WHERE o.`role` = 'STAFF'
+                            UNION
+                            SELECT
+                            h.login_name
+                            FROM
+                            user_role h
+                            WHERE h.role IN ('STAFF', 'AGENT')) gg
+                            WHERE j.`login_name` = gg.login_name)) uu
                         </if>
                           on uu.login_name=ii.login_name
                         where
@@ -776,6 +858,12 @@
         </choose>
         and i.status='SUCCESS'
         and i.created_time between #{startTime} and #{endTime}
+        <if test="channel !=null and channel != '' and channel != '其他' ">
+            and u.channel = #{channel}
+        </if>
+        <if test="channel == '其他'" >
+            and u.channel IS NULL
+        </if>
         group by u.province, `name`
         <if test="province == null or province ==''">
             union all
@@ -805,19 +893,26 @@
                 user j
                 JOIN
                 (SELECT
+                h.login_name
+                FROM
+                user_role h
+                WHERE h.role = 'STAFF') gg
+                ON j.`login_name` = gg.login_name) u
+            </if>
+            <if test="roleStage.name() == 'RECOMMENDATION' ">
+                (SELECT
+                j.*
+                FROM
+                user j
+                JOIN
+                (SELECT
                 k.`login_name`
                 FROM
                 user_role o
                 RIGHT JOIN referrer_relation k
                 ON o.`login_name` = k.`referrer_login_name`
                 AND k.`level` = 1
-                WHERE o.`role` = 'STAFF'
-                UNION
-                SELECT
-                h.login_name
-                FROM
-                user_role h
-                WHERE h.role = 'STAFF') gg
+                WHERE o.`role` = 'STAFF') gg
                 ON j.`login_name` = gg.login_name) u
             </if>
             <if test="roleStage.name() == 'AGENT' ">
@@ -838,15 +933,26 @@
                 (SELECT
                 j.*
                 FROM
-                user j
-                JOIN
+                USER j
+                WHERE NOT EXISTS
                 (SELECT
-                o.`login_name`
+                1
+                FROM
+                (SELECT
+                k.`login_name`
                 FROM
                 user_role o
-                WHERE o.`role` NOT IN ('AGENT','STAFF')
-                GROUP BY o.`login_name`) oo
-                ON j.`login_name` = oo.login_name) u
+                RIGHT JOIN referrer_relation k
+                ON o.`login_name` = k.`referrer_login_name`
+                AND k.`level` = 1
+                WHERE o.`role` = 'STAFF'
+                UNION
+                SELECT
+                h.login_name
+                FROM
+                user_role h
+                WHERE h.role IN ('STAFF', 'AGENT')) gg
+                WHERE j.`login_name` = gg.login_name)) u
             </if>
             join invest i
             on u.login_name = i.login_name
@@ -867,19 +973,26 @@
                         user j
                         JOIN
                         (SELECT
+                        h.login_name
+                        FROM
+                        user_role h
+                        WHERE h.role = 'STAFF') gg
+                        ON j.`login_name` = gg.login_name) uu
+                    </if>
+                    <if test="roleStage.name() == 'RECOMMENDATION' ">
+                        (SELECT
+                        j.*
+                        FROM
+                        user j
+                        JOIN
+                        (SELECT
                         k.`login_name`
                         FROM
                         user_role o
                         RIGHT JOIN referrer_relation k
                         ON o.`login_name` = k.`referrer_login_name`
                         AND k.`level` = 1
-                        WHERE o.`role` = 'STAFF'
-                        UNION
-                        SELECT
-                        h.login_name
-                        FROM
-                        user_role h
-                        WHERE h.role = 'STAFF') gg
+                        WHERE o.`role` = 'STAFF') gg
                         ON j.`login_name` = gg.login_name) uu
                     </if>
                     <if test="roleStage.name() == 'AGENT' ">
@@ -900,20 +1013,37 @@
                         (SELECT
                         j.*
                         FROM
-                        user j
-                        JOIN
+                        USER j
+                        WHERE NOT EXISTS
                         (SELECT
-                        o.`login_name`
+                        1
+                        FROM
+                        (SELECT
+                        k.`login_name`
                         FROM
                         user_role o
-                        WHERE o.`role` NOT IN ('AGENT','STAFF')
-                        GROUP BY o.`login_name`) oo
-                        ON j.`login_name` = oo.login_name) uu
+                        RIGHT JOIN referrer_relation k
+                        ON o.`login_name` = k.`referrer_login_name`
+                        AND k.`level` = 1
+                        WHERE o.`role` = 'STAFF'
+                        UNION
+                        SELECT
+                        h.login_name
+                        FROM
+                        user_role h
+                        WHERE h.role IN ('STAFF', 'AGENT')) gg
+                        WHERE j.`login_name` = gg.login_name)) uu
                     </if>
                     on uu.login_name=ii.login_name
                     where
                         ii.status='SUCCESS'
                         and ii.created_time between #{startTime} and #{endTime}
+                    <if test="channel !=null and channel != '' and channel != '其他' ">
+                        and uu.channel = #{channel}
+                    </if>
+                    <if test="channel == '其他'" >
+                        and uu.channel IS NULL
+                    </if>
                     group by province
                     order by amount desc
                     limit 5

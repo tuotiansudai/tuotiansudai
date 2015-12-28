@@ -27,6 +27,12 @@ public class BusinessIntelligenceController {
             "湖北","湖南","江西","福建","云南","海南","四川","贵州","广东","内蒙古","新疆","广西","西藏","宁夏","香港","澳门","台湾");
 
     @ResponseBody
+    @RequestMapping(value = "/channels", method = RequestMethod.GET)
+    public List<String> queryChannels() {
+        return businessIntelligenceService.getChannels();
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/province", method = RequestMethod.GET)
     public List<String> queryProvinces() {
         return PROVINCES;
@@ -40,8 +46,9 @@ public class BusinessIntelligenceController {
             @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
             @RequestParam(name = "province",required = false) String province,
             @RequestParam(name = "userStage",required = false) UserStage userStage,
-            @RequestParam(name = "roleStage",required = false) RoleStage roleStage){
-        return businessIntelligenceService.queryUserRegisterTrend(granularity, startTime, endTime, province, userStage, roleStage);
+            @RequestParam(name = "roleStage",required = false) RoleStage roleStage,
+            @RequestParam(name = "channel",required = false) String channel){
+        return businessIntelligenceService.queryUserRegisterTrend(granularity, startTime, endTime, province, userStage, roleStage, channel);
     }
 
     @ResponseBody
@@ -80,8 +87,9 @@ public class BusinessIntelligenceController {
             @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
             @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
             @RequestParam(name = "province",required = false) String province,
-            @RequestParam(name = "roleStage",required = false) RoleStage roleStage){
-        return businessIntelligenceService.queryUserInvestAmountTrend(granularity, startTime, endTime, province, roleStage);
+            @RequestParam(name = "roleStage",required = false) RoleStage roleStage,
+            @RequestParam(name = "channel") String channel){
+        return businessIntelligenceService.queryUserInvestAmountTrend(granularity, startTime, endTime, province, roleStage,channel);
     }
 
     @ResponseBody
