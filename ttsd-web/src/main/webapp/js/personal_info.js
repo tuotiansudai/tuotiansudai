@@ -17,7 +17,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                 shadeClose: true,
                 content: $changeEmailDOM,
                 cancel: function () {
-                    $passwordForm.validate().resetForm();
+                    $EmailForm.validate().resetForm();
                 }
             });
         });
@@ -27,7 +27,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             rules: {
                 email: {
                     required: true,
-                    email: true,
+                    regex:/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
                     isExist: "/personal-info/email/{0}/is-exist"
                 }
             },
@@ -45,7 +45,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             messages: {
                 email: {
                     required: "请输入有效邮箱",
-                    email: "请输入有效邮箱",
+                    regex:'请输入有效邮箱',
                     isExist: "邮箱已存在"
                 }
             },
