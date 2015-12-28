@@ -343,8 +343,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> findLoginNameFromAccountLike(String loginName) {
-        return accountMapper.findAllLoginNamesByLike(loginName);
+    public List<String> findAllLoanerLikeLoginName(String loginName) {
+        return accountMapper.findAllLoanerLikeLoginName(loginName);
+    }
+
+    @Override
+    public List<String> findAccountLikeLoginName(String loginName) {
+        return accountMapper.findAccountLikeLoginName(loginName);
     }
 
     @Override
@@ -409,7 +414,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserModel> findUsersAccountBalance(String loginName, int currentPageNo, int pageSize) {
-        return userMapper.findUsersAccountBalance(loginName, (currentPageNo - 1 ) * pageSize, pageSize);
+        return userMapper.findUsersAccountBalance(loginName, (currentPageNo - 1) * pageSize, pageSize);
     }
 
     @Override

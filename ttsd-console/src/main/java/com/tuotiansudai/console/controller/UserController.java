@@ -60,7 +60,13 @@ public class UserController {
     @RequestMapping(value = "/account/{loginName}/search", method = RequestMethod.GET)
     @ResponseBody
     public List<String> findLoginNames(@PathVariable String loginName) {
-        return userService.findLoginNameFromAccountLike(loginName);
+        return userService.findAllLoanerLikeLoginName(loginName);
+    }
+
+    @RequestMapping(value = "/account/{loginName}/query", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> findAllLoanerLikeLoginName(@PathVariable String loginName) {
+        return userService.findAccountLikeLoginName(loginName);
     }
 
 

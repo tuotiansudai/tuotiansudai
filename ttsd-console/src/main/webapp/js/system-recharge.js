@@ -5,7 +5,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
         $("#login-name").autocomplete({
             minLength: 3,
             source: function (query, process) {
-                $.get('/user-manage/account/' + query.term + '/search', function (respData) {
+                $.get('/user-manage/account/' + query.term + '/query', function (respData) {
                     $('#balance').val('');
                     autoValue = respData;
                     return process(respData);
