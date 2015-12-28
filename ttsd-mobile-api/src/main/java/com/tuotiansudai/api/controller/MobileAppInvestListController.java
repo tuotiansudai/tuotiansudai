@@ -10,13 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 public class MobileAppInvestListController extends MobileAppBaseController {
     @Autowired
     private MobileAppInvestListService mobileAppInvestListService;
 
     @RequestMapping(value = "/get/invests", method = RequestMethod.POST)
-    public BaseResponseDto queryInvestList(@RequestBody InvestListRequestDto investListRequestDto) {
+    public BaseResponseDto queryInvestList(@Valid @RequestBody InvestListRequestDto investListRequestDto) {
+
         investListRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppInvestListService.generateInvestList(investListRequestDto);
     }
