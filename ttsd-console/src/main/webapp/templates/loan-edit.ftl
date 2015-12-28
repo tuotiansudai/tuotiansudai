@@ -64,6 +64,24 @@
                        value="${loanInfo.name}" <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if>>
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">产品线类型: </label>
+            <div class="col-sm-4">
+                <select class="selectpicker b-width" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
+                    <option value="">请选择</option>
+                    <#list productTypes as productType>
+                        <option value="${productType.name()}"
+                                <#if loanInfo.productType?? && productType.name() == loanInfo.productType>selected</#if>
+                                data-period="${productType.getPeriods()}" data-baserate="${productType.getRate()?string('0.00')}">
+                            ${productType.getName()}
+                        </option>
+                    </#list>
+                </select>
+                <input type="hidden" class="jq-product-type" value="${loanInfo.productType!}"/>
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="col-sm-2 control-label">代理用户: </label>
 
@@ -217,19 +235,7 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="col-sm-2 control-label">产品线类型: </label>
-            <div class="col-sm-4">
-                <select class="selectpicker" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
-                    <#list productTypes as productType>
-                        <option value="${productType.name()}" <#if productType.name() == loanInfo.productType>selected</#if> data-period="${productType.getPeriods()}" data-baserate="${productType.getRate()?string('0.00')}">
-                        ${productType.getName()}
-                        </option>
-                    </#list>
-                </select>
-                <input type="hidden" class="jq-product-type" value="${loanInfo.productType}"/>
-            </div>
-        </div>
+
 
         <div class="form-group">
             <label class="col-sm-2 control-label">活动利率（%）: </label>

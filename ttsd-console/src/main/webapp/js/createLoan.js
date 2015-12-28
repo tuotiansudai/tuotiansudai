@@ -109,17 +109,25 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             var _select = bootstrapSelect.siblings('select');
             var _options = _select.find('option');
             var _hidden = bootstrapSelect.siblings('[type="hidden"]');
-            var type=false;
-            if (_select.hasClass('product-type-name')) {
-                type = true;
+            var flag = false;
+            if (_select.hasClass('jq-b-type')) {
+                flag = true;
             } else {
-                type = false;
+                flag = false;
             }
             _options.each(function (i) {
                 if ($.trim(_options.eq(i).text()) == $.trim(txt)) {
-                    if(type){
-                        $('#loanPeriod').val(_options.eq(i).attr('data-time'));
-                        $('#baseRate').val(_options.eq(i).attr('data-percent'));
+                    if (flag) {
+                        var pix = _options.eq(i).attr('data-repaytimeunit');
+                        var _pix = '';
+                        if (pix == 'MONTH') {
+                            _pix = "月";
+                        } else {
+                            _pix = "天";
+                        }
+                        var day = _options.eq(i).attr('data-repaytimeperiod');
+                        $('.jq-day').text(day);
+                        $('.jq-piex').text(_pix);
                     }
                     _hidden.val(_options.eq(i).attr('value'));
                     if (_hidden.hasClass('jq-product-type')) {

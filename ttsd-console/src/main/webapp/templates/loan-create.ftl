@@ -52,19 +52,22 @@
                 <div class="form-control-static"> 限制6个字以内,不可写标的总额、期数、天数以及标的符号。</div>
             </div>
         </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">产品类型: </label>
 
+        <div class="form-group">
+            <label class="col-sm-2 control-label">产品线类型: </label>
             <div class="col-sm-4">
-                <select class="selectpicker b-width product-type-name">
-                    <option value="请选择产品类型" data-percent="0%" data-time="">请选择产品类型</option>
-                    <option value="速盈利" data-percent="10%" data-time="1">速盈利</option>
-                    <option value="稳盈绣" data-percent="12%" data-time="3">稳盈绣</option>
-                    <option value="久盈富" data-percent="14%" data-time="6">久盈富</option>
+                <select class="selectpicker b-width">
+                    <option value="">请选择</option>
+                    <#list productTypes as productType>
+                        <option value="${productType.name()}" data-period="${productType.getPeriods()}" data-baserate="${productType.getRate()?string('0.00')}">
+                        ${productType.getName()}
+                        </option>
+                    </#list>
                 </select>
-                <input type="hidden" class="product-type" value=""/>
+                <input type="hidden" class="jq-product-type" />
             </div>
         </div>
+
         <div class="form-group">
             <label class="col-sm-2 control-label">代理用户: </label>
 
@@ -198,21 +201,6 @@
                     </#list>
                 </select>
                 <input type="hidden" class="jq-impact-type"/>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-sm-2 control-label">产品线类型: </label>
-            <div class="col-sm-4">
-                <select class="selectpicker">
-                    <option value="">请选择</option>
-                    <#list productTypes as productType>
-                        <option value="${productType.name()}" data-period="${productType.getPeriods()}" data-baserate="${productType.getRate()?string('0.00')}">
-                            ${productType.getName()}
-                        </option>
-                    </#list>
-                </select>
-                <input type="hidden" class="jq-product-type" />
             </div>
         </div>
 
