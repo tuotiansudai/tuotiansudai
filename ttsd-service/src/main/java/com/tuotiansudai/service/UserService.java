@@ -49,7 +49,9 @@ public interface UserService {
 
     List<String> findStaffNameFromUserLike(String loginName);
 
-    List<String> findLoginNameFromAccountLike(String loginName);
+    List<String> findAllLoanerLikeLoginName(String loginName);
+
+    List<String> findAccountLikeLoginName(String loginName);
 
     List<String> findLoginNameLike(String loginName);
 
