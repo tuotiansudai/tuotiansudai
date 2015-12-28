@@ -135,7 +135,7 @@
                 <div class="coupon-time">
                     请在${(endTimeCoupon?string('yyyy-MM-dd'))!}前使用
                 </div>
-                <a href="##" class="coupon-link"></a>
+                <a href="/my-treasure" class="coupon-link"></a>
             </div>
         </div>
     </#if>
