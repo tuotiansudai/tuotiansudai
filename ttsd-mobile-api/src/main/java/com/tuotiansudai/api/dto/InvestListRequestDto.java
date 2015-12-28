@@ -8,8 +8,8 @@ public class InvestListRequestDto extends BaseParamDto{
 
     private Integer index;
     private Integer pageSize;
-    @NotEmpty
-    @Pattern(regexp = "^\\d+$")
+    @NotEmpty(message = "0057")
+    @Pattern(regexp = "^\\d+$",message = "0057")
     private String loanId;
 
     public String getLoanId() {
