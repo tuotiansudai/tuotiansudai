@@ -277,6 +277,10 @@
         select distinct channel from invest where channel is not NULL
     </select>
 
+    <select id="findAllInvestChannels" resultType="java.lang.String">
+        select IFNULL(channel,'其他') from invest group by channel order by channel desc
+    </select>
+
     <select id="countAutoInvest" parameterType="map" resultType="long">
         select count(*)
         from invest

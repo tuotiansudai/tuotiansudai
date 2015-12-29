@@ -6,6 +6,8 @@ import com.tuotiansudai.dto.UserStage;
 import com.tuotiansudai.repository.mapper.BusinessIntelligenceMapper;
 import com.tuotiansudai.repository.model.KeyValueModel;
 import com.tuotiansudai.service.BusinessIntelligenceService;
+import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.service.UserService;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.collections4.Predicate;
 import org.joda.time.DateTime;
@@ -21,11 +23,26 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     @Autowired
     private BusinessIntelligenceMapper businessIntelligenceMapper;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private InvestService investService;
+
     @Override
-    public List<KeyValueModel> queryUserRegisterTrend(Granularity granularity, Date startTime, Date endTime, String province,UserStage userStage,RoleStage roleStage) {
+    public List<String> getChannels() {
+        List<String> userChannel = userService.findAllUserChannels();
+        List<String> investChannel = investService.findAllInvestChannels();
+        userChannel.removeAll(investChannel);
+        userChannel.addAll(investChannel);
+        return userChannel;
+    }
+
+    @Override
+    public List<KeyValueModel> queryUserRegisterTrend(Granularity granularity, Date startTime, Date endTime, String province,UserStage userStage,RoleStage roleStage,String channel) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-        return businessIntelligenceMapper.queryUserRegisterTrend(queryStartTime, queryEndTime, granularity, province, userStage, roleStage);
+        return businessIntelligenceMapper.queryUserRegisterTrend(queryStartTime, queryEndTime, granularity, province, userStage, roleStage, channel);
     }
 
     @Override
@@ -81,10 +98,10 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     }
 
     @Override
-    public List<KeyValueModel> queryUserInvestAmountTrend(Granularity granularity, Date startTime, Date endTime, String province, RoleStage roleStage) {
+    public List<KeyValueModel> queryUserInvestAmountTrend(Granularity granularity, Date startTime, Date endTime, String province, RoleStage roleStage, String channel) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-        return businessIntelligenceMapper.queryUserInvestAmountTrend(queryStartTime, queryEndTime, granularity, province, roleStage);
+        return businessIntelligenceMapper.queryUserInvestAmountTrend(queryStartTime, queryEndTime, granularity, province, roleStage, channel);
     }
 
     @Override
