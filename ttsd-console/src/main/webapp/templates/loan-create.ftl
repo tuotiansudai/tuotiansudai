@@ -49,7 +49,7 @@
                 <input type="text" class="form-control jq-user" placeholder="" datatype="*" errormsg="借款项目名称不能为空" maxlength="6">
             </div>
             <div class="col-sm-6">
-                <div class="form-control-static"> 限制6个字以内,不可写标的总额、期数、天数以及标的符号。</div>
+                <div class="form-control-static"> 限制6个字以内,不可写标的总额、期数、天数以及标点符号。</div>
             </div>
         </div>
 

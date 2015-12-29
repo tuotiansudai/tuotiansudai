@@ -162,7 +162,7 @@
                 </ul>
             </div>
             <div class="company-up">
-                <a href="http://www.iqiyi.com/w_19rthksnrd.html#vfrm=2-3-0-1" target="_blank">
+                <a href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" target="_blank">
                     <img src="${staticServer}/images/banner/video-images.png" alt="拓天伟业挂牌视频">
                 </a>
             </div>
