@@ -156,7 +156,7 @@
             <label class="col-sm-2 control-label">投资手续费比例（%）: </label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control jq-fee jq-money" placeholder="" value="10%" datatype="money_fl"
+                <input type="text" class="form-control jq-fee jq-money" placeholder="" value="10.00" datatype="money_fl"
                        errormsg="投资手续费比例需要正确填写">
             </div>
             <div class="col-sm-6">
