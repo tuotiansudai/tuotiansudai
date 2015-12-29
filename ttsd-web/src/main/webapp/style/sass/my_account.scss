@@ -1218,6 +1218,26 @@
 
 /* my treasure*/
 .my-treasure-content {
+  .column-title{
+    em{
+      &.title-navli{
+        border-bottom: 4px solid #999;
+        color: #999;
+        cursor:pointer;
+        margin-right:40px;
+      }
+      &.active{
+        border-bottom: 4px solid #ff7200;
+        color: #ff7200;
+      }
+    }
+  }
+  .list-tab{
+    display:none;
+  }
+  .tab-show{
+    display:block;
+  }
   .no-treasure-tip {
     color: #7f7f7f;
     font-size:18px;
