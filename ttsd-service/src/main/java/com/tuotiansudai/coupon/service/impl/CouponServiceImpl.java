@@ -34,12 +34,16 @@ public class CouponServiceImpl implements CouponService {
     public void createCoupon(String loginName, CouponDto couponDto) throws CreateCouponException {
         CouponModel couponModel = new CouponModel(couponDto);
         long amount = couponModel.getAmount();
+        long investQuota = couponModel.getInvestQuota();
         if (amount <= 0) {
             throw new CreateCouponException("投资体验券金额应大于0!");
         }
         long totalCount = couponModel.getTotalCount();
         if (totalCount <= 0) {
             throw new CreateCouponException("发放数量应大于0!");
+        }
+        if (investQuota <= 0) {
+            throw new CreateCouponException("使用条件金额应大于0!");
         }
         Date startTime = couponModel.getStartTime();
         Date endTime = couponModel.getEndTime();

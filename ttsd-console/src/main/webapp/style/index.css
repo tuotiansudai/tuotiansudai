@@ -289,3 +289,14 @@ td.td {
 .form-group .form-control{
     padding:6px;
 }
+
+.item-zl{
+    float: left;
+    line-height: 35px;
+    font-size:16px;
+}
+
+.invest-quota{
+    width: 121px;
+    float: left;
+}
