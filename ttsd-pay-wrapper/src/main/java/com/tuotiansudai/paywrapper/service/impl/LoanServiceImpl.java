@@ -193,25 +193,27 @@ public class LoanServiceImpl implements LoanService {
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> loanOut(long loanId) {
 
-        redisWrapperClient.set(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId, "1");
-
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
 
-        try {
-            ProjectTransferResponseModel umPayReturn = doLoanOut(loanId);
-            payDataDto.setStatus(umPayReturn.isSuccess());
-            payDataDto.setCode(umPayReturn.getRetCode());
-            payDataDto.setMessage(umPayReturn.getRetMsg());
+        if(redisWrapperClient.setnx(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId, "1")) {
+            try {
+                ProjectTransferResponseModel umPayReturn = doLoanOut(loanId);
+                payDataDto.setStatus(umPayReturn.isSuccess());
+                payDataDto.setCode(umPayReturn.getRetCode());
+                payDataDto.setMessage(umPayReturn.getRetMsg());
 
-            if (umPayReturn.isSuccess()) {
                 redisWrapperClient.del(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId);
+            } catch (PayException e) {
+                payDataDto.setStatus(false);
+                payDataDto.setMessage(e.getLocalizedMessage());
+                logger.error(e.getLocalizedMessage(), e);
             }
-        } catch (PayException e) {
+        } else {
             payDataDto.setStatus(false);
-            payDataDto.setMessage(e.getLocalizedMessage());
-            logger.error(e.getLocalizedMessage(), e);
+            payDataDto.setMessage("some other loan out process is running.");
+            logger.error("some other thread is loan-outing for this loan, loanId:"+loanId);
         }
         return baseDto;
     }
