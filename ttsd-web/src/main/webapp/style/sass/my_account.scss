@@ -800,30 +800,12 @@
       border: 1px solid #ff752a;
       float: left;
       display: inline-block;
-      & .box {
+       .box {
         width: 180px;
         height: 180px;
         position: relative;
         margin: 10px;
-        & .sub-percent {
-          color: #ff752a;
-          font-size: 12px;
-          right: 23px;
-          top: 56px;
-          position: absolute;
-          z-index: 33;
-        }
-        & .title {
-          color: #a4a4a4;
-          font-size: 16px;
-          right: 0;
-          width: 180px;
-          top: 120px;
-          position: absolute;
-          z-index: 33;
-          text-align: center;
-        }
-        & div {
+         div {
           position: absolute;
           top: 0;
           left: 0;
@@ -833,33 +815,50 @@
           -webkit-transition: all .2s ease-in-out;
           -moz-transition: all .2s ease-in-out;
         }
-        & .bg {
+         .bg {
           border: #ccc 10px solid
         }
-        & .bg2 {
+         .bg2 {
           border: #ccc 10px solid;
           clip: rect(0, 90px, 180px, 0);
         }
-        & .rount {
-          border: #ff752a 10px solid;
+         .rount {
+          border: #f24712 10px solid;
           clip: rect(0, 90px, 180px, 0);
           -webkit-transform: rotate(0deg);
         }
-        & .rount2 {
-          border: #ff752a 10px solid;
+         .rount2 {
+          border: #f24712 10px solid;
           clip: rect(0, 180px, 180px, 90px);
           -webkit-transform: rotate(0deg);
           display: none
         }
-        & .num {
-          font: bold 25px/180px tahoma;
-          text-align: center;
-          color: #f24712;
-          top: 10px;
-          left: 10px;
-          z-index: 9;
-        }
 
+      .pr-square-in {
+        left: 13px;
+        top: 30px;
+        font-size: 15px;
+        display: inline-block;
+        text-align: center;
+        em {
+          color: #ff3333;
+          font-size: 17px;
+          line-height: 1;
+          font-weight: bold;
+          padding-top: 40px;
+          display: inline-block;
+          b {
+            font-size: 40px;
+            line-height:0.5;
+          }
+        }
+        i {
+          color: #999;
+          clear: both;
+          display: block;
+          margin-top: -6px;
+        }
+      }
       }
     }
     .chart-info {

@@ -4,6 +4,7 @@ public enum RoleStage {
 
     ALL,
     STAFF,
+    RECOMMENDATION,
     AGENT,
     OTHERS;
 

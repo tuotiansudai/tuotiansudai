@@ -1,6 +1,8 @@
 package com.tuotiansudai.service.impl;
 
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserRoleModel;
@@ -25,6 +27,17 @@ public class UserRoleServiceImpl implements UserRoleService{
             }
         }
         return false;
+    }
+
+    @Override
+    public List<Role> findRoleNameByLoginName(String loginName) {
+        List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(loginName);
+        return Lists.transform(userRoleModels, new Function<UserRoleModel, Role>() {
+            @Override
+            public Role apply(UserRoleModel input) {
+                return input.getRole();
+            }
+        });
     }
 
 }

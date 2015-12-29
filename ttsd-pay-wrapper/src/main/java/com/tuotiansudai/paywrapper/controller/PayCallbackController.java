@@ -49,10 +49,20 @@ public class PayCallbackController {
     @Autowired
     private LoanService loanService;
 
+    @Autowired
+    private SystemRechargeService systemRechargeService;
+
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.rechargeService.rechargeCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/system_recharge_notify", method = RequestMethod.GET)
+    public ModelAndView transferNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.systemRechargeService.systemRechargeCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

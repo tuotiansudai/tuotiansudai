@@ -300,6 +300,7 @@ public class LoanServiceImpl implements LoanService {
                 BaseDto<PayDataDto> investLoanDto = payWrapperClient.updateLoan(loanDto);
                 if (investLoanDto.getData().getStatus()) {
                     loanDto.setLoanStatus(LoanStatus.PREHEAT);
+                    loanDto.setVerifyTime(new Date());
                     updateLoanAndLoanTitleRelation(loanDto);
 
                     // 建标成功后，再次校验Loan状态，以确保只有建标成功后才创建job

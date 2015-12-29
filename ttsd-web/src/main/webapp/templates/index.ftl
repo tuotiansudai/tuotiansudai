@@ -71,8 +71,9 @@
                     <img class="icon-off" src="${staticServer}/images/icons/icon-off-2.png" alt="三方监管 放心理财">
                     <img class="icon-on" src="${staticServer}/images/icons/icon-on-2.png" alt="三方监管 放心理财">
                 <span class="clearfix">
-                    <b class="clearfix">三方监管 放心理财</b>
-                    第三方资金监管，第三方支付
+                    <b class="clearfix">三方托管 放心理财</b>
+                    第三方资金托管 <br/>
+                    第三方支付
                 </span>
                 </a>
             </dd>

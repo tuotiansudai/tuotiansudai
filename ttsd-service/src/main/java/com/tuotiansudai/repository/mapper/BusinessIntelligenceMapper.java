@@ -12,7 +12,8 @@ import java.util.List;
 
 @Repository
 public interface BusinessIntelligenceMapper {
-    List<KeyValueModel> queryUserRegisterTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("granularity") Granularity granularity, @Param("province") String province, @Param("userStage") UserStage userStage, @Param("roleStage") RoleStage roleStage);
+    List<KeyValueModel> queryUserRegisterTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("granularity") Granularity granularity,
+                                               @Param("province") String province, @Param("userStage") UserStage userStage, @Param("roleStage") RoleStage roleStage, @Param("channel") String channel);
 
     List<KeyValueModel> queryUserRechargeTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("granularity") Granularity granularity, @Param("province") String province);
 
@@ -22,7 +23,8 @@ public interface BusinessIntelligenceMapper {
 
     List<KeyValueModel> queryUserInvestCountTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province);
 
-    List<KeyValueModel> queryUserInvestAmountTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("granularity") Granularity granularity, @Param("province") String province, @Param("roleStage") RoleStage roleStage);
+    List<KeyValueModel> queryUserInvestAmountTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("granularity") Granularity granularity,
+                                                   @Param("province") String province, @Param("roleStage") RoleStage roleStage, @Param("channel") String channel);
 
     List<KeyValueModel> queryUserAgeTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province, @Param("isInvestor") String isInvestor);
 }

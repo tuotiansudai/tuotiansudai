@@ -14,9 +14,11 @@
                     <div class="rount"></div>
                     <div class="bg2"></div>
                     <div class="rount2" style="display: none;"></div>
-                    <span class="sub-percent"><#if loan.activityRate??>+<@percentInteger>${loan.activityRate}</@percentInteger><@percentFraction>${loan.activityRate}</@percentFraction>%</#if></span>
-                    <div id="num" class="num"><@percentInteger>${loan.basicRate}</@percentInteger><@percentFraction>${loan.basicRate}</@percentFraction>%</div>
-                    <span class="title">年化收益率</span>
+                    <div class="pr-square-in">
+                        <em><b><@percentInteger>${loan.basicRate}</@percentInteger><@percentFraction>${loan.basicRate}</@percentFraction></b><#if loan.activityRate??>+<@percentInteger>${loan.activityRate}</@percentInteger><@percentFraction>${loan.activityRate}</@percentFraction>%</#if></em>
+                        <i>年化收益</i>
+                    </div>
+
                 </div>
             </div>
             <div class="chart-info">

@@ -136,6 +136,7 @@ body {
       }
     }
   }
+
   .notice-list {
     width: 100%;
     height: 40px;
@@ -563,7 +564,6 @@ body {
                   color: #999;
                   display: block;
                 }
-
               }
             }
             .pad-m {
@@ -823,7 +823,7 @@ body {
       padding-top: 320px;
       .page-img {
         position: absolute;
-        left: -360px;
+        left: 1260px;
         top: 35px;
       }
       .article-one {
@@ -836,50 +836,44 @@ body {
         width: 40%;
         position: absolute;
         left: 0;
-        top: 310px;
+        top: 300px;
       }
       .article-three {
         width: 40%;
         position: absolute;
         right: 0;
-        top: 265px;
-      }
-      .article-app {
-        display: none;
+        top: 285px;
       }
     }
-
   }
   .box-insurance {
-    padding-top: 75px;
-    .page-width {
-      position: relative;
-      .page-img {
-        position: absolute;
-        right: 1400px;
-        top: 80px;
-      }
-      .sqr-title {
-        border-radius: 17px;
-        border: 1px dashed #fff;
-        display: inline-block;
-        padding: 4px 10px;
-        line-height: 1.4;
-      }
-      .fl {
-        width: 40%;
-      }
-      .fr {
-        width: 40%;
-        padding-top: 325px;
-      }
-      .article-mobile {
-        display: none;
+      padding-top: 50px;
+      .page-width {
+        position: relative;
+        .page-img {
+          position: absolute;
+          right: 1400px;
+          top: 60px;
+        }
+        .sqr-title {
+          border-radius: 17px;
+          border: 1px dashed #fff;
+          display: inline-block;
+          padding: 4px 10px;
+          line-height: 1.4;
+        }
+        .fl {
+          width: 42%;
+        }
+        .fr {
+          width: 35%;
+          padding-top: 295px;
+        }
+        .article-mobile {
+          display: none;
+        }
       }
     }
-
-  }
-
 }
 
 /* refer reward page */
@@ -964,6 +958,8 @@ body {
 }
 
 @media screen and (max-width: 1370px) and (max-height: 680px) {
+  .assurance-container .box-benift .page-width img.fl { margin-top:20px;}
+  .assurance-container .down { top:350px;}
   .assurance-container .section-title b {
     font-size: 44px;
   }
@@ -1014,7 +1010,6 @@ body {
     .home-content {
       background: #fafafa;
       margin-top: 10px !important;
-      padding-top:0!important;
       .page-width {
         padding: 15px;
         .product-box-list {
@@ -1122,10 +1117,8 @@ body {
                     }
                   }
                   span {
-
                     display: inline-block;
                   }
-
                 }
               }
               .pad-m {
@@ -1201,7 +1194,6 @@ body {
       }
     }
   }
-
   .new-guide-container {
     .new-guide-img {
       height: 150px !important;
@@ -1239,7 +1231,6 @@ body {
       }
     }
   }
-
   .back-home {
     background: rgba(0, 0, 0, .6);
     color: #fff;
@@ -1252,7 +1243,6 @@ body {
     padding: 5px 12px;
   }
   .assurance-container {
-
     p {
       line-height: 1.8;
       font-size: 12px;
@@ -1261,13 +1251,15 @@ body {
       b {
         font-size: 22px;
         margin-top: 0;
-        position: absolute;
-        left: 17%;
-        top: -20px;
+        position: relative;
+        top: -13px;
+        width: 100%;
+        text-align: center;
+        display: inline;
       }
       em {
         font-size: 16px;
-        margin-top: 15px;
+        margin-top: -15px;
       }
     }
     .down {
@@ -1306,14 +1298,22 @@ body {
           top: 15px;
 
         }
-        .article-one,
-        .article-two,
+        .article-one {
+          width: 98%;
+          position: relative;
+          left: 0;
+          top: 4px;
+          text-align: center;
+        }
+        .article-two {
+          width: 98%;
+          position: relative;
+          left: 0;
+          top: 0px;
+          text-align: center;
+        }
         .article-three {
           display: none;
-        }
-        .article-app {
-          display: block;
-          font-size: 14px;
         }
       }
     }
@@ -1364,5 +1364,4 @@ body {
       position: relative;
     }
   }
-
 }

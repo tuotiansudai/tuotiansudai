@@ -108,15 +108,21 @@ public class LoanModel implements Serializable {
      ***/
     private Date createdTime = new Date();
 
+    private String createdLoginName;
+
     private Date updateTime = new Date();
     /***
      * 初审时间
      ***/
     private Date verifyTime;
+
+    private String verifyLoginName;
     /***
      * 复审时间
      ***/
     private Date recheckTime;
+
+    private String recheckLoginName;
     /***
      * 标的状态
      ***/
@@ -182,6 +188,9 @@ public class LoanModel implements Serializable {
         this.status = LoanStatus.WAITING_VERIFY;
         this.verifyTime = loanDto.getVerifyTime();
         this.recheckTime = loanDto.getRecheckTime();
+        this.createdLoginName = loanDto.getCreatedLoginName();
+        this.verifyLoginName = loanDto.getVerifyLoginName();
+        this.recheckLoginName = loanDto.getRecheckLoginName();
     }
 
     public long getId() {
@@ -478,5 +487,29 @@ public class LoanModel implements Serializable {
 
     public void setProductType(ProductType productType) {
         this.productType = productType;
+    }
+
+    public String getCreatedLoginName() {
+        return createdLoginName;
+    }
+
+    public void setCreatedLoginName(String createdLoginName) {
+        this.createdLoginName = createdLoginName;
+    }
+
+    public String getVerifyLoginName() {
+        return verifyLoginName;
+    }
+
+    public void setVerifyLoginName(String verifyLoginName) {
+        this.verifyLoginName = verifyLoginName;
+    }
+
+    public String getRecheckLoginName() {
+        return recheckLoginName;
+    }
+
+    public void setRecheckLoginName(String recheckLoginName) {
+        this.recheckLoginName = recheckLoginName;
     }
 }

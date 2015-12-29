@@ -238,6 +238,11 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
+    public List<String> findAllInvestChannels() {
+        return investMapper.findAllInvestChannels();
+    }
+
+    @Override
     public InvestModel findById(long investId) {
         return investMapper.findById(investId);
     }
