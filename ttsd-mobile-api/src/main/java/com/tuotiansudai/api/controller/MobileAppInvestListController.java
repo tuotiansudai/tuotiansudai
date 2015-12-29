@@ -21,8 +21,7 @@ public class MobileAppInvestListController extends MobileAppBaseController {
 
     @RequestMapping(value = "/get/invests", method = RequestMethod.POST)
     public BaseResponseDto queryInvestList(@Valid @RequestBody InvestListRequestDto investListRequestDto,BindingResult bindingResult) {
-        String s = null;
-        s.toString();
+
         if (bindingResult.hasErrors()) {
             String errorCode = bindingResult.getFieldError().getDefaultMessage();
             String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);
