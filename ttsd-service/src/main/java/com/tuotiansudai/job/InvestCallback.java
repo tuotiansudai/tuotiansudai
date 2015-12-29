@@ -2,20 +2,10 @@ package com.tuotiansudai.job;
 
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.SmsInvestFatalNotifyDto;
-import com.tuotiansudai.repository.model.Environment;
-import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-
-import java.text.MessageFormat;
-import java.util.List;
 
 public class InvestCallback implements Job {
 
@@ -33,6 +23,7 @@ public class InvestCallback implements Job {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
+
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         String trigger = redisWrapperClient.get(JOB_TRIGGER_KEY);
@@ -40,5 +31,4 @@ public class InvestCallback implements Job {
             payWrapperClient.investCallback();
         }
     }
-
 }
