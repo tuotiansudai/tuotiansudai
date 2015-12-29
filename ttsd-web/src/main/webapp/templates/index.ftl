@@ -4,13 +4,13 @@
     <div class="banner-box">
         <div class="banner-img-list">
             <a href="/activity/ranking" target="_blank">
-                <img src="${staticServer}/images/sign/activities/ranking/qph.jpg" alt="抢排行，送大礼">
+                <img src="${staticServer}/images/sign/actor/ranking/qph.jpg" alt="抢排行，送大礼">
             </a>
             <a href="/activity/grand" target="_blank">
-                <img src="${staticServer}/images/sign/activities/grand/banner-grand.jpg" alt="累计收益兑大奖">
+                <img src="${staticServer}/images/sign/actor/grand/ba-grand.jpg" alt="累计收益兑大奖">
             </a>
              <a href="/activity/recruit" target="_blank">
-                 <img src="${staticServer}/images/banner/banner-home03.png" alt="招募代理">
+                 <img src="${staticServer}/images/ttimg/ttimg-home03.png" alt="招募代理">
              </a>
         </div>
         <ul class="scroll-num">
@@ -39,7 +39,7 @@
     <div class="main-advantage page-width">
         <dl>
             <dd>
-                <a href="/about/assurance" target="_blank">
+                <a href="/about/assurance?aid=1" target="_blank">
                 <img src="${staticServer}/images/icons/hs01.png" alt="超高收益 最低门槛" >
                 <span class="clearfix">
                      <b class="clearfix">超高收益 最低门槛</b>
@@ -49,7 +49,7 @@
                 </a>
             </dd>
             <dd>
-                <a href="/about/assurance" target="_blank">
+                <a href="/about/assurance?aid=2" target="_blank">
                 <img src="${staticServer}/images/icons/hs02.png" alt="三方托管 放心理财">
                 <span class="clearfix">
                     <b class="clearfix">三方托管 放心理财</b>
@@ -59,7 +59,7 @@
                     </a>
             </dd>
             <dd>
-                <a href="/about/assurance" target="_blank">
+                <a href="/about/assurance?aid=3" target="_blank">
                 <img src="${staticServer}/images/icons/hs03.png" alt="实力雄厚 安全保障">
                 <span class="clearfix">
                     <b class="clearfix">实力雄厚 安全保障</b>
@@ -117,7 +117,7 @@
                 </div>
             </div>
             <div class="home-ad fr">
-                <a href="/activity/ranking" target="_blank"> <img src="${staticServer}/images/sign/ad-h.jpg"></a>
+                <a href="/activity/ranking" target="_blank"> <img src="${staticServer}/images/sign/side-h.jpg"></a>
             </div>
         </div>
 
@@ -135,7 +135,7 @@
                 <div class="coupon-time">
                     请在${(endTimeCoupon?string('yyyy-MM-dd'))!}前使用
                 </div>
-                <a href="##" class="coupon-link"></a>
+                <a href="/my-treasure" class="coupon-link"></a>
             </div>
         </div>
     </#if>

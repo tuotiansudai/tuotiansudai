@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SmsWrapperClient;
@@ -45,7 +46,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -138,41 +138,49 @@ public class LoanServiceImpl implements LoanService {
                 logger.error(e.getLocalizedMessage(),e);
             }
         }
-        return this.updateLoanStatus(loanId,LoanStatus.CANCEL);
+        return  this.updateLoanStatus(loanId,LoanStatus.CANCEL);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> updateLoanStatus(long loanId, LoanStatus loanStatus) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
+        baseDto.setData(payDataDto);
+
         LoanModel loanModel = loanMapper.findById(loanId);
-        MerUpdateProjectRequestModel merUpdateProjectRequestModel = new MerUpdateProjectRequestModel(loanModel.getLoanAmount(),
-                loanModel.getId(),
-                loanModel.getName(),
-                loanStatus.getCode(),
-                new SimpleDateFormat("yyyyMMdd").format(loanModel.getFundraisingEndTime()));
+        if (loanModel.getStatus() == loanStatus) {
+            payDataDto.setStatus(true);
+            return baseDto;
+        }
+
         try {
-            MerUpdateProjectResponseModel responseModel = paySyncClient.send(MerUpdateProjectMapper.class,
-                    merUpdateProjectRequestModel,
-                    MerUpdateProjectResponseModel.class);
-            if (responseModel.isSuccess()) {
-                LoanModel loan = loanMapper.findById(loanId);
-                loan.setStatus(loanStatus);
-                if(loanStatus == LoanStatus.CANCEL) {
-                    loan.setRecheckTime(new Date());
-                }
-                if (loanStatus == LoanStatus.REPAYING) {
-                    loan.setVerifyTime(new Date());
-                }
-                loanMapper.update(loan);
+            boolean updateSuccess = Strings.isNullOrEmpty(loanStatus.getCode());
+            if (!updateSuccess) {
+                MerUpdateProjectRequestModel merUpdateProjectRequestModel = new MerUpdateProjectRequestModel(String.valueOf(loanModel.getLoanAmount()),
+                        String.valueOf(loanModel.getId()),
+                        loanModel.getName(),
+                        loanStatus.getCode());
+
+                MerUpdateProjectResponseModel responseModel = paySyncClient.send(MerUpdateProjectMapper.class,
+                        merUpdateProjectRequestModel,
+                        MerUpdateProjectResponseModel.class);
+                updateSuccess =  responseModel.isSuccess();
+                payDataDto.setCode(responseModel.getRetCode());
+                payDataDto.setMessage(responseModel.getRetMsg());
             }
-            payDataDto.setStatus(responseModel.isSuccess());
-            payDataDto.setCode(responseModel.getRetCode());
-            payDataDto.setMessage(responseModel.getRetMsg());
+
+            if (updateSuccess) {
+                loanModel.setStatus(loanStatus);
+                if(loanStatus == LoanStatus.CANCEL || loanStatus == LoanStatus.REPAYING) {
+                    loanModel.setRecheckTime(new Date());
+                }
+                loanMapper.update(loanModel);
+            }
+            payDataDto.setStatus(updateSuccess);
         } catch (PayException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-        baseDto.setData(payDataDto);
+
         return baseDto;
     }
 

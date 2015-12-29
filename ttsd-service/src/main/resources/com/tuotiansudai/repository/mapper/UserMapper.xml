@@ -24,6 +24,7 @@
         <result column="source" property="source"></result>
         <result column="province" property="province"></result>
         <result column="city" property="city"></result>
+        <result column="auto_invest_status" property="autoInvestStatus"></result>
         <association property="account" javaType="com.tuotiansudai.repository.model.AccountModel">
             <id column="id" property="id"></id>
             <result column="login_name" property="loginName"></result>
@@ -47,7 +48,12 @@
     </select>
 
     <select id="findByLoginName" parameterType="java.lang.String" resultMap="userResultMap">
-      select * from user where login_name = #{loginName}
+      select
+          u.*,
+          IF(au.login_name is null, "0", "1") as auto_invest_status
+      from user u
+      left join auto_invest_plan au on au.login_name = u.login_name and au.enabled=1
+      where u.login_name = #{loginName}
     </select>
 
     <select id="findByLoginNameOrMobile" parameterType="java.lang.String" resultMap="userResultMap">
@@ -76,11 +82,18 @@
     </update>
 
     <select id="findAllUser" parameterType="map" resultMap="userResultMap">
-        select * from user u left join account a on u.login_name = a.login_name
+        select
+            u.*,
+            a.*,
+            IF(au.login_name is null, "0", "1") as auto_invest_status
+        from user u
+            left join account a on u.login_name = a.login_name
 
         <if test="role !=null" >
             join user_role r on u.login_name = r.login_name
         </if>
+
+            left join auto_invest_plan au on u.login_name = au.login_name and enabled=1
         <where>
             <if test="role !=null" >
                 and r.role = #{role}
@@ -157,6 +170,11 @@
         select login_name from user where login_name like CONCAT(CONCAT('%', #{loginName}), '%')
     </select>
 
+    <select id="findStaffByLikeLoginName" parameterType="java.lang.String" resultType="java.lang.String">
+        select login_name from user u where u.login_name like CONCAT(CONCAT('%', #{loginName}), '%')
+        and exists(select * from user_role r where r.login_name = u.login_name and r.role = 'STAFF')
+    </select>
+
     <select id="findAllChannels" resultType="java.lang.String">
         select distinct channel from user where channel is not NULL
     </select>
@@ -167,6 +185,92 @@
 
     <select id="findUserCount" resultType="int">
         select count(*) from user
+    </select>
+
+    <select id="searchAllUsers" parameterType="map" resultMap="userResultMap">
+        SELECT
+          *
+        FROM
+          user u
+          LEFT JOIN account a
+            ON u.`login_name` = a.`login_name`
+        <where>
+            <if test="identityNumber != null and identityNumber != '' " >
+                AND a.`identity_number` = #{identityNumber}
+            </if>
+            <if test="loginName != null and loginName != '' ">
+                AND u.`login_name` = #{loginName}
+            </if>
+            <if test="referrer != null and referrer != '' ">
+                AND u.`referrer` = #{referrer}
+            </if>
+            <if test="mobile != null and mobile != '' ">
+                AND u.`mobile` = #{mobile}
+            </if>
+        </where>
+        ORDER BY u.`register_time` DESC
+    </select>
+
+    <select id="findUsersAccountBalance" parameterType="map" resultMap="userResultMap">
+        SELECT
+          *
+        FROM
+          user u
+           JOIN account a
+            ON u.`login_name` = a.`login_name`
+            AND a.`balance` > 0
+            <if test="loginName != null and loginName != '' ">
+            AND a.`login_name` = #{loginName}
+            </if>
+        WHERE NOT EXISTS
+        (SELECT
+            1
+          FROM
+            user_role r
+          WHERE u.`login_name` = r.`login_name`
+          AND r.`role` = 'LOANER')
+        ORDER BY a.`balance` DESC
+        limit #{startLimit}, #{endLimit}
+    </select>
+
+    <select id="findUsersAccountBalanceSum" parameterType="map" resultType="long">
+        SELECT
+        IFNULL(SUM(a.`balance`), 0)
+        FROM
+          user u
+           JOIN account a
+            ON u.`login_name` = a.`login_name`
+            AND a.`balance` > 0
+        <if test="loginName != null and loginName != '' ">
+            AND a.`login_name` = #{loginName}
+        </if>
+            WHERE NOT EXISTS
+        (SELECT
+            1
+          FROM
+            user_role r
+          WHERE u.`login_name` = r.`login_name`
+          AND r.`role` = 'LOANER')
+    </select>
+
+    <select id="findUsersAccountBalanceCount" parameterType="map" resultType="int">
+        SELECT
+        IFNULL(count(*), 0)
+        FROM
+          user u
+           JOIN account a
+            ON u.`login_name` = a.`login_name`
+            AND a.`balance` > 0
+        <if test="loginName != null and loginName != '' ">
+            AND a.`login_name` = #{loginName}
+        </if>
+            WHERE NOT EXISTS
+        (SELECT
+            1
+          FROM
+            user_role r
+          WHERE u.`login_name` = r.`login_name`
+          AND r.`role` = 'LOANER')
     </select>
 
 </mapper>

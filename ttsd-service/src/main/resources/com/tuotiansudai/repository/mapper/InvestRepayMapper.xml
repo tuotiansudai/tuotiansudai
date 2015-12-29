@@ -6,6 +6,8 @@
 
     <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
 
+    <cache-ref namespace="com.tuotiansudai.repository.mapper.InvestMapper"/>
+
     <resultMap id="investRepayInAccountResultMap" type="LatestInvestView">
         <result column="created_time" property="investTime"></result>
         <result column="loanName" property="loanName"></result>
@@ -115,7 +117,10 @@
 
     <update id="update" parameterType="InvestRepayModel">
         update invest_repay
-        set actual_interest = #{actualInterest},
+        set expected_interest = #{expectedInterest},
+            expected_fee = #{expectedFee},
+            repay_date = #{repayDate},
+            actual_interest = #{actualInterest},
             actual_fee = #{actualFee},
             actual_repay_date = #{actualRepayDate},
             status = #{status},

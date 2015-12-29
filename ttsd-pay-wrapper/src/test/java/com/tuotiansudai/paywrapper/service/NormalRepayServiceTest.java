@@ -469,7 +469,6 @@ public class NormalRepayServiceTest {
         this.generateMockResponse(10);
 
         normalRepayService.repayCallback(this.getFakeCallbackParamsMap(fakeLoanRepayModel2.getId()), "");
-        normalRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
         boolean isSuccess = normalRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
 
         assertTrue(isSuccess);

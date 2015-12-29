@@ -9,7 +9,7 @@
             <#list loanTitleRelationModel.applicationMaterialUrls?split(",") as title>
             initialPreview.push("<img src='${title}' class='file-preview-image' alt='${title}' title='${title}'>");
             </#list>
-        rereq['${loanTitleRelationModel.titleId}'] = initialPreview;
+        rereq['${loanTitleRelationModel.titleId?string.computer}'] = initialPreview;
         </#list>
     </#if>
 </script>
@@ -265,6 +265,50 @@
                 </div>
             </div>
         </div>
+
+        <#if loanInfo.verifyTime??>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">
+                初审时间:
+            </label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" disabled="disabled" value="${loanInfo.verifyTime?string('yyyy-MM-dd HH:mm:ss')}"/>
+            </div>
+        </div>
+        </#if>
+
+        <#if loanInfo.verifyLoginName??>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">
+                初审人员:
+            </label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" disabled="disabled" value="${loanInfo.verifyLoginName}"/>
+            </div>
+        </div>
+        </#if>
+
+        <#if loanInfo.recheckTime??>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">
+                复审时间:
+            </label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" disabled="disabled" value="${loanInfo.recheckTime?string('yyyy-MM-dd HH:mm:ss')}"/>
+            </div>
+        </div>
+        </#if>
+
+        <#if loanInfo.recheckLoginName??>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">
+                复审人员:
+            </label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" disabled="disabled" value="${loanInfo.recheckLoginName}"/>
+            </div>
+        </div>
+        </#if>
 
         <!--<div class="form-group">-->
         <!--<label  class="col-sm-2 control-label">初审是否通过: </label>-->

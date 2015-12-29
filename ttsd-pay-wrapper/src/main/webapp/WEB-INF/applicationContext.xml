@@ -35,7 +35,7 @@
         <property name="minConnectionsPerPartition" value="${pay.ump_operations.minConnectionsPerPartition}"/>
         <property name="maxConnectionsPerPartition" value="${pay.ump_operations.maxConnectionsPerPartition}"/>
         <property name="acquireIncrement" value="${pay.ump_operations.acquireIncrement}"/>
-        <property name="idleMaxAgeInSeconds" value="1800"/>
+        <property name="idleMaxAgeInSeconds" value="600"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>
 
@@ -47,7 +47,7 @@
         <property name="minConnectionsPerPartition" value="${pay.aa.minConnectionsPerPartition}"/>
         <property name="maxConnectionsPerPartition" value="${pay.aa.maxConnectionsPerPartition}"/>
         <property name="acquireIncrement" value="${pay.aa.acquireIncrement}"/>
-        <property name="idleMaxAgeInSeconds" value="1800"/>
+        <property name="idleMaxAgeInSeconds" value="600"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>
 
@@ -59,7 +59,7 @@
         <property name="minConnectionsPerPartition" value="${pay.job_worker.minConnectionsPerPartition}"/>
         <property name="maxConnectionsPerPartition" value="${pay.job_worker.maxConnectionsPerPartition}"/>
         <property name="acquireIncrement" value="${pay.job_worker.acquireIncrement}"/>
-        <property name="idleMaxAgeInSeconds" value="1800"/>
+        <property name="idleMaxAgeInSeconds" value="600"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>
 

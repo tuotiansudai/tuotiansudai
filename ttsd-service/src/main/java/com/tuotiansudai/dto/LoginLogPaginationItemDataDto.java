@@ -13,12 +13,15 @@ public class LoginLogPaginationItemDataDto {
 
     private Date loginTime;
 
+    private String device;
+
     private boolean success;
 
-    public LoginLogPaginationItemDataDto(String loginName, Source source, String ip, Date loginTime, boolean success) {
+    public LoginLogPaginationItemDataDto(String loginName, Source source, String ip, String device, Date loginTime, boolean success) {
         this.loginName = loginName;
         this.source = source;
         this.ip = ip;
+        this.device = device;
         this.loginTime = loginTime;
         this.success = success;
     }
@@ -29,6 +32,10 @@ public class LoginLogPaginationItemDataDto {
 
     public Source getSource() {
         return source;
+    }
+
+    public String getDevice() {
+        return device;
     }
 
     public String getIp() {

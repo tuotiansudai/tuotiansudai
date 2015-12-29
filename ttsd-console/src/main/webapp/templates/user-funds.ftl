@@ -13,14 +13,14 @@
                 <label for="control-label">时间</label>
 
                 <div class='input-group date' id="investDateBegin">
-                    <input type='text' class="form-control jq-startTime" value="${(startTime?string('yyyy-MM-dd'))!}"/>
+                    <input type='text' class="form-control jq-startTime" value="${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
                 </div>
                 -
                 <div class='input-group date' id="investDateEnd">
-                    <input type='text' class="form-control jq-endTime" value="${(endTime?string('yyyy-MM-dd'))!}"/>
+                    <input type='text' class="form-control jq-endTime" value="${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -69,7 +69,7 @@
             <tbody>
                 <#list userBillModels as userBillModel>
                 <tr>
-                    <td>${(userBillModel.createdTime?string('yyyy-MM-dd'))!}</td>
+                    <td>${(userBillModel.createdTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>${userBillModel.id?string('0')}</td>
                     <td>${userBillModel.loginName!''}</td>
                     <td>${userBillModel.operationType.getDescription()}</td>
@@ -90,7 +90,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/finance-manage/user-funds?loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&userBillOperationType=${userBillOperationType!}&userBillBusinessType=${userBillBusinessType!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/user-funds?loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&userBillOperationType=${userBillOperationType!}&userBillBusinessType=${userBillBusinessType!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -99,7 +99,7 @@
                 <li><a>${currentPageNo}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="/finance-manage/user-funds?loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&userBillOperationType=${userBillOperationType!}&userBillBusinessType=${userBillBusinessType!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/user-funds?loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&userBillOperationType=${userBillOperationType!}&userBillBusinessType=${userBillBusinessType!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>

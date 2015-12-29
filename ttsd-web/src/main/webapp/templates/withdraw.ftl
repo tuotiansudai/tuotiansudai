@@ -4,8 +4,8 @@
     <h4 class="column-title"><em class="tc">我要提现</em></h4>
     <div class="pad-s">
         <div class="borderBox withdraw">
-            提现额度：<i class="color-note">${balance}</i>元<br/>
-            提现金额：<input type="text" class="amount-display" data-d-group="4" data-l-zero="deny" data-v-min="0.00" data-v-max="${balance}" placeholder="0.00"> 元
+            可提现额度：<i class="color-note">${balance}</i>元<br/>
+            <span class="pad-l-15">提现金额：</span><input type="text" class="amount-display" data-d-group="4" data-l-zero="deny" data-v-min="0.00" data-v-max="${balance}" placeholder="0.00"> 元
                 <span class="error" style="display: none;"><i class="fa fa-times-circle"></i> 金额必须大于2.00元</span>
 
             <div class="calculate">
@@ -25,7 +25,7 @@
         <div class="borderBox">
             <b>温馨提示:</b><br/>
             1、每笔提现，手续费${withdrawFee}元。<br/>
-            2、提现操作，T+1日内完成，均受节假日影响。<br/>
+            2、当日16:00点前提现预计当日到款，16:00后提现预计次日到款（如遇双休日或法定节假日顺延）。<br/>
             3、提现银行卡姓名应与实名认证身份一致，才可提现。<br/>
         </div>
     </div>
@@ -39,7 +39,7 @@
         <p>充值失败：<a href="/withdraw" class="btn-normal" data-category="重新提现" data-label="withdraw">重新提现</a>
             <span class="help">查看<a href="/about/qa"  target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
         </p>
-        <span>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</span>
+        <span>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-20:00）</span>
     </div>
 </div>
 </@global.main>

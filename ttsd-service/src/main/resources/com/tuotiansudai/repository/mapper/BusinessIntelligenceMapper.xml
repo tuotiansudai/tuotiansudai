@@ -23,7 +23,61 @@
         </if>
           count(*) as `value`,
           u.province as `group`
-        from user u
+          from
+        <if test="roleStage.name() == 'ALL' ">
+              user u
+        </if>
+        <if test="roleStage.name() == 'STAFF' ">
+            (SELECT
+              j.*
+             FROM
+              user j
+              JOIN
+              (SELECT
+                k.`login_name`
+               FROM
+                user_role o
+                RIGHT JOIN referrer_relation k
+                  ON o.`login_name` = k.`referrer_login_name`
+                  AND k.`level` = 1
+                WHERE o.`role` = 'STAFF'
+                UNION
+                SELECT
+                  h.login_name
+                FROM
+                  user_role h
+                WHERE h.role = 'STAFF') gg
+              ON j.`login_name` = gg.login_name) u
+        </if>
+        <if test="roleStage.name() == 'AGENT' ">
+            (SELECT
+              j.*
+            FROM
+              user j
+              JOIN
+              (SELECT
+                o.`login_name`
+              FROM
+                user_role o
+              WHERE o.`role` = 'AGENT'
+              GROUP BY o.`login_name`) oo
+            ON j.`login_name` = oo.login_name) u
+        </if>
+        <if test="roleStage.name() == 'OTHERS' ">
+            (SELECT
+              j.*
+            FROM
+              user j
+              JOIN
+              (SELECT
+                o.`login_name`
+              FROM
+                user_role o
+              WHERE o.`role` not in ('AGENT','STAFF')
+              GROUP BY o.`login_name`) oo
+            ON j.`login_name` = oo.login_name) u
+        </if>
+
         <choose>
             <when test="province != null and province!= ''">
                 where u.province = #{province}
@@ -34,6 +88,12 @@
                         select province from (
                             select count(*) as v, a.province from user a
                             where a.register_time between #{startTime} and #{endTime}
+                            <if test="userStage.name() == 'BindCard'">
+                                and exists (select * from bank_card b where  a.login_name = b.login_name and b.status='PASSED')
+                            </if>
+                            <if test="userStage.name() == 'Certification'">
+                                and exists (select * from account ac where  a.login_name = ac.login_name)
+                            </if>
                             group by province
                         ) t order by v desc limit 5
                     ) p where p.province = u.province
@@ -41,6 +101,12 @@
             </otherwise>
         </choose>
         and u.register_time between #{startTime} and #{endTime}
+        <if test="userStage.name() == 'BindCard'">
+          and exists (select * from bank_card b where  u.login_name = b.login_name and b.status='PASSED')
+        </if>
+        <if test="userStage.name() == 'Certification'">
+          and exists (select * from account ac where  u.login_name = ac.login_name)
+        </if>
         group by u.province,
         <if test="granularity.name() == 'Daily'">
           date(u.register_time)
@@ -65,17 +131,82 @@
             </if>
               count(*) as `value`,
               '其它' as `group`
-            from user u
+            from
+            <if test="roleStage.name() == 'ALL' ">
+                user u
+            </if>
+            <if test="roleStage.name() == 'STAFF' ">
+                (SELECT
+                  j.*
+                FROM
+                  user j
+                  JOIN
+                  (SELECT
+                    k.`login_name`
+                  FROM
+                    user_role o
+                    RIGHT JOIN referrer_relation k
+                    ON o.`login_name` = k.`referrer_login_name`
+                    AND k.`level` = 1
+                  WHERE o.`role` = 'STAFF'
+                  UNION
+                  SELECT
+                    h.login_name
+                  FROM
+                    user_role h
+                  WHERE h.role = 'STAFF') gg
+                ON j.`login_name` = gg.login_name) u
+            </if>
+            <if test="roleStage.name() == 'AGENT' ">
+                (SELECT
+                  j.*
+                FROM
+                  user j
+                JOIN
+                  (SELECT
+                    o.`login_name`
+                  FROM
+                    user_role o
+                  WHERE o.`role` = 'AGENT'
+                  GROUP BY o.`login_name`) oo
+                ON j.`login_name` = oo.login_name) u
+            </if>
+            <if test="roleStage.name() == 'OTHERS' ">
+                (SELECT
+                  j.*
+                FROM
+                  user j
+                  JOIN
+                  (SELECT
+                    o.`login_name`
+                  FROM
+                    user_role o
+                  WHERE o.`role` not in ('AGENT','STAFF')
+                  GROUP BY o.`login_name`) oo
+                ON j.`login_name` = oo.login_name) u
+            </if>
             where not exists (
                 select province from (
                     select province from (
                         select count(*) as v, a.province from user a
                         where a.register_time between #{startTime} and #{endTime}
+                        <if test="userStage.name() == 'BindCard'">
+                            and exists (select * from bank_card b where  a.login_name = b.login_name and b.status='PASSED')
+                        </if>
+                        <if test="userStage.name() == 'Certification'">
+                            and exists (select * from account ac where  a.login_name = ac.login_name)
+                        </if>
                         group by province
                     ) t order by v desc limit 5
                 ) p where p.province = u.province
             )
             and u.register_time between #{startTime} and #{endTime}
+            <if test="userStage.name() == 'BindCard'">
+                and exists (select * from bank_card b where  u.login_name = b.login_name and b.status='PASSED')
+            </if>
+            <if test="userStage.name() == 'Certification'">
+                and exists (select * from account ac where  u.login_name = ac.login_name)
+            </if>
             group by
             <if test="granularity.name() == 'Daily'">
                 date(u.register_time)
@@ -107,7 +238,17 @@
         JOIN
         <choose>
             <when test="province != null and province!= ''">
-                `user` u
+                (SELECT
+                *
+                FROM
+                user u
+                WHERE NOT EXISTS
+                (SELECT
+                1
+                FROM
+                user_role ur
+                WHERE u.`login_name` = ur.`login_name`
+                AND ur.`role` = 'LOANER')) u
                 ON r.`login_name` = u.`login_name`
                 AND u.`province` = #{province}
             </when>
@@ -115,7 +256,17 @@
                 (SELECT
                 *
                 FROM
-                `user` t
+                (SELECT
+                *
+                FROM
+                user u
+                WHERE NOT EXISTS
+                (SELECT
+                1
+                FROM
+                user_role ur
+                WHERE u.`login_name` = ur.`login_name`
+                AND ur.`role` = 'LOANER')) t
                 WHERE EXISTS
                 (SELECT
                 1
@@ -124,7 +275,17 @@
                 n.`province`
                 FROM
                 `recharge` m
-                JOIN `user` n
+                JOIN (SELECT
+                *
+                FROM
+                user u
+                WHERE NOT EXISTS
+                (SELECT
+                1
+                FROM
+                user_role ur
+                WHERE u.`login_name` = ur.`login_name`
+                AND ur.`role` = 'LOANER')) n
                 ON m.`login_name` = n.`login_name`
                 WHERE m.`created_time` BETWEEN #{startTime} AND #{endTime}
                 AND m.`status` = 'SUCCESS'
@@ -168,7 +329,17 @@
             (SELECT
             *
             FROM
-            `user` b
+            (SELECT
+            *
+            FROM
+            user u
+            WHERE NOT EXISTS
+            (SELECT
+            1
+            FROM
+            user_role ur
+            WHERE u.`login_name` = ur.`login_name`
+            AND ur.`role` = 'LOANER')) b
             WHERE NOT EXISTS
             (SELECT
             1
@@ -177,7 +348,17 @@
             d.`province`
             FROM
             `recharge` c
-            JOIN `user` d
+            JOIN (SELECT
+            *
+            FROM
+            user u
+            WHERE NOT EXISTS
+            (SELECT
+            1
+            FROM
+            user_role ur
+            WHERE u.`login_name` = ur.`login_name`
+            AND ur.`role` = 'LOANER')) d
             ON c.`login_name` = d.`login_name`
             WHERE c.`created_time` BETWEEN #{startTime} AND #{endTime}
             AND c.`status` = 'SUCCESS'
@@ -219,7 +400,17 @@
         JOIN
         <choose>
             <when test="province != null and province!= ''">
-                `user` u
+                (SELECT
+                *
+                FROM
+                user u
+                WHERE NOT EXISTS
+                (SELECT
+                1
+                FROM
+                user_role ur
+                WHERE u.`login_name` = ur.`login_name`
+                AND ur.`role` = 'LOANER')) u
                 ON r.`login_name` = u.`login_name`
                 AND u.`province` = #{province}
             </when>
@@ -227,7 +418,17 @@
                 (SELECT
                 *
                 FROM
-                `user` t
+                (SELECT
+                *
+                FROM
+                user u
+                WHERE NOT EXISTS
+                (SELECT
+                1
+                FROM
+                user_role ur
+                WHERE u.`login_name` = ur.`login_name`
+                AND ur.`role` = 'LOANER')) t
                 WHERE EXISTS
                 (SELECT
                 1
@@ -236,7 +437,17 @@
                 n.`province`
                 FROM
                 `withdraw` m
-                JOIN `user` n
+                JOIN (SELECT
+                *
+                FROM
+                user u
+                WHERE NOT EXISTS
+                (SELECT
+                1
+                FROM
+                user_role ur
+                WHERE u.`login_name` = ur.`login_name`
+                AND ur.`role` = 'LOANER')) n
                 ON m.`login_name` = n.`login_name`
                 WHERE m.`created_time` BETWEEN #{startTime} AND #{endTime}
                 AND m.`status` = 'SUCCESS'
@@ -280,7 +491,17 @@
             (SELECT
             *
             FROM
-            `user` b
+            (SELECT
+            *
+            FROM
+            user u
+            WHERE NOT EXISTS
+            (SELECT
+            1
+            FROM
+            user_role ur
+            WHERE u.`login_name` = ur.`login_name`
+            AND ur.`role` = 'LOANER')) b
             WHERE NOT EXISTS
             (SELECT
             1
@@ -289,7 +510,17 @@
             d.`province`
             FROM
             `withdraw` c
-            JOIN `user` d
+            JOIN (SELECT
+            *
+            FROM
+            user u
+            WHERE NOT EXISTS
+            (SELECT
+            1
+            FROM
+            user_role ur
+            WHERE u.`login_name` = ur.`login_name`
+            AND ur.`role` = 'LOANER')) d
             ON c.`login_name` = d.`login_name`
             WHERE c.`created_time` BETWEEN #{startTime} AND #{endTime}
             AND c.`status` = 'SUCCESS'
@@ -313,214 +544,28 @@
         </if>
     </select>
 
-    <select id="queryUserAccountTrend" parameterType="map" resultMap="keyValueMap">
-        SELECT
-        <if test="granularity.name() == 'Daily'">
-            DATE(r.`created_time`) AS `name`,
-        </if>
-        <if test="granularity.name() == 'Weekly'">
-            DATE_FORMAT(r.`created_time`,'%Y-W%u') AS `name`,
-        </if>
-        <if test="granularity.name() == 'Monthly'">
-            DATE_FORMAT(r.`created_time`,'%Y-%m') AS `name`,
-        </if>
-        ROUND(SUM(r.`balance`/100), 2) AS `value`,
-        u.`province` AS `group`
-        FROM
-        (SELECT
-        ub.`login_name`,
-        <if test="granularity.name() == 'Daily'">
-            DATE(ub.`created_time`),
-        </if>
-        <if test="granularity.name() == 'Weekly'">
-            WEEK(ub.`created_time`),
-        </if>
-        <if test="granularity.name() == 'Monthly'">
-            MONTH(ub.`created_time`),
-        </if>
-        MAX(ub.`created_time`) AS created_time,
-        MIN(ub.`balance`) AS balance
-        FROM
-        user_bill ub
-        GROUP BY ub.`login_name`,
-        <if test="granularity.name() == 'Daily'">
-            DATE(ub.`created_time`)
-        </if>
-        <if test="granularity.name() == 'Weekly'">
-            WEEK(ub.`created_time`)
-        </if>
-        <if test="granularity.name() == 'Monthly'">
-            MONTH(ub.`created_time`)
-        </if>
-        ) r
-        JOIN
-        <choose>
-            <when test="province != null and province!= ''">
-                `user` u
-                ON r.`login_name` = u.`login_name`
-                AND u.`province` = #{province}
-            </when>
-            <otherwise>
-                (SELECT
-                *
-                FROM
-                `user` t
-                WHERE EXISTS
-                (SELECT
-                1
-                FROM
-                (SELECT
-                n.`province`
-                FROM
-                (SELECT
-                ub.`login_name`,
-                <if test="granularity.name() == 'Daily'">
-                    DATE(ub.`created_time`),
-                </if>
-                <if test="granularity.name() == 'Weekly'">
-                    WEEK(ub.`created_time`),
-                </if>
-                <if test="granularity.name() == 'Monthly'">
-                    MONTH(ub.`created_time`),
-                </if>
-                MAX(ub.`created_time`) AS created_time,
-                MIN(ub.`balance`) AS balance
-                FROM
-                user_bill ub
-                GROUP BY ub.`login_name`,
-                <if test="granularity.name() == 'Daily'">
-                    DATE(ub.`created_time`)
-                </if>
-                <if test="granularity.name() == 'Weekly'">
-                    WEEK(ub.`created_time`)
-                </if>
-                <if test="granularity.name() == 'Monthly'">
-                    MONTH(ub.`created_time`)
-                </if>
-                ) m
-                JOIN `user` n
-                ON m.`login_name` = n.`login_name`
-                WHERE m.`created_time` BETWEEN #{startTime} AND #{endTime}
-                GROUP BY n.`province`
-                ORDER BY ROUND(SUM(m.`balance`), 2) DESC
-                LIMIT 5) temp
-                WHERE t.`province` = temp.`province`)) u
-                ON r.`login_name` = u.`login_name`
-            </otherwise>
-        </choose>
-        WHERE r.`created_time` BETWEEN #{startTime} AND #{endTime}
-        GROUP BY u.`province`,
-        <if test="granularity.name() == 'Daily'">
-            DATE(r.`created_time`)
-        </if>
-        <if test="granularity.name() == 'Weekly'">
-            CONCAT(YEAR(r.`created_time`), '-', WEEK(r.`created_time`))
-        </if>
-        <if test="granularity.name() == 'Monthly'">
-            CONCAT(YEAR(r.`created_time`), '-', MONTH(r.`created_time`))
-        </if>
-        <if test="province == null or province ==''">
-            UNION
-            ALL
-            SELECT
-            <if test="granularity.name() == 'Daily'">
-                DATE(a.`created_time`) AS `name`,
+    <select id="queryInvestViscosity" parameterType="map" resultMap="keyValueMap">
+        select
+          a.loan_count as `name`,
+          count(*) as `value`,
+          '续投用户' as `group`
+        from (
+          select
+            count(distinct i.loan_id) as loan_count
+          from invest i
+          <if test="province != null and province !=''">
+          inner join `user` u
+          on i.login_name = u.login_name
+          </if>
+          where
+            i.created_time between #{startTime} and #{endTime}
+            <if test="province != null and province !=''">
+            and u.province = #{province}
             </if>
-            <if test="granularity.name() == 'Weekly'">
-                DATE_FORMAT(a.`created_time`, '%Y-W%u') AS `name`,
-            </if>
-            <if test="granularity.name() == 'Monthly'">
-                DATE_FORMAT(a.`created_time`, '%Y-%m') AS `name`,
-            </if>
-            ROUND(SUM(a.`balance`/100), 2) AS `value`,
-            '其他' AS `group`
-            FROM
-            (SELECT
-            ub.`login_name`,
-            <if test="granularity.name() == 'Daily'">
-                DATE(ub.`created_time`),
-            </if>
-            <if test="granularity.name() == 'Weekly'">
-                WEEK(ub.`created_time`),
-            </if>
-            <if test="granularity.name() == 'Monthly'">
-                MONTH(ub.`created_time`),
-            </if>
-            MAX(ub.`created_time`) AS created_time,
-            MIN(ub.`balance`) AS balance
-            FROM
-            user_bill ub
-            GROUP BY ub.`login_name`,
-            <if test="granularity.name() == 'Daily'">
-                DATE(ub.`created_time`)
-            </if>
-            <if test="granularity.name() == 'Weekly'">
-                WEEK(ub.`created_time`)
-            </if>
-            <if test="granularity.name() == 'Monthly'">
-                MONTH(ub.`created_time`)
-            </if>
-            ) a
-            JOIN
-            (SELECT
-            *
-            FROM
-            `user` b
-            WHERE NOT EXISTS
-            (SELECT
-            1
-            FROM
-            (SELECT
-            d.`province`
-            FROM
-            (SELECT
-            ub.`login_name`,
-            <if test="granularity.name() == 'Daily'">
-                DATE(ub.`created_time`),
-            </if>
-            <if test="granularity.name() == 'Weekly'">
-                WEEK(ub.`created_time`),
-            </if>
-            <if test="granularity.name() == 'Monthly'">
-                MONTH(ub.`created_time`),
-            </if>
-            MAX(ub.`created_time`) AS created_time,
-            MIN(ub.`balance`) AS balance
-            FROM
-            user_bill ub
-            GROUP BY ub.`login_name`,
-            <if test="granularity.name() == 'Daily'">
-                DATE(ub.`created_time`)
-            </if>
-            <if test="granularity.name() == 'Weekly'">
-                WEEK(ub.`created_time`)
-            </if>
-            <if test="granularity.name() == 'Monthly'">
-                MONTH(ub.`created_time`)
-            </if>
-            ) c
-            JOIN `user` d
-            ON c.`login_name` = d.`login_name`
-            WHERE c.`created_time` BETWEEN #{startTime} AND #{endTime}
-            GROUP BY d.`province`
-            ORDER BY ROUND(SUM(c.`balance`), 2) DESC
-            LIMIT 5) temp1
-            WHERE b.`province` = temp1.`province`)) e
-            ON a.`login_name` = e.`login_name`
-            WHERE a.`created_time` BETWEEN #{startTime} AND #{endTime}
-            GROUP BY
-            <if test="granularity.name() == 'Daily'">
-                DATE(a.`created_time`)
-            </if>
-            <if test="granularity.name() == 'Weekly'">
-                CONCAT(YEAR(a.`created_time`), '-', WEEK(a.`created_time`))
-            </if>
-            <if test="granularity.name() == 'Monthly'">
-                CONCAT(YEAR(a.`created_time`), '-', MONTH(a.`created_time`))
-            </if>
-        </if>
+          group by i.login_name
+        ) a
+        group by a.loan_count;
     </select>
-
 
     <select id="queryUserInvestCountTrend" parameterType="map" resultMap="keyValueMap">
         select
@@ -596,7 +641,60 @@
             </if>
             ROUND(IFNULL(SUM(i.amount), 0)/100, 2) as `value`,
             u.province as `group`
-        from user u
+        from
+        <if test="roleStage.name() == 'ALL' ">
+            user u
+        </if>
+        <if test="roleStage.name() == 'STAFF' ">
+            (SELECT
+            j.*
+            FROM
+            user j
+            JOIN
+            (SELECT
+            k.`login_name`
+            FROM
+            user_role o
+            RIGHT JOIN referrer_relation k
+            ON o.`login_name` = k.`referrer_login_name`
+            AND k.`level` = 1
+            WHERE o.`role` = 'STAFF'
+            UNION
+            SELECT
+            h.login_name
+            FROM
+            user_role h
+            WHERE h.role = 'STAFF') gg
+            ON j.`login_name` = gg.login_name) u
+        </if>
+        <if test="roleStage.name() == 'AGENT' ">
+            (SELECT
+            j.*
+            FROM
+            user j
+            JOIN
+            (SELECT
+            o.`login_name`
+            FROM
+            user_role o
+            WHERE o.`role` = 'AGENT'
+            GROUP BY o.`login_name`) oo
+            ON j.`login_name` = oo.login_name) u
+        </if>
+        <if test="roleStage.name() == 'OTHERS' ">
+            (SELECT
+            j.*
+            FROM
+            user j
+            JOIN
+            (SELECT
+            o.`login_name`
+            FROM
+            user_role o
+            WHERE o.`role` NOT IN ('AGENT','STAFF')
+            GROUP BY o.`login_name`) oo
+            ON j.`login_name` = oo.login_name) u
+        </if>
         join invest i
         on u.login_name = i.login_name
         <choose>
@@ -610,7 +708,61 @@
                           uu.province as province,
                           IFNULL(SUM(ii.amount), 0) as amount
                         from invest ii
-                        join user uu on uu.login_name=ii.login_name
+                        join
+                        <if test="roleStage.name() == 'ALL' ">
+                            user uu
+                        </if>
+                        <if test="roleStage.name() == 'STAFF' ">
+                            (SELECT
+                            j.*
+                            FROM
+                            user j
+                            JOIN
+                            (SELECT
+                            k.`login_name`
+                            FROM
+                            user_role o
+                            RIGHT JOIN referrer_relation k
+                            ON o.`login_name` = k.`referrer_login_name`
+                            AND k.`level` = 1
+                            WHERE o.`role` = 'STAFF'
+                            UNION
+                            SELECT
+                            h.login_name
+                            FROM
+                            user_role h
+                            WHERE h.role = 'STAFF') gg
+                            ON j.`login_name` = gg.login_name) uu
+                        </if>
+                        <if test="roleStage.name() == 'AGENT' ">
+                            (SELECT
+                            j.*
+                            FROM
+                            user j
+                            JOIN
+                            (SELECT
+                            o.`login_name`
+                            FROM
+                            user_role o
+                            WHERE o.`role` = 'AGENT'
+                            GROUP BY o.`login_name`) oo
+                            ON j.`login_name` = oo.login_name) uu
+                        </if>
+                        <if test="roleStage.name() == 'OTHERS' ">
+                            (SELECT
+                            j.*
+                            FROM
+                            user j
+                            JOIN
+                            (SELECT
+                            o.`login_name`
+                            FROM
+                            user_role o
+                            WHERE o.`role` NOT IN ('AGENT','STAFF')
+                            GROUP BY o.`login_name`) oo
+                            ON j.`login_name` = oo.login_name) uu
+                        </if>
+                          on uu.login_name=ii.login_name
                         where
                           ii.status='SUCCESS'
                           and ii.created_time between #{startTime} and #{endTime}
@@ -642,7 +794,60 @@
             </if>
             ROUND(IFNULL(SUM(i.amount), 0)/100, 2) as `value`,
             '其它' as `group`
-            from user u
+            from
+            <if test="roleStage.name() == 'ALL' ">
+                user u
+            </if>
+            <if test="roleStage.name() == 'STAFF' ">
+                (SELECT
+                j.*
+                FROM
+                user j
+                JOIN
+                (SELECT
+                k.`login_name`
+                FROM
+                user_role o
+                RIGHT JOIN referrer_relation k
+                ON o.`login_name` = k.`referrer_login_name`
+                AND k.`level` = 1
+                WHERE o.`role` = 'STAFF'
+                UNION
+                SELECT
+                h.login_name
+                FROM
+                user_role h
+                WHERE h.role = 'STAFF') gg
+                ON j.`login_name` = gg.login_name) u
+            </if>
+            <if test="roleStage.name() == 'AGENT' ">
+                (SELECT
+                j.*
+                FROM
+                user j
+                JOIN
+                (SELECT
+                o.`login_name`
+                FROM
+                user_role o
+                WHERE o.`role` = 'AGENT'
+                GROUP BY o.`login_name`) oo
+                ON j.`login_name` = oo.login_name) u
+            </if>
+            <if test="roleStage.name() == 'OTHERS' ">
+                (SELECT
+                j.*
+                FROM
+                user j
+                JOIN
+                (SELECT
+                o.`login_name`
+                FROM
+                user_role o
+                WHERE o.`role` NOT IN ('AGENT','STAFF')
+                GROUP BY o.`login_name`) oo
+                ON j.`login_name` = oo.login_name) u
+            </if>
             join invest i
             on u.login_name = i.login_name
             where not exists (
@@ -651,7 +856,61 @@
                         uu.province as province,
                         IFNULL(SUM(ii.amount), 0) as amount
                     from invest ii
-                    join user uu on uu.login_name=ii.login_name
+                    join
+                    <if test="roleStage.name() == 'ALL' ">
+                        user uu
+                    </if>
+                    <if test="roleStage.name() == 'STAFF' ">
+                        (SELECT
+                        j.*
+                        FROM
+                        user j
+                        JOIN
+                        (SELECT
+                        k.`login_name`
+                        FROM
+                        user_role o
+                        RIGHT JOIN referrer_relation k
+                        ON o.`login_name` = k.`referrer_login_name`
+                        AND k.`level` = 1
+                        WHERE o.`role` = 'STAFF'
+                        UNION
+                        SELECT
+                        h.login_name
+                        FROM
+                        user_role h
+                        WHERE h.role = 'STAFF') gg
+                        ON j.`login_name` = gg.login_name) uu
+                    </if>
+                    <if test="roleStage.name() == 'AGENT' ">
+                        (SELECT
+                        j.*
+                        FROM
+                        user j
+                        JOIN
+                        (SELECT
+                        o.`login_name`
+                        FROM
+                        user_role o
+                        WHERE o.`role` = 'AGENT'
+                        GROUP BY o.`login_name`) oo
+                        ON j.`login_name` = oo.login_name) uu
+                    </if>
+                    <if test="roleStage.name() == 'OTHERS' ">
+                        (SELECT
+                        j.*
+                        FROM
+                        user j
+                        JOIN
+                        (SELECT
+                        o.`login_name`
+                        FROM
+                        user_role o
+                        WHERE o.`role` NOT IN ('AGENT','STAFF')
+                        GROUP BY o.`login_name`) oo
+                        ON j.`login_name` = oo.login_name) uu
+                    </if>
+                    on uu.login_name=ii.login_name
                     where
                         ii.status='SUCCESS'
                         and ii.created_time between #{startTime} and #{endTime}
@@ -665,5 +924,36 @@
             and i.created_time between #{startTime} and #{endTime}
             group by `name`
         </if>
+    </select>
+
+    <select id="queryUserAgeTrend" parameterType="map" resultMap="keyValueMap">
+        select
+            <![CDATA[if(age<20,'20 岁以下',if(age<35,'20~35 岁',if(age<50,'35~50 岁','50 岁以上')))]]> as `name`,
+            count(1) as `value`,
+            <choose>
+                <when test="province != null and province!= ''"> #{province} </when>
+                <otherwise> "全部" </otherwise>
+            </choose> as `group`
+        from
+            (
+                select date_format(now(),'%Y')-if(length(identity_number)=18,substring(identity_number,7,4),1900+substring(identity_number,7,2)) as age
+                from
+                    account a
+                <if test="province != null and province !=''">
+                join user u
+                    on a.login_name=u.login_name
+                    and u.province=#{province}
+                </if>
+                where
+                    length(identity_number) in (15,18)
+                    and a.register_time between #{startTime} and #{endTime}
+                    <if test="isInvestor=='true'">
+                    and exists
+                        (
+                            select 1 from invest i where i.login_name=a.login_name
+                        )
+                    </if>
+            ) temp
+        group by `name`;
     </select>
 </mapper>
