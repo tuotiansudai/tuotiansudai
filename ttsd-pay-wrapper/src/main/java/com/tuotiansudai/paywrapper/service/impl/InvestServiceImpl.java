@@ -216,7 +216,7 @@ public class InvestServiceImpl implements InvestService {
                 try {
                     ((InvestService) AopContext.currentProxy()).processOneCallback(model);
                 } catch (Exception e) {
-                    fatalLog("invest callback, processOneCallback error. investId:"+model.getOrderId(), e);
+                    fatalLog("invest callback, processOneCallback error. investId:" + model.getOrderId(), e);
                     e.printStackTrace();
                 }
             }
@@ -394,7 +394,10 @@ public class InvestServiceImpl implements InvestService {
             }
 
             if (autoInvestIntervalMilliseconds >= 0) {
-                try { Thread.sleep(autoInvestIntervalMilliseconds); } catch (InterruptedException e) { }
+                try {
+                    Thread.sleep(autoInvestIntervalMilliseconds);
+                } catch (InterruptedException e) {
+                }
             }
         }
     }
