@@ -76,7 +76,7 @@ public class PayWrapperClient extends BaseClient {
     }
 
     public BaseDto<PayDataDto> cancelLoan(Long loanId) {
-        return syncExecute(null, MessageFormat.format(cancelLoanPath,loanId.toString()), "POST");
+        return syncExecute(null, MessageFormat.format(cancelLoanPath, loanId.toString()), "POST");
     }
 
     public BaseDto<PayFormDataDto> agreement(AgreementDto dto) {
@@ -239,5 +239,9 @@ public class PayWrapperClient extends BaseClient {
 
     public void setApplicationContext(String applicationContext) {
         this.applicationContext = applicationContext;
+    }
+
+    public BaseDto<PayDataDto> autoLoanOutAfterRaisingComplete(long loanId){
+        return syncExecute(String.valueOf(loanId), "/job/auto-loan-out-after-raising-complete", "POST");
     }
 }

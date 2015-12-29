@@ -3,12 +3,14 @@ package com.tuotiansudai.paywrapper.service.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -91,6 +93,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private JobManager jobManager;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(long loanId) {
@@ -187,6 +192,9 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> loanOut(long loanId) {
+
+        redisWrapperClient.set(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId, "1");
+
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
@@ -196,6 +204,10 @@ public class LoanServiceImpl implements LoanService {
             payDataDto.setStatus(umPayReturn.isSuccess());
             payDataDto.setCode(umPayReturn.getRetCode());
             payDataDto.setMessage(umPayReturn.getRetMsg());
+
+            if (umPayReturn.isSuccess()) {
+                redisWrapperClient.del(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId);
+            }
         } catch (PayException e) {
             payDataDto.setStatus(false);
             payDataDto.setMessage(e.getLocalizedMessage());

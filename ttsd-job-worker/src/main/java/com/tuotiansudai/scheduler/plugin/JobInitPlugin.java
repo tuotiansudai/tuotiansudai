@@ -11,6 +11,7 @@ import org.quartz.SimpleScheduleBuilder;
 import org.quartz.spi.ClassLoadHelper;
 import org.quartz.spi.SchedulerPlugin;
 
+import java.util.Date;
 import java.util.TimeZone;
 
 public class JobInitPlugin implements SchedulerPlugin {
@@ -41,6 +42,9 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
         if (JobType.AutoReFreshAreaByMobile.name().equalsIgnoreCase(schedulerName)) {
             createRefreshAreaByMobile();
+        }
+        if (JobType.AutoLoanOut.name().equalsIgnoreCase(schedulerName)) {
+            createAutoLoanOutJob(666);
         }
     }
 
@@ -85,4 +89,19 @@ public class JobInitPlugin implements SchedulerPlugin {
             logger.debug(e.getLocalizedMessage(), e);
         }
     }
+
+    private void createAutoLoanOutJob(long loanId) {
+        try {
+            Date triggerTime = new DateTime().plusMinutes(AutoLoanOutJob.AUTO_LOAN_OUT_DELAY_MINUTES)
+                    .toDate();
+            jobManager.newJob(JobType.AutoLoanOut, AutoLoanOutJob.class)
+                    .addJobData(AutoLoanOutJob.LOAN_ID_KEY, loanId)
+                    .withIdentity(JobType.AutoLoanOut.name(), "Loan-" + loanId)
+                    .runOnceAt(triggerTime)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create auto loan out job for loan[" + loanId + "] fail", e);
+        }
+    }
+
 }
