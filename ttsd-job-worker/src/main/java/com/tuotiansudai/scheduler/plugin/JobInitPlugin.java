@@ -1,9 +1,11 @@
 package com.tuotiansudai.scheduler.plugin;
 
-import com.tuotiansudai.job.*;
+import com.tuotiansudai.job.AutoReFreshAreaByMobileJob;
+import com.tuotiansudai.job.CalculateDefaultInterestJob;
+import com.tuotiansudai.job.InvestCallback;
+import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -11,7 +13,6 @@ import org.quartz.SimpleScheduleBuilder;
 import org.quartz.spi.ClassLoadHelper;
 import org.quartz.spi.SchedulerPlugin;
 
-import java.util.Date;
 import java.util.TimeZone;
 
 public class JobInitPlugin implements SchedulerPlugin {
@@ -42,9 +43,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
         if (JobType.AutoReFreshAreaByMobile.name().equalsIgnoreCase(schedulerName)) {
             createRefreshAreaByMobile();
-        }
-        if (JobType.AutoLoanOut.name().equalsIgnoreCase(schedulerName)) {
-            createAutoLoanOutJob(666);
         }
     }
 
@@ -87,20 +85,6 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .withIdentity(JobType.AutoReFreshAreaByMobile.name(), JobType.AutoReFreshAreaByMobile.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void createAutoLoanOutJob(long loanId) {
-        try {
-            Date triggerTime = new DateTime().plusMinutes(AutoLoanOutJob.AUTO_LOAN_OUT_DELAY_MINUTES)
-                    .toDate();
-            jobManager.newJob(JobType.AutoLoanOut, AutoLoanOutJob.class)
-                    .addJobData(AutoLoanOutJob.LOAN_ID_KEY, loanId)
-                    .withIdentity(JobType.AutoLoanOut.name(), "Loan-" + loanId)
-                    .runOnceAt(triggerTime)
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.error("create auto loan out job for loan[" + loanId + "] fail", e);
         }
     }
 
