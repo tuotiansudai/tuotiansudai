@@ -31,7 +31,6 @@ public class AutoLoanOutJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.debug("trigger auto loan out after raising complete job, prepare do job");
-        redisWrapperClient.set("aaa", "1");
         long loanId;
         try {
             loanId = (long) context.getJobDetail().getJobDataMap().get(LOAN_ID_KEY);
