@@ -28,8 +28,13 @@ public class AnnounceController {
     @RequestMapping(value = "/{announceId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView getAnnounceDetail(@PathVariable long announceId) {
         AnnounceDto dto = announceService.getDtoById(announceId);
-        ModelAndView modelAndView =  new ModelAndView("/about/notice-detail", "announce", dto);
-        modelAndView.addObject("responsive",true);
+
+        if (dto == null) {
+            return new ModelAndView("/error/404");
+        }
+
+        ModelAndView modelAndView = new ModelAndView("/about/notice-detail", "announce", dto);
+        modelAndView.addObject("responsive", true);
         return modelAndView;
     }
 }
