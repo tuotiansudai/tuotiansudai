@@ -54,7 +54,7 @@
     </resultMap>
 
     <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanModel">
-        insert into loan(id, name, agent_login_name, loaner_login_name, loaner_user_name, loaner_identity_number, type, periods, description_text, description_html, base_rate, loan_amount, invest_fee_rate, min_invest_amount, invest_increasing_amount, max_invest_amount, activity_type, activity_rate, product_type, contract_id, fundraising_start_time, fundraising_end_time, show_on_home, created_time, created_login_name, verify_time, verify_login_name, recheck_time, recheck_login_name, status, update_time)
+        insert into loan(id, name, agent_login_name, loaner_login_name, loaner_user_name, loaner_identity_number, type, periods, description_text, description_html, base_rate, loan_amount, invest_fee_rate, min_invest_amount, invest_increasing_amount, max_invest_amount, activity_type, product_type, activity_rate, contract_id, fundraising_start_time, fundraising_end_time, show_on_home, created_time, created_login_name, verify_time, verify_login_name, recheck_time, recheck_login_name, status, update_time)
         values(#{id}, #{name}, #{agentLoginName}, #{loanerLoginName}, #{loanerUserName}, #{loanerIdentityNumber}, #{type}, #{periods}, #{descriptionText}, #{descriptionHtml}, #{baseRate}, #{loanAmount}, #{investFeeRate}, #{minInvestAmount}, #{investIncreasingAmount}, #{maxInvestAmount}, #{activityType}, #{productType}, #{activityRate}, #{contractId}, #{fundraisingStartTime}, #{fundraisingEndTime}, #{showOnHome}, #{createdTime}, #{createdLoginName}, #{verifyTime}, #{verifyLoginName}, #{recheckTime}, #{recheckLoginName}, #{status}, #{updateTime})
     </insert>
 
