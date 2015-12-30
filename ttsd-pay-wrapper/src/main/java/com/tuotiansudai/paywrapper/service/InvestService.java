@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
 
 import java.util.List;
@@ -23,4 +24,5 @@ public interface InvestService {
 
     void notifyInvestorRepaySuccessfulByEmail(long loanId,int period);
 
+    void investSuccess(long orderId, InvestModel investModel, String loginName);
 }

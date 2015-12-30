@@ -1,5 +1,7 @@
 package com.tuotiansudai.coupon.repository.model;
 
+import com.tuotiansudai.repository.model.InvestStatus;
+
 import java.util.Date;
 
 public class UserCouponModel {
@@ -25,6 +27,10 @@ public class UserCouponModel {
     private long actualFee;
 
     private Date createdTime;
+
+    private long investId;
+
+    private InvestStatus status;
 
     public UserCouponModel() {
     }
@@ -121,5 +127,21 @@ public class UserCouponModel {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public long getInvestId() {
+        return investId;
+    }
+
+    public void setInvestId(long investId) {
+        this.investId = investId;
+    }
+
+    public InvestStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(InvestStatus status) {
+        this.status = status;
     }
 }

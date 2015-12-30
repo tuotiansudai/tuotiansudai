@@ -24,4 +24,6 @@ public interface UserCouponMapper {
 
     List<CouponUseRecordView> findUseRecords(@Param(value = "loginName") String loginName, @Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
 
+    UserCouponModel findByInvestId(@Param("investId") long investId);
+
 }
