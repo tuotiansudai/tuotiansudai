@@ -6,11 +6,13 @@ public class UserInvestingCouponDto {
     private final long amount;
     private long loanId;
     private long interest;
+    private long investQuota;
 
     public UserInvestingCouponDto(UserCouponDto userCouponDto){
         this.id = userCouponDto.getId();
         this.name = userCouponDto.getName();
         this.amount = userCouponDto.getAmount();
+        this.investQuota = userCouponDto.getInvestQuota();
     }
 
     public long getId() {
@@ -39,5 +41,13 @@ public class UserInvestingCouponDto {
 
     public void setInterest(long interest) {
         this.interest = interest;
+    }
+
+    public long getInvestQuota() {
+        return investQuota;
+    }
+
+    public void setInvestQuota(long investQuota) {
+        this.investQuota = investQuota;
     }
 }

@@ -7,6 +7,7 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.exception.CreateCouponException;
+import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -102,4 +103,11 @@ public class CouponServiceImpl implements CouponService {
         return couponMapper.findById(couponId);
     }
 
+    @Override
+    public boolean couponIsAvailable(long userCouponId, String amount) {
+        UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
+        CouponModel couponModel = findCouponById(userCouponModel.getCouponId());
+        long investAmount = AmountConverter.convertStringToCent(amount);
+        return investAmount >= couponModel.getInvestQuota();
+    }
 }
