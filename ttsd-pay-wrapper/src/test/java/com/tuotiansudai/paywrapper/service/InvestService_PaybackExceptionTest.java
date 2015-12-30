@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.SmsFatalNotifyDto;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -71,7 +72,7 @@ public class InvestService_PaybackExceptionTest {
     @Mock
     InvestNotifyRequestMapper investNotifyRequestMapper;
 
-    @Autowired
+    @Mock
     private SmsWrapperClient smsWrapperClient;
 
     @Mock
@@ -127,6 +128,7 @@ public class InvestService_PaybackExceptionTest {
         when(this.paySyncClient.send(Matchers.<Class<? extends ProjectTransferMapper>>any(), any(ProjectTransferRequestModel.class), Matchers.<Class<ProjectTransferResponseModel>>any())).thenThrow(PayException.class);
 
         when(this.redisWrapperClient.incr(any(String.class))).thenCallRealMethod();
+        when(this.smsWrapperClient.sendFatalNotify(any(SmsFatalNotifyDto.class))).thenReturn(null);
         investService.asyncInvestCallback();
 
         ArgumentCaptor<Long> accountModelArgumentCaptor1 = ArgumentCaptor.forClass(Long.class);
