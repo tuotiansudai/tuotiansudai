@@ -49,14 +49,17 @@ public class AnnounceServiceImpl implements AnnounceService {
     }
 
     @Override
-    public AnnounceDto getDtoById(long id){
-        AnnounceModel model =  this.findById(id);
+    public AnnounceDto getDtoById(long id) {
+        AnnounceModel model = this.findById(id);
+        if (model == null) {
+            return null;
+        }
         return new AnnounceDto(model);
     }
 
     @Override
     public BaseDto<BasePaginationDataDto> getAnnouncementList(int index, int pageSize) {
-        List<AnnounceModel> announceList = this.announceMapper.findAnnounce(null, null, (index-1)*pageSize, pageSize);
+        List<AnnounceModel> announceList = this.announceMapper.findAnnounce(null, null, (index - 1) * pageSize, pageSize);
         int count = this.announceMapper.findAnnounceCount(null, null);
 
         List<AnnounceDto> announceDtos = new ArrayList<AnnounceDto>();
