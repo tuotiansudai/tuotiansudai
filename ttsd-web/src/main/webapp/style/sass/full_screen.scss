@@ -222,6 +222,8 @@ body {
           float: left;
           width: 100%;
           &.icon-hover{
+            width: 138px;
+            margin: 0 96px;
             &:hover .icon-off {
               display: none;
             }
