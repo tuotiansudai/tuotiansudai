@@ -28,26 +28,24 @@ public class BankCardUtil {
             .put("COMM", "交通银行")
             .put("CITIC", "中信银行")
             .put("BJBANK", "北京银行")
-            .put("SHRCB", "上海农商银行")
-            .put("WZCB", "温州银行")
             .put("CZSB", "浙商银行")
             .put("SPAB", "平安银行")
             .put("BHB", "河北银行")
             .put("LZB", "兰州银行")
             .build());
 
-    private static final List<String> RECHARGE_BANKS = Lists.newArrayList("ICBC", "CMB", "ABC", "CCB", "CMBC", "SPDB",
-            "GDB", "HXB", "PSBC", "BOC", "CEB", "BEA",
-            "CIB", "COMM", "CITIC", "BJBANK", "SHRCB", "WZCB");
+    private static final List<String> RECHARGE_BANKS = Lists.newArrayList("ICBC", "CMB", "ABC", "CCB", "CMBC",
+            "SPDB", "GDB", "HXB", "PSBC", "BOC",
+            "CEB", "BEA", "COMM", "CITIC", "BJBANK");
 
 
     private static final List<String> WITHDRAW_BANKS = Lists.newArrayList("BOC", "ABC", "CCB", "COMM", "PSBC", "CMBC",
             "CITIC", "CEB", "HXB", "GDB", "CIB", "SPDB",
             "CZSB", "SPAB", "BHB", "LZB", "CMB", "ICBC");
 
-    private static final List<String> FAST_PAY_BANKS = Lists.newArrayList("ICBC", "ABC", "CCB", "HXB", "BOC",
-            "PSBC", "SPDB", "COMM", "CMBC", "GDB",
-            "CITIC", "CIB", "CEB", "CMB", "SPAB");
+    private static final List<String> FAST_PAY_BANKS = Lists.newArrayList("ICBC", "ABC", "CCB", "BOC", "CEB",
+            "CIB", "CMBC", "HXB", "PSBC", "SPDB",
+            "COMM",  "GDB", "CITIC", "CMB", "SPAB");
 
     private static final List<String> BIND_CARD_ONE_CENT_BANKS = Lists.newArrayList("CMB");
 
@@ -75,5 +73,3 @@ public class BankCardUtil {
         return BIND_CARD_ONE_CENT_BANKS;
     }
 }
-
-
