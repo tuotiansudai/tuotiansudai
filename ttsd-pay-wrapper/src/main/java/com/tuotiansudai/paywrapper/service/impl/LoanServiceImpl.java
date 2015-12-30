@@ -25,6 +25,7 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransf
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerBindProjectRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerUpdateProjectRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
@@ -213,6 +214,7 @@ public class LoanServiceImpl implements LoanService {
             }
         } else {
             payDataDto.setStatus(true);
+            payDataDto.setCode(BaseSyncResponseModel.SUCCESS_CODE);
             payDataDto.setMessage("some other loan out process is running.");
             logger.error("some other thread is loan-outing for this loan, loanId:"+loanId);
         }
@@ -228,6 +230,15 @@ public class LoanServiceImpl implements LoanService {
         if (loan == null) {
             throw new PayException("loan is not exists [" + loanId + "]");
         }
+
+        if (LoanStatus.REPAYING == loan.getStatus()){
+            logger.warn("loan has already been outed. [" + loanId + "]");
+            ProjectTransferResponseModel umPayReturn = new ProjectTransferResponseModel();
+            umPayReturn.setRetCode(BaseSyncResponseModel.SUCCESS_CODE);
+            umPayReturn.setRetMsg("loan has already been outed.");
+            return umPayReturn;
+        }
+
         if (LoanStatus.RECHECK != loan.getStatus()){
             throw new PayException("loan is not ready for recheck [" + loanId + "]");
         }
