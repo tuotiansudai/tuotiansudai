@@ -5,7 +5,13 @@
   background: #fff;
   padding: 10px 30px 30px 40px;
   overflow: hidden;
-
+  p{
+    font-size:14px;
+    color:#4c4c4c;
+    .give-number{
+      color:#ff7200;
+    }
+  }
   .company-summary {
     p {
       font-size: nth($fontSize, 1);

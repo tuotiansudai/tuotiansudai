@@ -613,6 +613,82 @@
 
 }
 
+
+/* new guide page  */
+.newguide-container {
+  padding-top: 10px;
+  color: #fff;
+  font-size: 14px;
+  .page-width{
+    position: relative;
+    height:100%;
+    .down {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      bottom:30px;
+      b {
+        display: block;
+        font-weight: lighter;
+        &.text-gray{
+          color:#ccc;
+        }
+      }
+      .down-icon{
+        -webkit-animation: fade 3s infinite linear;
+        animation: fade 3s infinite linear;
+      }
+      @-webkit-keyframes fade {
+        0% { opacity: 1;}
+        50% { opacity: 0.3;}
+        100% { opacity: 1;}
+      }
+      @keyframes fade {
+        0% { opacity: 1;}
+        50% { opacity: 0.3;}
+        100% { opacity: 1;}
+      }
+    }
+  }
+  .intro-text{
+    background:url("/images/sign/guide-bg.png") no-repeat center fixed;
+    .first-model{
+      width:100%;
+      position: absolute;
+      top:50%;
+      left:50px;
+      margin-top:-180px; 
+      p{
+        color:#fff;
+        margin-bottom:0;
+        &.intro-title{
+          font-size:56px;
+          line-height:56px;
+        }
+        &.intro-english{
+          font-size:36px;
+          font-weight: lighter;
+          font-family: sans-serif;
+        }
+        &.text-name{
+          font-size:20px;
+          margin-top:85px;
+        }
+        &.intro-detail{
+          font-size:16px;
+          line-height:22px;
+          margin-top:30px;
+        }
+      }
+    }
+  }
+  .intro-text{
+    background:url("/images/sign/guide-bg.png") no-repeat center fixed;
+  }
+  .intro-text{
+    background:url("/images/sign/guide-bg.png") no-repeat center fixed;
+  }
+}
 /* refer reward page */
 .refer-reward-instruction {
   overflow: hidden;
