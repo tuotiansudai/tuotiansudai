@@ -76,7 +76,7 @@
                     </span>
                     <span class="clearfix">
                         <b class="clearfix">三方托管 放心理财</b>
-                        第三方资金托管,第三方支付
+                        第三方资金托管，第三方支付
                     </span>
                 </a>
             </dd>
