@@ -15,7 +15,6 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections4.CollectionUtils;
@@ -33,8 +32,6 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
-
-import static com.tuotiansudai.repository.model.LoanStatus.RECHECK;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -636,6 +633,7 @@ public class LoanServiceImpl implements LoanService {
             loanListDto.setActivityRate(String.valueOf(new BigDecimal(loanModel.getActivityRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
             loanListDto.setStatus(loanModel.getStatus());
             loanListDto.setCreatedTime(loanModel.getCreatedTime());
+            loanListDto.setProductType(loanModel.getProductType());
             loanListDtos.add(loanListDto);
         }
         return loanListDtos;

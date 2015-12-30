@@ -46,6 +46,7 @@
             <tr>
                 <th>编号</th>
                 <th>项目名称</th>
+                <th>产品类型</th>
                 <th>借款人</th>
                 <th>代理人</th>
                 <th>借款金额</th>
@@ -66,6 +67,7 @@
                             <a href="${webServer}/loan/${loanListDto.id?string('0')}" target="_blank">${loanListDto.name}</a>
                         </span>
                     </td>
+                    <td><#if loanListDto.productType??>${loanListDto.productType.getName()}</#if></td>
                     <td>${loanListDto.loanerUserName}</td>
                     <td>${loanListDto.agentLoginName}</td>
                     <td class="td">${loanListDto.loanAmount/100}</td>

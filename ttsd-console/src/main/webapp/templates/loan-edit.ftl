@@ -138,7 +138,7 @@
             <label class="col-sm-2 control-label">借款期限: </label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control jq-timer" placeholder="" datatype="num" errormsg="借款期限需要填写数字"
+                <input type="text" class="form-control jq-timer" placeholder="" datatype="num" errormsg="请选择产品线类型"
                        value="${loanInfo.periods}" disabled="disabled">
 
             </div>
@@ -254,7 +254,7 @@
 
             <div class="col-sm-4">
                 <input type="text" class="form-control jq-base-percent jq-money" placeholder="" datatype="money_fl"
-                       errormsg="基本利率需要正确填写" value="${(loanInfo.baseRate*100)?string('0.00')}"
+                       errormsg="请选择产品线类型" value="${(loanInfo.baseRate*100)?string('0.00')}"
                        disabled="disabled">
             </div>
         </div>
