@@ -56,10 +56,10 @@ public class CouponMapperTest {
         couponModel.setAmount(1000l);
         couponModel.setActiveUser("couponTest");
         couponModel.setActive(false);
-        couponModel.setCreateTime(new Date());
+        couponModel.setCreatedTime(new Date());
         couponModel.setEndTime(new Date());
         couponModel.setStartTime(new Date());
-        couponModel.setCreateUser("couponTest");
+        couponModel.setCreatedBy("couponTest");
         couponModel.setTotalCount(1000l);
         couponModel.setUsedCount(500l);
         couponModel.setInvestQuota(10000l);

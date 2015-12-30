@@ -1107,8 +1107,8 @@ public class AdvanceRepayServiceTest {
         couponModel.setAmount(amount);
         couponModel.setTotalCount(1);
         couponModel.setActive(true);
-        couponModel.setCreateUser(loginName);
-        couponModel.setCreateTime(new Date());
+        couponModel.setCreatedBy(loginName);
+        couponModel.setCreatedTime(new Date());
         return couponModel;
     }
 }

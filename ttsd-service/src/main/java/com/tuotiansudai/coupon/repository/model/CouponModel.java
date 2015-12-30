@@ -27,9 +27,9 @@ public class CouponModel implements Serializable {
 
     private boolean active = false;
 
-    private Date createTime;
+    private Date createdTime;
 
-    private String createUser;
+    private String createdBy;
 
     private String activeUser;
 
@@ -111,20 +111,20 @@ public class CouponModel implements Serializable {
         this.active = active;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreatedTime() {
+        return createdTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
-    public String getCreateUser() {
-        return createUser;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     public String getActiveUser() {
@@ -201,7 +201,7 @@ public class CouponModel implements Serializable {
         this.startTime = couponDto.getStartTime();
         this.endTime = couponDto.getEndTime();
         this.totalCount = StringUtils.isEmpty(couponDto.getTotalCount())?0l:Long.parseLong(couponDto.getTotalCount());
-        this.createTime = new Date();
+        this.createdTime = new Date();
         this.productType = Joiner.on(",").join(couponDto.getProductType()) ;
         this.couponType = couponDto.getCouponType().name();
         this.investQuota = AmountConverter.convertStringToCent(couponDto.getInvestQuota());
