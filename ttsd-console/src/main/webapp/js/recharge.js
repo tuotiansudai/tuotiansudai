@@ -3,12 +3,8 @@ require(['jquery', 'jquery-ui',
     'moment'], function ($) {
     $(function () {
         $('.selectpicker').selectpicker();
-        $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm', maxDate: 'now'});
-        $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm', maxDate: 'now'});
-        var dpicker2 = $('#datetimepicker2').data("DateTimePicker");
-        $('#datetimepicker1').on('dp.change', function (e) {
-            dpicker2.minDate(e.date);
-        });
+        $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
+        $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
 
         $('form button[type="reset"]').click(function () {
             location.href = "/finance-manage/recharge";

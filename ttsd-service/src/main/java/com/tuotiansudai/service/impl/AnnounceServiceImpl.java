@@ -53,6 +53,9 @@ public class AnnounceServiceImpl implements AnnounceService {
     @Override
     public AnnounceDto getDtoById(long id) {
         AnnounceModel model = this.findById(id);
+        if (model == null) {
+            return null;
+        }
         return new AnnounceDto(model);
     }
 
