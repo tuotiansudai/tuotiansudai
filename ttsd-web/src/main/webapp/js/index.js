@@ -54,13 +54,6 @@ require(['jquery', 'underscore', 'csrf'], function ($, _) {
             window.location.href = $(this).data("url");
         });
 
-        if (screenWid < 700) {
-            $imgScroll.find('img').eq(0).attr('src', staticServer + '/images/ttimg/ph-a01.jpg');
-            $imgScroll.find('img').eq(1).attr('src', staticServer + '/images/ttimg/ph-a02.jpg');
-            $imgScroll.find('img').eq(2).attr('src', staticServer + '/images/ttimg/ph-a03.jpg');
-
-            $imgScroll.find('img').css({'margin-left': '0px'});
-        }
 
         var adjustBanner = function () {
             var screenWidNow = $(window).width();
@@ -80,6 +73,7 @@ require(['jquery', 'underscore', 'csrf'], function ($, _) {
                 $imgScroll.find('img').css({'margin-left': '-' + leftWid + 'px'});
                 $registerBox.css({'right': (screenWidNow - 1000) / 2 + 'px'});
             }
+            $userCount.html($userCount.attr('data-count')).css({'color':'#ff752a'});
         };
 
         $(window).resize(function () {
