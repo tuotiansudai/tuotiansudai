@@ -68,9 +68,11 @@ public class CouponAspect {
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
         InvestModel investModel = (InvestModel)joinPoint.getArgs()[1];
         UserCouponModel userCouponModel = userCouponMapper.findByInvestId(investModel.getId());
-        userCouponModel.setStatus(InvestStatus.SUCCESS);
-        userCouponMapper.update(userCouponModel);
-        userCouponService.recordUsedCount(userCouponModel.getCouponId());
+        if (userCouponModel != null) {
+            userCouponModel.setStatus(InvestStatus.SUCCESS);
+            userCouponMapper.update(userCouponModel);
+            userCouponService.recordUsedCount(userCouponModel.getCouponId());
+        }
     }
 
 }
