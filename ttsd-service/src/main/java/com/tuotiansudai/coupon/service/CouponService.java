@@ -20,7 +20,4 @@ public interface CouponService {
     int findCouponsCount();
 
     void updateCoupon(String loginName, long couponId, boolean active);
-
-    CouponModel findCouponById (long couponId);
-
 }

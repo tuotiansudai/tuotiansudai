@@ -82,7 +82,7 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Transactional
-    public void recordUsedCount(long id){
+    public void recordUsedCount(long id) {
         CouponModel couponModel = couponMapper.lockByCoupon(id);
         long usedCount = couponModel.getUsedCount();
         couponModel.setUsedCount(usedCount + 1);
@@ -92,40 +92,40 @@ public class CouponServiceImpl implements CouponService {
     @Override
     @Transactional
     public void afterReturningInvest(InvestDto investDto) {
-        if(investDto.getUserCouponId() == null){
+        if (investDto.getUserCouponId() == null) {
             return;
         }
         long userCouponId = investDto.getUserCouponIdLong();
         UserCouponDto userCouponDto = convertUserCouponDto(userCouponId);
-        if (userCouponDto == null){
-            logger.debug(MessageFormat.format("userCouponId:{0} , is not exist",userCouponId));
+        if (userCouponDto == null) {
+            logger.debug(MessageFormat.format("userCouponId:{0} , is not exist", userCouponId));
             return;
         }
-        if(userCouponDto.isExpired()){
-            logger.debug(MessageFormat.format("userCouponId:{0} , is expired",userCouponId));
+        if (userCouponDto.isExpired()) {
+            logger.debug(MessageFormat.format("userCouponId:{0} , is expired", userCouponId));
 
         }
-        if(userCouponDto.isUsed()){
-            logger.debug(MessageFormat.format("userCouponId:{0} , is used",userCouponId));
+        if (userCouponDto.isUsed()) {
+            logger.debug(MessageFormat.format("userCouponId:{0} , is used", userCouponId));
         }
-        if (userCouponDto.isValid()){
+        if (userCouponDto.isValid()) {
             UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
             userCouponModel.setLoanId(investDto.getLoanIdLong());
             userCouponModel.setUsedTime(new Date());
             userCouponMapper.update(userCouponModel);
             recordUsedCount(userCouponDto.getCouponId());
-        }else {
-            logger.debug(MessageFormat.format("userCouponId:{0} , is invalid",userCouponId));
+        } else {
+            logger.debug(MessageFormat.format("userCouponId:{0} , is invalid", userCouponId));
         }
 
     }
 
-    private UserCouponDto convertUserCouponDto(long userCouponId){
+    private UserCouponDto convertUserCouponDto(long userCouponId) {
         UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
-        if(userCouponModel != null){
+        if (userCouponModel != null) {
             long couponId = userCouponModel.getCouponId();
             CouponModel couponModel = couponMapper.findById(couponId);
-            UserCouponDto userCouponDto = new UserCouponDto(couponModel,userCouponModel);
+            UserCouponDto userCouponDto = new UserCouponDto(couponModel, userCouponModel);
 
             return userCouponDto;
         }
@@ -151,10 +151,4 @@ public class CouponServiceImpl implements CouponService {
         couponModel.setActiveUser(loginName);
         couponMapper.updateCoupon(couponModel);
     }
-
-    @Override
-    public CouponModel findCouponById(long couponId) {
-        return couponMapper.findById(couponId);
-    }
-
 }

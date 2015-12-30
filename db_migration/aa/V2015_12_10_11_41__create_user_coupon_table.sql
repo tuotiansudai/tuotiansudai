@@ -3,7 +3,7 @@ CREATE TABLE `aa`.`user_coupon` (
   `login_name`        VARCHAR(25)     NOT NULL,
   `coupon_id`         BIGINT UNSIGNED NOT NULL,
   `loan_id`           BIGINT UNSIGNED NULL,
-  `created_time`       DATETIME        NOT NULL,
+  `created_time`      DATETIME        NOT NULL,
   `used_time`         DATETIME        NULL,
   `expected_interest` BIGINT UNSIGNED NULL,
   `actual_interest`   BIGINT UNSIGNED NULL,

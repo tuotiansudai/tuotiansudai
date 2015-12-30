@@ -24,7 +24,7 @@ public class CouponModel implements Serializable {
 
     private long totalCount;
 
-    private boolean active = false;
+    private boolean active;
 
     private Date createTime;
 
@@ -41,6 +41,8 @@ public class CouponModel implements Serializable {
     private long actualAmount;
 
     private long investQuota;
+
+    private UserGroup userGroup;
 
     public long getId() {
         return id;
@@ -162,10 +164,6 @@ public class CouponModel implements Serializable {
         this.actualAmount = actualAmount;
     }
 
-    public CouponModel(){
-
-    }
-
     public long getInvestQuota() {
         return investQuota;
     }
@@ -174,12 +172,24 @@ public class CouponModel implements Serializable {
         this.investQuota = investQuota;
     }
 
-    public CouponModel(CouponDto couponDto){
+    public UserGroup getUserGroup() {
+        return userGroup;
+    }
+
+    public void setUserGroup(UserGroup userGroup) {
+        this.userGroup = userGroup;
+    }
+
+    public CouponModel() {
+
+    }
+
+    public CouponModel(CouponDto couponDto) {
         this.name = couponDto.getName();
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime();
         this.endTime = couponDto.getEndTime();
-        this.totalCount = StringUtils.isEmpty(couponDto.getTotalCount())?0l:Long.parseLong(couponDto.getTotalCount());
+        this.totalCount = StringUtils.isEmpty(couponDto.getTotalCount()) ? 0L : Long.parseLong(couponDto.getTotalCount());
         this.createTime = new Date();
         this.investQuota = AmountConverter.convertStringToCent(couponDto.getInvestQuota());
     }
