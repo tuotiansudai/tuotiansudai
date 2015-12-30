@@ -1109,6 +1109,8 @@ public class AdvanceRepayServiceTest {
         couponModel.setActive(true);
         couponModel.setCreatedBy(loginName);
         couponModel.setCreatedTime(new Date());
+        couponModel.setCouponType(CouponType.INVEST_COUPON.name());
+        couponModel.setProductType(ProductType.JYF.name());
         return couponModel;
     }
 }
