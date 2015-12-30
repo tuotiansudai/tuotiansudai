@@ -21,11 +21,13 @@
         <result column="expected_amount" property="expectedAmount"/>
         <result column="actual_amount" property="actualAmount"/>
         <result column="invest_quota" property="investQuota"/>
+        <result column="product_type" property="productType"/>
+        <result column="coupon_type" property="couponType"/>
     </resultMap>
 
     <insert id="create" parameterType="CouponModel" useGeneratedKeys="true" keyProperty="id">
-        insert into coupon (name, amount, start_time, end_time, used_count, total_count, active, create_time, create_user, active_user,active_time,issued_count,invest_quota)
-        value(#{name}, #{amount}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{createTime}, #{createUser}, #{activeUser},#{activeTime},#{issuedCount},#{investQuota})
+        insert into coupon (name, amount, start_time, end_time, used_count, total_count, active, create_time, create_user, active_user,active_time,issued_count,invest_quota,product_type,coupon_type)
+        value(#{name}, #{amount}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{createTime}, #{createUser}, #{activeUser},#{activeTime},#{issuedCount},#{investQuota},#{productType},#{couponType})
     </insert>
 
     <select id="findById" resultMap="couponResultMap" parameterType="long">

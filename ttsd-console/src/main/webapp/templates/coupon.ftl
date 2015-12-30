@@ -8,7 +8,7 @@
 			<label class="col-sm-2 control-label">体验券名称:</label>
 			<div class="col-sm-4">
 
-                <select class="selectpicker jq-b-type" name="name">
+                <select class="selectpicker jq-b-type" name="couponType">
 					<#list couponTypes as couponType>
                         <option value="${couponType.name()}">${couponType.getDesc()}</option>
 					</#list>
@@ -69,7 +69,7 @@
             <label  class="col-sm-2 control-label">使用条件: </label>
 
 			<div class="col-sm-8">
-				<div class="item-invest">投资满</div><input type="text" class="form-control invest-quota coupon-number " name="investQuota" placeholder="" <#if coupon??>value="${coupon.investQuota!}"</#if> datatype="*" errormsg="使用条件金额不能为空"><div class="item-zl">元可用</div>
+				<div class="item-invest">投资满</div><input type="text" class="form-control invest-quota coupon-number " name="investQuota" placeholder="" <#if coupon??>value="${coupon.investQuota!}"</#if> datatype="*" errormsg="使用条件金额不能为空"><div class="item-invest">元可用</div>
 			</div>
         </div>
         <div class="form-group">
@@ -77,7 +77,7 @@
             <div class="col-sm-3">
 				<#list productTypes as productType>
 
-                    <label><input type="checkbox" name="productType"
+                    <label><input type="checkbox" name="productType" class="productType"
 								  <#if productType_index == 0>checked="checked"</#if>
                                   value="${productType.name()}">${productType.getName()}
                     </label>

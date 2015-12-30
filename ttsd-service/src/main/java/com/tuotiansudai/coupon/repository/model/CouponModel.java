@@ -1,6 +1,7 @@
 package com.tuotiansudai.coupon.repository.model;
 
 
+import com.google.common.base.Joiner;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.lang.StringUtils;
@@ -41,6 +42,10 @@ public class CouponModel implements Serializable {
     private long actualAmount;
 
     private long investQuota;
+
+    private String productType;
+
+    private String couponType;
 
     public long getId() {
         return id;
@@ -174,13 +179,31 @@ public class CouponModel implements Serializable {
         this.investQuota = investQuota;
     }
 
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
+    }
+
+    public String getCouponType() {
+        return couponType;
+    }
+
+    public void setCouponType(String couponType) {
+        this.couponType = couponType;
+    }
+
     public CouponModel(CouponDto couponDto){
-        this.name = couponDto.getName();
+        this.name = couponDto.getCouponType().getDesc();
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime();
         this.endTime = couponDto.getEndTime();
         this.totalCount = StringUtils.isEmpty(couponDto.getTotalCount())?0l:Long.parseLong(couponDto.getTotalCount());
         this.createTime = new Date();
+        this.productType = Joiner.on(",").join(couponDto.getProductType()) ;
+        this.couponType = couponDto.getCouponType().name();
         this.investQuota = AmountConverter.convertStringToCent(couponDto.getInvestQuota());
     }
 }
