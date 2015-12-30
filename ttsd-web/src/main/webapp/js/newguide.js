@@ -19,8 +19,6 @@ require(['jquery','fullPage'], function ($) {
         scrollingSpeed:600,
         css3: true,
         afterLoad: function(anchorLink, index){
-            var $fpNav=$('#fp-nav');
-
             if(boolHead) {
                 if(index == 1){
                     $boxProfit.find('img.fl').animate({
