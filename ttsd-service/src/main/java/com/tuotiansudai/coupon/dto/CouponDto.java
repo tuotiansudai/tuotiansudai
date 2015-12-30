@@ -18,6 +18,8 @@ public class CouponDto implements Serializable {
     private Date endTime;
     @NotEmpty
     private String totalCount;
+    @NotEmpty
+    private String investQuota;
 
     public String getName() {
         return name;
@@ -57,5 +59,13 @@ public class CouponDto implements Serializable {
 
     public void setTotalCount(String totalCount) {
         this.totalCount = totalCount;
+    }
+
+    public String getInvestQuota() {
+        return investQuota;
+    }
+
+    public void setInvestQuota(String investQuota) {
+        this.investQuota = investQuota;
     }
 }
