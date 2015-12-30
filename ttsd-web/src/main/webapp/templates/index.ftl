@@ -43,7 +43,7 @@
                 <ul>
                     <#list announces as announce>
                         <li>
-                            <a href="/announce/${announce.id}">
+                            <a href="/announce/${announce.id?string.computer}">
                                 <span class="text-title">${announce.title}</span>
                                 <span class="text-date">${announce.createdTime?string("yyyy-MM-dd")}</span>
                             </a>
