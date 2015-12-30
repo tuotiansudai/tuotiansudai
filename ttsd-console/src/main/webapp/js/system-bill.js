@@ -13,11 +13,6 @@ require(['jquery',
             maxDate: 'now'
         });
 
-        var dpicker2 = $('#datetimepicker2').data("DateTimePicker");
-        $('#datetimepicker1').on('dp.change', function(e) {
-            dpicker2.minDate(e.date);
-        });
-
         $('form button[type="reset"]').click(function() {
             location.href = "/finance-manage/system-bill";
         });
