@@ -572,7 +572,14 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional
     public BaseDto<PayDataDto> loanOut(LoanDto loanDto) throws BaseException {
-        this.checkLoanAmount(loanDto.getId());
+        if (!this.checkLoanAmount(loanDto.getId())) {
+            BaseDto<PayDataDto> dto = new BaseDto<>();
+            PayDataDto payDataDto = new PayDataDto();
+            dto.setData(payDataDto);
+            payDataDto.setStatus(false);
+            payDataDto.setMessage("放款失败，标的投资金额与募集金额不符。");
+            return dto;
+        }
 
         this.updateLoanAndLoanTitleRelation(loanDto);
 
