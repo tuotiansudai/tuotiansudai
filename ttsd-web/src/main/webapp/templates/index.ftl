@@ -58,34 +58,38 @@
         <dl>
             <dd>
                 <a href="/about/assurance?aid=1" target="_blank">
-                    <img class="icon-off" src="${staticServer}/images/icons/icon-off-1.png" alt="超高收益 最低门槛">
-                    <img class="icon-on" src="${staticServer}/images/icons/icon-on-1.png" alt="超高收益 最低门槛">
-                <span class="clearfix">
-                     <b class="clearfix">超高收益 最低门槛</b>
-                    最高46倍活期存款收益，最低投资门槛50元
-                </span>
+                    <span class="icon-hover">
+                        <img class="icon-off" src="${staticServer}/images/icons/icon-off-1.png" alt="超高收益 最低门槛">
+                        <img class="icon-on" src="${staticServer}/images/icons/icon-on-1.png" alt="超高收益 最低门槛">
+                    </span>
+                    <span class="clearfix">
+                         <b class="clearfix">超高收益 最低门槛</b>
+                        最高46倍活期存款收益，最低投资门槛50元
+                    </span>
                 </a>
             </dd>
             <dd>
                 <a href="/about/assurance?aid=2" target="_blank">
-                    <img class="icon-off" src="${staticServer}/images/icons/icon-off-2.png" alt="三方监管 放心理财">
-                    <img class="icon-on" src="${staticServer}/images/icons/icon-on-2.png" alt="三方监管 放心理财">
-                <span class="clearfix">
-                    <b class="clearfix">三方托管 放心理财</b>
-                    第三方资金托管 <br/>
-                    第三方支付
-                </span>
+                    <span class="icon-hover">
+                        <img class="icon-off" src="${staticServer}/images/icons/icon-off-2.png" alt="三方监管 放心理财">
+                        <img class="icon-on" src="${staticServer}/images/icons/icon-on-2.png" alt="三方监管 放心理财">
+                    </span>
+                    <span class="clearfix">
+                        <b class="clearfix">三方托管 放心理财</b>
+                        第三方资金托管,第三方支付
+                    </span>
                 </a>
             </dd>
             <dd>
                 <a href="/about/assurance?aid=3" target="_blank">
-                    <img class="icon-off" src="${staticServer}/images/icons/icon-off-3.png" alt="实力雄厚 安全保障">
-                    <img class="icon-on" src="${staticServer}/images/icons/icon-on-3.png" alt="实力雄厚 安全保障">
-
-                <span class="clearfix">
-                    <b class="clearfix">实力雄厚 安全保障</b>
-                    上市企业投资，资金数据均安全
-                </span>
+                    <span class="icon-hover">
+                        <img class="icon-off" src="${staticServer}/images/icons/icon-off-3.png" alt="实力雄厚 安全保障">
+                        <img class="icon-on" src="${staticServer}/images/icons/icon-on-3.png" alt="实力雄厚 安全保障">
+                    </span>
+                    <span class="clearfix">
+                        <b class="clearfix">实力雄厚 安全保障</b>
+                        上市企业投资，资金数据均安全
+                    </span>
                 </a>
             </dd>
         </dl>

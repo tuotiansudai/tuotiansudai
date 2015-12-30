@@ -218,15 +218,17 @@ body {
         font-size: 14px;
         color: #0e050a;
         line-height: 1;
-        &:hover .icon-off {
-          display: none;
-        }
-        &:hover .icon-on {
-          display: block;
-        }
         span {
           float: left;
           width: 100%;
+          &.icon-hover{
+            &:hover .icon-off {
+              display: none;
+            }
+            &:hover .icon-on {
+              display: block;
+            }
+          }
           b {
             font-size: 20px;
             display: block;
