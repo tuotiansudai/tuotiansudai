@@ -1,15 +1,18 @@
 package com.tuotiansudai.coupon.dto;
 
 
+import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.ProductType;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class CouponDto implements Serializable {
-    @NotEmpty
-    private String name;
+
     @NotEmpty
     private String amount;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
@@ -20,14 +23,10 @@ public class CouponDto implements Serializable {
     private String totalCount;
     @NotEmpty
     private String investQuota;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    @NotEmpty
+    private List<ProductType> productType;
+    @NotNull
+    private CouponType couponType;
 
     public String getAmount() {
         return amount;
@@ -67,5 +66,21 @@ public class CouponDto implements Serializable {
 
     public void setInvestQuota(String investQuota) {
         this.investQuota = investQuota;
+    }
+
+    public List<ProductType> getProductType() {
+        return productType;
+    }
+
+    public void setProductType(List<ProductType> productType) {
+        this.productType = productType;
+    }
+
+    public CouponType getCouponType() {
+        return couponType;
+    }
+
+    public void setCouponType(CouponType couponType) {
+        this.couponType = couponType;
     }
 }

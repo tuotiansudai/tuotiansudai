@@ -5,9 +5,15 @@
 <div class="col-md-10">
 	<form action="/activity-manage/coupon" method="post" class="form-horizontal form-list">
 		<div class="form-group">
-			<label class="col-sm-2 control-label">投资体验券名称:</label>
+			<label class="col-sm-2 control-label">体验券名称:</label>
 			<div class="col-sm-4">
-				<input type="text" class="form-control coupon-name" name="name" placeholder="" <#if coupon??>value="${coupon.name!}"</#if> datatype="*" errormsg="投资体验券名称不能为空">
+
+                <select class="selectpicker jq-b-type" name="couponType">
+					<#list couponTypes as couponType>
+                        <option value="${couponType.name()}">${couponType.getDesc()}</option>
+					</#list>
+                </select>
+
 			</div>
 		</div>
 		<div class="form-group">
@@ -65,7 +71,19 @@
 			<div class="col-sm-8">
 				<div class="item-invest">投资满</div><input type="text" class="form-control invest-quota coupon-number " name="investQuota" placeholder="" <#if coupon??>value="${coupon.investQuota!}"</#if> datatype="*" errormsg="使用条件金额不能为空"><div class="item-invest">元可用</div>
 			</div>
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">可投资标的: </label>
+            <div class="col-sm-3">
+				<#list productTypes as productType>
 
+                    <label><input type="checkbox" name="productType" class="productType"
+								  <#if productType_index == 0>checked="checked"</#if>
+                                  value="${productType.name()}">${productType.getName()}
+                    </label>
+
+				</#list>
+            </div>
         </div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<div class="form-group">

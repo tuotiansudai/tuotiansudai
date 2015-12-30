@@ -1,5 +1,6 @@
 package com.tuotiansudai.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
@@ -67,6 +68,7 @@ public class CouponServiceTest {
         DateTime dateTime = new DateTime().plusDays(1);
         couponDto.setStartTime(dateTime.toDate());
         couponDto.setEndTime(dateTime.toDate());
+
         couponService.createCoupon("couponTest", couponDto);
 
     }
@@ -248,7 +250,11 @@ public class CouponServiceTest {
         couponDto.setTotalCount("100");
         couponDto.setEndTime(new Date());
         couponDto.setStartTime(new Date());
-        couponDto.setName("优惠券");
+        couponDto.setCouponType(CouponType.INVEST_COUPON);
+        List<ProductType> productTypes = Lists.newArrayList();
+        productTypes.add(ProductType.JYF);
+        couponDto.setProductType(productTypes);
+        couponDto.setInvestQuota("1000");
         return couponDto;
     }
 
