@@ -38,8 +38,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
         return false;
     });
     $('.start-date,.end-date').datetimepicker({
-        format: 'YYYY-MM-DD',
-        maxDate: 'now'
+        format: 'YYYY-MM-DD'
     });
 
     loadEcharts.ChartsProvince(function(data) {
