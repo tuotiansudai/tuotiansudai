@@ -204,14 +204,15 @@ public class LoanServiceImpl implements LoanService {
                 payDataDto.setCode(umPayReturn.getRetCode());
                 payDataDto.setMessage(umPayReturn.getRetMsg());
 
-                redisWrapperClient.del(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId);
             } catch (PayException e) {
                 payDataDto.setStatus(false);
                 payDataDto.setMessage(e.getLocalizedMessage());
                 logger.error(e.getLocalizedMessage(), e);
+            } finally {
+                redisWrapperClient.del(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId);
             }
         } else {
-            payDataDto.setStatus(false);
+            payDataDto.setStatus(true);
             payDataDto.setMessage("some other loan out process is running.");
             logger.error("some other thread is loan-outing for this loan, loanId:"+loanId);
         }

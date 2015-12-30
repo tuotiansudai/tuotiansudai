@@ -37,7 +37,7 @@ public class AutoLoanOutJob implements Job {
             logger.debug("trigger auto loan out after raising complete job, loanId : " + String.valueOf(loanId));
 
             if (redisWrapperClient.exists(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId)) {
-                logger.debug("another loan out process is running, stop auto loan out. loanId : " + String.valueOf(loanId));
+                logger.warn("another loan out process is running, stop auto loan out. loanId : " + String.valueOf(loanId));
                 return;
             }
 
