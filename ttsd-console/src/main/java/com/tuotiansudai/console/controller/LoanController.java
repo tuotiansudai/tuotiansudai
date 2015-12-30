@@ -12,6 +12,7 @@ import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.service.LoanService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,8 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/project-manage/loan")
 public class LoanController {
+
+    static Logger logger = Logger.getLogger(LoanController.class);
 
     private static final String DEFAULT_CONTRACT_ID = "789098123"; // 四方合同
 
@@ -101,7 +104,7 @@ public class LoanController {
             loanDto.setRecheckLoginName(LoginUserInfo.getLoginName());
             baseDto = loanService.loanOut(loanDto);
         } catch (BaseException e) {
-            e.printStackTrace();
+            logger.error(e.getLocalizedMessage(), e);
         }
         return baseDto;
     }

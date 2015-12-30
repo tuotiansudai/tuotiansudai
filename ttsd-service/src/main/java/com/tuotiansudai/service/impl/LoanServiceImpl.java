@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.job.AutoInvestJob;
@@ -58,6 +59,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
 
     @Value("${console.auto.invest.delay.minutes}")
     private int autoInvestDelayMinutes;
@@ -452,11 +456,11 @@ public class LoanServiceImpl implements LoanService {
         loanModel.setStatus(loanDto.getLoanStatus());
         loanMapper.update(loanModel);
         List<LoanTitleRelationModel> loanTitleRelationModelList = loanTitleRelationMapper.findByLoanId(loanDto.getId());
-        if (!CollectionUtils.isEmpty(loanTitleRelationModelList)) {
+        if (CollectionUtils.isNotEmpty(loanTitleRelationModelList)) {
             loanTitleRelationMapper.delete(loanDto.getId());
         }
         loanTitleRelationModelList = loanDto.getLoanTitles();
-        if (!CollectionUtils.isEmpty(loanTitleRelationModelList)) {
+        if (CollectionUtils.isNotEmpty(loanTitleRelationModelList)) {
             for (LoanTitleRelationModel loanTitleRelationModel : loanTitleRelationModelList) {
                 loanTitleRelationModel.setId(idGenerator.generate());
                 loanTitleRelationModel.setLoanId(loanModel.getId());
@@ -566,8 +570,11 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
+    @Transactional
     public BaseDto<PayDataDto> loanOut(LoanDto loanDto) throws BaseException {
-        updateLoanAndLoanTitleRelation(loanDto);
+        this.checkLoanAmount(loanDto.getId());
+
+        this.updateLoanAndLoanTitleRelation(loanDto);
 
         // 如果存在未处理完成的记录，则不允许放款
         // 放款并记账，同时生成还款计划，处理推荐人奖励，处理短信和邮件通知
@@ -698,4 +705,12 @@ public class LoanServiceImpl implements LoanService {
         }
     }
 
+    private boolean checkLoanAmount(long loanId) {
+        BaseDto<PayDataDto> dto = payWrapperClient.checkLoanAmount(loanId);
+
+        if (!dto.getData().getStatus()) {
+            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("标的({0})投资金额与募集金额不符，放款失败。", String.valueOf(loanId))));
+        }
+        return dto.getData().getStatus();
+    }
 }
