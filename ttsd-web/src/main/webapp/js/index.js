@@ -1,4 +1,4 @@
-require(['jquery', 'csrf'], function ($) {
+require(['jquery', 'underscore', 'csrf'], function ($, _) {
     $(function () {
         var $bannerBox = $('.banner-box'),
             $imgScroll = $('.banner-img-list', $bannerBox),
@@ -7,6 +7,7 @@ require(['jquery', 'csrf'], function ($) {
             $productFrame = $('#productFrame'),
             $dlAmount = $('.dl-amount', $productFrame),
             $imgNum = $('li', $scrollNum),
+            $userCount=$('#userCount'),
             $bannerImg = $imgScroll.find('a'),
             screenWid, picWid, leftWid, adTimer = null, n = 0;
 
@@ -20,6 +21,13 @@ require(['jquery', 'csrf'], function ($) {
         picWid = $bannerImg.first().find('img').width();
 
         leftWid = (picWid - screenWid) / 2;
+
+        //Traversing the data and formatting output
+        var userCountArray=_.filter($userCount.attr('data-count')),html='';
+        for (var i=0,len=userCountArray.length;i<len; i++) {
+            html+='<i>'+userCountArray[i]+'</i>';
+        };
+        $userCount.html(html);
 
         $registerBox.css({'right': (screenWid - 1000) / 2 + 'px'});
         $scrollNum.css({'left': (screenWid - $scrollNum.width()) / 2});
@@ -77,6 +85,27 @@ require(['jquery', 'csrf'], function ($) {
         $(window).resize(function () {
             adjustBanner();
         });
+
+
+        var scrollTimer;
+        $(".scroll-top").hover(function() {
+            clearInterval(scrollTimer);
+        }, function() {
+            scrollTimer = setInterval(function() {
+                scrollNews($(".scroll-top"));
+            }, 2000);
+        }).trigger("mouseout");
+        function scrollNews(obj) {
+            var $self = obj.find("ul:first");
+            var lineHeight = $self.find("li:first").height();
+            $self.animate({
+                "margin-top": -lineHeight + "px"
+            }, 600, function() {
+                $self.css({
+                    "margin-top": "0px"
+                }).find("li:first").appendTo($self);
+            })
+        }
 
     });
 });

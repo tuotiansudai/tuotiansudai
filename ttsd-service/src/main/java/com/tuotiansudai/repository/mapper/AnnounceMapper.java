@@ -9,9 +9,12 @@ import java.util.List;
 @Repository
 public interface AnnounceMapper {
 
-    int findAnnounceCount(@Param("id") Long id,@Param("title") String title);
+    int findAnnounceCount(@Param("id") Long id, @Param("title") String title);
 
-    List<AnnounceModel> findAnnounce(@Param("id") Long id,@Param("title") String title,@Param("startLimit") int startLimit,@Param("endLimit") int endLimit);
+    List<AnnounceModel> findAnnounce(@Param("id") Long id,
+                                     @Param("title") String title,
+                                     @Param("index") int index,
+                                     @Param("pageSize") int pageSize);
 
     void create(AnnounceModel announceModel);
 
