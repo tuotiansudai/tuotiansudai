@@ -4,6 +4,8 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.junit.Test;
@@ -72,6 +74,8 @@ public class UserCouponMapperTest {
         couponModel.setCreatedBy("couponTest");
         couponModel.setTotalCount(1000l);
         couponModel.setUsedCount(500l);
+        couponModel.setCouponType(CouponType.INVEST_COUPON.name());
+        couponModel.setProductType(ProductType.JYF.name());
 
         return couponModel;
     }
