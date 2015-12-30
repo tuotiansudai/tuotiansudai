@@ -290,6 +290,16 @@ td.td {
     padding:6px;
 }
 
+.item-invest{
+    float: left;
+    line-height: 35px;
+    font-size:16px;
+}
+
+.invest-quota{
+    width: 121px;
+    float: left;
+}
 .system-recharge-label{
     width: 11%;
 }

@@ -20,11 +20,12 @@
         <result column="issued_count" property="issuedCount"/>
         <result column="expected_amount" property="expectedAmount"/>
         <result column="actual_amount" property="actualAmount"/>
+        <result column="invest_quota" property="investQuota"/>
     </resultMap>
 
     <insert id="create" parameterType="CouponModel" useGeneratedKeys="true" keyProperty="id">
-        insert into coupon (name, amount, start_time, end_time, used_count, total_count, active, create_time, create_user, active_user,active_time,issued_count)
-        value(#{name}, #{amount}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{createTime}, #{createUser}, #{activeUser},#{activeTime},#{issuedCount})
+        insert into coupon (name, amount, start_time, end_time, used_count, total_count, active, create_time, create_user, active_user,active_time,issued_count,invest_quota)
+        value(#{name}, #{amount}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{createTime}, #{createUser}, #{activeUser},#{activeTime},#{issuedCount},#{investQuota})
     </insert>
 
     <select id="findById" resultMap="couponResultMap" parameterType="long">
@@ -69,7 +70,8 @@
     </select>
 
     <update id="updateCoupon" parameterType="CouponModel">
-        update coupon set used_count = #{usedCount},issued_count = #{issuedCount},active_time = #{activeTime},active = #{active},active_user = #{activeUser} where id = #{id}
+        update coupon set used_count = #{usedCount},issued_count = #{issuedCount},active_time = #{activeTime},active = #{active},
+                      active_user = #{activeUser},invest_quota = #{investQuota} where id = #{id}
     </update>
 
 </mapper>

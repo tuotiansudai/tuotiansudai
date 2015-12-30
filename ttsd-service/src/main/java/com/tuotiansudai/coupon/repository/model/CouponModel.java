@@ -40,6 +40,8 @@ public class CouponModel implements Serializable {
 
     private long actualAmount;
 
+    private long investQuota;
+
     public long getId() {
         return id;
     }
@@ -163,6 +165,15 @@ public class CouponModel implements Serializable {
     public CouponModel(){
 
     }
+
+    public long getInvestQuota() {
+        return investQuota;
+    }
+
+    public void setInvestQuota(long investQuota) {
+        this.investQuota = investQuota;
+    }
+
     public CouponModel(CouponDto couponDto){
         this.name = couponDto.getName();
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
@@ -170,5 +181,6 @@ public class CouponModel implements Serializable {
         this.endTime = couponDto.getEndTime();
         this.totalCount = StringUtils.isEmpty(couponDto.getTotalCount())?0l:Long.parseLong(couponDto.getTotalCount());
         this.createTime = new Date();
+        this.investQuota = AmountConverter.convertStringToCent(couponDto.getInvestQuota());
     }
 }
