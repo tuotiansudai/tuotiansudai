@@ -648,28 +648,26 @@
         width: 40%;
         position: absolute;
         left: 0;
-        top: 310px;
+        top: 300px;
       }
       .article-three {
         width: 40%;
         position: absolute;
         right: 0;
-        top: 265px;
+        top: 285px;
       }
-      .article-app {
-        display: none;
-      }
+
     }
 
   }
   .box-insurance {
-    padding-top: 75px;
+    padding-top: 50px;
     .page-width {
       position: relative;
       .page-img {
         position: absolute;
         right: 1400px;
-        top: 80px;
+        top: 60px;
       }
       .sqr-title {
         border-radius: 17px;
@@ -679,11 +677,11 @@
         line-height: 1.4;
       }
       .fl {
-        width: 40%;
+        width: 42%;
       }
       .fr {
-        width: 40%;
-        padding-top: 325px;
+        width: 35%;
+        padding-top: 295px;
       }
       .article-mobile {
         display: none;
@@ -1063,13 +1061,15 @@
       b {
         font-size: 22px;
         margin-top: 0;
-        position: absolute;
-        left: 17%;
-        top: -20px;
+        position: relative;
+        top: -13px;
+        width: 100%;
+        text-align: center;
+        display: inline;
       }
       em {
         font-size: 16px;
-        margin-top: 15px;
+        margin-top: -15px;
       }
     }
     .down {
@@ -1108,14 +1108,22 @@
           top: 15px;
 
         }
-        .article-one,
-        .article-two,
+        .article-one {
+          width: 98%;
+          position: relative;
+          left: 0;
+          top: 4px;
+          text-align: center;
+        }
+        .article-two {
+          width: 98%;
+          position: relative;
+          left: 0;
+          top: 0px;
+          text-align: center;
+        }
         .article-three {
           display: none;
-        }
-        .article-app {
-          display: block;
-          font-size: 14px;
         }
       }
     }

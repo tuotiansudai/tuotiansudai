@@ -290,7 +290,7 @@ td.td {
     padding:6px;
 }
 
-.item-zl{
+.item-invest{
     float: left;
     line-height: 35px;
     font-size:16px;
@@ -299,4 +299,20 @@ td.td {
 .invest-quota{
     width: 121px;
     float: left;
+}
+.system-recharge-label{
+    width: 11%;
+}
+
+.system-recharge-amount{
+    width:25%;
+}
+.system-recharge-btn{
+    margin-left: 0.3%;
+}
+
+.system-recharge-balance{
+    border: none;
+    box-shadow: none;
+    margin-top: 5px;
 }
