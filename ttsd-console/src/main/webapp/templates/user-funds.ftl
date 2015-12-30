@@ -59,6 +59,8 @@
                 <th>时间</th>
                 <th>序号</th>
                 <th>用户名</th>
+                <th>姓名</th>
+                <th>手机号</th>
                 <th>费用类型</th>
                 <th>操作类型</th>
                 <th>金额</th>
@@ -71,7 +73,13 @@
                 <tr>
                     <td>${(userBillModel.createdTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>${userBillModel.id?string('0')}</td>
-                    <td>${userBillModel.loginName!''}</td>
+                    <td>${userBillModel.loginName!''}
+                        <#if userBillModel.isStaff()>
+                            <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
+                        </#if>
+                    </td>
+                    <td>${userBillModel.userName}</td>
+                    <td>${userBillModel.mobile}</td>
                     <td>${userBillModel.operationType.getDescription()}</td>
                     <td>${userBillModel.businessType.getDescription()}</td>
                     <td>${userBillModel.amount/100}</td>
