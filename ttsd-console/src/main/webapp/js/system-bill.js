@@ -5,12 +5,10 @@ require(['jquery',
     $(function() {
         $('.selectpicker').selectpicker();
         $('#datetimepicker1').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm',
-            maxDate: 'now'
+            format: 'YYYY-MM-DD HH:mm'
         });
         $('#datetimepicker2').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm',
-            maxDate: 'now'
+            format: 'YYYY-MM-DD HH:mm'
         });
 
         $('form button[type="reset"]').click(function() {
