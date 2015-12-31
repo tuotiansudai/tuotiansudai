@@ -22,12 +22,18 @@ require(['jquery', 'underscore', 'csrf'], function ($, _) {
 
         leftWid = (picWid - screenWid) / 2;
 
-        //Traversing the data and formatting output
-        var userCountArray=_.filter($userCount.attr('data-count')),html='';
-        for (var i=0,len=userCountArray.length;i<len; i++) {
-            html+='<i>'+userCountArray[i]+'</i>';
+        function FormatMoney(money) {
+            if (/[^0-9\.]/.test(money)) return '0';
+            money = money.replace(/^(\d*)$/, "$1.");
+            money = money.replace(".", ",");
+            var re = /(\d)(\d{3},)/;
+            while (re.test(money)) {
+                money = money.replace(re, "$1,$2");
+            }
+            money = money.replace(/,(\d\d)$/, ".$1");
+            return $userCount.html(money.replace(/,$/gi,'')).css({'color':'#ff752a'});
         };
-        $userCount.html(html);
+        FormatMoney($userCount.attr('data-count'));
 
         $registerBox.css({'right': (screenWid - 1000) / 2 + 'px'});
         $scrollNum.css({'left': (screenWid - $scrollNum.width()) / 2});
@@ -73,7 +79,6 @@ require(['jquery', 'underscore', 'csrf'], function ($, _) {
                 $imgScroll.find('img').css({'margin-left': '-' + leftWid + 'px'});
                 $registerBox.css({'right': (screenWidNow - 1000) / 2 + 'px'});
             }
-            $userCount.html($userCount.attr('data-count')).css({'color':'#ff752a'});
         };
 
         $(window).resize(function () {
