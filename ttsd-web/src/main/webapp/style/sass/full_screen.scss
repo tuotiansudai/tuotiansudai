@@ -416,6 +416,8 @@ body {
         line-height: 100px;
         background: #fff;
         margin: 0 0 30px 0;
+        border-radius: 10px;
+        border: 1px solid #e5e5e5;
         span {
           float: left;
           font-size: 20px;
@@ -805,6 +807,20 @@ body {
     b {
       display: block;
     }
+    .down-icon{
+      -webkit-animation: fade 3s infinite linear;
+      animation: fade 3s infinite linear;
+    }
+    @-webkit-keyframes fade {
+      0% { opacity: 1;}
+      50% { opacity: 0.3;}
+      100% { opacity: 1;}
+    }
+    @keyframes fade {
+      0% { opacity: 1;}
+      50% { opacity: 0.3;}
+      100% { opacity: 1;}
+    }
   }
   .box-benift {
     .page-width {
@@ -918,7 +934,7 @@ body {
   }
   .intro-text{
     background:url("/images/sign/guide-bg.png") no-repeat center fixed;
-    .first-model{
+    .flex-model{
       width:100%;
       position: absolute;
       top:50%;
@@ -948,8 +964,25 @@ body {
       }
     }
   }
-  .intro-text{
-    background:url("/images/sign/guide-bg.png") no-repeat center fixed;
+  .mode-operation{
+    width:1000px;
+    position: absolute;
+    top:50%;
+    left:50%;
+    margin-top:-391px;
+    margin-left:-500px;
+    p{
+      float:left;
+      width:100%;
+      color:#808080;
+      text-align:center;
+      &.mode-title{
+        font-size:30px;
+        span{
+          color:#449be2;
+        }
+      }
+    }
   }
   .intro-text{
     background:url("/images/sign/guide-bg.png") no-repeat center fixed;

@@ -31,7 +31,7 @@
 <div class="newguide-container" id="assuranceEffect">
     <div class="section intro-text">
         <div class="page-width clearfix">
-            <div class="first-model">
+            <div class="flex-model">
                 <p class="intro-title">我们是谁？</p>
                 <p class="intro-english">Who we are ?</p>
                 <p class="text-name">拓天速贷——互联网金融信息服务平台</p>
@@ -45,8 +45,10 @@
     </div>
     <div class="section">
         <div class="page-width clearfix">
-            <p>我们的<span>运作模式</span></br>The mode of operation </p>
-            <p><img src="" alt=""></p>
+        <div class="mode-operation">
+            <p class="mode-title">我们的<span>运作模式</span></br>The mode of operation </p>
+            <p><img src="/images/sign/model-type.png" alt=""></p>
+        </div>
             <div class="down clearfix"><b class="text-gray">试试鼠标滚动</b><img src="/images/sign/assure/down-gray.png" class="down-icon" alt=""></div>
         </div>
     </div>
