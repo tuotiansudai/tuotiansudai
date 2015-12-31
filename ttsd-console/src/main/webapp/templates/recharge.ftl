@@ -81,14 +81,16 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th colspan="10">合计充值金额：${sumAmount/100} 元</th>
+                <th colspan="12">合计充值金额：${sumAmount/100} 元</th>
             </tr>
             <tr>
                 <th>编号</th>
                 <th>时间</th>
                 <th>用户名</th>
-                <th>充值金额(元)</th>
-                <th>手续费(元)</th>
+                <th>姓名</th>
+                <th>手机号</th>
+                <th>充值金额</th>
+                <th>手续费</th>
                 <th>充值渠道</th>
                 <th>管理员充值</th>
                 <th>充值状态</th>
@@ -103,7 +105,13 @@
                     <tr>
                         <td>${rechargeItem.rechargeId?string('0')}</td>
                         <td>${(rechargeItem.createdTime?string('yyyy-MM-dd HH:mm'))!}</td>
-                        <td>${rechargeItem.loginName}</td>
+                        <td>${rechargeItem.loginName}
+                            <#if rechargeItem.isStaff()>
+                                <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
+                            </#if>
+                        </td>
+                        <td>${rechargeItem.userName}</td>
+                        <td>${rechargeItem.mobile}</td>
                         <td>${rechargeItem.amount}</td>
                         <td>${rechargeItem.fee}</td>
                         <td>${rechargeItem.bankCode!}</td>
@@ -115,7 +123,7 @@
                     </#list>
                 <#else>
                 <tr>
-                    <td colspan="10">Empty</td>
+                    <td colspan="12">Empty</td>
                 </tr>
                 </#if>
             </tbody>

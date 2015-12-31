@@ -75,7 +75,7 @@ public class MobileAppWithdrawServiceTest extends ServiceTestBase {
         List<WithdrawModel> withdrawModels = Lists.newArrayList();
         withdrawModels.add(withdrawModel1);
         withdrawModels.add(withdrawModel2);
-        when(withdrawMapper.findWithdrawCount(anyString(), anyString(), any(WithdrawStatus.class), any(Source.class), any(Date.class), any(Date.class))).thenReturn(2L);
+        when(withdrawMapper.findWithdrawCount(anyString(), anyString(), any(WithdrawStatus.class), any(Source.class), any(Date.class), any(Date.class))).thenReturn(2);
         when(withdrawMapper.findWithdrawPagination(anyString(),anyString(),
                 any(WithdrawStatus.class),any(Source.class),anyInt(),anyInt(),any(Date.class),any(Date.class))).thenReturn(withdrawModels);
         BaseParam baseParam = new BaseParam();
