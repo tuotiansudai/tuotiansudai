@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'csrf'], function ($, _) {
+require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
     $(function () {
         var $bannerBox = $('.banner-box'),
             $imgScroll = $('.banner-img-list', $bannerBox),
@@ -45,33 +45,14 @@ require(['jquery', 'underscore', 'csrf'], function ($, _) {
         $(".product-box .pad-m").click(function () {
             window.location.href = $(this).data("url");
         });
-
-
-        var adjustBanner = function () {
-            var screenWidNow = $(window).width();
-            if (screenWidNow < 700) {
-                $imgScroll.find('img').eq(0).attr('src', staticServer + '/images/ttimg/ph-a01.jpg');
-                $imgScroll.find('img').eq(1).attr('src', staticServer + '/images/ttimg/ph-a02.jpg');
-                $imgScroll.find('img').eq(2).attr('src', staticServer + '/images/ttimg/ph-a03.jpg');
-
-                $imgScroll.find('img').css({'margin-left': '0px'});
-
-            }
-            else {
-                $imgScroll.find('img').eq(0).attr('src', staticServer + '/images/sign/actor/ranking/qph.jpg');
-                $imgScroll.find('img').eq(1).attr('src', staticServer + '/images/sign/actor/grand/ba-grand.jpg');
-                $imgScroll.find('img').eq(2).attr('src', staticServer + '/images/ttimg/ttimg-home03.png');
-
-                $imgScroll.find('img').css({'margin-left': '-' + leftWid + 'px'});
-                $registerBox.css({'right': (screenWidNow - 1000) / 2 + 'px'});
-            }
-        };
-
-        $(window).resize(function () {
-            adjustBanner();
-        });
-
-
+        var viewport=commonFun.browserRedirect();
+        if(viewport=='pc') {
+            $imgScroll.find('img.iphone-img').remove();
+        }
+        else if(viewport=='mobile') {
+            $imgScroll.find('img.pc-img').remove();
+            $imgScroll.find('img.iphone-img').css({'margin-left': '0px'});
+        }
         var scrollTimer;
         $(".scroll-top").hover(function() {
             clearInterval(scrollTimer);
