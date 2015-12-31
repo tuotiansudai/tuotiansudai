@@ -109,7 +109,7 @@ public class CouponServiceTest {
         couponDto.setStartTime(startDateTime.toDate());
         couponDto.setEndTime(endDateTime.toDate());
         CouponModel couponModel = new CouponModel(couponDto);
-        couponModel.setCreateUser("couponTest");
+        couponModel.setCreatedBy("couponTest");
         couponModel.setActive(true);
         couponMapper.create(couponModel);
 
@@ -131,7 +131,7 @@ public class CouponServiceTest {
         couponDto.setStartTime(startDateTime.toDate());
         couponDto.setEndTime(endDateTime.toDate());
         CouponModel couponModel = new CouponModel(couponDto);
-        couponModel.setCreateUser("couponTest");
+        couponModel.setCreatedBy("couponTest");
         couponModel.setActive(true);
         couponMapper.create(couponModel);
 
@@ -167,7 +167,7 @@ public class CouponServiceTest {
         couponDto.setStartTime(startDateTime.toDate());
         couponDto.setEndTime(endDateTime.toDate());
         CouponModel couponModel = new CouponModel(couponDto);
-        couponModel.setCreateUser("couponTest");
+        couponModel.setCreatedBy("couponTest");
         couponModel.setActive(true);
         couponMapper.create(couponModel);
         LoanModel loanModel = fakeLoanModel(userModel.getLoginName());
@@ -218,7 +218,7 @@ public class CouponServiceTest {
         couponDto.setStartTime(startDateTime.toDate());
         couponDto.setEndTime(endDateTime.toDate());
         CouponModel couponModel = new CouponModel(couponDto);
-        couponModel.setCreateUser(userModel.getLoginName());
+        couponModel.setCreatedBy(userModel.getLoginName());
         couponModel.setActive(true);
         couponMapper.create(couponModel);
 

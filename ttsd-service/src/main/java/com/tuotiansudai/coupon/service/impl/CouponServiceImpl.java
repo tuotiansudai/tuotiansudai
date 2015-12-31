@@ -57,7 +57,7 @@ public class CouponServiceImpl implements CouponService {
         if (endTime.before(startTime)) {
             throw new CreateCouponException("活动止期早于活动起期!");
         }
-        couponModel.setCreateUser(loginName);
+        couponModel.setCreatedBy(loginName);
         couponMapper.create(couponModel);
     }
 
