@@ -1,6 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.RechargeModel;
+import com.tuotiansudai.repository.model.RechargePaginationView;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
@@ -16,6 +17,11 @@ public class RechargePaginationItemDataDto extends RechargeDto implements Serial
 
     private Date createdTime;
 
+    private String userName;
+
+    private String mobile;
+
+    private String isStaff;
 
     public RechargePaginationItemDataDto(RechargeModel rechargeModel) {
         this.rechargeId = rechargeModel.getId();
@@ -28,6 +34,13 @@ public class RechargePaginationItemDataDto extends RechargeDto implements Serial
         super.setSource(rechargeModel.getSource());
         super.setFastPay(rechargeModel.isFastPay());
         super.setChannel(rechargeModel.getChannel());
+
+        if (rechargeModel instanceof RechargePaginationView) {
+            RechargePaginationView rechargeView = (RechargePaginationView) rechargeModel;
+            this.userName = rechargeView.getUserName();
+            this.mobile = rechargeView.getMobile();
+            this.isStaff = rechargeView.getIsStaff();
+        }
     }
 
     public Date getCreatedTime() {
@@ -62,4 +75,27 @@ public class RechargePaginationItemDataDto extends RechargeDto implements Serial
         this.status = status;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public boolean isStaff() {
+        return "1".equals(isStaff);
+    }
+
+    public void setIsStaff(String isStaff) {
+        this.isStaff = isStaff;
+    }
 }

@@ -336,7 +336,7 @@ body {
               }
               .product-intro {
                 float: left;
-                width: 458px;
+                width: 300px;
                 height: 100px;
                 span {
                   float: left;
@@ -358,6 +358,36 @@ body {
                     text-align: center;
                     .income-num {
                       font-size: 40px;
+                    }
+                    .income-month {
+                      color: #b2b2b2;
+                    }
+                  }
+                  &.income-text-intro {
+                    font-size: 16px;
+                    color: #b2b2b2;
+                    text-align: left;
+                    padding-left: 5px;
+                  }
+                }
+              }
+              .product-month {
+                float: left;
+                width: 100px;
+                height: 70px;
+                padding-top: 25px;
+                margin-right:20px;
+                p {
+                  margin-bottom: 0;
+                  line-height: 25px;
+                  &.income-num-text {
+                    font-size: 20px;
+                    text-align: center;
+                    .income-num {
+                      font-size: 40px;
+                    }
+                    .income-month {
+                      color: #b2b2b2;
                     }
                   }
                   &.income-text-intro {
@@ -423,14 +453,8 @@ body {
           font-size: 20px;
           color: #808080;
           margin-left: 30px;
-          i {
-            color: #808080;
-            font-size: 18px;
-            font-weight: 700;
-            padding: 5px 7px;
-            border: 1px solid #ff752a;
-            margin: 0 5px;
-            border-radius: 5px;
+          strong{
+            color: #ff7200;
           }
         }
       }
@@ -812,7 +836,7 @@ body {
     .page-width {
       position: relative;
       img.fl {
-        margin-left: -850px;
+        margin-left: 90px;
         margin-top: 50px;
       }
       .fr {
@@ -828,7 +852,7 @@ body {
       padding-top: 320px;
       .page-img {
         position: absolute;
-        left: 1260px;
+        left: 360px;
         top: 35px;
       }
       .article-one {
@@ -857,7 +881,7 @@ body {
         position: relative;
         .page-img {
           position: absolute;
-          right: 1400px;
+          right: 20px;
           top: 60px;
         }
         .sqr-title {

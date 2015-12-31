@@ -17,6 +17,13 @@
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
+    <resultMap id="rechargeResultView" type="RechargePaginationView" extends="rechargeResultMap">
+        <result column="user_name" property="userName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="is_staff" property="isStaff"></result>
+    </resultMap>
+
+
     <insert id="create" parameterType="RechargeModel">
         insert into recharge (id, login_name, amount, fee, bank_code, status, source, channel, fast_pay, created_time)
         value(#{id}, #{loginName}, #{amount}, #{fee}, #{bankCode}, #{status}, #{source}, #{channel}, #{fastPay}, #{createdTime})
@@ -34,32 +41,36 @@
         select IFNULL(sum(amount),0) as amount from recharge where status = 'SUCCESS' and login_name = #{loginName} and bank_code != 'ADMIN'
     </select>
 
-    <select id="findRechargePagination" parameterType="map" resultMap="rechargeResultMap">
-        select * from recharge
+    <select id="findRechargePagination" parameterType="map" resultMap="rechargeResultView">
+        select r.*, a.user_name, u.mobile,
+        IFNULL((select 1 from user_role ur where ur.login_name = r.login_name and ur.role='STAFF'),0) as is_staff
+        from recharge r
+        JOIN `user` u on r.login_name = u.login_name
+        JOIN account a on r.login_name = a.login_name
         <where>
             <if test="rechargeId !=null and rechargeId !='' ">
-                id = #{rechargeId}
+                r.id = #{rechargeId}
             </if>
             <if test="loginName !=null and loginName != '' ">
-                <![CDATA[and login_name like '${loginName}%']]>
+                <![CDATA[and r.login_name like '${loginName}%']]>
             </if>
             <if test="startTime !=null" >
-                and created_time >= #{startTime}
+                and r.created_time >= #{startTime}
             </if>
             <if test="endTime !=null ">
-                and created_time &lt;= #{endTime}
+                and r.created_time &lt;= #{endTime}
             </if>
             <if test="status !=null">
-                and status  = #{status}
+                and r.status  = #{status}
             </if>
             <if test="source !=null">
-                and source  = #{source}
+                and r.source  = #{source}
             </if>
             <if test="channel !=null and channel != ''">
-                and channel  = #{channel}
+                and r.channel  = #{channel}
             </if>
         </where>
-        order by created_time desc
+        order by r.created_time desc
         limit #{index}, #{pageSize}
     </select>
 
