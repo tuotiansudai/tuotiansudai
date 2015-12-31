@@ -2,11 +2,9 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.WithdrawModel;
+import com.tuotiansudai.repository.model.WithdrawPaginationView;
 import com.tuotiansudai.util.AmountConverter;
-import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -36,6 +34,13 @@ public class WithdrawPaginationItemDataDto implements Serializable {
 
     private String bankCard;
 
+    private String userName;
+
+    private String mobile;
+
+    private String isStaff;
+
+
     public WithdrawPaginationItemDataDto(WithdrawModel withdrawModel) {
         this.withdrawId = withdrawModel.getId();
         this.fee = AmountConverter.convertCentToString(withdrawModel.getFee());
@@ -49,6 +54,13 @@ public class WithdrawPaginationItemDataDto implements Serializable {
         this.amount = AmountConverter.convertCentToString(withdrawModel.getAmount());
         this.source = withdrawModel.getSource();
         this.bankCard = withdrawModel.getBankCard().getCardNumber();
+
+        if (withdrawModel instanceof WithdrawPaginationView) {
+            WithdrawPaginationView withdrawView = (WithdrawPaginationView) withdrawModel;
+            this.userName = withdrawView.getUserName();
+            this.mobile = withdrawView.getMobile();
+            this.isStaff = withdrawView.getIsStaff();
+        }
     }
 
     public long getWithdrawId() {
@@ -97,5 +109,17 @@ public class WithdrawPaginationItemDataDto implements Serializable {
 
     public String getBankCard() {
         return bankCard;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public boolean isStaff() {
+        return "1".equals(isStaff);
     }
 }
