@@ -1,7 +1,6 @@
+ALTER TABLE coupon ADD deadline INT UNSIGNED;
 
-alter table coupon add deadline INT UNSIGNED ;
+ALTER TABLE coupon ADD user_group VARCHAR(32);
 
-alter table coupon add user_group varchar(32);
-
-alter table coupon add sms_alert TINYINT(1);
+ALTER TABLE coupon ADD sms_alert BOOLEAN;
 
