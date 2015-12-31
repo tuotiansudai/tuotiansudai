@@ -297,6 +297,9 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             //$(".jq-form").Validform({
             //    tiptype: 0,
             //});
+            if (!confirm("确认要执行此操作吗?")) {
+                return;
+            }
             if (formFlag) {
                 $(this).attr('disabled', 'disabled');
                 indexPic();
