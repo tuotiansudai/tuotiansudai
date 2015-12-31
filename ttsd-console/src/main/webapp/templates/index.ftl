@@ -26,10 +26,12 @@
                                 </select>
                                 <select class="form-control" name="roleStage">
                                     <option value="ALL" selected>全部用户</option>
-                                    <option value="STAFF">业务员及一级推荐</option>
+                                    <option value="STAFF">业务员</option>
+                                    <option value="RECOMMENDATION">业务员的一级推荐</option>
                                     <option value="AGENT">代理商</option>
                                     <option value="OTHERS">其他用户</option>
                                 </select>
+                                <select class="form-control" name="channel"></select>
                         <#--<select class="form-control" name=""></select>-->
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
@@ -148,10 +150,12 @@
                         </select>
                         <select class="form-control" name="roleStage">
                             <option value="ALL" selected>全部用户</option>
-                            <option value="STAFF">业务员及一级推荐</option>
+                            <option value="STAFF">业务员</option>
+                            <option value="RECOMMENDATION">业务员的一级推荐</option>
                             <option value="AGENT">代理商</option>
                             <option value="OTHERS">其他用户</option>
                         </select>
+                        <select class="form-control" name="channel"></select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
                     <div id="userInvestAmountDistribution" style="width:100%; height:400px;">

@@ -154,5 +154,7 @@ public interface InvestMapper {
 
     List<String> findAllChannels();
 
+    List<String> findAllInvestChannels();
+
     long countAutoInvest(@Param(value = "loanId") Long loanId, @Param(value = "loginName") String loginName);
 }

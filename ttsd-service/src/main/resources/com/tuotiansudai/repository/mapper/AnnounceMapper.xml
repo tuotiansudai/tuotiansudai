@@ -28,7 +28,7 @@
               </if>
           </where>
           ORDER BY update_time DESC
-          limit #{startLimit},#{endLimit}
+          limit #{index}, #{pageSize}
     </select>
 
     <select id="findAnnounceCount" parameterType="map" resultType="int">

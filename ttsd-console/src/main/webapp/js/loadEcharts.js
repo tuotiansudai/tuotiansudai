@@ -247,10 +247,21 @@ define(['jquery','underscore','echarts'], function ($,_) {
             $.ajax({
                 type: 'GET',
                 url: '/bi/province',
-                dataType: 'json'
+                dataType: 'json',
+                async:false
             }).done(function (data) {
                 callback && callback(data);
 
+            });
+        },
+        ChartsChannels:function(callback){
+            $.ajax({
+                type: 'GET',
+                url: '/bi/channels',
+                dataType: 'json',
+                async:false
+            }).done(function(data) {
+                callback && callback(data);
             });
         },
         datetimeFun: {

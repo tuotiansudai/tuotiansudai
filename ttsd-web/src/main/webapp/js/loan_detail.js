@@ -117,7 +117,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                         location.href = '/login?redirect='+encodeURIComponent(location.href);
                         return false;
                     }
-                    var amount = $("input[name='amount']",frm).val();
+                    var amount=parseFloat(amountInputElement.autoNumeric("get"));
                     if(isNaN(parseFloat(amount))) {
                         $errorDom.html("<i class='fa fa-times-circle'></i>请正确输入投资金额").removeAttr("style");
                         return false;

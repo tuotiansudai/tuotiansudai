@@ -21,7 +21,7 @@
                 <th>姓名</th>
                 <th>手机号</th>
                 <th>地区</th>
-                <th>账户余额(共${sumBalance/100})</th>
+                <th>账户余额(共${sumBalance/100}元)</th>
             </tr>
             </thead>
             <tbody>

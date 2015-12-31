@@ -13,7 +13,7 @@
                     <span class="user fr">${userName}</span>
                 </div>
 
-                    <div class="card-num tc">${cardNumber}</div>
+                    <div class="card-num tc">${cardNumber?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}</div>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div class="card-link clearfix">
                         <#if replaceCardAvailable>
