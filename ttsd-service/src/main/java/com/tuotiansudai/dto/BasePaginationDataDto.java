@@ -2,14 +2,13 @@ package com.tuotiansudai.dto;
 
 import java.util.List;
 
-public class BasePaginationDataDto<T> extends BaseDataDto {
+public class BasePaginationDataDto<T> extends BaseListDataDto<T> {
 
     private int index;
     private int pageSize;
     private long count;
     private boolean hasPreviousPage;
     private boolean hasNextPage;
-    private List<T> records;
 
     public BasePaginationDataDto(int index, int pageSize, long count, List<T> records) {
         long totalPages = count / pageSize + (count % pageSize > 0 ? 1 : 0);
@@ -39,9 +38,5 @@ public class BasePaginationDataDto<T> extends BaseDataDto {
 
     public boolean isHasNextPage() {
         return hasNextPage;
-    }
-
-    public List<T> getRecords() {
-        return records;
     }
 }

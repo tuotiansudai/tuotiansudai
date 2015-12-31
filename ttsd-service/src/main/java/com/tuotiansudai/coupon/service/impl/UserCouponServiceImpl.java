@@ -1,9 +1,11 @@
 package com.tuotiansudai.coupon.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
-import com.tuotiansudai.coupon.dto.UserInvestingCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -12,13 +14,16 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
-import org.apache.commons.collections4.ListUtils;
-import org.apache.commons.collections4.Predicate;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -33,39 +38,57 @@ public class UserCouponServiceImpl implements UserCouponService {
     @Autowired
     private InvestService investService;
 
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    private static final String NEWBIE_COUPON_ALERT_KEY = "web:newbiecoupon:alert:{0}";
+
     @Override
-    public List<UserCouponDto> getUserCouponDtoByLoginName(String loginName) {
+    public List<UserCouponDto> getUserCoupons(String loginName) {
         List<UserCouponModel> modelList = userCouponMapper.findByLoginName(loginName);
-        List<UserCouponDto> dtoList = Lists.transform(modelList, new Function<UserCouponModel, UserCouponDto>() {
+        return Lists.transform(modelList, new Function<UserCouponModel, UserCouponDto>() {
             @Override
             public UserCouponDto apply(UserCouponModel userCoupon) {
                 CouponModel coupon = couponMapper.findById(userCoupon.getCouponId());
                 return new UserCouponDto(coupon, userCoupon);
             }
         });
-        return dtoList;
     }
 
     @Override
-    public List<UserInvestingCouponDto> getValidCoupons(String loginName, final long loanId) {
-        List<UserCouponDto> userCouponDtos = getUserCouponDtoByLoginName(loginName);
-        List<UserCouponDto> validUserCouponDtos = ListUtils.select(userCouponDtos, new Predicate<UserCouponDto>() {
+    public UserCouponDto getUsableNewbieCoupon(String loginName) {
+        List<UserCouponModel> userCoupons = userCouponMapper.findByLoginName(loginName);
+
+        if (!redisWrapperClient.exists(MessageFormat.format(NEWBIE_COUPON_ALERT_KEY, 111))) {
+            redisWrapperClient.set(MessageFormat.format(NEWBIE_COUPON_ALERT_KEY, 11111), null);
+
+
+            return new UserCouponDto();
+        }
+        return null;
+    }
+
+    @Override
+    public List<UserCouponDto> getUsableCoupons(String loginName, long loanId, final long amount) {
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName);
+
+        final DateTime now = new DateTime();
+
+        Iterator<UserCouponModel> iterator = userCouponModels.iterator();
+        while (iterator.hasNext()) {
+            UserCouponModel model = iterator.next();
+            if (true) {
+                iterator.remove();
+            }
+        }
+
+        return Lists.transform(userCouponModels, new Function<UserCouponModel, UserCouponDto>() {
             @Override
-            public boolean evaluate(UserCouponDto userCouponDto) {
-                return userCouponDto.isValid();
+            public UserCouponDto apply(UserCouponModel userCouponModel) {
+                CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+                return new UserCouponDto(couponModel, userCouponModel, amount);
             }
         });
-        List<UserInvestingCouponDto> investingCouponDtos = Lists.transform(validUserCouponDtos, new Function<UserCouponDto, UserInvestingCouponDto>() {
-            @Override
-            public UserInvestingCouponDto apply(UserCouponDto userCouponDto) {
-                long interest = investService.estimateInvestIncome(loanId, userCouponDto.getAmount());
-                UserInvestingCouponDto userInvestingCouponDto = new UserInvestingCouponDto(userCouponDto);
-                userInvestingCouponDto.setLoanId(loanId);
-                userInvestingCouponDto.setInterest(interest);
-                return userInvestingCouponDto;
-            }
-        });
-        return investingCouponDtos;
     }
 
     @Override

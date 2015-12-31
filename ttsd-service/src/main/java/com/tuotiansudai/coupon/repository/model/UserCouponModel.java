@@ -14,6 +14,8 @@ public class UserCouponModel {
 
     private long loanId;
 
+    private long investId;
+
     private Date usedTime;
 
     private long expectedInterest;
@@ -27,8 +29,6 @@ public class UserCouponModel {
     private long actualFee;
 
     private Date createdTime;
-
-    private long investId;
 
     private InvestStatus status;
 

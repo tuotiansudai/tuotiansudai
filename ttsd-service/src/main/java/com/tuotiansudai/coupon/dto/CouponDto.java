@@ -8,18 +8,24 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class CouponDto implements Serializable {
+
     @NotEmpty
     private String name;
+
     @NotEmpty
     private String amount;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date startTime;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date endTime;
+
     @NotEmpty
     private String totalCount;
+
     @NotEmpty
-    private String investQuota;
+    private String investLowerLimit;
 
     public String getName() {
         return name;
@@ -61,11 +67,11 @@ public class CouponDto implements Serializable {
         this.totalCount = totalCount;
     }
 
-    public String getInvestQuota() {
-        return investQuota;
+    public String getInvestLowerLimit() {
+        return investLowerLimit;
     }
 
-    public void setInvestQuota(String investQuota) {
-        this.investQuota = investQuota;
+    public void setInvestLowerLimit(String investLowerLimit) {
+        this.investLowerLimit = investLowerLimit;
     }
 }

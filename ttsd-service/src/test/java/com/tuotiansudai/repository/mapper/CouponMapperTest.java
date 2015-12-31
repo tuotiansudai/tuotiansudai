@@ -60,7 +60,7 @@ public class CouponMapperTest {
         couponModel.setCreateUser("couponTest");
         couponModel.setTotalCount(1000l);
         couponModel.setUsedCount(500l);
-        couponModel.setInvestQuota(10000l);
+        couponModel.setInvestLowerLimit(10000l);
         return couponModel;
     }
     private UserModel fakeUserModel() {

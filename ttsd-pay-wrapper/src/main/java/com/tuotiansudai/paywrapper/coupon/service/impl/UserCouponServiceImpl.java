@@ -32,7 +32,7 @@ public class UserCouponServiceImpl implements UserCouponService{
         if(investDto.getUserCouponId() == null){
             return;
         }
-        long userCouponId = investDto.getUserCouponIdLong();
+        long userCouponId = Long.parseLong(investDto.getUserCouponId());
         UserCouponDto userCouponDto = convertUserCouponDto(userCouponId);
         if (userCouponDto == null){
             logger.debug(MessageFormat.format("userCouponId:{0} , is not exist", userCouponId));
@@ -45,9 +45,9 @@ public class UserCouponServiceImpl implements UserCouponService{
         if(userCouponDto.isUsed()){
             logger.debug(MessageFormat.format("userCouponId:{0} , is used",userCouponId));
         }
-        if (userCouponDto.isValid()){
+        if (userCouponDto.isUsable()){
             UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
-            userCouponModel.setLoanId(investDto.getLoanIdLong());
+            userCouponModel.setLoanId(Long.parseLong(investDto.getLoanId()));
             userCouponModel.setUsedTime(new Date());
             userCouponModel.setInvestId(investId);
             userCouponMapper.update(userCouponModel);

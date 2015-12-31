@@ -173,7 +173,7 @@ public class CouponServiceTest {
         couponDto.setEndTime(new Date());
         couponDto.setStartTime(new Date());
         couponDto.setName("优惠券");
-        couponDto.setInvestQuota("1000.00");
+        couponDto.setInvestLowerLimit("1000.00");
         return couponDto;
     }
 

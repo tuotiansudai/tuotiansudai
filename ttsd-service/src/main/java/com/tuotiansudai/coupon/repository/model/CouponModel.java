@@ -24,7 +24,7 @@ public class CouponModel implements Serializable {
 
     private long totalCount;
 
-    private boolean active = false;
+    private boolean active;
 
     private Date createTime;
 
@@ -40,7 +40,7 @@ public class CouponModel implements Serializable {
 
     private long actualAmount;
 
-    private long investQuota;
+    private long investLowerLimit;
 
     public long getId() {
         return id;
@@ -162,25 +162,24 @@ public class CouponModel implements Serializable {
         this.actualAmount = actualAmount;
     }
 
-    public CouponModel(){
-
+    public CouponModel() {
     }
 
-    public long getInvestQuota() {
-        return investQuota;
+    public long getInvestLowerLimit() {
+        return investLowerLimit;
     }
 
-    public void setInvestQuota(long investQuota) {
-        this.investQuota = investQuota;
+    public void setInvestLowerLimit(long investLowerLimit) {
+        this.investLowerLimit = investLowerLimit;
     }
 
-    public CouponModel(CouponDto couponDto){
+    public CouponModel(CouponDto couponDto) {
         this.name = couponDto.getName();
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime();
         this.endTime = couponDto.getEndTime();
-        this.totalCount = StringUtils.isEmpty(couponDto.getTotalCount())?0l:Long.parseLong(couponDto.getTotalCount());
+        this.totalCount = StringUtils.isEmpty(couponDto.getTotalCount()) ? 0L : Long.parseLong(couponDto.getTotalCount());
         this.createTime = new Date();
-        this.investQuota = AmountConverter.convertStringToCent(couponDto.getInvestQuota());
+        this.investLowerLimit = AmountConverter.convertStringToCent(couponDto.getInvestLowerLimit());
     }
 }

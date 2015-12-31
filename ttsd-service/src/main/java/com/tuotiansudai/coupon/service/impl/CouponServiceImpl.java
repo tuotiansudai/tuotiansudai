@@ -32,7 +32,7 @@ public class CouponServiceImpl implements CouponService {
     public void createCoupon(String loginName, CouponDto couponDto) throws CreateCouponException {
         CouponModel couponModel = new CouponModel(couponDto);
         long amount = couponModel.getAmount();
-        long investQuota = couponModel.getInvestQuota();
+        long investLowerLimit = couponModel.getInvestLowerLimit();
         if (amount <= 0) {
             throw new CreateCouponException("投资体验券金额应大于0!");
         }
@@ -40,7 +40,7 @@ public class CouponServiceImpl implements CouponService {
         if (totalCount <= 0) {
             throw new CreateCouponException("发放数量应大于0!");
         }
-        if (investQuota <= 0) {
+        if (investLowerLimit <= 0) {
             throw new CreateCouponException("使用条件金额应大于0!");
         }
         Date startTime = couponModel.getStartTime();
@@ -108,6 +108,6 @@ public class CouponServiceImpl implements CouponService {
         UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
         CouponModel couponModel = findCouponById(userCouponModel.getCouponId());
         long investAmount = AmountConverter.convertStringToCent(amount);
-        return investAmount >= couponModel.getInvestQuota();
+        return investAmount >= couponModel.getInvestLowerLimit();
     }
 }
