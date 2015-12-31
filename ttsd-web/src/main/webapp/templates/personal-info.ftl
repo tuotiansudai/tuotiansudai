@@ -15,7 +15,7 @@
                     </span>
                 </li>
                 <li><span class="info-title"> 身份认证</span>
-                    <em class="info">${identityNumber?replace("^(\\d{6}).*(\\d{3}(\\d|x|X))$","$1****$2","r")}</em>
+                    <em class="info">${identityNumber?replace("^\\d{3}(\\d{3}).*$","***$1************","r")}</em>
                     <span class="binding-set">
                        <i class="fa fa-check-circle ok"></i> 已认证
                     </span>
@@ -43,7 +43,7 @@
                 </li>
                 <li><span class="info-title"> 绑定银行卡</span>
                     <#if bankCard??>
-                        <em class="info">${bankCard?replace("^(\\d{6}).*(\\d{4})$","$1****$2","r")}</em>
+                        <em class="info">${bankCard?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}</em>
                     <span class="binding-set">
                         <i class="fa fa-check-circle ok"></i> 已绑定 <a class="setlink setBankCard" href="${requestContext.getContextPath()}/bind-card">修改</a>
                     </span>

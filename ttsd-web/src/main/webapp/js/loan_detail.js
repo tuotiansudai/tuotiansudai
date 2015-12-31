@@ -175,7 +175,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                         location.href = '/login?redirect='+encodeURIComponent(location.href);
                         return false;
                     }
-                    var amount = $("input[name='amount']",frm).val();
+                    var amount=parseFloat(amountInputElement.autoNumeric("get"));
                     if(isNaN(parseFloat(amount))) {
                         return false;
                     }

@@ -29,6 +29,7 @@ body {
   background: nth($baseColor,5);
   color:nth($CK2,7);
   overflow-x: hidden;
+  overflow-y: auto;
 }
 input,button,select,textarea{outline:none}
 textarea{resize:none}
@@ -95,6 +96,12 @@ p {
 }
 .text-b {
   font-size: nth($fontSize,4); //16px
+}
+.text-16 {
+  font-size: 16px;
+}
+.text-18 {
+  font-size: 18px;
 }
 //@extend
 .auto-height {

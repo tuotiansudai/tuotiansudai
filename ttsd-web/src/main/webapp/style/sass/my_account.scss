@@ -619,6 +619,30 @@
          left: -5px;
          top: -6px;
       }
+      .syl {
+        width: 71px;
+        height: 71px;
+        background: url("/images/icons/img-syl.png") no-repeat;
+        position: absolute;
+         left: -5px;
+         top: -6px;
+      }
+      .wyx {
+        width: 71px;
+        height: 71px;
+        background: url("/images/icons/img-wyx.png") no-repeat;
+        position: absolute;
+         left: -5px;
+         top: -6px;
+      }
+      .jyf {
+        width: 71px;
+        height: 71px;
+        background: url("/images/icons/img-jyf.png") no-repeat;
+        position: absolute;
+         left: -5px;
+         top: -6px;
+      }
        .loan-info-frame {
         width: 690px;
          padding-bottom: 10px;
@@ -767,6 +791,7 @@
     width: 620px;
 
     padding-bottom: 15px;
+    position: relative;
     .hd {
       margin: -3px 10px 0;
       position: relative;
@@ -786,10 +811,10 @@
     }
     .chart-box {
       width: 200px;
-      margin: 20px 60px;
+      margin: 20px 50px;
       border-collapse: collapse;
       border-radius: 50%;
-      border: 1px solid #f24712;
+      border: 1px solid #ff752a;
       float: left;
       display: inline-block;
        .box {
@@ -797,7 +822,6 @@
         height: 180px;
         position: relative;
         margin: 10px;
-
          div {
           position: absolute;
           top: 0;
@@ -855,9 +879,23 @@
       }
     }
     .chart-info {
+      float:left;
+      width:315px;
       color: #a4a4a4;
       padding-top: 20px;
       line-height: 30px;
+    }
+    .product-type-text{
+      position: absolute;
+      left: 108px;
+      bottom: -5px;
+      width: 86px;
+      text-align: center;
+      border: 1px dashed #ff752a;
+      border-radius: 34px;
+      font-size: 16px;
+      color: #ff752a;
+      line-height: 26px;
     }
   }
   .account-info {
