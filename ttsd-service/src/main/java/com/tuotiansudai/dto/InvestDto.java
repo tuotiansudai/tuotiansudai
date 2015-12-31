@@ -1,16 +1,14 @@
 package com.tuotiansudai.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tuotiansudai.repository.model.Source;
-
-import javax.validation.constraints.Pattern;
+import org.apache.commons.lang3.StringUtils;
 
 public class InvestDto extends ProjectTransferDto {
 
     private Source source = Source.WEB;
 
     private String channel = null;
-    @JsonIgnore
+
     private String userCouponId ;
 
 
@@ -37,8 +35,12 @@ public class InvestDto extends ProjectTransferDto {
     public void setUserCouponId(String userCouponId) {
         this.userCouponId = userCouponId;
     }
-    @JsonIgnore
+
     public long getUserCouponIdLong(){
-        return Long.parseLong(this.getUserCouponId());
+        long returnUserCouponIdLong = 0;
+        if (StringUtils.isNotEmpty(this.getUserCouponId())) {
+            returnUserCouponIdLong = Long.parseLong(this.getUserCouponId());
+        }
+        return returnUserCouponIdLong;
     }
 }

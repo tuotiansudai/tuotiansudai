@@ -1,20 +1,18 @@
 package com.tuotiansudai.coupon.service.impl;
 
 import com.tuotiansudai.coupon.dto.CouponDto;
-import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.exception.CreateCouponException;
+import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -81,58 +79,6 @@ public class CouponServiceImpl implements CouponService {
         couponMapper.updateCoupon(couponModel);
     }
 
-    @Transactional
-    public void recordUsedCount(long id) {
-        CouponModel couponModel = couponMapper.lockByCoupon(id);
-        long usedCount = couponModel.getUsedCount();
-        couponModel.setUsedCount(usedCount + 1);
-        couponMapper.updateCoupon(couponModel);
-    }
-
-    @Override
-    @Transactional
-    public void afterReturningInvest(InvestDto investDto) {
-        if (investDto.getUserCouponId() == null) {
-            return;
-        }
-        long userCouponId = investDto.getUserCouponIdLong();
-        UserCouponDto userCouponDto = convertUserCouponDto(userCouponId);
-        if (userCouponDto == null) {
-            logger.debug(MessageFormat.format("userCouponId:{0} , is not exist", userCouponId));
-            return;
-        }
-        if (userCouponDto.isExpired()) {
-            logger.debug(MessageFormat.format("userCouponId:{0} , is expired", userCouponId));
-
-        }
-        if (userCouponDto.isUsed()) {
-            logger.debug(MessageFormat.format("userCouponId:{0} , is used", userCouponId));
-        }
-        if (userCouponDto.isValid()) {
-            UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
-            userCouponModel.setLoanId(investDto.getLoanIdLong());
-            userCouponModel.setUsedTime(new Date());
-            userCouponMapper.update(userCouponModel);
-            recordUsedCount(userCouponDto.getCouponId());
-        } else {
-            logger.debug(MessageFormat.format("userCouponId:{0} , is invalid", userCouponId));
-        }
-
-    }
-
-    private UserCouponDto convertUserCouponDto(long userCouponId) {
-        UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
-        if (userCouponModel != null) {
-            long couponId = userCouponModel.getCouponId();
-            CouponModel couponModel = couponMapper.findById(couponId);
-            UserCouponDto userCouponDto = new UserCouponDto(couponModel, userCouponModel);
-
-            return userCouponDto;
-        }
-
-        return null;
-    }
-
     @Override
     public List<CouponModel> findCoupons(int index, int pageSize) {
         return couponMapper.findCoupons((index - 1) * pageSize, pageSize);
@@ -150,5 +96,18 @@ public class CouponServiceImpl implements CouponService {
         couponModel.setActiveTime(new Date());
         couponModel.setActiveUser(loginName);
         couponMapper.updateCoupon(couponModel);
+    }
+
+    @Override
+    public CouponModel findCouponById(long couponId) {
+        return couponMapper.findById(couponId);
+    }
+
+    @Override
+    public boolean couponIsAvailable(long userCouponId, String amount) {
+        UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
+        CouponModel couponModel = findCouponById(userCouponModel.getCouponId());
+        long investAmount = AmountConverter.convertStringToCent(amount);
+        return investAmount >= couponModel.getInvestQuota();
     }
 }

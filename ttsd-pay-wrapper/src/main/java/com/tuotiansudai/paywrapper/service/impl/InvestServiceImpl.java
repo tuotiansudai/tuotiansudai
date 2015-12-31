@@ -498,7 +498,9 @@ public class InvestServiceImpl implements InvestService {
      * @param investModel
      * @param loginName
      */
-    private void investSuccess(long orderId, InvestModel investModel, String loginName) {
+    @Override
+    @Transactional
+    public void investSuccess(long orderId, InvestModel investModel, String loginName) {
         try {
             // 冻结资金
             amountTransfer.freeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);

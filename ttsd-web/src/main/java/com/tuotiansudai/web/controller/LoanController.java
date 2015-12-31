@@ -7,9 +7,6 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.web.freemarker.directive.AmountDirective;
-import com.tuotiansudai.web.freemarker.directive.PercentFractionDirective;
-import com.tuotiansudai.web.freemarker.directive.PercentIntegerDirective;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,13 +35,8 @@ public class LoanController {
         if (dto.getData() == null) {
             return new ModelAndView("/error/404");
         }
-        modelAndView.addObject("percentFraction", new PercentFractionDirective());
-        modelAndView.addObject("percentInteger", new PercentIntegerDirective());
-        modelAndView.addObject("amount", new AmountDirective());
-        modelAndView.addObject("loan", dto.getData());
-
         addCouponInfo(modelAndView, loginName, loanId);
-
+        modelAndView.addObject("loan",dto.getData());
         return modelAndView;
     }
 

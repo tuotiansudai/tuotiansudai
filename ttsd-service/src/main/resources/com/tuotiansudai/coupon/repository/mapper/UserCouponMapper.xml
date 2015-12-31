@@ -16,6 +16,8 @@
         <result column="actual_fee" property="actualFee"/>
         <result column="default_interest" property="defaultInterest"/>
         <result column="created_time" property="createdTime"/>
+        <result column="invest_id" property="investId"/>
+        <result column="status" property="status" />
     </resultMap>
 
     <resultMap id="useRecordMap" type="CouponUseRecordView">
@@ -42,16 +44,18 @@
             expected_fee = #{expectedFee},
             actual_fee = #{actualFee},
             default_interest = #{defaultInterest},
-            created_time = #{createdTime}
+            created_time = #{createdTime},
+            invest_id = #{investId},
+            status = #{status}
         where id = #{id}
     </update>
 
     <select id="findByLoginName" resultMap="userCouponResultMap" parameterType="String">
-        select * from user_coupon where login_name = #{loginName}
+        select * from user_coupon where login_name = #{loginName} and (status != 'SUCCESS' or status is null)
     </select>
 
     <select id="findById" resultMap="userCouponResultMap" parameterType="long">
-        select * from user_coupon where id = #{id}
+        select * from user_coupon where id = #{id} and (status = 'SUCCESS'or status is null)
     </select>
 
     <select id="findByLoanId" resultMap="userCouponResultMap" parameterType="long">
@@ -84,5 +88,9 @@
             and uc.login_name = #{loginName}
         ORDER BY used_time DESC
         limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findByInvestId" parameterType="map" resultMap="userCouponResultMap">
+        select * from user_coupon where invest_id = #{investId}
     </select>
 </mapper>
