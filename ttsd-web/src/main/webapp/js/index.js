@@ -7,7 +7,6 @@ require(['jquery', 'underscore', 'csrf'], function ($, _) {
             $productFrame = $('#productFrame'),
             $dlAmount = $('.dl-amount', $productFrame),
             $imgNum = $('li', $scrollNum),
-            $userCount=$('#userCount'),
             $bannerImg = $imgScroll.find('a'),
             screenWid, picWid, leftWid, adTimer = null, n = 0;
 
@@ -21,13 +20,6 @@ require(['jquery', 'underscore', 'csrf'], function ($, _) {
         picWid = $bannerImg.first().find('img').width();
 
         leftWid = (picWid - screenWid) / 2;
-
-        //Traversing the data and formatting output
-        var userCountArray=_.filter($userCount.attr('data-count')),html='';
-        for (var i=0,len=userCountArray.length;i<len; i++) {
-            html+='<i>'+userCountArray[i]+'</i>';
-        };
-        $userCount.html(html);
 
         $registerBox.css({'right': (screenWid - 1000) / 2 + 'px'});
         $scrollNum.css({'left': (screenWid - $scrollNum.width()) / 2});
@@ -73,7 +65,6 @@ require(['jquery', 'underscore', 'csrf'], function ($, _) {
                 $imgScroll.find('img').css({'margin-left': '-' + leftWid + 'px'});
                 $registerBox.css({'right': (screenWidNow - 1000) / 2 + 'px'});
             }
-            $userCount.html($userCount.attr('data-count')).css({'color':'#ff752a'});
         };
 
         $(window).resize(function () {

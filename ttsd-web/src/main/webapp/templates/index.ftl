@@ -106,63 +106,47 @@
             </h3>
             <div class="product-list">
                 <ul>
-                    <li class="syl-text">
-                        <a href="/loan-list?productType=SYL">
-                            <div class="icon-proimg">
-                                <img class="icon-off" src="${staticServer}/images/icons/syl-icon.png" alt="速盈利 快速高效">
-                            </div>
-                            <div class="product-intro">
-                                <span class="text-intro">快速高效，银行活期28倍</span>
-                            </div>
-                            <div class="product-income">
-                                <p class="income-num-text">
-                                    <span class="income-num">10</span>
-                                    <span>%</span>
-                                </p>
-                                <p class="income-text-intro">
-                                    年化收益
-                                </p>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="wyx-text">
-                        <a href="/loan-list?productType=WYX">
-                            <div class="icon-proimg">
-                                <img class="icon-off" src="${staticServer}/images/icons/wyx-icon.png" alt="稳盈绣 稳健灵活">
-                            </div>
-                            <div class="product-intro">
-                                <span class="text-intro">稳健灵活，收益高，银行定期8倍以上</span>
-                            </div>
-                            <div class="product-income">
-                                <p class="income-num-text">
-                                    <span class="income-num">12</span>
-                                    <span>%</span>
-                                </p>
-                                <p class="income-text-intro">
-                                    年化收益
-                                </p>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="jyf-text li-last">
-                        <a href="/loan-list?productType=JYF">
-                            <div class="icon-proimg">
-                                <img class="icon-off" src="${staticServer}/images/icons/jyf-icon.png" alt="久盈富 财富法宝">
-                            </div>
-                            <div class="product-intro">
-                                <span class="text-intro">财富增长法宝，银行定期9倍以上，跑过GDP</span>
-                            </div>
-                            <div class="product-income">
-                                <p class="income-num-text">
-                                    <span class="income-num">14</span>
-                                    <span>%</span>
-                                </p>
-                                <p class="income-text-intro">
-                                    年化收益
-                                </p>
-                            </div>
-                        </a>
-                    </li>
+                    <#list productTypes as productType>
+                        <#if productType.name() = 'SYL'>
+                            <#assign description = '快速高效'>
+                            <#assign description_detail = '快速投资，高效理财'>
+                        <#elseif productType.name() = 'WYX'>
+                            <#assign description = '稳健灵活'>
+                            <#assign description_detail = '稳健收益，灵活便捷'>
+                        <#elseif productType.name() = 'JYF'>
+                            <#assign description = '财富法宝'>
+                            <#assign description_detail = '财富积累，普惠法宝'>
+                        </#if>
+                        <li class="${productType.name()?lower_case}-text">
+                            <a href="/loan-list?productType=${productType.name()}">
+                                <div class="icon-proimg">
+                                    <img class="icon-off" src="${staticServer}/images/icons/${productType.name()?lower_case}-icon.png" alt="${productType.getName()} ${description}">
+                                </div>
+                                <div class="product-intro">
+                                    <span class="text-intro">${description_detail}</span>
+                                </div>
+                                <div class="product-month">
+                                    <p class="income-num-text">
+                                        <span class="income-num">${productType.getPeriods()}</span>
+                                        <span class="income-month">个月</span>
+                                    </p>
+                                    <p class="income-text-intro">
+                                        项目期限
+                                    </p>
+                                </div>
+                                <div class="product-income">
+                                    <p class="income-num-text">
+                                        <span class="income-num">${productType.getRate()?string('0')}</span>
+                                        <span>%</span>
+                                        <span class="income-month">起</span>
+                                    </p>
+                                    <p class="income-text-intro">
+                                        年化收益
+                                    </p>
+                                </div>
+                            </a>
+                        </li>
+                    </#list>
                 </ul>
             </div>
             <div class="company-up">
@@ -228,7 +212,7 @@
             </h3>
             <div class="clear-blank invest-total">
                 <span class="fl">累计投资人数: 
-                    <strong data-count="${(userCount?string('0'))!}" id="userCount"><i>${(userCount?string('0'))!}</i></strong>人
+                    <strong data-count="${userCount}" id="userCount">${userCount}</strong>人
                 </span>
             </div>
         </div>
