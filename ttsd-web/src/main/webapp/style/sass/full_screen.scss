@@ -93,7 +93,7 @@ body {
       height: 300px;
       box-sizing: border-box;
       padding: 50px 50px 10px;
-      background: rgba(255, 255, 255, 0.8);
+      background: url("/images/sign/bg-transparent.png") repeat;
       border-radius: 10px;
       .num-text {
         float: left;
@@ -1359,15 +1359,6 @@ body {
         float: left;
         margin-bottom: 30px;
       }
-    }
-  }
-  .register-ad-box {
-    background-color: #fff;
-    filter: Alpha(opacity=80);
-    position: static;
-    *zoom: 1;
-    p {
-      position: relative;
     }
   }
 }
