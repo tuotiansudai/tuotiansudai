@@ -3,6 +3,7 @@ package com.tuotiansudai.service;
 import com.tuotiansudai.dto.Granularity;
 import com.tuotiansudai.dto.RoleStage;
 import com.tuotiansudai.dto.UserStage;
+import com.tuotiansudai.repository.model.InvestViscosityDetailView;
 import com.tuotiansudai.repository.model.KeyValueModel;
 
 import java.util.Date;
@@ -19,6 +20,8 @@ public interface BusinessIntelligenceService {
     List<KeyValueModel> queryUserWithdrawTrend(Granularity granularity, Date startTime, Date endTime, String province);
 
     List<KeyValueModel> queryInvestViscosity(Date startTime, Date endTime, String province);
+
+    List<InvestViscosityDetailView> queryInvestViscosityDetail(Date startTime, Date endTime, final String province, int loanCount, int pageNo, int pageSize);
 
     List<KeyValueModel> queryUserInvestCountTrend(Date startTime, Date endTime, String province);
 

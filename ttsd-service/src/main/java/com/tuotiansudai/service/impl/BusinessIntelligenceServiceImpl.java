@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.Granularity;
 import com.tuotiansudai.dto.RoleStage;
 import com.tuotiansudai.dto.UserStage;
 import com.tuotiansudai.repository.mapper.BusinessIntelligenceMapper;
+import com.tuotiansudai.repository.model.InvestViscosityDetailView;
 import com.tuotiansudai.repository.model.KeyValueModel;
 import com.tuotiansudai.service.BusinessIntelligenceService;
 import com.tuotiansudai.service.InvestService;
@@ -39,7 +40,7 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     }
 
     @Override
-    public List<KeyValueModel> queryUserRegisterTrend(Granularity granularity, Date startTime, Date endTime, String province,UserStage userStage,RoleStage roleStage,String channel) {
+    public List<KeyValueModel> queryUserRegisterTrend(Granularity granularity, Date startTime, Date endTime, String province, UserStage userStage, RoleStage roleStage, String channel) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
         return businessIntelligenceMapper.queryUserRegisterTrend(queryStartTime, queryEndTime, granularity, province, userStage, roleStage, channel);
@@ -65,11 +66,11 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
         List<KeyValueModel> keyValueModelList = businessIntelligenceMapper.queryInvestViscosity(queryStartTime, queryEndTime, province);
         final KeyValueModel keyValueModel = new KeyValueModel();
-        List<KeyValueModel> top12List = ListUtils.select(keyValueModelList, new Predicate<KeyValueModel>() {
+        List<KeyValueModel> top4List = ListUtils.select(keyValueModelList, new Predicate<KeyValueModel>() {
             @Override
             public boolean evaluate(KeyValueModel object) {
                 int loan_count = Integer.valueOf(object.getName());
-                if(loan_count<=12) {
+                if (loan_count <= 4) {
                     return true;
                 } else {
                     keyValueModel.setGroup(object.getGroup());
@@ -83,11 +84,18 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
                 }
             }
         });
-        if(keyValueModel.getGroup() != null) {
-            keyValueModel.setName("13+");
-            top12List.add(keyValueModel);
+        if (keyValueModel.getGroup() != null) {
+            keyValueModel.setName("5+");
+            top4List.add(keyValueModel);
         }
-        return top12List;
+        return top4List;
+    }
+
+    @Override
+    public List<InvestViscosityDetailView> queryInvestViscosityDetail(Date startTime, Date endTime, final String province, int loanCount, int pageNo, int pageSize) {
+        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+        return businessIntelligenceMapper.queryInvestViscosityDetail(startTime, endTime, province, loanCount, (pageNo - 1) * pageSize, pageSize);
     }
 
     @Override
@@ -105,7 +113,7 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     }
 
     @Override
-    public List<KeyValueModel> queryUserAgeTrend(Date startTime, Date endTime, String province, String isInvestor){
+    public List<KeyValueModel> queryUserAgeTrend(Date startTime, Date endTime, String province, String isInvestor) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
         return businessIntelligenceMapper.queryUserAgeTrend(queryStartTime, queryEndTime, province, isInvestor);
