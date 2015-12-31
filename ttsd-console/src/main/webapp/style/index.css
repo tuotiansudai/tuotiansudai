@@ -196,7 +196,9 @@ td.td {
 .bootstrap-select button.dropdown-toggle {
     width: 170px;
 }
-
+.bootstrap-select.b-width button.dropdown-toggle {
+    width: 345px;
+}
 /*.bootstrap-select .btn { padding:3px 10px; font-size: 13px;}*/
 .btnSearch {
     padding: 5px 20px;

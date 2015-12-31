@@ -28,6 +28,13 @@ public enum LoanType {
         return name;
     }
 
+    public String getInterestPointName(){
+        return this.name.substring(name.indexOf("，") + 1);
+    }
+    public String getRepayType(){
+        return this.name.substring(0,name.indexOf("，"));
+    }
+
     public InterestInitiateType getInterestInitiateType() {
         return interestInitiateType;
     }

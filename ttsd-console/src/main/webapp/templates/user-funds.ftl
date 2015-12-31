@@ -63,9 +63,9 @@
                 <th>手机号</th>
                 <th>费用类型</th>
                 <th>操作类型</th>
-                <th>金额</th>
-                <th>余额</th>
-                <th>冻结金额</th>
+                <th>金额(元)</th>
+                <th>余额(元)</th>
+                <th>冻结金额(元)</th>
             </tr>
             </thead>
             <tbody>
