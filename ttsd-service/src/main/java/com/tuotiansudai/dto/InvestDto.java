@@ -1,6 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.Source;
+import org.apache.commons.lang3.StringUtils;
 
 public class InvestDto extends ProjectTransferDto {
 
@@ -36,6 +37,10 @@ public class InvestDto extends ProjectTransferDto {
     }
 
     public long getUserCouponIdLong(){
-        return Long.parseLong(this.getUserCouponId());
+        long returnUserCouponIdLong = 0;
+        if (StringUtils.isNotEmpty(this.getUserCouponId())) {
+            returnUserCouponIdLong = Long.parseLong(this.getUserCouponId());
+        }
+        return returnUserCouponIdLong;
     }
 }
