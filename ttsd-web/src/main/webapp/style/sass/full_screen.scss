@@ -161,7 +161,6 @@ body {
       }
       .notice-text {
         float: left;
-        width: 825px;
         padding-left: 40px;
         ul{
           float:left;
@@ -218,15 +217,19 @@ body {
         font-size: 14px;
         color: #0e050a;
         line-height: 1;
-        &:hover .icon-off {
-          display: none;
-        }
-        &:hover .icon-on {
-          display: block;
-        }
         span {
           float: left;
           width: 100%;
+          &.icon-hover{
+            width: 138px;
+            margin: 0 96px;
+            &:hover .icon-off {
+              display: none;
+            }
+            &:hover .icon-on {
+              display: block;
+            }
+          }
           b {
             font-size: 20px;
             display: block;
@@ -304,7 +307,7 @@ body {
           float: left;
           li {
             float: left;
-            width: 100%;
+            width: 758px;
             margin-bottom: 20px;
             border: 1px solid #e6e6e6;
             border-radius: 10px;
@@ -345,7 +348,7 @@ body {
               .product-income {
                 float: left;
                 width: 100px;
-                height: 85px;
+                height: 70px;
                 padding-top: 25px;
                 p {
                   margin-bottom: 0;
