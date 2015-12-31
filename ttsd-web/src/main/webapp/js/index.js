@@ -7,7 +7,6 @@ require(['jquery', 'underscore', 'csrf'], function ($, _) {
             $productFrame = $('#productFrame'),
             $dlAmount = $('.dl-amount', $productFrame),
             $imgNum = $('li', $scrollNum),
-            $userCount=$('#userCount'),
             $bannerImg = $imgScroll.find('a'),
             screenWid, picWid, leftWid, adTimer = null, n = 0;
 
@@ -21,19 +20,6 @@ require(['jquery', 'underscore', 'csrf'], function ($, _) {
         picWid = $bannerImg.first().find('img').width();
 
         leftWid = (picWid - screenWid) / 2;
-
-        function FormatMoney(money) {
-            if (/[^0-9\.]/.test(money)) return '0';
-            money = money.replace(/^(\d*)$/, "$1.");
-            money = money.replace(".", ",");
-            var re = /(\d)(\d{3},)/;
-            while (re.test(money)) {
-                money = money.replace(re, "$1,$2");
-            }
-            money = money.replace(/,(\d\d)$/, ".$1");
-            return $userCount.html(money.replace(/,$/gi,'')).css({'color':'#ff752a'});
-        };
-        FormatMoney($userCount.attr('data-count'));
 
         $registerBox.css({'right': (screenWid - 1000) / 2 + 'px'});
         $scrollNum.css({'left': (screenWid - $scrollNum.width()) / 2});
