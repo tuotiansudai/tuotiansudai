@@ -46,7 +46,8 @@
     <div class="section">
         <div class="page-width clearfix">
         <div class="mode-operation">
-            <p class="mode-title">我们的<span>运作模式</span></br>The mode of operation </p>
+            <p class="mode-title">我们的<span>运作模式</span></p>
+            <p class="title-word">The mode of operation </p>
             <p><img src="/images/sign/model-type.png" alt=""></p>
         </div>
             <div class="down clearfix"><b class="text-gray">试试鼠标滚动</b><img src="/images/sign/assure/down-gray.png" class="down-icon" alt=""></div>

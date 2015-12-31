@@ -965,12 +965,9 @@ body {
     }
   }
   .mode-operation{
-    width:1000px;
-    position: absolute;
-    top:50%;
-    left:50%;
-    margin-top:-391px;
-    margin-left:-500px;
+    float:left;
+    width:100%;
+    margin-top:75px;
     p{
       float:left;
       width:100%;
@@ -978,9 +975,13 @@ body {
       text-align:center;
       &.mode-title{
         font-size:30px;
+        margin-bottom:0;
         span{
           color:#449be2;
         }
+      }
+      &.title-word{
+        font-size:px;
       }
     }
   }
