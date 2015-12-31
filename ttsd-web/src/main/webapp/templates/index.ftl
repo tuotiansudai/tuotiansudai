@@ -71,8 +71,8 @@
             <dd>
                 <a href="/about/assurance?aid=2" target="_blank">
                     <span class="icon-hover">
-                        <img class="icon-off" src="${staticServer}/images/icons/icon-off-2.png" alt="三方监管 放心理财">
-                        <img class="icon-on" src="${staticServer}/images/icons/icon-on-2.png" alt="三方监管 放心理财">
+                        <img class="icon-off" src="${staticServer}/images/icons/icon-off-2.png" alt="三方托管 放心理财">
+                        <img class="icon-on" src="${staticServer}/images/icons/icon-on-2.png" alt="三方托管 放心理财">
                     </span>
                     <span class="clearfix">
                         <b class="clearfix">三方托管 放心理财</b>
