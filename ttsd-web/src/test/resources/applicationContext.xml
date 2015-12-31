@@ -40,18 +40,6 @@
         <property name="statementsCacheSize" value="100"/>
     </bean>
 
-    <bean id="jobBoneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
-        <property name="username" value="${common.jdbc.username}"/>
-        <property name="password" value="${common.jdbc.password}"/>
-        <property name="minConnectionsPerPartition" value="1"/>
-        <property name="maxConnectionsPerPartition" value="1"/>
-        <property name="acquireIncrement" value="1"/>
-        <property name="idleMaxAgeInSeconds" value="600"/>
-        <property name="statementsCacheSize" value="100"/>
-    </bean>
-
     <!-- transaction manager, use JtaTransactionManager for global tx -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="boneCPDataSource"/>
@@ -84,6 +72,19 @@
     <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
 
     <!-- job -->
+    <bean id="jobBoneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="username" value="${common.jdbc.username}"/>
+        <property name="password" value="${common.jdbc.password}"/>
+        <property name="partitionCount" value="4"/>
+        <property name="minConnectionsPerPartition" value="1"/>
+        <property name="maxConnectionsPerPartition" value="2"/>
+        <property name="acquireIncrement" value="1"/>
+        <property name="idleMaxAgeInSeconds" value="600"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+
     <bean id="jobSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="jobBoneCPDataSource"/>
         <property name="typeAliasesPackage" value="com.tuotiansudai.web.repository.job.model"/>

@@ -2,6 +2,7 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.LoanType;
+import com.tuotiansudai.repository.model.ProductType;
 
 import java.util.Date;
 
@@ -28,6 +29,8 @@ public class LoanListDto{
     private LoanStatus status;
 
     private Date createdTime;
+
+    private ProductType productType;
 
     public long getId() {
         return id;
@@ -115,5 +118,13 @@ public class LoanListDto{
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public ProductType getProductType() {
+        return productType;
+    }
+
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
     }
 }

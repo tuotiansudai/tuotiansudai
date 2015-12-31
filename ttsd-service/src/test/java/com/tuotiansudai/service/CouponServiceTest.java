@@ -38,6 +38,7 @@ public class CouponServiceTest {
 
     @Autowired
     private CouponService couponService;
+
     @Autowired
     private UserMapper userMapper;
     @Autowired
