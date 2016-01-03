@@ -37,6 +37,7 @@ public class HomeController {
     private RedisWrapperClient redisWrapperClient;
 
     private final static String KEYTEMPLATE = "web:{0}:showCoupon";
+
     @Autowired
     private AnnounceService announceService;
 
