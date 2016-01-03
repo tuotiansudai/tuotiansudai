@@ -175,7 +175,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                         location.href = '/login?redirect='+encodeURIComponent(location.href);
                         return false;
                     }
-                    var amount = $("input[name='amount']",frm).val();
+                    var amount=parseFloat(amountInputElement.autoNumeric("get"));
                     if(isNaN(parseFloat(amount))) {
                         return false;
                     }
@@ -188,6 +188,32 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     return true;
                 }
                 return true;
+            });
+
+            $('#use-experience-ticket').change(function(event) {
+                var $this=$(this),
+                    userCouponId=this.value,
+                    boolSelect=$this.prop('checked'),
+                    amount = parseFloat(amountInputElement.autoNumeric("get"));
+
+                if(boolSelect) {
+                    $.ajax({
+                        url: '/coupon-is-available/coupon/' + userCouponId + '/amount/' + amount,
+                        type: 'get',
+                        dataType: 'json',
+                        contentType: 'application/json; charset=UTF-8'
+                    }).done(function(dataBool){
+                        if(!dataBool) {
+                            $this.prop('checked',false);
+                            layer.tips('<i class="fa fa-times-circle"></i>投资金额不少于'+$this.attr('data-amount')+'才可使用此劵', '.experience-ticket', {
+                                tips: [1,'#ff7200'] ,
+                                time:0
+                            });
+                            $('.experience-revenue').hide();
+                        }
+                    });
+
+                }
             });
         }
 

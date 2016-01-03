@@ -3,12 +3,12 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.service.UserCouponService;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.HomeLoanDto;
+import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.web.freemarker.directive.AmountDirective;
-import com.tuotiansudai.web.freemarker.directive.PercentFractionDirective;
-import com.tuotiansudai.web.freemarker.directive.PercentIntegerDirective;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -37,16 +37,17 @@ public class HomeController {
     private RedisWrapperClient redisWrapperClient;
 
     private final static String KEYTEMPLATE = "web:{0}:showCoupon";
+    @Autowired
+    private AnnounceService announceService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("/index", "responsive", true);
         List<HomeLoanDto> loans = homeService.getLoans();
+        BaseDto<BasePaginationDataDto> baseDto = announceService.getAnnouncementList(1, 3);
         int userCount = userService.findUserCount();
         modelAndView.addObject("loans", loans);
-        modelAndView.addObject("percentFraction",new PercentFractionDirective());
-        modelAndView.addObject("percentInteger",new PercentIntegerDirective());
-        modelAndView.addObject("amount",new AmountDirective());
+        modelAndView.addObject("announces", baseDto.getData().getRecords());
         modelAndView.addObject("userCount",userCount);
         boolean showCoupon = false;
         if (StringUtils.isNotEmpty(LoginUserInfo.getLoginName())
@@ -62,5 +63,4 @@ public class HomeController {
         modelAndView.addObject("showCoupon",showCoupon);
         return modelAndView;
     }
-
 }

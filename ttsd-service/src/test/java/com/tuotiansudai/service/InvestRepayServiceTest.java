@@ -11,6 +11,7 @@ import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -154,7 +155,7 @@ public class InvestRepayServiceTest {
 
     @Test
     public void investRepayAmount() {
-        Date startTime = DateUtil.getFirstDayOfMonth(new Date());
+        Date startTime = new DateTime().dayOfMonth().withMinimumValue().toDate();
         Date endTime = DateUtils.addMonths(startTime, 1);
         long notSuccessInvestRepay = investRepayService.findByLoginNameAndTimeAndNotSuccessInvestRepay("testuser123",startTime,endTime);
         assert notSuccessInvestRepay == 400;
@@ -165,7 +166,7 @@ public class InvestRepayServiceTest {
 
     @Test
     public void investRepayList() {
-        Date startTime = DateUtil.getFirstDayOfMonth(new Date());
+        Date startTime = new DateTime().dayOfMonth().withMinimumValue().toDate();
         Date endTime = DateUtils.addMonths(startTime, 1);
         List<InvestRepayModel> investRepayModels = investRepayService.findByLoginNameAndTimeNotSuccessInvestRepayList("testuser123", startTime, endTime, 0, 6);
         assert investRepayModels.size() == 2;

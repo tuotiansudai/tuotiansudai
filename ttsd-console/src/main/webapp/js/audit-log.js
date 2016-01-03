@@ -8,15 +8,15 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrapDatetimepicker', 'bootstrap', 
     var $startTimeInput = $('input[name="startTime"]');
     var $endTimeInput = $('input[name="endTime"]');
 
-    $startTime.datetimepicker({format: 'YYYY-MM-DD', maxDate: 'now', locale: 'zh-cn'});
-    $endTime.datetimepicker({format: 'YYYY-MM-DD', maxDate: 'now', locale: 'zh-cn'});
+    $startTime.datetimepicker({format: 'YYYY-MM-DD', locale: 'zh-cn'});
+    $endTime.datetimepicker({format: 'YYYY-MM-DD', locale: 'zh-cn'});
 
-    $startTime.on("dp.change", function (e) {
-        $endTime.data("DateTimePicker").minDate(e.date);
-    });
-    $endTime.on("dp.change", function (e) {
-        $startTime.data("DateTimePicker").maxDate(e.date);
-    });
+    //$startTime.on("dp.change", function (e) {
+    //    $endTime.data("DateTimePicker").minDate(e.date);
+    //});
+    //$endTime.on("dp.change", function (e) {
+    //    $startTime.data("DateTimePicker").maxDate(e.date);
+    //});
 
     $loginName.autocomplete({
         minLength: 3,

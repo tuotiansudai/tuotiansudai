@@ -28,7 +28,7 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
 
     @Override
     protected Map<Object, Object> createInstance() {
-        Map<Object, Object> map = Maps.newHashMap();
+        Map<Object, Object> map = super.createInstance();
 
         map.put("staticServer", Strings.isNullOrEmpty(staticServer) ? "" : staticServer);
 

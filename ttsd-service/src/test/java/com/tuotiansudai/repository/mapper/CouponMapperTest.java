@@ -54,7 +54,7 @@ public class CouponMapperTest {
         CouponModel couponModel = new CouponModel();
         couponModel.setName("优惠券");
         couponModel.setAmount(1000l);
-        couponModel.setActiveUser("couponTest");
+        couponModel.setActivatedBy("couponTest");
         couponModel.setActive(false);
         couponModel.setCreatedTime(new Date());
         couponModel.setEndTime(new Date());

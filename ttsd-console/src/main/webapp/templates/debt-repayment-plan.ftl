@@ -32,7 +32,7 @@
             <thead>
             <tr>
                 <th>时间</th>
-                <th>还款金额</th>
+                <th>还款金额(元)</th>
             </tr>
             </thead>
             <tbody>

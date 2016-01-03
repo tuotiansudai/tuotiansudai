@@ -7,7 +7,6 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.exception.ReferrerRelationException;
@@ -38,6 +37,7 @@ public class CouponServiceTest {
 
     @Autowired
     private CouponService couponService;
+
     @Autowired
     private UserMapper userMapper;
     @Autowired
@@ -68,7 +68,6 @@ public class CouponServiceTest {
         DateTime dateTime = new DateTime().plusDays(1);
         couponDto.setStartTime(dateTime.toDate());
         couponDto.setEndTime(dateTime.toDate());
-
         couponService.createCoupon("couponTest", couponDto);
 
     }
@@ -119,82 +118,6 @@ public class CouponServiceTest {
         assertEquals(1, couponModel2.getIssuedCount());
 
     }
-
-    @Test
-    public void shouldAfterReturningInvestIsSuccess() {
-        UserModel userModel = fakeUserModel();
-        userMapper.create(userModel);
-
-        CouponDto couponDto = fakeCouponDto();
-        DateTime startDateTime = new DateTime().plusDays(-1);
-        DateTime endDateTime = new DateTime().plusDays(1);
-        couponDto.setStartTime(startDateTime.toDate());
-        couponDto.setEndTime(endDateTime.toDate());
-        CouponModel couponModel = new CouponModel(couponDto);
-        couponModel.setCreatedBy("couponTest");
-        couponModel.setActive(true);
-        couponMapper.create(couponModel);
-
-        UserCouponModel userCouponModel = new UserCouponModel();
-
-        userCouponModel.setLoginName(userModel.getLoginName());
-        userCouponModel.setCouponId(couponModel.getId());
-        userCouponModel.setCreatedTime(new Date());
-        userCouponMapper.create(userCouponModel);
-
-        LoanModel loanModel = fakeLoanModel(userModel.getLoginName());
-        loanMapper.create(loanModel);
-
-        InvestDto investDto = new InvestDto();
-        investDto.setLoanId("" +loanModel.getId());
-        investDto.setLoginName(userModel.getLoginName());
-        investDto.setUserCouponId("" + userCouponModel.getId());
-        couponService.afterReturningInvest(investDto);
-
-        CouponModel couponModel1 = couponMapper.findById(couponModel.getId());
-
-        assertEquals(1, couponModel1.getUsedCount());
-    }
-
-    @Test
-    public void shouldAfterReturningInvestIsExpired() {
-        UserModel userModel = fakeUserModel();
-        userMapper.create(userModel);
-
-        CouponDto couponDto = fakeCouponDto();
-        DateTime startDateTime = new DateTime().plusDays(-1);
-        DateTime endDateTime = new DateTime().plusDays(-1);
-        couponDto.setStartTime(startDateTime.toDate());
-        couponDto.setEndTime(endDateTime.toDate());
-        CouponModel couponModel = new CouponModel(couponDto);
-        couponModel.setCreatedBy("couponTest");
-        couponModel.setActive(true);
-        couponMapper.create(couponModel);
-        LoanModel loanModel = fakeLoanModel(userModel.getLoginName());
-        loanMapper.create(loanModel);
-
-        UserCouponModel userCouponModel = new UserCouponModel();
-
-        userCouponModel.setLoginName(userModel.getLoginName());
-        userCouponModel.setCouponId(couponModel.getId());
-        userCouponModel.setCreatedTime(new Date());
-
-        userCouponMapper.create(userCouponModel);
-
-
-
-        InvestDto investDto = new InvestDto();
-        investDto.setLoanId("" + loanModel.getId());
-        investDto.setLoginName(userModel.getLoginName());
-        investDto.setUserCouponId("" + userCouponModel.getId());
-        couponService.afterReturningInvest(investDto);
-
-        CouponModel couponModel1 = couponMapper.findById(couponModel.getId());
-
-        assertEquals(0,couponModel1.getUsedCount());
-
-    }
-
 
     @Test
     public void shouldRegisterUserIsSuccess() throws ReferrerRelationException {
@@ -254,7 +177,8 @@ public class CouponServiceTest {
         List<ProductType> productTypes = Lists.newArrayList();
         productTypes.add(ProductType.JYF);
         couponDto.setProductType(productTypes);
-        couponDto.setInvestQuota("1000");
+        couponDto.setInvestQuota("1000.00");
+
         return couponDto;
     }
 
