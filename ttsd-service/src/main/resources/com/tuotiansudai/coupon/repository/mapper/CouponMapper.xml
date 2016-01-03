@@ -63,7 +63,7 @@
               user_coupon t
             GROUP BY t.coupon_id) temp
             ON c.id = temp.coupon_id
-        ORDER BY create_time DESC
+        ORDER BY created_time DESC
         LIMIT #{index},#{pageSize}
     </select>
 
@@ -72,8 +72,8 @@
     </select>
 
     <update id="updateCoupon" parameterType="CouponModel">
-        update coupon set used_count = #{usedCount},issued_count = #{issuedCount},active_time = #{activeTime},active = #{active},
-                      active_user = #{activeUser},invest_quota = #{investQuota} where id = #{id}
+        update coupon set used_count = #{usedCount},issued_count = #{issuedCount},activated_time = #{activatedTime},active = #{active},
+                      activated_by = #{activatedBy},invest_quota = #{investQuota} where id = #{id}
     </update>
 
 </mapper>

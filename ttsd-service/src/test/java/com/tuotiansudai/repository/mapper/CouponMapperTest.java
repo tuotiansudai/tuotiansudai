@@ -65,6 +65,7 @@ public class CouponMapperTest {
         couponModel.setInvestQuota(10000l);
         couponModel.setCouponType(CouponType.INVEST_COUPON.name());
         couponModel.setProductType(ProductType.JYF.name());
+
         return couponModel;
     }
     private UserModel fakeUserModel() {
