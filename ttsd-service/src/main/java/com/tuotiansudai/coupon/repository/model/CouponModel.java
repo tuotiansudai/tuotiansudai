@@ -31,9 +31,9 @@ public class CouponModel implements Serializable {
 
     private String createdBy;
 
-    private String activeUser;
+    private String activatedBy;
 
-    private Date activeTime;
+    private Date activatedTime;
 
     private long issuedCount;
 
@@ -127,20 +127,20 @@ public class CouponModel implements Serializable {
         this.createdBy = createdBy;
     }
 
-    public String getActiveUser() {
-        return activeUser;
+    public String getActivatedBy() {
+        return activatedBy;
     }
 
-    public void setActiveUser(String activeUser) {
-        this.activeUser = activeUser;
+    public void setActivatedBy(String activatedBy) {
+        this.activatedBy = activatedBy;
     }
 
-    public Date getActiveTime() {
-        return activeTime;
+    public Date getActivatedTime() {
+        return activatedTime;
     }
 
-    public void setActiveTime(Date activeTime) {
-        this.activeTime = activeTime;
+    public void setActivatedTime(Date activatedTime) {
+        this.activatedTime = activatedTime;
     }
 
     public long getIssuedCount() {

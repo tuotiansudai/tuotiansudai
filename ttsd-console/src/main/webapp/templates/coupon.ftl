@@ -17,7 +17,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label  class="col-sm-2 control-label">投资体验券金额(元): </label>
+			<label  class="col-sm-2 control-label">体验券金额(元): </label>
 			<div class="col-sm-4">
 				<input type="text" class="form-control coupon-number" name="amount" placeholder="" <#if coupon??>value="${coupon.amount!}"</#if> datatype="*" errormsg="投资体验券金额不能为空">
 			</div>
