@@ -65,7 +65,7 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
 
         var rep_point2 = /^[0-9]+\.[0-9]*$/;
 
-        $('.give-number').blur(function () {
+        $('.give-number,.coupon-deadline').blur(function () {
             var _this = $(this),
                 text = _this.val(),
                 num = text.replace(rep, "$1");
@@ -132,19 +132,49 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
 
         $('.couponType').change(function(){
             var couponType = this.value;
+            iniForm();
             if(couponType == "NEWBIE_COUPON"){
                 $('.newbie-coupon').show();
                 $('.invest-coupon').hide();
-                $('.give-number').removeClass("invest-coupon-total_count");
+                $('.userGroup').addClass("invest-coupon-total_count");
+                $('.give-number').removeAttr("invest-coupon-total_count");
+                $('.give-number').removeAttr("readonly");
             }else{
                 $('.give-number').addClass("invest-coupon-total_count");
+                $('.give-number').attr("readonly",true);
+                $('.userGroup').removeAttr("invest-coupon-total_count");
                 $('.newbie-coupon').hide();
                 $('.invest-coupon').show();
             }
         });
 
+        function iniForm(){
+            $errorDom.html('');
+            $('.coupon-number').val('');
+            $('.coupon-deadline').val('');
+            $('.give-number').val('');
+            $('.coupon-start').val('');
+            $('.coupon-end').val('');
+            $('.invest-quota').val('');
+            $('.smsAlert').eq(0).prop('checked',true)
+            $('.productType').prop('checked',false).eq(0).prop('checked',true)
+            $selectDom.filter('.userGroup').selectpicker('val','INVESTED_USER');
+            var couponType = $('.couponType').val();
+            if(couponType == "INVEST_COUPON"){
+                $selectDom.filter('.userGroup').trigger('change');
+            }
+
+
+        }
+
         $('.userGroup').change(function(){
             var userGroup = this.value;
+            var couponType = $('.couponType').val();
+            if(couponType == "INVEST_COUPON"){
+                $.get('/activity-manage/get/'+userGroup,function(data){
+                    $('.give-number').val(data);
+                })
+            }
 
         });
 

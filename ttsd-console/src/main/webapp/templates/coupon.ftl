@@ -30,7 +30,7 @@
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">发放对象:</label>
-            <div class="col-sm-4">
+            <div class="col-sm-4 coupon-hide invest-coupon">
 
                 <select class="selectpicker jq-b-type userGroup" name="userGroup">
 					<#list userGroups as userGroup>
@@ -39,11 +39,14 @@
                 </select>
 
             </div>
+            <div class="col-sm-4 newbie-coupon">
+                <input type="text" class="form-control userGroup invest-coupon-total_count" name="userGroup" value="新注册用户"  readonly="true">
+            </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">预计发放数量(张): </label>
             <div class="col-sm-4">
-                <input type="text" value="1" class="form-control give-number" name="totalCount" placeholder="" <#if coupon??>value="${coupon.totalCount!}"</#if>  datatype="n" errormsg="发放数量需要填写数字" >
+                <input type="text" class="form-control give-number" name="totalCount" placeholder="" <#if coupon??>value="${coupon.totalCount!}"</#if>  datatype="n" errormsg="发放数量需要填写数字" >
             </div>
         </div>
 		<div class="form-group newbie-coupon">

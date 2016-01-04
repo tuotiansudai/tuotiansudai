@@ -158,6 +158,8 @@ public interface InvestMapper {
 
     long countAutoInvest(@Param(value = "loanId") Long loanId, @Param(value = "loginName") String loginName);
 
+    List<String> findInvestorLoginNames();
+
     long findInvestorCount();
 
     long findCertificationNoInvestCount();

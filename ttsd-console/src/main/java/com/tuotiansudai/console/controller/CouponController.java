@@ -70,7 +70,8 @@ public class CouponController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/get/{userGroup}",method = RequestMethod.POST)
+    @RequestMapping(value = "/get/{userGroup}",method = RequestMethod.GET)
+    @ResponseBody
     public long findEstimatedCount(@PathVariable UserGroup userGroup){
         return couponService.findEstimatedCount(userGroup);
     }
