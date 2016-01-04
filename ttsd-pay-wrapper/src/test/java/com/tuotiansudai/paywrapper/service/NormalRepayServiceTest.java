@@ -1206,7 +1206,6 @@ public class NormalRepayServiceTest {
 
     private CouponModel getFakeCoupon(long amount, String loginName) {
         CouponModel couponModel = new CouponModel();
-        couponModel.setName("couponName");
         couponModel.setAmount(amount);
         couponModel.setTotalCount(1);
         couponModel.setActive(true);

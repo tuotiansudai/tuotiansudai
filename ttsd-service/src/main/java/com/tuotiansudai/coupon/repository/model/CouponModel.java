@@ -14,8 +14,6 @@ public class CouponModel implements Serializable {
 
     private long id;
 
-    private String name;
-
     private long amount;
 
     private Date startTime;
@@ -64,14 +62,6 @@ public class CouponModel implements Serializable {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public long getAmount() {
@@ -247,7 +237,6 @@ public class CouponModel implements Serializable {
     }
 
     public CouponModel(CouponDto couponDto){
-        this.name = couponDto.getCouponType().getDesc();
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime();
         this.endTime = couponDto.getEndTime();
