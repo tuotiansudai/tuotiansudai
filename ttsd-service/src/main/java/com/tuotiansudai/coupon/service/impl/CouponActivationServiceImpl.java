@@ -34,7 +34,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Transactional
     @Override
-    public void active(String operator, long couponId) {
+    public void active(String loginNameLoginName, long couponId) {
         CouponModel couponModel = couponMapper.findById(couponId);
         if (couponModel.isActive()) {
             return;
@@ -53,7 +53,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         }
 
         couponModel.setActive(true);
-        couponModel.setActivatedBy(operator);
+        couponModel.setActivatedBy(loginNameLoginName);
         couponModel.setActivatedTime(new Date());
         couponMapper.updateCoupon(couponModel);
     }

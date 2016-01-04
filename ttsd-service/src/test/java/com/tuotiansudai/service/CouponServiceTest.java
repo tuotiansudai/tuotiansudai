@@ -112,7 +112,7 @@ public class CouponServiceTest {
         couponModel.setActive(true);
         couponMapper.create(couponModel);
 
-        couponService.afterReturningUserRegistered(userModel.getLoginName());
+        couponService.assignNewbieCoupon(userModel.getLoginName());
         CouponModel couponModel2 = couponMapper.findById(couponModel.getId());
 
         assertEquals(1, couponModel2.getIssuedCount());

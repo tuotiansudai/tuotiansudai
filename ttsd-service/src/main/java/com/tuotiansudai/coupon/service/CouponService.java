@@ -10,15 +10,9 @@ public interface CouponService {
 
     void createCoupon(String loginName,CouponDto couponDto) throws CreateCouponException;
 
-    void afterReturningUserRegistered(String loginName);
+    void assignNewbieCoupon(String loginName);
 
     List<CouponModel> findCoupons(int index, int pageSize);
 
     int findCouponsCount();
-
-    void updateCoupon(String loginName, long couponId, boolean active);
-
-    CouponModel findCouponById (long couponId);
-
-    boolean couponIsAvailable(long userCouponId, String amount);
 }

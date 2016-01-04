@@ -8,11 +8,11 @@ public class UserCouponModel {
 
     private long id;
 
-    private String loginName;
-
     private long couponId;
 
-    private long loanId;
+    private String loginName;
+
+    private Long loanId;
 
     private Long investId;
 
@@ -65,11 +65,11 @@ public class UserCouponModel {
         this.couponId = couponId;
     }
 
-    public long getLoanId() {
+    public Long getLoanId() {
         return loanId;
     }
 
-    public void setLoanId(long loanId) {
+    public void setLoanId(Long loanId) {
         this.loanId = loanId;
     }
 

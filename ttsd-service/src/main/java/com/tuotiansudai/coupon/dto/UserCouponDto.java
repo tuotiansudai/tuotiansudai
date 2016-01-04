@@ -11,11 +11,11 @@ import java.util.Date;
 public class UserCouponDto implements Serializable {
     private long id;
     private long couponId;
+    private Long loanId;
     private String name;
     private long amount;
     private Date startTime;
     private Date endTime;
-    private long loanId;
     private boolean used;
     private boolean expired;
     private boolean unused;
@@ -41,7 +41,7 @@ public class UserCouponDto implements Serializable {
 
     public UserCouponDto(CouponModel couponModel, UserCouponModel userCouponModel, long investAmount) {
         this(couponModel, userCouponModel);
-        this.usable = this.unused && investAmount > couponModel.getInvestLowerLimit();
+        this.usable = this.unused && investAmount >= couponModel.getInvestLowerLimit();
     }
 
     public long getId() {
@@ -92,11 +92,11 @@ public class UserCouponDto implements Serializable {
         this.endTime = endTime;
     }
 
-    public long getLoanId() {
+    public Long getLoanId() {
         return loanId;
     }
 
-    public void setLoanId(long loanId) {
+    public void setLoanId(Long loanId) {
         this.loanId = loanId;
     }
 

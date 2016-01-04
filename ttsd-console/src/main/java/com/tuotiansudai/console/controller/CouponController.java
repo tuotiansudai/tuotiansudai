@@ -59,6 +59,7 @@ public class CouponController {
     @ResponseBody
     public BaseDto<BaseDataDto> activeCoupon(@PathVariable long couponId){
         BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(true);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         baseDto.setData(dataDto);
 
@@ -83,5 +84,4 @@ public class CouponController {
         modelAndView.addObject("hasNextPage", hasNextPage);
         return modelAndView;
     }
-
 }

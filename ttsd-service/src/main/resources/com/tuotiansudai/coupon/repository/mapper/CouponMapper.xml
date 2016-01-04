@@ -34,12 +34,12 @@
         select * from coupon where id = #{id}
     </select>
 
-    <select id="findValidCoupon" resultMap="couponResultMap" >
-        select * from coupon where active = true and issued_count &lt; total_count and now() between start_time and end_time;
+    <select id="findNewbieCoupon" resultMap="couponResultMap">
+        select * from coupon where coupon_type = 'NEWBIE_COUPON';
     </select>
 
 
-    <select useCache="false" id="lockByCoupon" parameterType="java.lang.Long" resultMap="couponResultMap">
+    <select useCache="false" id="lockById" parameterType="java.lang.Long" resultMap="couponResultMap">
         select * from coupon where id = #{id} for update
     </select>
 

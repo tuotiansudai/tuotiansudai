@@ -18,12 +18,11 @@ public interface UserCouponMapper {
 
     UserCouponModel findById(@Param("id") long id);
 
-    List<UserCouponModel> findByLoanId(@Param("loanId") long loanId);
+    List<UserCouponModel> findByLoanId(@Param("loanId") Long loanId);
 
     int findUseRecordsCount(@Param(value = "loginName") String loginName);
 
     List<CouponUseRecordView> findUseRecords(@Param(value = "loginName") String loginName, @Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
 
-    UserCouponModel findByInvestId(@Param("investId") long investId);
-
+    UserCouponModel findByInvestId(@Param("investId") Long investId);
 }
