@@ -65,7 +65,6 @@ public class UserCouponMapperTest {
 
     private CouponModel fakeCouponModel() {
         CouponModel couponModel = new CouponModel();
-        couponModel.setName("优惠券");
         couponModel.setAmount(1000l);
         couponModel.setActivatedBy("couponTest");
         couponModel.setActive(false);
