@@ -7,6 +7,7 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.exception.CreateCouponException;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class CouponServiceImpl implements CouponService {
 
     @Autowired
     private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private LoanMapper loanMapper;
 
     @Override
     @Transactional
@@ -81,7 +85,11 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public List<CouponModel> findCoupons(int index, int pageSize) {
-        return couponMapper.findCoupons((index - 1) * pageSize, pageSize);
+        List<CouponModel> couponModels = couponMapper.findCoupons((index - 1) * pageSize, pageSize);
+        for (CouponModel couponModel : couponModels) {
+            couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
+        }
+        return couponModels;
     }
 
     @Override
@@ -110,4 +118,23 @@ public class CouponServiceImpl implements CouponService {
         long investAmount = AmountConverter.convertStringToCent(amount);
         return investAmount >= couponModel.getInvestQuota();
     }
+
+    @Override
+    public List<UserCouponModel> findCouponDetail(long couponId, Boolean isUsed) {
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponIdAndStatus(couponId, isUsed);
+        for (UserCouponModel userCouponModel : userCouponModels) {
+            userCouponModel.setLoanName(userCouponModel.getLoanId() != null ? loanMapper.findById(userCouponModel.getLoanId()).getName() : null);
+        }
+        return userCouponModels;
+    }
+
+    @Override
+    public void deleteCoupon(String loginName, long couponId, boolean deleted) {
+        CouponModel couponModel = couponMapper.findById(couponId);
+        couponModel.setOperatedBy(loginName);
+        couponModel.setOperatedTime(new Date());
+        couponModel.setDeleted(deleted);
+        couponMapper.updateCoupon(couponModel);
+    }
+
 }
