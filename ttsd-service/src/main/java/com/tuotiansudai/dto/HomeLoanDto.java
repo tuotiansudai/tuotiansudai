@@ -3,6 +3,7 @@ package com.tuotiansudai.dto;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanPeriodUnit;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.ProductType;
 
 import java.math.BigDecimal;
 
@@ -11,6 +12,8 @@ public class HomeLoanDto {
     private long id;
 
     private String name;
+
+    private ProductType productType;
 
     private String activityType;
 
@@ -28,9 +31,10 @@ public class HomeLoanDto {
 
     private String status;
 
-    public HomeLoanDto(long loanId, String name, ActivityType activityType, LoanPeriodUnit periodUnit, double baseRate, double activityRate, int periods, long amount, long investAmount, LoanStatus status) {
+    public HomeLoanDto(long loanId, String name, ProductType productType, ActivityType activityType, LoanPeriodUnit periodUnit, double baseRate, double activityRate, int periods, long amount, long investAmount, LoanStatus status) {
         this.id = loanId;
         this.name = name;
+        this.productType = productType;
         this.activityType = activityType.name();
         this.baseRate = new BigDecimal(String.valueOf(baseRate)).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
         if (activityRate > 0) {
@@ -57,6 +61,14 @@ public class HomeLoanDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public ProductType getProductType() {
+        return productType;
+    }
+
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
     }
 
     public String getActivityType() {
