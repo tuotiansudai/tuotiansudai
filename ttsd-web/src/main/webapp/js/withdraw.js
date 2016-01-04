@@ -10,12 +10,12 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric'], function ($,layer) {
         amountInputElement.autoNumeric("init");
 
         amountInputElement.keyup(function () {
-            var reg=/.\d*$/,
-                amount = parseFloat(amountInputElement.autoNumeric("get")),
+            var amount = parseFloat(amountInputElement.autoNumeric("get")),
                 withdrawFee = Number(withdrawFeeElement.html());
-            if(reg.exec(amount)[0].length>3) {
-                return;
-            }
+
+            //if(reg.exec(amount)[0].length>3) {
+            //    return;
+            //}
             if (isNaN(amount) || amount <= withdrawFee) {
                 submitElement.prop('disabled',true);
                 errorElement.show();
