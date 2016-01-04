@@ -95,10 +95,10 @@ public class InvestService_PaybackExceptionTest {
         model.setOrderId(orderId);
         model.setRetCode("0000");
 
-        List<InvestNotifyRequestModel> toDoList = new ArrayList<InvestNotifyRequestModel>();
-        toDoList.add(model);
+//        List<InvestNotifyRequestModel> toDoList = new ArrayList<InvestNotifyRequestModel>();
+//        toDoList.add(model);
 
-        when(this.investNotifyRequestMapper.getTodoList(anyInt())).thenReturn(toDoList);
+//        when(this.investNotifyRequestMapper.getTodoList(anyInt())).thenReturn(toDoList);
 
         long loanId = 77777777L;
         long investId = 1;
@@ -127,7 +127,7 @@ public class InvestService_PaybackExceptionTest {
         when(this.paySyncClient.send(Matchers.<Class<? extends ProjectTransferMapper>>any(), any(ProjectTransferRequestModel.class), Matchers.<Class<ProjectTransferResponseModel>>any())).thenThrow(PayException.class);
 
         when(this.redisWrapperClient.incr(any(String.class))).thenCallRealMethod();
-        investService.asyncInvestCallback();
+        investService.processOneCallback(model);
 
         ArgumentCaptor<Long> accountModelArgumentCaptor1 = ArgumentCaptor.forClass(Long.class);
         ArgumentCaptor<InvestStatus> accountModelArgumentCaptor2 = ArgumentCaptor.forClass(InvestStatus.class);

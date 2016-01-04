@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'csrf'], function ($, _) {
+require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
     $(function () {
         var $bannerBox = $('.banner-box'),
             $imgScroll = $('.banner-img-list', $bannerBox),
@@ -7,7 +7,6 @@ require(['jquery', 'underscore', 'csrf'], function ($, _) {
             $productFrame = $('#productFrame'),
             $dlAmount = $('.dl-amount', $productFrame),
             $imgNum = $('li', $scrollNum),
-            $userCount=$('#userCount'),
             $bannerImg = $imgScroll.find('a'),
             $couponClose = $('.coupon-close'),
             screenWid, picWid, leftWid, adTimer = null,
@@ -25,13 +24,6 @@ require(['jquery', 'underscore', 'csrf'], function ($, _) {
         picWid = $bannerImg.first().find('img').width();
 
         leftWid = (picWid - screenWid) / 2;
-
-        //Traversing the data and formatting output
-        var userCountArray=_.filter($userCount.attr('data-count')),html='';
-        for (var i=0,len=userCountArray.length;i<len; i++) {
-            html+='<i>'+userCountArray[i]+'</i>';
-        };
-        $userCount.html(html);
 
         $registerBox.css({'right': (screenWid - 1000) / 2 + 'px'});
         $scrollNum.css({'left': (screenWid - $scrollNum.width()) / 2});
@@ -62,37 +54,13 @@ require(['jquery', 'underscore', 'csrf'], function ($, _) {
 
             window.location.href = $(this).data("url");
         });
-
-        if (screenWid < 700) {
-            $imgScroll.find('img').eq(0).attr('src', staticServer + '/images/ttimg/ph-a01.jpg');
-            $imgScroll.find('img').eq(1).attr('src', staticServer + '/images/ttimg/ph-a02.jpg');
-            $imgScroll.find('img').eq(2).attr('src', staticServer + '/images/ttimg/ph-a03.jpg');
-
-            $imgScroll.find('img').css({'margin-left': '0px'});
+        var viewport=commonFun.browserRedirect();
+        if(viewport=='pc') {
+            $imgScroll.find('img.iphone-img').remove();
+        } else if(viewport=='mobile') {
+            $imgScroll.find('img.pc-img').remove();
+            $imgScroll.find('img.iphone-img').css({'margin-left': '0px'});
         }
-
-        var adjustBanner = function () {
-            var screenWidNow = $(window).width();
-            if (screenWidNow < 700) {
-                $imgScroll.find('img').eq(0).attr('src', staticServer + '/images/ttimg/ph-a01.jpg');
-                $imgScroll.find('img').eq(1).attr('src', staticServer + '/images/ttimg/ph-a02.jpg');
-                $imgScroll.find('img').eq(2).attr('src', staticServer + '/images/ttimg/ph-a03.jpg');
-                $imgScroll.find('img').css({'margin-left': '0px'});
-
-            }
-            else {
-                $imgScroll.find('img').eq(0).attr('src', staticServer + '/images/sign/actor/ranking/qph.jpg');
-                $imgScroll.find('img').eq(1).attr('src', staticServer + '/images/sign/actor/grand/ba-grand.jpg');
-                $imgScroll.find('img').eq(2).attr('src', staticServer + '/images/ttimg/ttimg-home03.png');
-
-                $imgScroll.find('img').css({'margin-left': '-' + leftWid + 'px'});
-                $registerBox.css({'right': (screenWidNow - 1000) / 2 + 'px'});
-            }
-        };
-
-        $(window).resize(function () {
-            adjustBanner();
-        });
 
         $couponClose.on('click',function(e) {
             e.preventDefault();
@@ -120,6 +88,5 @@ require(['jquery', 'underscore', 'csrf'], function ($, _) {
                 }).find("li:first").appendTo($self);
             })
         }
-
     });
 });

@@ -11,6 +11,7 @@ import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.model.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
+import com.tuotiansudai.repository.model.UserBillPaginationView;
 import com.tuotiansudai.service.UserBillService;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -75,7 +76,7 @@ public class UserBillServiceImpl implements UserBillService {
     }
 
     @Override
-    public List<UserBillModel> findUserFunds(UserBillBusinessType userBillBusinessType, UserBillOperationType userBillOperationType, String loginName, Date startTime, Date endTime, int index, int pageSize) {
+    public List<UserBillPaginationView> findUserFunds(UserBillBusinessType userBillBusinessType, UserBillOperationType userBillOperationType, String loginName, Date startTime, Date endTime, int index, int pageSize) {
         Date formattedStartTime;
         Date formattedEndTime;
 
