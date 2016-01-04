@@ -5,6 +5,7 @@ import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDataDto;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/activity-manage")
@@ -91,6 +93,27 @@ public class CouponController {
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/coupon/detail", method = RequestMethod.GET)
+    public ModelAndView couponDetail(@RequestParam(value = "couponId") long couponId,
+                                      @RequestParam(value = "isUsed",required = false) Boolean isUsed) {
+        ModelAndView modelAndView = new ModelAndView("/coupon-detail");
+        List<UserCouponModel> userCouponModels = couponService.findCouponDetail(couponId, isUsed);
+        modelAndView.addObject("userCouponModels", userCouponModels);
+        modelAndView.addObject("isUsed", isUsed);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/coupon/{couponId:^\\d+$}/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> couponDetele(@PathVariable long couponId) {
+        BaseDataDto dataDto = new BaseDataDto();
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        baseDto.setData(dataDto);
+        String loginName = LoginUserInfo.getLoginName();
+        couponService.deleteCoupon(loginName, couponId, true);
+        return baseDto;
     }
 
 }

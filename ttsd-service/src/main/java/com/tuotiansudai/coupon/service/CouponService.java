@@ -3,6 +3,7 @@ package com.tuotiansudai.coupon.service;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.exception.CreateCouponException;
 
 import java.util.List;
@@ -23,5 +24,11 @@ public interface CouponService {
 
     boolean couponIsAvailable(long userCouponId, String amount);
 
+
     long findEstimatedCount(UserGroup userGroup);
+
+    List<UserCouponModel> findCouponDetail(long couponId, Boolean isUsed);
+
+    void deleteCoupon(String loginName, long couponId, boolean deleted);
+
 }

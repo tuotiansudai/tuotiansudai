@@ -102,6 +102,8 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
                     return false;
                 }
                 var chooseProductType = $('.productType').prop("checked");
+
+                console.log("chooseProductType========" + chooseProductType);
                 if(!chooseProductType){
                     showErrorMessage('请选择可投资标的', $('.productType', curform));
                     return false;
