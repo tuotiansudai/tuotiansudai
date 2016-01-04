@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.Granularity;
 import com.tuotiansudai.dto.RoleStage;
 import com.tuotiansudai.dto.UserStage;
 import com.tuotiansudai.repository.mapper.BusinessIntelligenceMapper;
+import com.tuotiansudai.repository.model.InvestViscosityDetailTableView;
 import com.tuotiansudai.repository.model.InvestViscosityDetailView;
 import com.tuotiansudai.repository.model.KeyValueModel;
 import com.tuotiansudai.service.BusinessIntelligenceService;
@@ -92,17 +93,15 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     }
 
     @Override
-    public List<InvestViscosityDetailView> queryInvestViscosityDetail(Date startTime, Date endTime, final String province, int loanCount, int pageNo, int pageSize) {
+    public InvestViscosityDetailTableView queryInvestViscosityDetail(Date startTime, Date endTime, final String province, int loanCount, int pageNo, int pageSize) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-        return businessIntelligenceMapper.queryInvestViscosityDetail(startTime, endTime, province, loanCount, (pageNo - 1) * pageSize, pageSize);
-    }
 
-    @Override
-    public long queryInvestViscositySumAmount(Date startTime, Date endTime, final String province, int loanCount){
-        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
-        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
-        return businessIntelligenceMapper.queryInvestViscositySumAmount(startTime, endTime, province, loanCount);
+        long sumAmount = businessIntelligenceMapper.queryInvestViscositySumAmount(startTime, endTime, province, loanCount);
+        List<InvestViscosityDetailView> items = businessIntelligenceMapper.queryInvestViscosityDetail(startTime, endTime, province, loanCount, (pageNo - 1) * pageSize, pageSize);
+
+        InvestViscosityDetailTableView tableView = new InvestViscosityDetailTableView(sumAmount, items);
+        return tableView;
     }
 
     @Override
