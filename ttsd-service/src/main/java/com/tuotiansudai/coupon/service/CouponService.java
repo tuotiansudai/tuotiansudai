@@ -21,5 +21,4 @@ public interface CouponService {
     CouponModel findCouponById (long couponId);
 
     boolean couponIsAvailable(long userCouponId, String amount);
-
 }

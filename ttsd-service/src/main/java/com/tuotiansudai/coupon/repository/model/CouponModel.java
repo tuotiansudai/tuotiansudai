@@ -14,8 +14,6 @@ public class CouponModel implements Serializable {
 
     private long id;
 
-    private String name;
-
     private long amount;
 
     private Date startTime;
@@ -50,7 +48,8 @@ public class CouponModel implements Serializable {
 
     private boolean smsAlert;
 
-    private boolean smsAlert;
+    private UserGroup userGroup;
+
 
     public long getId() {
         return id;
@@ -58,14 +57,6 @@ public class CouponModel implements Serializable {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public long getAmount() {
@@ -172,16 +163,24 @@ public class CouponModel implements Serializable {
         this.actualAmount = actualAmount;
     }
 
-    public CouponModel(){
-
-    }
-
     public long getInvestQuota() {
         return investQuota;
     }
 
     public void setInvestQuota(long investQuota) {
         this.investQuota = investQuota;
+    }
+
+    public UserGroup getUserGroup() {
+        return userGroup;
+    }
+
+    public void setUserGroup(UserGroup userGroup) {
+        this.userGroup = userGroup;
+    }
+
+    public CouponModel() {
+
     }
 
     public List<ProductType> getProductTypes() {
@@ -209,7 +208,6 @@ public class CouponModel implements Serializable {
     }
 
     public CouponModel(CouponDto couponDto){
-        this.name = couponDto.getCouponType().getDesc();
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime();
         this.endTime = couponDto.getEndTime();
