@@ -1210,8 +1210,10 @@ public class NormalRepayServiceTest {
         couponModel.setAmount(amount);
         couponModel.setTotalCount(1);
         couponModel.setActive(true);
-        couponModel.setCreateUser(loginName);
-        couponModel.setCreateTime(new Date());
+        couponModel.setCreatedBy(loginName);
+        couponModel.setCreatedTime(new Date());
+        couponModel.setProductTypes(Lists.newArrayList(ProductType.JYF));
+        couponModel.setCouponType(CouponType.INVEST_COUPON);
         return couponModel;
     }
 }

@@ -55,7 +55,7 @@ public class CouponServiceImpl implements CouponService {
         if (endTime.before(startTime)) {
             throw new CreateCouponException("活动止期早于活动起期!");
         }
-        couponModel.setCreateUser(loginName);
+        couponModel.setCreatedBy(loginName);
         couponMapper.create(couponModel);
     }
 
@@ -93,8 +93,8 @@ public class CouponServiceImpl implements CouponService {
     public void updateCoupon(String loginName, long couponId, boolean active) {
         CouponModel couponModel = couponMapper.findById(couponId);
         couponModel.setActive(active);
-        couponModel.setActiveTime(new Date());
-        couponModel.setActiveUser(loginName);
+        couponModel.setActivatedTime(new Date());
+        couponModel.setActivatedBy(loginName);
         couponMapper.updateCoupon(couponModel);
     }
 

@@ -1,12 +1,14 @@
 package com.tuotiansudai.coupon.repository.model;
 
-
 import com.tuotiansudai.coupon.dto.CouponDto;
+import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class CouponModel implements Serializable {
 
@@ -26,13 +28,13 @@ public class CouponModel implements Serializable {
 
     private boolean active;
 
-    private Date createTime;
+    private Date createdTime;
 
-    private String createUser;
+    private String createdBy;
 
-    private String activeUser;
+    private String activatedBy;
 
-    private Date activeTime;
+    private Date activatedTime;
 
     private long issuedCount;
 
@@ -41,6 +43,10 @@ public class CouponModel implements Serializable {
     private long actualAmount;
 
     private long investQuota;
+
+    private List<ProductType> productTypes;
+
+    private CouponType couponType;
 
     private UserGroup userGroup;
 
@@ -108,36 +114,36 @@ public class CouponModel implements Serializable {
         this.active = active;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreatedTime() {
+        return createdTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
-    public String getCreateUser() {
-        return createUser;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public String getActiveUser() {
-        return activeUser;
+    public String getActivatedBy() {
+        return activatedBy;
     }
 
-    public void setActiveUser(String activeUser) {
-        this.activeUser = activeUser;
+    public void setActivatedBy(String activatedBy) {
+        this.activatedBy = activatedBy;
     }
 
-    public Date getActiveTime() {
-        return activeTime;
+    public Date getActivatedTime() {
+        return activatedTime;
     }
 
-    public void setActiveTime(Date activeTime) {
-        this.activeTime = activeTime;
+    public void setActivatedTime(Date activatedTime) {
+        this.activatedTime = activatedTime;
     }
 
     public long getIssuedCount() {
@@ -184,13 +190,31 @@ public class CouponModel implements Serializable {
 
     }
 
-    public CouponModel(CouponDto couponDto) {
-        this.name = couponDto.getName();
+    public List<ProductType> getProductTypes() {
+        return productTypes;
+    }
+
+    public void setProductTypes(List<ProductType> productTypes) {
+        this.productTypes = productTypes;
+    }
+
+    public CouponType getCouponType() {
+        return couponType;
+    }
+
+    public void setCouponType(CouponType couponType) {
+        this.couponType = couponType;
+    }
+
+    public CouponModel(CouponDto couponDto){
+        this.name = couponDto.getCouponType().getDesc();
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime();
         this.endTime = couponDto.getEndTime();
-        this.totalCount = StringUtils.isEmpty(couponDto.getTotalCount()) ? 0L : Long.parseLong(couponDto.getTotalCount());
-        this.createTime = new Date();
+        this.totalCount = StringUtils.isEmpty(couponDto.getTotalCount())? 0L :Long.parseLong(couponDto.getTotalCount());
+        this.productTypes = couponDto.getProductTypes() ;
+        this.couponType = couponDto.getCouponType();
         this.investQuota = AmountConverter.convertStringToCent(couponDto.getInvestQuota());
+        this.createdTime = new Date();
     }
 }

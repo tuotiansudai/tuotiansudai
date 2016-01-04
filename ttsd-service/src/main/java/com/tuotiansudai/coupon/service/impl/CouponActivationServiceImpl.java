@@ -53,8 +53,8 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         }
 
         couponModel.setActive(true);
-        couponModel.setActiveUser(operator);
-        couponModel.setActiveTime(new Date());
+        couponModel.setActivatedBy(operator);
+        couponModel.setActivatedTime(new Date());
         couponMapper.updateCoupon(couponModel);
     }
 

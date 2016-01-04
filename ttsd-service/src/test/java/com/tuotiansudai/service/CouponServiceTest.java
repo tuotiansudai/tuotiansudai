@@ -1,5 +1,6 @@
 package com.tuotiansudai.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
@@ -107,7 +108,7 @@ public class CouponServiceTest {
         couponDto.setStartTime(startDateTime.toDate());
         couponDto.setEndTime(endDateTime.toDate());
         CouponModel couponModel = new CouponModel(couponDto);
-        couponModel.setCreateUser("couponTest");
+        couponModel.setCreatedBy("couponTest");
         couponModel.setActive(true);
         couponMapper.create(couponModel);
 
@@ -140,7 +141,7 @@ public class CouponServiceTest {
         couponDto.setStartTime(startDateTime.toDate());
         couponDto.setEndTime(endDateTime.toDate());
         CouponModel couponModel = new CouponModel(couponDto);
-        couponModel.setCreateUser(userModel.getLoginName());
+        couponModel.setCreatedBy(userModel.getLoginName());
         couponModel.setActive(true);
         couponMapper.create(couponModel);
 
@@ -172,8 +173,12 @@ public class CouponServiceTest {
         couponDto.setTotalCount("100");
         couponDto.setEndTime(new Date());
         couponDto.setStartTime(new Date());
-        couponDto.setName("优惠券");
+        couponDto.setCouponType(CouponType.INVEST_COUPON);
+        List<ProductType> productTypes = Lists.newArrayList();
+        productTypes.add(ProductType.JYF);
+        couponDto.setProductType(productTypes);
         couponDto.setInvestQuota("1000.00");
+
         return couponDto;
     }
 

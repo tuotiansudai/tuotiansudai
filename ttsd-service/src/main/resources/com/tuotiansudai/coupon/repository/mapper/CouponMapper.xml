@@ -13,19 +13,21 @@
         <result column="used_count" property="usedCount"/>
         <result column="total_count" property="totalCount"/>
         <result column="active" property="active"/>
-        <result column="create_time" property="createTime"/>
-        <result column="create_user" property="createUser"/>
-        <result column="active_user" property="activeUser"/>
-        <result column="active_time" property="activeTime"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="created_by" property="createdBy"/>
+        <result column="activated_by" property="activatedBy"/>
+        <result column="activated_time" property="activatedTime"/>
         <result column="issued_count" property="issuedCount"/>
         <result column="expected_amount" property="expectedAmount"/>
         <result column="actual_amount" property="actualAmount"/>
         <result column="invest_quota" property="investQuota"/>
+        <result column="coupon_type" property="couponType"/>
+        <result column="product_types" property="productTypes" typeHandler="com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler"/>
     </resultMap>
 
     <insert id="create" parameterType="CouponModel" useGeneratedKeys="true" keyProperty="id">
-        insert into coupon (name, amount, start_time, end_time, used_count, total_count, active, create_time, create_user, active_user,active_time,issued_count,invest_quota)
-        value(#{name}, #{amount}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{createTime}, #{createUser}, #{activeUser},#{activeTime},#{issuedCount},#{investQuota})
+        insert into coupon (name, amount, start_time, end_time, used_count, total_count, active, created_by, created_time, activated_by, activated_time, issued_count, invest_quota, coupon_type, product_types)
+        value(#{name}, #{amount}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{createdBy}, #{createdTime}, #{activatedBy}, #{activatedTime}, #{issuedCount}, #{investQuota}, #{couponType}, #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler})
     </insert>
 
     <select id="findById" resultMap="couponResultMap" parameterType="long">
@@ -61,7 +63,7 @@
               user_coupon t
             GROUP BY t.coupon_id) temp
             ON c.id = temp.coupon_id
-        ORDER BY create_time DESC
+        ORDER BY created_time DESC
         LIMIT #{index},#{pageSize}
     </select>
 
@@ -74,10 +76,11 @@
         set used_count = #{usedCount},
         total_count = #{totalCount},
         issued_count = #{issuedCount},
-        active_time = #{activeTime},
+        activated_by = #{activatedBy},
+        activated_time = #{activatedTime},
         active = #{active},
-        active_user = #{activeUser},
-        invest_quota = #{investQuota}
+        invest_quota = #{investQuota},
+        product_types = #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}
         where id = #{id}
     </update>
 
