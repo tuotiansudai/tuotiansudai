@@ -20,6 +20,12 @@
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
+    <resultMap id="userBillResultView" type="UserBillPaginationView" extends="userBillResultMap">
+        <result column="user_name" property="userName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="is_staff" property="isStaff"></result>
+    </resultMap>
+
     <insert id="create" parameterType="UserBillModel" useGeneratedKeys="true" keyProperty="id">
         insert into user_bill (login_name, order_id, amount, balance, freeze, operation_type, business_type, operator_login_name, intervention_reason, created_time)
         value(#{loginName}, #{orderId}, #{amount}, #{balance}, #{freeze}, #{operationType}, #{businessType}, #{operatorLoginName}, #{interventionReason}, #{createdTime})
@@ -80,26 +86,32 @@
         AND user_bill.`login_name` = #{loginName}
     </select>
 
-    <select id="findUserFunds" parameterType="map" resultMap="userBillResultMap">
-        select * from user_bill
+    <select id="findUserFunds" parameterType="map" resultMap="userBillResultView">
+        select ub.*,
+        a.user_name,
+        u.mobile,
+        IFNULL((select 1 from user_role ur where ur.login_name = ub.login_name and ur.role = 'STAFF'),0) as is_staff
+        from user_bill ub
+        LEFT JOIN `user` u on ub.login_name = u.login_name
+        LEFT JOIN account a on ub.login_name = a.login_name
         <where>
             <if test="userBillBusinessType != null">
-                and business_type = #{userBillBusinessType}
+                and ub.business_type = #{userBillBusinessType}
             </if>
             <if test="userBillOperationType != null">
-                and operation_type = #{userBillOperationType}
+                and ub.operation_type = #{userBillOperationType}
             </if>
             <if test="loginName != null and loginName != ''">
-                and login_name = #{loginName}
+                and ub.login_name = #{loginName}
             </if>
             <if test="startTime != null">
-                and created_time >= #{startTime}
+                and ub.created_time >= #{startTime}
             </if>
             <if test="endTime != null">
-                <![CDATA[ and created_time <= #{endTime} ]]>
+                <![CDATA[ and ub.created_time <= #{endTime} ]]>
             </if>
         </where>
-        order by created_time desc, id desc
+        order by ub.created_time desc, id desc
         limit #{startLimit} , #{endLimit}
     </select>
 

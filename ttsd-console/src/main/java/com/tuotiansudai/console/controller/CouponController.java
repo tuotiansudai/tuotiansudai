@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.controller;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -8,6 +9,8 @@ import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.exception.CreateCouponException;
+import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.ProductType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +31,10 @@ public class CouponController {
 
     @RequestMapping(value = "/coupon",method = RequestMethod.GET)
     public ModelAndView coupon(){
-        return new ModelAndView("/coupon");
+        ModelAndView modelAndView = new  ModelAndView("/coupon");
+        modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.values()));
+        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
+        return modelAndView;
     }
 
     @RequestMapping(value = "/coupon",method = RequestMethod.POST)
