@@ -28,4 +28,6 @@ public interface UserCouponMapper {
 
     long findSumInvestAmountByCouponId(@Param("couponId") long couponId);
 
+    List<UserCouponModel> findByCouponIdAndStatus(@Param("couponId") long couponId, @Param("isUsed") Boolean isUsed);
+
 }

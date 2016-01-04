@@ -7,6 +7,7 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.exception.CreateCouponException;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class CouponServiceImpl implements CouponService {
 
     @Autowired
     private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private LoanMapper loanMapper;
 
     @Override
     @Transactional
@@ -114,4 +118,14 @@ public class CouponServiceImpl implements CouponService {
         long investAmount = AmountConverter.convertStringToCent(amount);
         return investAmount >= couponModel.getInvestQuota();
     }
+
+    @Override
+    public List<UserCouponModel> findCouponDetail(long couponId, Boolean isUsed) {
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponIdAndStatus(couponId, isUsed);
+        for (UserCouponModel userCouponModel : userCouponModels) {
+            userCouponModel.setLoanName(userCouponModel.getLoanId() != null ? loanMapper.findById(userCouponModel.getLoanId()).getName() : null);
+        }
+        return userCouponModels;
+    }
+
 }

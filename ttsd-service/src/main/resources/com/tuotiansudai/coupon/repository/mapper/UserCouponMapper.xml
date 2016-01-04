@@ -104,4 +104,14 @@
         WHERE t.`coupon_id` = #{couponId}
           AND t.`status` = 'SUCCESS'
     </select>
+
+    <select id="findByCouponIdAndStatus" parameterType="map" parameterMap="UserCouponModel">
+        select * from user_coupon where coupon_id = #{couponId}
+        <if test="isUsed != null and isUsed">
+            and status = 'SUCCESS'
+        </if>
+        <if test="isUsed != null and !isUsed">
+            and (status != 'SUCCESS' or status is null)
+        </if>
+    </select>
 </mapper>

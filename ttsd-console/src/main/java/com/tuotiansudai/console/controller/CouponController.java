@@ -3,7 +3,7 @@ package com.tuotiansudai.console.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDataDto;
@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/activity-manage")
@@ -81,6 +82,16 @@ public class CouponController {
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/coupon/detail", method = RequestMethod.GET)
+    public ModelAndView couponDetail(@RequestParam(value = "couponId") long couponId,
+                                      @RequestParam(value = "isUsed",required = false) Boolean isUsed) {
+        ModelAndView modelAndView = new ModelAndView("/coupon-detail");
+        List<UserCouponModel> userCouponModels = couponService.findCouponDetail(couponId, isUsed);
+        modelAndView.addObject("userCouponModels", userCouponModels);
+        modelAndView.addObject("isUsed", isUsed);
         return modelAndView;
     }
 
