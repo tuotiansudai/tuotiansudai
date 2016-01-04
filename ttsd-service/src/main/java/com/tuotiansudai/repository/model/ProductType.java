@@ -4,7 +4,7 @@ public enum ProductType {
 
     SYL("速盈利", 1, 10.00),
     WYX("稳盈绣", 3, 12.00),
-    JYF("久盈富", 6, 14.00);
+    JYF("久盈富", 6, 13.00);
 
     private String name;
 

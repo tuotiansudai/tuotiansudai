@@ -1,9 +1,10 @@
 package com.tuotiansudai.web.controller;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.HomeLoanDto;
-import com.tuotiansudai.repository.model.AnnounceModel;
+import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
 import com.tuotiansudai.service.UserService;
@@ -36,6 +37,7 @@ public class HomeController {
         modelAndView.addObject("loans", loans);
         modelAndView.addObject("announces", baseDto.getData().getRecords());
         modelAndView.addObject("userCount",userCount);
+        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         return modelAndView;
     }
 }
