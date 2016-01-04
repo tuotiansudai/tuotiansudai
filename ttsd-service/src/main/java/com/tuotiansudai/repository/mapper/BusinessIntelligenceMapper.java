@@ -24,6 +24,8 @@ public interface BusinessIntelligenceMapper {
 
     List<InvestViscosityDetailView> queryInvestViscosityDetail(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province, @Param("loanCount") int loanCount, @Param("startIndex") int startIndex, @Param("pageSize") int pageSize);
 
+    long queryInvestViscositySumAmount(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province, @Param("loanCount") int loanCount);
+
     List<KeyValueModel> queryUserInvestCountTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province);
 
     List<KeyValueModel> queryUserInvestAmountTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("granularity") Granularity granularity,

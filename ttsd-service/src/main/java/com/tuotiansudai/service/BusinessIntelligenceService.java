@@ -23,6 +23,8 @@ public interface BusinessIntelligenceService {
 
     List<InvestViscosityDetailView> queryInvestViscosityDetail(Date startTime, Date endTime, final String province, int loanCount, int pageNo, int pageSize);
 
+    long queryInvestViscositySumAmount(Date startTime, Date endTime, final String province, int loanCount);
+
     List<KeyValueModel> queryUserInvestCountTrend(Date startTime, Date endTime, String province);
 
     List<KeyValueModel> queryUserInvestAmountTrend(Granularity granularity, Date startTime, Date endTime, String province, RoleStage roleStage, String channel);

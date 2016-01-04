@@ -99,6 +99,13 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
     }
 
     @Override
+    public long queryInvestViscositySumAmount(Date startTime, Date endTime, final String province, int loanCount){
+        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+        return businessIntelligenceMapper.queryInvestViscositySumAmount(startTime, endTime, province, loanCount);
+    }
+
+    @Override
     public List<KeyValueModel> queryUserInvestCountTrend(Date startTime, Date endTime, String province) {
         Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
