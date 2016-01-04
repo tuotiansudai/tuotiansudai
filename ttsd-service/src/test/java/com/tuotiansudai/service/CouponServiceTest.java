@@ -177,7 +177,7 @@ public class CouponServiceTest {
         couponDto.setCouponType(CouponType.INVEST_COUPON);
         List<ProductType> productTypes = Lists.newArrayList();
         productTypes.add(ProductType.JYF);
-        couponDto.setProductType(productTypes);
+        couponDto.setProductTypes(productTypes);
         couponDto.setInvestQuota("1000.00");
 
         return couponDto;

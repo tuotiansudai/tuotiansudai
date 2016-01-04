@@ -34,7 +34,7 @@
 
                 <select class="selectpicker jq-b-type userGroup" name="userGroup">
 					<#list userGroups as userGroup>
-                        <option value="${userGroup.name()}">${userGroup.getDesc()}</option>
+                        <option value="${userGroup.name()}">${userGroup.getDescription()}</option>
 					</#list>
                 </select>
 

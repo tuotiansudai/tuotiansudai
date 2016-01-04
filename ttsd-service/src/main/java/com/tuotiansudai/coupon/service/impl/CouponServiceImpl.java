@@ -5,8 +5,10 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.exception.CreateCouponException;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
@@ -27,6 +29,9 @@ public class CouponServiceImpl implements CouponService {
 
     @Autowired
     private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private InvestMapper investMapper;
 
     @Override
     @Transactional
@@ -113,5 +118,17 @@ public class CouponServiceImpl implements CouponService {
         CouponModel couponModel = findCouponById(userCouponModel.getCouponId());
         long investAmount = AmountConverter.convertStringToCent(amount);
         return investAmount >= couponModel.getInvestQuota();
+    }
+
+    @Override
+    public long findEstimatedCount(UserGroup userGroup) {
+
+        if(userGroup.isInvestedUser()){
+            return investMapper.findInvestorCount();
+        }
+        if(userGroup.isRegisteredNotInvestedUser()){
+            return investMapper.findCertificationNoInvestCount();
+        }
+        return 0L;
     }
 }

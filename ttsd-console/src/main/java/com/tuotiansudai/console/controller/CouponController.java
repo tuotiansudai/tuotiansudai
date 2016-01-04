@@ -70,6 +70,11 @@ public class CouponController {
         return baseDto;
     }
 
+    @RequestMapping(value = "/get/{userGroup}",method = RequestMethod.POST)
+    public long findEstimatedCount(@PathVariable UserGroup userGroup){
+        return couponService.findEstimatedCount(userGroup);
+    }
+
     @RequestMapping(value = "/coupons",method = RequestMethod.GET)
     public ModelAndView coupons(@RequestParam(value = "index",required = false,defaultValue = "1") int index,
                                  @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize) {

@@ -16,10 +16,10 @@ public class CouponDto implements Serializable {
     @NotEmpty
     private String amount;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date startTime;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date endTime;
 
     @NotEmpty
@@ -28,6 +28,7 @@ public class CouponDto implements Serializable {
     @NotEmpty
     private String investQuota;
 
+    @NotEmpty
     private List<ProductType> productTypes;
 
     @NotNull
@@ -79,7 +80,7 @@ public class CouponDto implements Serializable {
         return productTypes;
     }
 
-    public void setProductType(List<ProductType> productTypes) {
+    public void setProductTypes(List<ProductType> productTypes) {
         this.productTypes = productTypes;
     }
 
