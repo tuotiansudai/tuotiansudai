@@ -1,13 +1,14 @@
 package com.tuotiansudai.coupon.repository.model;
 
-
-import com.google.common.base.Joiner;
 import com.tuotiansudai.coupon.dto.CouponDto;
+import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class CouponModel implements Serializable {
 
@@ -25,7 +26,7 @@ public class CouponModel implements Serializable {
 
     private long totalCount;
 
-    private boolean active = false;
+    private boolean active;
 
     private Date createdTime;
 
@@ -43,9 +44,9 @@ public class CouponModel implements Serializable {
 
     private long investQuota;
 
-    private String productType;
+    private List<ProductType> productTypes;
 
-    private String couponType;
+    private CouponType couponType;
 
     public long getId() {
         return id;
@@ -179,19 +180,19 @@ public class CouponModel implements Serializable {
         this.investQuota = investQuota;
     }
 
-    public String getProductType() {
-        return productType;
+    public List<ProductType> getProductTypes() {
+        return productTypes;
     }
 
-    public void setProductType(String productType) {
-        this.productType = productType;
+    public void setProductTypes(List<ProductType> productTypes) {
+        this.productTypes = productTypes;
     }
 
-    public String getCouponType() {
+    public CouponType getCouponType() {
         return couponType;
     }
 
-    public void setCouponType(String couponType) {
+    public void setCouponType(CouponType couponType) {
         this.couponType = couponType;
     }
 
@@ -200,10 +201,10 @@ public class CouponModel implements Serializable {
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime();
         this.endTime = couponDto.getEndTime();
-        this.totalCount = StringUtils.isEmpty(couponDto.getTotalCount())?0l:Long.parseLong(couponDto.getTotalCount());
-        this.createdTime = new Date();
-        this.productType = Joiner.on(",").join(couponDto.getProductType()) ;
-        this.couponType = couponDto.getCouponType().name();
+        this.totalCount = StringUtils.isEmpty(couponDto.getTotalCount())? 0L :Long.parseLong(couponDto.getTotalCount());
+        this.productTypes = couponDto.getProductTypes() ;
+        this.couponType = couponDto.getCouponType();
         this.investQuota = AmountConverter.convertStringToCent(couponDto.getInvestQuota());
+        this.createdTime = new Date();
     }
 }

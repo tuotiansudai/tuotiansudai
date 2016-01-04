@@ -1,3 +1,3 @@
-alter table coupon add column product_type varchar(32) not null;
+ALTER TABLE coupon ADD COLUMN product_types VARCHAR(32) NOT NULL;
 
-alter table coupon add column coupon_type varchar(32) not null;
+ALTER TABLE coupon ADD COLUMN coupon_type VARCHAR(32) NOT NULL;
