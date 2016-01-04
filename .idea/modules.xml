@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ttsd-console/ttsd-console.iml" filepath="$PROJECT_DIR$/ttsd-console/ttsd-console.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ttsd-job-worker/ttsd-job-worker.iml" filepath="$PROJECT_DIR$/ttsd-job-worker/ttsd-job-worker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ttsd-mobile-api/ttsd-mobile-api.iml" filepath="$PROJECT_DIR$/ttsd-mobile-api/ttsd-mobile-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ttsd-pay-wrapper/ttsd-pay-wrapper.iml" filepath="$PROJECT_DIR$/ttsd-pay-wrapper/ttsd-pay-wrapper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ttsd-service/ttsd-service.iml" filepath="$PROJECT_DIR$/ttsd-service/ttsd-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ttsd-sms-wrapper/ttsd-sms-wrapper.iml" filepath="$PROJECT_DIR$/ttsd-sms-wrapper/ttsd-sms-wrapper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ttsd-web/ttsd-web.iml" filepath="$PROJECT_DIR$/ttsd-web/ttsd-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tuotian.iml" filepath="$PROJECT_DIR$/tuotian.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/tuotian.iml" filepath="$PROJECT_DIR$/.idea/tuotian.iml" />
+    </modules>
+  </component>
+</project>

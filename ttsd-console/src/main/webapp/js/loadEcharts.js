@@ -41,10 +41,11 @@ define(['jquery','underscore','echarts'], function ($,_) {
                 toolbox: {
                     show: true,
                     feature: {
-                        mark: true,
-                        dataView: { readOnly: false },
-                        restore: true,
-                        saveAsImage: true
+                        mark : {show: false},
+                        dataView : {show: true, readOnly: false},
+                        magicType : {show: true, type: ['line', 'bar', 'stack']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
                     }
                 }
             },
@@ -87,10 +88,11 @@ define(['jquery','underscore','echarts'], function ($,_) {
                 toolbox: {
                     show : true,
                     feature: {
-                        mark: true,
-                        dataView: { readOnly: false },
-                        restore: true,
-                        saveAsImage: true
+                        mark : {show: false},
+                        dataView : {show: true, readOnly: false},
+                        magicType : {show: true, type: ['line', 'bar', 'stack']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
                     }
                 }
             },
@@ -219,6 +221,15 @@ define(['jquery','underscore','echarts'], function ($,_) {
                 return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonLineOption, option);
             }
         },
+        eConsole: function (param) {
+            if (typeof param.seriesIndex == 'undefined') {
+                return;
+            }
+            if (param.type == 'click') {
+                var mes = param.name + ':' + param.value;
+                document.getElementById('info').innerHTML = mes;
+            }
+        },
         Charts: {
             RenderChart: function (option) {
                 require(
@@ -231,14 +242,15 @@ define(['jquery','underscore','echarts'], function ($,_) {
                     ],
                     function (ec) {
                         var echarts = ec;
-
+                        var ecConfig = require('echarts/config');
                         if (option.chart && option.chart.dispose)
                             option.chart.dispose();
                         option.chart = echarts.init(option.container);
 
                         option.chart.setOption(option.option, true);
-                        window.onresize = option.chart.resize;
 
+                        option.chart.on(ecConfig.EVENT.CLICK, MyChartsObject.eConsole); //添加点击事件
+                        window.onresize = option.chart.resize;
 
                     });
             }

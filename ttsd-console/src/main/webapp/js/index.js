@@ -106,6 +106,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
                 }
                 var container =reportBoxDOM[0],
                     opt = loadEcharts.ChartConfig(container, option);
+
                 loadEcharts.Charts.RenderChart(opt);
 
             });
