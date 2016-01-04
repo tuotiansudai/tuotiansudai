@@ -44,6 +44,8 @@ public class CouponModel implements Serializable {
 
     private UserGroup userGroup;
 
+    private long totalInvestAmount;
+
     public long getId() {
         return id;
     }
@@ -182,6 +184,14 @@ public class CouponModel implements Serializable {
 
     public CouponModel() {
 
+    }
+
+    public long getTotalInvestAmount() {
+        return totalInvestAmount;
+    }
+
+    public void setTotalInvestAmount(long totalInvestAmount) {
+        this.totalInvestAmount = totalInvestAmount;
     }
 
     public CouponModel(CouponDto couponDto) {

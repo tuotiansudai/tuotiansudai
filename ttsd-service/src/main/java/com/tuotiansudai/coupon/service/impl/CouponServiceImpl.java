@@ -81,7 +81,11 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public List<CouponModel> findCoupons(int index, int pageSize) {
-        return couponMapper.findCoupons((index - 1) * pageSize, pageSize);
+        List<CouponModel> couponModels = couponMapper.findCoupons((index - 1) * pageSize, pageSize);
+        for (CouponModel couponModel : couponModels) {
+            couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
+        }
+        return couponModels;
     }
 
     @Override
