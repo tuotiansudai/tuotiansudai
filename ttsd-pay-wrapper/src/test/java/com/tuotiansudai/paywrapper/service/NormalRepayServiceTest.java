@@ -256,6 +256,7 @@ public class NormalRepayServiceTest {
         userCouponMapper.create(userCouponModel);
         userCouponModel.setLoanId(fakeNormalLoan.getId());
         userCouponModel.setUsedTime(today.minusDays(5).toDate());
+        userCouponModel.setInvestId(fakeInvestModel1.getId());
         userCouponMapper.update(userCouponModel);
 
         this.generateMockResponse(10);
@@ -359,6 +360,7 @@ public class NormalRepayServiceTest {
         userCouponMapper.create(userCouponModel);
         userCouponModel.setLoanId(fakeNormalLoan.getId());
         userCouponModel.setUsedTime(today.minusDays(5).toDate());
+        userCouponModel.setInvestId(fakeInvestModel1.getId());
         userCouponMapper.update(userCouponModel);
 
         this.generateMockResponse(10);
