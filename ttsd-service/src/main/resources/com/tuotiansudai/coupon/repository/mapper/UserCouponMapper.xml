@@ -105,7 +105,7 @@
           AND t.`status` = 'SUCCESS'
     </select>
 
-    <select id="findByCouponIdAndStatus" parameterType="map" resultMap="UserCouponModel">
+    <select id="findByCouponIdAndStatus" parameterType="map" resultMap="userCouponResultMap">
         select * from user_coupon where coupon_id = #{couponId}
         <if test="isUsed != null and isUsed">
             and status = 'SUCCESS'
