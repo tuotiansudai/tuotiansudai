@@ -21,13 +21,13 @@
         <result column="expected_amount" property="expectedAmount"/>
         <result column="actual_amount" property="actualAmount"/>
         <result column="invest_quota" property="investQuota"/>
-        <result column="product_type" property="productType"/>
         <result column="coupon_type" property="couponType"/>
+        <result column="product_types" property="productTypes" typeHandler="com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler"/>
     </resultMap>
 
     <insert id="create" parameterType="CouponModel" useGeneratedKeys="true" keyProperty="id">
-        insert into coupon (name, amount, start_time, end_time, used_count, total_count, active, created_time, created_by, activated_by,activated_time,issued_count,invest_quota,product_type,coupon_type)
-        value(#{name}, #{amount}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{createdTime}, #{createdBy}, #{activatedBy},#{activatedTime},#{issuedCount},#{investQuota},#{productType},#{couponType})
+        insert into coupon (name, amount, start_time, end_time, used_count, total_count, active, created_by, created_time, activated_by, activated_time, issued_count, invest_quota, coupon_type, product_types)
+        value(#{name}, #{amount}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{createdBy}, #{createdTime}, #{activatedBy}, #{activatedTime}, #{issuedCount}, #{investQuota}, #{couponType}, #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler})
     </insert>
 
     <select id="findById" resultMap="couponResultMap" parameterType="long">
@@ -72,8 +72,15 @@
     </select>
 
     <update id="updateCoupon" parameterType="CouponModel">
-        update coupon set used_count = #{usedCount},issued_count = #{issuedCount},activated_time = #{activatedTime},active = #{active},
-                      activated_by = #{activatedBy},invest_quota = #{investQuota} where id = #{id}
+        update coupon
+        set used_count = #{usedCount},
+        issued_count = #{issuedCount},
+        activated_by = #{activatedBy},
+        activated_time = #{activatedTime},
+        active = #{active},
+        invest_quota = #{investQuota},
+        product_types = #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}
+        where id = #{id}
     </update>
 
 </mapper>

@@ -1212,8 +1212,8 @@ public class NormalRepayServiceTest {
         couponModel.setActive(true);
         couponModel.setCreatedBy(loginName);
         couponModel.setCreatedTime(new Date());
-        couponModel.setProductType(ProductType.JYF.name());
-        couponModel.setCouponType(CouponType.INVEST_COUPON.name());
+        couponModel.setProductTypes(Lists.newArrayList(ProductType.JYF));
+        couponModel.setCouponType(CouponType.INVEST_COUPON);
         return couponModel;
     }
 }

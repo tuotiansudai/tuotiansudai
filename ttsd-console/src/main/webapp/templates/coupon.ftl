@@ -77,7 +77,7 @@
             <div class="col-sm-3">
 				<#list productTypes as productType>
 
-                    <label><input type="checkbox" name="productType" class="productType"
+                    <label><input type="checkbox" name="productTypes" class="productType"
 								  <#if productType_index == 0>checked="checked"</#if>
                                   value="${productType.name()}">${productType.getName()}
                     </label>
