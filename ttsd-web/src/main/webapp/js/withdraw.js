@@ -27,7 +27,7 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric'], function ($,layer) {
             if (submitElement.hasClass('inactive')) {
                 return false;
             }
-            var amount = parseFloat(amountInputElement.autoNumeric("get"));
+            var amount = (parseFloat(amountInputElement.autoNumeric("get")) * 100).toFixed(0) / 100.0;
             $(".withdraw form input[name='amount']").val(amount);
             formElement.submit();
             layer.open({
