@@ -419,7 +419,7 @@ public class InvestServiceImpl implements InvestService {
             returnAmount = availableLoanAmount;
         }
         long autoInvestMoney = returnAmount - (returnAmount - minLoanInvestAmount) % investIncreasingAmount;
-        return autoInvestMoney < minInvestAmount ? 0L : autoInvestMoney;
+        return autoInvestMoney < NumberUtils.max(minInvestAmount, minLoanInvestAmount) ? 0L : autoInvestMoney;
     }
 
     @Override
