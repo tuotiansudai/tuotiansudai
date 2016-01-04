@@ -41,7 +41,7 @@
                     <td>${userAccount.account.userName!''}</td>
                     <td>${userAccount.mobile}</td>
                     <td>${userAccount.province!''}</td>
-                    <td>${(userAccount.lastBillTime?string('yyyy-MM-dd'))!}</td>
+                    <td>${(userAccount.lastBillTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>${userAccount.account.balance/100}</td>
                 </tr>
                 </#list>
