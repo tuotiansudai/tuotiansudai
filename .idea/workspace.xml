@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a9649d07-80ab-4868-bdfb-1ccb98831063" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ttsd-web/src/main/webapp/templates/macro/global.ftl" afterPath="$PROJECT_DIR$/ttsd-web/src/main/webapp/templates/macro/global.ftl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ttsd-console/src/main/webapp/js/index.js" afterPath="$PROJECT_DIR$/ttsd-console/src/main/webapp/js/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ttsd-console/src/main/webapp/js/loadEcharts.js" afterPath="$PROJECT_DIR$/ttsd-console/src/main/webapp/js/loadEcharts.js" />
     </list>
     <ignored path="tuotian.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -100,8 +95,8 @@
       <file leaf-file-name="global.ftl" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ttsd-web/src/main/webapp/templates/macro/global.ftl">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5690608">
-              <caret line="203" column="44" selection-start-line="203" selection-start-column="44" selection-end-line="203" selection-end-column="44" />
+            <state vertical-scroll-proportion="0.5276243">
+              <caret line="202" column="62" selection-start-line="202" selection-start-column="62" selection-end-line="202" selection-end-column="62" />
               <folding />
             </state>
           </provider>
@@ -2980,12 +2975,12 @@
       <option name="number" value="Default" />
       <updated>1451535891870</updated>
       <workItem from="1451556718953" duration="12000" />
-      <workItem from="1451556783464" duration="7472000" />
+      <workItem from="1451556783464" duration="7629000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7484000" />
+    <option name="totallyTimeSpent" value="7641000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="815" extended-state="6" />
@@ -3210,8 +3205,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ttsd-web/src/main/webapp/templates/macro/global.ftl">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5690608">
-          <caret line="203" column="44" selection-start-line="203" selection-start-column="44" selection-end-line="203" selection-end-column="44" />
+        <state vertical-scroll-proportion="0.5276243">
+          <caret line="202" column="62" selection-start-line="202" selection-start-column="62" selection-end-line="202" selection-end-column="62" />
           <folding />
         </state>
       </provider>
