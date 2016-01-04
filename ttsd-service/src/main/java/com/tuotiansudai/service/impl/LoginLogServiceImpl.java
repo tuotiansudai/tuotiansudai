@@ -38,7 +38,7 @@ public class LoginLogServiceImpl implements LoginLogService {
             return;
         LoginLogModel model = new LoginLogModel(userModel.getLoginName(), source, ip, device, loginSuccess);
         DateTime now = new DateTime();
-        loginLogMapper.create(model, MessageFormat.format(LOGIN_LOG_TABLE_TEMPLATE, String.valueOf(now.getYear()), String.valueOf(now.getMonthOfYear())));
+        //loginLogMapper.create(model, MessageFormat.format(LOGIN_LOG_TABLE_TEMPLATE, String.valueOf(now.getYear()), String.valueOf(now.getMonthOfYear())));
     }
 
     @Override

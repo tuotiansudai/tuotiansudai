@@ -82,6 +82,7 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
             btnSubmit: '#btnSave',
             tipSweep: true, //表单提交时触发显示
             focusOnError: false,
+            ignoreHidden:true,
             tiptype: function(msg, o, cssctl) {
                 if (o.type == 3) {
                     var msg = o.obj.attr('errormsg') || msg;
@@ -127,6 +128,24 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
                 $self.attr('disabled', 'disabled');
                 $couponForm[0].submit();
             }
+        });
+
+        $('.couponType').change(function(){
+            var couponType = this.value;
+            if(couponType == "NEWBIE_COUPON"){
+                $('.newbie-coupon').show();
+                $('.invest-coupon').hide();
+                $('.give-number').removeClass("invest-coupon-total_count");
+            }else{
+                $('.give-number').addClass("invest-coupon-total_count");
+                $('.newbie-coupon').hide();
+                $('.invest-coupon').show();
+            }
+        });
+
+        $('.userGroup').change(function(){
+            var userGroup = this.value;
+
         });
 
     });

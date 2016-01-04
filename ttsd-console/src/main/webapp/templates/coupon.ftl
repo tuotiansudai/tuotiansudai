@@ -8,7 +8,7 @@
 			<label class="col-sm-2 control-label">体验券名称:</label>
 			<div class="col-sm-4">
 
-                <select class="selectpicker jq-b-type" name="couponType">
+                <select class="selectpicker jq-b-type couponType" name="couponType">
 					<#list couponTypes as couponType>
                         <option value="${couponType.name()}">${couponType.getDesc()}</option>
 					</#list>
@@ -22,11 +22,35 @@
 				<input type="text" class="form-control coupon-number" name="amount" placeholder="" <#if coupon??>value="${coupon.amount!}"</#if> datatype="*" errormsg="投资体验券金额不能为空">
 			</div>
 		</div>
-		<div class="form-group">
-			<label  class="col-sm-2 control-label">活动期限: </label>
+        <div class="form-group coupon-hide invest-coupon" >
+            <label  class="col-sm-2 control-label">体验券有效期限(天): </label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control coupon-deadline" name="deadline" placeholder="" <#if coupon??>value="${coupon.deadline!}"</#if> datatype="*" errormsg="体验券有效期限不能为空">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">发放对象:</label>
+            <div class="col-sm-4">
+
+                <select class="selectpicker jq-b-type userGroup" name="userGroup">
+					<#list userGroups as userGroup>
+                        <option value="${userGroup.name()}">${userGroup.getDesc()}</option>
+					</#list>
+                </select>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">预计发放数量(张): </label>
+            <div class="col-sm-4">
+                <input type="text" value="1" class="form-control give-number" name="totalCount" placeholder="" <#if coupon??>value="${coupon.totalCount!}"</#if>  datatype="n" errormsg="发放数量需要填写数字" >
+            </div>
+        </div>
+		<div class="form-group newbie-coupon">
+			<label  class="col-sm-2 control-label ">活动期限: </label>
 			<div class="col-sm-2">
 				<div class='input-group date' id='startTime'>
-					<input type='text' class="form-control coupon-start" name="startTime" <#if coupon??>value="${coupon.startTime?string("yyyy-MM-dd")}"</#if>  datatype="date" errormsg="请选择活动开始时间"/>
+					<input type='text' class="form-control coupon-start" name="startTime" <#if coupon??>value="${(coupon.startTime?string("yyyy-MM-dd"))!}"</#if>  datatype="date" errormsg="请选择活动开始时间"/>
 					<span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -35,36 +59,14 @@
 			<div class="line-size">-</div>
 			<div class="col-sm-2">
 				<div class='input-group date' id='endTime'>
-					<input type='text' class="form-control coupon-end" name="endTime" <#if coupon??>value="${coupon.endTime?string("yyyy-MM-dd")}"</#if>  datatype="date" errormsg="请选择活动结束时间"/>
+					<input type='text' class="form-control coupon-end" name="endTime" <#if coupon??>value="${(coupon.endTime?string("yyyy-MM-dd"))!}"</#if>  datatype="date" errormsg="请选择活动结束时间"/>
 					<span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>
 					</span>
 				</div>
 			</div>
 		</div>
-		<div class="form-group">
-			<label class="col-sm-2 control-label">发放数量(张): </label>
-			<div class="col-sm-4">
-				<input type="text" class="form-control give-number" name="totalCount" placeholder="" <#if coupon??>value="${coupon.totalCount!}"</#if>  datatype="n" errormsg="发放数量需要填写数字">
-			</div>
-		</div>
-		<div class="form-group">
-			<label  class="col-sm-2 control-label">发放对象: </label>
-			<div class="col-sm-2">
-				<select class="selectpicker" name="giveObject">
-					<option value="新注册用户">新注册用户</option>
-				</select>
-			</div>
-			<div class="line-size">[自动发放]</div>
-		</div>
-		<div class="form-group">
-			<label  class="col-sm-2 control-label">标的使用条件: </label>
-			<div class="col-sm-2">
-				<select class="selectpicker" name="markCondition">
-					<option value="所有标的">所有标的</option>
-				</select>
-			</div>
-		</div>
+
         <div class="form-group">
             <label  class="col-sm-2 control-label">使用条件: </label>
 
@@ -85,8 +87,19 @@
 				</#list>
             </div>
         </div>
+        <div class="form-group coupon-hide invest-coupon" >
+            <label  class="col-sm-2 control-label">短信提醒: </label>
+            <div class="col-sm-3">
+
+                    <label><input type="checkbox" name="smsAlert" class="smsAlert"
+								  <#if !(coupon??&&coupon.smsAlert)>checked</#if> />
+                    </label>
+
+            </div>
+        </div>
+
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-		<div class="form-group">
+		<div class="form-group ">
             <label class="col-sm-2 control-label"></label>
             <div class="col-sm-4 form-error">
 				<#if errorMessage?has_content>

@@ -205,7 +205,7 @@ td.td {
     font-size: 14px;
 }
 
-.web-error-message {
+.web-error-message,.coupon-hide {
     display: none;
 }
 
@@ -313,8 +313,10 @@ td.td {
     margin-left: 0.3%;
 }
 
-.system-recharge-balance{
+.system-recharge-balance,.invest-coupon-total_count{
     border: none;
     box-shadow: none;
     margin-top: 5px;
 }
+
+

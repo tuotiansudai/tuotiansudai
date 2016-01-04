@@ -7,6 +7,7 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.exception.CreateCouponException;
+import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,16 +46,19 @@ public class CouponServiceImpl implements CouponService {
         }
         Date startTime = couponModel.getStartTime();
         Date endTime = couponModel.getEndTime();
+        if(CouponType.isNewBieCoupon(couponDto.getCouponType())){
+            if (startTime == null) {
+                throw new CreateCouponException("活动起期不能为空!");
+            }
+            if (endTime == null) {
+                throw new CreateCouponException("活动止期不能为空!");
+            }
+            if (endTime.before(startTime)) {
+                throw new CreateCouponException("活动止期早于活动起期!");
+            }
+        }
 
-        if (startTime == null) {
-            throw new CreateCouponException("活动起期不能为空!");
-        }
-        if (endTime == null) {
-            throw new CreateCouponException("活动止期不能为空!");
-        }
-        if (endTime.before(startTime)) {
-            throw new CreateCouponException("活动止期早于活动起期!");
-        }
+
         couponModel.setCreatedBy(loginName);
         couponMapper.create(couponModel);
     }

@@ -48,6 +48,8 @@ public class CouponModel implements Serializable {
 
     private CouponType couponType;
 
+    private boolean smsAlert;
+
     public long getId() {
         return id;
     }
@@ -196,6 +198,14 @@ public class CouponModel implements Serializable {
         this.couponType = couponType;
     }
 
+    public boolean isSmsAlert() {
+        return smsAlert;
+    }
+
+    public void setSmsAlert(boolean smsAlert) {
+        this.smsAlert = smsAlert;
+    }
+
     public CouponModel(CouponDto couponDto){
         this.name = couponDto.getCouponType().getDesc();
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
@@ -206,5 +216,6 @@ public class CouponModel implements Serializable {
         this.couponType = couponDto.getCouponType();
         this.investQuota = AmountConverter.convertStringToCent(couponDto.getInvestQuota());
         this.createdTime = new Date();
+        this.smsAlert = couponDto.isSmsAlert();
     }
 }

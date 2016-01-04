@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.repository.model.CouponType;
@@ -28,6 +29,8 @@ public class CouponController {
         ModelAndView modelAndView = new  ModelAndView("/coupon");
         modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.values()));
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
+        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
+
         return modelAndView;
     }
 

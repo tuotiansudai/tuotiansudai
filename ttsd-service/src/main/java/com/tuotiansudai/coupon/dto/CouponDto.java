@@ -16,10 +16,10 @@ public class CouponDto implements Serializable {
     @NotEmpty
     private String amount;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startTime;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endTime;
 
     @NotEmpty
@@ -28,11 +28,12 @@ public class CouponDto implements Serializable {
     @NotEmpty
     private String investQuota;
 
-    @NotEmpty
     private List<ProductType> productTypes;
 
     @NotNull
     private CouponType couponType;
+
+    private boolean smsAlert;
 
     public String getAmount() {
         return amount;
@@ -88,5 +89,13 @@ public class CouponDto implements Serializable {
 
     public void setCouponType(CouponType couponType) {
         this.couponType = couponType;
+    }
+
+    public boolean isSmsAlert() {
+        return smsAlert;
+    }
+
+    public void setSmsAlert(boolean smsAlert) {
+        this.smsAlert = smsAlert;
     }
 }
