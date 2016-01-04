@@ -51,7 +51,9 @@ public class HomeController {
         int userCount = userService.findUserCount();
         modelAndView.addObject("loans", loans);
         modelAndView.addObject("announces", baseDto.getData().getRecords());
+
         modelAndView.addObject("userCount", userCount);
+
         boolean showCoupon = false;
         if (StringUtils.isNotEmpty(LoginUserInfo.getLoginName())
                 && CollectionUtils.isNotEmpty(userCouponService.getUserCouponDtoByLoginName(LoginUserInfo.getLoginName()))
@@ -63,7 +65,9 @@ public class HomeController {
             modelAndView.addObject("endTimeCoupon", userCouponDto.getEndTime());
             modelAndView.addObject("nameCoupon", userCouponDto.getName());
         }
+
         modelAndView.addObject("showCoupon", showCoupon);
+
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         return modelAndView;
     }

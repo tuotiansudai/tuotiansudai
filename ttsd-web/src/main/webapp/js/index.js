@@ -78,6 +78,7 @@ require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
                 scrollNews($(".scroll-top"));
             }, 2000);
         }).trigger("mouseout");
+
         function scrollNews(obj) {
             var $self = obj.find("ul:first");
             var lineHeight = $self.find("li:first").height();

@@ -48,6 +48,8 @@ public class CouponModel implements Serializable {
 
     private CouponType couponType;
 
+    private UserGroup userGroup;
+
     public long getId() {
         return id;
     }
@@ -168,16 +170,24 @@ public class CouponModel implements Serializable {
         this.actualAmount = actualAmount;
     }
 
-    public CouponModel(){
-
-    }
-
     public long getInvestQuota() {
         return investQuota;
     }
 
     public void setInvestQuota(long investQuota) {
         this.investQuota = investQuota;
+    }
+
+    public UserGroup getUserGroup() {
+        return userGroup;
+    }
+
+    public void setUserGroup(UserGroup userGroup) {
+        this.userGroup = userGroup;
+    }
+
+    public CouponModel() {
+
     }
 
     public List<ProductType> getProductTypes() {

@@ -74,6 +74,7 @@
     <update id="updateCoupon" parameterType="CouponModel">
         update coupon
         set used_count = #{usedCount},
+        total_count = #{totalCount},
         issued_count = #{issuedCount},
         activated_by = #{activatedBy},
         activated_time = #{activatedTime},
