@@ -24,7 +24,7 @@ public interface UserMapper {
 
     void updateUser(UserModel userModel);
 
-    List<UserModel> searchAllUsers(@Param(value = "loginName") String loginName,@Param(value = "referrer") String referrer,@Param(value = "mobile") String mobile,
+    List<UserModel> searchAllUsers(@Param(value = "loginName") String loginName, @Param(value = "referrer") String referrer, @Param(value = "mobile") String mobile,
                                    @Param(value = "identityNumber") String identityNumber);
 
     List<UserModel> findAllUser(@Param(value = "loginName") String loginName,
@@ -40,14 +40,14 @@ public interface UserMapper {
                                 @Param(value = "pageSize") Integer pageSize);
 
     int findAllUserCount(@Param(value = "loginName") String loginName,
-                                @Param(value = "email") String email,
-                                @Param(value = "mobile") String mobile,
-                                @Param(value = "beginTime") Date beginTime,
-                                @Param(value = "endTime") Date endTime,
-                                @Param(value = "source") Source source,
-                                @Param(value = "role") Role role,
-                                @Param(value = "referrer") String referrer,
-                                @Param(value = "channel") String channel);
+                         @Param(value = "email") String email,
+                         @Param(value = "mobile") String mobile,
+                         @Param(value = "beginTime") Date beginTime,
+                         @Param(value = "endTime") Date endTime,
+                         @Param(value = "source") Source source,
+                         @Param(value = "role") Role role,
+                         @Param(value = "referrer") String referrer,
+                         @Param(value = "channel") String channel);
 
 
     void updatePasswordByLoginName(@Param(value = "loginName") String loginName, @Param(value = "password") String password);
@@ -61,12 +61,20 @@ public interface UserMapper {
     List<String> findAllUserChannels();
 
     List<UserModel> findUserByProvince();
-    
+
     int findUserCount();
 
-    List<UserModel> findUsersAccountBalance(@Param(value = "loginName") String loginName, @Param(value = "startLimit") int startLimit, @Param(value = "endLimit") int endLimit);
+    List<UserModel> findUsersAccountBalance(@Param(value = "loginName") String loginName,
+                                            @Param(value = "balanceMin") int balanceMin,
+                                            @Param(value = "balanceMax") int balanceMax,
+                                            @Param(value = "startLimit") int startLimit,
+                                            @Param(value = "endLimit") int endLimit);
 
-    long findUsersAccountBalanceSum(@Param(value = "loginName") String loginName);
+    long findUsersAccountBalanceSum(@Param(value = "loginName") String loginName,
+                                    @Param(value = "balanceMin") int balanceMin,
+                                    @Param(value = "balanceMax") int balanceMax);
 
-    int findUsersAccountBalanceCount(@Param(value = "loginName") String loginName);
+    int findUsersAccountBalanceCount(@Param(value = "loginName") String loginName,
+                                     @Param(value = "balanceMin") int balanceMin,
+                                     @Param(value = "balanceMax") int balanceMax);
 }

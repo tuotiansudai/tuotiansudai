@@ -315,7 +315,7 @@ public class UserServiceImpl implements UserService {
             userItemDataDto.setUserRoles(userRoleMapper.findByLoginName(userModel.getLoginName()));
             List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(userModel.getReferrer());
             for (UserRoleModel userRoleModel : userRoleModels) {
-                if (userRoleModel.getRole()==Role.STAFF) {
+                if (userRoleModel.getRole() == Role.STAFF) {
                     staff = true;
                     break;
                 }
@@ -413,18 +413,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserModel> findUsersAccountBalance(String loginName, int currentPageNo, int pageSize) {
-        return userMapper.findUsersAccountBalance(loginName, (currentPageNo - 1) * pageSize, pageSize);
+    public List<UserModel> findUsersAccountBalance(String loginName, String balanceMin, String balanceMax, int currentPageNo, int pageSize) {
+        int[] balance = parseBalanceInt(balanceMin, balanceMax);
+        return userMapper.findUsersAccountBalance(loginName, balance[0], balance[1], (currentPageNo - 1) * pageSize, pageSize);
     }
 
     @Override
-    public int findUsersAccountBalanceCount(String loginName) {
-        return userMapper.findUsersAccountBalanceCount(loginName);
+    public int findUsersAccountBalanceCount(String loginName, String balanceMin, String balanceMax) {
+        int[] balance = parseBalanceInt(balanceMin, balanceMax);
+        return userMapper.findUsersAccountBalanceCount(loginName, balance[0], balance[1]);
     }
 
     @Override
-    public long findUsersAccountBalanceSum(String loginName) {
-        return userMapper.findUsersAccountBalanceSum(loginName);
+    public long findUsersAccountBalanceSum(String loginName, String balanceMin, String balanceMax) {
+        int[] balance = parseBalanceInt(balanceMin, balanceMax);
+        return userMapper.findUsersAccountBalanceSum(loginName, balance[0], balance[1]);
     }
 
+    private int[] parseBalanceInt(String balanceMin, String balanceMax) {
+        int min, max;
+        try {
+            min = Integer.parseInt(balanceMin) * 100;
+        } catch (NumberFormatException e) {
+            min = 1;
+            logger.warn("user account balance search parameter wrong, balanceMin is not an integer, balanceMin:" + balanceMin);
+        }
+
+        try {
+            max = Integer.parseInt(balanceMax) * 100;
+        } catch (NumberFormatException e) {
+            max = Integer.MAX_VALUE;
+            logger.warn("user account balance search parameter wrong, balanceMax is not an integer, balanceMax:" + balanceMin);
+        }
+        return new int[]{min, max};
+    }
 }
