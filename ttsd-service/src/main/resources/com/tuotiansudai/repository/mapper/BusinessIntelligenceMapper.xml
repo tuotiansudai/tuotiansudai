@@ -1058,12 +1058,6 @@
                     where
                         ii.status='SUCCESS'
                         and ii.created_time between #{startTime} and #{endTime}
-                    <if test="channel !=null and channel != '' and channel != '其他' ">
-                        and uu.channel = #{channel}
-                    </if>
-                    <if test="channel == '其他'" >
-                        and uu.channel IS NULL
-                    </if>
                     group by province
                     order by amount desc
                     limit 5
@@ -1072,6 +1066,12 @@
             )
             and i.status='SUCCESS'
             and i.created_time between #{startTime} and #{endTime}
+            <if test="channel !=null and channel != '' and channel != '其他' ">
+                and u.channel = #{channel}
+            </if>
+            <if test="channel == '其他'" >
+                and u.channel IS NULL
+            </if>
             group by `name`
         </if>
     </select>
