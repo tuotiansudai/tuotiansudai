@@ -10,12 +10,8 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric'], function ($,layer) {
         amountInputElement.autoNumeric("init");
 
         amountInputElement.keyup(function () {
-            var reg=/.\d*$/,
-                amount = parseFloat(amountInputElement.autoNumeric("get")),
-                withdrawFee = Number(withdrawFeeElement.html());
-            if(reg.exec(amount)[0].length>3) {
-                return;
-            }
+            var amount = (parseFloat(amountInputElement.autoNumeric("get")) * 100).toFixed(0) / 100.0,
+                withdrawFee = parseFloat(withdrawFeeElement.html());
             if (isNaN(amount) || amount <= withdrawFee) {
                 submitElement.prop('disabled',true);
                 errorElement.show();
@@ -31,7 +27,7 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric'], function ($,layer) {
             if (submitElement.hasClass('inactive')) {
                 return false;
             }
-            var amount = parseFloat(amountInputElement.autoNumeric("get"));
+            var amount = (parseFloat(amountInputElement.autoNumeric("get")) * 100).toFixed(0) / 100.0;
             $(".withdraw form input[name='amount']").val(amount);
             formElement.submit();
             layer.open({
