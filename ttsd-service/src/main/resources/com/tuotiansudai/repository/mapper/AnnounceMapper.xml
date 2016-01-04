@@ -4,6 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.AnnounceMapper">
 
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
     <resultMap id="AnnounceResultMap" type="AnnounceModel">
         <id column="id" property="id"></id>
         <result column="title" property="title"></result>
