@@ -45,7 +45,6 @@ public class CouponMapperTest {
 
         CouponModel couponModel1 = couponMapper.findById(couponModel.getId());
         assertNotNull(couponModel1.getId());
-        assertEquals("优惠券", couponModel1.getName());
         assertEquals(1000L,couponModel1.getAmount());
         assertEquals(false,couponModel1.isActive());
         assertNotNull(couponModel1.getStartTime());
@@ -54,7 +53,6 @@ public class CouponMapperTest {
 
     private CouponModel fakeCouponModel(){
         CouponModel couponModel = new CouponModel();
-        couponModel.setName("优惠券");
         couponModel.setAmount(1000L);
         couponModel.setActivatedBy("couponTest");
         couponModel.setActive(false);

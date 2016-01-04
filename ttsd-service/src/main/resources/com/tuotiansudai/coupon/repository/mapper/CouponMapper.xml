@@ -6,7 +6,6 @@
 
     <resultMap id="couponResultMap" type="CouponModel">
         <id column="id" property="id"/>
-        <result column="name" property="name"/>
         <result column="amount" property="amount"/>
         <result column="start_time" property="startTime"/>
         <result column="end_time" property="endTime"/>
@@ -26,8 +25,8 @@
     </resultMap>
 
     <insert id="create" parameterType="CouponModel" useGeneratedKeys="true" keyProperty="id">
-        insert into coupon (name, amount, start_time, end_time, used_count, total_count, active, created_by, created_time, activated_by, activated_time, issued_count, invest_quota, coupon_type, product_types)
-        value(#{name}, #{amount}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{createdBy}, #{createdTime}, #{activatedBy}, #{activatedTime}, #{issuedCount}, #{investQuota}, #{couponType}, #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler})
+        insert into coupon (amount, start_time, end_time, used_count, total_count, active, created_by, created_time, activated_by, activated_time, issued_count, invest_quota, coupon_type, product_types)
+        value( #{amount}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{createdBy}, #{createdTime}, #{activatedBy}, #{activatedTime}, #{issuedCount}, #{investQuota}, #{couponType}, #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler})
     </insert>
 
     <select id="findById" resultMap="couponResultMap" parameterType="long">

@@ -23,7 +23,6 @@ public class UserCouponDto implements Serializable {
     public UserCouponDto(CouponModel coupon, UserCouponModel userCoupon) {
         this.id = userCoupon.getId();
         this.couponId = coupon.getId();
-        this.name = coupon.getName();
         this.amount = coupon.getAmount();
         this.startTime = coupon.getStartTime();
         this.endTime = coupon.getEndTime();
