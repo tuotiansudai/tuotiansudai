@@ -24,4 +24,6 @@ public interface CouponService {
     boolean couponIsAvailable(long userCouponId, String amount);
 
     List<UserCouponModel> findCouponDetail(long couponId, Boolean isUsed);
+
+    void deleteCoupon(String loginName, long couponId, boolean deleted);
 }

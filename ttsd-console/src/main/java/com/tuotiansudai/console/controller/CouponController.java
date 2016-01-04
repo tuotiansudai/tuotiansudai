@@ -95,4 +95,15 @@ public class CouponController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/coupon/{couponId:^\\d+$}/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> couponDetele(@PathVariable long couponId) {
+        BaseDataDto dataDto = new BaseDataDto();
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        baseDto.setData(dataDto);
+        String loginName = LoginUserInfo.getLoginName();
+        couponService.deleteCoupon(loginName, couponId, true);
+        return baseDto;
+    }
+
 }
