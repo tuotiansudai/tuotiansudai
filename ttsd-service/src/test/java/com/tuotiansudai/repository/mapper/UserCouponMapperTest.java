@@ -1,10 +1,12 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.CouponStatus;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.junit.Test;
@@ -65,14 +67,16 @@ public class UserCouponMapperTest {
         CouponModel couponModel = new CouponModel();
         couponModel.setName("优惠券");
         couponModel.setAmount(1000l);
-        couponModel.setActiveUser("couponTest");
+        couponModel.setActivatedBy("couponTest");
         couponModel.setActive(false);
-        couponModel.setCreateTime(new Date());
+        couponModel.setCreatedTime(new Date());
         couponModel.setEndTime(new Date());
         couponModel.setStartTime(new Date());
-        couponModel.setCreateUser("couponTest");
-        couponModel.setTotalCount(1000l);
-        couponModel.setUsedCount(500l);
+        couponModel.setCreatedBy("couponTest");
+        couponModel.setTotalCount(1000L);
+        couponModel.setUsedCount(500L);
+        couponModel.setCouponType(CouponType.INVEST_COUPON);
+        couponModel.setProductTypes(Lists.newArrayList(ProductType.JYF, ProductType.SYL));
 
         return couponModel;
     }

@@ -1,6 +1,8 @@
 package com.tuotiansudai.web.controller;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.service.UserCouponService;
+import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
 import com.tuotiansudai.service.UserService;
@@ -33,6 +35,7 @@ public class HomeController {
         modelAndView.addObject("announces", announceService.getAnnouncementList(1, 3).getData().getRecords());
         modelAndView.addObject("userCount", userService.findUserCount());
         modelAndView.addObject("newbieCoupon", this.userCouponService.getUsableNewbieCoupon(LoginUserInfo.getLoginName()));
+        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         return modelAndView;
     }
 }

@@ -27,7 +27,7 @@ public class InvestCallback implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         String trigger = redisWrapperClient.get(JOB_TRIGGER_KEY);
-        if(trigger != null && Integer.valueOf(trigger) > 0) {
+        if (trigger != null && Integer.valueOf(trigger) > 0) {
             payWrapperClient.investCallback();
         }
     }

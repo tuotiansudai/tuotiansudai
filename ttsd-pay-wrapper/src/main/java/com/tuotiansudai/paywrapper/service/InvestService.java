@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
@@ -24,5 +25,5 @@ public interface InvestService {
 
     void notifyInvestorRepaySuccessfulByEmail(long loanId,int period);
 
-    void investSuccess(long orderId, InvestModel investModel, String loginName);
+    void processOneCallback(InvestNotifyRequestModel callbackRequestModel);
 }

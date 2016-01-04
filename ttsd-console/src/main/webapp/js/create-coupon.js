@@ -13,6 +13,8 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
         //渲染select表单
         $selectDom.selectpicker();
 
+
+
         //起始时间绑定插件
         $dateStart.datetimepicker({
             format: 'YYYY-MM-DD HH:mm'
@@ -96,6 +98,11 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
                 var fivenumber = parseInt($('.give-number', curform).val());
                 if (fivenumber <= 0) {
                     showErrorMessage('最小为1', $('.coupon-number', curform));
+                    return false;
+                }
+                var chooseProductType = $('.productType').prop("checked");
+                if(!chooseProductType){
+                    showErrorMessage('请选择可投资标的', $('.productType', curform));
                     return false;
                 }
             },

@@ -288,4 +288,8 @@
         and invest.login_name = #{loginName}
         and source = 'AUTO'
     </select>
+
+    <select id="findInvestorLoginNames" resultType="java.lang.String">
+        select login_name from invest where invest.status = 'SUCCESS'
+    </select>
 </mapper>
