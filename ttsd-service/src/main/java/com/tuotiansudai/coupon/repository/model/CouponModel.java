@@ -50,6 +50,8 @@ public class CouponModel implements Serializable {
 
     private boolean smsAlert;
 
+    private boolean smsAlert;
+
     public long getId() {
         return id;
     }
