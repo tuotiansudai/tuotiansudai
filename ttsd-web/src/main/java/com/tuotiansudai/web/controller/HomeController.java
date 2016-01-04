@@ -1,11 +1,13 @@
 package com.tuotiansudai.web.controller;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.HomeLoanDto;
+import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
 import com.tuotiansudai.service.UserService;
@@ -49,19 +51,20 @@ public class HomeController {
         int userCount = userService.findUserCount();
         modelAndView.addObject("loans", loans);
         modelAndView.addObject("announces", baseDto.getData().getRecords());
-        modelAndView.addObject("userCount",userCount);
+        modelAndView.addObject("userCount", userCount);
         boolean showCoupon = false;
         if (StringUtils.isNotEmpty(LoginUserInfo.getLoginName())
                 && CollectionUtils.isNotEmpty(userCouponService.getUserCouponDtoByLoginName(LoginUserInfo.getLoginName()))
                 && !redisWrapperClient.exists(MessageFormat.format(KEYTEMPLATE, LoginUserInfo.getLoginName()))) {
             showCoupon = true;
-            redisWrapperClient.set(MessageFormat.format(KEYTEMPLATE, LoginUserInfo.getLoginName()),"show");
+            redisWrapperClient.set(MessageFormat.format(KEYTEMPLATE, LoginUserInfo.getLoginName()), "show");
             UserCouponDto userCouponDto = userCouponService.getUserCouponDtoByLoginName(LoginUserInfo.getLoginName()).get(0);
-            modelAndView.addObject("amountCoupon",userCouponDto.getAmount());
-            modelAndView.addObject("endTimeCoupon",userCouponDto.getEndTime());
-            modelAndView.addObject("nameCoupon",userCouponDto.getName());
+            modelAndView.addObject("amountCoupon", userCouponDto.getAmount());
+            modelAndView.addObject("endTimeCoupon", userCouponDto.getEndTime());
+            modelAndView.addObject("nameCoupon", userCouponDto.getName());
         }
-        modelAndView.addObject("showCoupon",showCoupon);
+        modelAndView.addObject("showCoupon", showCoupon);
+        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         return modelAndView;
     }
 }

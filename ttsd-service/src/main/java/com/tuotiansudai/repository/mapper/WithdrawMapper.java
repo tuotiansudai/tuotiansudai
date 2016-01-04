@@ -19,13 +19,13 @@ public interface WithdrawMapper {
     long findSumSuccessWithdrawByLoginName(String loginName);
 
     List<WithdrawModel> findWithdrawPagination(@Param(value = "withdrawId") String withdrawId,
-                                               @Param(value = "loginName") String loginName,
-                                               @Param(value = "status") WithdrawStatus status,
-                                               @Param(value = "source") Source source,
-                                               @Param(value = "index") int index,
-                                               @Param(value = "pageSize") int pageSize,
-                                               @Param(value = "startTime") Date startTime,
-                                               @Param(value = "endTime") Date endTime);
+                                                        @Param(value = "loginName") String loginName,
+                                                        @Param(value = "status") WithdrawStatus status,
+                                                        @Param(value = "source") Source source,
+                                                        @Param(value = "index") int index,
+                                                        @Param(value = "pageSize") int pageSize,
+                                                        @Param(value = "startTime") Date startTime,
+                                                        @Param(value = "endTime") Date endTime);
 
 
     long findSumWithdrawAmount(@Param(value = "withdrawId") String withdrawId,
@@ -43,10 +43,10 @@ public interface WithdrawMapper {
                             @Param(value = "startTime") Date startTime,
                             @Param(value = "endTime") Date endTime);
 
-    long findWithdrawCount(@Param(value = "withdrawId") String withdrawId,
-                           @Param(value = "loginName") String loginName,
-                           @Param(value = "status") WithdrawStatus status,
-                           @Param(value = "source") Source source,
-                           @Param(value = "startTime") Date startTime,
-                           @Param(value = "endTime") Date endTime);
+    int findWithdrawCount(@Param(value = "withdrawId") String withdrawId,
+                          @Param(value = "loginName") String loginName,
+                          @Param(value = "status") WithdrawStatus status,
+                          @Param(value = "source") Source source,
+                          @Param(value = "startTime") Date startTime,
+                          @Param(value = "endTime") Date endTime);
 }

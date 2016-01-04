@@ -93,7 +93,7 @@ body {
       height: 300px;
       box-sizing: border-box;
       padding: 50px 50px 10px;
-      background: rgba(255, 255, 255, 0.8);
+      background: url("/images/sign/bg-transparent.png") repeat;
       border-radius: 10px;
       .num-text {
         float: left;
@@ -161,7 +161,6 @@ body {
       }
       .notice-text {
         float: left;
-        width: 825px;
         padding-left: 40px;
         ul{
           float:left;
@@ -218,15 +217,19 @@ body {
         font-size: 14px;
         color: #0e050a;
         line-height: 1;
-        &:hover .icon-off {
-          display: none;
-        }
-        &:hover .icon-on {
-          display: block;
-        }
         span {
           float: left;
           width: 100%;
+          &.icon-hover{
+            width: 138px;
+            margin: 0 96px;
+            &:hover .icon-off {
+              display: none;
+            }
+            &:hover .icon-on {
+              display: block;
+            }
+          }
           b {
             font-size: 20px;
             display: block;
@@ -304,7 +307,7 @@ body {
           float: left;
           li {
             float: left;
-            width: 100%;
+            width: 758px;
             margin-bottom: 20px;
             border: 1px solid #e6e6e6;
             border-radius: 10px;
@@ -333,7 +336,7 @@ body {
               }
               .product-intro {
                 float: left;
-                width: 458px;
+                width: 300px;
                 height: 100px;
                 span {
                   float: left;
@@ -345,7 +348,7 @@ body {
               .product-income {
                 float: left;
                 width: 100px;
-                height: 85px;
+                height: 70px;
                 padding-top: 25px;
                 p {
                   margin-bottom: 0;
@@ -355,6 +358,36 @@ body {
                     text-align: center;
                     .income-num {
                       font-size: 40px;
+                    }
+                    .income-month {
+                      color: #b2b2b2;
+                    }
+                  }
+                  &.income-text-intro {
+                    font-size: 16px;
+                    color: #b2b2b2;
+                    text-align: left;
+                    padding-left: 5px;
+                  }
+                }
+              }
+              .product-month {
+                float: left;
+                width: 100px;
+                height: 70px;
+                padding-top: 25px;
+                margin-right:20px;
+                p {
+                  margin-bottom: 0;
+                  line-height: 25px;
+                  &.income-num-text {
+                    font-size: 20px;
+                    text-align: center;
+                    .income-num {
+                      font-size: 40px;
+                    }
+                    .income-month {
+                      color: #b2b2b2;
                     }
                   }
                   &.income-text-intro {
@@ -413,19 +446,15 @@ body {
         line-height: 100px;
         background: #fff;
         margin: 0 0 30px 0;
+        border-radius: 10px;
+        border: 1px solid #e5e5e5;
         span {
           float: left;
           font-size: 20px;
           color: #808080;
           margin-left: 30px;
-          i {
-            color: #808080;
-            font-size: 18px;
-            font-weight: 700;
-            padding: 5px 7px;
-            border: 1px solid #ff752a;
-            margin: 0 5px;
-            border-radius: 5px;
+          strong{
+            color: #ff7200;
           }
         }
       }
@@ -886,7 +915,7 @@ body {
     .page-width {
       position: relative;
       img.fl {
-        margin-left: -850px;
+        margin-left: 90px;
         margin-top: 50px;
       }
       .fr {
@@ -902,7 +931,7 @@ body {
       padding-top: 320px;
       .page-img {
         position: absolute;
-        left: 1260px;
+        left: 360px;
         top: 35px;
       }
       .article-one {
@@ -931,7 +960,7 @@ body {
         position: relative;
         .page-img {
           position: absolute;
-          right: 1400px;
+          right: 20px;
           top: 60px;
         }
         .sqr-title {
@@ -1438,15 +1467,6 @@ body {
         float: left;
         margin-bottom: 30px;
       }
-    }
-  }
-  .register-ad-box {
-    background-color: #fff;
-    filter: Alpha(opacity=80);
-    position: static;
-    *zoom: 1;
-    p {
-      position: relative;
     }
   }
 }

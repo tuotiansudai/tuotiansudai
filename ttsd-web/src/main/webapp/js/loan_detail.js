@@ -179,12 +179,13 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     if(isNaN(parseFloat(amount))) {
                         return false;
                     }
-                    var investAmount = parseFloat(amount);
+
                     var accountAmount = parseFloat($('form .account-amount').text());
-                    if(investAmount > accountAmount){
+                    if(amount > accountAmount){
                         location.href = '/recharge';
                         return false;
                     }
+                    amountInputElement.val(amount);
                     return true;
                 }
                 return true;

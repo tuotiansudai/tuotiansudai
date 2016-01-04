@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.WithdrawModel;
+import com.tuotiansudai.repository.model.WithdrawPaginationView;
 import com.tuotiansudai.repository.model.WithdrawStatus;
 import com.tuotiansudai.service.WithdrawService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,5 +85,18 @@ public class WithdrawServiceImpl implements WithdrawService {
 
         return withdrawMapper.findSumWithdrawFee(withdrawId, loginName, status, source, startTime, endTime);
     }
+
+
+    @Override
+    public int findWithdrawCount(String withdrawId,
+                                  String loginName,
+                                  WithdrawStatus status,
+                                  Source source,
+                                  Date startTime,
+                                  Date endTime) {
+
+        return withdrawMapper.findWithdrawCount(withdrawId, loginName, status, source, startTime, endTime);
+    }
+
 
 }
