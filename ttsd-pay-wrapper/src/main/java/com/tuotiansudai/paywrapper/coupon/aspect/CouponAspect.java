@@ -66,13 +66,16 @@ public class CouponAspect {
 
     @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.InvestService.investSuccess(*))")
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
+        logger.debug("after invest success");
         InvestModel investModel = (InvestModel)joinPoint.getArgs()[1];
         UserCouponModel userCouponModel = userCouponMapper.findByInvestId(investModel.getId());
+        logger.debug("after invest success invest id is " + investModel.getId());
         if (userCouponModel != null) {
             userCouponModel.setStatus(InvestStatus.SUCCESS);
             userCouponMapper.update(userCouponModel);
             userCouponService.recordUsedCount(userCouponModel.getCouponId());
         }
+        logger.debug("can not find user coupon by invest id , invest id is " + investModel.getId());
     }
 
 }
