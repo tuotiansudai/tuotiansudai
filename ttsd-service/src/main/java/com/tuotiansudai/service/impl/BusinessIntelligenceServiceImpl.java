@@ -99,8 +99,9 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
 
         long sumAmount = businessIntelligenceMapper.queryInvestViscositySumAmount(startTime, endTime, province, loanCount);
         List<InvestViscosityDetailView> items = businessIntelligenceMapper.queryInvestViscosityDetail(startTime, endTime, province, loanCount, (pageNo - 1) * pageSize, pageSize);
+        int totalCount = businessIntelligenceMapper.queryInvestViscosityDetailCount(startTime, endTime, province, loanCount);
 
-        InvestViscosityDetailTableView tableView = new InvestViscosityDetailTableView(sumAmount, items);
+        InvestViscosityDetailTableView tableView = new InvestViscosityDetailTableView(sumAmount, totalCount, items);
         return tableView;
     }
 

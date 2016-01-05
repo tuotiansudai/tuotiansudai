@@ -679,6 +679,35 @@
         LIMIT #{startIndex}, #{pageSize}
     </select>
 
+    <select id="queryInvestViscosityDetailCount" parameterType="map" resultType="int">
+        select
+            count(temp.login_name)
+        from (
+            select
+                i.login_name,
+                count(distinct i.loan_id) as loan_count
+            from invest i
+                <if test="province != null and province !=''">
+                    inner join `user` uu
+                    on i.login_name = uu.login_name
+                </if>
+            where
+                i.status='SUCCESS'
+                AND i.created_time between #{startTime} and #{endTime}
+                <if test="province != null and province !=''">
+                    and uu.province = #{province}
+                </if>
+            group by i.login_name
+            ) temp
+        WHERE
+        <if test="loanCount == 5">
+            <![CDATA[ temp.loan_count >= #{loanCount} ]]>
+        </if>
+        <if test="loanCount &lt; 5">
+            temp.loan_count = #{loanCount}
+        </if>
+    </select>
+
     <select id="queryInvestViscositySumAmount" parameterType="map" resultType="long">
         select
             SUM(temp.total_amount) as sum_amount
