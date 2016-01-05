@@ -443,7 +443,7 @@ public class UserServiceImpl implements UserService {
             max = Integer.parseInt(balanceMax) * 100;
         } catch (NumberFormatException e) {
             max = Integer.MAX_VALUE;
-            logger.warn("user account balance search parameter wrong, balanceMax is not an integer, balanceMax:" + balanceMin);
+            logger.warn("user account balance search parameter wrong, balanceMax is not an integer, balanceMax:" + balanceMax);
         }
         return new int[]{min, max};
     }

@@ -10,7 +10,7 @@
         </div>
         <div class="form-group">
             <label for="control-label">余额：</label>
-            <input type="text" class="form-control jq-balance-min" name="balanceMin" value="${balanceMin!}">~
+            <input type="text" class="form-control jq-balance-min" name="balanceMin" value="${balanceMin!50}">~
             <input type="text" class="form-control jq-balance-max" name="balanceMax" value="${balanceMax!}">
         </div>
 
