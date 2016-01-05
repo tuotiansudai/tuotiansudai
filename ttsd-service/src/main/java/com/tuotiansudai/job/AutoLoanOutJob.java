@@ -20,7 +20,7 @@ public class AutoLoanOutJob implements Job {
 
     public final static String LOAN_OUT_IN_PROCESS_KEY = "job:loan-out-in-process:";
 
-    public final static int AUTO_LOAN_OUT_DELAY_MINUTES = 1;
+    public final static int AUTO_LOAN_OUT_DELAY_MINUTES = 30;
 
     @Autowired
     private PayWrapperClient payWrapperClient;
