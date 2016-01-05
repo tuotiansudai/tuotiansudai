@@ -56,6 +56,7 @@ public class CouponAspect {
 
     @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.InvestService.invest(*))", returning = "returnValue")
     public void afterReturningInvest(JoinPoint joinPoint, Object returnValue) {
+        logger.debug("after invest");
         BaseDto<PayFormDataDto> baseDto= (BaseDto)returnValue;
         if (baseDto.getData() != null && baseDto.getData().getStatus()) {
             InvestDto investDto = (InvestDto) joinPoint.getArgs()[0];
