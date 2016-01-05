@@ -52,7 +52,7 @@ public class CouponModel implements Serializable {
 
     private boolean smsAlert;
 
-    private long deadline;
+    private Long deadline;
 
     private UserGroup userGroup;
 
@@ -247,11 +247,11 @@ public class CouponModel implements Serializable {
         this.deleted = deleted;
     }
 
-    public long getDeadline() {
+    public Long getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(long deadline) {
+    public void setDeadline(Long deadline) {
         this.deadline = deadline;
     }
 

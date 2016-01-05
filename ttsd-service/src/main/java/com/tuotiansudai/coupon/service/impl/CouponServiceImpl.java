@@ -82,24 +82,10 @@ public class CouponServiceImpl implements CouponService {
     @Transactional
     public void editCoupon(String loginName, CouponDto couponDto) throws CreateCouponException {
         this.checkCoupon(couponDto);
-        long id = couponDto.getId();
-        CouponModel couponModel = couponMapper.findById(id);
-
-        if(couponModel == null){
-            logger.error(id + " not exist");
-        }
+        CouponModel couponModel = new CouponModel(couponDto);
+        couponModel.setId(couponDto.getId());
         couponModel.setOperatedBy(loginName);
         couponModel.setOperatedTime(new Date());
-        couponModel.setAmount(AmountConverter.convertStringToCent(couponDto.getAmount()));
-        couponModel.setDeadline(StringUtils.isEmpty(couponDto.getDeadline()) ? null : Long.parseLong(couponDto.getDeadline()));
-        couponModel.setUserGroup(couponDto.getUserGroup());
-        couponModel.setTotalCount(StringUtils.isEmpty(couponDto.getTotalCount()) ? 0L : Long.parseLong(couponDto.getTotalCount()));
-        couponModel.setProductTypes(couponDto.getProductTypes());
-        couponModel.setInvestQuota(AmountConverter.convertStringToCent(couponDto.getInvestQuota()));
-        couponModel.setSmsAlert(couponDto.isSmsAlert());
-        couponModel.setStartTime(couponDto.getStartTime());
-        couponModel.setEndTime(couponDto.getEndTime());
-
         couponMapper.updateCoupon(couponModel);
     }
 

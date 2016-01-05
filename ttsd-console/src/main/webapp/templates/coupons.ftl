@@ -57,16 +57,16 @@
         <#list coupons as coupon>
         <tr>
             <td>
-                <span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${coupon.name}">${coupon.name}</span>
+                <span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title=""></span>
             </td>
             <td>
                 ${coupon.amount/100}
             </td>
             <td>
-                ${coupon.startTime?string('yyyy-MM-dd HH:mm')}
+                ${(coupon.startTime?string('yyyy-MM-dd HH:mm'))!}
             </td>
             <td>
-                ${coupon.endTime?string('yyyy-MM-dd HH:mm')}
+                ${(coupon.endTime?string('yyyy-MM-dd HH:mm'))!}
             </td>
             <td>
                 ${coupon.totalCount?string('0')}
@@ -90,6 +90,7 @@
                 ${coupon.actualAmount/100}
             </td>
             <td>
+                <a class="loan_repay " href="/activity-manage/coupon/${coupon.id?string('0')}/edit" data-id="${coupon.id?string('0')}">编辑</a>
                 <#if coupon.active>
                     <label>
                         <i class="check-btn add-check"></i>

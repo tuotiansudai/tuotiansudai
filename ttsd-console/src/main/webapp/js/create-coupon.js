@@ -143,9 +143,15 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
                 $('.userGroup').addClass("invest-coupon-total_count");
                 $('.give-number').removeAttr("invest-coupon-total_count");
                 $('.give-number').removeAttr("readonly");
+                $('.userGroup').attr('disabled','disabled');
+                $('.userGroup').selectpicker('refresh');
+                $('.user-group-hid').removeAttr("disabled");
             }else{
                 $('.give-number').addClass("invest-coupon-total_count");
                 $('.give-number').attr("readonly",true);
+                $('.user-group-hid').attr('disabled','disabled');
+                $('.userGroup').removeAttr("disabled");
+                $('.userGroup').selectpicker('refresh');
                 $('.userGroup').removeAttr("invest-coupon-total_count");
                 $('.newbie-coupon').hide();
                 $('.invest-coupon').show();
@@ -177,7 +183,7 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
             var userGroup = this.value;
             var couponType = $('.couponType').val();
             if(couponType == "INVEST_COUPON"){
-                $.get('/activity-manage/get/'+userGroup,function(data){
+                $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
                     $('.give-number').val(data);
                 })
             }

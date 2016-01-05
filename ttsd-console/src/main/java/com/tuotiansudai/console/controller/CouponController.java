@@ -48,45 +48,38 @@ public class CouponController {
     public ModelAndView createCoupon(@Valid @ModelAttribute CouponDto couponDto,RedirectAttributes redirectAttributes){
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView();
+        Long id = couponDto.getId();
         try {
-            couponService.createCoupon(loginName, couponDto);
+            if(id != null){
+                couponService.editCoupon(loginName, couponDto);
+            }else{
+                couponService.createCoupon(loginName, couponDto);
+            }
             modelAndView.setViewName("redirect:/activity-manage/coupons");
             return modelAndView;
         } catch (CreateCouponException e) {
-            modelAndView.setViewName("redirect:/activity-manage/coupon");
+            if(id != null){
+                modelAndView.setViewName("redirect:/activity-manage/coupon/"+id+"/edit");
+
+            }else{
+                modelAndView.setViewName("redirect:/activity-manage/coupon");
+            }
             redirectAttributes.addFlashAttribute("coupon", couponDto);
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return modelAndView;
         }
 
     }
-    @RequestMapping(value = "/coupon/edit",method = RequestMethod.POST)
-    @ResponseBody
-    public ModelAndView editCoupon(@Valid @ModelAttribute CouponDto couponDto,RedirectAttributes redirectAttributes){
-        String loginName = LoginUserInfo.getLoginName();
-        ModelAndView modelAndView = new ModelAndView();
-        try {
-            couponService.editCoupon(loginName, couponDto);
-            modelAndView.setViewName("redirect:/activity-manage/coupons");
-            return modelAndView;
-        } catch (CreateCouponException e) {
-            modelAndView.setViewName("redirect:/activity-manage/coupon");
-            redirectAttributes.addFlashAttribute("coupon", couponDto);
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return modelAndView;
-        }
-
-    }
-    @RequestMapping(value = "/coupon/edit/{id:^\\d+$}",method = RequestMethod.GET)
+    @RequestMapping(value = "/coupon/{id:^\\d+$}/edit",method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView edit(@PathVariable long id){
-        ModelAndView modelAndView = new ModelAndView("/edit-coupon");
+        ModelAndView modelAndView = new ModelAndView("/coupon-edit");
 
         CouponModel couponModel = couponService.findCouponById(id);
 
         modelAndView.addObject("coupon", couponModel);
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
-//        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
+        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
         return modelAndView;
 
     }
@@ -104,7 +97,7 @@ public class CouponController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/get/{userGroup}",method = RequestMethod.GET)
+    @RequestMapping(value = "/coupon/user-group/{userGroup}/estimate",method = RequestMethod.GET)
     @ResponseBody
     public long findEstimatedCount(@PathVariable UserGroup userGroup){
         return couponService.findEstimatedCount(userGroup);
