@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
 
 import java.util.List;
@@ -29,5 +30,5 @@ public interface InvestService {
 
     void processOneCallback(InvestNotifyRequestModel callbackRequestModel);
 
-    void fatalLog(String msg, String orderId, long amount, String loginName, long loanId, Throwable e);
+    void investSuccess(long orderId, InvestModel investModel, String loginName);
 }
