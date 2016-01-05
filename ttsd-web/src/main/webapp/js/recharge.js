@@ -14,19 +14,31 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric', 'commonFun'], function
             fastRechargeAmountElement = $('input[name="amount"]', $fastRechargeForm),
             fastRechargeSubmitElement = $('.btn', $fastRechargeForm),
             bankElement = $('.e-bank-recharge ol li'),
-            turnOnFastSubmitElement = $('input[type="submit"]',$turnOnFast);
+            turnOnFastSubmitElement = $('input[type="submit"]',$turnOnFast),
+            inputAmount = 0;
 
         if (rechargeInputAmountElement) {
             rechargeInputAmountElement.autoNumeric("init");
             rechargeInputAmountElement.keyup(function () {
+                inputAmount = parseFloat(rechargeInputAmountElement.autoNumeric("get")).toFixed(3);
                 var $this=$(this),
-                 amount = parseFloat(rechargeInputAmountElement.autoNumeric("get"));
+                   amount = parseFloat(inputAmount.substring(0, inputAmount.lastIndexOf('.') + 3));
                 if (isNaN(amount) || amount < 1) {
                     $this.parents('form').find('.error').show();
                     rechargeSubmitElement.prop('disabled', true).removeClass('btn-normal');
                 } else {
                     $this.parents('form').find('.error').hide();
                     rechargeSubmitElement.prop('disabled', false).addClass('btn-normal');
+                }
+            });
+
+            rechargeInputAmountElement.focus(function () {
+                if (inputAmount > 0) {
+                    var inputAmountStr = inputAmount + '';
+                    var amount = parseFloat(inputAmountStr.substring(0, inputAmountStr.lastIndexOf('.') + 3))
+                    if (!isNaN(amount)) {
+                        rechargeInputAmountElement.autoNumeric("set", amount);
+                    }
                 }
             });
             //网银充值提交
