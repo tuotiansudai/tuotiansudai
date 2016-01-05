@@ -269,7 +269,8 @@ public class InvestServiceImpl implements InvestService {
                 // 投资成功
                 infoLog("invest_success", orderIdStr, investModel.getAmount(), loginName, loanId);
                 // 投资成功，冻结用户资金，更新投资状态为success
-                investSuccess(orderId, investModel, loginName);
+
+                ((InvestService) AopContext.currentProxy()).investSuccess(orderId, investModel, loginName);
 
                 if (successInvestAmountTotal + investModel.getAmount() == loanModel.getLoanAmount()) {
                     // 满标，改标的状态 RECHECK
@@ -488,7 +489,7 @@ public class InvestServiceImpl implements InvestService {
             // 返款失败，当作投资成功处理
             errorLog("pay_back_notify_fail,take_as_invest_success", orderIdStr, investModel.getAmount(), loginName, investModel.getLoanId());
 
-            investSuccess(orderId, investModel, loginName);
+            ((InvestService) AopContext.currentProxy()).investSuccess(orderId, investModel, loginName);
 
             long loanId = investModel.getLoanId();
             // 超投，改标的状态为满标 RECHECK
@@ -508,7 +509,8 @@ public class InvestServiceImpl implements InvestService {
      * @param investModel
      * @param loginName
      */
-    private void investSuccess(long orderId, InvestModel investModel, String loginName) {
+    @Override
+    public void investSuccess(long orderId, InvestModel investModel, String loginName) {
         try {
             // 冻结资金
             amountTransfer.freeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
