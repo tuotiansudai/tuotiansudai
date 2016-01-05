@@ -94,13 +94,14 @@ public class CouponController {
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/active",method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> activeCoupon(@PathVariable long couponId){
+        String loginName = LoginUserInfo.getLoginName();
+        couponActivationService.active(loginName, couponId);
+
         BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(true);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         baseDto.setData(dataDto);
 
-        String loginName = LoginUserInfo.getLoginName();
-        couponActivationService.active(loginName, couponId);
         return baseDto;
     }
 
@@ -143,7 +144,7 @@ public class CouponController {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         baseDto.setData(dataDto);
         String loginName = LoginUserInfo.getLoginName();
-        couponService.deleteCoupon(loginName, couponId, true);
+        couponService.deleteCoupon(loginName, couponId);
         return baseDto;
     }
 }

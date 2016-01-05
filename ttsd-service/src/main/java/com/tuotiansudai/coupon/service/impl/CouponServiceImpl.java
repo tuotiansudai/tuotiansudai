@@ -167,11 +167,11 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public void deleteCoupon(String loginName, long couponId, boolean deleted) {
+    public void deleteCoupon(String loginName, long couponId) {
         CouponModel couponModel = couponMapper.findById(couponId);
         couponModel.setUpdatedBy(loginName);
         couponModel.setUpdatedTime(new Date());
-        couponModel.setDeleted(deleted);
+        couponModel.setDeleted(true);
         couponMapper.updateCoupon(couponModel);
     }
 }
