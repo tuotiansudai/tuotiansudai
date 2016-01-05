@@ -124,6 +124,37 @@
                     </form>
                     <div id="userInvestViscosity" style="width:100%; height:400px;">
                     </div>
+
+                    <div class="row" id="boxUserInvest" style="display: none">
+                    <div class="title-list">
+                        <span>合计投资金额： <em class="sumAmount"></em> 元</span>
+                    </div>
+                    <table class="table table-bordered" >
+                        <thead>
+                        <tr>
+                            <th>用户名</th>
+                            <th>真实姓名</th>
+                            <th>电话</th>
+                            <th>是否业务员</th>
+                            <th>推荐人id</th>
+                            <th>推荐人姓名</th>
+                            <th>推荐人是否业务员</th>
+                            <th>投资总金额(元)</th>
+                            <th>投资总次数</th>
+                            <th>上次投资时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td class="pageNumber" colspan="10">
+                                <span class="pageBtn"></span>总共<span class="TotalRecords"></span>条
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                    </div>
                 </div>
             </div>
         </div>
