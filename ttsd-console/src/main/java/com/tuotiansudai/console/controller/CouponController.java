@@ -76,7 +76,7 @@ public class CouponController {
         }
 
     }
-    @RequestMapping(value = "/coupon/edit/{id:^\\d+$}",method = RequestMethod.GET)
+    @RequestMapping(value = "/coupon/{id:^\\d+$}/edit",method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView edit(@PathVariable long id){
         ModelAndView modelAndView = new ModelAndView("/edit-coupon");
@@ -95,6 +95,7 @@ public class CouponController {
     @ResponseBody
     public BaseDto<BaseDataDto> activeCoupon(@PathVariable long couponId){
         BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(true);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         baseDto.setData(dataDto);
 
@@ -103,7 +104,7 @@ public class CouponController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/get/{userGroup}",method = RequestMethod.GET)
+    @RequestMapping(value = "/coupon/user-group/{userGroup}/estimate",method = RequestMethod.GET)
     @ResponseBody
     public long findEstimatedCount(@PathVariable UserGroup userGroup){
         return couponService.findEstimatedCount(userGroup);
@@ -145,5 +146,4 @@ public class CouponController {
         couponService.deleteCoupon(loginName, couponId, true);
         return baseDto;
     }
-
 }

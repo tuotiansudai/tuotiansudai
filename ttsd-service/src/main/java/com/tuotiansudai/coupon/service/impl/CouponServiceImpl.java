@@ -1,5 +1,8 @@
 package com.tuotiansudai.coupon.service.impl;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
@@ -8,15 +11,13 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.exception.CreateCouponException;
-
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.CouponType;
-
 import com.tuotiansudai.repository.mapper.LoanMapper;
-
+import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +53,7 @@ public class CouponServiceImpl implements CouponService {
     private void checkCoupon(CouponDto couponDto) throws CreateCouponException {
         CouponModel couponModel = new CouponModel(couponDto);
         long amount = couponModel.getAmount();
-        long investQuota = couponModel.getInvestQuota();
+        long investLowerLimit = couponModel.getInvestLowerLimit();
         if (amount <= 0) {
             throw new CreateCouponException("投资体验券金额应大于0!");
         }
@@ -60,7 +61,7 @@ public class CouponServiceImpl implements CouponService {
         if (totalCount <= 0) {
             throw new CreateCouponException("发放数量应大于0!");
         }
-        if (investQuota <= 0) {
+        if (investLowerLimit <= 0) {
             throw new CreateCouponException("使用条件金额应大于0!");
         }
         Date startTime = couponModel.getStartTime();
@@ -95,7 +96,7 @@ public class CouponServiceImpl implements CouponService {
         couponModel.setUserGroup(couponDto.getUserGroup());
         couponModel.setTotalCount(StringUtils.isEmpty(couponDto.getTotalCount()) ? 0L : Long.parseLong(couponDto.getTotalCount()));
         couponModel.setProductTypes(couponDto.getProductTypes());
-        couponModel.setInvestQuota(AmountConverter.convertStringToCent(couponDto.getInvestQuota()));
+        couponModel.setInvestLowerLimit(AmountConverter.convertStringToCent(couponDto.getInvestLowerLimit()));
         couponModel.setSmsAlert(couponDto.isSmsAlert());
         couponModel.setStartTime(couponDto.getStartTime());
         couponModel.setEndTime(couponDto.getEndTime());
@@ -105,22 +106,24 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     @Transactional
-    public void afterReturningUserRegistered(String loginName) {
-        List<CouponModel> couponModelValid = couponMapper.findValidCoupon();
-        for (CouponModel couponModel : couponModelValid) {
-            long id = couponModel.getId();
-            UserCouponModel userCouponModel = new UserCouponModel(loginName, id);
-            userCouponMapper.create(userCouponModel);
-            recordIssuedCount(id);
-        }
-    }
+    public void assignNewbieCoupon(String loginName) {
+        List<CouponModel> newbieCoupons = couponMapper.findNewbieCoupon();
+        Optional<CouponModel> found = Iterators.tryFind(newbieCoupons.iterator(), new Predicate<CouponModel>() {
+            @Override
+            public boolean apply(CouponModel couponModel) {
+                return couponModel.isActive() && couponModel.getEndTime().after(new DateTime().withTimeAtStartOfDay().toDate());
+            }
+        });
 
-    @Transactional
-    public void recordIssuedCount(long id) {
-        CouponModel couponModel = couponMapper.lockByCoupon(id);
-        long issuedCount = couponModel.getIssuedCount();
-        couponModel.setIssuedCount(issuedCount + 1);
-        couponMapper.updateCoupon(couponModel);
+        if (found.isPresent()) {
+            CouponModel couponModel = couponMapper.lockById(found.get().getId());
+            couponModel.setIssuedCount(couponModel.getIssuedCount() + 1);
+            couponModel.setTotalCount(couponModel.getTotalCount() + 1);
+            couponMapper.updateCoupon(couponModel);
+            
+            UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId());
+            userCouponMapper.create(userCouponModel);
+        }
     }
 
     @Override
@@ -137,14 +140,6 @@ public class CouponServiceImpl implements CouponService {
         return couponMapper.findCouponsCount();
     }
 
-    @Override
-    public void updateCoupon(String loginName, long couponId, boolean active) {
-        CouponModel couponModel = couponMapper.findById(couponId);
-        couponModel.setActive(active);
-        couponModel.setActivatedTime(new Date());
-        couponModel.setActivatedBy(loginName);
-        couponMapper.updateCoupon(couponModel);
-    }
 
     @Override
     public CouponModel findCouponById(long couponId) {
@@ -152,24 +147,17 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public boolean couponIsAvailable(long userCouponId, String amount) {
-        UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
-        CouponModel couponModel = findCouponById(userCouponModel.getCouponId());
-        long investAmount = AmountConverter.convertStringToCent(amount);
-        return investAmount >= couponModel.getInvestQuota();
-    }
-
-    @Override
     public long findEstimatedCount(UserGroup userGroup) {
-
         if(userGroup.isInvestedUser()){
             return investMapper.findInvestorCount();
         }
         if(userGroup.isRegisteredNotInvestedUser()){
             return investMapper.findCertificationNoInvestCount();
         }
-        return 0L;
+        return 0;
     }
+
+    @Override
     public List<UserCouponModel> findCouponDetail(long couponId, Boolean isUsed) {
         List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponIdAndStatus(couponId, isUsed);
         for (UserCouponModel userCouponModel : userCouponModels) {

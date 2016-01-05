@@ -23,7 +23,7 @@
         <result column="issued_count" property="issuedCount"/>
         <result column="expected_amount" property="expectedAmount"/>
         <result column="actual_amount" property="actualAmount"/>
-        <result column="invest_quota" property="investQuota"/>
+        <result column="invest_lower_limit" property="investLowerLimit"/>
         <result column="coupon_type" property="couponType"/>
         <result column="product_types" property="productTypes" typeHandler="com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler"/>
         <result column="deleted" property="deleted"/>
@@ -41,13 +41,12 @@
         select * from coupon where id = #{id} and deleted is FALSE
     </select>
 
-    <select id="findValidCoupon" resultMap="couponResultMap" >
-        select * from coupon where active = true and issued_count &lt; total_count and now() between start_time and end_time and deleted is FALSE;
+    <select id="findNewbieCoupon" resultMap="couponResultMap">
+        select * from coupon where coupon_type = 'NEWBIE_COUPON';
     </select>
 
-
-    <select useCache="false" id="lockByCoupon" parameterType="java.lang.Long" resultMap="couponResultMap">
-        select * from coupon where id = #{id} and deleted is FALSE for update
+    <select useCache="false" id="lockById" parameterType="java.lang.Long" resultMap="couponResultMap">
+        select * from coupon where id = #{id} for update
     </select>
 
     <select id="findCoupons" parameterType="map" resultMap="couponResultMap">
@@ -96,10 +95,8 @@
         update_by = #{updateBy},
         update_time = #{updateTime},
         active = #{active},
-        invest_quota = #{investQuota},
-        <if test="deleted != null">
-            deleted = #{deleted},
-        </if>
+        invest_lower_limit = #{investLowerLimit},
+        deleted = #{deleted},
         product_types = #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}
         where id = #{id}
     </update>
