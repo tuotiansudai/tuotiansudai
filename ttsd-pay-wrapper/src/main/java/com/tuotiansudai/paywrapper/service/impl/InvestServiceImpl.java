@@ -6,7 +6,6 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -23,6 +22,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransfer
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestService;
+import com.tuotiansudai.paywrapper.service.InvestSuccessService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.*;
@@ -99,6 +99,9 @@ public class InvestServiceImpl implements InvestService {
     private int autoInvestIntervalMilliseconds;
 
     public static final String JOB_TRIGGER_KEY = "job:invest:invest_callback_job_trigger";
+
+    @Autowired
+    private InvestSuccessService investSuccessService;
 
     @Override
     @Transactional
@@ -270,7 +273,7 @@ public class InvestServiceImpl implements InvestService {
                 infoLog("invest_success", orderIdStr, investModel.getAmount(), loginName, loanId);
                 // 投资成功，冻结用户资金，更新投资状态为success
 
-                ((InvestService) AopContext.currentProxy()).investSuccess(orderId, investModel, loginName);
+                investSuccessService.investSuccess(orderId, investModel, loginName);
 
                 if (successInvestAmountTotal + investModel.getAmount() == loanModel.getLoanAmount()) {
                     // 满标，改标的状态 RECHECK
@@ -492,7 +495,7 @@ public class InvestServiceImpl implements InvestService {
             // 返款失败，当作投资成功处理
             errorLog("pay_back_notify_fail,take_as_invest_success", orderIdStr, investModel.getAmount(), loginName, investModel.getLoanId());
 
-            ((InvestService) AopContext.currentProxy()).investSuccess(orderId, investModel, loginName);
+            investSuccessService.investSuccess(orderId, investModel, loginName);
 
             long loanId = investModel.getLoanId();
             // 超投，改标的状态为满标 RECHECK
@@ -504,27 +507,6 @@ public class InvestServiceImpl implements InvestService {
         String respData = callbackRequest.getResponseData();
         return respData;
     }
-
-    /**
-     * 投资成功处理：冻结资金＋更新invest状态
-     *
-     * @param orderId
-     * @param investModel
-     * @param loginName
-     */
-    @Override
-    public void investSuccess(long orderId, InvestModel investModel, String loginName) {
-        try {
-            // 冻结资金
-            amountTransfer.freeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
-        } catch (AmountTransferException e) {
-            // 记录日志，发短信通知管理员
-            fatalLog("invest success, but freeze account fail", String.valueOf(orderId), investModel.getAmount(), loginName, investModel.getLoanId(), e);
-        }
-        // 改invest 本身状态为投资成功
-        investMapper.updateStatus(investModel.getId(), InvestStatus.SUCCESS);
-    }
-
 
     private void infoLog(String msg, String orderId, long amount, String loginName, long loanId) {
         logger.info(msg + ",orderId:" + orderId + ",LoginName:" + loginName + ",amount:" + amount + ",loanId:" + loanId);
@@ -542,7 +524,8 @@ public class InvestServiceImpl implements InvestService {
         this.fatalLog(errMsg, null);
     }
 
-    private void fatalLog(String msg, String orderId, long amount, String loginName, long loanId, Throwable e) {
+    @Override
+    public void fatalLog(String msg, String orderId, long amount, String loginName, long loanId, Throwable e) {
         String errMsg = msg + ",orderId:" + orderId + ",LoginName:" + loginName + ",amount:" + amount + ",loanId:" + loanId;
         fatalLog(errMsg, e);
     }
