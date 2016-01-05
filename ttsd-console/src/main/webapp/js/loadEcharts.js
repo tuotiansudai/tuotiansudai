@@ -226,7 +226,7 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                 $boxUserInvest=$('#boxUserInvest');
             $.pageflip.defaultVal = {
                 pageIndex: 1,
-                pageSize: 1,
+                pageSize: 10,
                 PageCallback: loadReportData,
                 PagePosition: "#boxUserInvest table .pageNumber span.pageBtn",
                 pageLocalized: {
@@ -264,8 +264,8 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                             '<td>'+((_.isNull(option.referrer))?'':option.referrer)+'</td> ' +
                             '<td>'+((_.isNull(option.referrerUserName))?'':option.referrerUserName)+'</td> ' +
                             '<td>'+((option.isStaff==1)?'是':'否')+'</td> ' +
-                            '<td>'+option.totalAmount+'</td> ' +
-                            '<td>'+option.loanCount/100+'</td> ' +
+                            '<td>'+option.totalAmount/100+'</td> ' +
+                            '<td>'+option.loanCount+'</td> ' +
                             '<td>'+showDate+'</td> ' +
                             '</tr>');
                     })
