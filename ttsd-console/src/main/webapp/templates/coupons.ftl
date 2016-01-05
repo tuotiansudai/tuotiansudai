@@ -106,7 +106,7 @@
                 </#list>
             </td>
             <td>
-                投资满${coupon.investQuota/100}元
+                投资满${coupon.investLowerLimit/100}元
             </td>
             <td>
                 ${coupon.expectedAmount/100}

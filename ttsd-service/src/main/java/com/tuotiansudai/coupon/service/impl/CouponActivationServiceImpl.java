@@ -74,7 +74,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
             couponModel.setIssuedCount(loginNames.size());
         }
 
-        if (couponModel.getDeadline() == null) {
+        if (couponModel.getDeadline() != null) {
             Date now = new Date();
             couponModel.setStartTime(new DateTime(now).withTimeAtStartOfDay().toDate());
             couponModel.setEndTime(new DateTime(now).plusDays(couponModel.getDeadline()).withTimeAtStartOfDay().minusSeconds(1).toDate());
