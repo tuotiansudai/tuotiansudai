@@ -1,7 +1,7 @@
 from paver.shell import sh
 
 
-class NewVersionUnitTest(object):
+class UTRunner(object):
     def __init__(self, db_host, db_port, redis_host, redis_port):
         self.db_host = db_host
         self.db_port = db_port
