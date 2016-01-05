@@ -89,12 +89,12 @@ public class CouponServiceImpl implements CouponService {
         if(couponModel == null){
             logger.error(id + " not exist");
         }
-        couponModel.setUpdateBy(loginName);
-        couponModel.setUpdateTime(new Date());
+        couponModel.setUpdatedBy(loginName);
+        couponModel.setUpdatedTime(new Date());
         couponModel.setAmount(AmountConverter.convertStringToCent(couponDto.getAmount()));
-        couponModel.setDeadline(StringUtils.isEmpty(couponDto.getDeadline()) ? null : Long.parseLong(couponDto.getDeadline()));
+        couponModel.setDeadline(couponDto.getDeadline());
         couponModel.setUserGroup(couponDto.getUserGroup());
-        couponModel.setTotalCount(StringUtils.isEmpty(couponDto.getTotalCount()) ? 0L : Long.parseLong(couponDto.getTotalCount()));
+        couponModel.setTotalCount(couponDto.getTotalCount());
         couponModel.setProductTypes(couponDto.getProductTypes());
         couponModel.setInvestLowerLimit(AmountConverter.convertStringToCent(couponDto.getInvestLowerLimit()));
         couponModel.setSmsAlert(couponDto.isSmsAlert());
@@ -169,8 +169,8 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public void deleteCoupon(String loginName, long couponId, boolean deleted) {
         CouponModel couponModel = couponMapper.findById(couponId);
-        couponModel.setUpdateBy(loginName);
-        couponModel.setUpdateTime(new Date());
+        couponModel.setUpdatedBy(loginName);
+        couponModel.setUpdatedTime(new Date());
         couponModel.setDeleted(deleted);
         couponMapper.updateCoupon(couponModel);
     }

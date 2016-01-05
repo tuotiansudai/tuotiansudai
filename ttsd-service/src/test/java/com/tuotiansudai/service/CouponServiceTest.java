@@ -171,7 +171,7 @@ public class CouponServiceTest {
     private CouponDto fakeCouponDto(){
         CouponDto couponDto = new CouponDto();
         couponDto.setAmount("1000.00");
-        couponDto.setTotalCount("100");
+        couponDto.setTotalCount(100L);
         couponDto.setEndTime(new Date());
         couponDto.setStartTime(new Date());
         couponDto.setInvestLowerLimit("1000.00");
