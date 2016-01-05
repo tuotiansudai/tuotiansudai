@@ -136,7 +136,6 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
 
         $('.couponType').change(function(){
             var couponType = this.value;
-            iniForm();
             if(couponType == "NEWBIE_COUPON"){
                 $('.newbie-coupon').show();
                 $('.invest-coupon').hide();
@@ -150,28 +149,7 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
                 $('.newbie-coupon').hide();
                 $('.invest-coupon').show();
             }
-        });
-
-
-
-        function iniForm(){
-            $errorDom.html('');
-            $('.coupon-number').val('');
-            $('.coupon-deadline').val('');
-            $('.give-number').val('');
-            $('.coupon-start').val('');
-            $('.coupon-end').val('');
-            $('.invest-quota').val('');
-            $('.smsAlert').eq(0).prop('checked',true)
-            $('.productType').prop('checked',false).eq(0).prop('checked',true)
-            $selectDom.filter('.userGroup').selectpicker('val','INVESTED_USER');
-            var couponType = $('.couponType').val();
-            if(couponType == "INVEST_COUPON"){
-                $selectDom.filter('.userGroup').trigger('change');
-            }
-
-
-        }
+        }).trigger('change');
 
         $('.userGroup').change(function(){
             var userGroup = this.value;

@@ -15,6 +15,7 @@ import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 
 import com.tuotiansudai.util.AmountConverter;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,13 @@ public class CouponServiceImpl implements CouponService {
     @Override
     @Transactional
     public void createCoupon(String loginName, CouponDto couponDto) throws CreateCouponException {
+        this.checkCoupon(couponDto);
+        CouponModel couponModel = new CouponModel(couponDto);
+        couponModel.setCreatedBy(loginName);
+        couponMapper.create(couponModel);
+    }
+
+    private void checkCoupon(CouponDto couponDto) throws CreateCouponException {
         CouponModel couponModel = new CouponModel(couponDto);
         long amount = couponModel.getAmount();
         long investQuota = couponModel.getInvestQuota();
@@ -68,10 +76,31 @@ public class CouponServiceImpl implements CouponService {
                 throw new CreateCouponException("活动止期早于活动起期!");
             }
         }
+    }
 
+    @Override
+    @Transactional
+    public void editCoupon(String loginName, CouponDto couponDto) throws CreateCouponException {
+        this.checkCoupon(couponDto);
+        long id = couponDto.getId();
+        CouponModel couponModel = couponMapper.findById(id);
 
-        couponModel.setCreatedBy(loginName);
-        couponMapper.create(couponModel);
+        if(couponModel == null){
+            logger.error(id + " not exist");
+        }
+        couponModel.setOperatedBy(loginName);
+        couponModel.setOperatedTime(new Date());
+        couponModel.setAmount(AmountConverter.convertStringToCent(couponDto.getAmount()));
+        couponModel.setDeadline(StringUtils.isEmpty(couponDto.getDeadline()) ? null : Long.parseLong(couponDto.getDeadline()));
+        couponModel.setUserGroup(couponDto.getUserGroup());
+        couponModel.setTotalCount(StringUtils.isEmpty(couponDto.getTotalCount()) ? 0L : Long.parseLong(couponDto.getTotalCount()));
+        couponModel.setProductTypes(couponDto.getProductTypes());
+        couponModel.setInvestQuota(AmountConverter.convertStringToCent(couponDto.getInvestQuota()));
+        couponModel.setSmsAlert(couponDto.isSmsAlert());
+        couponModel.setStartTime(couponDto.getStartTime());
+        couponModel.setEndTime(couponDto.getEndTime());
+
+        couponMapper.updateCoupon(couponModel);
     }
 
     @Override

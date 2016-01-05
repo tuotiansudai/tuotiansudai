@@ -12,6 +12,7 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.ProductType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -59,6 +60,37 @@ public class CouponController {
         }
 
     }
+    @RequestMapping(value = "/coupon/edit",method = RequestMethod.POST)
+    @ResponseBody
+    public ModelAndView editCoupon(@Valid @ModelAttribute CouponDto couponDto,RedirectAttributes redirectAttributes){
+        String loginName = LoginUserInfo.getLoginName();
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            couponService.editCoupon(loginName, couponDto);
+            modelAndView.setViewName("redirect:/activity-manage/coupons");
+            return modelAndView;
+        } catch (CreateCouponException e) {
+            modelAndView.setViewName("redirect:/activity-manage/coupon");
+            redirectAttributes.addFlashAttribute("coupon", couponDto);
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return modelAndView;
+        }
+
+    }
+    @RequestMapping(value = "/coupon/edit/{id:^\\d+$}",method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView edit(@PathVariable long id){
+        ModelAndView modelAndView = new ModelAndView("/edit-coupon");
+
+        CouponModel couponModel = couponService.findCouponById(id);
+
+        modelAndView.addObject("coupon", couponModel);
+        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
+//        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
+        return modelAndView;
+
+    }
+
 
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/active",method = RequestMethod.POST)
     @ResponseBody
