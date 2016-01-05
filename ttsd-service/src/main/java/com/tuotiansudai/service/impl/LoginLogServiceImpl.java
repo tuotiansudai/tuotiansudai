@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 public class LoginLogServiceImpl implements LoginLogService {
 
-    private static String LOGIN_LOG_TABLE_TEMPLATE = "login_log_{0}{1}";
+    private static String LOGIN_LOG_TABLE_TEMPLATE = "login_log_{0}";
 
     @Autowired
     private LoginLogMapper loginLogMapper;
@@ -37,23 +37,20 @@ public class LoginLogServiceImpl implements LoginLogService {
         if(userModel == null)
             return;
         LoginLogModel model = new LoginLogModel(userModel.getLoginName(), source, ip, device, loginSuccess);
-        DateTime now = new DateTime();
-        loginLogMapper.create(model, MessageFormat.format(LOGIN_LOG_TABLE_TEMPLATE, String.valueOf(now.getYear()), String.valueOf(now.getMonthOfYear())));
+        loginLogMapper.create(model, this.getLoginLogTableName());
     }
 
     @Override
     public BasePaginationDataDto<LoginLogPaginationItemDataDto> getLoginLogPaginationData(String loginName, Boolean success, int index, int pageSize, int year, int month) {
-        String table = MessageFormat.format(LOGIN_LOG_TABLE_TEMPLATE, String.valueOf(year), String.valueOf(month));
-
-        long count = loginLogMapper.count(loginName, success, table);
+        String loginLogTableName = this.getLoginLogTableName();
+        long count = loginLogMapper.count(loginName, success, loginLogTableName);
 
         List<LoginLogModel> data = Lists.newArrayList();
         if (count > 0 ) {
             int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
-            data = loginLogMapper.getPaginationData(loginName, success, (index - 1) * pageSize, pageSize, table);
+            data = loginLogMapper.getPaginationData(loginName, success, (index - 1) * pageSize, pageSize, loginLogTableName);
         }
-
 
         List<LoginLogPaginationItemDataDto> records = Lists.transform(data, new Function<LoginLogModel, LoginLogPaginationItemDataDto>() {
             @Override
@@ -63,5 +60,9 @@ public class LoginLogServiceImpl implements LoginLogService {
         });
 
         return new BasePaginationDataDto<>(index, pageSize, count, records);
+    }
+
+    private String getLoginLogTableName() {
+        return MessageFormat.format(LOGIN_LOG_TABLE_TEMPLATE, new DateTime().toString("yyyyMM"));
     }
 }

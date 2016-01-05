@@ -1,8 +1,8 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.ProductType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,13 +16,16 @@ public interface LoanMapper {
 
     LoanModel findById(@Param(value = "loanId") long loanId);
 
-    List<LoanModel> findLoanListWeb(@Param(value = "activityType") ActivityType activityType, @Param(value = "status") LoanStatus status,
-                                    @Param(value = "periodsStart") long periodsStart, @Param(value = "periodsEnd") long periodsEnd,
-                                    @Param(value = "rateStart") double rateStart, @Param(value = "rateEnd") double rateEnd, @Param(value = "currentPageNo") int currentPageNo);
+    List<LoanModel> findLoanListWeb(@Param(value = "productType") ProductType productType,
+                                    @Param(value = "status") LoanStatus status,
+                                    @Param(value = "rateStart") double rateStart,
+                                    @Param(value = "rateEnd") double rateEnd,
+                                    @Param(value = "index") int index);
 
-    int findLoanListCountWeb(@Param(value = "activityType") ActivityType activityType, @Param(value = "status") LoanStatus status,
-                             @Param(value = "periodsStart") long periodsStart, @Param(value = "periodsEnd") long periodsEnd,
-                             @Param(value = "rateStart") double rateStart, @Param(value = "rateEnd") double rateEnd);
+    int findLoanListCountWeb(@Param(value = "productType") ProductType productType,
+                             @Param(value = "status") LoanStatus status,
+                             @Param(value = "rateStart") double rateStart,
+                             @Param(value = "rateEnd") double rateEnd);
 
     void update(LoanModel loanModel);
 
@@ -69,5 +72,5 @@ public interface LoanMapper {
     void updateRaisingCompleteTime(@Param(value = "loanId") long loanId,
                                    @Param(value = "raisingCompleteTime") Date raisingCompleteTime);
 
-    List<LoanModel> findTopSixLoanList();
+    List<LoanModel> findHomeLoan();
 }
