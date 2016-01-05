@@ -612,7 +612,8 @@
           on i.login_name = u.login_name
           </if>
           where
-            i.created_time between #{startTime} and #{endTime}
+            i.status='SUCCESS'
+            and i.created_time between #{startTime} and #{endTime}
             <if test="province != null and province !=''">
             and u.province = #{province}
             </if>
