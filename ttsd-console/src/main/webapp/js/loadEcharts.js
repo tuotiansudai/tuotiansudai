@@ -250,11 +250,19 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                     contentType: 'application/json; charset=UTF-8'
                 }).done(function (data) {
                     var dataObj=[], TotalRecord=data.totalCount;
-                    $boxUserInvest.find('.sumAmount').text(data.sumAmount);
+
+                    $boxUserInvest.find('.sumAmount').text(parseFloat(data.sumAmount/100).toFixed(2));
                     $.each(data.items,function(key,option) {
                         var isReferrerStaff=(option.isReferrerStaff==1)?'是':'否';
                         var getDate=new Date(option.lastInvestTime),
-                            showDate=MyChartsObject.datetimeFun.getNowFormatDate(getDate);
+                            Hours=getDate.getHours(),
+                            minutes=getDate.getMinutes(),
+                            seconds=getDate.getSeconds();
+
+                        Hours=(Hours >= 10)?(Hours + ":"):("0" + Hours + ":");
+                        minutes=(minutes >= 10)?(minutes + ":"):("0" + minutes + ":");
+                        seconds=(seconds >= 10)?seconds:("0" + seconds);
+                            showDate=MyChartsObject.datetimeFun.getNowFormatDate(getDate)+' '+Hours+minutes+seconds;
 
                         dataObj.push('<tr> ' +
                             '<td>'+option.loginName+'</td> ' +
@@ -264,7 +272,7 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                             '<td>'+((_.isNull(option.referrer))?'':option.referrer)+'</td> ' +
                             '<td>'+((_.isNull(option.referrerUserName))?'':option.referrerUserName)+'</td> ' +
                             '<td>'+((option.isStaff==1)?'是':'否')+'</td> ' +
-                            '<td>'+option.totalAmount/100+'</td> ' +
+                            '<td>'+parseFloat(option.totalAmount/100).toFixed(2)+'</td> ' +
                             '<td>'+option.loanCount+'</td> ' +
                             '<td>'+showDate+'</td> ' +
                             '</tr>');
