@@ -114,4 +114,8 @@
             and (status != 'SUCCESS' or status is null)
         </if>
     </select>
+
+    <select id="findByCouponId" parameterType="long" resultMap="userCouponResultMap">
+        select * from user_coupon where coupon_id = #{couponId}
+    </select>
 </mapper>

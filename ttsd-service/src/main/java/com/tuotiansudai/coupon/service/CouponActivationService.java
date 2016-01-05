@@ -2,5 +2,7 @@ package com.tuotiansudai.coupon.service;
 
 public interface CouponActivationService {
 
-    void active(String loginName, long couponId);
+    void active(String loginNameLoginName, long couponId);
+
+    void sendSms(long couponId);
 }

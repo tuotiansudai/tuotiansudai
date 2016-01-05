@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +18,7 @@ public class CouponDto implements Serializable {
     private Long id;
 
     @NotEmpty
+    @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String amount;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
@@ -25,13 +27,13 @@ public class CouponDto implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date endTime;
 
-    @NotEmpty
-    private String totalCount;
+    private Long totalCount;
 
     @NotEmpty
-    private String investQuota;
+    @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
+    private String investLowerLimit;
 
-    @NotEmpty
+    @NotNull
     private List<ProductType> productTypes;
 
     @NotNull
@@ -39,7 +41,7 @@ public class CouponDto implements Serializable {
 
     private boolean smsAlert;
 
-    private String deadline;
+    private Integer deadline;
 
     private UserGroup userGroup;
 
@@ -67,20 +69,20 @@ public class CouponDto implements Serializable {
         this.endTime = endTime;
     }
 
-    public String getTotalCount() {
+    public Long getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(String totalCount) {
+    public void setTotalCount(Long totalCount) {
         this.totalCount = totalCount;
     }
 
-    public String getInvestQuota() {
-        return investQuota;
+    public String getInvestLowerLimit() {
+        return investLowerLimit;
     }
 
-    public void setInvestQuota(String investQuota) {
-        this.investQuota = investQuota;
+    public void setInvestLowerLimit(String investLowerLimit) {
+        this.investLowerLimit = investLowerLimit;
     }
 
     public List<ProductType> getProductTypes() {
@@ -107,11 +109,11 @@ public class CouponDto implements Serializable {
         this.smsAlert = smsAlert;
     }
 
-    public String getDeadline() {
+    public Integer getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(String deadline) {
+    public void setDeadline(Integer deadline) {
         this.deadline = deadline;
     }
 

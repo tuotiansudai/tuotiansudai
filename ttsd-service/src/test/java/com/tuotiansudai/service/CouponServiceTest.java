@@ -113,7 +113,7 @@ public class CouponServiceTest {
         couponModel.setActive(true);
         couponMapper.create(couponModel);
 
-        couponService.afterReturningUserRegistered(userModel.getLoginName());
+        couponService.assignNewbieCoupon(userModel.getLoginName());
         CouponModel couponModel2 = couponMapper.findById(couponModel.getId());
 
         assertEquals(1, couponModel2.getIssuedCount());
@@ -171,15 +171,15 @@ public class CouponServiceTest {
     private CouponDto fakeCouponDto(){
         CouponDto couponDto = new CouponDto();
         couponDto.setAmount("1000.00");
-        couponDto.setTotalCount("100");
+        couponDto.setTotalCount(100L);
         couponDto.setEndTime(new Date());
         couponDto.setStartTime(new Date());
+        couponDto.setInvestLowerLimit("1000.00");
         couponDto.setCouponType(CouponType.INVEST_COUPON);
         List<ProductType> productTypes = Lists.newArrayList();
         productTypes.add(ProductType.JYF);
         couponDto.setProductTypes(productTypes);
-        couponDto.setInvestQuota("1000.00");
-
+        couponDto.setInvestLowerLimit("1000.00");
         return couponDto;
     }
 
@@ -212,7 +212,7 @@ public class CouponServiceTest {
         loanModel.setInvestIncreasingAmount(1);
         loanModel.setLoanAmount(10000);
         loanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
-        loanModel.setMaxInvestAmount(100000000000l);
+        loanModel.setMaxInvestAmount(100000000000L);
         loanModel.setMinInvestAmount(0);
         loanModel.setCreatedTime(new Date());
         loanModel.setStatus(LoanStatus.RAISING);
@@ -221,6 +221,4 @@ public class CouponServiceTest {
         loanModel.setLoanerIdentityNumber("111111111111111111");
         return loanModel;
     }
-
-
 }

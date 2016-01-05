@@ -16,14 +16,12 @@
         <result column="created_by" property="createdBy"/>
         <result column="activated_by" property="activatedBy"/>
         <result column="activated_time" property="activatedTime"/>
-
-        <result column="operated_by" property="operatedBy"/>
-        <result column="operated_time" property="operatedTime"/>
-
+        <result column="updated_by" property="updatedBy"/>
+        <result column="updated_time" property="updatedTime"/>
         <result column="issued_count" property="issuedCount"/>
         <result column="expected_amount" property="expectedAmount"/>
         <result column="actual_amount" property="actualAmount"/>
-        <result column="invest_quota" property="investQuota"/>
+        <result column="invest_lower_limit" property="investLowerLimit"/>
         <result column="coupon_type" property="couponType"/>
         <result column="product_types" property="productTypes" typeHandler="com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler"/>
         <result column="deleted" property="deleted"/>
@@ -33,21 +31,20 @@
     </resultMap>
 
     <insert id="create" parameterType="CouponModel" useGeneratedKeys="true" keyProperty="id">
-        insert into coupon (amount, start_time, end_time, used_count, total_count, active, created_by, created_time, activated_by, activated_time, operated_by, operated_time, issued_count, invest_quota, coupon_type, product_types, deleted,deadline,user_group,sms_alert)
-        value(#{amount}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{createdBy}, #{createdTime}, #{activatedBy}, #{activatedTime}, #{operatedBy}, #{operatedTime}, #{issuedCount}, #{investQuota}, #{couponType}, #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}, #{deleted},#{deadline},#{userGroup},#{smsAlert})
+        insert into coupon (amount, start_time, end_time, used_count, total_count, active, created_by, created_time, activated_by, activated_time, issued_count, invest_quota, coupon_type, product_types, deleted, deadline, user_group, sms_alert)
+        value(#{amount}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{createdBy}, #{createdTime}, #{activatedBy}, #{activatedTime}, #{issuedCount}, #{investQuota}, #{couponType}, #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}, #{deleted},#{deadline},#{userGroup},#{smsAlert})
     </insert>
 
     <select id="findById" resultMap="couponResultMap" parameterType="long">
         select * from coupon where id = #{id} and deleted is FALSE
     </select>
 
-    <select id="findValidCoupon" resultMap="couponResultMap" >
-        select * from coupon where active = true and issued_count &lt; total_count and now() between start_time and end_time and deleted is FALSE;
+    <select id="findNewbieCoupon" resultMap="couponResultMap">
+        select * from coupon where coupon_type = 'NEWBIE_COUPON';
     </select>
 
-
-    <select useCache="false" id="lockByCoupon" parameterType="java.lang.Long" resultMap="couponResultMap">
-        select * from coupon where id = #{id} and deleted is FALSE for update
+    <select useCache="false" id="lockById" parameterType="java.lang.Long" resultMap="couponResultMap">
+        select * from coupon where id = #{id} for update
     </select>
 
     <select id="findCoupons" parameterType="map" resultMap="couponResultMap">
@@ -93,13 +90,11 @@
         deadline = #{deadline},
         user_group = #{userGroup},
         sms_alert = #{smsAlert},
-        operated_by = #{operatedBy},
-        operated_time = #{operatedTime},
+        updated_by = #{updatedBy},
+        updated_time = #{updatedTime},
         active = #{active},
-        invest_quota = #{investQuota},
-        <if test="deleted != null">
-            deleted = #{deleted},
-        </if>
+        invest_lower_limit = #{investLowerLimit},
+        deleted = #{deleted},
         product_types = #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}
         where id = #{id}
     </update>

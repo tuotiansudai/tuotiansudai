@@ -26,7 +26,7 @@
                         在投资金额输入框的下方勾
                         选“使用体验劵”即可使用。
                     </dd>
-                    <dd class="tc"><a href="${coupon.valid?string('/loan-list','javascript:void(0);')}" class="btn-action">立即使用</a></dd>
+                    <dd class="tc"><a href="${coupon.unused?string('/loan-list','javascript:void(0);')}" class="btn-action">立即使用</a></dd>
                 </dl>
             </div>
             <div class="sign-seal sign-used"><span>已<br/>使用</span></div>

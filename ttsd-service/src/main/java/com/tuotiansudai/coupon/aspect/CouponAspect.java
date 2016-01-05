@@ -29,7 +29,7 @@ public class CouponAspect {
             boolean userRegisterFlag = (boolean) returnValue;
             if (userRegisterFlag) {
                 RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
-                couponService.afterReturningUserRegistered(registerUserDto.getLoginName());
+                couponService.assignNewbieCoupon(registerUserDto.getLoginName());
             }
         } catch (Exception e) {
             logger.error("after user registered aspect fail ", e);

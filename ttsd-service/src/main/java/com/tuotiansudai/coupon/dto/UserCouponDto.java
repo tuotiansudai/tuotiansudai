@@ -2,6 +2,7 @@ package com.tuotiansudai.coupon.dto;
 
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.model.InvestStatus;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
@@ -9,16 +10,20 @@ import java.util.Date;
 
 public class UserCouponDto implements Serializable {
     private long id;
+    private long couponId;
+    private Long loanId;
     private String name;
     private long amount;
     private Date startTime;
     private Date endTime;
-    private long loanId;
     private boolean used;
     private boolean expired;
-    private boolean valid = true;
-    private long couponId;
-    private long investQuota;
+    private boolean unused;
+    private boolean usable;
+    private long investLowerLimit;
+
+    public UserCouponDto() {
+    }
 
     public UserCouponDto(CouponModel coupon, UserCouponModel userCoupon) {
         this.id = userCoupon.getId();
@@ -27,14 +32,15 @@ public class UserCouponDto implements Serializable {
         this.startTime = coupon.getStartTime();
         this.endTime = coupon.getEndTime();
         this.loanId = userCoupon.getLoanId();
-        this.used = (this.loanId != 0);
-        if (this.used) {
-            this.expired = false;
-        } else {
-            this.expired = new DateTime(this.endTime).plusDays(1).withTimeAtStartOfDay().isBeforeNow();
-        }
-        this.valid = !(this.used || this.expired);
-        this.investQuota = coupon.getInvestQuota();
+        this.used = InvestStatus.SUCCESS == userCoupon.getStatus();
+        this.expired = !this.used && new DateTime(this.endTime).plusDays(1).withTimeAtStartOfDay().isBeforeNow();
+        this.unused = !this.used && !this.expired;
+        this.investLowerLimit = coupon.getInvestLowerLimit();
+    }
+
+    public UserCouponDto(CouponModel couponModel, UserCouponModel userCouponModel, long investAmount) {
+        this(couponModel, userCouponModel);
+        this.usable = this.unused && investAmount >= couponModel.getInvestLowerLimit();
     }
 
     public long getId() {
@@ -43,6 +49,14 @@ public class UserCouponDto implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getCouponId() {
+        return couponId;
+    }
+
+    public void setCouponId(long couponId) {
+        this.couponId = couponId;
     }
 
     public String getName() {
@@ -77,11 +91,11 @@ public class UserCouponDto implements Serializable {
         this.endTime = endTime;
     }
 
-    public long getLoanId() {
+    public Long getLoanId() {
         return loanId;
     }
 
-    public void setLoanId(long loanId) {
+    public void setLoanId(Long loanId) {
         this.loanId = loanId;
     }
 
@@ -101,27 +115,27 @@ public class UserCouponDto implements Serializable {
         this.expired = expired;
     }
 
-    public boolean isValid() {
-        return valid;
+    public boolean isUnused() {
+        return unused;
     }
 
-    public void setValid(boolean valid) {
-        this.valid = valid;
+    public void setUnused(boolean unused) {
+        this.unused = unused;
     }
 
-    public long getCouponId() {
-        return couponId;
+    public boolean isUsable() {
+        return usable;
     }
 
-    public void setCouponId(long couponId) {
-        this.couponId = couponId;
+    public void setUsable(boolean usable) {
+        this.usable = usable;
     }
 
-    public long getInvestQuota() {
-        return investQuota;
+    public long getInvestLowerLimit() {
+        return investLowerLimit;
     }
 
-    public void setInvestQuota(long investQuota) {
-        this.investQuota = investQuota;
+    public void setInvestLowerLimit(long investLowerLimit) {
+        this.investLowerLimit = investLowerLimit;
     }
 }

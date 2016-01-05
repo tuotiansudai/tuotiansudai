@@ -2,6 +2,8 @@ package com.tuotiansudai.coupon.service.impl;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -9,16 +11,27 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.util.UserCollector;
+import com.tuotiansudai.dto.SmsCouponNotifyDto;
+import com.tuotiansudai.job.CouponNotifyJob;
+import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.JobManager;
+import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class CouponActivationServiceImpl implements CouponActivationService {
+
+    static Logger logger = Logger.getLogger(CouponActivationServiceImpl.class);
 
     @Resource(name = "investedUserCollector")
     private UserCollector investedUserCollector;
@@ -27,14 +40,23 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     private UserCollector registeredNotInvestedUserCollector;
 
     @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
     private CouponMapper couponMapper;
 
     @Autowired
     private UserCouponMapper userCouponMapper;
 
+    @Autowired
+    private JobManager jobManager;
+
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
+
     @Transactional
     @Override
-    public void active(String operator, long couponId) {
+    public void active(String loginNameLoginName, long couponId) {
         CouponModel couponModel = couponMapper.findById(couponId);
         if (couponModel.isActive()) {
             return;
@@ -52,10 +74,41 @@ public class CouponActivationServiceImpl implements CouponActivationService {
             couponModel.setIssuedCount(loginNames.size());
         }
 
+        if (couponModel.getDeadline() == null) {
+            Date now = new Date();
+            couponModel.setStartTime(new DateTime(now).withTimeAtStartOfDay().toDate());
+            couponModel.setEndTime(new DateTime(now).plusDays(couponModel.getDeadline()).withTimeAtStartOfDay().minusSeconds(1).toDate());
+        }
+
         couponModel.setActive(true);
-        couponModel.setActivatedBy(operator);
+        couponModel.setActivatedBy(loginNameLoginName);
         couponModel.setActivatedTime(new Date());
         couponMapper.updateCoupon(couponModel);
+
+        if (couponModel.isSmsAlert()) {
+            this.createSmsNotifyJob(couponId);
+        }
+    }
+
+    @Override
+    public void sendSms(long couponId) {
+        CouponModel couponModel = couponMapper.findById(couponId);
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(couponId);
+        SmsCouponNotifyDto notifyDto = new SmsCouponNotifyDto();
+        notifyDto.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
+        notifyDto.setCouponType(couponModel.getCouponType());
+        notifyDto.setExpiredDate(couponModel.getEndTime());
+
+        for (UserCouponModel userCouponModel : userCouponModels) {
+            String loginName = userCouponModel.getLoginName();
+            String mobile = userMapper.findByLoginName(loginName).getMobile();
+            notifyDto.setMobile(mobile);
+            try {
+                smsWrapperClient.sendCouponNotify(notifyDto);
+            } catch (Exception e) {
+                logger.error(MessageFormat.format("Send coupon notify is failed (userCouponId = {0})", String.valueOf(userCouponModel.getId())));
+            }
+        }
     }
 
 
@@ -64,5 +117,18 @@ public class CouponActivationServiceImpl implements CouponActivationService {
                 .put(UserGroup.INVESTED_USER, this.investedUserCollector)
                 .put(UserGroup.REGISTERED_NOT_INVESTED_USER, this.registeredNotInvestedUserCollector)
                 .build()).get(userGroup);
+    }
+
+    private void createSmsNotifyJob(long couponId) {
+        try {
+            Date oneMinuteLater = new DateTime().plusMinutes(1).toDate();
+            jobManager.newJob(JobType.CouponNotify, CouponNotifyJob.class)
+                    .runOnceAt(oneMinuteLater)
+                    .addJobData(CouponNotifyJob.COUPON_ID, couponId)
+                    .withIdentity(JobType.CouponNotify.name(), MessageFormat.format("Coupon-Notify-{0}", String.valueOf(couponId)))
+                    .submit();
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("Create coupon notify job failed (couponId = {0})", String.valueOf(couponId)), e);
+        }
     }
 }

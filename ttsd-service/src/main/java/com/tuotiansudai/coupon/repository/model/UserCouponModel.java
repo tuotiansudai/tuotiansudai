@@ -9,11 +9,13 @@ public class UserCouponModel implements Serializable{
 
     private long id;
 
-    private String loginName;
-
     private long couponId;
 
+    private String loginName;
+
     private Long loanId;
+
+    private Long investId;
 
     private Date usedTime;
 
@@ -28,8 +30,6 @@ public class UserCouponModel implements Serializable{
     private long actualFee;
 
     private Date createdTime;
-
-    private Long investId;
 
     private InvestStatus status;
 

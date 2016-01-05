@@ -30,6 +30,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.springframework.aop.framework.AopContext;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -116,12 +117,11 @@ public class InvestServiceImpl implements InvestService {
         try {
             checkLoanInvestAccountAmount(dto.getLoginName(), investModel.getLoanId(), investModel.getAmount());
             investMapper.create(investModel);
-            BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
-            return baseDto;
+            return payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
         } catch (PayException e) {
+            logger.error(e.getLocalizedMessage(), e);
             BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
             PayFormDataDto payFormDataDto = new PayFormDataDto();
-            payFormDataDto.setStatus(false);
             payFormDataDto.setMessage(e.getMessage());
             baseDto.setData(payFormDataDto);
             return baseDto;
@@ -203,8 +203,7 @@ public class InvestServiceImpl implements InvestService {
         if (callbackRequest == null) {
             return null;
         }
-        String respData = callbackRequest.getResponseData();
-        return respData;
+        return callbackRequest.getResponseData();
     }
 
     @Override
@@ -269,7 +268,7 @@ public class InvestServiceImpl implements InvestService {
                 // 投资成功
                 infoLog("invest_success", orderIdStr, investModel.getAmount(), loginName, loanId);
                 // 投资成功，冻结用户资金，更新投资状态为success
-                investSuccess(orderId, investModel, loginName);
+                ((InvestService) AopContext.currentProxy()).investSuccess(orderId, investModel, loginName);
 
                 if (successInvestAmountTotal + investModel.getAmount() == loanModel.getLoanAmount()) {
                     // 满标，改标的状态 RECHECK
@@ -418,8 +417,11 @@ public class InvestServiceImpl implements InvestService {
         if (returnAmount >= availableLoanAmount) {
             returnAmount = availableLoanAmount;
         }
+        if (returnAmount < minLoanInvestAmount) {
+            return 0L;
+        }
         long autoInvestMoney = returnAmount - (returnAmount - minLoanInvestAmount) % investIncreasingAmount;
-        return autoInvestMoney < minInvestAmount ? 0L : autoInvestMoney;
+        return autoInvestMoney < NumberUtils.max(minInvestAmount, minLoanInvestAmount) ? 0L : autoInvestMoney;
     }
 
     @Override
@@ -455,6 +457,7 @@ public class InvestServiceImpl implements InvestService {
      * @param queryString
      * @return
      */
+    @Override
     public String overInvestPaybackCallback(Map<String, String> paramsMap, String queryString) {
 
         logger.debug("into over_invest_payback_callback, queryString: " + queryString);
@@ -488,7 +491,7 @@ public class InvestServiceImpl implements InvestService {
             // 返款失败，当作投资成功处理
             errorLog("pay_back_notify_fail,take_as_invest_success", orderIdStr, investModel.getAmount(), loginName, investModel.getLoanId());
 
-            investSuccess(orderId, investModel, loginName);
+            ((InvestService) AopContext.currentProxy()).investSuccess(orderId, investModel, loginName);
 
             long loanId = investModel.getLoanId();
             // 超投，改标的状态为满标 RECHECK
@@ -508,7 +511,8 @@ public class InvestServiceImpl implements InvestService {
      * @param investModel
      * @param loginName
      */
-    private void investSuccess(long orderId, InvestModel investModel, String loginName) {
+    @Override
+    public void investSuccess(long orderId, InvestModel investModel, String loginName) {
         try {
             // 冻结资金
             amountTransfer.freeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);

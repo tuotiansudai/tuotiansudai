@@ -2,14 +2,12 @@ package com.tuotiansudai.paywrapper.coupon.aspect;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
-import com.tuotiansudai.paywrapper.coupon.service.UserCouponService;
+import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.InvestStatus;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -31,10 +29,7 @@ public class CouponAspect {
     private CouponRepayService couponRepayService;
 
     @Autowired
-    private UserCouponMapper userCouponMapper;
-
-    @Autowired
-    private UserCouponService userCouponService;
+    private CouponInvestService couponInvestService;
 
     @Around(value = "execution(* com.tuotiansudai.paywrapper.service.RepayService.postRepayCallback(*))")
     public Object aroundRepay(ProceedingJoinPoint proceedingJoinPoint) {
@@ -54,26 +49,28 @@ public class CouponAspect {
         return false;
     }
 
+    @SuppressWarnings(value = "unchecked")
     @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.InvestService.invest(*))", returning = "returnValue")
     public void afterReturningInvest(JoinPoint joinPoint, Object returnValue) {
-        BaseDto<PayFormDataDto> baseDto= (BaseDto)returnValue;
+        InvestDto investDto = (InvestDto) joinPoint.getArgs()[0];
+        BaseDto<PayFormDataDto> baseDto = (BaseDto<PayFormDataDto>) returnValue;
         if (baseDto.getData() != null && baseDto.getData().getStatus()) {
-            InvestDto investDto = (InvestDto) joinPoint.getArgs()[0];
-            long investId = Long.parseLong(baseDto.getData().getFields().get("order_id").toString());
-            userCouponService.afterReturningInvest(investDto, investId);
+            long investId = Long.parseLong(baseDto.getData().getFields().get("order_id"));
+            Long userCouponId;
+            try {
+                userCouponId = Long.parseLong(investDto.getUserCouponId());
+            } catch (NumberFormatException e) {
+                logger.error(e.getLocalizedMessage(), e);
+                userCouponId = null;
+            }
+            couponInvestService.invest(investId, userCouponId);
         }
     }
 
     @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.InvestService.investSuccess(*))")
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
-        InvestModel investModel = (InvestModel)joinPoint.getArgs()[1];
-        UserCouponModel userCouponModel = userCouponMapper.findByInvestId(investModel.getId());
-        if (userCouponModel != null) {
-            userCouponModel.setStatus(InvestStatus.SUCCESS);
-            userCouponMapper.update(userCouponModel);
-            userCouponService.recordUsedCount(userCouponModel.getCouponId());
-        }
+        InvestModel investModel = (InvestModel) joinPoint.getArgs()[1];
+        couponInvestService.investCallback(investModel.getId());
     }
-
 }
 
