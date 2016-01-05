@@ -93,4 +93,25 @@
     <select id="findByInvestId" parameterType="map" resultMap="userCouponResultMap">
         select * from user_coupon where invest_id = #{investId}
     </select>
+
+    <select id="findSumInvestAmountByCouponId" parameterType="map" resultType="long">
+        SELECT
+          IFNULL(SUM(i.`amount`), 0)
+        FROM
+          user_coupon t
+          JOIN invest i
+            ON t.`invest_id` = i.`id`
+        WHERE t.`coupon_id` = #{couponId}
+          AND t.`status` = 'SUCCESS'
+    </select>
+
+    <select id="findByCouponIdAndStatus" parameterType="map" resultMap="userCouponResultMap">
+        select * from user_coupon where coupon_id = #{couponId}
+        <if test="isUsed != null and isUsed">
+            and status = 'SUCCESS'
+        </if>
+        <if test="isUsed != null and !isUsed">
+            and (status != 'SUCCESS' or status is null)
+        </if>
+    </select>
 </mapper>

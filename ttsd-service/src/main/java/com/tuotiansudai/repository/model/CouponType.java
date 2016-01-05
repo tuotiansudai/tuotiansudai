@@ -18,4 +18,8 @@ public enum CouponType {
     CouponType(String desc) {
         this.desc = desc;
     }
+
+    public static boolean isNewBieCoupon(CouponType couponType){
+        return couponType.equals(CouponType.NEWBIE_COUPON);
+    }
 }

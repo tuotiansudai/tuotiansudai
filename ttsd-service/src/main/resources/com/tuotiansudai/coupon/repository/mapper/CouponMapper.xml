@@ -16,27 +16,32 @@
         <result column="created_by" property="createdBy"/>
         <result column="activated_by" property="activatedBy"/>
         <result column="activated_time" property="activatedTime"/>
+        <result column="operated_by" property="operatedBy"/>
+        <result column="operated_time" property="operatedTime"/>
         <result column="issued_count" property="issuedCount"/>
         <result column="expected_amount" property="expectedAmount"/>
         <result column="actual_amount" property="actualAmount"/>
         <result column="invest_lower_limit" property="investLowerLimit"/>
         <result column="coupon_type" property="couponType"/>
         <result column="product_types" property="productTypes" typeHandler="com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler"/>
+        <result column="deleted" property="deleted"/>
+        <result column="deadline" property="deadline"/>
+        <result column="user_group" property="userGroup"/>
+        <result column="sms_alert" property="smsAlert"/>
     </resultMap>
 
     <insert id="create" parameterType="CouponModel" useGeneratedKeys="true" keyProperty="id">
-        insert into coupon (amount, start_time, end_time, used_count, total_count, active, created_by, created_time, activated_by, activated_time, issued_count, invest_lower_limit, coupon_type, product_types)
-        value(#{amount}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{createdBy}, #{createdTime}, #{activatedBy}, #{activatedTime}, #{issuedCount}, #{investLowerLimit}, #{couponType}, #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler})
+        insert into coupon (amount, start_time, end_time, used_count, total_count, active, created_by, created_time, activated_by, activated_time, operated_by, operated_time, issued_count, invest_lower_limit, coupon_type, product_types, deleted, deadline, user_group, sms_alert)
+        value(#{amount}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{createdBy}, #{createdTime}, #{activatedBy}, #{activatedTime}, #{operatedBy}, #{operatedTime}, #{issuedCount}, #{investLowerLimit}, #{couponType}, #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}, #{deleted}, #{deadline}, #{userGroup}, #{smsAlert})
     </insert>
 
     <select id="findById" resultMap="couponResultMap" parameterType="long">
-        select * from coupon where id = #{id}
+        select * from coupon where id = #{id} and deleted is FALSE
     </select>
 
     <select id="findNewbieCoupon" resultMap="couponResultMap">
         select * from coupon where coupon_type = 'NEWBIE_COUPON';
     </select>
-
 
     <select useCache="false" id="lockById" parameterType="java.lang.Long" resultMap="couponResultMap">
         select * from coupon where id = #{id} for update
@@ -62,23 +67,34 @@
               user_coupon t
             GROUP BY t.coupon_id) temp
             ON c.id = temp.coupon_id
+            where c.deleted is FALSE
         ORDER BY created_time DESC
         LIMIT #{index},#{pageSize}
     </select>
 
     <select id="findCouponsCount"  resultType="int">
-        select count(*) from coupon
+        select count(*) from coupon where deleted is FALSE
     </select>
 
     <update id="updateCoupon" parameterType="CouponModel">
         update coupon
-        set used_count = #{usedCount},
+        set
+        amount = #{amount},
+        start_time = #{startTime},
+        end_time = #{endTime},
+        used_count = #{usedCount},
         total_count = #{totalCount},
         issued_count = #{issuedCount},
         activated_by = #{activatedBy},
         activated_time = #{activatedTime},
+        deadline = #{deadline},
+        user_group = #{userGroup},
+        sms_alert = #{smsAlert},
+        operated_by = #{operatedBy},
+        operated_time = #{operatedTime},
         active = #{active},
         invest_lower_limit = #{investLowerLimit},
+        deleted = #{deleted},
         product_types = #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}
         where id = #{id}
     </update>

@@ -8,8 +8,14 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.exception.CreateCouponException;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.util.AmountConverter;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +36,21 @@ public class CouponServiceImpl implements CouponService {
     @Autowired
     private UserCouponMapper userCouponMapper;
 
+    @Autowired
+    private InvestMapper investMapper;
+    @Autowired
+    private LoanMapper loanMapper;
+
     @Override
     @Transactional
     public void createCoupon(String loginName, CouponDto couponDto) throws CreateCouponException {
+        this.checkCoupon(couponDto);
+        CouponModel couponModel = new CouponModel(couponDto);
+        couponModel.setCreatedBy(loginName);
+        couponMapper.create(couponModel);
+    }
+
+    private void checkCoupon(CouponDto couponDto) throws CreateCouponException {
         CouponModel couponModel = new CouponModel(couponDto);
         long amount = couponModel.getAmount();
         long investLowerLimit = couponModel.getInvestLowerLimit();
@@ -48,18 +66,42 @@ public class CouponServiceImpl implements CouponService {
         }
         Date startTime = couponModel.getStartTime();
         Date endTime = couponModel.getEndTime();
+        if(CouponType.isNewBieCoupon(couponDto.getCouponType())){
+            if (startTime == null) {
+                throw new CreateCouponException("活动起期不能为空!");
+            }
+            if (endTime == null) {
+                throw new CreateCouponException("活动止期不能为空!");
+            }
+            if (endTime.before(startTime)) {
+                throw new CreateCouponException("活动止期早于活动起期!");
+            }
+        }
+    }
 
-        if (startTime == null) {
-            throw new CreateCouponException("活动起期不能为空!");
+    @Override
+    @Transactional
+    public void editCoupon(String loginName, CouponDto couponDto) throws CreateCouponException {
+        this.checkCoupon(couponDto);
+        long id = couponDto.getId();
+        CouponModel couponModel = couponMapper.findById(id);
+
+        if(couponModel == null){
+            logger.error(id + " not exist");
         }
-        if (endTime == null) {
-            throw new CreateCouponException("活动止期不能为空!");
-        }
-        if (endTime.before(startTime)) {
-            throw new CreateCouponException("活动止期早于活动起期!");
-        }
-        couponModel.setCreatedBy(loginName);
-        couponMapper.create(couponModel);
+        couponModel.setOperatedBy(loginName);
+        couponModel.setOperatedTime(new Date());
+        couponModel.setAmount(AmountConverter.convertStringToCent(couponDto.getAmount()));
+        couponModel.setDeadline(StringUtils.isEmpty(couponDto.getDeadline()) ? null : Long.parseLong(couponDto.getDeadline()));
+        couponModel.setUserGroup(couponDto.getUserGroup());
+        couponModel.setTotalCount(StringUtils.isEmpty(couponDto.getTotalCount()) ? 0L : Long.parseLong(couponDto.getTotalCount()));
+        couponModel.setProductTypes(couponDto.getProductTypes());
+        couponModel.setInvestLowerLimit(AmountConverter.convertStringToCent(couponDto.getInvestLowerLimit()));
+        couponModel.setSmsAlert(couponDto.isSmsAlert());
+        couponModel.setStartTime(couponDto.getStartTime());
+        couponModel.setEndTime(couponDto.getEndTime());
+
+        couponMapper.updateCoupon(couponModel);
     }
 
     @Override
@@ -86,7 +128,11 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public List<CouponModel> findCoupons(int index, int pageSize) {
-        return couponMapper.findCoupons((index - 1) * pageSize, pageSize);
+        List<CouponModel> couponModels = couponMapper.findCoupons((index - 1) * pageSize, pageSize);
+        for (CouponModel couponModel : couponModels) {
+            couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
+        }
+        return couponModels;
     }
 
     @Override
@@ -94,4 +140,38 @@ public class CouponServiceImpl implements CouponService {
         return couponMapper.findCouponsCount();
     }
 
+
+    @Override
+    public CouponModel findCouponById(long couponId) {
+        return couponMapper.findById(couponId);
+    }
+
+    @Override
+    public long findEstimatedCount(UserGroup userGroup) {
+        if(userGroup.isInvestedUser()){
+            return investMapper.findInvestorCount();
+        }
+        if(userGroup.isRegisteredNotInvestedUser()){
+            return investMapper.findCertificationNoInvestCount();
+        }
+        return 0;
+    }
+
+    @Override
+    public List<UserCouponModel> findCouponDetail(long couponId, Boolean isUsed) {
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponIdAndStatus(couponId, isUsed);
+        for (UserCouponModel userCouponModel : userCouponModels) {
+            userCouponModel.setLoanName(userCouponModel.getLoanId() != null ? loanMapper.findById(userCouponModel.getLoanId()).getName() : null);
+        }
+        return userCouponModels;
+    }
+
+    @Override
+    public void deleteCoupon(String loginName, long couponId, boolean deleted) {
+        CouponModel couponModel = couponMapper.findById(couponId);
+        couponModel.setOperatedBy(loginName);
+        couponModel.setOperatedTime(new Date());
+        couponModel.setDeleted(deleted);
+        couponMapper.updateCoupon(couponModel);
+    }
 }
