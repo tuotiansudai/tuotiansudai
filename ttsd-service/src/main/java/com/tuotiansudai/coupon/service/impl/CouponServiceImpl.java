@@ -5,10 +5,17 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.exception.CreateCouponException;
+
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.model.CouponType;
+
 import com.tuotiansudai.repository.mapper.LoanMapper;
+
 import com.tuotiansudai.util.AmountConverter;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,11 +36,20 @@ public class CouponServiceImpl implements CouponService {
     private UserCouponMapper userCouponMapper;
 
     @Autowired
+    private InvestMapper investMapper;
+    @Autowired
     private LoanMapper loanMapper;
 
     @Override
     @Transactional
     public void createCoupon(String loginName, CouponDto couponDto) throws CreateCouponException {
+        this.checkCoupon(couponDto);
+        CouponModel couponModel = new CouponModel(couponDto);
+        couponModel.setCreatedBy(loginName);
+        couponMapper.create(couponModel);
+    }
+
+    private void checkCoupon(CouponDto couponDto) throws CreateCouponException {
         CouponModel couponModel = new CouponModel(couponDto);
         long amount = couponModel.getAmount();
         long investQuota = couponModel.getInvestQuota();
@@ -49,18 +65,42 @@ public class CouponServiceImpl implements CouponService {
         }
         Date startTime = couponModel.getStartTime();
         Date endTime = couponModel.getEndTime();
+        if(CouponType.isNewBieCoupon(couponDto.getCouponType())){
+            if (startTime == null) {
+                throw new CreateCouponException("活动起期不能为空!");
+            }
+            if (endTime == null) {
+                throw new CreateCouponException("活动止期不能为空!");
+            }
+            if (endTime.before(startTime)) {
+                throw new CreateCouponException("活动止期早于活动起期!");
+            }
+        }
+    }
 
-        if (startTime == null) {
-            throw new CreateCouponException("活动起期不能为空!");
+    @Override
+    @Transactional
+    public void editCoupon(String loginName, CouponDto couponDto) throws CreateCouponException {
+        this.checkCoupon(couponDto);
+        long id = couponDto.getId();
+        CouponModel couponModel = couponMapper.findById(id);
+
+        if(couponModel == null){
+            logger.error(id + " not exist");
         }
-        if (endTime == null) {
-            throw new CreateCouponException("活动止期不能为空!");
-        }
-        if (endTime.before(startTime)) {
-            throw new CreateCouponException("活动止期早于活动起期!");
-        }
-        couponModel.setCreatedBy(loginName);
-        couponMapper.create(couponModel);
+        couponModel.setOperatedBy(loginName);
+        couponModel.setOperatedTime(new Date());
+        couponModel.setAmount(AmountConverter.convertStringToCent(couponDto.getAmount()));
+        couponModel.setDeadline(StringUtils.isEmpty(couponDto.getDeadline()) ? null : Long.parseLong(couponDto.getDeadline()));
+        couponModel.setUserGroup(couponDto.getUserGroup());
+        couponModel.setTotalCount(StringUtils.isEmpty(couponDto.getTotalCount()) ? 0L : Long.parseLong(couponDto.getTotalCount()));
+        couponModel.setProductTypes(couponDto.getProductTypes());
+        couponModel.setInvestQuota(AmountConverter.convertStringToCent(couponDto.getInvestQuota()));
+        couponModel.setSmsAlert(couponDto.isSmsAlert());
+        couponModel.setStartTime(couponDto.getStartTime());
+        couponModel.setEndTime(couponDto.getEndTime());
+
+        couponMapper.updateCoupon(couponModel);
     }
 
     @Override
@@ -120,6 +160,16 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
+    public long findEstimatedCount(UserGroup userGroup) {
+
+        if(userGroup.isInvestedUser()){
+            return investMapper.findInvestorCount();
+        }
+        if(userGroup.isRegisteredNotInvestedUser()){
+            return investMapper.findCertificationNoInvestCount();
+        }
+        return 0L;
+    }
     public List<UserCouponModel> findCouponDetail(long couponId, Boolean isUsed) {
         List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponIdAndStatus(couponId, isUsed);
         for (UserCouponModel userCouponModel : userCouponModels) {
@@ -136,5 +186,4 @@ public class CouponServiceImpl implements CouponService {
         couponModel.setDeleted(deleted);
         couponMapper.updateCoupon(couponModel);
     }
-
 }

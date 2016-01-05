@@ -13,4 +13,11 @@ public enum UserGroup {
     public String getDescription() {
         return description;
     }
+
+    public boolean isInvestedUser(){
+        return this == INVESTED_USER;
+    }
+    public boolean isRegisteredNotInvestedUser(){
+        return this == REGISTERED_NOT_INVESTED_USER;
+    }
 }

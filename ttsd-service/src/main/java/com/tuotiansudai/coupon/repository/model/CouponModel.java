@@ -50,6 +50,10 @@ public class CouponModel implements Serializable {
 
     private CouponType couponType;
 
+    private boolean smsAlert;
+
+    private long deadline;
+
     private UserGroup userGroup;
 
     private long totalInvestAmount;
@@ -212,6 +216,13 @@ public class CouponModel implements Serializable {
         this.couponType = couponType;
     }
 
+    public boolean isSmsAlert() {
+        return smsAlert;
+    }
+
+    public void setSmsAlert(boolean smsAlert) {
+        this.smsAlert = smsAlert;
+    }
     public String getOperatedBy() {
         return operatedBy;
     }
@@ -236,6 +247,14 @@ public class CouponModel implements Serializable {
         this.deleted = deleted;
     }
 
+    public long getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(long deadline) {
+        this.deadline = deadline;
+    }
+
     public CouponModel(CouponDto couponDto){
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime();
@@ -245,6 +264,9 @@ public class CouponModel implements Serializable {
         this.couponType = couponDto.getCouponType();
         this.investQuota = AmountConverter.convertStringToCent(couponDto.getInvestQuota());
         this.createdTime = new Date();
+        this.smsAlert = couponDto.isSmsAlert();
         this.deleted = false;
+        this.deadline = StringUtils.isEmpty(couponDto.getDeadline())? null :Long.parseLong(couponDto.getDeadline());
+        this.userGroup = couponDto.getUserGroup();
     }
 }

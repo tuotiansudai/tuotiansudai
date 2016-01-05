@@ -27,11 +27,14 @@
         <result column="coupon_type" property="couponType"/>
         <result column="product_types" property="productTypes" typeHandler="com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler"/>
         <result column="deleted" property="deleted"/>
+        <result column="deadline" property="deadline"/>
+        <result column="user_group" property="userGroup"/>
+        <result column="sms_alert" property="smsAlert"/>
     </resultMap>
 
     <insert id="create" parameterType="CouponModel" useGeneratedKeys="true" keyProperty="id">
-        insert into coupon (amount, start_time, end_time, used_count, total_count, active, created_by, created_time, activated_by, activated_time, operated_by, operated_time, issued_count, invest_quota, coupon_type, product_types, deleted)
-        value(#{amount}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{createdBy}, #{createdTime}, #{activatedBy}, #{activatedTime}, #{operatedBy}, #{operatedTime}, #{issuedCount}, #{investQuota}, #{couponType}, #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}, #{deleted})
+        insert into coupon (amount, start_time, end_time, used_count, total_count, active, created_by, created_time, activated_by, activated_time, operated_by, operated_time, issued_count, invest_quota, coupon_type, product_types, deleted,deadline,user_group,sms_alert)
+        value(#{amount}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{createdBy}, #{createdTime}, #{activatedBy}, #{activatedTime}, #{operatedBy}, #{operatedTime}, #{issuedCount}, #{investQuota}, #{couponType}, #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}, #{deleted},#{deadline},#{userGroup},#{smsAlert})
     </insert>
 
     <select id="findById" resultMap="couponResultMap" parameterType="long">
@@ -78,11 +81,18 @@
 
     <update id="updateCoupon" parameterType="CouponModel">
         update coupon
-        set used_count = #{usedCount},
+        set
+        amount = #{amount},
+        start_time = #{startTime},
+        end_time = #{endTime},
+        used_count = #{usedCount},
         total_count = #{totalCount},
         issued_count = #{issuedCount},
         activated_by = #{activatedBy},
         activated_time = #{activatedTime},
+        deadline = #{deadline},
+        user_group = #{userGroup},
+        sms_alert = #{smsAlert},
         operated_by = #{operatedBy},
         operated_time = #{operatedTime},
         active = #{active},

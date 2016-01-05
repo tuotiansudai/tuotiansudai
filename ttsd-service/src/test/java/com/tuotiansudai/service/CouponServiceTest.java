@@ -7,6 +7,7 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.exception.ReferrerRelationException;
@@ -176,7 +177,7 @@ public class CouponServiceTest {
         couponDto.setCouponType(CouponType.INVEST_COUPON);
         List<ProductType> productTypes = Lists.newArrayList();
         productTypes.add(ProductType.JYF);
-        couponDto.setProductType(productTypes);
+        couponDto.setProductTypes(productTypes);
         couponDto.setInvestQuota("1000.00");
 
         return couponDto;

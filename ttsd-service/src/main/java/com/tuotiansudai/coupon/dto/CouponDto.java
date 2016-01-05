@@ -1,6 +1,7 @@
 package com.tuotiansudai.coupon.dto;
 
 
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -12,6 +13,8 @@ import java.util.Date;
 import java.util.List;
 
 public class CouponDto implements Serializable {
+
+    private long id;
 
     @NotEmpty
     private String amount;
@@ -33,6 +36,12 @@ public class CouponDto implements Serializable {
 
     @NotNull
     private CouponType couponType;
+
+    private boolean smsAlert;
+
+    private String deadline;
+
+    private UserGroup userGroup;
 
     public String getAmount() {
         return amount;
@@ -78,7 +87,7 @@ public class CouponDto implements Serializable {
         return productTypes;
     }
 
-    public void setProductType(List<ProductType> productTypes) {
+    public void setProductTypes(List<ProductType> productTypes) {
         this.productTypes = productTypes;
     }
 
@@ -88,5 +97,37 @@ public class CouponDto implements Serializable {
 
     public void setCouponType(CouponType couponType) {
         this.couponType = couponType;
+    }
+
+    public boolean isSmsAlert() {
+        return smsAlert;
+    }
+
+    public void setSmsAlert(boolean smsAlert) {
+        this.smsAlert = smsAlert;
+    }
+
+    public String getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
+
+    public UserGroup getUserGroup() {
+        return userGroup;
+    }
+
+    public void setUserGroup(UserGroup userGroup) {
+        this.userGroup = userGroup;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
