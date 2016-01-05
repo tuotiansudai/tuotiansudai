@@ -14,15 +14,13 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric', 'commonFun'], function
             fastRechargeAmountElement = $('input[name="amount"]', $fastRechargeForm),
             fastRechargeSubmitElement = $('.btn', $fastRechargeForm),
             bankElement = $('.e-bank-recharge ol li'),
-            turnOnFastSubmitElement = $('input[type="submit"]',$turnOnFast),
-            inputAmount = 0;
+            turnOnFastSubmitElement = $('input[type="submit"]',$turnOnFast);
 
         if (rechargeInputAmountElement) {
             rechargeInputAmountElement.autoNumeric("init");
             rechargeInputAmountElement.keyup(function () {
-                inputAmount = parseFloat(rechargeInputAmountElement.autoNumeric("get")).toFixed(3);
-                var $this=$(this),
-                   amount = parseFloat(inputAmount.substring(0, inputAmount.lastIndexOf('.') + 3));
+                var amount = parseFloat(rechargeInputAmountElement.autoNumeric("get"));
+                var $this=$(this);
                 if (isNaN(amount) || amount < 1) {
                     $this.parents('form').find('.error').show();
                     rechargeSubmitElement.prop('disabled', true).removeClass('btn-normal');
@@ -32,15 +30,6 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric', 'commonFun'], function
                 }
             });
 
-            rechargeInputAmountElement.focus(function () {
-                if (inputAmount > 0) {
-                    var inputAmountStr = inputAmount + '';
-                    var amount = parseFloat(inputAmountStr.substring(0, inputAmountStr.lastIndexOf('.') + 3))
-                    if (!isNaN(amount)) {
-                        rechargeInputAmountElement.autoNumeric("set", amount);
-                    }
-                }
-            });
             //网银充值提交
             rechargeSubmitElement.click(function () {
                 var amount = rechargeInputAmountElement.autoNumeric("get");
@@ -60,7 +49,7 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric', 'commonFun'], function
             fastRechargeInputAmountElement.autoNumeric("init");
             fastRechargeInputAmountElement.keyup(function () {
                 var $this=$(this),
-                 amount = parseFloat($this.autoNumeric("get"));
+                    amount = parseFloat($this.autoNumeric("get"));
                 if (isNaN(amount) || amount < 1) {
                     $this.parents('form').find('.error').show();
                     fastRechargeSubmitElement.prop('disabled', true).removeClass('btn-normal');
