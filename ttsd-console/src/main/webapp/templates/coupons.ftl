@@ -19,16 +19,19 @@
                 名称
             </th>
             <th>
-                金额(元)
+                金额
             </th>
             <th>
-                开始日期
+                总投资金额(元)
             </th>
             <th>
-                结束日期
+                活动期限
             </th>
             <th>
-                可发放(张)
+                有效期限
+            </th>
+            <th>
+                预计发放数量(张)
             </th>
             <th>
                 已发放(张)
@@ -40,16 +43,20 @@
                 发放对象
             </th>
             <th>
+                可投标的
+            </th>
+            <th>
                 使用条件
             </th>
             <th>
-                预估总收益(元)
+                应发放总收益(元)
             </th>
             <th>
-                已回款总收益(元)
+                已发放收益(元)
             </th>
             <th>
-                操作
+            </th>
+            <th>
             </th>
         </tr>
         </thead>
@@ -57,16 +64,28 @@
         <#list coupons as coupon>
         <tr>
             <td>
-                <span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${coupon.name}">${coupon.name}</span>
+                <span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${coupon.couponType.getDesc()}">${coupon.couponType.getDesc()}</span>
             </td>
             <td>
                 ${coupon.amount/100}
             </td>
             <td>
-                ${coupon.startTime?string('yyyy-MM-dd HH:mm')}
+                ${coupon.totalInvestAmount/100}
             </td>
             <td>
-                ${coupon.endTime?string('yyyy-MM-dd HH:mm')}
+                <#if coupon.couponType == 'NEWBIE_COUPON' || coupon.active>
+                ${coupon.startTime?string('yyyy-MM-dd')}至${coupon.endTime?string('yyyy-MM-dd')}
+                <#else>
+                -
+                </#if>
+
+            </td>
+            <td>
+                <#if coupon.couponType == 'NEWBIE_COUPON'>
+                -
+                <#else>
+                ${coupon.deadline}
+                </#if>
             </td>
             <td>
                 ${coupon.totalCount?string('0')}
@@ -78,16 +97,24 @@
                 ${coupon.usedCount?string('0')}
             </td>
             <td>
-                新注册用户
+                <#--${coupon.userGroup.getDescription()}-->
             </td>
             <td>
-                所有标的
+                <#list coupon.productTypes as productType>
+                ${productType.getName()},
+                </#list>
+            </td>
+            <td>
+                投资满${coupon.investQuota/100}元
             </td>
             <td>
                 ${coupon.expectedAmount/100}
             </td>
             <td>
                 ${coupon.actualAmount/100}
+            </td>
+            <td>
+
             </td>
             <td>
                 <#if coupon.active>
