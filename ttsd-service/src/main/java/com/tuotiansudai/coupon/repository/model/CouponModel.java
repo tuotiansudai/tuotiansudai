@@ -34,9 +34,9 @@ public class CouponModel implements Serializable {
 
     private Date activatedTime;
 
-    private String operatedBy;
+    private String updateBy;
 
-    private Date operatedTime;
+    private Date updateTime;
 
     private long issuedCount;
 
@@ -223,20 +223,20 @@ public class CouponModel implements Serializable {
     public void setSmsAlert(boolean smsAlert) {
         this.smsAlert = smsAlert;
     }
-    public String getOperatedBy() {
-        return operatedBy;
+    public String getUpdateBy() {
+        return updateBy;
     }
 
-    public void setOperatedBy(String operatedBy) {
-        this.operatedBy = operatedBy;
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
     }
 
-    public Date getOperatedTime() {
-        return operatedTime;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setOperatedTime(Date operatedTime) {
-        this.operatedTime = operatedTime;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     public boolean isDeleted() {

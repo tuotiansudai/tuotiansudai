@@ -88,8 +88,8 @@ public class CouponServiceImpl implements CouponService {
         if(couponModel == null){
             logger.error(id + " not exist");
         }
-        couponModel.setOperatedBy(loginName);
-        couponModel.setOperatedTime(new Date());
+        couponModel.setUpdateBy(loginName);
+        couponModel.setUpdateTime(new Date());
         couponModel.setAmount(AmountConverter.convertStringToCent(couponDto.getAmount()));
         couponModel.setDeadline(StringUtils.isEmpty(couponDto.getDeadline()) ? null : Long.parseLong(couponDto.getDeadline()));
         couponModel.setUserGroup(couponDto.getUserGroup());
@@ -181,8 +181,8 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public void deleteCoupon(String loginName, long couponId, boolean deleted) {
         CouponModel couponModel = couponMapper.findById(couponId);
-        couponModel.setOperatedBy(loginName);
-        couponModel.setOperatedTime(new Date());
+        couponModel.setUpdateBy(loginName);
+        couponModel.setUpdateTime(new Date());
         couponModel.setDeleted(deleted);
         couponMapper.updateCoupon(couponModel);
     }

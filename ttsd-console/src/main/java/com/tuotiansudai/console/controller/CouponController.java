@@ -4,15 +4,14 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.ProductType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -127,9 +126,8 @@ public class CouponController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/coupon/detail", method = RequestMethod.GET)
-    public ModelAndView couponDetail(@RequestParam(value = "couponId") long couponId,
-                                      @RequestParam(value = "isUsed",required = false) Boolean isUsed) {
+    @RequestMapping(value = "/coupon/{couponId:^\\d+$}/detail", method = RequestMethod.GET)
+    public ModelAndView couponDetail(@PathVariable long couponId, @RequestParam(value = "isUsed",required = false) Boolean isUsed) {
         ModelAndView modelAndView = new ModelAndView("/coupon-detail");
         List<UserCouponModel> userCouponModels = couponService.findCouponDetail(couponId, isUsed);
         modelAndView.addObject("userCouponModels", userCouponModels);
@@ -137,9 +135,9 @@ public class CouponController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/coupon/{couponId:^\\d+$}/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/coupon/{couponId:^\\d+$}", method = RequestMethod.DELETE)
     @ResponseBody
-    public BaseDto<BaseDataDto> couponDetele(@PathVariable long couponId) {
+    public BaseDto<BaseDataDto> couponDelete(@PathVariable long couponId) {
         BaseDataDto dataDto = new BaseDataDto();
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         baseDto.setData(dataDto);
