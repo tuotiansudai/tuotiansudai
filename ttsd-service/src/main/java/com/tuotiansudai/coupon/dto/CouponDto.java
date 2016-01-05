@@ -29,7 +29,7 @@ public class CouponDto implements Serializable {
     private String totalCount;
 
     @NotEmpty
-    private String investQuota;
+    private String investLowerLimit;
 
     @NotEmpty
     private List<ProductType> productTypes;
@@ -75,12 +75,12 @@ public class CouponDto implements Serializable {
         this.totalCount = totalCount;
     }
 
-    public String getInvestQuota() {
-        return investQuota;
+    public String getInvestLowerLimit() {
+        return investLowerLimit;
     }
 
-    public void setInvestQuota(String investQuota) {
-        this.investQuota = investQuota;
+    public void setInvestLowerLimit(String investLowerLimit) {
+        this.investLowerLimit = investLowerLimit;
     }
 
     public List<ProductType> getProductTypes() {

@@ -18,7 +18,6 @@
                         <em><b><@percentInteger>${loan.basicRate}</@percentInteger><@percentFraction>${loan.basicRate}</@percentFraction></b><#if loan.activityRate??>+<@percentInteger>${loan.activityRate}</@percentInteger><@percentFraction>${loan.activityRate}</@percentFraction></#if>%</em>
                         <i>年化收益</i>
                     </div>
-
                 </div>
             </div>
             <div class="chart-info">
@@ -57,7 +56,7 @@
                         <#list coupons as coupon>
                         <dd class="experience-ticket">
                             <span class="fl"><i class="fa fa-money"></i> ${coupon.name}<@amount>${coupon.amount?string(0)}</@amount>元</span>
-                            <em class="fr"><label for="use-experience-ticket"> 使用体验劵</label> <input type="checkbox" id="use-experience-ticket" name="userCouponId" value="${coupon.id?string('0')}" data-amount="${(coupon.investQuota/100)?string('0.00')}"></em>
+                            <em class="fr"><label for="use-experience-ticket"> 使用体验劵</label> <input type="checkbox" id="use-experience-ticket" name="userCouponId" value="${coupon.id?string('0')}" data-amount="${(coupon.investLowerLimit/100)?string('0.00')}"></em>
                         </dd>
                         <dd class="experience-revenue hide"><span class="fl">体验劵预期收益：</span><em class="fr"><i class="experience-interest"><@amount>${coupon.interest?string(0)}</@amount></i>元</em></dd>
                         </#list>

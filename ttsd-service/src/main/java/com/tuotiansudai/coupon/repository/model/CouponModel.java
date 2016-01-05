@@ -44,7 +44,7 @@ public class CouponModel implements Serializable {
 
     private long actualAmount;
 
-    private long investQuota;
+    private long investLowerLimit;
 
     private List<ProductType> productTypes;
 
@@ -172,13 +172,14 @@ public class CouponModel implements Serializable {
         this.actualAmount = actualAmount;
     }
 
-    public long getInvestQuota() {
-        return investQuota;
+    public long getInvestLowerLimit() {
+        return investLowerLimit;
     }
 
-    public void setInvestQuota(long investQuota) {
-        this.investQuota = investQuota;
+    public void setInvestLowerLimit(long investLowerLimit) {
+        this.investLowerLimit = investLowerLimit;
     }
+
 
     public UserGroup getUserGroup() {
         return userGroup;
@@ -262,7 +263,7 @@ public class CouponModel implements Serializable {
         this.totalCount = StringUtils.isEmpty(couponDto.getTotalCount())? 0L :Long.parseLong(couponDto.getTotalCount());
         this.productTypes = couponDto.getProductTypes() ;
         this.couponType = couponDto.getCouponType();
-        this.investQuota = AmountConverter.convertStringToCent(couponDto.getInvestQuota());
+        this.investLowerLimit = AmountConverter.convertStringToCent(couponDto.getInvestLowerLimit());
         this.createdTime = new Date();
         this.smsAlert = couponDto.isSmsAlert();
         this.deleted = false;

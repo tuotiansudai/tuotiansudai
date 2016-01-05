@@ -13,26 +13,19 @@ public interface CouponService {
 
     void createCoupon(String loginName,CouponDto couponDto) throws CreateCouponException;
 
-    void editCoupon(String loginName,CouponDto couponDto) throws CreateCouponException;
+    void assignNewbieCoupon(String loginName);
 
-    void afterReturningUserRegistered(String loginName);
+    void editCoupon(String loginName,CouponDto couponDto) throws CreateCouponException;
 
     List<CouponModel> findCoupons(int index, int pageSize);
 
     int findCouponsCount();
 
-    void updateCoupon(String loginName, long couponId, boolean active);
-
     CouponModel findCouponById (long couponId);
-
-    boolean couponIsAvailable(long userCouponId, String amount);
-
 
     long findEstimatedCount(UserGroup userGroup);
 
     List<UserCouponModel> findCouponDetail(long couponId, Boolean isUsed);
 
     void deleteCoupon(String loginName, long couponId, boolean deleted);
-
-
 }
