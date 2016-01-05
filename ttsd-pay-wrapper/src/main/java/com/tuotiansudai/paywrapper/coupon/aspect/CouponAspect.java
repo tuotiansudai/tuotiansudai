@@ -13,6 +13,7 @@ import com.tuotiansudai.repository.model.InvestStatus;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -65,7 +66,7 @@ public class CouponAspect {
         }
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.InvestSuccessService.investSuccess(*))")
+    @After(value = "execution(* com.tuotiansudai.paywrapper.service.InvestSuccessService.investSuccess(*))")
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
         logger.debug("after invest success");
         InvestModel investModel = (InvestModel)joinPoint.getArgs()[1];
