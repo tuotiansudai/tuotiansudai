@@ -1,34 +1,4 @@
-﻿
-/*
-调用这个分页代码的关键几点： 
-
-1. 在页面中重新初始化数据选项
-$.pageflip.defaultVal = {
-                        pageIndex: 1,
-                        pageSize: 10,
-                        PageCallback: loadReportData,
-                        PagePosition: "div.userlist_container table tfoot td.pageNumber span.pageBtn",
-                        pageLocalized: {
-                            first: "<<",
-                            prev: "<",
-                            next: ">",
-                            last: ">>"
-                        }
-                    }
-
-2. 传参： $.pageflip.defaultVal.pageSize 和 $.pageflip.defaultVal.pageIndex
-
-CurrentPageIndex=$.pageflip.defaults.pageIndex - 1
-
-3.在页面中调用分页函数，包括总共有多少页的显示
-$.pageflip.paging(TotalRecord,{ PageCallback: loadMonthReportData,
-                                 PagePosition: "div.MonthlyCallLogscontainer table tfoot td.pageNumber span.pageBtn"
-                   });
-$("#TotalRecords > em > b").text(data.TotalNum);
-
-*/
-
-; (function ($) {
+﻿; (function ($) {
 
     jQuery.pageflip = {
 
