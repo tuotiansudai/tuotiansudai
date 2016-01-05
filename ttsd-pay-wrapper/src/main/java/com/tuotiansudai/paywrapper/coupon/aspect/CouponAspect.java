@@ -65,7 +65,7 @@ public class CouponAspect {
         }
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.InvestService.investSuccess(*))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.InvestSuccessService.investSuccess(*))")
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
         logger.debug("after invest success");
         InvestModel investModel = (InvestModel)joinPoint.getArgs()[1];
