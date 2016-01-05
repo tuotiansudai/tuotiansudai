@@ -134,28 +134,11 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
             }
         });
 
-        $('.couponType').change(function(){
-            var couponType = this.value;
-            if(couponType == "NEWBIE_COUPON"){
-                $('.newbie-coupon').show();
-                $('.invest-coupon').hide();
-                $('.userGroup').addClass("invest-coupon-total_count");
-                $('.give-number').removeAttr("invest-coupon-total_count");
-                $('.give-number').removeAttr("readonly");
-            }else{
-                $('.give-number').addClass("invest-coupon-total_count");
-                $('.give-number').attr("readonly",true);
-                $('.userGroup').removeAttr("invest-coupon-total_count");
-                $('.newbie-coupon').hide();
-                $('.invest-coupon').show();
-            }
-        }).trigger('change');
-
         $('.userGroup').change(function(){
             var userGroup = this.value;
-            var couponType = $('.couponType').val();
+            var couponType = $('.coupon-type-hid').val();
             if(couponType == "INVEST_COUPON"){
-                $.get('/activity-manage/get/'+userGroup,function(data){
+                $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
                     $('.give-number').val(data);
                 })
             }

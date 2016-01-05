@@ -15,7 +15,6 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.util.AmountConverter;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,24 +82,10 @@ public class CouponServiceImpl implements CouponService {
     @Transactional
     public void editCoupon(String loginName, CouponDto couponDto) throws CreateCouponException {
         this.checkCoupon(couponDto);
-        long id = couponDto.getId();
-        CouponModel couponModel = couponMapper.findById(id);
-
-        if(couponModel == null){
-            logger.error(id + " not exist");
-        }
+        CouponModel couponModel = new CouponModel(couponDto);
+        couponModel.setId(couponDto.getId());
         couponModel.setUpdatedBy(loginName);
         couponModel.setUpdatedTime(new Date());
-        couponModel.setAmount(AmountConverter.convertStringToCent(couponDto.getAmount()));
-        couponModel.setDeadline(couponDto.getDeadline());
-        couponModel.setUserGroup(couponDto.getUserGroup());
-        couponModel.setTotalCount(couponDto.getTotalCount());
-        couponModel.setProductTypes(couponDto.getProductTypes());
-        couponModel.setInvestLowerLimit(AmountConverter.convertStringToCent(couponDto.getInvestLowerLimit()));
-        couponModel.setSmsAlert(couponDto.isSmsAlert());
-        couponModel.setStartTime(couponDto.getStartTime());
-        couponModel.setEndTime(couponDto.getEndTime());
-
         couponMapper.updateCoupon(couponModel);
     }
 

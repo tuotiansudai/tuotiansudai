@@ -248,7 +248,6 @@ public class CouponModel implements Serializable {
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
-
     public Integer getDeadline() {
         return deadline;
     }

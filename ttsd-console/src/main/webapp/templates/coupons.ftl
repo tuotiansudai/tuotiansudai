@@ -64,6 +64,7 @@
         <#list coupons as coupon>
         <tr>
             <td>
+
                 <span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${coupon.couponType.getDesc()}">${coupon.couponType.getDesc()}</span>
             </td>
             <td>
@@ -112,9 +113,6 @@
             </td>
             <td>
                 ${coupon.actualAmount/100}
-            </td>
-            <td>
-
             </td>
             <td>
                 <#if coupon.active>
