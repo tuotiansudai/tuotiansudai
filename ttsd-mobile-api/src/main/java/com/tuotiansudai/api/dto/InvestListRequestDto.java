@@ -4,7 +4,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;
 
-public class InvestListRequestDto extends BaseParamDto{
+public class InvestListRequestDto extends BaseParamDto {
 
     private Integer index;
     private Integer pageSize;
