@@ -8,13 +8,17 @@ require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
             $dlAmount = $('.dl-amount', $productFrame),
             $imgNum = $('li', $scrollNum),
             $bannerImg = $imgScroll.find('a'),
-            screenWid, picWid, leftWid, adTimer = null, n = 0;
+            $couponClose = $('.coupon-close'),
+            screenWid, picWid, leftWid, adTimer = null,
+            n = 0;
 
-        $dlAmount.find('i').filter(function (index) {
+        $dlAmount.find('i').filter(function(index) {
             var value = $(this).text(),
                 valueAmount = value.replace(/[^\d|.]*/g, '');
             return valueAmount.length > 5;
-        }).css({'font-size': '16px'});
+        }).css({
+            'font-size': '16px'
+        });
 
         screenWid = $(window).width(); //screen width
         picWid = $bannerImg.first().find('img').width();
@@ -24,25 +28,30 @@ require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
         $registerBox.css({'right': (screenWid - 1000) / 2 + 'px'});
         $scrollNum.css({'left': (screenWid - $scrollNum.width()) / 2});
         $imgScroll.find("a:not(:first)").hide();
-        $imgScroll.find('img').css({'margin-left': '-' + leftWid + 'px'});
+        $imgScroll.find('img').css({
+            'margin-left': '-' + leftWid + 'px'
+        });
 
 
-        $imgNum.click(function () {
+        $imgNum.click(function() {
+
             var num_nav = $imgNum.index(this);
             $(this).addClass("selected").siblings().removeClass("selected");
             $bannerImg.eq(num_nav).fadeIn(1000).siblings().fadeOut(1000);
         });
-        $bannerBox.hover(function () {
+        $bannerBox.hover(function() {
             clearInterval(adTimer);
-        }, function () {
-            adTimer = setInterval(function () {
+        }, function() {
+            adTimer = setInterval(function() {
+
                 n = n >= ($bannerImg.length - 1) ? 0 : (n + 1);
                 $imgNum.eq(n).trigger('click');
             }, 3000);
         }).trigger('mouseleave');
 
 
-        $(".product-box .pad-m").click(function () {
+        $(".product-box .pad-m").click(function() {
+
             window.location.href = $(this).data("url");
         });
         var viewport=commonFun.browserRedirect();
@@ -53,6 +62,14 @@ require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
             $imgScroll.find('img.pc-img').remove();
             $imgScroll.find('img.iphone-img').css({'margin-left': '0px'});
         }
+
+        $couponClose.on('click',function(e) {
+            e.preventDefault();
+            var $self=$(this),
+                $couponModel=$self.parents('#couponModel');
+            $couponModel.fadeOut('fast');
+        });
+
         var scrollTimer;
         $(".scroll-top").hover(function() {
             clearInterval(scrollTimer);
@@ -61,6 +78,7 @@ require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
                 scrollNews($(".scroll-top"));
             }, 2000);
         }).trigger("mouseout");
+
         function scrollNews(obj) {
             var $self = obj.find("ul:first");
             var lineHeight = $self.find("li:first").height();
@@ -72,6 +90,5 @@ require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
                 }).find("li:first").appendTo($self);
             })
         }
-
     });
 });

@@ -10,7 +10,9 @@ public enum SystemBillDetailTemplate {
 
     INVEST_FEE_DETAIL_TEMPLATE("投资人({0})投资返款(investRepayId={1})手续费"),
 
-    LOAN_REMAINING_INTEREST_DETAIL_TEMPLATE("标的(loanRepayId={0})还款完成, 剩余利息({1}分)");
+    LOAN_REMAINING_INTEREST_DETAIL_TEMPLATE("标的(loanRepayId={0})还款完成, 剩余利息({1}分)"),
+
+    NEWBIE_COUPON_INTEREST_DETAIL_TEMPLATE("新手体验券(userCouponId={0}), 还款(loanRepayId={1}), 发放利息({2}分)");
 
     private final String template;
 

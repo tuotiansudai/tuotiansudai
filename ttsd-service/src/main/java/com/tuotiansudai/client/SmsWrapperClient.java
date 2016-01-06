@@ -27,20 +27,22 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String RETRIEVE_PASSWORD_CAPTCHA_URI = "/sms/retrieve-password-captcha";
 
-    private final static String LOAN_OUT_INVESTOR_NOTIFY = "/sms/loan-out-investor-notify";
+    private final static String LOAN_OUT_INVESTOR_NOTIFY_URI = "/sms/loan-out-investor-notify";
 
-    private final static String PASSWORD_CHANGED_NOTIFY_URL = "/sms/mobile/{mobile}/password-changed-notify";
+    private final static String PASSWORD_CHANGED_NOTIFY_URI = "/sms/mobile/{mobile}/password-changed-notify";
 
-    private final static String INVEST_FATAL_NOTIFY_URL = "/sms/invest-fatal-notify";
+    private final static String INVEST_FATAL_NOTIFY_URI = "/sms/invest-fatal-notify";
 
-    private final static String JOB_FATAL_NOTIFY_URL = "/sms/job-fatal-notify";
+    private final static String COUPON_NOTIFY_URI = "/sms/invest-fatal-notify";
+
+    private final static String JOB_FATAL_NOTIFY_URI = "/sms/job-fatal-notify";
 
     public BaseDto<SmsDataDto> sendRegisterCaptchaSms(SmsCaptchaDto dto) {
         return send(dto, REGISTER_CAPTCHA_SMS_URI);
     }
 
     public BaseDto<SmsDataDto> sendInvestNotify(InvestSmsNotifyDto dto) {
-        return send(dto, LOAN_OUT_INVESTOR_NOTIFY);
+        return send(dto, LOAN_OUT_INVESTOR_NOTIFY_URI);
     }
 
     public BaseDto<SmsDataDto> sendRetrievePasswordCaptchaSms(SmsCaptchaDto dto) {
@@ -48,15 +50,19 @@ public class SmsWrapperClient extends BaseClient {
     }
 
     public BaseDto<SmsDataDto> sendPasswordChangedNotify(String mobile) {
-        return send(null, PASSWORD_CHANGED_NOTIFY_URL.replace("{mobile}", mobile));
+        return send(null, PASSWORD_CHANGED_NOTIFY_URI.replace("{mobile}", mobile));
     }
 
     public BaseDto<SmsDataDto> sendInvestFatalNotify(SmsInvestFatalNotifyDto dto) {
-        return send(dto, INVEST_FATAL_NOTIFY_URL);
+        return send(dto, INVEST_FATAL_NOTIFY_URI);
     }
 
     public BaseDto<SmsDataDto> sendJobFatalNotify(SmsJobFatalNotifyDto dto) {
-        return send(dto, JOB_FATAL_NOTIFY_URL);
+        return send(dto, JOB_FATAL_NOTIFY_URI);
+    }
+
+    public BaseDto<SmsDataDto> sendCouponNotify(SmsCouponNotifyDto dto) {
+        return send(dto, COUPON_NOTIFY_URI);
     }
 
     private BaseDto<SmsDataDto> send(Object requestData, String requestPath) {

@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.service;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
 
 import java.util.List;
@@ -26,4 +27,5 @@ public interface InvestService {
 
     void processOneCallback(InvestNotifyRequestModel callbackRequestModel);
 
+    void investSuccess(long orderId, InvestModel investModel, String loginName);
 }

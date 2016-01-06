@@ -24,9 +24,6 @@ public class InvestController {
     @Autowired
     private InvestService investService;
 
-    @Autowired
-    private LoanController loanController;
-
     @RequestMapping(value = "/invest", method = RequestMethod.POST)
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, RedirectAttributes redirectAttributes) {
         investDto.setSource(Source.WEB);
@@ -59,5 +56,4 @@ public class InvestController {
         long expectedInterest = investService.estimateInvestIncome(loanId, AmountConverter.convertStringToCent(amount));
         return AmountConverter.convertCentToString(expectedInterest);
     }
-
 }

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.coupon.repository.mapper.UserCouponMapper">
+
+    <resultMap id="userCouponResultMap" type="UserCouponModel">
+        <id column="id" property="id"/>
+        <result column="login_name" property="loginName"/>
+        <result column="coupon_id" property="couponId"/>
+        <result column="loan_id" property="loanId"/>
+        <result column="used_time" property="usedTime"/>
+        <result column="expected_interest" property="expectedInterest"/>
+        <result column="actual_interest" property="actualInterest"/>
+        <result column="expected_fee" property="expectedFee"/>
+        <result column="actual_fee" property="actualFee"/>
+        <result column="default_interest" property="defaultInterest"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="invest_id" property="investId"/>
+        <result column="status" property="status" />
+    </resultMap>
+
+    <resultMap id="useRecordMap" type="CouponUseRecordView">
+        <result column="loan_id" property="loanId"/>
+        <result column="loan_name" property="loanName"/>
+        <result column="coupon_name" property="couponName"/>
+        <result column="coupon_amount" property="couponAmount"/>
+        <result column="used_time" property="usedTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="UserCouponModel" useGeneratedKeys="true" keyProperty="id">
+        insert into user_coupon (login_name, coupon_id, created_time)
+        value(#{loginName}, #{couponId}, #{createdTime})
+    </insert>
+
+    <update id="update" parameterType="UserCouponModel">
+        update user_coupon
+        set login_name = #{loginName},
+            coupon_id = #{couponId},
+            loan_id = #{loanId},
+            used_time = #{usedTime},
+            expected_interest = #{expectedInterest},
+            actual_interest = #{actualInterest},
+            expected_fee = #{expectedFee},
+            actual_fee = #{actualFee},
+            default_interest = #{defaultInterest},
+            created_time = #{createdTime},
+            invest_id = #{investId},
+            status = #{status}
+        where id = #{id}
+    </update>
+
+    <select id="findByLoginName" resultMap="userCouponResultMap" parameterType="String">
+        select * from user_coupon where login_name = #{loginName} and (status != 'SUCCESS' or status is null)
+    </select>
+
+    <select id="findById" resultMap="userCouponResultMap" parameterType="long">
+        select * from user_coupon where id = #{id} and (status = 'SUCCESS'or status is null)
+    </select>
+
+    <select id="findByLoanId" resultMap="userCouponResultMap" parameterType="long">
+        select * from user_coupon where loan_id = #{loanId}
+    </select>
+
+    <select id="findUseRecordsCount" resultType="int" parameterType="String">
+        select
+            count(1)
+        from user_coupon uc
+        join coupon c on uc.coupon_id=c.id
+        join loan l on l.id=uc.loan_id
+        where
+            uc.loan_id is not null
+            and uc.login_name = #{loginName}
+    </select>
+
+    <select id="findUseRecords" resultMap="useRecordMap" parameterType="map">
+        select
+            l.id as loan_id,
+            l.name as loan_name,
+            c.name as coupon_name,
+            c.amount as coupon_amount,
+            uc.used_time as used_time
+        from user_coupon uc
+        join coupon c on uc.coupon_id=c.id
+        join loan l on l.id=uc.loan_id
+        where
+            uc.loan_id is not null
+            and uc.login_name = #{loginName}
+        ORDER BY used_time DESC
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findByInvestId" parameterType="map" resultMap="userCouponResultMap">
+        select * from user_coupon where invest_id = #{investId}
+    </select>
+
+    <select id="findSumInvestAmountByCouponId" parameterType="map" resultType="long">
+        SELECT
+          IFNULL(SUM(i.`amount`), 0)
+        FROM
+          user_coupon t
+          JOIN invest i
+            ON t.`invest_id` = i.`id`
+        WHERE t.`coupon_id` = #{couponId}
+          AND t.`status` = 'SUCCESS'
+    </select>
+
+    <select id="findByCouponIdAndStatus" parameterType="map" resultMap="userCouponResultMap">
+        select * from user_coupon where coupon_id = #{couponId}
+        <if test="isUsed != null and isUsed">
+            and status = 'SUCCESS'
+        </if>
+        <if test="isUsed != null and !isUsed">
+            and (status != 'SUCCESS' or status is null)
+        </if>
+    </select>
+
+    <select id="findByCouponId" parameterType="long" resultMap="userCouponResultMap">
+        select * from user_coupon where coupon_id = #{couponId}
+    </select>
+</mapper>

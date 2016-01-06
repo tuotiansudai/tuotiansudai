@@ -27,9 +27,10 @@ public class AmountDirective implements TemplateDirectiveModel {
     }
 
     private static class AmountFilterWriter extends Writer {
-
         private final Writer out;
+
         private static final BigDecimal ONE_HUNDRED = new BigDecimal(100);
+
         private static final BigDecimal TEN_THOUSANDS = new BigDecimal(1000000);
 
         AmountFilterWriter (Writer out) {

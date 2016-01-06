@@ -215,12 +215,29 @@
                 </span>
             </h3>
             <div class="clear-blank invest-total">
-                <span class="fl">累计投资人数: 
+                <span class="fl">累计投资人数:
                     <strong data-count="${userCount}" id="userCount">${userCount}</strong>人
                 </span>
             </div>
         </div>
 
     </div>
+    <#if newbieCoupon??>
+        <div class="activity-coupon-model" id="couponModel">
+            <div class="coupon-model-list">
+                <div class="coupon-close">
+                </div>
+                <div class="coupon-text">
+                    <span class="text-number"><@amount>${newbieCoupon.amount}</@amount></span>
+                    <span class="text-unit">元</span>
+                </div>
+                <div class="coupon-name">${newbieCoupon.name}</div>
+                <div class="coupon-time">
+                    请在${(newbieCoupon.endTime?string('yyyy-MM-dd'))!}前使用
+                </div>
+                <a href="/my-treasure" class="coupon-link"></a>
+            </div>
+        </div>
+    </#if>
 </div>
 </@global.main>

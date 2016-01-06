@@ -82,6 +82,14 @@
                     {"name":"loginLog","text":"登录日志","link":"/security-log/login-log","role":"'ADMIN'"},
                     {"name":"auditLog","text":"管理日志","link":"/security-log/audit-log","role":"'ADMIN'"}
                 ]
+            },
+            {
+                "name":"activity-manage",
+                "header":{"text":"活动管理"},
+                "sidebar":[
+                    {"name":"createCoupon","text":"创建投资体验券","link":"/activity-manage/coupon","role":"'ADMIN'"},
+                    {"name":"statisticsCoupon","text":"体验券数据统计","link":"/activity-manage/coupons","role":"'ADMIN'"}
+                ]
             }
         ]
 >
