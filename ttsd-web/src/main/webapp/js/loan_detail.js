@@ -211,6 +211,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                                 time:0
                             });
                             $('.experience-revenue').hide();
+                            minusCouponInterest();
                         }
                     });
 

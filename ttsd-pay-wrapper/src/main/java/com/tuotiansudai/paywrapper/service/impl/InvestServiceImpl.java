@@ -268,6 +268,7 @@ public class InvestServiceImpl implements InvestService {
                 // 投资成功
                 infoLog("invest_success", orderIdStr, investModel.getAmount(), loginName, loanId);
                 // 投资成功，冻结用户资金，更新投资状态为success
+
                 ((InvestService) AopContext.currentProxy()).investSuccess(orderId, investModel, loginName);
 
                 if (successInvestAmountTotal + investModel.getAmount() == loanModel.getLoanAmount()) {
@@ -449,6 +450,25 @@ public class InvestServiceImpl implements InvestService {
         }
     }
 
+    /**
+     * 投资成功处理：冻结资金＋更新invest状态
+     *
+     * @param orderId
+     * @param investModel
+     * @param loginName
+     */
+    @Override
+    public void investSuccess(long orderId, InvestModel investModel, String loginName) {
+        try {
+            // 冻结资金
+            amountTransfer.freeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
+        } catch (AmountTransferException e) {
+            // 记录日志，发短信通知管理员
+            fatalLog("invest success, but freeze account fail", String.valueOf(orderId), investModel.getAmount(), loginName, investModel.getLoanId(), e);
+        }
+        // 改invest 本身状态为投资成功
+        investMapper.updateStatus(investModel.getId(), InvestStatus.SUCCESS);
+    }
 
     /**
      * umpay 超投返款的回调
@@ -503,27 +523,6 @@ public class InvestServiceImpl implements InvestService {
         String respData = callbackRequest.getResponseData();
         return respData;
     }
-
-    /**
-     * 投资成功处理：冻结资金＋更新invest状态
-     *
-     * @param orderId
-     * @param investModel
-     * @param loginName
-     */
-    @Override
-    public void investSuccess(long orderId, InvestModel investModel, String loginName) {
-        try {
-            // 冻结资金
-            amountTransfer.freeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
-        } catch (AmountTransferException e) {
-            // 记录日志，发短信通知管理员
-            fatalLog("invest success, but freeze account fail", String.valueOf(orderId), investModel.getAmount(), loginName, investModel.getLoanId(), e);
-        }
-        // 改invest 本身状态为投资成功
-        investMapper.updateStatus(investModel.getId(), InvestStatus.SUCCESS);
-    }
-
 
     private void infoLog(String msg, String orderId, long amount, String loginName, long loanId) {
         logger.info(msg + ",orderId:" + orderId + ",LoginName:" + loginName + ",amount:" + amount + ",loanId:" + loanId);
