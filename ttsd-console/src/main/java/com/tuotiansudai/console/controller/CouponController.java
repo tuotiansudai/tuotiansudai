@@ -18,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -135,9 +134,10 @@ public class CouponController {
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/detail", method = RequestMethod.GET)
     public ModelAndView couponDetail(@PathVariable long couponId, @RequestParam(value = "isUsed",required = false) Boolean isUsed) {
         ModelAndView modelAndView = new ModelAndView("/coupon-detail");
-        List<UserCouponModel> userCouponModels = couponService.findCouponDetail(couponId, isUsed);
-        modelAndView.addObject("userCouponModels", userCouponModels);
+        List<UserCouponModel> userCoupons = couponService.findCouponDetail(couponId, isUsed);
+        modelAndView.addObject("userCoupons", userCoupons);
         modelAndView.addObject("isUsed", isUsed);
+        modelAndView.addObject("couponId", couponId);
         return modelAndView;
     }
 

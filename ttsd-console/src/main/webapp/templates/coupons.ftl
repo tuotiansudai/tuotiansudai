@@ -98,11 +98,11 @@
                 ${coupon.usedCount?string('0')}
             </td>
             <td>
-                <#--${coupon.userGroup.getDescription()}-->
+                ${coupon.userGroup.getDescription()}
             </td>
             <td>
                 <#list coupon.productTypes as productType>
-                ${productType.getName()},
+                ${productType.getName()}<#sep>, </#sep>
                 </#list>
             </td>
             <td>
@@ -116,15 +116,22 @@
             </td>
             <td>
                 <#if coupon.active>
+                    <a href="/activity-manage/coupon/${coupon.id?string('0')}/detail" class="btn-link">查看详情</a>
+                <#else>
+                    <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a> / <button class="btn-link" date-link="" data-id="${coupon.id?string('0')}">删除</button>
+                </#if>
+            </td>
+            <td>
+                <#if coupon.active>
                     <label>
                         <i class="check-btn add-check"></i>
                         <a class="loan_repay confirm-btn already-btn" href="javascript:void(0)" data-id="${coupon.id?string('0')}">已生效</a>
                     </label>
                 <#else>
-                <label>
-                    <i class="check-btn"></i>
-                    <a class="loan_repay confirm-btn" href="javascript:void(0)" data-id="${coupon.id?string('0')}">确认生效</a>
-                </label>
+                    <label>
+                        <i class="check-btn"></i>
+                        <a class="loan_repay confirm-btn" href="javascript:void(0)" data-id="${coupon.id?string('0')}">确认生效</a>
+                    </label>
                 </#if>
             </td>
         </tr>
