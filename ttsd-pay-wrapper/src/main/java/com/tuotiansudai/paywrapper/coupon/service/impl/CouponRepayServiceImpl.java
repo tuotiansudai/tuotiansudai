@@ -26,12 +26,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class CouponRepayServiceImpl implements CouponRepayService {
 
     static Logger logger = Logger.getLogger(CouponRepayServiceImpl.class);
+
+    private static final String COUPON_ORDER_ID_TEMPLATE = "{0}X{1}";
 
     @Autowired
     private AccountMapper accountMapper;
@@ -72,7 +75,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             long transferAmount = actualInterest - actualFee;
             boolean isSuccess = transferAmount == 0;
             if (transferAmount > 0) {
-                TransferRequestModel requestModel = TransferRequestModel.newCouponRequest(String.valueOf(userCouponModel.getId()),
+                TransferRequestModel requestModel = TransferRequestModel.newCouponRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(userCouponModel.getId()), String.valueOf(new Date().getTime())) ,
                         accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayUserId(),
                         String.valueOf(transferAmount));
                 try {
