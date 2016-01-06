@@ -290,6 +290,11 @@ body {
             padding-left: 38px;
             background: url("/images/icons/index_11.png") no-repeat;
           }
+          &.friend-link-icon {
+            width: 722px;
+            padding-left: 38px;
+            background: url("/images/icons/index_12.png") no-repeat 10px 10px;
+          }
         }
         .hot-more {
           float: right;
@@ -455,6 +460,21 @@ body {
           margin-left: 30px;
           strong{
             color: #ff7200;
+          }
+        }
+      }
+      .friendly-box {
+        background: #fff;
+        margin: 0 0 15px 0;
+        border-radius: 10px;
+        border: 1px solid #e5e5e5;
+        padding:20px;
+        a {
+          color: #808080;
+          display: inline-block;
+          margin-right:15px;
+          &:hover {
+            color:#ffa32a;
           }
         }
       }

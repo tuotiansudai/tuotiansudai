@@ -47,6 +47,8 @@
     <meta charset="UTF-8" />
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="keywords" content="拓天,拓天速贷,投资,投资安全,理财,理财安全,P2P,速贷,金融,互联网金融,互联网金融是什么,银行理财,私募,信托,贷款,股票,P2P理财,P2P财是什么,理财产品公司,理财产品排行,P2P理财公司,P2P理财产品公司,P2P公司,理财排名,互联网借贷平台,网络借贷平台,中介,中介金融,中介金融公司,金融中介,互联网金融公司,P2P收益,高收益,拓天伟业,拓天官网,拓天资产,拓天担保,担保,伟业,资产,资产管理,房屋抵押,汽车抵押,房屋抵押贷款,抵押贷款,买车贷款,公证书,房产证,他项证,银行托管,第三方托管,第三方支付,支付,提现,理财服务费,新手,投资新手,理财新手,新手体验,新手体验券,投资体验券,体验,投资体验,加息,加息券,债权,债务,债权转让,转让,短期借贷,借贷,P2P搜索,P2P搜索神器,神器,P2P终结者,P2P排名,P2P网贷,网贷,网贷App,网贷应用,网贷工具,网贷软件,网贷系统,网贷安全,网贷之家,网贷专家,理财专家,网贷天眼,P2Peye,p2p天眼,P2P软件,P2P第一品牌,P2P系统,p2p投资,p2p贷款,P2P怎么用,P2P贷款平台,国资系P2P,国资P2P,P2P圈,小额贷款,p2p小额贷款,致富,小额担保,年化收益,收益,利息,高利息,利率,高利率,普惠,普惠金融">
+    <meta name="description" content="拓天速贷是基于互联网的金融信息服务平台，由拓天伟业（北京）资产管理有限公司旗下的拓天伟业（北京）金融信息服务有限公司运营">
     <#if responsive??>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     </#if>
