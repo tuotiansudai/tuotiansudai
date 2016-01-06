@@ -85,7 +85,7 @@
                 <div class="col-sm-2">
                     <div class='input-group date' id='startTime'>
                         <input type='text' class="form-control coupon-start" name="startTime"
-                               <#if coupon??>value="${(coupon.startTime?string("yyyy-MM-dd HH:mm"))!}"</#if>
+                               <#if coupon??>value="${(coupon.startTime?string("yyyy-MM-dd"))!}"</#if>
                                datatype="date" errormsg="请选择活动开始时间"/>
 					<span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>
@@ -96,7 +96,7 @@
                 <div class="col-sm-2">
                     <div class='input-group date' id='endTime'>
                         <input type='text' class="form-control coupon-end" name="endTime"
-                               <#if coupon??>value="${(coupon.endTime?string("yyyy-MM-dd HH:mm"))!}"</#if>  datatype="date"
+                               <#if coupon??>value="${(coupon.endTime?string("yyyy-MM-dd"))!}"</#if>  datatype="date"
                                errormsg="请选择活动结束时间"/>
 					<span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>
