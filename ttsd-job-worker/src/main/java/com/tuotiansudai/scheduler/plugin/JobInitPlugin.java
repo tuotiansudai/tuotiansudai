@@ -42,6 +42,9 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.AutoReFreshAreaByMobile.name().equalsIgnoreCase(schedulerName)) {
             createRefreshAreaByMobile();
         }
+        if (JobType.LoanRepayNotify.name().equalsIgnoreCase(schedulerName)) {
+            createLoanRepayNotifyJob();
+        }
     }
 
     @Override
@@ -81,6 +84,16 @@ public class JobInitPlugin implements SchedulerPlugin {
             jobManager.newJob(JobType.AutoReFreshAreaByMobile, AutoReFreshAreaByMobileJob.class).replaceExistingJob(true)
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 2 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
                     .withIdentity(JobType.AutoReFreshAreaByMobile.name(), JobType.AutoReFreshAreaByMobile.name()).submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createLoanRepayNotifyJob() {
+        try {
+            jobManager.newJob(JobType.LoanRepayNotify, LoanRepayNotifyJob.class).replaceExistingJob(true)
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 14 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+                    .withIdentity(JobType.LoanRepayNotify.name(), JobType.LoanRepayNotify.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }

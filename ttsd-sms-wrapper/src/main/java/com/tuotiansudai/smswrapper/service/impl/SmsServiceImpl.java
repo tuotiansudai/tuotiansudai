@@ -64,4 +64,11 @@ public class SmsServiceImpl implements SmsService {
         String content = SmsTemplate.SMS_JOB_FATAL_NOTIFY_TEMPLATE.generateContent(map);
         return smsClient.sendSMS(JobFatalNotifyMapper.class, mobile, content, "");
     }
+
+    @Override
+    public BaseDto<SmsDataDto> loanRepayNotify(String mobile, String loanName, String repayAmount) {
+        Map<String, String> map = ImmutableMap.<String, String>builder().put("loanName", loanName).put("repayAmount", repayAmount).build();
+        String content = SmsTemplate.SMS_LOAN_REPAY_NOTIFY_TEMPLATE.generateContent(map);
+        return smsClient.sendSMS(LoanRepayNotifyMapper.class, mobile, content, "");
+    }
 }

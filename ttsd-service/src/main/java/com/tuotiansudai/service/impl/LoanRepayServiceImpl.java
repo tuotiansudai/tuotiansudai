@@ -1,16 +1,18 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.LoanRepayDataItemDto;
+import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanRepayService;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.DateUtil;
+import org.apache.log4j.Logger;
+import org.apache.log4j.spi.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,8 @@ import java.util.List;
 
 @Service
 public class LoanRepayServiceImpl implements LoanRepayService {
+
+    static Logger logger = Logger.getLogger(LoanRepayServiceImpl.class);
 
     @Value("${pay.overdue.fee}")
     private double overdueFee;
@@ -37,6 +41,9 @@ public class LoanRepayServiceImpl implements LoanRepayService {
 
     @Autowired
     private InvestMapper investMapper;
+
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
 
     @Override
     public BaseDto<BasePaginationDataDto> findLoanRepayPagination(int index, int pageSize, Long loanId,
@@ -107,4 +114,20 @@ public class LoanRepayServiceImpl implements LoanRepayService {
         }
     }
 
+    @Override
+    public void loanRepayNotify() {
+
+        List<LoanRepayNotifyModel> loanRepayNotifyModelList = loanRepayMapper.findLoanRepayNotifyToday();
+
+        for (LoanRepayNotifyModel model : loanRepayNotifyModelList) {
+
+            logger.info("sent loan repay notify sms message to " + model.getMobile());
+
+            LoanRepayNotifyDto dto = new LoanRepayNotifyDto();
+            dto.setMobile(model.getMobile());
+            dto.setLoanName(model.getLoanName());
+            dto.setRepayAmount(AmountConverter.convertCentToString(model.getRepayAmount()));
+            smsWrapperClient.sendLoanRepayNotify(dto);
+        }
+    }
 }
