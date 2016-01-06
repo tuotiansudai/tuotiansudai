@@ -23,10 +23,10 @@ public class CouponDto implements Serializable {
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String amount;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startTime;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endTime;
 
     private Long totalCount;
@@ -46,6 +46,18 @@ public class CouponDto implements Serializable {
     private Integer deadline;
 
     private UserGroup userGroup;
+
+    private boolean active;
+
+    private long totalInvestAmount;
+
+    private long usedCount;
+
+    private long issuedCount;
+
+    private long expectedAmount;
+
+    private long actualAmount;
 
     public String getAmount() {
         return amount;
@@ -135,6 +147,54 @@ public class CouponDto implements Serializable {
         this.id = id;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public long getTotalInvestAmount() {
+        return totalInvestAmount;
+    }
+
+    public void setTotalInvestAmount(long totalInvestAmount) {
+        this.totalInvestAmount = totalInvestAmount;
+    }
+
+    public long getUsedCount() {
+        return usedCount;
+    }
+
+    public void setUsedCount(long usedCount) {
+        this.usedCount = usedCount;
+    }
+
+    public long getIssuedCount() {
+        return issuedCount;
+    }
+
+    public void setIssuedCount(long issuedCount) {
+        this.issuedCount = issuedCount;
+    }
+
+    public long getExpectedAmount() {
+        return expectedAmount;
+    }
+
+    public void setExpectedAmount(long expectedAmount) {
+        this.expectedAmount = expectedAmount;
+    }
+
+    public long getActualAmount() {
+        return actualAmount;
+    }
+
+    public void setActualAmount(long actualAmount) {
+        this.actualAmount = actualAmount;
+    }
+
     public CouponDto(){
 
     }
@@ -151,5 +211,11 @@ public class CouponDto implements Serializable {
         this.userGroup = couponModel.getUserGroup();
         this.deadline = couponModel.getDeadline();
         this.smsAlert = couponModel.isSmsAlert();
+        this.active = couponModel.isActive();
+        this.totalInvestAmount = couponModel.getTotalInvestAmount();
+        this.issuedCount = couponModel.getIssuedCount();
+        this.usedCount = couponModel.getUsedCount();
+        this.expectedAmount = couponModel.getExpectedAmount();
+        this.actualAmount = couponModel.getActualAmount();
     }
 }

@@ -2,10 +2,9 @@ package com.tuotiansudai.coupon.service;
 
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.exception.CreateCouponException;
-import com.tuotiansudai.repository.model.LoanModel;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ public interface CouponService {
 
     void editCoupon(String loginName,CouponDto couponDto) throws CreateCouponException;
 
-    List<CouponModel> findCoupons(int index, int pageSize);
+    List<CouponDto> findCoupons(int index, int pageSize);
 
     int findCouponsCount();
 

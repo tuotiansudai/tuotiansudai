@@ -68,7 +68,7 @@
                 <span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${coupon.couponType.getDesc()}">${coupon.couponType.getDesc()}</span>
             </td>
             <td>
-                ${coupon.amount/100}
+                ${coupon.amount}
             </td>
             <td>
                 ${coupon.totalInvestAmount/100}
@@ -98,15 +98,15 @@
                 ${coupon.usedCount?string('0')}
             </td>
             <td>
-                <#--${coupon.userGroup.getDescription()}-->
+                ${coupon.userGroup.getDescription()}
             </td>
             <td>
                 <#list coupon.productTypes as productType>
-                ${productType.getName()},
+                ${productType.getName()}<#sep>, </#sep>
                 </#list>
             </td>
             <td>
-                投资满${coupon.investLowerLimit/100}元
+                投资满${coupon.investLowerLimit}元
             </td>
             <td>
                 ${coupon.expectedAmount/100}
@@ -116,15 +116,22 @@
             </td>
             <td>
                 <#if coupon.active>
+                    <a href="/activity-manage/coupon/${coupon.id?string('0')}/detail" class="btn-link">查看详情</a>
+                <#else>
+                    <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a> / <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/${coupon.id?string('0')}" >删除</button>
+                </#if>
+            </td>
+            <td>
+                <#if coupon.active>
                     <label>
                         <i class="check-btn add-check"></i>
-                        <a class="loan_repay confirm-btn already-btn" href="javascript:void(0)" data-id="${coupon.id?string('0')}">已生效</a>
+                        <button class="loan_repay already-btn btn-link" disabled>已生效</button>
                     </label>
                 <#else>
-                <label>
-                    <i class="check-btn"></i>
-                    <a class="loan_repay confirm-btn" href="javascript:void(0)" data-id="${coupon.id?string('0')}">确认生效</a>
-                </label>
+                    <label>
+                        <i class="check-btn"></i>
+                        <a class="loan_repay confirm-btn" href="javascript:void(0)" data-id="${coupon.id?string('0')}">确认生效</a>
+                    </label>
                 </#if>
             </td>
         </tr>
