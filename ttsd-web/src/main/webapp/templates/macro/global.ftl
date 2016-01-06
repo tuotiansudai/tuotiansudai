@@ -30,7 +30,9 @@
     {"title":"资金管理", "url":"/user-bill", "role":"'INVESTOR', 'LOANER'"},
     {"title":"个人资料", "url":"/personal-info", "role":"'INVESTOR', 'LOANER'"},
     {"title":"自动投标", "url":"/investor/auto-invest", "role":"'INVESTOR'"},
-    {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'INVESTOR', 'LOANER'"}]},
+    {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'INVESTOR', 'LOANER'"},
+    {"title":"我的宝藏", "url":"/my-treasure", "role":"'INVESTOR', 'LOANER'"}
+    ]},
     {"title":"推荐奖励", "url":"/activity/refer-reward"},
     {"title":"关于我们", "url":"/about/company", "leftNavs":[
     {"title":"公司介绍", "url":"/about/company"},
