@@ -161,6 +161,9 @@ public class UserController {
 
                 dataModel.add(StringUtils.join(userRole, ";"));
                 dataModel.add(userItemDataDtos.get(i).getStatus() == UserStatus.ACTIVE ? "正常" : "禁用");
+                dataModel.add(userItemDataDtos.get(i).getBirthday());
+                dataModel.add(userItemDataDtos.get(i).getProvince());
+                dataModel.add(userItemDataDtos.get(i).getCity());
                 data.add(dataModel);
             }
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUsers, data, response.getOutputStream());
