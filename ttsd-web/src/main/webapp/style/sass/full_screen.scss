@@ -286,10 +286,10 @@ body {
             background: url("/images/icons/index_09.png") no-repeat;
           }
           &.report-icon {
-            width: 722px;
-            padding-left: 38px;
-            background: url("/images/icons/index_11.png") no-repeat;
-          }
+             width: 722px;
+             padding-left: 38px;
+             background: url("/images/icons/index_11.png") no-repeat;
+           }
         }
         .hot-more {
           float: right;
@@ -445,7 +445,7 @@ body {
         color: #666;
         line-height: 100px;
         background: #fff;
-        margin: 0 0 30px 0;
+        margin: 0 0 15px 0;
         border-radius: 10px;
         border: 1px solid #e5e5e5;
         span {
