@@ -63,10 +63,10 @@
                 ${coupon.amount/100}
             </td>
             <td>
-                ${coupon.startTime?string('yyyy-MM-dd HH:mm')}
+                ${coupon.startTime?string('yyyy-MM-dd')}
             </td>
             <td>
-                ${coupon.endTime?string('yyyy-MM-dd HH:mm')}
+                ${coupon.endTime?string('yyyy-MM-dd')}
             </td>
             <td>
                 ${coupon.totalCount?string('0')}
