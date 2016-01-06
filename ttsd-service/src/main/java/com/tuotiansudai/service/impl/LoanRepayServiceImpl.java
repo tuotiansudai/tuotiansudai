@@ -124,8 +124,8 @@ public class LoanRepayServiceImpl implements LoanRepayService {
             logger.info("sent loan repay notify sms message to " + model.getMobile());
 
             LoanRepayNotifyDto dto = new LoanRepayNotifyDto();
-            dto.setMobile(model.getMobile());
-            dto.setLoanName(model.getLoanName());
+            dto.setMobile(model.getMobile().trim());
+            dto.setLoanName(model.getLoanName().trim());
             dto.setRepayAmount(AmountConverter.convertCentToString(model.getRepayAmount()));
             smsWrapperClient.sendLoanRepayNotify(dto);
         }
