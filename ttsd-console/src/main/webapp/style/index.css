@@ -196,7 +196,9 @@ td.td {
 .bootstrap-select button.dropdown-toggle {
     width: 170px;
 }
-
+.bootstrap-select.b-width button.dropdown-toggle {
+    width: 345px;
+}
 /*.bootstrap-select .btn { padding:3px 10px; font-size: 13px;}*/
 .btnSearch {
     padding: 5px 20px;
@@ -250,4 +252,21 @@ td.td {
 
 .agent-rate{
     padding-right: 5px;
+}
+
+.system-recharge-label{
+    width: 11%;
+}
+
+.system-recharge-amount{
+    width:25%;
+}
+.system-recharge-btn{
+    margin-left: 0.3%;
+}
+
+.system-recharge-balance{
+    border: none;
+    box-shadow: none;
+    margin-top: 5px;
 }

@@ -1,4 +1,4 @@
-define(['jquery','underscore','echarts'], function ($,_) {
+define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
 
     var MyChartsObject={
         ChartConfig: function (container, option) {
@@ -41,10 +41,11 @@ define(['jquery','underscore','echarts'], function ($,_) {
                 toolbox: {
                     show: true,
                     feature: {
-                        mark: true,
-                        dataView: { readOnly: false },
-                        restore: true,
-                        saveAsImage: true
+                        mark: {show: false},
+                        dataView: {show: true, readOnly: false},
+                        magicType: {show: true, type: ['line', 'bar']},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
                     }
                 }
             },
@@ -87,10 +88,11 @@ define(['jquery','underscore','echarts'], function ($,_) {
                 toolbox: {
                     show : true,
                     feature: {
-                        mark: true,
-                        dataView: { readOnly: false },
-                        restore: true,
-                        saveAsImage: true
+                        mark: {show: false},
+                        dataView: {show: true, readOnly: false},
+                        magicType: {show: true, type: ['line', 'bar']},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
                     }
                 }
             },
@@ -219,6 +221,75 @@ define(['jquery','underscore','echarts'], function ($,_) {
                 return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonLineOption, option);
             }
         },
+        eConsole: function (param) {
+            var $formUserReport=$('#formUserInvestViscosityReport'),
+                $boxUserInvest=$('#boxUserInvest');
+            $.pageflip.defaultVal = {
+                pageIndex: 1,
+                pageSize: 10,
+                PageCallback: loadReportData,
+                PagePosition: "#boxUserInvest table .pageNumber span.pageBtn",
+                pageLocalized: {
+                    first: "<<",
+                    prev: "<",
+                    next: ">",
+                    last: ">>"
+                }
+            }
+            function loadReportData() {
+                if (typeof param.seriesIndex == 'undefined') {
+                    return;
+                }
+                var loanCount= /[0-9]/.exec(param.name)[0];
+                var formData=$formUserReport.serialize()+'&loanCount='+loanCount+'&pageNo='+$.pageflip.defaultVal.pageIndex+'&pageSize='+$.pageflip.defaultVal.pageSize;
+                $.ajax({
+                    url: '/bi/user-invest-viscosity-detail',
+                    type: 'GET',
+                    dataType: 'json',
+                    data:formData,
+                    contentType: 'application/json; charset=UTF-8'
+                }).done(function (data) {
+                    var dataObj=[], TotalRecord=data.totalCount;
+
+                    $boxUserInvest.find('.sumAmount').text(parseFloat(data.sumAmount/100).toFixed(2));
+                    $.each(data.items,function(key,option) {
+                        var isReferrerStaff=(option.isReferrerStaff==1)?'是':'否';
+                        var getDate=new Date(option.lastInvestTime),
+                            Hours=getDate.getHours(),
+                            minutes=getDate.getMinutes(),
+                            seconds=getDate.getSeconds();
+
+                        Hours=(Hours >= 10)?(Hours + ":"):("0" + Hours + ":");
+                        minutes=(minutes >= 10)?(minutes + ":"):("0" + minutes + ":");
+                        seconds=(seconds >= 10)?seconds:("0" + seconds);
+                            showDate=MyChartsObject.datetimeFun.getNowFormatDate(getDate)+' '+Hours+minutes+seconds;
+
+                        dataObj.push('<tr> ' +
+                            '<td>'+option.loginName+'</td> ' +
+                            '<td>'+option.userName+'</td> ' +
+                            '<td>'+option.mobile+'</td> ' +
+                            '<td>'+isReferrerStaff+'</td> ' +
+                            '<td>'+((_.isNull(option.referrer))?'':option.referrer)+'</td> ' +
+                            '<td>'+((_.isNull(option.referrerUserName))?'':option.referrerUserName)+'</td> ' +
+                            '<td>'+((option.isStaff==1)?'是':'否')+'</td> ' +
+                            '<td>'+parseFloat(option.totalAmount/100).toFixed(2)+'</td> ' +
+                            '<td>'+option.loanCount+'</td> ' +
+                            '<td>'+showDate+'</td> ' +
+                            '</tr>');
+                    })
+                    $boxUserInvest.show().find('tbody').empty().append(dataObj.join(''));
+
+                    $.pageflip.paging(TotalRecord,{ PageCallback: loadReportData,
+                        PagePosition: "#boxUserInvest table .pageNumber span.pageBtn"
+                    });
+                    $boxUserInvest.find('.TotalRecords').text(TotalRecord);
+                });
+            }
+            if (param.type == 'click') {
+                loadReportData();
+            }
+
+        },
         Charts: {
             RenderChart: function (option) {
                 require(
@@ -231,12 +302,15 @@ define(['jquery','underscore','echarts'], function ($,_) {
                     ],
                     function (ec) {
                         var echarts = ec;
-
+                        var ecConfig = require('echarts/config');
                         if (option.chart && option.chart.dispose)
                             option.chart.dispose();
                         option.chart = echarts.init(option.container);
 
                         option.chart.setOption(option.option, true);
+                        if(/userInvestViscosity/.test(option.chart.dom.id)) {
+                            option.chart.on(ecConfig.EVENT.CLICK, MyChartsObject.eConsole); //添加点击事件
+                        }
                         window.onresize = option.chart.resize;
 
 
@@ -247,10 +321,21 @@ define(['jquery','underscore','echarts'], function ($,_) {
             $.ajax({
                 type: 'GET',
                 url: '/bi/province',
-                dataType: 'json'
+                dataType: 'json',
+                async:false
             }).done(function (data) {
                 callback && callback(data);
 
+            });
+        },
+        ChartsChannels:function(callback){
+            $.ajax({
+                type: 'GET',
+                url: '/bi/channels',
+                dataType: 'json',
+                async:false
+            }).done(function(data) {
+                callback && callback(data);
             });
         },
         datetimeFun: {

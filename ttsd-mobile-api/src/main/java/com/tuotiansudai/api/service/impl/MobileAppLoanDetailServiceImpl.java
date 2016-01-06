@@ -62,9 +62,8 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setLoanId("" + loan.getId());
         loanDetailResponseDataDto.setLoanType(loan.getActivityType().name());
         loanDetailResponseDataDto.setLoanName(loan.getName());
-        String loanType = loan.getType().getName();
-        String repayTypeName = loanType.substring(0, loanType.lastIndexOf("，"));
-        String interestPointName = loanType.substring(loanType.lastIndexOf("，")+1);
+        String repayTypeName = loan.getType().getRepayType();
+        String interestPointName = loan.getType().getInterestPointName();
         loanDetailResponseDataDto.setRepayTypeCode("");
         loanDetailResponseDataDto.setRepayTypeName(repayTypeName);
         loanDetailResponseDataDto.setInterestPointName(interestPointName);

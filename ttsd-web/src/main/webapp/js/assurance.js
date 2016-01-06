@@ -16,29 +16,10 @@ require(['jquery','fullPage'], function ($) {
         sectionsColor: ['#d9ac52', '#50b281', '#9676d6'],
         navigation: true,
         resize:true,
-        scrollingSpeed:600,
+        scrollingSpeed:800,
         css3: true,
         afterLoad: function(anchorLink, index){
             var $fpNav=$('#fp-nav');
-
-            if(boolHead) {
-                if(index == 1){
-                    $boxProfit.find('img.fl').animate({
-                        'marginLeft': '90px'
-                    }, 600);
-                }
-                if(index == 2){
-                    $boxWealth.find('img.page-img').animate({
-                        left: '360px'
-                    }, 600);
-                }
-                if(index == 3){
-                    $boxInsurance.find('img.page-img').animate({
-                        right: '0'
-                    }, 600);
-
-                }
-            }
                 $fpNav.find('li').each(function(key,option) {
                     var $this=$(this);
                    switch(key){
@@ -54,28 +35,8 @@ require(['jquery','fullPage'], function ($) {
                    }
 
                 });
-
-        },
-        onLeave: function(index, direction){
-            if(boolHead) {
-                if(index == 1){
-                    $boxProfit.find('img.fl').animate({
-                        'marginLeft': '-850px'
-                    }, 600);
-                }
-                if(index == 2){
-                    $boxWealth.find('img.page-img').animate({
-                        left: '1260px'
-                    }, 600);
-                }
-                if(index == 3){
-                    $boxInsurance.find('img.page-img').animate({
-                        right: '1400px'
-                    }, 600);
-
-                }
-            }
         }
+
     });
 
 });

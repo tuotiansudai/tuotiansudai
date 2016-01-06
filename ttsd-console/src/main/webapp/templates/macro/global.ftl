@@ -64,7 +64,8 @@
                     {"name":"systemBill","text":"系统账户查询","link":"/finance-manage/system-bill","role":"'ADMIN'"},
                     {"name":"adminIntervention","text":"修改账户余额","link":"/finance-manage/admin-intervention","role":"'ADMIN'"},
                     {"name":"realTimeStatus","text":"联动优势余额查询","link":"/finance-manage/real-time-status","role":"'ADMIN'"},
-                    {"name":"userBalance","text":"用户余额","link":"/finance-manage/account-balance","role":"'ADMIN','CUSTOMER_SERVICE'"}
+                    {"name":"userBalance","text":"用户余额","link":"/finance-manage/account-balance","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"systemRecharge","text":"平台账户充值","link":"/finance-manage/system-recharge","role":"'ADMIN'"}
                 ]
             },
             {
@@ -104,6 +105,7 @@
     <link href="${applicationContext}/style/libs/bootstrap-select.css" rel="stylesheet" type="text/css" charset="utf-8"/>
     <link href="${applicationContext}/style/libs/jquery-ui/jquery-ui-1.11.4.min.css" rel="stylesheet" charset="utf-8"/>
     <link href="${applicationContext}/style/index.css" rel="stylesheet">
+    <link href="${applicationContext}/style/libs/jquery.pageflip.css" rel="stylesheet">
     <link href="${applicationContext}/style/libs/fileinput.css" rel="stylesheet"/><!--上传图片插件-->
     <#if pageCss?? && pageCss != "">
         <link rel="stylesheet" type="text/css" href="${applicationContext}/style/dest/${pageCss}" charset="utf-8"/>
