@@ -73,14 +73,16 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th colspan="10">合计提现金额：${sumAmount/100} 元 &nbsp;&nbsp;&nbsp; 合计提现手续费：${sumFee/100} 元</th>
+                <th colspan="12">合计提现金额：${sumAmount/100} 元 &nbsp;&nbsp;&nbsp; 合计提现手续费：${sumFee/100} 元</th>
             </tr>
             <tr>
-                <th>提现编号</th>
+                <th>编号</th>
                 <th>申请时间</th>
                 <th>初审时间</th>
                 <th>复核时间</th>
                 <th>用户名</th>
+                <th>姓名</th>
+                <th>手机号</th>
                 <th>提现金额</th>
                 <th>手续费</th>
                 <th>银行卡</th>
@@ -97,7 +99,13 @@
                         <td>${(withdrawItem.createdTime?string('yyyy-MM-dd HH:mm'))!}</td>
                         <td>${(withdrawItem.applyNotifyTime?string('yyyy-MM-dd HH:mm'))!}</td>
                         <td>${(withdrawItem.notifyTime?string('yyyy-MM-dd HH:mm'))!}</td>
-                        <td>${withdrawItem.loginName}</td>
+                        <td>${withdrawItem.loginName}
+                            <#if withdrawItem.isStaff()>
+                                <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
+                            </#if>
+                        </td>
+                        <td>${withdrawItem.userName}</td>
+                        <td>${withdrawItem.mobile}</td>
                         <td>${withdrawItem.amount}</td>
                         <td>${withdrawItem.fee}</td>
                         <td>${withdrawItem.bankCard}</td>
@@ -107,7 +115,7 @@
                     </#list>
                 <#else>
                 <tr>
-                    <td colspan="11">Empty</td>
+                    <td colspan="12">Empty</td>
                 </tr>
                 </#if>
             </tbody>
@@ -115,12 +123,12 @@
     </div>
 
     <!-- pagination  -->
-    <nav>
+    <nav class="pagination-control">
         <#if withdrawList?has_content>
             <div>
                 <span class="bordern">总共${pagination.count}条,每页显示${pageSize}条</span>
             </div>
-            <ul class="pagination">
+            <ul class="pagination pull-left">
                 <li>
                     <#if pagination.hasPreviousPage >
                     <a href="?withdrawId=${withdrawId!}&loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&source=${source!}&status=${status!}&pageSize=${pageSize}&index=${index-1}"
@@ -143,6 +151,7 @@
                 </a>
                 </li>
             </ul>
+            <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
         </#if>
     </nav>
     <!-- pagination -->

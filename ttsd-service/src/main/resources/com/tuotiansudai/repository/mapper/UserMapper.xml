@@ -24,6 +24,7 @@
         <result column="source" property="source"></result>
         <result column="province" property="province"></result>
         <result column="city" property="city"></result>
+        <result column="auto_invest_status" property="autoInvestStatus"></result>
         <association property="account" javaType="com.tuotiansudai.repository.model.AccountModel">
             <id column="id" property="id"></id>
             <result column="login_name" property="loginName"></result>
@@ -47,7 +48,12 @@
     </select>
 
     <select id="findByLoginName" parameterType="java.lang.String" resultMap="userResultMap">
-      select * from user where login_name = #{loginName}
+      select
+          u.*,
+          IF(au.login_name is null, "0", "1") as auto_invest_status
+      from user u
+      left join auto_invest_plan au on au.login_name = u.login_name and au.enabled=1
+      where u.login_name = #{loginName}
     </select>
 
     <select id="findByLoginNameOrMobile" parameterType="java.lang.String" resultMap="userResultMap">
@@ -76,11 +82,18 @@
     </update>
 
     <select id="findAllUser" parameterType="map" resultMap="userResultMap">
-        select * from user u left join account a on u.login_name = a.login_name
+        select
+            u.*,
+            a.*,
+            IF(au.login_name is null, "0", "1") as auto_invest_status
+        from user u
+            left join account a on u.login_name = a.login_name
 
         <if test="role !=null" >
             join user_role r on u.login_name = r.login_name
         </if>
+
+            left join auto_invest_plan au on u.login_name = au.login_name and enabled=1
         <where>
             <if test="role !=null" >
                 and r.role = #{role}
@@ -164,6 +177,10 @@
 
     <select id="findAllChannels" resultType="java.lang.String">
         select distinct channel from user where channel is not NULL
+    </select>
+
+    <select id="findAllUserChannels" resultType="java.lang.String">
+        select IFNULL(channel,'其他') from user group by channel order by channel desc
     </select>
 
     <select id="findUserByProvince" resultMap="userResultMap">

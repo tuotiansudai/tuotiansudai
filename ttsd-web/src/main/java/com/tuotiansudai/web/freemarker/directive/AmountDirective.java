@@ -29,6 +29,8 @@ public class AmountDirective implements TemplateDirectiveModel {
     private static class AmountFilterWriter extends Writer {
 
         private final Writer out;
+        private static final BigDecimal ONE_HUNDRED = new BigDecimal(100);
+        private static final BigDecimal TEN_THOUSANDS = new BigDecimal(1000000);
 
         AmountFilterWriter (Writer out) {
             this.out = out;
@@ -38,10 +40,10 @@ public class AmountDirective implements TemplateDirectiveModel {
         public void write(char[] cbuf, int off, int len) throws IOException {
             BigDecimal amount = new BigDecimal(new String(cbuf, off, len));
             String returnAmount;
-            if (amount.compareTo(new BigDecimal(1000000)) != -1){
-                returnAmount = amount.divide(new BigDecimal(1000000), 2, BigDecimal.ROUND_HALF_UP).toString().replaceAll("0+?$", "").replaceAll("[.]$", "")+"万";
+            if (amount.compareTo(TEN_THOUSANDS) != -1){
+                returnAmount = amount.divide(TEN_THOUSANDS, 2, BigDecimal.ROUND_HALF_UP).toString().replaceAll("0+?$", "").replaceAll("[.]$", "")+" 万";
             } else {
-                returnAmount = amount.divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP).toString().replaceAll("0+?$", "").replaceAll("[.]$", "");
+                returnAmount = amount.divide(ONE_HUNDRED, 2, BigDecimal.ROUND_HALF_UP).toString().replaceAll("0+?$", "").replaceAll("[.]$", "");
             }
             out.write(returnAmount);
         }

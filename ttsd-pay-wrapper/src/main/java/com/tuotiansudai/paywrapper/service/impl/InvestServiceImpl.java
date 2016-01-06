@@ -29,6 +29,7 @@ import com.tuotiansudai.util.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -212,7 +213,12 @@ public class InvestServiceImpl implements InvestService {
 
         for (InvestNotifyRequestModel model : todoList) {
             if (updateInvestNotifyRequestStatus(model)) {
-                processOneCallback(model);
+                try {
+                    ((InvestService) AopContext.currentProxy()).processOneCallback(model);
+                } catch (Exception e) {
+                    fatalLog("invest callback, processOneCallback error. investId:" + model.getOrderId(), e);
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -237,7 +243,8 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Transactional
-    private synchronized void processOneCallback(InvestNotifyRequestModel callbackRequestModel) {
+    @Override
+    public void processOneCallback(InvestNotifyRequestModel callbackRequestModel) {
 
         String orderIdStr = callbackRequestModel.getOrderId();
         long orderId = Long.parseLong(orderIdStr);
@@ -387,7 +394,10 @@ public class InvestServiceImpl implements InvestService {
             }
 
             if (autoInvestIntervalMilliseconds >= 0) {
-                try { Thread.sleep(autoInvestIntervalMilliseconds); } catch (InterruptedException e) { }
+                try {
+                    Thread.sleep(autoInvestIntervalMilliseconds);
+                } catch (InterruptedException e) {
+                }
             }
         }
     }
@@ -408,8 +418,11 @@ public class InvestServiceImpl implements InvestService {
         if (returnAmount >= availableLoanAmount) {
             returnAmount = availableLoanAmount;
         }
+        if (returnAmount < minLoanInvestAmount) {
+            return 0L;
+        }
         long autoInvestMoney = returnAmount - (returnAmount - minLoanInvestAmount) % investIncreasingAmount;
-        return autoInvestMoney < minInvestAmount ? 0L : autoInvestMoney;
+        return autoInvestMoney < NumberUtils.max(minInvestAmount, minLoanInvestAmount) ? 0L : autoInvestMoney;
     }
 
     @Override

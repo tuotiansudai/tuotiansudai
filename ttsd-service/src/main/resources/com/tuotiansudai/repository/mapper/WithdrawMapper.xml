@@ -28,6 +28,12 @@
         </association>
     </resultMap>
 
+    <resultMap id="withdrawResultView" type="WithdrawPaginationView" extends="withdrawResultMap">
+        <result column="user_name" property="userName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="is_staff" property="isStaff"></result>
+    </resultMap>
+
     <sql id="columns">
         withdraw.id as withdraw_id,
         withdraw.bank_card_id as withdraw_bank_card_id,
@@ -75,9 +81,15 @@
         select IFNULL(sum(amount), 0) as amount from withdraw where status = 'SUCCESS' and login_name = #{loginName}
     </select>
 
-    <select id="findWithdrawPagination" parameterType="map" resultMap="withdrawResultMap">
-        select <include refid="columns"></include>
-        from withdraw join bank_card on withdraw.bank_card_id = bank_card.id
+    <select id="findWithdrawPagination" parameterType="map" resultMap="withdrawResultView">
+        select <include refid="columns"></include>,
+        a.user_name,
+        u.mobile,
+        IFNULL((select 1 from user_role ur where ur.login_name = withdraw.login_name and ur.role = 'STAFF'),0) as is_staff
+        from withdraw
+        join bank_card on withdraw.bank_card_id = bank_card.id
+        LEFT JOIN `user` u on withdraw.login_name = u.login_name
+        LEFT JOIN account a on withdraw.login_name = a.login_name
         <where>
             <if test="withdrawId != null and withdrawId != ''">
                 and withdraw.id = #{withdrawId}
@@ -102,7 +114,7 @@
         limit #{index}, #{pageSize}
     </select>
 
-    <select id="findWithdrawCount" parameterType="map" resultType="long">
+    <select id="findWithdrawCount" parameterType="map" resultType="int">
         select count(1) from withdraw join bank_card on withdraw.bank_card_id = bank_card.id
         <where>
             <if test="withdrawId != null and withdrawId != '' ">

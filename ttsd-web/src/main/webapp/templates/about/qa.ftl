@@ -1,6 +1,6 @@
 <#import "../macro/global.ftl" as global>
     <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="关于我们" activeLeftNav="常见问题" title="常见问题">
-<div class="about-us-container">
+<div class="about-us-container" id="WhetherApp">
 	<h2 class="column-title"><em>常见问题</em></h2>
 	<div class="common-problem clearfix">
 		<dl class="problem-list">
@@ -13,9 +13,9 @@
 			<dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>4.电子合同有效么？受到法律保护么？</span></dt>
 			<dd><strong>答：</strong>拓天速贷的电子合同是受法律保护的。根据《合同法》和《电子签名法》的规定，当事人可以采用合同书、信件和数据电文（包括电报、电传、传真、电子数据交换和电子邮件）等形式订立合同，并通过以电子形式所含、所附的，用于识别签名人身份并表明签名人认可其中内容的数据电文等电子签名方式进行签署，当事人不能仅因合同采用电子签名、数据电文的形式就否定其法律效力。 </dd>
 			<dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>5.拓天速贷如何保障资金安全？</span></dt>
-			<dd><strong>答：</strong>拓天速贷由联动优势代为提供第三方资金监管及交易安全方面的工作，拓天速贷本身不吸储、不放贷，只撮合债权债务双方，不经手资金。“第三方监管模式”能够满足资金的去向更加明确、更加透明的诉求，并进行有效的风险隔离。 </dd>
+			<dd><strong>答：</strong>拓天速贷由联动优势代为提供第三方资金托管及交易安全方面的工作，拓天速贷本身不吸储、不放贷，只撮合债权债务双方，不经手资金。“第三方托管模式”能够满足资金的去向更加明确、更加透明的诉求，并进行有效的风险隔离。 </dd>
 			<dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>6.拓天速贷与联动优势的合作关系？ </span></dt>
-			<dd><strong>答：</strong>联动优势是由中国移动、中国银联于2003年联合发起成立。作为专业的移动电子商务服务提供商，为普通个人用户提供安全、便捷、易用的移动电子商务服务。2011年8月31日成功入选央行公布的第二批第三方支付牌照名单。联动优势作为拓天速贷的资金安全保障方，为拓天速贷的用户提供安全稳健的资金监管保障，避免用户资金的流失及其他不良事件的发生。 </dd>
+			<dd><strong>答：</strong>联动优势是由中国移动、中国银联于2003年联合发起成立。作为专业的移动电子商务服务提供商，为普通个人用户提供安全、便捷、易用的移动电子商务服务。2011年8月31日成功入选央行公布的第二批第三方支付牌照名单。联动优势作为拓天速贷的资金安全保障方，为拓天速贷的用户提供安全稳健的资金托管保障，避免用户资金的流失及其他不良事件的发生。 </dd>
 			<dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>7.拓天速贷与京都律师事务所的合作关系？ </span></dt>
 			<dd><strong>答：</strong>北京市京都律师事务所成立于1995年，是国内较早设立的合伙制律师事务所之一，并在刑事诉讼领域居于全国领先地位。京都律师事务所作为拓天速贷的法律服务保障方，为拓天速贷及其用户提供专业高效的法律保障及法律援助服务，确保您拥有坚实的法律保障。 </dd>
 			<dt class="text-overflow"><i class="fa fa-toggle-up"></i><span>8.拓天速贷的标的物信息是否可以在网上进行查询？ </span></dt>
