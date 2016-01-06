@@ -41,6 +41,18 @@ public class TransferRequestModel extends BaseSyncRequestModel {
         return model;
     }
 
+    public static TransferRequestModel newCouponRequest(String orderId, String payUserId, String amount) {
+        TransferRequestModel model = new TransferRequestModel();
+        model.service = UmPayService.TRANSFER.getServiceName();
+        model.orderId = orderId;
+        model.particUserId = payUserId;
+        model.amount = amount;
+        model.particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
+        model.transAction = UmPayTransAction.OUT.getCode();
+        model.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        return model;
+    }
+
     @Override
     public Map<String, String> generatePayRequestData() {
         Map<String, String> payRequestData = super.generatePayRequestData();
