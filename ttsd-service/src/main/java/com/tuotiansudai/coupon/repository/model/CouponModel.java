@@ -5,6 +5,7 @@ import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -259,7 +260,7 @@ public class CouponModel implements Serializable {
     public CouponModel(CouponDto couponDto){
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime();
-        this.endTime = couponDto.getEndTime();
+        this.endTime =  new DateTime(couponDto.getEndTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate();
         this.totalCount = couponDto.getTotalCount();
         this.productTypes = couponDto.getProductTypes() ;
         this.couponType = couponDto.getCouponType();

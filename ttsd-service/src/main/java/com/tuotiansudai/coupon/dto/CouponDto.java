@@ -23,10 +23,10 @@ public class CouponDto implements Serializable {
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String amount;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startTime;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endTime;
 
     private Long totalCount;
