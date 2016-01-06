@@ -62,10 +62,12 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
             personalInfoDataDto.setCertificationFlag(true);
             personalInfoDataDto.setRealName(account.getUserName());
             personalInfoDataDto.setIdCard(account.getIdentityNumber());
+            personalInfoDataDto.setAutoInvest(account.isAutoInvest());
         } else {
             personalInfoDataDto.setCertificationFlag(false);
             personalInfoDataDto.setRealName("");
             personalInfoDataDto.setIdCard("");
+            personalInfoDataDto.setAutoInvest(false);
         }
         if (bankCard != null) {
             personalInfoDataDto.setIsBoundBankCard(true);
