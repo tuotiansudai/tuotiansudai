@@ -68,7 +68,7 @@
                 <span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${coupon.couponType.getDesc()}">${coupon.couponType.getDesc()}</span>
             </td>
             <td>
-                ${coupon.amount/100}
+                ${coupon.amount}
             </td>
             <td>
                 ${coupon.totalInvestAmount/100}
@@ -106,7 +106,7 @@
                 </#list>
             </td>
             <td>
-                投资满${coupon.investLowerLimit/100}元
+                投资满${coupon.investLowerLimit}元
             </td>
             <td>
                 ${coupon.expectedAmount/100}

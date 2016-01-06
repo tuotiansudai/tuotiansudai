@@ -1,8 +1,10 @@
 package com.tuotiansudai.coupon.service.impl;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
@@ -111,12 +113,17 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<CouponModel> findCoupons(int index, int pageSize) {
+    public List<CouponDto> findCoupons(int index, int pageSize) {
         List<CouponModel> couponModels = couponMapper.findCoupons((index - 1) * pageSize, pageSize);
         for (CouponModel couponModel : couponModels) {
             couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
         }
-        return couponModels;
+        return Lists.transform(couponModels, new Function<CouponModel, CouponDto>() {
+            @Override
+            public CouponDto apply(CouponModel input) {
+                return new CouponDto(input);
+            }
+        });
     }
 
     @Override
