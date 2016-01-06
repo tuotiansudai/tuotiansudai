@@ -143,5 +143,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     /*标的满标周期分布*/
     showReport('#formLoanRaisingTimeCostingReport','/bi/loan-raising-time-costing-trend','loanRaisingTimeCostingDistribution','小时','kBar');
 
+    /*提现人数分布*/
+    showReport('#formWithdrawUserCountReport','/bi/withdraw-user-count-trend','withdrawUserCountDistribution','提现人数(人)','Lines');
 
 });

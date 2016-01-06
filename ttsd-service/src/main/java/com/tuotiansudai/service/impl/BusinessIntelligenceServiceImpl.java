@@ -151,4 +151,11 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         }
         return loanRaisingTimeCostList;
     }
+
+    @Override
+    public List<KeyValueModel> queryWithdrawUserCountTrend(Date startTime, Date endTime,Granularity granularity){
+        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+        return businessIntelligenceMapper.queryWithdrawUserCountTrend(queryStartTime, queryEndTime,granularity);
+    }
 }

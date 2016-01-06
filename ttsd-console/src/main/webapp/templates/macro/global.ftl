@@ -21,7 +21,8 @@
                     {"name":"userInvestAmount","text":"用户投资金额时间分布","link":"/","role":"'ADMIN'"},
                     {"name":"userInvestCount","text":"用户投资次数时间分布","link":"/","role":"'ADMIN'"},
                     {"name":"userAge","text":"用户年龄分布","link":"/","role":"'ADMIN'"},
-                    {"name":"loanRaisingTimeCosting","text":"标的满标周期分布","link":"/","role":"'ADMIN'"}
+                    {"name":"loanRaisingTimeCosting","text":"标的满标周期分布","link":"/","role":"'ADMIN'"},
+                    {"name":"userWithdrawCount","text":"提现人数分布","link":"/","role":"'ADMIN'"}
                 ]
 
             },

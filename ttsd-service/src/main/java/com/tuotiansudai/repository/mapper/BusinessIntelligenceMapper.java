@@ -36,4 +36,6 @@ public interface BusinessIntelligenceMapper {
     List<KeyValueModel> queryUserAgeTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("province") String province, @Param("isInvestor") String isInvestor);
 
     List<KeyValueModel> queryLoanRaisingTimeCostingTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
+
+    List<KeyValueModel> queryWithdrawUserCountTrend(@Param("startTime") Date startTime, @Param("endTime") Date endTime,@Param("granularity") Granularity granularity);
 }

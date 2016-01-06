@@ -137,7 +137,15 @@ public class BusinessIntelligenceController {
     @RequestMapping(value = "/loan-raising-time-costing-trend", method = RequestMethod.GET)
     public List<KeyValueModel> queryLoanRaisingTimeCostingTrend(
             @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime){
+            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
         return businessIntelligenceService.queryLoanRaisingTimeCostingTrend(startTime, endTime);
+    }
+
+    @RequestMapping(value = "/withdraw-user-count-trend", method = RequestMethod.GET)
+    public List<KeyValueModel> queryWithdrawUserCountTrend(
+            @RequestParam(name = "granularity") Granularity granularity,
+            @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime){
+        return businessIntelligenceService.queryWithdrawUserCountTrend(startTime, endTime,granularity);
     }
 }
