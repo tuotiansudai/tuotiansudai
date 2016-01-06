@@ -3,6 +3,8 @@ package com.tuotiansudai.console.controller;
 import com.tuotiansudai.dto.Granularity;
 import com.tuotiansudai.dto.RoleStage;
 import com.tuotiansudai.dto.UserStage;
+import com.tuotiansudai.repository.model.InvestViscosityDetailTableView;
+import com.tuotiansudai.repository.model.InvestViscosityDetailView;
 import com.tuotiansudai.repository.model.KeyValueModel;
 import com.tuotiansudai.service.BusinessIntelligenceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +80,18 @@ public class BusinessIntelligenceController {
             @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
             @RequestParam(name = "province",required = false) String province) {
         return businessIntelligenceService.queryInvestViscosity(startTime, endTime, province);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/user-invest-viscosity-detail", method = RequestMethod.GET)
+    public InvestViscosityDetailTableView queryInvestViscosityDetail(
+            @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+            @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+            @RequestParam(name = "province",required = false) String province,
+            @RequestParam(name = "loanCount",required = true) int loanCount,
+            @RequestParam(name = "pageNo",required = true) int pageNo,
+            @RequestParam(name = "pageSize",required = true) int pageSize) {
+        return businessIntelligenceService.queryInvestViscosityDetail(startTime, endTime, province, loanCount, pageNo, pageSize);
     }
 
     @ResponseBody

@@ -612,13 +612,131 @@
           on i.login_name = u.login_name
           </if>
           where
-            i.created_time between #{startTime} and #{endTime}
+            i.status='SUCCESS'
+            and i.created_time between #{startTime} and #{endTime}
             <if test="province != null and province !=''">
             and u.province = #{province}
             </if>
           group by i.login_name
         ) a
         group by a.loan_count;
+    </select>
+
+
+    <resultMap id="investViscosityDetailView" type="InvestViscosityDetailView">
+        <result column="login_name" property="loginName"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="is_staff" property="isStaff"></result>
+        <result column="referrer" property="referrer"></result>
+        <result column="referrer_user_name" property="referrerUserName"></result>
+        <result column="is_referrer_staff" property="isReferrerStaff"></result>
+        <result column="total_amount" property="totalAmount"></result>
+        <result column="last_invest_time" property="lastInvestTime"></result>
+        <result column="loan_count" property="loanCount"></result>
+    </resultMap>
+
+    <select id="queryInvestViscosityDetail" parameterType="map" resultMap="investViscosityDetailView">
+        select
+            temp.login_name,
+            a.user_name,
+            u.mobile,
+            IFNULL((select 1 from user_role ur where ur.login_name = temp.login_name and ur.role='STAFF'),0) as is_staff,
+            u.referrer,
+            ra.user_name as referrer_user_name,
+            IFNULL((select 1 from user_role ur where ur.login_name = u.referrer and ur.role='STAFF'),0) as is_referrer_staff,
+            temp.total_amount,
+            temp.last_invest_time,
+            temp.loan_count
+        from (
+            select
+                i.login_name,
+                IFNULL(SUM(i.amount),0) as total_amount,
+                MAX(i.created_time) as last_invest_time,
+                count(distinct i.loan_id) as loan_count
+            from invest i
+            <if test="province != null and province !=''">
+                inner join `user` uu
+                    on i.login_name = uu.login_name
+            </if>
+            where
+                i.status='SUCCESS'
+                AND i.created_time between #{startTime} and #{endTime}
+                <if test="province != null and province !=''">
+                    and uu.province = #{province}
+                </if>
+            group by i.login_name
+        ) temp
+        LEFT JOIN `user` u on temp.login_name = u.login_name
+        LEFT JOIN `account` a on temp.login_name = a.login_name
+        LEFT JOIN account ra on u.referrer = ra.login_name
+        WHERE
+        <if test="loanCount == 5">
+            <![CDATA[ temp.loan_count >= #{loanCount} ]]>
+        </if>
+        <if test="loanCount &lt; 5">
+            temp.loan_count = #{loanCount}
+        </if>
+        LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+    <select id="queryInvestViscosityDetailCount" parameterType="map" resultType="int">
+        select
+            count(temp.login_name)
+        from (
+            select
+                i.login_name,
+                count(distinct i.loan_id) as loan_count
+            from invest i
+                <if test="province != null and province !=''">
+                    inner join `user` uu
+                    on i.login_name = uu.login_name
+                </if>
+            where
+                i.status='SUCCESS'
+                AND i.created_time between #{startTime} and #{endTime}
+                <if test="province != null and province !=''">
+                    and uu.province = #{province}
+                </if>
+            group by i.login_name
+            ) temp
+        WHERE
+        <if test="loanCount == 5">
+            <![CDATA[ temp.loan_count >= #{loanCount} ]]>
+        </if>
+        <if test="loanCount &lt; 5">
+            temp.loan_count = #{loanCount}
+        </if>
+    </select>
+
+    <select id="queryInvestViscositySumAmount" parameterType="map" resultType="long">
+        select
+            SUM(temp.total_amount) as sum_amount
+        from (
+            select
+                i.login_name,
+                IFNULL(SUM(i.amount),0) as total_amount,
+                count(distinct i.loan_id) as loan_count
+            from invest i
+                <if test="province != null and province !=''">
+                    inner join `user` uu
+                    on i.login_name = uu.login_name
+                </if>
+            where
+                i.status='SUCCESS'
+                AND i.created_time between #{startTime} and #{endTime}
+                <if test="province != null and province !=''">
+                    and uu.province = #{province}
+                </if>
+            group by i.login_name
+        ) temp
+        WHERE
+            <if test="loanCount == 5">
+                <![CDATA[ temp.loan_count >= #{loanCount} ]]>
+            </if>
+            <if test="loanCount &lt; 5">
+                temp.loan_count = #{loanCount}
+            </if>
     </select>
 
     <select id="queryUserInvestCountTrend" parameterType="map" resultMap="keyValueMap">
