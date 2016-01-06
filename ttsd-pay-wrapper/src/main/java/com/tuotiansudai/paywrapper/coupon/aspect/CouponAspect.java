@@ -8,8 +8,12 @@ import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.coupon.service.UserCouponService;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.LoanPeriodUnit;
+import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -20,6 +24,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.List;
 
@@ -36,6 +41,9 @@ public class CouponAspect {
 
     @Autowired
     private UserCouponService userCouponService;
+
+    @Autowired
+    private LoanMapper loanMapper;
 
     @Around(value = "execution(* com.tuotiansudai.paywrapper.service.RepayService.postRepayCallback(*))")
     public Object aroundRepay(ProceedingJoinPoint proceedingJoinPoint) {
@@ -74,6 +82,17 @@ public class CouponAspect {
         logger.debug("after invest success invest id is " + investModel.getId());
         if (userCouponModel != null) {
             userCouponModel.setStatus(InvestStatus.SUCCESS);
+            LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+            int repayTimes = loanModel.calculateLoanRepayTimes();
+            int daysOfMonth = 30;
+            int duration = loanModel.getPeriods();
+            if (loanModel.getType().getLoanPeriodUnit() == LoanPeriodUnit.MONTH) {
+                duration = repayTimes * daysOfMonth;
+            }
+            long expectedInterest = InterestCalculator.calculateInterest(loanModel, investModel.getAmount() * duration);
+            userCouponModel.setExpectedInterest(expectedInterest);
+            long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+            userCouponModel.setExpectedFee(expectedFee);
             userCouponMapper.update(userCouponModel);
             userCouponService.recordUsedCount(userCouponModel.getCouponId());
         }
