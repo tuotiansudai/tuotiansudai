@@ -1,9 +1,11 @@
 package com.tuotiansudai.coupon.dto;
 
 
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.util.AmountConverter;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -131,5 +133,23 @@ public class CouponDto implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public CouponDto(){
+
+    }
+
+    public CouponDto(CouponModel couponModel){
+        this.id = couponModel.getId();
+        this.amount = AmountConverter.convertCentToString(couponModel.getAmount());
+        this.startTime = couponModel.getStartTime();
+        this.endTime = couponModel.getEndTime();
+        this.totalCount = couponModel.getTotalCount();
+        this.investLowerLimit = AmountConverter.convertCentToString(couponModel.getInvestLowerLimit());
+        this.productTypes = couponModel.getProductTypes();
+        this.couponType = couponModel.getCouponType();
+        this.userGroup = couponModel.getUserGroup();
+        this.deadline = couponModel.getDeadline();
+        this.smsAlert = couponModel.isSmsAlert();
     }
 }

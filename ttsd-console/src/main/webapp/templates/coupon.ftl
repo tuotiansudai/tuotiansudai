@@ -25,7 +25,7 @@
         <div class="form-group coupon-hide invest-coupon" >
             <label  class="col-sm-2 control-label">体验券有效期限(天): </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control coupon-deadline" name="deadline" placeholder="" <#if coupon??>value="${coupon.deadline?string('0')!}"</#if> datatype="*" errormsg="体验券有效期限不能为空">
+                <input type="text" class="form-control coupon-deadline" name="deadline" placeholder="" <#if coupon??>value="${coupon.deadline!}"</#if> datatype="*" errormsg="体验券有效期限不能为空">
             </div>
         </div>
         <div class="form-group">

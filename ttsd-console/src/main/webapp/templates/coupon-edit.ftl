@@ -20,7 +20,7 @@
 
             <div class="col-sm-4">
                 <input type="text" class="form-control coupon-number" name="amount" placeholder=""
-                       <#if coupon??>value="${coupon.amount/100}"</#if> datatype="*" errormsg="投资体验券金额不能为空">
+                       <#if coupon??>value="${coupon.amount!}"</#if> datatype="*" errormsg="投资体验券金额不能为空">
             </div>
         </div>
         <#if coupon??&&coupon.couponType.name() == "INVEST_COUPON">
@@ -112,8 +112,8 @@
 
             <div class="col-sm-8">
                 <div class="item-invest">投资满</div>
-                <input type="text" class="form-control invest-quota coupon-number " name="investQuota" placeholder=""
-                       <#if coupon??>value="${coupon.investQuota/100}"</#if> datatype="*"
+                <input type="text" class="form-control invest-quota coupon-number " name="investLowerLimit" placeholder=""
+                       <#if coupon??>value="${coupon.investLowerLimit}"</#if> datatype="*"
                        errormsg="使用条件金额不能为空">
 
                 <div class="item-invest">元可用</div>
