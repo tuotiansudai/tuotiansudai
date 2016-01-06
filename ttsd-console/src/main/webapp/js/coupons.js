@@ -36,6 +36,7 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
         $confirmBtn.on('click',function(e) {
             e.preventDefault();
             var $self=$(this),
+                $parentTd = $self.parents('td'),
                 thisId=$self.attr('data-id');//data id
             if (!confirm("是否确认执行此操作?")) {
                 return;
@@ -47,8 +48,8 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
                 })
                 .done(function(res) {
                     if(res.data.status){
-                        $self.text('已生效').addClass('already-btn btn-link').removeClass('confirm-btn').prop('disabled',true)
-                            .siblings('.check-btn').addClass('add-check');
+                        $parentTd.html('<i class="check-btn add-check"></i><button class="loan_repay already-btn btn-link" disabled>已生效</button>');
+                        $parentTd.prev().html('<a href="/activity-manage/coupon/'+thisId+'/detail" class="btn-link">查看详情</a>');
                     }else{
                         $tipCom.show().find('.txt').text('操作失败！');
                     }
