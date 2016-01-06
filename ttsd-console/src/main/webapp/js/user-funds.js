@@ -5,7 +5,7 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker','jque
     $(function () {
 
         $('#investDateBegin,#investDateEnd').datetimepicker({
-            format: 'YYYY-MM-DD'
+            format: 'YYYY-MM-DD HH:mm:ss'
         });
         $('#investDateEnd').datetimepicker({
             useCurrent: false

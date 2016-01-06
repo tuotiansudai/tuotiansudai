@@ -26,15 +26,17 @@
                                 </select>
                                 <select class="form-control" name="roleStage">
                                     <option value="ALL" selected>全部用户</option>
-                                    <option value="STAFF">业务员及一级推荐</option>
+                                    <option value="STAFF">业务员</option>
+                                    <option value="RECOMMENDATION">业务员的一级推荐</option>
                                     <option value="AGENT">代理商</option>
                                     <option value="OTHERS">其他用户</option>
                                 </select>
+                                <select class="form-control" name="channel"></select>
                         <#--<select class="form-control" name=""></select>-->
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
                     <div  id="userDateDistribution" style="width:100%; height:400px;">
-                        <span class="loading-report">加载中...</span>
+
                     </div>
                 </div>
             </div>
@@ -68,7 +70,6 @@
 
                    <div id="UserRechargeDistribution" style="width:100%; height:400px;">
 
-                       <span class="loading-report">加载中...</span>
                    </div>
                 </div>
             </div>
@@ -99,7 +100,6 @@
                     </form>
 
                     <div id="userWithdrawDistribution" style="width:100%; height:400px;">
-                        <span class="loading-report">加载中...</span>
                     </div>
                 </div>
             </div>
@@ -123,7 +123,6 @@
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
                     <div id="userInvestViscosity" style="width:100%; height:400px;">
-                        <span class="loading-report">加载中...</span>
                     </div>
                 </div>
             </div>
@@ -151,14 +150,15 @@
                         </select>
                         <select class="form-control" name="roleStage">
                             <option value="ALL" selected>全部用户</option>
-                            <option value="STAFF">业务员及一级推荐</option>
+                            <option value="STAFF">业务员</option>
+                            <option value="RECOMMENDATION">业务员的一级推荐</option>
                             <option value="AGENT">代理商</option>
                             <option value="OTHERS">其他用户</option>
                         </select>
+                        <select class="form-control" name="channel"></select>
                         <button class="btn btn-primary" type="button">查询</button>
                     </form>
                     <div id="userInvestAmountDistribution" style="width:100%; height:400px;">
-                        <span class="loading-report">加载中...</span>
                     </div>
                 </div>
             </div>
@@ -186,7 +186,6 @@
                     </form>
 
                     <div id="userInvestCountDistribution" style="width:100%; height:400px;">
-                        <span class="loading-report">加载中...</span>
                     </div>
                 </div>
             </div>
@@ -211,7 +210,6 @@
                     </form>
 
                     <div id="registerUserAgeDistribution" style="width:100%; height:400px;">
-                        <span class="loading-report">加载中...</span>
                     </div>
                 </div>
             </div>
@@ -234,7 +232,6 @@
                     </form>
 
                     <div id="investorUserAgeDistribution" style="width:100%; height:400px;">
-                        <span class="loading-report">加载中...</span>
                     </div>
                 </div>
             </div>

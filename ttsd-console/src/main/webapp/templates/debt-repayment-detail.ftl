@@ -33,7 +33,7 @@
             <thead>
             <tr>
                 <th>应还日期</th>
-                <th>还款金额</th>
+                <th>还款金额(元)</th>
                 <th>标的名称</th>
                 <th>代理人</th>
                 <th>还款状态</th>
@@ -45,7 +45,7 @@
                 <tr>
                     <td>${(debtRepaymentPlanDetail.expertRepayDate?string('yyyy-MM-dd'))!}</td>
                     <td>${((debtRepaymentPlanDetail.repayAmount/100)?string('0.00'))!}</td>
-                    <td>${debtRepaymentPlanDetail.loanName!}</td>
+                    <td><a href="${webServer}/loan/${debtRepaymentPlanDetail.loanId?string('0')}" target="_blank">${debtRepaymentPlanDetail.loanName!}</a></td>
                     <td>${debtRepaymentPlanDetail.loginName!}</td>
                     <#if debtRepaymentPlanDetail.status == 'COMPLETE'>
                         <td>还款完成</td>

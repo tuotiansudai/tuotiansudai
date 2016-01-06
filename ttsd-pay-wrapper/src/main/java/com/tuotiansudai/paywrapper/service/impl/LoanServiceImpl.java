@@ -46,7 +46,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -172,11 +171,8 @@ public class LoanServiceImpl implements LoanService {
 
             if (updateSuccess) {
                 loanModel.setStatus(loanStatus);
-                if(loanStatus == LoanStatus.CANCEL) {
+                if(loanStatus == LoanStatus.CANCEL || loanStatus == LoanStatus.REPAYING) {
                     loanModel.setRecheckTime(new Date());
-                }
-                if (loanStatus == LoanStatus.REPAYING) {
-                    loanModel.setVerifyTime(new Date());
                 }
                 loanMapper.update(loanModel);
             }

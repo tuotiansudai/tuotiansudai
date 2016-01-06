@@ -9,7 +9,10 @@ import java.util.Date;
 import java.util.List;
 
 public interface BusinessIntelligenceService {
-    List<KeyValueModel> queryUserRegisterTrend(Granularity granularity, Date startTime, Date endTime, String province,UserStage userStage,RoleStage roleStage);
+
+    List<String> getChannels();
+
+    List<KeyValueModel> queryUserRegisterTrend(Granularity granularity, Date startTime, Date endTime, String province,UserStage userStage,RoleStage roleStage, String channel);
 
     List<KeyValueModel> queryUserRechargeTrend(Granularity granularity, Date startTime, Date endTime, String province);
 
@@ -19,7 +22,7 @@ public interface BusinessIntelligenceService {
 
     List<KeyValueModel> queryUserInvestCountTrend(Date startTime, Date endTime, String province);
 
-    List<KeyValueModel> queryUserInvestAmountTrend(Granularity granularity, Date startTime, Date endTime, String province, RoleStage roleStage);
+    List<KeyValueModel> queryUserInvestAmountTrend(Granularity granularity, Date startTime, Date endTime, String province, RoleStage roleStage, String channel);
 
     List<KeyValueModel> queryUserAgeTrend(Date startTime, Date endTime, String province, String isInvestor);
 

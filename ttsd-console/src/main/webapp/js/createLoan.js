@@ -58,11 +58,20 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             if (obj.length) {
                 obj.remove();
             }
-            var txt = _this.siblings('.files-input').val();
+            var txt = _this.siblings('.files-input').val().replace(/\s+/g,"");
             if (!txt) {
                 _this.parent().append('<i class="error">材料名称不能为空！</i>');
                 return;
             }
+            var duplicate = _this.siblings('.select-box').find('select.selectpicker option').filter(function(key,option){
+                return $(option).text() == txt;
+            });
+
+            if (duplicate.length > 0) {
+                _this.parent().append('<i class="error">材料名称已存在,不能重复添加！</i>');
+                return;
+            }
+
             $.ajax({
                 url: API_POST_TITLE,
                 type: 'POST',
@@ -130,6 +139,16 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         $('.jq-piex').text(_pix);
                     }
                     _hidden.val(_options.eq(i).attr('value'));
+                    if (_hidden.hasClass('jq-product-type')) {
+                        if (_options.eq(i).attr('value')) {
+                            $('.jq-timer').val(_options.eq(i).data('period'));
+                            $('.jq-base-percent').val(_options.eq(i).data('baserate'));
+                        } else {
+                            $('.jq-timer').val('');
+                            $('.jq-base-percent').val('');
+                        }
+                    }
+
                 }
             })
         });
@@ -278,6 +297,9 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             //$(".jq-form").Validform({
             //    tiptype: 0,
             //});
+            if (!confirm("确认要执行此操作吗?")) {
+                return;
+            }
             if (formFlag) {
                 $(this).attr('disabled', 'disabled');
                 indexPic();
@@ -303,6 +325,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     "maxInvestAmount": $('.jq-max-pay').val(),
                     "investIncreasingAmount": $('.jq-add-pay').val(),
                     "activityType": $('.jq-impact-type').val(),
+                    "productType": $('.jq-product-type').val(),
                     "activityRate": $('.jq-percent').val(),
                     "contractId": $('.jq-pact').val(),
                     "basicRate": $('.jq-base-percent').val(),

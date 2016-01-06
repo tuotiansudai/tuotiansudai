@@ -11,6 +11,7 @@ import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.model.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
+import com.tuotiansudai.repository.model.UserBillPaginationView;
 import com.tuotiansudai.service.UserBillService;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -75,20 +76,20 @@ public class UserBillServiceImpl implements UserBillService {
     }
 
     @Override
-    public List<UserBillModel> findUserFunds(UserBillBusinessType userBillBusinessType, UserBillOperationType userBillOperationType, String loginName, Date startTime, Date endTime, int index, int pageSize) {
+    public List<UserBillPaginationView> findUserFunds(UserBillBusinessType userBillBusinessType, UserBillOperationType userBillOperationType, String loginName, Date startTime, Date endTime, int index, int pageSize) {
         Date formattedStartTime;
         Date formattedEndTime;
 
         if (startTime == null) {
             formattedStartTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
-            formattedStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+            formattedStartTime = new DateTime(startTime).toDate();
         }
 
         if (endTime == null) {
             formattedEndTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
         } else {
-            formattedEndTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+            formattedEndTime = new DateTime(endTime).toDate();
         }
 
         return userBillMapper.findUserFunds(userBillBusinessType, userBillOperationType, loginName, formattedStartTime, formattedEndTime, (index - 1) * pageSize, pageSize);
@@ -102,13 +103,13 @@ public class UserBillServiceImpl implements UserBillService {
         if (startTime == null) {
             formattedStartTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
-            formattedStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+            formattedStartTime = new DateTime(startTime).toDate();
         }
 
         if (endTime == null) {
             formattedEndTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
         } else {
-            formattedEndTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+            formattedEndTime = new DateTime(endTime).toDate();
         }
         return userBillMapper.findUserFundsCount(userBillBusinessType, userBillOperationType, loginName, formattedStartTime, formattedEndTime);
     }
