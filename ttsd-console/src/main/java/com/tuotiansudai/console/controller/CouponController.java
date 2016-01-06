@@ -145,6 +145,7 @@ public class CouponController {
     @ResponseBody
     public BaseDto<BaseDataDto> couponDelete(@PathVariable long couponId) {
         BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(true);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         baseDto.setData(dataDto);
         String loginName = LoginUserInfo.getLoginName();
