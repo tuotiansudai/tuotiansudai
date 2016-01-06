@@ -3,11 +3,10 @@
 
 <div class="col-md-10">
     <div class="form-group">
-        <input type="hidden" name="couponId" value="${couponId?string('0')}" />
-        <select class="selectpicker">
-            <option>全部</option>
-            <option value="true">已使用</option>
-            <option value="false">未使用</option>
+        <select class="selectpicker" data-link = '/activity-manage/coupon/${couponId?string('0')}/detail'>
+            <option value="" <#if !(isUsed??)>selected</#if>>全部</option>
+            <option value="true" <#if isUsed?? && isUsed>selected</#if>>已使用</option>
+            <option value="false" <#if isUsed?? && !isUsed>selected</#if>>未使用</option>
         </select>
     </div>
 
