@@ -19,8 +19,8 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric', 'commonFun'], function
         if (rechargeInputAmountElement) {
             rechargeInputAmountElement.autoNumeric("init");
             rechargeInputAmountElement.keyup(function () {
-                var $this=$(this),
-                 amount = parseFloat(rechargeInputAmountElement.autoNumeric("get"));
+                var amount = parseFloat(rechargeInputAmountElement.autoNumeric("get"));
+                var $this=$(this);
                 if (isNaN(amount) || amount < 1) {
                     $this.parents('form').find('.error').show();
                     rechargeSubmitElement.prop('disabled', true).removeClass('btn-normal');
@@ -29,6 +29,7 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric', 'commonFun'], function
                     rechargeSubmitElement.prop('disabled', false).addClass('btn-normal');
                 }
             });
+
             //网银充值提交
             rechargeSubmitElement.click(function () {
                 var amount = rechargeInputAmountElement.autoNumeric("get");
@@ -48,7 +49,7 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric', 'commonFun'], function
             fastRechargeInputAmountElement.autoNumeric("init");
             fastRechargeInputAmountElement.keyup(function () {
                 var $this=$(this),
-                 amount = parseFloat($this.autoNumeric("get"));
+                    amount = parseFloat($this.autoNumeric("get"));
                 if (isNaN(amount) || amount < 1) {
                     $this.parents('form').find('.error').show();
                     fastRechargeSubmitElement.prop('disabled', true).removeClass('btn-normal');

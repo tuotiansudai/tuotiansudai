@@ -98,10 +98,11 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">开通自动投标：</label>
+            <label class="col-sm-2 control-label">已开通自动投标：</label>
 
             <div class="col-sm-3">
                 <p class="form-control-static"><#if user.autoInvestStatus=="1">是<#else>否</#if></p>
+                <input type="hidden" name="autoInvestStatus" value="${user.autoInvestStatus!}"/>
             </div>
         </div>
 
