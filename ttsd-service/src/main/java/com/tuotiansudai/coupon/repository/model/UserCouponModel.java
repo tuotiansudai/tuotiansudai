@@ -12,7 +12,7 @@ public class UserCouponModel {
 
     private long couponId;
 
-    private long loanId;
+    private Long loanId;
 
     private Date usedTime;
 
@@ -28,7 +28,7 @@ public class UserCouponModel {
 
     private Date createdTime;
 
-    private long investId;
+    private Long investId;
 
     private InvestStatus status;
 
@@ -65,11 +65,11 @@ public class UserCouponModel {
         this.couponId = couponId;
     }
 
-    public long getLoanId() {
+    public Long getLoanId() {
         return loanId;
     }
 
-    public void setLoanId(long loanId) {
+    public void setLoanId(Long loanId) {
         this.loanId = loanId;
     }
 
@@ -129,11 +129,11 @@ public class UserCouponModel {
         this.createdTime = createdTime;
     }
 
-    public long getInvestId() {
+    public Long getInvestId() {
         return investId;
     }
 
-    public void setInvestId(long investId) {
+    public void setInvestId(Long investId) {
         this.investId = investId;
     }
 
