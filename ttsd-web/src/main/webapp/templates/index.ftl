@@ -221,6 +221,35 @@
             </div>
         </div>
 
+        <div class="page-width clearfix ">
+            <h3 class="label-title media-hide">
+                <span class="friend-link-icon">友情链接</span>
+            </h3>
+            <div class="clear-blank friendly-box">
+                <a href="http://www.tuotianzichan.com/" target="_blank">拓天伟业（北京）资产管理有限公司</a>
+                <a href="https://www.zuiyidai.com/" target="_blank">最易贷</a>
+                <a href="https://www.p2l.com.cn/" target="_blank">融租e保</a>
+            </div>
+        </div>
     </div>
+    <#if showCoupon>
+        <div class="activity-coupon-model" id="couponModel">
+            <div class="coupon-model-list">
+                <div class="coupon-close">
+                </div>
+                <div class="coupon-text">
+                    <span class="text-number"><@amount>${(amountCoupon?string('0.00'))!}</@amount></span>
+                    <span class="text-unit">元</span>
+                </div>
+                <div class="coupon-name">${nameCoupon}</div>
+                <div class="coupon-time">
+                    请在${(endTimeCoupon?string('yyyy-MM-dd'))!}前使用
+                </div>
+                <a href="/my-treasure" class="coupon-link"></a>
+            </div>
+        </div>
+    </#if>
+
 </div>
+
 </@global.main>
