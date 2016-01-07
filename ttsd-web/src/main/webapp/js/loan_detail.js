@@ -131,7 +131,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     amount='0.00';
                 }
                 var amountNeedRaised = $('form .amountNeedRaised-i').text();
-
+                layer.closeAll('tips');
                 $.ajax({
                     url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + amount,
                     type: 'get',
