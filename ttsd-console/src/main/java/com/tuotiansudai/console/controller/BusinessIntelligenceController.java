@@ -105,7 +105,7 @@ public class BusinessIntelligenceController {
 
 
     @RequestMapping(value = "/user-invest-viscosity-detail-csv", method = RequestMethod.GET)
-    public ModelAndView getInvestList(
+    public void getInvestList(
             @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
             @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
             @RequestParam(name = "province", required = false) String province,
@@ -138,7 +138,6 @@ public class BusinessIntelligenceController {
             data.add(dataModel);
         }
         ExportCsvUtil.createCsvOutputStream(CsvHeaderType.BIInvestViscosity, data, response.getOutputStream());
-        return null;
     }
 
     @ResponseBody
