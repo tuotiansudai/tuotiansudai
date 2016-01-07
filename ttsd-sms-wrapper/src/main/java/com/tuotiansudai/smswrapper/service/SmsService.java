@@ -3,6 +3,11 @@ package com.tuotiansudai.smswrapper.service;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.SmsDataDto;
+import com.tuotiansudai.dto.SmsFatalNotifyDto;
+import com.tuotiansudai.smswrapper.SmsTemplate;
+import com.tuotiansudai.smswrapper.repository.mapper.BaseMapper;
+
+import java.util.List;
 
 public interface SmsService {
 
@@ -14,7 +19,5 @@ public interface SmsService {
 
     BaseDto<SmsDataDto> sendPasswordChangedNotify(String mobile);
 
-    BaseDto<SmsDataDto> investFatalNotify(String mobile, String errMsg);
-
-    BaseDto<SmsDataDto> jobFatalNotify(String mobile, String errMsg);
+    BaseDto<SmsDataDto> sendFatalNotify(SmsFatalNotifyDto notify);
 }

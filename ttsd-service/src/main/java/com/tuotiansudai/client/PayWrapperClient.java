@@ -105,8 +105,16 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(dto, loanPath, "PUT");
     }
 
+    public BaseDto<PayDataDto> investCallback() {
+        return syncExecute(null, "/job/async_invest_notify", "POST");
+    }
+
     public BaseDto<PayDataDto> loanOut(LoanOutDto dto) {
         return syncExecute(dto, loanOutPath, "POST");
+    }
+
+    public BaseDto<PayDataDto> checkLoanAmount(long loanId) {
+        return syncExecute(null, MessageFormat.format("/real-time/loan/{0}/check-amount", String.valueOf(loanId)), "GET");
     }
 
     public BaseDto<PayDataDto> loanOutSuccessNotify(long loanId){
@@ -121,10 +129,6 @@ public class PayWrapperClient extends BaseClient {
             logger.error(e.getLocalizedMessage(), e);
         }
         return Maps.newHashMap();
-    }
-
-    public BaseDto<PayDataDto> investCallback() {
-        return syncExecute(null, "/job/async_invest_notify", "POST");
     }
 
     public Map<String, String> getLoanStatus(long loanId) {

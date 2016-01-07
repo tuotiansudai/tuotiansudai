@@ -93,10 +93,6 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private JobManager jobManager;
 
-
-    @Value("#{'${pay.invest.notify.fatal.mobile}'.split('\\|')}")
-    private List<String> fatalNotifyMobiles;
-
     @Value("${common.environment}")
     private Environment environment;
 
@@ -575,19 +571,12 @@ public class InvestServiceImpl implements InvestService {
 
     private void fatalLog(String errMsg, Throwable e) {
         logger.fatal(errMsg, e);
-        if (CollectionUtils.isNotEmpty(fatalNotifyMobiles)) {
-            sendSmsErrNotify(fatalNotifyMobiles, MessageFormat.format("{0},{1}", environment, errMsg));
-        }
+        sendSmsErrNotify(MessageFormat.format("{0},{1}", environment, errMsg));
     }
 
-    private void sendSmsErrNotify(List<String> mobiles, String errMsg) {
-        for (String mobile : mobiles) {
-            logger.info("sent invest fatal sms message to " + mobile);
-
-            SmsInvestFatalNotifyDto dto = new SmsInvestFatalNotifyDto();
-            dto.setMobile(mobile);
-            dto.setErrMsg(errMsg);
-            smsWrapperClient.sendInvestFatalNotify(dto);
-        }
+    private void sendSmsErrNotify(String errMsg) {
+        logger.info("sent invest fatal sms message");
+        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("投资业务错误。详细信息：{0}", errMsg));
+        smsWrapperClient.sendFatalNotify(dto);
     }
 }
