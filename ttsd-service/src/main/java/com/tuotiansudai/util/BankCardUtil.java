@@ -36,7 +36,7 @@ public class BankCardUtil {
 
     private static final List<String> RECHARGE_BANKS = Lists.newArrayList("ICBC", "CMB", "ABC", "CCB", "CMBC",
             "SPDB", "GDB", "HXB", "PSBC", "BOC",
-            "CEB", "BEA", "COMM", "CITIC", "BJBANK");
+            "CEB", "BEA", "COMM", "CITIC", "BJB");
 
 
     private static final List<String> WITHDRAW_BANKS = Lists.newArrayList("BOC", "ABC", "CCB", "COMM", "PSBC", "CMBC",
