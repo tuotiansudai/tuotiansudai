@@ -5,7 +5,7 @@ var require = {
         'jqueryPage': staticServer + '/js/libs/jquery.page',
         'jquery.validate': staticServer + '/js/libs/jquery.validate-1.14.0.min',
         'jquery.form': staticServer + '/js/libs/jquery.form-3.51.0.min',
-        'autoNumeric': staticServer + '/js/libs/autoNumeric-2.0-BETA',
+        'autoNumeric': staticServer + '/js/libs/autoNumeric',
         'mustache': staticServer + '/js/libs/mustache-2.1.3.min',
         'moment': staticServer + '/js/libs/moment-2.10.6.min',
         'underscore': staticServer + '/js/libs/underscore-1.8.3.min',
