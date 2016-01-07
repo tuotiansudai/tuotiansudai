@@ -1,7 +1,6 @@
 package com.tuotiansudai.paywrapper.coupon.aspect;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -72,7 +71,6 @@ public class CouponAspect {
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
         InvestModel investModel = (InvestModel) joinPoint.getArgs()[1];
         couponInvestService.investCallback(investModel.getId());
-
     }
 }
 

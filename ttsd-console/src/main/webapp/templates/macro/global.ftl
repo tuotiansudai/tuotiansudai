@@ -20,7 +20,10 @@
                     {"name":"userInvestViscosity","text":"用户续投情况","link":"/","role":"'ADMIN'"},
                     {"name":"userInvestAmount","text":"用户投资金额时间分布","link":"/","role":"'ADMIN'"},
                     {"name":"userInvestCount","text":"用户投资次数时间分布","link":"/","role":"'ADMIN'"},
-                    {"name":"userAge","text":"用户年龄分布","link":"/","role":"'ADMIN'"}
+                    {"name":"userAge","text":"用户年龄分布","link":"/","role":"'ADMIN'"},
+                    {"name":"loanAmount","text":"标的资金分布","link":"/","role":"'ADMIN'"},
+                    {"name":"loanRaisingTimeCosting","text":"标的满标周期分布","link":"/","role":"'ADMIN'"},
+                    {"name":"userWithdrawCount","text":"提现人数分布","link":"/","role":"'ADMIN'"}
                 ]
 
             },
@@ -112,6 +115,7 @@
     <link href="${applicationContext}/style/libs/bootstrap-select.css" rel="stylesheet" type="text/css" charset="utf-8"/>
     <link href="${applicationContext}/style/libs/jquery-ui/jquery-ui-1.11.4.min.css" rel="stylesheet" charset="utf-8"/>
     <link href="${applicationContext}/style/index.css" rel="stylesheet">
+    <link href="${applicationContext}/style/libs/jquery.pageflip.css" rel="stylesheet">
     <link href="${applicationContext}/style/libs/fileinput.css" rel="stylesheet"/><!--上传图片插件-->
     <#if pageCss?? && pageCss != "">
         <link rel="stylesheet" type="text/css" href="${applicationContext}/style/dest/${pageCss}" charset="utf-8"/>
