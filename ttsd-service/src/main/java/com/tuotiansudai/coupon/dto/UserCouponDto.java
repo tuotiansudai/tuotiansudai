@@ -2,6 +2,7 @@ package com.tuotiansudai.coupon.dto;
 
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.model.InvestStatus;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
@@ -13,7 +14,7 @@ public class UserCouponDto implements Serializable {
     private long amount;
     private Date startTime;
     private Date endTime;
-    private long loanId;
+    private Long loanId;
     private boolean used;
     private boolean expired;
     private boolean valid = true;
@@ -28,7 +29,7 @@ public class UserCouponDto implements Serializable {
         this.startTime = coupon.getStartTime();
         this.endTime = coupon.getEndTime();
         this.loanId = userCoupon.getLoanId();
-        this.used = (this.loanId != 0);
+        this.used = (userCoupon.getStatus() != null && userCoupon.getStatus() == InvestStatus.SUCCESS);
         if (this.used) {
             this.expired = false;
         } else {
@@ -78,11 +79,11 @@ public class UserCouponDto implements Serializable {
         this.endTime = endTime;
     }
 
-    public long getLoanId() {
+    public Long getLoanId() {
         return loanId;
     }
 
-    public void setLoanId(long loanId) {
+    public void setLoanId(Long loanId) {
         this.loanId = loanId;
     }
 
