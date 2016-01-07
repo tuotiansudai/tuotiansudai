@@ -11,6 +11,8 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,9 @@ public class MobileAppAgreementServiceImpl implements MobileAppAgreementService{
     @Autowired
     private PayWrapperClient payWrapperClient;
 
+    @Autowired
+    private AccountMapper accountMapper;
+
     @Override
     public BaseResponseDto generateAgreementRequest(AgreementOperateRequestDto requestDto) {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
@@ -34,6 +39,13 @@ public class MobileAppAgreementServiceImpl implements MobileAppAgreementService{
 
         BaseDto<PayFormDataDto> formDto = payWrapperClient.agreement(agreementDto);
         AgreementOperateResponseDataDto responseDataDto = new AgreementOperateResponseDataDto();
+        AccountModel accountModel = accountMapper.findByLoginName(agreementDto.getLoginName());
+        if (accountModel.isAutoInvest()) {
+            baseResponseDto.setCode(ReturnMessage.AUTO_INVEST.getCode());
+            baseResponseDto.setMessage(ReturnMessage.AUTO_INVEST.getMsg());
+            baseResponseDto.setData(responseDataDto);
+            return baseResponseDto;
+        }
         try {
             if (formDto.isSuccess()) {
                 responseDataDto.setUrl(formDto.getData().getUrl());
