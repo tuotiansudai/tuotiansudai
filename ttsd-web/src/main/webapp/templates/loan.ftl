@@ -4,7 +4,7 @@
     <div class="borderBox bg-w clearfix">
         <div class="news-share fl">
             <h2 class="hd">
-            ${loan.projectName}
+            ${loan.name}
                 <input class="jq-loan-user" type="hidden" value="${loan.id}">
                 <input id="loanStatus" type="hidden" value="${loan.loanStatus}">
             </h2>
@@ -15,7 +15,8 @@
                     <div class="bg2"></div>
                     <div class="rount2" style="display: none;"></div>
                     <div class="pr-square-in">
-                        <em><b><@percentInteger>${loan.basicRate}</@percentInteger><@percentFraction>${loan.basicRate}</@percentFraction></b><#if loan.activityRate??>+<@percentInteger>${loan.activityRate}</@percentInteger><@percentFraction>${loan.activityRate}</@percentFraction></#if>%</em>
+                        <em><b><@percentInteger>${loan.basicRate}</@percentInteger><@percentFraction>${loan.basicRate}</@percentFraction></b><#if loan.activityRate??>
+                            +<@percentInteger>${loan.activityRate}</@percentInteger><@percentFraction>${loan.activityRate}</@percentFraction></#if>%</em>
                         <i>年化收益</i>
                     </div>
                 </div>
@@ -54,11 +55,13 @@
                             </#if>
                         </dd>
                         <#list coupons as coupon>
-                        <dd class="experience-ticket">
-                            <span class="fl"><i class="fa fa-money"></i> ${coupon.name}<@amount>${coupon.amount?string(0)}</@amount>元</span>
-                            <em class="fr"><label for="use-experience-ticket"> 使用体验劵</label> <input type="checkbox" id="use-experience-ticket" name="userCouponId" value="${coupon.id?string('0')}" data-amount="${(coupon.investLowerLimit/100)?string('0.00')}"></em>
-                        </dd>
-                        <dd class="experience-revenue hide"><span class="fl">体验劵预期收益：</span><em class="fr"><i class="experience-interest"><@amount>${coupon.interest?string(0)}</@amount></i>元</em></dd>
+                            <dd class="experience-ticket">
+                                <span class="fl"><i class="fa fa-money"></i> ${coupon.name}<@amount>${coupon.amount?string(0)}</@amount>元</span>
+                                <em class="fr"><label for="use-experience-ticket"> 使用体验劵</label> <input type="checkbox" id="use-experience-ticket" name="userCouponId" value="${coupon.id?string('0')}"
+                                                                                                        data-amount="${(coupon.investLowerLimit/100)?string('0.00')}"></em>
+                            </dd>
+                            <dd class="experience-revenue hide"><span class="fl">体验劵预期收益：</span><em class="fr"><i class="experience-interest"><@amount>${coupon.interest?string(0)}</@amount></i>元</em>
+                            </dd>
                         </#list>
                         <dd><span class="fl">预计总收益：</span><em class="fr"><i class="expected-interest"></i>元</em></dd>
                         <dd>
@@ -92,10 +95,12 @@
                         <#list coupons as coupon>
                             <dd class="experience-ticket">
                                 <span class="fl"><i class="fa fa-money"></i> ${coupon.name}<@amount>${coupon.amount?string(0)}</@amount>元</span>
-                                <em class="fr"><label for="use-experience-ticket"> 使用体验劵</label> <input type="checkbox" id="use-experience-ticket" name="userCouponId" value="${coupon.id?string('0')}" data-amount="${(coupon.investQuota/100)?string('0.00')}"/>
+                                <em class="fr"><label for="use-experience-ticket"> 使用体验劵</label> <input type="checkbox" id="use-experience-ticket" name="userCouponId" value="${coupon.id?string('0')}"
+                                                                                                        data-amount="${(coupon.investQuota/100)?string('0.00')}"/>
                                 </em>
                             </dd>
-                            <dd class="experience-revenue hide"><span class="fl">体验劵预期收益：</span><em class="fr"><i class="experience-interest"><@amount>${coupon.interest?string(0)}</@amount></i>元</em></dd>
+                            <dd class="experience-revenue hide"><span class="fl">体验劵预期收益：</span><em class="fr"><i class="experience-interest"><@amount>${coupon.interest?string(0)}</@amount></i>元</em>
+                            </dd>
                         </#list>
                         <dd class="time-item">
                             <#if loan.preheatSeconds lte 1800>

@@ -175,25 +175,21 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public BaseDto<LoanDto> getLoanDetail(String loginName, long loanId) {
-        BaseDto<LoanDto> dto = new BaseDto<>();
-        LoanDto loanDto = new LoanDto();
-
+    public LoanDetailDto getLoanDetail(String loginName, long loanId) {
         LoanModel loanModel = loanMapper.findById(loanId);
         if (loanModel == null) {
-            return dto;
+            return null;
         }
 
-        loanDto = convertModelToDto(loanModel, loginName);
+        LoanDetailDto loanDto = convertModelToDto(loanModel, loginName);
         loanDto.setStatus(true);
-        dto.setData(loanDto);
-        return dto;
+        return loanDto;
     }
 
-    private LoanDto convertModelToDto(LoanModel loanModel, String loginName) {
-        LoanDto loanDto = new LoanDto();
+    private LoanDetailDto convertModelToDto(LoanModel loanModel, String loginName) {
+        LoanDetailDto loanDto = new LoanDetailDto();
         loanDto.setId(loanModel.getId());
-        loanDto.setProjectName(loanModel.getName());
+        loanDto.setName(loanModel.getName());
         loanDto.setProductType(loanModel.getProductType());
         loanDto.setAgentLoginName(loanModel.getAgentLoginName());
         loanDto.setLoanerLoginName(loanModel.getLoanerLoginName());

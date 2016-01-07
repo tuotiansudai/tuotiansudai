@@ -27,12 +27,11 @@ public class LoanController {
 
     @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView getLoanDetail(@PathVariable long loanId) {
-        String loginName = LoginUserInfo.getLoginName();
-        BaseDto<LoanDto> dto = loanService.getLoanDetail(loginName, loanId);
-        if (dto.getData() == null) {
+        LoanDetailDto dto = loanService.getLoanDetail(LoginUserInfo.getLoginName(), loanId);
+        if (dto == null) {
             return new ModelAndView("/error/404");
         }
-        return new ModelAndView("/loan", "loan", dto.getData());
+        return new ModelAndView("/loan", "loan", dto);
     }
 
     @RequestMapping(value = "/{loanId:^\\d+$}/amount/{amount:^\\d+(?:\\.\\d{1,2})?$}", method = RequestMethod.GET)
