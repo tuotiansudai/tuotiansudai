@@ -187,9 +187,17 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private LoanDetailDto convertModelToDto(LoanModel loanModel, String loginName) {
+        long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
         LoanDetailDto loanDto = new LoanDetailDto();
         loanDto.setId(loanModel.getId());
         loanDto.setName(loanModel.getName());
+        loanDto.setProgress(new BigDecimal(investedAmount).divide(new BigDecimal(loanModel.getLoanAmount()), 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue());
+
+        loanDto.setBasicRate(new BigDecimal(loanModel.getBaseRate()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
+        loanDto.setActivityRate(new BigDecimal(loanModel.getActivityRate()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
+
+        loanDto.setActivityType(loanModel.getActivityType());
+
         loanDto.setProductType(loanModel.getProductType());
         loanDto.setAgentLoginName(loanModel.getAgentLoginName());
         loanDto.setLoanerLoginName(loanModel.getLoanerLoginName());
@@ -201,15 +209,11 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setLoanAmount(new BigDecimal(loanModel.getLoanAmount()).toString());
         loanDto.setInvestIncreasingAmount("" + loanModel.getInvestIncreasingAmount());
         loanDto.setMinInvestAmount("" + loanModel.getMinInvestAmount());
-        loanDto.setActivityType(loanModel.getActivityType());
-        loanDto.setBasicRate(new BigDecimal(String.valueOf(loanModel.getBaseRate())).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).toString());
-        if (loanModel.getActivityRate() > 0) {
-            loanDto.setActivityRate(new BigDecimal(String.valueOf(loanModel.getActivityRate())).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).toString());
-        }
+
         loanDto.setLoanStatus(loanModel.getStatus());
         loanDto.setType(loanModel.getType());
         loanDto.setMaxInvestAmount(AmountConverter.convertCentToString(loanModel.getMaxInvestAmount()));
-        long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
+
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
             long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), loginName);
@@ -221,7 +225,7 @@ public class LoanServiceImpl implements LoanService {
         }
 
         loanDto.setAmountNeedRaised(calculateAmountNeedRaised(investedAmount, loanModel.getLoanAmount()));
-        loanDto.setRaiseCompletedRate(calculateRaiseCompletedRate(investedAmount, loanModel.getLoanAmount()));
+
         loanDto.setLoanTitles(loanTitleRelationMapper.findByLoanId(loanModel.getId()));
         loanDto.setLoanTitleDto(loanTitleMapper.findAll());
         loanDto.setPreheatSeconds(calculatorPreheatSeconds(loanModel.getFundraisingStartTime()));

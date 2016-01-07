@@ -103,19 +103,9 @@ public class LoanDetailDto extends BaseDataDto {
     @NotEmpty
     private ProductType productType;
 
-    /***
-     * 活动利率
-     ***/
-    @NotEmpty
-    @Pattern(regexp = "^[+]?[\\d]+(([\\.]{1}[\\d]+)|([\\d]*))$")
-    private String activityRate;
+    private double basicRate;
 
-    /***
-     * 基本利率
-     ***/
-    @NotEmpty
-    @Pattern(regexp = "^[+]?[\\d]+(([\\.]{1}[\\d]+)|([\\d]*))$")
-    private String basicRate;
+    private double activityRate;
 
     /***
      * 合同
@@ -193,7 +183,7 @@ public class LoanDetailDto extends BaseDataDto {
     /**
      * 完成比例
      **/
-    private double raiseCompletedRate;
+    private double progress;
 
     /**
      * 预计总收益
@@ -210,7 +200,6 @@ public class LoanDetailDto extends BaseDataDto {
 
     public LoanDetailDto() {
     }
-
 
     public long getId() {
         return id;
@@ -332,19 +321,19 @@ public class LoanDetailDto extends BaseDataDto {
         this.activityType = activityType;
     }
 
-    public String getActivityRate() {
+    public double getActivityRate() {
         return activityRate;
     }
 
-    public void setActivityRate(String activityRate) {
+    public void setActivityRate(double activityRate) {
         this.activityRate = activityRate;
     }
 
-    public String getBasicRate() {
+    public double getBasicRate() {
         return basicRate;
     }
 
-    public void setBasicRate(String basicRate) {
+    public void setBasicRate(double basicRate) {
         this.basicRate = basicRate;
     }
 
@@ -452,12 +441,12 @@ public class LoanDetailDto extends BaseDataDto {
         this.balance = balance;
     }
 
-    public double getRaiseCompletedRate() {
-        return raiseCompletedRate;
+    public double getProgress() {
+        return progress;
     }
 
-    public void setRaiseCompletedRate(double raiseCompletedRate) {
-        this.raiseCompletedRate = raiseCompletedRate;
+    public void setProgress(double progress) {
+        this.progress = progress;
     }
 
     public long getExpectedTotalIncome() {
