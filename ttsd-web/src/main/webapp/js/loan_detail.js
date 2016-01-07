@@ -81,6 +81,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         }
 
         if($('#loanStatus').val() == 'PREHEAT' ){
+            $btnLookOther.prop('disabled', true);
             timer(intDiff);
         }
 
@@ -131,36 +132,13 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 }
                 var amountNeedRaised = $('form .amountNeedRaised-i').text();
 
-                if(Number(amountNeedRaised) < Number(amount) || amount<=0){
-                    var tipmsg;
-                    if(amount<=0) {
-                        tipmsg='输入金额不能等于0!';
-                    }
-                    else {
-                        tipmsg='输入金额不能大于可投金额!';
-                    }
-                    layer.tips('<i class="fa fa-times-circle"></i>'+tipmsg, '.text-input-amount', {
-                        tips: [1,'#ff7200'] ,
-                        time:0
-                    });
-                    $btnLookOther.prop('disabled', true);
-                    return;
-                }
-                else {
-                    layer.closeAll('tips');
-                    $btnLookOther.prop('disabled', false);
-                }
                 $.ajax({
                     url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + amount,
                     type: 'get',
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'
                 }).done(function(amount){
-                    if(!isFirstLoad){
-                        layer.closeAll('tips');
-                    }
                     showInterest(amount);
-                    $btnLookOther.prop('disabled', false);
                 });
             };
             if(typeof user_can_invest !== 'undefined') {
