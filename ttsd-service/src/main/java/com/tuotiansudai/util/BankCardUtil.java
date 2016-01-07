@@ -27,7 +27,7 @@ public class BankCardUtil {
             .put("CIB", "兴业银行")
             .put("COMM", "交通银行")
             .put("CITIC", "中信银行")
-            .put("BJBANK", "北京银行")
+            .put("BJB", "北京银行")
             .put("CZSB", "浙商银行")
             .put("SPAB", "平安银行")
             .put("BHB", "河北银行")
