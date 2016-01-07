@@ -32,13 +32,11 @@ public class MobileAppAgreementServiceImpl implements MobileAppAgreementService{
 
     @Override
     public BaseResponseDto generateAgreementRequest(AgreementOperateRequestDto requestDto) {
+        AgreementOperateResponseDataDto responseDataDto = new AgreementOperateResponseDataDto();
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         requestDto.setAutoInvest(true);
         requestDto.setFastPay(false);
         AgreementDto agreementDto = requestDto.convertToAgreementDto();
-
-        BaseDto<PayFormDataDto> formDto = payWrapperClient.agreement(agreementDto);
-        AgreementOperateResponseDataDto responseDataDto = new AgreementOperateResponseDataDto();
         AccountModel accountModel = accountMapper.findByLoginName(agreementDto.getLoginName());
         if (accountModel.isAutoInvest()) {
             baseResponseDto.setCode(ReturnMessage.AUTO_INVEST.getCode());
@@ -46,6 +44,7 @@ public class MobileAppAgreementServiceImpl implements MobileAppAgreementService{
             baseResponseDto.setData(responseDataDto);
             return baseResponseDto;
         }
+        BaseDto<PayFormDataDto> formDto = payWrapperClient.agreement(agreementDto);
         try {
             if (formDto.isSuccess()) {
                 responseDataDto.setUrl(formDto.getData().getUrl());
