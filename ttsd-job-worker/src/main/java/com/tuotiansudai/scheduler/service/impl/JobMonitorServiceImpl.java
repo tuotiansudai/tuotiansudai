@@ -3,7 +3,7 @@ package com.tuotiansudai.scheduler.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.SmsJobFatalNotifyDto;
+import com.tuotiansudai.dto.SmsFatalNotifyDto;
 import com.tuotiansudai.job.InvestCallback;
 import com.tuotiansudai.repository.model.Environment;
 import com.tuotiansudai.scheduler.repository.mapper.ExecutionLogMapper;
@@ -28,9 +28,6 @@ public class JobMonitorServiceImpl implements JobMonitorService {
     private static String JOB_LOG_ID_FIELD_NAME = "__job_log_id__";
 
     private ObjectMapper objectMapper = new ObjectMapper();
-
-    @Value("#{'${pay.invest.notify.fatal.mobile}'.split('\\|')}")
-    private List<String> fatalNotifyMobiles;
 
     @Value("${common.environment}")
     private Environment environment;
@@ -103,18 +100,13 @@ public class JobMonitorServiceImpl implements JobMonitorService {
                 logger.warn("cannot parse jobData to json", e);
             }
             String errorMessage = MessageFormat.format("{0},{1},{2},{3}", environment, jobKey.getGroup(), jobKey.getName(), jobParams);
-            sendSmsErrNotify(fatalNotifyMobiles, errorMessage);
+            sendSmsFatalNotify(errorMessage);
         }
     }
 
-    private void sendSmsErrNotify(List<String> mobiles, String errMsg) {
-        for (String mobile : mobiles) {
-            logger.info("sent job fatal sms message to " + mobile);
-
-            SmsJobFatalNotifyDto dto = new SmsJobFatalNotifyDto();
-            dto.setMobile(mobile);
-            dto.setErrMsg(errMsg);
-            smsWrapperClient.sendJobFatalNotify(dto);
-        }
+    private void sendSmsFatalNotify(String errMsg) {
+        logger.info("sent job fatal sms message");
+        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("Job执行错误。详细信息：{0}", errMsg));
+        smsWrapperClient.sendFatalNotify(dto);
     }
 }
