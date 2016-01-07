@@ -2,6 +2,7 @@ package com.tuotiansudai.coupon.dto;
 
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.model.InvestStatus;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
@@ -28,7 +29,7 @@ public class UserCouponDto implements Serializable {
         this.startTime = coupon.getStartTime();
         this.endTime = coupon.getEndTime();
         this.loanId = userCoupon.getLoanId();
-        this.used = (this.loanId != null);
+        this.used = (userCoupon.getStatus() != null && userCoupon.getStatus() == InvestStatus.SUCCESS);
         if (this.used) {
             this.expired = false;
         } else {
