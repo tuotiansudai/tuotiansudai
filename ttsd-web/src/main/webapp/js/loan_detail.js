@@ -7,7 +7,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             tabs = $('.loan-nav li'),
             $loanlist = $('.loan-list', $loanDetail),
             $imageList=$('#picListBox'),
-            $expectedInterest=$('.expected-interest'),
             $experienceTicket=$('.experience-ticket',$loanDetail),
             $couponInterest=$('.experience-interest',$loanDetail),
             paginationElement = $('.pagination',$loanDetail),
@@ -85,28 +84,24 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         }
 
         function showInterest(interest){
-            $expectedInterest.data("amount",interest);
             var $checkBox = $experienceTicket.find(':checkbox');
             if($checkBox.is(':checked')){
                 plusCouponInterest();
             }else{
-                minusCouponInterest();
+
             }
         }
 
         function plusCouponInterest(){
             var couponInterest = parseFloat($couponInterest.html());
-            var amount = parseFloat($expectedInterest.data("amount"));
             var interest = Math.round((couponInterest + amount)*100);
-            $expectedInterest.html(interest/100);
-        }
 
-        function minusCouponInterest(){
-            var amount = parseFloat($expectedInterest.data("amount"));
-            $expectedInterest.html(amount);
         }
 
         if(amountInputElement.length) {
+            var $ticketList=$('.ticket-list'),
+                $useExperienceTicket=$('#use-experience-ticket'),
+                initInvestAmount=0;
             if($experienceTicket.is(':hidden')) {
                 $('.account-list').find('dd').last().css({'margin-top':'20px'});
             }
@@ -119,7 +114,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                         plusCouponInterest();
                     } else {
                         $experienceTicket.next('dd.experience-revenue').hide();
-                        minusCouponInterest();
+
                     }
                 });
             }
@@ -150,6 +145,9 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     layer.closeAll('tips');
                     $btnLookOther.prop('disabled', false);
                 }
+                $ticketList.find('.ticket-title').filter(function(key,option) {
+                    return $(option).attr('data-income')>amount;
+                }).parents('li').addClass('disabled');
                 $.ajax({
                     url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + amount,
                     type: 'get',
@@ -166,8 +164,15 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             if(typeof user_can_invest !== 'undefined') {
                 calExpectedInterest(true);
             }
-            amountInputElement.blur(function(){calExpectedInterest(false);});
+            amountInputElement.blur(function(){
+                calExpectedInterest(false);
+            });
+            amountInputElement.keypress(function(event) {
+                    $ticketList.find('input').prop('checked',false);
+                    $useExperienceTicket.find('span').text('请点击选择优惠券');
 
+
+            });
             $('form').submit(function(){
                 var frm = $(this);
                 if(frm.attr('action') === '/invest'){
@@ -190,8 +195,35 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 }
                 return true;
             });
+            $useExperienceTicket.click(function(event) {
+                var $this=$(this);
+                if($this.hasClass('disabled')) {
+                    return false;
+                }
+                $ticketList.toggleClass('hide');
+                $this.find('.fa-sort-down').toggleClass('hide').siblings('.fa-sort-up').toggleClass('hide');
+                if (event.stopPropagation) {
+                    event.stopPropagation();
+                }
+                else if (window.event) {
+                    window.event.cancelBubble = true;
+                }
 
-            $('#use-experience-ticket').change(function(event) {
+            });
+            $ticketList.find('input').click(function(event) {
+                var text= $.trim($(event.target).next().find('.ticket-title').text());
+                $useExperienceTicket.find('span').text(text);
+            });
+
+            $('body').click(function(e) {
+                var event = e || window.event,
+                    target = event.srcElement || event.target;
+
+                if(!$ticketList.hasClass('hide') && $(target).parents('.ticket-list').length==0) {
+                    $ticketList.addClass('hide');
+                }
+            });
+            $('#use-experience-ticket').click(function(event) {
                 var $this=$(this),
                     userCouponId=this.value,
                     boolSelect=$this.prop('checked'),

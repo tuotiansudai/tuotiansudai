@@ -146,14 +146,13 @@
 
 select {
   vertical-align: middle;
-  background: none repeat scroll 0 0 nth($baseColor, 5);
+  background: none;
   border: {
-    color: nth($btnColor, 2) nth($btnColor, 3) nth($btnColor, 3) nth($btnColor, 2);
+    color: #ccc;
     style: solid;
     width: 1px;
   }
   color: nth($btnColor, 1);
-  padding: 4px;
 }
 
 input {

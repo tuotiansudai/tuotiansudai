@@ -7,6 +7,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
@@ -74,8 +75,12 @@ public class UserCouponServiceImpl implements UserCouponService {
     @Override
     public UserCouponDto getUsableNewbieCoupon(String loginName) {
         try {
+            if (!redisWrapperClient.exists(NEWBIE_COUPON_ALERT_KEY)) {
+                redisWrapperClient.set(NEWBIE_COUPON_ALERT_KEY, objectMapper.writeValueAsString(Sets.newHashSet()));
+            }
             String redisValue = redisWrapperClient.get(NEWBIE_COUPON_ALERT_KEY);
-            Set<String> loginNames = objectMapper.readValue(redisValue, new TypeReference<Set<String>>() {});
+            Set<String> loginNames = objectMapper.readValue(redisValue, new TypeReference<Set<String>>() {
+            });
             if (loginNames.contains(loginName)) {
                 return null;
             }
