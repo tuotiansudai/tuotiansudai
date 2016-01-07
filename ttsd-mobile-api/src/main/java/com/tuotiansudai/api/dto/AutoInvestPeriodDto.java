@@ -1,8 +1,16 @@
 package com.tuotiansudai.api.dto;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.tuotiansudai.util.AutoInvestMonthPeriod;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class AutoInvestPeriodDto {
     private String pid;
-    private String pname;
+    private String pName;
     private boolean selected = false;
 
     public String getPid() {
@@ -13,12 +21,12 @@ public class AutoInvestPeriodDto {
         this.pid = pid;
     }
 
-    public String getPname() {
-        return pname;
+    public String getpName() {
+        return pName;
     }
 
-    public void setPname(String pname) {
-        this.pname = pname;
+    public void setpName(String pName) {
+        this.pName = pName;
     }
 
     public boolean isSelected() {
@@ -27,5 +35,28 @@ public class AutoInvestPeriodDto {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    public static List<AutoInvestPeriodDto> generateSelectedAutoInvestPeriodDto(int mergedPeriodsValue){
+        final AutoInvestMonthPeriod mergedPeriod = new AutoInvestMonthPeriod(mergedPeriodsValue,"");
+        List<AutoInvestMonthPeriod> allPeriods = Arrays.asList(AutoInvestMonthPeriod.AllPeriods);
+        List<AutoInvestPeriodDto> selectedPeriods = Lists.transform(allPeriods, new Function<AutoInvestMonthPeriod, AutoInvestPeriodDto>() {
+
+            @Override
+            public AutoInvestPeriodDto apply(AutoInvestMonthPeriod input) {
+                AutoInvestPeriodDto autoInvestPeriodDto = new AutoInvestPeriodDto();
+                autoInvestPeriodDto.setPid("" + input.getPeriodValue());
+                autoInvestPeriodDto.setpName("" + input.getPeriodName());
+                if(mergedPeriod.contains(Integer.parseInt(autoInvestPeriodDto.getPid()))){
+                    autoInvestPeriodDto.setSelected(true);
+
+                }else{
+                    autoInvestPeriodDto.setSelected(false);
+                }
+                return autoInvestPeriodDto;
+            }
+        });
+
+        return selectedPeriods;
     }
 }

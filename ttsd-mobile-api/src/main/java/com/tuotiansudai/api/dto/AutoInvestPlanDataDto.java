@@ -1,11 +1,16 @@
 package com.tuotiansudai.api.dto;
 
+import com.tuotiansudai.repository.model.AutoInvestPlanModel;
+import com.tuotiansudai.util.AmountConverter;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
 public class AutoInvestPlanDataDto extends BaseResponseDataDto{
     private String pid;
     private String loginName;
     private String minInvestAmount;
     private String maxInvestAmount;
-    private AutoInvestPeriodDto[] autoInvestPeriods;
+    private List<AutoInvestPeriodDto> autoInvestPeriods;
     private boolean enabled ;
     private String createdTime;
 
@@ -41,11 +46,11 @@ public class AutoInvestPlanDataDto extends BaseResponseDataDto{
         this.maxInvestAmount = maxInvestAmount;
     }
 
-    public AutoInvestPeriodDto[] getAutoInvestPeriods() {
+    public List<AutoInvestPeriodDto> getAutoInvestPeriods() {
         return autoInvestPeriods;
     }
 
-    public void setAutoInvestPeriods(AutoInvestPeriodDto[] autoInvestPeriods) {
+    public void setAutoInvestPeriods(List<AutoInvestPeriodDto> autoInvestPeriods) {
         this.autoInvestPeriods = autoInvestPeriods;
     }
 
@@ -64,4 +69,18 @@ public class AutoInvestPlanDataDto extends BaseResponseDataDto{
     public void setCreatedTime(String createdTime) {
         this.createdTime = createdTime;
     }
+    public AutoInvestPlanDataDto(){
+
+    }
+
+    public AutoInvestPlanDataDto(AutoInvestPlanModel autoInvestPlanModel){
+        this.pid = "" + autoInvestPlanModel.getId();
+        this.loginName = autoInvestPlanModel.getLoginName();
+        this.minInvestAmount = AmountConverter.convertCentToString(autoInvestPlanModel.getMinInvestAmount());
+        this.maxInvestAmount = AmountConverter.convertCentToString(autoInvestPlanModel.getMaxInvestAmount());
+        this.enabled = autoInvestPlanModel.isEnabled();
+        this.createdTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(autoInvestPlanModel.getCreatedTime());
+        this.autoInvestPeriods = AutoInvestPeriodDto.generateSelectedAutoInvestPeriodDto(autoInvestPlanModel.getAutoInvestPeriods());
+    }
+
 }
