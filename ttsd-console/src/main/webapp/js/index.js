@@ -70,7 +70,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     $('.start-date').val(initStartDate);
     $('.end-date').val(initEndDate);
 
-    function showReport(form,url,reportbox,name,category) {
+    function showReport(form,url,reportbox,name,category,xAxisName) {
         var Btn=$(form).find(':button');
         Btn.click(function() {
             var dataFormat=$(form).serialize(),
@@ -97,7 +97,10 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
                          option = loadEcharts.ChartOptionTemplates.Lines(data, name);
                         break;
                     case 'bar':
-                         option = loadEcharts.ChartOptionTemplates.Bar(data, name);
+                         option = loadEcharts.ChartOptionTemplates.Bar(data, name,xAxisName);
+                        break;
+                    case 'kBar':
+                        option = loadEcharts.ChartOptionTemplates.kBar(data, name);
                         break;
                     case 'pie':
                         option = loadEcharts.ChartOptionTemplates.Pie(data, name);
@@ -123,7 +126,7 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     showReport('#formWithdrawReport','/bi/user-withdraw-trend','userWithdrawDistribution','用户提现(元)','Lines');
 
     /*用户续投情况*/
-    showReport('#formUserInvestViscosityReport','/bi/user-invest-viscosity','userInvestViscosity','投资人数(人)','bar');
+    showReport('#formUserInvestViscosityReport','/bi/user-invest-viscosity','userInvestViscosity','投资人数(人)','bar','投资次数');
 
     /*用户投资金额时间分布*/
     showReport('#formUserInvestAmountReport','/bi/user-invest-amount-trend','userInvestAmountDistribution','用户投资金额(元)','Lines');
@@ -136,5 +139,14 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
 
     /*投资用户年龄分布*/
     showReport('#formInvestorUserAgeReport','/bi/investor-user-age-trend','investorUserAgeDistribution','投资用户(人)','pie');
+
+    /*标的资金分布*/
+    showReport('#formLoanAmountReport','/bi/loan-amount-distribution','loanAmountDistribution','标的金额(元)','bar','标的期数');
+
+    /*标的满标周期分布*/
+    showReport('#formLoanRaisingTimeCostingReport','/bi/loan-raising-time-costing-trend','loanRaisingTimeCostingDistribution','小时','kBar');
+
+    /*提现人数分布*/
+    showReport('#formWithdrawUserCountReport','/bi/withdraw-user-count-trend','withdrawUserCountDistribution','提现人数(人)','Lines');
 
 });
