@@ -37,6 +37,15 @@ public class AutoInvestPeriodDto {
         this.selected = selected;
     }
 
+    public AutoInvestPeriodDto(){
+
+    }
+    public AutoInvestPeriodDto(String pid,String pName,boolean selected){
+        this.pid = pid;
+        this.pName = pName;
+        this.selected = selected;
+    }
+
     public static List<AutoInvestPeriodDto> generateSelectedAutoInvestPeriodDto(int mergedPeriodsValue){
         final AutoInvestMonthPeriod mergedPeriod = new AutoInvestMonthPeriod(mergedPeriodsValue,"");
         List<AutoInvestMonthPeriod> allPeriods = Arrays.asList(AutoInvestMonthPeriod.AllPeriods);

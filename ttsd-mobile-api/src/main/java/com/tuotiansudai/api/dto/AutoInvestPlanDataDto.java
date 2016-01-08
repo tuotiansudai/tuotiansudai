@@ -10,6 +10,7 @@ public class AutoInvestPlanDataDto extends BaseResponseDataDto{
     private String loginName;
     private String minInvestAmount;
     private String maxInvestAmount;
+    private String retentionAmount;
     private List<AutoInvestPeriodDto> autoInvestPeriods;
     private boolean enabled ;
     private String createdTime;
@@ -69,6 +70,15 @@ public class AutoInvestPlanDataDto extends BaseResponseDataDto{
     public void setCreatedTime(String createdTime) {
         this.createdTime = createdTime;
     }
+
+    public String getRetentionAmount() {
+        return retentionAmount;
+    }
+
+    public void setRetentionAmount(String retentionAmount) {
+        this.retentionAmount = retentionAmount;
+    }
+
     public AutoInvestPlanDataDto(){
 
     }
@@ -78,6 +88,7 @@ public class AutoInvestPlanDataDto extends BaseResponseDataDto{
         this.loginName = autoInvestPlanModel.getLoginName();
         this.minInvestAmount = AmountConverter.convertCentToString(autoInvestPlanModel.getMinInvestAmount());
         this.maxInvestAmount = AmountConverter.convertCentToString(autoInvestPlanModel.getMaxInvestAmount());
+        this.retentionAmount = AmountConverter.convertCentToString(autoInvestPlanModel.getRetentionAmount());
         this.enabled = autoInvestPlanModel.isEnabled();
         this.createdTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(autoInvestPlanModel.getCreatedTime());
         this.autoInvestPeriods = AutoInvestPeriodDto.generateSelectedAutoInvestPeriodDto(autoInvestPlanModel.getAutoInvestPeriods());
