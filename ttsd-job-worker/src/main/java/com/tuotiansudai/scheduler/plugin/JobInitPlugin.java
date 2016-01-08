@@ -1,9 +1,11 @@
 package com.tuotiansudai.scheduler.plugin;
 
-import com.tuotiansudai.job.*;
+import com.tuotiansudai.job.AutoReFreshAreaByMobileJob;
+import com.tuotiansudai.job.CalculateDefaultInterestJob;
+import com.tuotiansudai.job.InvestCallback;
+import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -85,4 +87,5 @@ public class JobInitPlugin implements SchedulerPlugin {
             logger.debug(e.getLocalizedMessage(), e);
         }
     }
+
 }

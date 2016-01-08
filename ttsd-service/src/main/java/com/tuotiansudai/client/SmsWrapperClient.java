@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class SmsWrapperClient extends BaseClient {
@@ -27,13 +28,11 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String RETRIEVE_PASSWORD_CAPTCHA_URI = "/sms/retrieve-password-captcha";
 
-    private final static String LOAN_OUT_INVESTOR_NOTIFY = "/sms/loan-out-investor-notify";
-
     private final static String PASSWORD_CHANGED_NOTIFY_URL = "/sms/mobile/{mobile}/password-changed-notify";
 
-    private final static String INVEST_FATAL_NOTIFY_URL = "/sms/invest-fatal-notify";
+    private final static String LOAN_OUT_INVESTOR_NOTIFY = "/sms/loan-out-investor-notify";
 
-    private final static String JOB_FATAL_NOTIFY_URL = "/sms/job-fatal-notify";
+    private final static String FATAL_NOTIFY_URL = "/sms/fatal-notify";
 
     public BaseDto<SmsDataDto> sendRegisterCaptchaSms(SmsCaptchaDto dto) {
         return send(dto, REGISTER_CAPTCHA_SMS_URI);
@@ -51,12 +50,8 @@ public class SmsWrapperClient extends BaseClient {
         return send(null, PASSWORD_CHANGED_NOTIFY_URL.replace("{mobile}", mobile));
     }
 
-    public BaseDto<SmsDataDto> sendInvestFatalNotify(SmsInvestFatalNotifyDto dto) {
-        return send(dto, INVEST_FATAL_NOTIFY_URL);
-    }
-
-    public BaseDto<SmsDataDto> sendJobFatalNotify(SmsJobFatalNotifyDto dto) {
-        return send(dto, JOB_FATAL_NOTIFY_URL);
+    public BaseDto<SmsDataDto> sendFatalNotify(SmsFatalNotifyDto notify) {
+        return send(notify, FATAL_NOTIFY_URL);
     }
 
     private BaseDto<SmsDataDto> send(Object requestData, String requestPath) {
