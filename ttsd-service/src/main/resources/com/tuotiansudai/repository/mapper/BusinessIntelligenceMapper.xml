@@ -677,6 +677,7 @@
         <if test="loanCount &lt; 5">
             temp.loan_count = #{loanCount}
         </if>
+        ORDER BY temp.total_amount DESC
         LIMIT #{startIndex}, #{pageSize}
     </select>
 

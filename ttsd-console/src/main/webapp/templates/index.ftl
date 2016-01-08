@@ -135,10 +135,8 @@
                             <th>用户名</th>
                             <th>真实姓名</th>
                             <th>电话</th>
-                            <th>是否业务员</th>
                             <th>推荐人id</th>
                             <th>推荐人姓名</th>
-                            <th>推荐人是否业务员</th>
                             <th>投资总金额(元)</th>
                             <th>投资次数</th>
                             <th>上次投资时间</th>
@@ -154,6 +152,8 @@
                         </tr>
                         </tfoot>
                     </table>
+
+                    <button class="btn btn-default pull-left down-load viscosity-export" type="button">导出Excel</button>
                     </div>
                 </div>
             </div>
