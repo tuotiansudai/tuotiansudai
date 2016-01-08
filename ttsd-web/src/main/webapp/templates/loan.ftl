@@ -109,10 +109,7 @@
                             </#if>
                             <input type="text" name="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" value="${defaultInvestAmount}" class="text-input-amount"/>
                             <#if errorMessage?has_content>
-
-                                <span class="error"><i class="fa fa-times-circle"></i>${errorMessage!}</span>
-                            <#else >
-                                <span class="error" style="display: none"><i class="fa fa-times-circle"></i></span>
+                                <span class="errorTip hide"><i class="fa fa-times-circle"></i>${errorMessage!}</span>
                             </#if>
                         </dd>
                         <#list coupons as coupon>

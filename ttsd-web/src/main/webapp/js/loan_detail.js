@@ -80,6 +80,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         }
 
         if($('#loanStatus').val() == 'PREHEAT' ){
+            $btnLookOther.prop('disabled', true);
             timer(intDiff);
         }
 
@@ -148,17 +149,14 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 $ticketList.find('.ticket-title').filter(function(key,option) {
                     return $(option).attr('data-income')>amount;
                 }).parents('li').addClass('disabled');
+                layer.closeAll('tips');
                 $.ajax({
                     url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + amount,
                     type: 'get',
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'
                 }).done(function(amount){
-                    if(!isFirstLoad){
-                        layer.closeAll('tips');
-                    }
                     showInterest(amount);
-                    $btnLookOther.prop('disabled', false);
                 });
             };
             if(typeof user_can_invest !== 'undefined') {

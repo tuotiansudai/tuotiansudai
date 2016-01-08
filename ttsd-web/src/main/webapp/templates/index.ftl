@@ -220,17 +220,6 @@
                 </span>
             </div>
         </div>
-
-        <div class="page-width clearfix ">
-            <h3 class="label-title media-hide">
-                <span class="friend-link-icon">友情链接</span>
-            </h3>
-            <div class="clear-blank friendly-box">
-                <a href="http://www.tuotianzichan.com/" target="_blank">拓天伟业（北京）资产管理有限公司</a>
-                <a href="https://www.zuiyidai.com/" target="_blank">最易贷</a>
-                <a href="https://www.p2l.com.cn/" target="_blank">融租e保</a>
-            </div>
-        </div>
     </div>
     <#if newbieCoupon??>
         <div class="activity-coupon-model" id="couponModel">
