@@ -39,7 +39,7 @@ public class LoanController {
     public ModelAndView createLoan() {
         ModelAndView modelAndView = new ModelAndView("/loan-create");
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
-        modelAndView.addObject("productTypes",Lists.newArrayList(ProductType.values()));
+        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
         return modelAndView;
@@ -72,7 +72,7 @@ public class LoanController {
         }
         ModelAndView modelAndView = new ModelAndView("/loan-edit");
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
-        modelAndView.addObject("productTypes",Lists.newArrayList(ProductType.values()));
+        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
         modelAndView.addObject("loanInfo", loanService.findLoanById(loanId));
@@ -102,14 +102,8 @@ public class LoanController {
     @RequestMapping(value = "/recheck", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> recheckLoan(@RequestBody LoanDto loanDto) {
-        BaseDto<PayDataDto> baseDto = null;
-        try {
-            loanDto.setRecheckLoginName(LoginUserInfo.getLoginName());
-            baseDto = loanService.loanOut(loanDto);
-        } catch (BaseException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        return baseDto;
+        loanDto.setRecheckLoginName(LoginUserInfo.getLoginName());
+        return loanService.loanOut(loanDto);
     }
 
     @RequestMapping(value = "/cancel", method = RequestMethod.POST)

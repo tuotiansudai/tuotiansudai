@@ -572,14 +572,10 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     @Transactional
-    public BaseDto<PayDataDto> loanOut(LoanDto loanDto) throws BaseException {
-        if (!this.checkLoanAmount(loanDto.getId())) {
-            BaseDto<PayDataDto> dto = new BaseDto<>();
-            PayDataDto payDataDto = new PayDataDto();
-            dto.setData(payDataDto);
-            payDataDto.setStatus(false);
-            payDataDto.setMessage("放款失败，标的投资金额与募集金额不符。");
-            return dto;
+    public BaseDto<PayDataDto> loanOut(LoanDto loanDto) {
+        BaseDto<PayDataDto> baseDto = this.checkLoanAmount(loanDto.getId());
+        if (!baseDto.getData().getStatus()) {
+            return baseDto;
         }
 
         this.updateLoanAndLoanTitleRelation(loanDto);
@@ -589,16 +585,12 @@ public class LoanServiceImpl implements LoanService {
         return processLoanOutPayRequest(loanDto.getId());
     }
 
-    private BaseDto<PayDataDto> processLoanOutPayRequest(long loanId) throws BaseException {
+    private BaseDto<PayDataDto> processLoanOutPayRequest(long loanId) {
         LoanOutDto loanOutDto = new LoanOutDto();
         loanOutDto.setLoanId(String.valueOf(loanId));
         BaseDto<PayDataDto> dto = payWrapperClient.loanOut(loanOutDto);
-        if (dto.isSuccess()) {
-            PayDataDto data = dto.getData();
-            if (!data.getStatus()) {
-                logger.error(MessageFormat.format("放款失败: {0}", dto.getData().getMessage()));
-                throw new BaseException("放款失败");
-            }
+        if (dto.isSuccess() && !dto.getData().getStatus()) {
+            logger.error(MessageFormat.format("放款失败: {0}", dto.getData().getMessage()));
         }
         return dto;
     }
@@ -719,12 +711,17 @@ public class LoanServiceImpl implements LoanService {
         }
     }
 
-    private boolean checkLoanAmount(long loanId) {
-        BaseDto<PayDataDto> dto = payWrapperClient.checkLoanAmount(loanId);
+    private BaseDto<PayDataDto> checkLoanAmount(long loanId) {
+        BaseDto<PayDataDto> dto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        payDataDto.setStatus(true);
+        dto.setData(payDataDto);
 
-        if (!dto.getData().getStatus()) {
+        if (!payWrapperClient.checkLoanAmount(loanId).getData().getStatus()) {
             smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("标的({0})投资金额与募集金额不符，放款失败。", String.valueOf(loanId))));
+            payDataDto.setStatus(false);
+            payDataDto.setMessage(MessageFormat.format("放款失败: {0}", "标的投资金额与募集金额不符"));
         }
-        return dto.getData().getStatus();
+        return dto;
     }
 }
