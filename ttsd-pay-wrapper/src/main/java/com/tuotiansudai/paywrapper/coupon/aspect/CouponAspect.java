@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.coupon.aspect;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
@@ -56,12 +57,13 @@ public class CouponAspect {
         BaseDto<PayFormDataDto> baseDto = (BaseDto<PayFormDataDto>) returnValue;
         if (baseDto.getData() != null && baseDto.getData().getStatus()) {
             long investId = Long.parseLong(baseDto.getData().getFields().get("order_id"));
-            Long userCouponId;
+            Long userCouponId = null;
             try {
-                userCouponId = Long.parseLong(investDto.getUserCouponId());
+                if (Strings.isNullOrEmpty(investDto.getUserCouponId())) {
+                    userCouponId = Long.parseLong(investDto.getUserCouponId());
+                }
             } catch (NumberFormatException e) {
                 logger.error(e.getLocalizedMessage(), e);
-                userCouponId = null;
             }
             couponInvestService.invest(investId, userCouponId);
         }

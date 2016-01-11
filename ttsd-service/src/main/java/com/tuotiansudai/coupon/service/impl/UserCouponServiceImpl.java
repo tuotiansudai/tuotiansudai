@@ -105,7 +105,7 @@ public class UserCouponServiceImpl implements UserCouponService {
     }
 
     @Override
-    public List<UserCouponDto> getUsableCoupons(String loginName, long loanId, final long amount) {
+    public List<UserCouponDto> getUsableCoupons(String loginName, long loanId) {
         LoanModel loanModel = loanMapper.findById(loanId);
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName);
 
@@ -115,7 +115,7 @@ public class UserCouponServiceImpl implements UserCouponService {
             if (InvestStatus.SUCCESS != userCouponModel.getStatus()
                     && new DateTime(couponModel.getEndTime()).plusDays(1).withTimeAtStartOfDay().isAfterNow()
                     && couponModel.getProductTypes().contains(loanModel.getProductType())) {
-                usableCoupons.add(new UserCouponDto(couponModel, userCouponModel, amount));
+                usableCoupons.add(new UserCouponDto(couponModel, userCouponModel));
             }
         }
 

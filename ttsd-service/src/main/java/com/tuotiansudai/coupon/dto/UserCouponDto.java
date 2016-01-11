@@ -2,6 +2,7 @@ package com.tuotiansudai.coupon.dto;
 
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
 import org.joda.time.DateTime;
 
@@ -11,15 +12,15 @@ import java.util.Date;
 public class UserCouponDto implements Serializable {
     private long id;
     private long couponId;
-    private Long loanId;
+    private CouponType couponType;
     private String name;
     private long amount;
     private Date startTime;
     private Date endTime;
+    private Long loanId;
     private boolean used;
     private boolean expired;
     private boolean unused;
-    private boolean usable;
     private long investLowerLimit;
 
     public UserCouponDto() {
@@ -27,7 +28,8 @@ public class UserCouponDto implements Serializable {
 
     public UserCouponDto(CouponModel coupon, UserCouponModel userCoupon) {
         this.id = userCoupon.getId();
-        this.name = coupon.getCouponType().getDesc();
+        this.couponType = coupon.getCouponType();
+        this.name = coupon.getCouponType().getName();
         this.couponId = coupon.getId();
         this.amount = coupon.getAmount();
         this.startTime = coupon.getStartTime();
@@ -37,11 +39,6 @@ public class UserCouponDto implements Serializable {
         this.expired = !this.used && new DateTime(this.endTime).plusDays(1).withTimeAtStartOfDay().isBeforeNow();
         this.unused = !this.used && !this.expired;
         this.investLowerLimit = coupon.getInvestLowerLimit();
-    }
-
-    public UserCouponDto(CouponModel couponModel, UserCouponModel userCouponModel, long investAmount) {
-        this(couponModel, userCouponModel);
-        this.usable = this.unused && investAmount >= couponModel.getInvestLowerLimit();
     }
 
     public long getId() {
@@ -58,6 +55,14 @@ public class UserCouponDto implements Serializable {
 
     public void setCouponId(long couponId) {
         this.couponId = couponId;
+    }
+
+    public CouponType getCouponType() {
+        return couponType;
+    }
+
+    public void setCouponType(CouponType couponType) {
+        this.couponType = couponType;
     }
 
     public String getName() {
@@ -122,14 +127,6 @@ public class UserCouponDto implements Serializable {
 
     public void setUnused(boolean unused) {
         this.unused = unused;
-    }
-
-    public boolean isUsable() {
-        return usable;
-    }
-
-    public void setUsable(boolean usable) {
-        this.usable = usable;
     }
 
     public long getInvestLowerLimit() {

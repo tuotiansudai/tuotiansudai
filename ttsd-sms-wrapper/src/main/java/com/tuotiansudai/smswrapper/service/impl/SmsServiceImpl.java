@@ -71,7 +71,7 @@ public class SmsServiceImpl implements SmsService {
     public BaseDto<SmsDataDto> couponNotify(SmsCouponNotifyDto notifyDto) {
         Map<String, String> map = ImmutableMap.<String, String>builder()
                 .put("amount", notifyDto.getAmount())
-                .put("couponType", notifyDto.getCouponType().getDesc())
+                .put("couponType", notifyDto.getCouponType().getName())
                 .put("expiredDate", new DateTime(notifyDto.getExpiredDate()).toString("yyyy-MM-dd"))
                 .build();
         String content = SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE.generateContent(map);
