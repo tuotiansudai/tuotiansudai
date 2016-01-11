@@ -17,4 +17,6 @@ public interface SmsService {
     BaseDto<SmsDataDto> investFatalNotify(String mobile, String errMsg);
 
     BaseDto<SmsDataDto> jobFatalNotify(String mobile, String errMsg);
+
+    BaseDto<SmsDataDto> loanRepayNotify(String mobile, String loanName, String repayAmount);
 }

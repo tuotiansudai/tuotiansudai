@@ -35,6 +35,8 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String JOB_FATAL_NOTIFY_URL = "/sms/job-fatal-notify";
 
+    private final static String LOAN_REPAY_NOTIFY_URL = "/sms/loan-repay-notify";
+
     public BaseDto<SmsDataDto> sendRegisterCaptchaSms(SmsCaptchaDto dto) {
         return send(dto, REGISTER_CAPTCHA_SMS_URI);
     }
@@ -53,6 +55,10 @@ public class SmsWrapperClient extends BaseClient {
 
     public BaseDto<SmsDataDto> sendInvestFatalNotify(SmsInvestFatalNotifyDto dto) {
         return send(dto, INVEST_FATAL_NOTIFY_URL);
+    }
+
+    public BaseDto<SmsDataDto> sendLoanRepayNotify(LoanRepayNotifyDto dto) {
+        return send(dto, LOAN_REPAY_NOTIFY_URL);
     }
 
     public BaseDto<SmsDataDto> sendJobFatalNotify(SmsJobFatalNotifyDto dto) {
