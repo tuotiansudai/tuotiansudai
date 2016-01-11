@@ -11,6 +11,7 @@ public class InvestRequestDto extends BaseParamDto {
     @Deprecated
     private String password;
 
+    private String userCouponId;
 
     public String getUserId() {
         return userId;
@@ -47,12 +48,21 @@ public class InvestRequestDto extends BaseParamDto {
         this.investMoney = investMoney;
     }
 
+    public String getUserCouponId() {
+        return userCouponId;
+    }
+
+    public void setUserCouponId(String userCouponId) {
+        this.userCouponId = userCouponId;
+    }
+
     public InvestDto convertToInvestDto(){
         InvestDto investDto = new InvestDto();
         investDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
         investDto.setAmount(this.getInvestMoney());
         investDto.setLoginName(this.getBaseParam().getUserId());
         investDto.setLoanId(this.getLoanId());
+        investDto.setUserCouponId(this.userCouponId);
         return investDto;
 
     }
