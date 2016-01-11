@@ -172,6 +172,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     return false;
                 }
 
+
                 var amount = parseInt((amountInputElement.autoNumeric("get") * 100).toFixed(0));
 
                 var accountAmount = parseInt($('form .account-amount').data("user-balance"));

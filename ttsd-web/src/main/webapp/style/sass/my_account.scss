@@ -888,7 +888,7 @@
     .product-type-text{
       position: absolute;
       left: 108px;
-      bottom: -5px;
+      bottom: 2px;
       width: 86px;
       text-align: center;
       border: 1px dashed #ff752a;
@@ -1428,8 +1428,9 @@
         padding-bottom: 5px;
       }
       time {
-        color: #808080;
+        color: #adafb2;
         font-size: 12px;
+        letter-spacing: 2px;
       }
     }
     .ticket-info {
@@ -1437,7 +1438,7 @@
       height:100%;
       background:#ff752a url("/images/icons/line-wheel.png") right -1px no-repeat;
       color: #fff;
-      line-height: 1.5;
+      line-height: 2.5;
       font-size: 12px;
       dl {
         dt {

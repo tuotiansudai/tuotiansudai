@@ -141,6 +141,7 @@ public class BusinessIntelligenceController {
         return businessIntelligenceService.queryLoanAmountDistribution(startTime, endTime);
     }
 
+    @ResponseBody
     @RequestMapping(value = "/loan-raising-time-costing-trend", method = RequestMethod.GET)
     public List<KeyValueModel> queryLoanRaisingTimeCostingTrend(
             @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
@@ -148,6 +149,7 @@ public class BusinessIntelligenceController {
         return businessIntelligenceService.queryLoanRaisingTimeCostingTrend(startTime, endTime);
     }
 
+    @ResponseBody
     @RequestMapping(value = "/withdraw-user-count-trend", method = RequestMethod.GET)
     public List<KeyValueModel> queryWithdrawUserCountTrend(
             @RequestParam(name = "granularity") Granularity granularity,
