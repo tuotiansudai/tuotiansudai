@@ -1,6 +1,7 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.my_account}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
-<div class="loan-detail-content" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.preheatSeconds?string.computer}" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
+<div class="loan-detail-content" data-loan-status="${loan.loanStatus}" data-loan-progress="${loan.progress?string.computer}" data-loan-countdown="${loan.preheatSeconds?string.computer}"
+     data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
     <div class="borderBox bg-w clearfix">
         <div class="news-share fl">
             <h2 class="title hd">${loan.name}</h2>
@@ -34,107 +35,90 @@
         </div>
         <div class="account-info fl">
             <h5 class="l-title">拓天速贷提醒您：理财非存款，投资需谨慎！</h5>
-            <#if loan.loanStatus == "RAISING">
-                <form action="/invest" method="post">
-                    <dl class="account-list">
-                        <dd><span class="fl">可投金额：</span><em class="fr"><i class="amountNeedRaised-i">${loan.amountNeedRaised}</i> 元</em></dd>
-                        <dd><span class="fl">账户余额：</span><em class="fr account-amount">${loan.userBalance!("0.00")} 元</em></dd>
-                        <dd><span class="fl">每人限投：</span><em class="fr">${loan.maxInvestAmount} 元</em></dd>
-                        <dd class="invest-amount tl">
-                            <#assign defaultInvestAmount = loan.maxAvailableInvestAmount!>
-                            <#if investAmount??>
-                                <#assign defaultInvestAmount = investAmount>
-                            </#if>
-                            <span class="fl">投资金额：</span>
-                            <input type="text" name="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" value="${defaultInvestAmount}"
-                                   class="text-input-amount fr position-width"/>
-                            <#if errorMessage?has_content>
-                                <span class="errorTip hide"><i class="fa fa-times-circle"></i>${errorMessage!}</span>
-                            </#if>
-                        </dd>
-                        <dd class="experience-ticket">
-                            <span class="fl">体验券</span>
-                            <div class="fr experience-ticket-box">
-                                <em class="experience-ticket-input disabled" id="use-experience-ticket">
-                                    <span>当前我无可用体验券哦</span>
-                                    <i class="fa fa-sort-down fr"></i>
-                                    <i class="fa fa-sort-up hide fr"></i>
-                                </em>
+            <form action="/invest" method="post">
+                <dl class="account-list">
+                    <dd>
+                        <span class="fl">可投金额：</span>
+                        <em class="fr">
+                            <i class="amountNeedRaised-i" data-amount-need-raised="${loan.amountNeedRaised?string.computer}">${(loan.amountNeedRaised / 100)?string("0.00")}</i> 元
+                        </em>
+                    </dd>
+                    <dd><span class="fl">账户余额：</span><em class="fr account-amount" data-user-balance="${loan.userBalance?string.computer}">${(loan.userBalance / 100)?string("0.00")} 元</em></dd>
+                    <dd><span class="fl">每人限投：</span><em class="fr">${loan.maxInvestAmount} 元</em></dd>
+                    <dd class="invest-amount tl" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
+                        <#assign defaultInvestAmount = loan.maxAvailableInvestAmount!>
+                        <#if investAmount??>
+                            <#assign defaultInvestAmount = investAmount>
+                        </#if>
+                        <span class="fl">投资金额：</span>
+                        <input type="text" name="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" value="${defaultInvestAmount}"
+                               class="text-input-amount fr position-width"/>
+                        <#if errorMessage?has_content>
+                            <span class="errorTip hide"><i class="fa fa-times-circle"></i>${errorMessage!}</span>
+                        </#if>
+                    </dd>
+
+                    <dd class="experience-ticket" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
+                        <span class="fl">体验券：</span>
+                        <div class="fr experience-ticket-box">
+                            <em class="experience-ticket-input <#if !coupons?has_content>disabled</#if>" id="use-experience-ticket">
+                                <span><#if coupons?has_content>请选择您的体验券<#else>当前您无可用体验券</#if></span>
+                                <i class="fa fa-sort-down fr"></i>
+                                <i class="fa fa-sort-up hide fr"></i>
+                            </em>
+                            <#if coupons?has_content>
                                 <ul class="ticket-list hide">
-                                    <li><input type="radio" name="ticket" value="1" id="ticketList1"><label for="ticketList1"><i class="ticket-title"> 不使用体验券</i></label></li>
-                                    <li><input type="radio" name="ticket" value="2" id="ticketList2" class="input-use-ticket">
-                                        <label for="ticketList2">
-                                            <span class="sign">新手</span>
-                                            <span class="ticket-info">
-                                                <i class="ticket-title" data-income="1000">新手体验券1000元</i><br/>
-                                                <i class="ticket-term">[投资满1000元可用]</i>
-                                            </span></label></li>
-                                    <li class="disabled"><input type="radio" name="ticket" value="3" id="ticketList3" class="input-use-ticket" disabled>
-                                        <label for="ticketList3">
-                                            <span class="sign">满抵</span>
-                                            <span class="ticket-info">
-                                               <i class="ticket-title">体验券1000元</i><br/>
-                                                <i class="ticket-term">[投资满1000元可用]</i>
-                                            </span>
-                                        </label></li>
+                                    <li>
+                                        <input type="radio" name="userCouponId" value="" id="noCouponSelected">
+                                        <label for="noCouponSelected">
+                                            <i class="ticket-title">不使用体验券</i>
+                                        </label>
+                                    </li>
+                                    <#list coupons as coupon>
+                                        <li data-coupon-amount="${coupon.amount?string.computer}">
+                                            <input type="radio" name="userCouponId" value="${coupon.id?string.computer}" id="${coupon.id?string.computer}" class="input-use-ticket">
+                                            <label for="${coupon.id?string.computer}">
+                                                <span class="sign">${coupon.couponType.getAbbr()}</span>
+                                                    <span class="ticket-info">
+                                                        <i class="ticket-title">
+                                                        ${coupon.name}${(coupon.amount / 100)?string("0.00")}元
+                                                        </i><br/>
+                                                        <i class="ticket-term"
+                                                           data-invest-lower-limit="${coupon.investLowerLimit?string.computer}">[投资满${(coupon.investLowerLimit / 100)?string("0.00")}元可用]</i>
+                                                    </span>
+                                            </label>
+                                        </li>
+                                    </#list>
                                 </ul>
-                            </div>
-                        </dd>
-                        <dd class="experience-revenue hide"><span class="fl">体验劵预期收益：</span><em class="fr"><i class="experience-interest"></i>元</em></dd>
-
-                        <dd class="expected-interest-dd tc">
-                            <span>预计总收益：</span>
-                            <span class="principal-income">23.25</span>
-                            <span class="experience-income">+12.38</span>元
-                        </dd>
-                        <dd>
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string("0")}"/>
-                            <button class="btn-pay btn-normal" type="submit">马上投资</button>
-                        </dd>
-
-                    </dl>
-                </form>
-            </#if>
-            <#if loan.loanStatus == "PREHEAT">
-                <form action="/invest" method="post">
-                    <dl class="account-list">
-                        <dd><span class="fl">可投金额：</span><em class="fr"><i class="amountNeedRaised-i">${loan.amountNeedRaised}</i>元</em>
-                        <dd><span class="fl">账户余额：</span><em class="fr account-amount">${loan.userBalance} 元</em></dd>
-                        <dd><span class="fl">每人限投：</span><em class="fr">${loan.maxInvestAmount}元</em></dd>
-                        <dd class="invest-amount tl">
-                            <#assign defaultInvestAmount = loan.maxAvailableInvestAmount!>
-                            <#if investAmount??>
-                                <#assign defaultInvestAmount = investAmount>
                             </#if>
-                            <input type="text" name="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" value="${defaultInvestAmount}" class="text-input-amount"/>
-                            <#if errorMessage??>
-                                <span class="error"><i class="fa fa-times-circle"></i>${errorMessage}</span>
-                            <#else>
-                                <span class="error" style="display: none"><i class="fa fa-times-circle"></i></span>
-                            </#if>
-                        </dd>
-                        <dd class="time-item">
-                            <#if loan.preheatSeconds lte 1800>
-                                <i class="time-clock"></i>
-                                <strong id="minute_show">00</strong>
-                                <em>:</em>
-                                <strong id="second_show">00</strong>
-                                以后可投资
-                            <#else >
+                        </div>
+                    </dd>
+
+                    <dd class="expected-interest-dd tc" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
+                        <span>预计总收益：</span>
+                        <span class="principal-income">0.00</span>
+                        <span class="experience-income"></span>元
+                    </dd>
+
+                    <dd class="time-item" <#if loan.loanStatus == "RAISING">style="display: none"</#if>>
+                        <#if loan.preheatSeconds lte 1800>
+                            <i class="time-clock"></i><strong id="minute_show">00</strong><em>:</em><strong id="second_show">00</strong>以后可投资
+                        <#else>
                             ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
-                            </#if>
-                        </dd>
-                        <dd class="hide">
-                            <span class="fl">预计总收益：</span><em class="fr"><i class="expected-interest"></i>元</em>
-                        </dd>
-                        <dd><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string("0")}"/>
-                            <button class="btn-pay btn-normal" type="submit" disabled="disabled">预热中</button>
-                        </dd>
-                    </dl>
-                </form>
-            </#if>
+                        </#if>
+                    </dd>
+
+                    <dd>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string.computer}"/>
+                        <button class="btn-pay btn-normal" type="submit" <#if loan.loanStatus == "PREHEAT">disabled="disabled"</#if>>
+                            <#if loan.loanStatus == "PREHEAT">预热中</#if>
+                            <#if loan.loanStatus == "RAISING">马上投资</#if>
+                        </button>
+                    </dd>
+
+                </dl>
+            </form>
             <#if ["REPAYING", "RECHECK", "CANCEL", "OVERDUE", "COMPLETE"]?seq_contains(loan.loanStatus)>
                 <form action="/loan-list" method="get">
                     <dl class="account-list">
@@ -188,9 +172,4 @@
         </div>
     </div>
 </div>
-<script>
-        <@global.role hasRole="'INVESTOR'">
-        var user_can_invest = true;
-        </@global.role>
-</script>
 </@global.main>

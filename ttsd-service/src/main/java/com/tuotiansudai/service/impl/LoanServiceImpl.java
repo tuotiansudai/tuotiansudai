@@ -192,8 +192,8 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setId(loanModel.getId());
         loanDto.setName(loanModel.getName());
         loanDto.setProgress(new BigDecimal(investedAmount).divide(new BigDecimal(loanModel.getLoanAmount()), 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue());
-        loanDto.setBasicRate(new BigDecimal(loanModel.getBaseRate()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
-        loanDto.setActivityRate(new BigDecimal(loanModel.getActivityRate()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
+        loanDto.setBasicRate(new BigDecimal(loanModel.getBaseRate()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+        loanDto.setActivityRate(new BigDecimal(loanModel.getActivityRate()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
         loanDto.setLoanAmount(loanModel.getLoanAmount());
         loanDto.setAgentLoginName(loanModel.getAgentLoginName());
         loanDto.setLoanerLoginName(loanModel.getLoanerLoginName());
@@ -203,7 +203,7 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setInvestIncreasingAmount(loanModel.getInvestIncreasingAmount());
         loanDto.setProductType(loanModel.getProductType());
         loanDto.setLoanStatus(loanModel.getStatus());
-        loanDto.setAmountNeedRaised(AmountConverter.convertCentToString(loanModel.getLoanAmount() - investedAmount));
+        loanDto.setAmountNeedRaised(loanModel.getLoanAmount() - investedAmount);
         loanDto.setMaxInvestAmount(AmountConverter.convertCentToString(loanModel.getMaxInvestAmount()));
 
         loanDto.setDescriptionHtml(loanModel.getDescriptionHtml());
@@ -212,7 +212,7 @@ public class LoanServiceImpl implements LoanService {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
             long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), loginName);
-            loanDto.setUserBalance(AmountConverter.convertCentToString(accountModel.getBalance()));
+            loanDto.setUserBalance(accountModel.getBalance());
             loanDto.setMaxAvailableInvestAmount(AmountConverter.convertCentToString(calculateMaxAvailableInvestAmount(
                     NumberUtils.min(accountModel.getBalance(), loanModel.getLoanAmount() - investedAmount, loanModel.getMaxInvestAmount() - sumSuccessInvestAmount),
                     loanModel.getMinInvestAmount(),

@@ -48,14 +48,16 @@ public class LoanDetailDto extends BaseDataDto {
 
     private List<LoanTitleModel> loanTitleDto;
 
-    private String amountNeedRaised;
+    private long amountNeedRaised;
 
     private String maxAvailableInvestAmount;
 
     private double progress;
 
     private long preheatSeconds;
-    private String userBalance;
+
+    private long userBalance;
+
     private List<LoanTitleRelationModel> loanTitles;
 
     public LoanDetailDto() {
@@ -213,11 +215,11 @@ public class LoanDetailDto extends BaseDataDto {
         this.loanTitleDto = loanTitleDto;
     }
 
-    public String getAmountNeedRaised() {
+    public long getAmountNeedRaised() {
         return amountNeedRaised;
     }
 
-    public void setAmountNeedRaised(String amountNeedRaised) {
+    public void setAmountNeedRaised(long amountNeedRaised) {
         this.amountNeedRaised = amountNeedRaised;
     }
 
@@ -245,11 +247,11 @@ public class LoanDetailDto extends BaseDataDto {
         this.preheatSeconds = preheatSeconds;
     }
 
-    public void setUserBalance(String userBalance) {
+    public void setUserBalance(long userBalance) {
         this.userBalance = userBalance;
     }
 
-    public String getUserBalance() {
+    public long getUserBalance() {
         return userBalance;
     }
 

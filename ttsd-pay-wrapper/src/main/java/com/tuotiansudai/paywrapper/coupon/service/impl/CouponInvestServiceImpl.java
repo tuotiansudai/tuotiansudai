@@ -54,7 +54,8 @@ public class CouponInvestServiceImpl implements CouponInvestService {
 
         if (InvestStatus.SUCCESS != userCouponModel.getStatus()
                 && new DateTime(couponModel.getEndTime()).plusDays(1).withTimeAtStartOfDay().isAfterNow()
-                && couponModel.getProductTypes().contains(loanModel.getProductType())) {
+                && couponModel.getProductTypes().contains(loanModel.getProductType())
+                && investModel.getAmount() >= couponModel.getInvestLowerLimit()) {
             userCouponModel.setInvestId(investId);
             userCouponMapper.update(userCouponModel);
         } else {

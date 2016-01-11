@@ -1,11 +1,11 @@
 package com.tuotiansudai.web.controller;
 
 
-import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.service.UserCouponService;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.LoanDetailDto;
 import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,16 +31,9 @@ public class LoanController {
         if (dto == null) {
             return new ModelAndView("/error/404");
         }
-        return new ModelAndView("/loan", "loan", dto);
-    }
-
-    @RequestMapping(value = "/{loanId:^\\d+$}/amount/{amount:^\\d+(?:\\.\\d{1,2})?$}", method = RequestMethod.GET)
-    @ResponseBody
-    public BaseDto<BaseListDataDto> getUsableCoupons(@PathVariable long loanId, @PathVariable String amount) {
-        BaseDto<BaseListDataDto> dto = new BaseDto<>();
-        BaseListDataDto<UserCouponDto> dataDto = new BaseListDataDto<>();
-        dataDto.setRecords(userCouponService.getUsableCoupons(LoginUserInfo.getLoginName(), loanId, AmountConverter.convertStringToCent(amount)));
-        return dto;
+        ModelAndView modelAndView = new ModelAndView("/loan", "loan", dto);
+        modelAndView.addObject("coupons", userCouponService.getUsableCoupons(LoginUserInfo.getLoginName(), loanId));
+        return modelAndView;
     }
 
     @RequestMapping(value = "/{loanId:^\\d+$}/invests", method = RequestMethod.GET)
