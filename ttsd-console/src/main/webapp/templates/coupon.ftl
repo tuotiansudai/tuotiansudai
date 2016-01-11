@@ -10,7 +10,7 @@
 
                 <select class="selectpicker jq-b-type couponType" name="couponType">
 					<#list couponTypes as couponType>
-                        <option value="${couponType.name()}">${couponType.getDesc()}</option>
+                        <option value="${couponType.name()}">${couponType.getName()}</option>
 					</#list>
                 </select>
 

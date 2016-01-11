@@ -65,7 +65,7 @@
         <tr>
             <td>
 
-                <span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${coupon.couponType.getDesc()}">${coupon.couponType.getDesc()}</span>
+                <span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${coupon.couponType.getName()}">${coupon.couponType.getName()}</span>
             </td>
             <td>
                 ${coupon.amount}

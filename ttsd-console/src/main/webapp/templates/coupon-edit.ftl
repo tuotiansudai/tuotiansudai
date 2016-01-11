@@ -9,7 +9,7 @@
 
             <div class="col-sm-4">
                 <input type="text" class="form-control invest-coupon-total_count couponType" name="couponTypeDesc"
-                       placeholder="" <#if coupon??>value="${coupon.couponType.getDesc()!}"</#if> readonly="true"/>
+                       placeholder="" <#if coupon??>value="${coupon.couponType.getName()!}"</#if> readonly="true"/>
 
                 <input type="hidden" class="form-control coupon-type-hid" name="couponType" placeholder=""
                        <#if coupon??>value="${coupon.couponType.name()!}"</#if> />
