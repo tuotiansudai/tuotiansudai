@@ -10,8 +10,8 @@
         </div>
         <div class="form-group">
             <label for="control-label">余额：</label>
-            <input type="text" class="form-control jq-balance-min" name="balanceMin" value="${balanceMin!50}">~
-            <input type="text" class="form-control jq-balance-max" name="balanceMax" value="${balanceMax!}">
+            <input type="text" class="form-control jq-balance-min" name="balanceMin" value="${balanceMin!50}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">~
+            <input type="text" class="form-control jq-balance-max" name="balanceMax" value="${balanceMax!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
         </div>
 
         <button class="btn btn-primary" type="submit">查询</button>
