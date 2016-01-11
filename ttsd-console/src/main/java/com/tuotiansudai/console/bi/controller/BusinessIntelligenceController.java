@@ -1,12 +1,11 @@
-package com.tuotiansudai.console.controller;
+package com.tuotiansudai.console.bi.controller;
 
-import com.tuotiansudai.dto.Granularity;
-import com.tuotiansudai.dto.RoleStage;
-import com.tuotiansudai.dto.UserStage;
-import com.tuotiansudai.repository.model.InvestViscosityDetailTableView;
-import com.tuotiansudai.repository.model.InvestViscosityDetailView;
-import com.tuotiansudai.repository.model.KeyValueModel;
-import com.tuotiansudai.service.BusinessIntelligenceService;
+import com.tuotiansudai.console.bi.dto.Granularity;
+import com.tuotiansudai.console.bi.dto.RoleStage;
+import com.tuotiansudai.console.bi.dto.UserStage;
+import com.tuotiansudai.console.bi.model.InvestViscosityDetailTableView;
+import com.tuotiansudai.console.bi.model.KeyValueModel;
+import com.tuotiansudai.console.bi.service.BusinessIntelligenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -155,6 +154,6 @@ public class BusinessIntelligenceController {
             @RequestParam(name = "granularity") Granularity granularity,
             @RequestParam(name = "startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
             @RequestParam(name = "endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime){
-        return businessIntelligenceService.queryWithdrawUserCountTrend(startTime, endTime,granularity);
+        return businessIntelligenceService.queryWithdrawUserCountTrend(startTime, endTime, granularity);
     }
 }

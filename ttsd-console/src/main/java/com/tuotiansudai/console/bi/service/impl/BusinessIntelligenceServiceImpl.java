@@ -1,13 +1,13 @@
-package com.tuotiansudai.service.impl;
+package com.tuotiansudai.console.bi.service.impl;
 
-import com.tuotiansudai.dto.Granularity;
-import com.tuotiansudai.dto.RoleStage;
-import com.tuotiansudai.dto.UserStage;
+import com.tuotiansudai.console.bi.service.BusinessIntelligenceService;
+import com.tuotiansudai.console.bi.dto.Granularity;
+import com.tuotiansudai.console.bi.dto.RoleStage;
+import com.tuotiansudai.console.bi.dto.UserStage;
 import com.tuotiansudai.repository.mapper.BusinessIntelligenceMapper;
-import com.tuotiansudai.repository.model.InvestViscosityDetailTableView;
-import com.tuotiansudai.repository.model.InvestViscosityDetailView;
-import com.tuotiansudai.repository.model.KeyValueModel;
-import com.tuotiansudai.service.BusinessIntelligenceService;
+import com.tuotiansudai.console.bi.model.InvestViscosityDetailTableView;
+import com.tuotiansudai.console.bi.model.InvestViscosityDetailView;
+import com.tuotiansudai.console.bi.model.KeyValueModel;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.UserService;
 import org.apache.commons.collections4.ListUtils;
