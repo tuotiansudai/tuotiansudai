@@ -23,6 +23,7 @@ import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,11 +71,13 @@ public class UserCouponServiceImpl implements UserCouponService {
             }
         });
     }
-
     @Override
     public UserCouponDto getUsableNewbieCoupon(String loginName) {
         try {
             String redisValue = redisWrapperClient.get(NEWBIE_COUPON_ALERT_KEY);
+            if(StringUtils.isEmpty(redisValue)){
+                return null;
+            }
             Set<String> loginNames = objectMapper.readValue(redisValue, new TypeReference<Set<String>>() {});
             if (loginNames.contains(loginName)) {
                 return null;
