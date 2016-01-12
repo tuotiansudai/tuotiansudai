@@ -33,7 +33,7 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
             }
         });
 
-        $inactiveBtn.on('click',function(e){
+        $('body').delegate('.inactive-btn','click',function(e) {
             e.preventDefault();
             var $self = $(this),
                 $parentTd = $self.parents('td'),
@@ -63,7 +63,7 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
         });
 
         //confirm event
-        $confirmBtn.on('click',function(e) {
+        $('body').delegate('.confirm-btn','click',function(e) {
             e.preventDefault();
             var $self=$(this),
                 $parentTd = $self.parents('td'),
@@ -77,24 +77,23 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
                     type: 'POST',
                     dataType: 'json'
                 })
-                .done(function(res) {
-                    if(res.data.status){
-                        $parentTd.html('<i class="check-btn add-check"></i><button class="loan_repay already-btn btn-link inactive-btn" data-id="'+thisId+'">已生效</button>');
-                        if (couponType != 'NEWBIE_COUPON') {
-                            $parentTd.find('button').attr('disabled');
+                    .done(function(res) {
+                        if(res.data.status){
+                            $parentTd.html('<i class="check-btn add-check"></i><button class="loan_repay already-btn btn-link inactive-btn" data-id="'+thisId+'">已生效</button>');
+                            if (couponType != 'NEWBIE_COUPON') {
+                                $parentTd.find('button').attr('disabled');
+                            }
+                            $parentTd.prev().html('<a href="/activity-manage/coupon/'+thisId+'/detail" class="btn-link">查看详情</a>');
+                        }else{
+                            $tipCom.show().find('.txt').text('操作失败！');
                         }
-                        $parentTd.prev().html('<a href="/activity-manage/coupon/'+thisId+'/detail" class="btn-link">查看详情</a>');
-                    }else{
-                        $tipCom.show().find('.txt').text('操作失败！');
-                    }
-                })
-                .fail(function(res) {
-                    $self.addClass('confirm-btn').text('操作失败');
-                    $tipCom.show().find('.txt').text('请求发送失败，请刷新重试！');
-                });
+                    })
+                    .fail(function(res) {
+                        $self.addClass('confirm-btn').text('操作失败');
+                        $tipCom.show().find('.txt').text('请求发送失败，请刷新重试！');
+                    });
             }
-            
-        });
+        })
         
     });
 });
