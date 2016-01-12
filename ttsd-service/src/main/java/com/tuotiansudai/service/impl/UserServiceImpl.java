@@ -213,7 +213,7 @@ public class UserServiceImpl implements UserService {
         auditLogService.generateAuditLog(operatorLoginName, beforeUpdateUserModel, beforeUpdateUserRoleModels, userModel, afterUpdateUserRoleModels, ip);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if (!mobile.equals(userModel.getMobile()) && accountModel != null) {
+        if (!mobile.equals(beforeUpdateUserModel.getMobile()) && accountModel != null) {
             RegisterAccountDto registerAccountDto = new RegisterAccountDto(userModel.getLoginName(),
                     mobile,
                     accountModel.getUserName(),
@@ -343,8 +343,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> findLoginNameFromAccountLike(String loginName) {
-        return accountMapper.findAllLoginNamesByLike(loginName);
+    public List<String> findAllLoanerLikeLoginName(String loginName) {
+        return accountMapper.findAllLoanerLikeLoginName(loginName);
+    }
+
+    @Override
+    public List<String> findAccountLikeLoginName(String loginName) {
+        return accountMapper.findAccountLikeLoginName(loginName);
     }
 
     @Override
@@ -361,6 +366,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<String> findAllChannels() {
         return userMapper.findAllChannels();
+    }
+
+    @Override
+    public List<String> findAllUserChannels() {
+        return userMapper.findAllUserChannels();
     }
 
     @Transactional
@@ -404,7 +414,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserModel> findUsersAccountBalance(String loginName, int currentPageNo, int pageSize) {
-        return userMapper.findUsersAccountBalance(loginName, (currentPageNo - 1 ) * pageSize, pageSize);
+        return userMapper.findUsersAccountBalance(loginName, (currentPageNo - 1) * pageSize, pageSize);
     }
 
     @Override

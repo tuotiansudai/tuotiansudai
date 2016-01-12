@@ -60,7 +60,13 @@ public class UserController {
     @RequestMapping(value = "/account/{loginName}/search", method = RequestMethod.GET)
     @ResponseBody
     public List<String> findLoginNames(@PathVariable String loginName) {
-        return userService.findLoginNameFromAccountLike(loginName);
+        return userService.findAllLoanerLikeLoginName(loginName);
+    }
+
+    @RequestMapping(value = "/account/{loginName}/query", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> findAllLoanerLikeLoginName(@PathVariable String loginName) {
+        return userService.findAccountLikeLoginName(loginName);
     }
 
 
@@ -96,9 +102,9 @@ public class UserController {
 
     @RequestMapping(value = "/users-search", method = RequestMethod.GET)
     public ModelAndView searchAllUsers(String loginName,
-                                        String referrer,
-                                        String mobile,
-                                        String identityNumber, HttpServletRequest request) {
+                                       String referrer,
+                                       String mobile,
+                                       String identityNumber, HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("/user-search");
         if (request.getParameterMap().size() != 0) {
             mv.addObject("loginName", loginName);
@@ -118,7 +124,7 @@ public class UserController {
                                     @RequestParam(value = "source", required = false) Source source,
                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
                                     @RequestParam(value = "export", required = false) String export,
-                                    HttpServletResponse response) throws IOException{
+                                    HttpServletResponse response) throws IOException {
         if (export != null && !export.equals("")) {
             response.setCharacterEncoding("UTF-8");
             try {
@@ -131,7 +137,7 @@ public class UserController {
             BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel, 1, count);
             List<List<String>> data = Lists.newArrayList();
             List<UserItemDataDto> userItemDataDtos = baseDto.getData().getRecords();
-            for (int i = 0 ;i < userItemDataDtos.size(); i++) {
+            for (int i = 0; i < userItemDataDtos.size(); i++) {
                 List<String> dataModel = Lists.newArrayList();
                 dataModel.add(userItemDataDtos.get(i).getLoginName());
                 dataModel.add(userItemDataDtos.get(i).isBankCard() ? "是" : "否");
@@ -140,9 +146,10 @@ public class UserController {
                 dataModel.add(userItemDataDtos.get(i).getEmail());
                 dataModel.add(userItemDataDtos.get(i).getReferrer());
                 dataModel.add(userItemDataDtos.get(i).isStaff() ? "是" : "否");
-                dataModel.add(userItemDataDtos.get(i).getSource().name());
+                dataModel.add(userItemDataDtos.get(i).getSource() != null ? userItemDataDtos.get(i).getSource().name() : "");
                 dataModel.add(userItemDataDtos.get(i).getChannel());
                 dataModel.add(new DateTime(userItemDataDtos.get(i).getRegisterTime()).toString("yyyy-MM-dd HH:mm"));
+                dataModel.add("1".equals(userItemDataDtos.get(i).getAutoInvestStatus()) ? "是" : "否");
 
                 List<UserRoleModel> userRoleModels = userItemDataDtos.get(i).getUserRoles();
                 List<String> userRole = Lists.transform(userRoleModels, new Function<UserRoleModel, String>() {
@@ -152,8 +159,11 @@ public class UserController {
                     }
                 });
 
-                dataModel.add(StringUtils.join(userRole,";"));
+                dataModel.add(StringUtils.join(userRole, ";"));
                 dataModel.add(userItemDataDtos.get(i).getStatus() == UserStatus.ACTIVE ? "正常" : "禁用");
+                dataModel.add(userItemDataDtos.get(i).getBirthday());
+                dataModel.add(userItemDataDtos.get(i).getProvince());
+                dataModel.add(userItemDataDtos.get(i).getCity());
                 data.add(dataModel);
             }
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUsers, data, response.getOutputStream());

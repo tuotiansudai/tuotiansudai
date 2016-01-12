@@ -38,6 +38,8 @@ public class UserModel implements Cloneable, Serializable {
 
     private String city;
 
+    private String autoInvestStatus;
+
     private boolean staff;
 
     private AccountModel account;
@@ -180,6 +182,14 @@ public class UserModel implements Cloneable, Serializable {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getAutoInvestStatus() {
+        return autoInvestStatus;
+    }
+
+    public void setAutoInvestStatus(String autoInvestStatus) {
+        this.autoInvestStatus = autoInvestStatus;
     }
 
     public boolean isStaff() {

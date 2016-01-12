@@ -27,6 +27,8 @@ public class EditUserDto implements Serializable {
 
     private List<Role> roles;
 
+    private String autoInvestStatus;
+
     public EditUserDto(UserModel userModel, AccountModel accountModel, List<Role> roles) {
         this.loginName = userModel.getLoginName();
         this.email = userModel.getEmail();
@@ -40,6 +42,7 @@ public class EditUserDto implements Serializable {
         }
         this.referrer = userModel.getReferrer();
         this.status = userModel.getStatus();
+        this.autoInvestStatus = userModel.getAutoInvestStatus();
     }
 
     public EditUserDto() {
@@ -107,6 +110,14 @@ public class EditUserDto implements Serializable {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getAutoInvestStatus() {
+        return autoInvestStatus;
+    }
+
+    public void setAutoInvestStatus(String autoInvestStatus) {
+        this.autoInvestStatus = autoInvestStatus;
     }
 
     public String getBankCardNumber() {

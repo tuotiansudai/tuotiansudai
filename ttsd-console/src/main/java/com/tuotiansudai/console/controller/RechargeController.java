@@ -66,10 +66,13 @@ public class RechargeController {
                 dataModel.add(new BigDecimal(rechargePaginationItemDataDtos.get(i).getRechargeId()).toString());
                 dataModel.add(new DateTime(rechargePaginationItemDataDtos.get(i).getCreatedTime()).toString("yyyy-MM-dd HH:mm"));
                 dataModel.add(rechargePaginationItemDataDtos.get(i).getLoginName());
+                dataModel.add(rechargePaginationItemDataDtos.get(i).isStaff()?"是":"否");
+                dataModel.add(rechargePaginationItemDataDtos.get(i).getUserName());
+                dataModel.add(rechargePaginationItemDataDtos.get(i).getMobile());
                 dataModel.add(rechargePaginationItemDataDtos.get(i).getAmount());
                 dataModel.add(rechargePaginationItemDataDtos.get(i).getFee());
                 dataModel.add(rechargePaginationItemDataDtos.get(i).getBankCode());
-                dataModel.add("TODO");
+                dataModel.add(rechargePaginationItemDataDtos.get(i).isFastPay()?"是":"否");
                 dataModel.add(rechargePaginationItemDataDtos.get(i).getStatus());
                 dataModel.add(rechargePaginationItemDataDtos.get(i).getSource().name());
                 dataModel.add(rechargePaginationItemDataDtos.get(i).getChannel());

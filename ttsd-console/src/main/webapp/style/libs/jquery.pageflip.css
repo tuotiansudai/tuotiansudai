@@ -1,0 +1,42 @@
+﻿        .pageBtn
+        {
+            text-align: right;
+            padding: 10px;
+        }
+        .pageBtn a, .pageBtn span
+        {
+            display: inline-block;
+            width: auto;
+            height: auto;
+            padding: 2px 5px;
+            margin: 0 2px;
+        }
+        .pageBtn span
+        {
+        }
+        .pageBtn a
+        {
+            border: 1px solid #C6E4EA;
+            background: #E3F3F6;
+        }
+        .pageBtn a.jp-current
+        {
+            border: none;
+            background: none;
+            cursor: default;
+            color: #FF4242;
+            font-weight: bold;
+        }
+        .pageBtn a.jp-disabled
+        {
+            color: #bbb;
+            cursor: default;
+            text-decoration: none;
+            border: 1px solid #ccc;
+            background: #f4f4f4;
+        }
+        
+        .pageBtn .jp-hidden  
+        {
+            display:none;
+            }

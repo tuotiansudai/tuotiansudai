@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.SystemRechargeMapper">
+
+    <resultMap id="systemRechargeResultMap" type="systemRechargeModel">
+        <id column="id" property="id"></id>
+        <result column="login_name" property="loginName"></result>
+        <result column="time" property="time"></result>
+        <result column="amount" property="amount"></result>
+        <result column="success_time" property="successTime"></result>
+        <result column="status" property="status"></result>
+        <result column="remark" property="remark"></result>
+
+    </resultMap>
+
+    <insert id="create" parameterType="systemRechargeModel" useGeneratedKeys="true" keyProperty="id">
+        insert into system_recharge (id, login_name,time,amount,success_time,status,remark)
+        value( #{id},#{loginName}, #{time}, #{amount}, #{successTime}, #{status},#{remark})
+    </insert>
+
+    <select id="findById" parameterType="long" resultMap="systemRechargeResultMap">
+        select * from system_recharge where id = #{id}
+    </select>
+
+    <select id="findByLoginName" parameterType="string" resultMap="systemRechargeResultMap">
+        select * from system_recharge where login_name = #{loginName}
+    </select>
+    <update id="updateSystemRecharge" parameterType="com.tuotiansudai.repository.model.SystemRechargeModel">
+        update system_recharge set success_time = #{successTime},status = #{status} where id = #{id}
+    </update>
+
+
+
+
+</mapper>

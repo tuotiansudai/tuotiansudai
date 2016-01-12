@@ -41,9 +41,9 @@ public interface LoanService {
 
     BaseDto<PayDataDto> cancelLoan(LoanDto loanDto);
 
-    List<LoanListWebDto> findLoanListWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd, int currentPageNo);
+    List<LoanItemDto> findLoanItems(ProductType productType, LoanStatus status, double rateStart, double rateEnd, int currentPageNo);
 
-    int findLoanListCountWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd);
+    int findLoanListCountWeb(ProductType productType, LoanStatus status, double rateStart, double rateEnd);
 
     LoanModel findLoanById(long loanId);
 

@@ -20,8 +20,12 @@ public class UserItemDataDto implements Serializable {
     private List<UserRoleModel> userRoles;
     private UserStatus status;
     private Source source;
+    private String autoInvestStatus;
     private boolean staff;
     private boolean bankCard;
+    private String identityNumber;
+    private String province;
+    private String city;
 
     public String getLoginName() {
         return loginName;
@@ -103,6 +107,14 @@ public class UserItemDataDto implements Serializable {
         this.source = source;
     }
 
+    public String getAutoInvestStatus() {
+        return autoInvestStatus;
+    }
+
+    public void setAutoInvestStatus(String autoInvestStatus) {
+        this.autoInvestStatus = autoInvestStatus;
+    }
+
     public boolean isStaff() {
         return staff;
     }
@@ -119,6 +131,42 @@ public class UserItemDataDto implements Serializable {
         this.bankCard = bankCard;
     }
 
+    public String getIdentityNumber() {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getBirthday() {
+        if (identityNumber == null) {
+            return "";
+        } else if (identityNumber.length() == 18) {
+            return identityNumber.substring(6, 14);
+        } else if (identityNumber.length() == 15) {
+            return identityNumber.substring(6, 12);
+        } else {
+            return "";
+        }
+    }
+
     public UserItemDataDto(UserModel userModel) {
         this.loginName = userModel.getLoginName();
         this.email = userModel.getEmail();
@@ -131,7 +179,10 @@ public class UserItemDataDto implements Serializable {
             this.userName = userModel.getAccount().getUserName();
         }
         this.status = userModel.getStatus();
-
+        this.autoInvestStatus = userModel.getAutoInvestStatus();
+        this.identityNumber = userModel.getAccount().getIdentityNumber();
+        this.province = userModel.getProvince();
+        this.city = userModel.getCity();
     }
 }
 

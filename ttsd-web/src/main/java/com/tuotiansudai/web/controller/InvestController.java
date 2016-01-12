@@ -1,5 +1,6 @@
 package com.tuotiansudai.web.controller;
 
+import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -25,7 +26,7 @@ public class InvestController {
     private InvestService investService;
 
     @Autowired
-    private LoanController loanController;
+    private CouponService couponService;
 
     @RequestMapping(value = "/invest", method = RequestMethod.POST)
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, RedirectAttributes redirectAttributes) {
@@ -58,6 +59,12 @@ public class InvestController {
     public String calculateExpectedInterest(@PathVariable long loanId, @PathVariable String amount) {
         long expectedInterest = investService.estimateInvestIncome(loanId, AmountConverter.convertStringToCent(amount));
         return AmountConverter.convertCentToString(expectedInterest);
+    }
+
+    @RequestMapping(value = "/coupon-is-available/coupon/{userCouponId}/amount/{amount:^\\d+(?:\\.\\d{1,2})?$}", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean couponIsAvailable(@PathVariable long userCouponId, @PathVariable String amount) {
+        return couponService.couponIsAvailable(userCouponId, amount);
     }
 
 }
