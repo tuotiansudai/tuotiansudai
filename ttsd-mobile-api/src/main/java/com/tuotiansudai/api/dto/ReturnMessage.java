@@ -95,7 +95,7 @@ public enum ReturnMessage {
     /******未开通快捷支付******/
     NOT_OPNE_FAST_PAYMENT("0046","未开通快捷支付"),
 
-    USER_IS_DISABLED("0049", "登录尝试次数过多，用户已被禁用"),
+    USER_IS_DISABLED("0049", "登录尝试次数过多，用户已被禁用30分钟"),
     CANNOT_GET_APK_VERSION("0060", "查找不到版本信息"),
 
     /******提现******/

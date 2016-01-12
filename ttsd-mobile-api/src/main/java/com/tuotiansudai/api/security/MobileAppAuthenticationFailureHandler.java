@@ -56,11 +56,6 @@ public class MobileAppAuthenticationFailureHandler extends SimpleUrlAuthenticati
         ReturnMessage errorMsg = (exception instanceof DisabledException) ?
                 ReturnMessage.USER_IS_DISABLED : ReturnMessage.LOGIN_FAILED;
         BaseResponseDto dto = mobileAppTokenProvider.generateResponseDto(errorMsg);
-        if(dto != null && ReturnMessage.USER_IS_DISABLED.getCode().equals(dto.getCode())){
-            String errorMessage = dto.getMessage();
-
-            dto.setMessage(MessageFormat.format("{0}{1}分钟",errorMessage,second/60));
-        }
         String jsonBody = objectMapper.writeValueAsString(dto);
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
