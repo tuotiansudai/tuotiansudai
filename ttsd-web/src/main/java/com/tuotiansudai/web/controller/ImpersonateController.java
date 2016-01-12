@@ -18,10 +18,10 @@ public class ImpersonateController {
     @Autowired
     private ImpersonateService impersonateService;
 
-    @RequestMapping(params = {"loginName", "randomCode"})
-    public ModelAndView impersonate(String loginName, String randomCode, HttpServletRequest request) {
+    @RequestMapping(params = "securityCode")
+    public ModelAndView impersonate(String securityCode, HttpServletRequest request) {
 
-        if (impersonateService.impersonateLogin(loginName, randomCode)) {
+        if (impersonateService.impersonateLogin(securityCode)) {
             request.getSession().setAttribute("impersonate", "1");
         }
         return new ModelAndView("redirect:/");

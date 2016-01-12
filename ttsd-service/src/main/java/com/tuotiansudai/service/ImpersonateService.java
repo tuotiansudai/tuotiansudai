@@ -3,7 +3,7 @@ package com.tuotiansudai.service;
 
 public interface ImpersonateService {
 
-    boolean impersonateLogin(String loginName, String randomCode);
+    boolean impersonateLogin(String securityCode);
 
-    String plantRandomCode(String loginName);
+    String plantSecurityCode(String loginName);
 }

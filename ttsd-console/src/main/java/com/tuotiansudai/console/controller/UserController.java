@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -221,7 +220,7 @@ public class UserController {
 
     @RequestMapping(value = "/user/{loginName}/impersonate", method = RequestMethod.GET)
     public ModelAndView impersonate(@PathVariable String loginName) {
-        String randomCode = impersonateService.plantRandomCode(loginName);
-        return new ModelAndView("redirect:" + webServer + "/impersonate?loginName=" + loginName + "&randomCode=" + randomCode);
+        String securityCode = impersonateService.plantSecurityCode(loginName);
+        return new ModelAndView("redirect:" + webServer + "/impersonate?securityCode=" + securityCode);
     }
 }
