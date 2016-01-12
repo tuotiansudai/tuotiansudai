@@ -11,9 +11,11 @@
       color:#ff7200;
     }
   }
-  .company-summary {
-    p {
-      font-size: nth($fontSize, 1);
+  &.company-summary {
+    img {
+      &:nth-child(2) {
+        display: none;
+      }
     }
   }
   .company-info {
@@ -188,6 +190,27 @@
       }
       p{
         margin-bottom:0;
+      }
+    }
+
+    &.company-summary {
+      p{
+        margin-bottom: 5px;
+        font-size: 13px;
+      }
+      .pc {
+        display: none;
+      }
+      h3 { text-align: center;}
+      img {
+        display: none;
+        width:100%;
+        &:nth-child(1) {
+          display: none;
+        }
+        &:nth-child(2) {
+          display: block;
+        }
       }
     }
   }
