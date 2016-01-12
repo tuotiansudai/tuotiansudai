@@ -21,7 +21,7 @@ public class UserItemDataDto implements Serializable {
     private UserStatus status;
     private Source source;
     private String autoInvestStatus;
-    private boolean staff;
+    private boolean referrerStaff;
     private boolean bankCard;
 
     public String getLoginName() {
@@ -112,12 +112,12 @@ public class UserItemDataDto implements Serializable {
         this.autoInvestStatus = autoInvestStatus;
     }
 
-    public boolean isStaff() {
-        return staff;
+    public boolean isReferrerStaff() {
+        return referrerStaff;
     }
 
-    public void setStaff(boolean staff) {
-        this.staff = staff;
+    public void setReferrerStaff(boolean referrerStaff) {
+        this.referrerStaff = referrerStaff;
     }
 
     public boolean isBankCard() {

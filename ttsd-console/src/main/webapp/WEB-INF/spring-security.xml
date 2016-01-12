@@ -63,6 +63,7 @@
         <intercept-url pattern="/finance-manage/account-balance" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
 
         <intercept-url pattern="/**" access="hasAuthority('ADMIN')"/>
+        <intercept-url pattern="/user-manage/user/*/impersonate" access="hasAuthority('ADMIN')"/>
         <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>
     </http>
 
