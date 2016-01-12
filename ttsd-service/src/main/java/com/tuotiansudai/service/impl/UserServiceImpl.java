@@ -213,7 +213,7 @@ public class UserServiceImpl implements UserService {
         auditLogService.generateAuditLog(operatorLoginName, beforeUpdateUserModel, beforeUpdateUserRoleModels, userModel, afterUpdateUserRoleModels, ip);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if (!mobile.equals(userModel.getMobile()) && accountModel != null) {
+        if (!mobile.equals(beforeUpdateUserModel.getMobile()) && accountModel != null) {
             RegisterAccountDto registerAccountDto = new RegisterAccountDto(userModel.getLoginName(),
                     mobile,
                     accountModel.getUserName(),

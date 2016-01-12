@@ -92,7 +92,7 @@
                 <th>充值金额</th>
                 <th>手续费</th>
                 <th>充值渠道</th>
-                <th>管理员充值</th>
+                <th>快捷充值</th>
                 <th>充值状态</th>
                 <th>充值来源</th>
                 <th>渠道</th>
@@ -115,7 +115,7 @@
                         <td>${rechargeItem.amount}</td>
                         <td>${rechargeItem.fee}</td>
                         <td>${rechargeItem.bankCode!}</td>
-                        <td>TODO</td>
+                        <td><#if rechargeItem.fastPay>是<#else>否</#if></td>
                         <td>${rechargeItem.status}</td>
                         <td>${rechargeItem.source}</td>
                         <td>${rechargeItem.channel!}</td>

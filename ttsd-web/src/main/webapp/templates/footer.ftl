@@ -19,6 +19,12 @@
             <li><a href="/about/qa">常见问题</a></li>
         </ul>
         <ul>
+            <li class="f-title">友情链接</li>
+            <li><a href="http://www.tuotianzichan.com/" target="_blank">拓天伟业</a></li>
+            <li><a href="https://www.zuiyidai.com/" target="_blank">最易贷</a></li>
+            <li><a href="https://www.p2l.com.cn/" target="_blank">融租e投</a></li>
+        </ul>
+        <ul>
             <li class="f-title">联系我们</li>
             <li>客服电话：400-169-1188（服务时间：9:00－20:00）</li>
             <li>客服邮箱：kefu@tuotiansudai.com</li>
