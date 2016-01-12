@@ -15,7 +15,7 @@ public class AboutController {
     @Value("${pay.withdraw.fee}")
     private long withdrawFee;
 
-    @RequestMapping(path = "/{item:^assurance|company|contact|guide|notice|notice-detail|service-fee|qa|team$}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{item:^assurance|company|contact|guide|notice|media|notice-detail|service-fee|qa|team$}", method = RequestMethod.GET)
     public ModelAndView about(@PathVariable String item){
         ModelAndView modelAndView =  new ModelAndView("/about/" + item);
         modelAndView.addObject("responsive",true);

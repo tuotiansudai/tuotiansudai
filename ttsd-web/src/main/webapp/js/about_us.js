@@ -1,4 +1,4 @@
-require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagination'], function ($,Mustache,ListTemplate) {
+require(['jquery','mustache','text!/tpl/notice-list.mustache','load-swiper','commonFun','pagination'], function ($,Mustache,ListTemplate,loadSwiper) {
     $(function () {
         var $noticeList=$('#noticeList'),
             $noticeDetail=$('#noticeDetail'),
@@ -8,7 +8,7 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
             $problemList=$('.problem-list dt span'),
             paginationElement = $('.pagination');
 
-        /* notice list*/
+
         if($noticeList.length) {
             var requestData={"index":1,"pageSize":10};
             paginationElement.loadPagination(requestData, function (data) {

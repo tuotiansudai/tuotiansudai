@@ -44,6 +44,11 @@
           color: nth($CK1, 2);
         }
       }
+      .from-media {
+        position: absolute;
+        right: 100px;
+        top: 5px;
+      }
       time {
         position: absolute;
         right: 0;
@@ -171,6 +176,9 @@
         a{
           width:65%;
         }
+      }
+      .from-media {
+        display: none;
       }
     }
     .crumb-lead {

@@ -38,6 +38,7 @@
     {"title":"公司介绍", "url":"/about/company"},
     {"title":"团队介绍", "url":"/about/team"},
     {"title":"拓天公告", "url":"/about/notice"},
+    {"title":"媒体报道", "url":"/about/media"},
     {"title":"服务费用", "url":"/about/service-fee"},
     {"title":"常见问题", "url":"/about/qa"},
     {"title":"联系我们", "url":"/about/contact"}
@@ -77,17 +78,17 @@
         </#if>
     </div>
 </div>
-<div class="main-frame full-screen">
+<div class="main-frame full-screen swiper-container">
     <#list menus as menu>
         <#if activeNav?? && activeNav==menu.title && menu.leftNavs??>
-            <ul class="left-nav">
+            <ul class="left-nav swiper-wrapper">
                 <#list menu.leftNavs as leftNav>
                     <#if leftNav.role??>
                         <@role hasRole=leftNav.role>
-                            <li><a <#if leftNav.title==activeLeftNav>class="active"</#if> href="${leftNav.url}">${leftNav.title}</a></li>
+                            <li class="swiper-slide"><a <#if leftNav.title==activeLeftNav>class="active"</#if> href="${leftNav.url}">${leftNav.title}</a></li>
                         </@role>
                     <#else>
-                        <li><a <#if leftNav.title==activeLeftNav>class="active"</#if> href="${leftNav.url}">${leftNav.title}</a></li>
+                        <li class="swiper-slide"><a <#if leftNav.title==activeLeftNav>class="active"</#if> href="${leftNav.url}">${leftNav.title}</a></li>
                     </#if>
                 </#list>
             </ul>
@@ -204,7 +205,8 @@
 <script src="${staticServer}/js/dest/${js.config}" type="text/javascript" charset="utf-8"></script>
 <#if pageJavascript??>
 <script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
-        data-main="${staticServer}/js/dest/${pageJavascript}">
+        <#--data-main="${staticServer}/js/dest/${pageJavascript}">-->
+    data-main="${staticServer}/js/about_us.js">
 </script>
 </#if>
 
