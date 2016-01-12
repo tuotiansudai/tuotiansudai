@@ -1,5 +1,12 @@
 require(['jquery', 'bootstrapSelect', 'jquery-ui', 'bootstrapDatetimepicker'], function ($) {
 
+    $('#businessType').selectpicker();
+    $('#merDate').datetimepicker({
+        format: 'YYYY-MM-DD',
+        maxDate: 'now',
+        ignoreReadonly: true
+    });
+
     $('.btnSearch').click(function(){
         var type = $('select[name="type"]').val();
 
@@ -40,8 +47,6 @@ require(['jquery', 'bootstrapSelect', 'jquery-ui', 'bootstrapDatetimepicker'], f
         }
 
         if (selected === 'transfer') {
-            $('#merDate').datetimepicker({format: 'YYYY-MM-DD', maxDate: 'now'});
-            $('#businessType').selectpicker();
             $("div.transfer").show();
         }
     });

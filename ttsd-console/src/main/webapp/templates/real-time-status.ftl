@@ -40,8 +40,8 @@
 
         <div class="transfer form-group" <#if !(type??) || type != 'transfer'>style="display: none"</#if>>
             <label for="merDate">交易时间</label>
-            <div class='input-group date'>
-                <input type='text' class="form-control" name="mer-date" id='merDate' value="${(merDate?string('yyyy-MM-dd'))!}"/>
+            <div class='input-group date' id="merDate">
+                <input type='text' class="form-control" name="mer-date" value="${(merDate?string('yyyy-MM-dd'))!}" readonly/>
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
