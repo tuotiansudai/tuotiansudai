@@ -323,6 +323,9 @@
       li{
         float: left;
         width:16.666666%;
+        &:nth-child(4) {
+          display: none;
+        }
       }
     }
 
