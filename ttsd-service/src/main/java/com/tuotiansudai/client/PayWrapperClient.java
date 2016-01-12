@@ -29,6 +29,8 @@ public class PayWrapperClient extends BaseClient {
 
     private String registerPath = "/register";
 
+    private String systemRechargePath = "/system-recharge";
+
     private String rechargePath = "/recharge";
 
     private String bindCardPath = "/bind-card";
@@ -57,6 +59,10 @@ public class PayWrapperClient extends BaseClient {
 
     public BaseDto<PayFormDataDto> recharge(RechargeDto dto) {
         return asyncExecute(dto, rechargePath, "POST");
+    }
+
+    public BaseDto<PayFormDataDto> systemRecharge(SystemRechargeDto dto) {
+        return asyncExecute(dto, systemRechargePath, "POST");
     }
 
     public BaseDto<PayFormDataDto> withdraw(WithdrawDto dto) {

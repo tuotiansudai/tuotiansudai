@@ -5,17 +5,10 @@ require(['jquery',
     $(function() {
         $('.selectpicker').selectpicker();
         $('#datetimepicker1').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm',
-            maxDate: 'now'
+            format: 'YYYY-MM-DD HH:mm'
         });
         $('#datetimepicker2').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm',
-            maxDate: 'now'
-        });
-
-        var dpicker2 = $('#datetimepicker2').data("DateTimePicker");
-        $('#datetimepicker1').on('dp.change', function(e) {
-            dpicker2.minDate(e.date);
+            format: 'YYYY-MM-DD HH:mm'
         });
 
         $('form button[type="reset"]').click(function() {

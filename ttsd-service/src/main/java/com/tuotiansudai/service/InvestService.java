@@ -49,5 +49,7 @@ public interface InvestService {
 
     List<String> findAllChannel();
 
+    List<String> findAllInvestChannels();
+
     InvestModel findById(long investId);
 }

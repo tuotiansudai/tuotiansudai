@@ -8,7 +8,6 @@ html, ul, li, ol, dl, dd, dt, p, h3, h4, h5, h1, h2, span, i, b, strong, em, inp
   outline: none;
   font-style: normal;
 }
-/*去掉苹果的默认UI来渲染按钮*/
 input[type="submit"],
 input[type="reset"],
 input[type="button"],
@@ -30,6 +29,7 @@ body {
   background: nth($baseColor,5);
   color:nth($CK2,7);
   overflow-x: hidden;
+  overflow-y: auto;
 }
 input,button,select,textarea{outline:none}
 textarea{resize:none}
@@ -66,6 +66,12 @@ a{
 .tr {
   text-align: right;
 }
+.hide {
+  display: none;
+}
+.show {
+  display: block;
+}
 p {
   color: #4c4c4c;
   margin-bottom: 15px;
@@ -90,6 +96,12 @@ p {
 }
 .text-b {
   font-size: nth($fontSize,4); //16px
+}
+.text-16 {
+  font-size: 16px;
+}
+.text-18 {
+  font-size: 18px;
 }
 //@extend
 .auto-height {
@@ -135,8 +147,8 @@ p {
 // form validation
 .fa:before {
   padding-left: 4px;
-  padding-right: 4px;
-  padding-right: 4px;
+  padding-right: 3px;
+  vertical-align: middle;
 }
 
 form {

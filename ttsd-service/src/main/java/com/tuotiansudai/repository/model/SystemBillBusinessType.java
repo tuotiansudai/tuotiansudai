@@ -12,11 +12,17 @@ public enum SystemBillBusinessType {
 
     WITHDRAW_SUCCESS("提现"),
 
+    SYSTEM_RECHARGE("平台充值"),
+
     INVEST_FEE("利息管理费"),
+
+    ADMIN_INTERVENTION("管理员干预"),
 
     REFERRER_REWARD("推荐人奖励"),
 
-    LOAN_REMAINING_INTEREST("标的剩余利息");
+    LOAN_REMAINING_INTEREST("标的剩余利息"),
+
+    NEWBIE_COUPON("体验券");
 
     private final String description;
 
