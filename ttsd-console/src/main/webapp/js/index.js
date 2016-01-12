@@ -125,6 +125,9 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     /*用户提现时间分布*/
     showReport('#formWithdrawReport','/bi/user-withdraw-trend','userWithdrawDistribution','用户提现(元)','Lines');
 
+    /*提现人数分布*/
+    showReport('#formWithdrawUserCountReport','/bi/withdraw-user-count-trend','withdrawUserCountDistribution','提现人数(人)','Lines');
+
     /*用户续投情况*/
     showReport('#formUserInvestViscosityReport','/bi/user-invest-viscosity','userInvestViscosity','投资人数(人)','bar','投资次数');
 
@@ -146,7 +149,5 @@ require(['jquery','loadEcharts','bootstrapDatetimepicker'],function($,loadEchart
     /*标的满标周期分布*/
     showReport('#formLoanRaisingTimeCostingReport','/bi/loan-raising-time-costing-trend','loanRaisingTimeCostingDistribution','小时','kBar');
 
-    /*提现人数分布*/
-    showReport('#formWithdrawUserCountReport','/bi/withdraw-user-count-trend','withdrawUserCountDistribution','提现人数(人)','Lines');
 
 });
