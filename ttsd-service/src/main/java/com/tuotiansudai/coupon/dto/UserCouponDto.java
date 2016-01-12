@@ -4,10 +4,12 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.ProductType;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class UserCouponDto implements Serializable {
     private long id;
@@ -22,6 +24,7 @@ public class UserCouponDto implements Serializable {
     private boolean expired;
     private boolean unused;
     private long investLowerLimit;
+    private List<ProductType> productTypeList;
 
     public UserCouponDto() {
     }
@@ -39,6 +42,7 @@ public class UserCouponDto implements Serializable {
         this.expired = !this.used && new DateTime(this.endTime).plusDays(1).withTimeAtStartOfDay().isBeforeNow();
         this.unused = !this.used && !this.expired;
         this.investLowerLimit = coupon.getInvestLowerLimit();
+        this.productTypeList = coupon.getProductTypes();
     }
 
     public long getId() {
@@ -135,5 +139,13 @@ public class UserCouponDto implements Serializable {
 
     public void setInvestLowerLimit(long investLowerLimit) {
         this.investLowerLimit = investLowerLimit;
+    }
+
+    public List<ProductType> getProductTypeList() {
+        return productTypeList;
+    }
+
+    public void setProductTypeList(List<ProductType> productTypeList) {
+        this.productTypeList = productTypeList;
     }
 }

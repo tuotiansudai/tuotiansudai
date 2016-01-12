@@ -19,10 +19,13 @@
                 <dl class="pad-s">
                     <dt>使用条件：</dt>
                     <dd>
-                        <img src="/images/icons/icon_treasure.png" alt="投资体验券"> 产品线可用
+                        <#list coupon.productTypeList as productType>
+                            <img src="/images/icons/${productType}.png" alt="投资体验券">
+                        </#list>
+                        产品线可用
                     </dd>
                     <dd>
-                        投资满10000元可用。
+                        投资满<@amount>${coupon.investLowerLimit?string(0)}</@amount>元可用。
                     </dd>
                     <dd class="tc"><a href="${coupon.unused?string('/loan-list','javascript:void(0);')}" class="btn-action">立即使用</a></dd>
                 </dl>
