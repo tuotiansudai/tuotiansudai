@@ -578,11 +578,16 @@ public class LoanServiceImpl implements LoanService {
             return baseDto;
         }
 
-        this.updateLoanAndLoanTitleRelation(loanDto);
-
         // 如果存在未处理完成的记录，则不允许放款
         // 放款并记账，同时生成还款计划，处理推荐人奖励，处理短信和邮件通知
-        return processLoanOutPayRequest(loanDto.getId());
+        baseDto = processLoanOutPayRequest(loanDto.getId());
+        if (baseDto.getData().getStatus()) {
+            loanDto.setLoanStatus(LoanStatus.REPAYING);
+            this.updateLoanAndLoanTitleRelation(loanDto);
+            return baseDto;
+        }
+
+        return baseDto;
     }
 
     private BaseDto<PayDataDto> processLoanOutPayRequest(long loanId) {
