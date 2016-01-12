@@ -75,24 +75,24 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
     if (amountInputElement.length) {
         amountInputElement.autoNumeric("init");
+        amountInputElement.onfocus(function () {
+            layer.closeAll('tips');
+        });
+
         var isInvestor = 'INVESTOR' === $loanDetail.data('user-role');
         var $ticketList = $('.ticket-list');
         var $useExperienceTicket = $('#use-experience-ticket');
 
-        if ($experienceTicket.is(':hidden')) {
-            $('.account-list').find('dd').last().css({'margin-top': '20px'});
-        } else {
-            $experienceTicket.find(':radio').on('click', function () {
-                $(this).is(':checked') ? $experienceTicket.next('dd.experience-revenue').show() : $experienceTicket.next('dd.experience-revenue').hide();
-            });
-        }
-
-        var refreshCouponStatus = function () {
+        var getInvestAmount = function () {
             var amount = 0;
             if (!isNaN(amountInputElement.autoNumeric("get"))) {
                 amount = parseInt((amountInputElement.autoNumeric("get") * 100).toFixed(0));
             }
 
+            return amount;
+        };
+
+        var refreshCouponStatus = function () {
             $ticketList.find("li").each(function (ticket) {
                 var self = $(this);
                 var radio = self.find("input[name='userCouponId']");
@@ -100,7 +100,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 radio.prop("disabled", false);
                 var ticketTerm = $(self.find(".ticket-term"));
                 var investLowerLimit = ticketTerm.data('invest-lower-limit') || 0;
-                if (investLowerLimit > amount) {
+                if (investLowerLimit > getInvestAmount()) {
                     self.addClass('disabled');
                     radio.prop("disabled", true);
                 }
@@ -108,12 +108,11 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         };
 
         var validateInvestAmount = function () {
-            var amount = 0;
-            if (!isNaN(amountInputElement.autoNumeric("get"))) {
-                amount = parseInt((amountInputElement.autoNumeric("get") * 100).toFixed(0));
-            }
-            var amountNeedRaised = parseInt($('form .amountNeedRaised-i').data("amount-need-raised"));
+            var amount = getInvestAmount();
 
+            var amountNeedRaised = 0;
+
+            var amountNeedRaised = parseInt($('form .amountNeedRaised-i').data("amount-need-raised"));
             return amount > 0 && amountNeedRaised >= amount;
         };
 

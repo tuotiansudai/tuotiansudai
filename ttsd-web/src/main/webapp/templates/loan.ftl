@@ -35,6 +35,7 @@
         </div>
         <div class="account-info fl">
             <h5 class="l-title">拓天速贷提醒您：理财非存款，投资需谨慎！</h5>
+            <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
             <form action="/invest" method="post">
                 <dl class="account-list">
                     <dd>
@@ -119,6 +120,7 @@
 
                 </dl>
             </form>
+            </#if>
             <#if ["REPAYING", "RECHECK", "CANCEL", "OVERDUE", "COMPLETE"]?seq_contains(loan.loanStatus)>
                 <form action="/loan-list" method="get">
                     <dl class="account-list">
