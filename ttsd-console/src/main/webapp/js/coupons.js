@@ -38,6 +38,7 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
             var $self = $(this),
                 $parentTd = $self.parents('td'),
                 thisId = $self.attr('data-id');//data id
+            var couponType = $self.attr('data-type');
             if (!confirm("是否确认执行此操作?")) {
                 return;
             } else {
@@ -48,7 +49,7 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
                 })
                 .done(function(res) {
                     if (res.data.status) {
-                        $parentTd.html('<i class="check-btn"></i><a class="loan_repay confirm-btn" href="javascript:void(0)" data-id="'+thisId+'">确认生效</a>');
+                        $parentTd.html('<i class="check-btn"></i><a class="loan_repay confirm-btn" href="javascript:void(0)" data-type="'+couponType+'" data-id="'+thisId+'">确认生效</a>');
                         $parentTd.prev().html('<a href="/activity-manage/coupon/'+thisId+'/edit" class="btn-link">编辑</a> / <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/'+thisId+'" >删除</button>');
                     } else {
                         $tipCom.show().find('.txt').text('操作失败！');
@@ -78,7 +79,7 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
                 })
                 .done(function(res) {
                     if(res.data.status){
-                        $parentTd.html('<i class="check-btn add-check"></i><button class="loan_repay already-btn btn-link" data-id="'+thisId+'">已生效</button>');
+                        $parentTd.html('<i class="check-btn add-check"></i><button class="loan_repay already-btn btn-link inactive-btn" data-id="'+thisId+'">已生效</button>');
                         if (couponType != 'NEWBIE_COUPON') {
                             $parentTd.find('button').attr('disabled');
                         }
