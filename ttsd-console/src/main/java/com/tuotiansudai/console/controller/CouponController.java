@@ -108,6 +108,19 @@ public class CouponController {
         return baseDto;
     }
 
+    @RequestMapping(value = "/coupon/{couponId:^\\d+$}/inactive", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> inactiveCoupon(@PathVariable long couponId) {
+        String loginName = LoginUserInfo.getLoginName();
+        couponActivationService.inactive(loginName, couponId);
+        BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(true);
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        baseDto.setData(dataDto);
+
+        return baseDto;
+    }
+
     @RequestMapping(value = "/coupon/user-group/{userGroup}/estimate",method = RequestMethod.GET)
     @ResponseBody
     public long findEstimatedCount(@PathVariable UserGroup userGroup){
