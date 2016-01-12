@@ -45,6 +45,9 @@ public class LoanRepayServiceImpl implements LoanRepayService {
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
+    @Value("#{'${repay.remind.mobileList}'.split('\\|')}")
+    private List<String> repayRemindMobileList;
+
     @Override
     public BaseDto<BasePaginationDataDto> findLoanRepayPagination(int index, int pageSize, Long loanId,
                                                                   String loginName, Date startTime, Date endTime, RepayStatus repayStatus) {
@@ -121,13 +124,22 @@ public class LoanRepayServiceImpl implements LoanRepayService {
 
         for (LoanRepayNotifyModel model : loanRepayNotifyModelList) {
 
-            logger.info("sent loan repay notify sms message to " + model.getMobile());
+            logger.info("sent loan repay notify sms message to " + model.getMobile() + ", loan name:" + model.getLoanName().trim());
 
             LoanRepayNotifyDto dto = new LoanRepayNotifyDto();
             dto.setMobile(model.getMobile().trim());
             dto.setLoanName(model.getLoanName().trim());
             dto.setRepayAmount(AmountConverter.convertCentToString(model.getRepayAmount()));
             smsWrapperClient.sendLoanRepayNotify(dto);
+
+            for (String mobile : repayRemindMobileList) {
+                logger.info("sent loan repay notify sms message to " + mobile + ", loan name:" + model.getLoanName().trim());
+                LoanRepayNotifyDto notifyDto = new LoanRepayNotifyDto();
+                notifyDto.setMobile(mobile.trim());
+                notifyDto.setLoanName(model.getLoanName().trim());
+                notifyDto.setRepayAmount(AmountConverter.convertCentToString(model.getRepayAmount()));
+                smsWrapperClient.sendLoanRepayNotify(notifyDto);
+            }
         }
     }
 }
