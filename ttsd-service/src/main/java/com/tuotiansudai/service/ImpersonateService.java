@@ -5,5 +5,5 @@ public interface ImpersonateService {
 
     boolean impersonateLogin(String securityCode);
 
-    String plantSecurityCode(String loginName);
+    String plantSecurityCode(String adminLoginName, String loginName);
 }

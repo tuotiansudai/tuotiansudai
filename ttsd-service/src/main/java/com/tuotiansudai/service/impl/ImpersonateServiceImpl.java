@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ImpersonateServiceImpl implements ImpersonateService {
 
-    private Logger logger = Logger.getLogger(ImpersonateServiceImpl.class);
+    private static Logger logger = Logger.getLogger(ImpersonateServiceImpl.class);
 
     @Autowired
     private MyAuthenticationManager myAuthenticationManager;
@@ -28,16 +28,20 @@ public class ImpersonateServiceImpl implements ImpersonateService {
         String loginName = redisWrapperClient.get(IMPERSONATE_SECURITY_KEY + securityCode);
 
         if (StringUtils.isNotEmpty(loginName)) {
+            logger.info("impersonate login, securityCode: " + securityCode + ", user login name: " + loginName);
             myAuthenticationManager.createAuthentication(loginName);
             redisWrapperClient.del(IMPERSONATE_SECURITY_KEY + securityCode);
             return true;
+        } else {
+            logger.warn("impersonate login fail, securityCode: " + securityCode + ", user login name is empty.");
+            return false;
         }
-        return false;
     }
 
     @Override
-    public String plantSecurityCode(String loginName) {
-        logger.info("impersonate login, loginName:" + loginName);
+    public String plantSecurityCode(String adminLoginName, String loginName) {
+        logger.info("plant security code for impersonate login, admin user: " + adminLoginName + ", impersonate user: " + loginName);
+
         String securityCode = generateSecurityCode();
         redisWrapperClient.setex(IMPERSONATE_SECURITY_KEY + securityCode, 5, loginName);
         return securityCode;

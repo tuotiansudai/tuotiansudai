@@ -53,6 +53,7 @@ public class UserController {
     @Value("${web.server}")
     private String webServer;
 
+
     @RequestMapping(value = "/user/{loginName}", method = RequestMethod.GET)
     public ModelAndView editUser(@PathVariable String loginName, Model model) {
         ModelAndView modelAndView = new ModelAndView("/user-edit");
@@ -220,7 +221,7 @@ public class UserController {
 
     @RequestMapping(value = "/user/{loginName}/impersonate", method = RequestMethod.GET)
     public ModelAndView impersonate(@PathVariable String loginName) {
-        String securityCode = impersonateService.plantSecurityCode(loginName);
+        String securityCode = impersonateService.plantSecurityCode(LoginUserInfo.getLoginName(), loginName);
         return new ModelAndView("redirect:" + webServer + "/impersonate?securityCode=" + securityCode);
     }
 }
