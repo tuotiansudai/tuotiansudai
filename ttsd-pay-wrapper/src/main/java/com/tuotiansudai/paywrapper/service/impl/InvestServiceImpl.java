@@ -269,7 +269,8 @@ public class InvestServiceImpl implements InvestService {
                 // 投资成功
                 infoLog("invest_success", orderIdStr, investModel.getAmount(), loginName, loanId);
                 // 投资成功，冻结用户资金，更新投资状态为success
-                investSuccess(orderId, investModel, loginName);
+
+                ((InvestService) AopContext.currentProxy()).investSuccess(orderId, investModel, loginName);
 
                 if (successInvestAmountTotal + investModel.getAmount() == loanModel.getLoanAmount()) {
                     // 满标，改标的状态 RECHECK
@@ -418,8 +419,11 @@ public class InvestServiceImpl implements InvestService {
         if (returnAmount >= availableLoanAmount) {
             returnAmount = availableLoanAmount;
         }
+        if (returnAmount < minLoanInvestAmount) {
+            return 0L;
+        }
         long autoInvestMoney = returnAmount - (returnAmount - minLoanInvestAmount) % investIncreasingAmount;
-        return autoInvestMoney < minInvestAmount ? 0L : autoInvestMoney;
+        return autoInvestMoney < NumberUtils.max(minInvestAmount, minLoanInvestAmount) ? 0L : autoInvestMoney;
     }
 
     @Override
@@ -447,6 +451,25 @@ public class InvestServiceImpl implements InvestService {
         }
     }
 
+    /**
+     * 投资成功处理：冻结资金＋更新invest状态
+     *
+     * @param orderId
+     * @param investModel
+     * @param loginName
+     */
+    @Override
+    public void investSuccess(long orderId, InvestModel investModel, String loginName) {
+        try {
+            // 冻结资金
+            amountTransfer.freeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
+        } catch (AmountTransferException e) {
+            // 记录日志，发短信通知管理员
+            fatalLog("invest success, but freeze account fail", String.valueOf(orderId), investModel.getAmount(), loginName, investModel.getLoanId(), e);
+        }
+        // 改invest 本身状态为投资成功
+        investMapper.updateStatus(investModel.getId(), InvestStatus.SUCCESS);
+    }
 
     /**
      * umpay 超投返款的回调
@@ -488,7 +511,7 @@ public class InvestServiceImpl implements InvestService {
             // 返款失败，当作投资成功处理
             errorLog("pay_back_notify_fail,take_as_invest_success", orderIdStr, investModel.getAmount(), loginName, investModel.getLoanId());
 
-            investSuccess(orderId, investModel, loginName);
+            ((InvestService) AopContext.currentProxy()).investSuccess(orderId, investModel, loginName);
 
             long loanId = investModel.getLoanId();
             // 超投，改标的状态为满标 RECHECK
@@ -500,26 +523,6 @@ public class InvestServiceImpl implements InvestService {
         String respData = callbackRequest.getResponseData();
         return respData;
     }
-
-    /**
-     * 投资成功处理：冻结资金＋更新invest状态
-     *
-     * @param orderId
-     * @param investModel
-     * @param loginName
-     */
-    private void investSuccess(long orderId, InvestModel investModel, String loginName) {
-        try {
-            // 冻结资金
-            amountTransfer.freeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
-        } catch (AmountTransferException e) {
-            // 记录日志，发短信通知管理员
-            fatalLog("invest success, but freeze account fail", String.valueOf(orderId), investModel.getAmount(), loginName, investModel.getLoanId(), e);
-        }
-        // 改invest 本身状态为投资成功
-        investMapper.updateStatus(investModel.getId(), InvestStatus.SUCCESS);
-    }
-
 
     private void infoLog(String msg, String orderId, long amount, String loginName, long loanId) {
         logger.info(msg + ",orderId:" + orderId + ",LoginName:" + loginName + ",amount:" + amount + ",loanId:" + loanId);
