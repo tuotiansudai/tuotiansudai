@@ -46,26 +46,9 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
 
         // 充值金额保留小数点后2位
         var rep = /^\d+$/;
-        var rep_point = /^([0-9]+\.[0-9]{2})[0-9]*$/;
-        var rep_point1 = /^[0-9]+\.[0-9]$/;
-        $('.coupon-number').blur(function () {
-            var _this = $(this),
-                text = _this.val(),
-                num = text.replace(rep_point, "$1");
-            if (rep.test(text)) {
-                _this.val(text + '.00').removeClass('Validform_error');
-            } else if (rep_point.test(text)) {
-                _this.val(num).removeClass('Validform_error');
-            } else if (rep_point1.test(text)) {
-                _this.val(text + '0').removeClass('Validform_error');
-            } else {
-                _this.val('').addClass('Validform_error');
-            }
-        });
-
         var rep_point2 = /^[0-9]+\.[0-9]*$/;
 
-        $('.give-number,.coupon-deadline').blur(function () {
+        $('.give-number,.coupon-deadline,.coupon-number').blur(function () {
             var _this = $(this),
                 text = _this.val(),
                 num = text.replace(rep, "$1");
