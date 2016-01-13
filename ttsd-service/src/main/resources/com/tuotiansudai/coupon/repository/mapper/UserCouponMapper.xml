@@ -25,7 +25,7 @@
     <resultMap id="useRecordMap" type="CouponUseRecordView">
         <result column="loan_id" property="loanId"/>
         <result column="loan_name" property="loanName"/>
-        <result column="coupon_name" property="couponName"/>
+        <result column="coupon_type" property="couponType"/>
         <result column="coupon_amount" property="couponAmount"/>
         <result column="used_time" property="usedTime"/>
     </resultMap>
@@ -79,7 +79,7 @@
         select
             l.id as loan_id,
             l.name as loan_name,
-            c.name as coupon_name,
+            c.coupon_type as coupon_type,
             c.amount as coupon_amount,
             uc.used_time as used_time
         from user_coupon uc
