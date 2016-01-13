@@ -4,6 +4,7 @@ import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,6 +27,8 @@ public class UserItemDataDto implements Serializable {
     private String identityNumber;
     private String province;
     private String city;
+    private String balance;
+
 
     public String getLoginName() {
         return loginName;
@@ -155,6 +158,14 @@ public class UserItemDataDto implements Serializable {
         this.city = city;
     }
 
+    public String getBalance() {
+        return balance;
+    }
+
+    public void setBalance(String balance) {
+        this.balance = balance;
+    }
+
     public String getBirthday() {
         if (identityNumber == null) {
             return "";
@@ -178,6 +189,7 @@ public class UserItemDataDto implements Serializable {
         if (userModel.getAccount() != null) {
             this.userName = userModel.getAccount().getUserName();
         }
+        this.balance = AmountConverter.convertCentToString(userModel.getAccount().getBalance());
         this.status = userModel.getStatus();
         this.autoInvestStatus = userModel.getAutoInvestStatus();
         this.identityNumber = userModel.getAccount().getIdentityNumber();

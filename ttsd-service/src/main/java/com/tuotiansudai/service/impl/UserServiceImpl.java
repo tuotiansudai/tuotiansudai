@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserRoleService userRoleService;
 
     @Autowired
     private UserRoleMapper userRoleMapper;
@@ -413,8 +417,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserModel> findUsersAccountBalance(String loginName, int currentPageNo, int pageSize) {
-        return userMapper.findUsersAccountBalance(loginName, (currentPageNo - 1) * pageSize, pageSize);
+    public List<UserItemDataDto> findUsersAccountBalance(String loginName, int currentPageNo, int pageSize) {
+        List<UserModel> userModels =  userMapper.findUsersAccountBalance(loginName, (currentPageNo - 1) * pageSize, pageSize);
+
+        List<UserItemDataDto> userItemDataDtoList = new ArrayList<>();
+        for(UserModel userModel : userModels) {
+            UserItemDataDto userItemDataDto = new UserItemDataDto(userModel);
+            userItemDataDto.setStaff(userRoleService.judgeUserRoleExist(userModel.getLoginName(), Role.STAFF));
+            userItemDataDtoList.add(userItemDataDto);
+        }
+        return userItemDataDtoList;
     }
 
     @Override
