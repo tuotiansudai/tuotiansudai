@@ -35,6 +35,8 @@ public class UserCouponModel implements Serializable{
 
     private String loanName;
 
+    private Long investAmount;
+
     public UserCouponModel() {
     }
 
@@ -154,5 +156,13 @@ public class UserCouponModel implements Serializable{
 
     public void setLoanName(String loanName) {
         this.loanName = loanName;
+    }
+
+    public Long getInvestAmount() {
+        return investAmount;
+    }
+
+    public void setInvestAmount(Long investAmount) {
+        this.investAmount = investAmount;
     }
 }

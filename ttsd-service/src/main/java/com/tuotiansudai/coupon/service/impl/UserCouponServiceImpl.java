@@ -7,6 +7,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
@@ -74,10 +75,10 @@ public class UserCouponServiceImpl implements UserCouponService {
     @Override
     public UserCouponDto getUsableNewbieCoupon(String loginName) {
         try {
-            String redisValue = redisWrapperClient.get(NEWBIE_COUPON_ALERT_KEY);
-            if(StringUtils.isEmpty(redisValue)){
-                return null;
+            if (!redisWrapperClient.exists(NEWBIE_COUPON_ALERT_KEY)) {
+                redisWrapperClient.set(NEWBIE_COUPON_ALERT_KEY, objectMapper.writeValueAsString(Sets.newHashSet()));
             }
+            String redisValue = redisWrapperClient.get(NEWBIE_COUPON_ALERT_KEY);
             Set<String> loginNames = objectMapper.readValue(redisValue, new TypeReference<Set<String>>() {});
             if (loginNames.contains(loginName)) {
                 return null;
@@ -103,7 +104,7 @@ public class UserCouponServiceImpl implements UserCouponService {
     }
 
     @Override
-    public List<UserCouponDto> getUsableCoupons(String loginName, long loanId, final long amount) {
+    public List<UserCouponDto> getUsableCoupons(String loginName, long loanId) {
         LoanModel loanModel = loanMapper.findById(loanId);
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName);
 
@@ -113,7 +114,7 @@ public class UserCouponServiceImpl implements UserCouponService {
             if (InvestStatus.SUCCESS != userCouponModel.getStatus()
                     && new DateTime(couponModel.getEndTime()).plusDays(1).withTimeAtStartOfDay().isAfterNow()
                     && couponModel.getProductTypes().contains(loanModel.getProductType())) {
-                usableCoupons.add(new UserCouponDto(couponModel, userCouponModel, amount));
+                usableCoupons.add(new UserCouponDto(couponModel, userCouponModel));
             }
         }
 

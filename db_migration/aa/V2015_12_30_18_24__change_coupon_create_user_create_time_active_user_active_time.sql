@@ -2,13 +2,13 @@ ALTER TABLE coupon CHANGE `create_time` `created_time` DATETIME NOT NULL;
 
 ALTER TABLE coupon CHANGE `active_time` `activated_time` DATETIME;
 
-ALTER TABLE coupon CHANGE `create_user` `created_by` VARCHAR(25) NOT NULL;
-
-ALTER TABLE coupon CHANGE `active_user` `activated_by` VARCHAR(25);
-
 ALTER TABLE coupon DROP FOREIGN KEY FK_CREATE_USER_REF_USER_LOGIN_NAME;
 
 ALTER TABLE coupon DROP FOREIGN KEY FK_ACTIVATE_USER_REF_USER_LOGIN_NAME;
+
+ALTER TABLE coupon CHANGE `create_user` `created_by` VARCHAR(25) NOT NULL;
+
+ALTER TABLE coupon CHANGE `active_user` `activated_by` VARCHAR(25);
 
 ALTER TABLE coupon ADD CONSTRAINT FK_COUPON_CREATED_BY_REF_USER_LOGIN_NAME FOREIGN KEY (created_by) REFERENCES `user` (login_name);
 

@@ -1,8 +1,10 @@
 package com.tuotiansudai.coupon.service.impl;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
@@ -14,7 +16,6 @@ import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,12 +113,17 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<CouponModel> findCoupons(int index, int pageSize) {
+    public List<CouponDto> findCoupons(int index, int pageSize) {
         List<CouponModel> couponModels = couponMapper.findCoupons((index - 1) * pageSize, pageSize);
         for (CouponModel couponModel : couponModels) {
             couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
         }
-        return couponModels;
+        return Lists.transform(couponModels, new Function<CouponModel, CouponDto>() {
+            @Override
+            public CouponDto apply(CouponModel input) {
+                return new CouponDto(input);
+            }
+        });
     }
 
     @Override
@@ -147,6 +153,7 @@ public class CouponServiceImpl implements CouponService {
         List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponIdAndStatus(couponId, isUsed);
         for (UserCouponModel userCouponModel : userCouponModels) {
             userCouponModel.setLoanName(userCouponModel.getLoanId() != null ? loanMapper.findById(userCouponModel.getLoanId()).getName() : null);
+            userCouponModel.setInvestAmount(userCouponModel.getInvestId() != null ? investMapper.findById(userCouponModel.getInvestId()).getAmount() : null);
         }
         return userCouponModels;
     }

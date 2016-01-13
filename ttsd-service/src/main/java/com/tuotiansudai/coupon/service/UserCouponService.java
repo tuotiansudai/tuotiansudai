@@ -12,7 +12,7 @@ public interface UserCouponService {
 
     UserCouponDto getUsableNewbieCoupon(String loginName);
 
-    List<UserCouponDto> getUsableCoupons(String loginName, final long loanId, long amount);
+    List<UserCouponDto> getUsableCoupons(String loginName, final long loanId);
 
     BaseDto<BasePaginationDataDto> findUseRecords(String loginName, int index, int pageSize);
 }

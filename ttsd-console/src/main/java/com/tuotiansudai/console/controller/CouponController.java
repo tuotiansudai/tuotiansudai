@@ -15,12 +15,14 @@ import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/activity-manage")
@@ -71,12 +73,20 @@ public class CouponController {
     }
     @RequestMapping(value = "/coupon/{id:^\\d+$}/edit",method = RequestMethod.GET)
     @ResponseBody
-    public ModelAndView edit(@PathVariable long id){
+    public ModelAndView edit(@PathVariable long id,Model model){
         ModelAndView modelAndView = new ModelAndView("/coupon-edit");
 
         CouponModel couponModel = couponService.findCouponById(id);
+        if (!model.containsAttribute("coupon")) {
+            CouponDto couponDto = new CouponDto(couponModel);
+            modelAndView.addObject("coupon", couponDto);
+        }else{
+            Map modelMap = model.asMap();
+            for(Object modelKey : modelMap.keySet()){
+                modelAndView.addObject(modelKey.toString(),modelMap.get(modelKey));
+            }
+        }
 
-        modelAndView.addObject("coupon", couponModel);
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
         return modelAndView;
@@ -90,6 +100,19 @@ public class CouponController {
         String loginName = LoginUserInfo.getLoginName();
         couponActivationService.active(loginName, couponId);
 
+        BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(true);
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        baseDto.setData(dataDto);
+
+        return baseDto;
+    }
+
+    @RequestMapping(value = "/coupon/{couponId:^\\d+$}/inactive", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> inactiveCoupon(@PathVariable long couponId) {
+        String loginName = LoginUserInfo.getLoginName();
+        couponActivationService.inactive(loginName, couponId);
         BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(true);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
@@ -124,9 +147,10 @@ public class CouponController {
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/detail", method = RequestMethod.GET)
     public ModelAndView couponDetail(@PathVariable long couponId, @RequestParam(value = "isUsed",required = false) Boolean isUsed) {
         ModelAndView modelAndView = new ModelAndView("/coupon-detail");
-        List<UserCouponModel> userCouponModels = couponService.findCouponDetail(couponId, isUsed);
-        modelAndView.addObject("userCouponModels", userCouponModels);
+        List<UserCouponModel> userCoupons = couponService.findCouponDetail(couponId, isUsed);
+        modelAndView.addObject("userCoupons", userCoupons);
         modelAndView.addObject("isUsed", isUsed);
+        modelAndView.addObject("couponId", couponId);
         return modelAndView;
     }
 
@@ -134,6 +158,7 @@ public class CouponController {
     @ResponseBody
     public BaseDto<BaseDataDto> couponDelete(@PathVariable long couponId) {
         BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(true);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         baseDto.setData(dataDto);
         String loginName = LoginUserInfo.getLoginName();
