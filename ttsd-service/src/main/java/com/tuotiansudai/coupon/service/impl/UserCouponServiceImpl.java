@@ -7,7 +7,9 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
+import com.google.common.primitives.Ints;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
@@ -106,8 +108,16 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Override
     public List<UserCouponDto> getUsableCoupons(String loginName, long loanId) {
-        LoanModel loanModel = loanMapper.findById(loanId);
+        final LoanModel loanModel = loanMapper.findById(loanId);
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName);
+        if (loanModel == null || Iterators.tryFind(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
+            @Override
+            public boolean apply(UserCouponModel userCouponModel) {
+                return InvestStatus.SUCCESS == userCouponModel.getStatus() && userCouponModel.getLoanId() == loanModel.getId();
+            }
+        }).isPresent()) {
+            return Lists.newArrayList();
+        }
 
         List<UserCouponDto> usableCoupons = Lists.newArrayList();
         for (UserCouponModel userCouponModel : userCouponModels) {

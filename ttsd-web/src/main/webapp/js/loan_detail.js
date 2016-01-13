@@ -1,4 +1,4 @@
-require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'csrf', 'autoNumeric'], function ($, pagination, Mustache, investListTemplate, layer) {
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'csrf', 'autoNumeric'], function ($, pagination, Mustache, investListTemplate, layer, _) {
 
     var $loanDetail = $('.loan-detail-content'),
         loanId = $('.hid-loan').val(),
@@ -105,6 +105,13 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     radio.prop("disabled", true);
                 }
             });
+
+            var tickets = _.sortBy($ticketList.find("li"), function(ticket) {
+                var $ticket = $(ticket);
+                return new Date($ticket.data("coupon-created-time")).getTime() * ($ticket.hasClass('disabled') ? 2 : 1);
+            });
+
+            $ticketList.empty().append(tickets);
         };
 
         var validateInvestAmount = function () {

@@ -24,6 +24,7 @@ public class UserCouponDto implements Serializable {
     private boolean expired;
     private boolean unused;
     private long investLowerLimit;
+    private Date createdTime;
     private List<ProductType> productTypeList;
 
     public UserCouponDto() {
@@ -42,6 +43,7 @@ public class UserCouponDto implements Serializable {
         this.expired = !this.used && new DateTime(this.endTime).plusDays(1).withTimeAtStartOfDay().isBeforeNow();
         this.unused = !this.used && !this.expired;
         this.investLowerLimit = coupon.getInvestLowerLimit();
+        this.createdTime = userCoupon.getCreatedTime();
         this.productTypeList = coupon.getProductTypes();
     }
 
@@ -49,103 +51,55 @@ public class UserCouponDto implements Serializable {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public long getCouponId() {
         return couponId;
-    }
-
-    public void setCouponId(long couponId) {
-        this.couponId = couponId;
     }
 
     public CouponType getCouponType() {
         return couponType;
     }
 
-    public void setCouponType(CouponType couponType) {
-        this.couponType = couponType;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public long getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
-        this.amount = amount;
-    }
-
     public Date getStartTime() {
         return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
     }
 
     public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
     public Long getLoanId() {
         return loanId;
-    }
-
-    public void setLoanId(Long loanId) {
-        this.loanId = loanId;
     }
 
     public boolean isUsed() {
         return used;
     }
 
-    public void setUsed(boolean used) {
-        this.used = used;
-    }
-
     public boolean isExpired() {
         return expired;
-    }
-
-    public void setExpired(boolean expired) {
-        this.expired = expired;
     }
 
     public boolean isUnused() {
         return unused;
     }
 
-    public void setUnused(boolean unused) {
-        this.unused = unused;
-    }
-
     public long getInvestLowerLimit() {
         return investLowerLimit;
     }
 
-    public void setInvestLowerLimit(long investLowerLimit) {
-        this.investLowerLimit = investLowerLimit;
+    public Date getCreatedTime() {
+        return createdTime;
     }
 
     public List<ProductType> getProductTypeList() {
         return productTypeList;
-    }
-
-    public void setProductTypeList(List<ProductType> productTypeList) {
-        this.productTypeList = productTypeList;
     }
 }
