@@ -8,7 +8,6 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','load-swiper','com
             $problemList=$('.problem-list dt span'),
             paginationElement = $('.pagination');
 
-
         if($noticeList.length) {
             var requestData={"index":1,"pageSize":10};
             paginationElement.loadPagination(requestData, function (data) {

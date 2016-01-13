@@ -681,17 +681,90 @@ body {
       .media-logo-list {
         width: 367px;
         height: 220px;
-        background: url("/images/sign/bg-media.png") right 0 no-repeat;
+        background: url("/images/sign/media/bg-media.png") right 0 no-repeat;
         li {
           display: inline-block;
           margin-left: 18px;
           width: 44%;
           height:47px;
+          position: relative;
           a {
             display: block;
             cursor: pointer;
             width:100%;
             height:100%;
+            &.qq:hover {
+              background: url("/images/sign/media/tengxun.png") 0px 0px no-repeat;
+              background-size:100%;
+              position: absolute;
+              left:-15px;
+              width:120%;
+              height:120%;
+              top:-5px;
+            }
+            &.yangshi:hover {
+              background: url("/images/sign/media/yangshi.png") 0px 0px no-repeat;
+              background-size:100%;
+              position: absolute;
+              left:-15px;
+              width:120%;
+              height:120%;
+              top:-5px;
+            }
+            &.msn:hover {
+              background: url("/images/sign/media/msn.png") 0px 0px no-repeat;
+              background-size:100%;
+              position: absolute;
+              left:-15px;
+              width:120%;
+              height:120%;
+              top:-5px;
+            }
+            &.sina:hover {
+              background: url("/images/sign/media/sina.png") 0px 0px no-repeat;
+              background-size:100%;
+              position: absolute;
+              left:-15px;
+              width:120%;
+              height:120%;
+              top:-5px;
+            }
+            &.ifeng:hover {
+              background: url("/images/sign/media/fenghuang.png") 0px 0px no-repeat;
+              background-size:100%;
+              position: absolute;
+              left:-15px;
+              width:120%;
+              height:120%;
+              top:5px;
+            }
+            &.wangyi:hover {
+              background: url("/images/sign/media/wangyi.png") 0px 0px no-repeat;
+              background-size:100%;
+              position: absolute;
+              left:-15px;
+              width:120%;
+              height:120%;
+              top:5px;
+            }
+            &.china:hover {
+              background: url("/images/sign/media/zhonghuawang.png") 0px 0px no-repeat;
+              background-size:100%;
+              position: absolute;
+              left:-15px;
+              width:120%;
+              height:120%;
+              top:5px;
+            }
+            &.toutiao:hover {
+              background: url("/images/sign/media/jinritoutiao.png") 0px 0px no-repeat;
+              background-size:100%;
+              position: absolute;
+              left:-15px;
+              width:120%;
+              height:120%;
+              top:5px;
+            }
           }
         }
       }
