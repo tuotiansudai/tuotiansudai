@@ -3,6 +3,10 @@
 <div class="home-page-container">
     <div class="banner-box">
         <div class="banner-img-list">
+            <a href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" target="_blank">
+                <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">
+                <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="招募代理" class="iphone-img">
+            </a>
             <a href="/activity/ranking" target="_blank">
                 <img src="${staticServer}/images/sign/actor/ranking/qph.jpg" alt="抢排行，送大礼" class="pc-img">
                 <img src="${staticServer}/images/ttimg/ph-a01.jpg" alt="抢排行，送大礼" class="iphone-img">
@@ -16,10 +20,7 @@
                 <img src="${staticServer}/images/ttimg/ttimg-home03.png" alt="招募代理" class="pc-img">
                 <img src="${staticServer}/images/ttimg/ph-a03.jpg" alt="招募代理" class="iphone-img">
             </a>
-            <a href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" target="_blank">
-                <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">
-                <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="招募代理" class="iphone-img">
-            </a>
+
         </div>
         <ul class="scroll-num">
             <li class="selected"></li>

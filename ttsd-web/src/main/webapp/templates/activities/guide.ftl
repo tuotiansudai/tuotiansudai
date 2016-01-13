@@ -97,7 +97,7 @@
                 <p class="pc-img"><img src="/images/sign/liu-img.png"  width="65%" alt=""></p>
                 <p class="responsive-img"><img src="/images/sign/res-register.png"  width="60%" alt=""></p>
                 <p class="user-register">
-                    <a href="/register/user">立即注册</a>
+                    <a href="/loan-list">立即投资</a>
                 </p>
             </div>
             <div class="down clearfix"><b class="text-gray">试试鼠标滚动</b><img src="/images/sign/assure/up-gray.png" class="down-icon" alt=""></div>
