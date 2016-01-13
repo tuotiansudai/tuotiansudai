@@ -1570,6 +1570,9 @@ body {
     .page-width{
       .down {
         bottom:0!important;
+        b {
+          display: none;
+        }
       }
     }
     .intro-text{

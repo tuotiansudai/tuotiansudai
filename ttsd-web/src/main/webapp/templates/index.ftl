@@ -254,8 +254,8 @@
 
             <div class="box-radius clearfix">
                 <ul>
-                    <li><img src="${staticServer}/images/sign/partner/jingdu.png"></li>
-                    <li><img src="${staticServer}/images/sign/partner/liandongyoushi.png"></li>
+                    <li><a href="http://www.king-capital.com/" target="_blank"> <img src="${staticServer}/images/sign/partner/jingdu.png"></a></li>
+                    <li><a href="http://www.umpay.com/umpay_cms/" target="_blank"><img src="${staticServer}/images/sign/partner/liandongyoushi.png"></a> </li>
                 </ul>
              </div>
             </div>
