@@ -98,7 +98,7 @@ public class CouponServiceImpl implements CouponService {
             @Override
             public boolean apply(CouponModel couponModel) {
                 return couponModel.isActive()
-                        && couponModel.getStartTime().compareTo(new DateTime().withTimeAtStartOfDay().toDate()) < 0
+                        && couponModel.getStartTime().compareTo(new DateTime().withTimeAtStartOfDay().toDate()) <= 0
                         && couponModel.getEndTime().after(new DateTime().withTimeAtStartOfDay().toDate());
             }
         });
