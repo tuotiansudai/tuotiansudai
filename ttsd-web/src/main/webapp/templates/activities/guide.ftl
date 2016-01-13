@@ -33,7 +33,7 @@
         <div class="page-width clearfix">
             <div class="flex-model">
                 <p class="intro-title">我们是谁？</p>
-                <p class="intro-english">Who we are ?</p>
+                <p class="intro-english">Who Are We?</p>
                 <p class="text-name">拓天速贷——互联网金融信息服务平台</p>
                 <p class="intro-detail">以创新、诚信、专业作为核心价值观，坚持安全，公平，透明的原则，</br>
                     在为个人和企业提供急需的资金的同时，响应普惠金融的号召，</br>
@@ -49,7 +49,7 @@
         <div class="page-width clearfix">
             <div class="mode-operation">
                 <p class="mode-title">我们的<span>运作模式</span></p>
-                <p class="title-word">The mode of operation </p>
+                <p class="title-word">Our Way Of Operation</p>
                 <p class="pc-img"><img src="/images/sign/model-type.png"  width="55%" alt=""></p>
                 <p class="responsive-img"><img src="/images/sign/res-model.png"  width="80%" alt=""></p>
             </div>
@@ -60,7 +60,7 @@
         <div class="page-width clearfix">
             <div class="mode-operation">
                 <p class="mode-title">为什么选择<span>拓天速贷</span></p>
-                <p class="title-word">Why choose us </p>
+                <p class="title-word">Why Should You Select Us</p>
                 <p class="pc-img"><img src="/images/sign/why-img.png"  width="80%" alt=""></p>
                 <p class="responsive-img"><img src="/images/sign/res-kind.png"  width="70%" alt=""></p>
             </div>
@@ -71,7 +71,7 @@
         <div class="page-width clearfix">
             <div class="mode-operation">
                 <p class="mode-title">拓天速贷<span>投资示例</span></p>
-                <p class="title-word">Why choose us </p>
+                <p class="title-word">An Example Of Investing</p>
                 <p class="pc-img"><img src="/images/sign/choose-img.png"  width="40%" alt=""></p>
                 <p class="responsive-img"><img src="/images/sign/res-case.png"  width="80%" alt=""></p>
             </div>
@@ -82,7 +82,7 @@
         <div class="page-width clearfix">
             <div class="mode-operation">
                 <p class="mode-title">多种<span>投资方式</span>供您选择</p>
-                <p class="title-word">A variety of investment </p>
+                <p class="title-word">Abundant Choices For Your Investment Needs</p>
                 <p class="pc-img"><img src="/images/sign/tou-img.png"  width="60%" alt=""></p>
                 <p class="responsive-img"><img src="/images/sign/res-type.png"  width="70%" alt=""></p>
             </div>
@@ -93,7 +93,7 @@
         <div class="page-width clearfix">
             <div class="mode-operation">
                 <p class="mode-title">轻松四步<span>坐享收益</span></p>
-                <p class="title-word">The mode of operation </p>
+                <p class="title-word">Enjoy Your Profit In Four Simple Steps</p>
                 <p class="pc-img"><img src="/images/sign/liu-img.png"  width="65%" alt=""></p>
                 <p class="responsive-img"><img src="/images/sign/res-register.png"  width="60%" alt=""></p>
                 <p class="user-register">

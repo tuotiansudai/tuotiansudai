@@ -12,9 +12,49 @@
     }
   }
   &.company-summary {
-    img {
-      &:nth-child(2) {
+    .refer-reward-box {
+      position: relative;
+      height:640px;
+      &.mobile {
         display: none;
+      }
+      .pc-column {
+        width:145px;
+        height: 561px;
+        background: url("/images/sign/aboutus/give-intro.png") 0 0 no-repeat;
+        position: absolute;
+        left: 300px;
+        top: 30px;
+      }
+      .border-radius {
+        border: 1px solid #ff7200;
+        border-radius: 8px;
+        padding: 8px 10px;
+      }
+      .section-one {
+        position: absolute;
+        left: 446px;
+        top: 60px;
+
+      }
+      .section-two {
+        position: absolute;
+        left: 8px;
+        top: 105px;
+        width: 270px;
+
+      }
+      .section-three {
+        position: absolute;
+        left: 444px;
+        top: 280px;
+        width: 270px;
+      }
+      .section-four {
+        position: absolute;
+        left: 8px;
+        top: 430px;
+        width: 270px;
       }
     }
   }
@@ -198,20 +238,17 @@
         margin-bottom: 5px;
         font-size: 13px;
       }
-      .pc {
+      .refer-reward-box {
+      &.pc {
         display: none;
+      }
+      &.mobile {
+        display: block;
+        height:auto;
       }
       h3 { text-align: center;}
-      img {
-        display: none;
-        width:100%;
-        &:nth-child(1) {
-          display: none;
-        }
-        &:nth-child(2) {
-          display: block;
-        }
-      }
+
+    }
     }
   }
 

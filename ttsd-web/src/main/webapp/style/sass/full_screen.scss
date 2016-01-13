@@ -1160,6 +1160,7 @@ body {
       &.title-word{
         font-size:18px;
         margin-bottom:40px;
+        color:#b3b3b3;
       }
       &.user-register{
         margin-top:50px;
@@ -1297,6 +1298,7 @@ body {
     top: 370px;
   }
 }
+
 @media screen and (max-width: 700px) {
   .home-page-container {
     .main-advantage, .register-ad-box {
@@ -1492,6 +1494,9 @@ body {
     .page-width{
       .down {
         bottom:0!important;
+        b {
+          display: none;
+        }
       }
     }
     .intro-text{
@@ -1502,7 +1507,7 @@ body {
         position: static;
         top:0;
         left:0;
-        margin-top:0; 
+        margin-top:0;
         p{
           color:#fff;
           margin:0 20px;
@@ -1570,9 +1575,6 @@ body {
       background:url("/images/sign/guide-bg.png") no-repeat center fixed;
     }
   }
-}
-
-@media screen and (max-width: 700px) {
   .refer-reward-instruction {
     .refer-reward-bg {
       background: #fff;

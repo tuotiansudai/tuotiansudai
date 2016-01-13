@@ -74,11 +74,12 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','load-swiper','com
             }
         }
 
-        $problemList.on('click', function(e) {
-            e.preventDefault();
-            var $self=$(this),
-                $dtDom=$self.parent('dt'),
-                $parents=$dtDom.parent();
+        if($problemList.length) {
+            $problemList.on('click', function(e) {
+                e.preventDefault();
+                var $self=$(this),
+                    $dtDom=$self.parent('dt'),
+                    $parents=$dtDom.parent();
 
                 if($dtDom.next().hasClass('active')){
                     $dtDom.next().removeClass('active');
@@ -89,6 +90,8 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','load-swiper','com
                     $dtDom.next().addClass('active');
                     $dtDom.find('i').removeClass('fa-toggle-up').addClass('fa-toggle-down');
                 }
-        });
+            });
+        }
+
     });
 });
