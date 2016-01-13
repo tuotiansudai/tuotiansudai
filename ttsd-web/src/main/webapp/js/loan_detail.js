@@ -7,7 +7,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         $btnLookOther = $('.btn-pay', $accountInfo),
         tabs = $('.loan-nav li'),
         $loanList = $('.loan-list', $loanDetail),
-        $experienceTicket = $('.experience-ticket', $loanDetail),
         paginationElement = $('.pagination', $loanDetail),
         $error = $('.errorTip');
 
@@ -75,13 +74,14 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
     if (amountInputElement.length) {
         amountInputElement.autoNumeric("init");
-        amountInputElement.onfocus(function () {
+        amountInputElement.focus(function () {
             layer.closeAll('tips');
         });
 
         var isInvestor = 'INVESTOR' === $loanDetail.data('user-role');
         var $ticketList = $('.ticket-list');
         var $useExperienceTicket = $('#use-experience-ticket');
+        var $couponExpectedInterest = $(".experience-income");
 
         var getInvestAmount = function () {
             var amount = 0;
@@ -109,21 +109,13 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
         var validateInvestAmount = function () {
             var amount = getInvestAmount();
-
-            var amountNeedRaised = 0;
-
-            var amountNeedRaised = parseInt($('form .amountNeedRaised-i').data("amount-need-raised"));
+            var amountNeedRaised = parseInt($('form .amountNeedRaised-i').data("amount-need-raised")) || 0;
             return amount > 0 && amountNeedRaised >= amount;
         };
 
         var calExpectedInterest = function () {
-            var amount = parseInt((amountInputElement.autoNumeric("get") * 100).toFixed(0));
-            if (!validateInvestAmount()) {
-                return;
-            }
-            layer.closeAll('tips');
             $.ajax({
-                url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + amount,
+                url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
                 type: 'get',
                 dataType: 'json',
                 contentType: 'application/json; charset=UTF-8'
@@ -133,9 +125,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         };
 
         if (isInvestor) {
-            if(!isNaN(amountInputElement.autoNumeric("get"))) {
-                calExpectedInterest();
-            }
+            calExpectedInterest();
         }
 
         amountInputElement.blur(function () {
@@ -143,23 +133,14 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         });
 
         amountInputElement.keyup(function (event) {
-            $(".experience-income").text("");
-            if (!$('#noCouponSelected').prop('checked')) {
+            $couponExpectedInterest.text("");
+            if (isInvestor && !$('#noCouponSelected').prop('checked')) {
                 $ticketList.find('input').prop('checked', false);
                 $useExperienceTicket.find('span').text('请点击选择优惠券');
             }
         });
 
         $('form').submit(function () {
-            if (!validateInvestAmount()) {
-                var tipContent = isNaN(amountInputElement.autoNumeric("get")) || parseInt((amountInputElement.autoNumeric("get") * 100).toFixed(0)) === 0 ? '投资金额不能为0元！' : '投资金额不能大于可投金额！';
-                layer.tips('<i class="fa fa-times-circle"></i>' + tipContent, '.text-input-amount', {
-                    tips: [1, '#ff7200'],
-                    time: 0
-                });
-                return false;
-            }
-
             var frm = $(this);
             if (frm.attr('action') === '/invest') {
                 if (!isInvestor) {
@@ -167,20 +148,21 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     return false;
                 }
 
-                if (isNaN(amountInputElement.autoNumeric("get"))) {
+                if (!validateInvestAmount()) {
+                    var tipContent = isNaN(amountInputElement.autoNumeric("get")) || parseInt((amountInputElement.autoNumeric("get") * 100).toFixed(0)) === 0 ? '投资金额不能为0元！' : '投资金额不能大于可投金额！';
+                    layer.tips('<i class="fa fa-times-circle"></i>' + tipContent, '.text-input-amount', {
+                        tips: [1, '#ff7200'],
+                        time: 0
+                    });
                     return false;
                 }
 
-
-                var amount = parseInt((amountInputElement.autoNumeric("get") * 100).toFixed(0));
-
-                var accountAmount = parseInt($('form .account-amount').data("user-balance"));
-                if (amount > accountAmount) {
+                var investAmount = getInvestAmount();
+                var accountAmount = parseInt($('form .account-amount').data("user-balance")) || 0;
+                if (investAmount > accountAmount) {
                     location.href = '/recharge';
                     return false;
                 }
-                amountInputElement.val(amountInputElement.autoNumeric("get"));
-                return true;
             }
             return true;
         });
@@ -214,7 +196,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             $ticketList.addClass('hide');
 
             var couponAmount = couponItem.data('coupon-amount');
-            $(".experience-income").text("");
+            $couponExpectedInterest.text("");
             if (!isNaN(couponAmount)) {
                 $.ajax({
                     url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + couponAmount,
@@ -222,7 +204,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'
                 }).done(function (amount) {
-                    $(".experience-income").text("+" + (amount/100).toFixed(2));
+                    $couponExpectedInterest.text("+" + (amount/100).toFixed(2));
                     $btnLookOther.prop('disabled', false);
                 });
             }
