@@ -57,6 +57,9 @@
         width: 270px;
       }
     }
+    .info span {
+      display: none;
+    }
   }
   .company-info {
     width: 48%;
@@ -246,10 +249,11 @@
       &.mobile {
         display: block;
         height:auto;
+        margin-bottom:15px;
       }
     }
       .info span {
-        display: none;
+        display: block;
       }
     }
   }
