@@ -235,15 +235,15 @@
                     <li><i>●</i><a href="#">拓天速贷官网全新升级迈入2.0智能金融信息服务时代</a> <time>2015-12-21 01:52</time></li>
                 </ul>
                 <ul class="media-logo-list fr">
-                    <li><a href="http://news.ifeng.com/a/20151028/46027672_0.shtml" target="_blank"><img src="${staticServer}/images/sign/media/fenghuang.png" alt="凤凰网"> </a> </li>
-                    <li><a href="http://toutiao.com/news/6233268186905575938/" target="_blank"><img src="${staticServer}/images/sign/media/jinritoutiao.png" alt="今日头条"> </a> </li>
-                    <li><a href="http://msn.ynet.com/3.1/1512/16/10626316.html" target="_blank"><img src="${staticServer}/images/sign/media/msn.png" alt="MSN"> </a> </li>
-                    <li><a href="http://news.dichan.sina.com.cn/2015/10/28/1131448.html" target="_blank"><img src="${staticServer}/images/sign/media/sina.png" alt="新浪"> </a> </li>
-                    <li><a href="http://house.qq.com/a/20151221/035341.htm" target="_blank"><img src="${staticServer}/images/sign/media/tengxun.png" alt="腾讯"> </a> </li>
-                    <li><a href="http://help.3g.163.com/0406/15/0930/16/B4P96I6K0406002E.html" target="_blank"><img src="${staticServer}/images/sign/media/wangyi.png" alt="网易"> </a> </li>
-                    <li><a href="http://yueyu.cntv.cn/2015/10/28/ARTI1446021624023304.shtml" target="_blank"><img src="${staticServer}/images/sign/media/yangshi.png" alt="央视"> </a> </li>
-                    <li><a href="http://money.china.com/fin/lc/201509/29/3549074.html" target="_blank"><img src="${staticServer}/images/sign/media/zhonghuawang.png" alt="中华网"> </a> </li>
-                </ul>
+                    <li><a href="http://house.qq.com/a/20151221/035341.htm" target="_blank"></a> </li>
+                    <li><a href="http://yueyu.cntv.cn/2015/10/28/ARTI1446021624023304.shtml" target="_blank"></a> </li>
+                    <li><a href="http://msn.ynet.com/3.1/1512/16/10626316.html" target="_blank"></a> </li>
+                    <li><a href="http://news.dichan.sina.com.cn/2015/10/28/1131448.html" target="_blank"></a> </li>
+                    <li><a href="http://news.ifeng.com/a/20151028/46027672_0.shtml" target="_blank"></a> </li>
+                    <li><a href="http://help.3g.163.com/0406/15/0930/16/B4P96I6K0406002E.html" target="_blank"></a> </li>
+                    <li><a href="http://money.china.com/fin/lc/201509/29/3549074.html" target="_blank"></a> </li>
+                    <li><a href="http://yueyu.cntv.cn/2015/10/28/ARTI1446021624023304.shtml" target="_blank"></a> </li>
+                  </ul>
             </div>
         </div>
 

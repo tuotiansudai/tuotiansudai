@@ -653,10 +653,10 @@ body {
       .media-list {
         width:563px;
         li {
-          font-size: 13px;
+          font-size: 14px;
           color: #b2b2b2;
           padding-top:5px;
-          padding-bottom: 10px;
+          padding-bottom: 13px;
           position: relative;
           &:nth-last-child(1) {
             padding-bottom: 0px;
@@ -679,19 +679,19 @@ body {
         }
       }
       .media-logo-list {
-        width:380px;
+        width: 367px;
+        height: 220px;
+        background: url("/images/sign/bg-media.png") right 0 no-repeat;
         li {
           display: inline-block;
-          margin-left:20px;
-          margin-bottom: 10px;
-          img{
-            &:hover {
-              transform:scale(1.2);
-              -webkit-transform:scale(1.2);
-              -moz-transform:scale(1.2);
-              -o-transform:scale(1.2);
-              -ms-transform:scale(1.2);
-            }
+          margin-left: 18px;
+          width: 44%;
+          height:47px;
+          a {
+            display: block;
+            cursor: pointer;
+            width:100%;
+            height:100%;
           }
         }
       }
