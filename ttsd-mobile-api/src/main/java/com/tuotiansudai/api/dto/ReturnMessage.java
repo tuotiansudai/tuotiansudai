@@ -98,6 +98,14 @@ public enum ReturnMessage {
 
     USER_IS_DISABLED("0049", "登录尝试次数过多，用户已被禁用"),
     CANNOT_GET_APK_VERSION("0060", "查找不到版本信息"),
+    /******自动投标******/
+    AUTO_INVEST_PLAN_NOT_EXIST("0061","自动投标计划不存在"),
+    MIN_NOT_EXCEED_MAX_INVEST_AMOUNT("0062","最小投资金额不能超过最大投资金额"),
+    MIN_INVEST_AMOUNT_NOT_NULL("0063","最小投资金额不能空"),
+    MAX_INVEST_AMOUNT_NOT_NULL("0064","最大投资金额不能空"),
+    RETENTION_AMOUNT_NOT_NULL("0065","保留金额不能空"),
+    AUTO_INVEST_PERIODS_NOT_NULL("0066","保留金额不能空"),
+
 
     /******提现******/
     WITHDRAW_AMOUNT_NOT_REACH_FEE("0070","提现金额需大于手续费"),
@@ -107,6 +115,7 @@ public enum ReturnMessage {
 
     /******手机端修改密码******/
     CHANGEPASSWORD_INVALID_PASSWORD("0090", "原密码错误"),
+
 
     BAD_REQUEST("0400", "非法请求"),
     UNAUTHORIZED("0401", "未授权");

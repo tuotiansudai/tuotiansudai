@@ -71,6 +71,8 @@ public class MobileAppAutoInvestPlanInfoServiceTest  {
 
     }
 
+
+
     private UserModel createUserModelTest() {
         UserModel userModelTest = new UserModel();
         userModelTest.setLoginName("helloworld");
