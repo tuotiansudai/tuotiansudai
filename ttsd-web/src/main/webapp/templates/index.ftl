@@ -223,16 +223,16 @@
         <div class="page-width clearfix media-coverage-box margin-top25 media-hide">
             <h3 class="label-title">
                 <span class="media-coverage-icon"></span>
-                <a href="/" class="hot-more">更多>></a>
+                <a href="/about/media" class="hot-more">更多>></a>
             </h3>
 
             <div class="box-radius clearfix">
                 <ul class="media-list fl">
-                    <li><i>●</i><a href="#">拓天速贷官网全新升级迈入2.0智能金融信息服务时代</a> <time>2015-12-21 01:52</time></li>
-                    <li><i>●</i><a href="#">拓天速贷官网全新升级迈入2.0智能金融信息服务时代</a> <time>2015-12-21 01:52</time></li>
-                    <li><i>●</i><a href="#">拓天速贷官网全新升级迈入2.0智能金融信息服务时代</a> <time>2015-12-21 01:52</time></li>
-                    <li><i>●</i><a href="#">拓天速贷官网全新升级迈入2.0智能金融信息服务时代</a> <time>2015-12-21 01:52</time></li>
-                    <li><i>●</i><a href="#">拓天速贷官网全新升级迈入2.0智能金融信息服务时代</a> <time>2015-12-21 01:52</time></li>
+                    <li><i>●</i><a href="http://house.qq.com/a/20151221/035341.htm" target="_blank">拓天速贷官网全新升级 迈入2.0智能金融信息服务时代</a> <time>2015-12-21</time></li>
+                    <li><i>●</i><a href="http://toutiao.com/news/6233268186905575938/" target="_blank">拓天速贷以卓越风控打造高效资产平台</a> <time>2015-12-28</time></li>
+                    <li><i>●</i><a href="http://money.cri.cn/303/2015/12/16/124s17791.htm" target="_blank">拓天速贷走进石家庄 双十二财富送到家</a> <time>2015-12-16</time></li>
+                    <li><i>●</i><a href="http://money.china.com/fin/lc/201509/29/3549074.html" target="_blank">拓天速贷：高效资产平台的缔造者</a> <time>2015-09-29</time></li>
+                    <li><i>●</i><a href="http://news.dichan.sina.com.cn/2015/10/28/1131448.html" target="_blank">拓天速贷推出累积收益?兑大奖活动</a> <time>2015-10-28</time></li>
                 </ul>
                 <ul class="media-logo-list fr">
                     <li><a href="http://house.qq.com/a/20151221/035341.htm" target="_blank" class="qq"></a> </li>
