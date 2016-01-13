@@ -68,6 +68,9 @@ public class CouponInvestServiceImpl implements CouponInvestService {
     public void investCallback(long investId) {
         LoanModel loanModel = loanMapper.findById(investId);
         UserCouponModel userCouponModel = userCouponMapper.findByInvestId(investId);
+        if (userCouponModel == null) {
+            return;
+        }
         userCouponModel.setLoanId(loanModel.getId());
         userCouponModel.setInvestId(investId);
         userCouponModel.setUsedTime(new Date());
@@ -80,8 +83,8 @@ public class CouponInvestServiceImpl implements CouponInvestService {
             duration = repayTimes * daysOfMonth;
         }
         long expectedInterest = InterestCalculator.calculateInterest(loanModel, coupon.getAmount() * duration);
-        userCouponModel.setExpectedInterest(expectedInterest);
         long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        userCouponModel.setExpectedInterest(expectedInterest);
         userCouponModel.setExpectedFee(expectedFee);
         userCouponMapper.update(userCouponModel);
 

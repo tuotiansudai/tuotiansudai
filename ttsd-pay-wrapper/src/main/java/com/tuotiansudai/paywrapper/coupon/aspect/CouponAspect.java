@@ -59,7 +59,7 @@ public class CouponAspect {
             long investId = Long.parseLong(baseDto.getData().getFields().get("order_id"));
             Long userCouponId = null;
             try {
-                if (Strings.isNullOrEmpty(investDto.getUserCouponId())) {
+                if (!Strings.isNullOrEmpty(investDto.getUserCouponId())) {
                     userCouponId = Long.parseLong(investDto.getUserCouponId());
                 }
             } catch (NumberFormatException e) {
@@ -72,7 +72,11 @@ public class CouponAspect {
     @After(value = "execution(* com.tuotiansudai.paywrapper.service.InvestService.investSuccess(..))")
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
         InvestModel investModel = (InvestModel) joinPoint.getArgs()[1];
-        couponInvestService.investCallback(investModel.getId());
+        try {
+            couponInvestService.investCallback(investModel.getId());
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
     }
 }
 
