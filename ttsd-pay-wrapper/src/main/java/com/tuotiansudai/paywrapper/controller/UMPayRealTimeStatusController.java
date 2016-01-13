@@ -21,19 +21,19 @@ public class UMPayRealTimeStatusController {
 
     @RequestMapping(path = "/user/{loginName}", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, String> getRealTimeStatus(@PathVariable String loginName) {
+    public Map<String, String> getRealTimeUserStatus(@PathVariable String loginName) {
         return payRealTimeStatusService.getUserStatus(loginName);
     }
 
     @RequestMapping(path = "/platform", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, String> getRealTimeStatus() {
+    public Map<String, String> getRealTimePlatformStatus() {
         return payRealTimeStatusService.getPlatformStatus();
     }
 
     @RequestMapping(path = "/loan/{loanId}", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, String> getRealTimeStatus(@PathVariable long loanId) {
+    public Map<String, String> getRealTimeLoanStatus(@PathVariable long loanId) {
         return payRealTimeStatusService.getLoanStatus(loanId);
     }
 
@@ -41,5 +41,13 @@ public class UMPayRealTimeStatusController {
     @ResponseBody
     public BaseDto<PayDataDto> checkLoanAmount(@PathVariable long loanId) {
         return payRealTimeStatusService.checkLoanAmount(loanId);
+    }
+
+    @RequestMapping(path = "/transfer/order-id/{orderId}/mer-date/{merDate}/business-type/{businessType}", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, String> getRealTimeTransferStatus(@PathVariable String orderId,
+                                                         @PathVariable String merDate,
+                                                         @PathVariable String businessType) {
+        return payRealTimeStatusService.getTransferStatus(orderId, merDate, businessType);
     }
 }
