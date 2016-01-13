@@ -9,6 +9,7 @@ import org.mockito.Mock;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class MobileAppInvestListControllerTest extends ControllerTestBase {
 
@@ -25,9 +26,11 @@ public class MobileAppInvestListControllerTest extends ControllerTestBase {
 
     @Test
     public void shouldQueryInvestListIsOk() throws Exception {
+        InvestListRequestDto investListRequestDto = new InvestListRequestDto();
+        investListRequestDto.setLoanId("12345678");
         when(service.generateInvestList(any(InvestListRequestDto.class))).thenReturn(successResponseDto);
         doRequestWithServiceMockedTest("/get/invests",
-                new InvestListRequestDto());
+                investListRequestDto);
     }
     @Test
     public void shouldQueryInvestListIsBadRequest() throws Exception {
@@ -36,8 +39,8 @@ public class MobileAppInvestListControllerTest extends ControllerTestBase {
         investListRequestDto.setPageSize(10);
         investListRequestDto.setLoanId("abc123");
         when(service.generateInvestList(any(InvestListRequestDto.class))).thenReturn(successResponseDto);
-        doRequestWithServiceMockedTest("/get/invests",
-                investListRequestDto);
+        doRequestWithServiceIsOkMockedTest("/get/invests",
+                investListRequestDto).andExpect(jsonPath("$.code").value("0023"));
     }
 
     @Test

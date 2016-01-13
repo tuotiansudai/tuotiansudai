@@ -9,4 +9,6 @@ public interface UMPayRealTimeStatusService {
     Map<String, String> getPlatformStatus();
 
     Map<String, String> getLoanStatus(long loanId);
+
+    Map<String,String> getTransferStatus(String orderId, String merDate, String businessType);
 }
