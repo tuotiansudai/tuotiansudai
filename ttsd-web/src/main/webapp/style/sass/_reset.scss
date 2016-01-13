@@ -31,7 +31,7 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
 }
-input,button,select,textarea{outline:none}
+input,button,select,textarea{outline:none; }
 textarea{resize:none}
 
 input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {

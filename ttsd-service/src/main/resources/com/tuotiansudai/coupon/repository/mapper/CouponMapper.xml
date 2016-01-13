@@ -40,11 +40,11 @@
     </select>
 
     <select id="findNewbieCoupon" resultMap="couponResultMap">
-        select * from coupon where coupon_type = 'NEWBIE_COUPON';
+        select * from coupon where coupon_type = 'NEWBIE_COUPON' and deleted is FALSE;
     </select>
 
     <select useCache="false" id="lockById" parameterType="java.lang.Long" resultMap="couponResultMap">
-        select * from coupon where id = #{id} for update
+        select * from coupon where id = #{id} and deleted is FALSE for update
     </select>
 
     <select id="findCoupons" parameterType="map" resultMap="couponResultMap">

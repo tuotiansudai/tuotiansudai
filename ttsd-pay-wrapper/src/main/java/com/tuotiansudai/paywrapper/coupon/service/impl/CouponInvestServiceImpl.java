@@ -10,12 +10,15 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.LoanPeriodUnit;
+import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 
@@ -51,7 +54,8 @@ public class CouponInvestServiceImpl implements CouponInvestService {
 
         if (InvestStatus.SUCCESS != userCouponModel.getStatus()
                 && new DateTime(couponModel.getEndTime()).plusDays(1).withTimeAtStartOfDay().isAfterNow()
-                && couponModel.getProductTypes().contains(loanModel.getProductType())) {
+                && couponModel.getProductTypes().contains(loanModel.getProductType())
+                && investModel.getAmount() >= couponModel.getInvestLowerLimit()) {
             userCouponModel.setInvestId(investId);
             userCouponMapper.update(userCouponModel);
         } else {
@@ -68,6 +72,17 @@ public class CouponInvestServiceImpl implements CouponInvestService {
         userCouponModel.setInvestId(investId);
         userCouponModel.setUsedTime(new Date());
         userCouponModel.setStatus(InvestStatus.SUCCESS);
+        CouponModel coupon = couponMapper.findById(userCouponModel.getCouponId());
+        int repayTimes = loanModel.calculateLoanRepayTimes();
+        int daysOfMonth = 30;
+        int duration = loanModel.getPeriods();
+        if (loanModel.getType().getLoanPeriodUnit() == LoanPeriodUnit.MONTH) {
+            duration = repayTimes * daysOfMonth;
+        }
+        long expectedInterest = InterestCalculator.calculateInterest(loanModel, coupon.getAmount() * duration);
+        userCouponModel.setExpectedInterest(expectedInterest);
+        long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        userCouponModel.setExpectedFee(expectedFee);
         userCouponMapper.update(userCouponModel);
 
         CouponModel couponModel = couponMapper.lockById(userCouponModel.getCouponId());

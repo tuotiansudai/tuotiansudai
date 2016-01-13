@@ -215,12 +215,11 @@
                 </span>
             </h3>
             <div class="clear-blank invest-total">
-                <span class="fl">累计投资人数: 
+                <span class="fl">累计投资人数:
                     <strong data-count="${userCount}" id="userCount">${userCount}</strong>人
                 </span>
             </div>
         </div>
-
     </div>
     <#if newbieCoupon??>
         <div class="activity-coupon-model" id="couponModel">

@@ -2,7 +2,6 @@ package com.tuotiansudai.coupon.service.impl;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
@@ -15,6 +14,7 @@ import com.tuotiansudai.dto.SmsCouponNotifyDto;
 import com.tuotiansudai.job.CouponNotifyJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
@@ -53,6 +53,19 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
+
+    @Transactional
+    @Override
+    public void inactive(String loginNameLoginName, long couponId) {
+        CouponModel couponModel = couponMapper.findById(couponId);
+        if (!couponModel.isActive() || couponModel.getCouponType() != CouponType.NEWBIE_COUPON) {
+            return;
+        }
+        couponModel.setActive(false);
+        couponModel.setActivatedBy(loginNameLoginName);
+        couponModel.setActivatedTime(new Date());
+        couponMapper.updateCoupon(couponModel);
+    }
 
     @Transactional
     @Override

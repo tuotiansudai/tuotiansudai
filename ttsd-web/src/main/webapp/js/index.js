@@ -57,8 +57,7 @@ require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
         var viewport=commonFun.browserRedirect();
         if(viewport=='pc') {
             $imgScroll.find('img.iphone-img').remove();
-        }
-        else if(viewport=='mobile') {
+        } else if(viewport=='mobile') {
             $imgScroll.find('img.pc-img').remove();
             $imgScroll.find('img.iphone-img').css({'margin-left': '0px'});
         }

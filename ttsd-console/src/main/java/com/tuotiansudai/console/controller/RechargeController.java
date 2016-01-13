@@ -72,7 +72,7 @@ public class RechargeController {
                 dataModel.add(rechargePaginationItemDataDtos.get(i).getAmount());
                 dataModel.add(rechargePaginationItemDataDtos.get(i).getFee());
                 dataModel.add(rechargePaginationItemDataDtos.get(i).getBankCode());
-                dataModel.add("TODO");
+                dataModel.add(rechargePaginationItemDataDtos.get(i).isFastPay()?"是":"否");
                 dataModel.add(rechargePaginationItemDataDtos.get(i).getStatus());
                 dataModel.add(rechargePaginationItemDataDtos.get(i).getSource().name());
                 dataModel.add(rechargePaginationItemDataDtos.get(i).getChannel());

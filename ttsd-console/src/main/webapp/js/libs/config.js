@@ -23,7 +23,8 @@ var require = {
         'autoNumeric': '/js/libs/autoNumeric-2.0-BETA',
         'echarts': '/js/libs/echarts/dist/echarts.min',
         'loadEcharts':'/js/loadEcharts',
-        'underscore': '/js/libs/underscore-1.8.3.min'
+        'underscore': '/js/libs/underscore-1.8.3.min',
+        'pageNumber':'/js/libs/jquery.pageflip'
     },
     'waitSeconds':0,
     'shim': {
@@ -36,7 +37,8 @@ var require = {
         'jquery.validate': ['jquery'],
         'Validform': ['jquery'],
         'Validform_Datatype':['jquery'],
-        'autoNumeric': ['jquery']
+        'autoNumeric': ['jquery'],
+        'pageNumber':['jquery']
     }
 };
 
