@@ -12,7 +12,7 @@ import java.util.List;
 
 public class AutoInvestPlanRequestDto extends BaseParamDto {
     @Pattern(regexp = "^\\d+$",message = "0023")
-    private String pid;
+    private String id;
     @NotEmpty(message = "0063")
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$",message = "0023")
     private String minInvestAmount;
@@ -27,12 +27,12 @@ public class AutoInvestPlanRequestDto extends BaseParamDto {
 
     private boolean enabled;
 
-    public String getPid() {
-        return pid;
+    public String getId() {
+        return id;
     }
 
-    public void setPid(String pid) {
-        this.pid = pid;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getMinInvestAmount() {
@@ -77,8 +77,8 @@ public class AutoInvestPlanRequestDto extends BaseParamDto {
 
     public AutoInvestPlanModel convertDtoToModel(){
         AutoInvestPlanModel autoInvestPlanModel = new AutoInvestPlanModel();
-        if(StringUtils.isNotEmpty(this.getPid())){
-            autoInvestPlanModel.setId(Long.parseLong(this.getPid()));
+        if(StringUtils.isNotEmpty(this.getId())){
+            autoInvestPlanModel.setId(Long.parseLong(this.getId()));
         }
         autoInvestPlanModel.setLoginName(this.getBaseParam().getUserId());
         autoInvestPlanModel.setMinInvestAmount(AmountConverter.convertStringToCent(this.getMinInvestAmount()));
