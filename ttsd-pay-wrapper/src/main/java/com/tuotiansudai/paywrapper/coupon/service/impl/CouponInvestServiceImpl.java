@@ -56,7 +56,9 @@ public class CouponInvestServiceImpl implements CouponInvestService {
                 && new DateTime(couponModel.getEndTime()).plusDays(1).withTimeAtStartOfDay().isAfterNow()
                 && couponModel.getProductTypes().contains(loanModel.getProductType())
                 && investModel.getAmount() >= couponModel.getInvestLowerLimit()) {
+            userCouponModel.setStatus(InvestStatus.WAIT_PAY);
             userCouponModel.setInvestId(investId);
+            userCouponModel.setLoanId(loanModel.getId());
             userCouponMapper.update(userCouponModel);
         } else {
             logger.debug(MessageFormat.format("user coupon ({0}) is unusable!", String.valueOf(userCouponId)));
@@ -66,11 +68,12 @@ public class CouponInvestServiceImpl implements CouponInvestService {
     @Override
     @Transactional
     public void investCallback(long investId) {
-        LoanModel loanModel = loanMapper.findById(investId);
         UserCouponModel userCouponModel = userCouponMapper.findByInvestId(investId);
         if (userCouponModel == null) {
             return;
         }
+        InvestModel investModel = investMapper.findById(investId);
+        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         userCouponModel.setLoanId(loanModel.getId());
         userCouponModel.setInvestId(investId);
         userCouponModel.setUsedTime(new Date());
