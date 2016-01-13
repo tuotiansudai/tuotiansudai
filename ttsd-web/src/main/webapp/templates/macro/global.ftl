@@ -33,11 +33,12 @@
     {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'INVESTOR', 'LOANER'"},
     {"title":"我的宝藏", "url":"/my-treasure", "role":"'INVESTOR', 'LOANER'"}
     ]},
-    {"title":"推荐奖励", "url":"/activity/refer-reward"},
+    {"title":"新手指引", "url":"/activity/refer-reward"},
     {"title":"关于我们", "url":"/about/company", "leftNavs":[
     {"title":"公司介绍", "url":"/about/company"},
     {"title":"团队介绍", "url":"/about/team"},
     {"title":"拓天公告", "url":"/about/notice"},
+    {"title":"推荐奖励", "url":"/about/refer-reward"},
     {"title":"服务费用", "url":"/about/service-fee"},
     {"title":"常见问题", "url":"/about/qa"},
     {"title":"联系我们", "url":"/about/contact"}

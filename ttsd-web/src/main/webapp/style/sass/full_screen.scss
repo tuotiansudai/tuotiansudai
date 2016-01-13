@@ -909,6 +909,20 @@ body {
     b {
       display: block;
     }
+    .down-icon{
+      -webkit-animation: fade 3s infinite linear;
+      animation: fade 3s infinite linear;
+    }
+    @-webkit-keyframes fade {
+      0% { opacity: 1;}
+      50% { opacity: 0.3;}
+      100% { opacity: 1;}
+    }
+    @keyframes fade {
+      0% { opacity: 1;}
+      50% { opacity: 0.3;}
+      100% { opacity: 1;}
+    }
   }
   .box-benift {
     .page-width {
@@ -983,6 +997,125 @@ body {
     }
 }
 
+
+/* new guide page  */
+.newguide-container {
+  padding-top: 10px;
+  color: #fff;
+  font-size: 14px;
+  .page-width{
+    position: relative;
+    height:100%;
+    .down {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      bottom:30px;
+      b {
+        display: block;
+        font-weight: lighter;
+        &.text-gray{
+          color:#ccc;
+        }
+      }
+      .down-icon{
+        -webkit-animation: fade 3s infinite linear;
+        animation: fade 3s infinite linear;
+      }
+      @-webkit-keyframes fade {
+        0% { opacity: 1;}
+        50% { opacity: 0.3;}
+        100% { opacity: 1;}
+      }
+      @keyframes fade {
+        0% { opacity: 1;}
+        50% { opacity: 0.3;}
+        100% { opacity: 1;}
+      }
+    }
+  }
+  .intro-text{
+    background:url("/images/sign/guide-bg.png") no-repeat center fixed;
+    .flex-model{
+      width:100%;
+      position: absolute;
+      top:50%;
+      left:50px;
+      margin-top:-180px; 
+      p{
+        color:#fff;
+        margin-bottom:0;
+        &.intro-title{
+          font-size:56px;
+          line-height:56px;
+        }
+        &.intro-english{
+          font-size:36px;
+          font-weight: lighter;
+          font-family: sans-serif;
+        }
+        &.text-name{
+          font-size:20px;
+          margin-top:85px;
+        }
+        &.intro-detail{
+          font-size:16px;
+          line-height:22px;
+          margin-top:30px;
+        }
+        &.intro-restext{
+          font-size:16px;
+          line-height:22px;
+          margin-top:30px;
+          display:none;
+        }
+      }
+    }
+  }
+  .mode-operation{
+    float:left;
+    width:100%;
+    margin-top:120px;
+    p{
+      float:left;
+      width:100%;
+      color:#808080;
+      text-align:center;
+      &.mode-title{
+        font-size:30px;
+        margin-bottom:0;
+        line-height: 30px;
+        span{
+          color:#449be2;
+        }
+      }
+      &.title-word{
+        font-size:18px;
+        margin-bottom:40px;
+      }
+      &.user-register{
+        margin-top:50px;
+        a{
+          padding:10px 100px;
+          text-align:center;
+          background:#ff9c2b;
+          color:#fff;
+          border-radius:5px;
+          line-height:40px;
+        }
+      }
+      &.pc-img{
+        display:block;
+      }
+      &.responsive-img{
+        display:none;
+      }
+    }
+  }
+  .intro-text{
+    background:url("/images/sign/guide-bg.png") no-repeat center fixed;
+  }
+}
 /* refer reward page */
 .refer-reward-instruction {
   overflow: hidden;
@@ -1286,7 +1419,89 @@ body {
       }
     }
   }
-
+  /* new guide page  */
+  .newguide-container {
+    .page-width{
+      .down {
+        bottom:0!important;
+      }
+    }
+    .intro-text{
+      background:url("/images/sign/wap-bg.png") no-repeat center!important;
+      .flex-model{
+        float:left;
+        width:100%;
+        position: static;
+        top:0;
+        left:0;
+        margin-top:0; 
+        p{
+          color:#fff;
+          margin:0 20px;
+          &.intro-title{
+            font-size:36px;
+            line-height:36px;
+            margin-top:100px;
+          }
+          &.intro-english{
+            font-size:14px;
+            letter-spacing:6px;
+          }
+          &.text-name{
+            font-size:16px;
+            margin-top:30px;
+          }
+          &.intro-detail{
+            display:none;
+          }
+          &.intro-restext{
+            display:block;
+          }
+        }
+      }
+    }
+    .mode-operation{
+      margin-top:50px;
+      p{
+        float:left;
+        width:100%;
+        color:#808080;
+        text-align:center;
+        &.mode-title{
+          font-size:26px;
+          margin-bottom:0;
+          line-height: 26px;
+          span{
+            color:#449be2;
+          }
+        }
+        &.title-word{
+          font-size:16px;
+          margin-bottom:20px;
+        }
+        &.user-register{
+          margin-top:10px;
+          a{
+            padding:10px 100px;
+            text-align:center;
+            background:#ff9c2b;
+            color:#fff;
+            border-radius:5px;
+            line-height:40px;
+          }
+        }
+        &.pc-img{
+          display:none;
+        }
+        &.responsive-img{
+          display:block;
+        }
+      }
+    }
+    .intro-text{
+      background:url("/images/sign/guide-bg.png") no-repeat center fixed;
+    }
+  }
 }
 
 @media screen and (max-width: 700px) {
