@@ -97,7 +97,9 @@ public class CouponServiceImpl implements CouponService {
         Optional<CouponModel> found = Iterators.tryFind(newbieCoupons.iterator(), new Predicate<CouponModel>() {
             @Override
             public boolean apply(CouponModel couponModel) {
-                return couponModel.isActive() && couponModel.getEndTime().after(new DateTime().withTimeAtStartOfDay().toDate());
+                return couponModel.isActive()
+                        && couponModel.getStartTime().compareTo(new DateTime().withTimeAtStartOfDay().toDate()) < 0
+                        && couponModel.getEndTime().after(new DateTime().withTimeAtStartOfDay().toDate());
             }
         });
 
