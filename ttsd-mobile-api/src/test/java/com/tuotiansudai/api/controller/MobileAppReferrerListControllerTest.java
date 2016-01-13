@@ -1,6 +1,5 @@
 package com.tuotiansudai.api.controller;
 
-import com.tuotiansudai.api.dto.RechargeListRequestDto;
 import com.tuotiansudai.api.dto.ReferrerListRequestDto;
 import com.tuotiansudai.api.service.MobileAppReferrerListService;
 import org.junit.Test;
