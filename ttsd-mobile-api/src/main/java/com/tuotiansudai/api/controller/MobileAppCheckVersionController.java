@@ -91,7 +91,7 @@ public class MobileAppCheckVersionController extends MobileAppBaseController {
         while((i=is.read())!=-1){
             byteArrayOutputStream.write(i);
         }
-        return byteArrayOutputStream.toString();
+        return byteArrayOutputStream.toString("utf-8");
     }
 
 }
