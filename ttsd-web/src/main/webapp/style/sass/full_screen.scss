@@ -782,84 +782,6 @@ body {
       }
     }
   }
-  .activity-coupon-model{
-    width:100%;
-    height:100%;
-    position: fixed;
-    top:0;
-    left:0;
-    background:rgba(0,0,0,0.5);
-    z-index:999;
-    .coupon-model-list{
-      float:left;
-      width:590px;
-      height:546px;
-      position: relative;
-      top:50%;
-      left:50%;
-      margin-top:-273px;
-      margin-left:-295px;
-      background:url("/images/sign/activities/coupon-bag-info.png") no-repeat center;
-      .coupon-close{
-        width:28px;
-        height:28px;
-        cursor:pointer;
-        position: absolute;
-        top:87px;
-        left:464px;
-        background:url("/images/sign/activities/coupon-close.png") no-repeat center;
-      }
-      .coupon-text{
-        width: 204px;
-        height: 48px;
-        position: absolute;
-        top: 174px;
-        left: 176px;
-        text-align: center;
-        color: #ff752a;
-        line-height: 40px;
-        span{
-          &.text-number{
-            font-size:40px;
-          }
-          &.text-unit{
-            font-size:30px;
-          }
-        }
-      }
-      .coupon-name{
-        width: 220px;
-        height: 26px;
-        position: absolute;
-        top: 222px;
-        left: 176px;
-        text-align: center;
-        color: #ff752a;
-        line-height: 26px;
-        font-size: 20px;
-        letter-spacing: 8px;
-      }
-      .coupon-time{
-        width:204px;
-        height:32px;
-        position: absolute;
-        top:252px;
-        left:182px;
-        text-align:center;
-        color:#59310d;
-        font-size:14px;
-        line-height:32px;
-      }
-      .coupon-link{
-        width:150px;
-        height:40px;
-        position: absolute;
-        top:340px;
-        left:208px;
-        background:url("/images/sign/activities/see-link-btn.png") no-repeat center;
-      }
-    }
-  }
 
 }
 
@@ -1238,6 +1160,7 @@ body {
       &.title-word{
         font-size:18px;
         margin-bottom:40px;
+        color:#b3b3b3;
       }
       &.user-register{
         margin-top:50px;
@@ -1375,6 +1298,7 @@ body {
     top: 370px;
   }
 }
+
 @media screen and (max-width: 700px) {
   .home-page-container {
     .main-advantage, .register-ad-box {
@@ -1570,6 +1494,9 @@ body {
     .page-width{
       .down {
         bottom:0!important;
+        b {
+          display: none;
+        }
       }
     }
     .intro-text{
@@ -1580,7 +1507,7 @@ body {
         position: static;
         top:0;
         left:0;
-        margin-top:0; 
+        margin-top:0;
         p{
           color:#fff;
           margin:0 20px;
@@ -1648,9 +1575,6 @@ body {
       background:url("/images/sign/guide-bg.png") no-repeat center fixed;
     }
   }
-}
-
-@media screen and (max-width: 700px) {
   .refer-reward-instruction {
     .refer-reward-bg {
       background: #fff;
@@ -1814,13 +1738,6 @@ body {
 
 @media screen \0
 {
-  //IE8-10
-  .activity-coupon-model{
-    background-color:#000000;
-    filter:Alpha(opacity=50);
-    position:static;
-    *zoom:1;
-  }
   .home-page-container {
     .main-advantage {
       dl dd {

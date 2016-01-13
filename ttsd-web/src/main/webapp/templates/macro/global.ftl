@@ -33,7 +33,7 @@
     {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'INVESTOR', 'LOANER'"},
     {"title":"我的宝藏", "url":"/my-treasure", "role":"'INVESTOR', 'LOANER'"}
     ]},
-    {"title":"新手指引", "url":"/activity/refer-reward"},
+    {"title":"新手指引", "url":"/activity/guide"},
     {"title":"关于我们", "url":"/about/company", "leftNavs":[
     {"title":"公司介绍", "url":"/about/company"},
     {"title":"团队介绍", "url":"/about/team"},
@@ -79,9 +79,10 @@
         </#if>
     </div>
 </div>
-<div class="main-frame full-screen swiper-container">
+<div class="main-frame full-screen ">
     <#list menus as menu>
         <#if activeNav?? && activeNav==menu.title && menu.leftNavs??>
+        <div class="swiper-container">
             <ul class="left-nav swiper-wrapper">
                 <#list menu.leftNavs as leftNav>
                     <#if leftNav.role??>
@@ -93,6 +94,7 @@
                     </#if>
                 </#list>
             </ul>
+        </div>
         </#if>
     </#list>
     <#nested>

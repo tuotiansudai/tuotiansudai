@@ -254,29 +254,13 @@
 
             <div class="box-radius clearfix">
                 <ul>
-                    <li><img src="${staticServer}/images/sign/partner/jingdu.png"></li>
-                    <li><img src="${staticServer}/images/sign/partner/liandongyoushi.png"></li>
+                    <li><a href="http://www.king-capital.com/" target="_blank"> <img src="${staticServer}/images/sign/partner/jingdu.png"></a></li>
+                    <li><a href="http://www.umpay.com/umpay_cms/" target="_blank"><img src="${staticServer}/images/sign/partner/liandongyoushi.png"></a> </li>
                 </ul>
              </div>
             </div>
     </div>
-    <#if showCoupon>
-        <div class="activity-coupon-model" id="couponModel">
-            <div class="coupon-model-list">
-                <div class="coupon-close">
-                </div>
-                <div class="coupon-text">
-                    <span class="text-number"><@amount>${(amountCoupon?string('0.00'))!}</@amount></span>
-                    <span class="text-unit">元</span>
-                </div>
-                <div class="coupon-name">${nameCoupon}</div>
-                <div class="coupon-time">
-                    请在${(endTimeCoupon?string('yyyy-MM-dd'))!}前使用
-                </div>
-                <a href="/my-treasure" class="coupon-link"></a>
-            </div>
-        </div>
-    </#if>
+
 
 </div>
 
