@@ -242,7 +242,7 @@
                     <li><a href="http://news.ifeng.com/a/20151028/46027672_0.shtml" target="_blank" class="ifeng"></a> </li>
                     <li><a href="http://help.3g.163.com/0406/15/0930/16/B4P96I6K0406002E.html" target="_blank" class="wangyi"></a> </li>
                     <li><a href="http://money.china.com/fin/lc/201509/29/3549074.html" target="_blank" class="china"></a> </li>
-                    <li><a href="http://yueyu.cntv.cn/2015/10/28/ARTI1446021624023304.shtml" target="_blank" class="toutiao"></a> </li>
+                    <li><a href="http://toutiao.com/news/6233268186905575938/" target="_blank" class="toutiao"></a> </li>
                   </ul>
             </div>
         </div>
