@@ -9,13 +9,18 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.util.Date;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class MobileAppAgreementServiceTest extends ServiceTestBase{
@@ -25,6 +30,9 @@ public class MobileAppAgreementServiceTest extends ServiceTestBase{
 
     @Mock
     private PayWrapperClient payWrapperClient;
+
+    @Mock
+    private AccountMapper accountMapper;
 
     @Test
     public void shouldGenerateAgreementRequestIsOk() {
@@ -39,7 +47,10 @@ public class MobileAppAgreementServiceTest extends ServiceTestBase{
         dataDto.setStatus(true);
         formDto.setData(dataDto);
 
+        AccountModel accountModel = new AccountModel("testuser", "testuser", "identityNumber", "payUserId", "payAccountId", new Date());
+
         when(payWrapperClient.agreement(any(AgreementDto.class))).thenReturn(formDto);
+        when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
         BaseResponseDto<AgreementOperateResponseDataDto> baseResponseDto = mobileAppAgreementService.generateAgreementRequest(agreementOperateRequestDto);
 
         assertTrue(baseResponseDto.isSuccess());

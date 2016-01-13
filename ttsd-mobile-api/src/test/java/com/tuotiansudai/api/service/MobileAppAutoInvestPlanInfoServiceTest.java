@@ -63,7 +63,7 @@ public class MobileAppAutoInvestPlanInfoServiceTest  {
 
         BaseResponseDto<AutoInvestPlanInfoResponseDataDto> baseDto = mobileAppAutoInvestPlanInfoService.getAutoInvestPlanInfoData(baseParamDto);
         assertEquals(true,baseDto.getData().isAutoInvest());
-        assertEquals("" + autoInvestPlanModel.getId(), baseDto.getData().getAutoInvestPlan().getPid());
+        assertEquals("" + autoInvestPlanModel.getId(), baseDto.getData().getAutoInvestPlan().getId());
         assertEquals("1",baseDto.getData().getAutoInvestPlan().getAutoInvestPeriods().get(0).getPid());
         assertEquals("256",baseDto.getData().getAutoInvestPlan().getAutoInvestPeriods().get(8).getPid());
         assertEquals("512",baseDto.getData().getAutoInvestPlan().getAutoInvestPeriods().get(9).getPid());
