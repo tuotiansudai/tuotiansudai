@@ -17,6 +17,8 @@ public class CouponModel implements Serializable {
 
     private long amount;
 
+    private double rate;
+
     private Date startTime;
 
     private Date endTime;
@@ -47,6 +49,8 @@ public class CouponModel implements Serializable {
 
     private long investLowerLimit;
 
+    private long investUpperLimit;
+
     private List<ProductType> productTypes;
 
     private CouponType couponType;
@@ -75,6 +79,14 @@ public class CouponModel implements Serializable {
 
     public void setAmount(long amount) {
         this.amount = amount;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
     }
 
     public Date getStartTime() {
@@ -181,6 +193,13 @@ public class CouponModel implements Serializable {
         this.investLowerLimit = investLowerLimit;
     }
 
+    public long getInvestUpperLimit() {
+        return investUpperLimit;
+    }
+
+    public void setInvestUpperLimit(long investUpperLimit) {
+        this.investUpperLimit = investUpperLimit;
+    }
 
     public UserGroup getUserGroup() {
         return userGroup;
