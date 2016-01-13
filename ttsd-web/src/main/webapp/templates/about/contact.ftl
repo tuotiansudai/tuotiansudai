@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-    <@global.main pageCss="${css.about_us}" pageJavascript="" activeNav="关于我们" activeLeftNav="联系我们" title="联系我们">
+    <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="关于我们" activeLeftNav="联系我们" title="联系我们">
     <div class="about-us-container">
         <h2 class="column-title"><em>联系我们</em></h2>
         <b class="text-m">客户服务</b>
