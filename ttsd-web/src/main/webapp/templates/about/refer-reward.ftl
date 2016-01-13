@@ -34,8 +34,13 @@
     <div class="refer-reward-box mobile">
         <img src="${staticServer}/images/sign/aboutus/give-intro-phone.png" alt="推荐奖励介绍" class="responsive-width">
     </div>
-    <p class="tc">
-        <i class="color-note">注：奖励发放方式请关注平台公告。</i>
+    <p class="tc info">
+        <span>小李再推荐投资人，小张无奖励。 </span> <br/>
+        <i class="color-note">
+            注：奖励发放方式请关注平台公告。</i>
     </p>
 </div>
 </@global.main>
+
+
+

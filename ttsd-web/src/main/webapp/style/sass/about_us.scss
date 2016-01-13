@@ -234,6 +234,7 @@
     }
 
     &.company-summary {
+      h3 { text-align: center;}
       p{
         margin-bottom: 5px;
         font-size: 13px;
@@ -246,9 +247,10 @@
         display: block;
         height:auto;
       }
-      h3 { text-align: center;}
-
     }
+      .info span {
+        display: none;
+      }
     }
   }
 
