@@ -42,6 +42,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             $('.chart-box .rount2').css('webkitTransform', "rotate(" + 3.6 * (java_point - 50) + "deg)");
         }
 
+
         // tab select
         $loanlist.find('.loan-list-con').eq(0).show();
         tabs.click(function () {

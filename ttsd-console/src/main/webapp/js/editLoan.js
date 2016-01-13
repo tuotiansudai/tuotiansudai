@@ -289,7 +289,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
         var currentErrorObj = null;
         function showErrorMessage(msg, obj){
             currentErrorObj = obj;
-            var htm = '<div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <span class="txt">建标失败：'+msg+'</span></div>';
+            var htm = '<div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <span class="txt">' + msg + '</span></div>';
             $('.form-error').append(htm);
         }
 
@@ -345,29 +345,26 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     "loanTitles": uploadFile
                 });
                 $.ajax({
-                    url: API_FORM+operate,
+                    url: API_FORM + operate,
                     type: 'POST',
                     dataType: 'json',
                     data: dataForm,
                     contentType: 'application/json; charset=UTF-8'
-                })
-                    .done(function (res) {
-                        if(res.data.status){
-                            formFlag =true;
-                            location.href='/project-manage/loan-list';
-                        }else{
-                            formFlag =false;
-                            var msg = res.data.message || '服务端校验失败';
-                            showErrorMessage(msg);
-                        }
-                    })
-                    .fail(function () {
-                        console.log("error");
-                        $('.jq-btn-form').removeAttr('disabled');
-                    })
-                    .always(function () {
-                        console.log("complete");
-                    });
+                }).done(function (res) {
+                    if(res.data.status){
+                        formFlag =true;
+                        location.href='/project-manage/loan-list';
+                    }else{
+                        formFlag =false;
+                        var msg = res.data.message || '服务端校验失败';
+                        showErrorMessage(msg);
+                    }
+                }).fail(function () {
+                    console.log("error");
+                    $('.jq-btn-form').removeAttr('disabled');
+                }).always(function () {
+                    console.log("complete");
+                });
             }
         });
     });

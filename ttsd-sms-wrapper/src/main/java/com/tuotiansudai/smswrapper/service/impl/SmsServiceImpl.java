@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.dto.SmsFatalNotifyDto;
+import com.tuotiansudai.repository.model.Environment;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.client.SmsClient;
 import com.tuotiansudai.smswrapper.repository.mapper.*;
@@ -26,6 +27,9 @@ public class SmsServiceImpl implements SmsService {
 
     @Value("#{'${sms.fatal.mobile}'.split('\\|')}")
     private List<String> fatalNotifyMobiles;
+
+    @Value("${common.environment}")
+    private Environment environment;
 
     @Override
     public BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, String captcha, String ip) {
@@ -65,7 +69,10 @@ public class SmsServiceImpl implements SmsService {
         dataDto.setStatus(true);
 
         for (String mobile : fatalNotifyMobiles) {
-            Map<String, String> map = ImmutableMap.<String, String>builder().put("errorMessage", notify.getErrorMessage()).build();
+            Map<String, String> map = ImmutableMap.<String, String>builder()
+                    .put("env", environment.name())
+                    .put("errorMessage", notify.getErrorMessage())
+                    .build();
             String content = SmsTemplate.SMS_FATAL_NOTIFY_TEMPLATE.generateContent(map);
             BaseDto<SmsDataDto> dto = smsClient.sendSMS(FatalNotifyMapper.class, mobile, content, "");
             if (!dto.getData().getStatus()) {
