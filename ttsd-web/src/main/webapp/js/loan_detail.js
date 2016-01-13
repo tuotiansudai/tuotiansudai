@@ -112,6 +112,30 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             });
 
             $ticketList.empty().append(tickets);
+
+            $ticketList.find('li').click(function (event) {
+                var couponItem = $($(event.target).parents("li")).length > 0 ? $($(event.target).parents("li")) : $(event.target);
+                if (couponItem.hasClass("disabled")) {
+                    return false;
+                }
+                var text = $.trim(couponItem.find('.ticket-title').text());
+                $useExperienceTicket.find('span').text(text);
+                $ticketList.addClass('hide');
+
+                var couponAmount = couponItem.data('coupon-amount');
+                $couponExpectedInterest.text("");
+                if (!isNaN(couponAmount)) {
+                    $.ajax({
+                        url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + couponAmount,
+                        type: 'get',
+                        dataType: 'json',
+                        contentType: 'application/json; charset=UTF-8'
+                    }).done(function (amount) {
+                        $couponExpectedInterest.text("+" + (amount/100).toFixed(2));
+                        $btnLookOther.prop('disabled', false);
+                    });
+                }
+            });
         };
 
         var validateInvestAmount = function () {
@@ -190,30 +214,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 event.stopPropagation();
             } else if (window.event) {
                 window.event.cancelBubsuble = true;
-            }
-        });
-
-        $ticketList.find('li').click(function (event) {
-            var couponItem = $($(event.target).parents("li")).length > 0 ? $($(event.target).parents("li")) : $(event.target);
-            if (couponItem.hasClass("disabled")) {
-                return false;
-            }
-            var text = $.trim(couponItem.find('.ticket-title').text());
-            $useExperienceTicket.find('span').text(text);
-            $ticketList.addClass('hide');
-
-            var couponAmount = couponItem.data('coupon-amount');
-            $couponExpectedInterest.text("");
-            if (!isNaN(couponAmount)) {
-                $.ajax({
-                    url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + couponAmount,
-                    type: 'get',
-                    dataType: 'json',
-                    contentType: 'application/json; charset=UTF-8'
-                }).done(function (amount) {
-                    $couponExpectedInterest.text("+" + (amount/100).toFixed(2));
-                    $btnLookOther.prop('disabled', false);
-                });
             }
         });
 
