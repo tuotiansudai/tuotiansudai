@@ -122,5 +122,24 @@
                   data-url="/loan-list?status=${status!}&productType=${productType!}&rateStart=${rateStart!}&rateEnd=${rateEnd!}&index=${index + 1}">下一页</span>
         </div>
     </div>
+
+    <#if showCoupon>
+        <div class="activity-coupon-model" id="couponModel">
+            <div class="coupon-model-list">
+                <div class="coupon-close">
+                </div>
+                <div class="coupon-text">
+                    <span class="text-number"><@amount>${(amountCoupon?string('0.00'))!}</@amount></span>
+                    <span class="text-unit">元</span>
+                </div>
+                <div class="coupon-name">${nameCoupon}</div>
+                <div class="coupon-time">
+                    请在${(endTimeCoupon?string('yyyy-MM-dd'))!}前使用
+                </div>
+                <a href="/my-treasure" class="coupon-link"></a>
+            </div>
+        </div>
+    </#if>
+
 </div>
 </@global.main>
