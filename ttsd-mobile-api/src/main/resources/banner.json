@@ -2,25 +2,33 @@
   {
     "pictureId": "",
     "title": "",
-    "url": "/activity/ranking?source=app",
+    "url": "",
+    "seqNum": 4,
+    "picture": "{static}/images/app-banner/banner-ipo.png",
+    "noticeId": ""
+  },
+  {
+    "pictureId": "",
+    "title": "",
+    "url": "{web}/activity/ranking?source=app",
     "seqNum": 1,
-    "picture": "https://api.tuotiansudai.com/upload/2015121801/20151218012620.png",
+    "picture": "{static}/images/app-banner/activity-ranking.png",
     "noticeId": ""
   },
   {
     "pictureId": "",
     "title": "",
-    "url": "/activity/recruit?source=app",
+    "url": "{web}/activity/recruit?source=app",
     "seqNum": 2,
-    "picture": "https://api.tuotiansudai.com/upload/2015113005/20151130050244.png",
+    "picture": "{static}/images/app-banner/activity-recruit.png",
     "noticeId": ""
   },
   {
     "pictureId": "",
     "title": "",
-    "url": "/activity/grand?source=app",
+    "url": "{web}/activity/grand?source=app",
     "seqNum": 3,
-    "picture": "https://api.tuotiansudai.com/upload/2015110609/20151106091603.png",
+    "picture": "{static}/images/app-banner/activity-grand.png",
     "noticeId": ""
   }
 ]
