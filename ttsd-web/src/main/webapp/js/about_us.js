@@ -63,6 +63,7 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','load-swiper','com
         }
 
         if($('#WhetherApp').length) {
+            var $WhetherApp=$('#WhetherApp');
             if(/app/gi.test(location.search)) {
                 if($('#WhetherApp').find('.res-no-app').length) {
                     $('#WhetherApp').find('.res-no-app').remove();
@@ -70,6 +71,9 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','load-swiper','com
                 $('.header-container,.nav-container,.footer-container').remove();
                 if($('.left-nav').length) {
                     $('.left-nav').remove();
+                }
+                if($('.wap-hide',$WhetherApp).length) {
+                    $('.wap-hide',$WhetherApp).remove();
                 }
             }
         }

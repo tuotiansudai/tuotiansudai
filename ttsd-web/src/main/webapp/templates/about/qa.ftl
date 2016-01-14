@@ -1,7 +1,7 @@
 <#import "../macro/global.ftl" as global>
     <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="关于我们" activeLeftNav="常见问题" title="常见问题">
 <div class="about-us-container" id="WhetherApp">
-	<h2 class="column-title"><em>常见问题</em></h2>
+	<h2 class="column-title wap-hide"><em>常见问题</em></h2>
 	<div class="common-problem clearfix">
 		<dl class="problem-list">
 			<dt class="text-overflow"><i class="fa fa-toggle-down"></i><span>1.拓天速贷是一个什么类型的网站？</span></dt>
