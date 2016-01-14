@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class MobileAppPushClient {
+public class MobileAppJPushClient {
     @Value("${common.jpush.masterSecret}")
     private String masterSecret;
 
