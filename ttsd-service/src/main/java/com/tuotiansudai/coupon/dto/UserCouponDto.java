@@ -124,7 +124,7 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
     public int compareTo(UserCouponDto dto) {
         if (this.getStatusCode() == dto.getStatusCode()) {
             long diff = this.getCompareTime().getTime() - dto.getCompareTime().getTime();
-            int opposite = this.getStatusCode() == 1 ? -1 : 1;
+            int opposite = this.getStatusCode() == 1 ? 1 : -1;
             return diff == 0 ? 0 : diff > 0 ? opposite * 1 : opposite * -1;
         } else {
             return this.getStatusCode() - dto.getStatusCode();
