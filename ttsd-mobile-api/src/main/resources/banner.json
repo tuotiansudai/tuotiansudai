@@ -2,8 +2,8 @@
   {
     "pictureId": "",
     "title": "",
-    "url": "",
-    "seqNum": 4,
+    "url": "http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1",
+    "seqNum": 1,
     "picture": "{static}/images/app-banner/banner-ipo.png",
     "noticeId": ""
   },
@@ -11,7 +11,7 @@
     "pictureId": "",
     "title": "",
     "url": "{web}/activity/ranking?source=app",
-    "seqNum": 1,
+    "seqNum": 2,
     "picture": "{static}/images/app-banner/activity-ranking.png",
     "noticeId": ""
   },
@@ -19,7 +19,7 @@
     "pictureId": "",
     "title": "",
     "url": "{web}/activity/recruit?source=app",
-    "seqNum": 2,
+    "seqNum": 3,
     "picture": "{static}/images/app-banner/activity-recruit.png",
     "noticeId": ""
   },
@@ -27,7 +27,7 @@
     "pictureId": "",
     "title": "",
     "url": "{web}/activity/grand?source=app",
-    "seqNum": 3,
+    "seqNum": 4,
     "picture": "{static}/images/app-banner/activity-grand.png",
     "noticeId": ""
   }
