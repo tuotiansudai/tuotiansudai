@@ -17,6 +17,7 @@ public class UserCouponDto implements Serializable {
     private CouponType couponType;
     private String name;
     private long amount;
+    private double rate;
     private Date startTime;
     private Date endTime;
     private Long loanId;
@@ -24,6 +25,7 @@ public class UserCouponDto implements Serializable {
     private boolean expired;
     private boolean unused;
     private long investLowerLimit;
+    private long investUpperLimit;
     private Date createdTime;
     private List<ProductType> productTypeList;
 
@@ -34,6 +36,7 @@ public class UserCouponDto implements Serializable {
         this.id = userCoupon.getId();
         this.couponType = coupon.getCouponType();
         this.name = coupon.getCouponType().getName();
+        this.rate = coupon.getRate();
         this.couponId = coupon.getId();
         this.amount = coupon.getAmount();
         this.startTime = coupon.getStartTime();
@@ -43,6 +46,7 @@ public class UserCouponDto implements Serializable {
         this.expired = !this.used && new DateTime(this.endTime).plusDays(1).withTimeAtStartOfDay().isBeforeNow();
         this.unused = !this.used && !this.expired;
         this.investLowerLimit = coupon.getInvestLowerLimit();
+        this.investUpperLimit = coupon.getInvestUpperLimit();
         this.createdTime = userCoupon.getCreatedTime();
         this.productTypeList = coupon.getProductTypes();
     }
@@ -65,6 +69,10 @@ public class UserCouponDto implements Serializable {
 
     public long getAmount() {
         return amount;
+    }
+
+    public double getRate() {
+        return rate;
     }
 
     public Date getStartTime() {
@@ -93,6 +101,10 @@ public class UserCouponDto implements Serializable {
 
     public long getInvestLowerLimit() {
         return investLowerLimit;
+    }
+
+    public long getInvestUpperLimit() {
+        return investUpperLimit;
     }
 
     public Date getCreatedTime() {
