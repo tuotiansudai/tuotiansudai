@@ -981,7 +981,6 @@
     padding: 10px;
     width: 350px;
     text-align: center;
-    position: relative;
     font-size: 12px;
     color: #949494;
     .l-title {
@@ -994,11 +993,10 @@
     .account-list {
       margin-left: 10px;
       dd {
-        overflow: auto;
-        height:auto;
+        clear:both;
         margin-bottom: 5px;
-        .text-input-amount {
-          width:95%;
+        .position-width {
+          width:230px;
           text-align: right;
         }
         &.invest-amount {
@@ -1006,10 +1004,99 @@
           margin-bottom: 14px;
         }
         &.experience-ticket {
-          color: #f24712;
-          line-height: 20px;
-          i.fa {
-            font-size:17px;
+          .experience-ticket-box {
+            width: 244px;
+            position: relative;
+            color: #d35010;
+            .experience-ticket-input {
+              display: inline-block;
+              border: solid 1px #fdd8bd;
+              width: 100%;
+              height: 28px;
+              line-height: 28px;
+              text-align: center;
+              font-size: 14px;
+              background: #fff2e9;
+              cursor: pointer;
+              .fa {
+                font-size: 18px;
+                vertical-align: top;
+                color: #ffc89b;
+              }
+              .fa-sort-up {
+                margin-top: 7px;
+              }
+              &.disabled {
+                border:1px solid #e6e6e6;
+                cursor: default;
+                color: #b2b2b2;
+                background: #f2f2f2;
+                .fa-sort-down {
+                  color:#cbcbcb;
+                }
+              }
+            }
+            .ticket-list {
+              position: absolute;
+              z-index: 100;
+              left: 0px;
+              top: 29px;
+              border: solid 1px #fdd8bd;
+              background: #fff2e9;
+              width:100%;
+              text-align: left;
+              font-size: 13px;
+
+              li {
+                padding:5px 10px;
+                line-height: 1.6;
+                .input-use-ticket {
+                   margin-bottom: 12px;
+                }
+                .sign {
+                  width: 13px;
+                  display: inline-block;
+                  background: #ff7101;
+                  word-wrap: break-word;
+                  word-break: normal;
+                  padding: 3px;
+                  color: #fff;
+                }
+                .ticket-info {
+                  display: inline-block;
+                  .ticket-term {
+                    font-size: 10px;
+                  }
+                }
+                &:hover {
+                  background: #ffead9;
+                }
+                &.disabled {
+                  color: #8f8f8f;
+                  background: #f2f2f2;
+                  .sign {
+                    background: #909090;
+                  }
+                  &:hover {
+                    background: #f2f2f2;
+                  }
+                }
+
+              }
+            }
+          }
+
+
+        }
+        &.expected-interest-dd {
+          padding:2px;
+          .principal-income {
+            font-size: 25px;
+            color: #ff7200;
+          }
+          .experience-income {
+            font-size:15px;
+            color: #ff7200;
           }
         }
         &.experience-revenue {
@@ -1022,7 +1109,7 @@
           display: inline-block;
           border-radius: 10px;
           border: 1px dashed red;
-          margin-top: -8px;
+          margin-top: 15px;
           padding: 1px 40px;
           font-size: 13px;
           .time-clock {
@@ -1419,8 +1506,9 @@
         padding-bottom: 5px;
       }
       time {
-        color: #808080;
+        color: #adafb2;
         font-size: 12px;
+        letter-spacing: 2px;
       }
     }
     .ticket-info {
@@ -1428,7 +1516,7 @@
       height:100%;
       background:#ff752a url("/images/icons/line-wheel.png") right -1px no-repeat;
       color: #fff;
-      line-height: 1.5;
+      line-height: 2.5;
       font-size: 12px;
       dl {
         dt {
@@ -1511,6 +1599,3 @@
     *zoom:1;
   }
 }
-
-
-

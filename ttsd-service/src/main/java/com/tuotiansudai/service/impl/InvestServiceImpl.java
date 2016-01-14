@@ -56,7 +56,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private void checkInvestAmount(InvestDto investDto) throws InvestException {
-        long loanId = investDto.getLoanIdLong();
+        long loanId = Long.parseLong(investDto.getLoanId());
         LoanModel loan = loanMapper.findById(loanId);
         long userInvestMinAmount = loan.getMinInvestAmount();
         long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());

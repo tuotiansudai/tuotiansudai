@@ -1,1 +1,1 @@
-alter table coupon add column invest_quota BIGINT(20) not null;
+ALTER TABLE coupon ADD COLUMN invest_quota BIGINT(20) NOT NULL;

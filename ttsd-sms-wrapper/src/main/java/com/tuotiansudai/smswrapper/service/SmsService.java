@@ -2,6 +2,7 @@ package com.tuotiansudai.smswrapper.service;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestSmsNotifyDto;
+import com.tuotiansudai.dto.SmsCouponNotifyDto;
 import com.tuotiansudai.dto.SmsDataDto;
 
 public interface SmsService {
@@ -17,4 +18,6 @@ public interface SmsService {
     BaseDto<SmsDataDto> investFatalNotify(String mobile, String errMsg);
 
     BaseDto<SmsDataDto> jobFatalNotify(String mobile, String errMsg);
+
+    BaseDto<SmsDataDto> couponNotify(SmsCouponNotifyDto notifyDto);
 }
