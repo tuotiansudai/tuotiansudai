@@ -72,8 +72,8 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','load-swiper','com
                 if($('.left-nav').length) {
                     $('.left-nav').remove();
                 }
-                if($('.wap-hide',$WhetherApp).length) {
-                    $('.wap-hide',$WhetherApp).remove();
+                if($('.column-title',$WhetherApp).length) {
+                    $('.column-title',$WhetherApp).remove();
                 }
             }
         }
