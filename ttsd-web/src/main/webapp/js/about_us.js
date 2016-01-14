@@ -67,9 +67,9 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','load-swiper','com
                 if($('#WhetherApp').find('.res-no-app').length) {
                     $('#WhetherApp').find('.res-no-app').remove();
                 }
-                $('.header-container,.nav-container,.footer-container').hide();
+                $('.header-container,.nav-container,.footer-container').remove();
                 if($('.left-nav').length) {
-                    $('.left-nav').hide();
+                    $('.left-nav').remove();
                 }
             }
         }
