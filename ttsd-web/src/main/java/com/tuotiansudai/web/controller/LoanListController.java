@@ -51,4 +51,5 @@ public class LoanListController {
         modelAndView.addObject("newbieCoupon", this.userCouponService.getUsableNewbieCoupon(LoginUserInfo.getLoginName()));
         return modelAndView;
     }
+
 }

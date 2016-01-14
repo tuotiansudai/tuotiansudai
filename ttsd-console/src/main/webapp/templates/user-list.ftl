@@ -1,6 +1,7 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="user-list.js" headLab="user-manage" sideLab="userMan" title="用户管理">
 
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#assign pagination = baseDto.data />
 <#assign userList = pagination.records />
 
@@ -110,7 +111,7 @@
                     <td>${userItem.mobile}</td>
                     <td>${userItem.email!}</td>
                     <td>${userItem.referrer!}
-                        <#if userItem.staff>
+                        <#if userItem.referrerStaff>
                         <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
                         </#if>
                     </td>
@@ -126,6 +127,9 @@
                         <#else>
                             <a class="user-status-modifier" href="#" data-url="/user-manage/user/${userItem.loginName}/enable">解禁</a>
                         </#if>
+                        <@security.authorize access="hasAnyAuthority('ADMIN')">
+                            <a href="/user-manage/user/${userItem.loginName}/impersonate" target="_blank"> | 模拟登录</a>
+                        </@security.authorize>
                     </td>
                 </tr>
                 <#else>

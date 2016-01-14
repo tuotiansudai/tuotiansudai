@@ -3,6 +3,10 @@
 <div class="home-page-container">
     <div class="banner-box">
         <div class="banner-img-list">
+            <a href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" target="_blank">
+                <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">
+                <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="招募代理" class="iphone-img">
+            </a>
             <a href="/activity/ranking" target="_blank">
                 <img src="${staticServer}/images/sign/actor/ranking/qph.jpg" alt="抢排行，送大礼" class="pc-img">
                 <img src="${staticServer}/images/ttimg/ph-a01.jpg" alt="抢排行，送大礼" class="iphone-img">
@@ -16,9 +20,11 @@
                 <img src="${staticServer}/images/ttimg/ttimg-home03.png" alt="招募代理" class="pc-img">
                 <img src="${staticServer}/images/ttimg/ph-a03.jpg" alt="招募代理" class="iphone-img">
             </a>
+
         </div>
         <ul class="scroll-num">
             <li class="selected"></li>
+            <li></li>
             <li></li>
             <li></li>
         </ul>
@@ -101,12 +107,8 @@
     <div class="home-content" id="productFrame">
         <div class="page-width clearfix media-hide">
             <h3 class="label-title">
-                <span class="product-icon">
-                    产品介绍
-                </span>
-                <span class="notice-icon">
-                    拓天上市
-                </span>
+                <span class="product-icon"></span>
+                <span class="notice-icon"></span>
             </h3>
             <div class="product-list">
                 <ul>
@@ -161,9 +163,7 @@
         </div>
         <div class="page-width clearfix">
             <h3 class="label-title media-hide">
-                <span class="hot-product">
-                    热门产品
-                </span>
+                <span class="hot-product"></span>
                 <a href="/loan-list" class="hot-more">更多>></a>
             </h3>
             <div class="product-box-list fl">
@@ -208,19 +208,45 @@
             </div>
         </div>
 
-        <div class="page-width clearfix">
-            <h3 class="label-title media-hide">
-                <span class="report-icon">
-                    运营报告
-                </span>
+        <div class="page-width clearfix media-coverage-box margin-top25 media-hide">
+            <h3 class="label-title">
+                <span class="media-coverage-icon"></span>
+                <a href="/about/media" class="hot-more">更多>></a>
             </h3>
-            <div class="clear-blank invest-total">
-                <span class="fl">累计投资人数:
-                    <strong data-count="${userCount}" id="userCount">${userCount}</strong>人
-                </span>
+
+            <div class="box-radius clearfix">
+                <ul class="media-list fl">
+                    <li><i>●</i><a href="http://house.qq.com/a/20151221/035341.htm" target="_blank">拓天速贷官网全新升级 迈入2.0智能金融信息服务时代</a> <time>2015-12-21</time></li>
+                    <li><i>●</i><a href="http://toutiao.com/news/6233268186905575938/" target="_blank">拓天速贷以卓越风控打造高效资产平台</a> <time>2015-12-28</time></li>
+                    <li><i>●</i><a href="http://money.cri.cn/303/2015/12/16/124s17791.htm" target="_blank">拓天速贷走进石家庄 双十二财富送到家</a> <time>2015-12-16</time></li>
+                    <li><i>●</i><a href="http://money.china.com/fin/lc/201509/29/3549074.html" target="_blank">拓天速贷：高效资产平台的缔造者</a> <time>2015-09-29</time></li>
+                    <li><i>●</i><a href="http://news.dichan.sina.com.cn/2015/10/28/1131448.html" target="_blank">拓天速贷推出累积收益?兑大奖活动</a> <time>2015-10-28</time></li>
+                </ul>
+                <ul class="media-logo-list fr">
+                    <li><a href="http://house.qq.com/a/20151221/035341.htm" target="_blank" class="qq"></a> </li>
+                    <li><a href="http://yueyu.cntv.cn/2015/10/28/ARTI1446021624023304.shtml" target="_blank" class="yangshi"></a> </li>
+                    <li><a href="http://msn.ynet.com/3.1/1512/16/10626316.html" target="_blank" class="msn"></a> </li>
+                    <li><a href="http://news.dichan.sina.com.cn/2015/10/28/1131448.html" target="_blank" class="sina"></a> </li>
+                    <li><a href="http://news.ifeng.com/a/20151028/46027672_0.shtml" target="_blank" class="ifeng"></a> </li>
+                    <li><a href="http://help.3g.163.com/0406/15/0930/16/B4P96I6K0406002E.html" target="_blank" class="wangyi"></a> </li>
+                    <li><a href="http://money.china.com/fin/lc/201509/29/3549074.html" target="_blank" class="china"></a> </li>
+                    <li><a href="http://toutiao.com/news/6233268186905575938/" target="_blank" class="toutiao"></a> </li>
+                  </ul>
             </div>
         </div>
-    </div>
 
+        <div class="page-width clearfix partner-box margin-top25 margin-bottom25 media-hide">
+            <h3 class="label-title">
+                <span class="partner-icon"></span>
+            </h3>
+
+            <div class="box-radius clearfix">
+                <ul>
+                    <li><a href="http://www.king-capital.com/" target="_blank"> <img src="${staticServer}/images/sign/partner/jingdu.png"></a></li>
+                    <li><a href="http://www.umpay.com/umpay_cms/" target="_blank"><img src="${staticServer}/images/sign/partner/liandongyoushi.png"></a> </li>
+                </ul>
+             </div>
+            </div>
+    </div>
 </div>
 </@global.main>

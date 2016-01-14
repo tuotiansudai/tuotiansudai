@@ -13,6 +13,7 @@ import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.service.ImpersonateService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
@@ -20,6 +21,7 @@ import com.tuotiansudai.util.RequestIPParser;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,6 +46,12 @@ public class UserController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private ImpersonateService impersonateService;
+
+    @Value("${web.server}")
+    private String webServer;
 
 
     @RequestMapping(value = "/user/{loginName}", method = RequestMethod.GET)
@@ -145,7 +153,7 @@ public class UserController {
                 dataModel.add(userItemDataDtos.get(i).getMobile());
                 dataModel.add(userItemDataDtos.get(i).getEmail());
                 dataModel.add(userItemDataDtos.get(i).getReferrer());
-                dataModel.add(userItemDataDtos.get(i).isStaff() ? "是" : "否");
+                dataModel.add(userItemDataDtos.get(i).isReferrerStaff() ? "是" : "否");
                 dataModel.add(userItemDataDtos.get(i).getSource() != null ? userItemDataDtos.get(i).getSource().name() : "");
                 dataModel.add(userItemDataDtos.get(i).getChannel());
                 dataModel.add(new DateTime(userItemDataDtos.get(i).getRegisterTime()).toString("yyyy-MM-dd HH:mm"));
@@ -211,5 +219,9 @@ public class UserController {
         return "OK";
     }
 
-
+    @RequestMapping(value = "/user/{loginName}/impersonate", method = RequestMethod.GET)
+    public ModelAndView impersonate(@PathVariable String loginName) {
+        String securityCode = impersonateService.plantSecurityCode(LoginUserInfo.getLoginName(), loginName);
+        return new ModelAndView("redirect:" + webServer + "/impersonate?securityCode=" + securityCode);
+    }
 }

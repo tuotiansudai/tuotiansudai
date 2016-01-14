@@ -135,6 +135,7 @@
                 <div class="coupon-name">${newbieCoupon.name}</div>
                 <div class="coupon-time">
                     请在${(newbieCoupon.endTime?string('yyyy-MM-dd'))!}前使用
+
                 </div>
                 <a href="/my-treasure" class="coupon-link"></a>
             </div>
