@@ -69,7 +69,7 @@
         join coupon c on uc.coupon_id=c.id
         join loan l on l.id=uc.loan_id
         where
-            uc.loan_id is not null
+            uc.status='SUCCESS'
             and uc.login_name = #{loginName}
     </select>
 
@@ -84,7 +84,7 @@
         join coupon c on uc.coupon_id=c.id
         join loan l on l.id=uc.loan_id
         where
-            uc.loan_id is not null
+            uc.status='SUCCESS'
             and uc.login_name = #{loginName}
         ORDER BY used_time DESC
         limit #{index}, #{pageSize}
