@@ -40,7 +40,6 @@ public class CouponController {
         modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.values()));
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
-
         return modelAndView;
     }
 
@@ -71,6 +70,17 @@ public class CouponController {
         }
 
     }
+
+    @RequestMapping(value = "/interestCoupon", method = RequestMethod.GET)
+    public ModelAndView interestCoupon() {
+        ModelAndView modelAndView = new  ModelAndView("/interestCoupon");
+        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
+        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/interestCoupon", method = RequestMethod.GET)
+
     @RequestMapping(value = "/coupon/{id:^\\d+$}/edit",method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView edit(@PathVariable long id,Model model){
@@ -92,7 +102,6 @@ public class CouponController {
         return modelAndView;
 
     }
-
 
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/active",method = RequestMethod.POST)
     @ResponseBody
