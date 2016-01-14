@@ -12,7 +12,7 @@
             <div class="vertical-line"></div>
             <div class="ticket-amount fl tc">
                 <h3>${coupon.name}</h3>
-                <strong>${coupon.amount/100?float}元</strong>
+                <strong>${(coupon.amount/100)?string("0")}元</strong>
                 <time>有效期：在${coupon.endTime?date}前使用</time>
             </div>
             <div class="ticket-info fr">
