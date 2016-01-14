@@ -72,7 +72,7 @@ public class SmsServiceImpl implements SmsService {
         Map<String, String> map = ImmutableMap.<String, String>builder()
                 .put("amount", notifyDto.getAmount())
                 .put("couponType", notifyDto.getCouponType().getName())
-                .put("expiredDate", new DateTime(notifyDto.getExpiredDate()).toString("yyyy-MM-dd"))
+                .put("expiredDate", notifyDto.getExpiredDate())
                 .build();
         String content = SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE.generateContent(map);
         return smsClient.sendSMS(JobFatalNotifyMapper.class, notifyDto.getMobile(), content, "");
