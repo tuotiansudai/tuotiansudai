@@ -47,7 +47,7 @@
                     </div>
 
                     <div class="button-bar tc">
-                        <a href="#" class="btn-primary ">查看更多详情</a><br/>
+                        <a href="/announce/180" class="btn-primary ">查看更多详情</a><br/>
                         <time class="clearfix">
                             如有任何疑问请联系拓天速贷客服：400-169-1188（服务时间：早9点至晚20点） <br/>
                             本活动最终解释权归拓天速贷所有
