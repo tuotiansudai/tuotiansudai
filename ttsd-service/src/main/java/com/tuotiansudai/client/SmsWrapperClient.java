@@ -33,7 +33,7 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String INVEST_FATAL_NOTIFY_URI = "/sms/invest-fatal-notify";
 
-    private final static String COUPON_NOTIFY_URI = "/sms/invest-fatal-notify";
+    private final static String COUPON_NOTIFY_URI = "/sms/coupon-notify";
 
     private final static String JOB_FATAL_NOTIFY_URI = "/sms/job-fatal-notify";
 

@@ -110,7 +110,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         SmsCouponNotifyDto notifyDto = new SmsCouponNotifyDto();
         notifyDto.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
         notifyDto.setCouponType(couponModel.getCouponType());
-        notifyDto.setExpiredDate(couponModel.getEndTime());
+        notifyDto.setExpiredDate(new DateTime(couponModel.getEndTime()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
 
         for (UserCouponModel userCouponModel : userCouponModels) {
             String loginName = userCouponModel.getLoginName();
