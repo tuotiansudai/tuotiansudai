@@ -50,10 +50,10 @@ public class InvestController {
         return new ModelAndView(MessageFormat.format("redirect:/loan/{0}", investDto.getLoanId()));
     }
 
-    @RequestMapping(value = "/calculate-expected-interest/loan/{loanId}/amount/{amount:^\\d+(?:\\.\\d{1,2})?$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/calculate-expected-interest/loan/{loanId}/amount/{amount:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
-    public String calculateExpectedInterest(@PathVariable long loanId, @PathVariable String amount) {
-        long expectedInterest = investService.estimateInvestIncome(loanId, AmountConverter.convertStringToCent(amount));
+    public String calculateExpectedInterest(@PathVariable long loanId, @PathVariable long amount) {
+        long expectedInterest = investService.estimateInvestIncome(loanId, amount);
         return AmountConverter.convertCentToString(expectedInterest);
     }
 }
