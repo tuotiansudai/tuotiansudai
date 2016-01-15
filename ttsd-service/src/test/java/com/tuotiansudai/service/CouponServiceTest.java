@@ -111,6 +111,7 @@ public class CouponServiceTest {
         CouponModel couponModel = new CouponModel(couponDto);
         couponModel.setCreatedBy("couponTest");
         couponModel.setActive(true);
+        couponModel.setCouponType(CouponType.NEWBIE_COUPON);
         couponMapper.create(couponModel);
 
         couponService.assignNewbieCoupon(userModel.getLoginName());
@@ -144,6 +145,7 @@ public class CouponServiceTest {
         CouponModel couponModel = new CouponModel(couponDto);
         couponModel.setCreatedBy(userModel.getLoginName());
         couponModel.setActive(true);
+        couponModel.setCouponType(CouponType.NEWBIE_COUPON);
         couponMapper.create(couponModel);
 
         userService.registerUser(registerUserDto);
