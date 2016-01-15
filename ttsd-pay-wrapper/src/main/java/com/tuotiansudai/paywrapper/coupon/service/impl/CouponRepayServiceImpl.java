@@ -4,7 +4,6 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
@@ -92,16 +91,17 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                     userCouponModel.setActualFee(userCouponModel.getActualFee() + actualFee);
                     userCouponMapper.update(userCouponModel);
 
-                    String detail = MessageFormat.format(SystemBillDetailTemplate.NEWBIE_COUPON_INTEREST_DETAIL_TEMPLATE.getTemplate(),
+                    String detail = MessageFormat.format(SystemBillDetailTemplate.COUPON_INTEREST_DETAIL_TEMPLATE.getTemplate(),
+                            couponModel.getCouponType().getName(),
                             String.valueOf(userCouponModel.getId()),
                             String.valueOf(currentLoanRepayModel.getId()),
                             String.valueOf(transferAmount));
-                    systemBillService.transferOut(userCouponModel.getId(), transferAmount, SystemBillBusinessType.NEWBIE_COUPON, detail);
+                    systemBillService.transferOut(userCouponModel.getId(), transferAmount, SystemBillBusinessType.COUPON, detail);
 
                     amountTransfer.transferInBalance(userCouponModel.getLoginName(),
                             userCouponModel.getId(),
                             actualInterest,
-                            UserBillBusinessType.NEWBIE_COUPON, null, null);
+                            couponModel.getCouponType().getUserBillBusinessType(), null, null);
 
                     amountTransfer.transferOutBalance(userCouponModel.getLoginName(),
                             userCouponModel.getId(),

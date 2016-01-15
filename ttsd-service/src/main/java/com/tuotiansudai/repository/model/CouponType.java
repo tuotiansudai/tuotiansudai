@@ -25,4 +25,15 @@ public enum CouponType {
     public String getAbbr() {
         return abbr;
     }
+
+    public UserBillBusinessType getUserBillBusinessType() {
+        switch (this) {
+            case NEWBIE_COUPON:
+                return UserBillBusinessType.NEWBIE_COUPON;
+            case INVEST_COUPON:
+                return UserBillBusinessType.INVEST_COUPON;
+        }
+
+        return null;
+    }
 }
