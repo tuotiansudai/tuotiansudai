@@ -16,12 +16,16 @@ import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.LoanPeriodUnit;
+import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -66,7 +70,7 @@ public class CouponServiceImpl implements CouponService {
         }
         Date startTime = couponModel.getStartTime();
         Date endTime = couponModel.getEndTime();
-        if(CouponType.isNewBieCoupon(couponDto.getCouponType())){
+        if (CouponType.isNewBieCoupon(couponDto.getCouponType())) {
             if (startTime == null) {
                 throw new CreateCouponException("活动起期不能为空!");
             }
@@ -108,7 +112,7 @@ public class CouponServiceImpl implements CouponService {
             couponModel.setIssuedCount(couponModel.getIssuedCount() + 1);
             couponModel.setTotalCount(couponModel.getTotalCount() + 1);
             couponMapper.updateCoupon(couponModel);
-            
+
             UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId());
             userCouponMapper.create(userCouponModel);
         }
@@ -141,11 +145,11 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public long findEstimatedCount(UserGroup userGroup) {
-        if(userGroup.isInvestedUser()){
+        if (userGroup.isInvestedUser()) {
             return investMapper.findInvestorCount();
         }
-        if(userGroup.isRegisteredNotInvestedUser()){
-            return investMapper.findCertificationNoInvestCount();
+        if (userGroup.isRegisteredNotInvestedUser()) {
+            return investMapper.findRegisteredNotInvestCount();
         }
         return 0;
     }
@@ -167,5 +171,42 @@ public class CouponServiceImpl implements CouponService {
         couponModel.setUpdatedTime(new Date());
         couponModel.setDeleted(true);
         couponMapper.updateCoupon(couponModel);
+    }
+
+    @Override
+    public long estimateCouponExpectedInterest(long loanId, long couponId, long amount) {
+        LoanModel loanModel = loanMapper.findById(loanId);
+        CouponModel couponModel = couponMapper.findById(couponId);
+        if (loanModel == null || couponModel == null) {
+            return 0;
+        }
+
+        DateTime loanDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
+        int daysOfYear = loanDate.dayOfYear().getMaximumValue();
+        int repayTimes = loanModel.calculateLoanRepayTimes();
+        int daysOfMonth = 30;
+        int duration = loanModel.getPeriods();
+        if (loanModel.getType().getLoanPeriodUnit() == LoanPeriodUnit.MONTH) {
+            duration = repayTimes * daysOfMonth;
+        }
+
+        long expectedInterest = 0;
+        switch (couponModel.getCouponType()) {
+            case NEWBIE_COUPON:
+            case INVEST_COUPON:
+                expectedInterest = new BigDecimal(duration * couponModel.getAmount())
+                        .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
+                        .divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
+                break;
+            case INTEREST_COUPON:
+                expectedInterest = new BigDecimal(duration * amount)
+                        .multiply(new BigDecimal(couponModel.getRate()))
+                        .divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
+                break;
+        }
+
+        long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+
+        return expectedInterest - expectedFee;
     }
 }

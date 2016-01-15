@@ -1,5 +1,6 @@
 package com.tuotiansudai.web.controller;
 
+import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -23,6 +24,9 @@ public class InvestController {
 
     @Autowired
     private InvestService investService;
+
+    @Autowired
+    private CouponService couponService;
 
     @RequestMapping(value = "/invest", method = RequestMethod.POST)
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, RedirectAttributes redirectAttributes) {
@@ -50,10 +54,17 @@ public class InvestController {
         return new ModelAndView(MessageFormat.format("redirect:/loan/{0}", investDto.getLoanId()));
     }
 
-    @RequestMapping(value = "/calculate-expected-interest/loan/{loanId}/amount/{amount:^\\d+(?:\\.\\d{1,2})?$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/calculate-expected-interest/loan/{loanId:^\\d+$}/amount/{amount:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
-    public String calculateExpectedInterest(@PathVariable long loanId, @PathVariable String amount) {
-        long expectedInterest = investService.estimateInvestIncome(loanId, AmountConverter.convertStringToCent(amount));
+    public String calculateExpectedInterest(@PathVariable long loanId, @PathVariable long amount) {
+        long expectedInterest = investService.estimateInvestIncome(loanId, amount);
+        return AmountConverter.convertCentToString(expectedInterest);
+    }
+
+    @RequestMapping(value = "/calculate-expected-coupon-interest/loan/{loanId:^\\d+$}/coupon/{couponId:^\\d+$}/amount/{amount:^\\d+$}", method = RequestMethod.GET)
+    @ResponseBody
+    public String calculateCouponExpectedInterest(@PathVariable long loanId, @PathVariable long couponId, @PathVariable long amount) {
+        long expectedInterest = couponService.estimateCouponExpectedInterest(loanId, couponId, amount);
         return AmountConverter.convertCentToString(expectedInterest);
     }
 }

@@ -4,6 +4,7 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -38,6 +39,9 @@ public class CouponInvestServiceImpl implements CouponInvestService {
 
     @Autowired
     private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private CouponService couponService;
 
     @Override
     @Transactional
@@ -78,14 +82,7 @@ public class CouponInvestServiceImpl implements CouponInvestService {
         userCouponModel.setInvestId(investId);
         userCouponModel.setUsedTime(new Date());
         userCouponModel.setStatus(InvestStatus.SUCCESS);
-        CouponModel coupon = couponMapper.findById(userCouponModel.getCouponId());
-        int repayTimes = loanModel.calculateLoanRepayTimes();
-        int daysOfMonth = 30;
-        int duration = loanModel.getPeriods();
-        if (loanModel.getType().getLoanPeriodUnit() == LoanPeriodUnit.MONTH) {
-            duration = repayTimes * daysOfMonth;
-        }
-        long expectedInterest = InterestCalculator.calculateInterest(loanModel, coupon.getAmount() * duration);
+        long expectedInterest = couponService.estimateCouponExpectedInterest(loanModel.getId(), userCouponModel.getCouponId(), investModel.getAmount());
         long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         userCouponModel.setExpectedInterest(expectedInterest);
         userCouponModel.setExpectedFee(expectedFee);

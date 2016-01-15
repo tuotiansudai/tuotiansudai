@@ -13,6 +13,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferRespon
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
@@ -25,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -38,6 +40,9 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private InvestMapper investMapper;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -115,6 +120,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     }
 
     private long calculateActualInterest(CouponModel couponModel, UserCouponModel userCouponModel, LoanModel loanModel, LoanRepayModel currentLoanRepayModel, List<LoanRepayModel> loanRepayModels) {
+
         DateTime currentRepayDate = new DateTime(currentLoanRepayModel.getActualRepayDate());
 
         LoanRepayModel lastLoanRepayModel = null;
@@ -129,9 +135,24 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             lastRepayDate = new DateTime(lastLoanRepayModel.getActualRepayDate());
         }
 
+        int daysOfYear = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().dayOfYear().getMaximumValue();
         int periodDuration = Days.daysBetween(lastRepayDate.withTimeAtStartOfDay(), currentRepayDate.withTimeAtStartOfDay()).getDays();
-        long corpusMultiplyPeriodDays = couponModel.getAmount() * periodDuration;
 
-        return InterestCalculator.calculateInterest(loanModel, corpusMultiplyPeriodDays);
+        long expectedInterest = 0;
+        switch (couponModel.getCouponType()) {
+            case NEWBIE_COUPON:
+            case INVEST_COUPON:
+                expectedInterest = new BigDecimal(periodDuration * couponModel.getAmount())
+                        .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
+                        .divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
+                break;
+            case INTEREST_COUPON:
+                expectedInterest = new BigDecimal(periodDuration * investMapper.findById(userCouponModel.getInvestId()).getAmount())
+                        .multiply(new BigDecimal(couponModel.getRate()))
+                        .divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
+                break;
+        }
+
+        return expectedInterest;
     }
 }

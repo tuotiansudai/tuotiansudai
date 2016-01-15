@@ -162,5 +162,5 @@ public interface InvestMapper {
 
     long findInvestorCount();
 
-    long findCertificationNoInvestCount();
+    long findRegisteredNotInvestCount();
 }

@@ -93,6 +93,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         };
 
         var refreshCouponStatus = function () {
+            var investAmount = getInvestAmount();
             $ticketList.find("li").each(function (ticket) {
                 var self = $(this);
                 var radio = self.find("input[name='userCouponId']");
@@ -100,7 +101,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 radio.prop("disabled", false);
                 var ticketTerm = $(self.find(".ticket-term"));
                 var investLowerLimit = ticketTerm.data('invest-lower-limit') || 0;
-                if (investLowerLimit > getInvestAmount()) {
+                var investUpperLimit = ticketTerm.data('invest-upper-limit') || 0;
+                if ((investLowerLimit > 0 && investLowerLimit > investAmount) || (investUpperLimit > 0 && investUpperLimit < investAmount)) {
                     self.addClass('disabled');
                     radio.prop("disabled", true);
                 }
@@ -122,19 +124,18 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 $useExperienceTicket.find('span').text(text);
                 $ticketList.addClass('hide');
 
-                var couponAmount = couponItem.data('coupon-amount');
+                var couponId = couponItem.data('coupon-id');
                 $couponExpectedInterest.text("");
-                if (!isNaN(couponAmount)) {
-                    $.ajax({
-                        url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + couponAmount,
-                        type: 'get',
-                        dataType: 'json',
-                        contentType: 'application/json; charset=UTF-8'
-                    }).done(function (amount) {
-                        $couponExpectedInterest.text("+" + (amount/100).toFixed(2));
-                        $btnLookOther.prop('disabled', false);
-                    });
-                }
+                $.ajax({
+                    url: '/calculate-expected-coupon-interest/loan/' + loanId + '/coupon/' + couponId + '/amount/' + getInvestAmount(),
+                    type: 'get',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
+                }).done(function (amount) {
+                    $couponExpectedInterest.text("+" + (amount/100).toFixed(2));
+                    $btnLookOther.prop('disabled', false);
+                });
+                return false;
             });
         };
 
@@ -151,7 +152,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 dataType: 'json',
                 contentType: 'application/json; charset=UTF-8'
             }).done(function (amount) {
-                $(".principal-income").text((amount/100).toFixed(2));
+                $(".principal-income").text(amount);
             });
         };
 
