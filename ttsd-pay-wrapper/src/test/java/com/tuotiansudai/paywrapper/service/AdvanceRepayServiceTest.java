@@ -914,7 +914,7 @@ public class AdvanceRepayServiceTest {
         UserCouponModel actualUserCouponModel = userCouponMapper.findById(userCouponModel.getId());
         assertThat(actualUserCouponModel.getActualInterest(), is(32L));
         assertThat(actualUserCouponModel.getActualFee(), is(3L));
-        SystemBillModel systemBillModel3 = systemBillMapper.findByOrderId(userCouponModel.getId(), SystemBillBusinessType.NEWBIE_COUPON);
+        SystemBillModel systemBillModel3 = systemBillMapper.findByOrderId(userCouponModel.getId(), SystemBillBusinessType.COUPON);
         assertThat(systemBillModel3.getAmount(), is(29L));
     }
 
@@ -1002,7 +1002,7 @@ public class AdvanceRepayServiceTest {
         UserCouponModel actualUserCouponModel = userCouponMapper.findById(userCouponModel.getId());
         assertThat(actualUserCouponModel.getActualInterest(), is(0L));
         assertThat(actualUserCouponModel.getActualFee(), is(0L));
-        SystemBillModel systemBillModel3 = systemBillMapper.findByOrderId(userCouponModel.getId(), SystemBillBusinessType.NEWBIE_COUPON);
+        SystemBillModel systemBillModel3 = systemBillMapper.findByOrderId(userCouponModel.getId(), SystemBillBusinessType.COUPON);
         assertThat(systemBillModel3.getAmount(), is(0L));
     }
 

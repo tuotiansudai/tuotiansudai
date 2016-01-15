@@ -42,6 +42,7 @@ public class CouponServiceImpl implements CouponService {
 
     @Autowired
     private InvestMapper investMapper;
+
     @Autowired
     private LoanMapper loanMapper;
 
@@ -177,33 +178,7 @@ public class CouponServiceImpl implements CouponService {
     public long estimateCouponExpectedInterest(long loanId, long couponId, long amount) {
         LoanModel loanModel = loanMapper.findById(loanId);
         CouponModel couponModel = couponMapper.findById(couponId);
-        if (loanModel == null || couponModel == null) {
-            return 0;
-        }
-
-        DateTime loanDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
-        int daysOfYear = loanDate.dayOfYear().getMaximumValue();
-        int repayTimes = loanModel.calculateLoanRepayTimes();
-        int daysOfMonth = 30;
-        int duration = loanModel.getPeriods();
-        if (loanModel.getType().getLoanPeriodUnit() == LoanPeriodUnit.MONTH) {
-            duration = repayTimes * daysOfMonth;
-        }
-
-        long expectedInterest = 0;
-        switch (couponModel.getCouponType()) {
-            case NEWBIE_COUPON:
-            case INVEST_COUPON:
-                expectedInterest = new BigDecimal(duration * couponModel.getAmount())
-                        .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
-                        .divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
-                break;
-            case INTEREST_COUPON:
-                expectedInterest = new BigDecimal(duration * amount)
-                        .multiply(new BigDecimal(couponModel.getRate()))
-                        .divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
-                break;
-        }
+        long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(loanModel, couponModel, amount);
 
         long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
 

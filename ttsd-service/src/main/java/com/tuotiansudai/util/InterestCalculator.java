@@ -5,6 +5,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Ordering;
 import com.google.common.primitives.Ints;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.repository.model.*;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -20,6 +21,37 @@ public class InterestCalculator {
         DateTime loanDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
         int daysOfYear = loanDate.dayOfYear().getMaximumValue();
         return new BigDecimal(corpusMultiplyPeriodDays).multiply(loanRate).divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
+    }
+
+    public static long estimateCouponExpectedInterest(LoanModel loanModel, CouponModel couponModel, long amount) {
+        if (loanModel == null || couponModel == null) {
+            return 0;
+        }
+
+        DateTime loanDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
+        int daysOfYear = loanDate.dayOfYear().getMaximumValue();
+        int repayTimes = loanModel.calculateLoanRepayTimes();
+        int daysOfMonth = 30;
+        int duration = loanModel.getPeriods();
+        if (loanModel.getType().getLoanPeriodUnit() == LoanPeriodUnit.MONTH) {
+            duration = repayTimes * daysOfMonth;
+        }
+
+        long expectedInterest = 0;
+        switch (couponModel.getCouponType()) {
+            case NEWBIE_COUPON:
+            case INVEST_COUPON:
+                expectedInterest = new BigDecimal(duration * couponModel.getAmount())
+                        .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
+                        .divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
+                break;
+            case INTEREST_COUPON:
+                expectedInterest = new BigDecimal(duration * amount)
+                        .multiply(new BigDecimal(couponModel.getRate()))
+                        .divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
+                break;
+        }
+        return expectedInterest;
     }
 
     public static long calculateLoanRepayInterest(LoanModel loanModel, List<InvestModel> investModels, DateTime lastRepayDate, DateTime currentRepayDate) {

@@ -4,7 +4,6 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
@@ -18,7 +17,6 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
-import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -97,11 +95,12 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                     userCouponModel.setActualFee(userCouponModel.getActualFee() + actualFee);
                     userCouponMapper.update(userCouponModel);
 
-                    String detail = MessageFormat.format(SystemBillDetailTemplate.NEWBIE_COUPON_INTEREST_DETAIL_TEMPLATE.getTemplate(),
+                    String detail = MessageFormat.format(SystemBillDetailTemplate.COUPON_INTEREST_DETAIL_TEMPLATE.getTemplate(),
+                            
                             String.valueOf(userCouponModel.getId()),
                             String.valueOf(currentLoanRepayModel.getId()),
                             String.valueOf(transferAmount));
-                    systemBillService.transferOut(userCouponModel.getId(), transferAmount, SystemBillBusinessType.NEWBIE_COUPON, detail);
+                    systemBillService.transferOut(userCouponModel.getId(), transferAmount, SystemBillBusinessType.COUPON, detail);
 
                     amountTransfer.transferInBalance(userCouponModel.getLoginName(),
                             userCouponModel.getId(),

@@ -40,9 +40,6 @@ public class CouponInvestServiceImpl implements CouponInvestService {
     @Autowired
     private UserCouponMapper userCouponMapper;
 
-    @Autowired
-    private CouponService couponService;
-
     @Override
     @Transactional
     public void invest(long investId, Long userCouponId) {
@@ -76,20 +73,21 @@ public class CouponInvestServiceImpl implements CouponInvestService {
         if (userCouponModel == null) {
             return;
         }
+
+        CouponModel couponModel = couponMapper.lockById(userCouponModel.getCouponId());
+        couponModel.setUsedCount(couponModel.getUsedCount() + 1);
+        couponMapper.updateCoupon(couponModel);
+
         InvestModel investModel = investMapper.findById(investId);
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         userCouponModel.setLoanId(loanModel.getId());
         userCouponModel.setInvestId(investId);
         userCouponModel.setUsedTime(new Date());
         userCouponModel.setStatus(InvestStatus.SUCCESS);
-        long expectedInterest = couponService.estimateCouponExpectedInterest(loanModel.getId(), userCouponModel.getCouponId(), investModel.getAmount());
+        long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(loanModel, couponModel, investModel.getAmount());
         long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         userCouponModel.setExpectedInterest(expectedInterest);
         userCouponModel.setExpectedFee(expectedFee);
         userCouponMapper.update(userCouponModel);
-
-        CouponModel couponModel = couponMapper.lockById(userCouponModel.getCouponId());
-        couponModel.setUsedCount(couponModel.getUsedCount() + 1);
-        couponMapper.updateCoupon(couponModel);
     }
 }
