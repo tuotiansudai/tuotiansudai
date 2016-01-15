@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.console.jpush.repository.mapper.JPushAlertMapper">
+
+    <resultMap id="jPushAlertResultMap" type="jPushAlertModel">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="push_time" property="pushTime"></result>
+        <result column="push_type" property="pushType"></result>
+        <result column="push_objects" property="pushObjects" typeHandler="com.tuotiansudai.console.util.mybatis.PushObjectHandler"/>
+        <result column="push_source" property="pushSource"></result>
+        <result column="status" property="status"></result>
+        <result column="content" property="content"></result>
+        <result column="jumpTo" property="jump_to"></result>
+        <result column="link_address" property="linkAddress"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="created_by" property="createdBy"></result>
+        <result column="updated_time" property="updatedTime"></result>
+        <result column="updated_by" property="updatedBy"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="jPushAlertModel" useGeneratedKeys="true" keyProperty="id">
+        insert into jpush_alert (name, push_time, push_type,push_objects, push_source, status, content, jump_to, link_address,created_time,created_by,updated_time,updated_by)
+        value(#{name}, #{pushTime}, #{pushType},#{pushObjects,typeHandler=com.tuotiansudai.console.util.mybatis.PushObjectHandler}, #{pushSource}, #{status}, #{content}, #{jumpTo}, #{linkAddress}, #{createdTime}, #{createdBy}, #{updatedTime}, #{updatedBy})
+    </insert>
+
+
+
+
+
+</mapper>
