@@ -22,13 +22,5 @@
     "seqNum": 3,
     "picture": "{static}/images/app-banner/activity-recruit.png",
     "noticeId": ""
-  },
-  {
-    "pictureId": "",
-    "title": "",
-    "url": "{web}/activity/grand?source=app",
-    "seqNum": 4,
-    "picture": "{static}/images/app-banner/activity-grand.png",
-    "noticeId": ""
   }
 ]

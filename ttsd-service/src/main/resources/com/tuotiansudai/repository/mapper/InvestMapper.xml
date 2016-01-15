@@ -288,4 +288,16 @@
         and invest.login_name = #{loginName}
         and source = 'AUTO'
     </select>
+
+    <select id="findInvestorLoginNames" resultType="java.lang.String">
+        select login_name from invest where invest.status = 'SUCCESS'
+    </select>
+
+    <select id="findInvestorCount" resultType="long">
+        select count(distinct(login_name)) from invest where invest.status = 'SUCCESS'
+    </select>
+
+    <select id="findCertificationNoInvestCount" resultType="long">
+        select count(*) from account a where not exists(select 1 from invest i where a.login_name = i.login_name and i.status='SUCCESS');
+    </select>
 </mapper>

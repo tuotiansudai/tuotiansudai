@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(path = "/activity")
 public class ActivitiesController {
 
-    @RequestMapping(path = "/{item:^grand|recruit|awards|guide$}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{item:^recruit|awards|guide$}", method = RequestMethod.GET)
     public ModelAndView activities(@PathVariable String item) {
         return new ModelAndView("/activities/" + item, "responsive", true);
     }

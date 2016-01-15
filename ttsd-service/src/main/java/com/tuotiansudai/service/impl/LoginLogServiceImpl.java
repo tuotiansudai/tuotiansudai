@@ -37,7 +37,9 @@ public class LoginLogServiceImpl implements LoginLogService {
         if(userModel == null)
             return;
         LoginLogModel model = new LoginLogModel(userModel.getLoginName(), source, ip, device, loginSuccess);
+
         loginLogMapper.create(model, this.getLoginLogTableName());
+
     }
 
     @Override

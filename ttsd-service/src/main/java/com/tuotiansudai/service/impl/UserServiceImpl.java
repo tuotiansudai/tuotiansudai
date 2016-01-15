@@ -339,11 +339,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int findUserCount() {
-        return userMapper.findUserCount();
-    }
-
-    @Override
     public List<String> findAllLoanerLikeLoginName(String loginName) {
         return accountMapper.findAllLoanerLikeLoginName(loginName);
     }
