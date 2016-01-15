@@ -1,2 +1,2 @@
-alter table user_coupon add column invest_id BIGINT UNSIGNED NULL;
-alter table user_coupon add column status VARCHAR(50) NULL;
+ALTER TABLE user_coupon ADD COLUMN invest_id BIGINT UNSIGNED NULL;
+ALTER TABLE user_coupon ADD COLUMN status VARCHAR(50) NULL;

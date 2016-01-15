@@ -208,19 +208,6 @@
             </div>
         </div>
 
-        <#--<div class="page-width clearfix">-->
-            <#--<h3 class="label-title media-hide">-->
-                <#--<span class="report-icon">-->
-                    <#--运营报告-->
-                <#--</span>-->
-            <#--</h3>-->
-            <#--<div class="clear-blank invest-total">-->
-                <#--<span class="fl">累计投资人数:-->
-                    <#--<strong data-count="${userCount}" id="userCount">${userCount}</strong>人-->
-                <#--</span>-->
-            <#--</div>-->
-        <#--</div>-->
-
         <div class="page-width clearfix media-coverage-box margin-top25 media-hide">
             <h3 class="label-title">
                 <span class="media-coverage-icon"></span>
@@ -261,8 +248,5 @@
              </div>
             </div>
     </div>
-
-
 </div>
-
 </@global.main>
