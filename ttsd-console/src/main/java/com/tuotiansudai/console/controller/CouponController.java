@@ -17,9 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -55,14 +58,25 @@ public class CouponController {
             }else{
                 couponService.createCoupon(loginName, couponDto);
             }
-            modelAndView.setViewName("redirect:/activity-manage/coupons");
+            if (couponDto.getCouponType() == CouponType.INTEREST_COUPON) {
+                modelAndView.setViewName("redirect:/activity-manage/interest-coupons");
+            } else {
+                modelAndView.setViewName("redirect:/activity-manage/coupons");
+            }
             return modelAndView;
         } catch (CreateCouponException e) {
             if(id != null){
-                modelAndView.setViewName("redirect:/activity-manage/coupon/"+id+"/edit");
-
+                if (couponDto.getCouponType() == CouponType.INTEREST_COUPON) {
+                    modelAndView.setViewName("redirect:/activity-manage/interest-coupon/"+id+"/edit");
+                } else {
+                    modelAndView.setViewName("redirect:/activity-manage/coupon/" + id + "/edit");
+                }
             }else{
-                modelAndView.setViewName("redirect:/activity-manage/coupon");
+                if (couponDto.getCouponType() == CouponType.INTEREST_COUPON) {
+                    modelAndView.setViewName("redirect:/activity-manage/interest-coupon");
+                } else {
+                    modelAndView.setViewName("redirect:/activity-manage/coupon");
+                }
             }
             redirectAttributes.addFlashAttribute("coupon", couponDto);
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
@@ -71,15 +85,13 @@ public class CouponController {
 
     }
 
-    @RequestMapping(value = "/interestCoupon", method = RequestMethod.GET)
+    @RequestMapping(value = "/interest-coupon", method = RequestMethod.GET)
     public ModelAndView interestCoupon() {
-        ModelAndView modelAndView = new  ModelAndView("/interestCoupon");
+        ModelAndView modelAndView = new  ModelAndView("/interest-coupon");
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
         return modelAndView;
     }
-
-    @RequestMapping(value = "/interestCoupon", method = RequestMethod.GET)
 
     @RequestMapping(value = "/coupon/{id:^\\d+$}/edit",method = RequestMethod.GET)
     @ResponseBody
@@ -174,4 +186,12 @@ public class CouponController {
         couponService.deleteCoupon(loginName, couponId);
         return baseDto;
     }
+
+    @RequestMapping(value = "/export-excel", method = RequestMethod.POST)
+    public int exportExcel(HttpServletRequest request) {
+        MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+        MultipartFile multipartFile = multiRequest.getFile("");
+        
+    }
+
 }

@@ -4,7 +4,6 @@ import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
-import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
@@ -17,7 +16,7 @@ public class CouponModel implements Serializable {
 
     private long amount;
 
-    private double rate;
+    private Double rate;
 
     private Date startTime;
 
@@ -81,11 +80,11 @@ public class CouponModel implements Serializable {
         this.amount = amount;
     }
 
-    public double getRate() {
+    public Double getRate() {
         return rate;
     }
 
-    public void setRate(double rate) {
+    public void setRate(Double rate) {
         this.rate = rate;
     }
 
@@ -284,9 +283,11 @@ public class CouponModel implements Serializable {
         this.productTypes = couponDto.getProductTypes() ;
         this.couponType = couponDto.getCouponType();
         this.investLowerLimit = AmountConverter.convertStringToCent(couponDto.getInvestLowerLimit());
+        this.investUpperLimit = AmountConverter.convertStringToCent(couponDto.getInvestUpperLimit());
         this.createdTime = new Date();
         this.smsAlert = couponDto.isSmsAlert();
         this.deadline = couponDto.getDeadline();
         this.userGroup = couponDto.getUserGroup();
+        this.rate = couponDto.getRate();
     }
 }

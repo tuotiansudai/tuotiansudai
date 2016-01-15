@@ -19,7 +19,6 @@ public class CouponDto implements Serializable {
 
     private Long id;
 
-    @NotEmpty
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String amount;
 
@@ -34,6 +33,13 @@ public class CouponDto implements Serializable {
     @NotEmpty
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String investLowerLimit;
+
+
+    @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
+    private String investUpperLimit;
+
+    @Pattern(regexp = "^[+]?[\\d]+(([\\.]{1}[\\d]+)|([\\d]*))$")
+    private Double rate;
 
     @NotNull
     private List<ProductType> productTypes;
@@ -195,6 +201,22 @@ public class CouponDto implements Serializable {
         this.actualAmount = actualAmount;
     }
 
+    public String getInvestUpperLimit() {
+        return investUpperLimit;
+    }
+
+    public void setInvestUpperLimit(String investUpperLimit) {
+        this.investUpperLimit = investUpperLimit;
+    }
+
+    public Double getRate() {
+        return rate;
+    }
+
+    public void setRate(Double rate) {
+        this.rate = rate;
+    }
+
     public CouponDto(){
 
     }
@@ -206,6 +228,7 @@ public class CouponDto implements Serializable {
         this.endTime = couponModel.getEndTime();
         this.totalCount = couponModel.getTotalCount();
         this.investLowerLimit = AmountConverter.convertCentToString(couponModel.getInvestLowerLimit());
+        this.investUpperLimit = AmountConverter.convertCentToString(couponModel.getInvestUpperLimit());
         this.productTypes = couponModel.getProductTypes();
         this.couponType = couponModel.getCouponType();
         this.userGroup = couponModel.getUserGroup();
@@ -217,5 +240,6 @@ public class CouponDto implements Serializable {
         this.usedCount = couponModel.getUsedCount();
         this.expectedAmount = couponModel.getExpectedAmount();
         this.actualAmount = couponModel.getActualAmount();
+        this.rate = couponModel.getRate();
     }
 }
