@@ -1,7 +1,5 @@
 package com.tuotiansudai.api.dto;
 
-import com.tuotiansudai.repository.model.ActivityType;
-
 public class LoanResponseDataDto {
     private String loanId;
     private String loanType;
@@ -37,15 +35,7 @@ public class LoanResponseDataDto {
     }
 
     public void setLoanType(String loanType) {
-        if(ActivityType.NEWBIE.name().equals(loanType)){
-            this.loanType = "xs";
-        }else if(ActivityType.EXCLUSIVE.name().equals(loanType)){
-            this.loanType = "dx";
-        }else if(ActivityType.PROMOTION.name().equals(loanType)){
-            this.loanType = "jx";
-        }else if(ActivityType.NORMAL.name().equals(loanType)){
-            this.loanType = "pt";
-        }
+        this.loanType = loanType;
     }
 
     public String getLoanName() {
