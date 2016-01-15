@@ -1456,14 +1456,14 @@
       display: none;
       width: 80px;
       height: 80px;
-      border: 3px solid #7f7f7f;
+      border: 2px solid #7f7f7f;
       color: #7f7f7f;
       text-align: center;
       line-height: 80px;
       position: absolute;
       left: 45%;
       top: 20%;
-      border-radius: 40px;
+      border-radius: 50%;
       span {
         -webkit-transform: rotate(30deg);
         -moz-transform: rotate(30deg);
@@ -1473,6 +1473,7 @@
         line-height: 1.2;
         padding-top: 16px;
         display: block;
+        letter-spacing: 8px;
       }
     }
     .vertical-line {
@@ -1523,7 +1524,7 @@
           letter-spacing: 3px;
         }
         dd {
-          padding-left: 2em;
+          padding-left: 2.4em;
           &.tc  {
             padding-left: 0;
             .btn-action {
@@ -1553,11 +1554,11 @@
         &.sign-expired {
           display: block;
         }
-        border: 3px solid #ff752a;
+        border: 2px solid #ff752a;
         color: #ff752a;
       }
       .vertical-line {
-        border-right:1px dashed #ff752a;
+        border-right:1px dashed #ccc;
       }
       .ticket-amount {
         color: #b2b2b2;
