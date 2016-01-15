@@ -8,7 +8,6 @@
 
 .actor-img img{
   margin: 0 auto;
-
 }
 .actor-recruit-img,.actor-recruit-img img {
   height:350px;
@@ -335,6 +334,103 @@ img.icon-mark {
   }
 }
 
+.activity-award-container {
+  overflow: hidden;
+  background: #a30716;
+  color: #fff1b5;
+  .wide-screen-out {
+    position: relative;
+    .wide-screen-left,.wide-screen-right {
+      position: absolute;
+      left:-1px;
+      top:0;
+      background: url("/images/sign/actor/awards/award-left.jpg") right 0 no-repeat;
+      height:520px;
+      display: none;
+    }
+    .wide-screen-right {
+      right:0;
+      left:auto;
+      background: url("/images/sign/actor/awards/award-right.jpg") left 0 no-repeat;
+    }
+    .wide-screen-inner {
+      width:1000px;
+      margin:0px auto;
+      padding-top:30px;
+      .activity-info {
+        margin:20px;
+        padding:15px;
+        font-size: 22px;
+        border:1px dashed #fff1b5;
+        border-radius:10px;
+
+        text-align: center;
+        b {
+          font-size: 34px;
+        }
+        .last-word {
+          display: block;
+        }
+      }
+      .award-product-box {
+        height: 380px;
+        margin-top:50px;
+        background: url("/images/sign/actor/awards/award-product.jpg") center top no-repeat;
+      }
+      .trophy-box {
+        text-align: center;
+        margin-top:50px;
+        .trophy-text {
+          font-size: 30px;
+          line-height: 1.5;
+          padding-top: 30px;
+          display: inline-block;
+        }
+      }
+      .activity-table {
+        margin:20px;
+        border:1px solid #fff1b5;
+        border-radius:10px;
+      }
+      .table-awards td {
+        border-bottom:1px dashed #fff1b5;
+        padding:10px;
+        font-size: 22px;
+        color: #fff1b5;
+      }
+      .table-awards td.last {
+        border-bottom-width: 0;
+      }
+      .table-awards td[scope="col"] {
+        width:180px;
+        border-right: 1px dashed #fff1b5;
+      }
+
+      .button-bar {
+        margin-top:60px;
+        .btn-primary {
+          color: #801616!important;
+          font-size: 30px;
+          background: #ffcc00;
+          font-weight: bold;
+          letter-spacing: 0;
+        }
+      }
+      time {
+        font-size: 14px;
+        padding-top: 40px;
+        display: inline-block;
+        padding-bottom:60px;
+      }
+
+    }
+  }
+  .actor-award-img {
+    height:477px;
+    background: url("/images/sign/actor/awards/img-award.jpg") center top no-repeat;
+    clear:both;
+  }
+}
 @media screen and (max-width: 700px){
   .activity-ranking-container {
     .res-no-app {
@@ -481,6 +577,70 @@ img.icon-mark {
         width:100%;
       }
     }
+  }
+
+  .activity-award-container {
+    .actor-award-img {
+      height: 150px !important;
+      background: url("/images/sign/actor/awards/ph-awards.jpg") center top no-repeat;
+      clear: both;
+      background-size: cover !important;
+    }
+    .wide-screen-out {
+      .wide-screen-inner {
+        width: 98%;
+        margin:0 auto;
+        padding-top:10px;
+        .activity-info {
+          font-size: 14px;
+          margin: 10px;
+          padding: 9px;
+          span {
+            display: block;
+          }
+          img {
+            display: none;
+          }
+          b {
+            font-size: 18px;
+          }
+        }
+        .award-product-box {
+          height: 380px;
+          margin-top:20px;
+          background: url("/images/sign/actor/awards/app-product.jpg") center top no-repeat;
+          background-size: 100%;
+        }
+        .trophy-box {
+          .trophy-big {
+            width:70px;
+          }
+          .trophy-text {
+            font-size: 15px;
+          }
+        }
+        .activity-table {
+          margin:30px 5px 5px 5px;
+          border-radius: 5px;
+          .table-awards td {
+              padding: 5px;
+              font-size: 12px;
+            }
+          .table-awards td[scope="col"] {
+            width:70px;
+            border-right: 1px dashed #fff1b5;
+          }
+        }
+        .button-bar {
+          margin-top:30px;
+          time {
+            padding-top:20px;
+            padding-bottom: 20px;
+          }
+        }
+      }
+    }
+
   }
 
 }

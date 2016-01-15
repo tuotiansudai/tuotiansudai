@@ -8,13 +8,9 @@
                 <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="招募代理" class="iphone-img">
             </a>
             <a href="/activity/awards" target="_blank">
-                <img src="${staticServer}/images/ttimg/ttimg-awards.jpg" alt="宝马大奖颁奖典礼" class="pc-img">
-                <img src="${staticServer}/images/ttimg/ph-a01.jpg" alt="抢排行，送大礼" class="iphone-img">
+                <img src="${staticServer}/images/sign/actor/awards/ttimg-awards.jpg" alt="宝马大奖颁奖典礼" class="pc-img">
+                <img src="${staticServer}/images/sign/actor/awards/ph-awards.jpg" alt="宝马大奖颁奖典礼" class="iphone-img">
             </a>
-            <#--<a href="/activity/ranking" target="_blank">-->
-                <#--<img src="${staticServer}/images/sign/actor/ranking/qph.jpg" alt="抢排行，送大礼" class="pc-img">-->
-                <#--<img src="${staticServer}/images/ttimg/ph-a01.jpg" alt="抢排行，送大礼" class="iphone-img">-->
-            <#--</a>-->
             <a href="/activity/grand" target="_blank">
                 <img src="${staticServer}/images/sign/actor/grand/ba-grand.jpg" alt="累计收益兑大奖" class="pc-img">
                 <img src="${staticServer}/images/ttimg/ph-a02.jpg" alt="累计收益兑大奖" class="iphone-img">

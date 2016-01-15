@@ -74,6 +74,14 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','load-swiper','com
             }
         }
 
+        if($('#activityAwardBox').length) {
+
+            var $activityAwardBox=$('#activityAwardBox'),
+                screenWid=$(window).width();
+            $activityAwardBox.find('.wide-screen-left,.wide-screen-right').width((screenWid-1000)/2).show();
+
+        }
+
         if($problemList.length) {
             $problemList.on('click', function(e) {
                 e.preventDefault();
