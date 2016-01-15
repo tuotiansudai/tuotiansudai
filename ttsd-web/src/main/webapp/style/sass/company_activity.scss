@@ -19,10 +19,6 @@
   height:350px;
   background: url("/images/sign/actor/grand/ba-grand.jpg") center top no-repeat;
 }
-.actor-ranking-img {
-  height: 439px;
-  background: url("/images/sign/actor/ranking/ba-rank.jpg") center top no-repeat;
-}
 .main-width {
   width:1010px;
   margin: 0 auto;
@@ -281,7 +277,6 @@ img.icon-mark {
   position: absolute;
   z-index: 10;
 }
-.activity-ranking-container,
 .activity-grand-container{
   background: #fffbd9;
 }
@@ -345,11 +340,6 @@ img.icon-mark {
     .res-no-app {
       display: none;
     }
-  }
-  .actor-ranking-img {
-    height: 150px!important;
-    background: url("/images/ttimg/ph-a01.jpg") center top no-repeat!important;
-    background-size: cover!important;
   }
   .actor-grand-img{
     height: 150px!important;
