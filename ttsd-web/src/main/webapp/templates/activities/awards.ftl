@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-    <@global.main pageCss="${css.company_activity}" pageJavascript="${js.about_us}" activeNav="" activeLeftNav="" title="抢排行">
+    <@global.main pageCss="${css.company_activity}" pageJavascript="${js.about_us}" activeNav="" activeLeftNav="" title="宝马大奖颁奖典礼">
     <div class="activity-award-container" id="WhetherApp">
         <div class="actor-award-img"></div>
         <div class="wide-screen-out" id="activityAwardBox">
