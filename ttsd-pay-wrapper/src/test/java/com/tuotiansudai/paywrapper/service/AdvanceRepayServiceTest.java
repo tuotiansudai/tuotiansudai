@@ -864,6 +864,7 @@ public class AdvanceRepayServiceTest {
         userCouponMapper.create(userCouponModel);
         userCouponModel.setLoanId(fakeNormalLoan.getId());
         userCouponModel.setUsedTime(today.minusDays(10).toDate());
+        userCouponModel.setInvestId(fakeInvestModel.getId());
         userCouponMapper.update(userCouponModel);
 
         this.generateMockResponse(10);
@@ -950,6 +951,7 @@ public class AdvanceRepayServiceTest {
         userCouponMapper.create(userCouponModel);
         userCouponModel.setLoanId(fakeNormalLoan.getId());
         userCouponModel.setUsedTime(today.minusDays(10).toDate());
+        userCouponModel.setInvestId(fakeInvestModel.getId());
         userCouponMapper.update(userCouponModel);
 
         this.generateMockResponse(10);
@@ -1103,12 +1105,13 @@ public class AdvanceRepayServiceTest {
 
     private CouponModel getFakeCoupon(long amount, String loginName) {
         CouponModel couponModel = new CouponModel();
-        couponModel.setName("couponName");
         couponModel.setAmount(amount);
         couponModel.setTotalCount(1);
         couponModel.setActive(true);
-        couponModel.setCreateUser(loginName);
-        couponModel.setCreateTime(new Date());
+        couponModel.setCreatedBy(loginName);
+        couponModel.setCreatedTime(new Date());
+        couponModel.setCouponType(CouponType.INVEST_COUPON);
+        couponModel.setProductTypes(Lists.newArrayList(ProductType.JYF));
         return couponModel;
     }
 }
