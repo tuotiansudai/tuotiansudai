@@ -7,11 +7,14 @@
                 <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">
                 <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="招募代理" class="iphone-img">
             </a>
-            <a href="/activity/ranking" target="_blank">
-                <img src="${staticServer}/images/sign/actor/ranking/qph.jpg" alt="抢排行，送大礼" class="pc-img">
+            <a href="/activity/awards" target="_blank">
+                <img src="${staticServer}/images/ttimg/ttimg-awards.jpg" alt="宝马大奖颁奖典礼" class="pc-img">
                 <img src="${staticServer}/images/ttimg/ph-a01.jpg" alt="抢排行，送大礼" class="iphone-img">
-
             </a>
+            <#--<a href="/activity/ranking" target="_blank">-->
+                <#--<img src="${staticServer}/images/sign/actor/ranking/qph.jpg" alt="抢排行，送大礼" class="pc-img">-->
+                <#--<img src="${staticServer}/images/ttimg/ph-a01.jpg" alt="抢排行，送大礼" class="iphone-img">-->
+            <#--</a>-->
             <a href="/activity/grand" target="_blank">
                 <img src="${staticServer}/images/sign/actor/grand/ba-grand.jpg" alt="累计收益兑大奖" class="pc-img">
                 <img src="${staticServer}/images/ttimg/ph-a02.jpg" alt="累计收益兑大奖" class="iphone-img">
@@ -157,7 +160,7 @@
             </div>
             <div class="company-up">
                 <a href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" target="_blank">
-                    <img src="${staticServer}/images/banner/video-images.png" alt="拓天伟业挂牌视频">
+                    <img src="${staticServer}/images/sign/video-images.png" alt="拓天伟业挂牌视频">
                 </a>
             </div>
         </div>
