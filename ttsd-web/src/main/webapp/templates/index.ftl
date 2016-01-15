@@ -10,7 +10,6 @@
             <a href="/activity/ranking" target="_blank">
                 <img src="${staticServer}/images/sign/actor/ranking/qph.jpg" alt="抢排行，送大礼" class="pc-img">
                 <img src="${staticServer}/images/ttimg/ph-a01.jpg" alt="抢排行，送大礼" class="iphone-img">
-
             </a>
 
             <a href="/activity/recruit" target="_blank">
