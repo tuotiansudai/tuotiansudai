@@ -319,18 +319,6 @@ public class LoanServiceTest {
     }
 
     @Test
-    public void shouldGetLoanDetailTest(){
-        mockLoginUser("loginName", "13900000000");
-
-        long id = createLoanService();
-        BaseDto<LoanDto> baseDto = loanService.getLoanDetail("loginName", id);
-        assertNotNull(baseDto.getData().getId());
-        assertNotNull(baseDto.getData().getLoanTitles().get(0).getApplicationMaterialUrls());
-        assertEquals(99.5, baseDto.getData().getAmountNeedRaised(), 0);
-        assertEquals(0.005, baseDto.getData().getRaiseCompletedRate(), 0);
-    }
-
-    @Test
     public void shouldGetTheInvests(){
         long loanId = createLoanService();
         createTestInvests(loanId, "loginName", 10);

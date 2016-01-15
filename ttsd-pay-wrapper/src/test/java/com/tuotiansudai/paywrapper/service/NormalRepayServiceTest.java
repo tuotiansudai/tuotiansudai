@@ -324,7 +324,7 @@ public class NormalRepayServiceTest {
         UserCouponModel actualUserCouponModel = userCouponMapper.findById(userCouponModel.getId());
         assertThat(actualUserCouponModel.getActualInterest(), is(17L));
         assertThat(actualUserCouponModel.getActualFee(), is(1L));
-        SystemBillModel systemBillModel3 = systemBillMapper.findByOrderId(userCouponModel.getId(), SystemBillBusinessType.NEWBIE_COUPON);
+        SystemBillModel systemBillModel3 = systemBillMapper.findByOrderId(userCouponModel.getId(), SystemBillBusinessType.COUPON);
         assertThat(systemBillModel3.getAmount(), is(16L));
     }
 
@@ -427,7 +427,7 @@ public class NormalRepayServiceTest {
         UserCouponModel actualUserCouponModel = userCouponMapper.findById(userCouponModel.getId());
         assertThat(actualUserCouponModel.getActualInterest(), is(5L));
         assertThat(actualUserCouponModel.getActualFee(), is(2L));
-        SystemBillModel systemBillModel3 = systemBillMapper.findByOrderId(userCouponModel.getId(), SystemBillBusinessType.NEWBIE_COUPON);
+        SystemBillModel systemBillModel3 = systemBillMapper.findByOrderId(userCouponModel.getId(), SystemBillBusinessType.COUPON);
         assertThat(systemBillModel3.getAmount(), is(3L));
     }
 
@@ -1206,12 +1206,13 @@ public class NormalRepayServiceTest {
 
     private CouponModel getFakeCoupon(long amount, String loginName) {
         CouponModel couponModel = new CouponModel();
-        couponModel.setName("couponName");
         couponModel.setAmount(amount);
         couponModel.setTotalCount(1);
         couponModel.setActive(true);
-        couponModel.setCreateUser(loginName);
-        couponModel.setCreateTime(new Date());
+        couponModel.setCreatedBy(loginName);
+        couponModel.setCreatedTime(new Date());
+        couponModel.setProductTypes(Lists.newArrayList(ProductType.JYF));
+        couponModel.setCouponType(CouponType.INVEST_COUPON);
         return couponModel;
     }
 }

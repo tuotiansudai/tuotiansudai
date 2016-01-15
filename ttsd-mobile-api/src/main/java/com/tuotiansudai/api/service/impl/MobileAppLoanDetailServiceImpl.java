@@ -60,7 +60,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         LoanDetailResponseDataDto loanDetailResponseDataDto = new LoanDetailResponseDataDto();
         loanDetailResponseDataDto.setLoanId("" + loan.getId());
-        loanDetailResponseDataDto.setLoanType(loan.getActivityType().name());
+        loanDetailResponseDataDto.setLoanType(loan.getProductType() != null ? loan.getProductType().name() : "");
         loanDetailResponseDataDto.setLoanName(loan.getName());
         String repayTypeName = loan.getType().getRepayType();
         String interestPointName = loan.getType().getInterestPointName();
