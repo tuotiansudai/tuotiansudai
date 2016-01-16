@@ -2,7 +2,6 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.service.UserCouponService;
-import com.tuotiansudai.web.freemarker.directive.AmountDirective;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,10 +21,7 @@ public class MyTreasureController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getUserCoupon() {
         String loginName = LoginUserInfo.getLoginName();
-        List<UserCouponDto> userCouponDtos = userCouponService.getUserCouponDtoByLoginName(loginName);
-        ModelAndView mv = new ModelAndView("/my-treasure");
-        mv.addObject("coupons", userCouponDtos);
-        mv.addObject("amount", new AmountDirective());
-        return mv;
+        List<UserCouponDto> userCoupons = userCouponService.getUserCoupons(loginName);
+        return new ModelAndView("/my-treasure", "coupons", userCoupons);
     }
 }
