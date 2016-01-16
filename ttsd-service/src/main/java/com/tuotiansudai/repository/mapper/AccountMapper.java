@@ -14,7 +14,6 @@ public interface AccountMapper {
 
     AccountModel findByPayUserId(String payUserId);
 
-
     List<String> findAllLoanerLikeLoginName(String loginName);
 
     List<String> findAccountLikeLoginName(String loginName);
@@ -25,4 +24,5 @@ public interface AccountMapper {
 
     AccountModel findByIdentityNumber(String identityNumber);
 
+    List<String> findLoginNames();
 }

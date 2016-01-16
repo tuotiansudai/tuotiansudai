@@ -1,14 +1,17 @@
 package com.tuotiansudai.coupon.repository.model;
 
+import com.tuotiansudai.repository.model.CouponType;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class CouponUseRecordView {
+public class CouponUseRecordView implements Serializable {
 
     private long loanId;
 
     private String loanName;
 
-    private String couponName;
+    private CouponType couponType;
 
     private long couponAmount;
 
@@ -21,6 +24,10 @@ public class CouponUseRecordView {
     private String expectInterestStr;
 
     public CouponUseRecordView() {
+    }
+
+    public String getCouponName() {
+        return couponType.getName();
     }
 
     public long getLoanId() {
@@ -39,12 +46,12 @@ public class CouponUseRecordView {
         this.loanName = loanName;
     }
 
-    public String getCouponName() {
-        return couponName;
+    public CouponType getCouponType() {
+        return couponType;
     }
 
-    public void setCouponName(String couponName) {
-        this.couponName = couponName;
+    public void setCouponType(CouponType couponType) {
+        this.couponType = couponType;
     }
 
     public long getCouponAmount() {

@@ -1,9 +1,11 @@
 package com.tuotiansudai.web.controller;
 
+import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.LoanItemDto;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.web.util.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,9 @@ public class LoanListController {
 
     @Autowired
     private LoanService loanService;
+
+    @Autowired
+    private UserCouponService userCouponService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView webLoanList(@RequestParam(value = "productType", required = false) ProductType productType,
@@ -43,6 +48,8 @@ public class LoanListController {
         int maxIndex = count / 10 + (count % 10 > 0 ? 1 : 0);
         modelAndView.addObject("hasPreviousPage", index > 1 && index <= maxIndex);
         modelAndView.addObject("hasNextPage", index < maxIndex);
+        modelAndView.addObject("newbieCoupon", this.userCouponService.getUsableNewbieCoupon(LoginUserInfo.getLoginName()));
         return modelAndView;
     }
+
 }
