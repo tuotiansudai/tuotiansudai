@@ -25,7 +25,7 @@ public class MobileAppAutoInvestPlanServiceImpl implements MobileAppAutoInvestPl
     @Transactional
     public BaseResponseDto buildAutoInvestPlan(AutoInvestPlanRequestDto autoInvestPlanRequestDto) {
         BaseResponseDto baseDto = new BaseResponseDto();
-        String id = autoInvestPlanRequestDto.getId();
+        String id = autoInvestPlanRequestDto.getAutoPlanId();
         String loginName = autoInvestPlanRequestDto.getBaseParam().getUserId();
 
         long minInvestAmount = AmountConverter.convertStringToCent(autoInvestPlanRequestDto.getMinInvestAmount());

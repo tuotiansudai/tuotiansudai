@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class AutoInvestPlanDataDto extends BaseResponseDataDto{
-    private String id;
+    private String autoPlanId;
     private String loginName;
     private String minInvestAmount;
     private String maxInvestAmount;
@@ -15,12 +15,12 @@ public class AutoInvestPlanDataDto extends BaseResponseDataDto{
     private boolean enabled ;
     private String createdTime;
 
-    public String getId() {
-        return id;
+    public String getAutoPlanId() {
+        return autoPlanId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setAutoPlanId(String autoPlanId) {
+        this.autoPlanId = autoPlanId;
     }
 
     public String getLoginName() {
@@ -84,7 +84,7 @@ public class AutoInvestPlanDataDto extends BaseResponseDataDto{
     }
 
     public AutoInvestPlanDataDto(AutoInvestPlanModel autoInvestPlanModel){
-        this.id = "" + autoInvestPlanModel.getId();
+        this.autoPlanId = "" + autoInvestPlanModel.getId();
         this.loginName = autoInvestPlanModel.getLoginName();
         this.minInvestAmount = AmountConverter.convertCentToString(autoInvestPlanModel.getMinInvestAmount());
         this.maxInvestAmount = AmountConverter.convertCentToString(autoInvestPlanModel.getMaxInvestAmount());

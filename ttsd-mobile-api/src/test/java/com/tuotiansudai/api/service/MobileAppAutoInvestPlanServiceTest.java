@@ -50,10 +50,10 @@ public class MobileAppAutoInvestPlanServiceTest {
     @Test
     public void shouldCreateAutoInvestPlanIsSuccess(){
         AutoInvestPlanRequestDto autoInvestPlanRequestDto = getAutoInvestPlanRequestDto();
-        autoInvestPlanRequestDto.setId("");
+        autoInvestPlanRequestDto.setAutoPlanId("");
         BaseResponseDto<AutoInvestPlanDataDto> baseDto = mobileAppAutoInvestPlanService.buildAutoInvestPlan(autoInvestPlanRequestDto);
         assertEquals(true, baseDto.getData().isEnabled());
-        assertNotNull(baseDto.getData().getId());
+        assertNotNull(baseDto.getData().getAutoPlanId());
         assertEquals("500.00", baseDto.getData().getMinInvestAmount());
         assertEquals("10000.00", baseDto.getData().getMaxInvestAmount());
         assertEquals("100.00", baseDto.getData().getRetentionAmount());
@@ -76,7 +76,7 @@ public class MobileAppAutoInvestPlanServiceTest {
 
         autoInvestPlanMapper.create(autoInvestPlanModel);
 
-        autoInvestPlanRequestDto.setId("" + autoInvestPlanModel.getId());
+        autoInvestPlanRequestDto.setAutoPlanId("" + autoInvestPlanModel.getId());
 
         BaseResponseDto<AutoInvestPlanDataDto> baseDto = mobileAppAutoInvestPlanService.buildAutoInvestPlan(autoInvestPlanRequestDto);
         assertEquals(false,baseDto.getData().getAutoInvestPeriods().get(1).isSelected());
@@ -133,7 +133,7 @@ public class MobileAppAutoInvestPlanServiceTest {
 
         autoInvestPlanMapper.create(autoInvestPlanModel);
 
-        autoInvestPlanRequestDto.setId("" + autoInvestPlanModel.getId());
+        autoInvestPlanRequestDto.setAutoPlanId("" + autoInvestPlanModel.getId());
         autoInvestPlanRequestDto.setEnabled(false);
 
         BaseResponseDto<AutoInvestPlanDataDto> baseDto = mobileAppAutoInvestPlanService.buildAutoInvestPlan(autoInvestPlanRequestDto);
@@ -148,7 +148,7 @@ public class MobileAppAutoInvestPlanServiceTest {
         autoInvestPlanModel.setEnabled(false);
         autoInvestPlanMapper.create(autoInvestPlanModel);
 
-        autoInvestPlanRequestDto.setId("" + autoInvestPlanModel.getId());
+        autoInvestPlanRequestDto.setAutoPlanId("" + autoInvestPlanModel.getId());
         autoInvestPlanRequestDto.setEnabled(true);
 
         BaseResponseDto<AutoInvestPlanDataDto> baseDto = mobileAppAutoInvestPlanService.buildAutoInvestPlan(autoInvestPlanRequestDto);
