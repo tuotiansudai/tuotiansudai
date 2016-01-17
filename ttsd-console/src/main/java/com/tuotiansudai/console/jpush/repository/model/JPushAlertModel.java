@@ -2,6 +2,7 @@ package com.tuotiansudai.console.jpush.repository.model;
 
 
 import com.tuotiansudai.console.jpush.dto.JPushAlertDto;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,14 +12,13 @@ public class JPushAlertModel implements Serializable{
 
     private long id;
     private String name;
-    private Date pushTime;
     private PushType pushType;
     private List<String> pushObjects;
     private PushSource pushSource;
     private PushStatus status;
     private String content;
     private JumpTo jumpTo;
-    private String linkAddress;
+    private String jumpToLink;
     private Date createdTime;
     private String createdBy;
     private Date updatedTime;
@@ -38,14 +38,6 @@ public class JPushAlertModel implements Serializable{
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Date getPushTime() {
-        return pushTime;
-    }
-
-    public void setPushTime(Date pushTime) {
-        this.pushTime = pushTime;
     }
 
     public PushType getPushType() {
@@ -88,14 +80,6 @@ public class JPushAlertModel implements Serializable{
         this.jumpTo = jumpTo;
     }
 
-    public String getLinkAddress() {
-        return linkAddress;
-    }
-
-    public void setLinkAddress(String linkAddress) {
-        this.linkAddress = linkAddress;
-    }
-
     public Date getCreatedTime() {
         return createdTime;
     }
@@ -135,19 +119,30 @@ public class JPushAlertModel implements Serializable{
     public void setPushObjects(List<String> pushObjects) {
         this.pushObjects = pushObjects;
     }
+
+    public String getJumpToLink() {
+        return jumpToLink;
+    }
+
+    public void setJumpToLink(String jumpToLink) {
+        this.jumpToLink = jumpToLink;
+    }
+
     public JPushAlertModel(){
 
     }
     public JPushAlertModel(JPushAlertDto jPushAlertDto){
+        if (StringUtils.isNotEmpty(jPushAlertDto.getId())){
+            this.id = Long.parseLong(jPushAlertDto.getId());
+        }
         this.name = jPushAlertDto.getName();
-        this.pushTime = jPushAlertDto.getPushTime();
         this.pushType = jPushAlertDto.getPushType();
         this.pushObjects = jPushAlertDto.getPushObjects();
         this.pushSource = jPushAlertDto.getPushSource();
         this.status = PushStatus.CREATED;
         this.content = jPushAlertDto.getContent();
         this.jumpTo = jPushAlertDto.getJumpTo();
-        this.linkAddress = jPushAlertDto.getLinkAddress();
-        this.createdTime = new Date();
+        this.jumpToLink = jPushAlertDto.getJumpToLink();
+
     }
 }

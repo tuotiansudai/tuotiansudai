@@ -12,4 +12,7 @@ public enum PushType {
         this.description = description;
     }
 
+    public String getDescription() {
+        return description;
+    }
 }

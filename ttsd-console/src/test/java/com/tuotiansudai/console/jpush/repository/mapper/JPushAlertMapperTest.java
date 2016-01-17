@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -39,16 +40,26 @@ public class JPushAlertMapperTest {
         assertNotNull(jPushAlertModel.getId());
 
     }
+    @Test
+    public void shouldFindJPushAlertModelByIdIsSuccess(){
+        UserModel userModel1 = fakeUserModel("tuotian1", "12900000000");
+        userMapper.create(userModel1);
+        JPushAlertModel jPushAlertModel = getFakeJPushAlertModel("tuotian1");
+        jPushAlertMapper.create(jPushAlertModel);
+
+        JPushAlertModel jPushAlertModel1 = jPushAlertMapper.findJPushAlertModelById(jPushAlertModel.getId());
+        assertEquals(jPushAlertModel.getName(),jPushAlertModel1.getName());
+        assertEquals(jPushAlertModel.getJumpTo(),jPushAlertModel1.getJumpTo());
+    }
 
     private JPushAlertModel getFakeJPushAlertModel(String loginName){
         JPushAlertModel jPushAlertModel = new JPushAlertModel();
         jPushAlertModel.setName("name");
-        jPushAlertModel.setPushTime(new Date());
         jPushAlertModel.setPushType(PushType.HUMANISTIC_CARE);
-        jPushAlertModel.setPushSource(PushSource.All);
+        jPushAlertModel.setPushSource(PushSource.ALL);
         jPushAlertModel.setContent("content");
         jPushAlertModel.setJumpTo(JumpTo.INVEST);
-        jPushAlertModel.setLinkAddress("lindAddress");
+        jPushAlertModel.setJumpToLink("lindAddress");
         jPushAlertModel.setCreatedTime(new Date());
         String[] pushObjects = {"11","12"};
         jPushAlertModel.setPushObjects(Arrays.asList(new String[]{"12","13"}));

@@ -1,32 +1,30 @@
 package com.tuotiansudai.console.jpush.dto;
 
-import com.tuotiansudai.console.jpush.repository.model.JumpTo;
-import com.tuotiansudai.console.jpush.repository.model.PushSource;
-import com.tuotiansudai.console.jpush.repository.model.PushStatus;
-import com.tuotiansudai.console.jpush.repository.model.PushType;
+import com.tuotiansudai.console.jpush.repository.model.*;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
 public class JPushAlertDto {
+
+    private String id;
     @NotEmpty
     private String name;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date pushTime;
-    @NotEmpty
+    @NotNull
     private PushType pushType;
     @NotEmpty
     private List<String> pushObjects;
-    @NotEmpty
+    @NotNull
     private PushSource pushSource;
 
     private String content;
 
     private JumpTo jumpTo;
 
-    private String linkAddress;
+    private String jumpToLink;
 
     public String getName() {
         return name;
@@ -34,14 +32,6 @@ public class JPushAlertDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Date getPushTime() {
-        return pushTime;
-    }
-
-    public void setPushTime(Date pushTime) {
-        this.pushTime = pushTime;
     }
 
     public PushType getPushType() {
@@ -84,11 +74,33 @@ public class JPushAlertDto {
         this.jumpTo = jumpTo;
     }
 
-    public String getLinkAddress() {
-        return linkAddress;
+    public String getJumpToLink() {
+        return jumpToLink;
     }
 
-    public void setLinkAddress(String linkAddress) {
-        this.linkAddress = linkAddress;
+    public void setJumpToLink(String jumpToLink) {
+        this.jumpToLink = jumpToLink;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public JPushAlertDto(){
+
+    }
+    public JPushAlertDto(JPushAlertModel jPushAlertModel){
+        this.id = "" + jPushAlertModel.getId();
+        this.name = jPushAlertModel.getName();
+        this.pushType = jPushAlertModel.getPushType();
+        this.pushObjects = jPushAlertModel.getPushObjects();
+        this.pushSource = jPushAlertModel.getPushSource();
+        this.content = jPushAlertModel.getContent();
+        this.jumpTo = jPushAlertModel.getJumpTo();
+        this.jumpToLink = jPushAlertModel.getJumpToLink();
     }
 }
