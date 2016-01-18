@@ -90,7 +90,9 @@ public class AutoInvestPlanRequestDto extends BaseParamDto {
         if(CollectionUtils.isNotEmpty(this.getAutoInvestPeriods())){
             int autoInvestPeriods = 0 ;
             for(AutoInvestPeriodDto autoInvestPeriodDto:this.getAutoInvestPeriods()){
-                autoInvestPeriods += Integer.parseInt(autoInvestPeriodDto.getPid());
+                if(autoInvestPeriodDto.isSelected()){
+                    autoInvestPeriods += Integer.parseInt(autoInvestPeriodDto.getPid());
+                }
             }
             autoInvestPlanModel.setAutoInvestPeriods(autoInvestPeriods);
         }
