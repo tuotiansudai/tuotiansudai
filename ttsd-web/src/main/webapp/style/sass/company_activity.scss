@@ -291,6 +291,10 @@
           line-height: 1.5;
           padding-top: 30px;
           display: inline-block;
+
+          b {
+            font-size: 38px;
+          }
         }
       }
       .activity-table {
@@ -442,6 +446,9 @@
           }
           .trophy-text {
             font-size: 15px;
+            b {
+              font-size: 18px;
+            }
           }
         }
         .activity-table {

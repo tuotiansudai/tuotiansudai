@@ -16,8 +16,8 @@
                     <div class="trophy-box">
                         <img src="${staticServer}/images/sign/actor/awards/trophy-big.png" class="trophy-big"> <br/>
                     <span class="trophy-text tc">
-                     热烈祝贺！<br/>
-                    guanquanzhi荣获第一期排行榜“宝马大奖”！
+                    热烈祝贺！<br/>
+                    贯先生<em>（***uanzhi，138****0131，11010*********1553 ）</em>以三个月总收益<b>91438.88</b>元获得“宝马大奖”！
                     </span>
                     </div>
 
