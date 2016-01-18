@@ -17,6 +17,7 @@ public class UserItemDataDto implements Serializable {
     private String mobile;
     private String referrer;
     private String channel;
+    private boolean staff;
     private Date registerTime;
     private List<UserRoleModel> userRoles;
     private UserStatus status;
@@ -76,6 +77,14 @@ public class UserItemDataDto implements Serializable {
 
     public void setChannel(String channel) {
         this.channel = channel;
+    }
+
+    public boolean isStaff() {
+        return staff;
+    }
+
+    public void setStaff(boolean staff) {
+        this.staff = staff;
     }
 
     public Date getRegisterTime() {
