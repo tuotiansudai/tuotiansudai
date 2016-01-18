@@ -114,11 +114,10 @@
         and status = '${status}'
     </select>
 
-    <update id="cleanWaitingInvestBefore" parameterType="map">
+    <update id="cleanWaitingInvest" parameterType="long">
         update invest set status = 'FAIL'
         where loan_id = #{loanId}
         and status = 'WAIT_PAY'
-        and created_time &lt; #{beforeTime}
     </update>
 
     <select id="findWaitingInvestCountAfter" parameterType="map" resultType="int">
