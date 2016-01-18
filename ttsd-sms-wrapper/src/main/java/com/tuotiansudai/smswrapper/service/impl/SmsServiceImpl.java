@@ -92,6 +92,6 @@ public class SmsServiceImpl implements SmsService {
                 .put("expiredDate", notifyDto.getExpiredDate())
                 .build();
         String content = SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE.generateContent(map);
-        return smsClient.sendSMS(JobFatalNotifyMapper.class, notifyDto.getMobile(), content, "");
+        return smsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(), content, "");
     }
 }
