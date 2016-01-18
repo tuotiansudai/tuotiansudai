@@ -712,7 +712,7 @@
 
     <select id="queryInvestViscositySumAmount" parameterType="map" resultType="long">
         select
-            SUM(temp.total_amount) as sum_amount
+            IFNULL(SUM(temp.total_amount),0) as sum_amount
         from (
             select
                 i.login_name,
