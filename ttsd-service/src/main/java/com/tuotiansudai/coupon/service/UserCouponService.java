@@ -8,11 +8,17 @@ import java.util.List;
 
 public interface UserCouponService {
 
-    List<UserCouponDto> getUserCoupons(String loginName);
+    List<UserCouponDto> getUserAllCoupons(String loginName);
+
+    List<UserCouponDto> getUserMoneyCoupons(String loginName);
+
+    List<UserCouponDto> getUserInterestCoupons(String loginName);
 
     UserCouponDto getUsableNewbieCoupon(String loginName);
 
     List<UserCouponDto> getUsableCoupons(String loginName, final long loanId);
 
-    BaseDto<BasePaginationDataDto> findUseRecords(String loginName, int index, int pageSize);
+    BaseDto<BasePaginationDataDto> findMoneyCouponUseRecords(String loginName, int index, int pageSize);
+
+    BaseDto<BasePaginationDataDto> findInterestCouponUseRecords(String loginName, int index, int pageSize);
 }

@@ -1,6 +1,5 @@
 package com.tuotiansudai.web.controller;
 
-
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
@@ -21,11 +20,18 @@ public class CouponUseRecordController {
     UserCouponService userCouponService;
 
     @ResponseBody
-    @RequestMapping(value = "/use-record", method = RequestMethod.GET)
-    public BaseDto<BasePaginationDataDto> getAnnounceList(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                                          @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+    @RequestMapping(value = "/money-coupon-use-record", method = RequestMethod.GET)
+    public BaseDto<BasePaginationDataDto> getMoneyCouponUseRecordList(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
+                                                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         String loginName = LoginUserInfo.getLoginName();
-        return userCouponService.findUseRecords(loginName, index, pageSize);
+        return userCouponService.findMoneyCouponUseRecords(loginName, index, pageSize);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/interest-coupon-use-record", method = RequestMethod.GET)
+    public BaseDto<BasePaginationDataDto> getInterestCouponUseRecordList(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
+                                                                         @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        String loginName = LoginUserInfo.getLoginName();
+        return userCouponService.findInterestCouponUseRecords(loginName, index, pageSize);
+    }
 }
