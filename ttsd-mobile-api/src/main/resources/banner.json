@@ -10,9 +10,9 @@
   {
     "pictureId": "",
     "title": "",
-    "url": "{web}/activity/ranking?source=app",
+    "url": "{web}/activity/awards?source=app",
     "seqNum": 2,
-    "picture": "{static}/images/app-banner/activity-ranking.png",
+    "picture": "{static}/images/app-banner/activity-awards.png",
     "noticeId": ""
   },
   {
