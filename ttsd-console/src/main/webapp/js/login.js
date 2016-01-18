@@ -22,7 +22,7 @@ $(function() {
                     break;
                 }
                 if (roles[idx] === 'CUSTOMER_SERVICE') {
-                    url = '/user-manage/users-search';
+                    url = '/';
                 }
             }
         }

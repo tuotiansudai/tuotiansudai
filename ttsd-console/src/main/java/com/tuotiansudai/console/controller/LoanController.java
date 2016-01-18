@@ -13,6 +13,7 @@ import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.service.LoanService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,8 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/project-manage/loan")
 public class LoanController {
+
+    static Logger logger = Logger.getLogger(LoanController.class);
 
     private static final String DEFAULT_CONTRACT_ID = "789098123"; // 四方合同
 
@@ -36,7 +39,7 @@ public class LoanController {
     public ModelAndView createLoan() {
         ModelAndView modelAndView = new ModelAndView("/loan-create");
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
-        modelAndView.addObject("productTypes",Lists.newArrayList(ProductType.values()));
+        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
         return modelAndView;
@@ -69,7 +72,7 @@ public class LoanController {
         }
         ModelAndView modelAndView = new ModelAndView("/loan-edit");
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
-        modelAndView.addObject("productTypes",Lists.newArrayList(ProductType.values()));
+        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
         modelAndView.addObject("loanInfo", loanService.findLoanById(loanId));
@@ -99,14 +102,8 @@ public class LoanController {
     @RequestMapping(value = "/recheck", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> recheckLoan(@RequestBody LoanDto loanDto) {
-        BaseDto<PayDataDto> baseDto = null;
-        try {
-            loanDto.setRecheckLoginName(LoginUserInfo.getLoginName());
-            baseDto = loanService.loanOut(loanDto);
-        } catch (BaseException e) {
-            e.printStackTrace();
-        }
-        return baseDto;
+        loanDto.setRecheckLoginName(LoginUserInfo.getLoginName());
+        return loanService.loanOut(loanDto);
     }
 
     @RequestMapping(value = "/cancel", method = RequestMethod.POST)

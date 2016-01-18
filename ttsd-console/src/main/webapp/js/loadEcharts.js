@@ -320,7 +320,10 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
 
                     $boxUserInvest.find('.sumAmount').text(parseFloat(data.sumAmount/100).toFixed(2));
                     $.each(data.items,function(key,option) {
-                        var isReferrerStaff=(option.isReferrerStaff==1)?'是':'否';
+                        var staffIcon = '<span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>';
+                        var isReferrerStaffIcon=(option.isReferrerStaff==1)?staffIcon:'';
+                        var isStaffIcon=((option.isStaff==1)?staffIcon:'');
+
                         var getDate=new Date(option.lastInvestTime),
                             Hours=getDate.getHours(),
                             minutes=getDate.getMinutes(),
@@ -332,13 +335,11 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                             showDate=MyChartsObject.datetimeFun.getNowFormatDate(getDate)+' '+Hours+minutes+seconds;
 
                         dataObj.push('<tr> ' +
-                            '<td>'+option.loginName+'</td> ' +
+                            '<td>'+option.loginName + isStaffIcon + '</td> ' +
                             '<td>'+option.userName+'</td> ' +
                             '<td>'+option.mobile+'</td> ' +
-                            '<td>'+isReferrerStaff+'</td> ' +
-                            '<td>'+((_.isNull(option.referrer))?'':option.referrer)+'</td> ' +
+                            '<td>'+((_.isNull(option.referrer))?'':option.referrer+isReferrerStaffIcon)+'</td> ' +
                             '<td>'+((_.isNull(option.referrerUserName))?'':option.referrerUserName)+'</td> ' +
-                            '<td>'+((option.isStaff==1)?'是':'否')+'</td> ' +
                             '<td>'+parseFloat(option.totalAmount/100).toFixed(2)+'</td> ' +
                             '<td>'+option.loanCount+'</td> ' +
                             '<td>'+showDate+'</td> ' +
@@ -350,6 +351,10 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                         PagePosition: "#boxUserInvest table .pageNumber span.pageBtn"
                     });
                     $boxUserInvest.find('.TotalRecords').text(TotalRecord);
+                });
+
+                $('.viscosity-export').click(function () {
+                    location.href = "/bi/user-invest-viscosity-detail-csv?"+$formUserReport.serialize()+"&loanCount="+loanCount;
                 });
             }
             if (param.type == 'click') {
