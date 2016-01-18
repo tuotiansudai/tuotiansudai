@@ -33,7 +33,7 @@
     {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'INVESTOR', 'LOANER'"},
     {"title":"我的宝藏", "url":"/my-treasure", "role":"'INVESTOR', 'LOANER'"}
     ]},
-    {"title":"新手指引", "url":"/activity/guide"},
+    {"title":"新手指引", "url":"/about/guide"},
     {"title":"关于我们", "url":"/about/company", "leftNavs":[
     {"title":"公司介绍", "url":"/about/company"},
     {"title":"团队介绍", "url":"/about/team"},
