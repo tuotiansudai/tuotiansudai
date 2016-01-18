@@ -48,6 +48,10 @@ public class ProjectAccountSearchResponseModel extends BaseSyncResponseModel {
         this.balance = resData.get("balance");
     }
 
+    public String getBalance() {
+        return balance;
+    }
+
     public Map<String, String> generateHumanReadableInfo() {
         return Maps.newLinkedHashMap(ImmutableMap.<String, String>builder()
                 .put("标的号", Strings.isNullOrEmpty(this.projectId) ? "" : this.projectId)

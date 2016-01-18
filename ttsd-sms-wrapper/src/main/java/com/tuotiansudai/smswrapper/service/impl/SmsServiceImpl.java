@@ -6,15 +6,19 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.SmsCouponNotifyDto;
 import com.tuotiansudai.dto.SmsDataDto;
+import com.tuotiansudai.dto.SmsFatalNotifyDto;
+import com.tuotiansudai.repository.model.Environment;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.client.SmsClient;
 import com.tuotiansudai.smswrapper.repository.mapper.*;
 import com.tuotiansudai.smswrapper.service.SmsService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -22,6 +26,12 @@ public class SmsServiceImpl implements SmsService {
 
     @Autowired
     private SmsClient smsClient;
+
+    @Value("#{'${sms.fatal.mobile}'.split('\\|')}")
+    private List<String> fatalNotifyMobiles;
+
+    @Value("${common.environment}")
+    private Environment environment;
 
     @Override
     public BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, String captcha, String ip) {
@@ -54,17 +64,24 @@ public class SmsServiceImpl implements SmsService {
     }
 
     @Override
-    public BaseDto<SmsDataDto> investFatalNotify(String mobile, String errMsg) {
-        Map<String, String> map = ImmutableMap.<String, String>builder().put("errMsg", errMsg).build();
-        String content = SmsTemplate.SMS_INVEST_FATAL_NOTIFY_TEMPLATE.generateContent(map);
-        return smsClient.sendSMS(InvestFatalNotifyMapper.class, mobile, content, "");
-    }
+    public BaseDto<SmsDataDto> sendFatalNotify(SmsFatalNotifyDto notify) {
+        BaseDto<SmsDataDto> result = new BaseDto<>();
+        SmsDataDto dataDto = new SmsDataDto();
+        result.setData(dataDto);
+        dataDto.setStatus(true);
 
-    @Override
-    public BaseDto<SmsDataDto> jobFatalNotify(String mobile, String errMsg) {
-        Map<String, String> map = ImmutableMap.<String, String>builder().put("errMsg", errMsg).build();
-        String content = SmsTemplate.SMS_JOB_FATAL_NOTIFY_TEMPLATE.generateContent(map);
-        return smsClient.sendSMS(JobFatalNotifyMapper.class, mobile, content, "");
+        for (String mobile : fatalNotifyMobiles) {
+            Map<String, String> map = ImmutableMap.<String, String>builder()
+                    .put("env", environment.name())
+                    .put("errorMessage", notify.getErrorMessage())
+                    .build();
+            String content = SmsTemplate.SMS_FATAL_NOTIFY_TEMPLATE.generateContent(map);
+            BaseDto<SmsDataDto> dto = smsClient.sendSMS(FatalNotifyMapper.class, mobile, content, "");
+            if (!dto.getData().getStatus()) {
+                result = dto;
+            }
+        }
+        return result;
     }
 
     @Override
@@ -75,6 +92,6 @@ public class SmsServiceImpl implements SmsService {
                 .put("expiredDate", notifyDto.getExpiredDate())
                 .build();
         String content = SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE.generateContent(map);
-        return smsClient.sendSMS(JobFatalNotifyMapper.class, notifyDto.getMobile(), content, "");
+        return smsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(), content, "");
     }
 }
