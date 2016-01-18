@@ -14,6 +14,6 @@ public interface UMPayRealTimeStatusService {
     Map<String, String> getLoanStatus(long loanId);
 
     BaseDto<PayDataDto> checkLoanAmount(long loanId);
-    
+
     Map<String,String> getTransferStatus(String orderId, String merDate, String businessType);
 }
