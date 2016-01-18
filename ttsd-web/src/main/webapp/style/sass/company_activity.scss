@@ -413,7 +413,7 @@
       height: 150px !important;
       background: url("/images/sign/actor/awards/ph-awards.jpg") center top no-repeat;
       clear: both;
-      background-size: cover !important;
+      background-size: contain !important;
     }
     .wide-screen-out {
       .wide-screen-inner {
