@@ -63,13 +63,20 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','load-swiper','com
         }
 
         if($('#WhetherApp').length) {
+            var viewport=commonFun.browserRedirect();
             if(/app/gi.test(location.search)) {
                 if($('#WhetherApp').find('.res-no-app').length) {
                     $('#WhetherApp').find('.res-no-app').remove();
                 }
-                $('.header-container,.nav-container,.footer-container').hide();
+                $('.header-container,.nav-container,.footer-container').remove();
                 if($('.left-nav').length) {
-                    $('.left-nav').hide();
+                    $('.left-nav').remove();
+                }
+            }
+            if(viewport=='mobile') {
+                if($('#noticeDetail').length || $('#noticeList').length) {
+                    $('.header-container,.nav-container,.footer-container').remove();
+                    $('.left-nav').remove();
                 }
             }
         }
