@@ -52,10 +52,10 @@
         LIMIT #{index},#{pageSize}
     </select>
 
-    <!--<update id="update" parameterType="jPushAlertModel">-->
-        <!--update jpush_alert set name=#{name},push_type=#{pushType},push_objects=#{pushObjects},push_source=#{pushSource},content=#{content},-->
-         <!--jump_to = #{jumpTo},jump_to_link=#{jumpToLink},updated_time=#{updatedTime},updated_by=#{updatedBy},send_no=#{sendNo},msg_id=#{msgId} where id = #{id}-->
-    <!--</update>-->
+    <update id="update" parameterType="jPushAlertModel">
+        update jpush_alert set name=#{name},push_type=#{pushType},push_objects=#{pushObjects,typeHandler=com.tuotiansudai.console.util.mybatis.PushObjectHandler},push_source=#{pushSource},status=#{status},content=#{content},
+         jump_to = #{jumpTo},jump_to_link=#{jumpToLink},updated_time=#{updatedTime},updated_by=#{updatedBy} where id = #{id}
+    </update>
 
     <select id="findJPushAlertModelById" parameterType="long" resultMap="jPushAlertResultMap">
         select * from jpush_alert where id = #{id}

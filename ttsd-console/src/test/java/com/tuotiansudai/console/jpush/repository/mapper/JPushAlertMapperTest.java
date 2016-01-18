@@ -7,6 +7,7 @@ import com.tuotiansudai.console.jpush.repository.model.PushType;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:dispatcher-servlet.xml", "classpath:spring-security.xml", "classpath:applicationContext.xml"})
@@ -48,8 +51,34 @@ public class JPushAlertMapperTest {
         jPushAlertMapper.create(jPushAlertModel);
 
         JPushAlertModel jPushAlertModel1 = jPushAlertMapper.findJPushAlertModelById(jPushAlertModel.getId());
-        assertEquals(jPushAlertModel.getName(),jPushAlertModel1.getName());
-        assertEquals(jPushAlertModel.getJumpTo(),jPushAlertModel1.getJumpTo());
+        assertEquals(jPushAlertModel.getName(), jPushAlertModel1.getName());
+        assertEquals(jPushAlertModel.getJumpTo(), jPushAlertModel1.getJumpTo());
+    }
+    @Test
+    public void shouldUpdateJPushAlertModelIsSuccess(){
+        UserModel userModel1 = fakeUserModel("tuotian1", "12900000000");
+        userMapper.create(userModel1);
+        JPushAlertModel jPushAlertModel = getFakeJPushAlertModel("tuotian1");
+        jPushAlertMapper.create(jPushAlertModel);
+
+        jPushAlertModel.setPushObjects(Arrays.asList(new String[]{"44", "55"}));
+        jPushAlertModel.setUpdatedTime(new Date());
+        jPushAlertModel.setUpdatedBy(userModel1.getLoginName());
+
+        jPushAlertMapper.update(jPushAlertModel);
+
+        JPushAlertModel jPushAlertModel1 = jPushAlertMapper.findJPushAlertModelById(jPushAlertModel.getId());
+
+        assertNotNull(jPushAlertModel1.getUpdatedBy());
+        assertNotNull(jPushAlertModel1.getUpdatedTime());
+
+        List<String> pushObjects = jPushAlertModel1.getPushObjects();
+
+        String[] pushObjectArr = (String[])pushObjects.toArray();
+        assertEquals("44",pushObjectArr[0]);
+        assertEquals("55",pushObjectArr[1]);
+
+
     }
 
     private JPushAlertModel getFakeJPushAlertModel(String loginName){
@@ -61,7 +90,6 @@ public class JPushAlertMapperTest {
         jPushAlertModel.setJumpTo(JumpTo.INVEST);
         jPushAlertModel.setJumpToLink("lindAddress");
         jPushAlertModel.setCreatedTime(new Date());
-        String[] pushObjects = {"11","12"};
         jPushAlertModel.setPushObjects(Arrays.asList(new String[]{"12","13"}));
         jPushAlertModel.setCreatedBy(loginName);
         return jPushAlertModel;

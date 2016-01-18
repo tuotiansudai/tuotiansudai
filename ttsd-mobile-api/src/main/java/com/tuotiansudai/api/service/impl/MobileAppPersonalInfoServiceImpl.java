@@ -7,6 +7,7 @@ import com.tuotiansudai.api.dto.PersonalInfoResponseDataDto;
 import com.tuotiansudai.api.dto.ReturnMessage;
 import com.tuotiansudai.api.service.MobileAppPersonalInfoService;
 import com.tuotiansudai.api.util.CommonUtils;
+import com.tuotiansudai.api.util.DistrictUtil;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -14,6 +15,7 @@ import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.util.BankCardUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +60,9 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
         personalInfoDataDto.setPhoneNum(user.getMobile());
         personalInfoDataDto.setPhoto(user.getAvatar());
         personalInfoDataDto.setEmail(user.getEmail());
+        if(StringUtils.isNotEmpty(user.getProvince())){
+            personalInfoDataDto.setDistrict(DistrictUtil.convertNameToCode(user.getProvince()));
+        }
         if (account != null) {
             personalInfoDataDto.setCertificationFlag(true);
             personalInfoDataDto.setRealName(account.getUserName());

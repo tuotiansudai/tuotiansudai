@@ -12,7 +12,7 @@ public interface JPushAlertMapper {
 
     void create(JPushAlertModel jPushAlertModel);
 
-//    void update(JPushAlertModel jPushAlertModel);
+    void update(JPushAlertModel jPushAlertModel);
 
     int findPushTypeCount(@Param("pushType") PushType pushType);
 

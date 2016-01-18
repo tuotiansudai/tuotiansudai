@@ -15,7 +15,7 @@ public class JPushAlertDto {
     private String name;
     @NotNull
     private PushType pushType;
-    @NotEmpty
+
     private List<String> pushObjects;
     @NotNull
     private PushSource pushSource;

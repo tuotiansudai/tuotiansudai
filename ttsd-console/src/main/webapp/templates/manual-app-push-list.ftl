@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="coupons.js" headLab="app-push-manage" sideLab="manualAppPushManage" title="手动推送管理">
+<@global.main pageCss="" pageJavascript="app-push-list.js" headLab="app-push-manage" sideLab="manualAppPushManage" title="手动推送管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -81,7 +81,18 @@
                 ${(pushAlert.pushSource)!}
             </td>
             <td>
-                全部
+                <#if pushAlert.pushObjects?has_content>
+                    <#list pushAlert.pushObjects as pushObject>
+                        <#list provinces?keys as key>
+                            <#if pushObject == key>
+                                ${provinces[key]}
+                            </#if>
+                        </#list>
+
+                    </#list>
+                <#else >
+                    全部
+                </#if>
             </td>
             <td>
                 ${(pushAlert.content)!}
@@ -91,7 +102,7 @@
             </td>
             <td>
                 <#if pushAlert.status != "SEND_SUCCESS">
-                    <a href="/app-push-manage/manual-app-push/${pushAlert.id?string('0')}/edit">编辑</a>|<a href="/app-push-manage/manual-app-push/${pushAlert.id?string('0')}/send">发送</a>
+                    <a href="/app-push-manage/manual-app-push/${pushAlert.id?string('0')}/edit">编辑</a>|<a class="send-push-link" href="/app-push-manage/manual-app-push/${pushAlert.id?string('0')}/send">推送</a>
                 </#if>
             </td>
             <td>

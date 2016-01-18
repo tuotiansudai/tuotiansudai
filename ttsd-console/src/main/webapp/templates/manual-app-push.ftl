@@ -5,6 +5,7 @@
 <div class="col-md-10">
     <form action="/app-push-manage/manual-app-push" method="post" class="form-horizontal form-list">
         <div class="form-group">
+            <input type="hidden" name="id" placeholder="" <#if jPushAlert??>value="${jPushAlert.id!}"</#if> />
             <label class="col-sm-2 control-label">通知名称:</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control name"  name="name" placeholder="" <#if jPushAlert??>value="${jPushAlert.name!}"</#if> readonly datatype="*" errormsg="通知名称不能为空">
@@ -22,21 +23,35 @@
         </div>
         <div class="form-group">
             <label  class="col-sm-2 control-label">推送对象: </label>
-            <div class="col-sm-4">
-                <input type="radio"   checked name="pushObjectChoose" placeholder=""  datatype="*" >全部
-                <input type="radio"   name="pushObjectChoose" placeholder=""  datatype="*" >地区
-                <input type="hidden"  name="pushObjects" placeholder=""  datatype="*" value="ALL">
-
-            </div>
-
-            <div class="col-sm-3">
-                <#if provinces??&&provinces?size gt 0>
-                    <#list provinces?keys as key>
-                        <input type="checkbox" name="pushObjects" class="pushObject" value="${key}"/>${provinces.get(key)!}
-                    </#list>
+            <div class="col-sm-10">
+                <#if jPushAlert??>
+                    <input type="radio"  class="push_object_choose" value="all" name="pushObjectChoose" <#if jPushAlert??&&jPushAlert.pushObjects?size == 0>checked</#if> placeholder=""  datatype="*" >全部
+                    <input type="radio"  class="push_object_choose" value="district" <#if jPushAlert??&&jPushAlert.pushObjects?size gt 0>checked</#if> name="pushObjectChoose" placeholder=""  datatype="*" >地区
+                <#else>
+                    <input type="radio"  class="push_object_choose" value="all" checked name="pushObjectChoose" placeholder=""  datatype="*" >全部
+                    <input type="radio"  class="push_object_choose" value="district" name="pushObjectChoose" placeholder=""  datatype="*" >地区
                 </#if>
             </div>
 
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-2 control-label"></label>
+            <div class="col-sm-5 province <#if !(jPushAlert??&&jPushAlert.pushObjects?size gt 0)>app-push-link</#if>">
+
+                <#list provinces?keys as key>
+                    <#if jPushAlert??&&jPushAlert.pushObjects?size gt 0>
+                        <label for="${key}"> <input type="checkbox" name="pushObjects" class="pushObject"
+                               id="${key}"
+                               <#if jPushAlert?? && jPushAlert.pushObjects?seq_contains('${key}')>checked="checked"</#if> value="${key}"/>
+
+                       ${provinces[key]}</label>
+                    <#else >
+                        <label for="${key}"><input type="checkbox" name="pushObjects" class="pushObject"  value="${key}" id="${key}"/>
+                        ${provinces[key]}</label>
+                    </#if>
+
+                </#list>
+            </div>
         </div>
         <div class="form-group">
             <label  class="col-sm-2 control-label">推送渠道: </label>
@@ -51,9 +66,7 @@
         <div class="form-group">
             <label  class="col-sm-2 control-label">推送模板: </label>
             <div class="col-sm-4">
-                <textarea rows="4" cols="58" maxlength="40" <#if jPushAlert??>value="${jPushAlert.content!}"</#if> name="content" errormsg="通知模板不能为空">
-
-                </textarea>
+                <textarea rows="4" cols="58" maxlength="40" name="content" errormsg="通知模板不能为空"><#if jPushAlert??>${jPushAlert.content!}</#if></textarea>
 
             </div>
         </div>

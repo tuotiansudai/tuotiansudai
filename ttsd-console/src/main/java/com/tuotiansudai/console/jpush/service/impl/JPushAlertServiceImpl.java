@@ -27,16 +27,16 @@ public class JPushAlertServiceImpl implements JPushAlertService{
     @Transactional
     public void buildJPushAlert(String loginName, JPushAlertDto jPushAlertDto) {
         JPushAlertModel jPushAlertModel = new JPushAlertModel(jPushAlertDto);
-//        if(StringUtils.isNotEmpty(jPushAlertDto.getId())){
-//            jPushAlertModel.setUpdatedBy(loginName);
-//            jPushAlertModel.setUpdatedTime(new Date());
-//            jPushAlertMapper.update(jPushAlertModel);
-//
-//        }else{
+        if(StringUtils.isNotEmpty(jPushAlertDto.getId())){
+            jPushAlertModel.setUpdatedBy(loginName);
+            jPushAlertModel.setUpdatedTime(new Date());
+            jPushAlertMapper.update(jPushAlertModel);
+
+        }else{
             jPushAlertModel.setCreatedBy(loginName);
             jPushAlertModel.setCreatedTime(new Date());
             jPushAlertMapper.create(jPushAlertModel);
-//        }
+        }
     }
 
     @Override
@@ -70,6 +70,7 @@ public class JPushAlertServiceImpl implements JPushAlertService{
         List<String> pushObjects = jPushAlertDto.getPushObjects();
 
         if(pushSource == PushSource.ALL){
+
             if(CollectionUtils.isNotEmpty(pushObjects)){
                 sendResult = mobileAppJPushClient.sendPushAlertByAliases(jPushAlertDto.getId(),pushObjects, alert, jumpToOrLink[0], jumpToOrLink[1]);
             }else {
@@ -95,14 +96,12 @@ public class JPushAlertServiceImpl implements JPushAlertService{
             jPushAlertModel.setUpdatedBy(loginName);
             jPushAlertModel.setUpdatedTime(new Date());
             jPushAlertModel.setStatus(PushStatus.SEND_SUCCESS);
-            //TODO:UPDATE jPushAlertMapper.UPDATE()
-
-
+            jPushAlertMapper.update(jPushAlertModel);
         }else{
             jPushAlertModel.setUpdatedBy(loginName);
             jPushAlertModel.setUpdatedTime(new Date());
             jPushAlertModel.setStatus(PushStatus.SEND_FAIL);
-            //TODO:UPDATE jPushAlertMapper.UPDATE()
+            jPushAlertMapper.update(jPushAlertModel);
         }
     }
 

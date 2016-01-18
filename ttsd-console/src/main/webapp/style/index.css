@@ -321,5 +321,9 @@ td.td {
     background-color: transparent;
 }
 
+.province label {
+    font-weight: normal;
+}
+
 
 

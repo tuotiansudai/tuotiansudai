@@ -46,7 +46,7 @@ require(['jquery', 'template', 'csrf', 'bootstrap', 'bootstrapDatetimepicker', '
             }
         });
 
-        $('.pushType').change(function () {
+        $('select.pushType').change(function () {
             var nowDate = new Date(),
                 yyyy = nowDate.getFullYear(),
                 MM = nowDate.getMonth() + 1,
@@ -68,7 +68,6 @@ require(['jquery', 'template', 'csrf', 'bootstrap', 'bootstrapDatetimepicker', '
             var pushTypeText = $(this).find("option:selected").text();
             var nameTemplate = "{0}-{1}-{2}"
             var pushType = $(this).val();
-            console.log("==pushType===" + pushType);
             $.get('/app-push-manage/manual-app-push/push-type/' + pushType, function (data) {
                 var serialNo = data + 1;
                 $('.name').val(String.format(nameTemplate, yyyyMMdd, pushTypeText, serialNo));
@@ -76,7 +75,7 @@ require(['jquery', 'template', 'csrf', 'bootstrap', 'bootstrapDatetimepicker', '
 
         }).trigger('change');
 
-        $('.jumpTo').change(function () {
+        $('select.jumpTo').change(function () {
             var jumpTo = $(this).val();
             if (jumpTo == 'OTHER') {
                 $('.jump-to-link').removeClass('app-push-link').val('');
@@ -84,13 +83,24 @@ require(['jquery', 'template', 'csrf', 'bootstrap', 'bootstrapDatetimepicker', '
                 $('.jump-to-link').addClass('app-push-link').val('');
             }
 
-        }).trigger('load');
+        }).trigger('change');
+
+        $('.push_object_choose').click(function () {
+
+            if($(this).val() == 'district'){
+                $('.province').removeClass('app-push-link');
+            }else{
+                $('.pushObject').prop('checked',false);
+                $('.province').addClass('app-push-link');
+            }
+        });
 
         //表单校验初始化参数
         $(".form-list").Validform({
             btnSubmit: '#btnSave',
             tipSweep: true, //表单提交时触发显示
             focusOnError: false,
+            ignoreHidden:true,
             tiptype: function (msg, o, cssctl) {
                 if (o.type == 3) {
                     var msg = o.obj.attr('errormsg') || msg;
@@ -121,7 +131,6 @@ require(['jquery', 'template', 'csrf', 'bootstrap', 'bootstrapDatetimepicker', '
                 $manualAppPushForm[0].submit();
             }
         });
-
 
     });
 });

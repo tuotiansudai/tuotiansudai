@@ -4,6 +4,7 @@ import cn.jpush.api.JPushClient;
 import cn.jpush.api.common.APIConnectionException;
 import cn.jpush.api.common.APIRequestException;
 import cn.jpush.api.push.PushResult;
+import cn.jpush.api.push.model.Options;
 import cn.jpush.api.push.model.Platform;
 import cn.jpush.api.push.model.PushPayload;
 import cn.jpush.api.push.model.audience.Audience;
@@ -11,6 +12,7 @@ import cn.jpush.api.push.model.notification.AndroidNotification;
 import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
 import cn.jpush.api.push.model.notification.PlatformNotification;
+import com.tuotiansudai.repository.model.Environment;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,14 +30,25 @@ public class MobileAppJPushClient {
     @Value("${common.jpush.appKey}")
     private String appKey;
 
+    @Value("${common.environment}")
+    private Environment environment;
+
+    private static boolean isProduction = false;
+
     private static JPushClient jPushClient;
 
     public JPushClient getJPushClient() {
+        if(environment == Environment.PRODUCTION){
+            isProduction = true;
+        }else{
+            isProduction = false;
+        }
         if (jPushClient == null) {
             jPushClient = new JPushClient(masterSecret, appKey, 3);
         }
         return jPushClient;
     }
+
 
     public static PushPayload buildPushObject_all_all_alert(String alert) {
         return PushPayload.alertAll(alert);
@@ -75,6 +88,7 @@ public class MobileAppJPushClient {
                 .build();
 
     }
+
     public static PushPayload buildPushObject_ios_aliases_alertWithExtras(List<String> alias, String alert, String extraKey, String extraValue) {
         return PushPayload.newBuilder()
                 .setPlatform(Platform.ios())
@@ -82,6 +96,7 @@ public class MobileAppJPushClient {
                 .setNotification(Notification.newBuilder()
                         .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
                         .build())
+                .setOptions(Options.newBuilder().setApnsProduction(isProduction).build())
                 .build();
 
     }
@@ -93,6 +108,7 @@ public class MobileAppJPushClient {
                 .setNotification(Notification.newBuilder()
                         .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
                         .build())
+                .setOptions(Options.newBuilder().setApnsProduction(isProduction).build())
                 .build();
 
     }
@@ -114,11 +130,13 @@ public class MobileAppJPushClient {
 
         return sendPush(payload, jPushAlertId);
     }
+
     public boolean sendPushAlertByAndroidAliases(String jPushAlertId, List<String> alias, String alert, String extraKey, String extraValue) {
         PushPayload payload = buildPushObject_android_aliases_alertWithExtras(alias, alert, extraKey, extraValue);
 
         return sendPush(payload, jPushAlertId);
     }
+
     public boolean sendPushAlertByIosAliases(String jPushAlertId, List<String> alias, String alert, String extraKey, String extraValue) {
         PushPayload payload = buildPushObject_ios_aliases_alertWithExtras(alias, alert, extraKey, extraValue);
 

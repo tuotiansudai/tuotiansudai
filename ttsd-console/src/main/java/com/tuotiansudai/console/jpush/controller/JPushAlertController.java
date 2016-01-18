@@ -9,18 +9,13 @@ import com.tuotiansudai.console.jpush.repository.model.PushType;
 import com.tuotiansudai.console.jpush.service.JPushAlertService;
 import com.tuotiansudai.console.util.DistrictUtil;
 import com.tuotiansudai.console.util.LoginUserInfo;
-import com.tuotiansudai.coupon.dto.CouponDto;
-import com.tuotiansudai.exception.CreateCouponException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.swing.*;
 import javax.validation.Valid;
-import java.lang.reflect.Method;
 
 @Controller
 @RequestMapping(value = "/app-push-manage")
@@ -38,6 +33,7 @@ public class JPushAlertController {
         modelAndView.addObject("pushSources", Lists.newArrayList(PushSource.values()));
         modelAndView.addObject("pushTypes", Lists.newArrayList(PushType.values()));
         modelAndView.addObject("jumpTos", Lists.newArrayList(JumpTo.values()));
+        modelAndView.addObject("provinces", DistrictUtil.getProvinces());
         return modelAndView;
     }
 
@@ -46,7 +42,6 @@ public class JPushAlertController {
         ModelAndView modelAndView = new ModelAndView("/manual-app-push");
         modelAndView.addObject("pushSources", Lists.newArrayList(PushSource.values()));
         modelAndView.addObject("pushTypes", Lists.newArrayList(PushType.values()));
-        modelAndView.addObject("jumpTos", Lists.newArrayList(JumpTo.values()));
         modelAndView.addObject("jumpTos", Lists.newArrayList(JumpTo.values()));
         modelAndView.addObject("provinces", DistrictUtil.getProvinces());
 
@@ -80,6 +75,7 @@ public class JPushAlertController {
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("name", name);
         modelAndView.addObject("pushAlerts", jPushAlertService.findPushAlerts(index, pageSize, name));
+        modelAndView.addObject("provinces", DistrictUtil.getProvinces());
         int jPushAlertCount = jPushAlertService.findPushAlertCount(name);
         modelAndView.addObject("jPushAlertCount", jPushAlertCount);
         long totalPages = jPushAlertCount / pageSize + (jPushAlertCount % pageSize > 0 ? 1 : 0);
