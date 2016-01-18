@@ -4,7 +4,8 @@ public enum CouponType {
 
     NEWBIE_COUPON("新手体验券", "新手"),
     INVEST_COUPON("投资体验券", "投资"),
-    INTEREST_COUPON("加息优惠券", "加息");
+    INTEREST_COUPON("加息优惠券", "加息"),
+    RED_ENVELOPE("投资返现红包", "返现");
 
     private String name;
 
