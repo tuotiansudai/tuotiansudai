@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.job.AutoInvestJob;
 import com.tuotiansudai.job.DeadlineFundraisingJob;
 import com.tuotiansudai.job.FundraisingStartJob;
@@ -572,7 +571,7 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(payDataDto);
             return baseDto;
         }
-        investMapper.cleanWaitingInvestBefore(loanDto.getId(), validInvestTime);
+        investMapper.cleanWaitingInvest(loanDto.getId());
         return payWrapperClient.cancelLoan(loanDto.getId());
     }
 

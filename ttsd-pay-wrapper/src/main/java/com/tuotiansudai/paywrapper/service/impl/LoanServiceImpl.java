@@ -222,8 +222,8 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private ProjectTransferResponseModel doLoanOut(long loanId) throws PayException {
-        // 预处理等待状态的投资记录，检查是否存在等待状态的投资记录
-        proProcessWaitingInvest(loanId);
+        // 将已失效的投资记录状态置为失败
+        investMapper.cleanWaitingInvest(loanId);
 
         // 查找借款人
         LoanModel loan = loanMapper.findById(loanId);
@@ -319,20 +319,6 @@ public class LoanServiceImpl implements LoanService {
         }
 
         return true;
-    }
-
-    private void proProcessWaitingInvest(long loanId) throws PayException {
-        // 获取联动优势投资订单的有效时间点（在此时间之前的waiting记录将被清理，如存在在此时间之后的waiting记录，则暂时不允许放款）
-        Date validInvestTime = new DateTime().minusSeconds(UmpayConstants.TIMEOUT_IN_SECOND_PROJECT_TRANSFER).toDate();
-
-        // 检查是否存在未处理完成的投资记录
-        int waitingInvestCount = investMapper.findWaitingInvestCountAfter(loanId, validInvestTime);
-        if (waitingInvestCount > 0) {
-            throw new PayException("exist waiting invest on loan[" + loanId + "]");
-        }
-
-        // 将已失效的投资记录状态置为失败
-        investMapper.cleanWaitingInvestBefore(loanId, validInvestTime);
     }
 
     private ProjectTransferResponseModel doPayRequest(long loanId, String payUserId, long amount) throws PayException {
