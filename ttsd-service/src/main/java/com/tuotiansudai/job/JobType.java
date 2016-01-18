@@ -29,7 +29,8 @@ public enum JobType {
     AutoReFreshAreaByMobile("获取手机归属地"),
     NormalRepay("正常还款"),
     AdvanceRepay("提前还款"),
-    AutoLoanOut("满标自动放款");
+    AutoLoanOut("满标自动放款"),
+    CouponNotify("优惠券通知");
 
 
     private final String description;

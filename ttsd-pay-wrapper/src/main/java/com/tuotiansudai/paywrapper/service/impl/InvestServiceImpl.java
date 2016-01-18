@@ -34,6 +34,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
 import org.springframework.aop.framework.AopContext;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -120,12 +121,11 @@ public class InvestServiceImpl implements InvestService {
         try {
             checkLoanInvestAccountAmount(dto.getLoginName(), investModel.getLoanId(), investModel.getAmount());
             investMapper.create(investModel);
-            BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
-            return baseDto;
+            return payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
         } catch (PayException e) {
+            logger.error(e.getLocalizedMessage(), e);
             BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
             PayFormDataDto payFormDataDto = new PayFormDataDto();
-            payFormDataDto.setStatus(false);
             payFormDataDto.setMessage(e.getMessage());
             baseDto.setData(payFormDataDto);
             return baseDto;
@@ -207,8 +207,7 @@ public class InvestServiceImpl implements InvestService {
         if (callbackRequest == null) {
             return null;
         }
-        String respData = callbackRequest.getResponseData();
-        return respData;
+        return callbackRequest.getResponseData();
     }
 
     @Override
@@ -480,6 +479,7 @@ public class InvestServiceImpl implements InvestService {
      * @param queryString
      * @return
      */
+    @Override
     public String overInvestPaybackCallback(Map<String, String> paramsMap, String queryString) {
 
         logger.debug("into over_invest_payback_callback, queryString: " + queryString);

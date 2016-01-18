@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.about_us}" pageJavascript="" activeNav="关于我们" activeLeftNav="公司介绍" title="公司介绍">
+<@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="关于我们" activeLeftNav="公司介绍" title="公司介绍">
 <div class="about-us-container company-summary">
     <h2 class="column-title"><em>拓天速贷</em></h2>
     <div class="fl company-info">

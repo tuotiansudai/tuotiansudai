@@ -43,4 +43,11 @@ public class SmsController {
     public BaseDto<SmsDataDto> fatalNotify(@Valid @RequestBody SmsFatalNotifyDto notify) {
         return smsService.sendFatalNotify(notify);
     }
+
+    @RequestMapping(value = "/coupon-notify", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> couponNotify(@Valid @RequestBody SmsCouponNotifyDto notifyDto) {
+        return smsService.couponNotify(notifyDto);
+    }
+
 }

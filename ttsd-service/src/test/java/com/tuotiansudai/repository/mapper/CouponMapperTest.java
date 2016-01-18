@@ -1,7 +1,10 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import org.junit.Test;
@@ -15,8 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.UUID;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-security.xml"})
@@ -40,29 +45,29 @@ public class CouponMapperTest {
 
         CouponModel couponModel1 = couponMapper.findById(couponModel.getId());
         assertNotNull(couponModel1.getId());
-        assertEquals("优惠券", couponModel1.getName());
-        assertEquals(1000l,couponModel1.getAmount());
+        assertEquals(1000L,couponModel1.getAmount());
         assertEquals(false,couponModel1.isActive());
         assertNotNull(couponModel1.getStartTime());
-
-
-
+        assertThat(couponModel.getProductTypes().size(), is(3));
     }
+
     private CouponModel fakeCouponModel(){
         CouponModel couponModel = new CouponModel();
-        couponModel.setName("优惠券");
-        couponModel.setAmount(1000l);
-        couponModel.setActiveUser("couponTest");
+        couponModel.setAmount(1000L);
+        couponModel.setActivatedBy("couponTest");
         couponModel.setActive(false);
-        couponModel.setCreateTime(new Date());
+        couponModel.setCreatedTime(new Date());
         couponModel.setEndTime(new Date());
         couponModel.setStartTime(new Date());
-        couponModel.setCreateUser("couponTest");
-        couponModel.setTotalCount(1000l);
-        couponModel.setUsedCount(500l);
-        couponModel.setInvestQuota(10000l);
+        couponModel.setCreatedBy("couponTest");
+        couponModel.setTotalCount(1000L);
+        couponModel.setUsedCount(500L);
+        couponModel.setInvestLowerLimit(10000L);
+        couponModel.setCouponType(CouponType.INVEST_COUPON);
+        couponModel.setProductTypes(Lists.newArrayList(ProductType.JYF, ProductType.SYL, ProductType.WYX));
         return couponModel;
     }
+
     private UserModel fakeUserModel() {
         UserModel userModelTest = new UserModel();
         userModelTest.setLoginName("couponTest");
@@ -74,7 +79,4 @@ public class CouponMapperTest {
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         return userModelTest;
     }
-
-
-
 }

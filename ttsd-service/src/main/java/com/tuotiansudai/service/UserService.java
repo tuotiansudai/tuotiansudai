@@ -61,8 +61,6 @@ public interface UserService {
 
     List<String> findAllUserChannels();
 
-    int findUserCount();
-
     void refreshAreaByMobile(List<UserModel> userModels) ;
 
     void refreshAreaByMobileInJob() ;

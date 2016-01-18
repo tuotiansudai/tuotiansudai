@@ -51,7 +51,7 @@ public interface LoanService {
 
     BaseDto<PayDataDto> loanOut(LoanDto loanDto);
 
-    BaseDto<LoanDto> getLoanDetail(String loginName, long loanId);
+    LoanDetailDto getLoanDetail(String loginName, long loanId);
 
     BaseDto<BasePaginationDataDto> getInvests(String loginName, long loanId, int index, int pageSize);
 

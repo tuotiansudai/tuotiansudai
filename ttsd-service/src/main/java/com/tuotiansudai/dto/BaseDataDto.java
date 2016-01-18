@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public class BaseDataDto implements Serializable {
 
-    private boolean status;
+    protected boolean status;
 
-    private String message;
+    protected String message;
 
     public boolean getStatus() {
         return status;
