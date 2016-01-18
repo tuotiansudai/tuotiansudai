@@ -50,6 +50,8 @@
                         <a href="/announce/180" class="btn-primary ">查看更多详情</a><br/>
                         <div class="time clearfix">
                             如有任何疑问请联系拓天速贷客服：400-169-1188（服务时间：早9点至晚20点） <br/>
+                            <span>图片来源于网络，以实物为准</span>
+                            <br/>
                             本活动最终解释权归拓天速贷所有
                         </div>
                     </div>
