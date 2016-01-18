@@ -171,6 +171,7 @@ public class CouponServiceImpl implements CouponService {
         couponModel.setUpdatedBy(loginName);
         couponModel.setUpdatedTime(new Date());
         couponModel.setDeleted(true);
+        couponModel.setActive(false);
         couponMapper.updateCoupon(couponModel);
     }
 

@@ -180,8 +180,10 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     return false;
                 }
 
+                var investAmount = getInvestAmount();
+
                 if (!validateInvestAmount()) {
-                    var tipContent = isNaN(amountInputElement.autoNumeric("get")) || parseInt((amountInputElement.autoNumeric("get") * 100).toFixed(0)) === 0 ? '投资金额不能为0元！' : '投资金额不能大于可投金额！';
+                    var tipContent = investAmount === 0 ? '投资金额不能为0元！' : '投资金额不能大于可投金额！';
                     layer.tips('<i class="fa fa-times-circle"></i>' + tipContent, '.text-input-amount', {
                         tips: [1, '#ff7200'],
                         time: 0
@@ -189,13 +191,13 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     return false;
                 }
 
-                var investAmount = getInvestAmount();
                 var accountAmount = parseInt($('form .account-amount').data("user-balance")) || 0;
                 if (investAmount > accountAmount) {
                     location.href = '/recharge';
                     return false;
                 }
             }
+            amountInputElement.val(amountInputElement.autoNumeric("get"));
             return true;
         });
 

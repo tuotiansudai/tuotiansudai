@@ -10,12 +10,8 @@
             <a href="/activity/ranking" target="_blank">
                 <img src="${staticServer}/images/sign/actor/ranking/qph.jpg" alt="抢排行，送大礼" class="pc-img">
                 <img src="${staticServer}/images/ttimg/ph-a01.jpg" alt="抢排行，送大礼" class="iphone-img">
+            </a>
 
-            </a>
-            <a href="/activity/grand" target="_blank">
-                <img src="${staticServer}/images/sign/actor/grand/ba-grand.jpg" alt="累计收益兑大奖" class="pc-img">
-                <img src="${staticServer}/images/ttimg/ph-a02.jpg" alt="累计收益兑大奖" class="iphone-img">
-            </a>
             <a href="/activity/recruit" target="_blank">
                 <img src="${staticServer}/images/ttimg/ttimg-home03.png" alt="招募代理" class="pc-img">
                 <img src="${staticServer}/images/ttimg/ph-a03.jpg" alt="招募代理" class="iphone-img">
@@ -24,7 +20,6 @@
         </div>
         <ul class="scroll-num">
             <li class="selected"></li>
-            <li></li>
             <li></li>
             <li></li>
         </ul>

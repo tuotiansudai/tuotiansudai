@@ -96,7 +96,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                     userCouponMapper.update(userCouponModel);
 
                     String detail = MessageFormat.format(SystemBillDetailTemplate.COUPON_INTEREST_DETAIL_TEMPLATE.getTemplate(),
-                            
+                            couponModel.getCouponType().getName(),
                             String.valueOf(userCouponModel.getId()),
                             String.valueOf(currentLoanRepayModel.getId()),
                             String.valueOf(transferAmount));
@@ -105,7 +105,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                     amountTransfer.transferInBalance(userCouponModel.getLoginName(),
                             userCouponModel.getId(),
                             actualInterest,
-                            UserBillBusinessType.NEWBIE_COUPON, null, null);
+                            couponModel.getCouponType().getUserBillBusinessType(), null, null);
 
                     amountTransfer.transferOutBalance(userCouponModel.getLoginName(),
                             userCouponModel.getId(),
