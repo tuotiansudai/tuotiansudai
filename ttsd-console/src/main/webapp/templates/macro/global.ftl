@@ -14,16 +14,16 @@
                 "role":"'ADMIN'",
                 "header":{"text":"系统主页","link":"/"},
                 "sidebar":[
-                    {"name":"userDate","text":"用户注册时间分布","link":"/","role":"'ADMIN'"},
-                    {"name":"userRecharge","text":"用户充值时间分布","link":"/","role":"'ADMIN'"},
-                    {"name":"userWithdraw","text":"用户提现时间分布","link":"/","role":"'ADMIN'"},
-                    {"name":"withdrawUserCount","text":"提现人数分布","link":"/","role":"'ADMIN'"},
-                    {"name":"userInvestViscosity","text":"用户续投情况","link":"/","role":"'ADMIN'"},
-                    {"name":"userInvestAmount","text":"用户投资金额时间分布","link":"/","role":"'ADMIN'"},
-                    {"name":"userInvestCount","text":"用户投资次数时间分布","link":"/","role":"'ADMIN'"},
-                    {"name":"userAge","text":"用户年龄分布","link":"/","role":"'ADMIN'"},
-                    {"name":"loanRaisingTimeCosting","text":"标的满标周期分布","link":"/","role":"'ADMIN'"},
-                    {"name":"loanAmount","text":"标的资金分布","link":"/","role":"'ADMIN'"}
+                    {"name":"userDate","text":"用户注册时间分布","link":"/","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"userRecharge","text":"用户充值时间分布","link":"/","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"userWithdraw","text":"用户提现时间分布","link":"/","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"withdrawUserCount","text":"提现人数分布","link":"/","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"userInvestViscosity","text":"用户续投情况","link":"/","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"userInvestAmount","text":"用户投资金额时间分布","link":"/","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"userInvestCount","text":"用户投资次数时间分布","link":"/","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"userAge","text":"用户年龄分布","link":"/","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"loanRaisingTimeCosting","text":"标的满标周期分布","link":"/","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"loanAmount","text":"标的资金分布","link":"/","role":"'ADMIN','CUSTOMER_SERVICE'"}
                 ]
 
             },
