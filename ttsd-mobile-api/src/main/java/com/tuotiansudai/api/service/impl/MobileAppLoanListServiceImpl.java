@@ -6,13 +6,12 @@ import com.tuotiansudai.api.service.MobileAppLoanListService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.tuotiansudai.repository.model.LoanStatus;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -67,7 +66,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         for (LoanModel loan : loanList) {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());
-            loanResponseDataDto.setLoanType(loan.getActivityType().name());
+            loanResponseDataDto.setLoanType(loan.getProductType() != null ? loan.getProductType().name() : "");
             loanResponseDataDto.setLoanName(loan.getName());
             loanResponseDataDto.setRepayTypeCode("");
             loanResponseDataDto.setRepayTypeName(loan.getType().getName());

@@ -30,3 +30,8 @@
 
     </div>
 </div>
+
+<#if Session.impersonate?exists && Session.impersonate == '1'>
+    <div style="position: fixed; right: 10px; top: 20px; font-size: 35px; color: red; z-index: 10">模拟登录</div>
+    <div style="position: fixed; left: 10px; top: 20px; font-size: 35px; color: green; z-index: 10">模拟登录</div>
+</#if>
