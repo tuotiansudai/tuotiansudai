@@ -23,4 +23,5 @@ public interface CouponMapper {
 
     int findCouponsCount();
 
+    List<CouponModel> findAllActiveCoupons();
 }

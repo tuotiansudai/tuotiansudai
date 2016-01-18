@@ -163,4 +163,6 @@ public interface InvestMapper {
     long findInvestorCount();
 
     long findRegisteredNotInvestCount();
+
+    boolean hasSuccessInvest(String loginName);
 }

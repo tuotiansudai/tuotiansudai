@@ -17,7 +17,6 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanPeriodUnit;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -146,10 +145,10 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public long findEstimatedCount(UserGroup userGroup) {
-        if (userGroup.isInvestedUser()) {
+        if (userGroup == UserGroup.INVESTED_USER) {
             return investMapper.findInvestorCount();
         }
-        if (userGroup.isRegisteredNotInvestedUser()) {
+        if (userGroup == UserGroup.REGISTERED_NOT_INVESTED_USER) {
             return investMapper.findRegisteredNotInvestCount();
         }
         return 0;
