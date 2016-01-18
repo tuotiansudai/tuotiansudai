@@ -11,13 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 public class MobileAppAutoInvestPlanInfoController extends MobileAppBaseController {
     @Autowired
     private MobileAppAutoInvestPlanInfoService mobileAppAutoInvestPlanInfoService;
 
     @RequestMapping(value = "/get/auto-invest-plan", method = RequestMethod.POST)
-    public BaseResponseDto getAutoInvestPlanInfoData(@RequestBody BaseParamDto baseParamDto) {
+    public BaseResponseDto getAutoInvestPlanInfoData(@Valid @RequestBody BaseParamDto baseParamDto) {
         baseParamDto.getBaseParam().setUserId(getLoginName());
 
         return mobileAppAutoInvestPlanInfoService.getAutoInvestPlanInfoData(baseParamDto);

@@ -12,13 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 public class MobileAppAutoInvestPlanController extends MobileAppBaseController {
     @Autowired
     private MobileAppAutoInvestPlanService mobileAppAutoInvestPlanService;
 
     @RequestMapping(value = "/auto-invest-plan", method = RequestMethod.POST)
-    public BaseResponseDto buildAutoInvestPlan(@RequestBody AutoInvestPlanRequestDto autoInvestPlanRequestDto, BindingResult bindingResult) {
+    public BaseResponseDto buildAutoInvestPlan(@Valid @RequestBody AutoInvestPlanRequestDto autoInvestPlanRequestDto, BindingResult bindingResult) {
         autoInvestPlanRequestDto.getBaseParam().setUserId(getLoginName());
 
         if (bindingResult.hasErrors()) {
