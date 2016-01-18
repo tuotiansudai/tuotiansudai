@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface UserCollector {
 
-    List<String> collect();
+    List<String> collect(long couponId);
 }

@@ -39,6 +39,9 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     @Resource(name = "registeredNotInvestedUserCollector")
     private UserCollector registeredNotInvestedUserCollector;
 
+    @Resource(name = "importUserCollector")
+    private UserCollector importUserCollector;
+
     @Autowired
     private UserMapper userMapper;
 
@@ -69,7 +72,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Transactional
     @Override
-    public void active(String loginNameLoginName, long couponId) {
+    public void active(String operatorLoginName, long couponId) {
         CouponModel couponModel = couponMapper.findById(couponId);
         if (couponModel.isActive()) {
             return;
@@ -78,7 +81,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         UserCollector collector = this.getCollector(couponModel.getUserGroup());
 
         if (collector != null) {
-            List<String> loginNames = collector.collect();
+            List<String> loginNames = collector.collect(couponId);
             for (String loginName : loginNames) {
                 UserCouponModel userCouponModel = new UserCouponModel(loginName, couponId);
                 userCouponMapper.create(userCouponModel);
@@ -94,7 +97,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         }
 
         couponModel.setActive(true);
-        couponModel.setActivatedBy(loginNameLoginName);
+        couponModel.setActivatedBy(operatorLoginName);
         couponModel.setActivatedTime(new Date());
         couponMapper.updateCoupon(couponModel);
 
@@ -124,11 +127,11 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         }
     }
 
-
     private UserCollector getCollector(UserGroup userGroup) {
         return Maps.newHashMap(ImmutableMap.<UserGroup, UserCollector>builder()
                 .put(UserGroup.INVESTED_USER, this.investedUserCollector)
                 .put(UserGroup.REGISTERED_NOT_INVESTED_USER, this.registeredNotInvestedUserCollector)
+                .put(UserGroup.IMPORT_USER, this.importUserCollector)
                 .build()).get(userGroup);
     }
 

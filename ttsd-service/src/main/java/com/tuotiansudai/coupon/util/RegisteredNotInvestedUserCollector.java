@@ -17,7 +17,7 @@ public class RegisteredNotInvestedUserCollector implements UserCollector {
     private InvestMapper investMapper;
 
     @Override
-    public List<String> collect() {
+    public List<String> collect(long couponId) {
         List<String> investorLoginNames = investMapper.findInvestorLoginNames();
         List<String> accountLoginNames = accountMapper.findLoginNames();
         accountLoginNames.removeAll(investorLoginNames);

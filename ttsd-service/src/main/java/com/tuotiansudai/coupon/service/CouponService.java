@@ -27,4 +27,6 @@ public interface CouponService {
     List<UserCouponModel> findCouponDetail(long couponId, Boolean isUsed);
 
     void deleteCoupon(String loginName, long couponId);
+
+    long estimateCouponExpectedInterest(long loanId, long couponId, long amount);
 }
