@@ -7,6 +7,7 @@ import com.tuotiansudai.console.jpush.repository.model.JumpTo;
 import com.tuotiansudai.console.jpush.repository.model.PushSource;
 import com.tuotiansudai.console.jpush.repository.model.PushType;
 import com.tuotiansudai.console.jpush.service.JPushAlertService;
+import com.tuotiansudai.console.util.DistrictUtil;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.exception.CreateCouponException;
@@ -46,6 +47,9 @@ public class JPushAlertController {
         modelAndView.addObject("pushSources", Lists.newArrayList(PushSource.values()));
         modelAndView.addObject("pushTypes", Lists.newArrayList(PushType.values()));
         modelAndView.addObject("jumpTos", Lists.newArrayList(JumpTo.values()));
+        modelAndView.addObject("jumpTos", Lists.newArrayList(JumpTo.values()));
+        modelAndView.addObject("provinces", DistrictUtil.getProvinces());
+
         return modelAndView;
     }
     @RequestMapping(value="/manual-app-push/{id}/send",method = RequestMethod.GET)

@@ -28,6 +28,15 @@
                 <input type="hidden"  name="pushObjects" placeholder=""  datatype="*" value="ALL">
 
             </div>
+
+            <div class="col-sm-3">
+                <#if provinces??&&provinces?size gt 0>
+                    <#list provinces?keys as key>
+                        <input type="checkbox" name="pushObjects" class="pushObject" value="${key}"/>${provinces.get(key)!}
+                    </#list>
+                </#if>
+            </div>
+
         </div>
         <div class="form-group">
             <label  class="col-sm-2 control-label">推送渠道: </label>
