@@ -100,6 +100,11 @@ public class SmsControllerTest {
         mockResponse.setHeader("content-type", "application/json; charset=UTF-8");
 
         server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
         URL url = server.getUrl("/");
 
         this.smsClient.setUrl(url.toString());
@@ -108,7 +113,7 @@ public class SmsControllerTest {
         String requestData = this.objectMapper.writeValueAsString(dto);
         jsonPath(requestData);
 
-        this.mockMvc.perform(post("/sms/invest-fatal-notify")
+        this.mockMvc.perform(post("/sms/fatal-notify")
                 .contentType("application/json; charset=UTF-8")
                 .content(requestData)
                 .contentType(MediaType.parseMediaType("application/json; charset=UTF-8")))
