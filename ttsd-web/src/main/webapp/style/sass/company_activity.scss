@@ -323,7 +323,7 @@
         }
       }
       .time {
-        font-size: 14px;
+        font-size: 13px;
         padding-top: 40px;
         display: inline-block;
         padding-bottom:60px;
@@ -434,7 +434,7 @@
           height: 425px;
           margin-top:20px;
           background: url("/images/sign/actor/awards/app-product.jpg") center top no-repeat;
-          background-size: 100%;
+          background-size: contain;
         }
         .trophy-box {
           .trophy-big {
