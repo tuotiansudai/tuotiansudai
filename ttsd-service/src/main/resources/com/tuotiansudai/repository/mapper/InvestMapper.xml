@@ -42,6 +42,9 @@
         <result column="referrer_roles" property="referrerRoles"></result>
         <result column="referrer_user_name" property="referrerUserName"></result>
         <result column="referrer_mobile" property="referrerMobile"></result>
+        <result column="identity_number" property="identityNumber"></result>
+        <result column="province" property="province"></result>
+        <result column="city" property="city"></result>
     </resultMap>
 
     <sql id="columns">
@@ -150,6 +153,9 @@
         loan.periods as loan_periods,
         a.user_name as investor_user_name,
         u.mobile as investor_mobile,
+        a.identity_number as identity_number,
+        u.province as province,
+        u.city as city,
         u.referrer as referrer_login_name,
         ra.user_name as referrer_user_name,
         ru.mobile as referrer_mobile,
