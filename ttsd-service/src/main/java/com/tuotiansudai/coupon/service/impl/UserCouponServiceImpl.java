@@ -2,11 +2,10 @@ package com.tuotiansudai.coupon.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
@@ -125,29 +124,33 @@ public class UserCouponServiceImpl implements UserCouponService {
     }
 
     @Override
-    public List<UserCouponDto> getUsableCoupons(String loginName, long loanId) {
+    public List<UserCouponDto> getUsableCoupons(String loginName, final long loanId) {
         final LoanModel loanModel = loanMapper.findById(loanId);
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName);
-        if (loanModel == null || Iterators.tryFind(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
-            @Override
-            public boolean apply(UserCouponModel userCouponModel) {
-                return InvestStatus.SUCCESS == userCouponModel.getStatus() && userCouponModel.getLoanId() == loanModel.getId();
-            }
-        }).isPresent()) {
+        if (loanModel == null) {
             return Lists.newArrayList();
         }
 
-        List<UserCouponDto> usableCoupons = Lists.newArrayList();
-        for (UserCouponModel userCouponModel : userCouponModels) {
-            CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
-            if (InvestStatus.SUCCESS != userCouponModel.getStatus()
-                    && new DateTime(couponModel.getEndTime()).plusDays(1).withTimeAtStartOfDay().isAfterNow()
-                    && couponModel.getProductTypes().contains(loanModel.getProductType())) {
-                usableCoupons.add(new UserCouponDto(couponModel, userCouponModel));
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName);
+        List<UserCouponDto> couponDtoList = Lists.transform(userCouponModels, new Function<UserCouponModel, UserCouponDto>() {
+            @Override
+            public UserCouponDto apply(UserCouponModel input) {
+                return new UserCouponDto(couponMapper.findById(input.getInvestId()), input);
             }
-        }
+        });
 
-        return usableCoupons;
+        final boolean hasUsedCoupons = Iterators.tryFind(couponDtoList.iterator(), new Predicate<UserCouponDto>() {
+            @Override
+            public boolean apply(UserCouponDto input) {
+                return input.getCouponType() != CouponType.RED_ENVELOPE && input.isUsed() && input.getLoanId() == loanModel.getId();
+            }
+        }).isPresent();
+
+        return Lists.newArrayList(Iterators.filter(couponDtoList.iterator(), new Predicate<UserCouponDto>() {
+            @Override
+            public boolean apply(UserCouponDto input) {
+                return input.getProductTypeList().contains(loanModel.getProductType()) && input.isUnused() && (input.getCouponType() == CouponType.RED_ENVELOPE || !hasUsedCoupons);
+            }
+        }));
     }
 
     @Override
