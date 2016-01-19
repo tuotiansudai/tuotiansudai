@@ -1,0 +1,1 @@
+ALTER TABLE coupon ADD column shared BOOLEAN DEFAULT FALSE AFTER active;
