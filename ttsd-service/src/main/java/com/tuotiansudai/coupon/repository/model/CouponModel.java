@@ -311,7 +311,6 @@ public class CouponModel implements Serializable {
         this.couponType = couponDto.getCouponType();
         this.investLowerLimit = AmountConverter.convertStringToCent(couponDto.getInvestLowerLimit());
         this.investUpperLimit = AmountConverter.convertStringToCent(couponDto.getInvestUpperLimit());
-        this.createdTime = new Date();
         this.smsAlert = couponDto.isSmsAlert();
         this.deadline = couponDto.getDeadline();
         this.userGroup = couponDto.getUserGroup();

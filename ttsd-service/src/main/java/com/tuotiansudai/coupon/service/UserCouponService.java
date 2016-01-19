@@ -9,11 +9,7 @@ import java.util.List;
 
 public interface UserCouponService {
 
-    List<UserCouponDto> getUserAllCoupons(String loginName);
-
-    List<UserCouponDto> getUserMoneyCoupons(String loginName);
-
-    List<UserCouponDto> getUserInterestCoupons(String loginName);
+    List<UserCouponDto> getUserCoupons(String loginName, List<CouponType> couponTypeList);
 
     UserCouponDto getUsableNewbieCoupon(String loginName);
 

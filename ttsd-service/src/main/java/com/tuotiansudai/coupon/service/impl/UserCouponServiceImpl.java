@@ -21,7 +21,6 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -49,9 +48,6 @@ public class UserCouponServiceImpl implements UserCouponService {
     private CouponMapper couponMapper;
 
     @Autowired
-    private InvestService investService;
-
-    @Autowired
     private RedisWrapperClient redisWrapperClient;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -59,8 +55,8 @@ public class UserCouponServiceImpl implements UserCouponService {
     private static final String NEWBIE_COUPON_ALERT_KEY = "web:newbiecoupon:alert";
 
     @Override
-    public List<UserCouponDto> getUserAllCoupons(String loginName) {
-        List<UserCouponModel> modelList = userCouponMapper.findByLoginName(loginName);
+    public List<UserCouponDto> getUserCoupons(String loginName, List<CouponType> couponTypeList) {
+        List<UserCouponModel> modelList = userCouponMapper.findByLoginName(loginName, couponTypeList);
         List<UserCouponDto> userCouponDtoList = new ArrayList<>();
         for (UserCouponModel couponModel : modelList) {
             CouponModel coupon = couponMapper.findById(couponModel.getCouponId());
@@ -71,26 +67,6 @@ public class UserCouponServiceImpl implements UserCouponService {
         return userCouponDtoList;
     }
 
-
-    public List<UserCouponDto> getUserMoneyCoupons(String loginName) {
-        List<UserCouponDto> userCouponModelList = getUserAllCoupons(loginName);
-        return Lists.newArrayList(Iterators.filter(userCouponModelList.iterator(), new Predicate<UserCouponDto>() {
-            @Override
-            public boolean apply(UserCouponDto input) {
-                return input.getCouponType() == CouponType.NEWBIE_COUPON || input.getCouponType() == CouponType.INVEST_COUPON;
-            }
-        }));
-    }
-
-    public List<UserCouponDto> getUserInterestCoupons(String loginName) {
-        List<UserCouponDto> userCouponModelList = getUserAllCoupons(loginName);
-        return Lists.newArrayList(Iterators.filter(userCouponModelList.iterator(), new Predicate<UserCouponDto>() {
-            @Override
-            public boolean apply(UserCouponDto input) {
-                return input.getCouponType() == CouponType.INTEREST_COUPON;
-            }
-        }));
-    }
 
     @Override
     public UserCouponDto getUsableNewbieCoupon(String loginName) {
@@ -104,7 +80,7 @@ public class UserCouponServiceImpl implements UserCouponService {
             if (loginNames.contains(loginName)) {
                 return null;
             }
-            List<UserCouponModel> userCoupons = userCouponMapper.findByLoginName(loginName);
+            List<UserCouponModel> userCoupons = userCouponMapper.findByLoginName(loginName, null);
             Optional<UserCouponModel> found = Iterators.tryFind(userCoupons.iterator(), new Predicate<UserCouponModel>() {
                 @Override
                 public boolean apply(UserCouponModel userCouponModel) {
@@ -127,7 +103,7 @@ public class UserCouponServiceImpl implements UserCouponService {
     @Override
     public List<UserCouponDto> getUsableCoupons(String loginName, long loanId) {
         final LoanModel loanModel = loanMapper.findById(loanId);
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName);
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
         if (loanModel == null || Iterators.tryFind(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
             @Override
             public boolean apply(UserCouponModel userCouponModel) {

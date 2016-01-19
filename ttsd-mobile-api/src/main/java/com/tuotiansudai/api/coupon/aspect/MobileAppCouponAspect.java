@@ -3,7 +3,6 @@ package com.tuotiansudai.api.coupon.aspect;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
-import com.tuotiansudai.dto.RegisterUserDto;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -12,12 +11,10 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-
 @Component
 @Aspect
-public class CouponAspect {
-    static Logger logger = Logger.getLogger(CouponAspect.class);
+public class MobileAppCouponAspect {
+    static Logger logger = Logger.getLogger(MobileAppCouponAspect.class);
 
     @Autowired
     CouponActivationService couponActivationService;

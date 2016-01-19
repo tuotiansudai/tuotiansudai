@@ -1,6 +1,6 @@
 package com.tuotiansudai.util;
 
-import com.google.common.base.Strings;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public class AmountConverter {
 
     public static long convertStringToCent(String amount) {
-        if (Strings.isNullOrEmpty(amount)) {
+        if (StringUtils.isEmpty(amount)) {
             return 0;
         }
         Pattern pattern = Pattern.compile("^\\d+(\\.\\d{1,2})?$");
