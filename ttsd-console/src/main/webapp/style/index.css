@@ -321,5 +321,24 @@ td.td {
     background-color: transparent;
 }
 
+.file-btn{
+    float:left;
+    width:100px;
+    height:35px;
+    text-align:center;
+    line-height: 35px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    position: relative;
+}
+.file-btn input{
+    position: absolute;
+    top:0;
+    left:0;
+    width:100px;
+    height:35px;
+    opacity:0;
+}
+
 
 

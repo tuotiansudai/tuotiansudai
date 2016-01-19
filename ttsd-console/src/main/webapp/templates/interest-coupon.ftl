@@ -7,14 +7,14 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">加息券名称:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control"  value="加息卷"  readonly="true">
+                <span class="form-control">加息卷</span>
                 <input class="couponType" name="couponType" value="INTEREST_COUPON" type="hidden">
             </div>
         </div>
         <div class="form-group">
             <label  class="col-sm-2 control-label">加息卷利率: </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control coupon-number" name="rate" placeholder="" <#if coupon??>value="${coupon.rate!}"</#if> datatype="*" errormsg="加息劵利率不能为空">
+                <input type="text" class="form-control coupon-rate" name="rate" placeholder="" <#if coupon??>value="${coupon.rate!}"</#if> datatype="*" errormsg="加息劵利率不能为空">
             </div>
         </div>
 
@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <div class="form-group coupon-hide invest-coupon" >
+        <div class="form-group invest-coupon" >
             <label  class="col-sm-2 control-label">有效期限(天): </label>
             <div class="col-sm-4">
                 <input type="text" class="form-control coupon-deadline" name="deadline" placeholder="" <#if coupon??>value="${coupon.deadline!}"</#if> datatype="*" errormsg="有效期限不能为空">
@@ -33,9 +33,9 @@
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">发放对象:</label>
-            <div class="col-sm-4 coupon-hide invest-coupon">
+            <div class="col-sm-4 invest-coupon">
 
-                <select class="selectpicker jq-b-type userGroup" name="userGroup" disabled>
+                <select class="selectpicker jq-b-type userGroup" name="userGroup">
                     <#list userGroups as userGroup>
                         <#if userGroup.name() != 'NEW_REGISTERED_USER'>
                             <option value="${userGroup.name()}">${userGroup.getDescription()}</option>
@@ -43,13 +43,16 @@
                     </#list>
                 </select>
             </div>
-
-            <input type="file" name="file" value="导入用户名单" id="file">
+            <div class="file-btn">
+                <input type="file">
+                导入用户名单
+            </div>
+            <input type="hidden" name="file" id="import-file">
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">预计发放数量(张): </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control give-number" name="totalCount" placeholder="" <#if coupon??>value="${coupon.totalCount?string('0')!}"</#if>  datatype="n" errormsg="发放数量需要填写数字" >
+                <input type="text" readonly class="form-control give-number" name="totalCount" placeholder="" <#if coupon??>value="${coupon.totalCount?string('0')!}"</#if>  datatype="n" errormsg="发放数量需要填写数字" >
             </div>
         </div>
 

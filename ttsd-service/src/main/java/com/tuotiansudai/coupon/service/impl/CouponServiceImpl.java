@@ -5,6 +5,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
@@ -16,12 +17,14 @@ import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -41,22 +44,42 @@ public class CouponServiceImpl implements CouponService {
     @Autowired
     private LoanMapper loanMapper;
 
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private IdGenerator idGenerator;
+
+    private static String redisKeyTemplate = "console:{0}:importcouponuser";
+
     @Override
     @Transactional
     public void createCoupon(String loginName, CouponDto couponDto) throws CreateCouponException {
         this.checkCoupon(couponDto);
         CouponModel couponModel = new CouponModel(couponDto);
         couponModel.setCreatedBy(loginName);
+        couponModel.setId(idGenerator.generate());
+        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() == UserGroup.IMPORT_USER_STAFF) {
+            if (redisWrapperClient.hexists(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "success")) {
+                redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "success"));
+            }
+            if (redisWrapperClient.hexists(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "failed")) {
+                redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "failed"));
+            }
+            redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, couponDto.getFile()));
+        }
         couponMapper.create(couponModel);
     }
 
     private void checkCoupon(CouponDto couponDto) throws CreateCouponException {
         CouponModel couponModel = new CouponModel(couponDto);
-        long amount = couponModel.getAmount();
-        long investLowerLimit = couponModel.getInvestLowerLimit();
-        if (amount <= 0) {
-            throw new CreateCouponException("投资体验券金额应大于0!");
+        if (couponDto.getCouponType() != CouponType.INTEREST_COUPON) {
+            long amount = couponModel.getAmount();
+            if (amount <= 0) {
+                throw new CreateCouponException("投资体验券金额应大于0!");
+            }
         }
+        long investLowerLimit = couponModel.getInvestLowerLimit();
         long totalCount = couponModel.getTotalCount();
         if (totalCount <= 0) {
             throw new CreateCouponException("发放数量应大于0!");
@@ -112,6 +135,32 @@ public class CouponServiceImpl implements CouponService {
             UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId());
             userCouponMapper.create(userCouponModel);
         }
+    }
+
+    @Override
+    public List<CouponDto> findInterestCoupons(int index, int pageSize) {
+        List<CouponModel> couponModels = couponMapper.findInterestCoupons((index - 1) * pageSize, pageSize);
+        for (CouponModel couponModel : couponModels) {
+            couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
+            if (couponModel.getUserGroup() == UserGroup.IMPORT_USER_STAFF) {
+                if (redisWrapperClient.hexists(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())),"failed")) {
+                    couponModel.setImportIsRight(false);
+                } else {
+                    couponModel.setImportIsRight(true);
+                }
+            }
+        }
+        return Lists.transform(couponModels, new Function<CouponModel, CouponDto>() {
+            @Override
+            public CouponDto apply(CouponModel input) {
+                return new CouponDto(input);
+            }
+        });
+    }
+
+    @Override
+    public int findInterestCouponsCount() {
+        return couponMapper.findInterestCouponsCount();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -11,8 +12,17 @@ import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.exception.CreateCouponException;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.util.UUIDGenerator;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +34,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.InputStream;
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +49,14 @@ public class CouponController {
 
     @Autowired
     private CouponActivationService couponActivationService;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
     @RequestMapping(value = "/coupon",method = RequestMethod.GET)
     public ModelAndView coupon(){
@@ -148,6 +169,23 @@ public class CouponController {
         return couponService.findEstimatedCount(userGroup);
     }
 
+    @RequestMapping(value = "/interest-coupons", method = RequestMethod.GET)
+    public ModelAndView interestCoupons(@RequestParam(value = "index",required = false,defaultValue = "1") int index,
+                                        @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize) {
+        ModelAndView modelAndView = new ModelAndView("/interest-coupons");
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+        modelAndView.addObject("coupons", couponService.findInterestCoupons(index, pageSize));
+        int couponsCount = couponService.findInterestCouponsCount();
+        modelAndView.addObject("couponsCount", couponsCount);
+        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 ? 1 : 0);
+        boolean hasPreviousPage = index > 1 && index <= totalPages;
+        boolean hasNextPage = index < totalPages;
+        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
+        modelAndView.addObject("hasNextPage", hasNextPage);
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/coupons",method = RequestMethod.GET)
     public ModelAndView coupons(@RequestParam(value = "index",required = false,defaultValue = "1") int index,
                                  @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize) {
@@ -187,11 +225,62 @@ public class CouponController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/export-excel", method = RequestMethod.POST)
-    public int exportExcel(HttpServletRequest request) {
+    @RequestMapping(value = "/import-excel", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Object> importExcel(HttpServletRequest request) throws Exception{
+        String uuid = UUIDGenerator.generate();
+        String redisKey = MessageFormat.format(redisKeyTemplate, uuid);
         MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-        MultipartFile multipartFile = multiRequest.getFile("");
-        
+        MultipartFile multipartFile = multiRequest.getFile("file");
+        InputStream inputStream = multipartFile.getInputStream();
+        HSSFWorkbook hssfWorkbook = new HSSFWorkbook(inputStream);
+        HSSFSheet hssfSheet = hssfWorkbook.getSheetAt(0);
+        List<String> listSuccess = new ArrayList<>();
+        List<String> listFailed = new ArrayList<>();
+        for (int rowNum = 0; rowNum < hssfSheet.getLastRowNum()+1; rowNum++) {
+            HSSFRow hssfRow = hssfSheet.getRow(rowNum);
+            int firstCellNum = hssfRow.getFirstCellNum();
+            HSSFCell hssfCell = hssfRow.getCell(firstCellNum);
+            String loginName = getStringVal(hssfCell);
+            UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
+            if (userModel == null) {
+                listFailed.add(loginName);
+            } else {
+                listSuccess.add(loginName);
+            }
+        }
+        redisWrapperClient.hset(redisKey, "failed", StringUtils.join(listFailed, ","));
+        redisWrapperClient.hset(redisKey, "success", StringUtils.join(listSuccess, ","));
+        List<Object> list = new ArrayList<>();
+        list.add(uuid);
+        list.add(hssfSheet.getLastRowNum()+1);
+        return list;
+    }
+
+    private String getStringVal(HSSFCell hssfCell) {
+        switch (hssfCell.getCellType()) {
+            case Cell.CELL_TYPE_NUMERIC:
+                hssfCell.setCellType(Cell.CELL_TYPE_STRING);
+                return hssfCell.getStringCellValue();
+            case Cell.CELL_TYPE_STRING:
+                return hssfCell.getStringCellValue();
+            default:
+                return "";
+        }
+    }
+
+    @RequestMapping(value = "/coupon/{couponId:^\\d+$}/redis", method = RequestMethod.POST)
+    @ResponseBody
+    public List<String> getRedisImportExcel(@PathVariable long couponId) {
+        List<String> list = new ArrayList<>();
+        String redisKey = MessageFormat.format(redisKeyTemplate, String.valueOf(couponId));
+        if (redisWrapperClient.hexists(redisKey, "failed")) {
+            list.add(redisWrapperClient.hget(redisKey, "failed"));
+        }
+        if (redisWrapperClient.hexists(redisKey, "success")) {
+            list.add(redisWrapperClient.hget(redisKey, "success"));
+        }
+        return list;
     }
 
 }

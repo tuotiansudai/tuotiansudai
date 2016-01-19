@@ -33,8 +33,8 @@
     </resultMap>
 
     <insert id="create" parameterType="CouponModel" useGeneratedKeys="true" keyProperty="id">
-        insert into coupon (amount, rate, start_time, end_time, used_count, total_count, active, created_by, created_time, activated_by, activated_time, issued_count, invest_lower_limit, invest_upper_limit, coupon_type, product_types, deleted, deadline, user_group, sms_alert)
-        value(#{amount}, #{rate}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{createdBy}, #{createdTime}, #{activatedBy}, #{activatedTime}, #{issuedCount}, #{investLowerLimit}, #{investUpperLimit}, #{couponType}, #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}, #{deleted}, #{deadline}, #{userGroup}, #{smsAlert})
+        insert into coupon (id,amount, rate, start_time, end_time, used_count, total_count, active, created_by, created_time, activated_by, activated_time, issued_count, invest_lower_limit, invest_upper_limit, coupon_type, product_types, deleted, deadline, user_group, sms_alert)
+        value(#{id}, #{amount}, #{rate}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{createdBy}, #{createdTime}, #{activatedBy}, #{activatedTime}, #{issuedCount}, #{investLowerLimit}, #{investUpperLimit}, #{couponType}, #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}, #{deleted}, #{deadline}, #{userGroup}, #{smsAlert})
     </insert>
 
     <select id="findById" resultMap="couponResultMap" parameterType="long">
@@ -69,13 +69,42 @@
               user_coupon t
             GROUP BY t.coupon_id) temp
             ON c.id = temp.coupon_id
-            where c.deleted is FALSE
+            where c.deleted is FALSE and c.coupon_type != 'INTEREST_COUPON'
+        ORDER BY created_time DESC
+        LIMIT #{index},#{pageSize}
+    </select>
+
+    <select id="findInterestCoupons" parameterType="map" resultMap="couponResultMap">
+        SELECT
+        c.*,
+        IFNULL(temp.expected_amount, 0) AS expected_amount,
+        IFNULL(temp.actual_amount, 0) AS actual_amount
+        FROM
+        coupon c
+        LEFT JOIN
+        (SELECT
+        t.coupon_id,
+        SUM(
+        t.expected_interest + t.default_interest - t.expected_fee
+        ) AS expected_amount,
+        SUM(
+        t.actual_interest + t.default_interest - t.actual_fee
+        ) AS actual_amount
+        FROM
+        user_coupon t
+        GROUP BY t.coupon_id) temp
+        ON c.id = temp.coupon_id
+        where c.deleted is FALSE and c.coupon_type = 'INTEREST_COUPON'
         ORDER BY created_time DESC
         LIMIT #{index},#{pageSize}
     </select>
 
     <select id="findCouponsCount"  resultType="int">
-        select count(*) from coupon where deleted is FALSE
+        select count(*) from coupon where deleted is FALSE and coupon_type != 'INTEREST_COUPON'
+    </select>
+
+    <select id="findInterestCouponsCount"  resultType="int">
+        select count(*) from coupon where deleted is FALSE and coupon_type = 'INTEREST_COUPON'
     </select>
 
     <update id="updateCoupon" parameterType="CouponModel">

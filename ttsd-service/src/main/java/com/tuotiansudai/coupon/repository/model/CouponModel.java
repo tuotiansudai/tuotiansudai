@@ -64,6 +64,8 @@ public class CouponModel implements Serializable {
 
     private boolean deleted;
 
+    private Boolean importIsRight;
+
     public long getId() {
         return id;
     }
@@ -271,19 +273,37 @@ public class CouponModel implements Serializable {
         return deadline;
     }
 
+    public Boolean getImportIsRight() {
+        return importIsRight;
+    }
+
+    public void setImportIsRight(Boolean importIsRight) {
+        this.importIsRight = importIsRight;
+    }
+
+    public void setTotalCount(Long totalCount) {
+        this.totalCount = totalCount;
+    }
+
     public void setDeadline(Integer deadline) {
         this.deadline = deadline;
     }
 
     public CouponModel(CouponDto couponDto){
-        this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
+        if (couponDto.getAmount() != null) {
+            this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
+        }
         this.startTime = couponDto.getStartTime();
-        this.endTime =  new DateTime(couponDto.getEndTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate();
+        if (couponDto.getEndTime() != null) {
+            this.endTime = new DateTime(couponDto.getEndTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate();
+        }
         this.totalCount = couponDto.getTotalCount();
         this.productTypes = couponDto.getProductTypes() ;
         this.couponType = couponDto.getCouponType();
         this.investLowerLimit = AmountConverter.convertStringToCent(couponDto.getInvestLowerLimit());
-        this.investUpperLimit = AmountConverter.convertStringToCent(couponDto.getInvestUpperLimit());
+        if (couponDto.getInvestUpperLimit() != null) {
+            this.investUpperLimit = AmountConverter.convertStringToCent(couponDto.getInvestUpperLimit());
+        }
         this.createdTime = new Date();
         this.smsAlert = couponDto.isSmsAlert();
         this.deadline = couponDto.getDeadline();

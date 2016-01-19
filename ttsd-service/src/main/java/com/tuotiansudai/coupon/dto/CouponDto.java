@@ -38,7 +38,6 @@ public class CouponDto implements Serializable {
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String investUpperLimit;
 
-    @Pattern(regexp = "^[+]?[\\d]+(([\\.]{1}[\\d]+)|([\\d]*))$")
     private Double rate;
 
     @NotNull
@@ -64,6 +63,10 @@ public class CouponDto implements Serializable {
     private long expectedAmount;
 
     private long actualAmount;
+
+    private String file;
+
+    private Boolean importIsRight;
 
     public String getAmount() {
         return amount;
@@ -217,6 +220,22 @@ public class CouponDto implements Serializable {
         this.rate = rate;
     }
 
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
+    }
+
+    public Boolean getImportIsRight() {
+        return importIsRight;
+    }
+
+    public void setImportIsRight(Boolean importIsRight) {
+        this.importIsRight = importIsRight;
+    }
+
     public CouponDto(){
 
     }
@@ -241,5 +260,8 @@ public class CouponDto implements Serializable {
         this.expectedAmount = couponModel.getExpectedAmount();
         this.actualAmount = couponModel.getActualAmount();
         this.rate = couponModel.getRate();
+        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() == UserGroup.IMPORT_USER_STAFF) {
+            this.importIsRight = couponModel.getImportIsRight();
+        }
     }
 }
