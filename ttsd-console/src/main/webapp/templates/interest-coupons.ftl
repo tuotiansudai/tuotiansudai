@@ -4,8 +4,7 @@
 <!-- content area begin -->
 <div class="col-md-10">
     <div class="see-detail">
-        <span class="text-red"></span>
-        <span></span>
+        <table border="1"></table>
         <span class="close-span"><a href="#" class="close-btn">关闭</a></span>
     </div>
     <div class="tip-container">
