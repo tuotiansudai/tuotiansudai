@@ -105,13 +105,13 @@
         <div class="clear-blank"></div>
         <div class="record-tab tab-show">
             <div class="invest-list"></div>
-            <div id="use-record-money" class="pagination" data-url="/coupon/money-coupon-use-record" data-page-size="10">
+            <div id="use-record-money" class="pagination" data-url="/coupon/use-record" data-page-size="10">
             </div>
         </div>
 
         <div class="record-tab">
             <div class="invest-list-interest"></div>
-            <div id="use-record-interest" class="pagination" data-url="/coupon/interest-coupon-use-record" data-page-size="10">
+            <div id="use-record-interest" class="pagination" data-url="/coupon/use-record" data-page-size="10">
             </div>
         </div>
     </div>

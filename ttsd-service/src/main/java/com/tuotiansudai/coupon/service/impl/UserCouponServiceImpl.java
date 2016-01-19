@@ -151,9 +151,9 @@ public class UserCouponServiceImpl implements UserCouponService {
     }
 
     @Override
-    public BaseDto<BasePaginationDataDto> findMoneyCouponUseRecords(String loginName, int index, int pageSize) {
-        int count = userCouponMapper.findMoneyCouponUseRecordsCount(loginName);
-        List<CouponUseRecordView> couponUseRecordList = userCouponMapper.findMoneyCouponUseRecords(loginName, (index - 1) * pageSize, pageSize);
+    public BaseDto<BasePaginationDataDto> findUseRecords(List<CouponType> couponTypeList, String loginName, int index, int pageSize) {
+        int count = userCouponMapper.findUseRecordsCount(couponTypeList, loginName);
+        List<CouponUseRecordView> couponUseRecordList = userCouponMapper.findUseRecords(couponTypeList, loginName, (index - 1) * pageSize, pageSize);
 
         for (CouponUseRecordView curm : couponUseRecordList) {
             curm.setExpectedIncomeStr(AmountConverter.convertCentToString(curm.getExpectedIncome()));
@@ -167,20 +167,4 @@ public class UserCouponServiceImpl implements UserCouponService {
         return baseDto;
     }
 
-    @Override
-    public BaseDto<BasePaginationDataDto> findInterestCouponUseRecords(String loginName, int index, int pageSize) {
-        int count = userCouponMapper.findInterestCouponUseRecordsCount(loginName);
-        List<CouponUseRecordView> couponUseRecordList = userCouponMapper.findInterestCouponUseRecords(loginName, (index - 1) * pageSize, pageSize);
-
-        for (CouponUseRecordView curm : couponUseRecordList) {
-            curm.setExpectedIncomeStr(AmountConverter.convertCentToString(curm.getExpectedIncome()));
-            curm.setInvestAmountStr(AmountConverter.convertCentToString(curm.getInvestAmount()));
-        }
-
-        BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
-        BasePaginationDataDto<CouponUseRecordView> dataDto = new BasePaginationDataDto<>(index, pageSize, count, couponUseRecordList);
-        baseDto.setData(dataDto);
-        dataDto.setStatus(true);
-        return baseDto;
-    }
 }

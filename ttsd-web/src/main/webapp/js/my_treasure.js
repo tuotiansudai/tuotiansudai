@@ -29,14 +29,14 @@ function($, layer, moment, pagination, Mustache, treasureListTemplate, treasureL
         });
 
         function loadTasteData() {
-            $('#use-record-money').loadPagination({}, function(data) {
+            $('#use-record-money').loadPagination({couponTypeList:['NEWBIE_COUPON','INVEST_COUPON']}, function(data) {
                 var html = Mustache.render(treasureListTemplate, data);
                 $('.invest-list').html(html);
             });
         };
 
         function loadInterestData() {
-            $('#use-record-interest').loadPagination({}, function(data) {
+            $('#use-record-interest').loadPagination({couponTypeList:['INTEREST_COUPON']}, function(data) {
                 var html = Mustache.render(treasureListInterestTemplate, data);
                 $('.invest-list-interest').html(html);
             });
