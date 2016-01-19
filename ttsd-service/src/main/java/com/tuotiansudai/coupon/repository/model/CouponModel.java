@@ -4,7 +4,6 @@ import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
-import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
@@ -17,7 +16,7 @@ public class CouponModel implements Serializable {
 
     private long amount;
 
-    private double rate;
+    private Double rate;
 
     private Date startTime;
 
@@ -67,6 +66,8 @@ public class CouponModel implements Serializable {
 
     private boolean deleted;
 
+    private Boolean importIsRight;
+
     public long getId() {
         return id;
     }
@@ -83,11 +84,11 @@ public class CouponModel implements Serializable {
         this.amount = amount;
     }
 
-    public double getRate() {
+    public Double getRate() {
         return rate;
     }
 
-    public void setRate(double rate) {
+    public void setRate(Double rate) {
         this.rate = rate;
     }
 
@@ -282,6 +283,18 @@ public class CouponModel implements Serializable {
         return deadline;
     }
 
+    public Boolean getImportIsRight() {
+        return importIsRight;
+    }
+
+    public void setImportIsRight(Boolean importIsRight) {
+        this.importIsRight = importIsRight;
+    }
+
+    public void setTotalCount(Long totalCount) {
+        this.totalCount = totalCount;
+    }
+
     public void setDeadline(Integer deadline) {
         this.deadline = deadline;
     }
@@ -290,14 +303,18 @@ public class CouponModel implements Serializable {
         this.shared = couponDto.isShared();
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime();
-        this.endTime =  new DateTime(couponDto.getEndTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate();
+        if (couponDto.getEndTime() != null) {
+            this.endTime = new DateTime(couponDto.getEndTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate();
+        }
         this.totalCount = couponDto.getTotalCount();
         this.productTypes = couponDto.getProductTypes() ;
         this.couponType = couponDto.getCouponType();
         this.investLowerLimit = AmountConverter.convertStringToCent(couponDto.getInvestLowerLimit());
+        this.investUpperLimit = AmountConverter.convertStringToCent(couponDto.getInvestUpperLimit());
         this.createdTime = new Date();
         this.smsAlert = couponDto.isSmsAlert();
         this.deadline = couponDto.getDeadline();
         this.userGroup = couponDto.getUserGroup();
+        this.rate = couponDto.getRate();
     }
 }

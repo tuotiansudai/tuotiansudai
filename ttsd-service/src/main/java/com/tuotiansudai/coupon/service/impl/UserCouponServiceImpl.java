@@ -2,7 +2,6 @@ package com.tuotiansudai.coupon.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
@@ -60,9 +59,9 @@ public class UserCouponServiceImpl implements UserCouponService {
     private static final String NEWBIE_COUPON_ALERT_KEY = "web:newbiecoupon:alert";
 
     @Override
-    public List<UserCouponDto> getUserCoupons(String loginName) {
+    public List<UserCouponDto> getUserAllCoupons(String loginName) {
         List<UserCouponModel> modelList = userCouponMapper.findByLoginName(loginName);
-        List<UserCouponDto> userCouponDtoList =  new ArrayList<>();
+        List<UserCouponDto> userCouponDtoList = new ArrayList<>();
         for (UserCouponModel couponModel : modelList) {
             CouponModel coupon = couponMapper.findById(couponModel.getCouponId());
             UserCouponDto dto = new UserCouponDto(coupon, couponModel);
@@ -70,6 +69,27 @@ public class UserCouponServiceImpl implements UserCouponService {
         }
         Collections.sort(userCouponDtoList);
         return userCouponDtoList;
+    }
+
+
+    public List<UserCouponDto> getUserMoneyCoupons(String loginName) {
+        List<UserCouponDto> userCouponModelList = getUserAllCoupons(loginName);
+        return Lists.newArrayList(Iterators.filter(userCouponModelList.iterator(), new Predicate<UserCouponDto>() {
+            @Override
+            public boolean apply(UserCouponDto input) {
+                return input.getCouponType() == CouponType.NEWBIE_COUPON || input.getCouponType() == CouponType.INVEST_COUPON;
+            }
+        }));
+    }
+
+    public List<UserCouponDto> getUserInterestCoupons(String loginName) {
+        List<UserCouponDto> userCouponModelList = getUserAllCoupons(loginName);
+        return Lists.newArrayList(Iterators.filter(userCouponModelList.iterator(), new Predicate<UserCouponDto>() {
+            @Override
+            public boolean apply(UserCouponDto input) {
+                return input.getCouponType() == CouponType.INTEREST_COUPON;
+            }
+        }));
     }
 
     @Override
@@ -131,14 +151,12 @@ public class UserCouponServiceImpl implements UserCouponService {
     }
 
     @Override
-    public BaseDto<BasePaginationDataDto> findUseRecords(String loginName, int index, int pageSize) {
-        int count = userCouponMapper.findUseRecordsCount(loginName);
-        List<CouponUseRecordView> couponUseRecordList = userCouponMapper.findUseRecords(loginName, (index - 1) * pageSize, pageSize);
+    public BaseDto<BasePaginationDataDto> findUseRecords(List<CouponType> couponTypeList, String loginName, int index, int pageSize) {
+        int count = userCouponMapper.findUseRecordsCount(couponTypeList, loginName);
+        List<CouponUseRecordView> couponUseRecordList = userCouponMapper.findUseRecords(couponTypeList, loginName, (index - 1) * pageSize, pageSize);
 
         for (CouponUseRecordView curm : couponUseRecordList) {
-            long expectInterest = investService.estimateInvestIncome(curm.getLoanId(), curm.getCouponAmount());
-            curm.setExpectInterest(expectInterest);
-            curm.setExpectInterestStr(AmountConverter.convertCentToString(expectInterest));
+            curm.setExpectedIncomeStr(AmountConverter.convertCentToString(curm.getExpectedIncome()));
             curm.setCouponAmountStr(AmountConverter.convertCentToString(curm.getCouponAmount()));
         }
 
@@ -148,4 +166,5 @@ public class UserCouponServiceImpl implements UserCouponService {
         dataDto.setStatus(true);
         return baseDto;
     }
+
 }

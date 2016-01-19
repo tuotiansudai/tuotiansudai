@@ -21,7 +21,12 @@ public class MyTreasureController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getUserCoupon() {
         String loginName = LoginUserInfo.getLoginName();
-        List<UserCouponDto> userCoupons = userCouponService.getUserCoupons(loginName);
-        return new ModelAndView("/my-treasure", "coupons", userCoupons);
+        List<UserCouponDto> moneyCoupons = userCouponService.getUserMoneyCoupons(loginName);
+        List<UserCouponDto> interestCoupons = userCouponService.getUserInterestCoupons(loginName);
+
+        ModelAndView modelAndView = new ModelAndView("/my-treasure");
+        modelAndView.addObject("moneyCoupons", moneyCoupons);
+        modelAndView.addObject("interestCoupons", interestCoupons);
+        return modelAndView;
     }
 }

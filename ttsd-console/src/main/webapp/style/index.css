@@ -321,5 +321,48 @@ td.td {
     background-color: transparent;
 }
 
+.file-btn{
+    float:left;
+    width:100px;
+    height:35px;
+    text-align:center;
+    line-height: 35px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    position: relative;
+}
+.file-btn input{
+    position: absolute;
+    top:0;
+    left:0;
+    width:100px;
+    height:35px;
+    opacity:0;
+}
 
+.text-red {
+    color: #ff0000;
+}
+
+.text-blue {
+    color: #0000ff;
+}
+.see-detail{
+    position:fixed;
+    top:50%;
+    left:50%;
+    width:200px;
+    height:200px;
+    margin-top: -100px;
+    margin-left: -100px;
+    overflow:hidden;
+    overflow-y:scroll;
+    background:#fff;
+    display:none;
+    border:1px solid #ccc;
+}
+.see-detail span{
+    float:left;
+    width:100%;
+}
 
