@@ -66,8 +66,8 @@
         <div class="form-group">
             <label  class="col-sm-2 control-label">推送模板: </label>
             <div class="col-sm-4">
-                <textarea rows="4" cols="58" maxlength="40" name="content" errormsg="通知模板不能为空"><#if jPushAlert??>${jPushAlert.content!}</#if></textarea>
-
+                <textarea rows="4" cols="58" maxlength="40" class="content" name="content" errormsg="通知模板不能为空"><#if jPushAlert??>${jPushAlert.content!}</#if></textarea>
+                （长度请不要超过40个字）
             </div>
         </div>
 

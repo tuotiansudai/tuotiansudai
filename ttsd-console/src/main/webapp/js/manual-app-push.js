@@ -109,12 +109,24 @@ require(['jquery', 'template', 'csrf', 'bootstrap', 'bootstrapDatetimepicker', '
             },
             beforeCheck: function (curform) {
                 $errorDom.html('');
+                var content = $('.content').val();
+                if(typeof content == 'undefined' || content == '' ){
+                    showErrorMessage('推送模板不能为空', $('.content', curform));
+                    return false;
+                }
                 var jumpTo = $('.jumpTo').val();
                 var jumpToLink = $('.jump-link-text').val();
                 if (jumpTo == 'OTHER' && jumpToLink == '') {
                     showErrorMessage('链接地址不能为空', $('.jump-link-text', curform));
                     return false;
                 }
+                var reg_url = /^(http|https):\/\/([\w-]+\.)+[\w-]+(\/[\w-.\/?%&=]*)?$/;
+                if(jumpTo == 'OTHER' && jumpToLink != '' && !reg_url.test(jumpToLink)){
+                    showErrorMessage('链接地址输入不正确', $('.jump-link-text', curform));
+                    return false;
+                }
+
+
             },
             callback: function (form) {
                 boolFlag = true;

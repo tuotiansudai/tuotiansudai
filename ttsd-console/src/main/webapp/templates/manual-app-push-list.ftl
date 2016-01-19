@@ -131,7 +131,7 @@
     <ul class="pagination">
         <li>
         <#if hasPreviousPage>
-        <a href="?index=${index-1}&pageSize=${pageSize}" aria-label="Previous">
+        <a href="?index=${index-1}&pageSize=${pageSize}&name=${name!}" aria-label="Previous">
         <#else>
         <a href="#" aria-label="Previous">
         </#if>
@@ -141,7 +141,7 @@
         <li><a>${index}</a></li>
         <li>
         <#if hasNextPage>
-        <a href="?index=${index+1}&pageSize=${pageSize}" aria-label="Next">
+        <a href="?index=${index+1}&pageSize=${pageSize}&name=${name!}" aria-label="Next">
         <#else>
         <a href="#" aria-label="Next">
         </#if>
