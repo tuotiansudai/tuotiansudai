@@ -72,21 +72,20 @@ public class JPushAlertServiceImpl implements JPushAlertService{
         if(pushSource == PushSource.ALL){
 
             if(CollectionUtils.isNotEmpty(pushObjects)){
-                sendResult = mobileAppJPushClient.sendPushAlertByAliases(jPushAlertDto.getId(),pushObjects, alert, jumpToOrLink[0], jumpToOrLink[1]);
+                sendResult = mobileAppJPushClient.sendPushAlertByTags(jPushAlertDto.getId(), pushObjects, alert, jumpToOrLink[0], jumpToOrLink[1]);
             }else {
                 sendResult =  mobileAppJPushClient.sendPushAlertByAll(jPushAlertDto.getId(), alert, jumpToOrLink[0], jumpToOrLink[1]);
             }
 
         }else if(pushSource == PushSource.ANDROID){
             if(CollectionUtils.isNotEmpty(pushObjects)){
-                sendResult = mobileAppJPushClient.sendPushAlertByAndroidAliases(jPushAlertDto.getId(), pushObjects, alert, jumpToOrLink[0], jumpToOrLink[1]);
+                sendResult = mobileAppJPushClient.sendPushAlertByAndroidTags(jPushAlertDto.getId(), pushObjects, alert, jumpToOrLink[0], jumpToOrLink[1]);
             }else{
-
                 sendResult = mobileAppJPushClient.sendPushAlertByAndroid(jPushAlertDto.getId(), alert, jumpToOrLink[0], jumpToOrLink[1]);
             }
         }else if(pushSource == PushSource.IOS){
             if(CollectionUtils.isNotEmpty(pushObjects)){
-                sendResult = mobileAppJPushClient.sendPushAlertByIosAliases(jPushAlertDto.getId(),pushObjects, alert, jumpToOrLink[0], jumpToOrLink[1]);
+                sendResult = mobileAppJPushClient.sendPushAlertByIosTags(jPushAlertDto.getId(), pushObjects, alert, jumpToOrLink[0], jumpToOrLink[1]);
             }else{
                 sendResult = mobileAppJPushClient.sendPushAlertByIos(jPushAlertDto.getId(), alert, jumpToOrLink[0], jumpToOrLink[1]);
             }

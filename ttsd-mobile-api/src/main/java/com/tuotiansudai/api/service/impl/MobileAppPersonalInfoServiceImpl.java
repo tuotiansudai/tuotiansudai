@@ -61,7 +61,7 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
         personalInfoDataDto.setPhoto(user.getAvatar());
         personalInfoDataDto.setEmail(user.getEmail());
         if(StringUtils.isNotEmpty(user.getProvince())){
-            personalInfoDataDto.setDistrict(DistrictUtil.convertNameToCode(user.getProvince()));
+            personalInfoDataDto.setDistrictCode(DistrictUtil.convertNameToCode(user.getProvince()));
         }
         if (account != null) {
             personalInfoDataDto.setCertificationFlag(true);

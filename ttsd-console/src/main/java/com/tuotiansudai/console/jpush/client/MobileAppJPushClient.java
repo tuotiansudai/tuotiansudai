@@ -11,9 +11,7 @@ import cn.jpush.api.push.model.audience.Audience;
 import cn.jpush.api.push.model.notification.AndroidNotification;
 import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
-import cn.jpush.api.push.model.notification.PlatformNotification;
 import com.tuotiansudai.repository.model.Environment;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -33,29 +31,17 @@ public class MobileAppJPushClient {
     @Value("${common.environment}")
     private Environment environment;
 
-    private static boolean isProduction = false;
 
     private static JPushClient jPushClient;
 
     public JPushClient getJPushClient() {
-        if(environment == Environment.PRODUCTION){
-            isProduction = true;
-        }else{
-            isProduction = false;
-        }
         if (jPushClient == null) {
             jPushClient = new JPushClient(masterSecret, appKey, 3);
         }
         return jPushClient;
     }
 
-
-    public static PushPayload buildPushObject_all_all_alert(String alert) {
-        return PushPayload.alertAll(alert);
-
-    }
-
-    public static PushPayload buildPushObject_all_all_alertWithExtras(String alert, String extraKey, String extraValue) {
+    public PushPayload buildPushObject_all_all_alertWithExtras(String alert, String extraKey, String extraValue) {
         return PushPayload.newBuilder()
                 .setPlatform(Platform.all())
                 .setAudience(Audience.all())
@@ -63,94 +49,92 @@ public class MobileAppJPushClient {
                         .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
                         .addPlatformNotification(AndroidNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
                         .build())
+                .setOptions(Options.newBuilder().setApnsProduction(Environment.isProduction(environment)).build())
                 .build();
 
     }
 
-    public static PushPayload buildPushObject_android_all_alertWithExtras(String alert, String extraKey, String extraValue) {
+    public PushPayload buildPushObject_android_all_alertWithExtras(String alert, String extraKey, String extraValue) {
         return PushPayload.newBuilder()
                 .setPlatform(Platform.android())
                 .setAudience(Audience.all())
                 .setNotification(Notification.newBuilder()
                         .addPlatformNotification(AndroidNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
                         .build())
+                .setOptions(Options.newBuilder().setApnsProduction(Environment.isProduction(environment)).build())
                 .build();
 
     }
 
-    public static PushPayload buildPushObject_android_aliases_alertWithExtras(List<String> alias, String alert, String extraKey, String extraValue) {
+    public PushPayload buildPushObject_android_tags_alertWithExtras(List<String> tags, String alert, String extraKey, String extraValue) {
         return PushPayload.newBuilder()
                 .setPlatform(Platform.android())
-                .setAudience(Audience.alias(alias))
+                .setAudience(Audience.tag(tags))
                 .setNotification(Notification.newBuilder()
                         .addPlatformNotification(AndroidNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
                         .build())
+                .setOptions(Options.newBuilder().setApnsProduction(Environment.isProduction(environment)).build())
                 .build();
 
     }
 
-    public static PushPayload buildPushObject_ios_aliases_alertWithExtras(List<String> alias, String alert, String extraKey, String extraValue) {
+    public PushPayload buildPushObject_ios_tags_alertWithExtras(List<String> tags, String alert, String extraKey, String extraValue) {
         return PushPayload.newBuilder()
                 .setPlatform(Platform.ios())
-                .setAudience(Audience.alias(alias))
+                .setAudience(Audience.tag(tags))
                 .setNotification(Notification.newBuilder()
                         .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
                         .build())
-                .setOptions(Options.newBuilder().setApnsProduction(isProduction).build())
+                .setOptions(Options.newBuilder().setApnsProduction(Environment.isProduction(environment)).build())
                 .build();
 
     }
 
-    public static PushPayload buildPushObject_ios_all_alertWithExtras(String alert, String extraKey, String extraValue) {
+    public PushPayload buildPushObject_ios_all_alertWithExtras(String alert, String extraKey, String extraValue) {
         return PushPayload.newBuilder()
                 .setPlatform(Platform.ios())
                 .setAudience(Audience.all())
                 .setNotification(Notification.newBuilder()
                         .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
                         .build())
-                .setOptions(Options.newBuilder().setApnsProduction(isProduction).build())
+                .setOptions(Options.newBuilder().setApnsProduction(Environment.isProduction(environment)).build())
                 .build();
 
     }
 
-    public static PushPayload buildPushObject_all_aliases_alert(List<String> alias, String alert, String extraKey, String extraValue) {
+    public PushPayload buildPushObject_all_tags_alert(List<String> tags, String alert, String extraKey, String extraValue) {
 
         return PushPayload.newBuilder()
                 .setPlatform(Platform.all())
-                .setAudience(Audience.alias(alias))
+                .setAudience(Audience.tag(tags))
                 .setNotification(Notification.newBuilder()
                         .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
                         .addPlatformNotification(AndroidNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
                         .build())
+                .setOptions(Options.newBuilder().setApnsProduction(Environment.isProduction(environment)).build())
                 .build();
     }
 
-    public boolean sendPushAlertByAliases(String jPushAlertId, List<String> alias, String alert, String extraKey, String extraValue) {
-        PushPayload payload = buildPushObject_all_aliases_alert(alias, alert, extraKey, extraValue);
+    public boolean sendPushAlertByTags(String jPushAlertId, List<String> tags, String alert, String extraKey, String extraValue) {
+        PushPayload payload = buildPushObject_all_tags_alert(tags, alert, extraKey, extraValue);
 
         return sendPush(payload, jPushAlertId);
     }
 
-    public boolean sendPushAlertByAndroidAliases(String jPushAlertId, List<String> alias, String alert, String extraKey, String extraValue) {
-        PushPayload payload = buildPushObject_android_aliases_alertWithExtras(alias, alert, extraKey, extraValue);
+    public boolean sendPushAlertByAndroidTags(String jPushAlertId, List<String> tags, String alert, String extraKey, String extraValue) {
+        PushPayload payload = buildPushObject_android_tags_alertWithExtras(tags, alert, extraKey, extraValue);
 
         return sendPush(payload, jPushAlertId);
     }
 
-    public boolean sendPushAlertByIosAliases(String jPushAlertId, List<String> alias, String alert, String extraKey, String extraValue) {
-        PushPayload payload = buildPushObject_ios_aliases_alertWithExtras(alias, alert, extraKey, extraValue);
+    public boolean sendPushAlertByIosTags(String jPushAlertId, List<String> tags, String alert, String extraKey, String extraValue) {
+        PushPayload payload = buildPushObject_ios_tags_alertWithExtras(tags, alert, extraKey, extraValue);
 
         return sendPush(payload, jPushAlertId);
     }
 
     public boolean sendPushAlertByAll(String jPushAlertId, String alert, String extraKey, String extraValue) {
-        PushPayload payload = null;
-        if (StringUtils.isNotEmpty(extraKey) && StringUtils.isNotEmpty(extraValue)) {
-            payload = buildPushObject_all_all_alertWithExtras(alert, extraKey, extraValue);
-        } else {
-            payload = buildPushObject_all_all_alert(alert);
-
-        }
+        PushPayload payload = buildPushObject_all_all_alertWithExtras(alert, extraKey, extraValue);
         return sendPush(payload, jPushAlertId);
     }
 
@@ -180,16 +164,6 @@ public class MobileAppJPushClient {
         }
         return false;
 
-    }
-
-
-    public static PushPayload buildPushObject_all_alias_alert(String alias, String alert) {
-
-        return PushPayload.newBuilder()
-                .setPlatform(Platform.all())
-                .setAudience(Audience.alias(alias))
-                .setNotification(Notification.alert(alert))
-                .build();
     }
 
     public static JPushClient getjPushClient() {

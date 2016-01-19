@@ -15,7 +15,7 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     private String bankId;
     private boolean fastPaymentEnable;
     private String email;
-    private String district;
+    private String districtCode;
 
 
     public boolean getCertificationFlag() {
@@ -122,11 +122,11 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
         this.email = email;
     }
 
-    public String getDistrict() {
-        return district;
+    public String getDistrictCode() {
+        return districtCode;
     }
 
-    public void setDistrict(String district) {
-        this.district = district;
+    public void setDistrictCode(String districtCode) {
+        this.districtCode = districtCode;
     }
 }
