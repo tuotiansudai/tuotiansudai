@@ -1,5 +1,6 @@
-require(['jquery', 'layerWrapper', 'moment', 'pagination', 'mustache', 'text!/tpl/my-treasure-table.mustache', 'text!/tpl/my-treasure-table-interest.mustache','csrf'],
-function($, layer, moment, pagination, Mustache, treasureListTemplate, treasureListInterestTemplate) {
+require(['jquery', 'layerWrapper', 'moment', 'pagination', 'mustache', 'text!/tpl/my-treasure-table.mustache',
+        'text!/tpl/my-treasure-table-interest.mustache', 'text!/tpl/my-treasure-table-red.mustache', 'csrf'],
+function($, layer, moment, pagination, Mustache, treasureListTemplate, treasureListTemplateInterest, treasureListTemplateRedEnvelope) {
     $(function() {
         var $navLi = $('.column-title .title-navli'),
             $listTab = $('.list-tab');
@@ -28,16 +29,23 @@ function($, layer, moment, pagination, Mustache, treasureListTemplate, treasureL
             }
         });
 
+        function loadRedEnvelopeData() {
+            $('#use-record-red').loadPagination({couponTypeList:['RED_ENVELOPE']}, function(data) {
+                var html = Mustache.render(treasureListTemplateRedEnvelope, data);
+                $('.invest-list-red').html(html);
+            });
+        };
+
         function loadTasteData() {
-            $('#use-record-money').loadPagination({couponTypeList:['NEWBIE_COUPON','INVEST_COUPON']}, function(data) {
+            $('#use-record-taste').loadPagination({couponTypeList:['NEWBIE_COUPON','INVEST_COUPON']}, function(data) {
                 var html = Mustache.render(treasureListTemplate, data);
-                $('.invest-list').html(html);
+                $('.invest-list-taste').html(html);
             });
         };
 
         function loadInterestData() {
             $('#use-record-interest').loadPagination({couponTypeList:['INTEREST_COUPON']}, function(data) {
-                var html = Mustache.render(treasureListInterestTemplate, data);
+                var html = Mustache.render(treasureListTemplateInterest, data);
                 $('.invest-list-interest').html(html);
             });
         };
@@ -55,6 +63,7 @@ function($, layer, moment, pagination, Mustache, treasureListTemplate, treasureL
             $('.record-tab:eq(' + index + ')').addClass('tab-show');
         });
 
+        loadRedEnvelopeData();
         loadTasteData();
         loadInterestData();
     });
