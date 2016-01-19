@@ -63,13 +63,13 @@ public class CouponServiceImpl implements CouponService {
         this.checkCoupon(couponDto);
         CouponModel couponModel = new CouponModel(couponDto);
         couponModel.setCreatedBy(loginName);
-        couponModel.setId(idGenerator.generate());
+        couponModel.setCreatedTime(new Date());
+        couponMapper.create(couponModel);
         if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
             redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "success"));
             redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "failed"));
             redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, couponDto.getFile()));
         }
-        couponMapper.create(couponModel);
     }
 
     private void checkCoupon(CouponDto couponDto) throws CreateCouponException {
@@ -111,6 +111,15 @@ public class CouponServiceImpl implements CouponService {
         couponModel.setId(couponDto.getId());
         couponModel.setUpdatedBy(loginName);
         couponModel.setUpdatedTime(new Date());
+        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() != UserGroup.IMPORT_USER
+                && redisWrapperClient.exists(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())))){
+            redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())));
+        }
+        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
+            redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "success"));
+            redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "failed"));
+            redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, couponDto.getFile()));
+        }
         couponMapper.updateCoupon(couponModel);
     }
 

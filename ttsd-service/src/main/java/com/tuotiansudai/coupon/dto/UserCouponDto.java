@@ -17,7 +17,7 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
     private CouponType couponType;
     private String name;
     private long amount;
-    private double rate;
+    private Double rate;
     private Date startTime;
     private Date endTime;
     private Date usedTime;
@@ -73,7 +73,7 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
         return amount;
     }
 
-    public double getRate() {
+    public Double getRate() {
         return rate;
     }
 

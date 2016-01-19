@@ -366,3 +366,7 @@ td.td {
     width:100%;
 }
 
+.import-hidden {
+    display: none;
+}
+

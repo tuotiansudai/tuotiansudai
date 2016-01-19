@@ -49,7 +49,7 @@ public class UserCouponMapperTest {
         UserCouponModel userCouponModel = fakeUserCouponModel(couponModel.getId());
         userCouponMapper.create(userCouponModel);
 
-        List<UserCouponModel> userCouponModelList = userCouponMapper.findByLoginName("couponTest");
+        List<UserCouponModel> userCouponModelList = userCouponMapper.findByLoginName("couponTest", null);
 
         assertNotNull(userCouponModelList);
         assertEquals(1, userCouponModelList.size());

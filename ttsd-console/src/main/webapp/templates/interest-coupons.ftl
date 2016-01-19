@@ -99,13 +99,13 @@
         </td>
         <td>
             <#if coupon.userGroup == 'IMPORT_USER'>
-                <a href="javascript:void(0)" data-url="/activity-manage/coupon/${coupon.id?string('0')}/redis" class="detail-redis <#if coupon.importIsRight>text-blue<#else>text-red</#if>">查看详情</a>
+                <a href="javascript:void(0)" data-url="/activity-manage/coupon/${coupon.id?string('0')}/redis" class="detail-redis <#if coupon.importIsRight??&&coupon.importIsRight>text-blue<#else>text-red</#if>">查看详情</a>
             <#else>
                 ${coupon.userGroup.getDescription()}
             </#if>
         </td>
         <td>
-            ${coupon.totalCount?string('0')}<#if !coupon.importIsRight>!</#if>
+            ${coupon.totalCount?string('0')}<#if coupon.importIsRight??&&!coupon.importIsRight>!</#if>
         </td>
         <td>
             <#if coupon.smsAlert>是<#else>否</#if>
