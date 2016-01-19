@@ -110,20 +110,20 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     @Override
     public void sendSms(long couponId) {
         CouponModel couponModel = couponMapper.findById(couponId);
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(couponId);
+        List<String> loginNames = this.getCollector(couponModel.getUserGroup()).collect(couponModel.getId());
+
         SmsCouponNotifyDto notifyDto = new SmsCouponNotifyDto();
         notifyDto.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
         notifyDto.setCouponType(couponModel.getCouponType());
         notifyDto.setExpiredDate(new DateTime(couponModel.getEndTime()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
 
-        for (UserCouponModel userCouponModel : userCouponModels) {
-            String loginName = userCouponModel.getLoginName();
+        for (String loginName : loginNames) {
             String mobile = userMapper.findByLoginName(loginName).getMobile();
             notifyDto.setMobile(mobile);
             try {
                 smsWrapperClient.sendCouponNotify(notifyDto);
             } catch (Exception e) {
-                logger.error(MessageFormat.format("Send coupon notify is failed (userCouponId = {0})", String.valueOf(userCouponModel.getId())));
+                logger.error(MessageFormat.format("Send coupon notify is failed (couponId = {0}, mobile = {1})", String.valueOf(couponId), mobile));
             }
         }
     }
