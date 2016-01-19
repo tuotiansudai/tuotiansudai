@@ -290,9 +290,7 @@ public class CouponModel implements Serializable {
     }
 
     public CouponModel(CouponDto couponDto){
-        if (couponDto.getAmount() != null) {
-            this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
-        }
+        this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime();
         if (couponDto.getEndTime() != null) {
             this.endTime = new DateTime(couponDto.getEndTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate();
@@ -301,10 +299,7 @@ public class CouponModel implements Serializable {
         this.productTypes = couponDto.getProductTypes() ;
         this.couponType = couponDto.getCouponType();
         this.investLowerLimit = AmountConverter.convertStringToCent(couponDto.getInvestLowerLimit());
-        if (couponDto.getInvestUpperLimit() != null) {
-            this.investUpperLimit = AmountConverter.convertStringToCent(couponDto.getInvestUpperLimit());
-        }
-        this.createdTime = new Date();
+        this.investUpperLimit = AmountConverter.convertStringToCent(couponDto.getInvestUpperLimit());
         this.smsAlert = couponDto.isSmsAlert();
         this.deadline = couponDto.getDeadline();
         this.userGroup = couponDto.getUserGroup();

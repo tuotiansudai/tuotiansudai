@@ -63,13 +63,12 @@ public class CouponServiceImpl implements CouponService {
         this.checkCoupon(couponDto);
         CouponModel couponModel = new CouponModel(couponDto);
         couponModel.setCreatedBy(loginName);
-        couponModel.setId(idGenerator.generate());
+        couponMapper.create(couponModel);
         if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
             redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "success"));
             redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "failed"));
             redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, couponDto.getFile()));
         }
-        couponMapper.create(couponModel);
     }
 
     private void checkCoupon(CouponDto couponDto) throws CreateCouponException {

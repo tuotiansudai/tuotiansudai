@@ -38,7 +38,8 @@
                 <select class="selectpicker jq-b-type userGroup" name="userGroup">
                     <#list userGroups as userGroup>
                         <#if userGroup.name() != 'NEW_REGISTERED_USER' && userGroup.name() != 'ALL_USER'>
-                            <option value="${userGroup.name()}">${userGroup.getDescription()}</option>
+                            <option value="${userGroup.name()}"
+                                <#if coupon??&&coupon.userGroup==userGroup>selected</#if>>${userGroup.getDescription()}</option>
                         </#if>
                     </#list>
                 </select>
@@ -62,7 +63,7 @@
                 <#list productTypes as productType>
 
                     <label><input type="checkbox" name="productTypes" class="productType"
-                                  <#if productType_index == 0>checked="checked"</#if>
+                                  <#if coupon?? && coupon.productTypes?seq_contains(productType.name())>checked="checked"</#if>
                                   value="${productType.name()}">${productType.getName()}
                     </label>
 
@@ -90,6 +91,7 @@
         </div>
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <input type="hidden" name="id" <#if coupon??>value="${coupon.id?string('0')}"</#if>/>
         <div class="form-group ">
             <label class="col-sm-2 control-label"></label>
             <div class="col-sm-4 form-error">
