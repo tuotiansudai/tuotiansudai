@@ -55,8 +55,15 @@
         where id = #{id}
     </update>
 
-    <select id="findByLoginName" resultMap="userCouponResultMap" parameterType="String">
-        select * from user_coupon where login_name = #{loginName}
+    <select id="findByLoginName" resultMap="userCouponResultMap" parameterType="map">
+        select uc.* from user_coupon uc
+        <if test="couponTypeList != null and couponTypeList.size != 0">
+            JOIN coupon c on uc.coupon_id = c.id and c.coupon_type in
+            <foreach collection="couponTypeList" item="couponType" index="index" open="(" separator="," close=")">
+                #{couponType}
+            </foreach>
+        </if>
+        where uc.login_name = #{loginName}
     </select>
 
     <select id="findById" resultMap="userCouponResultMap" parameterType="long">
