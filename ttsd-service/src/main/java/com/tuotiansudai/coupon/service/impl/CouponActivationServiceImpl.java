@@ -1,6 +1,9 @@
 package com.tuotiansudai.coupon.service.impl;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
@@ -33,11 +36,20 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     static Logger logger = Logger.getLogger(CouponActivationServiceImpl.class);
 
+    @Resource(name = "allUserCollector")
+    private UserCollector allUserCollector;
+
+    @Resource(name = "newRegisteredUserCollector")
+    private UserCollector newRegisteredUserCollector;
+
     @Resource(name = "investedUserCollector")
     private UserCollector investedUserCollector;
 
     @Resource(name = "registeredNotInvestedUserCollector")
     private UserCollector registeredNotInvestedUserCollector;
+
+    @Resource(name = "importUserCollector")
+    private UserCollector importUserCollector;
 
     @Autowired
     private UserMapper userMapper;
@@ -69,7 +81,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Transactional
     @Override
-    public void active(String loginNameLoginName, long couponId) {
+    public void active(String operatorLoginName, long couponId) {
         CouponModel couponModel = couponMapper.findById(couponId);
         if (couponModel.isActive()) {
             return;
@@ -77,15 +89,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
         UserCollector collector = this.getCollector(couponModel.getUserGroup());
 
-        if (collector != null) {
-            List<String> loginNames = collector.collect();
-            for (String loginName : loginNames) {
-                UserCouponModel userCouponModel = new UserCouponModel(loginName, couponId);
-                userCouponMapper.create(userCouponModel);
-            }
-            couponModel.setTotalCount(loginNames.size());
-            couponModel.setIssuedCount(loginNames.size());
-        }
+        couponModel.setTotalCount(collector.count(couponId));
 
         if (couponModel.getDeadline() != null) {
             Date now = new Date();
@@ -94,7 +98,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         }
 
         couponModel.setActive(true);
-        couponModel.setActivatedBy(loginNameLoginName);
+        couponModel.setActivatedBy(operatorLoginName);
         couponModel.setActivatedTime(new Date());
         couponMapper.updateCoupon(couponModel);
 
@@ -110,7 +114,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         SmsCouponNotifyDto notifyDto = new SmsCouponNotifyDto();
         notifyDto.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
         notifyDto.setCouponType(couponModel.getCouponType());
-        notifyDto.setExpiredDate(couponModel.getEndTime());
+        notifyDto.setExpiredDate(new DateTime(couponModel.getEndTime()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
 
         for (UserCouponModel userCouponModel : userCouponModels) {
             String loginName = userCouponModel.getLoginName();
@@ -124,11 +128,36 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         }
     }
 
+    @Override
+    @Transactional
+    public void assignUserCoupon(final String loginName, final List<UserGroup> userGroups) {
+        List<CouponModel> coupons = couponMapper.findAllActiveCoupons();
+
+        List<CouponModel> couponModels = Lists.newArrayList(Iterators.filter(coupons.iterator(), new Predicate<CouponModel>() {
+            @Override
+            public boolean apply(CouponModel couponModel) {
+                return userGroups.contains(couponModel.getUserGroup())
+                        && userCouponMapper.findByLoginNameAndCouponId(loginName, couponModel.getId()) == null
+                        && CouponActivationServiceImpl.this.getCollector(couponModel.getUserGroup()).contains(couponModel.getId(), loginName);
+            }
+        }));
+
+        for (CouponModel couponModel : couponModels) {
+            CouponModel lockedCoupon = couponMapper.lockById(couponModel.getId());
+            lockedCoupon.setIssuedCount(couponModel.getIssuedCount() + 1);
+            couponMapper.updateCoupon(lockedCoupon);
+            UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId());
+            userCouponMapper.create(userCouponModel);
+        }
+    }
 
     private UserCollector getCollector(UserGroup userGroup) {
         return Maps.newHashMap(ImmutableMap.<UserGroup, UserCollector>builder()
+                .put(UserGroup.ALL_USER, this.allUserCollector)
+                .put(UserGroup.NEW_REGISTERED_USER, this.newRegisteredUserCollector)
                 .put(UserGroup.INVESTED_USER, this.investedUserCollector)
                 .put(UserGroup.REGISTERED_NOT_INVESTED_USER, this.registeredNotInvestedUserCollector)
+                .put(UserGroup.IMPORT_USER, this.importUserCollector)
                 .build()).get(userGroup);
     }
 

@@ -31,4 +31,6 @@ public interface CouponService {
     List<CouponDto> findInterestCoupons(int index, int pageSize);
 
     int findInterestCouponsCount();
+
+    long estimateCouponExpectedInterest(long loanId, long couponId, long amount);
 }

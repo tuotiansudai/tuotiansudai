@@ -93,6 +93,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         };
 
         var refreshCouponStatus = function () {
+            var investAmount = getInvestAmount();
             $ticketList.find("li").each(function (ticket) {
                 var self = $(this);
                 var radio = self.find("input[name='userCouponId']");
@@ -100,7 +101,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 radio.prop("disabled", false);
                 var ticketTerm = $(self.find(".ticket-term"));
                 var investLowerLimit = ticketTerm.data('invest-lower-limit') || 0;
-                if (investLowerLimit > getInvestAmount()) {
+                var investUpperLimit = ticketTerm.data('invest-upper-limit') || 0;
+                if ((investLowerLimit > 0 && investLowerLimit > investAmount) || (investUpperLimit > 0 && investUpperLimit < investAmount)) {
                     self.addClass('disabled');
                     radio.prop("disabled", true);
                 }
@@ -122,19 +124,18 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 $useExperienceTicket.find('span').text(text);
                 $ticketList.addClass('hide');
 
-                var couponAmount = couponItem.data('coupon-amount');
+                var couponId = couponItem.data('coupon-id');
                 $couponExpectedInterest.text("");
-                if (!isNaN(couponAmount)) {
-                    $.ajax({
-                        url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + couponAmount,
-                        type: 'get',
-                        dataType: 'json',
-                        contentType: 'application/json; charset=UTF-8'
-                    }).done(function (amount) {
-                        $couponExpectedInterest.text("+" + (amount/100).toFixed(2));
-                        $btnLookOther.prop('disabled', false);
-                    });
-                }
+                $.ajax({
+                    url: '/calculate-expected-coupon-interest/loan/' + loanId + '/coupon/' + couponId + '/amount/' + getInvestAmount(),
+                    type: 'get',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
+                }).done(function (amount) {
+                    $couponExpectedInterest.text("+" + (amount/100).toFixed(2));
+                    $btnLookOther.prop('disabled', false);
+                });
+                return false;
             });
         };
 
@@ -151,7 +152,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 dataType: 'json',
                 contentType: 'application/json; charset=UTF-8'
             }).done(function (amount) {
-                $(".principal-income").text((amount/100).toFixed(2));
+                $(".principal-income").text(amount);
             });
         };
 
@@ -179,8 +180,10 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     return false;
                 }
 
+                var investAmount = getInvestAmount();
+
                 if (!validateInvestAmount()) {
-                    var tipContent = isNaN(amountInputElement.autoNumeric("get")) || parseInt((amountInputElement.autoNumeric("get") * 100).toFixed(0)) === 0 ? '投资金额不能为0元！' : '投资金额不能大于可投金额！';
+                    var tipContent = investAmount === 0 ? '投资金额不能为0元！' : '投资金额不能大于可投金额！';
                     layer.tips('<i class="fa fa-times-circle"></i>' + tipContent, '.text-input-amount', {
                         tips: [1, '#ff7200'],
                         time: 0
@@ -188,13 +191,13 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     return false;
                 }
 
-                var investAmount = getInvestAmount();
                 var accountAmount = parseInt($('form .account-amount').data("user-balance")) || 0;
                 if (investAmount > accountAmount) {
                     location.href = '/recharge';
                     return false;
                 }
             }
+            amountInputElement.val(amountInputElement.autoNumeric("get"));
             return true;
         });
 

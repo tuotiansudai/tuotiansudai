@@ -26,6 +26,9 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
     @Value("${web.server}")
     private String domainName;
 
+    @Value("${web.static.server}")
+    private String staticDomainName;
+
     @Override
     public BaseResponseDto generateBannerList() {
         BaseResponseDto baseDto = new BaseResponseDto();
@@ -66,15 +69,22 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
                 Map<String, String> inputData = (Map<String, String>) input;
                 BannerPictureResponseDataDto dataDto = new BannerPictureResponseDataDto();
                 dataDto.setNoticeId(inputData.get("noticeId"));
-                dataDto.setPicture(inputData.get("picture"));
                 dataDto.setSeqNum(Integer.valueOf(String.valueOf(inputData.get("seqNum"))));
                 dataDto.setPictureId(inputData.get("pictureId"));
                 dataDto.setTitle(inputData.get("title"));
                 String bannerUrl = inputData.get("url");
                 if (StringUtils.isNotEmpty(bannerUrl)) {
-                    dataDto.setUrl(domainName + bannerUrl);
+                    bannerUrl = bannerUrl.replaceFirst("\\{web\\}", domainName);
+                    dataDto.setUrl(bannerUrl);
                 } else {
                     dataDto.setUrl("");
+                }
+                String pictureUrl = inputData.get("picture");
+                if (StringUtils.isNotEmpty(pictureUrl)) {
+                    pictureUrl = pictureUrl.replaceFirst("\\{static\\}", staticDomainName);
+                    dataDto.setPicture(pictureUrl);
+                } else {
+                    dataDto.setPicture("");
                 }
                 return dataDto;
             }

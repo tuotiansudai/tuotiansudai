@@ -31,4 +31,6 @@ public interface UserCouponMapper {
     List<UserCouponModel> findByCouponIdAndStatus(@Param("couponId") long couponId, @Param("isUsed") Boolean isUsed);
 
     List<UserCouponModel> findByCouponId(long couponId);
+
+    UserCouponModel findByLoginNameAndCouponId(@Param("loginName") String loginName, @Param("couponId") long couponId);
 }
