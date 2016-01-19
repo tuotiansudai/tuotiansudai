@@ -63,14 +63,31 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','load-swiper','com
         }
 
         if($('#WhetherApp').length) {
+            var viewport=commonFun.browserRedirect();
             if(/app/gi.test(location.search)) {
                 if($('#WhetherApp').find('.res-no-app').length) {
                     $('#WhetherApp').find('.res-no-app').remove();
                 }
-                $('.header-container,.nav-container,.footer-container').hide();
+                $('.header-container,.nav-container,.footer-container').remove();
                 if($('.left-nav').length) {
-                    $('.left-nav').hide();
+                    $('.left-nav').remove();
                 }
+            }
+            if(viewport=='mobile') {
+                if($('#noticeDetail').length || $('#noticeList').length) {
+                    $('.header-container,.nav-container,.footer-container').remove();
+                    $('.left-nav').remove();
+                }
+            }
+        }
+
+        if($('#activityAwardBox').length) {
+
+            var $activityAwardBox=$('#activityAwardBox'),
+                screenWid=$(window).width(),
+                viewport=commonFun.browserRedirect();
+            if(viewport=='pc') {
+                $activityAwardBox.find('.wide-screen-left,.wide-screen-right').width((screenWid-1000)/2).show();
             }
         }
 

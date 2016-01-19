@@ -779,152 +779,6 @@ body {
   }
 }
 
-/* user guide page */
-.new-guide-container {
-  color: #2f2f2f;
-  .new-guide-img {
-    height: 350px;
-    background: url("/images/ttimg/ttimg-guide.jpg") center top no-repeat;
-  }
-  .content-info {
-    h3 {
-      font-size: 41px;
-      font-weight: normal;
-      margin: 20px auto;
-      line-height: 1.2;
-    }
-    p {
-      font-size: 17px;
-    }
-  }
-
-  .content-a {
-    background: #f1f1f1;
-    img {
-      margin: 20px auto;
-    }
-  }
-  .our-advantage-content {
-    h3 {
-      color: #313131;
-      font-size: 30px;
-      padding: 10px 10px 0 10px;
-      font-weight: bold;
-    }
-    .advantage-list {
-      font-size: 0;
-      li {
-        width: 33%;
-        display: inline-block;
-        font-size: 16px;
-        color: #6a6a6a;
-        box-sizing: border-box;
-        padding: 10px;
-        text-align: center;
-        b {
-          padding: 10px 30px;
-          color: #6a6a6a;
-          font-size: 16px;
-          display: inline-block;
-          line-height: 1.6;
-        }
-      }
-    }
-    .invest-category {
-      font-size: 0;
-      h3 {
-        text-align: center;
-        font-size: 22px;
-        padding: 20px 30px 10px 30px;
-        line-height: 1.8;
-        img {
-          margin-top: 20px;
-        }
-        span {
-          overflow: hidden;
-          display: inline-block;
-          text-align: center;
-          font-weight: normal;
-          b {
-            font-size: 20px;
-          }
-        }
-
-      }
-      li {
-        width: 31%;
-        height: 240px;
-        display: inline-block;
-        font-size: 17px;
-        color: #fff;
-        margin-left: 2%;
-        &:nth-child(1) {
-          background: #ef991e;
-        }
-        &:nth-child(2) {
-          background: #349dd7;
-        }
-        &:nth-child(3) {
-          background: #18b15f;
-        }
-        p {
-          padding: 0px 30px;
-          color: #fff;
-          line-height: 1.8;
-        }
-      }
-    }
-    .invest-example {
-      li {
-        width: 33%;
-        display: inline-block;
-        text-align: center;
-      }
-    }
-    .register-slide-out {
-      background: url("/images/sign/aboutus/screen-show.png") center 20px no-repeat;
-      height: 544px;
-      position: relative;
-      img {
-        &.last-step, &.next-step {
-          margin-top: 160px;
-          cursor: pointer;
-        }
-      }
-      .step-register-tab {
-        li {
-          cursor: pointer;
-        }
-      }
-      .slide-img-box {
-        width: 690px;
-        height: 412px;
-        overflow: hidden;
-        position: relative;
-        left: 81px;
-        top: 50px;
-        li {
-          position: absolute;
-          left: 0;
-          top: 0;
-          display: none;
-        }
-
-      }
-    }
-    .action-invest {
-      font-size: 18px;
-      color: #343434;
-      text-align: center;
-      padding-bottom: 30px;
-      .btn-normal {
-        padding: 8px 55px;
-        margin-top: 10px;
-      }
-    }
-  }
-}
-
 /* safety assurance page  */
 .assurance-container {
   padding-top: 10px;
@@ -1061,7 +915,7 @@ body {
 
 
 /* new guide page  */
-.newguide-container {
+.new-guide-container {
   padding-top: 10px;
   color: #fff;
   font-size: 14px;
@@ -1484,7 +1338,7 @@ body {
     }
   }
   /* new guide page  */
-  .newguide-container {
+  .new-guide-container {
     .page-width{
       .down {
         bottom:0!important;
@@ -1576,43 +1430,6 @@ body {
         width: 100%;
         img {
           width: 95%;
-        }
-      }
-    }
-  }
-  .new-guide-container {
-    .new-guide-img {
-      height: 150px !important;
-      background: url(/images/ttimg/ph-guide.jpg) center top no-repeat !important;
-      background-size: cover !important;
-    }
-    .content-info {
-      box-sizing: border-box;
-      padding: 10px;
-      h3 {
-        margin: 10px 0;
-        font-size: 16px;
-        font-weight: bold;
-      }
-      p {
-        font-size: 13px;
-      }
-    }
-    .content-a {
-      box-sizing: border-box;
-      padding: 10px;
-      img {
-        width: 100%;
-        margin: 0 !important;
-      }
-    }
-    .page-width {
-      .our-advantage-content {
-        .hide-dom {
-          display: none;
-        }
-        .action-invest {
-          font-size: 13px !important;
         }
       }
     }
