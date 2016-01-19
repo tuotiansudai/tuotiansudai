@@ -106,12 +106,17 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
             dataType:'JSON'
         })
         .done(function(res){
-
+            $('.see-detail').show();
+            $('.see-detail').find('span:eq(0)').text(res[0]);
+            $('.see-detail').find('span:eq(1)').text(res[1]);
         })
         .fail(function(res) {
-           $self.addClass('confirm-btn').text('操作失败');
-           $tipCom.show().find('.txt').text('请求发送失败，请刷新重试！');
+           $this.addClass('confirm-btn').text('操作失败');
         });
+    });
+
+    $('.close-btn').on('click',function(){
+        $(this).parents('.see-detail').hide();
     });
 
 });

@@ -3,6 +3,11 @@
 
 <!-- content area begin -->
 <div class="col-md-10">
+    <div class="see-detail">
+    <span class="text-red">sdsd</span>
+    <span>sdsd</span>
+        <span><a href="#" class="close-btn">关闭</a></span>
+    </div>
     <div class="tip-container">
         <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -93,8 +98,8 @@
             ${coupon.deadline}
         </td>
         <td>
-            <#if coupon.userGroup == 'IMPORT_USER_STAFF'>
-                <a data-url="/coupon/${coupon.id?string('0')}/redis" class="detail-redis">查看详情</a>
+            <#if coupon.userGroup == 'IMPORT_USER'>
+                <a href="javascript:void(0)" data-url="/activity-manage/coupon/${coupon.id?string('0')}/redis" class="detail-redis <#if coupon.importIsRight>text-blue<#else>text-red</#if>">查看详情</a>
             <#else>
                 ${coupon.userGroup.getDescription()}
             </#if>

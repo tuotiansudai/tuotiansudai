@@ -260,7 +260,7 @@ public class CouponDto implements Serializable {
         this.expectedAmount = couponModel.getExpectedAmount();
         this.actualAmount = couponModel.getActualAmount();
         this.rate = couponModel.getRate();
-        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() == UserGroup.IMPORT_USER_STAFF) {
+        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
             this.importIsRight = couponModel.getImportIsRight();
         }
     }

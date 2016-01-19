@@ -119,7 +119,7 @@ require(['jquery', 'template', 'csrf','bootstrap', 'jquery-ui', 'bootstrapSelect
         $('.userGroup').change(function(){
             var userGroup = this.value;
             var $fileBtn = $('.file-btn');
-            if(userGroup != "IMPORT_USER_STAFF"){
+            if(userGroup != "IMPORT_USER"){
                 $fileBtn.hide();
                 $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
                     $('.give-number').val(data);

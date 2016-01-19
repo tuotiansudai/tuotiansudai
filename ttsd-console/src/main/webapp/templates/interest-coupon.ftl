@@ -7,12 +7,12 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">加息券名称:</label>
             <div class="col-sm-4">
-                <span class="form-control">加息卷</span>
+                <span class="form-control">加息体验券</span>
                 <input class="couponType" name="couponType" value="INTEREST_COUPON" type="hidden">
             </div>
         </div>
         <div class="form-group">
-            <label  class="col-sm-2 control-label">加息卷利率: </label>
+            <label  class="col-sm-2 control-label">加息券利率: </label>
             <div class="col-sm-4">
                 <input type="text" class="form-control coupon-rate" name="rate" placeholder="" <#if coupon??>value="${coupon.rate!}"</#if> datatype="*" errormsg="加息劵利率不能为空">
             </div>
@@ -37,7 +37,7 @@
 
                 <select class="selectpicker jq-b-type userGroup" name="userGroup">
                     <#list userGroups as userGroup>
-                        <#if userGroup.name() != 'NEW_REGISTERED_USER'>
+                        <#if userGroup.name() != 'NEW_REGISTERED_USER' && userGroup.name() != 'ALL_USER'>
                             <option value="${userGroup.name()}">${userGroup.getDescription()}</option>
                         </#if>
                     </#list>
@@ -78,7 +78,7 @@
             </div>
         </div>
 
-        <div class="form-group coupon-hide invest-coupon" >
+        <div class="form-group invest-coupon" >
             <label  class="col-sm-2 control-label">短信提醒: </label>
             <div class="col-sm-3">
 

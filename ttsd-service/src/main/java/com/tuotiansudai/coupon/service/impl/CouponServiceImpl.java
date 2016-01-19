@@ -20,6 +20,7 @@ import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.InterestCalculator;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,13 +64,9 @@ public class CouponServiceImpl implements CouponService {
         CouponModel couponModel = new CouponModel(couponDto);
         couponModel.setCreatedBy(loginName);
         couponModel.setId(idGenerator.generate());
-        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() == UserGroup.IMPORT_USER_STAFF) {
-            if (redisWrapperClient.hexists(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "success")) {
-                redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "success"));
-            }
-            if (redisWrapperClient.hexists(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "failed")) {
-                redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "failed"));
-            }
+        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
+            redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "success"));
+            redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "failed"));
             redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, couponDto.getFile()));
         }
         couponMapper.create(couponModel);
@@ -146,8 +143,8 @@ public class CouponServiceImpl implements CouponService {
         List<CouponModel> couponModels = couponMapper.findInterestCoupons((index - 1) * pageSize, pageSize);
         for (CouponModel couponModel : couponModels) {
             couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
-            if (couponModel.getUserGroup() == UserGroup.IMPORT_USER_STAFF) {
-                if (redisWrapperClient.hexists(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())),"failed")) {
+            if (couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
+                if (StringUtils.isNotEmpty(redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())),"failed"))) {
                     couponModel.setImportIsRight(false);
                 } else {
                     couponModel.setImportIsRight(true);
