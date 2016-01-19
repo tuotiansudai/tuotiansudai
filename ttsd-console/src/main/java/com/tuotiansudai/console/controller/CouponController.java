@@ -117,9 +117,13 @@ public class CouponController {
     @RequestMapping(value = "/coupon/{id:^\\d+$}/edit",method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView edit(@PathVariable long id,Model model){
-        ModelAndView modelAndView = new ModelAndView("/coupon-edit");
-
         CouponModel couponModel = couponService.findCouponById(id);
+        ModelAndView modelAndView;
+        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON){
+            modelAndView = new ModelAndView("/interest-coupon-edit");
+        } else {
+            modelAndView = new ModelAndView("/coupon-edit");
+        }
         if (!model.containsAttribute("coupon")) {
             CouponDto couponDto = new CouponDto(couponModel);
             modelAndView.addObject("coupon", couponDto);
