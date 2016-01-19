@@ -44,11 +44,11 @@
                     </#list>
                 </select>
             </div>
-            <div class="file-btn">
+            <div class="file-btn <#if coupon.userGroup == 'IMPORT_USER'>import-hidden</#if>">
                 <input type="file">
                 导入用户名单
             </div>
-            <input type="hidden" name="file" id="import-file">
+            <input type="hidden" name="file" id="import-file" >
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">预计发放数量(张): </label>
