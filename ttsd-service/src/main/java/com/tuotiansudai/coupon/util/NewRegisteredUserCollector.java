@@ -1,9 +1,17 @@
 package com.tuotiansudai.coupon.util;
 
+import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class NewRegisteredUserCollector implements UserCollector {
+
+    @Override
+    public List<String> collect(long couponId) {
+        return Lists.newArrayList();
+    }
 
     @Override
     public long count(long couponId) {

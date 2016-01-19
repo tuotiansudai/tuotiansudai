@@ -24,6 +24,22 @@ public class ImportUserCollector implements UserCollector {
     private final static String IMPORT_COUPON_USER_REDIS_KEY_TEMPLATE = "console:{0}:importcouponuser";
 
     @Override
+    public List<String> collect(long couponId) {
+        String values = redisWrapperClient.hget(MessageFormat.format(IMPORT_COUPON_USER_REDIS_KEY_TEMPLATE, String.valueOf(couponId)), "success");
+        if (Strings.isNullOrEmpty(values)) {
+            return Lists.newArrayList();
+        }
+
+        return Lists.transform(Lists.newArrayList(values.split(",")), new Function<String, String>() {
+            @Override
+            public String apply(String value) {
+                UserModel userModel = userMapper.findByLoginNameOrMobile(value);
+                return userModel.getLoginName();
+            }
+        });
+    }
+
+    @Override
     public long count(long couponId) {
         String values = redisWrapperClient.hget(MessageFormat.format(IMPORT_COUPON_USER_REDIS_KEY_TEMPLATE, String.valueOf(couponId)), "success");
         if (Strings.isNullOrEmpty(values)) {
