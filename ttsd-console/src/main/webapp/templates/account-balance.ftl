@@ -32,10 +32,10 @@
                             <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
                         </#if>
                     </td>
-                    <td>${userAccount.account.userName!''}</td>
+                    <td>${userAccount.userName!''}</td>
                     <td>${userAccount.mobile}</td>
                     <td>${userAccount.province!''}</td>
-                    <td>${userAccount.account.balance/100}</td>
+                    <td>${userAccount.balance}</td>
                 </tr>
                 </#list>
             </tbody>
