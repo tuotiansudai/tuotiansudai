@@ -98,20 +98,64 @@ def ut(options):
     v2.test()
 
 
-@task
-def prod():
-    """
-    Deploy all components to PROD from CI
-    """
+def fab_command(command):
     from paver.shell import sh
 
     try:
         ci_file = open('/workspace/ci/def', 'rb')
         pwd = ci_file.readline().strip()
-        sh("/usr/local/bin/fab deploy -p {0} --show=debug".format(pwd))
+        sh("/usr/local/bin/fab {1} -p {0} --show=debug".format(pwd, command))
         ci_file.close()
     except IOError as e:
         print e
+
+
+@task
+def prod():
+    """
+    Deploy all components to PROD from CI
+    """
+    fab_command('all')
+
+
+@task
+def only_web():
+    """
+    Deploy web component to PROD from CI
+    """
+    fab_command("web")
+
+
+@task
+def only_console():
+    """
+    Deploy console component to PROD from CI
+    """
+    fab_command("console")
+
+
+@task
+def only_api():
+    """
+    Deploy api component to PROD from CI
+    """
+    fab_command("api")
+
+
+@task
+def only_sms():
+    """
+    Deploy sms component to PROD from CI
+    """
+    fab_command("sms")
+
+
+@task
+def only_worker():
+    """
+    Deploy worker component to PROD from CI
+    """
+    fab_command("worker")
 
 
 def generate_git_log_file():
