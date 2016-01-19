@@ -4,9 +4,9 @@
 <!-- content area begin -->
 <div class="col-md-10">
     <div class="see-detail">
-    <span class="text-red">sdsd</span>
-    <span>sdsd</span>
-        <span><a href="#" class="close-btn">关闭</a></span>
+        <span class="text-red"></span>
+        <span></span>
+        <span class="close-span"><a href="#" class="close-btn">关闭</a></span>
     </div>
     <div class="tip-container">
         <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
@@ -104,7 +104,7 @@
                 ${coupon.userGroup.getDescription()}
             </#if>
         </td>
-        <td>
+        <td <#if coupon.importIsRight??&&!coupon.importIsRight>class="text-red" </#if>>
             ${coupon.totalCount?string('0')}<#if coupon.importIsRight??&&!coupon.importIsRight>!</#if>
         </td>
         <td>
