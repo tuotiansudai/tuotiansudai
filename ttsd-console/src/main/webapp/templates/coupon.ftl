@@ -10,7 +10,9 @@
 
                 <select class="selectpicker jq-b-type couponType" name="couponType">
 					<#list couponTypes as couponType>
+						<#if couponType.name() != 'INTEREST_COUPON'>
                         <option value="${couponType.name()}">${couponType.getName()}</option>
+						</#if>
 					</#list>
                 </select>
 
