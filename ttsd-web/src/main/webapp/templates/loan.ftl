@@ -69,14 +69,16 @@
                             </em>
                             <#if coupons?has_content>
                                 <ul class="ticket-list hide">
-                                    <li data-coupon-created-time="0">
+                                    <li class="not-use-coupon">
                                         <input type="radio" name="userCouponId" id="noCouponSelected">
                                         <label for="noCouponSelected"><i class="ticket-title">不使用优惠券</i></label>
                                     </li>
                                     <#list coupons as coupon>
                                         <li data-coupon-id="${coupon.couponId?string.computer}"
+                                            data-coupon-shared="${coupon.shared?string("true", "false")}"
                                             data-coupon-created-time="${coupon.createdTime?string("yyyy-MM-dd HH:mm:ss")}">
-                                            <input type="radio" name="userCouponId" value="${coupon.id?string.computer}" id="${coupon.id?string.computer}" class="input-use-ticket">
+                                            <input <#if coupon.shared>type="checkbox" checked readonly<#else>type="radio"</#if>
+                                                   name="userCouponId" value="${coupon.id?string.computer}" id="${coupon.id?string.computer}" class="input-use-ticket" >
                                             <label for="${coupon.id?string.computer}">
                                                 <span class="sign">${coupon.couponType.getAbbr()}</span>
                                                     <span class="ticket-info">

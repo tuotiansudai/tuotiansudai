@@ -108,12 +108,16 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 }
             });
 
-            var tickets = _.sortBy($ticketList.find("li"), function(ticket) {
+            var notUseCoupon = $ticketList.find("li.not-use-coupon");
+            var sharedCoupons = _.sortBy($ticketList.find("li[data-coupon-shared='true']"), function(ticket) {
                 var $ticket = $(ticket);
                 return new Date($ticket.data("coupon-created-time")).getTime() * ($ticket.hasClass('disabled') ? 2 : 1);
             });
-
-            $ticketList.empty().append(tickets);
+            var notSharedCoupons = _.sortBy($ticketList.find("li[data-coupon-shared='false']"), function(ticket) {
+                var $ticket = $(ticket);
+                return new Date($ticket.data("coupon-created-time")).getTime() * ($ticket.hasClass('disabled') ? 2 : 1);
+            });
+            $ticketList.empty().append(sharedCoupons).append(notUseCoupon).append(notSharedCoupons);
 
             $ticketList.find('li').click(function (event) {
                 var couponItem = $($(event.target).parents("li")).length > 0 ? $($(event.target).parents("li")) : $(event.target);
