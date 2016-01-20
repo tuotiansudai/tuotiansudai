@@ -107,24 +107,17 @@ public class UserCouponServiceImpl implements UserCouponService {
         }
 
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
-        List<UserCouponDto> couponDtoList = Lists.transform(userCouponModels, new Function<UserCouponModel, UserCouponDto>() {
+        List<UserCouponDto> dtoList = Lists.transform(userCouponModels, new Function<UserCouponModel, UserCouponDto>() {
             @Override
-            public UserCouponDto apply(UserCouponModel input) {
-                return new UserCouponDto(couponMapper.findById(input.getInvestId()), input);
+            public UserCouponDto apply(UserCouponModel userCouponModel) {
+                return new UserCouponDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel);
             }
         });
 
-        final boolean hasUsedCoupons = Iterators.tryFind(couponDtoList.iterator(), new Predicate<UserCouponDto>() {
+        return Lists.newArrayList(Iterators.filter(dtoList.iterator(), new Predicate<UserCouponDto>() {
             @Override
-            public boolean apply(UserCouponDto input) {
-                return input.getCouponType() != CouponType.RED_ENVELOPE && input.isUsed() && input.getLoanId() == loanModel.getId();
-            }
-        }).isPresent();
-
-        return Lists.newArrayList(Iterators.filter(couponDtoList.iterator(), new Predicate<UserCouponDto>() {
-            @Override
-            public boolean apply(UserCouponDto input) {
-                return input.getProductTypeList().contains(loanModel.getProductType()) && input.isUnused() && (input.getCouponType() == CouponType.RED_ENVELOPE || !hasUsedCoupons);
+            public boolean apply(UserCouponDto dto) {
+                return dto.getProductTypeList().contains(loanModel.getProductType()) && dto.isUnused();
             }
         }));
     }
