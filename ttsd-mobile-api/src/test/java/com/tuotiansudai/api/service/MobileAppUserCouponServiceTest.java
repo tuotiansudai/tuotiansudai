@@ -25,7 +25,10 @@ import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 public class MobileAppUserCouponServiceTest extends ServiceTestBase {
@@ -92,7 +95,7 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
 
 
         List<UserCouponModel> fakeUserCoupons = Lists.newArrayList(unusedUserCouponModel, usedUserCouponModel, expiredUserCouponModel);
-        when(userCouponMapper.findByLoginName(anyString())).thenReturn(fakeUserCoupons);
+        when(userCouponMapper.findByLoginName(anyString(),anyList())).thenReturn(fakeUserCoupons);
         when(couponMapper.findById(unusedCouponModel.getId())).thenReturn(unusedCouponModel);
         when(couponMapper.findById(usedCouponModel.getId())).thenReturn(usedCouponModel);
         when(couponMapper.findById(expiredUserCouponModel.getId())).thenReturn(expiredCouponModel);
@@ -152,7 +155,7 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         expiredUserCouponModel.setCouponId(expiredCouponModel.getId());
 
         List<UserCouponModel> fakeUserCoupons = Lists.newArrayList(unusedUserCouponModel, usedUserCouponModel, expiredUserCouponModel);
-        when(userCouponMapper.findByLoginName(anyString())).thenReturn(fakeUserCoupons);
+        when(userCouponMapper.findByLoginName(anyString(),anyList())).thenReturn(fakeUserCoupons);
         when(couponMapper.findById(unusedCouponModel.getId())).thenReturn(unusedCouponModel);
         when(couponMapper.findById(usedCouponModel.getId())).thenReturn(usedCouponModel);
         when(couponMapper.findById(expiredUserCouponModel.getId())).thenReturn(expiredCouponModel);
@@ -208,7 +211,7 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         expiredUserCouponModel.setCouponId(expiredCouponModel.getId());
 
         List<UserCouponModel> fakeUserCoupons = Lists.newArrayList(unusedUserCouponModel, usedUserCouponModel, expiredUserCouponModel);
-        when(userCouponMapper.findByLoginName(anyString())).thenReturn(fakeUserCoupons);
+        when(userCouponMapper.findByLoginName(anyString(),anyList())).thenReturn(fakeUserCoupons);
         when(couponMapper.findById(unusedCouponModel.getId())).thenReturn(unusedCouponModel);
         when(couponMapper.findById(usedCouponModel.getId())).thenReturn(usedCouponModel);
         when(couponMapper.findById(expiredUserCouponModel.getId())).thenReturn(expiredCouponModel);

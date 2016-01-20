@@ -36,7 +36,7 @@ public class MobileAppUserCouponServiceImpl implements MobileAppUserCouponServic
 
     @Override
     public BaseResponseDto<UserCouponListResponseDataDto> getUserCoupons(final UserCouponRequestDto requestDto) {
-        List<UserCouponModel> userCouponModels =  userCouponMapper.findByLoginName(requestDto.getBaseParam().getUserId());
+        List<UserCouponModel> userCouponModels =  userCouponMapper.findByLoginName(requestDto.getBaseParam().getUserId(),null);
 
         UnmodifiableIterator<UserCouponModel> filter = Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
             @Override
