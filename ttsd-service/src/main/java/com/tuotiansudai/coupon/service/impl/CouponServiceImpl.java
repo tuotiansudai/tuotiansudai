@@ -81,9 +81,11 @@ public class CouponServiceImpl implements CouponService {
             }
         }
 
-        long totalCount = couponModel.getTotalCount();
-        if (totalCount <= 0) {
-            throw new CreateCouponException("发放数量应大于0!");
+        if (couponDto.getCouponType() != CouponType.RED_ENVELOPE) {
+            long totalCount = couponModel.getTotalCount();
+            if (totalCount <= 0) {
+                throw new CreateCouponException("发放数量应大于0!");
+            }
         }
 
         if (couponDto.getCouponType() != CouponType.INTEREST_COUPON) {
@@ -149,6 +151,25 @@ public class CouponServiceImpl implements CouponService {
             UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId());
             userCouponMapper.create(userCouponModel);
         }
+    }
+
+    @Override
+    public List<CouponDto> findRedEnvelopeCoupons(int index, int pageSize) {
+        List<CouponModel> couponModels = couponMapper.findRedEnvelopeCoupons((index - 1) * pageSize, pageSize);
+        for (CouponModel couponModel : couponModels) {
+            couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
+        }
+        return Lists.transform(couponModels, new Function<CouponModel, CouponDto>() {
+            @Override
+            public CouponDto apply(CouponModel input) {
+                return new CouponDto(input);
+            }
+        });
+    }
+
+    @Override
+    public int findRedEnvelopeCouponsCount() {
+        return couponMapper.findRedEnvelopeCouponsCount();
     }
 
     @Override

@@ -273,5 +273,6 @@ public class CouponDto implements Serializable {
         if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
             this.importIsRight = couponModel.getImportIsRight();
         }
+        this.shared = couponModel.isShared();
     }
 }

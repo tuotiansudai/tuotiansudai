@@ -116,12 +116,8 @@ public class CouponModel implements Serializable {
         this.usedCount = usedCount;
     }
 
-    public long getTotalCount() {
+    public Long getTotalCount() {
         return totalCount;
-    }
-
-    public void setTotalCount(long totalCount) {
-        this.totalCount = totalCount;
     }
 
     public boolean isActive() {
@@ -306,7 +302,11 @@ public class CouponModel implements Serializable {
         if (couponDto.getEndTime() != null) {
             this.endTime = new DateTime(couponDto.getEndTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate();
         }
-        this.totalCount = couponDto.getTotalCount();
+        if (couponDto.getTotalCount() != null) {
+            this.totalCount = couponDto.getTotalCount();
+        } else {
+            this.totalCount = 0L;
+        }
         this.productTypes = couponDto.getProductTypes() ;
         this.couponType = couponDto.getCouponType();
         this.investLowerLimit = AmountConverter.convertStringToCent(couponDto.getInvestLowerLimit());

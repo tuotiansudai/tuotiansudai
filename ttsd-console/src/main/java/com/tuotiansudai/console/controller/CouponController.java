@@ -58,6 +58,13 @@ public class CouponController {
 
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
+    @RequestMapping(value = "/red-envelope", method = RequestMethod.GET)
+    public ModelAndView redEnvelope() {
+        ModelAndView modelAndView = new  ModelAndView("/red-envelope");
+        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/coupon",method = RequestMethod.GET)
     public ModelAndView coupon(){
         ModelAndView modelAndView = new  ModelAndView("/coupon");
@@ -81,20 +88,20 @@ public class CouponController {
             }
             if (couponDto.getCouponType() == CouponType.INTEREST_COUPON) {
                 modelAndView.setViewName("redirect:/activity-manage/interest-coupons");
+            } else if (couponDto.getCouponType() == CouponType.RED_ENVELOPE) {
+                modelAndView.setViewName("redirect:/activity-manage/red-envelopes");
             } else {
                 modelAndView.setViewName("redirect:/activity-manage/coupons");
             }
             return modelAndView;
         } catch (CreateCouponException e) {
             if(id != null){
-                if (couponDto.getCouponType() == CouponType.INTEREST_COUPON) {
-                    modelAndView.setViewName("redirect:/activity-manage/interest-coupon/"+id+"/edit");
-                } else {
-                    modelAndView.setViewName("redirect:/activity-manage/coupon/" + id + "/edit");
-                }
+                modelAndView.setViewName("redirect:/activity-manage/coupon/" + id + "/edit");
             }else{
                 if (couponDto.getCouponType() == CouponType.INTEREST_COUPON) {
                     modelAndView.setViewName("redirect:/activity-manage/interest-coupon");
+                } else if (couponDto.getCouponType() == CouponType.RED_ENVELOPE) {
+                    modelAndView.setViewName("redirect:/activity-manage/red-envelope");
                 } else {
                     modelAndView.setViewName("redirect:/activity-manage/coupon");
                 }
@@ -119,8 +126,10 @@ public class CouponController {
     public ModelAndView edit(@PathVariable long id,Model model){
         CouponModel couponModel = couponService.findCouponById(id);
         ModelAndView modelAndView;
-        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON){
+        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON) {
             modelAndView = new ModelAndView("/interest-coupon-edit");
+        } else if (couponModel.getCouponType() == CouponType.RED_ENVELOPE) {
+            modelAndView = new ModelAndView("/red-envelope-edit");
         } else {
             modelAndView = new ModelAndView("/coupon-edit");
         }
@@ -181,6 +190,23 @@ public class CouponController {
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("coupons", couponService.findInterestCoupons(index, pageSize));
         int couponsCount = couponService.findInterestCouponsCount();
+        modelAndView.addObject("couponsCount", couponsCount);
+        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 ? 1 : 0);
+        boolean hasPreviousPage = index > 1 && index <= totalPages;
+        boolean hasNextPage = index < totalPages;
+        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
+        modelAndView.addObject("hasNextPage", hasNextPage);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/red-envelopes", method = RequestMethod.GET)
+    public ModelAndView redEnvelopes(@RequestParam(value = "index",required = false,defaultValue = "1") int index,
+                                     @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize) {
+        ModelAndView modelAndView = new ModelAndView("/red-envelopes");
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+        modelAndView.addObject("coupons", couponService.findRedEnvelopeCoupons(index, pageSize));
+        int couponsCount = couponService.findRedEnvelopeCouponsCount();
         modelAndView.addObject("couponsCount", couponsCount);
         long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
