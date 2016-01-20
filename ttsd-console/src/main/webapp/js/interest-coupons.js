@@ -107,8 +107,21 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
         })
         .done(function(res){
             $('.see-detail').show();
-            $('.see-detail').find('span:eq(0)').text(res[0]);
-            $('.see-detail').find('span:eq(1)').text(res[1]);
+            var $table = $('.see-detail').find('table');
+            if (res[0]) {
+                var failed = new Array();
+                failed = res[0].split(',');
+                for (i=0;i<failed.length;i++) {
+                    $table.append('<tr><td class="text-red">'+failed[i]+'</td></tr>');
+                }
+            }
+            if (res[1]) {
+                var success = new Array();
+                success = res[1].split(',');
+                for (i=0;i<success.length;i++) {
+                    $table.append('<tr><td>'+success[i]+'</td></tr>');
+                }
+            }
         })
         .fail(function(res) {
            $this.addClass('confirm-btn').text('操作失败');
