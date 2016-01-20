@@ -25,6 +25,7 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
     private boolean used;
     private boolean expired;
     private boolean unused;
+    private boolean shared;
     private long investLowerLimit;
     private long investUpperLimit;
     private Date createdTime;
@@ -47,6 +48,7 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
         this.used = InvestStatus.SUCCESS == userCoupon.getStatus();
         this.expired = !this.used && new DateTime(this.endTime).plusDays(1).withTimeAtStartOfDay().isBeforeNow();
         this.unused = !this.used && !this.expired;
+        this.shared = coupon.isShared();
         this.investLowerLimit = coupon.getInvestLowerLimit();
         this.investUpperLimit = coupon.getInvestUpperLimit();
         this.createdTime = userCoupon.getCreatedTime();
@@ -105,6 +107,10 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
         return unused;
     }
 
+    public boolean isShared() {
+        return shared;
+    }
+
     public long getInvestLowerLimit() {
         return investLowerLimit;
     }
@@ -133,6 +139,7 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
         else return this.createdTime;
     }
 
+    @Override
     public int compareTo(UserCouponDto dto) {
         if (this.getStatusCode() == dto.getStatusCode()) {
             long diff = this.getCompareTime().getTime() - dto.getCompareTime().getTime();
