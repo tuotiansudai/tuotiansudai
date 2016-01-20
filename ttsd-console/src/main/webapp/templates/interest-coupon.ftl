@@ -82,8 +82,7 @@
             <label  class="col-sm-2 control-label">短信提醒: </label>
             <div class="col-sm-3">
 
-                <label><input type="checkbox" name="smsAlert" class="smsAlert"
-                              <#if !(coupon??&&coupon.smsAlert)>checked</#if> />
+                <label><input type="checkbox" name="smsAlert" class="smsAlert"/>
                 </label>
 
             </div>

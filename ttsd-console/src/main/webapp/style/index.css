@@ -351,10 +351,11 @@ td.td {
     position:fixed;
     top:50%;
     left:50%;
-    width:200px;
-    height:200px;
-    margin-top: -100px;
-    margin-left: -100px;
+    width:400px;
+    height:400px;
+    padding-top:20px;
+    margin-top: -200px;
+    margin-left: -200px;
     overflow:hidden;
     overflow-y:scroll;
     background:#fff;
@@ -365,7 +366,12 @@ td.td {
     float:left;
     width:100%;
 }
-
+.see-detail .close-span{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 30px;
+}
 .import-hidden {
     display: none;
 }
