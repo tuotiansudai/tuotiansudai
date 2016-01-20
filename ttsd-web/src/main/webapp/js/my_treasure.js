@@ -1,5 +1,5 @@
 require(['jquery', 'layerWrapper', 'moment', 'pagination', 'mustache', 'text!/tpl/my-treasure-table.mustache', 'text!/tpl/my-treasure-table-interest.mustache','csrf'],
-function($, layer, moment, pagination, Mustache, treasureListTemplate, treasureListInterestTemplate) {
+function($, layer, moment, pagination, Mustache, treasureListTemplate, treasureListTemplateInterest) {
     $(function() {
         var $navLi = $('.column-title .title-navli'),
             $listTab = $('.list-tab');
