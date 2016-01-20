@@ -2,6 +2,7 @@ package com.tuotiansudai.api.security;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.client.RedisWrapperClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +21,14 @@ public class MobileAppTokenProvider {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    public String generateToken(String loginName) {
+    public String refreshToken(String loginName, String oldToken) {
+        if (!Strings.isNullOrEmpty(oldToken)) {
+            redisWrapperClient.del(oldToken);
+        }
         String tokenTemplate = "app-token:{0}:{1}";
         String token = MessageFormat.format(tokenTemplate, loginName, UUID.randomUUID().toString());
         redisWrapperClient.setex(token, this.tokenExpiredSeconds, loginName);
         return token;
-    }
-
-    public String refreshToken(String loginName, String token) {
-        redisWrapperClient.del(token);
-        return generateToken(loginName);
     }
 
     public void deleteToken(String token) {

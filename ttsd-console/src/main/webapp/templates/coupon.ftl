@@ -10,7 +10,9 @@
 
                 <select class="selectpicker jq-b-type couponType" name="couponType">
 					<#list couponTypes as couponType>
+						<#if couponType.name() != 'INTEREST_COUPON'>
                         <option value="${couponType.name()}">${couponType.getName()}</option>
+						</#if>
 					</#list>
                 </select>
 
@@ -34,7 +36,7 @@
 
                 <select class="selectpicker jq-b-type userGroup" name="userGroup" disabled>
 					<#list userGroups as userGroup>
-						<#if userGroup.name() != 'NEW_REGISTERED_USER'>
+						<#if userGroup.name() != 'NEW_REGISTERED_USER' && userGroup.name() != 'IMPORT_USER' && userGroup.name() != 'ALL_USER'>
                             <option value="${userGroup.name()}">${userGroup.getDescription()}</option>
 						</#if>
 					</#list>

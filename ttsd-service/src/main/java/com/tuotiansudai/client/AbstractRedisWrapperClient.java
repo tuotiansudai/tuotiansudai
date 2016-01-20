@@ -362,4 +362,14 @@ public abstract class AbstractRedisWrapperClient {
         });
     }
 
+    public boolean hexists(final String key, final String field) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Boolean>() {
+            @Override
+            public Boolean action(Jedis jedis) {
+                return jedis.hexists(key, field);
+            }
+        });
+    }
+
 }

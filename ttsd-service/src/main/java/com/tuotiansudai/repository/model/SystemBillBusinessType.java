@@ -22,7 +22,7 @@ public enum SystemBillBusinessType {
 
     LOAN_REMAINING_INTEREST("标的剩余利息"),
 
-    COUPON("优惠券");
+    COUPON("体验券");
 
     private final String description;
 

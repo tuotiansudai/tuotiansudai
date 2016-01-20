@@ -27,4 +27,10 @@ public interface CouponService {
     List<UserCouponModel> findCouponDetail(long couponId, Boolean isUsed);
 
     void deleteCoupon(String loginName, long couponId);
+
+    List<CouponDto> findInterestCoupons(int index, int pageSize);
+
+    int findInterestCouponsCount();
+
+    long estimateCouponExpectedInterest(long loanId, long couponId, long amount);
 }
