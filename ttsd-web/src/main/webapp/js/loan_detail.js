@@ -1,4 +1,4 @@
-require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'csrf', 'autoNumeric'], function ($, pagination, Mustache, investListTemplate, layer) {
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'csrf', 'autoNumeric'], function ($, pagination, Mustache, investListTemplate, layer, _) {
 
     var $loanDetail = $('.loan-detail-content'),
         loanId = $('.hid-loan').val(),
@@ -105,6 +105,37 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     radio.prop("disabled", true);
                 }
             });
+
+            var tickets = _.sortBy($ticketList.find("li"), function(ticket) {
+                var $ticket = $(ticket);
+                return new Date($ticket.data("coupon-created-time")).getTime() * ($ticket.hasClass('disabled') ? 2 : 1);
+            });
+
+            $ticketList.empty().append(tickets);
+
+            $ticketList.find('li').click(function (event) {
+                var couponItem = $($(event.target).parents("li")).length > 0 ? $($(event.target).parents("li")) : $(event.target);
+                if (couponItem.hasClass("disabled")) {
+                    return false;
+                }
+                var text = $.trim(couponItem.find('.ticket-title').text());
+                $useExperienceTicket.find('span').text(text);
+                $ticketList.addClass('hide');
+
+                var couponAmount = couponItem.data('coupon-amount');
+                $couponExpectedInterest.text("");
+                if (!isNaN(couponAmount)) {
+                    $.ajax({
+                        url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + couponAmount,
+                        type: 'get',
+                        dataType: 'json',
+                        contentType: 'application/json; charset=UTF-8'
+                    }).done(function (amount) {
+                        $couponExpectedInterest.text("+" + (amount/100).toFixed(2));
+                        $btnLookOther.prop('disabled', false);
+                    });
+                }
+            });
         };
 
         var validateInvestAmount = function () {
@@ -148,8 +179,10 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     return false;
                 }
 
+                var investAmount = getInvestAmount();
+
                 if (!validateInvestAmount()) {
-                    var tipContent = isNaN(amountInputElement.autoNumeric("get")) || parseInt((amountInputElement.autoNumeric("get") * 100).toFixed(0)) === 0 ? '投资金额不能为0元！' : '投资金额不能大于可投金额！';
+                    var tipContent = investAmount === 0 ? '投资金额不能为0元！' : '投资金额不能大于可投金额！';
                     layer.tips('<i class="fa fa-times-circle"></i>' + tipContent, '.text-input-amount', {
                         tips: [1, '#ff7200'],
                         time: 0
@@ -157,13 +190,13 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     return false;
                 }
 
-                var investAmount = getInvestAmount();
                 var accountAmount = parseInt($('form .account-amount').data("user-balance")) || 0;
                 if (investAmount > accountAmount) {
                     location.href = '/recharge';
                     return false;
                 }
             }
+            amountInputElement.val(amountInputElement.autoNumeric("get"));
             return true;
         });
 
@@ -183,30 +216,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 event.stopPropagation();
             } else if (window.event) {
                 window.event.cancelBubsuble = true;
-            }
-        });
-
-        $ticketList.find('li').click(function (event) {
-            var couponItem = $($(event.target).parents("li")).length > 0 ? $($(event.target).parents("li")) : $(event.target);
-            if (couponItem.hasClass("disabled")) {
-                return false;
-            }
-            var text = $.trim(couponItem.find('.ticket-title').text());
-            $useExperienceTicket.find('span').text(text);
-            $ticketList.addClass('hide');
-
-            var couponAmount = couponItem.data('coupon-amount');
-            $couponExpectedInterest.text("");
-            if (!isNaN(couponAmount)) {
-                $.ajax({
-                    url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + couponAmount,
-                    type: 'get',
-                    dataType: 'json',
-                    contentType: 'application/json; charset=UTF-8'
-                }).done(function (amount) {
-                    $couponExpectedInterest.text("+" + (amount/100).toFixed(2));
-                    $btnLookOther.prop('disabled', false);
-                });
             }
         });
 

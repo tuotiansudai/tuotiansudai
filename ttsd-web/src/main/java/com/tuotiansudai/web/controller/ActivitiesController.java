@@ -9,8 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(path = "/activity")
 public class ActivitiesController {
-
-    @RequestMapping(path = "/{item:^grand|ranking|recruit|refer-reward$}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{item:^recruit|awards|guide$}", method = RequestMethod.GET)
     public ModelAndView activities(@PathVariable String item) {
         return new ModelAndView("/activities/" + item, "responsive", true);
     }

@@ -31,9 +31,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.Date;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -64,13 +63,14 @@ public class UserCouponServiceImpl implements UserCouponService {
     @Override
     public List<UserCouponDto> getUserCoupons(String loginName) {
         List<UserCouponModel> modelList = userCouponMapper.findByLoginName(loginName);
-        return Lists.transform(modelList, new Function<UserCouponModel, UserCouponDto>() {
-            @Override
-            public UserCouponDto apply(UserCouponModel userCoupon) {
-                CouponModel coupon = couponMapper.findById(userCoupon.getCouponId());
-                return new UserCouponDto(coupon, userCoupon);
-            }
-        });
+        List<UserCouponDto> userCouponDtoList =  new ArrayList<>();
+        for (UserCouponModel couponModel : modelList) {
+            CouponModel coupon = couponMapper.findById(couponModel.getCouponId());
+            UserCouponDto dto = new UserCouponDto(coupon, couponModel);
+            userCouponDtoList.add(dto);
+        }
+        Collections.sort(userCouponDtoList);
+        return userCouponDtoList;
     }
     @Override
     public UserCouponDto getUsableNewbieCoupon(String loginName) {
@@ -105,8 +105,16 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Override
     public List<UserCouponDto> getUsableCoupons(String loginName, long loanId) {
-        LoanModel loanModel = loanMapper.findById(loanId);
+        final LoanModel loanModel = loanMapper.findById(loanId);
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName);
+        if (loanModel == null || Iterators.tryFind(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
+            @Override
+            public boolean apply(UserCouponModel userCouponModel) {
+                return InvestStatus.SUCCESS == userCouponModel.getStatus() && userCouponModel.getLoanId() == loanModel.getId();
+            }
+        }).isPresent()) {
+            return Lists.newArrayList();
+        }
 
         List<UserCouponDto> usableCoupons = Lists.newArrayList();
         for (UserCouponModel userCouponModel : userCouponModels) {

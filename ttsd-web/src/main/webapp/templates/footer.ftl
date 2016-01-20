@@ -11,10 +11,11 @@
             <li><a href="/about/company">公司介绍</a></li>
             <li><a href="/about/assurance">安全保障</a></li>
             <li><a href="/about/team">团队介绍</a></li>
+            <li><a href="/about/refer-reward">推荐奖励</a></li>
         </ul>
         <ul>
             <li class="f-title">帮助中心</li>
-            <li><a href="/about/guide">新手指南</a></li>
+            <li><a href="/about/guide">新手指引</a></li>
             <li><a href="/about/service-fee">服务费用</a></li>
             <li><a href="/about/qa">常见问题</a></li>
         </ul>

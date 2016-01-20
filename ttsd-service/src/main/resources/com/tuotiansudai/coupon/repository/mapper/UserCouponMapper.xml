@@ -25,7 +25,7 @@
     <resultMap id="useRecordMap" type="CouponUseRecordView">
         <result column="loan_id" property="loanId"/>
         <result column="loan_name" property="loanName"/>
-        <result column="coupon_name" property="couponName"/>
+        <result column="coupon_type" property="couponType"/>
         <result column="coupon_amount" property="couponAmount"/>
         <result column="used_time" property="usedTime"/>
     </resultMap>
@@ -53,11 +53,11 @@
     </update>
 
     <select id="findByLoginName" resultMap="userCouponResultMap" parameterType="String">
-        select * from user_coupon where login_name = #{loginName} and (status != 'SUCCESS' or status is null)
+        select * from user_coupon where login_name = #{loginName}
     </select>
 
     <select id="findById" resultMap="userCouponResultMap" parameterType="long">
-        select * from user_coupon where id = #{id} and (status = 'SUCCESS'or status is null)
+        select * from user_coupon where id = #{id}
     </select>
 
     <select id="findByLoanId" resultMap="userCouponResultMap" parameterType="long">
@@ -71,7 +71,7 @@
         join coupon c on uc.coupon_id=c.id and c.deleted is FALSE
         join loan l on l.id=uc.loan_id
         where
-            uc.loan_id is not null
+            uc.status='SUCCESS'
             and uc.login_name = #{loginName}
     </select>
 
@@ -79,14 +79,14 @@
         select
             l.id as loan_id,
             l.name as loan_name,
-            c.name as coupon_name,
+            c.coupon_type as coupon_type,
             c.amount as coupon_amount,
             uc.used_time as used_time
         from user_coupon uc
         join coupon c on uc.coupon_id=c.id and c.deleted is FALSE
         join loan l on l.id=uc.loan_id
         where
-            uc.loan_id is not null
+            uc.status='SUCCESS'
             and uc.login_name = #{loginName}
         ORDER BY used_time DESC
         limit #{index}, #{pageSize}
@@ -113,7 +113,7 @@
             and status = 'SUCCESS'
         </if>
         <if test="isUsed != null and !isUsed">
-            and (status != 'SUCCESS' or status is null)
+            and status != 'SUCCESS'
         </if>
         order by status desc, used_time desc
     </select>

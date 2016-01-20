@@ -60,32 +60,29 @@
                     </dd>
 
                     <dd class="experience-ticket" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
-                        <span class="fl">体验券：</span>
+                        <span class="fl">优惠券：</span>
                         <div class="fr experience-ticket-box">
                             <em class="experience-ticket-input <#if !coupons?has_content>disabled</#if>" id="use-experience-ticket">
-                                <span><#if coupons?has_content>请选择您的体验券<#else>当前您无可用体验券</#if></span>
+                                <span><#if coupons?has_content>请选择您的优惠券<#else>当前您无可用优惠券</#if></span>
                                 <i class="fa fa-sort-down fr"></i>
                                 <i class="fa fa-sort-up hide fr"></i>
                             </em>
                             <#if coupons?has_content>
                                 <ul class="ticket-list hide">
-                                    <li>
-                                        <input type="radio" name="userCouponId" value="" id="noCouponSelected">
-                                        <label for="noCouponSelected">
-                                            <i class="ticket-title">不使用体验券</i>
-                                        </label>
+                                    <li data-coupon-created-time="0">
+                                        <input type="radio" name="userCouponId" id="noCouponSelected">
+                                        <label for="noCouponSelected"><i class="ticket-title">不使用优惠券</i></label>
                                     </li>
                                     <#list coupons as coupon>
-                                        <li data-coupon-amount="${coupon.amount?string.computer}">
+                                        <li data-coupon-amount="${coupon.amount?string.computer}"
+                                            data-coupon-created-time="${coupon.createdTime?string("yyyy-MM-dd HH:mm:ss")}">
                                             <input type="radio" name="userCouponId" value="${coupon.id?string.computer}" id="${coupon.id?string.computer}" class="input-use-ticket">
                                             <label for="${coupon.id?string.computer}">
                                                 <span class="sign">${coupon.couponType.getAbbr()}</span>
                                                     <span class="ticket-info">
-                                                        <i class="ticket-title">
-                                                        ${coupon.name}${(coupon.amount / 100)?string("0.00")}元
-                                                        </i><br/>
-                                                        <i class="ticket-term"
-                                                           data-invest-lower-limit="${coupon.investLowerLimit?string.computer}">[投资满${(coupon.investLowerLimit / 100)?string("0.00")}元可用]</i>
+                                                        <i class="ticket-title">${coupon.name}${(coupon.amount / 100)?string("0.00")}元</i>
+                                                        <br/>
+                                                        <i class="ticket-term" data-invest-lower-limit="${coupon.investLowerLimit?string.computer}">[投资满${(coupon.investLowerLimit / 100)?string("0.00")}元可用]</i>
                                                     </span>
                                             </label>
                                         </li>

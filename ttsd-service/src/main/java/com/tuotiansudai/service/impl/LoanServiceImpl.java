@@ -4,8 +4,8 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.job.AutoInvestJob;
 import com.tuotiansudai.job.DeadlineFundraisingJob;
 import com.tuotiansudai.job.FundraisingStartJob;
@@ -58,6 +58,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
 
     @Value("${console.auto.invest.delay.minutes}")
     private int autoInvestDelayMinutes;
@@ -410,11 +413,11 @@ public class LoanServiceImpl implements LoanService {
         loanModel.setStatus(loanDto.getLoanStatus());
         loanMapper.update(loanModel);
         List<LoanTitleRelationModel> loanTitleRelationModelList = loanTitleRelationMapper.findByLoanId(loanDto.getId());
-        if (!CollectionUtils.isEmpty(loanTitleRelationModelList)) {
+        if (CollectionUtils.isNotEmpty(loanTitleRelationModelList)) {
             loanTitleRelationMapper.delete(loanDto.getId());
         }
         loanTitleRelationModelList = loanDto.getLoanTitles();
-        if (!CollectionUtils.isEmpty(loanTitleRelationModelList)) {
+        if (CollectionUtils.isNotEmpty(loanTitleRelationModelList)) {
             for (LoanTitleRelationModel loanTitleRelationModel : loanTitleRelationModelList) {
                 loanTitleRelationModel.setId(idGenerator.generate());
                 loanTitleRelationModel.setLoanId(loanModel.getId());
@@ -524,24 +527,31 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public BaseDto<PayDataDto> loanOut(LoanDto loanDto) throws BaseException {
-        updateLoanAndLoanTitleRelation(loanDto);
+    @Transactional
+    public BaseDto<PayDataDto> loanOut(LoanDto loanDto) {
+        BaseDto<PayDataDto> baseDto = this.checkLoanAmount(loanDto.getId());
+        if (!baseDto.getData().getStatus()) {
+            return baseDto;
+        }
 
         // 如果存在未处理完成的记录，则不允许放款
         // 放款并记账，同时生成还款计划，处理推荐人奖励，处理短信和邮件通知
-        return processLoanOutPayRequest(loanDto.getId());
+        baseDto = processLoanOutPayRequest(loanDto.getId());
+        if (baseDto.getData().getStatus()) {
+            loanDto.setLoanStatus(LoanStatus.REPAYING);
+            this.updateLoanAndLoanTitleRelation(loanDto);
+            return baseDto;
+        }
+
+        return baseDto;
     }
 
-    private BaseDto<PayDataDto> processLoanOutPayRequest(long loanId) throws BaseException {
+    private BaseDto<PayDataDto> processLoanOutPayRequest(long loanId) {
         LoanOutDto loanOutDto = new LoanOutDto();
         loanOutDto.setLoanId(String.valueOf(loanId));
         BaseDto<PayDataDto> dto = payWrapperClient.loanOut(loanOutDto);
-        if (dto.isSuccess()) {
-            PayDataDto data = dto.getData();
-            if (!data.getStatus()) {
-                logger.error(MessageFormat.format("放款失败: {0}", dto.getData().getMessage()));
-                throw new BaseException("放款失败");
-            }
+        if (dto.isSuccess() && !dto.getData().getStatus()) {
+            logger.error(MessageFormat.format("放款失败: {0}", dto.getData().getMessage()));
         }
         return dto;
     }
@@ -561,7 +571,7 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(payDataDto);
             return baseDto;
         }
-        investMapper.cleanWaitingInvestBefore(loanDto.getId(), validInvestTime);
+        investMapper.cleanWaitingInvest(loanDto.getId());
         return payWrapperClient.cancelLoan(loanDto.getId());
     }
 
@@ -662,4 +672,17 @@ public class LoanServiceImpl implements LoanService {
         }
     }
 
+    private BaseDto<PayDataDto> checkLoanAmount(long loanId) {
+        BaseDto<PayDataDto> dto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        payDataDto.setStatus(true);
+        dto.setData(payDataDto);
+
+        if (!payWrapperClient.checkLoanAmount(loanId).getData().getStatus()) {
+            smsWrapperClient.sendFatalNotify(new SmsFatalNotifyDto(MessageFormat.format("标的({0})投资金额与募集金额不符，放款失败。", String.valueOf(loanId))));
+            payDataDto.setStatus(false);
+            payDataDto.setMessage(MessageFormat.format("放款失败: {0}", "标的投资金额与募集金额不符"));
+        }
+        return dto;
+    }
 }

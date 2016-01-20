@@ -22,7 +22,7 @@ public class SmsCouponNotifyDto implements Serializable {
     private CouponType couponType;
 
     @NotNull
-    private Date expiredDate;
+    private String expiredDate;
 
     public String getMobile() {
         return mobile;
@@ -48,11 +48,11 @@ public class SmsCouponNotifyDto implements Serializable {
         this.couponType = couponType;
     }
 
-    public Date getExpiredDate() {
+    public String getExpiredDate() {
         return expiredDate;
     }
 
-    public void setExpiredDate(Date expiredDate) {
+    public void setExpiredDate(String expiredDate) {
         this.expiredDate = expiredDate;
     }
 }
