@@ -58,7 +58,7 @@
                 <div class="vertical-line"></div>
                 <div class="ticket-amount fl tc">
                     <h3>${coupon.name}</h3>
-                    <strong>${coupon.rate?string}％<em>年化利率</em></strong>
+                    <strong>${coupon.rate*100?float}%<em>年化利率</em></strong>
                     <time>有效期：在${coupon.endTime?date}前使用</time>
                 </div>
                 <div class="ticket-info fr">
