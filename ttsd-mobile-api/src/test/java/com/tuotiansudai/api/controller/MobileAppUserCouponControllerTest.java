@@ -38,7 +38,7 @@ public class MobileAppUserCouponControllerTest extends ControllerTestBase {
         UserCouponResponseDataDto item = new UserCouponResponseDataDto();
         item.setUserCouponId("1");
         item.setType(CouponType.NEWBIE_COUPON);
-        item.setName(CouponType.NEWBIE_COUPON.getDesc());
+        item.setName(CouponType.NEWBIE_COUPON.getAbbr());
         item.setAmount("1.00");
         item.setStartDate(new Date());
         item.setEndDate(new Date());

@@ -41,6 +41,12 @@ public class UserCouponResponseDataDto {
 
     private String expectedInterest;
 
+    private String rate;
+
+    private String investUpperLimit;
+
+    private boolean shared;
+
     public UserCouponResponseDataDto() {
     }
 
@@ -48,7 +54,7 @@ public class UserCouponResponseDataDto {
         super();
         this.userCouponId = String.valueOf(userCouponModel.getId());
         this.type = couponModel.getCouponType();
-        this.name = couponModel.getCouponType().getDesc();
+        this.name = couponModel.getCouponType().getName();
         this.amount = AmountConverter.convertCentToString(couponModel.getAmount());
         this.startDate = couponModel.getStartTime();
         this.endDate = couponModel.getEndTime();
@@ -56,6 +62,11 @@ public class UserCouponResponseDataDto {
         this.productTypes = couponModel.getProductTypes();
         this.usedTime = userCouponModel.getUsedTime();
         this.expectedInterest = AmountConverter.convertCentToString(userCouponModel.getExpectedInterest());
+        this.rate = String.valueOf(couponModel.getRate());
+        this.investUpperLimit = AmountConverter.convertCentToString(couponModel.getInvestUpperLimit());
+        this.shared = couponModel.isShared();
+
+
     }
 
     public String getUserCouponId() {
@@ -160,5 +171,29 @@ public class UserCouponResponseDataDto {
 
     public void setExpectedInterest(String expectedInterest) {
         this.expectedInterest = expectedInterest;
+    }
+
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
+    }
+
+    public String getInvestUpperLimit() {
+        return investUpperLimit;
+    }
+
+    public void setInvestUpperLimit(String investUpperLimit) {
+        this.investUpperLimit = investUpperLimit;
+    }
+
+    public boolean isShared() {
+        return shared;
+    }
+
+    public void setShared(boolean shared) {
+        this.shared = shared;
     }
 }

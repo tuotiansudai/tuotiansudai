@@ -6,7 +6,10 @@ import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.NewBieCouponResponseDataDto;
 import com.tuotiansudai.api.service.impl.MobileAppNewBieCouponServiceImpl;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.impl.UserCouponServiceImpl;
+import com.tuotiansudai.repository.model.CouponType;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -26,11 +29,13 @@ public class MobileAppNewBieCouponServiceTest extends ServiceTestBase{
     @Test
     public void shouldGetNewBieCouponIsSuccess(){
 
-        UserCouponDto userCouponDto = new UserCouponDto();
-        userCouponDto.setAmount(1000);
-        userCouponDto.setName("新手体验劵");
-        userCouponDto.setStartTime(new DateTime(2016, 1, 1, 0, 0, 0).toDate());
-        userCouponDto.setEndTime(new DateTime(2016, 1, 7, 23, 59, 59).toDate());
+        CouponModel couponModel = new CouponModel();
+        couponModel.setAmount(1000);
+        couponModel.setStartTime(new DateTime(2016, 1, 1, 0, 0, 0).toDate());
+        couponModel.setEndTime(new DateTime(2016, 1, 7, 23, 59, 59).toDate());
+        couponModel.setCouponType(CouponType.NEWBIE_COUPON);
+
+        UserCouponDto userCouponDto = new UserCouponDto(couponModel,new UserCouponModel());
 
         when(UserCouponService.getUsableNewbieCoupon(anyString())).thenReturn(userCouponDto);
         BaseParamDto baseParamDto = new BaseParamDto();
@@ -40,7 +45,7 @@ public class MobileAppNewBieCouponServiceTest extends ServiceTestBase{
         BaseResponseDto baseDto = mobileAppNewBieCouponService.getNewBieCoupon(baseParamDto);
         NewBieCouponResponseDataDto responseDataDto = (NewBieCouponResponseDataDto)baseDto.getData();
 
-        assertEquals("新手体验劵",responseDataDto.getName());
+        assertEquals("新手体验券",responseDataDto.getName());
         assertEquals("10.00",responseDataDto.getAmount());
         assertEquals("2016-01-01",responseDataDto.getStartTime());
         assertEquals("2016-01-07",responseDataDto.getEndTime());
