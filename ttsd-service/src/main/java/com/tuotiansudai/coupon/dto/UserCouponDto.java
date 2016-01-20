@@ -37,7 +37,7 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
         this.id = userCoupon.getId();
         this.couponType = coupon.getCouponType();
         this.name = coupon.getCouponType().getName();
-        this.rate = coupon.getRate() == null ? 0 : coupon.getRate();
+        this.rate = coupon.getRate();
         this.couponId = coupon.getId();
         this.amount = coupon.getAmount();
         this.startTime = coupon.getStartTime();
