@@ -15,6 +15,7 @@ import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +43,9 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         BaseResponseDto dto = new BaseResponseDto();
         Integer index = investListRequestDto.getIndex();
         Integer pageSize = investListRequestDto.getPageSize();
+        if(StringUtils.isEmpty(investListRequestDto.getLoanId())){
+            return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(),ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+        }
         long loanId = Long.parseLong(investListRequestDto.getLoanId());
 
         long count = investMapper.findCountByStatus(loanId, InvestStatus.SUCCESS);
