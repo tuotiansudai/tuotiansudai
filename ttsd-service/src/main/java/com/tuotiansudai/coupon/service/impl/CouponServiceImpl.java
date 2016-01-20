@@ -80,13 +80,17 @@ public class CouponServiceImpl implements CouponService {
                 throw new CreateCouponException("投资体验券金额应大于0!");
             }
         }
-        long investLowerLimit = couponModel.getInvestLowerLimit();
+
         long totalCount = couponModel.getTotalCount();
         if (totalCount <= 0) {
             throw new CreateCouponException("发放数量应大于0!");
         }
-        if (investLowerLimit <= 0) {
-            throw new CreateCouponException("使用条件金额应大于0!");
+
+        if (couponDto.getCouponType() != CouponType.INTEREST_COUPON) {
+            long investLowerLimit = couponModel.getInvestLowerLimit();
+            if (investLowerLimit <= 0) {
+                throw new CreateCouponException("使用条件金额应大于0!");
+            }
         }
         Date startTime = couponModel.getStartTime();
         Date endTime = couponModel.getEndTime();

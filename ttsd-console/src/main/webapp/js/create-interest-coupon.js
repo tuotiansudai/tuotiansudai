@@ -32,7 +32,7 @@ require(['jquery', 'template', 'csrf','bootstrap', 'jquery-ui', 'bootstrapSelect
         var rep = /^\d+$/;
         var rep_point2 = /^[0-9]+\.[0-9]*$/;
 
-        $('.give-number,.coupon-deadline,.coupon-number,.coupon-rate').blur(function () {
+        $('.give-number,.coupon-deadline,.coupon-number').blur(function () {
             var _this = $(this),
                 text = _this.val(),
                 num = text.replace(rep, "$1");
@@ -44,6 +44,19 @@ require(['jquery', 'template', 'csrf','bootstrap', 'jquery-ui', 'bootstrapSelect
                 _this.val('').addClass('Validform_error');
             }
         });
+
+        $('.coupon-rate').blur(function() {
+            var _this = $(this),
+                text = _this.val();
+            if (rep.test(text)) {
+                _this.val(text).removeClass('Validform_error');
+            }else if (rep_point2.test(text)) {
+                _this.val(parseFloat(text)).removeClass('Validform_error');
+            }else {
+                _this.val('').addClass('Validform_error');
+            }
+        });
+
         //表单校验初始化参数
         $(".form-list").Validform({
             btnSubmit: '#btnSave',
@@ -121,6 +134,7 @@ require(['jquery', 'template', 'csrf','bootstrap', 'jquery-ui', 'bootstrapSelect
             var $fileBtn = $('.file-btn');
             if(userGroup != "IMPORT_USER"){
                 $fileBtn.hide();
+                $('.file-btn').find('input').val('');
                 $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
                     $('.give-number').val(data);
                 })

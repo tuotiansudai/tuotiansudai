@@ -2,6 +2,7 @@ package com.tuotiansudai.coupon.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
@@ -102,26 +103,19 @@ public class UserCouponServiceImpl implements UserCouponService {
     public List<UserCouponDto> getUsableCoupons(String loginName, long loanId) {
         final LoanModel loanModel = loanMapper.findById(loanId);
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
-        if (loanModel == null || Iterators.tryFind(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
+        List<UserCouponDto> dtoList = Lists.transform(userCouponModels, new Function<UserCouponModel, UserCouponDto>() {
             @Override
-            public boolean apply(UserCouponModel userCouponModel) {
-                return InvestStatus.SUCCESS == userCouponModel.getStatus() && userCouponModel.getLoanId() == loanModel.getId();
+            public UserCouponDto apply(UserCouponModel userCouponModel) {
+                return new UserCouponDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel);
             }
-        }).isPresent()) {
-            return Lists.newArrayList();
-        }
+        });
 
-        List<UserCouponDto> usableCoupons = Lists.newArrayList();
-        for (UserCouponModel userCouponModel : userCouponModels) {
-            CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
-            if (InvestStatus.SUCCESS != userCouponModel.getStatus()
-                    && new DateTime(couponModel.getEndTime()).plusDays(1).withTimeAtStartOfDay().isAfterNow()
-                    && couponModel.getProductTypes().contains(loanModel.getProductType())) {
-                usableCoupons.add(new UserCouponDto(couponModel, userCouponModel));
+        return Lists.newArrayList(Iterators.filter(dtoList.iterator(), new Predicate<UserCouponDto>() {
+            @Override
+            public boolean apply(UserCouponDto dto) {
+                return dto.getProductTypeList().contains(loanModel.getProductType()) && dto.isUnused();
             }
-        }
-
-        return usableCoupons;
+        }));
     }
 
     @Override
