@@ -23,6 +23,7 @@
     </resultMap>
 
     <resultMap id="useRecordMap" type="CouponUseRecordView">
+        <id column="id" property="id"/>
         <result column="loan_id" property="loanId"/>
         <result column="loan_name" property="loanName"/>
         <result column="rate" property="rate"/>
@@ -83,6 +84,7 @@
             #{couponType}
         </foreach>
         join loan l on l.id=uc.loan_id
+        join invest i on i.id = uc.invest_id
         where
             uc.status='SUCCESS'
             and uc.login_name = #{loginName}
@@ -90,6 +92,7 @@
 
     <select id="findUseRecords" resultMap="useRecordMap" parameterType="map">
         select
+            uc.id as id,
             l.id as loan_id,
             l.name as loan_name,
             c.coupon_type as coupon_type,
