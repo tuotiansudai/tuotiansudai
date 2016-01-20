@@ -151,8 +151,7 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
             $('.coupon-start').val('');
             $('.coupon-end').val('');
             $('.invest-quota').val('');
-            $('.smsAlert').eq(0).prop('checked',true)
-            $('.productType').prop('checked',false).eq(0).prop('checked',true)
+            $('.productType').prop('checked',false).eq(0).prop('checked',true);
             $selectDom.filter('.userGroup').selectpicker('val','INVESTED_USER');
             var couponType = $('.couponType').val();
             if(couponType == "INVEST_COUPON"){

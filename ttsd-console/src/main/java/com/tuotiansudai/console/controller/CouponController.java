@@ -211,9 +211,17 @@ public class CouponController {
     public ModelAndView couponDetail(@PathVariable long couponId, @RequestParam(value = "isUsed",required = false) Boolean isUsed) {
         ModelAndView modelAndView = new ModelAndView("/coupon-detail");
         List<UserCouponModel> userCoupons = couponService.findCouponDetail(couponId, isUsed);
+        CouponModel couponModel = couponService.findCouponById(couponId);
         modelAndView.addObject("userCoupons", userCoupons);
         modelAndView.addObject("isUsed", isUsed);
         modelAndView.addObject("couponId", couponId);
+        String sideLabType;
+        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON) {
+            sideLabType = "statisticsInterestCoupon";
+        } else {
+            sideLabType = "statisticsCoupon";
+        }
+        modelAndView.addObject("sideLabType", sideLabType);
         return modelAndView;
     }
 

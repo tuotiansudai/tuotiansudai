@@ -44,7 +44,7 @@
                     </#list>
                 </select>
             </div>
-            <div class="file-btn <#if coupon.userGroup == 'IMPORT_USER'>import-hidden</#if>">
+            <div class="file-btn <#if coupon.userGroup != 'IMPORT_USER'>import-hidden</#if>">
                 <input type="file">
                 导入用户名单
             </div>
@@ -84,7 +84,7 @@
             <div class="col-sm-3">
 
                 <label><input type="checkbox" name="smsAlert" class="smsAlert"
-                              <#if !(coupon??&&coupon.smsAlert)>checked</#if> />
+                              <#if coupon??&&coupon.smsAlert>checked</#if> />
                 </label>
 
             </div>
