@@ -36,8 +36,13 @@ function($, layer, moment, pagination, Mustache, treasureListTemplate, treasureL
         };
 
         function loadInterestData() {
-            $('#use-record-interest').loadPagination({couponTypeList:['INTEREST_COUPON']}, function(data) {
-                var html = Mustache.render(treasureListInterestTemplate, data);
+            $('#use-record-interest').loadPagination({couponTypeList:['INTEREST_COUPON']}, function(response) {
+                if (response.status) {
+                    _.each(response.records, function (item) {
+                        item.rate = item.rate * 100;
+                    });
+                }
+                var html = Mustache.render(treasureListTemplateInterest, response);
                 $('.invest-list-interest').html(html);
             });
         };
