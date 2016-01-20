@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.controller;
 
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.service.UMPayRealTimeStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +35,12 @@ public class UMPayRealTimeStatusController {
     @ResponseBody
     public Map<String, String> getRealTimeLoanStatus(@PathVariable long loanId) {
         return payRealTimeStatusService.getLoanStatus(loanId);
+    }
+
+    @RequestMapping(path = "/loan/{loanId}/check-amount", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto<PayDataDto> checkLoanAmount(@PathVariable long loanId) {
+        return payRealTimeStatusService.checkLoanAmount(loanId);
     }
 
     @RequestMapping(path = "/transfer/order-id/{orderId}/mer-date/{merDate}/business-type/{businessType}", method = RequestMethod.GET)

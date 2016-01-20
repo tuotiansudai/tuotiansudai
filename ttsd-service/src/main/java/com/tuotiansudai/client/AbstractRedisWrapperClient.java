@@ -83,12 +83,12 @@ public abstract class AbstractRedisWrapperClient {
         void action(Jedis jedis);
     }
 
-    private  <T> T execute(JedisAction<T> jedisAction) throws JedisException {
+    private <T> T execute(JedisAction<T> jedisAction) throws JedisException {
         Jedis jedis = null;
         boolean broken = false;
         try {
             jedis = jedisPool.getResource();
-            if(StringUtils.isNotEmpty(redisPassword)){
+            if (StringUtils.isNotEmpty(redisPassword)) {
                 jedis.auth(redisPassword);
             }
             jedis.select(redisDb);
@@ -106,7 +106,7 @@ public abstract class AbstractRedisWrapperClient {
         boolean broken = false;
         try {
             jedis = jedisPool.getResource();
-            if(StringUtils.isNotEmpty(redisPassword)){
+            if (StringUtils.isNotEmpty(redisPassword)) {
                 jedis.auth(redisPassword);
             }
             jedis.select(redisDb);
@@ -202,6 +202,16 @@ public abstract class AbstractRedisWrapperClient {
         });
     }
 
+    public boolean setnx(final String key, final String value) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Boolean>() {
+            @Override
+            public Boolean action(Jedis jedis) {
+                return jedis.setnx(key, value) == 1;
+            }
+        });
+    }
+
     public boolean del(final String... keys) {
         this.setJedisPool(getPool());
         return execute(new JedisAction<Boolean>() {
@@ -212,7 +222,7 @@ public abstract class AbstractRedisWrapperClient {
         });
     }
 
-    public void append(final String key,final String value) {
+    public void append(final String key, final String value) {
         this.setJedisPool(getPool());
         execute(new JedisActionNoResult() {
             @Override
