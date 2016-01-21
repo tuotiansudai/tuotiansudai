@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.util.List;
 
 public class InvestDto implements Serializable {
 
@@ -19,8 +20,7 @@ public class InvestDto implements Serializable {
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String amount;
 
-    @Pattern(regexp = "^\\d*$")
-    private String userCouponId;
+    private List<Long> userCouponIds;
 
     private String channel;
 
@@ -50,12 +50,12 @@ public class InvestDto implements Serializable {
         this.amount = amount;
     }
 
-    public String getUserCouponId() {
-        return userCouponId;
+    public List<Long> getUserCouponIds() {
+        return userCouponIds;
     }
 
-    public void setUserCouponId(String userCouponId) {
-        this.userCouponId = userCouponId;
+    public void setUserCouponIds(List<Long> userCouponIds) {
+        this.userCouponIds = userCouponIds;
     }
 
     public String getChannel() {
