@@ -80,8 +80,8 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
                     .done(function(res) {
                         if(res.data.status){
                             $parentTd.html('<i class="check-btn add-check"></i><button class="loan_repay already-btn btn-link inactive-btn" data-id="'+thisId+'">已生效</button>');
-                            if (couponType != 'NEWBIE_COUPON') {
-                                $parentTd.find('button').attr('disabled');
+                            if (couponType != 'NEWBIE_COUPON' && couponType != 'RED_ENVELOPE') {
+                                $parentTd.find('button').prop('disabled',true);
                             }
                             $parentTd.prev().html('<a href="/activity-manage/coupon/'+thisId+'/detail" class="btn-link">查看详情</a>');
                         }else{

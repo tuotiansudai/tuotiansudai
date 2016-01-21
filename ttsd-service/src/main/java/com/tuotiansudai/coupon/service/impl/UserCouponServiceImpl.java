@@ -1,11 +1,9 @@
 package com.tuotiansudai.coupon.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
@@ -93,6 +91,11 @@ public class UserCouponServiceImpl implements UserCouponService {
         baseDto.setData(dataDto);
         dataDto.setStatus(true);
         return baseDto;
+    }
+
+    @Override
+    public List<UserCouponModel> findUserCouponByCouponId(long couponId) {
+        return userCouponMapper.findByCouponId(couponId);
     }
 
 }
