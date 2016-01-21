@@ -42,7 +42,7 @@
 
                     <select class="selectpicker jq-b-type userGroup" name="userGroup">
                         <#list userGroups as userGroup>
-                            <#if userGroup.name() != 'NEW_REGISTERED_USER'>
+                            <#if userGroup.name() != 'NEW_REGISTERED_USER' && userGroup.name() != 'IMPORT_USER' && userGroup.name() != 'ALL_USER'>
                                 <option value="${userGroup.name()}"
                                         <#if coupon??&&coupon.userGroup==userGroup>selected</#if>>${userGroup.getDescription()}</option>
 

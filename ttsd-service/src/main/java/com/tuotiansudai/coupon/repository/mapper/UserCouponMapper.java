@@ -2,6 +2,7 @@ package com.tuotiansudai.coupon.repository.mapper;
 
 import com.tuotiansudai.coupon.repository.model.CouponUseRecordView;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.model.CouponType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -14,15 +15,19 @@ public interface UserCouponMapper {
 
     void update(UserCouponModel userCouponModel);
 
-    List<UserCouponModel> findByLoginName(@Param("loginName") String loginName);
+    List<UserCouponModel> findByLoginName(@Param("loginName") String loginName, @Param("couponTypeList") List<CouponType> couponTypeList);
 
     UserCouponModel findById(@Param("id") long id);
 
     List<UserCouponModel> findByLoanId(@Param("loanId") Long loanId);
 
-    int findUseRecordsCount(@Param(value = "loginName") String loginName);
+    int findUseRecordsCount(@Param(value = "couponTypeList") List<CouponType> couponTypeList,
+                            @Param(value = "loginName") String loginName);
 
-    List<CouponUseRecordView> findUseRecords(@Param(value = "loginName") String loginName, @Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
+    List<CouponUseRecordView> findUseRecords(@Param(value = "couponTypeList") List<CouponType> couponTypeList,
+                                             @Param(value = "loginName") String loginName,
+                                             @Param(value = "index") int index,
+                                             @Param(value = "pageSize") int pageSize);
 
     UserCouponModel findByInvestId(@Param("investId") long investId);
 
@@ -31,4 +36,6 @@ public interface UserCouponMapper {
     List<UserCouponModel> findByCouponIdAndStatus(@Param("couponId") long couponId, @Param("isUsed") Boolean isUsed);
 
     List<UserCouponModel> findByCouponId(long couponId);
+
+    UserCouponModel findByLoginNameAndCouponId(@Param("loginName") String loginName, @Param("couponId") long couponId);
 }

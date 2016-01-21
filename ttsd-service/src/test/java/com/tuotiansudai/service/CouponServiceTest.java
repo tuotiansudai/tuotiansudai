@@ -151,7 +151,7 @@ public class CouponServiceTest {
         userService.registerUser(registerUserDto);
 
 
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(registerUserDto.getLoginName());
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(registerUserDto.getLoginName(), null);
         CouponModel couponModel1 = couponMapper.findById(couponModel.getId());
         assertEquals(true, CollectionUtils.isNotEmpty(userCouponModels));
         assertEquals(1,couponModel1.getIssuedCount());

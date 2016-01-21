@@ -19,8 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -37,9 +36,6 @@ public class InvestMapperTest {
 
     @Autowired
     private InvestMapper investMapper;
-
-    @Autowired
-    private InvestRepayMapper investRepayMapper;
 
     private String User_ID = "helloworld";
     private String User_ID2 = "testuser";
@@ -251,5 +247,20 @@ public class InvestMapperTest {
         assertEquals(4, investModelList.size());
         long investCount = investMapper.findCountByLoginName(User_ID2);
         assertEquals(4, investCount);
+    }
+
+    @Test
+    public void shouldHasSuccessInvest() throws Exception {
+        InvestModel fakeInvestModel = getFakeInvestModel();
+        fakeInvestModel.setStatus(InvestStatus.SUCCESS);
+        investMapper.create(fakeInvestModel);
+        boolean hasSuccessInvest = investMapper.hasSuccessInvest(User_ID);
+        assertTrue(hasSuccessInvest);
+    }
+
+    @Test
+    public void shouldHasNoSuccessInvest() throws Exception {
+        boolean hasSuccessInvest = investMapper.hasSuccessInvest(User_ID);
+        assertFalse(hasSuccessInvest);
     }
 }

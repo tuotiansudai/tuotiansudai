@@ -1,11 +1,17 @@
 package com.tuotiansudai.util;
 
+
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AmountConverter {
 
     public static long convertStringToCent(String amount) {
+        if (StringUtils.isEmpty(amount)) {
+            return 0;
+        }
         Pattern pattern = Pattern.compile("^\\d+(\\.\\d{1,2})?$");
         Matcher matcher = pattern.matcher(amount);
         if (matcher.matches()) {

@@ -22,7 +22,6 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -50,9 +49,6 @@ public class UserCouponServiceImpl implements UserCouponService {
     private CouponMapper couponMapper;
 
     @Autowired
-    private InvestService investService;
-
-    @Autowired
     private RedisWrapperClient redisWrapperClient;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -60,9 +56,9 @@ public class UserCouponServiceImpl implements UserCouponService {
     private static final String NEWBIE_COUPON_ALERT_KEY = "web:newbiecoupon:alert";
 
     @Override
-    public List<UserCouponDto> getUserCoupons(String loginName) {
-        List<UserCouponModel> modelList = userCouponMapper.findByLoginName(loginName);
-        List<UserCouponDto> userCouponDtoList =  new ArrayList<>();
+    public List<UserCouponDto> getUserCoupons(String loginName, List<CouponType> couponTypeList) {
+        List<UserCouponModel> modelList = userCouponMapper.findByLoginName(loginName, couponTypeList);
+        List<UserCouponDto> userCouponDtoList = new ArrayList<>();
         for (UserCouponModel couponModel : modelList) {
             CouponModel coupon = couponMapper.findById(couponModel.getCouponId());
             UserCouponDto dto = new UserCouponDto(coupon, couponModel);
@@ -71,6 +67,7 @@ public class UserCouponServiceImpl implements UserCouponService {
         Collections.sort(userCouponDtoList);
         return userCouponDtoList;
     }
+
 
     @Override
     public UserCouponDto getUsableNewbieCoupon(String loginName) {
@@ -84,7 +81,7 @@ public class UserCouponServiceImpl implements UserCouponService {
             if (loginNames.contains(loginName)) {
                 return null;
             }
-            List<UserCouponModel> userCoupons = userCouponMapper.findByLoginName(loginName);
+            List<UserCouponModel> userCoupons = userCouponMapper.findByLoginName(loginName, null);
             Optional<UserCouponModel> found = Iterators.tryFind(userCoupons.iterator(), new Predicate<UserCouponModel>() {
                 @Override
                 public boolean apply(UserCouponModel userCouponModel) {
@@ -107,38 +104,30 @@ public class UserCouponServiceImpl implements UserCouponService {
     @Override
     public List<UserCouponDto> getUsableCoupons(String loginName, long loanId) {
         final LoanModel loanModel = loanMapper.findById(loanId);
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName);
-        if (loanModel == null || Iterators.tryFind(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
+        List<UserCouponDto> dtoList = Lists.transform(userCouponModels, new Function<UserCouponModel, UserCouponDto>() {
             @Override
-            public boolean apply(UserCouponModel userCouponModel) {
-                return InvestStatus.SUCCESS == userCouponModel.getStatus() && userCouponModel.getLoanId() == loanModel.getId();
+            public UserCouponDto apply(UserCouponModel userCouponModel) {
+                return new UserCouponDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel);
             }
-        }).isPresent()) {
-            return Lists.newArrayList();
-        }
+        });
 
-        List<UserCouponDto> usableCoupons = Lists.newArrayList();
-        for (UserCouponModel userCouponModel : userCouponModels) {
-            CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
-            if (InvestStatus.SUCCESS != userCouponModel.getStatus()
-                    && new DateTime(couponModel.getEndTime()).plusDays(1).withTimeAtStartOfDay().isAfterNow()
-                    && couponModel.getProductTypes().contains(loanModel.getProductType())) {
-                usableCoupons.add(new UserCouponDto(couponModel, userCouponModel));
+        return Lists.newArrayList(Iterators.filter(dtoList.iterator(), new Predicate<UserCouponDto>() {
+            @Override
+            public boolean apply(UserCouponDto dto) {
+                return dto.getProductTypeList().contains(loanModel.getProductType()) && dto.isUnused();
             }
-        }
-
-        return usableCoupons;
+        }));
     }
 
     @Override
-    public BaseDto<BasePaginationDataDto> findUseRecords(String loginName, int index, int pageSize) {
-        int count = userCouponMapper.findUseRecordsCount(loginName);
-        List<CouponUseRecordView> couponUseRecordList = userCouponMapper.findUseRecords(loginName, (index - 1) * pageSize, pageSize);
+    public BaseDto<BasePaginationDataDto> findUseRecords(List<CouponType> couponTypeList, String loginName, int index, int pageSize) {
+        int count = userCouponMapper.findUseRecordsCount(couponTypeList, loginName);
+        List<CouponUseRecordView> couponUseRecordList = userCouponMapper.findUseRecords(couponTypeList, loginName, (index - 1) * pageSize, pageSize);
 
         for (CouponUseRecordView curm : couponUseRecordList) {
-            long expectInterest = investService.estimateInvestIncome(curm.getLoanId(), curm.getCouponAmount());
-            curm.setExpectInterest(expectInterest);
-            curm.setExpectInterestStr(AmountConverter.convertCentToString(expectInterest));
+            curm.setExpectedIncomeStr(AmountConverter.convertCentToString(curm.getExpectedIncome()));
+            curm.setInvestAmountStr(AmountConverter.convertCentToString(curm.getInvestAmount()));
             curm.setCouponAmountStr(AmountConverter.convertCentToString(curm.getCouponAmount()));
         }
 
@@ -148,4 +137,5 @@ public class UserCouponServiceImpl implements UserCouponService {
         dataDto.setStatus(true);
         return baseDto;
     }
+
 }
