@@ -132,14 +132,61 @@
     </select>
 
     <select id="findByCouponIdAndStatus" parameterType="map" resultMap="userCouponResultMap">
-        select * from user_coupon where coupon_id = #{couponId}
+        SELECT
+          t.*
+        FROM
+          user_coupon t
+          JOIN user u
+            ON t.`login_name` = u.`login_name`
+        <if test="loginName != null and loginName != ''">
+            AND u.`login_name` = #{loginName}
+        </if>
+        <if test="mobile != null and mobile != ''">
+            AND u.`mobile` = #{mobile}
+        </if>
+        <if test="registerStartTime != null">
+            AND u.`register_time` >= #{registerStartTime}
+        </if>
+        <if test="registerEndTime != null">
+            <![CDATA[ AND u.`register_time` <= #{registerEndTime} ]]>
+        </if>
+        where t.coupon_id = #{couponId}
         <if test="isUsed != null and isUsed">
-            and status = 'SUCCESS'
+            and t.status = 'SUCCESS'
         </if>
         <if test="isUsed != null and !isUsed">
-            and status != 'SUCCESS'
+            and t.status != 'SUCCESS'
         </if>
-        order by status desc, used_time desc
+        order by t.status desc, t.used_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCouponDetailCount" parameterType="map" resultType="int">
+        SELECT
+          ifnull(count(*),0)
+        FROM
+          user_coupon t
+          JOIN user u
+            ON t.`login_name` = u.`login_name`
+            <if test="loginName != null and loginName != ''">
+                AND u.`login_name` = #{loginName}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                AND u.`mobile` = #{mobile}
+            </if>
+            <if test="registerStartTime != null">
+                AND u.`register_time` >= #{registerStartTime}
+            </if>
+            <if test="registerEndTime != null">
+                <![CDATA[ AND u.`register_time` <= #{registerEndTime} ]]>
+            </if>
+            where t.coupon_id = #{couponId}
+            <if test="isUsed != null and isUsed">
+                and t.status = 'SUCCESS'
+            </if>
+            <if test="isUsed != null and !isUsed">
+                and t.status != 'SUCCESS'
+            </if>
     </select>
 
     <select id="findByCouponId" parameterType="long" resultMap="userCouponResultMap">
