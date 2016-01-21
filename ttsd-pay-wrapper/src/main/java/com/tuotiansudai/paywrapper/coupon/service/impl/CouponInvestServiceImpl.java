@@ -74,25 +74,24 @@ public class CouponInvestServiceImpl implements CouponInvestService {
     @Override
     @Transactional
     public void investCallback(long investId) {
-        UserCouponModel userCouponModel = userCouponMapper.findByInvestId(investId);
-        if (userCouponModel == null) {
-            return;
-        }
-
-        CouponModel couponModel = couponMapper.lockById(userCouponModel.getCouponId());
-        couponModel.setUsedCount(couponModel.getUsedCount() + 1);
-        couponMapper.updateCoupon(couponModel);
-
         InvestModel investModel = investMapper.findById(investId);
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
-        userCouponModel.setLoanId(loanModel.getId());
-        userCouponModel.setInvestId(investId);
-        userCouponModel.setUsedTime(new Date());
-        userCouponModel.setStatus(InvestStatus.SUCCESS);
-        long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(loanModel, couponModel, investModel.getAmount());
-        long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
-        userCouponModel.setExpectedInterest(expectedInterest);
-        userCouponModel.setExpectedFee(expectedFee);
-        userCouponMapper.update(userCouponModel);
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investId);
+
+        for (UserCouponModel model : userCouponModels) {
+            CouponModel couponModel = couponMapper.lockById(model.getCouponId());
+            couponModel.setUsedCount(couponModel.getUsedCount() + 1);
+            couponMapper.updateCoupon(couponModel);
+
+            model.setLoanId(loanModel.getId());
+            model.setInvestId(investId);
+            model.setUsedTime(new Date());
+            model.setStatus(InvestStatus.SUCCESS);
+            long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(loanModel, couponModel, investModel.getAmount());
+            long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+            model.setExpectedInterest(expectedInterest);
+            model.setExpectedFee(expectedFee);
+            userCouponMapper.update(model);
+        }
     }
 }
