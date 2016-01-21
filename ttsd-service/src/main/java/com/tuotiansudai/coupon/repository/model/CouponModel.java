@@ -4,7 +4,6 @@ import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
-import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
@@ -16,6 +15,8 @@ public class CouponModel implements Serializable {
     private long id;
 
     private long amount;
+
+    private double rate;
 
     private Date startTime;
 
@@ -47,6 +48,8 @@ public class CouponModel implements Serializable {
 
     private long investLowerLimit;
 
+    private long investUpperLimit;
+
     private List<ProductType> productTypes;
 
     private CouponType couponType;
@@ -60,6 +63,8 @@ public class CouponModel implements Serializable {
     private long totalInvestAmount;
 
     private boolean deleted;
+
+    private Boolean importIsRight;
 
     public long getId() {
         return id;
@@ -75,6 +80,14 @@ public class CouponModel implements Serializable {
 
     public void setAmount(long amount) {
         this.amount = amount;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
     }
 
     public Date getStartTime() {
@@ -181,6 +194,13 @@ public class CouponModel implements Serializable {
         this.investLowerLimit = investLowerLimit;
     }
 
+    public long getInvestUpperLimit() {
+        return investUpperLimit;
+    }
+
+    public void setInvestUpperLimit(long investUpperLimit) {
+        this.investUpperLimit = investUpperLimit;
+    }
 
     public UserGroup getUserGroup() {
         return userGroup;
@@ -253,6 +273,18 @@ public class CouponModel implements Serializable {
         return deadline;
     }
 
+    public Boolean getImportIsRight() {
+        return importIsRight;
+    }
+
+    public void setImportIsRight(Boolean importIsRight) {
+        this.importIsRight = importIsRight;
+    }
+
+    public void setTotalCount(Long totalCount) {
+        this.totalCount = totalCount;
+    }
+
     public void setDeadline(Integer deadline) {
         this.deadline = deadline;
     }
@@ -260,14 +292,17 @@ public class CouponModel implements Serializable {
     public CouponModel(CouponDto couponDto){
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime();
-        this.endTime =  new DateTime(couponDto.getEndTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate();
+        if (couponDto.getEndTime() != null) {
+            this.endTime = new DateTime(couponDto.getEndTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate();
+        }
         this.totalCount = couponDto.getTotalCount();
         this.productTypes = couponDto.getProductTypes() ;
         this.couponType = couponDto.getCouponType();
         this.investLowerLimit = AmountConverter.convertStringToCent(couponDto.getInvestLowerLimit());
-        this.createdTime = new Date();
+        this.investUpperLimit = AmountConverter.convertStringToCent(couponDto.getInvestUpperLimit());
         this.smsAlert = couponDto.isSmsAlert();
         this.deadline = couponDto.getDeadline();
         this.userGroup = couponDto.getUserGroup();
+        this.rate = couponDto.getRate() == null ? 0 : couponDto.getRate();
     }
 }

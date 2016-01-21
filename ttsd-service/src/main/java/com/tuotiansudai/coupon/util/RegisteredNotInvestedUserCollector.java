@@ -11,16 +11,26 @@ import java.util.List;
 public class RegisteredNotInvestedUserCollector implements UserCollector {
 
     @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
     private InvestMapper investMapper;
 
+    @Autowired
+    private AccountMapper accountMapper;
+
     @Override
-    public List<String> collect() {
+    public List<String> collect(long couponId) {
         List<String> investorLoginNames = investMapper.findInvestorLoginNames();
         List<String> accountLoginNames = accountMapper.findLoginNames();
         accountLoginNames.removeAll(investorLoginNames);
         return accountLoginNames;
+    }
+
+    @Override
+    public long count(long couponId) {
+        return investMapper.findRegisteredNotInvestCount();
+    }
+
+    @Override
+    public boolean contains(long couponId, String loginName) {
+        return !investMapper.hasSuccessInvest(loginName);
     }
 }

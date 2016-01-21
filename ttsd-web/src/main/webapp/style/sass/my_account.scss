@@ -1435,6 +1435,9 @@
       }
     }
   }
+  .record-tab{
+    display:none;
+  }
   .list-tab{
     display:none;
   }
@@ -1505,6 +1508,11 @@
         letter-spacing: 6px;
         padding-top: 3px;
         padding-bottom: 5px;
+        em {
+          font-size:12px;
+          color: #adafb2;
+          letter-spacing: 0;
+        }
       }
       time {
         color: #adafb2;

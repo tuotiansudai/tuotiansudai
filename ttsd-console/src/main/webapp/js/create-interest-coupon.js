@@ -1,8 +1,6 @@
-require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstrapSelect', 'moment', 'Validform', 'Validform_Datatype'], function($) {
+require(['jquery', 'template', 'csrf','bootstrap', 'jquery-ui', 'bootstrapSelect', 'moment', 'Validform', 'Validform_Datatype'], function($) {
     $(function() {
         var $selectDom = $('.selectpicker'), //select表单
-            $dateStart = $('#startTime'), //开始时间
-            $dateEnd = $('#endTime'), //结束时间
             $errorDom = $('.form-error'), //错误提示节点
             $submitBtn = $('#btnSave'), //提交按钮
             $couponForm = $('.form-list'),
@@ -12,20 +10,6 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
 
         //渲染select表单
         $selectDom.selectpicker();
-
-
-
-        //起始时间绑定插件
-        $dateStart.datetimepicker({
-            format: 'YYYY-MM-DD'
-        }).on('dp.change', function(e) {
-            $dateEnd.data("DateTimePicker").minDate(e.date);
-        });
-
-        //结束时间绑定插件
-        $dateEnd.datetimepicker({
-            format: 'YYYY-MM-DD'
-        });
 
         /**
          * @msg  {[string]} //文字信息
@@ -60,6 +44,19 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
                 _this.val('').addClass('Validform_error');
             }
         });
+
+        $('.coupon-rate').blur(function() {
+            var _this = $(this),
+                text = _this.val();
+            if (rep.test(text)) {
+                _this.val(text).removeClass('Validform_error');
+            }else if (rep_point2.test(text)) {
+                _this.val(parseFloat(text)).removeClass('Validform_error');
+            }else {
+                _this.val('').addClass('Validform_error');
+            }
+        });
+
         //表单校验初始化参数
         $(".form-list").Validform({
             btnSubmit: '#btnSave',
@@ -73,18 +70,23 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
                 }
             },
             beforeCheck: function(curform) {
+                var couponRate = parseFloat($('.coupon-rate').val());
+                if (couponRate <= 0) {
+                    showErrorMessage('加息券利率需要大于0', $('.coupon-rate', curform));
+                    return false;
+                }
                 var periods = parseInt($('.coupon-number', curform).val());
                 $errorDom.html('');
                 if (periods <= 0) {
-                    showErrorMessage('投资体验券金额最小为1', $('.coupon-number', curform));
+                    showErrorMessage('金额最小为1', $('.coupon-number', curform));
                     return false;
                 }
                 var fivenumber = parseInt($('.give-number', curform).val());
                 if (fivenumber <= 0) {
-                    showErrorMessage('最小为1', $('.coupon-number', curform));
+                    showErrorMessage('发放数量最小为1', $('.give-number', curform));
                     return false;
                 }
-               var len= $('input[name="productTypes"]').filter(function(key,option) {
+                var len= $('input[name="productTypes"]').filter(function(key,option) {
                     return $(option).is(':checked');
                 }).length;
 
@@ -117,59 +119,47 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
             }
         });
 
-        $('.couponType').change(function(){
-            var couponType = this.value;
-            iniForm();
-            if(couponType == "NEWBIE_COUPON"){
-                $('.newbie-coupon').show();
-                $('.invest-coupon').hide();
-                $('.userGroup').addClass("invest-coupon-total_count");
-                $('.give-number').removeAttr("invest-coupon-total_count");
-                $('.give-number').removeAttr("readonly");
-                $('.userGroup').attr('disabled','disabled');
-                $('.userGroup').selectpicker('refresh');
-                $('.user-group-hid').removeAttr("disabled");
-            }else{
-                $('.give-number').addClass("invest-coupon-total_count");
-                $('.give-number').attr("readonly",true);
-                $('.user-group-hid').attr('disabled','disabled');
-                $('.userGroup').removeAttr("disabled");
-                $('.userGroup').selectpicker('refresh');
-                $('.userGroup').removeAttr("invest-coupon-total_count");
-                $('.newbie-coupon').hide();
-                $('.invest-coupon').show();
-            }
-        });
-
-
-
         function iniForm(){
             $errorDom.html('');
             $('.coupon-number').val('');
             $('.coupon-deadline').val('');
             $('.give-number').val('');
-            $('.coupon-start').val('');
-            $('.coupon-end').val('');
             $('.invest-quota').val('');
-            $('.productType').prop('checked',false).eq(0).prop('checked',true);
-            $selectDom.filter('.userGroup').selectpicker('val','INVESTED_USER');
-            var couponType = $('.couponType').val();
-            if(couponType == "INVEST_COUPON"){
-                $selectDom.filter('.userGroup').trigger('change');
-            }
-
-
+            $('.smsAlert').eq(0).prop('checked',true)
+            $('.productType').prop('checked',false).eq(0).prop('checked',true)
         }
 
         $('.userGroup').change(function(){
             var userGroup = this.value;
-            var couponType = $('.couponType').val();
-            if(couponType == "INVEST_COUPON"){
+            var $fileBtn = $('.file-btn');
+            if(userGroup != "IMPORT_USER"){
+                $fileBtn.hide();
+                $('.file-btn').find('input').val('');
                 $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
                     $('.give-number').val(data);
                 })
+            } else {
+                $fileBtn.show();
+                $('.give-number').val('');
             }
+        });
 
+        $('.file-btn').on('change',function(){
+            var file = $(this).find('input').get(0).files[0];
+            var formData = new FormData();
+            formData.append('file',file);
+            $.ajax({
+                url:'/activity-manage/import-excel',
+                type:'POST',
+                data:formData,
+                dataType:'JSON',
+                contentType: false,
+                processData: false
+            })
+            .done(function(data){
+                $('#import-file').val(data[0]);
+                $('.give-number').val(data[1]);
+            });
         });
 
     });
