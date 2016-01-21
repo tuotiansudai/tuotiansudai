@@ -8,6 +8,7 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.repository.model.InvestModel;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -57,15 +58,14 @@ public class CouponAspect {
         BaseDto<PayFormDataDto> baseDto = (BaseDto<PayFormDataDto>) returnValue;
         if (baseDto.getData() != null && baseDto.getData().getStatus()) {
             long investId = Long.parseLong(baseDto.getData().getFields().get("order_id"));
-            Long userCouponId = null;
             try {
-                if (!Strings.isNullOrEmpty(investDto.getUserCouponId())) {
-                    userCouponId = Long.parseLong(investDto.getUserCouponId());
+                if (CollectionUtils.isNotEmpty(investDto.getUserCouponIds())) {
+                    couponInvestService.invest(investId, investDto.getUserCouponIds());
                 }
-            } catch (NumberFormatException e) {
+            } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
-            couponInvestService.invest(investId, userCouponId);
+
         }
     }
 

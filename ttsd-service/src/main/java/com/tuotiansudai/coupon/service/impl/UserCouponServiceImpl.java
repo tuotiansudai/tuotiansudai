@@ -5,9 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
@@ -100,8 +98,12 @@ public class UserCouponServiceImpl implements UserCouponService {
     }
 
     @Override
-    public List<UserCouponDto> getUsableCoupons(String loginName, long loanId) {
+    public List<UserCouponDto> getUsableCoupons(String loginName, final long loanId) {
         final LoanModel loanModel = loanMapper.findById(loanId);
+        if (loanModel == null) {
+            return Lists.newArrayList();
+        }
+
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
         List<UserCouponDto> dtoList = Lists.transform(userCouponModels, new Function<UserCouponModel, UserCouponDto>() {
             @Override
