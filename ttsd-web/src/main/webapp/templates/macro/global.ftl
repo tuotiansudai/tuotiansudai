@@ -117,12 +117,7 @@
             userAgent = navigator.userAgent.toLowerCase(),
             metaTags=document.getElementsByTagName('meta'),
             metaLen=metaTags.length,isResponse=false,isPC=false,i=0;
-        if(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
-            isPC=false;
-        }
-        else {
-            isPC=true;
-        }
+        isPC = !(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1);
         for(;i<metaLen;i++) {
             if(metaTags[i].getAttribute('name')=='viewport') {
                 isResponse=true;
