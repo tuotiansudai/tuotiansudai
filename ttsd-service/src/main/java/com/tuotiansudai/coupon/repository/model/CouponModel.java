@@ -7,6 +7,7 @@ import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class CouponModel implements Serializable {
 
     private long amount;
 
-    private Double rate;
+    private double rate;
 
     private Date startTime;
 
@@ -84,11 +85,11 @@ public class CouponModel implements Serializable {
         this.amount = amount;
     }
 
-    public Double getRate() {
+    public double getRate() {
         return rate;
     }
 
-    public void setRate(Double rate) {
+    public void setRate(double rate) {
         this.rate = rate;
     }
 
@@ -314,6 +315,6 @@ public class CouponModel implements Serializable {
         this.smsAlert = couponDto.isSmsAlert();
         this.deadline = couponDto.getDeadline();
         this.userGroup = couponDto.getUserGroup();
-        this.rate = couponDto.getRate();
+        this.rate = couponDto.getRate() == null ? 0 : new BigDecimal(couponDto.getRate()).divide(new BigDecimal(100)).doubleValue();
     }
 }

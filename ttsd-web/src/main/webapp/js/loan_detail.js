@@ -122,20 +122,19 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 }
                 var text = $.trim(couponItem.find('.ticket-title').text());
                 $useExperienceTicket.find('span').text(text);
-                $ticketList.addClass('hide');
-
-                var couponId = couponItem.data('coupon-id');
+                couponItem.find("input[name='userCouponId']").prop('checked', true);
                 $couponExpectedInterest.text("");
                 $.ajax({
-                    url: '/calculate-expected-coupon-interest/loan/' + loanId + '/coupon/' + couponId + '/amount/' + getInvestAmount(),
+                    url: '/calculate-expected-coupon-interest/loan/' + loanId + '/coupon/' + couponItem.data('coupon-id') + '/amount/' + getInvestAmount(),
                     type: 'get',
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'
                 }).done(function (amount) {
-                    $couponExpectedInterest.text("+" + (amount/100).toFixed(2));
+                    $couponExpectedInterest.text("+" + amount);
                     $btnLookOther.prop('disabled', false);
                 });
-                return false;
+                $ticketList.addClass('hide');
+                return false
             });
         };
 

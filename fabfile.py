@@ -131,11 +131,41 @@ def deploy_all():
     execute(deploy_web)
 
 
-def deploy():
+def pre_deploy():
     compile()
     migrate()
     build()
+
+
+def all():
+    pre_deploy()
     deploy_all()
+
+
+def web():
+    pre_deploy()
+    execute(deploy_web)
+    execute(deploy_static)
+
+
+def console():
+    pre_deploy()
+    execute(deploy_console)
+
+
+def api():
+    pre_deploy()
+    execute(deploy_api)
+
+
+def sms():
+    pre_deploy()
+    execute(deploy_sms)
+
+
+def worker():
+    pre_deploy()
+    execute(deploy_worker)
 
 
 def get_30days_before(date_format="%Y-%m-%d"):

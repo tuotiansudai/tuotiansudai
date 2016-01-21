@@ -8,7 +8,7 @@ public enum SmsTemplate {
     SMS_MOBILE_CAPTCHA_TEMPLATE("尊敬的拓天速贷客户，您的找回密码的验证码是：{captcha} 。请勿泄露给他人!【拓天速贷】"),
     SMS_PASSWORD_CHANGED_NOTIFY_TEMPLATE("尊敬的用户，您的登录密码已修改。如非本人操作，请速登录拓天速贷官网重置密码，或联系客服处理，电话：400-169-1188。【拓天速贷】"),
     SMS_FATAL_NOTIFY_TEMPLATE("{env}警报：{errorMessage}【拓天速贷】"),
-    SMS_COUPON_NOTIFY_TEMPLATE("尊敬的拓天速贷客户，恭喜您获得{amount}元{couponType}，有效期截至{expiredDate}，请及时投资体验。【拓天速贷】");
+    SMS_COUPON_NOTIFY_TEMPLATE("尊敬的拓天速贷客户，恭喜您获得{coupon}，有效期截至{expiredDate}，请及时投资体验。【拓天速贷】");
 
     private String template;
 

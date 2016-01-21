@@ -18,6 +18,10 @@ public class SmsCouponNotifyDto implements Serializable {
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String amount;
 
+    @NotEmpty
+    @Pattern(regexp = "^\\d+$")
+    private String rate;
+
     @NotNull
     private CouponType couponType;
 
@@ -38,6 +42,14 @@ public class SmsCouponNotifyDto implements Serializable {
 
     public void setAmount(String amount) {
         this.amount = amount;
+    }
+
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
     }
 
     public CouponType getCouponType() {
