@@ -9,6 +9,7 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.exception.CreateCouponException;
@@ -17,6 +18,7 @@ import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.UUIDGenerator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -57,6 +59,9 @@ public class CouponController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserCouponService userCouponService;
 
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
@@ -278,7 +283,11 @@ public class CouponController {
     @ResponseBody
     public BaseDto<BaseDataDto> couponDelete(@PathVariable long couponId) {
         BaseDataDto dataDto = new BaseDataDto();
-        dataDto.setStatus(true);
+        if (CollectionUtils.isNotEmpty(userCouponService.findUserCouponByCouponId(couponId))){
+            dataDto.setStatus(false);
+        } else {
+            dataDto.setStatus(true);
+        }
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         baseDto.setData(dataDto);
         String loginName = LoginUserInfo.getLoginName();

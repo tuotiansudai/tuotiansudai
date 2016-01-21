@@ -1,6 +1,7 @@
 package com.tuotiansudai.coupon.service;
 
 import com.tuotiansudai.coupon.dto.UserCouponDto;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.model.CouponType;
@@ -16,5 +17,7 @@ public interface UserCouponService {
     List<UserCouponDto> getUsableCoupons(String loginName, final long loanId);
 
     BaseDto<BasePaginationDataDto> findUseRecords(List<CouponType> couponTypeList, String loginName, int index, int pageSize);
+
+    List<UserCouponModel> findUserCouponByCouponId(long couponId);
 
 }

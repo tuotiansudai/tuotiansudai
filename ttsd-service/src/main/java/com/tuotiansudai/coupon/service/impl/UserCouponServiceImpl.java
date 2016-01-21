@@ -138,4 +138,9 @@ public class UserCouponServiceImpl implements UserCouponService {
         return baseDto;
     }
 
+    @Override
+    public List<UserCouponModel> findUserCouponByCouponId(long couponId) {
+        return userCouponMapper.findByCouponId(couponId);
+    }
+
 }
