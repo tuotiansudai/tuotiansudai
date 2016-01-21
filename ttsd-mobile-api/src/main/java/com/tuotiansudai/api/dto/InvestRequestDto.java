@@ -4,6 +4,8 @@ package com.tuotiansudai.api.dto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.repository.model.Source;
 
+import java.util.List;
+
 public class InvestRequestDto extends BaseParamDto {
     private String userId;
     private String investMoney;
@@ -11,7 +13,7 @@ public class InvestRequestDto extends BaseParamDto {
     @Deprecated
     private String password;
 
-    private String userCouponId;
+    private List<Long> userCouponIds;
 
     public String getUserId() {
         return userId;
@@ -48,12 +50,12 @@ public class InvestRequestDto extends BaseParamDto {
         this.investMoney = investMoney;
     }
 
-    public String getUserCouponId() {
-        return userCouponId;
+    public List<Long> getUserCouponIds() {
+        return userCouponIds;
     }
 
-    public void setUserCouponId(String userCouponId) {
-        this.userCouponId = userCouponId;
+    public void setUserCouponIds(List<Long> userCouponIds) {
+        this.userCouponIds = userCouponIds;
     }
 
     public InvestDto convertToInvestDto(){
@@ -62,7 +64,7 @@ public class InvestRequestDto extends BaseParamDto {
         investDto.setAmount(this.getInvestMoney());
         investDto.setLoginName(this.getBaseParam().getUserId());
         investDto.setLoanId(this.getLoanId());
-        investDto.setUserCouponId(this.userCouponId);
+        investDto.setUserCouponIds(this.userCouponIds);
         return investDto;
 
     }
