@@ -29,6 +29,8 @@ public class CouponModel implements Serializable {
 
     private boolean active;
 
+    private boolean shared;
+
     private Date createdTime;
 
     private String createdBy;
@@ -129,6 +131,14 @@ public class CouponModel implements Serializable {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public boolean isShared() {
+        return shared;
+    }
+
+    public void setShared(boolean shared) {
+        this.shared = shared;
     }
 
     public Date getCreatedTime() {
@@ -291,6 +301,7 @@ public class CouponModel implements Serializable {
     }
 
     public CouponModel(CouponDto couponDto){
+        this.shared = couponDto.isShared();
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime();
         if (couponDto.getEndTime() != null) {
