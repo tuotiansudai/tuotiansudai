@@ -26,14 +26,12 @@ require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
 
         $registerBox.css({'right': (screenWid - 1000) / 2 + 'px'});
         $scrollNum.css({'left': (screenWid - $scrollNum.find('li').length * 25) / 2});
-        $imgScroll.find("a:not(:first)").hide();
         $imgScroll.find('img').css({
             'margin-left': '-' + leftWid + 'px'
         });
 
 
         $imgNum.click(function() {
-
             var num_nav = $imgNum.index(this);
             $(this).addClass("selected").siblings().removeClass("selected");
             $bannerImg.eq(num_nav).fadeIn(1000).siblings().fadeOut(1000);
@@ -42,10 +40,9 @@ require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
             clearInterval(adTimer);
         }, function() {
             adTimer = setInterval(function() {
-
-                n = n >= ($bannerImg.length - 1) ? 0 : (n + 1);
-                $imgNum.eq(n).trigger('click');
-            }, 3000);
+                var index = ++n % $bannerImg.length;
+                $imgNum.eq(index).trigger('click');
+            }, 6000);
         }).trigger('mouseleave');
 
 
