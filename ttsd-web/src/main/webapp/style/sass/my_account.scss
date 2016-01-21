@@ -1449,36 +1449,37 @@
     font-size:18px;
 
   }
+  .sign-seal {
+    display: none;
+    width: 80px;
+    height: 80px;
+    border: 2px solid #7f7f7f;
+    color: #7f7f7f;
+    text-align: center;
+    line-height: 80px;
+    position: absolute;
+    left: 45%;
+    top: 20%;
+    border-radius: 50%;
+    span {
+      -webkit-transform: rotate(30deg);
+      -moz-transform: rotate(30deg);
+      transform: rotate(-30deg);
+      font-weight: bold;
+      font-size: 20px;
+      line-height: 1.2;
+      padding-top: 16px;
+      display: block;
+      letter-spacing: 8px;
+    }
+  }
   .experience-ticket-box {
     width:500px;
     height: 160px;
     position: relative;
     background: url("/images/icons/logo-transport.png") -14px -20px no-repeat;
     margin-top:12px;
-    .sign-seal {
-      display: none;
-      width: 80px;
-      height: 80px;
-      border: 2px solid #7f7f7f;
-      color: #7f7f7f;
-      text-align: center;
-      line-height: 80px;
-      position: absolute;
-      left: 45%;
-      top: 20%;
-      border-radius: 50%;
-      span {
-        -webkit-transform: rotate(30deg);
-        -moz-transform: rotate(30deg);
-        transform: rotate(-30deg);
-        font-weight: bold;
-        font-size: 20px;
-        line-height: 1.2;
-        padding-top: 16px;
-        display: block;
-        letter-spacing: 8px;
-      }
-    }
+
     .vertical-line {
       height:94%;
       width:1px;
@@ -1581,6 +1582,93 @@
       }
     }
   }
+
+  .red-envelope-frame {
+    margin-left: -20px;
+    .red-envelope-box {
+      font-size: 11px;
+      width:240px;
+      height:240px;
+      float: left;
+      margin-left: 20px;
+      margin-bottom: 20px;
+      background: url("/images/sign/activities/red-envelope-valid.png") 0 0 no-repeat;
+      position: relative;
+      .red-amount {
+        position: absolute;
+        width:100%;
+        text-align: center;
+        top:-2px;
+        font-size: 20px;
+        color: #f4e823;
+        em {
+          font-size: 30px;
+          font-weight: bold;
+        }
+      }
+      .use-status {
+        position: absolute;
+        left:50px;
+        top:120px;
+        color: #fff;
+
+        img {
+          display: inline-block;
+        }
+        span {
+          color: #f4e823;
+        }
+      }
+      .use-time {
+        position: absolute;
+        text-align: center;
+        top:211px;
+        width:100%;
+        color: #95000a;
+        span {
+          color: #fadde3;
+        }
+      }
+      &.red-status-expired {
+        background: url("/images/sign/activities/red-envelope-expired.png") 0 0 no-repeat;
+        .red-amount,.use-status span,.use-time,.use-time span {
+          color: #fff;
+        }
+        .sign-seal {
+          color: #df002c;
+          border: 2px solid #df002c;
+          display: block;
+          left: 58%;
+          top: 20px;
+        }
+
+      }
+      &.red-status-used {
+        border-radius: 10px;
+        .layer-mask {
+          width: 100%;
+          height: 100%;
+          background-color: rgba(77,77,77,0.6);
+          position: absolute;
+          z-index: 10;
+          border-radius: 10px;
+        }
+        .sign-seal {
+          color: #b7b7b7;
+          border: 2px solid #b7b7b7;
+          display: block;
+          left: 58%;
+          top: 20px;
+          z-index: 15;
+        }
+
+      }
+    }
+    .ticket-use-help {
+      margin-top:70px;
+    }
+  }
+
   .ticket-use-help {
     width:470px;
     padding:10px 15px;
