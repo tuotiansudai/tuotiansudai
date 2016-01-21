@@ -7,6 +7,8 @@ import java.util.Date;
 
 public class CouponUseRecordView implements Serializable {
 
+    private long id;
+
     private long loanId;
 
     private String loanName;
@@ -38,6 +40,14 @@ public class CouponUseRecordView implements Serializable {
     private String expectedIncomeStr;
 
     public CouponUseRecordView() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getCouponName() {
