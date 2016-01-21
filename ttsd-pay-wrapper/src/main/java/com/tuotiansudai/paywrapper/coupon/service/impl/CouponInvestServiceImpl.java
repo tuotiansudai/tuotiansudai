@@ -73,6 +73,29 @@ public class CouponInvestServiceImpl implements CouponInvestService {
 
     @Override
     @Transactional
+    public void cancelUserCoupon(long loanId) {
+        List<UserCouponModel> userCouponModels = userCouponMapper.findSuccessfulUserCouponByLoanId(loanId);
+        for(UserCouponModel userCouponModel : userCouponModels){
+            CouponModel couponModel = couponMapper.lockById(userCouponModel.getCouponId());
+            couponModel.setUsedCount(couponModel.getUsedCount() - 1);
+            couponMapper.updateCoupon(couponModel);
+
+            userCouponModel.setLoanId(null);
+            userCouponModel.setInvestId(null);
+            userCouponModel.setUsedTime(null);
+            userCouponModel.setStatus(null);
+            userCouponModel.setExpectedInterest(0L);
+            userCouponModel.setExpectedFee(0L);
+
+            userCouponMapper.update(userCouponModel);
+
+        }
+
+
+    }
+
+    @Override
+    @Transactional
     public void investCallback(long investId) {
         InvestModel investModel = investMapper.findById(investId);
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
