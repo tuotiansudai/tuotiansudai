@@ -23,7 +23,7 @@ var require = {
         'swiper':staticServer+'/js/libs/swiper-3.2.7.jquery.min',
         'load-swiper':staticServer+'/js/dest/load_swiper.min'
     },
-
+    'waitSeconds':0,
     'shim': {
         'jquery.validate': ['jquery'],
         'jquery.form': ['jquery'],
