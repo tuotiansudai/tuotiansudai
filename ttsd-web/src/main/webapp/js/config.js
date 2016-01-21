@@ -24,7 +24,7 @@ var require = {
         'load-swiper':staticServer+'/js/dest/load_swiper.min',
         'coupon-alert': staticServer+'/js/dest/coupon_alert.min'
     },
-
+    'waitSeconds':0,
     'shim': {
         'jquery.validate': ['jquery'],
         'jquery.form': ['jquery'],
