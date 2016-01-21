@@ -11,7 +11,10 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.AmountConverter;
@@ -33,6 +36,9 @@ public class MobileAppUserCouponServiceImpl implements MobileAppUserCouponServic
 
     @Autowired
     private LoanMapper loanMapper;
+
+    @Autowired
+    private InvestMapper investMapper;
 
     @Override
     public BaseResponseDto<UserCouponListResponseDataDto> getUserCoupons(final UserCouponRequestDto requestDto) {
@@ -59,6 +65,13 @@ public class MobileAppUserCouponServiceImpl implements MobileAppUserCouponServic
                     dataDto.setLoanId(String.valueOf(loanModel.getId()));
                     dataDto.setLoanName(loanModel.getName());
                     dataDto.setLoanProductType(loanModel.getProductType());
+                    if(CouponType.RED_ENVELOPE.equals(dataDto.getType())){
+                        InvestModel investModel = investMapper.findById(userCouponModel.getInvestId());
+                        if(investModel != null){
+                            dataDto.setInvestAmount(AmountConverter.convertCentToString(investModel.getAmount()));
+                        }
+
+                    }
                 }
                 return dataDto;
             }
