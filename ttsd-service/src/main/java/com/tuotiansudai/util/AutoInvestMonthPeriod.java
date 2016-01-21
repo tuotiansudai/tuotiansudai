@@ -91,6 +91,7 @@ public class AutoInvestMonthPeriod {
         return selectedPeriods.toArray(new AutoInvestMonthPeriod[0]);
     }
 
+
     private final int periodValue;
     private final String periodName;
 
