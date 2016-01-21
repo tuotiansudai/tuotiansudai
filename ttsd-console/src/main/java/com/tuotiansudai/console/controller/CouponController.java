@@ -244,6 +244,8 @@ public class CouponController {
         String sideLabType;
         if (couponModel.getCouponType() == CouponType.INTEREST_COUPON) {
             sideLabType = "statisticsInterestCoupon";
+        } else if (couponModel.getCouponType() == CouponType.RED_ENVELOPE) {
+            sideLabType = "statisticsRedEnvelope";
         } else {
             sideLabType = "statisticsCoupon";
         }

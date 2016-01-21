@@ -113,7 +113,7 @@
         <#if coupon.active>
             <label>
                 <i class="check-btn add-check"></i>
-                <button class="loan_repay already-btn btn-link inactive-btn" <#if coupon.couponType != 'NEWBIE_COUPON'>disabled</#if> data-id="${coupon.id?string('0')}" data-type="${coupon.couponType}">已生效</button>
+                <button class="loan_repay already-btn btn-link inactive-btn" data-id="${coupon.id?string('0')}" data-type="${coupon.couponType}">已生效</button>
             </label>
         <#else>
             <label>
