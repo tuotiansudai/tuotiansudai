@@ -74,6 +74,9 @@
     <select id="findByLoanId" resultMap="userCouponResultMap" parameterType="long">
         select * from user_coupon where loan_id = #{loanId}
     </select>
+    <select id="findSuccessfulUserCouponByLoanId" resultMap="userCouponResultMap" parameterType="long">
+        select * from user_coupon where loan_id = #{loanId} and status = 'SUCCESS'
+    </select>
 
     <select id="findUseRecordsCount" resultType="int" parameterType="map">
         select
