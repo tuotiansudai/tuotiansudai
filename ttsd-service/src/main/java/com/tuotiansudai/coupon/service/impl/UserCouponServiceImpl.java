@@ -127,6 +127,7 @@ public class UserCouponServiceImpl implements UserCouponService {
 
         for (CouponUseRecordView curm : couponUseRecordList) {
             curm.setExpectedIncomeStr(AmountConverter.convertCentToString(curm.getExpectedIncome()));
+            curm.setInvestAmountStr(AmountConverter.convertCentToString(curm.getInvestAmount()));
             curm.setCouponAmountStr(AmountConverter.convertCentToString(curm.getCouponAmount()));
         }
 

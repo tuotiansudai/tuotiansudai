@@ -132,7 +132,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 if (couponItem.hasClass("disabled") || couponItem.data('coupon-shared')) {
                     return false;
                 }
-
                 if (couponItem.hasClass('not-use-coupon')) {
                     $ticketList.find('li input[type="radio"]').prop("checked", false);
                 } else {
