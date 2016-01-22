@@ -19,8 +19,13 @@
               </div>
           </div>
     </div>
-        <a href="#"> <img src="${staticServer}/images/sign/actor/redbag/red-get.jpg" alt="注册即送红包"></a>
+        <a href="#" id="redEnvelope"> <img src="${staticServer}/images/sign/actor/redbag/red-get.jpg" alt="注册即送红包"></a>
         <img src="${staticServer}/images/sign/actor/redbag/red-info.png" alt="注册即送红包">
 
         </div>
+    
+    <div id="redEnvelopePopWindow" class="hide">
+        <img src="${staticServer}/images/sign/actor/redbag/red-pop.png" >
+        <div class="close-tip"></div>
+    </div>
         </@global.main>
