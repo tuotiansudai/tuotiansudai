@@ -137,8 +137,8 @@ define(['jquery','underscore','echarts','pageNumber'], function ($,_) {
                         trigger: 'axis',
                         formatter: function (params) {
                             var res = params[0].seriesName + ' ' + params[0].name;
-                            res += '<br/>  平均值 : ' + params[0].value[2] + '天   最高 : ' + params[0].value[3]+'天';
-                            res += '<br/>  中位数 : ' + params[0].value[1] + '天   最低 : ' + params[0].value[0]+'天';
+                            res += '<br/>  平均值 : ' + params[0].value[2] + '小时   最高 : ' + params[0].value[3]+'小时';
+                            res += '<br/>  中位数 : ' + params[0].value[1] + '小时   最低 : ' + params[0].value[0]+'小时';
                             return res;
                         }
                     },

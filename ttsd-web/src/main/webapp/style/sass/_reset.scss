@@ -31,7 +31,7 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
 }
-input,button,select,textarea{outline:none}
+input,button,select,textarea{outline:none; }
 textarea{resize:none}
 
 input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
@@ -118,7 +118,12 @@ p {
   height: 0;
   font-size:0;
 }
-
+.margin-top25 {
+  margin-top:25px;
+}
+.margin-bottom25 {
+  margin-bottom:25px;
+}
 .clear-blank{
   clear: both;
   margin-top:10px;

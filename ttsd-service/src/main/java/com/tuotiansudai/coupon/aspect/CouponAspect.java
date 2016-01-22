@@ -1,6 +1,8 @@
 package com.tuotiansudai.coupon.aspect;
 
-import com.tuotiansudai.coupon.service.CouponService;
+import com.google.common.collect.Lists;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.dto.RegisterUserDto;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
@@ -10,30 +12,48 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Component
 @Aspect
 public class CouponAspect {
     static Logger logger = Logger.getLogger(CouponAspect.class);
 
     @Autowired
-    CouponService couponService;
+    private CouponActivationService couponActivationService;
 
-    @Pointcut("execution(* com.tuotiansudai.service.UserService.registerUser(*))")
+    @Pointcut("execution(* com.tuotiansudai.service.UserService.registerUser(..))")
     public void registerUserPointcut() {
     }
 
+    @Pointcut("execution(* com.tuotiansudai.security.MySimpleUrlAuthenticationSuccessHandler.onAuthenticationSuccess(..))")
+    public void loginSuccessPointcut() {
+    }
+
     @AfterReturning(value = "registerUserPointcut()", returning = "returnValue")
-    public void afterReturningUserRegistered(JoinPoint joinPoint, Object returnValue) {
-        logger.debug("after registerUser pointcut");
+    public void afterReturningUserRegister(JoinPoint joinPoint, Object returnValue) {
+        logger.debug("after user register pointcut");
         try {
-            boolean userRegisterFlag = (boolean) returnValue;
-            if (userRegisterFlag) {
+            if ((boolean) returnValue) {
                 RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
-                couponService.afterReturningUserRegistered(registerUserDto.getLoginName());
+                couponActivationService.assignUserCoupon(registerUserDto.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER, UserGroup.NEW_REGISTERED_USER));
             }
         } catch (Exception e) {
-            logger.error("after user registered aspect fail ", e);
+            logger.error("after user register aspect fail ", e);
         }
     }
 
+    @AfterReturning(value = "loginSuccessPointcut()")
+    public void afterReturningUserLogin(JoinPoint joinPoint) {
+        logger.debug("after user login pointcut");
+        try {
+            HttpServletRequest request = (HttpServletRequest) joinPoint.getArgs()[0];
+            couponActivationService.assignUserCoupon(request.getParameter("username"), Lists.newArrayList(UserGroup.ALL_USER,
+                    UserGroup.INVESTED_USER,
+                    UserGroup.REGISTERED_NOT_INVESTED_USER,
+                    UserGroup.IMPORT_USER));
+        } catch (Exception e) {
+            logger.error("after user login aspect fail ", e);
+        }
+    }
 }

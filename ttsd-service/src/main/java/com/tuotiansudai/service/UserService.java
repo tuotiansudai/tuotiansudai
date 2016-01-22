@@ -61,15 +61,13 @@ public interface UserService {
 
     List<String> findAllUserChannels();
 
-    int findUserCount();
-
     void refreshAreaByMobile(List<UserModel> userModels);
 
     void refreshAreaByMobileInJob();
 
     List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber);
 
-    List<UserModel> findUsersAccountBalance(String loginName, String balanceMin, String balanceMax, int currentPageNo, int pageSize);
+    List<UserItemDataDto> findUsersAccountBalance(String loginName, String balanceMin, String balanceMax, int currentPageNo, int pageSize);
 
     int findUsersAccountBalanceCount(String loginName, String balanceMin, String balanceMax);
 

@@ -188,10 +188,6 @@
         select * from user where province is NULL or province = '' order by register_time DESC limit 0,100
     </select>
 
-    <select id="findUserCount" resultType="int">
-        select count(*) from user
-    </select>
-
     <select id="searchAllUsers" parameterType="map" resultMap="userResultMap">
         SELECT
           *

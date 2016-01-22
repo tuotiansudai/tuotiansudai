@@ -72,4 +72,10 @@ public class JobController {
         dataDto.setStatus(isSuccess);
         return dto;
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/auto-loan-out-after-raising-complete", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> autoLoanOutAfterRaisingComplete(@RequestBody long loanId) {
+        return loanService.loanOut(loanId);
+    }
 }

@@ -40,6 +40,7 @@
     <mvc:resources mapping="/pdf/**" location="/pdf/"/>
     <mvc:resources mapping="/tpl/**" location="/tpl/"/>
     <mvc:resources mapping="/upload/**" location="/upload/"/>
+    <mvc:resources mapping="/robots.txt" location="/robots.txt"/>
 
 
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.configuration.FreeMarkerVariablesMap">

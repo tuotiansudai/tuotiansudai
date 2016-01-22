@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.SmsCaptchaDto;
-import com.tuotiansudai.dto.SmsInvestFatalNotifyDto;
+import com.tuotiansudai.dto.SmsFatalNotifyDto;
 import com.tuotiansudai.smswrapper.client.SmsClient;
 import org.junit.After;
 import org.junit.Before;
@@ -100,15 +100,20 @@ public class SmsControllerTest {
         mockResponse.setHeader("content-type", "application/json; charset=UTF-8");
 
         server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
+        server.enqueue(mockResponse);
         URL url = server.getUrl("/");
 
         this.smsClient.setUrl(url.toString());
 
-        SmsInvestFatalNotifyDto dto = new SmsInvestFatalNotifyDto("18611445119", "pay_back_notify_fail,take_as_invest_success,orderId:12341234123412341234,LoginName:zhoubaoxin,amount:100000000,loanId:1000000");
+        SmsFatalNotifyDto dto = new SmsFatalNotifyDto("pay_back_notify_fail,take_as_invest_success,orderId:12341234123412341234,LoginName:zhoubaoxin,amount:100000000,loanId:1000000");
         String requestData = this.objectMapper.writeValueAsString(dto);
         jsonPath(requestData);
 
-        this.mockMvc.perform(post("/sms/invest-fatal-notify")
+        this.mockMvc.perform(post("/sms/fatal-notify")
                 .contentType("application/json; charset=UTF-8")
                 .content(requestData)
                 .contentType(MediaType.parseMediaType("application/json; charset=UTF-8")))

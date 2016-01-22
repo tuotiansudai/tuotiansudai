@@ -98,7 +98,7 @@ module.exports = function (grunt) {
                  ],
                  tasks: ['clean:js','uglify']
              }
-         },
+         }
     });
 
     // load all grunt tasks

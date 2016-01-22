@@ -2,17 +2,20 @@ package com.tuotiansudai.coupon.repository.model;
 
 import com.tuotiansudai.repository.model.InvestStatus;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class UserCouponModel {
+public class UserCouponModel implements Serializable{
 
     private long id;
 
-    private String loginName;
-
     private long couponId;
 
+    private String loginName;
+
     private Long loanId;
+
+    private Long investId;
 
     private Date usedTime;
 
@@ -28,9 +31,11 @@ public class UserCouponModel {
 
     private Date createdTime;
 
-    private Long investId;
-
     private InvestStatus status;
+
+    private String loanName;
+
+    private Long investAmount;
 
     public UserCouponModel() {
     }
@@ -143,5 +148,21 @@ public class UserCouponModel {
 
     public void setStatus(InvestStatus status) {
         this.status = status;
+    }
+
+    public String getLoanName() {
+        return loanName;
+    }
+
+    public void setLoanName(String loanName) {
+        this.loanName = loanName;
+    }
+
+    public Long getInvestAmount() {
+        return investAmount;
+    }
+
+    public void setInvestAmount(Long investAmount) {
+        this.investAmount = investAmount;
     }
 }

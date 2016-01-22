@@ -4,7 +4,6 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
@@ -13,11 +12,11 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferRespon
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
-import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -25,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -38,6 +38,9 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private InvestMapper investMapper;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -92,16 +95,17 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                     userCouponModel.setActualFee(userCouponModel.getActualFee() + actualFee);
                     userCouponMapper.update(userCouponModel);
 
-                    String detail = MessageFormat.format(SystemBillDetailTemplate.NEWBIE_COUPON_INTEREST_DETAIL_TEMPLATE.getTemplate(),
+                    String detail = MessageFormat.format(SystemBillDetailTemplate.COUPON_INTEREST_DETAIL_TEMPLATE.getTemplate(),
+                            couponModel.getCouponType().getName(),
                             String.valueOf(userCouponModel.getId()),
                             String.valueOf(currentLoanRepayModel.getId()),
                             String.valueOf(transferAmount));
-                    systemBillService.transferOut(userCouponModel.getId(), transferAmount, SystemBillBusinessType.NEWBIE_COUPON, detail);
+                    systemBillService.transferOut(userCouponModel.getId(), transferAmount, SystemBillBusinessType.COUPON, detail);
 
                     amountTransfer.transferInBalance(userCouponModel.getLoginName(),
                             userCouponModel.getId(),
                             actualInterest,
-                            UserBillBusinessType.NEWBIE_COUPON, null, null);
+                            couponModel.getCouponType().getUserBillBusinessType(), null, null);
 
                     amountTransfer.transferOutBalance(userCouponModel.getLoginName(),
                             userCouponModel.getId(),
@@ -115,6 +119,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     }
 
     private long calculateActualInterest(CouponModel couponModel, UserCouponModel userCouponModel, LoanModel loanModel, LoanRepayModel currentLoanRepayModel, List<LoanRepayModel> loanRepayModels) {
+
         DateTime currentRepayDate = new DateTime(currentLoanRepayModel.getActualRepayDate());
 
         LoanRepayModel lastLoanRepayModel = null;
@@ -129,9 +134,24 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             lastRepayDate = new DateTime(lastLoanRepayModel.getActualRepayDate());
         }
 
+        int daysOfYear = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().dayOfYear().getMaximumValue();
         int periodDuration = Days.daysBetween(lastRepayDate.withTimeAtStartOfDay(), currentRepayDate.withTimeAtStartOfDay()).getDays();
-        long corpusMultiplyPeriodDays = couponModel.getAmount() * periodDuration;
 
-        return InterestCalculator.calculateInterest(loanModel, corpusMultiplyPeriodDays);
+        long expectedInterest = 0;
+        switch (couponModel.getCouponType()) {
+            case NEWBIE_COUPON:
+            case INVEST_COUPON:
+                expectedInterest = new BigDecimal(periodDuration * couponModel.getAmount())
+                        .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
+                        .divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
+                break;
+            case INTEREST_COUPON:
+                expectedInterest = new BigDecimal(periodDuration * investMapper.findById(userCouponModel.getInvestId()).getAmount())
+                        .multiply(new BigDecimal(couponModel.getRate()))
+                        .divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
+                break;
+        }
+
+        return expectedInterest;
     }
 }

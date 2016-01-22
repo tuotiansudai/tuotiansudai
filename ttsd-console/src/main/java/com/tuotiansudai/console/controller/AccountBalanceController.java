@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.dto.UserItemDataDto;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.UserRoleService;
@@ -30,8 +31,6 @@ public class AccountBalanceController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private UserRoleService userRoleService;
 
     @RequestMapping(value = "/account-balance")
     public ModelAndView accountBalance(@RequestParam(value = "currentPageNo", defaultValue = "1", required = false) int currentPageNo,
@@ -49,21 +48,19 @@ public class AccountBalanceController {
                 logger.error(e.getLocalizedMessage(), e);
             }
             response.setContentType("application/csv");
-            int count = userService.findUsersAccountBalanceCount(loginName, balanceMin, balanceMax);
-            List<UserModel> userModelList = userService.findUsersAccountBalance(loginName, balanceMin, balanceMax, 1, count);
-            for (UserModel userModel : userModelList) {
-                userModel.setStaff(userRoleService.judgeUserRoleExist(userModel.getLoginName(), Role.STAFF));
-            }
+            List<UserItemDataDto> userItemDataDtoList = userService.findUsersAccountBalance(loginName, balanceMin, balanceMax, 1, Integer.MAX_VALUE);
             List<List<String>> data = Lists.newArrayList();
-            for (UserModel userModel : userModelList) {
+            for (UserItemDataDto itemDataDto : userItemDataDtoList) {
                 List<String> dataModel = Lists.newArrayList();
-                dataModel.add(userModel.getLoginName());
-                dataModel.add(userModel.isStaff() ? "是" : "否");
-                dataModel.add(userModel.getAccount().getUserName());
-                dataModel.add(userModel.getMobile());
-                dataModel.add(userModel.getProvince() != null ? userModel.getProvince() : "");
-                dataModel.add(userModel.getLastBillTime() != null ? new DateTime(userModel.getLastBillTime()).toString("yyyy-MM-dd HH:mm:ss") : "");
-                dataModel.add(String.valueOf(new BigDecimal(userModel.getAccount().getBalance()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+                dataModel.add(itemDataDto.getLoginName());
+                dataModel.add(itemDataDto.isStaff() ? "是" : "否");
+                dataModel.add(itemDataDto.getUserName());
+                dataModel.add(itemDataDto.getMobile());
+                dataModel.add(itemDataDto.getBirthday() != null ? itemDataDto.getBirthday() : "");
+                dataModel.add(itemDataDto.getProvince() != null ? itemDataDto.getProvince() : "");
+                dataModel.add(itemDataDto.getCity() != null ? itemDataDto.getCity() : "");
+                dataModel.add(itemDataDto.getLastBillTime() != null ? new DateTime(itemDataDto.getLastBillTime()).toString("yyyy-MM-dd HH:mm:ss") : "");
+                dataModel.add(itemDataDto.getBalance());
                 data.add(dataModel);
             }
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleBalance, data, response.getOutputStream());
@@ -72,11 +69,8 @@ public class AccountBalanceController {
             ModelAndView modelAndView = new ModelAndView("/account-balance");
             modelAndView.addObject("currentPageNo", currentPageNo);
             modelAndView.addObject("pageSize", pageSize);
-            List<UserModel> userModelList = userService.findUsersAccountBalance(loginName, balanceMin, balanceMax, currentPageNo, pageSize);
-            for (UserModel userModel : userModelList) {
-                userModel.setStaff(userRoleService.judgeUserRoleExist(userModel.getLoginName(), Role.STAFF));
-            }
-            modelAndView.addObject("userAccountList", userModelList);
+            List<UserItemDataDto> userItemDataDtoList = userService.findUsersAccountBalance(loginName, balanceMin, balanceMax, currentPageNo, pageSize);
+            modelAndView.addObject("userAccountList", userItemDataDtoList);
             int count = userService.findUsersAccountBalanceCount(loginName, balanceMin, balanceMax);
             modelAndView.addObject("sumBalance", userService.findUsersAccountBalanceSum(loginName, balanceMin, balanceMax));
             long totalPages = count / pageSize + (count % pageSize > 0 ? 1 : 0);

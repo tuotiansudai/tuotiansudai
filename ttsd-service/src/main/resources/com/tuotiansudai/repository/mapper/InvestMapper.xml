@@ -42,6 +42,9 @@
         <result column="referrer_roles" property="referrerRoles"></result>
         <result column="referrer_user_name" property="referrerUserName"></result>
         <result column="referrer_mobile" property="referrerMobile"></result>
+        <result column="identity_number" property="identityNumber"></result>
+        <result column="province" property="province"></result>
+        <result column="city" property="city"></result>
     </resultMap>
 
     <sql id="columns">
@@ -111,11 +114,10 @@
         and status = '${status}'
     </select>
 
-    <update id="cleanWaitingInvestBefore" parameterType="map">
+    <update id="cleanWaitingInvest" parameterType="long">
         update invest set status = 'FAIL'
         where loan_id = #{loanId}
         and status = 'WAIT_PAY'
-        and created_time &lt; #{beforeTime}
     </update>
 
     <select id="findWaitingInvestCountAfter" parameterType="map" resultType="int">
@@ -150,6 +152,9 @@
         loan.periods as loan_periods,
         a.user_name as investor_user_name,
         u.mobile as investor_mobile,
+        a.identity_number as identity_number,
+        u.province as province,
+        u.city as city,
         u.referrer as referrer_login_name,
         ra.user_name as referrer_user_name,
         ru.mobile as referrer_mobile,
@@ -288,4 +293,27 @@
         and invest.login_name = #{loginName}
         and source = 'AUTO'
     </select>
+
+    <select id="findInvestorLoginNames" resultType="java.lang.String">
+        select login_name from invest where invest.status = 'SUCCESS'
+    </select>
+
+    <select id="findInvestorCount" resultType="long">
+        select count(distinct(login_name)) from invest where invest.status = 'SUCCESS'
+    </select>
+
+    <select id="findRegisteredNotInvestCount" resultType="long">
+        select count(*) from account a where not exists(select 1 from invest i where a.login_name = i.login_name and i.status='SUCCESS');
+    </select>
+
+    <select id="hasSuccessInvest" resultType="boolean" parameterType="string">
+        select case count(1)
+               when 0
+                   then 0
+               else 1
+               end
+        from invest
+        where login_name = #{loginName} and status = 'SUCCESS';
+    </select>
+
 </mapper>

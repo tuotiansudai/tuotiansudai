@@ -7,6 +7,8 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.job.AutoLoanOutJob;
+import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -29,7 +31,10 @@ import com.tuotiansudai.util.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.quartz.SchedulerException;
 import org.springframework.aop.framework.AopContext;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -86,8 +91,8 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    @Value("#{'${pay.invest.notify.fatal.mobile}'.split('\\|')}")
-    private List<String> fatalNotifyMobiles;
+    @Autowired
+    private JobManager jobManager;
 
     @Value("${common.environment}")
     private Environment environment;
@@ -116,12 +121,11 @@ public class InvestServiceImpl implements InvestService {
         try {
             checkLoanInvestAccountAmount(dto.getLoginName(), investModel.getLoanId(), investModel.getAmount());
             investMapper.create(investModel);
-            BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
-            return baseDto;
+            return payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
         } catch (PayException e) {
+            logger.error(e.getLocalizedMessage(), e);
             BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
             PayFormDataDto payFormDataDto = new PayFormDataDto();
-            payFormDataDto.setStatus(false);
             payFormDataDto.setMessage(e.getMessage());
             baseDto.setData(payFormDataDto);
             return baseDto;
@@ -203,8 +207,7 @@ public class InvestServiceImpl implements InvestService {
         if (callbackRequest == null) {
             return null;
         }
-        String respData = callbackRequest.getResponseData();
-        return respData;
+        return callbackRequest.getResponseData();
     }
 
     @Override
@@ -274,9 +277,7 @@ public class InvestServiceImpl implements InvestService {
 
                 if (successInvestAmountTotal + investModel.getAmount() == loanModel.getLoanAmount()) {
                     // 满标，改标的状态 RECHECK
-                    loanMapper.updateStatus(loanId, LoanStatus.RECHECK);
-                    // 更新筹款完成时间
-                    loanMapper.updateRaisingCompleteTime(loanId, new Date());
+                    loanRaisingComplete(loanId);
                 }
             }
         } else {
@@ -478,6 +479,7 @@ public class InvestServiceImpl implements InvestService {
      * @param queryString
      * @return
      */
+    @Override
     public String overInvestPaybackCallback(Map<String, String> paramsMap, String queryString) {
 
         logger.debug("into over_invest_payback_callback, queryString: " + queryString);
@@ -514,15 +516,37 @@ public class InvestServiceImpl implements InvestService {
             ((InvestService) AopContext.currentProxy()).investSuccess(orderId, investModel, loginName);
 
             long loanId = investModel.getLoanId();
-            // 超投，改标的状态为满标 RECHECK
-            loanMapper.updateStatus(loanId, LoanStatus.RECHECK);
-            // 更新筹款完成时间
-            loanMapper.updateRaisingCompleteTime(loanId, new Date());
+            loanRaisingComplete(loanId);
+
         }
 
         String respData = callbackRequest.getResponseData();
         return respData;
     }
+
+    private void loanRaisingComplete(long loanId) {
+        // 超投，改标的状态为满标 RECHECK
+        loanMapper.updateStatus(loanId, LoanStatus.RECHECK);
+        // 更新筹款完成时间
+        loanMapper.updateRaisingCompleteTime(loanId, new Date());
+
+        createAutoLoanOutJob(loanId);
+    }
+
+    private void createAutoLoanOutJob(long loanId) {
+        try {
+            Date triggerTime = new DateTime().plusMinutes(AutoLoanOutJob.AUTO_LOAN_OUT_DELAY_MINUTES)
+                    .toDate();
+            jobManager.newJob(JobType.AutoLoanOut, AutoLoanOutJob.class)
+                    .addJobData(AutoLoanOutJob.LOAN_ID_KEY, loanId)
+                    .withIdentity(JobType.AutoLoanOut.name(), "Loan-" + loanId)
+                    .runOnceAt(triggerTime)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create auto loan out job for loan[" + loanId + "] fail", e);
+        }
+    }
+
 
     private void infoLog(String msg, String orderId, long amount, String loginName, long loanId) {
         logger.info(msg + ",orderId:" + orderId + ",LoginName:" + loginName + ",amount:" + amount + ",loanId:" + loanId);
@@ -547,19 +571,12 @@ public class InvestServiceImpl implements InvestService {
 
     private void fatalLog(String errMsg, Throwable e) {
         logger.fatal(errMsg, e);
-        if (CollectionUtils.isNotEmpty(fatalNotifyMobiles)) {
-            sendSmsErrNotify(fatalNotifyMobiles, MessageFormat.format("{0},{1}", environment, errMsg));
-        }
+        sendSmsErrNotify(MessageFormat.format("{0},{1}", environment, errMsg));
     }
 
-    private void sendSmsErrNotify(List<String> mobiles, String errMsg) {
-        for (String mobile : mobiles) {
-            logger.info("sent invest fatal sms message to " + mobile);
-
-            SmsInvestFatalNotifyDto dto = new SmsInvestFatalNotifyDto();
-            dto.setMobile(mobile);
-            dto.setErrMsg(errMsg);
-            smsWrapperClient.sendInvestFatalNotify(dto);
-        }
+    private void sendSmsErrNotify(String errMsg) {
+        logger.info("sent invest fatal sms message");
+        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("投资业务错误。详细信息：{0}", errMsg));
+        smsWrapperClient.sendFatalNotify(dto);
     }
 }

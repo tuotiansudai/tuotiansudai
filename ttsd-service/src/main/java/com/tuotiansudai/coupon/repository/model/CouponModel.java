@@ -1,21 +1,23 @@
 package com.tuotiansudai.coupon.repository.model;
 
-
 import com.tuotiansudai.coupon.dto.CouponDto;
+import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
-import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class CouponModel implements Serializable {
 
     private long id;
 
-    private String name;
-
     private long amount;
+
+    private double rate;
 
     private Date startTime;
 
@@ -23,17 +25,21 @@ public class CouponModel implements Serializable {
 
     private long usedCount;
 
-    private long totalCount;
+    private Long totalCount;
 
-    private boolean active = false;
+    private boolean active;
 
-    private Date createTime;
+    private Date createdTime;
 
-    private String createUser;
+    private String createdBy;
 
-    private String activeUser;
+    private String activatedBy;
 
-    private Date activeTime;
+    private Date activatedTime;
+
+    private String updatedBy;
+
+    private Date updatedTime;
 
     private long issuedCount;
 
@@ -41,7 +47,25 @@ public class CouponModel implements Serializable {
 
     private long actualAmount;
 
-    private long investQuota;
+    private long investLowerLimit;
+
+    private long investUpperLimit;
+
+    private List<ProductType> productTypes;
+
+    private CouponType couponType;
+
+    private boolean smsAlert;
+
+    private Integer deadline;
+
+    private UserGroup userGroup;
+
+    private long totalInvestAmount;
+
+    private boolean deleted;
+
+    private Boolean importIsRight;
 
     public long getId() {
         return id;
@@ -51,20 +75,20 @@ public class CouponModel implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public long getAmount() {
         return amount;
     }
 
     public void setAmount(long amount) {
         this.amount = amount;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
     }
 
     public Date getStartTime() {
@@ -107,36 +131,36 @@ public class CouponModel implements Serializable {
         this.active = active;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreatedTime() {
+        return createdTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
-    public String getCreateUser() {
-        return createUser;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public String getActiveUser() {
-        return activeUser;
+    public String getActivatedBy() {
+        return activatedBy;
     }
 
-    public void setActiveUser(String activeUser) {
-        this.activeUser = activeUser;
+    public void setActivatedBy(String activatedBy) {
+        this.activatedBy = activatedBy;
     }
 
-    public Date getActiveTime() {
-        return activeTime;
+    public Date getActivatedTime() {
+        return activatedTime;
     }
 
-    public void setActiveTime(Date activeTime) {
-        this.activeTime = activeTime;
+    public void setActivatedTime(Date activatedTime) {
+        this.activatedTime = activatedTime;
     }
 
     public long getIssuedCount() {
@@ -163,25 +187,123 @@ public class CouponModel implements Serializable {
         this.actualAmount = actualAmount;
     }
 
-    public CouponModel(){
+    public long getInvestLowerLimit() {
+        return investLowerLimit;
+    }
+
+    public void setInvestLowerLimit(long investLowerLimit) {
+        this.investLowerLimit = investLowerLimit;
+    }
+
+    public long getInvestUpperLimit() {
+        return investUpperLimit;
+    }
+
+    public void setInvestUpperLimit(long investUpperLimit) {
+        this.investUpperLimit = investUpperLimit;
+    }
+
+    public UserGroup getUserGroup() {
+        return userGroup;
+    }
+
+    public void setUserGroup(UserGroup userGroup) {
+        this.userGroup = userGroup;
+    }
+
+    public CouponModel() {
 
     }
 
-    public long getInvestQuota() {
-        return investQuota;
+    public long getTotalInvestAmount() {
+        return totalInvestAmount;
     }
 
-    public void setInvestQuota(long investQuota) {
-        this.investQuota = investQuota;
+    public void setTotalInvestAmount(long totalInvestAmount) {
+        this.totalInvestAmount = totalInvestAmount;
+    }
+
+    public List<ProductType> getProductTypes() {
+        return productTypes;
+    }
+
+    public void setProductTypes(List<ProductType> productTypes) {
+        this.productTypes = productTypes;
+    }
+
+    public CouponType getCouponType() {
+        return couponType;
+    }
+
+    public void setCouponType(CouponType couponType) {
+        this.couponType = couponType;
+    }
+
+    public boolean isSmsAlert() {
+        return smsAlert;
+    }
+
+    public void setSmsAlert(boolean smsAlert) {
+        this.smsAlert = smsAlert;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public Date getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Date updatedTime) {
+        this.updatedTime = updatedTime;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+    public Integer getDeadline() {
+        return deadline;
+    }
+
+    public Boolean getImportIsRight() {
+        return importIsRight;
+    }
+
+    public void setImportIsRight(Boolean importIsRight) {
+        this.importIsRight = importIsRight;
+    }
+
+    public void setTotalCount(Long totalCount) {
+        this.totalCount = totalCount;
+    }
+
+    public void setDeadline(Integer deadline) {
+        this.deadline = deadline;
     }
 
     public CouponModel(CouponDto couponDto){
-        this.name = couponDto.getName();
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime();
-        this.endTime =  new DateTime(couponDto.getEndTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate();
-        this.totalCount = StringUtils.isEmpty(couponDto.getTotalCount())?0l:Long.parseLong(couponDto.getTotalCount());
-        this.createTime = new Date();
-        this.investQuota = AmountConverter.convertStringToCent(couponDto.getInvestQuota());
+        if (couponDto.getEndTime() != null) {
+            this.endTime = new DateTime(couponDto.getEndTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate();
+        }
+        this.totalCount = couponDto.getTotalCount();
+        this.productTypes = couponDto.getProductTypes() ;
+        this.couponType = couponDto.getCouponType();
+        this.investLowerLimit = AmountConverter.convertStringToCent(couponDto.getInvestLowerLimit());
+        this.investUpperLimit = AmountConverter.convertStringToCent(couponDto.getInvestUpperLimit());
+        this.smsAlert = couponDto.isSmsAlert();
+        this.deadline = couponDto.getDeadline();
+        this.userGroup = couponDto.getUserGroup();
+        this.rate = couponDto.getRate() == null ? 0 : new BigDecimal(couponDto.getRate()).divide(new BigDecimal(100)).doubleValue();
     }
 }

@@ -2,7 +2,7 @@ package com.tuotiansudai.api.dto;
 
 public class AppVersionResponseDataDto extends BaseResponseDataDto {
     private String version;
-    private int versionCode;
+    private Integer versionCode;
     private String message;
     private boolean forceUpgrade;
     private String url;
@@ -15,11 +15,11 @@ public class AppVersionResponseDataDto extends BaseResponseDataDto {
         this.version = version;
     }
 
-    public int getVersionCode() {
+    public Integer getVersionCode() {
         return versionCode;
     }
 
-    public void setVersionCode(int versionCode) {
+    public void setVersionCode(Integer versionCode) {
         this.versionCode = versionCode;
     }
 

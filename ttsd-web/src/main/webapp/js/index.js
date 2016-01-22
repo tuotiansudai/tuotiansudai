@@ -8,7 +8,6 @@ require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
             $dlAmount = $('.dl-amount', $productFrame),
             $imgNum = $('li', $scrollNum),
             $bannerImg = $imgScroll.find('a'),
-            $couponClose = $('.coupon-close'),
             screenWid, picWid, leftWid, adTimer = null,
             n = 0;
 
@@ -26,7 +25,7 @@ require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
         leftWid = (picWid - screenWid) / 2;
 
         $registerBox.css({'right': (screenWid - 1000) / 2 + 'px'});
-        $scrollNum.css({'left': (screenWid - $scrollNum.width()) / 2});
+        $scrollNum.css({'left': (screenWid - $scrollNum.find('li').length * 25) / 2});
         $imgScroll.find("a:not(:first)").hide();
         $imgScroll.find('img').css({
             'margin-left': '-' + leftWid + 'px'
@@ -62,13 +61,6 @@ require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
             $imgScroll.find('img.iphone-img').css({'margin-left': '0px'});
         }
 
-        $couponClose.on('click',function(e) {
-            e.preventDefault();
-            var $self=$(this),
-                $couponModel=$self.parents('#couponModel');
-            $couponModel.fadeOut('fast');
-        });
-
         var scrollTimer;
         $(".scroll-top").hover(function() {
             clearInterval(scrollTimer);
@@ -77,6 +69,7 @@ require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
                 scrollNews($(".scroll-top"));
             }, 2000);
         }).trigger("mouseout");
+
         function scrollNews(obj) {
             var $self = obj.find("ul:first");
             var lineHeight = $self.find("li:first").height();

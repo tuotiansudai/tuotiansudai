@@ -1,18 +1,20 @@
 package com.tuotiansudai.coupon.service;
 
 import com.tuotiansudai.coupon.dto.UserCouponDto;
-import com.tuotiansudai.coupon.dto.UserInvestingCouponDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.repository.model.CouponType;
 
 import java.util.List;
 
 public interface UserCouponService {
 
-    List<UserCouponDto> getUserCouponDtoByLoginName(String loginName);
+    List<UserCouponDto> getUserCoupons(String loginName, List<CouponType> couponTypeList);
 
-    List<UserInvestingCouponDto> getValidCoupons(String loginName, final long loanId);
+    UserCouponDto getUsableNewbieCoupon(String loginName);
 
-    BaseDto<BasePaginationDataDto> findUseRecords(String loginName, int index, int pageSize);
+    List<UserCouponDto> getUsableCoupons(String loginName, final long loanId);
+
+    BaseDto<BasePaginationDataDto> findUseRecords(List<CouponType> couponTypeList, String loginName, int index, int pageSize);
 
 }
