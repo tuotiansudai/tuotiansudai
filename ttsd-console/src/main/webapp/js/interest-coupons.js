@@ -33,35 +33,6 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
             }
         });
 
-        $('body').delegate('.inactive-btn','click',function(e) {
-            e.preventDefault();
-            var $self = $(this),
-                $parentTd = $self.parents('td'),
-                thisId = $self.attr('data-id');//data id
-            var couponType = $self.attr('data-type');
-            if (!confirm("是否确认执行此操作?")) {
-                return;
-            } else {
-                $.ajax({
-                    url:'/activity-manage/coupon/'+thisId+'/inactive',
-                    type:'POST',
-                    dataType:'json'
-                })
-                    .done(function(res) {
-                        if (res.data.status) {
-                            $parentTd.html('<i class="check-btn"></i><a class="loan_repay confirm-btn" href="javascript:void(0)" data-type="'+couponType+'" data-id="'+thisId+'">确认生效</a>');
-                            $parentTd.prev().html('<a href="/activity-manage/coupon/'+thisId+'/edit" class="btn-link">编辑</a> / <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/'+thisId+'" >删除</button>');
-                        } else {
-                            $tipCom.show().find('.txt').text('操作失败！');
-                        }
-                    })
-                    .fail(function(res) {
-                        $self.addClass('confirm-btn').text('操作失败');
-                        $tipCom.show().find('.txt').text('请求发送失败，请刷新重试！');
-                    });
-            }
-        });
-
         //confirm event
         $('body').delegate('.confirm-btn','click',function(e) {
             e.preventDefault();
@@ -81,7 +52,7 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
                         if(res.data.status){
                             $parentTd.html('<i class="check-btn add-check"></i><button class="loan_repay already-btn btn-link inactive-btn" data-id="'+thisId+'">已生效</button>');
                             if (couponType != 'NEWBIE_COUPON') {
-                                $parentTd.find('button').attr('disabled');
+                                $parentTd.find('button').prop('disabled',true);
                             }
                             $parentTd.prev().html('<a href="/activity-manage/coupon/'+thisId+'/detail" class="btn-link">查看详情</a>');
                         }else{
@@ -108,6 +79,7 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
         .done(function(res){
             $('.see-detail').show();
             var $table = $('.see-detail').find('table');
+            $table.find('tr').remove();
             if (res[0]) {
                 var failed = new Array();
                 failed = res[0].split(',');

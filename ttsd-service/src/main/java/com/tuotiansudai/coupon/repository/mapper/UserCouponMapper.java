@@ -6,6 +6,7 @@ import com.tuotiansudai.repository.model.CouponType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -21,6 +22,9 @@ public interface UserCouponMapper {
 
     List<UserCouponModel> findByLoanId(@Param("loanId") Long loanId);
 
+    List<UserCouponModel> findSuccessfulUserCouponByLoanId(@Param("loanId") Long loanId);
+
+
     int findUseRecordsCount(@Param(value = "couponTypeList") List<CouponType> couponTypeList,
                             @Param(value = "loginName") String loginName);
 
@@ -33,7 +37,14 @@ public interface UserCouponMapper {
 
     long findSumInvestAmountByCouponId(@Param("couponId") long couponId);
 
-    List<UserCouponModel> findByCouponIdAndStatus(@Param("couponId") long couponId, @Param("isUsed") Boolean isUsed);
+    List<UserCouponModel> findByCouponIdAndStatus(@Param("couponId") long couponId, @Param("isUsed") Boolean isUsed,
+                                                  @Param("loginName") String loginName, @Param("mobile") String mobile,
+                                                  @Param("registerStartTime") Date registerStartTime, @Param("registerEndTime") Date registerEndTime,
+                                                  @Param("index") int index, @Param("pageSize") int pageSize);
+
+    int findCouponDetailCount(@Param("couponId") long couponId, @Param("isUsed") Boolean isUsed,
+                              @Param("loginName") String loginName, @Param("mobile") String mobile,
+                              @Param("registerStartTime") Date registerStartTime, @Param("registerEndTime") Date registerEndTime);
 
     List<UserCouponModel> findByCouponId(long couponId);
 

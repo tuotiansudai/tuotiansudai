@@ -5,7 +5,7 @@
         <div class="banner-img-list">
             <a href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" target="_blank">
                 <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">
-                <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="招募代理" class="iphone-img">
+                <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="拓天上市" class="iphone-img">
             </a>
             <a href="/activity/awards" target="_blank">
                 <img src="${staticServer}/images/sign/actor/awards/ttimg-awards.jpg" alt="宝马大奖颁奖典礼" class="pc-img">
@@ -211,22 +211,32 @@
 
             <div class="box-radius clearfix">
                 <ul class="media-list fl">
-                    <li><i>●</i><a href="http://house.qq.com/a/20151221/035341.htm" target="_blank">拓天速贷官网全新升级 迈入2.0智能金融信息服务时代</a> <time>2015-12-21</time></li>
-                    <li><i>●</i><a href="http://toutiao.com/news/6233268186905575938/" target="_blank">拓天速贷以卓越风控打造高效资产平台</a> <time>2015-12-28</time></li>
-                    <li><i>●</i><a href="http://money.cri.cn/303/2015/12/16/124s17791.htm" target="_blank">拓天速贷走进石家庄 双十二财富送到家</a> <time>2015-12-16</time></li>
-                    <li><i>●</i><a href="http://money.china.com/fin/lc/201509/29/3549074.html" target="_blank">拓天速贷：高效资产平台的缔造者</a> <time>2015-09-29</time></li>
-                    <li><i>●</i><a href="http://news.dichan.sina.com.cn/2015/10/28/1131448.html" target="_blank">拓天速贷推出累积收益?兑大奖活动</a> <time>2015-10-28</time></li>
+                    <li><i>●</i><a href="http://house.qq.com/a/20151221/035341.htm" target="_blank">拓天速贷官网全新升级 迈入2.0智能金融信息服务时代</a>
+                        <time>2015-12-21</time>
+                    </li>
+                    <li><i>●</i><a href="http://toutiao.com/news/6233268186905575938/" target="_blank">拓天速贷以卓越风控打造高效资产平台</a>
+                        <time>2015-12-28</time>
+                    </li>
+                    <li><i>●</i><a href="http://money.cri.cn/303/2015/12/16/124s17791.htm" target="_blank">拓天速贷走进石家庄 双十二财富送到家</a>
+                        <time>2015-12-16</time>
+                    </li>
+                    <li><i>●</i><a href="http://money.china.com/fin/lc/201509/29/3549074.html" target="_blank">拓天速贷：高效资产平台的缔造者</a>
+                        <time>2015-09-29</time>
+                    </li>
+                    <li><i>●</i><a href="http://news.dichan.sina.com.cn/2015/10/28/1131448.html" target="_blank">拓天速贷推出累积收益?兑大奖活动</a>
+                        <time>2015-10-28</time>
+                    </li>
                 </ul>
                 <ul class="media-logo-list fr">
-                    <li><a href="http://house.qq.com/a/20151221/035341.htm" target="_blank" class="qq"></a> </li>
-                    <li><a href="http://yueyu.cntv.cn/2015/10/28/ARTI1446021624023304.shtml" target="_blank" class="yangshi"></a> </li>
-                    <li><a href="http://msn.ynet.com/3.1/1512/16/10626316.html" target="_blank" class="msn"></a> </li>
-                    <li><a href="http://news.dichan.sina.com.cn/2015/10/28/1131448.html" target="_blank" class="sina"></a> </li>
-                    <li><a href="http://news.ifeng.com/a/20151028/46027672_0.shtml" target="_blank" class="ifeng"></a> </li>
-                    <li><a href="http://help.3g.163.com/0406/15/0930/16/B4P96I6K0406002E.html" target="_blank" class="wangyi"></a> </li>
-                    <li><a href="http://money.china.com/fin/lc/201509/29/3549074.html" target="_blank" class="china"></a> </li>
-                    <li><a href="http://toutiao.com/news/6233268186905575938/" target="_blank" class="toutiao"></a> </li>
-                  </ul>
+                    <li><a href="http://house.qq.com/a/20151221/035341.htm" target="_blank" class="qq"></a></li>
+                    <li><a href="http://yueyu.cntv.cn/2015/10/28/ARTI1446021624023304.shtml" target="_blank" class="yangshi"></a></li>
+                    <li><a href="http://msn.ynet.com/3.1/1512/16/10626316.html" target="_blank" class="msn"></a></li>
+                    <li><a href="http://news.dichan.sina.com.cn/2015/10/28/1131448.html" target="_blank" class="sina"></a></li>
+                    <li><a href="http://news.ifeng.com/a/20151028/46027672_0.shtml" target="_blank" class="ifeng"></a></li>
+                    <li><a href="http://help.3g.163.com/0406/15/0930/16/B4P96I6K0406002E.html" target="_blank" class="wangyi"></a></li>
+                    <li><a href="http://money.china.com/fin/lc/201509/29/3549074.html" target="_blank" class="china"></a></li>
+                    <li><a href="http://toutiao.com/news/6233268186905575938/" target="_blank" class="toutiao"></a></li>
+                </ul>
             </div>
         </div>
 
@@ -238,10 +248,12 @@
             <div class="box-radius clearfix">
                 <ul>
                     <li><a href="http://www.king-capital.com/" target="_blank"> <img src="${staticServer}/images/sign/partner/jingdu.png"></a></li>
-                    <li><a href="http://www.umpay.com/umpay_cms/" target="_blank"><img src="${staticServer}/images/sign/partner/liandongyoushi.png"></a> </li>
+                    <li><a href="http://www.umpay.com/umpay_cms/" target="_blank"><img src="${staticServer}/images/sign/partner/liandongyoushi.png"></a></li>
                 </ul>
-             </div>
             </div>
+        </div>
     </div>
+
+    <#include "coupon-alert.ftl" />
 </div>
 </@global.main>
