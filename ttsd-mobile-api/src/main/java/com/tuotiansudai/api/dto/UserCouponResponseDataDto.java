@@ -6,6 +6,7 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
+import org.omg.CORBA.PRIVATE_MEMBER;
 
 import java.util.Date;
 import java.util.List;
@@ -46,6 +47,8 @@ public class UserCouponResponseDataDto {
     private String investUpperLimit;
 
     private boolean shared;
+
+    private String investAmount;
 
     public UserCouponResponseDataDto() {
     }
@@ -195,5 +198,13 @@ public class UserCouponResponseDataDto {
 
     public void setShared(boolean shared) {
         this.shared = shared;
+    }
+
+    public String getInvestAmount() {
+        return investAmount;
+    }
+
+    public void setInvestAmount(String investAmount) {
+        this.investAmount = investAmount;
     }
 }
