@@ -22,6 +22,9 @@
                     产品线可用 <br/>
                     <em>单笔投资满&nbsp;<span class="red-amount-exceed"><@amount>${redEnvelope.investLowerLimit?string(0)}</@amount></span>&nbsp;元可用</em>
                 </div>
+                <div class="red-button">
+                    <a href="${redEnvelope.unused?string('/loan-list','javascript:void(0);')}" class="btn-action">立即使用 </a>
+                </div>
                 <div class="use-time">
                     请在&nbsp;<span>${redEnvelope.endTime?date}</span>&nbsp;前使用
                 </div>
