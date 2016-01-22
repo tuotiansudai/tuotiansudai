@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label  class="col-sm-2 control-label">加息券利率: </label>
+            <label  class="col-sm-2 control-label">加息券利率(%): </label>
             <div class="col-sm-4">
                 <input type="text" class="form-control coupon-rate" name="rate" placeholder="" <#if coupon??>value="${coupon.rate!}"</#if> datatype="*" errormsg="加息劵利率不能为空">
             </div>

@@ -1,6 +1,7 @@
 require(['jquery', 'layerWrapper', 'moment', 'pagination', 'mustache', 'text!/tpl/my-treasure-table.mustache',
         'text!/tpl/my-treasure-table-interest.mustache', 'text!/tpl/my-treasure-table-red.mustache', 'csrf'],
 function($, layer, moment, pagination, Mustache, treasureListTemplate, treasureListTemplateInterest, treasureListTemplateRedEnvelope) {
+
     $(function() {
         var $navLi = $('.column-title .title-navli'),
             $listTab = $('.list-tab');
@@ -44,8 +45,13 @@ function($, layer, moment, pagination, Mustache, treasureListTemplate, treasureL
         };
 
         function loadInterestData() {
-            $('#use-record-interest').loadPagination({couponTypeList:['INTEREST_COUPON']}, function(data) {
-                var html = Mustache.render(treasureListTemplateInterest, data);
+            $('#use-record-interest').loadPagination({couponTypeList:['INTEREST_COUPON']}, function(response) {
+                if (response.status) {
+                    _.each(response.records, function (item) {
+                        item.rate = item.rate * 100;
+                    });
+                }
+                var html = Mustache.render(treasureListTemplateInterest, response);
                 $('.invest-list-interest').html(html);
             });
         };

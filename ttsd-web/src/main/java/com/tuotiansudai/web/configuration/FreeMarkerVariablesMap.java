@@ -9,11 +9,14 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
 
 public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLoaderAware {
 
+    private static final int PROD_VERSION_LENGTH = 4;
     private ResourceLoader resourceLoader = new DefaultResourceLoader();
 
     private String staticServer = "";
@@ -22,46 +25,54 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
 
     private String cssLocation;
 
-    private static int DEV_VERSION_LENGTH = 3;
-
-    private static int PROD_VERSION_LENGTH = 4;
-
     @Override
     protected Map<Object, Object> createInstance() {
         Map<Object, Object> map = super.createInstance();
 
         map.put("staticServer", Strings.isNullOrEmpty(staticServer) ? "" : staticServer);
+        map.put("jsPath", javascriptLocation);
+        map.put("cssPath", cssLocation);
+
+        map.put("js", buildStaticFiles(javascriptLocation, ".js"));
+        map.put("css", buildStaticFiles(cssLocation, ".css"));
+
+        return map;
+    }
+
+    private Map<String, String> buildStaticFiles(String filePath, final String extension) {
+        FilenameFilter filenameFilter = new FilenameFilter() {
+
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.toLowerCase().endsWith(extension);
+            }
+        };
 
         try {
-            Resource javascriptResource = resourceLoader.getResource(javascriptLocation);
+            Resource javascriptResource = resourceLoader.getResource(filePath);
             File jsFolder = javascriptResource.getFile();
             if (jsFolder.isDirectory()) {
-                File[] jsFiles = jsFolder.listFiles();
-                map.put("js", this.generateVersionMap(jsFiles));
+                File[] jsFiles = jsFolder.listFiles(filenameFilter);
+                return this.generateVersionMap(jsFiles);
             }
-
-            Resource cssResource = resourceLoader.getResource(cssLocation);
-            File cssFolder = cssResource.getFile();
-            if (cssFolder.isDirectory()) {
-                File[] cssFiles = cssFolder.listFiles();
-                map.put("css", this.generateVersionMap(cssFiles));
-            }
+        } catch (IOException e) {
+            logger.error("Generate Static Resource Version Map Failed: ", e);
         }
-        catch (IOException ex) {
-            logger.error("Generate Static Resource Version Map Failed: ", ex);
-        }
-        return map;
+        return Collections.emptyMap();
     }
 
     private Map<String, String> generateVersionMap(File[] jsFiles) {
         Map<String, String> versionMap = Maps.newHashMap();
+
         for (File file : jsFiles) {
             String fileName = file.getName();
             String[] split = fileName.split("\\.");
             String filePrefix = split[0];
-            if (split.length == DEV_VERSION_LENGTH && !versionMap.containsKey(filePrefix)) {
+
+            if (!versionMap.containsKey(filePrefix)) {
                 versionMap.put(filePrefix, fileName);
             }
+
             if (split.length == PROD_VERSION_LENGTH) {
                 versionMap.put(filePrefix, fileName);
             }

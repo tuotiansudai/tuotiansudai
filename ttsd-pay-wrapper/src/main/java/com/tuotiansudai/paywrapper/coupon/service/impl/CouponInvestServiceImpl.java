@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class CouponInvestServiceImpl implements CouponInvestService {
@@ -42,52 +43,80 @@ public class CouponInvestServiceImpl implements CouponInvestService {
 
     @Override
     @Transactional
-    public void invest(long investId, Long userCouponId) {
-        if (userCouponId == null || userCouponMapper.findById(userCouponId) == null) {
-            return;
-        }
-
+    public void invest(long investId, List<Long> userCouponIds) {
         InvestModel investModel = investMapper.findById(investId);
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
 
-        UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
-        CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+        for (Long userCouponId : userCouponIds) {
+            UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
+            if (userCouponModel != null) {
+                CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+                if (InvestStatus.SUCCESS == userCouponModel.getStatus()
+                        || new DateTime(couponModel.getEndTime()).plusDays(1).withTimeAtStartOfDay().isBeforeNow()
+                        || !couponModel.getProductTypes().contains(loanModel.getProductType())
+                        || (couponModel.getInvestLowerLimit() > 0 && investModel.getAmount() < couponModel.getInvestLowerLimit())
+                        || (couponModel.getInvestUpperLimit() > 0 && investModel.getAmount() > couponModel.getInvestUpperLimit())) {
+                    logger.debug(MessageFormat.format("user coupon ({0}) is unusable!", String.valueOf(userCouponId)));
+                    return;
+                }
+            }
+        }
 
-        if (InvestStatus.SUCCESS != userCouponModel.getStatus()
-                && new DateTime(couponModel.getEndTime()).plusDays(1).withTimeAtStartOfDay().isAfterNow()
-                && couponModel.getProductTypes().contains(loanModel.getProductType())
-                && investModel.getAmount() >= couponModel.getInvestLowerLimit()) {
+        for (Long userCouponId : userCouponIds) {
+            UserCouponModel userCouponModel = userCouponMapper.findById(userCouponId);
             userCouponModel.setStatus(InvestStatus.WAIT_PAY);
             userCouponModel.setInvestId(investId);
             userCouponModel.setLoanId(loanModel.getId());
             userCouponMapper.update(userCouponModel);
-        } else {
-            logger.debug(MessageFormat.format("user coupon ({0}) is unusable!", String.valueOf(userCouponId)));
         }
     }
 
     @Override
     @Transactional
-    public void investCallback(long investId) {
-        UserCouponModel userCouponModel = userCouponMapper.findByInvestId(investId);
-        if (userCouponModel == null) {
-            return;
+    public void cancelUserCoupon(long loanId) {
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanId);
+        for(UserCouponModel userCouponModel : userCouponModels){
+            if(InvestStatus.SUCCESS.equals(userCouponModel.getStatus())){
+                CouponModel couponModel = couponMapper.lockById(userCouponModel.getCouponId());
+                couponModel.setUsedCount(couponModel.getUsedCount() - 1);
+                couponMapper.updateCoupon(couponModel);
+
+                userCouponModel.setLoanId(null);
+                userCouponModel.setInvestId(null);
+                userCouponModel.setUsedTime(null);
+                userCouponModel.setStatus(null);
+                userCouponModel.setExpectedInterest(0L);
+                userCouponModel.setExpectedFee(0L);
+
+                userCouponMapper.update(userCouponModel);
+            }
+
         }
 
-        CouponModel couponModel = couponMapper.lockById(userCouponModel.getCouponId());
-        couponModel.setUsedCount(couponModel.getUsedCount() + 1);
-        couponMapper.updateCoupon(couponModel);
 
+    }
+
+    @Override
+    @Transactional
+    public void investCallback(long investId) {
         InvestModel investModel = investMapper.findById(investId);
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
-        userCouponModel.setLoanId(loanModel.getId());
-        userCouponModel.setInvestId(investId);
-        userCouponModel.setUsedTime(new Date());
-        userCouponModel.setStatus(InvestStatus.SUCCESS);
-        long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(loanModel, couponModel, investModel.getAmount());
-        long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
-        userCouponModel.setExpectedInterest(expectedInterest);
-        userCouponModel.setExpectedFee(expectedFee);
-        userCouponMapper.update(userCouponModel);
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investId);
+
+        for (UserCouponModel model : userCouponModels) {
+            CouponModel couponModel = couponMapper.lockById(model.getCouponId());
+            couponModel.setUsedCount(couponModel.getUsedCount() + 1);
+            couponMapper.updateCoupon(couponModel);
+
+            model.setLoanId(loanModel.getId());
+            model.setInvestId(investId);
+            model.setUsedTime(new Date());
+            model.setStatus(InvestStatus.SUCCESS);
+            long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(loanModel, couponModel, investModel.getAmount());
+            long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+            model.setExpectedInterest(expectedInterest);
+            model.setExpectedFee(expectedFee);
+            userCouponMapper.update(model);
+        }
     }
 }

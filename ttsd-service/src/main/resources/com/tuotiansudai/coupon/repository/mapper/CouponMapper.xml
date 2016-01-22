@@ -74,7 +74,7 @@
               user_coupon t
             GROUP BY t.coupon_id) temp
             ON c.id = temp.coupon_id
-            where c.deleted is FALSE and c.coupon_type != 'INTEREST_COUPON'
+            where c.deleted is FALSE and c.coupon_type in ('NEWBIE_COUPON','INVEST_COUPON')
         ORDER BY created_time DESC
         LIMIT #{index},#{pageSize}
     </select>
@@ -104,12 +104,41 @@
         LIMIT #{index},#{pageSize}
     </select>
 
+    <select id="findRedEnvelopeCoupons" parameterType="map" resultMap="couponResultMap">
+        SELECT
+        c.*,
+        IFNULL(temp.expected_amount, 0) AS expected_amount,
+        IFNULL(temp.actual_amount, 0) AS actual_amount
+        FROM
+        coupon c
+        LEFT JOIN
+        (SELECT
+        t.coupon_id,
+        SUM(
+        t.expected_interest + t.default_interest - t.expected_fee
+        ) AS expected_amount,
+        SUM(
+        t.actual_interest + t.default_interest - t.actual_fee
+        ) AS actual_amount
+        FROM
+        user_coupon t
+        GROUP BY t.coupon_id) temp
+        ON c.id = temp.coupon_id
+        where c.deleted is FALSE and c.coupon_type = 'RED_ENVELOPE'
+        ORDER BY created_time DESC
+        LIMIT #{index},#{pageSize}
+    </select>
+
     <select id="findCouponsCount"  resultType="int">
-        select count(*) from coupon where deleted is FALSE and coupon_type != 'INTEREST_COUPON'
+        select count(*) from coupon where deleted is FALSE and coupon_type in ('NEWBIE_COUPON','INVEST_COUPON')
     </select>
 
     <select id="findInterestCouponsCount"  resultType="int">
         select count(*) from coupon where deleted is FALSE and coupon_type = 'INTEREST_COUPON'
+    </select>
+
+    <select id="findRedEnvelopeCouponsCount"  resultType="int">
+        select count(*) from coupon where deleted is FALSE and coupon_type = 'RED_ENVELOPE'
     </select>
 
     <update id="updateCoupon" parameterType="CouponModel">

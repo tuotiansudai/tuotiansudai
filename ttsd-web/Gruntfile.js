@@ -79,32 +79,32 @@ module.exports = function (grunt) {
                 ]
             }
         },
-         watch: {
-             sass: {
-                 files: [
-                     '<%= meta.baseSassPath %>/*.scss'
-                 ],
-                 tasks: ['clean:css','sass']
-             },
-             cssmin:{
-                 files:[
-                     ['<%= meta.baseCssPath %>/*.css']
-                 ],
-                 tasks: ['cssmin']
-             },
-             uglify:{
-                 files:[
-                     ['<%= meta.baseJsPath %>/*.js']
-                 ],
-                 tasks: ['clean:js','uglify']
-             }
-         },
+        watch: {
+            sass: {
+                files: [
+                    '<%= meta.baseSassPath %>/*.scss'
+                ],
+                tasks: ['clean:css', 'sass']
+            },
+            cssmin: {
+                files: [
+                    ['<%= meta.baseCssPath %>/*.css']
+                ],
+                tasks: ['cssmin']
+            },
+            uglify: {
+                files: [
+                    ['<%= meta.baseJsPath %>/*.js']
+                ],
+                tasks: ['clean:js', 'uglify']
+            }
+        }
     });
 
     // load all grunt tasks
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
     // 默认被执行的任务列表。
-    grunt.registerTask('default', ['clean', 'uglify', 'sass', 'cssmin','watch']);
+    grunt.registerTask('default', ['clean', 'uglify', 'sass', 'cssmin', 'watch']);
 
 };

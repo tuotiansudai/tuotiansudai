@@ -62,3 +62,8 @@
 
     </div>
 </div>
+
+
+<div id="layerTipBox" class="layer-tip-box">
+<img src="${staticServer}/images/sign/activities/icon-monkey.png" alt="现金红包">
+</div>

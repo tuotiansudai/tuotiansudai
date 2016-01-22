@@ -10,32 +10,23 @@
     </h4>
 
     <#-- 现金红包 start -->
-    <div class="list-tab tab-show">
+    <div class="list-tab red-envelope-frame tab-show">
         <#list redEnvelopes as redEnvelope>
-            <div class="experience-ticket-box ${redEnvelope.used?string('ticket-status-used', '')} ${redEnvelope.expired?string('ticket-status-expired', '')}">
-                <div class="vertical-line"></div>
-                <div class="ticket-amount fl tc">
-                    <h3>${redEnvelope.name}</h3>
-                    <strong>${(redEnvelope.amount/100)?string("0")}元</strong>
-                    <time>有效期：在${redEnvelope.endTime?date}前使用</time>
+            <div class="red-envelope-box ${redEnvelope.used?string('red-status-used', '')} ${redEnvelope.expired?string('red-status-expired', '')}">
+                <div class="layer-mask"></div>
+                <div class="red-amount"><em>${(redEnvelope.amount/100)?string("0")}</em>&nbsp;元</div>
+                <div class="use-status">
+                    <#list redEnvelope.productTypeList as productType>
+                        <img src="/images/icons/${productType}.png" alt="投资体验券">
+                    </#list>
+                    产品线可用 <br/>
+                    <em>单笔投资满&nbsp;<span class="red-amount-exceed"><@amount>${redEnvelope.investLowerLimit?string(0)}</@amount></span>&nbsp;元可用</em>
                 </div>
-                <div class="ticket-info fr">
-                    <dl class="pad-s">
-                        <dt>使用条件：</dt>
-                        <dd>
-                            <#list redEnvelope.productTypeList as productType>
-                                <img src="/images/icons/${productType}.png" alt="投资体验券">
-                            </#list>
-                            产品线可用
-                        </dd>
-                        <dd>
-                            投资满<@amount>${redEnvelope.investLowerLimit?string(0)}</@amount>元可用。
-                        </dd>
-                        <dd class="tc"><a href="${redEnvelope.unused?string('/loan-list','javascript:void(0);')}" class="btn-action">立即使用</a></dd>
-                    </dl>
+                <div class="use-time">
+                    请在&nbsp;<span>${redEnvelope.endTime?date}</span>&nbsp;前使用
                 </div>
-                <div class="sign-seal sign-used"><span>已<br/>使用</span></div>
                 <div class="sign-seal sign-expired"><span>已<br/>过期</span></div>
+                <div class="sign-seal sign-used"><span>已<br/>使用</span></div>
             </div>
         <#else>
             <p class="no-treasure-tip tc pad-m">您当前没有宝藏，敬请期待！</p>

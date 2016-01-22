@@ -1,5 +1,6 @@
 @import 'variables';
 @import 'jquery_fullpage';
+@import "coupon_alert";
 
 #fp-nav ul li {
   width: 25px;
@@ -53,10 +54,12 @@ body {
         height: 100%;
         left: 0;
         top: 0;
-        z-index: 1;
         img {
           height: 350px;
         }
+      }
+      a:first-child {
+        z-index: 1;
       }
     }
     .scroll-num {

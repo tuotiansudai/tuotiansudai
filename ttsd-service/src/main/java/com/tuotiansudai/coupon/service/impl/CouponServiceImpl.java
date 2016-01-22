@@ -81,9 +81,11 @@ public class CouponServiceImpl implements CouponService {
             }
         }
 
-        long totalCount = couponModel.getTotalCount();
-        if (totalCount <= 0) {
-            throw new CreateCouponException("发放数量应大于0!");
+        if (couponDto.getCouponType() != CouponType.RED_ENVELOPE) {
+            long totalCount = couponModel.getTotalCount();
+            if (totalCount <= 0) {
+                throw new CreateCouponException("发放数量应大于0!");
+            }
         }
 
         if (couponDto.getCouponType() != CouponType.INTEREST_COUPON) {
@@ -152,6 +154,25 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
+    public List<CouponDto> findRedEnvelopeCoupons(int index, int pageSize) {
+        List<CouponModel> couponModels = couponMapper.findRedEnvelopeCoupons((index - 1) * pageSize, pageSize);
+        for (CouponModel couponModel : couponModels) {
+            couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
+        }
+        return Lists.transform(couponModels, new Function<CouponModel, CouponDto>() {
+            @Override
+            public CouponDto apply(CouponModel input) {
+                return new CouponDto(input);
+            }
+        });
+    }
+
+    @Override
+    public int findRedEnvelopeCouponsCount() {
+        return couponMapper.findRedEnvelopeCouponsCount();
+    }
+
+    @Override
     public List<CouponDto> findInterestCoupons(int index, int pageSize) {
         List<CouponModel> couponModels = couponMapper.findInterestCoupons((index - 1) * pageSize, pageSize);
         for (CouponModel couponModel : couponModels) {
@@ -214,14 +235,20 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<UserCouponModel> findCouponDetail(long couponId, Boolean isUsed) {
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponIdAndStatus(couponId, isUsed);
+    public List<UserCouponModel> findCouponDetail(long couponId, Boolean isUsed, String loginName, String mobile, Date registerStartTime, Date registerEndTime, int index, int pageSize) {
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponIdAndStatus(couponId, isUsed, loginName, mobile, registerStartTime, registerEndTime, (index - 1) * pageSize, pageSize);
         for (UserCouponModel userCouponModel : userCouponModels) {
             userCouponModel.setLoanName(userCouponModel.getLoanId() != null ? loanMapper.findById(userCouponModel.getLoanId()).getName() : null);
             userCouponModel.setInvestAmount(userCouponModel.getInvestId() != null ? investMapper.findById(userCouponModel.getInvestId()).getAmount() : null);
         }
         return userCouponModels;
     }
+
+    @Override
+    public int findCouponDetailCount(long couponId, Boolean isUsed, String loginName, String mobile, Date registerStartTime, Date registerEndTime) {
+        return userCouponMapper.findCouponDetailCount(couponId, isUsed, loginName, mobile, registerStartTime, registerEndTime);
+    }
+
 
     @Override
     public void deleteCoupon(String loginName, long couponId) {
