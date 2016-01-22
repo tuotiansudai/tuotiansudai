@@ -4,7 +4,9 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -32,6 +34,9 @@ public class CouponAspect {
 
     @Autowired
     private CouponInvestService couponInvestService;
+
+    @Autowired
+    private CouponLoanOutService couponLoanOutService;
 
     @Around(value = "execution(* com.tuotiansudai.paywrapper.service.RepayService.postRepayCallback(*))")
     public Object aroundRepay(ProceedingJoinPoint proceedingJoinPoint) {
@@ -78,5 +83,21 @@ public class CouponAspect {
             logger.error(e.getLocalizedMessage(), e);
         }
     }
+
+
+    @SuppressWarnings(value = "unchecked")
+    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.LoanService.loanOut(*))", returning = "returnValue")
+    public void afterReturningLoanOut(JoinPoint joinPoint, Object returnValue) {
+        long loanId = (long) joinPoint.getArgs()[0];
+        BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
+        if (baseDto.getData() != null && baseDto.getData().getStatus()) {
+            try {
+                couponLoanOutService.loanOut(loanId);
+            } catch (Exception e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
+        }
+    }
+
 }
 

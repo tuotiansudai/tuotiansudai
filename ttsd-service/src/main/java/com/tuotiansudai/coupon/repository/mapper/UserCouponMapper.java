@@ -19,7 +19,7 @@ public interface UserCouponMapper {
 
     UserCouponModel findById(@Param("id") long id);
 
-    List<UserCouponModel> findByLoanId(@Param("loanId") Long loanId);
+    List<UserCouponModel> findByLoanId(@Param("loanId") Long loanId, @Param("couponTypeList") List<CouponType> couponTypeList);
 
     int findUseRecordsCount(@Param(value = "couponTypeList") List<CouponType> couponTypeList,
                             @Param(value = "loginName") String loginName);
