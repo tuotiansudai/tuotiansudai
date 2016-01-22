@@ -54,10 +54,12 @@ body {
         height: 100%;
         left: 0;
         top: 0;
-        z-index: 1;
         img {
           height: 350px;
         }
+      }
+      a:first-child {
+        z-index: 1;
       }
     }
     .scroll-num {

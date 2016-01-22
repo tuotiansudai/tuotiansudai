@@ -5,7 +5,7 @@
         <div class="banner-img-list">
             <a href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" target="_blank">
                 <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">
-                <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="招募代理" class="iphone-img">
+                <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="拓天上市" class="iphone-img">
             </a>
             <a href="/activity/awards" target="_blank">
                 <img src="${staticServer}/images/sign/actor/awards/ttimg-awards.jpg" alt="宝马大奖颁奖典礼" class="pc-img">
