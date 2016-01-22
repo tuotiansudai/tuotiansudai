@@ -9,7 +9,10 @@
                 快捷支付
             </li>
             <li class="e-bank-recharge-tab <#if !isFastPayOn>active</#if>">个人网银</li>
-            <li class="e-bank-public-recharge-tab">企业网银</li>
+            <@global.role hasRole="'LOANER'">
+                <li class="e-bank-public-recharge-tab">企业网银</li>
+            </@global.role>
+
         </ul>
         <div class="recharge-wrapper">
             <div class="recharge-content">
