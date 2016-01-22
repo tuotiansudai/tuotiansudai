@@ -12,17 +12,18 @@
             <img src="${staticServer}/images/sign/actor/redbag/red-top-mobile.png" alt="注册即送红包" class="red-top-mobile">
             <img src="${staticServer}/images/sign/actor/redbag/red_envelope.jpg" alt="注册即送红包">
         </div>
-    <div class="line-date-box">
+        <div class="line-date-box">
           <div class="line-date">
               <div class="date-info">
                   <i class="fa fa-circle left"></i><span>活动时间：2016年2月3日至2016年5月3日</span><i class="fa fa-circle right"></i>
               </div>
           </div>
     </div>
+        <div class="mobile">
         <a href="#" id="redEnvelope"> <img src="${staticServer}/images/sign/actor/redbag/red-get.jpg" alt="注册即送红包"></a>
         <img src="${staticServer}/images/sign/actor/redbag/red-info.png" alt="注册即送红包">
-
         </div>
+       </div>
     
     <div id="redEnvelopePopWindow" class="hide">
         <img src="${staticServer}/images/sign/actor/redbag/red-pop.png" >
