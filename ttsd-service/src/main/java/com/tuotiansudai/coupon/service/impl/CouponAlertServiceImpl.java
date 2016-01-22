@@ -2,6 +2,7 @@ package com.tuotiansudai.coupon.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -42,6 +43,9 @@ public class CouponAlertServiceImpl implements CouponAlertService {
 
     @Override
     public CouponAlertDto getCouponAlert(String loginName) {
+        if (Strings.isNullOrEmpty(loginName)) {
+            return null;
+        }
         try {
             if (!redisWrapperClient.hexists(COUPON_ALERT_KEY, loginName)) {
                 redisWrapperClient.hset(COUPON_ALERT_KEY, loginName, objectMapper.writeValueAsString(Sets.<Long>newHashSet()));
