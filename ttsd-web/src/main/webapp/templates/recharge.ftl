@@ -9,6 +9,7 @@
                 快捷支付
             </li>
             <li class="e-bank-recharge-tab <#if !isFastPayOn>active</#if>">个人网银</li>
+            <li class="e-bank-public-recharge-tab">企业网银</li>
         </ul>
         <div class="recharge-wrapper">
             <div class="recharge-content">
@@ -23,7 +24,6 @@
             <#if !isFastPayOn && isBindCard>
                 <div class="turn-on-fast-form pad-s">
                     <form action="/agreement" method="post" target="_blank">
-
                         <p><label>姓名：</label><span>${userName}</span></p>
                         <p><label>身份证：</label><span>${identityNumber}</span></p>
                         <p><label>开户行：</label><span>${bank}</span></p>
@@ -41,12 +41,13 @@
                 <div class="fast-recharge-form">
                     <form action="/recharge" method="post" target="_blank">
                         账户可用余额：<i>${balance}</i> 元 <br/>
-                        输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" > 元
+                        输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00"> 元
                         <span class="error" style="display: none;"><i class="fa fa-times-circle"></i>温馨提示：充值金额至少为1元</span>
                         <input type="hidden" name="bankCode" value="${bankCode}"/>
                         <input type="hidden" name="amount" value=""/>
                         <input type="hidden" name="source" value="WEB"/>
                         <input type="hidden" name="fastPay" value="true"/>
+                        <input type="hidden" name="publicPay" value="false"/>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <div class="tc pad-m">
                         <button type="submit" class="btn" disabled="disabled">确认充值</button>
@@ -74,6 +75,7 @@
                             <input type="hidden" name="amount" value=""/>
                         <input type="hidden" name="source" value="WEB"/>
                         <input type="hidden" name="fastPay" value="false"/>
+                        <input type="hidden" name="publicPay" value="false"/>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <div class="tc clear-blank-m">
                             <input type="submit" class="btn" disabled="disabled" value="确认充值"/>

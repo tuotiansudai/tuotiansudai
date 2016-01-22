@@ -25,6 +25,8 @@ public class RechargeDto implements Serializable {
 
     private boolean fastPay;
 
+    private boolean publicPay;
+
     public String getLoginName() {
         return loginName;
     }
@@ -57,6 +59,14 @@ public class RechargeDto implements Serializable {
         this.source = source;
     }
 
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
+
     public boolean isFastPay() {
         return fastPay;
     }
@@ -65,11 +75,11 @@ public class RechargeDto implements Serializable {
         this.fastPay = fastPay;
     }
 
-    public String getChannel() {
-        return channel;
+    public boolean isPublicPay() {
+        return publicPay;
     }
 
-    public void setChannel(String channel) {
-        this.channel = channel;
+    public void setPublicPay(boolean publicPay) {
+        this.publicPay = publicPay;
     }
 }

@@ -22,6 +22,8 @@ public enum SystemBillBusinessType {
 
     LOAN_REMAINING_INTEREST("标的剩余利息"),
 
+    PUBLIC_RECHARGE_SUCCESS("企业充值"),
+
     COUPON("体验券");
 
     private final String description;
