@@ -3,6 +3,10 @@
 <div class="home-page-container">
     <div class="banner-box">
         <div class="banner-img-list">
+            <a href="/activity/redbag" target="_blank">
+                <img src="${staticServer}/images/sign/actor/redbag/red-bag-pc.png" alt="宝马大奖颁奖典礼" class="pc-img">
+                <img src="${staticServer}/images/sign/actor/redbag/red-bag-phone.png" alt="宝马大奖颁奖典礼" class="iphone-img">
+            </a>
             <a href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" target="_blank">
                 <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">
                 <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="招募代理" class="iphone-img">
@@ -20,6 +24,7 @@
         </div>
         <ul class="scroll-num">
             <li class="selected"></li>
+            <li></li>
             <li></li>
             <li></li>
         </ul>
