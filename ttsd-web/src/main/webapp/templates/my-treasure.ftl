@@ -20,6 +20,9 @@
                 产品线可用 <br/>
                 <em>单笔投资满<span class="red-amount-exceed">10000</span>元可用</em>
             </div>
+            <div class="red-button">
+                <a href="/loan-list" class="btn-action">立即使用 </a>
+            </div>
             <div class="use-time">
                 请在<span>2016-05-03</span>前使用
             </div>
@@ -33,6 +36,9 @@
                 <img src="/images/icons/JYF.png" alt="投资体验券">
                 产品线可用 <br/>
                 <em>单笔投资满<span class="red-amount-exceed">10000</span>元可用</em>
+            </div>
+            <div class="red-button">
+                <a href="/loan-list" class="btn-action">立即使用 </a>
             </div>
             <div class="use-time">
                 请在<span>2016-05-03</span>前使用
@@ -48,6 +54,9 @@
                 产品线可用 <br/>
                 <em>投资即可返现</em>
             </div>
+            <div class="red-button">
+                <a href="/loan-list" class="btn-action">立即使用 </a>
+            </div>
             <div class="use-time">
                 请在<span>2016-05-03</span>前使用
             </div>
@@ -62,6 +71,9 @@
                 <img src="/images/icons/JYF.png" alt="投资体验券">
                 产品线可用 <br/>
                 <em>单笔投资满<span class="red-amount-exceed">10000</span>元可用</em>
+            </div>
+            <div class="red-button">
+                <a href="/loan-list" class="btn-action">立即使用 </a>
             </div>
             <div class="use-time">
                 请在<span>2016-05-03</span>前使用
