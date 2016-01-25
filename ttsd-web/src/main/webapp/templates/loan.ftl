@@ -101,12 +101,9 @@
                                                             <#if coupon.investUpperLimit!=0>
                                                                 [投资限${(coupon.investUpperLimit / 100)?string("0.00")}元内可用]
                                                             </#if>
-<<<<<<< HEAD
-=======
                                                             <#if coupon.investLowerLimit==0 && coupon.investUpperLimit==0>
                                                                 [投资即返]
                                                             </#if>
->>>>>>> app_1.6_master
                                                         </i>
                                                     </span>
                                                 </label>
