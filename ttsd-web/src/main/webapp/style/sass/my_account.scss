@@ -1515,7 +1515,7 @@
       float: left;
       margin-left: 20px;
       margin-bottom: 20px;
-      background: url("/images/sign/activities/red-envelope-valid.png") 0 0 no-repeat;
+      background: url("/images/sign/actor/red-envelope-valid.png") 0 0 no-repeat;
       position: relative;
       .red-amount {
         position: absolute;
@@ -1542,6 +1542,19 @@
           color: #f4e823;
         }
       }
+      .red-button {
+        position: absolute;
+        width:100%;
+        text-align: center;
+        top:172px;
+        font-weight: bold;
+        .btn-action {
+          background: #fdd738;
+          border-color: #fdd738;
+          color: #ff0737 !important;
+          font-weight: bold;
+        }
+      }
       .use-time {
         position: absolute;
         text-align: center;
@@ -1553,18 +1566,28 @@
         }
       }
       &.red-status-expired {
-        background: url("/images/sign/activities/red-envelope-expired.png") 0 0 no-repeat;
+        background: url("/images/sign/actor/red-envelope-expired.png") 0 0 no-repeat;
         .red-amount,.use-status span,.use-time,.use-time span {
           color: #fff;
         }
         .sign-seal {
           color: #df002c;
           border: 2px solid #df002c;
-          display: block;
           left: 58%;
           top: 20px;
+          &.sign-expired {
+            display: block;
+          }
         }
-
+        .red-button {
+          .btn-action {
+            background: #cccccc;
+            border-color: #cccccc;
+            color: #808080 !important;
+            font-weight: bold;
+            cursor: default;
+          }
+        }
       }
       &.red-status-used {
         border-radius: 10px;
@@ -1579,12 +1602,19 @@
         .sign-seal {
           color: #b7b7b7;
           border: 2px solid #b7b7b7;
-          display: block;
           left: 58%;
           top: 20px;
           z-index: 15;
+          &.sign-used {
+            display: block;
+          }
         }
+      }
 
+      &:hover {
+        -moz-box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
+        -webkit-box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
+        box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
       }
     }
     .ticket-use-help {
