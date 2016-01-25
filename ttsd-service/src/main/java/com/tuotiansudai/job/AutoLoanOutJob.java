@@ -4,6 +4,7 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.service.impl.LoanServiceImpl;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -21,6 +22,8 @@ public class AutoLoanOutJob implements Job {
     public final static String LOAN_OUT_IN_PROCESS_KEY = "job:loan-out-in-process:";
 
     public final static int AUTO_LOAN_OUT_DELAY_MINUTES = 30;
+
+    public static String ALREADY_OUT = "0001";
 
     @Autowired
     private PayWrapperClient payWrapperClient;
@@ -47,7 +50,7 @@ public class AutoLoanOutJob implements Job {
         }
 
         BaseDto<PayDataDto> dto = payWrapperClient.autoLoanOutAfterRaisingComplete(loanId);
-        if (!dto.getData().getStatus()) {
+        if (!dto.getData().getStatus() && dto.getData().getCode() != this.ALREADY_OUT) {
             throw new JobExecutionException();
         }
     }
