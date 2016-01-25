@@ -2,9 +2,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
-import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
@@ -15,7 +13,6 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,7 +115,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
 
         if (amount > 0) {
             try {
-                TransferRequestModel requestModel = TransferRequestModel.newReferrerRewardRequest(String.valueOf(orderId), accountModel.getPayUserId(), String.valueOf(amount));
+                TransferRequestModel requestModel = TransferRequestModel.newRequest(String.valueOf(orderId), accountModel.getPayUserId(), String.valueOf(amount));
                 TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
                 model.setStatus(responseModel.isSuccess() ? ReferrerRewardStatus.SUCCESS : ReferrerRewardStatus.FAILURE);
             } catch (Exception e) {
