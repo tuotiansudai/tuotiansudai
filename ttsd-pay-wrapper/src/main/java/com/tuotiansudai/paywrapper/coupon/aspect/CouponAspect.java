@@ -115,7 +115,7 @@ public class CouponAspect {
                         couponLoanOutService.loanOut(loanId);
                     }
                 }, "zzzzz");
-                t.setDaemon(true);
+                t.setDaemon(false);
                 t.start();
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
