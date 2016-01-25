@@ -43,6 +43,7 @@
                             <em class="fr">
                                 <i class="amountNeedRaised-i" data-amount-need-raised="${loan.amountNeedRaised?string.computer}">${(loan.amountNeedRaised / 100)?string("0.00")}</i> 元
                             </em>
+
                         </dd>
                         <dd><span class="fl">账户余额：</span><em class="fr account-amount" data-user-balance="${loan.userBalance?string.computer}">${(loan.userBalance / 100)?string("0.00")} 元</em></dd>
                         <dd><span class="fl">每人限投：</span><em class="fr">${loan.maxInvestAmount} 元</em></dd>
@@ -100,9 +101,12 @@
                                                             <#if coupon.investUpperLimit!=0>
                                                                 [投资限${(coupon.investUpperLimit / 100)?string("0.00")}元内可用]
                                                             </#if>
+<<<<<<< HEAD
+=======
                                                             <#if coupon.investLowerLimit==0 && coupon.investUpperLimit==0>
                                                                 [投资即返]
                                                             </#if>
+>>>>>>> app_1.6_master
                                                         </i>
                                                     </span>
                                                 </label>

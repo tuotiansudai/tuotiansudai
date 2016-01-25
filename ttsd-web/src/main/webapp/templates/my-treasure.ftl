@@ -9,6 +9,8 @@
         <em class="tc title-navli">使用记录</em>
     </h4>
 
+    <#-- 体验券 start -->
+    <div class="list-tab tab-show">
     <div class="list-tab red-envelope-frame tab-show">
 
         <div class="red-envelope-box">

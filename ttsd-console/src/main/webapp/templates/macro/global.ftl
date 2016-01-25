@@ -97,6 +97,14 @@
                     {"name":"createRedEnvelope","text":"现金红包创建","link":"/activity-manage/red-envelope","role":"'ADMIN'"},
                     {"name":"statisticsRedEnvelope","text":"现金红包管理","link":"/activity-manage/red-envelopes","role":"'ADMIN'"}
                 ]
+            },
+            {
+                "name":"app-push-manage",
+                "header":{"text":"APP推送管理"},
+                "sidebar":[
+                    {"name":"manualAppPushManage","text":"手动推送管理","link":"/app-push-manage/manual-app-push-list","role":"'ADMIN'"},
+                    {"name":"createManualAppPush","text":"创建手动推送","link":"/app-push-manage/manual-app-push","role":"'ADMIN'"}
+                ]
             }
         ]
 >

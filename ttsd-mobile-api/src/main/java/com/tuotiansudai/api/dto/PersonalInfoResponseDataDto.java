@@ -15,6 +15,7 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     private String bankId;
     private boolean fastPaymentEnable;
     private String email;
+    private String districtCode;
     private boolean autoInvest;
 
 
@@ -122,6 +123,13 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
         this.email = email;
     }
 
+    public String getDistrictCode() {
+        return districtCode;
+    }
+
+    public void setDistrictCode(String districtCode) {
+        this.districtCode = districtCode;
+    }
     public boolean isAutoInvest() {
         return autoInvest;
     }
