@@ -116,7 +116,7 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','load-swiper','lay
                     type: 1,
                     title: '',
                     area: ['490px', '240px'],
-                    skin:'red-envelope-box',
+                    skin:'red-envelope-box-out',
                     closeBtn: 0,
                     shadeClose: true,
                     move: false,
