@@ -9,6 +9,24 @@
 .register-skin .layui-layer-content {
   overflow: auto!important;
 }
+//red bag,will be remove some days
+.red-envelope-box {
+  background: transparent!important;
+  box-shadow: none!important;
+  position: relative;
+  .layui-layer-wrap {
+    position: relative;
+    .close-tip {
+      position: absolute;
+      right: 12px;
+      top: 1px;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+    }
+  }
+}
+
 
 .page-col-title,.column-title {
   border-bottom:1px solid #ccc;
