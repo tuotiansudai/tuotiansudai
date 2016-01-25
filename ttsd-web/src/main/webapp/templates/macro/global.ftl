@@ -60,9 +60,9 @@
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <title>${title}</title>
     <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" type="text/css" href="${staticServer}/style/dest/${css.global}" charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${css.global}" charset="utf-8" />
     <#if pageCss?? && pageCss != "">
-    <link rel="stylesheet" type="text/css" href="${staticServer}/style/dest/${pageCss}" charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${pageCss}" charset="utf-8" />
     </#if>
 </head>
 <body>
@@ -117,12 +117,7 @@
             userAgent = navigator.userAgent.toLowerCase(),
             metaTags=document.getElementsByTagName('meta'),
             metaLen=metaTags.length,isResponse=false,isPC=false,i=0;
-        if(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
-            isPC=false;
-        }
-        else {
-            isPC=true;
-        }
+        isPC = !(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1);
         for(;i<metaLen;i++) {
             if(metaTags[i].getAttribute('name')=='viewport') {
                 isResponse=true;
@@ -205,10 +200,11 @@
     phoneLoadFun();
 
 </script>
-<script src="${staticServer}/js/dest/${js.config}" type="text/javascript" charset="utf-8"></script>
+<script src="${staticServer}${jsPath}${js.config}" type="text/javascript" charset="utf-8"></script>
 <#if pageJavascript??>
 <script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
-        data-main="${staticServer}/js/dest/${pageJavascript}">
+        data-main="${staticServer}${jsPath}${pageJavascript}">
+
 </script>
 </#if>
 

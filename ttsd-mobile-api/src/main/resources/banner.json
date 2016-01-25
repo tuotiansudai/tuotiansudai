@@ -2,8 +2,16 @@
   {
     "pictureId": "",
     "title": "",
-    "url": "http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1",
+    "url": "{web}/activity/redbag?source=app",
     "seqNum": 1,
+    "picture": "{static}/images/app-banner/red-bag-phone.png",
+    "noticeId": ""
+  },
+  {
+    "pictureId": "",
+    "title": "",
+    "url": "http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1",
+    "seqNum": 2,
     "picture": "{static}/images/app-banner/banner-ipo.png",
     "noticeId": ""
   },
@@ -11,7 +19,7 @@
     "pictureId": "",
     "title": "",
     "url": "{web}/activity/awards?source=app",
-    "seqNum": 2,
+    "seqNum": 3,
     "picture": "{static}/images/app-banner/activity-awards.jpg",
     "noticeId": ""
   },
@@ -19,7 +27,7 @@
     "pictureId": "",
     "title": "",
     "url": "{web}/activity/recruit?source=app",
-    "seqNum": 3,
+    "seqNum": 4,
     "picture": "{static}/images/app-banner/activity-recruit.png",
     "noticeId": ""
   }

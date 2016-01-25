@@ -74,6 +74,23 @@ public class CouponAspect {
         }
     }
 
+    @SuppressWarnings(value = "unchecked")
+    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.LoanService.cancelLoan(*))", returning = "returnValue")
+    public void afterReturningCancelLoan(JoinPoint joinPoint, Object returnValue) {
+        long loanId = (long) joinPoint.getArgs()[0];
+        BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
+        if (baseDto.getData() != null && baseDto.getData().getStatus()) {
+
+            try {
+                couponInvestService.cancelUserCoupon(loanId);
+            } catch (Exception e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
+
+        }
+    }
+
+
     @After(value = "execution(* com.tuotiansudai.paywrapper.service.InvestService.investSuccess(..))")
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
         InvestModel investModel = (InvestModel) joinPoint.getArgs()[1];

@@ -191,5 +191,6 @@
             </div>
         </div>
     </div>
+    <#include "coupon-alert.ftl" />
 </div>
 </@global.main>
