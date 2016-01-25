@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.dto;
 
 public class BaseParamDto {
+
     private BaseParam baseParam;
 
     public BaseParam getBaseParam() {

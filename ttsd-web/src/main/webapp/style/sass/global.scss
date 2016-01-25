@@ -186,7 +186,12 @@
     margin-left: 20px;
   }
 }
-
+.layer-tip-box {
+  position: fixed;
+  right: 10px;
+  bottom: 60px;
+  z-index: 100;
+}
 /********************** Responsive Page ****************************/
 
 @media screen and (max-width: 700px) {
