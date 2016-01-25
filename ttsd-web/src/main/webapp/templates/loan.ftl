@@ -74,15 +74,30 @@
                                         <label for="noCouponSelected"><i class="ticket-title">不使用优惠券</i></label>
                                     </li>
                                     <#list coupons as coupon>
-                                        <li data-coupon-amount="${coupon.amount?string.computer}"
+                                        <li data-coupon-id="${coupon.couponId?string.computer}"
                                             data-coupon-created-time="${coupon.createdTime?string("yyyy-MM-dd HH:mm:ss")}">
                                             <input type="radio" name="userCouponId" value="${coupon.id?string.computer}" id="${coupon.id?string.computer}" class="input-use-ticket">
                                             <label for="${coupon.id?string.computer}">
                                                 <span class="sign">${coupon.couponType.getAbbr()}</span>
                                                     <span class="ticket-info">
-                                                        <i class="ticket-title">${coupon.name}${(coupon.amount / 100)?string("0.00")}元</i>
+                                                        <i class="ticket-title">
+                                                            <#if coupon.couponType=='INTEREST_COUPON'>
+                                                            +${coupon.rate * 100}%${coupon.name}
+                                                            <#else>
+                                                            ${coupon.name}${(coupon.amount / 100)?string("0.00")}元
+                                                            </#if>
+                                                        </i>
                                                         <br/>
-                                                        <i class="ticket-term" data-invest-lower-limit="${coupon.investLowerLimit?string.computer}">[投资满${(coupon.investLowerLimit / 100)?string("0.00")}元可用]</i>
+                                                        <i class="ticket-term"
+                                                           data-invest-lower-limit="${coupon.investLowerLimit?string.computer}"
+                                                           data-invest-upper-limit="${coupon.investUpperLimit?string.computer}">
+                                                            <#if coupon.investLowerLimit!=0>
+                                                                [投资满${(coupon.investLowerLimit / 100)?string("0.00")}元可用]
+                                                            </#if>
+                                                            <#if coupon.investUpperLimit!=0>
+                                                                [投资限${(coupon.investUpperLimit / 100)?string("0.00")}元内可用]
+                                                            </#if>
+                                                        </i>
                                                     </span>
                                             </label>
                                         </li>

@@ -6,6 +6,7 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.RegisterUserDto;
@@ -72,8 +73,9 @@ public class CouponServiceTest {
         couponService.createCoupon("couponTest", couponDto);
 
     }
+
     @Test
-    public void shouldCreateCouponAmountIsInvalid(){
+    public void shouldCreateCouponAmountIsInvalid() {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
         CouponDto couponDto = fakeCouponDto();
@@ -81,13 +83,13 @@ public class CouponServiceTest {
         try {
             couponService.createCoupon("couponTest", couponDto);
         } catch (CreateCouponException e) {
-            assertEquals("投资体验券金额应大于0!",e.getMessage());
+            assertEquals("投资体验券金额应大于0!", e.getMessage());
         }
 
     }
 
     @Test
-    public void shouldCreateCouponStartTimeIsInvalid()  {
+    public void shouldCreateCouponStartTimeIsInvalid() {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
         CouponDto couponDto = fakeCouponDto();
@@ -99,6 +101,7 @@ public class CouponServiceTest {
             assertEquals("活动起期不能早于当前日期!", e.getMessage());
         }
     }
+
     @Test
     public void shouldAfterReturningUserRegisteredIsSuccess() throws CreateCouponException {
         UserModel userModel = fakeUserModel();
@@ -112,6 +115,8 @@ public class CouponServiceTest {
         couponModel.setCreatedBy("couponTest");
         couponModel.setActive(true);
         couponModel.setCouponType(CouponType.NEWBIE_COUPON);
+        couponModel.setCreatedTime(new Date());
+        couponModel.setUserGroup(UserGroup.NEW_REGISTERED_USER);
         couponMapper.create(couponModel);
 
         couponService.assignNewbieCoupon(userModel.getLoginName());
@@ -146,15 +151,17 @@ public class CouponServiceTest {
         couponModel.setCreatedBy(userModel.getLoginName());
         couponModel.setActive(true);
         couponModel.setCouponType(CouponType.NEWBIE_COUPON);
+        couponModel.setUserGroup(UserGroup.NEW_REGISTERED_USER);
+        couponModel.setCreatedTime(new Date());
         couponMapper.create(couponModel);
 
         userService.registerUser(registerUserDto);
 
 
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(registerUserDto.getLoginName());
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(registerUserDto.getLoginName(), null);
         CouponModel couponModel1 = couponMapper.findById(couponModel.getId());
         assertEquals(true, CollectionUtils.isNotEmpty(userCouponModels));
-        assertEquals(1,couponModel1.getIssuedCount());
+        assertEquals(1, couponModel1.getIssuedCount());
 
     }
 
@@ -170,7 +177,7 @@ public class CouponServiceTest {
         return userModelTest;
     }
 
-    private CouponDto fakeCouponDto(){
+    private CouponDto fakeCouponDto() {
         CouponDto couponDto = new CouponDto();
         couponDto.setAmount("1000.00");
         couponDto.setTotalCount(100L);
@@ -185,7 +192,7 @@ public class CouponServiceTest {
         return couponDto;
     }
 
-    private RegisterUserDto fakeRegisterUserDto(){
+    private RegisterUserDto fakeRegisterUserDto() {
         RegisterUserDto registerUserDto = new RegisterUserDto();
         registerUserDto.setCaptcha("111111");
         registerUserDto.setLoginName("couponTest1");
@@ -194,7 +201,7 @@ public class CouponServiceTest {
         return registerUserDto;
     }
 
-    private LoanModel fakeLoanModel(String loginName){
+    private LoanModel fakeLoanModel(String loginName) {
         LoanModel loanModel = new LoanModel();
         loanModel.setAgentLoginName(loginName);
         loanModel.setBaseRate(16.00);

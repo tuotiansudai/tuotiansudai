@@ -160,5 +160,7 @@ public interface InvestMapper {
 
     long findInvestorCount();
 
-    long findCertificationNoInvestCount();
+    long findRegisteredNotInvestCount();
+
+    boolean hasSuccessInvest(String loginName);
 }

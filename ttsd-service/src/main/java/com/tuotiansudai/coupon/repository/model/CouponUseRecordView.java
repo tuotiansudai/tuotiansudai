@@ -7,11 +7,19 @@ import java.util.Date;
 
 public class CouponUseRecordView implements Serializable {
 
+    private long id;
+
     private long loanId;
 
     private String loanName;
 
     private CouponType couponType;
+
+    private long investAmount;
+
+    private String investAmountStr;
+
+    private String rate;
 
     private long couponAmount;
 
@@ -23,7 +31,23 @@ public class CouponUseRecordView implements Serializable {
 
     private String expectInterestStr;
 
+    private long expectedFee;
+
+    private String expectedFeeStr;
+
+    private long expectedIncome;
+
+    private String expectedIncomeStr;
+
     public CouponUseRecordView() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getCouponName() {
@@ -92,5 +116,61 @@ public class CouponUseRecordView implements Serializable {
 
     public void setExpectInterestStr(String expectInterestStr) {
         this.expectInterestStr = expectInterestStr;
+    }
+
+    public long getInvestAmount() {
+        return investAmount;
+    }
+
+    public void setInvestAmount(long investAmount) {
+        this.investAmount = investAmount;
+    }
+
+    public String getInvestAmountStr() {
+        return investAmountStr;
+    }
+
+    public void setInvestAmountStr(String investAmountStr) {
+        this.investAmountStr = investAmountStr;
+    }
+
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
+    }
+
+    public long getExpectedFee() {
+        return expectedFee;
+    }
+
+    public void setExpectedFee(long expectedFee) {
+        this.expectedFee = expectedFee;
+    }
+
+    public String getExpectedFeeStr() {
+        return expectedFeeStr;
+    }
+
+    public void setExpectedFeeStr(String expectedFeeStr) {
+        this.expectedFeeStr = expectedFeeStr;
+    }
+
+    public long getExpectedIncome() {
+        return expectedIncome;
+    }
+
+    public void setExpectedIncome(long expectedIncome) {
+        this.expectedIncome = expectedIncome;
+    }
+
+    public String getExpectedIncomeStr() {
+        return expectedIncomeStr;
+    }
+
+    public void setExpectedIncomeStr(String expectedIncomeStr) {
+        this.expectedIncomeStr = expectedIncomeStr;
     }
 }

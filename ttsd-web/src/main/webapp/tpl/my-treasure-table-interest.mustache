@@ -1,0 +1,27 @@
+<table class="invest-list-interest table-striped">
+    <thead>
+    <tr>
+        <th>项目名称</th>
+        <th>所用券</th>
+        <th>利率</th>
+        <th>使用时间</th>
+        <th>投资金额(元)</th>
+        <th>预计收益(元)</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#records}}
+    <tr>
+        <td><a href="/loan/{{loanId}}" class="project-name">{{loanName}}</td>
+        <td>{{couponName}}</td>
+        <td>{{rate}}％</td>
+        <td>{{usedTime}}</td>
+        <td>{{investAmountStr}}</td>
+        <td>{{expectedIncomeStr}}</td>
+    </tr>
+    {{/records}}
+    {{^records}}
+    <td colspan="6" class="no-data">暂时没有使用记录</td>
+    {{/records}}
+    </tbody>
+</table>

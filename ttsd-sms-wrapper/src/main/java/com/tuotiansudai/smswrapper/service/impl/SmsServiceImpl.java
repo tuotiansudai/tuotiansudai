@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.SmsCouponNotifyDto;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.dto.SmsFatalNotifyDto;
+import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.Environment;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.client.SmsClient;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,8 +89,7 @@ public class SmsServiceImpl implements SmsService {
     @Override
     public BaseDto<SmsDataDto> couponNotify(SmsCouponNotifyDto notifyDto) {
         Map<String, String> map = ImmutableMap.<String, String>builder()
-                .put("amount", notifyDto.getAmount())
-                .put("couponType", notifyDto.getCouponType().getName())
+                .put("coupon", (notifyDto.getCouponType() == CouponType.INTEREST_COUPON ? MessageFormat.format("+{0}%", notifyDto.getRate()) : MessageFormat.format("{0}元", notifyDto.getAmount())) + notifyDto.getCouponType().getName())
                 .put("expiredDate", notifyDto.getExpiredDate())
                 .build();
         String content = SmsTemplate.SMS_COUPON_NOTIFY_TEMPLATE.generateContent(map);
