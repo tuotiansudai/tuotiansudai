@@ -2,6 +2,6 @@ package com.tuotiansudai.paywrapper.coupon.service;
 
 public interface CouponLoanOutService {
 
-    void loanOut(long loanId);
+    void sendRedEnvelope(long loanId);
 
 }

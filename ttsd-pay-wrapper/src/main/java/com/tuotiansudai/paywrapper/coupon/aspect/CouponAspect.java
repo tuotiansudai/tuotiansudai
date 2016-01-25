@@ -1,15 +1,17 @@
 package com.tuotiansudai.paywrapper.coupon.aspect;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.job.SendRedEnvelopeJob;
 import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
@@ -18,10 +20,13 @@ import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.joda.time.DateTime;
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -37,6 +42,9 @@ public class CouponAspect {
 
     @Autowired
     private CouponLoanOutService couponLoanOutService;
+
+    @Autowired
+    private JobManager jobManager;
 
     @Around(value = "execution(* com.tuotiansudai.paywrapper.service.RepayService.postRepayCallback(*))")
     public Object aroundRepay(ProceedingJoinPoint proceedingJoinPoint) {
@@ -108,29 +116,22 @@ public class CouponAspect {
         final long loanId = (long) joinPoint.getArgs()[0];
         BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
         if (baseDto.getData() != null && baseDto.getData().getStatus()) {
-            try {
-                Thread t = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        couponLoanOutService.loanOut(loanId);
-                    }
-                }, "zzzzz");
-                t.setDaemon(true);
-                t.start();
-            } catch (Exception e) {
-                logger.error(e.getLocalizedMessage(), e);
-            }
-        }
-
-        try {
-            for (int i = 0; i < 100; i++) {
-                Thread.sleep(10);
-                logger.info("AAA"+i);
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            createSendRedEnvelopeJob(loanId);
         }
     }
 
+    private void createSendRedEnvelopeJob(long loanId) {
+        try {
+            Date triggerTime = new DateTime().plusMinutes(SendRedEnvelopeJob.SEND_RED_ENVELOPE_DELAY_MINUTES)
+                    .toDate();
+            jobManager.newJob(JobType.SendRedEnvelope, SendRedEnvelopeJob.class)
+                    .addJobData(SendRedEnvelopeJob.LOAN_ID_KEY, loanId)
+                    .withIdentity(JobType.SendRedEnvelope.name(), "Loan-" + loanId)
+                    .runOnceAt(triggerTime)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create send red envelope job for loan[" + loanId + "] fail", e);
+        }
+    }
 }
 
