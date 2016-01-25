@@ -2,9 +2,6 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.UserItemDataDto;
-import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
@@ -32,7 +29,7 @@ public class AccountBalanceController {
 
 
     @RequestMapping(value = "/account-balance")
-    public ModelAndView accountBalance(@RequestParam(value = "currentPageNo", defaultValue = "1", required = false) int currentPageNo,
+    public ModelAndView accountBalance(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                         @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
                                         @RequestParam(value = "loginName",required = false) String loginName,
                                         @RequestParam(value = "export", required = false) String export,
@@ -63,15 +60,15 @@ public class AccountBalanceController {
             return null;
         } else {
             ModelAndView modelAndView = new ModelAndView("/account-balance");
-            modelAndView.addObject("currentPageNo", currentPageNo);
+            modelAndView.addObject("index", index);
             modelAndView.addObject("pageSize", pageSize);
-            List<UserItemDataDto> userItemDataDtoList = userService.findUsersAccountBalance(loginName, currentPageNo, pageSize);
+            List<UserItemDataDto> userItemDataDtoList = userService.findUsersAccountBalance(loginName, index, pageSize);
             modelAndView.addObject("userAccountList", userItemDataDtoList);
             int count = userService.findUsersAccountBalanceCount(loginName);
             modelAndView.addObject("sumBalance", userService.findUsersAccountBalanceSum(loginName));
             long totalPages = count / pageSize + (count % pageSize > 0 ? 1 : 0);
-            boolean hasPreviousPage = currentPageNo > 1 && currentPageNo <= totalPages;
-            boolean hasNextPage = currentPageNo < totalPages;
+            boolean hasPreviousPage = index > 1 && index <= totalPages;
+            boolean hasNextPage = index < totalPages;
             modelAndView.addObject("hasPreviousPage", hasPreviousPage);
             modelAndView.addObject("hasNextPage", hasNextPage);
             modelAndView.addObject("count", count);
