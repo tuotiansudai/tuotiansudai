@@ -88,14 +88,30 @@ public class CouponAspect {
     @SuppressWarnings(value = "unchecked")
     @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.LoanService.loanOut(*))", returning = "returnValue")
     public void afterReturningLoanOut(JoinPoint joinPoint, Object returnValue) {
-        long loanId = (long) joinPoint.getArgs()[0];
+        final long loanId = (long) joinPoint.getArgs()[0];
         BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
         if (baseDto.getData() != null && baseDto.getData().getStatus()) {
             try {
-                couponLoanOutService.loanOut(loanId);
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        couponLoanOutService.loanOut(loanId);
+                    }
+                }, "zzzzz");
+                t.setDaemon(true);
+                t.start();
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
+        }
+
+        try {
+            for (int i = 0; i < 100; i++) {
+                Thread.sleep(10);
+                logger.info("AAA"+i);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

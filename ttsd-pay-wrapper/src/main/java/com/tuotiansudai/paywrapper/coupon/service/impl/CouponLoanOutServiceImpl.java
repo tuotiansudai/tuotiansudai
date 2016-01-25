@@ -59,6 +59,16 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
     @Override
     @Transactional
     public void loanOut(long loanId) {
+
+        try {
+            for (int i = 0; i < 100; i++) {
+                Thread.sleep(10);
+                logger.info("BBB"+i);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanId, Arrays.asList(CouponType.RED_ENVELOPE));
 
         for (UserCouponModel userCouponModel : userCouponModels) {
