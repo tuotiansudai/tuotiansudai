@@ -50,7 +50,7 @@
 
     <filter>
         <filter-name>pageFilter</filter-name>
-        <filter-class>com.tuotiansudai.console.util.PageFilter</filter-class>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
 
 
