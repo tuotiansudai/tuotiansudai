@@ -74,7 +74,7 @@ public class CouponInvestServiceImpl implements CouponInvestService {
     @Override
     @Transactional
     public void cancelUserCoupon(long loanId) {
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanId);
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanId, null);
         for(UserCouponModel userCouponModel : userCouponModels){
             if(InvestStatus.SUCCESS.equals(userCouponModel.getStatus())){
                 CouponModel couponModel = couponMapper.lockById(userCouponModel.getCouponId());
