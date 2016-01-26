@@ -91,20 +91,27 @@
                                                             ${coupon.name}${(coupon.amount / 100)?string("0.00")}元
                                                             </#if>
                                                         </i>
-                                                        <br/>
-                                                        <i class="ticket-term"
-                                                           data-invest-lower-limit="${coupon.investLowerLimit?string.computer}"
-                                                           data-invest-upper-limit="${coupon.investUpperLimit?string.computer}">
-                                                            <#if coupon.investLowerLimit!=0>
+                                                        <#if coupon.investLowerLimit!=0>
+                                                            <br/>
+                                                            <i class="ticket-term" data-invest-lower-limit="${coupon.investLowerLimit?string.computer}">
                                                                 [投资满${(coupon.investLowerLimit / 100)?string("0.00")}元可用]
-                                                            </#if>
-                                                            <#if coupon.investUpperLimit!=0>
+                                                            </i>
+
+                                                        </#if>
+                                                        <#if coupon.investUpperLimit!=0>
+                                                            <br/>
+                                                            <i class="ticket-term" data-invest-upper-limit="${coupon.investUpperLimit?string.computer}">
                                                                 [投资限${(coupon.investUpperLimit / 100)?string("0.00")}元内可用]
-                                                            </#if>
-                                                            <#if coupon.investLowerLimit==0 && coupon.investUpperLimit==0>
+                                                            </i>
+
+                                                        </#if>
+                                                        <#if coupon.investLowerLimit==0 && coupon.investUpperLimit==0>
+                                                            <br/>
+                                                            <i class="ticket-term" data-invest-upper-limit="${coupon.investUpperLimit?string.computer}">
                                                                 [投资即返]
-                                                            </#if>
-                                                        </i>
+                                                            </i>
+                                                        </#if>
+
                                                     </span>
                                                 </label>
                                             </li>

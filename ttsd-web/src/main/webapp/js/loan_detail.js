@@ -94,9 +94,9 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
         var refreshCouponStatus = function () {
             var investAmount = getInvestAmount();
-            $ticketList.find("li").each(function (ticket) {
-                var self = $(this);
-                var input = self.find("input[type='radio']");
+            $.each($ticketList.find("li"), function (index, ticket) {
+                var self = $(ticket);
+                var input = $(self.find("input"));
                 self.removeClass('disabled');
                 input.prop("disabled", false);
                 var ticketTerm = $(self.find(".ticket-term"));
@@ -105,25 +105,28 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 if ((investLowerLimit > 0 && investLowerLimit > investAmount) || (investUpperLimit > 0 && investUpperLimit < investAmount)) {
                     self.addClass('disabled');
                     input.prop("disabled", true);
+                    if (self.data("coupon-shared")) {
+                        input.prop("checked", false);
+                    }
                 }
             });
 
             var notUseCoupon = $ticketList.find("li.not-use-coupon");
-            var sharedCoupons = _.sortBy($ticketList.find("li[data-coupon-shared='true']"), function(ticket) {
+            var sharedCoupons = _.sortBy($ticketList.find("li[data-coupon-shared='true']"), function (ticket) {
                 var $ticket = $(ticket);
                 return new Date($ticket.data("coupon-created-time")).getTime() * ($ticket.hasClass('disabled') ? 2 : 1);
             });
-            var notSharedRedEnvelopes = _.sortBy($ticketList.find("li[data-coupon-shared='false'][data-coupon-type='RED_ENVELOPE']"), function(ticket) {
+            var notSharedRedEnvelopes = _.sortBy($ticketList.find("li[data-coupon-shared='false'][data-coupon-type='RED_ENVELOPE']"), function (ticket) {
                 var $ticket = $(ticket);
                 return new Date($ticket.data("coupon-created-time")).getTime() * ($ticket.hasClass('disabled') ? 2 : 1);
             });
-            var notSharedCoupons = _.sortBy($ticketList.find("li[data-coupon-shared='false'][data-coupon-type!='RED_ENVELOPE']"), function(ticket) {
+            var notSharedCoupons = _.sortBy($ticketList.find("li[data-coupon-shared='false'][data-coupon-type!='RED_ENVELOPE']"), function (ticket) {
                 var $ticket = $(ticket);
                 return new Date($ticket.data("coupon-created-time")).getTime() * ($ticket.hasClass('disabled') ? 2 : 1);
             });
 
             if (sharedCoupons.length > 0) {
-                notUseCoupon.css("border-top","solid 1px #fdd8bd")
+                notUseCoupon.css("border-top", "solid 1px #fdd8bd")
             }
             $ticketList.empty().append(sharedCoupons).append(notUseCoupon).append(notSharedRedEnvelopes).append(notSharedCoupons);
 
@@ -237,6 +240,10 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             } else if (window.event) {
                 window.event.cancelBubsuble = true;
             }
+        });
+
+        amountInputElement.focus(function (event) {
+            $ticketList.addClass('hide');
         });
 
         $('body').click(function (e) {
