@@ -22,9 +22,6 @@ public interface UserCouponMapper {
 
     List<UserCouponModel> findByLoanId(@Param("loanId") Long loanId);
 
-    List<UserCouponModel> findSuccessfulUserCouponByLoanId(@Param("loanId") Long loanId);
-
-
     int findUseRecordsCount(@Param(value = "couponTypeList") List<CouponType> couponTypeList,
                             @Param(value = "loginName") String loginName);
 

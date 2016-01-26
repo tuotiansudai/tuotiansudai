@@ -87,13 +87,9 @@ public class CouponInvestServiceImpl implements CouponInvestService {
                 userCouponModel.setStatus(null);
                 userCouponModel.setExpectedInterest(0L);
                 userCouponModel.setExpectedFee(0L);
-
                 userCouponMapper.update(userCouponModel);
             }
-
         }
-
-
     }
 
     @Override
