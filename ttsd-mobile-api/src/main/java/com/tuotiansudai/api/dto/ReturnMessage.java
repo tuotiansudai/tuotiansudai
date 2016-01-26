@@ -109,6 +109,7 @@ public enum ReturnMessage {
 
     /******提现******/
     WITHDRAW_AMOUNT_NOT_REACH_FEE("0070","提现金额需大于手续费"),
+    SPRING_FESTIVAL_NOT_WITHDRAW("0071","由于春节期间联动优势放假，2月7日至13日期间不可提现，敬请谅解"),
 
     /******意见反馈******/
     FEEDBACK_CAN_NOT_BE_EMPTY("0080", "内容不能为空"),
