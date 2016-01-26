@@ -16,10 +16,10 @@ public interface JPushAlertMapper {
 
     int findPushTypeCount(@Param("pushType") PushType pushType);
 
-    int findPushAlertCount(@Param(value = "name") String name);
+    int findPushAlertCount(@Param(value = "name") String name,@Param(value = "isAutomatic") boolean isAutomatic);
 
     List<JPushAlertModel> findPushAlerts(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize,
-                           @Param(value = "name") String name);
+                           @Param(value = "name") String name, @Param(value = "isAutomatic") boolean isAutomatic);
 
     JPushAlertModel findJPushAlertModelById(long id);
 

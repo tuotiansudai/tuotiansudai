@@ -35,6 +35,7 @@ public class JPushAlertServiceImpl implements JPushAlertService{
         }else{
             jPushAlertModel.setCreatedBy(loginName);
             jPushAlertModel.setCreatedTime(new Date());
+            jPushAlertModel.setIsAutomatic(false);
             jPushAlertMapper.create(jPushAlertModel);
         }
     }
@@ -45,13 +46,13 @@ public class JPushAlertServiceImpl implements JPushAlertService{
     }
 
     @Override
-    public int findPushAlertCount(String name) {
-        return jPushAlertMapper.findPushAlertCount(name);
+    public int findPushAlertCount(String name,boolean isAutomatic) {
+        return jPushAlertMapper.findPushAlertCount(name,false);
     }
 
     @Override
-    public List<JPushAlertModel> findPushAlerts(int index, int pageSize, String name) {
-        return jPushAlertMapper.findPushAlerts((index - 1) * pageSize, pageSize, name);
+    public List<JPushAlertModel> findPushAlerts(int index, int pageSize, String name,boolean isAutomatic) {
+        return jPushAlertMapper.findPushAlerts((index - 1) * pageSize, pageSize, name,isAutomatic);
     }
 
     @Override

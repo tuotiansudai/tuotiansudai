@@ -23,6 +23,7 @@ public class JPushAlertModel implements Serializable{
     private String createdBy;
     private Date updatedTime;
     private String updatedBy;
+    private boolean isAutomatic;
 
     public long getId() {
         return id;
@@ -126,6 +127,15 @@ public class JPushAlertModel implements Serializable{
 
     public void setJumpToLink(String jumpToLink) {
         this.jumpToLink = jumpToLink;
+    }
+
+
+    public boolean isAutomatic() {
+        return isAutomatic;
+    }
+
+    public void setIsAutomatic(boolean isAutomatic) {
+        this.isAutomatic = isAutomatic;
     }
 
     public JPushAlertModel(){

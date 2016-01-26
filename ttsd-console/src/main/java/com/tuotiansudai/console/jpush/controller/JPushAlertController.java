@@ -50,7 +50,7 @@ public class JPushAlertController {
     @RequestMapping(value="/manual-app-push/{id}/send",method = RequestMethod.GET)
     public String send(@PathVariable long id){
         String loginName = LoginUserInfo.getLoginName();
-        jPushAlertService.send(loginName,id);
+        jPushAlertService.send(loginName, id);
         return "redirect:/app-push-manage/manual-app-push-list";
     }
     @RequestMapping(value = "/manual-app-push",method = RequestMethod.POST)
@@ -74,9 +74,9 @@ public class JPushAlertController {
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("name", name);
-        modelAndView.addObject("pushAlerts", jPushAlertService.findPushAlerts(index, pageSize, name));
+        modelAndView.addObject("pushAlerts", jPushAlertService.findPushAlerts(index, pageSize, name,false));
         modelAndView.addObject("provinces", DistrictUtil.getProvinces());
-        int jPushAlertCount = jPushAlertService.findPushAlertCount(name);
+        int jPushAlertCount = jPushAlertService.findPushAlertCount(name,false);
         modelAndView.addObject("jPushAlertCount", jPushAlertCount);
         long totalPages = jPushAlertCount / pageSize + (jPushAlertCount % pageSize > 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
@@ -84,6 +84,14 @@ public class JPushAlertController {
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
 
+        return modelAndView;
+    }
+    @RequestMapping(value = "/auto-app-push-list",method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView autoAppPushList(@RequestParam(value = "index",required = false,defaultValue = "1") int index,
+                                        @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize){
+        ModelAndView modelAndView = new ModelAndView("/auto-app-push-list");
+        modelAndView.addObject("pushAlerts", jPushAlertService.findPushAlerts(index, pageSize,null,true));
         return modelAndView;
     }
 }

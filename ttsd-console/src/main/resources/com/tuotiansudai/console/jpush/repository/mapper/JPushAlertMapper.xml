@@ -19,35 +19,32 @@
         <result column="created_by" property="createdBy"></result>
         <result column="updated_time" property="updatedTime"></result>
         <result column="updated_by" property="updatedBy"></result>
+        <result column="is_automatic" property="isAutomatic"></result>
 
     </resultMap>
 
     <insert id="create" parameterType="jPushAlertModel" useGeneratedKeys="true" keyProperty="id">
-        insert into jpush_alert (name, push_type,push_objects, push_source, status, content, jump_to, jump_to_link,created_time,created_by,updated_time,updated_by)
+        insert into jpush_alert (name, push_type,push_objects, push_source, status, content, jump_to, jump_to_link,created_time,created_by,updated_time,updated_by,is_automatic)
         value(#{name}, #{pushType},#{pushObjects,typeHandler=com.tuotiansudai.console.util.mybatis.PushObjectHandler}, #{pushSource}, #{status}, #{content}, #{jumpTo},
-         #{jumpToLink}, #{createdTime}, #{createdBy}, #{updatedTime}, #{updatedBy})
+         #{jumpToLink}, #{createdTime}, #{createdBy}, #{updatedTime}, #{updatedBy},#{isAutomatic})
     </insert>
 
     <select id="findPushTypeCount" resultType="int" parameterType="map">
-        select count(*) from jpush_alert where push_type = #{pushType}
+        select count(*) from jpush_alert where push_type = #{pushType} and is_automatic = false;
     </select>
 
     <select id="findPushAlertCount" resultType="int" parameterType="map">
-        select COUNT(*) from jpush_alert
-        <where>
+        select COUNT(*) from jpush_alert where is_automatic = #{isAutomatic}
             <if test="name != null and name != '' ">
-                name like CONCAT(CONCAT('%', #{name}), '%')
+                and name like CONCAT(CONCAT('%', #{name}), '%')
             </if>
-        </where>
     </select>
 
     <select id="findPushAlerts" resultMap="jPushAlertResultMap" parameterType="map">
-        select * from jpush_alert
-        <where>
+        select * from jpush_alert where is_automatic = #{isAutomatic}
             <if test="name != null and name != '' ">
-                name like CONCAT(CONCAT('%', #{name}), '%')
+                and name like CONCAT(CONCAT('%', #{name}), '%')
             </if>
-        </where>
         ORDER BY created_time DESC
         LIMIT #{index},#{pageSize}
     </select>
@@ -58,7 +55,7 @@
     </update>
 
     <select id="findJPushAlertModelById" parameterType="long" resultMap="jPushAlertResultMap">
-        select * from jpush_alert where id = #{id}
+        select * from jpush_alert where id = #{id} and is_automatic = false
     </select>
 
 </mapper>

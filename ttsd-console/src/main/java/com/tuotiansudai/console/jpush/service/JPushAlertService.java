@@ -12,9 +12,9 @@ public interface JPushAlertService {
 
     int findPushTypeCount(PushType pushType);
 
-    int findPushAlertCount(String name);
+    int findPushAlertCount(String name,boolean isAutomatic);
 
-    List<JPushAlertModel> findPushAlerts(int index,int pageSize,String name);
+    List<JPushAlertModel> findPushAlerts(int index,int pageSize,String name,boolean isAutomatic);
 
     JPushAlertModel findJPushAlertModelById(long id);
 
