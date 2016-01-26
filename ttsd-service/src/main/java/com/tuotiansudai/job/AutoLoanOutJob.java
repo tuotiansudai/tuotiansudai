@@ -4,7 +4,6 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.service.impl.LoanServiceImpl;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -50,7 +49,7 @@ public class AutoLoanOutJob implements Job {
         }
 
         BaseDto<PayDataDto> dto = payWrapperClient.autoLoanOutAfterRaisingComplete(loanId);
-        if (!dto.getData().getStatus() && dto.getData().getCode() != this.ALREADY_OUT) {
+        if (!dto.getData().getStatus() && !this.ALREADY_OUT.equals(dto.getData().getCode())) {
             throw new JobExecutionException();
         }
     }
