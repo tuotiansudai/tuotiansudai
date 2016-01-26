@@ -121,7 +121,7 @@ public class CouponLoanOutServiceAspectTest {
         long mockCouponId = mockCoupon(couponCreater, mockCouponAmount);
         mockUserCouponAndInvest(mockInvestUserNames, mockCouponId, mockLoanId, investAmount);
 
-        couponLoanOutService.loanOut(mockLoanId);
+        couponLoanOutService.sendRedEnvelope(mockLoanId);
 
         AccountModel am1 = accountMapper.findByLoginName(mockInvestUserNames[0]);
         AccountModel am2 = accountMapper.findByLoginName(mockInvestUserNames[1]);
