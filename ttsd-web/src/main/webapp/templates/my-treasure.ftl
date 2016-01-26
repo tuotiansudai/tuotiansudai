@@ -20,7 +20,11 @@
                         <img src="/images/icons/${productType}.png" alt="投资体验券">
                     </#list>
                     产品线可用 <br/>
-                    <em>单笔投资满&nbsp;<span class="red-amount-exceed"><@amount>${redEnvelope.investLowerLimit?string(0)}</@amount></span>&nbsp;元可用</em>
+                    <#if redEnvelope.investLowerLimit == 0>
+                        <em>投资即可返现</em>
+                    <#else>
+                        <em>单笔投资满&nbsp;<span class="red-amount-exceed"><@amount>${redEnvelope.investLowerLimit?string(0)}</@amount></span>&nbsp;元可用</em>
+                    </#if>
                 </div>
                 <div class="red-button">
                     <a href="${redEnvelope.unused?string('/loan-list','javascript:void(0);')}" class="btn-action">立即使用 </a>
