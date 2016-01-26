@@ -2,10 +2,13 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
         var $InfoBox = $('#personInfoBox'),
             $changeEmailLayer = $('.setEmail', $InfoBox),
             $changePasswordLayer = $('.setPass', $InfoBox),
+            $changeUmpayPasswordLayer = $('.setUmpayPass', $InfoBox),
             $changeEmailDOM = $('#changeEmailDOM'),
             $changePassDOM = $('#changePassDOM'),
+            $changeUmpayPassDOM = $('#changeUmpayPassDOM'),
             $EmailForm = $('form', $changeEmailDOM),
-            $passwordForm = $('form', $changePassDOM);
+            $passwordForm = $('form', $changePassDOM),
+            $umpayPasswordForm = $('form', $changeUmpayPassDOM);
 
         $changeEmailLayer.on('click', function () {
             layer.open({
@@ -182,5 +185,20 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                     equalTo: "密码不一致"
                 }
             }
+        });
+
+        $changeUmpayPasswordLayer.on('click', function() {
+            layer.open({
+                type: 1,
+                move: false,
+                offset: "200px",
+                title: '修改支付密码',
+                area: ['500px', '300px'],
+                shadeClose: false,
+                content: $changeUmpayPassDOM,
+                cancel: function () {
+                    $passwordForm.validate().resetForm();
+                }
+            });
         });
     });

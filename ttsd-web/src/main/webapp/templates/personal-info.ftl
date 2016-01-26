@@ -54,14 +54,28 @@
                     </span>
                     </#if>
                 </li>
-                <li><span class="info-title"> 密码</span>
+                <li><span class="info-title"> 登录密码</span>
                     <em class="info">********</em>
                     <span class="binding-set">
                        <i class="fa fa-check-circle ok"></i> 已设置 <a class="setlink setPass" href="javascript:void(0);">修改</a>
                     </span>
                 </li>
+                <li><span class="info-title"> 支付密码</span>
+                    <em class="info">********</em>
+                    <span class="binding-set">
+                       <i class="fa fa-check-circle ok"></i> 已设置 <a class="setlink setUmpayPass" href="javascript:void(0);">重置</a>
+                    </span>
+                </li>
             </ul>
 
+</div>
+
+<div id="changeUmpayPassDOM" class="pad-m popLayer" style="display: none;">
+    <form name="changeUmpayPasswordForm" action="" method="post">
+
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <button type="submit" class="btn btn-normal">确认重置</button>
+    </form>
 </div>
 
 <div id="changePassDOM" class="pad-m popLayer" style="display: none;">
