@@ -6,7 +6,7 @@
         <em class="tc title-navli active">现金红包</em>
         <em class="tc title-navli">体验券</em>
         <em class="tc title-navli">加息券</em>
-        <em class="tc title-navli">使用记录</em>
+        <em class="tc title-navli">优惠券使用记录</em>
     </h4>
 
     <#-- 现金红包 start -->
@@ -20,7 +20,11 @@
                         <img src="/images/icons/${productType}.png" alt="投资体验券">
                     </#list>
                     产品线可用 <br/>
-                    <em>单笔投资满&nbsp;<span class="red-amount-exceed"><@amount>${redEnvelope.investLowerLimit?string(0)}</@amount></span>&nbsp;元可用</em>
+                    <#if redEnvelope.investLowerLimit == 0>
+                        <em>投资即可返现</em>
+                    <#else>
+                        <em>单笔投资满&nbsp;<span class="red-amount-exceed"><@amount>${redEnvelope.investLowerLimit?string(0)}</@amount></span>&nbsp;元可用</em>
+                    </#if>
                 </div>
                 <div class="red-button">
                     <a href="${redEnvelope.unused?string('/loan-list','javascript:void(0);')}" class="btn-action">立即使用 </a>
@@ -137,7 +141,7 @@
     <#-- 使用记录 start -->
     <div class="list-tab invest-list-content">
         <div class="item-block status-filter">
-            <span class="sub-hd">活动券类型:</span>
+            <span class="sub-hd">优惠券类型:</span>
             <span class="select-item current" data-status="touzi">现金红包</span>
             <span class="select-item" data-status="touzi">体验券</span>
             <span class="select-item" data-status="jiaxi">加息券</span>
