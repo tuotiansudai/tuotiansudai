@@ -91,7 +91,8 @@ public class PersonalInfoController {
     public BaseDto<BaseDataDto> changeUmpayPassword(String identityNumber) {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
-
-
+        baseDto.setData(dataDto);
+        dataDto.setStatus(userService.changeUmpayPassword(LoginUserInfo.getLoginName(), identityNumber));
+        return baseDto;
     }
 }

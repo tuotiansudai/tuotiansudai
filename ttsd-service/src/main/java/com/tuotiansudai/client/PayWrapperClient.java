@@ -57,8 +57,9 @@ public class PayWrapperClient extends BaseClient {
 
     private String changeUmpayPassword = "/change-umpay-password";
 
-    public BaseDto<PayDataDto> changeUmpayPassword(String loginName) {
-        return syncExecute(loginName, changeUmpayPassword, "POST");
+    public boolean changeUmpayPassword(AccountDto accountDto) {
+        BaseDto<PayDataDto> baseDto = syncExecute(accountDto, changeUmpayPassword, "POST");
+        return baseDto.isSuccess();
     }
 
     public BaseDto<PayDataDto> register(RegisterAccountDto dto) {

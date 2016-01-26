@@ -441,7 +441,8 @@ public class UserServiceImpl implements UserService {
         if (accountModel == null || !accountModel.getIdentityNumber().equals(identityNumber)) {
             return false;
         }
-        return payWrapperClient.changeUmpayPassword(loginName);
+        AccountDto accountDto = new AccountDto(loginName, identityNumber);
+        return payWrapperClient.changeUmpayPassword(accountDto);
     }
 
 }
