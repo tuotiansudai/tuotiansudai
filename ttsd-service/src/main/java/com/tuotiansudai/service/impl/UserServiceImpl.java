@@ -435,4 +435,13 @@ public class UserServiceImpl implements UserService {
         return userMapper.findUsersAccountBalanceSum(loginName);
     }
 
+    @Override
+    public boolean changeUmpayPassword(String loginName, String identityNumber) {
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        if (accountModel == null || !accountModel.getIdentityNumber().equals(identityNumber)) {
+            return false;
+        }
+        return payWrapperClient.changeUmpayPassword(loginName);
+    }
+
 }

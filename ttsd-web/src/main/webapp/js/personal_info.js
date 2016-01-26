@@ -197,8 +197,13 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                 shadeClose: false,
                 content: $changeUmpayPassDOM,
                 cancel: function () {
-                    $passwordForm.validate().resetForm();
+                    $umpayPasswordForm.validate().resetForm();
                 }
             });
         });
+
+        $umpayPasswordForm.validate({
+
+        });
+
     });

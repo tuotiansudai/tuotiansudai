@@ -55,6 +55,12 @@ public class PayWrapperClient extends BaseClient {
 
     private String cancelLoanPath = "/loan/{0}/cancel";
 
+    private String changeUmpayPassword = "/change-umpay-password";
+
+    public BaseDto<PayDataDto> changeUmpayPassword(String loginName) {
+        return syncExecute(loginName, changeUmpayPassword, "POST");
+    }
+
     public BaseDto<PayDataDto> register(RegisterAccountDto dto) {
         return syncExecute(dto, registerPath, "POST");
     }

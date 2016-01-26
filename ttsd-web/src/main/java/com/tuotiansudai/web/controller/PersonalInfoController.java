@@ -85,4 +85,13 @@ public class PersonalInfoController {
 
         return baseDto;
     }
+
+    @RequestMapping(value = "/change-umpay-password", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> changeUmpayPassword(String identityNumber) {
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto dataDto = new BaseDataDto();
+
+
+    }
 }
