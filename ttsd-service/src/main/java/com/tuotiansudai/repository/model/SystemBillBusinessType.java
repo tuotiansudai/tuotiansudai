@@ -10,6 +10,8 @@ public enum SystemBillBusinessType {
 
     RECHARGE_SUCCESS("充值"),
 
+    PUBLIC_RECHARGE_SUCCESS("企业充值"),
+
     WITHDRAW_SUCCESS("提现"),
 
     SYSTEM_RECHARGE("平台充值"),

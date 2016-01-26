@@ -13,5 +13,4 @@ public class SystemAccountController {
     public ModelAndView systemAccount() {
         return new ModelAndView("/system-account");
     }
-
 }

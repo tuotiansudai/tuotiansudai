@@ -24,6 +24,8 @@ public class RechargeModel implements Serializable {
 
     private boolean fastPay;
 
+    private boolean publicPay;
+
     private String channel;
 
     private Date createdTime;
@@ -39,6 +41,7 @@ public class RechargeModel implements Serializable {
         this.status = RechargeStatus.WAIT_PAY;
         this.source = dto.getSource();
         this.fastPay = dto.isFastPay();
+        this.publicPay = dto.isPublicPay();
         this.channel = dto.getChannel();
         this.createdTime = new Date();
     }
@@ -105,6 +108,14 @@ public class RechargeModel implements Serializable {
 
     public void setFastPay(boolean fastPay) {
         this.fastPay = fastPay;
+    }
+
+    public boolean isPublicPay() {
+        return publicPay;
+    }
+
+    public void setPublicPay(boolean publicPay) {
+        this.publicPay = publicPay;
     }
 
     public Date getCreatedTime() {
