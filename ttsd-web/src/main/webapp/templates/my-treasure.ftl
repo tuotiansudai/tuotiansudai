@@ -6,7 +6,7 @@
         <em class="tc title-navli active">现金红包</em>
         <em class="tc title-navli">体验券</em>
         <em class="tc title-navli">加息券</em>
-        <em class="tc title-navli">使用记录</em>
+        <em class="tc title-navli">优惠券使用记录</em>
     </h4>
 
     <#-- 现金红包 start -->
@@ -137,7 +137,7 @@
     <#-- 使用记录 start -->
     <div class="list-tab invest-list-content">
         <div class="item-block status-filter">
-            <span class="sub-hd">活动券类型:</span>
+            <span class="sub-hd">优惠券类型:</span>
             <span class="select-item current" data-status="touzi">现金红包</span>
             <span class="select-item" data-status="touzi">体验券</span>
             <span class="select-item" data-status="jiaxi">加息券</span>
