@@ -66,7 +66,7 @@ public class CouponLoanOutServiceImpl implements CouponLoanOutService {
             long transferAmount = couponModel.getAmount();
             boolean isSuccess = transferAmount == 0;
             if (transferAmount > 0) {
-                TransferRequestModel requestModel = TransferRequestModel.newCouponRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(userCouponModel.getId()), String.valueOf(new Date().getTime())),
+                TransferRequestModel requestModel = TransferRequestModel.newRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(userCouponModel.getId()), String.valueOf(new Date().getTime())),
                         accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayUserId(),
                         String.valueOf(transferAmount));
                 try {
