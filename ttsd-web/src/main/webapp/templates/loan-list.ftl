@@ -124,4 +124,5 @@
     </div>
     <#include "coupon-alert.ftl" />
 </div>
+    <#include "red-envelope-float.ftl" />
 </@global.main>
