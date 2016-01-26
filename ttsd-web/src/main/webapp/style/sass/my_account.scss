@@ -973,6 +973,12 @@
               li {
                 padding:5px 10px;
                 line-height: 1.6;
+                &.lower-upper-limit {
+                  .input-use-ticket,label .sign{
+                    position: relative;
+                    top:-8px;
+                  }
+                }
                 .input-use-ticket {
                    margin-bottom: 12px;
                 }

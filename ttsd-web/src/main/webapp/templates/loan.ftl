@@ -78,8 +78,9 @@
                                             <li data-coupon-id="${coupon.couponId?string.computer}"
                                                 data-coupon-type="${coupon.couponType}"
                                                 data-coupon-shared="${coupon.shared?string("true", "false")}"
-                                                data-coupon-created-time="${coupon.createdTime?string("yyyy-MM-dd HH:mm:ss")}">
-                                                <input <#if coupon.shared>type="checkbox" checked="checked" readonly="readonly"<#else>type="radio"</#if>
+                                                data-coupon-created-time="${coupon.createdTime?string("yyyy-MM-dd HH:mm:ss")}"
+                                            <#if coupon.investLowerLimit!=0 && coupon.investUpperLimit!=0>class="lower-upper-limit"</#if>>
+                                            <input <#if coupon.shared>type="checkbox" checked="checked" readonly="readonly"<#else>type="radio"</#if>
                                                        name="userCouponIds" value="${coupon.id?string.computer}" id="${coupon.id?string.computer}" class="input-use-ticket"/>
                                                 <label>
                                                     <span class="sign">${coupon.couponType.getAbbr()}</span>
