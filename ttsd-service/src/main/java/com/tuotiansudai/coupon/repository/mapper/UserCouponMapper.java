@@ -20,7 +20,7 @@ public interface UserCouponMapper {
 
     UserCouponModel findById(@Param("id") long id);
 
-    List<UserCouponModel> findByLoanId(@Param("loanId") Long loanId);
+    List<UserCouponModel> findByLoanId(@Param("loanId") Long loanId, @Param("couponTypeList") List<CouponType> couponTypeList);
 
     List<UserCouponModel> findSuccessfulUserCouponByLoanId(@Param("loanId") Long loanId);
 

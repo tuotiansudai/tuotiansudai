@@ -36,6 +36,8 @@ public enum CouponType {
                 return UserBillBusinessType.INVEST_COUPON;
             case INTEREST_COUPON:
                 return UserBillBusinessType.INTEREST_COUPON;
+            case RED_ENVELOPE:
+                return UserBillBusinessType.RED_ENVELOPE;
         }
 
         return null;

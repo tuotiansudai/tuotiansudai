@@ -1573,9 +1573,11 @@
         .sign-seal {
           color: #df002c;
           border: 2px solid #df002c;
-          display: block;
           left: 58%;
           top: 20px;
+          &.sign-expired {
+            display: block;
+          }
         }
         .red-button {
           .btn-action {
@@ -1583,9 +1585,9 @@
             border-color: #cccccc;
             color: #808080 !important;
             font-weight: bold;
+            cursor: default;
           }
         }
-
       }
       &.red-status-used {
         border-radius: 10px;
@@ -1600,13 +1602,15 @@
         .sign-seal {
           color: #b7b7b7;
           border: 2px solid #b7b7b7;
-          display: block;
           left: 58%;
           top: 20px;
           z-index: 15;
+          &.sign-used {
+            display: block;
+          }
         }
-
       }
+
       &:hover {
         -moz-box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
         -webkit-box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);

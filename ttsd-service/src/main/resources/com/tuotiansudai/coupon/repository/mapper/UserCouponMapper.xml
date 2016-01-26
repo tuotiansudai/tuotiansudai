@@ -60,7 +60,7 @@
         select uc.* from user_coupon uc
         <if test="couponTypeList != null and couponTypeList.size != 0">
             JOIN coupon c on uc.coupon_id = c.id and c.coupon_type in
-            <foreach collection="couponTypeList" item="couponType" index="index" open="(" separator="," close=")">
+            <foreach collection="couponTypeList" item="couponType" open="(" separator="," close=")">
                 #{couponType}
             </foreach>
         </if>
@@ -71,8 +71,15 @@
         select * from user_coupon where id = #{id}
     </select>
 
-    <select id="findByLoanId" resultMap="userCouponResultMap" parameterType="long">
-        select * from user_coupon where loan_id = #{loanId}
+    <select id="findByLoanId" resultMap="userCouponResultMap" parameterType="map">
+        select uc.* from user_coupon uc
+        <if test="couponTypeList != null and couponTypeList.size != 0">
+            JOIN coupon c on uc.coupon_id = c.id and c.coupon_type in
+            <foreach collection="couponTypeList" item="couponType" open="(" separator="," close=")">
+                #{couponType}
+            </foreach>
+        </if>
+        where loan_id = #{loanId}
     </select>
     <select id="findSuccessfulUserCouponByLoanId" resultMap="userCouponResultMap" parameterType="long">
         select * from user_coupon where loan_id = #{loanId} and status = 'SUCCESS'
