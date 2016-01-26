@@ -3,7 +3,7 @@
 <div class="home-page-container">
     <div class="banner-box">
         <div class="banner-img-list">
-            <a href="/activity/redbag" target="_blank">
+            <a href="/activity/red-envelope" target="_blank">
                 <img src="${staticServer}/images/sign/actor/redbag/red-bag-pc.png" alt="宝马大奖颁奖典礼" class="pc-img">
                 <img src="${staticServer}/images/sign/actor/redbag/red-bag-phone.png" alt="宝马大奖颁奖典礼" class="iphone-img">
             </a>
@@ -261,4 +261,6 @@
 
     <#include "coupon-alert.ftl" />
 </div>
+
+    <#include "red-envelope-float.ftl" />
 </@global.main>

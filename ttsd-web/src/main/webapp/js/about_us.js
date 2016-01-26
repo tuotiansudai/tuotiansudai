@@ -111,7 +111,11 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','load-swiper','lay
         }
 
         if($('#redEnvelope').length) {
-            $('#redEnvelope').click(function() {
+            $('#redEnvelope').click(function(event) {
+                var serverTime = new Date($(event.currentTarget).data("kick-off-date")).getTime();
+                if (serverTime > new Date("2016-02-03 00:00:00").getTime()) {
+                    return;
+                }
                 layer.open({
                     type: 1,
                     title: '',
