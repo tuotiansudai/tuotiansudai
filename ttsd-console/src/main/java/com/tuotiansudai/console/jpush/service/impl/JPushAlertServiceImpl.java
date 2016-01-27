@@ -40,6 +40,8 @@ public class JPushAlertServiceImpl implements JPushAlertService{
         }
     }
 
+
+
     @Override
     public int findPushTypeCount(PushType pushType) {
         return jPushAlertMapper.findPushTypeCount(pushType);
@@ -103,6 +105,14 @@ public class JPushAlertServiceImpl implements JPushAlertService{
             jPushAlertModel.setStatus(PushStatus.SEND_FAIL);
             jPushAlertMapper.update(jPushAlertModel);
         }
+    }
+
+    @Override
+    @Transactional
+    public void changeJPushAlertStatus(long id,PushStatus status) {
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertModelById(id);
+        jPushAlertModel.setStatus(status);
+        jPushAlertMapper.update(jPushAlertModel);
     }
 
     private String[] chooseJumpToOrLink(JPushAlertDto jPushAlertDto){

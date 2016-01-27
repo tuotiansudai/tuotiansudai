@@ -55,7 +55,7 @@
     </update>
 
     <select id="findJPushAlertModelById" parameterType="long" resultMap="jPushAlertResultMap">
-        select * from jpush_alert where id = #{id} and is_automatic = false
+        select * from jpush_alert where id = #{id}
     </select>
 
 </mapper>

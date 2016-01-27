@@ -2,10 +2,7 @@ package com.tuotiansudai.console.jpush.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.jpush.dto.JPushAlertDto;
-import com.tuotiansudai.console.jpush.repository.model.JPushAlertModel;
-import com.tuotiansudai.console.jpush.repository.model.JumpTo;
-import com.tuotiansudai.console.jpush.repository.model.PushSource;
-import com.tuotiansudai.console.jpush.repository.model.PushType;
+import com.tuotiansudai.console.jpush.repository.model.*;
 import com.tuotiansudai.console.jpush.service.JPushAlertService;
 import com.tuotiansudai.console.util.DistrictUtil;
 import com.tuotiansudai.console.util.LoginUserInfo;
@@ -92,6 +89,25 @@ public class JPushAlertController {
                                         @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize){
         ModelAndView modelAndView = new ModelAndView("/auto-app-push-list");
         modelAndView.addObject("pushAlerts", jPushAlertService.findPushAlerts(index, pageSize,null,true));
+
         return modelAndView;
     }
+
+    @RequestMapping(value = "/auto-app-push/{jPushAlertId}/disabled",method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView disableJpushAlert(long jPushAlertId){
+        ModelAndView modelAndView = new ModelAndView("/auto-app-push-list");
+        jPushAlertService.changeJPushAlertStatus(jPushAlertId, PushStatus.DISABLED);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/auto-app-push/{jPushAlertId}/enabled",method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView enabledJPushAlert(long jPushAlertId){
+        ModelAndView modelAndView = new ModelAndView("/auto-app-push-list");
+        jPushAlertService.changeJPushAlertStatus(jPushAlertId, PushStatus.ENABLED);
+        return modelAndView;
+    }
+
+
 }

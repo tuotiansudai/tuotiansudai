@@ -45,22 +45,67 @@
             </tr>
             </thead>
             <tbody>
-                <#--<#list pushAlerts as pushAlert>-->
+                <#list pushAlerts as pushAlert>
                 <tr>
                     <td>1</td>
-                    <td>生日提醒</td>
+                    <td>${(pushAlert.name)!}</td>
                     <td>每月1日推送当月生日用户</td>
                     <td>Android / IOS</td>
-                    <td>又长大一岁吧？是不是该多赚点钱，做点大人该做的事啦！生日快乐。</td>
-                    <td>已启用</td>
-                    <td>编辑 | 停用</td>
-                    <td>系统</td>
-                    <td>admin</td>
+                    <td>${(pushAlert.content)!}</td>
+                    <td>${pushAlert.status.getDescription()}</td>
+                    <td>
+                        <button class="btn btn-primary btn-lg" data-toggle="modal"
+                                data-target="#myModal">
+                            编辑
+                        </button>
+                        |
+                        <#if pushAlert.status=='ENABLED'>
+                            <a class="send-push-link"
+                               href="/app-push-manage/auto-app-push/${pushAlert.id?string('0')}/disabled">
+                                停用
+                            </a>
+                        <#else>
+                            <a class="send-push-link"
+                               href="/app-push-manage/auto-app-push/${pushAlert.id?string('0')}/enabled">
+                                启用
+                            </a>
+                        </#if>
+                    </td>
+                    <td>${(pushAlert.createdBy)!}</td>
+                    <td>${(pushAlert.updatedBy)!}</td>
                 </tr>
-                <#--</#list>-->
+                </#list>
             </tbody>
         </table>
     </div>
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        修改推送模板
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    在这里添加一些文本
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary">
+                        提交更改
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
 
 </div>
 <!-- content area end -->

@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.jpush.repository.model;
 
 public enum PushType {
+    BIRTHDAY_ALERT("生日提醒"),
     PREHEAT("预热标的"),
     PRESENT_SEND("礼品派送"),
     IMPORTANT_EVENT("重大事件"),
