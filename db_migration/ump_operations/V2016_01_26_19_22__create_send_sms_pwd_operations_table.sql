@@ -31,7 +31,7 @@ CREATE TABLE `ump_operations`.`mer_send_sms_pwd_response` (
   `response_time` DATETIME        NOT NULL,
   `response_data` TEXT            NOT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT FK_MER_REGISTER_RESPONSE_REQUEST_ID_REF_MER_REGISTER_REQUEST_ID FOREIGN KEY (`request_id`) REFERENCES `ump_operations`.`mer_send_sms_pwd_request` (`id`)
+  CONSTRAINT FK_MER_SEND_SMS_RESPONSE_REQUEST_ID_REF_MER_SEND_SMS_REQUEST_ID FOREIGN KEY (`request_id`) REFERENCES `ump_operations`.`mer_send_sms_pwd_request` (`id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 100001

@@ -6,6 +6,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             $changeEmailDOM = $('#changeEmailDOM'),
             $changePassDOM = $('#changePassDOM'),
             $changeUmpayPassDOM = $('#changeUmpayPassDOM'),
+            $successUmpayPass = $('#successUmpayPass'),
             $EmailForm = $('form', $changeEmailDOM),
             $passwordForm = $('form', $changePassDOM),
             $umpayPasswordForm = $('form', $changeUmpayPassDOM);
@@ -198,12 +199,61 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                 content: $changeUmpayPassDOM,
                 cancel: function () {
                     $umpayPasswordForm.validate().resetForm();
+                    $('.identityCodeTitle').show();
+                    $('.identityCodeError').hide();
                 }
             });
         });
 
         $umpayPasswordForm.validate({
+            submitHandler: function (form) {
+                var self = this;
+                $(form).ajaxSubmit({
+                    dataType: 'json',
+                    beforeSubmit: function (arr, $form, options) {
+                        self.resetForm();
+                    },
+                    success: function (response) {
+                        var data = response.data;
+                        if (data.status) {
+                            layer.closeAll();
+                            layer.open({
+                                type: 1,
+                                move: false,
+                                offset: "200px",
+                                title: '修改支付密码',
+                                area: ['500px', '300px'],
+                                shadeClose: false,
+                                content: $successUmpayPass
+                            });
+                        } else {
+                            $('.identityCodeTitle').hide();
+                            $('.identityCodeError').show();
+                        }
+                    },
+                    error: function () {
+                        $('.identityCodeTitle').hide();
+                        $('.identityCodeError').show();
+                    },
+                    complete: function () {
+                    }
+                });
+                return false;
+            },
+            rules: {
+                identityNumber: {
+                    required: true
+                }
+            },
+            messages: {
+                identityNumber: {
+                    required: "请输入身份证"
+                }
+            }
+        });
 
+        $('#readUmpayPass').on('click', function () {
+            layer.closeAll();
         });
 
     });

@@ -72,16 +72,26 @@
 
 <div id="changeUmpayPassDOM" class="pad-m popLayer" style="display: none;">
     <form name="changeUmpayPasswordForm" action="${requestContext.getContextPath()}/personal-info/change-umpay-password" method="post">
-        <dl>
-            <dt>通过身份证号重置支付密码</dt>
+        <dl class="identityCodeTitle" align="center">
+            通过身份证号重置支付密码
         </dl>
         <dl>
             <dt class="requireOpt">请输入您的身份证号</dt>
             <dd><input type="text" id="identityNumber" name="identityNumber" class="input-control"></dd>
         </dl>
+        <dl class="identityCodeError" >
+            <dt>您输入的身份证号与当前账号不符，请重新输入。</dt>
+        </dl>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button type="submit" class="btn btn-normal">确认重置</button>
     </form>
+</div>
+
+<div id="successUmpayPass" class="pad-m popLayer" style="display: none;">
+    <dl>
+        <dt>您的支付密码已被重置，请注意查收相关短信，查看新密码！</dt>
+    </dl>
+    <button type="button" class="btn btn-normal" id="readUmpayPass">我已查看</button>
 </div>
 
 <div id="changePassDOM" class="pad-m popLayer" style="display: none;">

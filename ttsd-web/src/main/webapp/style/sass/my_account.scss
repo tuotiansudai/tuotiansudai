@@ -34,12 +34,15 @@
   text-align: center;
   overflow: auto;
   height: auto;
-
   dl {
     margin-bottom: 12px;
     height: auto;
     overflow: auto;
     clear: both;
+    &.identityCodeError{
+      color: #ff0000;
+      display: none;
+    }
     dt, dd {
       float: left;
     }

@@ -45,4 +45,8 @@ public class AccountDto implements Serializable{
         this.loginName = loginName;
         this.identityNumber = identityNumber;
     }
+
+    public AccountDto() {
+
+    }
 }
