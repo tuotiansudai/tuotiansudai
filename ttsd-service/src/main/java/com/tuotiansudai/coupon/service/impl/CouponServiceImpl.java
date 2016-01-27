@@ -37,6 +37,8 @@ public class CouponServiceImpl implements CouponService {
 
     static Logger logger = Logger.getLogger(CouponServiceImpl.class);
 
+    private static String redisKeyTemplate = "console:{0}:importcouponuser";
+
     @Autowired
     private CouponMapper couponMapper;
 
@@ -51,11 +53,6 @@ public class CouponServiceImpl implements CouponService {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
-
-    @Autowired
-    private IdGenerator idGenerator;
-
-    private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
     @Override
     @Transactional
@@ -127,30 +124,6 @@ public class CouponServiceImpl implements CouponService {
             redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, couponDto.getFile()));
         }
         couponMapper.updateCoupon(couponModel);
-    }
-
-    @Override
-    @Transactional
-    public void assignNewbieCoupon(String loginName) {
-        List<CouponModel> newbieCoupons = couponMapper.findNewbieCoupon();
-        Optional<CouponModel> found = Iterators.tryFind(newbieCoupons.iterator(), new Predicate<CouponModel>() {
-            @Override
-            public boolean apply(CouponModel couponModel) {
-                return couponModel.isActive()
-                        && couponModel.getStartTime().compareTo(new DateTime().withTimeAtStartOfDay().toDate()) <= 0
-                        && couponModel.getEndTime().after(new DateTime().withTimeAtStartOfDay().toDate());
-            }
-        });
-
-        if (found.isPresent()) {
-            CouponModel couponModel = couponMapper.lockById(found.get().getId());
-            couponModel.setIssuedCount(couponModel.getIssuedCount() + 1);
-            couponModel.setTotalCount(couponModel.getTotalCount() + 1);
-            couponMapper.updateCoupon(couponModel);
-
-            UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId());
-            userCouponMapper.create(userCouponModel);
-        }
     }
 
     @Override

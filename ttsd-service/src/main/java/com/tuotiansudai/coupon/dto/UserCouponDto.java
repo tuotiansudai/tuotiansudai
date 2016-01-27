@@ -18,6 +18,8 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
     private String name;
     private long amount;
     private double rate;
+    private double birthdayBenefit;
+    private boolean multiple;
     private Date startTime;
     private Date endTime;
     private Date usedTime;
@@ -36,11 +38,13 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
 
     public UserCouponDto(CouponModel coupon, UserCouponModel userCoupon) {
         this.id = userCoupon.getId();
+        this.couponId = coupon.getId();
         this.couponType = coupon.getCouponType();
         this.name = coupon.getCouponType().getName();
-        this.rate = coupon.getRate();
-        this.couponId = coupon.getId();
         this.amount = coupon.getAmount();
+        this.rate = coupon.getRate();
+        this.birthdayBenefit = coupon.getBirthdayBenefit();
+        this.multiple = coupon.isMultiple();
         this.startTime = coupon.getStartTime();
         this.endTime = coupon.getEndTime();
         this.usedTime = userCoupon.getUsedTime();
@@ -77,6 +81,14 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
 
     public double getRate() {
         return rate;
+    }
+
+    public double getBirthdayBenefit() {
+        return birthdayBenefit;
+    }
+
+    public boolean isMultiple() {
+        return multiple;
     }
 
     public Date getStartTime() {

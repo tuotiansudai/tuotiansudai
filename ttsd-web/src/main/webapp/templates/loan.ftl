@@ -64,7 +64,9 @@
                             <span class="fl">优惠券：</span>
                             <div class="fr experience-ticket-box">
                                 <em class="experience-ticket-input <#if !coupons?has_content>disabled</#if>" id="use-experience-ticket">
-                                    <span><#if coupons?has_content>请选择您的优惠券<#else>当前您无可用优惠券</#if></span>
+                                    <span>
+                                        <#if coupons?has_content>请选择您的优惠券<#else>当前您无可用优惠券</#if>
+                                    </span>
                                     <i class="fa fa-sort-down fr"></i>
                                     <i class="fa fa-sort-up hide fr"></i>
                                 </em>
@@ -85,11 +87,16 @@
                                                     <span class="sign">${coupon.couponType.getAbbr()}</span>
                                                     <span class="ticket-info">
                                                         <i class="ticket-title">
-                                                            <#if coupon.couponType=='INTEREST_COUPON'>
-                                                                +${coupon.rate * 100}%${coupon.name}
-                                                            <#else>
-                                                            ${coupon.name}${(coupon.amount / 100)?string("0.00")}元
-                                                            </#if>
+                                                            <#switch coupon.couponType>
+                                                                <#case "INTEREST_COUPON">
+                                                                    +${coupon.rate * 100}%${coupon.name}
+                                                                    <#break>
+                                                                <#case "BIRTHDAY_COUPON">
+                                                                    ${coupon.name}首月收益&#215;${1 + coupon.birthdayBenefit}倍
+                                                                    <#break>
+                                                                <#default>
+                                                                    ${coupon.name}${(coupon.amount / 100)?string("0.00")}元
+                                                            </#switch>
                                                         </i>
                                                         <#if coupon.investLowerLimit!=0>
                                                             <br/>
@@ -111,7 +118,6 @@
                                                                 [投资即返]
                                                             </i>
                                                         </#if>
-
                                                     </span>
                                                 </label>
                                             </li>

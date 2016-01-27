@@ -8,6 +8,8 @@
         <id column="id" property="id"/>
         <result column="amount" property="amount"/>
         <result column="rate" property="rate"/>
+        <result column="birthday_benefit" property="birthdayBenefit"/>
+        <result column="multiple" property="multiple"/>
         <result column="start_time" property="startTime"/>
         <result column="end_time" property="endTime"/>
         <result column="used_count" property="usedCount"/>
@@ -34,8 +36,8 @@
     </resultMap>
 
     <insert id="create" parameterType="CouponModel" useGeneratedKeys="true" keyProperty="id">
-        insert into coupon (amount, rate, start_time, end_time, used_count, total_count, active, shared, created_by, created_time, activated_by, activated_time, issued_count, invest_lower_limit, invest_upper_limit, coupon_type, product_types, deleted, deadline, user_group, sms_alert)
-        value(#{amount}, #{rate}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{shared}, #{createdBy}, #{createdTime}, #{activatedBy}, #{activatedTime}, #{issuedCount}, #{investLowerLimit}, #{investUpperLimit}, #{couponType}, #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}, #{deleted}, #{deadline}, #{userGroup}, #{smsAlert})
+        insert into coupon (amount, rate, birthday_benefit, multiple, start_time, end_time, used_count, total_count, active, shared, created_by, created_time, activated_by, activated_time, issued_count, invest_lower_limit, invest_upper_limit, coupon_type, product_types, deleted, deadline, user_group, sms_alert)
+        value(#{amount}, #{rate}, #{birthdayBenefit}, #{multiple}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{shared}, #{createdBy}, #{createdTime}, #{activatedBy}, #{activatedTime}, #{issuedCount}, #{investLowerLimit}, #{investUpperLimit}, #{couponType}, #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}, #{deleted}, #{deadline}, #{userGroup}, #{smsAlert})
     </insert>
 
     <select id="findById" resultMap="couponResultMap" parameterType="long">
@@ -146,6 +148,8 @@
         set
         amount = #{amount},
         rate = #{rate},
+        birthday_benefit = #{birthdayBenefit},
+        multiple = #{multiple},
         start_time = #{startTime},
         end_time = #{endTime},
         used_count = #{usedCount},
