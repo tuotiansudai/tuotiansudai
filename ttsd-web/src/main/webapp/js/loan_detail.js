@@ -97,17 +97,14 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             $.each($ticketList.find("li"), function (index, ticket) {
                 var self = $(ticket);
                 var input = $(self.find("input"));
-                self.removeClass('disabled');
-                input.prop("disabled", false);
                 var ticketTerm = $(self.find(".ticket-term"));
                 var investLowerLimit = ticketTerm.data('invest-lower-limit') || 0;
                 var investUpperLimit = ticketTerm.data('invest-upper-limit') || 0;
-                if ((investLowerLimit > 0 && investLowerLimit > investAmount) || (investUpperLimit > 0 && investUpperLimit < investAmount)) {
-                    self.addClass('disabled');
-                    input.prop("disabled", true);
-                    if (self.data("coupon-shared")) {
-                        input.prop("checked", false);
-                    }
+                var disabled = (investLowerLimit > 0 && investLowerLimit > investAmount) || (investUpperLimit > 0 && investUpperLimit < investAmount);
+                input.prop("disabled", disabled);
+                disabled ? self.addClass('disabled') : self.removeClass('disabled');
+                if (self.data("coupon-shared")) {
+                    input.prop("checked", !disabled);
                 }
             });
 
