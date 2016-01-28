@@ -1,11 +1,11 @@
-package com.tuotiansudai.console.jpush.service.impl;
+package com.tuotiansudai.jpush.service.impl;
 
 
-import com.tuotiansudai.console.jpush.client.MobileAppJPushClient;
-import com.tuotiansudai.console.jpush.dto.JPushAlertDto;
-import com.tuotiansudai.console.jpush.repository.mapper.JPushAlertMapper;
-import com.tuotiansudai.console.jpush.repository.model.*;
-import com.tuotiansudai.console.jpush.service.JPushAlertService;
+import com.tuotiansudai.jpush.client.MobileAppJPushClient;
+import com.tuotiansudai.jpush.dto.JPushAlertDto;
+import com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper;
+import com.tuotiansudai.jpush.repository.model.*;
+import com.tuotiansudai.jpush.service.JPushAlertService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class JPushAlertServiceImpl implements JPushAlertService{
+public class JPushAlertServiceImpl implements JPushAlertService {
     @Autowired
     private JPushAlertMapper jPushAlertMapper;
 

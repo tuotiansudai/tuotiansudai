@@ -1,7 +1,7 @@
-package com.tuotiansudai.console.jpush.repository.mapper;
+package com.tuotiansudai.jpush.repository.mapper;
 
-import com.tuotiansudai.console.jpush.repository.model.JPushAlertModel;
-import com.tuotiansudai.console.jpush.repository.model.PushType;
+import com.tuotiansudai.jpush.repository.model.JPushAlertModel;
+import com.tuotiansudai.jpush.repository.model.PushType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

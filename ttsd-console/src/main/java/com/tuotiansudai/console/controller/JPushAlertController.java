@@ -1,11 +1,11 @@
-package com.tuotiansudai.console.jpush.controller;
+package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.console.jpush.dto.JPushAlertDto;
-import com.tuotiansudai.console.jpush.repository.model.*;
-import com.tuotiansudai.console.jpush.service.JPushAlertService;
-import com.tuotiansudai.console.util.DistrictUtil;
+import com.tuotiansudai.jpush.dto.JPushAlertDto;
+import com.tuotiansudai.jpush.repository.model.*;
+import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.console.util.LoginUserInfo;
+import com.tuotiansudai.util.DistrictUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -108,8 +108,5 @@ public class JPushAlertController {
         jPushAlertService.changeJPushAlertStatus(jPushAlertId, PushStatus.ENABLED,loginName);
         return modelAndView;
     }
-
-    public String
-
 
 }

@@ -16,7 +16,9 @@
             <div class="col-sm-4">
                 <select class="selectpicker pushType" name="pushType">
                     <#list pushTypes as pushType>
-                        <option value="${pushType.name()}" <#if jPushAlert?? && jPushAlert.pushType == pushType>selected</#if> >${pushType.getDescription()}</option>
+                        <#if pushType!='BIRTHDAY_ALERT'>
+                            <option value="${pushType.name()}" <#if jPushAlert?? && jPushAlert.pushType == pushType>selected</#if> >${pushType.getDescription()}</option>
+                        </#if>
                     </#list>
                 </select>
             </div>

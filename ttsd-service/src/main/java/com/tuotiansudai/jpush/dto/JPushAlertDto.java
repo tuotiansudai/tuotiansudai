@@ -1,11 +1,12 @@
-package com.tuotiansudai.console.jpush.dto;
+package com.tuotiansudai.jpush.dto;
 
-import com.tuotiansudai.console.jpush.repository.model.*;
+import com.tuotiansudai.jpush.repository.model.JPushAlertModel;
+import com.tuotiansudai.jpush.repository.model.JumpTo;
+import com.tuotiansudai.jpush.repository.model.PushSource;
+import com.tuotiansudai.jpush.repository.model.PushType;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 import java.util.List;
 
 public class JPushAlertDto {

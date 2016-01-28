@@ -1,4 +1,4 @@
-package com.tuotiansudai.console.util.mybatis;
+package com.tuotiansudai.util.mybatis;
 
 import com.google.common.base.Joiner;
 import org.apache.ibatis.type.BaseTypeHandler;

@@ -1,4 +1,4 @@
-package com.tuotiansudai.console.util;
+package com.tuotiansudai.util;
 
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;

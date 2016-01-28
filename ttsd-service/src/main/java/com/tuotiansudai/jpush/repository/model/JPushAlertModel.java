@@ -1,7 +1,7 @@
-package com.tuotiansudai.console.jpush.repository.model;
+package com.tuotiansudai.jpush.repository.model;
 
 
-import com.tuotiansudai.console.jpush.dto.JPushAlertDto;
+import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;

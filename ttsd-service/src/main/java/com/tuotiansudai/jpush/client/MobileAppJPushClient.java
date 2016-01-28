@@ -1,4 +1,4 @@
-package com.tuotiansudai.console.jpush.client;
+package com.tuotiansudai.jpush.client;
 
 import cn.jpush.api.JPushClient;
 import cn.jpush.api.common.APIConnectionException;

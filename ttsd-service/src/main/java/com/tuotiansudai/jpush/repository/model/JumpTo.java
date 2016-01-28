@@ -1,4 +1,4 @@
-package com.tuotiansudai.console.jpush.repository.model;
+package com.tuotiansudai.jpush.repository.model;
 
 public enum JumpTo {
     INVEST("1","首页-我要投资"),

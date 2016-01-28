@@ -1,10 +1,10 @@
-package com.tuotiansudai.console.jpush.service;
+package com.tuotiansudai.jpush.service;
 
 
-import com.tuotiansudai.console.jpush.dto.JPushAlertDto;
-import com.tuotiansudai.console.jpush.repository.model.JPushAlertModel;
-import com.tuotiansudai.console.jpush.repository.model.PushStatus;
-import com.tuotiansudai.console.jpush.repository.model.PushType;
+import com.tuotiansudai.jpush.dto.JPushAlertDto;
+import com.tuotiansudai.jpush.repository.model.JPushAlertModel;
+import com.tuotiansudai.jpush.repository.model.PushStatus;
+import com.tuotiansudai.jpush.repository.model.PushType;
 
 import java.util.List;
 
