@@ -30,7 +30,7 @@ public interface UserService {
      *
      * @param loginName
      * @param originalPassword 用户目前的密码（明文）
-     * @param newPassword 新密码（明文）
+     * @param newPassword      新密码（明文）
      * @return 修改成功返回 true , 修改失败返回 false
      */
     boolean changePassword(String loginName, String originalPassword, String newPassword);
@@ -42,9 +42,9 @@ public interface UserService {
     EditUserDto getEditUser(String loginName);
 
     BaseDto<BasePaginationDataDto> findAllUser(String loginName, String email,
-                String mobile, Date beginTime, Date endTime,
-                Source source,
-                Role role, String referrer, String channel, Integer pageIndex, Integer pageSize);
+                                               String mobile, Date beginTime, Date endTime,
+                                               Source source,
+                                               Role role, String referrer, String channel, Integer pageIndex, Integer pageSize);
 
 
     List<String> findStaffNameFromUserLike(String loginName);
@@ -61,15 +61,15 @@ public interface UserService {
 
     List<String> findAllUserChannels();
 
-    void refreshAreaByMobile(List<UserModel> userModels) ;
+    void refreshAreaByMobile(List<UserModel> userModels);
 
-    void refreshAreaByMobileInJob() ;
+    void refreshAreaByMobileInJob();
 
     List<UserModel> searchAllUsers(String loginName, String referrer, String mobile, String identityNumber);
 
-    List<UserItemDataDto> findUsersAccountBalance(String loginName, int currentPageNo, int pageSize);
+    List<UserItemDataDto> findUsersAccountBalance(String loginName, String balanceMin, String balanceMax, int currentPageNo, int pageSize);
 
-    int findUsersAccountBalanceCount(String loginName);
+    int findUsersAccountBalanceCount(String loginName, String balanceMin, String balanceMax);
 
-    long findUsersAccountBalanceSum(String loginName);
+    long findUsersAccountBalanceSum(String loginName, String balanceMin, String balanceMax);
 }

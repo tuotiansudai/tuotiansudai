@@ -21,6 +21,7 @@ require(['jquery', 'bootstrap','jquery-ui'], function ($) {
         }
     });
 
+
     $('form button[type="reset"]').click(function () {
         window.location.href = "/finance-manage/account-balance";
     });

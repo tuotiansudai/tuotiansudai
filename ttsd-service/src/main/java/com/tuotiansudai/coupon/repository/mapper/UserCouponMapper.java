@@ -6,6 +6,7 @@ import com.tuotiansudai.repository.model.CouponType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -19,7 +20,7 @@ public interface UserCouponMapper {
 
     UserCouponModel findById(@Param("id") long id);
 
-    List<UserCouponModel> findByLoanId(@Param("loanId") Long loanId);
+    List<UserCouponModel> findByLoanId(@Param("loanId") Long loanId, @Param("couponTypeList") List<CouponType> couponTypeList);
 
     int findUseRecordsCount(@Param(value = "couponTypeList") List<CouponType> couponTypeList,
                             @Param(value = "loginName") String loginName);
@@ -29,11 +30,18 @@ public interface UserCouponMapper {
                                              @Param(value = "index") int index,
                                              @Param(value = "pageSize") int pageSize);
 
-    UserCouponModel findByInvestId(@Param("investId") long investId);
+    List<UserCouponModel> findByInvestId(@Param("investId") long investId);
 
     long findSumInvestAmountByCouponId(@Param("couponId") long couponId);
 
-    List<UserCouponModel> findByCouponIdAndStatus(@Param("couponId") long couponId, @Param("isUsed") Boolean isUsed);
+    List<UserCouponModel> findByCouponIdAndStatus(@Param("couponId") long couponId, @Param("isUsed") Boolean isUsed,
+                                                  @Param("loginName") String loginName, @Param("mobile") String mobile,
+                                                  @Param("registerStartTime") Date registerStartTime, @Param("registerEndTime") Date registerEndTime,
+                                                  @Param("index") int index, @Param("pageSize") int pageSize);
+
+    int findCouponDetailCount(@Param("couponId") long couponId, @Param("isUsed") Boolean isUsed,
+                              @Param("loginName") String loginName, @Param("mobile") String mobile,
+                              @Param("registerStartTime") Date registerStartTime, @Param("registerEndTime") Date registerEndTime);
 
     List<UserCouponModel> findByCouponId(long couponId);
 

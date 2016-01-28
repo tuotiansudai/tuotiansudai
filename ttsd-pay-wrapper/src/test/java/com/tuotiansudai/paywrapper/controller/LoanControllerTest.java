@@ -1,10 +1,15 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.client.SendCloudClient;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanOutDto;
@@ -18,6 +23,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
+import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,6 +82,11 @@ public class LoanControllerTest {
     @Autowired
     private SendCloudClient sendCloudClient;
 
+    @Autowired
+    private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private CouponMapper couponMapper;
 
     private ObjectMapper objectMapper;
     private MockWebServer mockServer;
@@ -123,6 +134,9 @@ public class LoanControllerTest {
                 "  </body>\n" +
                 "</html>");
         mockResponse.setResponseCode(200);
+        mockWebServer.enqueue(mockResponse);
+        mockWebServer.enqueue(mockResponse);
+        mockWebServer.enqueue(mockResponse);
         mockWebServer.enqueue(mockResponse);
         mockWebServer.enqueue(mockResponse);
 
@@ -212,6 +226,82 @@ public class LoanControllerTest {
         assert amount - mockInitAmount == mockInitAmount * 2 - amount1 - amount2;
     }
 
+
+
+    @Test
+    public void shouldSendRedEnvelopeWhenLoanOut() throws Exception {
+        long mockLoanId = 123451234512345L;
+        long mockInitAmount = 30000;
+        long mockCouponAmount = 5000;
+        long mockInvestAmount = 10000;
+
+        String loanerLoginName = "mock_loaner1";
+        String[] mockInvestLoginName = new String[]{"mock_invest1", "mock_invest2"};
+        String[] mockUserNames = new String[]{loanerLoginName, mockInvestLoginName[0], mockInvestLoginName[1]};
+
+        mockUsers(mockUserNames);
+        mockAccounts(mockUserNames, mockInitAmount);
+        mockLoan(mockLoanId, loanerLoginName);
+        long mockCouponId = mockCoupon(loanerLoginName, mockCouponAmount);
+
+        mockUserCouponAndInvest(mockInvestLoginName, mockCouponId, mockLoanId, mockInvestAmount);
+
+        LoanOutDto loanOutDto = new LoanOutDto();
+        loanOutDto.setLoanId(String.valueOf(mockLoanId));
+
+        String requestJson = objectMapper.writeValueAsString(loanOutDto);
+
+        this.mockMvc.perform(post("/loan/loan-out").
+                contentType(MediaType.APPLICATION_JSON_VALUE).
+                content(requestJson))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json; charset=UTF-8"))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.status").value(true))
+                .andExpect(jsonPath("$.data.code").value("0000"));
+
+//        Thread.sleep(1000 * 5);
+        AccountModel am = accountMapper.findByLoginName(loanerLoginName);
+        AccountModel am1 = accountMapper.findByLoginName(mockInvestLoginName[0]);
+        AccountModel am2 = accountMapper.findByLoginName(mockInvestLoginName[1]);
+
+        long amount = am.getBalance();
+        long amount1 = am1.getBalance();
+        long amount2 = am2.getBalance();
+        Thread.sleep(1000 * 5);
+//        assert amount1 == mockInitAmount - mockInvestAmount + mockCouponAmount;
+//        assert amount2 == mockInitAmount - mockInvestAmount + mockCouponAmount;
+    }
+
+    private void mockUserCouponAndInvest(String[] loginNames, long couponId, long loanId, long investAmount) throws AmountTransferException {
+        for (String loginName : loginNames) {
+            long investId = mockInvest(loanId, loginName, investAmount);
+            mockUserCoupon(loginName, couponId, loanId, investId);
+        }
+    }
+
+    private void mockUserCoupon(String loginName, long couponId, long loanId, long investId) {
+        UserCouponModel userCouponModel = new UserCouponModel(loginName, couponId);
+        userCouponMapper.create(userCouponModel);
+        userCouponModel.setLoanId(loanId);
+        userCouponModel.setUsedTime(new DateTime().minusDays(10).toDate());
+        userCouponModel.setInvestId(investId);
+        userCouponMapper.update(userCouponModel);
+    }
+
+    private long mockCoupon(String loginName, long amount) {
+        CouponModel couponModel = new CouponModel();
+        couponModel.setAmount(amount);
+        couponModel.setTotalCount(1L);
+        couponModel.setActive(true);
+        couponModel.setCreatedBy(loginName);
+        couponModel.setCreatedTime(new Date());
+        couponModel.setCouponType(CouponType.RED_ENVELOPE);
+        couponModel.setProductTypes(Lists.newArrayList(ProductType.JYF, ProductType.WYX, ProductType.SYL));
+        couponMapper.create(couponModel);
+        return couponModel.getId();
+    }
+
     private void mockUsers(String[] loginNames) {
         mockUser(loginNames[0], "13000000000", "aaa@tuotiansudai.com");
         mockUser(loginNames[1], "13000000001", "bbb@tuotiansudai.com");
@@ -274,7 +364,7 @@ public class LoanControllerTest {
         }
     }
 
-    private void mockInvest(long loanId, String loginName, long amount) throws AmountTransferException {
+    private long mockInvest(long loanId, String loginName, long amount) throws AmountTransferException {
         InvestModel im = new InvestModel();
         im.setAmount(amount);
         im.setCreatedTime(new Date());
@@ -287,5 +377,6 @@ public class LoanControllerTest {
         investMapper.create(im);
 
         amountTransfer.freeze(loginName, im.getId(), amount, UserBillBusinessType.INVEST_SUCCESS, null, null);
+        return im.getId();
     }
 }

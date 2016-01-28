@@ -3,13 +3,56 @@
 
 <div class="content-container my-treasure-content">
     <h4 class="column-title">
-        <em class="tc title-navli active">体验券</em>
+        <em class="tc title-navli active">现金红包</em>
+        <em class="tc title-navli">体验券</em>
         <em class="tc title-navli">加息券</em>
-        <em class="tc title-navli">使用记录</em>
+        <em class="tc title-navli">优惠券使用记录</em>
     </h4>
 
+    <#-- 现金红包 start -->
+    <div class="list-tab red-envelope-frame tab-show">
+        <#list redEnvelopes as redEnvelope>
+            <div class="red-envelope-box ${redEnvelope.used?string('red-status-used', '')} ${redEnvelope.expired?string('red-status-expired', '')}">
+                <div class="layer-mask"></div>
+                <div class="red-amount"><em>${(redEnvelope.amount/100)?string("0")}</em>&nbsp;元</div>
+                <div class="use-status">
+                    <#list redEnvelope.productTypeList as productType>
+                        <img src="/images/icons/${productType}.png" alt="投资体验券">
+                    </#list>
+                    产品线可用 <br/>
+                    <#if redEnvelope.investLowerLimit == 0>
+                        <em>投资即可返现</em>
+                    <#else>
+                        <em>单笔投资满&nbsp;<span class="red-amount-exceed"><@amount>${redEnvelope.investLowerLimit?string(0)}</@amount></span>&nbsp;元可用</em>
+                    </#if>
+                </div>
+                <div class="red-button">
+                    <a href="${redEnvelope.unused?string('/loan-list','javascript:void(0);')}" class="btn-action">立即使用 </a>
+                </div>
+                <div class="use-time">
+                    请在&nbsp;<span>${redEnvelope.endTime?date}</span>&nbsp;前使用
+                </div>
+                <div class="sign-seal sign-expired"><span>已<br/>过期</span></div>
+                <div class="sign-seal sign-used"><span>已<br/>使用</span></div>
+            </div>
+        <#else>
+            <p class="no-treasure-tip tc pad-m">您当前没有宝藏，敬请期待！</p>
+        </#list>
+
+        <div class="ticket-use-help clear-blank-m">
+            <b>红包使用规则：</b>
+            <p>
+                1.  在投资过程中使用红包，投资成功后即可返现；<br/>
+                2.  现金红包不可与平台其他优惠券同时使用（3元现金红包除外）；<br/>
+                3.  投资成功后用户获得的现金可在“我的账户”中查询，提现；<br/>
+                4.  如红包有使用条件，用户需要按照条件使用。<br/>
+            </p>
+        </div>
+    </div>
+    <#-- 现金红包 end -->
+
     <#-- 体验券 start -->
-    <div class="list-tab tab-show">
+    <div class="list-tab">
         <#list moneyCoupons as coupon>
         <div class="experience-ticket-box ${coupon.used?string('ticket-status-used', '')} ${coupon.expired?string('ticket-status-expired', '')}">
             <div class="vertical-line"></div>
@@ -98,14 +141,21 @@
     <#-- 使用记录 start -->
     <div class="list-tab invest-list-content">
         <div class="item-block status-filter">
-            <span class="sub-hd">活动券类型:</span>
-            <span class="select-item current" data-status="touzi">体验券</span>
+            <span class="sub-hd">优惠券类型:</span>
+            <span class="select-item current" data-status="touzi">现金红包</span>
+            <span class="select-item" data-status="touzi">体验券</span>
             <span class="select-item" data-status="jiaxi">加息券</span>
         </div>
         <div class="clear-blank"></div>
         <div class="record-tab tab-show">
-            <div class="invest-list"></div>
-            <div id="use-record-money" class="pagination" data-url="/coupon/use-record" data-page-size="10">
+            <div class="invest-list-red"></div>
+            <div id="use-record-red" class="pagination" data-url="/coupon/use-record" data-page-size="10">
+            </div>
+        </div>
+
+        <div class="record-tab">
+            <div class="invest-list-taste"></div>
+            <div id="use-record-taste" class="pagination" data-url="/coupon/use-record" data-page-size="10">
             </div>
         </div>
 

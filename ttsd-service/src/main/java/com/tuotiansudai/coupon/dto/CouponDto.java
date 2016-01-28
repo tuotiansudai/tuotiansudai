@@ -54,6 +54,8 @@ public class CouponDto implements Serializable {
 
     private boolean active;
 
+    private boolean shared;
+
     private long totalInvestAmount;
 
     private long usedCount;
@@ -164,6 +166,14 @@ public class CouponDto implements Serializable {
         this.active = active;
     }
 
+    public boolean isShared() {
+        return shared;
+    }
+
+    public void setShared(boolean shared) {
+        this.shared = shared;
+    }
+
     public long getTotalInvestAmount() {
         return totalInvestAmount;
     }
@@ -263,5 +273,6 @@ public class CouponDto implements Serializable {
         if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
             this.importIsRight = couponModel.getImportIsRight();
         }
+        this.shared = couponModel.isShared();
     }
 }
