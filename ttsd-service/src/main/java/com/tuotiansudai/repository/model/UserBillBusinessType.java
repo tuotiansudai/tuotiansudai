@@ -19,6 +19,7 @@ public enum UserBillBusinessType {
     NEWBIE_COUPON("新手体验券"),
     INVEST_COUPON("投资体验券"),
     INTEREST_COUPON("加息优惠券"),
+    RED_ENVELOPE("现金红包"),
     SYSTEM_RECHARGE("平台充值");
 
     private final String description;

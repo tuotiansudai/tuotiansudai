@@ -21,7 +21,8 @@ var require = {
         'layerWrapper': staticServer + '/js/dest/wrapper-layer.min',
         'fullPage':staticServer+'/js/libs/jquery.fullPage.min',
         'swiper':staticServer+'/js/libs/swiper-3.2.7.jquery.min',
-        'load-swiper':staticServer+'/js/dest/load_swiper.min'
+        'load-swiper':staticServer+'/js/dest/load_swiper.min',
+        'coupon-alert': staticServer+'/js/dest/coupon_alert.min'
     },
     'waitSeconds':0,
     'shim': {

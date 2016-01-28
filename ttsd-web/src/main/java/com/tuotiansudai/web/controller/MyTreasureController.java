@@ -27,10 +27,12 @@ public class MyTreasureController {
 
         List<UserCouponDto> moneyCoupons = userCouponService.getUserCoupons(loginName, Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.INVEST_COUPON));
         List<UserCouponDto> interestCoupons = userCouponService.getUserCoupons(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON));
+        List<UserCouponDto> redEnvelopes = userCouponService.getUserCoupons(loginName, Lists.newArrayList(CouponType.RED_ENVELOPE));
 
         ModelAndView modelAndView = new ModelAndView("/my-treasure");
         modelAndView.addObject("moneyCoupons", moneyCoupons);
         modelAndView.addObject("interestCoupons", interestCoupons);
+        modelAndView.addObject("redEnvelopes", redEnvelopes);
         return modelAndView;
     }
 }

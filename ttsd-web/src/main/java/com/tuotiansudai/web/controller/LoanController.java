@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 
+import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
@@ -23,6 +24,9 @@ public class LoanController {
     private LoanService loanService;
 
     @Autowired
+    private CouponAlertService couponAlertService;
+
+    @Autowired
     private UserCouponService userCouponService;
 
     @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
@@ -33,6 +37,7 @@ public class LoanController {
         }
         ModelAndView modelAndView = new ModelAndView("/loan", "loan", dto);
         modelAndView.addObject("coupons", userCouponService.getUsableCoupons(LoginUserInfo.getLoginName(), loanId));
+        modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName()));
         return modelAndView;
     }
 

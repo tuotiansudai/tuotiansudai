@@ -60,7 +60,7 @@
         select uc.* from user_coupon uc
         <if test="couponTypeList != null and couponTypeList.size != 0">
             JOIN coupon c on uc.coupon_id = c.id and c.coupon_type in
-            <foreach collection="couponTypeList" item="couponType" index="index" open="(" separator="," close=")">
+            <foreach collection="couponTypeList" item="couponType" open="(" separator="," close=")">
                 #{couponType}
             </foreach>
         </if>
@@ -71,8 +71,15 @@
         select * from user_coupon where id = #{id}
     </select>
 
-    <select id="findByLoanId" resultMap="userCouponResultMap" parameterType="long">
-        select * from user_coupon where loan_id = #{loanId}
+    <select id="findByLoanId" resultMap="userCouponResultMap" parameterType="map">
+        select uc.* from user_coupon uc
+        <if test="couponTypeList != null and couponTypeList.size != 0">
+            JOIN coupon c on uc.coupon_id = c.id and c.coupon_type in
+            <foreach collection="couponTypeList" item="couponType" open="(" separator="," close=")">
+                #{couponType}
+            </foreach>
+        </if>
+        where loan_id = #{loanId} and status = 'SUCCESS'
     </select>
 
     <select id="findUseRecordsCount" resultType="int" parameterType="map">
@@ -132,14 +139,61 @@
     </select>
 
     <select id="findByCouponIdAndStatus" parameterType="map" resultMap="userCouponResultMap">
-        select * from user_coupon where coupon_id = #{couponId}
+        SELECT
+          t.*
+        FROM
+          user_coupon t
+          JOIN user u
+            ON t.`login_name` = u.`login_name`
+        <if test="loginName != null and loginName != ''">
+            AND u.`login_name` = #{loginName}
+        </if>
+        <if test="mobile != null and mobile != ''">
+            AND u.`mobile` = #{mobile}
+        </if>
+        <if test="registerStartTime != null">
+            AND u.`register_time` >= #{registerStartTime}
+        </if>
+        <if test="registerEndTime != null">
+            <![CDATA[ AND u.`register_time` <= #{registerEndTime} ]]>
+        </if>
+        where t.coupon_id = #{couponId}
         <if test="isUsed != null and isUsed">
-            and status = 'SUCCESS'
+            and t.status = 'SUCCESS'
         </if>
         <if test="isUsed != null and !isUsed">
-            and status != 'SUCCESS'
+            and t.status != 'SUCCESS'
         </if>
-        order by status desc, used_time desc
+        order by t.status desc, t.used_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCouponDetailCount" parameterType="map" resultType="int">
+        SELECT
+          ifnull(count(*),0)
+        FROM
+          user_coupon t
+          JOIN user u
+            ON t.`login_name` = u.`login_name`
+            <if test="loginName != null and loginName != ''">
+                AND u.`login_name` = #{loginName}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                AND u.`mobile` = #{mobile}
+            </if>
+            <if test="registerStartTime != null">
+                AND u.`register_time` >= #{registerStartTime}
+            </if>
+            <if test="registerEndTime != null">
+                <![CDATA[ AND u.`register_time` <= #{registerEndTime} ]]>
+            </if>
+            where t.coupon_id = #{couponId}
+            <if test="isUsed != null and isUsed">
+                and t.status = 'SUCCESS'
+            </if>
+            <if test="isUsed != null and !isUsed">
+                and t.status != 'SUCCESS'
+            </if>
     </select>
 
     <select id="findByCouponId" parameterType="long" resultMap="userCouponResultMap">
