@@ -97,12 +97,21 @@ public class JPushAlertController {
     public ModelAndView disableJPushAlert(@PathVariable long jPushAlertId){
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("redirect:/app-push-manage/auto-app-push-list");
-        jPushAlertService.changeJPushAlertStatus(jPushAlertId, PushStatus.DISABLED,loginName);
+        jPushAlertService.changeJPushAlertStatus(jPushAlertId, PushStatus.DISABLED, loginName);
         return modelAndView;
     }
 
     @RequestMapping(value = "/auto-app-push/{jPushAlertId}/enabled",method = RequestMethod.GET)
     public ModelAndView enabledJPushAlert(@PathVariable long jPushAlertId){
+        String loginName = LoginUserInfo.getLoginName();
+        ModelAndView modelAndView = new ModelAndView("redirect:/app-push-manage/auto-app-push-list");
+        jPushAlertService.changeJPushAlertStatus(jPushAlertId, PushStatus.ENABLED,loginName);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/auto-app-push/{jPushAlertId}/{content}",method = RequestMethod.GET)
+    
+    public ModelAndView changContent(@PathVariable long jPushAlertId,@PathVariable String content){
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("redirect:/app-push-manage/auto-app-push-list");
         jPushAlertService.changeJPushAlertStatus(jPushAlertId, PushStatus.ENABLED,loginName);

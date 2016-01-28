@@ -150,6 +150,10 @@ public class MobileAppJPushClient {
         PushPayload payload = buildPushObject_all_all_alertWithExtras(alert, extraKey, extraValue);
         return sendPush(payload, jPushAlertId);
     }
+    public boolean sendPushAlertByRegistrationIds(String jPushAlertId,List<String> registrationIds, String alert, String extraKey, String extraValue) {
+        PushPayload payload = buildPushObject_all_registration_id_alertWithExtras(registrationIds,alert, extraKey, extraValue);
+        return sendPush(payload, jPushAlertId);
+    }
 
     public boolean sendPushAlertByAndroid(String jPushAlertId, String alert, String extraKey, String extraValue) {
         PushPayload payload = buildPushObject_android_all_alertWithExtras(alert, extraKey, extraValue);

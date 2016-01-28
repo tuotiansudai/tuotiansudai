@@ -1,6 +1,8 @@
 package com.tuotiansudai.jpush.service.impl;
 
 
+import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.jpush.client.MobileAppJPushClient;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper;
@@ -31,16 +33,21 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     @Autowired
     private AccountMapper accountMapper;
 
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    private static final String JPUSH_ID_KEY = "api:jpushId:store";
+
     @Override
     @Transactional
     public void buildJPushAlert(String loginName, JPushAlertDto jPushAlertDto) {
         JPushAlertModel jPushAlertModel = new JPushAlertModel(jPushAlertDto);
-        if(StringUtils.isNotEmpty(jPushAlertDto.getId())){
+        if (StringUtils.isNotEmpty(jPushAlertDto.getId())) {
             jPushAlertModel.setUpdatedBy(loginName);
             jPushAlertModel.setUpdatedTime(new Date());
             jPushAlertMapper.update(jPushAlertModel);
 
-        }else{
+        } else {
             jPushAlertModel.setCreatedBy(loginName);
             jPushAlertModel.setCreatedTime(new Date());
             jPushAlertModel.setIsAutomatic(false);
@@ -49,19 +56,18 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
 
-
     @Override
     public int findPushTypeCount(PushType pushType) {
         return jPushAlertMapper.findPushTypeCount(pushType);
     }
 
     @Override
-    public int findPushAlertCount(String name,boolean isAutomatic) {
+    public int findPushAlertCount(String name, boolean isAutomatic) {
         return jPushAlertMapper.findPushAlertCount(name, false);
     }
 
     @Override
-    public List<JPushAlertModel> findPushAlerts(int index, int pageSize, String name,boolean isAutomatic) {
+    public List<JPushAlertModel> findPushAlerts(int index, int pageSize, String name, boolean isAutomatic) {
         return jPushAlertMapper.findPushAlerts((index - 1) * pageSize, pageSize, name, isAutomatic);
     }
 
@@ -71,7 +77,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
-    public void send(String loginName,long id) {
+    public void send(String loginName, long id) {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertModelById(id);
         JPushAlertDto jPushAlertDto = new JPushAlertDto(jPushAlertModel);
         PushSource pushSource = jPushAlertDto.getPushSource();
@@ -80,34 +86,34 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         boolean sendResult = false;
         List<String> pushObjects = jPushAlertDto.getPushObjects();
 
-        if(pushSource == PushSource.ALL){
+        if (pushSource == PushSource.ALL) {
 
-            if(CollectionUtils.isNotEmpty(pushObjects)){
+            if (CollectionUtils.isNotEmpty(pushObjects)) {
                 sendResult = mobileAppJPushClient.sendPushAlertByTags(jPushAlertDto.getId(), pushObjects, alert, jumpToOrLink[0], jumpToOrLink[1]);
-            }else {
-                sendResult =  mobileAppJPushClient.sendPushAlertByAll(jPushAlertDto.getId(), alert, jumpToOrLink[0], jumpToOrLink[1]);
+            } else {
+                sendResult = mobileAppJPushClient.sendPushAlertByAll(jPushAlertDto.getId(), alert, jumpToOrLink[0], jumpToOrLink[1]);
             }
 
-        }else if(pushSource == PushSource.ANDROID){
-            if(CollectionUtils.isNotEmpty(pushObjects)){
+        } else if (pushSource == PushSource.ANDROID) {
+            if (CollectionUtils.isNotEmpty(pushObjects)) {
                 sendResult = mobileAppJPushClient.sendPushAlertByAndroidTags(jPushAlertDto.getId(), pushObjects, alert, jumpToOrLink[0], jumpToOrLink[1]);
-            }else{
+            } else {
                 sendResult = mobileAppJPushClient.sendPushAlertByAndroid(jPushAlertDto.getId(), alert, jumpToOrLink[0], jumpToOrLink[1]);
             }
-        }else if(pushSource == PushSource.IOS){
-            if(CollectionUtils.isNotEmpty(pushObjects)){
+        } else if (pushSource == PushSource.IOS) {
+            if (CollectionUtils.isNotEmpty(pushObjects)) {
                 sendResult = mobileAppJPushClient.sendPushAlertByIosTags(jPushAlertDto.getId(), pushObjects, alert, jumpToOrLink[0], jumpToOrLink[1]);
-            }else{
+            } else {
                 sendResult = mobileAppJPushClient.sendPushAlertByIos(jPushAlertDto.getId(), alert, jumpToOrLink[0], jumpToOrLink[1]);
             }
         }
 
-        if(sendResult){
+        if (sendResult) {
             jPushAlertModel.setUpdatedBy(loginName);
             jPushAlertModel.setUpdatedTime(new Date());
             jPushAlertModel.setStatus(PushStatus.SEND_SUCCESS);
             jPushAlertMapper.update(jPushAlertModel);
-        }else{
+        } else {
             jPushAlertModel.setUpdatedBy(loginName);
             jPushAlertModel.setUpdatedTime(new Date());
             jPushAlertModel.setStatus(PushStatus.SEND_FAIL);
@@ -117,7 +123,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     @Override
     @Transactional
-    public void changeJPushAlertStatus(long id,PushStatus status,String loginName) {
+    public void changeJPushAlertStatus(long id, PushStatus status, String loginName) {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertModelById(id);
         jPushAlertModel.setStatus(status);
         jPushAlertModel.setUpdatedBy(loginName);
@@ -127,26 +133,45 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     @Override
     public void autoJPushAlertBirthMonth() {
-        int count = jPushAlertMapper.findJPushAlertCountByPushType();
-        if(count > 0){
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType();
+        if (jPushAlertModel != null) {
+            List<String> registrationIds = Lists.newArrayList();
             List<AccountModel> accountModels = accountMapper.findBirthOfAccountInMonth();
+            for (int i = 0; i < accountModels.size() - 1; i++) {
+                AccountModel accountModel = accountModels.get(i);
+                String loginName = accountModel.getLoginName();
+                if (redisWrapperClient.hexists(JPUSH_ID_KEY, loginName)) {
+                    String registrationId = redisWrapperClient.hget(JPUSH_ID_KEY, accountModel.getLoginName());
+                    registrationIds.add(registrationId);
+                }
+                if (registrationIds.size() == 1000 || (i == accountModels.size() - 1 && registrationIds.size() > 0)) {
+                    boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, jPushAlertModel.getContent(), "", "");
+                    if (sendResult) {
+                        logger.debug(MessageFormat.format("第{0}个用户推送成功", i + 1));
+                    }else{
+                        logger.debug(MessageFormat.format("第{0}个用户推送失败", i + 1));
+                    }
+                    registrationIds.clear();
+                }
 
-        }else{
+            }
+        } else {
             logger.debug("autoJPushAlertBirthMonthJob is disabled");
         }
 
     }
 
-    private String[] chooseJumpToOrLink(JPushAlertDto jPushAlertDto){
-        String[] jumpToOrLink = new String[]{"",""};
+
+    private String[] chooseJumpToOrLink(JPushAlertDto jPushAlertDto) {
+        String[] jumpToOrLink = new String[]{"", ""};
         JumpTo jumpTo = jPushAlertDto.getJumpTo();
         String jumpToLink = jPushAlertDto.getJumpToLink();
-        if(StringUtils.isNotEmpty(jumpToLink)){
+        if (StringUtils.isNotEmpty(jumpToLink)) {
             jumpToOrLink[0] = "jumpToLink";
             jumpToOrLink[1] = jumpToLink;
             return jumpToOrLink;
         }
-        if(jumpTo != null){
+        if (jumpTo != null) {
             jumpToOrLink[0] = "jumpTo";
             jumpToOrLink[1] = jumpTo.getIndex();
             return jumpToOrLink;

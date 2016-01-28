@@ -21,9 +21,8 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
             event.preventDefault();
             $.ajax({
                 url: '/announce-manage/announce/'+operate,
-                type: 'POST',
+                type: 'get',
                 dataType: 'json',
-                data: dataForm,
                 contentType: 'application/json; charset=UTF-8'
             }).done()
         });
