@@ -105,6 +105,33 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">提现人数分布</h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form-inline" id="formWithdrawUserCountReport">
+                        <select class="form-control search-category" name="granularity">
+                            <option value="Daily" selected>日</option>
+                            <option value="Weekly">周</option>
+                            <option value="Monthly">月</option>
+                        </select>
+
+                        开始时间： <input type="text" class="form-control start-date" name="startTime">
+                        结束时间：<input type="text" class="form-control end-date" name="endTime">
+                        <button class="btn btn-primary" type="button">查询</button>
+                    </form>
+
+                    <div id="withdrawUserCountDistribution" style="width:100%; height:400px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-lg-12 col-sm-12">
             <div class="panel panel-success">
@@ -135,10 +162,8 @@
                             <th>用户名</th>
                             <th>真实姓名</th>
                             <th>电话</th>
-                            <th>是否业务员</th>
                             <th>推荐人id</th>
                             <th>推荐人姓名</th>
-                            <th>推荐人是否业务员</th>
                             <th>投资总金额(元)</th>
                             <th>投资次数</th>
                             <th>上次投资时间</th>
@@ -154,6 +179,8 @@
                         </tr>
                         </tfoot>
                     </table>
+
+                    <button class="btn btn-default pull-left down-load viscosity-export" type="button">导出Excel</button>
                     </div>
                 </div>
             </div>
@@ -292,35 +319,8 @@
                 </div>
             </div>
         </div>
-
     </div>
 
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">提现人数分布</h3>
-                </div>
-                <div class="panel-body">
-                    <form class="form-inline" id="formWithdrawUserCountReport">
-                        <select class="form-control search-category" name="granularity">
-                            <option value="Daily" selected>日</option>
-                            <option value="Weekly">周</option>
-                            <option value="Monthly">月</option>
-                        </select>
-
-                        开始时间： <input type="text" class="form-control start-date" name="startTime">
-                        结束时间：<input type="text" class="form-control end-date" name="endTime">
-                        <button class="btn btn-primary" type="button">查询</button>
-                    </form>
-
-                    <div id="withdrawUserCountDistribution" style="width:100%; height:400px;">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
 
     <div class="row">
         <div class="col-lg-12 col-sm-12">

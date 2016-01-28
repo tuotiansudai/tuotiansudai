@@ -3,12 +3,14 @@ package com.tuotiansudai.paywrapper.service.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -23,6 +25,7 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransf
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerBindProjectRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerUpdateProjectRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
@@ -91,6 +94,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private JobManager jobManager;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(long loanId) {
@@ -187,37 +193,58 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> loanOut(long loanId) {
+
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
 
-        try {
-            ProjectTransferResponseModel umPayReturn = doLoanOut(loanId);
-            payDataDto.setStatus(umPayReturn.isSuccess());
-            payDataDto.setCode(umPayReturn.getRetCode());
-            payDataDto.setMessage(umPayReturn.getRetMsg());
-        } catch (PayException e) {
-            payDataDto.setStatus(false);
-            payDataDto.setMessage(e.getLocalizedMessage());
-            logger.error(e.getLocalizedMessage(), e);
+        if(redisWrapperClient.setnx(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId, "1")) {
+            try {
+                ProjectTransferResponseModel umPayReturn = doLoanOut(loanId);
+                payDataDto.setStatus(umPayReturn.isSuccess());
+                payDataDto.setCode(umPayReturn.getRetCode());
+                payDataDto.setMessage(umPayReturn.getRetMsg());
+
+            } catch (PayException e) {
+                payDataDto.setStatus(false);
+                payDataDto.setMessage(e.getLocalizedMessage());
+                logger.error(e.getLocalizedMessage(), e);
+            } finally {
+                redisWrapperClient.del(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId);
+            }
+        } else {
+            payDataDto.setStatus(true);
+            payDataDto.setCode(BaseSyncResponseModel.SUCCESS_CODE);
+            payDataDto.setMessage("some other loan out process is running.");
+            logger.error("some other thread is loan-outing for this loan, loanId:"+loanId);
         }
         return baseDto;
     }
 
     private ProjectTransferResponseModel doLoanOut(long loanId) throws PayException {
-        // 预处理等待状态的投资记录，检查是否存在等待状态的投资记录
-        proProcessWaitingInvest(loanId);
 
         // 查找借款人
         LoanModel loan = loanMapper.findById(loanId);
         if (loan == null) {
             throw new PayException("loan is not exists [" + loanId + "]");
         }
+
+        if (LoanStatus.REPAYING == loan.getStatus()){
+            logger.warn("loan has already been outed. [" + loanId + "]");
+            ProjectTransferResponseModel umPayReturn = new ProjectTransferResponseModel();
+            umPayReturn.setRetCode(AutoLoanOutJob.ALREADY_OUT);
+            umPayReturn.setRetMsg("loan has already been outed.");
+            return umPayReturn;
+        }
+
         if (LoanStatus.RECHECK != loan.getStatus()){
             throw new PayException("loan is not ready for recheck [" + loanId + "]");
         }
-        String agentPayUserId = accountMapper.findByLoginName(loan.getAgentLoginName()).getPayUserId();
 
+        // 将已失效的投资记录状态置为失败
+        investMapper.cleanWaitingInvest(loanId);
+
+        String agentPayUserId = accountMapper.findByLoginName(loan.getAgentLoginName()).getPayUserId();
 
         // 查找所有投资成功的记录
         List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
@@ -293,20 +320,6 @@ public class LoanServiceImpl implements LoanService {
         }
 
         return true;
-    }
-
-    private void proProcessWaitingInvest(long loanId) throws PayException {
-        // 获取联动优势投资订单的有效时间点（在此时间之前的waiting记录将被清理，如存在在此时间之后的waiting记录，则暂时不允许放款）
-        Date validInvestTime = new DateTime().minusSeconds(UmpayConstants.TIMEOUT_IN_SECOND_PROJECT_TRANSFER).toDate();
-
-        // 检查是否存在未处理完成的投资记录
-        int waitingInvestCount = investMapper.findWaitingInvestCountAfter(loanId, validInvestTime);
-        if (waitingInvestCount > 0) {
-            throw new PayException("exist waiting invest on loan[" + loanId + "]");
-        }
-
-        // 将已失效的投资记录状态置为失败
-        investMapper.cleanWaitingInvestBefore(loanId, validInvestTime);
     }
 
     private ProjectTransferResponseModel doPayRequest(long loanId, String payUserId, long amount) throws PayException {

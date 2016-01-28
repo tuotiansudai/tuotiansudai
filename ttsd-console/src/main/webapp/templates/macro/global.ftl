@@ -14,16 +14,16 @@
                 "role":"'ADMIN'",
                 "header":{"text":"系统主页","link":"/"},
                 "sidebar":[
-                    {"name":"userDate","text":"用户注册时间分布","link":"/","role":"'ADMIN'"},
-                    {"name":"userRecharge","text":"用户充值时间分布","link":"/","role":"'ADMIN'"},
-                    {"name":"userWithdraw","text":"用户提现时间分布","link":"/","role":"'ADMIN'"},
-                    {"name":"userInvestViscosity","text":"用户续投情况","link":"/","role":"'ADMIN'"},
-                    {"name":"userInvestAmount","text":"用户投资金额时间分布","link":"/","role":"'ADMIN'"},
-                    {"name":"userInvestCount","text":"用户投资次数时间分布","link":"/","role":"'ADMIN'"},
-                    {"name":"userAge","text":"用户年龄分布","link":"/","role":"'ADMIN'"},
-                    {"name":"loanRaisingTimeCosting","text":"标的满标周期分布","link":"/","role":"'ADMIN'"},
-                    {"name":"withdrawUserCount","text":"提现人数分布","link":"/","role":"'ADMIN'"},
-                    {"name":"loanAmount","text":"标的资金分布","link":"/","role":"'ADMIN'"}
+                    {"name":"userDate","text":"用户注册时间分布","link":"/","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"userRecharge","text":"用户充值时间分布","link":"/","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"userWithdraw","text":"用户提现时间分布","link":"/","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"withdrawUserCount","text":"提现人数分布","link":"/","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"userInvestViscosity","text":"用户续投情况","link":"/","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"userInvestAmount","text":"用户投资金额时间分布","link":"/","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"userInvestCount","text":"用户投资次数时间分布","link":"/","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"userAge","text":"用户年龄分布","link":"/","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"loanRaisingTimeCosting","text":"标的满标周期分布","link":"/","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"loanAmount","text":"标的资金分布","link":"/","role":"'ADMIN','CUSTOMER_SERVICE'"}
                 ]
 
             },
@@ -66,7 +66,7 @@
                     {"name":"systemBill","text":"系统账户查询","link":"/finance-manage/system-bill","role":"'ADMIN'"},
                     {"name":"adminIntervention","text":"修改账户余额","link":"/finance-manage/admin-intervention","role":"'ADMIN'"},
                     {"name":"realTimeStatus","text":"联动优势余额查询","link":"/finance-manage/real-time-status","role":"'ADMIN'"},
-                    {"name":"userBalance","text":"用户余额","link":"/finance-manage/account-balance","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"userBalance","text":"用户余额","link":"/finance-manage/account-balance?balanceMin=50","role":"'ADMIN','CUSTOMER_SERVICE'"},
                     {"name":"systemRecharge","text":"平台账户充值","link":"/finance-manage/system-recharge","role":"'ADMIN'"}
                 ]
             },
@@ -90,8 +90,20 @@
                 "name":"activity-manage",
                 "header":{"text":"活动管理"},
                 "sidebar":[
-                    {"name":"createCoupon","text":"创建投资体验券","link":"/activity-manage/coupon","role":"'ADMIN'"},
-                    {"name":"statisticsCoupon","text":"体验券数据统计","link":"/activity-manage/coupons","role":"'ADMIN'"}
+                    {"name":"createCoupon","text":"创建体验券","link":"/activity-manage/coupon","role":"'ADMIN'"},
+                    {"name":"statisticsCoupon","text":"体验券管理","link":"/activity-manage/coupons","role":"'ADMIN'"},
+                    {"name":"createInterestCoupon","text":"创建加息劵","link":"/activity-manage/interest-coupon","role":"'ADMIN'"},
+                    {"name":"statisticsInterestCoupon","text":"加息券管理","link":"/activity-manage/interest-coupons","role":"'ADMIN'"},
+                    {"name":"createRedEnvelope","text":"现金红包创建","link":"/activity-manage/red-envelope","role":"'ADMIN'"},
+                    {"name":"statisticsRedEnvelope","text":"现金红包管理","link":"/activity-manage/red-envelopes","role":"'ADMIN'"}
+                ]
+            },
+            {
+                "name":"app-push-manage",
+                "header":{"text":"APP推送管理"},
+                "sidebar":[
+                    {"name":"manualAppPushManage","text":"手动推送管理","link":"/app-push-manage/manual-app-push-list","role":"'ADMIN'"},
+                    {"name":"createManualAppPush","text":"创建手动推送","link":"/app-push-manage/manual-app-push","role":"'ADMIN'"}
                 ]
             }
         ]

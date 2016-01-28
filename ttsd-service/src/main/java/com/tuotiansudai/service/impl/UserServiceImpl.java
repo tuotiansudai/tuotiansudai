@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserRoleService userRoleService;
 
     @Autowired
     private UserRoleMapper userRoleMapper;
@@ -310,17 +314,17 @@ public class UserServiceImpl implements UserService {
         List<UserItemDataDto> userItemDataDtos = Lists.newArrayList();
         for (UserModel userModel : userModels) {
 
-            boolean staff = false;
             UserItemDataDto userItemDataDto = new UserItemDataDto(userModel);
-            userItemDataDto.setUserRoles(userRoleMapper.findByLoginName(userModel.getLoginName()));
-            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(userModel.getReferrer());
-            for (UserRoleModel userRoleModel : userRoleModels) {
-                if (userRoleModel.getRole()==Role.STAFF) {
-                    staff = true;
+            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(userModel.getLoginName());
+            userItemDataDto.setUserRoles(userRoleModels);
+
+            List<UserRoleModel> referrerRoleModels = userRoleMapper.findByLoginName(userModel.getReferrer());
+            for (UserRoleModel referrerRoleModel : referrerRoleModels) {
+                if (referrerRoleModel.getRole()==Role.STAFF) {
+                    userItemDataDto.setReferrerStaff(true);
                     break;
                 }
             }
-            userItemDataDto.setStaff(staff);
             userItemDataDto.setBankCard(bindBankCardService.getPassedBankCard(userModel.getLoginName()) != null);
             userItemDataDtos.add(userItemDataDto);
         }
@@ -335,11 +339,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<String> findStaffNameFromUserLike(String loginName) {
         return userMapper.findStaffByLikeLoginName(loginName);
-    }
-
-    @Override
-    public int findUserCount() {
-        return userMapper.findUserCount();
     }
 
     @Override
@@ -413,18 +412,46 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserModel> findUsersAccountBalance(String loginName, int currentPageNo, int pageSize) {
-        return userMapper.findUsersAccountBalance(loginName, (currentPageNo - 1) * pageSize, pageSize);
+    public List<UserItemDataDto> findUsersAccountBalance(String loginName, String balanceMin, String balanceMax, int currentPageNo, int pageSize) {
+        int[] balance = parseBalanceInt(balanceMin, balanceMax);
+        List<UserModel> userModels =  userMapper.findUsersAccountBalance(loginName,balance[0], balance[1],  (currentPageNo - 1) * pageSize, pageSize);
+
+        List<UserItemDataDto> userItemDataDtoList = new ArrayList<>();
+        for(UserModel userModel : userModels) {
+            UserItemDataDto userItemDataDto = new UserItemDataDto(userModel);
+            userItemDataDto.setStaff(userRoleService.judgeUserRoleExist(userModel.getLoginName(), Role.STAFF));
+            userItemDataDtoList.add(userItemDataDto);
+        }
+        return userItemDataDtoList;
     }
 
     @Override
-    public int findUsersAccountBalanceCount(String loginName) {
-        return userMapper.findUsersAccountBalanceCount(loginName);
+    public int findUsersAccountBalanceCount(String loginName, String balanceMin, String balanceMax) {
+        int[] balance = parseBalanceInt(balanceMin, balanceMax);
+        return userMapper.findUsersAccountBalanceCount(loginName, balance[0], balance[1]);
     }
 
     @Override
-    public long findUsersAccountBalanceSum(String loginName) {
-        return userMapper.findUsersAccountBalanceSum(loginName);
+    public long findUsersAccountBalanceSum(String loginName, String balanceMin, String balanceMax) {
+        int[] balance = parseBalanceInt(balanceMin, balanceMax);
+        return userMapper.findUsersAccountBalanceSum(loginName, balance[0], balance[1]);
     }
 
+    private int[] parseBalanceInt(String balanceMin, String balanceMax) {
+        int min, max;
+        try {
+            min = Integer.parseInt(balanceMin) * 100;
+        } catch (NumberFormatException e) {
+            min = 0;
+            logger.warn("user account balance search parameter wrong, balanceMin is not an integer, balanceMin:" + balanceMin);
+        }
+
+        try {
+            max = Integer.parseInt(balanceMax) * 100;
+        } catch (NumberFormatException e) {
+            max = Integer.MAX_VALUE;
+            logger.warn("user account balance search parameter wrong, balanceMax is not an integer, balanceMax:" + balanceMax);
+        }
+        return new int[]{min, max};
+    }
 }

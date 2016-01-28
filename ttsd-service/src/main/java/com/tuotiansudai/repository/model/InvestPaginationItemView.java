@@ -30,6 +30,13 @@ public class InvestPaginationItemView extends InvestModel {
 
     private long nextRepayAmount;
 
+    private String identityNumber;
+
+    private String province;
+
+    private String city;
+
+
     public String getLoanName() {
         return loanName;
     }
@@ -133,4 +140,29 @@ public class InvestPaginationItemView extends InvestModel {
     public void setReferrerRoles(String referrerRoles) {
         this.referrerRoles = referrerRoles;
     }
+
+    public String getIdentityNumber() {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
 }

@@ -33,11 +33,13 @@
     {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'INVESTOR', 'LOANER'"},
     {"title":"我的宝藏", "url":"/my-treasure", "role":"'INVESTOR', 'LOANER'"}
     ]},
-    {"title":"推荐奖励", "url":"/activity/refer-reward"},
+    {"title":"新手指引", "url":"/about/guide"},
     {"title":"关于我们", "url":"/about/company", "leftNavs":[
     {"title":"公司介绍", "url":"/about/company"},
     {"title":"团队介绍", "url":"/about/team"},
     {"title":"拓天公告", "url":"/about/notice"},
+    {"title":"媒体报道", "url":"/about/media"},
+    {"title":"推荐奖励", "url":"/about/refer-reward"},
     {"title":"服务费用", "url":"/about/service-fee"},
     {"title":"常见问题", "url":"/about/qa"},
     {"title":"联系我们", "url":"/about/contact"}
@@ -58,9 +60,9 @@
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <title>${title}</title>
     <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <link rel="stylesheet" type="text/css" href="${staticServer}/style/dest/${css.global}" charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${css.global}" charset="utf-8" />
     <#if pageCss?? && pageCss != "">
-    <link rel="stylesheet" type="text/css" href="${staticServer}/style/dest/${pageCss}" charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="${staticServer}${cssPath}${pageCss}" charset="utf-8" />
     </#if>
 </head>
 <body>
@@ -77,20 +79,22 @@
         </#if>
     </div>
 </div>
-<div class="main-frame full-screen">
+<div class="main-frame full-screen ">
     <#list menus as menu>
         <#if activeNav?? && activeNav==menu.title && menu.leftNavs??>
-            <ul class="left-nav">
+        <div class="swiper-container">
+            <ul class="left-nav swiper-wrapper">
                 <#list menu.leftNavs as leftNav>
                     <#if leftNav.role??>
                         <@role hasRole=leftNav.role>
-                            <li><a <#if leftNav.title==activeLeftNav>class="active"</#if> href="${leftNav.url}">${leftNav.title}</a></li>
+                            <li class="swiper-slide"><a <#if leftNav.title==activeLeftNav>class="active"</#if> href="${leftNav.url}">${leftNav.title}</a></li>
                         </@role>
                     <#else>
-                        <li><a <#if leftNav.title==activeLeftNav>class="active"</#if> href="${leftNav.url}">${leftNav.title}</a></li>
+                        <li class="swiper-slide"><a <#if leftNav.title==activeLeftNav>class="active"</#if> href="${leftNav.url}">${leftNav.title}</a></li>
                     </#if>
                 </#list>
             </ul>
+        </div>
         </#if>
     </#list>
     <#nested>
@@ -113,12 +117,7 @@
             userAgent = navigator.userAgent.toLowerCase(),
             metaTags=document.getElementsByTagName('meta'),
             metaLen=metaTags.length,isResponse=false,isPC=false,i=0;
-        if(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
-            isPC=false;
-        }
-        else {
-            isPC=true;
-        }
+        isPC = !(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1);
         for(;i<metaLen;i++) {
             if(metaTags[i].getAttribute('name')=='viewport') {
                 isResponse=true;
@@ -141,12 +140,7 @@
         window.$('btnExperience').onclick=function(event) {
             event.stopPropagation();
             event.preventDefault();
-            var userAgent = navigator.userAgent.toLowerCase();
-            if (userAgent.indexOf('android') > -1) {
-                location.href = "/app/tuotiansudai.apk";
-            } else if (userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
-                location.href = "http://itunes.apple.com/us/app/id1039233966";
-            }
+            location.href = "/app/download";
         };
 
         window.$('showMainMenu').onclick=function(event) {
@@ -201,10 +195,11 @@
     phoneLoadFun();
 
 </script>
-<script src="${staticServer}/js/dest/${js.config}" type="text/javascript" charset="utf-8"></script>
+<script src="${staticServer}${jsPath}${js.config}" type="text/javascript" charset="utf-8"></script>
 <#if pageJavascript??>
 <script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
-        data-main="${staticServer}/js/dest/${pageJavascript}">
+        data-main="${staticServer}${jsPath}${pageJavascript}">
+
 </script>
 </#if>
 

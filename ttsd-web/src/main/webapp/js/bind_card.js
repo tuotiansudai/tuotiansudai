@@ -7,7 +7,7 @@ require(['jquery', 'layerWrapper', 'csrf'], function ($,layer) {
             $btnOpenFastPay = $('.open-fast-pay', $FormOpenFastPay);
 
         $inputBankcard.keyup(function () {
-            if (/^\d{16,19}$/.test($(this).val())) {
+            if (/^\d+$/.test($(this).val())) {
                 $btnBindCard.prop('disabled', false);
                 $btnReplaceCard.prop('disabled', false);
             } else {

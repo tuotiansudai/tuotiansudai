@@ -26,28 +26,28 @@ public class SmsController {
         return smsService.sendRetrievePasswordCaptcha(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.getIp());
     }
 
-    @RequestMapping(value = "/loan-out-investor-notify", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<SmsDataDto> sendInvestNotify(@RequestBody InvestSmsNotifyDto investSmsNotifyDto) {
-        return smsService.sendInvestNotify(investSmsNotifyDto);
-    }
-
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/password-changed-notify", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<SmsDataDto> sendPasswordChangedNotify(@PathVariable String mobile) {
         return smsService.sendPasswordChangedNotify(mobile);
     }
 
-    @RequestMapping(value = "/invest-fatal-notify", method = RequestMethod.POST)
+    @RequestMapping(value = "/loan-out-investor-notify", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<SmsDataDto> investFatalNotify(@Valid @RequestBody SmsInvestFatalNotifyDto notifyDto) {
-        return smsService.investFatalNotify(notifyDto.getMobile(), notifyDto.getErrMsg());
+    public BaseDto<SmsDataDto> sendInvestNotify(@RequestBody InvestSmsNotifyDto investSmsNotifyDto) {
+        return smsService.sendInvestNotify(investSmsNotifyDto);
     }
 
-    @RequestMapping(value = "/job-fatal-notify", method = RequestMethod.POST)
+    @RequestMapping(value = "/fatal-notify", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<SmsDataDto> jobFatalNotify(@Valid @RequestBody SmsJobFatalNotifyDto notifyDto) {
-        return smsService.jobFatalNotify(notifyDto.getMobile(), notifyDto.getErrMsg());
+    public BaseDto<SmsDataDto> fatalNotify(@Valid @RequestBody SmsFatalNotifyDto notify) {
+        return smsService.sendFatalNotify(notify);
+    }
+
+    @RequestMapping(value = "/coupon-notify", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> couponNotify(@Valid @RequestBody SmsCouponNotifyDto notifyDto) {
+        return smsService.couponNotify(notifyDto);
     }
 
     @RequestMapping(value = "/loan-repay-notify", method = RequestMethod.POST)

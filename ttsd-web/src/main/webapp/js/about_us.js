@@ -1,4 +1,4 @@
-require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagination'], function ($,Mustache,ListTemplate) {
+require(['jquery','mustache','text!/tpl/notice-list.mustache','load-swiper','layerWrapper','commonFun','pagination'], function ($,Mustache,ListTemplate,loadSwiper,layer) {
     $(function () {
         var $noticeList=$('#noticeList'),
             $noticeDetail=$('#noticeDetail'),
@@ -8,7 +8,6 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
             $problemList=$('.problem-list dt span'),
             paginationElement = $('.pagination');
 
-        /* notice list*/
         if($noticeList.length) {
             var requestData={"index":1,"pageSize":10};
             paginationElement.loadPagination(requestData, function (data) {
@@ -64,22 +63,40 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
         }
 
         if($('#WhetherApp').length) {
+            var viewport=commonFun.browserRedirect();
             if(/app/gi.test(location.search)) {
                 if($('#WhetherApp').find('.res-no-app').length) {
                     $('#WhetherApp').find('.res-no-app').remove();
                 }
-                $('.header-container,.nav-container,.footer-container').hide();
+                $('.header-container,.nav-container,.footer-container').remove();
                 if($('.left-nav').length) {
-                    $('.left-nav').hide();
+                    $('.left-nav').remove();
+                }
+            }
+            if(viewport=='mobile') {
+                if($('#noticeDetail').length || $('#noticeList').length) {
+                    $('.header-container,.nav-container,.footer-container').remove();
+                    $('.left-nav').remove();
                 }
             }
         }
 
-        $problemList.on('click', function(e) {
-            e.preventDefault();
-            var $self=$(this),
-                $dtDom=$self.parent('dt'),
-                $parents=$dtDom.parent();
+        if($('#activityAwardBox').length) {
+
+            var $activityAwardBox=$('#activityAwardBox'),
+                screenWid=$(window).width(),
+                viewport=commonFun.browserRedirect();
+            if(viewport=='pc') {
+                $activityAwardBox.find('.wide-screen-left,.wide-screen-right').width((screenWid-1000)/2).show();
+            }
+        }
+
+        if($problemList.length) {
+            $problemList.on('click', function(e) {
+                e.preventDefault();
+                var $self=$(this),
+                    $dtDom=$self.parent('dt'),
+                    $parents=$dtDom.parent();
 
                 if($dtDom.next().hasClass('active')){
                     $dtDom.next().removeClass('active');
@@ -90,6 +107,33 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
                     $dtDom.next().addClass('active');
                     $dtDom.find('i').removeClass('fa-toggle-up').addClass('fa-toggle-down');
                 }
-        });
+            });
+        }
+
+        if($('#redEnvelope').length) {
+            $('#redEnvelope').click(function(event) {
+                var serverTime = new Date($(event.currentTarget).data("kick-off-date")).getTime();
+                if (serverTime > new Date("2016-02-03 00:00:00").getTime()) {
+                    return;
+                }
+                layer.open({
+                    type: 1,
+                    title: '',
+                    area: ['490px', '240px'],
+                    skin:'red-envelope-box-out',
+                    closeBtn: 0,
+                    shadeClose: true,
+                    move: false,
+                    content: $('#redEnvelopePopWindow'),
+                    success: function (layero, index) {
+                        $('#redEnvelopePopWindow').find('.close-tip').click(function() {
+                            layer.closeAll();
+                        });
+                    }
+                });
+                return false;
+            });
+        }
+
     });
 });

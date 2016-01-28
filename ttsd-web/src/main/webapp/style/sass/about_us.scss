@@ -4,10 +4,61 @@
   background: #fff;
   padding: 10px 30px 30px 40px;
   overflow: hidden;
+  p{
+    font-size:14px;
+    color:#4c4c4c;
+    .give-number{
+      color:#ff7200;
+    }
+  }
+  &.company-summary {
+    .refer-reward-box {
+      position: relative;
+      height:640px;
+      &.mobile {
+        display: none;
+      }
+      .pc-column {
+        width:145px;
+        height: 561px;
+        background: url("/images/sign/aboutus/give-intro.png") 0 0 no-repeat;
+        position: absolute;
+        left: 300px;
+        top: 30px;
+      }
+      .border-radius {
+        border: 1px solid #ff7200;
+        border-radius: 8px;
+        padding: 8px 10px;
+      }
+      .section-one {
+        position: absolute;
+        left: 446px;
+        top: 60px;
 
-  .company-summary {
-    p {
-      font-size: nth($fontSize, 1);
+      }
+      .section-two {
+        position: absolute;
+        left: 8px;
+        top: 105px;
+        width: 270px;
+
+      }
+      .section-three {
+        position: absolute;
+        left: 444px;
+        top: 280px;
+        width: 270px;
+      }
+      .section-four {
+        position: absolute;
+        left: 8px;
+        top: 430px;
+        width: 270px;
+      }
+    }
+    .info span {
+      display: none;
     }
   }
   .company-info {
@@ -182,6 +233,27 @@
       }
       p{
         margin-bottom:0;
+      }
+    }
+
+    &.company-summary {
+      h3 { text-align: center;}
+      p{
+        margin-bottom: 5px;
+        font-size: 13px;
+      }
+      .refer-reward-box {
+      &.pc {
+        display: none;
+      }
+      &.mobile {
+        display: block;
+        height:auto;
+        margin-bottom:15px;
+      }
+    }
+      .info span {
+        display: block;
       }
     }
   }

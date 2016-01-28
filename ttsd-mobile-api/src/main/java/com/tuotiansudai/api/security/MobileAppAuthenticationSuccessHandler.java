@@ -2,8 +2,6 @@ package com.tuotiansudai.api.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.LoginResponseDataDto;
-import com.tuotiansudai.api.dto.ReturnMessage;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.LoginLogService;
@@ -39,7 +37,7 @@ public class MobileAppAuthenticationSuccessHandler extends SimpleUrlAuthenticati
             String username = request.getParameter("j_username");
             clearFailHistory(username);
 
-            String token = mobileAppTokenProvider.generateToken(authentication.getName());
+            String token = mobileAppTokenProvider.refreshToken(authentication.getName(), null);
             BaseResponseDto dto = mobileAppTokenProvider.generateResponseDto(token);
             String jsonBody = objectMapper.writeValueAsString(dto);
 

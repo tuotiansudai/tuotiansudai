@@ -49,9 +49,9 @@ public interface LoanService {
 
     boolean loanIsExist(long loanId);
 
-    BaseDto<PayDataDto> loanOut(LoanDto loanDto) throws BaseException;
+    BaseDto<PayDataDto> loanOut(LoanDto loanDto);
 
-    BaseDto<LoanDto> getLoanDetail(String loginName, long loanId);
+    LoanDetailDto getLoanDetail(String loginName, long loanId);
 
     BaseDto<BasePaginationDataDto> getInvests(String loginName, long loanId, int index, int pageSize);
 

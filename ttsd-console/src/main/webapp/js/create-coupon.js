@@ -13,6 +13,8 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
         //渲染select表单
         $selectDom.selectpicker();
 
+
+
         //起始时间绑定插件
         $dateStart.datetimepicker({
             format: 'YYYY-MM-DD'
@@ -44,26 +46,9 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
 
         // 充值金额保留小数点后2位
         var rep = /^\d+$/;
-        var rep_point = /^([0-9]+\.[0-9]{2})[0-9]*$/;
-        var rep_point1 = /^[0-9]+\.[0-9]$/;
-        $('.coupon-number').blur(function () {
-            var _this = $(this),
-                text = _this.val(),
-                num = text.replace(rep_point, "$1");
-            if (rep.test(text)) {
-                _this.val(text + '.00').removeClass('Validform_error');
-            } else if (rep_point.test(text)) {
-                _this.val(num).removeClass('Validform_error');
-            } else if (rep_point1.test(text)) {
-                _this.val(text + '0').removeClass('Validform_error');
-            } else {
-                _this.val('').addClass('Validform_error');
-            }
-        });
-
         var rep_point2 = /^[0-9]+\.[0-9]*$/;
 
-        $('.give-number').blur(function () {
+        $('.give-number,.coupon-deadline,.coupon-number').blur(function () {
             var _this = $(this),
                 text = _this.val(),
                 num = text.replace(rep, "$1");
@@ -80,6 +65,7 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
             btnSubmit: '#btnSave',
             tipSweep: true, //表单提交时触发显示
             focusOnError: false,
+            ignoreHidden:true,
             tiptype: function(msg, o, cssctl) {
                 if (o.type == 3) {
                     var msg = o.obj.attr('errormsg') || msg;
@@ -98,6 +84,15 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
                     showErrorMessage('最小为1', $('.coupon-number', curform));
                     return false;
                 }
+               var len= $('input[name="productTypes"]').filter(function(key,option) {
+                    return $(option).is(':checked');
+                }).length;
+
+                if(len <= 0){
+                    showErrorMessage('请选择可投资标的', $('.productType', curform));
+                    return false;
+                }
+
             },
             callback: function(form) {
                 boolFlag = true;
@@ -120,6 +115,61 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
                 $self.attr('disabled', 'disabled');
                 $couponForm[0].submit();
             }
+        });
+
+        $('.couponType').change(function(){
+            var couponType = this.value;
+            iniForm();
+            if(couponType == "NEWBIE_COUPON"){
+                $('.newbie-coupon').show();
+                $('.invest-coupon').hide();
+                $('.userGroup').addClass("invest-coupon-total_count");
+                $('.give-number').removeAttr("invest-coupon-total_count");
+                $('.give-number').removeAttr("readonly");
+                $('.userGroup').attr('disabled','disabled');
+                $('.userGroup').selectpicker('refresh');
+                $('.user-group-hid').removeAttr("disabled");
+            }else{
+                $('.give-number').addClass("invest-coupon-total_count");
+                $('.give-number').attr("readonly",true);
+                $('.user-group-hid').attr('disabled','disabled');
+                $('.userGroup').removeAttr("disabled");
+                $('.userGroup').selectpicker('refresh');
+                $('.userGroup').removeAttr("invest-coupon-total_count");
+                $('.newbie-coupon').hide();
+                $('.invest-coupon').show();
+            }
+        });
+
+
+
+        function iniForm(){
+            $errorDom.html('');
+            $('.coupon-number').val('');
+            $('.coupon-deadline').val('');
+            $('.give-number').val('');
+            $('.coupon-start').val('');
+            $('.coupon-end').val('');
+            $('.invest-quota').val('');
+            $('.productType').prop('checked',false).eq(0).prop('checked',true);
+            $selectDom.filter('.userGroup').selectpicker('val','INVESTED_USER');
+            var couponType = $('.couponType').val();
+            if(couponType == "INVEST_COUPON"){
+                $selectDom.filter('.userGroup').trigger('change');
+            }
+
+
+        }
+
+        $('.userGroup').change(function(){
+            var userGroup = this.value;
+            var couponType = $('.couponType').val();
+            if(couponType == "INVEST_COUPON"){
+                $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
+                    $('.give-number').val(data);
+                })
+            }
+
         });
 
     });

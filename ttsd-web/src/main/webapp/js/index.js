@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
+require(['jquery', 'underscore', 'csrf','commonFun', 'coupon-alert'], function ($, _) {
     $(function () {
         var $bannerBox = $('.banner-box'),
             $imgScroll = $('.banner-img-list', $bannerBox),
@@ -8,7 +8,6 @@ require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
             $dlAmount = $('.dl-amount', $productFrame),
             $imgNum = $('li', $scrollNum),
             $bannerImg = $imgScroll.find('a'),
-            $couponClose = $('.coupon-close'),
             screenWid, picWid, leftWid, adTimer = null,
             n = 0;
 
@@ -26,15 +25,13 @@ require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
         leftWid = (picWid - screenWid) / 2;
 
         $registerBox.css({'right': (screenWid - 1000) / 2 + 'px'});
-        $scrollNum.css({'left': (screenWid - $scrollNum.width()) / 2});
-        $imgScroll.find("a:not(:first)").hide();
+        $scrollNum.css({'left': (screenWid - $scrollNum.find('li').length * 25) / 2});
         $imgScroll.find('img').css({
             'margin-left': '-' + leftWid + 'px'
         });
 
 
         $imgNum.click(function() {
-
             var num_nav = $imgNum.index(this);
             $(this).addClass("selected").siblings().removeClass("selected");
             $bannerImg.eq(num_nav).fadeIn(1000).siblings().fadeOut(1000);
@@ -43,10 +40,9 @@ require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
             clearInterval(adTimer);
         }, function() {
             adTimer = setInterval(function() {
-
-                n = n >= ($bannerImg.length - 1) ? 0 : (n + 1);
-                $imgNum.eq(n).trigger('click');
-            }, 3000);
+                var index = ++n % $bannerImg.length;
+                $imgNum.eq(index).trigger('click');
+            }, 6000);
         }).trigger('mouseleave');
 
 
@@ -62,13 +58,6 @@ require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
             $imgScroll.find('img.iphone-img').css({'margin-left': '0px'});
         }
 
-        $couponClose.on('click',function(e) {
-            e.preventDefault();
-            var $self=$(this),
-                $couponModel=$self.parents('#couponModel');
-            $couponModel.fadeOut('fast');
-        });
-
         var scrollTimer;
         $(".scroll-top").hover(function() {
             clearInterval(scrollTimer);
@@ -77,6 +66,7 @@ require(['jquery', 'underscore', 'csrf','commonFun'], function ($, _) {
                 scrollNews($(".scroll-top"));
             }, 2000);
         }).trigger("mouseout");
+
         function scrollNews(obj) {
             var $self = obj.find("ul:first");
             var lineHeight = $self.find("li:first").height();

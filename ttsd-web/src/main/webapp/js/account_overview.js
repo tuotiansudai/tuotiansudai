@@ -2,8 +2,8 @@ require(['jquery','echarts','commonFun', 'csrf','layerWrapper'], function ($) {
     $(function () {
     var $tMonthBox=$('#tMonthBox'),
         $switchMenu=$('ul',$tMonthBox);
-        $switchMenu.find('li').first().addClass('current');
-        $('table',$tMonthBox).eq(0).show().siblings('table').hide();
+        $switchMenu.find('li').last().addClass('current');
+        $('table',$tMonthBox).eq(1).show().siblings('table').hide();
         $switchMenu.find('li').click(function(index) {
             var $this=$(this),
                 num=$switchMenu.find('li').index(this);
