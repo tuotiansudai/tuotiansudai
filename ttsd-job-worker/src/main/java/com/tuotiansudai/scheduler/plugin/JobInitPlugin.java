@@ -44,6 +44,9 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.AutoReFreshAreaByMobile.name().equalsIgnoreCase(schedulerName)) {
             createRefreshAreaByMobile();
         }
+        if(JobType.AutoJPushAlertBirthMonth.name().equalsIgnoreCase(schedulerName)){
+            createAutoJPushAlertBirthMonth();
+        }
     }
 
     @Override
@@ -83,6 +86,16 @@ public class JobInitPlugin implements SchedulerPlugin {
             jobManager.newJob(JobType.AutoReFreshAreaByMobile, AutoReFreshAreaByMobileJob.class).replaceExistingJob(true)
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 2 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
                     .withIdentity(JobType.AutoReFreshAreaByMobile.name(), JobType.AutoReFreshAreaByMobile.name()).submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createAutoJPushAlertBirthMonth() {
+        try {
+            jobManager.newJob(JobType.AutoJPushAlertBirthMonth, AutoReFreshAreaByMobileJob.class).replaceExistingJob(true)
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 10 1 * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+                    .withIdentity(JobType.AutoJPushAlertBirthMonth.name(), JobType.AutoJPushAlertBirthMonth.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }

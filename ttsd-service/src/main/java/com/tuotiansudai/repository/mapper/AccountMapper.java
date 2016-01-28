@@ -25,4 +25,6 @@ public interface AccountMapper {
     AccountModel findByIdentityNumber(String identityNumber);
 
     List<String> findLoginNames();
+
+    List<AccountModel> findBirthOfAccountInMonth();
 }

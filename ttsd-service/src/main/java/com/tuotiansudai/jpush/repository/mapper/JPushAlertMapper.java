@@ -23,4 +23,6 @@ public interface JPushAlertMapper {
 
     JPushAlertModel findJPushAlertModelById(long id);
 
+    int findJPushAlertCountByPushType();
+
 }

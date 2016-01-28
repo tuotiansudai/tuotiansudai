@@ -27,6 +27,7 @@ public enum JobType {
     LoanStatusToRecheck("标的状态从筹款变为等待复核"),
     CalculateDefaultInterest("计算逾期罚息"),
     AutoReFreshAreaByMobile("获取手机归属地"),
+    AutoJPushAlertBirthMonth("每月1日推送当月生日用户"),
     NormalRepay("正常还款"),
     AdvanceRepay("提前还款"),
     AutoLoanOut("满标自动放款"),

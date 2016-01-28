@@ -60,4 +60,8 @@
         select login_name from account
     </select>
 
+    <select id="findBirthOfAccountInMonth" resultMap="accountResultMap">
+        select * from account where substring(identity_number,11,2) =  DATE_FORMAT(now(),'%m') ;
+    </select>
+
 </mapper>

@@ -58,4 +58,8 @@
         select * from jpush_alert where id = #{id}
     </select>
 
+    <select id="findJPushAlertCountByPushType"  resultType="int">
+        select count(*) from jpush_alert where push_type = #{BIRTHDAY_ALERT} and status = 'ENABLED' and is_automatic = true
+    </select>
+
 </mapper>

@@ -41,6 +41,19 @@ public class MobileAppJPushClient {
         return jPushClient;
     }
 
+    public PushPayload buildPushObject_all_registration_id_alertWithExtras(List<String> registrationIds, String alert, String extraKey, String extraValue) {
+
+        return PushPayload.newBuilder()
+                .setPlatform(Platform.all())
+                .setAudience(Audience.registrationId(registrationIds))
+                .setNotification(Notification.newBuilder()
+                        .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
+                        .addPlatformNotification(AndroidNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
+                        .build())
+                .setOptions(Options.newBuilder().setApnsProduction(Environment.isProduction(environment)).build())
+                .build();
+    }
+
     public PushPayload buildPushObject_all_all_alertWithExtras(String alert, String extraKey, String extraValue) {
         return PushPayload.newBuilder()
                 .setPlatform(Platform.all())

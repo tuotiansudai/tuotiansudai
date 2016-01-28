@@ -6,22 +6,30 @@ import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper;
 import com.tuotiansudai.jpush.repository.model.*;
 import com.tuotiansudai.jpush.service.JPushAlertService;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class JPushAlertServiceImpl implements JPushAlertService {
+    static Logger logger = Logger.getLogger(JPushAlertServiceImpl.class);
     @Autowired
     private JPushAlertMapper jPushAlertMapper;
 
     @Autowired
     private MobileAppJPushClient mobileAppJPushClient;
+
+    @Autowired
+    private AccountMapper accountMapper;
 
     @Override
     @Transactional
@@ -115,6 +123,18 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         jPushAlertModel.setUpdatedBy(loginName);
         jPushAlertModel.setUpdatedTime(new Date());
         jPushAlertMapper.update(jPushAlertModel);
+    }
+
+    @Override
+    public void autoJPushAlertBirthMonth() {
+        int count = jPushAlertMapper.findJPushAlertCountByPushType();
+        if(count > 0){
+            List<AccountModel> accountModels = accountMapper.findBirthOfAccountInMonth();
+
+        }else{
+            logger.debug("autoJPushAlertBirthMonthJob is disabled");
+        }
+
     }
 
     private String[] chooseJumpToOrLink(JPushAlertDto jPushAlertDto){
