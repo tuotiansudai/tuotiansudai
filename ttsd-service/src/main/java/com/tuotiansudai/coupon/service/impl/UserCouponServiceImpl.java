@@ -17,7 +17,6 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.AmountConverter;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -92,10 +91,4 @@ public class UserCouponServiceImpl implements UserCouponService {
         dataDto.setStatus(true);
         return baseDto;
     }
-
-    @Override
-    public List<UserCouponModel> findUserCouponByCouponId(long couponId) {
-        return userCouponMapper.findByCouponId(couponId);
-    }
-
 }

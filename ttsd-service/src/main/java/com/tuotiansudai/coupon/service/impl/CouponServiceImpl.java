@@ -1,9 +1,7 @@
 package com.tuotiansudai.coupon.service.impl;
 
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.CouponDto;
@@ -17,12 +15,11 @@ import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.InterestCalculator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -224,13 +221,18 @@ public class CouponServiceImpl implements CouponService {
 
 
     @Override
-    public void deleteCoupon(String loginName, long couponId) {
+    @Transactional
+    public boolean deleteCoupon(String loginName, long couponId) {
+        if (CollectionUtils.isEmpty(userCouponMapper.findByCouponId(couponId))) {
+            return false;
+        }
         CouponModel couponModel = couponMapper.findById(couponId);
         couponModel.setUpdatedBy(loginName);
         couponModel.setUpdatedTime(new Date());
         couponModel.setDeleted(true);
         couponModel.setActive(false);
         couponMapper.updateCoupon(couponModel);
+        return true;
     }
 
     @Override

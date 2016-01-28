@@ -27,7 +27,7 @@ public interface CouponService {
 
     int findCouponDetailCount(long couponId, Boolean isUsed, String loginName, String mobile, Date registerStartTime, Date registerEndTime);
 
-    void deleteCoupon(String loginName, long couponId);
+    boolean deleteCoupon(String loginName, long couponId);
 
     List<CouponDto> findInterestCoupons(int index, int pageSize);
 

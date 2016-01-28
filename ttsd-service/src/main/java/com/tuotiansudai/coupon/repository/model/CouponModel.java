@@ -335,6 +335,6 @@ public class CouponModel implements Serializable {
         this.smsAlert = couponDto.isSmsAlert();
         this.deadline = couponDto.getDeadline();
         this.userGroup = couponDto.getUserGroup();
-        this.rate = couponDto.getRate() == null ? 0 : new BigDecimal(couponDto.getRate()).divide(new BigDecimal(100)).doubleValue();
+        this.rate = couponDto.getRate() == null ? 0 : new BigDecimal(couponDto.getRate()).divide(new BigDecimal(100), 3, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 }
