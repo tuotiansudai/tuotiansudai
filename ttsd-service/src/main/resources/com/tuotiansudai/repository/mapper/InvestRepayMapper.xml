@@ -244,7 +244,7 @@
         WHERE ir.`status` != 'COMPLETE'
           AND ir.`repay_date` BETWEEN #{startTime}
           AND #{endTime}
-        ORDER BY ir.`repay_date` DESC
+        ORDER BY ir.`repay_date`
         LIMIT #{startLimit}, #{endLimit}
     </select>
 
