@@ -74,21 +74,21 @@
                             </#if>
                         </td>
                         <td>
-                            <#if userCoupon.investAmount??>
+                            <#if userCoupon.investAmount?? && userCoupon.usedTime??>
                                 ${userCoupon.investAmount/100}
                             <#else>
                                 未使用
                             </#if>
                         </td>
                         <td>
-                            <#if userCoupon.loanId??>
+                            <#if userCoupon.loanId?? && userCoupon.usedTime??>
                                 ${userCoupon.loanId?string('0')}
                             <#else>
                                 未使用
                             </#if>
                         </td>
                         <td>
-                            <#if userCoupon.loanName??>
+                            <#if userCoupon.loanName?? && userCoupon.usedTime??>
                                 ${userCoupon.loanName!}
                             <#else>
                                 未使用
