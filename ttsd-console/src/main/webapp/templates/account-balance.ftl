@@ -56,7 +56,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/finance-manage/account-balance?loginName=${loginName!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/account-balance?loginName=${loginName!}&balanceMin=${balanceMin!50}&balanceMax=${balanceMax!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -65,7 +65,7 @@
                 <li><a>${currentPageNo}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="/finance-manage/account-balance?loginName=${loginName!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/account-balance?loginName=${loginName!}&balanceMin=${balanceMin!50}&balanceMax=${balanceMax!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>

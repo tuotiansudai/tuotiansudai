@@ -23,7 +23,7 @@ require(['jquery', 'bootstrap','jquery-ui'], function ($) {
 
 
     $('form button[type="reset"]').click(function () {
-        window.location.href = "/finance-manage/account-balance";
+        window.location.href = "/finance-manage/account-balance?balanceMin=50";
     });
 
     $('.down-load').click(function(){

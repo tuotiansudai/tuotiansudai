@@ -442,7 +442,7 @@ public class UserServiceImpl implements UserService {
         try {
             min = Integer.parseInt(balanceMin) * 100;
         } catch (NumberFormatException e) {
-            min = 1;
+            min = 0;
             logger.warn("user account balance search parameter wrong, balanceMin is not an integer, balanceMin:" + balanceMin);
         }
 
