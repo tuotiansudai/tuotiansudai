@@ -54,18 +54,17 @@
                     <td>${(pushAlert.content)!}</td>
                     <td>${pushAlert.status.getDescription()}</td>
                     <td>
-                        <button class="btn btn-primary btn-lg" data-toggle="modal"
+                        <button class="btn btn-primary btn-xs edit-content" data-toggle="modal"
                                 data-target="#myModal">
                             编辑
                         </button>
-                        |
                         <#if pushAlert.status=='ENABLED'>
-                            <a class="send-push-link"
+                            <a class="btn btn-danger btn-xs disabled-link"
                                href="/app-push-manage/auto-app-push/${pushAlert.id?string('0')}/disabled">
                                 停用
                             </a>
                         <#else>
-                            <a class="send-push-link"
+                            <a class="btn btn-success btn-xs enabled-link"
                                href="/app-push-manage/auto-app-push/${pushAlert.id?string('0')}/enabled">
                                 启用
                             </a>
@@ -94,13 +93,13 @@
                     </h4>
                 </div>
                 <div class="modal-body">
-                    在这里添加一些文本
+                    <textarea rows="4" cols="50" maxlength="40" class="content" name="content" errormsg="通知模板不能为空"></textarea>（长度请不要超过40个字）
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"
                             data-dismiss="modal">关闭
                     </button>
-                    <button type="button" class="btn btn-primary">
+                    <button type="button" class="btn btn-primary change-content">
                         提交更改
                     </button>
                 </div>

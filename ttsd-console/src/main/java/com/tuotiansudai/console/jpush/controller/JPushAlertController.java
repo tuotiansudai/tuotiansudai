@@ -88,26 +88,28 @@ public class JPushAlertController {
     public ModelAndView autoAppPushList(@RequestParam(value = "index",required = false,defaultValue = "1") int index,
                                         @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize){
         ModelAndView modelAndView = new ModelAndView("/auto-app-push-list");
-        modelAndView.addObject("pushAlerts", jPushAlertService.findPushAlerts(index, pageSize,null,true));
+        modelAndView.addObject("pushAlerts", jPushAlertService.findPushAlerts(index, pageSize, null, true));
 
         return modelAndView;
     }
 
     @RequestMapping(value = "/auto-app-push/{jPushAlertId}/disabled",method = RequestMethod.GET)
-    @ResponseBody
-    public ModelAndView disableJpushAlert(long jPushAlertId){
-        ModelAndView modelAndView = new ModelAndView("/auto-app-push-list");
-        jPushAlertService.changeJPushAlertStatus(jPushAlertId, PushStatus.DISABLED);
+    public ModelAndView disableJPushAlert(@PathVariable long jPushAlertId){
+        String loginName = LoginUserInfo.getLoginName();
+        ModelAndView modelAndView = new ModelAndView("redirect:/app-push-manage/auto-app-push-list");
+        jPushAlertService.changeJPushAlertStatus(jPushAlertId, PushStatus.DISABLED,loginName);
         return modelAndView;
     }
 
     @RequestMapping(value = "/auto-app-push/{jPushAlertId}/enabled",method = RequestMethod.GET)
-    @ResponseBody
-    public ModelAndView enabledJPushAlert(long jPushAlertId){
-        ModelAndView modelAndView = new ModelAndView("/auto-app-push-list");
-        jPushAlertService.changeJPushAlertStatus(jPushAlertId, PushStatus.ENABLED);
+    public ModelAndView enabledJPushAlert(@PathVariable long jPushAlertId){
+        String loginName = LoginUserInfo.getLoginName();
+        ModelAndView modelAndView = new ModelAndView("redirect:/app-push-manage/auto-app-push-list");
+        jPushAlertService.changeJPushAlertStatus(jPushAlertId, PushStatus.ENABLED,loginName);
         return modelAndView;
     }
+
+    public String
 
 
 }

@@ -49,12 +49,12 @@ public class JPushAlertServiceImpl implements JPushAlertService{
 
     @Override
     public int findPushAlertCount(String name,boolean isAutomatic) {
-        return jPushAlertMapper.findPushAlertCount(name,false);
+        return jPushAlertMapper.findPushAlertCount(name, false);
     }
 
     @Override
     public List<JPushAlertModel> findPushAlerts(int index, int pageSize, String name,boolean isAutomatic) {
-        return jPushAlertMapper.findPushAlerts((index - 1) * pageSize, pageSize, name,isAutomatic);
+        return jPushAlertMapper.findPushAlerts((index - 1) * pageSize, pageSize, name, isAutomatic);
     }
 
     @Override
@@ -109,9 +109,11 @@ public class JPushAlertServiceImpl implements JPushAlertService{
 
     @Override
     @Transactional
-    public void changeJPushAlertStatus(long id,PushStatus status) {
+    public void changeJPushAlertStatus(long id,PushStatus status,String loginName) {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertModelById(id);
         jPushAlertModel.setStatus(status);
+        jPushAlertModel.setUpdatedBy(loginName);
+        jPushAlertModel.setUpdatedTime(new Date());
         jPushAlertMapper.update(jPushAlertModel);
     }
 
