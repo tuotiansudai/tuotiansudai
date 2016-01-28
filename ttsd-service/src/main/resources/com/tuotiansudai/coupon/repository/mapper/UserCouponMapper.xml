@@ -79,7 +79,7 @@
                 #{couponType}
             </foreach>
         </if>
-        where loan_id = #{loanId}
+        where loan_id = #{loanId} and status = 'SUCCESS'
     </select>
 
     <select id="findUseRecordsCount" resultType="int" parameterType="map">
