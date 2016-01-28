@@ -140,12 +140,7 @@
         window.$('btnExperience').onclick=function(event) {
             event.stopPropagation();
             event.preventDefault();
-            var userAgent = navigator.userAgent.toLowerCase();
-            if (userAgent.indexOf('android') > -1) {
-                location.href = "/app/tuotiansudai.apk";
-            } else if (userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
-                location.href = "http://itunes.apple.com/us/app/id1039233966";
-            }
+            location.href = "/app/download";
         };
 
         window.$('showMainMenu').onclick=function(event) {
