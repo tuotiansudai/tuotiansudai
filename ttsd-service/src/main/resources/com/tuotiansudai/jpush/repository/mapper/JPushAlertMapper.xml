@@ -59,7 +59,7 @@
     </select>
 
     <select id="findJPushAlertByPushType"  resultMap="jPushAlertResultMap">
-        select * from jpush_alert where push_type = #{BIRTHDAY_ALERT} and status = 'ENABLED' and is_automatic = true
+        select * from jpush_alert where push_type = 'BIRTHDAY_ALERT' and status = 'ENABLED' and is_automatic = true
     </select>
 
 </mapper>

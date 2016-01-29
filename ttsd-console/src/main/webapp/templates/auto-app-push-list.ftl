@@ -47,7 +47,7 @@
             <tbody>
                 <#list pushAlerts as pushAlert>
                 <tr>
-                    <td>1</td>
+                    <td>${pushAlert.id?string('0')}</td>
                     <td>${(pushAlert.name)!}</td>
                     <td>每月1日推送当月生日用户</td>
                     <td>Android / IOS</td>
@@ -94,8 +94,9 @@
                 </div>
                 <div class="modal-body">
                     <textarea rows="4" cols="50" maxlength="40" class="content" name="content" errormsg="通知模板不能为空"></textarea>（长度请不要超过40个字）
+                    <input type="hidden" name="jPushAlertId" class="jPushAlertId"/>
                 </div>
-                <div class="web-error-message alertMessage"></div>
+                <div class="text-danger web-error-message alertMessage"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"
                             data-dismiss="modal">关闭

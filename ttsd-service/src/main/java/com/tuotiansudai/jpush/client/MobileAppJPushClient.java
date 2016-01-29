@@ -47,7 +47,7 @@ public class MobileAppJPushClient {
                 .setPlatform(Platform.all())
                 .setAudience(Audience.registrationId(registrationIds))
                 .setNotification(Notification.newBuilder()
-                        .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
+                        .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).setBadge(0).build())
                         .addPlatformNotification(AndroidNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
                         .build())
                 .setOptions(Options.newBuilder().setApnsProduction(Environment.isProduction(environment)).build())

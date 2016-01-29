@@ -1,9 +1,6 @@
 package com.tuotiansudai.scheduler.plugin;
 
-import com.tuotiansudai.job.AutoReFreshAreaByMobileJob;
-import com.tuotiansudai.job.CalculateDefaultInterestJob;
-import com.tuotiansudai.job.InvestCallback;
-import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.job.*;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
 import org.quartz.CronScheduleBuilder;
@@ -84,7 +81,8 @@ public class JobInitPlugin implements SchedulerPlugin {
     private void createRefreshAreaByMobile() {
         try {
             jobManager.newJob(JobType.AutoReFreshAreaByMobile, AutoReFreshAreaByMobileJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 2 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 42 14 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+//                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 2 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
                     .withIdentity(JobType.AutoReFreshAreaByMobile.name(), JobType.AutoReFreshAreaByMobile.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
@@ -93,8 +91,9 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     private void createAutoJPushAlertBirthMonth() {
         try {
-            jobManager.newJob(JobType.AutoJPushAlertBirthMonth, AutoReFreshAreaByMobileJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 10 1 * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+            jobManager.newJob(JobType.AutoJPushAlertBirthMonth, AutoJPushAlertBirthMonthJob.class).replaceExistingJob(true)
+//                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 10 1 * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 5 15 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
                     .withIdentity(JobType.AutoJPushAlertBirthMonth.name(), JobType.AutoJPushAlertBirthMonth.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);

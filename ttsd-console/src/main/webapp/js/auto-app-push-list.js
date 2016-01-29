@@ -15,17 +15,20 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
             var $self=$(this),
                 $parent=$self.parents('tr'),
                 content=$parent.find('td:eq(4)').text();
+                jPushAlertId=$parent.find('td:eq(0)').text()
             $('.content').val(content);
+            $('.jPushAlertId').val(jPushAlertId);
         });
         $('.change-content').on('click',function(event) {
             event.preventDefault();
-            var content = $('.content').val();
+            var content = $('.content').val(),
+                jPushAlertId =  $('.jPushAlertId').val();
             if(content == ''){
-                $('.')
+                $('.alertMessage').text('请输入推送模板').show();
                 return false;
             }
             $.ajax({
-                url: '/app-push-manage/auto-app-push/51/'+content,
+                url: '/app-push-manage/auto-app-push/'+jPushAlertId+'/'+content,
                 type: 'get',
                 dataType: 'json',
                 contentType: 'application/json; charset=UTF-8'
