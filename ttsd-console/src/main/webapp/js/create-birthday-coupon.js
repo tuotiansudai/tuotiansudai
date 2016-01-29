@@ -54,7 +54,7 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
                 var periods = parseInt($('.birthday-benefit', curform).val());
                 $errorDom.html('');
                 if (periods <= 1) {
-                    showErrorMessage('首月利率翻倍倍数为1', $('.birthday-benefit', curform));
+                    showErrorMessage('首月利率翻倍倍数至少为1', $('.birthday-benefit', curform));
                     return false;
                 }
                 var len= $('input[name="productTypes"]').filter(function(key,option) {

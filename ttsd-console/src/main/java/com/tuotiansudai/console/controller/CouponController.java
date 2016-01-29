@@ -303,6 +303,8 @@ public class CouponController {
             sideLabType = "statisticsInterestCoupon";
         } else if (couponModel.getCouponType() == CouponType.RED_ENVELOPE) {
             sideLabType = "statisticsRedEnvelope";
+        } else if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) {
+            sideLabType = "statisticsBirthdayCoupon";
         } else {
             sideLabType = "statisticsCoupon";
         }

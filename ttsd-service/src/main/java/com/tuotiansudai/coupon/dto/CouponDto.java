@@ -6,7 +6,6 @@ import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
@@ -30,7 +29,6 @@ public class CouponDto implements Serializable {
 
     private Long totalCount;
 
-    @NotEmpty
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String investLowerLimit;
 
@@ -72,7 +70,7 @@ public class CouponDto implements Serializable {
 
     private Double birthdayBenefit;
 
-    private Boolean multiple;
+    private boolean multiple;
 
     public String getAmount() {
         return amount;
@@ -258,11 +256,11 @@ public class CouponDto implements Serializable {
         this.birthdayBenefit = birthdayBenefit;
     }
 
-    public Boolean getMultiple() {
+    public boolean getMultiple() {
         return multiple;
     }
 
-    public void setMultiple(Boolean multiple) {
+    public void setMultiple(boolean multiple) {
         this.multiple = multiple;
     }
 

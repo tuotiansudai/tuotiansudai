@@ -66,21 +66,21 @@ public class CouponServiceImpl implements CouponService {
 
     private void checkCoupon(CouponDto couponDto) throws CreateCouponException {
         CouponModel couponModel = new CouponModel(couponDto);
-        if (couponDto.getCouponType() != CouponType.INTEREST_COUPON) {
+        if (couponDto.getCouponType() != CouponType.INTEREST_COUPON && couponDto.getCouponType() != CouponType.BIRTHDAY_COUPON) {
             long amount = couponModel.getAmount();
             if (amount <= 0) {
                 throw new CreateCouponException("投资体验券金额应大于0!");
             }
         }
 
-        if (couponDto.getCouponType() != CouponType.RED_ENVELOPE) {
+        if (couponDto.getCouponType() != CouponType.RED_ENVELOPE && couponDto.getCouponType() != CouponType.BIRTHDAY_COUPON) {
             long totalCount = couponModel.getTotalCount();
             if (totalCount <= 0) {
                 throw new CreateCouponException("发放数量应大于0!");
             }
         }
 
-        if (couponDto.getCouponType() != CouponType.INTEREST_COUPON && couponDto.getCouponType() != CouponType.RED_ENVELOPE) {
+        if (couponDto.getCouponType() != CouponType.INTEREST_COUPON && couponDto.getCouponType() != CouponType.RED_ENVELOPE && couponDto.getCouponType() != CouponType.BIRTHDAY_COUPON) {
             long investLowerLimit = couponModel.getInvestLowerLimit();
             if (investLowerLimit <= 0) {
                 throw new CreateCouponException("使用条件金额应大于0!");
