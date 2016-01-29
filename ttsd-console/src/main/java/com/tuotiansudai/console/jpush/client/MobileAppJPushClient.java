@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.jpush.client;
 
 import cn.jpush.api.JPushClient;
+import cn.jpush.api.common.ClientConfig;
 import cn.jpush.api.common.resp.APIConnectionException;
 import cn.jpush.api.common.resp.APIRequestException;
 import cn.jpush.api.push.PushResult;
@@ -36,7 +37,7 @@ public class MobileAppJPushClient {
 
     public JPushClient getJPushClient() {
         if (jPushClient == null) {
-            jPushClient = new JPushClient(masterSecret, appKey, 3);
+            jPushClient = new JPushClient(masterSecret, appKey,null, ClientConfig.getInstance());
         }
         return jPushClient;
     }
