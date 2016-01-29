@@ -146,7 +146,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         if (jPushAlertModel != null) {
             List<String> registrationIds = Lists.newArrayList();
             List<AccountModel> accountModels = accountMapper.findBirthOfAccountInMonth();
-            for (int i = 0; i < accountModels.size() - 1; i++) {
+            for (int i = 0; i < accountModels.size(); i++) {
                 AccountModel accountModel = accountModels.get(i);
                 String loginName = accountModel.getLoginName();
                 if (redisWrapperClient.hexists(JPUSH_ID_KEY, loginName)) {
