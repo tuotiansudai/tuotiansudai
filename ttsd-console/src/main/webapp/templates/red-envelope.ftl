@@ -14,7 +14,7 @@
         <div class="form-group">
             <label  class="col-sm-2 control-label">红包金额(元): </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control coupon-number" name="amount" placeholder="" datatype="*" errormsg="红包金额不能为空">
+                <input type="text" class="form-control coupon-number" name="amount" placeholder="" datatype="*" errormsg="红包金额不能为空" <#if coupon??>value="${coupon.amount!}"</#if>>
             </div>
         </div>
 
@@ -22,7 +22,7 @@
             <label  class="col-sm-2 control-label ">活动日期: </label>
             <div class="col-sm-2">
                 <div class='input-group date' id='startTime'>
-                    <input type='text' class="form-control coupon-start" name="startTime" datatype="date" errormsg="请选择活动开始时间"/>
+                    <input type='text' class="form-control coupon-start" name="startTime" datatype="date" errormsg="请选择活动开始时间" <#if coupon??>value="${(coupon.startTime?string("yyyy-MM-dd"))!}"</#if>/>
 					<span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -31,7 +31,7 @@
             <div class="line-size">-</div>
             <div class="col-sm-2">
                 <div class='input-group date' id='endTime'>
-                    <input type='text' class="form-control coupon-end" name="endTime" datatype="date" errormsg="请选择活动结束时间"/>
+                    <input type='text' class="form-control coupon-end" name="endTime" datatype="date" errormsg="请选择活动结束时间" <#if coupon??>value="${(coupon.endTime?string("yyyy-MM-dd"))!}"</#if>/>
 					<span class="input-group-addon">
 					<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -63,7 +63,7 @@
             <label  class="col-sm-2 control-label">使用条件: </label>
 
             <div class="col-sm-8">
-                <div class="item-invest">投资满</div><input type="text" class="form-control invest-quota coupon-number " name="investLowerLimit" placeholder="" datatype="*" errormsg="使用条件金额不能为空"><div class="item-invest">元可用</div>
+                <div class="item-invest">投资满</div><input type="text" class="form-control invest-quota coupon-number " name="investLowerLimit" placeholder="" datatype="*" errormsg="使用条件金额不能为空" <#if coupon??>value="${coupon.investLowerLimit}"</#if>><div class="item-invest">元可用</div>
             </div>
         </div>
 
@@ -71,7 +71,7 @@
             <label  class="col-sm-2 control-label">与其他优惠券共用:</label>
             <div class="col-sm-3">
 
-                <label><input type="checkbox" name="shared" class="shared"/>
+                <label><input type="checkbox" name="shared" class="shared" <#if coupon??&&coupon.shared>checked</#if>/>
                 </label>
 
             </div>

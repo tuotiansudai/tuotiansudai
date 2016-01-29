@@ -78,8 +78,9 @@
                                             <li data-coupon-id="${coupon.couponId?string.computer}"
                                                 data-coupon-type="${coupon.couponType}"
                                                 data-coupon-shared="${coupon.shared?string("true", "false")}"
-                                                data-coupon-created-time="${coupon.createdTime?string("yyyy-MM-dd HH:mm:ss")}">
-                                                <input <#if coupon.shared>type="checkbox" checked="checked" readonly="readonly"<#else>type="radio"</#if>
+                                                data-coupon-created-time="${coupon.createdTime?string("yyyy-MM-dd HH:mm:ss")}"
+                                            <#if coupon.investLowerLimit!=0 && coupon.investUpperLimit!=0>class="lower-upper-limit"</#if>>
+                                            <input <#if coupon.shared>type="checkbox" checked="checked" readonly="readonly"<#else>type="radio"</#if>
                                                        name="userCouponIds" value="${coupon.id?string.computer}" id="${coupon.id?string.computer}" class="input-use-ticket"/>
                                                 <label>
                                                     <span class="sign">${coupon.couponType.getAbbr()}</span>
@@ -91,23 +92,27 @@
                                                             ${coupon.name}${(coupon.amount / 100)?string("0.00")}元
                                                             </#if>
                                                         </i>
-                                                        <br/>
-                                                        <i class="ticket-term"
-                                                           data-invest-lower-limit="${coupon.investLowerLimit?string.computer}"
-                                                           data-invest-upper-limit="${coupon.investUpperLimit?string.computer}">
-                                                            <#if coupon.investLowerLimit!=0>
+                                                        <#if coupon.investLowerLimit!=0>
+                                                            <br/>
+                                                            <i class="ticket-term" data-invest-lower-limit="${coupon.investLowerLimit?string.computer}">
                                                                 [投资满${(coupon.investLowerLimit / 100)?string("0.00")}元可用]
-                                                            </#if>
-                                                            <#if coupon.investUpperLimit!=0>
+                                                            </i>
+
+                                                        </#if>
+                                                        <#if coupon.investUpperLimit!=0>
+                                                            <br/>
+                                                            <i class="ticket-term" data-invest-upper-limit="${coupon.investUpperLimit?string.computer}">
                                                                 [投资限${(coupon.investUpperLimit / 100)?string("0.00")}元内可用]
-                                                            </#if>
-<<<<<<< HEAD
-=======
-                                                            <#if coupon.investLowerLimit==0 && coupon.investUpperLimit==0>
+                                                            </i>
+
+                                                        </#if>
+                                                        <#if coupon.investLowerLimit==0 && coupon.investUpperLimit==0>
+                                                            <br/>
+                                                            <i class="ticket-term" data-invest-upper-limit="${coupon.investUpperLimit?string.computer}">
                                                                 [投资即返]
-                                                            </#if>
->>>>>>> app_1.6_master
-                                                        </i>
+                                                            </i>
+                                                        </#if>
+
                                                     </span>
                                                 </label>
                                             </li>
@@ -197,4 +202,5 @@
     </div>
     <#include "coupon-alert.ftl" />
 </div>
+    <#include "red-envelope-float.ftl" />
 </@global.main>

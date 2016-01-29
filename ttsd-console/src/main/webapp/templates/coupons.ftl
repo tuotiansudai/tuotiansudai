@@ -55,6 +55,9 @@
                 已发放收益(元)
             </th>
             <th>
+                操作
+            </th>
+            <th>
             </th>
             <th>
             </th>
@@ -116,7 +119,7 @@
             </td>
             <td>
                 <#if coupon.active>
-                    <a href="/activity-manage/coupon/${coupon.id?string('0')}/detail" class="btn-link">查看详情</a>
+                    -
                 <#else>
                     <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a> / <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/${coupon.id?string('0')}" >删除</button>
                 </#if>
@@ -133,6 +136,9 @@
                         <a class="loan_repay confirm-btn" href="javascript:void(0)" data-id="${coupon.id?string('0')}" data-type="${coupon.couponType}">确认生效</a>
                     </label>
                 </#if>
+            </td>
+            <td>
+                <a href="/activity-manage/coupon/${coupon.id?string('0')}/detail" class="btn-link">查看详情</a>
             </td>
         </tr>
         </#list>

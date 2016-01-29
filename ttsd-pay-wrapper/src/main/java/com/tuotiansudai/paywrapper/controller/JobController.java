@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.controller;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
 import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.paywrapper.service.LoanService;
 import com.tuotiansudai.paywrapper.service.RepayService;
@@ -27,6 +28,9 @@ public class JobController {
 
     @Autowired
     private InvestService investService;
+
+    @Autowired
+    private CouponLoanOutService couponLoanOutService;
 
     @Resource(name = "normalRepayServiceImpl")
     private RepayService normalRepayService;
@@ -77,5 +81,11 @@ public class JobController {
     @RequestMapping(value = "/auto-loan-out-after-raising-complete", method = RequestMethod.POST)
     public BaseDto<PayDataDto> autoLoanOutAfterRaisingComplete(@RequestBody long loanId) {
         return loanService.loanOut(loanId);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/sed-red-envelope-after-loan-out", method = RequestMethod.POST)
+    public void sendRedEnvelopeAfterLoanOut(@RequestBody long loanId) {
+        couponLoanOutService.sendRedEnvelope(loanId);
     }
 }

@@ -286,12 +286,12 @@ public class CouponController {
         if (CollectionUtils.isNotEmpty(userCouponService.findUserCouponByCouponId(couponId))){
             dataDto.setStatus(false);
         } else {
+            String loginName = LoginUserInfo.getLoginName();
+            couponService.deleteCoupon(loginName, couponId);
             dataDto.setStatus(true);
         }
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         baseDto.setData(dataDto);
-        String loginName = LoginUserInfo.getLoginName();
-        couponService.deleteCoupon(loginName, couponId);
         return baseDto;
     }
 

@@ -1,8 +1,9 @@
 package com.tuotiansudai.jpush.client;
 
 import cn.jpush.api.JPushClient;
-import cn.jpush.api.common.APIConnectionException;
-import cn.jpush.api.common.APIRequestException;
+import cn.jpush.api.common.ClientConfig;
+import cn.jpush.api.common.resp.APIConnectionException;
+import cn.jpush.api.common.resp.APIRequestException;
 import cn.jpush.api.push.PushResult;
 import cn.jpush.api.push.model.Options;
 import cn.jpush.api.push.model.Platform;
@@ -36,7 +37,7 @@ public class MobileAppJPushClient {
 
     public JPushClient getJPushClient() {
         if (jPushClient == null) {
-            jPushClient = new JPushClient(masterSecret, appKey, 3);
+            jPushClient = new JPushClient(masterSecret, appKey,null, ClientConfig.getInstance());
         }
         return jPushClient;
     }
@@ -59,7 +60,7 @@ public class MobileAppJPushClient {
                 .setPlatform(Platform.all())
                 .setAudience(Audience.all())
                 .setNotification(Notification.newBuilder()
-                        .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
+                        .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).setBadge(0).addExtra(extraKey, extraValue).build())
                         .addPlatformNotification(AndroidNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
                         .build())
                 .setOptions(Options.newBuilder().setApnsProduction(Environment.isProduction(environment)).build())
@@ -96,7 +97,7 @@ public class MobileAppJPushClient {
                 .setPlatform(Platform.ios())
                 .setAudience(Audience.tag(tags))
                 .setNotification(Notification.newBuilder()
-                        .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
+                        .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).setBadge(0).addExtra(extraKey, extraValue).build())
                         .build())
                 .setOptions(Options.newBuilder().setApnsProduction(Environment.isProduction(environment)).build())
                 .build();
@@ -108,7 +109,7 @@ public class MobileAppJPushClient {
                 .setPlatform(Platform.ios())
                 .setAudience(Audience.all())
                 .setNotification(Notification.newBuilder()
-                        .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
+                        .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).setBadge(0).addExtra(extraKey, extraValue).build())
                         .build())
                 .setOptions(Options.newBuilder().setApnsProduction(Environment.isProduction(environment)).build())
                 .build();
@@ -121,7 +122,7 @@ public class MobileAppJPushClient {
                 .setPlatform(Platform.all())
                 .setAudience(Audience.tag(tags))
                 .setNotification(Notification.newBuilder()
-                        .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
+                        .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).setBadge(0).addExtra(extraKey, extraValue).build())
                         .addPlatformNotification(AndroidNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
                         .build())
                 .setOptions(Options.newBuilder().setApnsProduction(Environment.isProduction(environment)).build())
@@ -166,17 +167,14 @@ public class MobileAppJPushClient {
     }
 
     private boolean sendPush(PushPayload payload, String jPushAlertId) {
-        this.setjPushClient(getJPushClient());
+        setjPushClient(getJPushClient());
         try {
             System.out.println(payload.toJSON());
             logger.debug(MessageFormat.format("request:{0}:{1} begin", jPushAlertId, payload.toJSON()));
             PushResult result = jPushClient.sendPush(payload);
             logger.debug(MessageFormat.format("request:{0}:{1}:{2} end", jPushAlertId, result.msg_id, result.sendno));
             return true;
-        } catch (APIConnectionException e) {
-            logger.debug(MessageFormat.format("response:{0}:{1}", jPushAlertId, e.getMessage()));
-
-        } catch (APIRequestException e) {
+        } catch (APIConnectionException | APIRequestException e) {
             logger.debug(MessageFormat.format("response:{0}:{1}", jPushAlertId, e.getMessage()));
         }
         return false;

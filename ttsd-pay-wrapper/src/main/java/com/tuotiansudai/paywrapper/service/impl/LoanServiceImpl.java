@@ -222,8 +222,6 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private ProjectTransferResponseModel doLoanOut(long loanId) throws PayException {
-        // 将已失效的投资记录状态置为失败
-        investMapper.cleanWaitingInvest(loanId);
 
         // 查找借款人
         LoanModel loan = loanMapper.findById(loanId);
@@ -234,7 +232,7 @@ public class LoanServiceImpl implements LoanService {
         if (LoanStatus.REPAYING == loan.getStatus()){
             logger.warn("loan has already been outed. [" + loanId + "]");
             ProjectTransferResponseModel umPayReturn = new ProjectTransferResponseModel();
-            umPayReturn.setRetCode(BaseSyncResponseModel.SUCCESS_CODE);
+            umPayReturn.setRetCode(AutoLoanOutJob.ALREADY_OUT);
             umPayReturn.setRetMsg("loan has already been outed.");
             return umPayReturn;
         }
@@ -242,8 +240,11 @@ public class LoanServiceImpl implements LoanService {
         if (LoanStatus.RECHECK != loan.getStatus()){
             throw new PayException("loan is not ready for recheck [" + loanId + "]");
         }
-        String agentPayUserId = accountMapper.findByLoginName(loan.getAgentLoginName()).getPayUserId();
 
+        // 将已失效的投资记录状态置为失败
+        investMapper.cleanWaitingInvest(loanId);
+
+        String agentPayUserId = accountMapper.findByLoginName(loan.getAgentLoginName()).getPayUserId();
 
         // 查找所有投资成功的记录
         List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);

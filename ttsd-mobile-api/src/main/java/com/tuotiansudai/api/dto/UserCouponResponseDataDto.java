@@ -65,7 +65,7 @@ public class UserCouponResponseDataDto {
         this.productTypes = couponModel.getProductTypes();
         this.usedTime = userCouponModel.getUsedTime();
         this.expectedInterest = AmountConverter.convertCentToString(userCouponModel.getExpectedInterest());
-        this.rate = String.valueOf(couponModel.getRate());
+        this.rate = String.valueOf(couponModel.getRate() * 100);
         this.investUpperLimit = AmountConverter.convertCentToString(couponModel.getInvestUpperLimit());
         this.shared = couponModel.isShared();
 
