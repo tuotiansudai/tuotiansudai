@@ -95,6 +95,7 @@
                 <div class="modal-body">
                     <textarea rows="4" cols="50" maxlength="40" class="content" name="content" errormsg="通知模板不能为空"></textarea>（长度请不要超过40个字）
                 </div>
+                <div class="web-error-message alertMessage"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"
                             data-dismiss="modal">关闭

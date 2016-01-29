@@ -23,5 +23,7 @@ public interface JPushAlertService {
 
     void changeJPushAlertStatus(long id,PushStatus status,String loginName);
 
+    void changeJPushAlertContent(long id,String content,String loginName);
+
     void autoJPushAlertBirthMonth();
 }

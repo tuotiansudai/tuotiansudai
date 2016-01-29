@@ -19,12 +19,21 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
         });
         $('.change-content').on('click',function(event) {
             event.preventDefault();
+            var content = $('.content').val();
+            if(content == ''){
+                $('.')
+                return false;
+            }
             $.ajax({
-                url: '/announce-manage/announce/'+operate,
+                url: '/app-push-manage/auto-app-push/51/'+content,
                 type: 'get',
                 dataType: 'json',
                 contentType: 'application/json; charset=UTF-8'
-            }).done()
+            }).done(function(response){
+                if(response.data.status){
+                    location.href = "/app-push-manage/auto-app-push-list";
+                }
+            });
         });
 
     });

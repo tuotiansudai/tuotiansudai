@@ -132,6 +132,15 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
+    public void changeJPushAlertContent(long id, String content, String loginName) {
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertModelById(id);
+        jPushAlertModel.setContent(content);
+        jPushAlertModel.setUpdatedBy(loginName);
+        jPushAlertModel.setUpdatedTime(new Date());
+        jPushAlertMapper.update(jPushAlertModel);
+    }
+
+    @Override
     public void autoJPushAlertBirthMonth() {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType();
         if (jPushAlertModel != null) {
