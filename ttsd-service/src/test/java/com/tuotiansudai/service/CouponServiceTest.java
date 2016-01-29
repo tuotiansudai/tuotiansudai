@@ -103,30 +103,6 @@ public class CouponServiceTest {
     }
 
     @Test
-    public void shouldAfterReturningUserRegisteredIsSuccess() throws CreateCouponException {
-        UserModel userModel = fakeUserModel();
-        userMapper.create(userModel);
-        CouponDto couponDto = fakeCouponDto();
-        DateTime startDateTime = new DateTime().plusDays(-1);
-        DateTime endDateTime = new DateTime().plusDays(1);
-        couponDto.setStartTime(startDateTime.toDate());
-        couponDto.setEndTime(endDateTime.toDate());
-        CouponModel couponModel = new CouponModel(couponDto);
-        couponModel.setCreatedBy("couponTest");
-        couponModel.setActive(true);
-        couponModel.setCouponType(CouponType.NEWBIE_COUPON);
-        couponModel.setCreatedTime(new Date());
-        couponModel.setUserGroup(UserGroup.NEW_REGISTERED_USER);
-        couponMapper.create(couponModel);
-
-        couponService.assignNewbieCoupon(userModel.getLoginName());
-        CouponModel couponModel2 = couponMapper.findById(couponModel.getId());
-
-        assertEquals(1, couponModel2.getIssuedCount());
-
-    }
-
-    @Test
     public void shouldRegisterUserIsSuccess() throws ReferrerRelationException {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
