@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.LoanRepayModel;
+import com.tuotiansudai.repository.model.LoanRepayNotifyModel;
 import com.tuotiansudai.repository.model.RepayStatus;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -53,4 +54,6 @@ public interface LoanRepayMapper {
                                                          @Param(value = "startLimit") int startLimit,@Param(value = "endLimit") int endLimit);
 
     List<LoanRepayModel> findNotCompleteLoanRepay();
+
+    List<LoanRepayNotifyModel> findLoanRepayNotifyToday();
 }

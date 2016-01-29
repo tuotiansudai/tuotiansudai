@@ -205,7 +205,7 @@ td.td {
     font-size: 14px;
 }
 
-.web-error-message,.coupon-hide {
+.web-error-message,.coupon-hide,.app-push-link {
     display: none;
 }
 
@@ -321,6 +321,9 @@ td.td {
     background-color: transparent;
 }
 
+.province label {
+    font-weight: normal;
+}
 .file-btn{
     float:left;
     width:100px;

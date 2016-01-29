@@ -1,5 +1,6 @@
 @import 'variables';
 @import 'daterangepicker';
+@import "coupon_alert";
 
 .layui-layer-btn {
   text-align: center;
@@ -742,84 +743,6 @@
       }
     }
   }
-  .activity-coupon-model{
-    width:100%;
-    height:100%;
-    position: fixed;
-    top:0;
-    left:0;
-    background:rgba(0,0,0,0.5);
-    z-index:999;
-    .coupon-model-list{
-      float:left;
-      width:590px;
-      height:546px;
-      position: relative;
-      top:50%;
-      left:50%;
-      margin-top:-273px;
-      margin-left:-295px;
-      background:url("/images/sign/activities/coupon-bag-info.png") no-repeat center;
-      .coupon-close{
-        width:28px;
-        height:28px;
-        cursor:pointer;
-        position: absolute;
-        top:87px;
-        left:464px;
-        background:url("/images/sign/activities/coupon-close.png") no-repeat center;
-      }
-      .coupon-text{
-        width: 204px;
-        height: 48px;
-        position: absolute;
-        top: 174px;
-        left: 176px;
-        text-align: center;
-        color: #ff752a;
-        line-height: 40px;
-        span{
-          &.text-number{
-            font-size:40px;
-          }
-          &.text-unit{
-            font-size:30px;
-          }
-        }
-      }
-      .coupon-name{
-        width: 220px;
-        height: 26px;
-        position: absolute;
-        top: 222px;
-        left: 176px;
-        text-align: center;
-        color: #ff752a;
-        line-height: 26px;
-        font-size: 20px;
-        letter-spacing: 8px;
-      }
-      .coupon-time{
-        width:204px;
-        height:32px;
-        position: absolute;
-        top:252px;
-        left:182px;
-        text-align:center;
-        color:#59310d;
-        font-size:14px;
-        line-height:32px;
-      }
-      .coupon-link{
-        width:150px;
-        height:40px;
-        position: absolute;
-        top:340px;
-        left:208px;
-        background:url("/images/sign/activities/see-link-btn.png") no-repeat center;
-      }
-    }
-  }
 }
 
 /* refer page */
@@ -984,11 +907,10 @@
     font-size: 12px;
     color: #949494;
     .l-title {
-      margin-top: 43px;
-      padding: 10px;
-      border-top: 2px solid #ccc;
+      padding: 10px 0;
+      border-bottom: 2px solid #ccc;
       font-size: 12px;
-
+      text-align: right;
     }
     .account-list {
       margin-left: 10px;
@@ -1050,6 +972,12 @@
               li {
                 padding:5px 10px;
                 line-height: 1.6;
+                &.lower-upper-limit {
+                  .input-use-ticket,label .sign{
+                    position: relative;
+                    top:-8px;
+                  }
+                }
                 .input-use-ticket {
                    margin-bottom: 12px;
                 }
@@ -1449,36 +1377,37 @@
     font-size:18px;
 
   }
+  .sign-seal {
+    display: none;
+    width: 80px;
+    height: 80px;
+    border: 2px solid #7f7f7f;
+    color: #7f7f7f;
+    text-align: center;
+    line-height: 80px;
+    position: absolute;
+    left: 45%;
+    top: 20%;
+    border-radius: 50%;
+    span {
+      -webkit-transform: rotate(30deg);
+      -moz-transform: rotate(30deg);
+      transform: rotate(-30deg);
+      font-weight: bold;
+      font-size: 20px;
+      line-height: 1.2;
+      padding-top: 16px;
+      display: block;
+      letter-spacing: 8px;
+    }
+  }
   .experience-ticket-box {
     width:500px;
     height: 160px;
     position: relative;
     background: url("/images/icons/logo-transport.png") -14px -20px no-repeat;
     margin-top:12px;
-    .sign-seal {
-      display: none;
-      width: 80px;
-      height: 80px;
-      border: 2px solid #7f7f7f;
-      color: #7f7f7f;
-      text-align: center;
-      line-height: 80px;
-      position: absolute;
-      left: 45%;
-      top: 20%;
-      border-radius: 50%;
-      span {
-        -webkit-transform: rotate(30deg);
-        -moz-transform: rotate(30deg);
-        transform: rotate(-30deg);
-        font-weight: bold;
-        font-size: 20px;
-        line-height: 1.2;
-        padding-top: 16px;
-        display: block;
-        letter-spacing: 8px;
-      }
-    }
+
     .vertical-line {
       height:94%;
       width:1px;
@@ -1581,6 +1510,123 @@
       }
     }
   }
+
+  .red-envelope-frame {
+    margin-left: -20px;
+    .red-envelope-box {
+      font-size: 11px;
+      width:240px;
+      height:240px;
+      float: left;
+      margin-left: 20px;
+      margin-bottom: 20px;
+      background: url("/images/sign/actor/red-envelope-valid.png") 0 0 no-repeat;
+      position: relative;
+      .red-amount {
+        position: absolute;
+        width:100%;
+        text-align: center;
+        top:-2px;
+        font-size: 20px;
+        color: #f4e823;
+        em {
+          font-size: 30px;
+          font-weight: bold;
+        }
+      }
+      .use-status {
+        position: absolute;
+        left:50px;
+        top:120px;
+        color: #fff;
+
+        img {
+          display: inline-block;
+        }
+        span {
+          color: #f4e823;
+        }
+      }
+      .red-button {
+        position: absolute;
+        width:100%;
+        text-align: center;
+        top:172px;
+        font-weight: bold;
+        .btn-action {
+          background: #fdd738;
+          border-color: #fdd738;
+          color: #ff0737 !important;
+          font-weight: bold;
+        }
+      }
+      .use-time {
+        position: absolute;
+        text-align: center;
+        top:211px;
+        width:100%;
+        color: #95000a;
+        span {
+          color: #fadde3;
+        }
+      }
+      &.red-status-expired {
+        background: url("/images/sign/actor/red-envelope-expired.png") 0 0 no-repeat;
+        .red-amount,.use-status span,.use-time,.use-time span {
+          color: #fff;
+        }
+        .sign-seal {
+          color: #df002c;
+          border: 2px solid #df002c;
+          left: 58%;
+          top: 20px;
+          &.sign-expired {
+            display: block;
+          }
+        }
+        .red-button {
+          .btn-action {
+            background: #cccccc;
+            border-color: #cccccc;
+            color: #808080 !important;
+            font-weight: bold;
+            cursor: default;
+          }
+        }
+      }
+      &.red-status-used {
+        border-radius: 10px;
+        .layer-mask {
+          width: 100%;
+          height: 100%;
+          background-color: rgba(77,77,77,0.6);
+          position: absolute;
+          z-index: 10;
+          border-radius: 10px;
+        }
+        .sign-seal {
+          color: #b7b7b7;
+          border: 2px solid #b7b7b7;
+          left: 58%;
+          top: 20px;
+          z-index: 15;
+          &.sign-used {
+            display: block;
+          }
+        }
+      }
+
+      &:hover {
+        -moz-box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
+        -webkit-box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
+        box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
+      }
+    }
+    .ticket-use-help {
+      margin-top:70px;
+    }
+  }
+
   .ticket-use-help {
     width:470px;
     padding:10px 15px;

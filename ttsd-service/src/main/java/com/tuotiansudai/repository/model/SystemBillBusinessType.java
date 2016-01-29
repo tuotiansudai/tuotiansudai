@@ -10,6 +10,8 @@ public enum SystemBillBusinessType {
 
     RECHARGE_SUCCESS("充值"),
 
+    PUBLIC_RECHARGE_SUCCESS("企业充值"),
+
     WITHDRAW_SUCCESS("提现"),
 
     SYSTEM_RECHARGE("平台充值"),
@@ -22,9 +24,9 @@ public enum SystemBillBusinessType {
 
     LOAN_REMAINING_INTEREST("标的剩余利息"),
 
-    PUBLIC_RECHARGE_SUCCESS("企业充值"),
+    COUPON("体验券"),
 
-    COUPON("体验券");
+    COUPON_RED_ENVELOPE("红包");
 
     private final String description;
 

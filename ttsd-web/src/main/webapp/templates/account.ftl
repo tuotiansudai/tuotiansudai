@@ -78,8 +78,8 @@
     </#if>
     <div class="tMonthPayment bRadiusBox clear-blank bg-w" id="tMonthBox">
         <ul class="PaymentSwitch">
-            <li class="current"><a href="javascript:void(0);"> 本月已收回款</a></li>
-            <li><a href="javascript:void(0);">本月待收回款</a></li>
+            <li><a href="javascript:void(0);"> 本月已收回款</a></li>
+            <li class="current"><a href="javascript:void(0);">本月待收回款</a></li>
         </ul>
         <table class="table table-striped">
             <caption>本月已收回款总额：￥${((successSumInvestRepay/100)?string('0.00'))!}元 <a href="/investor/invest-list" class="fr">更多...</a> </caption>

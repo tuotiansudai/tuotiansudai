@@ -4,7 +4,8 @@ public enum CouponType {
 
     NEWBIE_COUPON("新手体验券", "新手"),
     INVEST_COUPON("投资体验券", "投资"),
-    INTEREST_COUPON("加息优惠券", "加息");
+    INTEREST_COUPON("加息优惠券", "加息"),
+    RED_ENVELOPE("现金红包", "红包");
 
     private String name;
 
@@ -35,6 +36,8 @@ public enum CouponType {
                 return UserBillBusinessType.INVEST_COUPON;
             case INTEREST_COUPON:
                 return UserBillBusinessType.INTEREST_COUPON;
+            case RED_ENVELOPE:
+                return UserBillBusinessType.RED_ENVELOPE;
         }
 
         return null;
