@@ -50,4 +50,9 @@ public class SmsController {
         return smsService.couponNotify(notifyDto);
     }
 
+    @RequestMapping(value = "/loan-repay-notify", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> loanRepayNotify(@Valid @RequestBody LoanRepayNotifyDto notifyDto) {
+        return smsService.loanRepayNotify(notifyDto.getMobile(), notifyDto.getLoanName(), notifyDto.getRepayAmount());
+    }
 }

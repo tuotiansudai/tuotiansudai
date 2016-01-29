@@ -131,7 +131,9 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Override
     @Transactional
-    public void assignUserCoupon(final String loginName, final List<UserGroup> userGroups) {
+    public void assignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
+        final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
+
         List<CouponModel> coupons = couponMapper.findAllActiveCoupons();
 
         List<CouponModel> couponModels = Lists.newArrayList(Iterators.filter(coupons.iterator(), new Predicate<CouponModel>() {

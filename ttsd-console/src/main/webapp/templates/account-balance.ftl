@@ -5,8 +5,13 @@
 <div class="col-md-10">
     <form action="" class="form-inline query-build">
         <div class="form-group">
-            <label for="control-label">用户名</label>
+            <label for="control-label">用户名：</label>
             <input type="text" class="form-control jq-loginName" name="loginName" value="${loginName!}">
+        </div>
+        <div class="form-group">
+            <label for="control-label">余额：</label>
+            <input type="text" class="form-control jq-balance-min" name="balanceMin" value="${balanceMin!50}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">~
+            <input type="text" class="form-control jq-balance-max" name="balanceMax" value="${balanceMax!}" onblur="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
         </div>
 
         <button class="btn btn-primary" type="submit">查询</button>
@@ -21,6 +26,7 @@
                 <th>姓名</th>
                 <th>手机号</th>
                 <th>地区</th>
+                <th>最后交易时间</th>
                 <th>账户余额(共${sumBalance/100}元)</th>
             </tr>
             </thead>
@@ -35,6 +41,7 @@
                     <td>${userAccount.userName!''}</td>
                     <td>${userAccount.mobile}</td>
                     <td>${userAccount.province!''}</td>
+                    <td>${(userAccount.lastBillTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
                     <td>${userAccount.balance}</td>
                 </tr>
                 </#list>
@@ -49,7 +56,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/finance-manage/account-balance?loginName=${loginName!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/account-balance?loginName=${loginName!}&balanceMin=${balanceMin!50}&balanceMax=${balanceMax!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -58,7 +65,7 @@
                 <li><a>${currentPageNo}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="/finance-manage/account-balance?loginName=${loginName!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/account-balance?loginName=${loginName!}&balanceMin=${balanceMin!50}&balanceMax=${balanceMax!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>

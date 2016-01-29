@@ -79,7 +79,7 @@
                 #{couponType}
             </foreach>
         </if>
-        where loan_id = #{loanId}
+        where loan_id = #{loanId} and status = 'SUCCESS'
     </select>
 
     <select id="findUseRecordsCount" resultType="int" parameterType="map">
@@ -164,7 +164,7 @@
         <if test="isUsed != null and !isUsed">
             and t.status != 'SUCCESS'
         </if>
-        order by t.status desc, t.used_time desc
+        order by t.used_time desc
         limit #{index}, #{pageSize}
     </select>
 

@@ -1,9 +1,6 @@
 package com.tuotiansudai.scheduler.plugin;
 
-import com.tuotiansudai.job.AutoReFreshAreaByMobileJob;
-import com.tuotiansudai.job.CalculateDefaultInterestJob;
-import com.tuotiansudai.job.InvestCallback;
-import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.job.*;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
 import org.quartz.CronScheduleBuilder;
@@ -43,6 +40,9 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
         if (JobType.AutoReFreshAreaByMobile.name().equalsIgnoreCase(schedulerName)) {
             createRefreshAreaByMobile();
+        }
+        if (JobType.LoanRepayNotify.name().equalsIgnoreCase(schedulerName)) {
+            createLoanRepayNotifyJob();
         }
     }
 
@@ -88,4 +88,13 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
     }
 
+    private void createLoanRepayNotifyJob() {
+        try {
+            jobManager.newJob(JobType.LoanRepayNotify, LoanRepayNotifyJob.class).replaceExistingJob(true)
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 14 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+                    .withIdentity(JobType.LoanRepayNotify.name(), JobType.LoanRepayNotify.name()).submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
 }

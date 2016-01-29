@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.jpush.client;
 
 import cn.jpush.api.JPushClient;
+import cn.jpush.api.common.ClientConfig;
 import cn.jpush.api.common.resp.APIConnectionException;
 import cn.jpush.api.common.resp.APIRequestException;
 import cn.jpush.api.push.PushResult;
@@ -36,7 +37,7 @@ public class MobileAppJPushClient {
 
     public JPushClient getJPushClient() {
         if (jPushClient == null) {
-            jPushClient = new JPushClient(masterSecret, appKey, 3);
+            jPushClient = new JPushClient(masterSecret, appKey,null, ClientConfig.getInstance());
         }
         return jPushClient;
     }
@@ -149,17 +150,14 @@ public class MobileAppJPushClient {
     }
 
     private boolean sendPush(PushPayload payload, String jPushAlertId) {
-        this.setjPushClient(getJPushClient());
+        setjPushClient(getJPushClient());
         try {
             System.out.println(payload.toJSON());
             logger.debug(MessageFormat.format("request:{0}:{1} begin", jPushAlertId, payload.toJSON()));
             PushResult result = jPushClient.sendPush(payload);
             logger.debug(MessageFormat.format("request:{0}:{1}:{2} end", jPushAlertId, result.msg_id, result.sendno));
             return true;
-        } catch (APIConnectionException e) {
-            logger.debug(MessageFormat.format("response:{0}:{1}", jPushAlertId, e.getMessage()));
-
-        } catch (APIRequestException e) {
+        } catch (APIConnectionException | APIRequestException e) {
             logger.debug(MessageFormat.format("response:{0}:{1}", jPushAlertId, e.getMessage()));
         }
         return false;
