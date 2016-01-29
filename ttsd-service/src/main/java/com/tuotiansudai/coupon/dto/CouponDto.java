@@ -70,6 +70,10 @@ public class CouponDto implements Serializable {
 
     private Boolean importIsRight;
 
+    private Double birthdayBenefit;
+
+    private Boolean multiple;
+
     public String getAmount() {
         return amount;
     }
@@ -246,6 +250,22 @@ public class CouponDto implements Serializable {
         this.importIsRight = importIsRight;
     }
 
+    public Double getBirthdayBenefit() {
+        return birthdayBenefit;
+    }
+
+    public void setBirthdayBenefit(Double birthdayBenefit) {
+        this.birthdayBenefit = birthdayBenefit;
+    }
+
+    public Boolean getMultiple() {
+        return multiple;
+    }
+
+    public void setMultiple(Boolean multiple) {
+        this.multiple = multiple;
+    }
+
     public CouponDto(){
 
     }
@@ -274,5 +294,7 @@ public class CouponDto implements Serializable {
             this.importIsRight = couponModel.getImportIsRight();
         }
         this.shared = couponModel.isShared();
+        this.birthdayBenefit = couponModel.getBirthdayBenefit();
+        this.multiple = couponModel.isMultiple();
     }
 }

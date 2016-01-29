@@ -38,4 +38,8 @@ public interface CouponService {
     List<CouponDto> findRedEnvelopeCoupons(int index, int pageSize);
 
     int findRedEnvelopeCouponsCount();
+
+    List<CouponDto> findBirthdayCoupons(int index, int pageSize);
+
+    int findBirthdayCouponsCount();
 }
