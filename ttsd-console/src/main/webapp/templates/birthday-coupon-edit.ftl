@@ -27,7 +27,7 @@
         <div class="form-group">
             <label  class="col-sm-2 control-label">首月利率翻倍倍数: </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control birthday-benefit" name="birthdayBenefit" placeholder="" datatype="*" errormsg=">首月利率翻倍倍数不能为空" <#if coupon??>value="${coupon.birthdayBenefit!}"</#if>>
+                <input type="text" class="form-control birthday-benefit" name="birthdayBenefit" placeholder="" datatype="*" errormsg=">首月利率翻倍倍数不能为空" <#if coupon??>value="${(coupon.birthdayBenefit+1)!}"</#if>>
             </div>
         </div>
 

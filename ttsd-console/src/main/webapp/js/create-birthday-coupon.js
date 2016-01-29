@@ -53,7 +53,7 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
             beforeCheck: function(curform) {
                 var periods = parseInt($('.birthday-benefit', curform).val());
                 $errorDom.html('');
-                if (periods <= 1) {
+                if (periods < 1) {
                     showErrorMessage('首月利率翻倍倍数至少为1', $('.birthday-benefit', curform));
                     return false;
                 }

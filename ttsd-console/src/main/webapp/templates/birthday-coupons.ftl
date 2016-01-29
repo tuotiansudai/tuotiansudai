@@ -61,7 +61,7 @@
             <span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${coupon.couponType.getName()}">${coupon.couponType.getName()}</span>
         </td>
         <td>
-            ${coupon.birthdayBenefit}
+            ${(coupon.birthdayBenefit+1)!}
         </td>
         <td>
             ${coupon.totalInvestAmount/100}
