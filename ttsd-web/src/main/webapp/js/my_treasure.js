@@ -1,5 +1,5 @@
 require(['jquery', 'layerWrapper', 'moment', 'pagination', 'mustache', 'text!/tpl/my-treasure-table.mustache',
-        'text!/tpl/my-treasure-table-interest.mustache', 'text!/tpl/my-treasure-table-red.mustache', 'csrf'],
+        'text!/tpl/my-treasure-table-interest.mustache', 'text!/tpl/my-treasure-table-red.mustache', 'csrf', 'coupon-alert'],
 function($, layer, moment, pagination, Mustache, treasureListTemplate, treasureListTemplateInterest, treasureListTemplateRedEnvelope) {
 
     $(function() {
