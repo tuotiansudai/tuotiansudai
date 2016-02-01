@@ -3,6 +3,7 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
@@ -14,6 +15,7 @@ import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -47,6 +49,9 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private IdGenerator idGenerator;
+
+    @Autowired
+    private UserCouponMapper userCouponMapper;
 
     @Override
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
@@ -184,7 +189,9 @@ public class InvestServiceImpl implements InvestService {
             int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
             items = investMapper.findInvestPagination(loanId, investorLoginName, channel, strSource, role, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus);
-
+            for (InvestPaginationItemView investPaginationItemView : items) {
+                investPaginationItemView.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponMapper.findSuccessByLoginNameAndLoanId(investorLoginName, investPaginationItemView.getLoanId())));
+            }
             investAmountSum = investMapper.sumInvestAmount(loanId, investorLoginName, channel, strSource, role, startTime, endTime, investStatus, loanStatus);
         }
 
