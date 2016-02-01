@@ -77,6 +77,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
+    @Transactional
     public void send(String loginName, long id) {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertModelById(id);
         JPushAlertDto jPushAlertDto = new JPushAlertDto(jPushAlertModel);
@@ -132,6 +133,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
+    @Transactional
     public void changeJPushAlertContent(long id, String content, String loginName) {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertModelById(id);
         jPushAlertModel.setContent(content);

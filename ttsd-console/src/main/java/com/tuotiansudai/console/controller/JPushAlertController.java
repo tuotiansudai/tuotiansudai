@@ -99,23 +99,31 @@ public class JPushAlertController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/auto-app-push/{jPushAlertId}/disabled", method = RequestMethod.GET)
-    public ModelAndView disableJPushAlert(@PathVariable long jPushAlertId) {
+    @RequestMapping(value = "/auto-app-push/{jPushAlertId}/disabled", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> disableJPushAlert(@PathVariable long jPushAlertId) {
         String loginName = LoginUserInfo.getLoginName();
-        ModelAndView modelAndView = new ModelAndView("redirect:/app-push-manage/auto-app-push-list");
+        BaseDto<BaseDataDto> baseDto = new BaseDto<BaseDataDto>();
+        BaseDataDto baseDataDto = new BaseDataDto();
+        baseDto.setData(baseDataDto);
         jPushAlertService.changeJPushAlertStatus(jPushAlertId, PushStatus.DISABLED, loginName);
-        return modelAndView;
+        baseDataDto.setStatus(true);
+        return baseDto;
     }
 
-    @RequestMapping(value = "/auto-app-push/{jPushAlertId}/enabled", method = RequestMethod.GET)
-    public ModelAndView enabledJPushAlert(@PathVariable long jPushAlertId) {
+    @RequestMapping(value = "/auto-app-push/{jPushAlertId}/enabled", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> enabledJPushAlert(@PathVariable long jPushAlertId) {
+        BaseDto<BaseDataDto> baseDto = new BaseDto<BaseDataDto>();
+        BaseDataDto baseDataDto = new BaseDataDto();
+        baseDto.setData(baseDataDto);
         String loginName = LoginUserInfo.getLoginName();
-        ModelAndView modelAndView = new ModelAndView("redirect:/app-push-manage/auto-app-push-list");
         jPushAlertService.changeJPushAlertStatus(jPushAlertId, PushStatus.ENABLED, loginName);
-        return modelAndView;
+        baseDataDto.setStatus(true);
+        return baseDto;
     }
 
-    @RequestMapping(value = "/auto-app-push/{jPushAlertId}/{content}", method = RequestMethod.GET)
+    @RequestMapping(value = "/auto-app-push/{jPushAlertId}/{content}", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> changContent(@PathVariable long jPushAlertId, @PathVariable String content) {
         BaseDto<BaseDataDto> baseDto = new BaseDto<BaseDataDto>();

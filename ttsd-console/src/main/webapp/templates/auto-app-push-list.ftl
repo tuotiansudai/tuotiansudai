@@ -59,15 +59,15 @@
                             编辑
                         </button>
                         <#if pushAlert.status=='ENABLED'>
-                            <a class="btn btn-danger btn-xs disabled-link"
-                               href="/app-push-manage/auto-app-push/${pushAlert.id?string('0')}/disabled">
+                            <button class="btn btn-danger btn-xs disabled-link"
+                                    data-link="/app-push-manage/auto-app-push/${pushAlert.id?string('0')}/disabled">
                                 停用
-                            </a>
+                            </button>
                         <#else>
-                            <a class="btn btn-success btn-xs enabled-link"
-                               href="/app-push-manage/auto-app-push/${pushAlert.id?string('0')}/enabled">
+                            <button class="btn btn-success btn-xs enabled-link"
+                                    data-link="/app-push-manage/auto-app-push/${pushAlert.id?string('0')}/enabled">
                                 启用
-                            </a>
+                            </button>
                         </#if>
                     </td>
                     <td>${(pushAlert.createdBy)!}</td>
