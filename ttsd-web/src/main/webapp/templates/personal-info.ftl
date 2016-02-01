@@ -70,8 +70,8 @@
 
 </div>
 
-<div id="changeUmpayPassDOM" class="pad-m popLayer" style="display: none;">
-    <form name="changeUmpayPasswordForm" action="${requestContext.getContextPath()}/personal-info/change-umpay-password" method="post">
+<div id="resetUmpayPassDOM" class="pad-m popLayer" style="display: none;">
+    <form name="resetUmpayPasswordForm" action="${requestContext.getContextPath()}/personal-info/reset-umpay-password" method="post">
         <dl class="identityCodeTitle" align="center">
             通过身份证号重置支付密码
         </dl>

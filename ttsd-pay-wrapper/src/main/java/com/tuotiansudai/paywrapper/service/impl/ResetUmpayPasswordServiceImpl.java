@@ -1,7 +1,7 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 
-import com.tuotiansudai.dto.AccountDto;
+import com.tuotiansudai.dto.ResetUmpayPasswordDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -9,7 +9,7 @@ import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.MerSendSmsPwdMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerSendSmsPwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerSendSmsPwdResponseModel;
-import com.tuotiansudai.paywrapper.service.ChangeUmpayPasswordService;
+import com.tuotiansudai.paywrapper.service.ResetUmpayPasswordService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.util.IdGenerator;
@@ -18,9 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ChangeUmpayPasswordServiceImpl implements ChangeUmpayPasswordService{
+public class ResetUmpayPasswordServiceImpl implements ResetUmpayPasswordService {
 
-    static Logger logger = Logger.getLogger(ChangeUmpayPasswordServiceImpl.class);
+    static Logger logger = Logger.getLogger(ResetUmpayPasswordServiceImpl.class);
 
     @Autowired
     private AccountMapper accountMapper;
@@ -32,8 +32,8 @@ public class ChangeUmpayPasswordServiceImpl implements ChangeUmpayPasswordServic
     private PaySyncClient paySyncClient;
 
     @Override
-    public BaseDto<PayDataDto> changeUmpayPassword(AccountDto accountDto) {
-        AccountModel accountModel = accountMapper.findByLoginName(accountDto.getLoginName());
+    public BaseDto<PayDataDto> resetUmpayPassword(ResetUmpayPasswordDto resetUmpayPasswordDto) {
+        AccountModel accountModel = accountMapper.findByLoginName(resetUmpayPasswordDto.getLoginName());
         String orderId = String.valueOf(idGenerator.generate());
         MerSendSmsPwdRequestModel merSendSmsPwdRequestModel = new MerSendSmsPwdRequestModel(accountModel.getPayUserId(), accountModel.getIdentityNumber(), orderId);
 

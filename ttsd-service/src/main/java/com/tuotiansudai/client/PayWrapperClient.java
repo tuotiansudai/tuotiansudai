@@ -55,10 +55,10 @@ public class PayWrapperClient extends BaseClient {
 
     private String cancelLoanPath = "/loan/{0}/cancel";
 
-    private String changeUmpayPassword = "/change-umpay-password";
+    private String resetUmpayPassword = "/reset-umpay-password";
 
-    public boolean changeUmpayPassword(AccountDto accountDto) {
-        BaseDto<PayDataDto> baseDto = syncExecute(accountDto, changeUmpayPassword, "POST");
+    public boolean resetUmpayPassword(ResetUmpayPasswordDto resetUmpayPasswordDto) {
+        BaseDto<PayDataDto> baseDto = syncExecute(resetUmpayPasswordDto, resetUmpayPassword, "POST");
         return baseDto.isSuccess();
     }
 

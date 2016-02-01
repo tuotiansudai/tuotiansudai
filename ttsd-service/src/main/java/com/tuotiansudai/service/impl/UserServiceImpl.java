@@ -438,13 +438,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean changeUmpayPassword(String loginName, String identityNumber) {
+    public boolean resetUmpayPassword(String loginName, String identityNumber) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel == null || !accountModel.getIdentityNumber().equals(identityNumber)) {
             return false;
         }
-        AccountDto accountDto = new AccountDto(loginName, identityNumber);
-        return payWrapperClient.changeUmpayPassword(accountDto);
+        ResetUmpayPasswordDto resetUmpayPasswordDto = new ResetUmpayPasswordDto(loginName, identityNumber);
+        return payWrapperClient.resetUmpayPassword(resetUmpayPasswordDto);
     }
 
     private int[] parseBalanceInt(String balanceMin, String balanceMax) {

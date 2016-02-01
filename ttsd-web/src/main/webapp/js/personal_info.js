@@ -2,14 +2,14 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
         var $InfoBox = $('#personInfoBox'),
             $changeEmailLayer = $('.setEmail', $InfoBox),
             $changePasswordLayer = $('.setPass', $InfoBox),
-            $changeUmpayPasswordLayer = $('.setUmpayPass', $InfoBox),
+            $resetUmpayPasswordLayer = $('.setUmpayPass', $InfoBox),
             $changeEmailDOM = $('#changeEmailDOM'),
             $changePassDOM = $('#changePassDOM'),
-            $changeUmpayPassDOM = $('#changeUmpayPassDOM'),
+            $resetUmpayPassDOM = $('#resetUmpayPassDOM'),
             $successUmpayPass = $('#successUmpayPass'),
             $EmailForm = $('form', $changeEmailDOM),
             $passwordForm = $('form', $changePassDOM),
-            $umpayPasswordForm = $('form', $changeUmpayPassDOM);
+            $umpayPasswordForm = $('form', $resetUmpayPassDOM);
 
         $changeEmailLayer.on('click', function () {
             layer.open({
@@ -188,7 +188,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             }
         });
 
-        $changeUmpayPasswordLayer.on('click', function() {
+        $resetUmpayPasswordLayer.on('click', function() {
             layer.open({
                 type: 1,
                 move: false,
@@ -196,7 +196,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                 title: '修改支付密码',
                 area: ['500px', '300px'],
                 shadeClose: false,
-                content: $changeUmpayPassDOM,
+                content: $resetUmpayPassDOM,
                 cancel: function () {
                     $umpayPasswordForm.validate().resetForm();
                     $('.identityCodeTitle').show();

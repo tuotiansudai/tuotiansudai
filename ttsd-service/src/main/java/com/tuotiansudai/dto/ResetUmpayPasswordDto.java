@@ -6,9 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
-public class AccountDto implements Serializable{
-
-    private String order_id;
+public class ResetUmpayPasswordDto implements Serializable{
 
     @NotEmpty
     private String loginName;
@@ -16,14 +14,6 @@ public class AccountDto implements Serializable{
     @NotEmpty
     @Pattern(regexp = "^[1-9]\\d{13,16}[a-zA-Z0-9]$")
     private String identityNumber;
-
-    public String getOrder_id() {
-        return order_id;
-    }
-
-    public void setOrder_id(String order_id) {
-        this.order_id = order_id;
-    }
 
     public String getLoginName() {
         return loginName;
@@ -41,12 +31,12 @@ public class AccountDto implements Serializable{
         this.identityNumber = identityNumber;
     }
 
-    public AccountDto(String loginName, String identityNumber) {
+    public ResetUmpayPasswordDto(String loginName, String identityNumber) {
         this.loginName = loginName;
         this.identityNumber = identityNumber;
     }
 
-    public AccountDto() {
+    public ResetUmpayPasswordDto() {
 
     }
 }

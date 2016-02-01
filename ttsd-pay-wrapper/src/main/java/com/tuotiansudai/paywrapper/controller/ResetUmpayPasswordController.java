@@ -1,8 +1,8 @@
 package com.tuotiansudai.paywrapper.controller;
 
-import com.tuotiansudai.dto.AccountDto;
+import com.tuotiansudai.dto.ResetUmpayPasswordDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.paywrapper.service.ChangeUmpayPasswordService;
+import com.tuotiansudai.paywrapper.service.ResetUmpayPasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.validation.Valid;
 
 @Controller
-public class ChangeUmpayPasswordController extends BaseController{
+public class ResetUmpayPasswordController extends BaseController{
 
     @Autowired
-    private ChangeUmpayPasswordService changeUmpayPasswordService;
+    private ResetUmpayPasswordService resetUmpayPasswordService;
 
-    @RequestMapping(value = "/change-umpay-password", method = RequestMethod.POST)
+    @RequestMapping(value = "/reset-umpay-password", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto changeUmpayPassword(@Valid @RequestBody AccountDto accountDto) {
-        return changeUmpayPasswordService.changeUmpayPassword(accountDto);
+    public BaseDto resetUmpayPassword(@Valid @RequestBody ResetUmpayPasswordDto resetUmpayPasswordDto) {
+        return resetUmpayPasswordService.resetUmpayPassword(resetUmpayPasswordDto);
     }
 }
