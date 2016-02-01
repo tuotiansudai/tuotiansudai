@@ -27,7 +27,7 @@
 
     <insert id="createRequest" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="MerSendSmsPwdRequestModel">
         insert into mer_send_sms_pwd_request (service, sign_type, sign, charset, mer_Id, version, user_id, order_id, identity_code, request_url, request_data, request_time, status)
-        values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{userId}, #{orderId}, #{identityNumber}, #{requestUrl}, #{requestData}, #{requestTime}, #{status})
+        values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{userId}, #{orderId}, #{identityCode}, #{requestUrl}, #{requestData}, #{requestTime}, #{status})
     </insert>
 
     <update id="updateRequestStatus" keyColumn="id" keyProperty="id" parameterType="map">
