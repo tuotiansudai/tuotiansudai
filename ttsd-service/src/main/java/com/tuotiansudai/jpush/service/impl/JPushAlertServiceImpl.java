@@ -147,15 +147,14 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType();
         if (jPushAlertModel != null) {
             List<String> registrationIds = Lists.newArrayList();
-            List<AccountModel> accountModels = accountMapper.findBirthOfAccountInMonth();
-            for (int i = 0; i < accountModels.size(); i++) {
-                AccountModel accountModel = accountModels.get(i);
-                String loginName = accountModel.getLoginName();
+            List<String> loginNames = accountMapper.findBirthOfAccountInMonth();
+            for (int i = 0; i < loginNames.size(); i++) {
+                String loginName = loginNames.get(i);
                 if (redisWrapperClient.hexists(JPUSH_ID_KEY, loginName)) {
-                    String registrationId = redisWrapperClient.hget(JPUSH_ID_KEY, accountModel.getLoginName());
+                    String registrationId = redisWrapperClient.hget(JPUSH_ID_KEY, loginName);
                     registrationIds.add(registrationId);
                 }
-                if (registrationIds.size() == 1000 || (i == accountModels.size() - 1 && registrationIds.size() > 0)) {
+                if (registrationIds.size() == 1000 || (i == loginNames.size() - 1 && registrationIds.size() > 0)) {
                     boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, jPushAlertModel.getContent(), "", "");
                     if (sendResult) {
                         logger.debug(MessageFormat.format("第{0}个用户推送成功", i + 1));

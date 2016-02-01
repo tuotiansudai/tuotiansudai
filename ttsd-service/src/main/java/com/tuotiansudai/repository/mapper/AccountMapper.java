@@ -26,5 +26,6 @@ public interface AccountMapper {
 
     List<String> findLoginNames();
 
-    List<AccountModel> findBirthOfAccountInMonth();
+    List<String> findBirthOfAccountInMonth();
+
 }
