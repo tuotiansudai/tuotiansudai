@@ -145,6 +145,7 @@
             <span class="select-item current" data-status="touzi">现金红包</span>
             <span class="select-item" data-status="touzi">体验券</span>
             <span class="select-item" data-status="jiaxi">加息券</span>
+            <span class="select-item" data-status="birthday">生日福利</span>
         </div>
         <div class="clear-blank"></div>
         <div class="record-tab tab-show">
@@ -162,6 +163,12 @@
         <div class="record-tab">
             <div class="invest-list-interest"></div>
             <div id="use-record-interest" class="pagination" data-url="/coupon/use-record" data-page-size="10">
+            </div>
+        </div>
+
+        <div class="record-tab">
+            <div class="invest-list-birthday"></div>
+            <div id="use-record-birthday" class="pagination" data-url="/coupon/use-record" data-page-size="10">
             </div>
         </div>
     </div>

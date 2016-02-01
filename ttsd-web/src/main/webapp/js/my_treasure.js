@@ -1,6 +1,6 @@
 require(['jquery', 'layerWrapper', 'moment', 'pagination', 'mustache', 'text!/tpl/my-treasure-table.mustache',
-        'text!/tpl/my-treasure-table-interest.mustache', 'text!/tpl/my-treasure-table-red.mustache', 'csrf'],
-function($, layer, moment, pagination, Mustache, treasureListTemplate, treasureListTemplateInterest, treasureListTemplateRedEnvelope) {
+        'text!/tpl/my-treasure-table-interest.mustache', 'text!/tpl/my-treasure-table-red.mustache', 'text!/tpl/my-treasure-table-birthday.mustache', 'csrf'],
+function($, layer, moment, pagination, Mustache, treasureListTemplate, treasureListTemplateInterest, treasureListTemplateRedEnvelope, treasureListTemplateBirthdayCoupon) {
 
     $(function() {
         var $navLi = $('.column-title .title-navli'),
@@ -56,6 +56,13 @@ function($, layer, moment, pagination, Mustache, treasureListTemplate, treasureL
             });
         };
 
+        function loadBirthdayCouponData() {
+            $('#use-record-birthday').loadPagination({couponTypeList:['BIRTHDAY_COUPON']}, function(data) {
+                var html = Mustache.render(treasureListTemplateBirthdayCoupon, data);
+                $('.invest-list-birthday').html(html);
+            });
+        };
+
         var $selItems = $('.status-filter .select-item'),
             $recordTab = $('.record-tab');
 
@@ -72,5 +79,6 @@ function($, layer, moment, pagination, Mustache, treasureListTemplate, treasureL
         loadRedEnvelopeData();
         loadTasteData();
         loadInterestData();
+        loadBirthdayCouponData();
     });
 });
