@@ -1,4 +1,4 @@
-require(['jquery','fullPage'], function ($) {
+require(['jquery','fullPage','commonFun'], function ($) {
 
     var $assuranceEffect=$('#assuranceEffect'),
         locationSearch=location.search,
@@ -6,12 +6,24 @@ require(['jquery','fullPage'], function ($) {
         $boxProfit=$assuranceEffect.find('.box-benift'),
         $boxWealth=$assuranceEffect.find('.box-wealth'),
         $boxInsurance=$assuranceEffect.find('.box-insurance'),
-        boolHead=$('.header-container').is(':visible');
+        boolHead=$('.header-container').is(':visible'),
+        viewport=commonFun.browserRedirect();
     if(!!location.search) {
         locationId=Number(/\d/.exec(location.search)[0]);
     }
         $assuranceEffect.find('.section').eq(locationId-1).addClass('active').siblings('.section').removeClass('active');
+    
+    function resize(){
+        $('.intro-list .hover-text').height($('.intro-list .picture-text').height());
+    }
+    $(window).resize(resize);
+    resize();
 
+    if(viewport=='pc') {
+        $('.intro-list .hover-text').height('110px');
+    } else if(viewport=='mobile') {
+        $('.intro-list .hover-text').height($('.intro-list .picture-text').height());
+    }
     $assuranceEffect.fullpage({
         sectionsColor: ['#eaf2ff', '#c5dbff', '#eaf2ff'],
         navigation: true,

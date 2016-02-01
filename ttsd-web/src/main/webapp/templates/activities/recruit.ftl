@@ -49,7 +49,7 @@
     <div class="section">
         <div class="page-width clearfix">
             <div class="two-model">
-                <p><span>如果您是</span>，在当地有较好的商业信誉和良好人际社交圈，拥有实现自我价值和追求成功的坚定信念，</p>
+                <p><span class="first-word">如果您是，</span>在当地有较好的商业信誉和良好人际社交圈，拥有实现自我价值和追求成功的坚定信念，</p>
                 <p>具备完全民事行为能力的，自然人或者机构；</p>
                 <p>加盟后我们<span>将为您提供:</span></p>
                 <ul class="intro-list">
@@ -92,7 +92,8 @@
                 </ul>
                 <p class="last-text">
                     <span class="last-one">除了这些，</br>现在加盟我们还有...</span>
-                    <span class="last-money">高额分红</br>200万</span>
+                    <span class="last-money"><strong>高额分红</br>200万</strong><i class="red-icon"><img src="/images/sign/actor/daili/red-hover.png" width="126" height="80"></i></span>
+                    <span class="phone-text">除了这些，现在加盟我们还有:<strong>高额分红200万.</strong></span>
                 </p>
             </div>
             <div class="down clearfix"><b>试试鼠标滚动</b><img src="/images/sign/assure/down.png" class="down-icon" alt=""></div>
@@ -101,7 +102,15 @@
     <div class="section">
         <div class="page-width clearfix">
             <div class="three-model">
-                <p>12</p>
+                <p class="title-text">轻松六步，加盟拓天，共赢未来</p>
+                <p class="phone-title"><span>轻松六步</span><span>加盟拓天，共赢未来</span></p>
+                <p class="title-text">
+                    <img src="/images/sign/actor/daili/three-picture.png" width="65%" alt="">
+                </p>
+                <p class="phone-title">
+                    <img src="/images/sign/actor/daili/phone-step.png" width="50%" alt="">
+                </p>
+                <p class="tel-text"><span>加盟热线：010－57064596</span></p>
             </div>
             <div class="down clearfix"><b class="text-gray">试试鼠标滚动</b><img src="/images/sign/assure/up-gray.png" class="down-icon" alt=""></div>
         </div>
