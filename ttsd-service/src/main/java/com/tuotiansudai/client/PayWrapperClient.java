@@ -273,4 +273,8 @@ public class PayWrapperClient extends BaseClient {
     public BaseDto<PayDataDto> autoLoanOutAfterRaisingComplete(long loanId){
         return syncExecute(String.valueOf(loanId), "/job/auto-loan-out-after-raising-complete", "POST");
     }
+
+    public BaseDto<PayDataDto> sendRedEnvelopeAfterLoanOut(long loanId){
+        return syncExecute(String.valueOf(loanId), "/job/sed-red-envelope-after-loan-out", "POST");
+    }
 }

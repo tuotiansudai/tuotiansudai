@@ -15,12 +15,15 @@ public class PtpMerBindAgreementRequestModel extends BaseAsyncRequestModel {
     public PtpMerBindAgreementRequestModel() {
     }
 
-    public PtpMerBindAgreementRequestModel(String userId, AgreementType userBindAgreementList,Source source) {
-        super(source,"ptp_mer_bind_agreement");
+    public PtpMerBindAgreementRequestModel(String userId, AgreementType userBindAgreementList, Source source) {
+        super(source, "ptp_mer_bind_agreement");
         this.service = "ptp_mer_bind_agreement";
         this.userId = userId;
         this.setNotifyUrl(MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "mer_bind_agreement_notify"));
         this.userBindAgreementList = userBindAgreementList;
+        if ("HTML5".equals(this.getSourceV()) && this.userBindAgreementList == AgreementType.ZTBB0G00) {
+            this.setRetUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("pay.callback.app.web.host"), "ptp_mer_no_password_invest"));
+        }
     }
 
     @Override

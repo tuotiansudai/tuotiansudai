@@ -315,7 +315,6 @@ public class UserServiceImpl implements UserService {
         for (UserModel userModel : userModels) {
 
             UserItemDataDto userItemDataDto = new UserItemDataDto(userModel);
-
             List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(userModel.getLoginName());
             userItemDataDto.setUserRoles(userRoleModels);
 
@@ -413,8 +412,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserItemDataDto> findUsersAccountBalance(String loginName, int currentPageNo, int pageSize) {
-        List<UserModel> userModels =  userMapper.findUsersAccountBalance(loginName, (currentPageNo - 1) * pageSize, pageSize);
+    public List<UserItemDataDto> findUsersAccountBalance(String loginName, String balanceMin, String balanceMax, int currentPageNo, int pageSize) {
+        int[] balance = parseBalanceInt(balanceMin, balanceMax);
+        List<UserModel> userModels =  userMapper.findUsersAccountBalance(loginName,balance[0], balance[1],  (currentPageNo - 1) * pageSize, pageSize);
 
         List<UserItemDataDto> userItemDataDtoList = new ArrayList<>();
         for(UserModel userModel : userModels) {
@@ -426,13 +426,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int findUsersAccountBalanceCount(String loginName) {
-        return userMapper.findUsersAccountBalanceCount(loginName);
+    public int findUsersAccountBalanceCount(String loginName, String balanceMin, String balanceMax) {
+        int[] balance = parseBalanceInt(balanceMin, balanceMax);
+        return userMapper.findUsersAccountBalanceCount(loginName, balance[0], balance[1]);
     }
 
     @Override
-    public long findUsersAccountBalanceSum(String loginName) {
-        return userMapper.findUsersAccountBalanceSum(loginName);
+    public long findUsersAccountBalanceSum(String loginName, String balanceMin, String balanceMax) {
+        int[] balance = parseBalanceInt(balanceMin, balanceMax);
+        return userMapper.findUsersAccountBalanceSum(loginName, balance[0], balance[1]);
     }
 
     @Override
@@ -445,4 +447,21 @@ public class UserServiceImpl implements UserService {
         return payWrapperClient.changeUmpayPassword(accountDto);
     }
 
+    private int[] parseBalanceInt(String balanceMin, String balanceMax) {
+        int min, max;
+        try {
+            min = Integer.parseInt(balanceMin) * 100;
+        } catch (NumberFormatException e) {
+            min = 0;
+            logger.warn("user account balance search parameter wrong, balanceMin is not an integer, balanceMin:" + balanceMin);
+        }
+
+        try {
+            max = Integer.parseInt(balanceMax) * 100;
+        } catch (NumberFormatException e) {
+            max = Integer.MAX_VALUE;
+            logger.warn("user account balance search parameter wrong, balanceMax is not an integer, balanceMax:" + balanceMax);
+        }
+        return new int[]{min, max};
+    }
 }

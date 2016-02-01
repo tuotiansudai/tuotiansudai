@@ -74,14 +74,20 @@
     margin: 0 auto;
     ul {
       float: left;
-      min-width: 130px;
+      min-width: 110px;
       text-align: left;
+      &.mt-50{
+        margin-left: 50px;
+      }
       li {
         height: 14px;
         margin-top: 14px;
         font-size: 12px;
         a {
           color: #c2c2c2;
+          &.mt-20{
+            margin-left: 20px;
+          }
         }
         a:hover {
           text-decoration: underline;

@@ -54,7 +54,7 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
                             if (couponType != 'NEWBIE_COUPON') {
                                 $parentTd.find('button').prop('disabled',true);
                             }
-                            $parentTd.prev().html('<a href="/activity-manage/coupon/'+thisId+'/detail" class="btn-link">查看详情</a>');
+                            $parentTd.prev().html('-');
                         }else{
                             $tipCom.show().find('.txt').text('操作失败！');
                         }
