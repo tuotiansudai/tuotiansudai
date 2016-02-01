@@ -67,13 +67,6 @@ public class InvestServiceImpl implements InvestService {
             throw new InvestException(InvestExceptionType.ILLEGAL_LOAN_STATUS);
         }
 
-        // 不满足新手标投资限制约束
-        if (ActivityType.NEWBIE == loan.getActivityType()) {
-            if (!canInvestNewbieLoan(investDto.getLoginName())) {
-                throw new InvestException(InvestExceptionType.OUT_OF_NOVICE_INVEST_LIMIT);
-            }
-        }
-
         // 不满足最小投资限制
         if (investAmount < userInvestMinAmount) {
             throw new InvestException(InvestExceptionType.LESS_THAN_MIN_INVEST_AMOUNT);
@@ -105,14 +98,6 @@ public class InvestServiceImpl implements InvestService {
             throw new InvestException(InvestExceptionType.MORE_THAN_MAX_INVEST_AMOUNT);
         }
 
-    }
-
-    private boolean canInvestNewbieLoan(String loginName) {
-        if (newbieInvestLimit == 0) {
-            return true;
-        }
-        int newbieInvestCount = investMapper.sumSuccessNewbieInvestCountByLoginName(loginName);
-        return (newbieInvestCount < newbieInvestLimit);
     }
 
     @Override
