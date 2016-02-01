@@ -1,6 +1,6 @@
 package com.tuotiansudai.web.controller;
 
-import com.tuotiansudai.coupon.service.UserCouponService;
+import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.dto.LoanItemDto;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.ProductType;
@@ -26,7 +26,7 @@ public class LoanListController {
     private LoanService loanService;
 
     @Autowired
-    private UserCouponService userCouponService;
+    private CouponAlertService couponAlertService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView webLoanList(@RequestParam(value = "productType", required = false) ProductType productType,
@@ -48,7 +48,7 @@ public class LoanListController {
         int maxIndex = count / 10 + (count % 10 > 0 ? 1 : 0);
         modelAndView.addObject("hasPreviousPage", index > 1 && index <= maxIndex);
         modelAndView.addObject("hasNextPage", index < maxIndex);
-        modelAndView.addObject("newbieCoupon", this.userCouponService.getUsableNewbieCoupon(LoginUserInfo.getLoginName()));
+        modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName()));
         return modelAndView;
     }
 

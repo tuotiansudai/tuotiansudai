@@ -76,4 +76,6 @@ public class AutoInvestPlanModel implements Serializable {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
+
+
 }

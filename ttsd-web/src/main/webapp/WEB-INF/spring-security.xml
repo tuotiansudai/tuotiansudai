@@ -85,6 +85,7 @@
         <intercept-url pattern="/loan-list/**" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/loan/**" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/referrer/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/my-treasure/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
         <intercept-url pattern="/contract/investor/**" access="hasAuthority('INVESTOR')"/>
         <intercept-url pattern="/contract/loaner/**" access="hasAuthority('LOANER')"/>

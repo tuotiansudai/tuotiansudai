@@ -44,6 +44,8 @@ public class UserModel implements Cloneable, Serializable {
 
     private AccountModel account;
 
+    private Date lastBillTime;
+
     public String getSalt() {
         return salt;
     }
@@ -198,6 +200,14 @@ public class UserModel implements Cloneable, Serializable {
 
     public void setStaff(boolean staff) {
         this.staff = staff;
+    }
+
+    public Date getLastBillTime() {
+        return lastBillTime;
+    }
+
+    public void setLastBillTime(Date lastBillTime) {
+        this.lastBillTime = lastBillTime;
     }
 
     @Override

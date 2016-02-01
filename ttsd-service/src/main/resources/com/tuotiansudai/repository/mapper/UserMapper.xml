@@ -25,6 +25,7 @@
         <result column="province" property="province"></result>
         <result column="city" property="city"></result>
         <result column="auto_invest_status" property="autoInvestStatus"></result>
+        <result column="last_bill_time" property="lastBillTime"></result>
         <association property="account" javaType="com.tuotiansudai.repository.model.AccountModel">
             <id column="id" property="id"></id>
             <result column="login_name" property="loginName"></result>
@@ -213,12 +214,14 @@
 
     <select id="findUsersAccountBalance" parameterType="map" resultMap="userResultMap">
         SELECT
-          *
+          *,
+          (SELECT max(created_time) FROM user_bill ub where ub.login_name = u.login_name) as last_bill_time
         FROM
           user u
            JOIN account a
             ON u.`login_name` = a.`login_name`
-            AND a.`balance` > 0
+            AND a.`balance` >= #{balanceMin}
+            AND a.`balance` &lt;= #{balanceMax}
             <if test="loginName != null and loginName != '' ">
             AND a.`login_name` = #{loginName}
             </if>
@@ -240,10 +243,11 @@
           user u
            JOIN account a
             ON u.`login_name` = a.`login_name`
-            AND a.`balance` > 0
-        <if test="loginName != null and loginName != '' ">
-            AND a.`login_name` = #{loginName}
-        </if>
+            AND a.`balance` >= #{balanceMin}
+            AND a.`balance` &lt;= #{balanceMax}
+            <if test="loginName != null and loginName != '' ">
+                AND a.`login_name` = #{loginName}
+            </if>
             WHERE NOT EXISTS
         (SELECT
             1
@@ -260,10 +264,11 @@
           user u
            JOIN account a
             ON u.`login_name` = a.`login_name`
-            AND a.`balance` > 0
-        <if test="loginName != null and loginName != '' ">
-            AND a.`login_name` = #{loginName}
-        </if>
+            AND a.`balance` >= #{balanceMin}
+            AND a.`balance` &lt;= #{balanceMax}
+            <if test="loginName != null and loginName != '' ">
+                AND a.`login_name` = #{loginName}
+            </if>
             WHERE NOT EXISTS
         (SELECT
             1
