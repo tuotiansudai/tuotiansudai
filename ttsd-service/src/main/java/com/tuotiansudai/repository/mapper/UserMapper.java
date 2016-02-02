@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.dto.RoleStage;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
@@ -33,7 +34,7 @@ public interface UserMapper {
                                 @Param(value = "beginTime") Date beginTime,
                                 @Param(value = "endTime") Date endTime,
                                 @Param(value = "source") Source source,
-                                @Param(value = "role") Role role,
+                                @Param(value = "roleStage") RoleStage roleStage,
                                 @Param(value = "referrer") String referrer,
                                 @Param(value = "channel") String channel,
                                 @Param(value = "index") Integer index,
@@ -45,7 +46,7 @@ public interface UserMapper {
                          @Param(value = "beginTime") Date beginTime,
                          @Param(value = "endTime") Date endTime,
                          @Param(value = "source") Source source,
-                         @Param(value = "role") Role role,
+                         @Param(value = "roleStage") RoleStage roleStage,
                          @Param(value = "referrer") String referrer,
                          @Param(value = "channel") String channel);
 

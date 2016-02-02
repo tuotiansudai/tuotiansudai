@@ -3,10 +3,7 @@ package com.tuotiansudai.console.controller;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.util.LoginUserInfo;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.EditUserDto;
-import com.tuotiansudai.dto.UserItemDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Role;
@@ -128,7 +125,7 @@ public class UserController {
     public ModelAndView findAllUser(String loginName, String email, String mobile,
                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date beginTime,
                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
-                                    Role role, String referrer, String channel, @RequestParam(value = "index", defaultValue = "1", required = false) int index,
+                                    RoleStage roleStage, String referrer, String channel, @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                     @RequestParam(value = "source", required = false) Source source,
                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
                                     @RequestParam(value = "export", required = false) String export,
@@ -141,8 +138,8 @@ public class UserController {
                 e.printStackTrace();
             }
             response.setContentType("application/csv");
-            int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel);
-            BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel, 1, count);
+            int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, roleStage, referrer, channel);
+            BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrer, channel, 1, count);
             List<List<String>> data = Lists.newArrayList();
             List<UserItemDataDto> userItemDataDtos = baseDto.getData().getRecords();
             for (int i = 0; i < userItemDataDtos.size(); i++) {
@@ -177,7 +174,7 @@ public class UserController {
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUsers, data, response.getOutputStream());
             return null;
         } else {
-            BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel, index, pageSize);
+            BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrer, channel, index, pageSize);
             ModelAndView mv = new ModelAndView("/user-list");
             mv.addObject("baseDto", baseDto);
             mv.addObject("loginName", loginName);
@@ -185,15 +182,15 @@ public class UserController {
             mv.addObject("mobile", mobile);
             mv.addObject("beginTime", beginTime);
             mv.addObject("endTime", endTime);
-            mv.addObject("role", role);
+            mv.addObject("roleStage", roleStage);
             mv.addObject("referrer", referrer);
             mv.addObject("channel", channel);
             mv.addObject("source", source);
             mv.addObject("pageIndex", index);
             mv.addObject("pageSize", pageSize);
-            List<Role> roleList = Lists.newArrayList(Role.values());
+            List<RoleStage> roleStageList = Lists.newArrayList(RoleStage.values());
             List<String> channelList = userService.findAllChannels();
-            mv.addObject("roleList", roleList);
+            mv.addObject("roleStageList", roleStageList);
             mv.addObject("channelList", channelList);
             mv.addObject("sourceList", Source.values());
             return mv;

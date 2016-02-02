@@ -44,7 +44,7 @@ public interface UserService {
     BaseDto<BasePaginationDataDto> findAllUser(String loginName, String email,
                                                String mobile, Date beginTime, Date endTime,
                                                Source source,
-                                               Role role, String referrer, String channel, Integer pageIndex, Integer pageSize);
+                                               RoleStage roleStage, String referrer, String channel, Integer pageIndex, Integer pageSize);
 
 
     List<String> findStaffNameFromUserLike(String loginName);

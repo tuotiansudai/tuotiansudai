@@ -306,11 +306,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public BaseDto<BasePaginationDataDto> findAllUser(String loginName, String email, String mobile, Date beginTime, Date endTime,
                                                       Source source,
-                                                      Role role, String referrer, String channel, Integer index, Integer pageSize) {
+                                                      RoleStage roleStage, String referrer, String channel, Integer index, Integer pageSize) {
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
         List<UserModel> userModels = userMapper.findAllUser(loginName, email, mobile, beginTime, endTime,
                 source,
-                role, referrer, channel, (index - 1) * pageSize, pageSize);
+                roleStage, referrer, channel, (index - 1) * pageSize, pageSize);
         List<UserItemDataDto> userItemDataDtos = Lists.newArrayList();
         for (UserModel userModel : userModels) {
 
@@ -328,7 +328,7 @@ public class UserServiceImpl implements UserService {
             userItemDataDto.setBankCard(bindBankCardService.getPassedBankCard(userModel.getLoginName()) != null);
             userItemDataDtos.add(userItemDataDto);
         }
-        int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel);
+        int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, roleStage, referrer, channel);
         BasePaginationDataDto<UserItemDataDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, userItemDataDtos);
         basePaginationDataDto.setStatus(true);
         baseDto.setData(basePaginationDataDto);
