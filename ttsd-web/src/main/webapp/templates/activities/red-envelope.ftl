@@ -31,8 +31,8 @@
            id="redEnvelope" data-kick-off-date="${.now}">
             <img src="${staticServer}/images/sign/actor/redbag/red-get.jpg" alt="注册即送红包">
         </a>
-        <img src="${staticServer}/images/sign/actor/redbag/red-info.png" alt="注册即送红包">
     </div>
+    <img src="${staticServer}/images/sign/actor/redbag/red-info.png" alt="注册即送红包">
 </div>
 
 <div id="redEnvelopePopWindow" class="hide">
