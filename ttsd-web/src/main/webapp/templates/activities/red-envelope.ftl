@@ -19,8 +19,18 @@
             </div>
         </div>
     </div>
-    <div class="mobile">
-        <a href="/my-treasure" id="redEnvelope" data-kick-off-date="${.now}"><img src="${staticServer}/images/sign/actor/redbag/red-get.jpg" alt="注册即送红包"></a>
+    <div <#if source?? && source=='app'>class="mobile"</#if>>
+        <a <@global.isNotAnonymous>href="/my-treasure"</@global.isNotAnonymous>
+            <@global.isAnonymous>
+                <#if channel??>
+                    href="/register/user?channel=${channel}"
+                <#else>
+                    href="/register/user"
+                </#if>
+            </@global.isAnonymous>
+           id="redEnvelope" data-kick-off-date="${.now}">
+            <img src="${staticServer}/images/sign/actor/redbag/red-get.jpg" alt="注册即送红包">
+        </a>
         <img src="${staticServer}/images/sign/actor/redbag/red-info.png" alt="注册即送红包">
     </div>
 </div>
