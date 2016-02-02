@@ -52,10 +52,13 @@
 
         <intercept-url pattern="/" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
         <intercept-url pattern="/bi/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
+        <intercept-url pattern="/project-manage/loan" access="hasAnyAuthority('ADMIN', 'OPERATOR')"/>
+        <intercept-url pattern="/project-manage/*" access="hasAnyAuthority('ADMIN', 'OPERATOR', 'OPERATOR_ADMIN')"/>
+        <intercept-url pattern="/activity-manage/*" access="hasAnyAuthority('ADMIN', 'OPERATOR', 'OPERATOR_ADMIN')"/>
         <intercept-url pattern="/user-manage/account/*/search" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
         <intercept-url pattern="/user-manage/user/*/search" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
-        <intercept-url pattern="/user-manage/users-search" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
-        <intercept-url pattern="/user-manage/user/*" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
+        <intercept-url pattern="/user-manage/users-search" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
+        <intercept-url pattern="/user-manage/user/*" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
         <intercept-url pattern="/user-manage/referrer/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
         <intercept-url pattern="/finance-manage/invests/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE')"/>
         <intercept-url pattern="/finance-manage/invest-repay/**" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
