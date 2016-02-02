@@ -60,16 +60,11 @@ public class CouponController {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    private UserCouponService userCouponService;
-
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
     @RequestMapping(value = "/red-envelope", method = RequestMethod.GET)
     public ModelAndView redEnvelope() {
-        ModelAndView modelAndView = new ModelAndView("/red-envelope");
-        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
-        return modelAndView;
+        return new ModelAndView("/red-envelope", "productTypes", Lists.newArrayList(ProductType.values()));
     }
 
     @RequestMapping(value = "/coupon", method = RequestMethod.GET)
@@ -79,6 +74,11 @@ public class CouponController {
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/birthday-coupon", method = RequestMethod.GET)
+    public ModelAndView birthdayCoupon() {
+        return new ModelAndView("/birthday-coupon", "productTypes", Lists.newArrayList(ProductType.values()));
     }
 
     @RequestMapping(value = "/coupon", method = RequestMethod.POST)
@@ -97,6 +97,8 @@ public class CouponController {
                 modelAndView.setViewName("redirect:/activity-manage/interest-coupons");
             } else if (couponDto.getCouponType() == CouponType.RED_ENVELOPE) {
                 modelAndView.setViewName("redirect:/activity-manage/red-envelopes");
+            } else if (couponDto.getCouponType() == CouponType.BIRTHDAY_COUPON) {
+                modelAndView.setViewName("redirect:/activity-manage/birthday-coupons");
             } else {
                 modelAndView.setViewName("redirect:/activity-manage/coupons");
             }
@@ -109,6 +111,8 @@ public class CouponController {
                     modelAndView.setViewName("redirect:/activity-manage/interest-coupon");
                 } else if (couponDto.getCouponType() == CouponType.RED_ENVELOPE) {
                     modelAndView.setViewName("redirect:/activity-manage/red-envelope");
+                } else if (couponDto.getCouponType() == CouponType.BIRTHDAY_COUPON) {
+                    modelAndView.setViewName("redirect:/activity-manage/birthday-coupon");
                 } else {
                     modelAndView.setViewName("redirect:/activity-manage/coupon");
                 }
@@ -137,6 +141,8 @@ public class CouponController {
             modelAndView = new ModelAndView("/interest-coupon-edit");
         } else if (couponModel.getCouponType() == CouponType.RED_ENVELOPE) {
             modelAndView = new ModelAndView("/red-envelope-edit");
+        } else if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) {
+            modelAndView = new ModelAndView("/birthday-coupon-edit");
         } else {
             modelAndView = new ModelAndView("/coupon-edit");
         }
@@ -223,6 +229,24 @@ public class CouponController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/birthday-coupons", method = RequestMethod.GET)
+    public ModelAndView birthdayCoupons(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
+                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+        ModelAndView modelAndView = new ModelAndView("/birthday-coupons");
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+        modelAndView.addObject("coupons", couponService.findBirthdayCoupons(index, pageSize));
+        int couponsCount = couponService.findBirthdayCouponsCount();
+        modelAndView.addObject("couponsCount", couponsCount);
+        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 ? 1 : 0);
+        boolean hasPreviousPage = index > 1 && index <= totalPages;
+        boolean hasNextPage = index < totalPages;
+        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
+        modelAndView.addObject("hasNextPage", hasNextPage);
+        return modelAndView;
+    }
+
+
     @RequestMapping(value = "/coupons", method = RequestMethod.GET)
     public ModelAndView coupons(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                 @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
@@ -272,6 +296,8 @@ public class CouponController {
             sideLabType = "statisticsInterestCoupon";
         } else if (couponModel.getCouponType() == CouponType.RED_ENVELOPE) {
             sideLabType = "statisticsRedEnvelope";
+        } else if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) {
+            sideLabType = "statisticsBirthdayCoupon";
         } else {
             sideLabType = "statisticsCoupon";
         }

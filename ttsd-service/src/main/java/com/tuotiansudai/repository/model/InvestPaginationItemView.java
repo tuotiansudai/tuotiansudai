@@ -36,6 +36,7 @@ public class InvestPaginationItemView extends InvestModel {
 
     private String city;
 
+    private boolean birthdayCoupon;
 
     public String getLoanName() {
         return loanName;
@@ -165,4 +166,11 @@ public class InvestPaginationItemView extends InvestModel {
         this.city = city;
     }
 
+    public boolean isBirthdayCoupon() {
+        return birthdayCoupon;
+    }
+
+    public void setBirthdayCoupon(boolean birthdayCoupon) {
+        this.birthdayCoupon = birthdayCoupon;
+    }
 }
