@@ -34,7 +34,7 @@
             </li>
         </ul>
     </div>
-    <div class="link-list page-width">
+    <div class="link-list page-width clearfix">
         <ul>
             <li class="f-title">友情链接</li>
             <li><a href="http://www.tuotianzichan.com/" target="_blank">拓天资产</a></li>
