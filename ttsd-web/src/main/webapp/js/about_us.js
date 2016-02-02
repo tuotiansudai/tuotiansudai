@@ -109,31 +109,5 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','load-swiper','lay
                 }
             });
         }
-
-        if($('#redEnvelope').length) {
-            $('#redEnvelope').click(function(event) {
-                var serverTime = new Date($(event.currentTarget).data("kick-off-date")).getTime();
-                if (serverTime > new Date("2016-02-03 00:00:00").getTime()) {
-                    return;
-                }
-                layer.open({
-                    type: 1,
-                    title: '',
-                    area: ['490px', '240px'],
-                    skin:'red-envelope-box-out',
-                    closeBtn: 0,
-                    shadeClose: true,
-                    move: false,
-                    content: $('#redEnvelopePopWindow'),
-                    success: function (layero, index) {
-                        $('#redEnvelopePopWindow').find('.close-tip').click(function() {
-                            layer.closeAll();
-                        });
-                    }
-                });
-                return false;
-            });
-        }
-
     });
 });
