@@ -1121,7 +1121,7 @@ body {
   padding-top: 10px;
   color: #fff;
   font-size: 14px;
-  font-family: "sans-serif,Microsoft YaHei,Helvetica";
+  font-family: 'NotoSansHans-Thin';
   .page-width{
     position: relative;
     height:100%;
@@ -1185,6 +1185,9 @@ body {
         font-family: sans-serif;
       }
     }
+    .phone-picture{
+      display:none;
+    }
   }
   .one-picture{
     position: absolute;
@@ -1201,12 +1204,12 @@ body {
     p{
       float:left;
       width:100%;
-      font-size:20px;
+      font-size:16px;
       color:#1c224e;
-      line-height:30px;
+      line-height:26px;
       position: relative;
       span{
-        font-size:30px;
+        font-size:20px;
         &.last-one{
           float:left;
           margin-left:80px;
@@ -1248,7 +1251,7 @@ body {
           }
           .red-icon{
             width:126px;
-            height:80px;
+            height:72px;
             position: absolute;
             top:0;
             left:0;
@@ -1784,7 +1787,9 @@ body {
     }
     .one-model{
       text-align:center;
+      margin-top:-290px!important;
       p{
+        text-align:center;
         &.intro-title{
           font-size:30px;
         }
@@ -1793,10 +1798,14 @@ body {
         }
         &.intro-detail{
           font-size:14px;
+          margin:20px 0!important;
         }
         &.text-name{
           font-size:30px;
         }
+      }
+      .phone-picture{
+        display:inline-block;
       }
     }
     .one-picture{
@@ -1805,13 +1814,19 @@ body {
     .two-model{
       margin-top:-280px!important;
       p{
-        font-size:18px;
+        font-size:16px;
         text-align:center;
         margin-bottom:0;
         span{
           &.first-word{
             float:left;
             width:100%;
+            text-align:center;
+          }
+          &.phone-font{
+            float:left;
+            width:100%;
+            font-size:16px;
             text-align:center;
           }
         }
@@ -1831,7 +1846,8 @@ body {
         }
       }
       .intro-list{
-        margin-top:0!important;
+        margin-top:15!important;
+        margin-bottom:15px;
         li{
           width:46%!important;
           height:auto!important;
@@ -1844,10 +1860,11 @@ body {
             .hover-text{
               display:block;
               width:100%;
-              padding:0;
-              line-height: 25px;
+              padding:10px 0 0 0;
+              line-height: 24px;
             }
             &.text-name{
+              font-size:16px;
               line-height:30px!important;
             }
           }

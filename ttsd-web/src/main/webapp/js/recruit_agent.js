@@ -14,7 +14,7 @@ require(['jquery','fullPage','commonFun'], function ($) {
         $assuranceEffect.find('.section').eq(locationId-1).addClass('active').siblings('.section').removeClass('active');
     
     function resize(){
-        $('.intro-list .hover-text').height($('.intro-list .picture-text').height());
+        $('.intro-list .hover-text').height($('.intro-list .picture-text').height()-10);
     }
     $(window).resize(resize);
     resize();

@@ -40,6 +40,7 @@
                     而现在互联网金融正成为理财方式的新宠；</br>
                     国家政策的扶持，行业新规的出台，规模惊人的市场；</br>
                 </p>
+                <img src="/images/sign/actor/daili/one-picture.png" width="50%" class="phone-picture">
                 <p class="text-name">这一切，你准备好了吗？</p>
             </div>
             <img src="/images/sign/actor/daili/one-picture.png" alt="第一屏图片" class="one-picture">
@@ -49,7 +50,11 @@
     <div class="section">
         <div class="page-width clearfix">
             <div class="two-model">
-                <p><span class="first-word">如果您是，</span>在当地有较好的商业信誉和良好人际社交圈，拥有实现自我价值和追求成功的坚定信念，</p>
+                <p>
+                    <span class="first-word">如果您是，</span>
+                    <span class="phone-font">在当地有较好的商业信誉和良好人际社交圈，</span>
+                    <span class="phone-font">拥有实现自我价值和追求成功的坚定信念，</span>
+                </p>
                 <p>具备完全民事行为能力的，自然人或者机构；</p>
                 <p>加盟后我们<span>将为您提供:</span></p>
                 <ul class="intro-list">
@@ -92,7 +97,7 @@
                 </ul>
                 <p class="last-text">
                     <span class="last-one">除了这些，</br>现在加盟我们还有...</span>
-                    <span class="last-money"><strong>高额分红</br>200万</strong><i class="red-icon"><img src="/images/sign/actor/daili/red-hover.png" width="126" height="80"></i></span>
+                    <span class="last-money"><strong>高额分红</br>200万</strong><i class="red-icon"><img src="/images/sign/actor/daili/red-hover.png" width="126" height="72"></i></span>
                     <span class="phone-text">除了这些，现在加盟我们还有:<strong>高额分红200万.</strong></span>
                 </p>
             </div>
