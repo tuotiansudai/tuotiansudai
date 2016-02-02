@@ -27,16 +27,10 @@
                 <#else>
                     href="/register/user"
                 </#if>
-            </@global.isAnonymous>
-           id="redEnvelope" data-kick-off-date="${.now}">
-            <img src="${staticServer}/images/sign/actor/redbag/red-get.jpg" alt="注册即送红包">
+            </@global.isAnonymous>>
+        <img src="${staticServer}/images/sign/actor/redbag/red-get.jpg" alt="注册即送红包">
         </a>
     </div>
     <img src="${staticServer}/images/sign/actor/redbag/red-info.png" alt="注册即送红包">
-</div>
-
-<div id="redEnvelopePopWindow" class="hide">
-    <img src="${staticServer}/images/sign/actor/redbag/red-pop.png">
-    <div class="close-tip"></div>
 </div>
 </@global.main>
