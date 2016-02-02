@@ -8,9 +8,9 @@
 
 <div class="red-envelope-container" id="WhetherApp">
     <div class="actor-img">
-        <img src="${staticServer}/images/sign/actor/redbag/re-top.jpg" alt="注册即送红包" class="red-top">
+        <img src="${staticServer}/images/sign/actor/redbag/re-top.png" alt="注册即送红包" class="red-top">
         <img src="${staticServer}/images/sign/actor/redbag/red-top-mobile.png" alt="注册即送红包" class="red-top-mobile">
-        <img src="${staticServer}/images/sign/actor/redbag/red_envelope.jpg" alt="注册即送红包">
+        <img src="${staticServer}/images/sign/actor/redbag/red_envelope.png" alt="注册即送红包">
     </div>
     <div class="line-date-box">
         <div class="line-date">
@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="mobile">
-        <a href="/my-treasure" id="redEnvelope" data-kick-off-date="${.now}"><img src="${staticServer}/images/sign/actor/redbag/red-get.jpg" alt="注册即送红包"></a>
+        <a href="/my-treasure" id="redEnvelope" data-kick-off-date="${.now}"><img src="${staticServer}/images/sign/actor/redbag/red-get.png" alt="注册即送红包"></a>
         <img src="${staticServer}/images/sign/actor/redbag/red-info.png" alt="注册即送红包">
     </div>
 </div>
