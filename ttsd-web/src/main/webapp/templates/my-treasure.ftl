@@ -173,5 +173,6 @@
         </div>
     </div>
     <#-- 使用记录 end -->
+    <#include "coupon-alert.ftl" />
 </div>
 </@global.main>

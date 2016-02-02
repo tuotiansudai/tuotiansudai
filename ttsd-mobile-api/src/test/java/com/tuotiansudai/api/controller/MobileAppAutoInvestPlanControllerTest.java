@@ -48,9 +48,14 @@ public class MobileAppAutoInvestPlanControllerTest extends ControllerTestBase {
         baseDto.setData(autoInvestPlanDataDto);
         baseDto.setData(autoInvestPlanDataDto);
 
+        AutoInvestPlanRequestDto autoInvestPlanRequestDto = new AutoInvestPlanRequestDto();
+        autoInvestPlanRequestDto.setAutoInvestPeriods(autoInvestPeriodDtos);
+        autoInvestPlanRequestDto.setMinInvestAmount("1.00");
+        autoInvestPlanRequestDto.setMaxInvestAmount("5.00");
+        autoInvestPlanRequestDto.setRetentionAmount("3.00");
         when(service.buildAutoInvestPlan(any(AutoInvestPlanRequestDto.class))).thenReturn(baseDto);
         doRequestWithServiceMockedTest("/auto-invest-plan",
-                new AutoInvestPlanRequestDto())
+                autoInvestPlanRequestDto)
                 .andExpect(jsonPath("$.code").value("0000"))
                 .andExpect(jsonPath("$.data.autoInvestPeriods[0].pid").value(autoInvestPeriodDto.getPid()));
 

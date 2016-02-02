@@ -162,6 +162,7 @@ public class CouponLoanOutServiceAspectTest {
         userCouponModel.setLoanId(loanId);
         userCouponModel.setUsedTime(new DateTime().minusDays(10).toDate());
         userCouponModel.setInvestId(investId);
+        userCouponModel.setStatus(InvestStatus.SUCCESS);
         userCouponMapper.update(userCouponModel);
     }
 

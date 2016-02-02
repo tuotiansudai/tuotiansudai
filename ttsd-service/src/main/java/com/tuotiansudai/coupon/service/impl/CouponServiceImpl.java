@@ -16,6 +16,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.InterestCalculator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -238,13 +239,18 @@ public class CouponServiceImpl implements CouponService {
 
 
     @Override
-    public void deleteCoupon(String loginName, long couponId) {
+    @Transactional
+    public boolean deleteCoupon(String loginName, long couponId) {
+        if (CollectionUtils.isEmpty(userCouponMapper.findByCouponId(couponId))) {
+            return false;
+        }
         CouponModel couponModel = couponMapper.findById(couponId);
         couponModel.setUpdatedBy(loginName);
         couponModel.setUpdatedTime(new Date());
         couponModel.setDeleted(true);
         couponModel.setActive(false);
         couponMapper.updateCoupon(couponModel);
+        return true;
     }
 
     @Override
