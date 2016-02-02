@@ -76,18 +76,12 @@
       float: left;
       min-width: 110px;
       text-align: left;
-      &.mt-50{
-        margin-left: 50px;
-      }
       li {
         height: 14px;
         margin-top: 14px;
         font-size: 12px;
         a {
           color: #c2c2c2;
-          &.mt-20{
-            margin-left: 20px;
-          }
         }
         a:hover {
           text-decoration: underline;
@@ -116,6 +110,30 @@
       -ms-filter: none;
       -o-filter: none;
       filter: none;
+    }
+  }
+  .link-list{
+    border-top: #606060 1px solid;
+    ul {
+      float: left;
+      min-width: 110px;
+      text-align: left;
+      li {
+        height: 14px;
+        margin-top: 14px;
+        font-size: 12px;
+        a {
+          color: #c2c2c2;
+        }
+        a:hover {
+          text-decoration: underline;
+        }
+      }
+      .f-title {
+        font-size: 14px;
+        color: #fff;
+        margin:30px 0px 25px 0px;
+      }
     }
   }
 }
@@ -279,6 +297,9 @@
     .footer ul {
       clear:both;
       margin-left:10px;
+      &.mt-50{
+        margin-left: 10px!important;
+      }
       li {
         display: inline-block;
         margin-top:0;
