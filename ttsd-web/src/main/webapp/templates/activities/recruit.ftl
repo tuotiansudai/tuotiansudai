@@ -43,7 +43,7 @@
                 <img src="/images/sign/actor/daili/one-picture.png" width="50%" class="phone-picture">
                 <p class="text-name">这一切，你准备好了吗？</p>
             </div>
-            <img src="/images/sign/actor/daili/one-picture.png" alt="第一屏图片" class="one-picture">
+            <img src="/images/sign/actor/daili/one-picture.png" alt="第一屏图片" width="35%" class="one-picture">
             <div class="down clearfix"><b class="text-gray">试试鼠标滚动</b><img src="/images/sign/assure/down-gray.png" class="down-icon" alt=""></div>
         </div>
     </div>
