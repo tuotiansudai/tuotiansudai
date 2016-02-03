@@ -1210,6 +1210,9 @@ body {
       position: relative;
       span{
         font-size:20px;
+        &.first-word{
+          font-size:30px;
+        }
         &.last-one{
           float:left;
           margin-left:225px;
@@ -1337,6 +1340,9 @@ body {
           text-align:center;
           font-size:18px;
         }
+      }
+      &.iphone-img{
+        display:none;
       }
       &.tel-text{
         margin-top:60px;
@@ -1782,10 +1788,6 @@ body {
     }
   }
   .want-recruit-container{
-    .section{
-      float:left;
-      width:100%;
-    }
     .down{
       bottom:0 !important;
       b{
@@ -1912,6 +1914,44 @@ body {
   }
 }
 
+@media screen and (max-width: 368px) {
+  .want-recruit-container{
+    .one-model{
+      text-align:center;
+      margin-top:-150px!important;
+      .phone-picture{
+        display:none;
+      }
+    }
+    .two-model{
+      margin-top:-150px!important;
+      .intro-list{
+        li{
+          width:46%!important;
+        }
+      }
+    }
+    .three-model{
+      margin-top:-110px!important;
+      p{
+        &.phone-pic{
+          display:none;
+        }
+        &.iphone-img{
+          display:block;
+          margin-top:15px;
+        }
+        &.tel-text{
+          margin-top:10!important;
+          span{
+            padding: 10px 15px;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+}
 @media screen \0
 {
   .home-page-container {
