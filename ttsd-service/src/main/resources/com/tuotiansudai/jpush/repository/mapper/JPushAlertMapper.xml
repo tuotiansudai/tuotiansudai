@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper">
+
+    <resultMap id="jPushAlertResultMap" type="jPushAlertModel">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="push_type" property="pushType"></result>
+        <result column="push_objects" property="pushObjects"
+                typeHandler="com.tuotiansudai.util.mybatis.PushObjectHandler"/>
+        <result column="push_source" property="pushSource"></result>
+        <result column="status" property="status"></result>
+        <result column="content" property="content"></result>
+        <result column="jump_to" property="jumpTo"></result>
+        <result column="jump_to_link" property="jumpToLink"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="created_by" property="createdBy"></result>
+        <result column="updated_time" property="updatedTime"></result>
+        <result column="updated_by" property="updatedBy"></result>
+        <result column="is_automatic" property="isAutomatic"></result>
+
+    </resultMap>
+
+    <insert id="create" parameterType="jPushAlertModel" useGeneratedKeys="true" keyProperty="id">
+        insert into jpush_alert (name, push_type,push_objects, push_source, status, content, jump_to, jump_to_link,created_time,created_by,updated_time,updated_by,is_automatic)
+        value(#{name}, #{pushType},#{pushObjects,typeHandler=com.tuotiansudai.util.mybatis.PushObjectHandler}, #{pushSource}, #{status}, #{content}, #{jumpTo},
+        #{jumpToLink}, #{createdTime}, #{createdBy}, #{updatedTime}, #{updatedBy},#{isAutomatic})
+    </insert>
+
+    <select id="findPushTypeCount" resultType="int" parameterType="map">
+        select count(*) from jpush_alert where push_type = #{pushType} and is_automatic = false;
+    </select>
+
+    <select id="findPushAlertCount" resultType="int" parameterType="map">
+        select COUNT(*) from jpush_alert where is_automatic = #{isAutomatic}
+        <if test="name != null and name != '' ">
+            and name like CONCAT(CONCAT('%', #{name}), '%')
+        </if>
+    </select>
+
+    <select id="findPushAlerts" resultMap="jPushAlertResultMap" parameterType="map">
+        select * from jpush_alert where is_automatic = #{isAutomatic}
+        <if test="name != null and name != '' ">
+            and name like CONCAT(CONCAT('%', #{name}), '%')
+        </if>
+        ORDER BY created_time DESC
+        LIMIT #{index},#{pageSize}
+    </select>
+
+    <update id="update" parameterType="jPushAlertModel">
+        update jpush_alert set name=#{name},push_type=#{pushType},push_objects=#{pushObjects,typeHandler=com.tuotiansudai.util.mybatis.PushObjectHandler},push_source=#{pushSource},status=#{status},content=#{content},
+        jump_to = #{jumpTo},jump_to_link=#{jumpToLink},updated_time=#{updatedTime},updated_by=#{updatedBy} where id = #{id}
+    </update>
+
+    <select id="findJPushAlertModelById" parameterType="long" resultMap="jPushAlertResultMap">
+        select * from jpush_alert where id = #{id}
+    </select>
+
+    <select id="findJPushAlertByPushType"  resultMap="jPushAlertResultMap">
+        select * from jpush_alert where push_type = 'BIRTHDAY_ALERT' and status = 'ENABLED' and is_automatic = true
+    </select>
+
+</mapper>
