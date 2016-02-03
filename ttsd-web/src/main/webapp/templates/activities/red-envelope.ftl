@@ -31,6 +31,6 @@
             <img src="${staticServer}/images/sign/actor/redbag/red-get.png" alt="注册即送红包">
         </a>
     </div>
-    <img src="${staticServer}/images/sign/actor/redbag/red-info.png" alt="注册即送红包">
+    <img src="${staticServer}/images/sign/actor/redbag/red-info.png" alt="注册即送红包" style="margin-bottom:40px">
 </div>
 </@global.main>
