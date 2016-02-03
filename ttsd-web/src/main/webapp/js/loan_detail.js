@@ -105,16 +105,44 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 disabled ? self.addClass('disabled') : self.removeClass('disabled');
             });
 
-            var notSharedRedEnvelopes = _.sortBy($ticketList.find("li[data-coupon-type='RED_ENVELOPE']"), function (ticket) {
-                var $ticket = $(ticket);
-                return new Date($ticket.data("coupon-created-time")).getTime() * ($ticket.hasClass('disabled') ? 2 : 1);
-            });
-            var notSharedCoupons = _.sortBy($ticketList.find("li[data-coupon-type!='RED_ENVELOPE']"), function (ticket) {
-                var $ticket = $(ticket);
-                return new Date($ticket.data("coupon-created-time")).getTime() * ($ticket.hasClass('disabled') ? 2 : 1);
+
+
+            var notSharedRedEnvelopes = _.groupBy($ticketList.find("li[data-coupon-type='RED_ENVELOPE']"), function(ticket) {
+                return $(ticket).hasClass('disabled') ? "disabled" : "enabled";
             });
 
-            $ticketList.empty().append(notSharedRedEnvelopes).append(notSharedCoupons);
+            var notSharedCoupons = _.groupBy($ticketList.find("li[data-coupon-type!='RED_ENVELOPE']"), function(ticket) {
+                return $(ticket).hasClass('disabled') ? "disabled" : "enabled";
+            });
+
+            $ticketList.empty();
+            if (notSharedRedEnvelopes['enabled']) {
+                $ticketList.append(_.sortBy(notSharedRedEnvelopes['enabled'], function (ticket) {
+                    var $ticket = $(ticket);
+                    return new Date($ticket.data("coupon-created-time")).getTime();
+                }));
+            }
+
+            if (notSharedCoupons['enabled']) {
+                $ticketList.append(_.sortBy(notSharedCoupons['enabled'], function (ticket) {
+                    var $ticket = $(ticket);
+                    return new Date($ticket.data("coupon-created-time")).getTime();
+                }));
+            }
+
+            if (notSharedRedEnvelopes['disabled']) {
+                $ticketList.append(_.sortBy(notSharedRedEnvelopes['enabled'], function (ticket) {
+                    var $ticket = $(ticket);
+                    return new Date($ticket.data("coupon-created-time")).getTime();
+                }));
+            }
+
+            if (notSharedCoupons['disabled']) {
+                $ticketList.append(_.sortBy(notSharedCoupons['enabled'], function (ticket) {
+                    var $ticket = $(ticket);
+                    return new Date($ticket.data("coupon-created-time")).getTime();
+                }));
+            }
 
             $ticketList.find('li').click(function (event) {
                 var couponItem = $(event.currentTarget);
@@ -185,11 +213,11 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
         amountInputElement.blur(function () {
             calExpectedInterest();
+            calExpectedCouponInterest();
         });
 
         amountInputElement.keyup(function (event) {
-            $couponExpectedInterest.text("");
-            if (isInvestor && !$('li.not-use-coupon').find("input").prop('checked')) {
+            if (isInvestor) {
                 $ticketList.find('input[type="radio"]').prop('checked', false);
                 $useExperienceTicket.find('span').text('请选择优惠券');
             }
