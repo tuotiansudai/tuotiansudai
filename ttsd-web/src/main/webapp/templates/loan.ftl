@@ -60,7 +60,7 @@
                             </#if>
                         </dd>
 
-                        <dd class="experience-ticket" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
+                        <dd class="experience-ticket clearfix" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
                             <span class="fl">优惠券：</span>
                             <div class="fr experience-ticket-box">
                                 <em class="experience-ticket-input <#if !coupons?has_content>disabled</#if>" id="use-experience-ticket">
@@ -114,6 +114,10 @@
                                     <#list coupons as coupon>
                                         <#if coupon.shared && coupon.investLowerLimit==0 && coupon.investUpperLimit==0>
                                             <input type="hidden" id="${coupon.id?string.computer}" name="userCouponIds" value="${coupon.id?string.computer}" data-coupon-id="${coupon.couponId?string.computer}" />
+                                            <p class="red-tiptext clearfix">
+                                                <i class="icon-redbag"></i>
+                                                <span>${coupon.couponType.getName()}${(coupon.amount / 100)?string("0.00")}元（投资即可返现）</span>
+                                            </p>
                                         </#if>
                                     </#list>
                                 </#if>
