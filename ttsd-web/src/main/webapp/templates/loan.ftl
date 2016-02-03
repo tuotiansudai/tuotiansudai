@@ -60,7 +60,7 @@
                             </#if>
                         </dd>
 
-                        <dd class="experience-ticket" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
+                        <dd class="experience-ticket clearfix" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
                             <span class="fl">优惠券：</span>
                             <div class="fr experience-ticket-box">
                                 <em class="experience-ticket-input <#if !coupons?has_content>disabled</#if>" id="use-experience-ticket">
@@ -118,6 +118,10 @@
                                             </li>
                                         </#list>
                                     </ul>
+                                    <p class="red-tiptext clearfix">
+                                        <i class="icon-redbag"></i>
+                                        <span>现金红包3元(投资即可返现)</span>
+                                    </p>
                                 </#if>
                             </div>
                         </dd>
