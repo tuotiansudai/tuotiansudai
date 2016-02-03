@@ -113,7 +113,7 @@
                     <img src="/images/sign/actor/daili/three-picture.png" width="65%" alt="">
                 </p>
                 <p class="phone-title">
-                    <img src="/images/sign/actor/daili/phone-step.png" width="40%" alt="">
+                    <img src="/images/sign/actor/daili/phone-step.png" width="35%" alt="">
                 </p>
                 <p class="tel-text"><span>加盟热线：010－57064596</span></p>
             </div>

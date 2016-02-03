@@ -1782,6 +1782,10 @@ body {
     }
   }
   .want-recruit-container{
+    .section{
+      float:left;
+      width:100%;
+    }
     .down{
       bottom:0 !important;
       b{
@@ -1897,7 +1901,11 @@ body {
           display:block;
         }
         &.tel-text{
-          display:none;
+          margin-top:0!important;
+          span{
+            padding: 10px 15px;
+            font-size: 14px;
+          }
         }
       }
     }

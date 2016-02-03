@@ -19,7 +19,7 @@ require(['jquery','fullPage','commonFun'], function ($) {
         navigation: true,
         resize:true,
         scrollingSpeed:600,
-        css3: true,
+        css3: true
     });
 
 });
