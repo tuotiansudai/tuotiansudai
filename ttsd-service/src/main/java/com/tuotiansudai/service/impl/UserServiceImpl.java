@@ -437,6 +437,16 @@ public class UserServiceImpl implements UserService {
         return userMapper.findUsersAccountBalanceSum(loginName, balance[0], balance[1]);
     }
 
+    @Override
+    public boolean resetUmpayPassword(String loginName, String identityNumber) {
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        if (accountModel == null || !accountModel.getIdentityNumber().equals(identityNumber)) {
+            return false;
+        }
+        ResetUmpayPasswordDto resetUmpayPasswordDto = new ResetUmpayPasswordDto(loginName, identityNumber);
+        return payWrapperClient.resetUmpayPassword(resetUmpayPasswordDto);
+    }
+
     private int[] parseBalanceInt(String balanceMin, String balanceMax) {
         int min, max;
         try {
