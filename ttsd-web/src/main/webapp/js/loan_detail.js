@@ -105,8 +105,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 disabled ? self.addClass('disabled') : self.removeClass('disabled');
             });
 
-
-
             var notSharedRedEnvelopes = _.groupBy($ticketList.find("li[data-coupon-type='RED_ENVELOPE']"), function(ticket) {
                 return $(ticket).hasClass('disabled') ? "disabled" : "enabled";
             });
@@ -131,14 +129,14 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             }
 
             if (notSharedRedEnvelopes['disabled']) {
-                $ticketList.append(_.sortBy(notSharedRedEnvelopes['enabled'], function (ticket) {
+                $ticketList.append(_.sortBy(notSharedRedEnvelopes['disabled'], function (ticket) {
                     var $ticket = $(ticket);
                     return new Date($ticket.data("coupon-created-time")).getTime();
                 }));
             }
 
             if (notSharedCoupons['disabled']) {
-                $ticketList.append(_.sortBy(notSharedCoupons['enabled'], function (ticket) {
+                $ticketList.append(_.sortBy(notSharedCoupons['disabled'], function (ticket) {
                     var $ticket = $(ticket);
                     return new Date($ticket.data("coupon-created-time")).getTime();
                 }));
@@ -148,11 +146,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 var couponItem = $(event.currentTarget);
                 if (couponItem.hasClass("disabled")) {
                     return false;
-                }
-                if (couponItem.hasClass('not-use-coupon')) {
-                    $ticketList.find('li input[type="radio"]').prop("checked", false);
-                } else {
-                    $('li.not-use-coupon input[type="radio"]').prop("checked", false);
                 }
 
                 var couponTitle = $.trim(couponItem.find('.ticket-title').text());
