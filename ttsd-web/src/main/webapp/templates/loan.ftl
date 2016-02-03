@@ -70,54 +70,52 @@
                                 </em>
                                 <#if coupons?has_content>
                                     <ul class="ticket-list hide">
-                                        <li class="not-use-coupon">
-                                            <input type="radio" data-coupon-shared="false">
-                                            <label><i class="ticket-title">不使用优惠券</i></label>
-                                        </li>
                                         <#list coupons as coupon>
-                                            <li data-coupon-id="${coupon.couponId?string.computer}"
-                                                data-coupon-type="${coupon.couponType}"
-                                                data-coupon-shared="${coupon.shared?string("true", "false")}"
-                                                data-coupon-created-time="${coupon.createdTime?string("yyyy-MM-dd HH:mm:ss")}"
-                                            <#if coupon.investLowerLimit!=0 && coupon.investUpperLimit!=0>class="lower-upper-limit"</#if>>
-                                            <input <#if coupon.shared>type="checkbox" checked="checked" readonly="readonly"<#else>type="radio"</#if>
-                                                       name="userCouponIds" value="${coupon.id?string.computer}" id="${coupon.id?string.computer}" class="input-use-ticket"/>
-                                                <label>
-                                                    <span class="sign">${coupon.couponType.getAbbr()}</span>
-                                                    <span class="ticket-info">
-                                                        <i class="ticket-title">
-                                                            <#if coupon.couponType=='INTEREST_COUPON'>
-                                                                +${coupon.rate * 100}%${coupon.name}
-                                                            <#else>
-                                                            ${coupon.name}${(coupon.amount / 100)?string("0.00")}元
+                                            <#if !coupon.shared>
+                                                <li data-coupon-id="${coupon.couponId?string.computer}"
+                                                    data-coupon-type="${coupon.couponType}"
+                                                    data-coupon-created-time="${coupon.createdTime?string("yyyy-MM-dd HH:mm:ss")}"
+                                                    <#if coupon.investLowerLimit!=0 && coupon.investUpperLimit!=0>class="lower-upper-limit"</#if>>
+                                                    <input type="radio" id="${coupon.id?string.computer}" name="userCouponIds" value="${coupon.id?string.computer}"  class="input-use-ticket" />
+                                                    <label>
+                                                        <span class="sign">${coupon.couponType.getAbbr()}</span>
+                                                        <span class="ticket-info">
+                                                            <i class="ticket-title">
+                                                                <#if coupon.couponType=='INTEREST_COUPON'>
+                                                                    +${coupon.rate * 100}%${coupon.name}
+                                                                <#else>
+                                                                ${coupon.name}${(coupon.amount / 100)?string("0.00")}元
+                                                                </#if>
+                                                            </i>
+                                                            <#if coupon.investLowerLimit!=0>
+                                                                <br/>
+                                                                <i class="ticket-term" data-invest-lower-limit="${coupon.investLowerLimit?string.computer}">
+                                                                    [投资满${(coupon.investLowerLimit / 100)?string("0.00")}元可用]
+                                                                </i>
                                                             </#if>
-                                                        </i>
-                                                        <#if coupon.investLowerLimit!=0>
-                                                            <br/>
-                                                            <i class="ticket-term" data-invest-lower-limit="${coupon.investLowerLimit?string.computer}">
-                                                                [投资满${(coupon.investLowerLimit / 100)?string("0.00")}元可用]
-                                                            </i>
-
-                                                        </#if>
-                                                        <#if coupon.investUpperLimit!=0>
-                                                            <br/>
-                                                            <i class="ticket-term" data-invest-upper-limit="${coupon.investUpperLimit?string.computer}">
-                                                                [投资限${(coupon.investUpperLimit / 100)?string("0.00")}元内可用]
-                                                            </i>
-
-                                                        </#if>
-                                                        <#if coupon.investLowerLimit==0 && coupon.investUpperLimit==0>
-                                                            <br/>
-                                                            <i class="ticket-term" data-invest-upper-limit="${coupon.investUpperLimit?string.computer}">
-                                                                [投资即返]
-                                                            </i>
-                                                        </#if>
-
-                                                    </span>
-                                                </label>
-                                            </li>
+                                                            <#if coupon.investUpperLimit!=0>
+                                                                <br/>
+                                                                <i class="ticket-term" data-invest-upper-limit="${coupon.investUpperLimit?string.computer}">
+                                                                    [投资限${(coupon.investUpperLimit / 100)?string("0.00")}元内可用]
+                                                                </i>
+                                                            </#if>
+                                                            <#if coupon.investLowerLimit==0 && coupon.investUpperLimit==0>
+                                                                <br/>
+                                                                <i class="ticket-term" data-invest-upper-limit="${coupon.investUpperLimit?string.computer}">
+                                                                    [投资即返]
+                                                                </i>
+                                                            </#if>
+                                                        </span>
+                                                    </label>
+                                                </li>
+                                            </#if>
                                         </#list>
                                     </ul>
+                                    <#list coupons as coupon>
+                                        <#if coupon.shared && coupon.investLowerLimit==0 && coupon.investUpperLimit==0>
+                                            <input type="hidden" id="${coupon.id?string.computer}" name="userCouponIds" value="${coupon.id?string.computer}" data-coupon-id="${coupon.couponId?string.computer}" />
+                                        </#if>
+                                    </#list>
                                 </#if>
                             </div>
                         </dd>
