@@ -1796,7 +1796,7 @@ body {
     }
     .one-model{
       text-align:center;
-      margin-top:-220px!important;
+      margin-top:-240px!important;
       p{
         text-align:center;
         &.intro-title{
@@ -1824,7 +1824,7 @@ body {
       display:none;
     }
     .two-model{
-      margin-top:-190px!important;
+      margin-top:-220px!important;
       p{
         font-size:16px;
         text-align:center;
@@ -1914,7 +1914,7 @@ body {
   }
 }
 
-@media screen and (max-width: 368px) {
+@media screen and (max-width: 350px) {
   .want-recruit-container{
     .one-model{
       text-align:center;
