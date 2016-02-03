@@ -1,9 +1,11 @@
 package com.tuotiansudai.task;
 
+import com.google.common.primitives.Longs;
+
 import java.io.Serializable;
 import java.util.Date;
 
-public class OperateTask<T> implements Serializable, Comparable<OperateTask> {
+public class OperationTask<T> implements Serializable, Comparable<OperationTask> {
 
     private long id;
 
@@ -56,8 +58,7 @@ public class OperateTask<T> implements Serializable, Comparable<OperateTask> {
     }
 
     @Override
-    public int compareTo(OperateTask o) {
-        return this.operateTime.getTime() - o.getOperateTime().getTime() > 0 ? 1 : -1;
+    public int compareTo(OperationTask o) {
+        return Longs.compare(this.operateTime.getTime(), o.getOperateTime().getTime());
     }
-
 }

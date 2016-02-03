@@ -1,6 +1,6 @@
 package com.tuotiansudai.task;
 
-public enum OperateType {
+public enum OperationType {
 
     PROJECT("项目"),
 
@@ -12,7 +12,7 @@ public enum OperateType {
 
     private String name;
 
-    OperateType(String name) {
+    OperationType(String name) {
         this.name = name;
     }
 
