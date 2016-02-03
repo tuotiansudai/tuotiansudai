@@ -64,7 +64,7 @@
                             <span class="fl">优惠券：</span>
                             <div class="fr experience-ticket-box">
                                 <em class="experience-ticket-input <#if !coupons?has_content>disabled</#if>" id="use-experience-ticket">
-                                    <span><#if coupons?has_content>请选择您的优惠券<#else>当前您无可用优惠券</#if></span>
+                                    <span><#if coupons?has_content>请选择优惠券<#else>当前无可用优惠券</#if></span>
                                     <i class="fa fa-sort-down fr"></i>
                                     <i class="fa fa-sort-up hide fr"></i>
                                 </em>

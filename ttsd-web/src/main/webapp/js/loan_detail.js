@@ -191,7 +191,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             $couponExpectedInterest.text("");
             if (isInvestor && !$('li.not-use-coupon').find("input").prop('checked')) {
                 $ticketList.find('input[type="radio"]').prop('checked', false);
-                $useExperienceTicket.find('span').text('请点击选择优惠券');
+                $useExperienceTicket.find('span').text('请选择优惠券');
             }
         });
 
