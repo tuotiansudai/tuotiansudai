@@ -56,7 +56,7 @@
                     <span class="phone-font">拥有实现自我价值和追求成功的坚定信念，</span>
                 </p>
                 <p>具备完全民事行为能力的，自然人或者机构；</p>
-                <p>加盟后我们<span>将为您提供:</span></p>
+                <p>加盟后<span>我们将为您提供:</span></p>
                 <ul class="intro-list">
                     <li>
                         <p class="picture-text">
@@ -113,7 +113,7 @@
                     <img src="/images/sign/actor/daili/three-picture.png" width="65%" alt="">
                 </p>
                 <p class="phone-title">
-                    <img src="/images/sign/actor/daili/phone-step.png" width="50%" alt="">
+                    <img src="/images/sign/actor/daili/phone-step.png" width="40%" alt="">
                 </p>
                 <p class="tel-text"><span>加盟热线：010－57064596</span></p>
             </div>
