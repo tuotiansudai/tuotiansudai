@@ -28,6 +28,9 @@
                     推送渠道
                 </th>
                 <th>
+                    打开定位到页面
+                </th>
+                <th>
                     推送模板
                 </th>
                 <th>
@@ -49,19 +52,20 @@
                 <tr>
                     <td>${pushAlert.id?string('0')}</td>
                     <td>${(pushAlert.name)!}</td>
-                    <td>每月1日上午10点推送当月生日用户</td>
+                    <td>用户生日当月1日，进行提醒</td>
                     <td>Android / IOS</td>
-                    <td>${(pushAlert.content)!}</td>
-                    <td>${pushAlert.status.getDescription()}</td>
                     <td>
-                        <button class="btn btn-primary btn-xs edit-content" data-toggle="modal"
-                                data-target="#myModal">
-                            编辑
-                        </button>
+                        <#if pushAlert.pushType.name()=='BIRTHDAY_ALERT_MONTH'>
+                            生日月加息活动专题页
+                        </#if>
+                    </td>
+                    <td>${(pushAlert.content)!}</td>
+                    <td><div class="${(pushAlert.status.name()=='ENABLED')?string('text-success','text-danger')}">${pushAlert.status.getDescription()}</div></td>
+                    <td>
                         <#if pushAlert.status=='ENABLED'>
                             <button class="btn btn-danger btn-xs disabled-link"
                                     data-link="/app-push-manage/auto-app-push/${pushAlert.id?string('0')}/disabled">
-                                停用
+                                暂停
                             </button>
                         <#else>
                             <button class="btn btn-success btn-xs enabled-link"

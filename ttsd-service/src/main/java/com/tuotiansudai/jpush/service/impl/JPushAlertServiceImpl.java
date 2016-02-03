@@ -146,6 +146,8 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     public void autoJPushAlertBirthMonth() {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType();
         if (jPushAlertModel != null) {
+            JPushAlertDto jPushAlertDto = new JPushAlertDto(jPushAlertModel);
+            String[] jumpToOrLink = chooseJumpToOrLink(jPushAlertDto);
             List<String> registrationIds = Lists.newArrayList();
             List<String> loginNames = accountMapper.findBirthOfAccountInMonth();
             for (int i = 0; i < loginNames.size(); i++) {
@@ -155,7 +157,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                     registrationIds.add(registrationId);
                 }
                 if (registrationIds.size() == 1000 || (i == loginNames.size() - 1 && registrationIds.size() > 0)) {
-                    boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, jPushAlertModel.getContent(), "", "");
+                    boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, jPushAlertModel.getContent(), jumpToOrLink[0], jumpToOrLink[1]);
                     if (sendResult) {
                         logger.debug(MessageFormat.format("第{0}个用户推送成功", i + 1));
                     }else{
