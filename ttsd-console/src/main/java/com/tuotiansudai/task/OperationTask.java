@@ -9,6 +9,10 @@ public class OperationTask<T> implements Serializable, Comparable<OperationTask>
 
     private long id;
 
+    private TaskType taskType;
+
+    private OperationType operationType;
+
     private String operator;
 
     private Date operateTime;
@@ -55,6 +59,22 @@ public class OperationTask<T> implements Serializable, Comparable<OperationTask>
 
     public void setObj(T obj) {
         this.obj = obj;
+    }
+
+    public TaskType getTaskType() {
+        return taskType;
+    }
+
+    public void setTaskType(TaskType taskType) {
+        this.taskType = taskType;
+    }
+
+    public OperationType getOperationType() {
+        return operationType;
+    }
+
+    public void setOperationType(OperationType operationType) {
+        this.operationType = operationType;
     }
 
     @Override
