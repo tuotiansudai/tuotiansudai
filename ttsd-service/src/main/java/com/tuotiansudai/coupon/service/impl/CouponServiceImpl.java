@@ -52,9 +52,6 @@ public class CouponServiceImpl implements CouponService {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    @Autowired
-    private IdGenerator idGenerator;
-
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
     @Override
@@ -261,13 +258,20 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public long estimateCouponExpectedInterest(long loanId, long couponId, long amount) {
-        LoanModel loanModel = loanMapper.findById(loanId);
-        CouponModel couponModel = couponMapper.findById(couponId);
-        long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(loanModel, couponModel, amount);
+    public long estimateCouponExpectedInterest(long loanId, List<Long> couponIds, long amount) {
+        long totalInterest = 0;
 
-        long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        for (Long couponId : couponIds) {
+            LoanModel loanModel = loanMapper.findById(loanId);
+            CouponModel couponModel = couponMapper.findById(couponId);
+            if (loanModel == null || couponModel == null) {
+                continue;
+            }
+            long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(loanModel, couponModel, amount);
+            long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount);
+            totalInterest += expectedInterest - expectedFee;
+        }
 
-        return expectedInterest - expectedFee;
+        return totalInterest;
     }
 }

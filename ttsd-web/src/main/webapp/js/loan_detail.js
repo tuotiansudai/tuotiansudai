@@ -103,39 +103,49 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 var disabled = (investLowerLimit > 0 && investLowerLimit > investAmount) || (investUpperLimit > 0 && investUpperLimit < investAmount);
                 input.prop("disabled", disabled);
                 disabled ? self.addClass('disabled') : self.removeClass('disabled');
-                if (self.data("coupon-shared")) {
-                    input.prop("checked", !disabled);
-                }
             });
 
-            var notUseCoupon = $ticketList.find("li.not-use-coupon");
-            var sharedCoupons = _.sortBy($ticketList.find("li[data-coupon-shared='true']"), function (ticket) {
-                var $ticket = $(ticket);
-                return new Date($ticket.data("coupon-created-time")).getTime() * ($ticket.hasClass('disabled') ? 2 : 1);
-            });
-            var notSharedRedEnvelopes = _.sortBy($ticketList.find("li[data-coupon-shared='false'][data-coupon-type='RED_ENVELOPE']"), function (ticket) {
-                var $ticket = $(ticket);
-                return new Date($ticket.data("coupon-created-time")).getTime() * ($ticket.hasClass('disabled') ? 2 : 1);
-            });
-            var notSharedCoupons = _.sortBy($ticketList.find("li[data-coupon-shared='false'][data-coupon-type!='RED_ENVELOPE']"), function (ticket) {
-                var $ticket = $(ticket);
-                return new Date($ticket.data("coupon-created-time")).getTime() * ($ticket.hasClass('disabled') ? 2 : 1);
+            var notSharedRedEnvelopes = _.groupBy($ticketList.find("li[data-coupon-type='RED_ENVELOPE']"), function(ticket) {
+                return $(ticket).hasClass('disabled') ? "disabled" : "enabled";
             });
 
-            if (sharedCoupons.length > 0) {
-                notUseCoupon.css("border-top", "solid 1px #fdd8bd")
+            var notSharedCoupons = _.groupBy($ticketList.find("li[data-coupon-type!='RED_ENVELOPE']"), function(ticket) {
+                return $(ticket).hasClass('disabled') ? "disabled" : "enabled";
+            });
+
+            $ticketList.empty();
+            if (notSharedRedEnvelopes['enabled']) {
+                $ticketList.append(_.sortBy(notSharedRedEnvelopes['enabled'], function (ticket) {
+                    var $ticket = $(ticket);
+                    return new Date($ticket.data("coupon-created-time")).getTime();
+                }));
             }
-            $ticketList.empty().append(sharedCoupons).append(notUseCoupon).append(notSharedRedEnvelopes).append(notSharedCoupons);
+
+            if (notSharedCoupons['enabled']) {
+                $ticketList.append(_.sortBy(notSharedCoupons['enabled'], function (ticket) {
+                    var $ticket = $(ticket);
+                    return new Date($ticket.data("coupon-created-time")).getTime();
+                }));
+            }
+
+            if (notSharedRedEnvelopes['disabled']) {
+                $ticketList.append(_.sortBy(notSharedRedEnvelopes['disabled'], function (ticket) {
+                    var $ticket = $(ticket);
+                    return new Date($ticket.data("coupon-created-time")).getTime();
+                }));
+            }
+
+            if (notSharedCoupons['disabled']) {
+                $ticketList.append(_.sortBy(notSharedCoupons['disabled'], function (ticket) {
+                    var $ticket = $(ticket);
+                    return new Date($ticket.data("coupon-created-time")).getTime();
+                }));
+            }
 
             $ticketList.find('li').click(function (event) {
                 var couponItem = $(event.currentTarget);
-                if (couponItem.hasClass("disabled") || couponItem.data('coupon-shared')) {
+                if (couponItem.hasClass("disabled")) {
                     return false;
-                }
-                if (couponItem.hasClass('not-use-coupon')) {
-                    $ticketList.find('li input[type="radio"]').prop("checked", false);
-                } else {
-                    $('li.not-use-coupon input[type="radio"]').prop("checked", false);
                 }
 
                 var couponTitle = $.trim(couponItem.find('.ticket-title').text());
@@ -143,16 +153,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 couponItem.find("input").prop('checked', true);
                 $couponExpectedInterest.text("");
 
-                if (couponItem.data('coupon-type') != 'RED_ENVELOPE' && couponItem.data('coupon-id')) {
-                    $.ajax({
-                        url: '/calculate-expected-coupon-interest/loan/' + loanId + '/coupon/' + couponItem.data('coupon-id') + '/amount/' + getInvestAmount(),
-                        type: 'get',
-                        dataType: 'json',
-                        contentType: 'application/json; charset=UTF-8'
-                    }).done(function (amount) {
-                        $couponExpectedInterest.text("+" + amount);
-                        $btnLookOther.prop('disabled', false);
-                    });
+                if (couponItem.data('coupon-id')) {
+                    calExpectedCouponInterest(couponItem.data('coupon-id'));
                 }
                 $ticketList.addClass('hide');
             });
@@ -162,6 +164,28 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             var amount = getInvestAmount();
             var amountNeedRaised = parseInt($('form .amountNeedRaised-i').data("amount-need-raised")) || 0;
             return amount > 0 && amountNeedRaised >= amount;
+        };
+
+        var calExpectedCouponInterest = function (couponId) {
+            var queryParams = [];
+            if ($.isNumeric(couponId)) {
+                queryParams.push({'name': 'couponIds', 'value': couponId});
+            }
+
+            $.each($('input[type="hidden"][name="userCouponIds"]'), function(index, item) {
+                queryParams.push({'name': 'couponIds', 'value': $(item).data("coupon-id")})
+            });
+
+            $.ajax({
+                url: '/calculate-expected-coupon-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
+                data: $.param(queryParams),
+                type: 'get',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8'
+            }).done(function (amount) {
+                $couponExpectedInterest.text("+" + amount);
+                $btnLookOther.prop('disabled', false);
+            });
         };
 
         var calExpectedInterest = function () {
@@ -177,17 +201,18 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
         if (isInvestor) {
             calExpectedInterest();
+            calExpectedCouponInterest();
         }
 
         amountInputElement.blur(function () {
             calExpectedInterest();
+            calExpectedCouponInterest();
         });
 
         amountInputElement.keyup(function (event) {
-            $couponExpectedInterest.text("");
-            if (isInvestor && !$('li.not-use-coupon').find("input").prop('checked')) {
+            if (isInvestor) {
                 $ticketList.find('input[type="radio"]').prop('checked', false);
-                $useExperienceTicket.find('span').text('请点击选择优惠券');
+                $useExperienceTicket.find('span').text('请选择优惠券');
             }
         });
 
