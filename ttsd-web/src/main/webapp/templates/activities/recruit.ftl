@@ -118,7 +118,7 @@
                 <p class="iphone-img">
                     <img src="/images/sign/actor/daili/iphone4-img.png" width="60%" alt="">
                 </p>
-                <p class="tel-text"><span>加盟热线：010－57064596</span></p>
+                <p class="tel-text"><span>加盟热线：010-57064596</span></p>
             </div>
             <div class="down clearfix"><b class="text-gray">试试鼠标滚动</b><img src="/images/sign/assure/up-gray.png" class="down-icon" alt=""></div>
         </div>
