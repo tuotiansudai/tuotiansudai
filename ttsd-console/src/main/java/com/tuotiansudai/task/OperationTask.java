@@ -19,6 +19,8 @@ public class OperationTask<T> implements Serializable, Comparable<OperationTask>
 
     private String objId;
 
+    private String description;
+
     private T obj;
 
     public long getId() {
@@ -51,6 +53,14 @@ public class OperationTask<T> implements Serializable, Comparable<OperationTask>
 
     public void setObjId(String objId) {
         this.objId = objId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public T getObj() {
