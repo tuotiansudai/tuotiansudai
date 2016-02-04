@@ -97,9 +97,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             $.each($ticketList.find("li"), function (index, ticket) {
                 var self = $(ticket);
                 var input = $(self.find("input"));
-                var ticketTerm = $(self.find(".ticket-term"));
-                var investLowerLimit = ticketTerm.data('invest-lower-limit') || 0;
-                var investUpperLimit = ticketTerm.data('invest-upper-limit') || 0;
+                var investLowerLimit = $(self.find(".ticket-term.lower-limit")).data('invest-lower-limit') || 0;
+                var investUpperLimit = $(self.find(".ticket-term.upper-limit")).data('invest-upper-limit') || 0;
                 var disabled = (investLowerLimit > 0 && investLowerLimit > investAmount) || (investUpperLimit > 0 && investUpperLimit < investAmount);
                 input.prop("disabled", disabled);
                 disabled ? self.addClass('disabled') : self.removeClass('disabled');
@@ -175,6 +174,11 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             $.each($('input[type="hidden"][name="userCouponIds"]'), function(index, item) {
                 queryParams.push({'name': 'couponIds', 'value': $(item).data("coupon-id")})
             });
+
+            if (queryParams.length == 0) {
+                $couponExpectedInterest.text("");
+                return;
+            }
 
             $.ajax({
                 url: '/calculate-expected-coupon-interest/loan/' + loanId + '/amount/' + getInvestAmount(),
