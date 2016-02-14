@@ -56,8 +56,27 @@ public class InterestCalculator {
                         .multiply(new BigDecimal(couponModel.getBirthdayBenefit()))
                         .divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
                 break;
+            case RED_ENVELOPE:
+                expectedInterest = couponModel.getAmount();
+                break;
         }
         return expectedInterest;
+    }
+
+    public static long estimateCouponExpectedFee(LoanModel loanModel, CouponModel couponModel, long amount) {
+        long estimateCouponExpectedInterest = estimateCouponExpectedInterest(loanModel, couponModel, amount);
+
+        long expectedFee;
+        switch (couponModel.getCouponType()) {
+            case NEWBIE_COUPON:
+            case INVEST_COUPON:
+            case INTEREST_COUPON:
+                expectedFee = new BigDecimal(estimateCouponExpectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+                break;
+            default:
+                expectedFee = 0;
+        }
+        return expectedFee;
     }
 
     public static long calculateLoanRepayInterest(LoanModel loanModel, List<InvestModel> investModels, DateTime lastRepayDate, DateTime currentRepayDate) {
