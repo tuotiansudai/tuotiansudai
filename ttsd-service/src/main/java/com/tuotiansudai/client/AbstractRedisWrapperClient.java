@@ -404,6 +404,16 @@ public abstract class AbstractRedisWrapperClient {
         });
     }
 
+    public Boolean hexistsSeri(final String key, final String field) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Boolean>() {
+            @Override
+            public Boolean action(Jedis jedis) {
+                return jedis.hexists(key.getBytes(), field.getBytes());
+            }
+        });
+    }
+
     public Object hgetSeri(final String key, final String field) {
         this.setJedisPool(getPool());
         return execute(new JedisAction() {
@@ -414,12 +424,22 @@ public abstract class AbstractRedisWrapperClient {
         });
     }
 
-    public Map<byte[], byte[]> hgetAllSeri(final String key, final String field) {
+    public Map<byte[], byte[]> hgetAllSeri(final String key) {
         this.setJedisPool(getPool());
         return execute(new JedisAction<Map<byte[], byte[]>>() {
             @Override
             public Map<byte[], byte[]> action(Jedis jedis) {
                 return jedis.hgetAll(key.getBytes());
+            }
+        });
+    }
+
+    public List<byte[]> hgetValuesSeri(final String key) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<List<byte[]>>() {
+            @Override
+            public List<byte[]> action(Jedis jedis) {
+                return jedis.hvals(key.getBytes());
             }
         });
     }

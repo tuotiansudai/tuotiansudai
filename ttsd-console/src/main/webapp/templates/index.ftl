@@ -3,6 +3,14 @@
 <div class="col-md-10 home-report">
 
     我的任务： </br>
+    <#list taskList as task>
+        <#if task.taskType == 'TASK'>
+            <a href="${task.operateURL}">${task.description!}</a> 同意｜拒绝
+        </#if>
+        <#if task.taskType == 'NOTIFY'>
+            <a href="${task.operateURL}">${task.description!}</a> 知道了
+        </#if>
+    </#list> </br>
 
     平台数据： </br>
     今日新增用户数${userToday!} 本周新增用户数${user7Days!}  本月新增用户数${user30Days!} </br>

@@ -1,6 +1,8 @@
 package com.tuotiansudai.task;
 
-public enum TaskType {
+import java.io.Serializable;
+
+public enum TaskType implements Serializable {
 
     TASK,
     NOTIFY;
