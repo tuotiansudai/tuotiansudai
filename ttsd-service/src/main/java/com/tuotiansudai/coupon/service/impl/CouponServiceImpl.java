@@ -80,7 +80,7 @@ public class CouponServiceImpl implements CouponService {
             }
         }
 
-        if (!Lists.newArrayList(CouponType.BIRTHDAY_COUPON).contains(couponDto.getCouponType())) {
+        if (!Lists.newArrayList(CouponType.BIRTHDAY_COUPON, CouponType.INTEREST_COUPON, CouponType.RED_ENVELOPE).contains(couponDto.getCouponType())) {
             long investLowerLimit = couponModel.getInvestLowerLimit();
             if (investLowerLimit <= 0) {
                 throw new CreateCouponException("使用条件金额应大于0!");
