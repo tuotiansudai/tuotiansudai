@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -81,7 +80,7 @@ public class CouponServiceImpl implements CouponService {
             }
         }
 
-        if (Lists.newArrayList(CouponType.INTEREST_COUPON, CouponType.RED_ENVELOPE, CouponType.BIRTHDAY_COUPON).contains(couponDto.getCouponType())) {
+        if (!Lists.newArrayList(CouponType.BIRTHDAY_COUPON).contains(couponDto.getCouponType())) {
             long investLowerLimit = couponModel.getInvestLowerLimit();
             if (investLowerLimit <= 0) {
                 throw new CreateCouponException("使用条件金额应大于0!");
