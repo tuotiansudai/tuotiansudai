@@ -16,11 +16,13 @@ import com.tuotiansudai.repository.model.WithdrawModel;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -78,6 +80,12 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         WithdrawDto withdrawDto = requestDto.convertToWithdrawDto();
         long withdrawAmount = AmountConverter.convertStringToCent(withdrawDto.getAmount());
+        DateTime startTime = new DateTime(2016,2,7,0,0,0);
+        DateTime endTime = new DateTime(2016,2,14,0,0,0);
+
+        if(startTime.isBeforeNow() && endTime.isAfterNow()){
+            return new BaseResponseDto(ReturnMessage.SPRING_FESTIVAL_NOT_WITHDRAW.getCode(), ReturnMessage.SPRING_FESTIVAL_NOT_WITHDRAW.getMsg());
+        }
         if (withdrawAmount <= withdrawFee) {
             return new BaseResponseDto(ReturnMessage.WITHDRAW_AMOUNT_NOT_REACH_FEE.getCode(), ReturnMessage.WITHDRAW_AMOUNT_NOT_REACH_FEE.getMsg());
         }
