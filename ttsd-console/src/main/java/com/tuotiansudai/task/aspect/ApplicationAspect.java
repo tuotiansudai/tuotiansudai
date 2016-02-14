@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -36,11 +35,7 @@ public class ApplicationAspect {
 
     static Logger logger = Logger.getLogger(ApplicationAspect.class);
 
-    @Pointcut("execution(* com.tuotiansudai.service.LoanService.createLoan(..))")
-    public void createLoanPointcut() {
-    }
-
-    @AfterReturning(value = "createLoanPointcut()", returning = "returnValue")
+    @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanService.createLoan(*))", returning = "returnValue")
     public void afterReturningCreateLoan(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after create loan");
         try {
@@ -59,10 +54,10 @@ public class ApplicationAspect {
 
                 String senderLoginName = loanDto.getCreatedLoginName();
                 AccountModel sender = accountService.findByLoginName(senderLoginName);
-                String senderRealName = sender.getUserName();
+                String senderRealName = sender != null ? sender.getUserName() : senderLoginName;
 
                 task.setSender(senderLoginName);
-                task.setOperateURL("/project-manage/loan/"+loanDto.getId());
+                task.setOperateURL("/project-manage/loan/" + loanDto.getId());
                 task.setDescription(senderRealName + "创建了新的标的，请审核。");
 
                 redisWrapperClient.hsetSeri(TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
@@ -73,35 +68,33 @@ public class ApplicationAspect {
     }
 
 
-    @Pointcut("execution(* com.tuotiansudai.service.LoanService.openLoan(..))")
-    public void openLoanPointcut() {
-    }
-
-    @AfterReturning(value = "openLoanPointcut()", returning = "returnValue")
+    @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanService.openLoan(*))", returning = "returnValue")
     public void afterReturningOpenLoan(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after open loan");
         try {
-            LoanDto loanDto = (LoanDto) joinPoint.getArgs()[0];
-            String taskId = OperationType.PROJECT + "-" + loanDto.getId();
+            if (((BaseDto<PayDataDto>) returnValue).getData().getStatus()) {
+                LoanDto loanDto = (LoanDto) joinPoint.getArgs()[0];
+                String taskId = OperationType.PROJECT + "-" + loanDto.getId();
 
-            if (redisWrapperClient.hexistsSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
-                redisWrapperClient.hdelSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+                if (redisWrapperClient.hexistsSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
+                    redisWrapperClient.hdelSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
 
-                OperationTask notify = new OperationTask();
-                notify.setTaskType(TaskType.NOTIFY);
-                notify.setOperationType(OperationType.PROJECT);
-                notify.setSender(loanDto.getVerifyLoginName());
-                notify.setReceiver(loanDto.getCreatedLoginName());
-                notify.setCreatedTime(new Date());
-                notify.setObjId(String.valueOf(loanDto.getId()));
-                notify.setId(taskId);
+                    OperationTask notify = new OperationTask();
+                    notify.setTaskType(TaskType.NOTIFY);
+                    notify.setOperationType(OperationType.PROJECT);
+                    notify.setSender(loanDto.getVerifyLoginName());
+                    notify.setReceiver(loanDto.getCreatedLoginName());
+                    notify.setCreatedTime(new Date());
+                    notify.setObjId(String.valueOf(loanDto.getId()));
+                    notify.setId(taskId);
 
-                String senderLoginName = loanDto.getVerifyLoginName();
-                AccountModel sender = accountService.findByLoginName(senderLoginName);
-                String senderRealName = sender.getUserName();
+                    String senderLoginName = loanDto.getVerifyLoginName();
+                    AccountModel sender = accountService.findByLoginName(senderLoginName);
+                    String senderRealName = sender != null ? sender.getUserName() : senderLoginName;
 
-                notify.setDescription(senderRealName + "通过了您的发标申请。");
-                redisWrapperClient.hsetSeri(NOTIFY_KEY + loanDto.getCreatedLoginName(), taskId, notify);
+                    notify.setDescription(senderRealName + "通过了您的发标申请。");
+                    redisWrapperClient.hsetSeri(NOTIFY_KEY + loanDto.getCreatedLoginName(), taskId, notify);
+                }
             }
         } catch (Exception e) {
             logger.error("after open loan aspect fail ", e);
