@@ -35,12 +35,15 @@
   text-align: center;
   overflow: auto;
   height: auto;
-
   dl {
     margin-bottom: 12px;
     height: auto;
     overflow: auto;
     clear: both;
+    &.identityCodeError{
+      color: #ff0000;
+      display: none;
+    }
     dt, dd {
       float: left;
     }
@@ -958,6 +961,22 @@
                 }
               }
             }
+            .red-tiptext{
+              margin-bottom: 0;
+              i.icon-redbag{
+                float:left;
+                width:18px;
+                height:14px;
+                margin-top: 5px;
+                background: url(/images/sign/icon-red-sm.png) no-repeat center;
+              }
+              span{
+                float:left;
+                font-size:12px;
+                color:#ff752a;
+                margin-left:6px;
+              }
+            }
             .ticket-list {
               position: absolute;
               z-index: 100;
@@ -1018,6 +1037,7 @@
         }
         &.expected-interest-dd {
           padding:2px;
+          line-height: 30px;
           .principal-income {
             font-size: 25px;
             color: #ff7200;
