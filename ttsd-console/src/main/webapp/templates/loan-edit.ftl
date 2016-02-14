@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <script>
     var API_SELECT = '${requestContext.getContextPath()}/project-manage/loan/titles';  // 申请资料标题url
     var API_POST_TITLE = '${requestContext.getContextPath()}/project-manage/loan/title';  //
@@ -362,9 +363,17 @@
 
             <div class="col-sm-4">
                 <input type="hidden" class="jq-pact" value="${contractId}"/><!-- 默认合同ID -->
-                <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="save">保存</button>
+
+                <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
+                    <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="save">保存</button>
+                </@security.authorize>
+
                 <#if loanInfo.status == "WAITING_VERIFY">
-                    <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="ok">审核通过</button>
+
+                    <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                        <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="ok">审核通过</button>
+                    </@security.authorize>
+
                 </#if>
                 <#if loanInfo.status == "RECHECK">
                     <#if loanInfo.raisingCompleteTime??>
