@@ -375,6 +375,7 @@
 
                     <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
                         <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="ok">审核通过</button>
+                        <button TYPE="button" class="btn jq-btn-refuse btn-danger" data-loanId="${loanInfo.id?c}">审核拒绝</button>
                     </@security.authorize>
 
                 </#if>
