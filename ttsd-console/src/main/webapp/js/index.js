@@ -2,19 +2,37 @@ require(['jquery'], function ($) {
 	$(function() {
 		$('.table .btn-danger').on('click',function(event) {
 			event.preventDefault();
-			var $self=$(this),
-					$parent=$self.parents('tr');
+			var $self=$(this);
 			$.ajax({
-				url: '/path/to/file',
-				type: 'POST',
+				url: '/refuse?taskId='+$(this).attr('data-taskId'),
+				type: 'GET',
 				dataType: 'json',
-				data: {param1: 'value1'},
+				data: {}
 			})
 			.done(function() {
-				$parent.fadeOut('fast').remove();
+				window.location="/";
 			})
 			.fail(function() {
+				alert("出错了！");
 			});
 		});
+
+		$('.table .btn-info').on('click',function(event) {
+			event.preventDefault();
+			var $self=$(this);
+			$.ajax({
+				url: '/deleteNotify?taskId='+$(this).attr('data-taskId'),
+				type: 'GET',
+				dataType: 'json',
+				data: {}
+			})
+            .done(function() {
+                window.location="/";
+            })
+            .fail(function() {
+                alert("出错了！");
+            });
+		});
+
 	});
 });

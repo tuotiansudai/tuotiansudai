@@ -4,25 +4,25 @@ import java.io.Serializable;
 
 public enum OperationType implements Serializable{
 
-    PROJECT("项目"),
+    PROJECT("创建标的"),
 
-    ACTIVITY("活动"),
+    ACTIVITY("创建优惠券"),
 
-    USER("用户"),
+    USER("修改用户"),
 
-    PUSH("推送");
+    PUSH("新建推送");
 
-    private String name;
+    private String description;
 
-    OperationType(String name) {
-        this.name = name;
+    OperationType(String description) {
+        this.description = description;
     }
 
-    public String getName() {
-        return name;
+    public String getDescription() {
+        return description;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

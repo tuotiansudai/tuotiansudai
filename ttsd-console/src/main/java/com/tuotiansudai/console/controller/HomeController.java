@@ -2,20 +2,29 @@ package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.client.AbstractRedisWrapperClient;
 import com.tuotiansudai.console.util.LoginUserInfo;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.ConsoleHomeService;
 import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.task.OperationTask;
+import com.tuotiansudai.task.OperationType;
+import com.tuotiansudai.task.TaskType;
 import com.tuotiansudai.task.aspect.ApplicationAspect;
 import com.tuotiansudai.util.SerializeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -30,12 +39,15 @@ public class HomeController {
     @Autowired
     UserRoleService userRoleService;
 
+    @Autowired
+    AccountService accountService;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
 
         ModelAndView mav = new ModelAndView("/index");
 
-        mav.addObject("taskList", getTaskList(userRoleService.findRoleNameByLoginName(LoginUserInfo.getLoginName())));
+        mav.addObject("taskList", getTaskList(LoginUserInfo.getLoginName()));
 
         mav.addObject("userToday", consoleHomeService.getRegisterUserToday());
         mav.addObject("user7Days", consoleHomeService.getRegisterUser7Days());
@@ -58,8 +70,8 @@ public class HomeController {
         return mav;
     }
 
-    private List<OperationTask> getTaskList(List<Role> roles) {
-
+    private List<OperationTask> getTaskList(String loginName) {
+        List<Role> roles = userRoleService.findRoleNameByLoginName(loginName);
         List<OperationTask> taskList = new ArrayList<>();
         for (Role role : roles) {
             List<byte[]> tasks = redisWrapperClient.hgetValuesSeri(ApplicationAspect.TASK_KEY + role);
@@ -68,9 +80,99 @@ public class HomeController {
                 taskList.add((OperationTask) SerializeUtil.deserialize(bs));
             }
         }
+
+        List<byte[]> notifies = redisWrapperClient.hgetValuesSeri(ApplicationAspect.NOTIFY_KEY + loginName);
+        for (byte[] bs : notifies) {
+            taskList.add((OperationTask) SerializeUtil.deserialize(bs));
+        }
+
         Collections.sort(taskList);
         return taskList;
     }
 
 
+    @ResponseBody
+    @RequestMapping(value = "/refuse", method = RequestMethod.GET, params = "taskId")
+    public BaseDto<BaseDataDto> refuseApply(String taskId) {
+
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto baseDataDto = new BaseDataDto();
+        baseDto.setData(baseDataDto);
+
+        if (redisWrapperClient.hexists(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
+
+            OperationTask task = (OperationTask) redisWrapperClient.hgetSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+
+            OperationTask notify = new OperationTask();
+            String notifyId = taskId;
+
+            notify.setId(notifyId);
+            notify.setTaskType(TaskType.NOTIFY);
+
+            OperationType operationType = task.getOperationType();
+            notify.setOperationType(operationType);
+
+            String senderLoginName = LoginUserInfo.getLoginName();
+            notify.setSender(senderLoginName);
+            notify.setReceiver(task.getSender());
+            notify.setCreatedTime(new Date());
+
+            notify.setObjId(task.getObjId());
+
+            AccountModel sender = accountService.findByLoginName(senderLoginName);
+            String senderRealName = sender != null ? sender.getUserName() : senderLoginName;
+
+            notify.setDescription(senderRealName + "拒绝了您" + operationType.getDescription() + "'" + task.getObjName() + "'的申请。");
+
+            redisWrapperClient.hdelSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+            redisWrapperClient.hsetSeri(ApplicationAspect.NOTIFY_KEY + task.getSender(), notifyId, notify);
+
+            baseDto.setSuccess(true);
+            baseDataDto.setStatus(true);
+        } else {
+            baseDto.setSuccess(false);
+            baseDataDto.setStatus(false);
+        }
+
+        return baseDto;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteNotify", method = RequestMethod.GET, params = {"taskId"})
+    public BaseDto<BaseDataDto> deleteNotify(String taskId) {
+        redisWrapperClient.hdelSeri(ApplicationAspect.NOTIFY_KEY + LoginUserInfo.getLoginName(), taskId);
+
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        baseDto.setSuccess(true);
+        BaseDataDto baseDataDto = new BaseDataDto();
+        baseDataDto.setStatus(true);
+        baseDto.setData(baseDataDto);
+        return baseDto;
+    }
+
+
+//    @RequestMapping(value = "/addTask", method = RequestMethod.GET)
+//    public ModelAndView addTask() {
+//        OperationTask<LoanDto> task = new OperationTask<>();
+//
+//        task.setTaskType(TaskType.TASK);
+//        task.setOperationType(OperationType.PROJECT);
+//
+//        String taskId = OperationType.PROJECT.toString() + "-" + "27224451230128";
+//        task.setId(taskId);
+//        task.setObjId("27224451230128");
+//        task.setCreatedTime(new Date());
+//
+//        String senderLoginName = "test_coupon";
+//        AccountModel sender = accountService.findByLoginName(senderLoginName);
+//        String senderRealName = sender != null ? sender.getUserName() : senderLoginName;
+//
+//        task.setSender(senderLoginName);
+//        task.setOperateURL("/project-manage/loan/" + "27224451230128");
+//        task.setDescription(senderRealName + "创建了新的标的，请审核。");
+//
+//        redisWrapperClient.hsetSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
+//
+//        return new ModelAndView("redirect:/");
+//    }
 }

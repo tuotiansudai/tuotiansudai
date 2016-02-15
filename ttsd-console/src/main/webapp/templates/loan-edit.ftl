@@ -332,6 +332,9 @@
         </div>
         </#if>
 
+        <input type="hidden" class="jq-creator" value="${loanInfo.createdLoginName}"/><!-- 创建者 -->
+
+
         <!--<div class="form-group">-->
         <!--<label  class="col-sm-2 control-label">初审是否通过: </label>-->
 
