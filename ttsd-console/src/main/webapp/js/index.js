@@ -1,6 +1,6 @@
 require(['jquery'], function ($) {
     $(function() {
-    	$('.table btn-danger').on('click',function(event) {
+    	$('.table .btn-danger').on('click',function(event) {
     		event.preventDefault();
     		$.ajax({
     			url: '/path/to/file',
