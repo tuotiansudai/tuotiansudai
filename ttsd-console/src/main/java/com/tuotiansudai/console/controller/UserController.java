@@ -18,6 +18,7 @@ import com.tuotiansudai.service.ImpersonateService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
+import com.tuotiansudai.task.aspect.ApplicationAspect;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
 import com.tuotiansudai.util.RequestIPParser;
@@ -65,10 +66,6 @@ public class UserController {
     @Value("${web.server}")
     private String webServer;
 
-    public static final String TASK_KEY = "console:task:";
-
-    public static final String NOTIFY_KEY = "console:notify:";
-
     @RequestMapping(value = "/user/{loginName}", method = RequestMethod.GET)
     public ModelAndView editUser(@PathVariable String loginName, Model model) {
         ModelAndView modelAndView = new ModelAndView("/user-edit");
@@ -83,10 +80,10 @@ public class UserController {
     @RequestMapping(value = "/user/{loginName}/task", method = RequestMethod.GET)
     public ModelAndView taskEditUser(@PathVariable String loginName) throws Exception{
         String taskId = OperationType.USER + "-" + loginName;
-        if (!redisWrapperClient.hexistsSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
+        if (!redisWrapperClient.hexistsSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
             return new ModelAndView("/");
         } else {
-            OperationTask<EditUserDto> task = (OperationTask<EditUserDto>)redisWrapperClient.hgetSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+            OperationTask<EditUserDto> task = (OperationTask<EditUserDto>)redisWrapperClient.hgetSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             String description = task.getDescription();
             String afterUpdate = description.split(" => ")[1];
 
@@ -105,7 +102,7 @@ public class UserController {
             editUserDto.setUserName(accountModel.getUserName());
             modelAndView.addObject("user", editUserDto);
             modelAndView.addObject("roles", Role.values());
-            modelAndView.addObject("task", true);
+            modelAndView.addObject("taskId", taskId);
             return modelAndView;
         }
     }

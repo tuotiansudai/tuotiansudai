@@ -151,7 +151,8 @@
         </@global.role>
 
         <@global.role hasRole="'OPERATOR_ADMIN'">
-        <#if task>
+        <#if taskId??>
+        <input type="hidden" value="${taskId}" class="taskId">
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-3">
                 <input class="btn btn-default btn-submit" type="submit" value="同意">

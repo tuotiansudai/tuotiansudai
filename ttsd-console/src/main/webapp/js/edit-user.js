@@ -36,9 +36,18 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrap'], function ($) {
     });
 
     $('.btn-refuse').click(function () {
-        var loginName = $('.loginName').val();
-        var url = '/user-manage/user/'+loginName+'/refuse';
-        location.href = url;
+        $.ajax({
+            url: '/refuse?taskId='+$('.taskId').val(),
+            type: 'GET',
+            dataType: 'json',
+            data: {}
+        })
+        .done(function() {
+            window.location="/user-manage/users";
+        })
+        .fail(function() {
+            window.location="/";
+        });
     });
 
     $('input[type="reset"]').click(function () {
