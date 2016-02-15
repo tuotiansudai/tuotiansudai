@@ -2,6 +2,7 @@ package com.tuotiansudai.jpush.service.impl;
 
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.jpush.client.MobileAppJPushClient;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
@@ -9,7 +10,8 @@ import com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper;
 import com.tuotiansudai.jpush.repository.model.*;
 import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.InvestNotifyInfo;
+import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -19,7 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class JPushAlertServiceImpl implements JPushAlertService {
@@ -144,35 +148,58 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     @Override
     public void autoJPushAlertBirthMonth() {
-        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType();
-        if (jPushAlertModel != null) {
-            JPushAlertDto jPushAlertDto = new JPushAlertDto(jPushAlertModel);
-            String[] jumpToOrLink = chooseJumpToOrLink(jPushAlertDto);
-            List<String> registrationIds = Lists.newArrayList();
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.BIRTHDAY_ALERT_MONTH);
+        if(jPushAlertModel != null){
             List<String> loginNames = accountMapper.findBirthOfAccountInMonth();
-            for (int i = 0; i < loginNames.size(); i++) {
-                String loginName = loginNames.get(i);
-                if (redisWrapperClient.hexists(JPUSH_ID_KEY, loginName)) {
-                    String registrationId = redisWrapperClient.hget(JPUSH_ID_KEY, loginName);
-                    registrationIds.add(registrationId);
-                }
-                if (registrationIds.size() == 1000 || (i == loginNames.size() - 1 && registrationIds.size() > 0)) {
-                    boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, jPushAlertModel.getContent(), jumpToOrLink[0], jumpToOrLink[1]);
-                    if (sendResult) {
-                        logger.debug(MessageFormat.format("第{0}个用户推送成功", i + 1));
-                    }else{
-                        logger.debug(MessageFormat.format("第{0}个用户推送失败", i + 1));
-                    }
-                    registrationIds.clear();
-                }
-
+            if(CollectionUtils.isEmpty(loginNames)){
+                logger.debug("accountMapper.findBirthOfAccountInMonth() without data");
             }
-        } else {
+            autoJPushByBatchRegistrationId(jPushAlertModel, loginNames);
+        }else{
             logger.debug("autoJPushAlertBirthMonthJob is disabled");
         }
 
     }
 
+    @Override
+    public void autoJPushAlertBirthDay() {
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.BIRTHDAY_ALERT_DAY);
+        if(jPushAlertModel != null){
+            List<String> loginNames = accountMapper.findBirthOfAccountInDay();
+            if(CollectionUtils.isEmpty(loginNames)){
+                logger.debug("accountMapper.findBirthOfAccountInDay() without data");
+            }
+            autoJPushByBatchRegistrationId(jPushAlertModel, loginNames);
+        }else{
+            logger.debug("AutoJPushAlertBirthDayJob is disabled");
+        }
+    }
+
+    @Override
+    public void autoJPushNoInvestAlert() {
+
+    }
+
+    @Override
+    public void autoJPushLoanAlert(List<InvestNotifyInfo> notifyInfos) {
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.LOAN_ALERT);
+        if (jPushAlertModel != null) {
+            if (CollectionUtils.isEmpty(notifyInfos)) {
+                logger.debug("notifyInfos without data");
+                return;
+            }
+            Map<String, List<String>> loginNameMap = Maps.newHashMap();
+
+            for (InvestNotifyInfo notifyInfo : notifyInfos) {
+                List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(notifyInfo.getAmount()));
+                loginNameMap.put(notifyInfo.getLoanName(),amountLists);
+                autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+                loginNameMap.clear();
+            }
+        } else {
+            logger.debug("LOAN_ALERT is disabled");
+        }
+    }
 
     private String[] chooseJumpToOrLink(JPushAlertDto jPushAlertDto) {
         String[] jumpToOrLink = new String[]{"", ""};
@@ -192,6 +219,58 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         return jumpToOrLink;
 
     }
+
+
+    private void autoJPushByBatchRegistrationId(JPushAlertModel jPushAlertModel, List<String> pushObjects) {
+        JPushAlertDto jPushAlertDto = new JPushAlertDto(jPushAlertModel);
+        String[] jumpToOrLink = chooseJumpToOrLink(jPushAlertDto);
+        List<String> registrationIds = Lists.newArrayList();
+        for (int i = 0; i < pushObjects.size(); i++) {
+            String loginName = pushObjects.get(i);
+            if (redisWrapperClient.hexists(JPUSH_ID_KEY, loginName)) {
+                String registrationId = redisWrapperClient.hget(JPUSH_ID_KEY, loginName);
+                registrationIds.add(registrationId);
+            }
+            if (registrationIds.size() == 1000 || (i == pushObjects.size() - 1 && registrationIds.size() > 0)) {
+                boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, jPushAlertModel.getContent(), jumpToOrLink[0], jumpToOrLink[1]);
+                if (sendResult) {
+                    logger.debug(MessageFormat.format("第{0}个用户推送成功", i + 1));
+                }else{
+                    logger.debug(MessageFormat.format("第{0}个用户推送失败", i + 1));
+                }
+                registrationIds.clear();
+            }
+
+        }
+    }
+
+    private void autoJPushByRegistrationId(JPushAlertModel jPushAlertModel, Map<String, List<String>> pushObjects) {
+        JPushAlertDto jPushAlertDto = new JPushAlertDto(jPushAlertModel);
+        String[] jumpToOrLink = chooseJumpToOrLink(jPushAlertDto);
+        Iterator iterator = pushObjects.entrySet().iterator();
+        List<String> registrationIds = Lists.newArrayList();
+        while (iterator.hasNext()){
+            Map.Entry<String, List<String>> entry = (Map.Entry<String, List<String>>) iterator.next();
+            String loginName = entry.getKey();
+            if (redisWrapperClient.hexists(JPUSH_ID_KEY, loginName)) {
+                String registrationId = redisWrapperClient.hget(JPUSH_ID_KEY, loginName);
+                registrationIds.add(registrationId);
+                List<String> params = entry.getValue();
+                String content = jPushAlertModel.getContent();
+                if (CollectionUtils.isNotEmpty(params)) {
+                    for (int i = 0; i < params.size(); i++) {
+                        content = content.replace("{" + i + "}", params.get(i));
+
+                    }
+                }
+                boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, content, jumpToOrLink[0], jumpToOrLink[1]);
+                registrationIds.clear();
+            }
+        }
+
+    }
+
+
 
 
 }

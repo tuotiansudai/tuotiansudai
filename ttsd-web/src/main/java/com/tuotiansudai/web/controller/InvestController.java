@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.text.MessageFormat;
+import java.util.List;
 
 @Controller
 public class InvestController {
@@ -61,10 +62,12 @@ public class InvestController {
         return AmountConverter.convertCentToString(expectedInterest);
     }
 
-    @RequestMapping(value = "/calculate-expected-coupon-interest/loan/{loanId:^\\d+$}/coupon/{couponId:^\\d+$}/amount/{amount:^\\d+$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/calculate-expected-coupon-interest/loan/{loanId:^\\d+$}/amount/{amount:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
-    public String calculateCouponExpectedInterest(@PathVariable long loanId, @PathVariable long couponId, @PathVariable long amount) {
-        long expectedInterest = couponService.estimateCouponExpectedInterest(loanId, couponId, amount);
+    public String calculateCouponExpectedInterest(@PathVariable long loanId,
+                                                  @PathVariable long amount,
+                                                  @RequestParam List<Long> couponIds) {
+        long expectedInterest = couponService.estimateCouponExpectedInterest(loanId, couponIds, amount);
         return AmountConverter.convertCentToString(expectedInterest);
     }
 }

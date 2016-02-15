@@ -18,8 +18,8 @@ public class AutoJPushAlertBirthDayJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        logger.debug("AutoJPushAlertBirthMonthJob===========in");
-        jPushAlertService.autoJPushAlertBirthMonth();
-        logger.debug("AutoJPushAlertBirthMonthJob===========out");
+        logger.debug("AutoJPushAlertBirthDayJob===========in");
+        jPushAlertService.autoJPushAlertBirthDay();
+        logger.debug("AutoJPushAlertBirthDayJob===========out");
     }
 }

@@ -9,7 +9,8 @@ public enum JumpTo {
     PASSWORD_MANAGE("6","密码管理"),
     ANNOUNCEMENT("7","公告列表"),
     ABOUT("8","关于我们"),
-    OTHER("9","其他");
+    MY_INVEST("9","我的投资"),
+    OTHER("0","其他");
 
     private final String index;
 

@@ -85,4 +85,14 @@ public class PersonalInfoController {
 
         return baseDto;
     }
+
+    @RequestMapping(value = "/reset-umpay-password", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<BaseDataDto> resetUmpayPassword(String identityNumber) {
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto dataDto = new BaseDataDto();
+        baseDto.setData(dataDto);
+        dataDto.setStatus(userService.resetUmpayPassword(LoginUserInfo.getLoginName(), identityNumber));
+        return baseDto;
+    }
 }

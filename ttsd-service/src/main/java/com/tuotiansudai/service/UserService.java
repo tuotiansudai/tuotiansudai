@@ -71,5 +71,7 @@ public interface UserService {
 
     int findUsersAccountBalanceCount(String loginName, String balanceMin, String balanceMax);
 
+    boolean resetUmpayPassword(String loginName, String identityNumber);
+
     long findUsersAccountBalanceSum(String loginName, String balanceMin, String balanceMax);
 }
