@@ -407,7 +407,7 @@ td.td {
 .green-bg{
     background: #4ab684;
 }
-.red-bg{
+.red-bg,.loan-bg{
     background: #e67b5e;
 }
 .yellow-bg li{
@@ -428,11 +428,14 @@ td.td {
 }
 .list-width li{
     float:left;
-    width:218px;
+    width:265px;
     height:85px;
     border-right:1px solid #fff;
     margin:20px 0;
     text-align: center;
+}
+.red-bg li{
+    width:300px;
 }
 .data-list li:last-child{
     border-right:none;

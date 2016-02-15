@@ -144,7 +144,7 @@
         <h4 class="send-money">投资金额 (元)</h4>
     </div>
     <div class="table-data">
-        <ul class="data-list list-width red-bg">
+        <ul class="data-list list-width loan-bg">
             <li>
                 <p class="num-text">${investToday!}</p>
                 <p class="name-text">今日投资</p>
