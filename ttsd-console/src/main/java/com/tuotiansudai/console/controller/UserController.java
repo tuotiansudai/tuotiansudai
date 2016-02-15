@@ -1,7 +1,9 @@
 package com.tuotiansudai.console.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
@@ -14,6 +16,8 @@ import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.ImpersonateService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.task.OperationTask;
+import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
 import com.tuotiansudai.util.RequestIPParser;
@@ -55,12 +59,18 @@ public class UserController {
     @Autowired
     private BindBankCardService bindBankCardService;
 
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
     @Value("${web.server}")
     private String webServer;
 
+    public static final String TASK_KEY = "console:task:";
+
+    public static final String NOTIFY_KEY = "console:notify:";
 
     @RequestMapping(value = "/user/{loginName}", method = RequestMethod.GET)
-    public ModelAndView taskEditUser(@PathVariable String loginName, Model model) {
+    public ModelAndView editUser(@PathVariable String loginName, Model model) {
         ModelAndView modelAndView = new ModelAndView("/user-edit");
         if (!model.containsAttribute("user")) {
             EditUserDto editUserDto = userService.getEditUser(loginName);
@@ -70,28 +80,34 @@ public class UserController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/user/{loginName}/refuse", method = RequestMethod.GET)
-    public ModelAndView refuseEditUser(@PathVariable String loginName) {
+    @RequestMapping(value = "/user/{loginName}/task", method = RequestMethod.GET)
+    public ModelAndView taskEditUser(@PathVariable String loginName) throws Exception{
+        String taskId = OperationType.USER + "-" + loginName;
+        if (!redisWrapperClient.hexistsSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
+            return new ModelAndView("/");
+        } else {
+            OperationTask<EditUserDto> task = (OperationTask<EditUserDto>)redisWrapperClient.hgetSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+            String description = task.getDescription();
+            String afterUpdate = description.split(" => ")[1];
 
-        return new ModelAndView("/user-manage/users");
-    }
+            ObjectMapper objectMapper = new ObjectMapper();
+            EditUserDto editUserDto = objectMapper.readValue(afterUpdate, EditUserDto.class);
 
-    @RequestMapping(value = "/user/{loginName}", method = RequestMethod.POST)
-    public ModelAndView editUser(@PathVariable String loginName, @ModelAttribute EditUserDto editUserDto) {
-        ModelAndView modelAndView = new ModelAndView("/user-edit");
-        AccountModel accountModel = accountService.findByLoginName(editUserDto.getLoginName());
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        BankCardModel bankCard = bindBankCardService.getPassedBankCard(editUserDto.getLoginName());
-        if (bankCard != null) {
-            editUserDto.setBankCardNumber(bankCard.getCardNumber());
+            ModelAndView modelAndView = new ModelAndView("/user-edit");
+            AccountModel accountModel = accountService.findByLoginName(loginName);
+            UserModel userModel = userMapper.findByLoginName(loginName);
+            BankCardModel bankCard = bindBankCardService.getPassedBankCard(loginName);
+            if (bankCard != null) {
+                editUserDto.setBankCardNumber(bankCard.getCardNumber());
+            }
+            editUserDto.setAutoInvestStatus(userModel.getAutoInvestStatus());
+            editUserDto.setIdentityNumber(accountModel.getIdentityNumber());
+            editUserDto.setUserName(accountModel.getUserName());
+            modelAndView.addObject("user", editUserDto);
+            modelAndView.addObject("roles", Role.values());
+            modelAndView.addObject("task", true);
+            return modelAndView;
         }
-        editUserDto.setAutoInvestStatus(userModel.getAutoInvestStatus());
-        editUserDto.setIdentityNumber(accountModel.getIdentityNumber());
-        editUserDto.setUserName(accountModel.getUserName());
-        modelAndView.addObject("user", editUserDto);
-        modelAndView.addObject("roles", Role.values());
-        modelAndView.addObject("task", true);
-        return modelAndView;
     }
 
     @RequestMapping(value = "/account/{loginName}/search", method = RequestMethod.GET)

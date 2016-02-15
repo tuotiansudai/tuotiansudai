@@ -149,7 +149,7 @@ public class ApplicationAspect {
             task.setId(taskId);
             task.setObjId(editUserDto.getLoginName());
             task.setCreatedTime(new Date());
-            task.setOperateURL("/user-manage/user/" + editUserDto.getLoginName());
+            task.setOperateURL("/user-manage/user/" + editUserDto.getLoginName() + "/task");
             task.setSender(operatorLoginName);
             AccountModel sender = accountService.findByLoginName(operatorLoginName);
             String senderRealName = sender != null ? sender.getUserName() : operatorLoginName;
@@ -179,7 +179,7 @@ public class ApplicationAspect {
                             return input.name();
                         }
                     })));
-            task.setDescription(senderRealName + "申请修改用户" + editUserDto.getLoginName() + "的信息。操作详情为：" + beforeUpdate + " => " + afterUpdate + "。");
+            task.setDescription(senderRealName + "申请修改用户" + editUserDto.getLoginName() + "的信息。操作详情为：" + beforeUpdate + " => " + afterUpdate);
             redisWrapperClient.hsetSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId, task);
             return true;
         }
