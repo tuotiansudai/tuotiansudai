@@ -7,44 +7,56 @@ import java.util.Date;
 
 public class OperationTask<T> implements Serializable, Comparable<OperationTask> {
 
-    private long id;
+    private String id;
 
     private TaskType taskType;
 
     private OperationType operationType;
 
-    private String operator;
+    private String sender;
 
-    private Date operateTime;
+    private String receiver;
+
+    private Date createdTime;
 
     private String objId;
 
     private String description;
 
+    private String operateURL;
+
     private T obj;
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getOperator() {
-        return operator;
+    public String getSender() {
+        return sender;
     }
 
-    public void setOperator(String operator) {
-        this.operator = operator;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
-    public Date getOperateTime() {
-        return operateTime;
+    public String getReceiver() {
+        return receiver;
     }
 
-    public void setOperateTime(Date operateTime) {
-        this.operateTime = operateTime;
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
+    }
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
     public String getObjId() {
@@ -61,6 +73,14 @@ public class OperationTask<T> implements Serializable, Comparable<OperationTask>
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getOperateURL() {
+        return operateURL;
+    }
+
+    public void setOperateURL(String operateURL) {
+        this.operateURL = operateURL;
     }
 
     public T getObj() {
@@ -89,6 +109,6 @@ public class OperationTask<T> implements Serializable, Comparable<OperationTask>
 
     @Override
     public int compareTo(OperationTask o) {
-        return Longs.compare(this.operateTime.getTime(), o.getOperateTime().getTime());
+        return Longs.compare(this.createdTime.getTime(), o.getCreatedTime().getTime());
     }
 }

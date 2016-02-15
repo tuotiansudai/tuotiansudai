@@ -1,6 +1,8 @@
 package com.tuotiansudai.task;
 
-public enum OperationType {
+import java.io.Serializable;
+
+public enum OperationType implements Serializable{
 
     PROJECT("项目"),
 
