@@ -7,6 +7,8 @@ import java.util.Date;
 
 public class OperationTask<T> implements Serializable, Comparable<OperationTask> {
 
+    private static final long serialVersionUID = 5818931956921106930L;
+
     private String id;
 
     private TaskType taskType;
@@ -20,6 +22,8 @@ public class OperationTask<T> implements Serializable, Comparable<OperationTask>
     private Date createdTime;
 
     private String objId;
+
+    private String objName;
 
     private String description;
 
@@ -65,6 +69,14 @@ public class OperationTask<T> implements Serializable, Comparable<OperationTask>
 
     public void setObjId(String objId) {
         this.objId = objId;
+    }
+
+    public String getObjName() {
+        return objName;
+    }
+
+    public void setObjName(String objName) {
+        this.objName = objName;
     }
 
     public String getDescription() {

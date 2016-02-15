@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.AbstractRedisWrapperClient;
+import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.dto.LoanDto;
@@ -57,7 +58,7 @@ public class ApplicationAspect {
 
     @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanService.createLoan(*))", returning = "returnValue")
     public void afterReturningCreateLoan(JoinPoint joinPoint, Object returnValue) {
-        logger.debug("after create loan");
+        logger.debug("after create loan aspect.");
         try {
             if (((BaseDto<PayDataDto>) returnValue).getData().getStatus()) {
                 LoanDto loanDto = (LoanDto) joinPoint.getArgs()[0];
@@ -70,6 +71,7 @@ public class ApplicationAspect {
                 String taskId = task.getOperationType().toString() + "-" + loanDto.getId();
                 task.setId(taskId);
                 task.setObjId(String.valueOf(loanDto.getId()));
+                task.setObjName(loanDto.getProjectName());
                 task.setCreatedTime(new Date());
 
                 String senderLoginName = loanDto.getCreatedLoginName();
@@ -78,7 +80,7 @@ public class ApplicationAspect {
 
                 task.setSender(senderLoginName);
                 task.setOperateURL("/project-manage/loan/" + loanDto.getId());
-                task.setDescription(senderRealName + "创建了新的标的，请审核。");
+                task.setDescription(senderRealName + "创建了新的标的'" + loanDto.getProjectName() + "'，请审核。");
 
                 redisWrapperClient.hsetSeri(TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
             }
@@ -90,30 +92,36 @@ public class ApplicationAspect {
 
     @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanService.openLoan(*))", returning = "returnValue")
     public void afterReturningOpenLoan(JoinPoint joinPoint, Object returnValue) {
-        logger.debug("after open loan");
+        logger.debug("after open loan aspect.");
         try {
             if (((BaseDto<PayDataDto>) returnValue).getData().getStatus()) {
                 LoanDto loanDto = (LoanDto) joinPoint.getArgs()[0];
                 String taskId = OperationType.PROJECT + "-" + loanDto.getId();
 
                 if (redisWrapperClient.hexistsSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
-                    redisWrapperClient.hdelSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+
+                    OperationTask task = (OperationTask) redisWrapperClient.hgetSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
 
                     OperationTask notify = new OperationTask();
+                    String notifyId = taskId;
+
+                    notify.setId(notifyId);
                     notify.setTaskType(TaskType.NOTIFY);
                     notify.setOperationType(OperationType.PROJECT);
-                    notify.setSender(loanDto.getVerifyLoginName());
-                    notify.setReceiver(loanDto.getCreatedLoginName());
-                    notify.setCreatedTime(new Date());
-                    notify.setObjId(String.valueOf(loanDto.getId()));
-                    notify.setId(taskId);
 
-                    String senderLoginName = loanDto.getVerifyLoginName();
+                    String senderLoginName = LoginUserInfo.getLoginName();
+                    notify.setSender(senderLoginName);
+                    notify.setReceiver(task.getSender());
+                    notify.setCreatedTime(new Date());
+                    notify.setObjId(task.getObjId());
+
                     AccountModel sender = accountService.findByLoginName(senderLoginName);
                     String senderRealName = sender != null ? sender.getUserName() : senderLoginName;
 
-                    notify.setDescription(senderRealName + "通过了您的发标申请。");
-                    redisWrapperClient.hsetSeri(NOTIFY_KEY + loanDto.getCreatedLoginName(), taskId, notify);
+                    notify.setDescription(senderRealName + "通过了您" + OperationType.PROJECT.getDescription() + "'" + task.getObjName() + "'的申请。");
+
+                    redisWrapperClient.hdelSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+                    redisWrapperClient.hsetSeri(NOTIFY_KEY + loanDto.getCreatedLoginName(), notifyId, notify);
                 }
             }
         } catch (Exception e) {
