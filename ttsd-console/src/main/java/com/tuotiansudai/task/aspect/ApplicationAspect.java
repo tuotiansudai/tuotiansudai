@@ -178,8 +178,8 @@ public class ApplicationAspect {
             String afterUpdate = MessageFormat.format(DES_TEMPLATE,
                     editUserDto.getLoginName(),
                     editUserDto.getMobile(),
-                    editUserDto.getEmail(),
-                    editUserDto.getReferrer(),
+                    editUserDto.getEmail() != null ? editUserDto.getEmail() : "",
+                    editUserDto.getReferrer() != null ? editUserDto.getReferrer() : "",
                     editUserDto.getStatus().name(),
                     Joiner.on(",").join(Lists.transform(editUserDto.getRoles(), new Function<Role, String>() {
                         @Override
