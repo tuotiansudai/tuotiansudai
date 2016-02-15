@@ -40,7 +40,7 @@
             <label for="mobile" class="col-sm-2 control-label">手机号码：</label>
 
             <div class="col-sm-3">
-                <@global.role hasRole="'ADMIN'">
+                <@global.role hasRole="'ADMIN','OPERATOR','OPERATOR_ADMIN'">
                 <input name="mobile" id="mobile" type="text" class="form-control" maxlength="11" value="${(user.mobile)!}"/>
                 </@global.role>
 
@@ -53,7 +53,7 @@
             <label for="email" class="col-sm-2 control-label">电子邮件：</label>
 
             <div class="col-sm-3">
-                <@global.role hasRole="'ADMIN'">
+                <@global.role hasRole="'ADMIN','OPERATOR','OPERATOR_ADMIN'">
                 <input name="email" id="email" type="email" class="form-control" value="${(user.email)!}"/>
                 </@global.role>
 
@@ -71,7 +71,7 @@
             </label>
 
             <div class="col-sm-3">
-                <@global.role hasRole="'ADMIN'">
+                <@global.role hasRole="'ADMIN','OPERATOR','OPERATOR_ADMIN'">
                 <input name="referrer" id="referrer" type="text" class="form-control" value="${(user.referrer)!}"/>
                 </@global.role>
 
@@ -97,19 +97,19 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="col-sm-2 control-label">已开通自动投标：</label>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">已开通自动投标：</label>
 
-            <div class="col-sm-3">
-                <p class="form-control-static"><#if user.autoInvestStatus=="1">是<#else>否</#if></p>
-                <input type="hidden" name="autoInvestStatus" value="${user.autoInvestStatus!}"/>
-            </div>
-        </div>
+                    <div class="col-sm-3">
+                        <p class="form-control-static"><#if user.autoInvestStatus=="1">是<#else>否</#if></p>
+                        <input type="hidden" name="autoInvestStatus" value="${user.autoInvestStatus!}"/>
+                    </div>
+                </div>
 
-        <div class="form-group">
-            <label for="referrer" class="col-sm-2 control-label">角色：</label>
+                <div class="form-group">
+                    <label for="referrer" class="col-sm-2 control-label">角色：</label>
 
-            <div class="col-sm-3">
+                    <div class="col-sm-3">
                 <input type="hidden" name="roles" value="USER"/>
                 <#list roles as roleItem>
                     <#if roleItem.name() != 'USER'>
@@ -139,7 +139,7 @@
             </div>
         </div>
 
-        <@global.role hasRole="'ADMIN'">
+        <@global.role hasRole="'ADMIN','OPERATOR','OPERATOR_ADMIN'">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
         <div class="form-group">

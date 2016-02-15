@@ -5,6 +5,8 @@ public enum Role {
     INVESTOR("出借人"),
     LOANER("借款人"),
     STAFF("业务员"),
+    OPERATOR("运营专员"),
+    OPERATOR_ADMIN("运营管理员"),
     CUSTOMER_SERVICE("客服"),
     AGENT("代理商"),
     ADMIN("管理员");
