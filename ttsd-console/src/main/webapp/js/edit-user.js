@@ -35,6 +35,12 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrap'], function ($) {
         $("form").submit();
     });
 
+    $('.btn-refuse').click(function () {
+        var loginName = $('.loginName').val();
+        var url = '/user-manage/user/'+loginName+'/refuse';
+        location.href = url;
+    });
+
     $('input[type="reset"]').click(function () {
         location.reload();
         return false;

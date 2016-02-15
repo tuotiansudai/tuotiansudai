@@ -9,7 +9,7 @@
 
             <div class="col-sm-3">
                 <p class="form-control-static">${user.loginName}</p>
-                <input type="hidden" name="loginName" value="${user.loginName}"/>
+                <input type="hidden" class="loginName" name="loginName" value="${user.loginName}"/>
             </div>
         </div>
         <div class="form-group">
@@ -139,15 +139,26 @@
             </div>
         </div>
 
-        <@global.role hasRole="'ADMIN','OPERATOR','OPERATOR_ADMIN'">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
+        <@global.role hasRole="'ADMIN','OPERATOR'">
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-3">
                 <input class="btn btn-default btn-submit" type="submit" value="提交">
                 <input class="btn btn-default" type="reset" value="重置">
             </div>
         </div>
+        </@global.role>
+
+        <@global.role hasRole="'OPERATOR_ADMIN'">
+        <#if task>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-3">
+                <input class="btn btn-default btn-submit" type="submit" value="同意">
+                <input class="btn btn-default btn-refuse" type="button" value="拒绝">
+            </div>
+        </div>
+        </#if>
         </@global.role>
     </form>
 </div>

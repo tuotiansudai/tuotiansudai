@@ -9,10 +9,9 @@ import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.dto.UserItemDataDto;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.repository.model.UserRoleModel;
-import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.ImpersonateService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CsvHeaderType;
@@ -50,18 +49,48 @@ public class UserController {
     @Autowired
     private ImpersonateService impersonateService;
 
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private BindBankCardService bindBankCardService;
+
     @Value("${web.server}")
     private String webServer;
 
 
     @RequestMapping(value = "/user/{loginName}", method = RequestMethod.GET)
-    public ModelAndView editUser(@PathVariable String loginName, Model model) {
+    public ModelAndView taskEditUser(@PathVariable String loginName, Model model) {
         ModelAndView modelAndView = new ModelAndView("/user-edit");
         if (!model.containsAttribute("user")) {
             EditUserDto editUserDto = userService.getEditUser(loginName);
             modelAndView.addObject("user", editUserDto);
             modelAndView.addObject("roles", Role.values());
         }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/user/{loginName}/refuse", method = RequestMethod.GET)
+    public ModelAndView refuseEditUser(@PathVariable String loginName) {
+
+        return new ModelAndView("/user-manage/users");
+    }
+
+    @RequestMapping(value = "/user/{loginName}", method = RequestMethod.POST)
+    public ModelAndView editUser(@PathVariable String loginName, @ModelAttribute EditUserDto editUserDto) {
+        ModelAndView modelAndView = new ModelAndView("/user-edit");
+        AccountModel accountModel = accountService.findByLoginName(editUserDto.getLoginName());
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        BankCardModel bankCard = bindBankCardService.getPassedBankCard(editUserDto.getLoginName());
+        if (bankCard != null) {
+            editUserDto.setBankCardNumber(bankCard.getCardNumber());
+        }
+        editUserDto.setAutoInvestStatus(userModel.getAutoInvestStatus());
+        editUserDto.setIdentityNumber(accountModel.getIdentityNumber());
+        editUserDto.setUserName(accountModel.getUserName());
+        modelAndView.addObject("user", editUserDto);
+        modelAndView.addObject("roles", Role.values());
+        modelAndView.addObject("task", true);
         return modelAndView;
     }
 
