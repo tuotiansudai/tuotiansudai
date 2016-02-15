@@ -2,69 +2,42 @@
 <@global.main pageCss="" pageJavascript="index.js" headLab="sys-manage" sideLab="myTasks" title="系统首页">
 <div class="col-md-10 home-report">
     <div class="title-type">
-        <h4 class="title-task">我的任务</h4>
+        <h4 class="title-task">我的任务 <!--&nbsp;&nbsp;<a href="/addTask">添加假任务(test)</a>--></h4>
     </div>
     <div class="table-data">
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th>发起者</th>
-                <th>内容</th>
-                <th>发起时间</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>张三</td>
-                <td>审批内容</td>
-                <td>2016-02-16</td>
-                <td>
-                    <a class="btn btn-danger btn-xs" href="javascript:void(0);">拒绝</a>
-                </td>
-            </tr>
-            <tr>
-                <td>张三</td>
-                <td>审批内容</td>
-                <td>2016-02-16</td>
-                <td>
-                    <a class="btn btn-danger btn-xs" href="javascript:void(0);">拒绝</a>
-                </td>
-            </tr>
-            <tr>
-                <td>张三</td>
-                <td>审批内容</td>
-                <td>2016-02-16</td>
-                <td>
-                    <a class="btn btn-danger btn-xs" href="javascript:void(0);">拒绝</a>
-                </td>
-            </tr>
-            <tr>
-                <td>张三</td>
-                <td>审批内容</td>
-                <td>2016-02-16</td>
-                <td>
-                    <a class="btn btn-danger btn-xs" href="javascript:void(0);">拒绝</a>
-                </td>
-            </tr>
-            <tr>
-                <td>张三</td>
-                <td>审批内容</td>
-                <td>2016-02-16</td>
-                <td>
-                    <a class="btn btn-danger btn-xs" href="javascript:void(0);">拒绝</a>
-                </td>
-            </tr>
-            <tr>
-                <td>张三</td>
-                <td>审批内容</td>
-                <td>2016-02-16</td>
-                <td>
-                    <a class="btn btn-danger btn-xs" href="javascript:void(0);">拒绝</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <#if taskList ?? && (taskList?size>0)>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>发起者</th>
+                    <th>内容</th>
+                    <th>发起时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <#list taskList as task>
+                    <tr>
+                        <td>${task.sender}</td>
+                        <td><a href="${task.operateURL!}">${task.description}</a></td>
+                        <td>${task.createdTime?string("yyyy-MM-dd HH:mm:ss")!}</td>
+                        <td>
+                            <#if task.taskType == "TASK" >
+                                <a class="btn btn-primary btn-xs" href="${task.operateURL!}">去审核</a>
+                                <a class="btn btn-danger btn-xs" href="javascript:void(0);" data-taskId="${task.id}">拒绝</a>
+                            </#if>
+                            <#if task.taskType == "NOTIFY" >
+                                <a class="btn btn-info btn-xs" href="javascript:void(0);" data-taskId="${task.id}">知道了</a>
+                            </#if>
+                        </td>
+                    </tr>
+                </#list>
+                </tbody>
+            </table>
+        <#else>
+            没有待处理的任务。</br></br>
+        </#if>
+
     </div>
     <div class="table-data">
         <div class="two-flex">

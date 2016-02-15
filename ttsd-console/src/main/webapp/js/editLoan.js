@@ -342,7 +342,8 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     "fundraisingEndTime": new Date(Date.parse(endTime.replace(/-/g, "/"))),
                     "showOnHome": showOnHome,
                     "loanAmount": $('.jq-pay').val(),
-                    "loanTitles": uploadFile
+                    "loanTitles": uploadFile,
+                    "createdLoginName": $('.jq-creator').val()
                 });
                 $.ajax({
                     url: API_FORM + operate,
