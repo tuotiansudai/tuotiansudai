@@ -378,4 +378,98 @@ td.td {
 .import-hidden {
     display: none;
 }
-
+/*index css*/
+.title-type{
+    float:left;
+    width:100%;
+    margin-bottom: 10px;
+}
+.table-data{
+    float:left;
+    width:100%;
+}
+.two-flex{
+    float:left;
+    width:500px;
+}
+.data-list{
+    float:left;
+    list-style: none;
+    padding-left: 0;
+    color:#fff;
+}
+.yellow-bg{
+    background: #fd9b31;
+}
+.blue-bg{
+    background: #5c98e2;
+}
+.green-bg{
+    background: #4ab684;
+}
+.red-bg{
+    background: #e67b5e;
+}
+.yellow-bg li{
+    float:left;
+    width:155px;
+    height:85px;
+    border-right:1px solid #fff;
+    margin:20px 0;
+    text-align: center;
+}
+.data-list li{
+    float:left;
+    width:155px;
+    height:85px;
+    border-right:1px solid #fff;
+    margin:20px 0;
+    text-align: center;
+}
+.list-width li{
+    float:left;
+    width:218px;
+    height:85px;
+    border-right:1px solid #fff;
+    margin:20px 0;
+    text-align: center;
+}
+.data-list li:last-child{
+    border-right:none;
+}
+.data-list li p{
+    margin-bottom: 0;
+}
+.data-list li .num-text{
+    font-size:40px;
+    line-height: 45px;
+}
+.data-list li .name-text{
+    font-size:20px;
+    line-height: 40px;
+}
+.title-task{
+    color:#377bba;
+    padding-left: 10px;
+    border-left:2px solid #377bba;
+}
+.give-charge{
+    color:#5c98e2;
+    padding-left: 10px;
+    border-left:2px solid #5c98e2;
+}
+.get-money{
+    color:#4ab684;
+    padding-left: 10px;
+    border-left:2px solid #4ab684;
+}
+.send-money{
+    color:#e67b5e;
+    padding-left: 10px;
+    border-left:2px solid #e67b5e;
+}
+.person-num{
+    color:#fd9b31;
+    padding-left: 10px;
+    border-left:2px solid #fd9b31;
+}
