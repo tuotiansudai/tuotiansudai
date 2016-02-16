@@ -3,6 +3,11 @@
 
 <!-- content area begin -->
 <div class="col-md-10">
+    <#if sender??>
+        <div class="user-operate">
+            该用户正在被${sender}修改
+        </div>
+    </#if>
     <form class="form-horizontal" action="/user-manage/user/edit" method="post">
         <div class="form-group">
             <label class="col-sm-2 control-label">登录名：</label>
@@ -142,15 +147,17 @@
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
         <@global.role hasRole="'ADMIN','OPERATOR'">
+        <#if showCommit?? && showCommit>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-3">
                 <input class="btn btn-default btn-submit" type="submit" value="提交">
                 <input class="btn btn-default" type="reset" value="重置">
             </div>
         </div>
+        </#if>
         </@global.role>
 
-        <@global.role hasRole="'OPERATOR_ADMIN'">
+        <@global.role hasRole="'ADMIN','OPERATOR_ADMIN'">
         <#if taskId??>
         <input type="hidden" value="${taskId}" class="taskId">
         <div class="form-group">

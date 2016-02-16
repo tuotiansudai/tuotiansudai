@@ -67,30 +67,23 @@ public class UserController {
     private String webServer;
 
     @RequestMapping(value = "/user/{loginName}", method = RequestMethod.GET)
-    public ModelAndView editUser(@PathVariable String loginName, Model model) {
-        ModelAndView modelAndView = new ModelAndView("/user-edit");
-        if (!model.containsAttribute("user")) {
-            EditUserDto editUserDto = userService.getEditUser(loginName);
-            modelAndView.addObject("user", editUserDto);
-            modelAndView.addObject("roles", Role.values());
-        }
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/user/{loginName}/task", method = RequestMethod.GET)
-    public ModelAndView taskEditUser(@PathVariable String loginName) throws Exception{
+    public ModelAndView editUser(@PathVariable String loginName, Model model) throws Exception{
         String taskId = OperationType.USER + "-" + loginName;
+        ModelAndView modelAndView = new ModelAndView("/user-edit");
         if (!redisWrapperClient.hexistsSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
-            return new ModelAndView("/");
+            if (!model.containsAttribute("user")) {
+                EditUserDto editUserDto = userService.getEditUser(loginName);
+                modelAndView.addObject("user", editUserDto);
+                modelAndView.addObject("roles", Role.values());
+                modelAndView.addObject("showCommit", true);
+            }
+            return modelAndView;
         } else {
             OperationTask<EditUserDto> task = (OperationTask<EditUserDto>)redisWrapperClient.hgetSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             String description = task.getDescription();
             String afterUpdate = description.split(" => ")[1];
-
             ObjectMapper objectMapper = new ObjectMapper();
             EditUserDto editUserDto = objectMapper.readValue(afterUpdate, EditUserDto.class);
-
-            ModelAndView modelAndView = new ModelAndView("/user-edit");
             AccountModel accountModel = accountService.findByLoginName(loginName);
             UserModel userModel = userMapper.findByLoginName(loginName);
             BankCardModel bankCard = bindBankCardService.getPassedBankCard(loginName);
@@ -103,6 +96,8 @@ public class UserController {
             modelAndView.addObject("user", editUserDto);
             modelAndView.addObject("roles", Role.values());
             modelAndView.addObject("taskId", taskId);
+            modelAndView.addObject("sender", task.getSender());
+            modelAndView.addObject("showCommit", LoginUserInfo.getLoginName().equals(task.getSender()));
             return modelAndView;
         }
     }

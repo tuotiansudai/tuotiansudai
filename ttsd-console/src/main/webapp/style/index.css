@@ -476,3 +476,9 @@ td.td {
     padding-left: 10px;
     border-left:2px solid #fd9b31;
 }
+.user-operate{
+    float:left;
+    width:100%;
+    padding-left: 100px;
+    color:#cc0000;
+}

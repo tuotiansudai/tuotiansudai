@@ -52,7 +52,7 @@ public class ApplicationAspect {
 
     public static final String NOTIFY_KEY = "console:notify:";
 
-    private static String DES_TEMPLATE = "'{'loginName:{0}, mobile:{1}, email:{2}, referrer:{3}, status:{4}, roles:[{5}]'}'";
+    private static String DES_TEMPLATE = "\"loginName\":{0}, \"mobile\":{1}, \"email\":{2}, \"referrer\":{3}, \"status\":{4}, \"roles\":[{5}]";
 
     static Logger logger = Logger.getLogger(ApplicationAspect.class);
 
@@ -130,9 +130,9 @@ public class ApplicationAspect {
     }
 
     @Around(value = "execution(* com.tuotiansudai.service.UserService.editUser(..))")
-    public Object aroundEditUser(ProceedingJoinPoint proceedingJoinPoint, JoinPoint joinPoint) throws Throwable {
-        String operatorLoginName = (String)joinPoint.getArgs()[0];
-        EditUserDto editUserDto = (EditUserDto)joinPoint.getArgs()[1];
+    public Object aroundEditUser(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        String operatorLoginName = (String)proceedingJoinPoint.getArgs()[0];
+        EditUserDto editUserDto = (EditUserDto)proceedingJoinPoint.getArgs()[1];
         String taskId = OperationType.USER + "-" + editUserDto.getLoginName();
         if (redisWrapperClient.hexistsSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
             OperationTask<EditUserDto> task = (OperationTask<EditUserDto>)redisWrapperClient.hgetSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
@@ -157,37 +157,37 @@ public class ApplicationAspect {
             task.setId(taskId);
             task.setObjId(editUserDto.getLoginName());
             task.setCreatedTime(new Date());
-            task.setOperateURL("/user-manage/user/" + editUserDto.getLoginName() + "/task");
+            task.setOperateURL("/user-manage/user/" + editUserDto.getLoginName());
             task.setSender(operatorLoginName);
             AccountModel sender = accountService.findByLoginName(operatorLoginName);
             String senderRealName = sender != null ? sender.getUserName() : operatorLoginName;
             UserModel beforeUpdateUserModel = userMapper.findByLoginName(editUserDto.getLoginName());
             List<UserRoleModel> beforeUpdateUserRoleModels = userRoleMapper.findByLoginName(editUserDto.getLoginName());
             String beforeUpdate = MessageFormat.format(DES_TEMPLATE,
-                    beforeUpdateUserModel.getLoginName(),
-                    beforeUpdateUserModel.getMobile(),
-                    beforeUpdateUserModel.getEmail(),
-                    beforeUpdateUserModel.getReferrer(),
-                    beforeUpdateUserModel.getStatus().name(),
+                    "\""+beforeUpdateUserModel.getLoginName()+"\"",
+                    "\""+beforeUpdateUserModel.getMobile()+"\"",
+                    "\""+beforeUpdateUserModel.getEmail()+"\"",
+                    "\""+beforeUpdateUserModel.getReferrer()+"\"",
+                    "\""+beforeUpdateUserModel.getStatus().name()+"\"",
                     Joiner.on(",").join(Lists.transform(beforeUpdateUserRoleModels, new Function<UserRoleModel, String>() {
                         @Override
                         public String apply(UserRoleModel input) {
-                            return input.getRole().name();
+                            return "\""+input.getRole().name()+"\"";
                         }
                     })));
             String afterUpdate = MessageFormat.format(DES_TEMPLATE,
-                    editUserDto.getLoginName(),
-                    editUserDto.getMobile(),
-                    editUserDto.getEmail() != null ? editUserDto.getEmail() : "",
-                    editUserDto.getReferrer() != null ? editUserDto.getReferrer() : "",
-                    editUserDto.getStatus().name(),
+                    "\""+editUserDto.getLoginName()+"\"",
+                    "\""+editUserDto.getMobile()+"\"",
+                    editUserDto.getEmail() != null ? "\""+editUserDto.getEmail()+"\"" : "\"\"",
+                    editUserDto.getReferrer() != null ? "\""+editUserDto.getReferrer()+"\"" : "\"\"",
+                    "\""+editUserDto.getStatus().name()+"\"",
                     Joiner.on(",").join(Lists.transform(editUserDto.getRoles(), new Function<Role, String>() {
                         @Override
                         public String apply(Role input) {
-                            return input.name();
+                            return "\""+input.name()+"\"";
                         }
                     })));
-            task.setDescription(senderRealName + "申请修改用户" + editUserDto.getLoginName() + "的信息。操作详情为：" + beforeUpdate + " => " + afterUpdate);
+            task.setDescription(senderRealName + "申请修改用户" + editUserDto.getLoginName() + "的信息。操作详情为：" + "{" + beforeUpdate + "}" + " => " + "{" + afterUpdate + "}");
             redisWrapperClient.hsetSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId, task);
             return true;
         }
