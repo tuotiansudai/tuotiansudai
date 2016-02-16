@@ -134,7 +134,16 @@ public class ApplicationAspect {
         String operatorLoginName = (String)proceedingJoinPoint.getArgs()[0];
         EditUserDto editUserDto = (EditUserDto)proceedingJoinPoint.getArgs()[1];
         String taskId = OperationType.USER + "-" + editUserDto.getLoginName();
-        if (redisWrapperClient.hexistsSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
+        String loginName = LoginUserInfo.getLoginName();
+        List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(loginName);
+        boolean flag = false;
+        for (UserRoleModel userRoleModel : userRoleModels) {
+            if (userRoleModel.getRole() == Role.OPERATOR_ADMIN || userRoleModel.getRole() == Role.ADMIN){
+                flag = true;
+                break;
+            }
+        }
+        if (redisWrapperClient.hexistsSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId) && flag) {
             OperationTask<EditUserDto> task = (OperationTask<EditUserDto>)redisWrapperClient.hgetSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             redisWrapperClient.hdelSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             OperationTask notify = new OperationTask();
