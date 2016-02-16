@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface CouponService {
 
-    boolean createCoupon(String loginName,CouponDto couponDto) throws CreateCouponException;
+    void createCoupon(String loginName,CouponDto couponDto) throws CreateCouponException;
 
     void assignNewbieCoupon(String loginName);
 

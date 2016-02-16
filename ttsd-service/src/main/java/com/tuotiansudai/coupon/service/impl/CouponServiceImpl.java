@@ -55,7 +55,7 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     @Transactional
-    public boolean createCoupon(String loginName, CouponDto couponDto) throws CreateCouponException {
+    public void createCoupon(String loginName, CouponDto couponDto) throws CreateCouponException {
         this.checkCoupon(couponDto);
         CouponModel couponModel = new CouponModel(couponDto);
         couponModel.setCreatedBy(loginName);
@@ -67,7 +67,6 @@ public class CouponServiceImpl implements CouponService {
             redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "failed"));
             redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, couponDto.getFile()));
         }
-        return true;
     }
 
     private void checkCoupon(CouponDto couponDto) throws CreateCouponException {
