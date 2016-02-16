@@ -1,8 +1,14 @@
 package com.tuotiansudai.jpush.service.impl;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import com.lowagie.text.pdf.PRIndirectReference;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.jpush.client.MobileAppJPushClient;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
@@ -10,6 +16,7 @@ import com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper;
 import com.tuotiansudai.jpush.repository.model.*;
 import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.InvestNotifyInfo;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections.CollectionUtils;
@@ -19,11 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class JPushAlertServiceImpl implements JPushAlertService {
@@ -41,6 +46,13 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private RedisWrapperClient redisWrapperClient;
 
     private static final String JPUSH_ID_KEY = "api:jpushId:store";
+
+    private static final String NO_INVEST_LOGIN_NAME = "job:noInvest:loginName";
+
+    @Autowired
+    private InvestMapper investMapper;
+
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     @Transactional
@@ -153,6 +165,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             List<String> loginNames = accountMapper.findBirthOfAccountInMonth();
             if(CollectionUtils.isEmpty(loginNames)){
                 logger.debug("accountMapper.findBirthOfAccountInMonth() without data");
+                return;
             }
             autoJPushByBatchRegistrationId(jPushAlertModel, loginNames);
         }else{
@@ -168,6 +181,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             List<String> loginNames = accountMapper.findBirthOfAccountInDay();
             if(CollectionUtils.isEmpty(loginNames)){
                 logger.debug("accountMapper.findBirthOfAccountInDay() without data");
+                return;
             }
             autoJPushByBatchRegistrationId(jPushAlertModel, loginNames);
         }else{
@@ -176,10 +190,62 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
-    public void autoJPushNoInvestAlert() {
+    public void autoJPushNoInvestAlert()  {
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.NO_INVEST_ALERT);
+        if(jPushAlertModel != null){
+            try {
+                Set<String> jPushAlertSet ;
+                Set<String> loginNames = investMapper.findNoInvestInThirtyDay();
+                if (CollectionUtils.isEmpty(loginNames)) {
+                    logger.debug("investMapper.findNoInvestInThirtyDay() without data");
+                    return;
+                }
+                if (redisWrapperClient.exists(NO_INVEST_LOGIN_NAME)) {
+                    String redisValue = redisWrapperClient.get(NO_INVEST_LOGIN_NAME);
+                    Set<String> oldLoginNames = objectMapper.readValue(redisValue, new TypeReference<Set<String>>() {
+                    });
+                    Sets.SetView<String> diffSetHandle = Sets.difference(loginNames, oldLoginNames);
+                    jPushAlertSet = diffSetHandle.immutableCopy();
+                }else{
+                    jPushAlertSet = loginNames;
+                }
+
+                redisWrapperClient.set(NO_INVEST_LOGIN_NAME, objectMapper.writeValueAsString(loginNames));
+                if(CollectionUtils.isNotEmpty(jPushAlertSet)){
+                    autoJPushByBatchRegistrationId(jPushAlertModel, Lists.newArrayList(jPushAlertSet));
+                }
+            }catch (IOException e){
+                logger.error(e.getLocalizedMessage(),e);
+            }
+        }else{
+            logger.debug("AutoJPushNoInvestAlertJob is disabled");
+        }
+    }
+    public static void main(String args[]){
+        //找出2个Set的不相同的元素和相同的元素，以Set形式返回
+        Set<String> oneSet=Sets.newHashSet("chen","lei","java");
+        Set<String> twoSet=Sets.newHashSet("chen", "lei", "hadoop");
+        List<String> list = Lists.newArrayList(oneSet);
+        for (String s : list){
+            System.out.println(s);
+        }
+        Set<String> diffSetHandle=Sets.difference(oneSet, twoSet);//是得到左边中不同或者特有的元素，若无，则返回长度为0的集合
+//        Set<String> diffImmutable=diffSetHandle.immutableCopy();//返回一个不可变的左边Set中特有元素集合的Set拷贝
+        Iterator iter=diffSetHandle.iterator();
+        while(iter.hasNext()){
+            System.out.println("Set的不同元素："+iter.next().toString());
+        }
+        Sets.SetView<String> commonSet=Sets.intersection(oneSet, twoSet);
+        Set<String> commonImmutable=commonSet.immutableCopy();//返回一个不可变的2个Set中共同元素集合的Set拷贝
+
+        Iterator iter1=commonSet.iterator();
+        while(iter1.hasNext()){
+            System.out.println("Set的相同同元素："+iter1.next().toString());
+        }
+
+
 
     }
-
     @Override
     public void autoJPushLoanAlert(List<InvestNotifyInfo> notifyInfos) {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.LOAN_ALERT);

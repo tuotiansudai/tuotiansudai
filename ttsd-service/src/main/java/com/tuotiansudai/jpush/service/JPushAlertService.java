@@ -1,6 +1,7 @@
 package com.tuotiansudai.jpush.service;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.repository.model.JPushAlertModel;
 import com.tuotiansudai.jpush.repository.model.PushStatus;
@@ -30,7 +31,7 @@ public interface JPushAlertService {
 
     void autoJPushAlertBirthDay();
 
-    void autoJPushNoInvestAlert() ;
+    void autoJPushNoInvestAlert();
 
     void autoJPushLoanAlert(List<InvestNotifyInfo> notifyInfos);
 }

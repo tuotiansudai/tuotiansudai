@@ -50,6 +50,10 @@ public class JobInitPlugin implements SchedulerPlugin {
         if(JobType.AutoJPushAlertBirthDay.name().equalsIgnoreCase(schedulerName)){
             createAutoJPushAlertBirthDay();
         }
+        if(JobType.AutoJPushNoInvestAlert.name().equalsIgnoreCase(schedulerName)){
+            createAutoJPushNoInvestAlert();
+        }
+
 
     }
 
@@ -108,8 +112,20 @@ public class JobInitPlugin implements SchedulerPlugin {
     private void createAutoJPushAlertBirthDay() {
         try {
             jobManager.newJob(JobType.AutoJPushAlertBirthDay, AutoJPushAlertBirthDayJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 8 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 36 17 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+//                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 9 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
                     .withIdentity(JobType.AutoJPushAlertBirthDay.name(), JobType.AutoJPushAlertBirthDay.name()).submit();
+
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+    private void createAutoJPushNoInvestAlert() {
+        try {
+            jobManager.newJob(JobType.AutoJPushNoInvestAlert, AutoJPushNoInvestAlertJob.class).replaceExistingJob(true)
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 54 16 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+//                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 30 9 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+                    .withIdentity(JobType.AutoJPushNoInvestAlert.name(), JobType.AutoJPushNoInvestAlert.name()).submit();
 
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
