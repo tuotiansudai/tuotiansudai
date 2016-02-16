@@ -221,31 +221,6 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             logger.debug("AutoJPushNoInvestAlertJob is disabled");
         }
     }
-    public static void main(String args[]){
-        //找出2个Set的不相同的元素和相同的元素，以Set形式返回
-        Set<String> oneSet=Sets.newHashSet("chen","lei","java");
-        Set<String> twoSet=Sets.newHashSet("chen", "lei", "hadoop");
-        List<String> list = Lists.newArrayList(oneSet);
-        for (String s : list){
-            System.out.println(s);
-        }
-        Set<String> diffSetHandle=Sets.difference(oneSet, twoSet);//是得到左边中不同或者特有的元素，若无，则返回长度为0的集合
-//        Set<String> diffImmutable=diffSetHandle.immutableCopy();//返回一个不可变的左边Set中特有元素集合的Set拷贝
-        Iterator iter=diffSetHandle.iterator();
-        while(iter.hasNext()){
-            System.out.println("Set的不同元素："+iter.next().toString());
-        }
-        Sets.SetView<String> commonSet=Sets.intersection(oneSet, twoSet);
-        Set<String> commonImmutable=commonSet.immutableCopy();//返回一个不可变的2个Set中共同元素集合的Set拷贝
-
-        Iterator iter1=commonSet.iterator();
-        while(iter1.hasNext()){
-            System.out.println("Set的相同同元素："+iter1.next().toString());
-        }
-
-
-
-    }
     @Override
     public void autoJPushLoanAlert(List<InvestNotifyInfo> notifyInfos) {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.LOAN_ALERT);
