@@ -154,7 +154,10 @@ public class ApplicationAspect {
             notify.setReceiver(task.getSender());
             AccountModel sender = accountService.findByLoginName(operatorLoginName);
             String senderRealName = sender != null ? sender.getUserName() : operatorLoginName;
-            notify.setDescription(senderRealName + "通过了您修改用户"+editUserDto.getLoginName()+"的申请。");
+
+            AccountModel account = accountService.findByLoginName(editUserDto.getLoginName());
+            String editUserRealName = account != null ? account.getUserName() : editUserDto.getLoginName();
+            notify.setDescription(senderRealName + "通过了您修改用户'" + editUserRealName + "'的申请。");
             redisWrapperClient.hsetSeri(NOTIFY_KEY + task.getSender(), taskId, notify);
             return proceedingJoinPoint.proceed();
         } else {
@@ -194,7 +197,7 @@ public class ApplicationAspect {
                             return "\""+input.name()+"\"";
                         }
                     })));
-            task.setDescription(senderRealName + "申请修改用户" + editUserDto.getLoginName() + "的信息。操作详情为：" + "{" + beforeUpdate + "}" + " => " + "{" + afterUpdate + "}");
+            task.setDescription(senderRealName + "申请修改用户" + editUserDto.getLoginName() + "的信息。操作详情为：</br>" + "{" + beforeUpdate + "}" + " =></br> " + "{" + afterUpdate + "}");
             redisWrapperClient.hsetSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId, task);
             return true;
         }
@@ -311,4 +314,5 @@ public class ApplicationAspect {
             logger.error("after delete coupon aspect fail ", e);
         }
     }
+
 }

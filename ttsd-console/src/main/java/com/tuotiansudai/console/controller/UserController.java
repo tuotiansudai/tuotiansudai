@@ -81,7 +81,7 @@ public class UserController {
         } else {
             OperationTask<EditUserDto> task = (OperationTask<EditUserDto>)redisWrapperClient.hgetSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             String description = task.getDescription();
-            String afterUpdate = description.split(" => ")[1];
+            String afterUpdate = description.split(" =></br> ")[1];
             ObjectMapper objectMapper = new ObjectMapper();
             EditUserDto editUserDto = objectMapper.readValue(afterUpdate, EditUserDto.class);
             AccountModel accountModel = accountService.findByLoginName(loginName);
@@ -91,8 +91,8 @@ public class UserController {
                 editUserDto.setBankCardNumber(bankCard.getCardNumber());
             }
             editUserDto.setAutoInvestStatus(userModel.getAutoInvestStatus());
-            editUserDto.setIdentityNumber(accountModel.getIdentityNumber());
-            editUserDto.setUserName(accountModel.getUserName());
+            editUserDto.setIdentityNumber(accountModel == null ? "" : accountModel.getIdentityNumber());
+            editUserDto.setUserName(accountModel == null ? "" : accountModel.getUserName());
             modelAndView.addObject("user", editUserDto);
             modelAndView.addObject("roles", Role.values());
             modelAndView.addObject("taskId", taskId);
@@ -261,4 +261,5 @@ public class UserController {
         String securityCode = impersonateService.plantSecurityCode(LoginUserInfo.getLoginName(), loginName);
         return new ModelAndView("redirect:" + webServer + "/impersonate?securityCode=" + securityCode);
     }
+
 }
