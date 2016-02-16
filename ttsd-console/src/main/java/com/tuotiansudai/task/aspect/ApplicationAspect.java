@@ -163,7 +163,6 @@ public class ApplicationAspect {
             String senderRealName = sender != null ? sender.getUserName() : operatorLoginName;
             UserModel beforeUpdateUserModel = userMapper.findByLoginName(editUserDto.getLoginName());
             List<UserRoleModel> beforeUpdateUserRoleModels = userRoleMapper.findByLoginName(editUserDto.getLoginName());
-            StringBuffer before = new StringBuffer();
             String beforeUpdate = MessageFormat.format(DES_TEMPLATE,
                     "\""+beforeUpdateUserModel.getLoginName()+"\"",
                     "\""+beforeUpdateUserModel.getMobile()+"\"",
