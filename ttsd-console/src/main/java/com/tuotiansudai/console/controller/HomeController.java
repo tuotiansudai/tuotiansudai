@@ -131,6 +131,7 @@ public class HomeController {
             baseDataDto.setStatus(true);
         } else {
             baseDto.setSuccess(false);
+            baseDataDto.setMessage("此审核任务不存在或已经被处理，请勿重复处理。");
             baseDataDto.setStatus(false);
         }
 

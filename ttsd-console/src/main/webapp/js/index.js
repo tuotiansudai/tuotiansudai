@@ -1,6 +1,9 @@
 require(['jquery'], function ($) {
 	$(function() {
 		$('.table .btn-danger').on('click',function(event) {
+			if (!confirm("确认要拒绝吗?")) {
+				return;
+			}
 			event.preventDefault();
 			var $self=$(this);
 			$.ajax({

@@ -368,5 +368,34 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 });
             }
         });
+
+        $('.jq-btn-refuse').click(function (event) {
+
+            if (!confirm("确认要执行此操作吗?")) {
+                return;
+            }
+
+            event.preventDefault();
+            var $self=$(this);
+            $.ajax({
+                url: '/refuse?taskId=PROJECT-'+$(this).attr('data-loanId'),
+                type: 'GET',
+                dataType: 'json',
+                data: {}
+            }).done(function(res) {
+                if(res.data.status){
+                    formFlag =true;
+                    location.href='/project-manage/loan-list';
+                }else{
+                    formFlag =false;
+                    var msg = res.data.message || '服务端校验失败';
+                    showErrorMessage(msg);
+                }
+            }).fail(function() {
+                console.log("error");
+                $('.jq-btn-refuse').removeAttr('disabled');
+            });
+        });
+
     });
 });

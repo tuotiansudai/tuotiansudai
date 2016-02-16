@@ -6,7 +6,7 @@ public enum OperationType implements Serializable{
 
     PROJECT("创建标的"),
 
-    ACTIVITY("创建优惠券"),
+    COUPON("创建优惠券"),
 
     USER("修改用户"),
 
