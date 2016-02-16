@@ -130,9 +130,9 @@ public class ApplicationAspect {
     }
 
     @Around(value = "execution(* com.tuotiansudai.service.UserService.editUser(..))")
-    public Object aroundEditUser(ProceedingJoinPoint proceedingJoinPoint, JoinPoint joinPoint) throws Throwable {
-        String operatorLoginName = (String)joinPoint.getArgs()[0];
-        EditUserDto editUserDto = (EditUserDto)joinPoint.getArgs()[1];
+    public Object aroundEditUser(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        String operatorLoginName = (String)proceedingJoinPoint.getArgs()[0];
+        EditUserDto editUserDto = (EditUserDto)proceedingJoinPoint.getArgs()[1];
         String taskId = OperationType.USER + "-" + editUserDto.getLoginName();
         if (redisWrapperClient.hexistsSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
             OperationTask<EditUserDto> task = (OperationTask<EditUserDto>)redisWrapperClient.hgetSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
