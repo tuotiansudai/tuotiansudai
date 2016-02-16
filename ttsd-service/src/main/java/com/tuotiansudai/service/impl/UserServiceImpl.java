@@ -1,6 +1,5 @@
 package com.tuotiansudai.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -16,6 +15,8 @@ import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.*;
+import com.tuotiansudai.task.OperationType;
+import com.tuotiansudai.task.aspect.ApplicationAspect;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.commons.collections4.CollectionUtils;
@@ -27,7 +28,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -322,12 +322,14 @@ public class UserServiceImpl implements UserService {
 
             List<UserRoleModel> referrerRoleModels = userRoleMapper.findByLoginName(userModel.getReferrer());
             for (UserRoleModel referrerRoleModel : referrerRoleModels) {
-                if (referrerRoleModel.getRole()==Role.STAFF) {
+                if (referrerRoleModel.getRole() == Role.STAFF) {
                     userItemDataDto.setReferrerStaff(true);
                     break;
                 }
             }
             userItemDataDto.setBankCard(bindBankCardService.getPassedBankCard(userModel.getLoginName()) != null);
+            String taskId = OperationType.USER + "-" + userModel.getLoginName();
+            userItemDataDto.setModify(redisWrapperClient.hexistsSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId));
             userItemDataDtos.add(userItemDataDto);
         }
         int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel);
