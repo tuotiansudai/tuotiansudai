@@ -12,7 +12,10 @@
     <tbody>
        {{#records}}
         <tr>
-            <td><a href="/loan/{{loanId}}" class="project-name">{{loanName}}</td>
+            <td>
+                <i {{#birthdayCoupon}}class="birth-icon"{{/birthdayCoupon}}></i>
+                <a href="/loan/{{loanId}}" class="project-name">{{loanName}}
+            </td>
             <td class="tr">{{amount}}</td>
             <td>{{createdTime}}</td>
             <td>{{status}}</td>

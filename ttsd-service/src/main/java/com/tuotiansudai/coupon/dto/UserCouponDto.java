@@ -14,6 +14,7 @@ import java.util.List;
 public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
     private long id;
     private long couponId;
+    private String loginName;
     private CouponType couponType;
     private String name;
     private long amount;
@@ -39,6 +40,7 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
     public UserCouponDto(CouponModel coupon, UserCouponModel userCoupon) {
         this.id = userCoupon.getId();
         this.couponId = coupon.getId();
+        this.loginName = userCoupon.getLoginName();
         this.couponType = coupon.getCouponType();
         this.name = coupon.getCouponType().getName();
         this.amount = coupon.getAmount();
@@ -65,6 +67,10 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
 
     public long getCouponId() {
         return couponId;
+    }
+
+    public String getLoginName() {
+        return loginName;
     }
 
     public CouponType getCouponType() {

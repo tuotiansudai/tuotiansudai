@@ -17,7 +17,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.AmountConverter;
-import org.apache.commons.lang3.StringUtils;
+import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +39,9 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Autowired
     private CouponMapper couponMapper;
+
+    @Autowired
+    private UserBirthdayUtil userBirthdayUtil;
 
     @Override
     public List<UserCouponDto> getUserCoupons(String loginName, List<CouponType> couponTypeList) {
@@ -70,7 +73,13 @@ public class UserCouponServiceImpl implements UserCouponService {
         return Lists.newArrayList(Iterators.filter(dtoList.iterator(), new Predicate<UserCouponDto>() {
             @Override
             public boolean apply(UserCouponDto dto) {
-                return dto.getProductTypeList().contains(loanModel.getProductType()) && dto.isUnused();
+                boolean isUsable = dto.getProductTypeList().contains(loanModel.getProductType()) && dto.isUnused();
+                switch (dto.getCouponType()) {
+                    case BIRTHDAY_COUPON:
+                        return isUsable && userBirthdayUtil.isBirthMonth(dto.getLoginName());
+                    default:
+                        return isUsable;
+                }
             }
         }));
     }
@@ -92,10 +101,4 @@ public class UserCouponServiceImpl implements UserCouponService {
         dataDto.setStatus(true);
         return baseDto;
     }
-
-    @Override
-    public List<UserCouponModel> findUserCouponByCouponId(long couponId) {
-        return userCouponMapper.findByCouponId(couponId);
-    }
-
 }
