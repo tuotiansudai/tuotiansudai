@@ -30,7 +30,7 @@
         <span class="select-item" data-status="ACTIVITY_REWARD,REFERRER_REWARD">奖励</span>
         <span class="select-item" data-status="NORMAL_REPAY,ADVANCE_REPAY">本息</span>
         <span class="select-item" data-status="INVEST_SUCCESS">投标</span>
-        <span class="select-item" data-status="NEWBIE_COUPON,INVEST_COUPON,INTEREST_COUPON,RED_ENVELOPE">宝藏</span>
+        <span class="select-item" data-status="NEWBIE_COUPON,INVEST_COUPON,INTEREST_COUPON,RED_ENVELOPE,BIRTHDAY_COUPON">宝藏</span>
     </div>
 
     <div class="clear-blank"></div>

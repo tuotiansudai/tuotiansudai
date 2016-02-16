@@ -16,7 +16,9 @@
             <div class="col-sm-4">
                 <select class="selectpicker pushType" name="pushType">
                     <#list pushTypes as pushType>
-                        <option value="${pushType.name()}" <#if jPushAlert?? && jPushAlert.pushType == pushType>selected</#if> >${pushType.getDescription()}</option>
+                        <#if pushType.getType()=='MANUAL'>
+                            <option value="${pushType.name()}" <#if jPushAlert?? && jPushAlert.pushType == pushType>selected</#if> >${pushType.getDescription()}</option>
+                        </#if>
                     </#list>
                 </select>
             </div>
@@ -25,8 +27,8 @@
             <label  class="col-sm-2 control-label">推送对象: </label>
             <div class="col-sm-10">
                 <#if jPushAlert??>
-                    <input type="radio"  class="push_object_choose" value="all" name="pushObjectChoose" <#if jPushAlert??&&jPushAlert.pushObjects?size == 0>checked</#if> placeholder=""  datatype="*" >全部
-                    <input type="radio"  class="push_object_choose" value="district" <#if jPushAlert??&&jPushAlert.pushObjects?size gt 0>checked</#if> name="pushObjectChoose" placeholder=""  datatype="*" >地区
+                    <input type="radio"  class="push_object_choose" value="all" name="pushObjectChoose" <#if jPushAlert??&&!(jPushAlert.pushObjects?has_content)>checked</#if> placeholder=""  datatype="*" >全部
+                    <input type="radio"  class="push_object_choose" value="district" <#if jPushAlert??&&(jPushAlert.pushObjects?has_content)&&jPushAlert.pushObjects?size gt 0>checked</#if> name="pushObjectChoose" placeholder=""  datatype="*" >地区
                 <#else>
                     <input type="radio"  class="push_object_choose" value="all" checked name="pushObjectChoose" placeholder=""  datatype="*" >全部
                     <input type="radio"  class="push_object_choose" value="district" name="pushObjectChoose" placeholder=""  datatype="*" >地区
@@ -36,10 +38,10 @@
         </div>
         <div class="form-group">
             <label  class="col-sm-2 control-label"></label>
-            <div class="col-sm-5 province <#if !(jPushAlert??&&jPushAlert.pushObjects?size gt 0)>app-push-link</#if>">
+            <div class="col-sm-5 province <#if jPushAlert??&&!(jPushAlert.pushObjects?has_content)>app-push-link</#if>">
 
                 <#list provinces?keys as key>
-                    <#if jPushAlert??&&jPushAlert.pushObjects?size gt 0>
+                    <#if jPushAlert??&&jPushAlert.pushObjects?has_content>
                         <label for="${key}"> <input type="checkbox" name="pushObjects" class="pushObject"
                                id="${key}"
                                <#if jPushAlert?? && jPushAlert.pushObjects?seq_contains('${key}')>checked="checked"</#if> value="${key}"/>
@@ -66,8 +68,7 @@
         <div class="form-group">
             <label  class="col-sm-2 control-label">推送模板: </label>
             <div class="col-sm-4">
-                <textarea rows="4" cols="58" maxlength="40" class="content" name="content" errormsg="通知模板不能为空"><#if jPushAlert??>${jPushAlert.content!}</#if></textarea>
-                （长度请不要超过40个字）
+                <textarea rows="4" cols="58" maxlength="40" class="content" name="content" placeholder="（长度请不要超过40个字）" errormsg="通知模板不能为空"><#if jPushAlert??>${jPushAlert.content!}</#if></textarea>
             </div>
         </div>
 

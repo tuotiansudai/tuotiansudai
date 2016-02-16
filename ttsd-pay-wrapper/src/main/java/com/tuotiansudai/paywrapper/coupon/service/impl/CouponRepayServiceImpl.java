@@ -1,5 +1,8 @@
 package com.tuotiansudai.paywrapper.coupon.service.impl;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -70,11 +73,15 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         LoanRepayModel currentLoanRepayModel = loanRepayMapper.findById(loanRepayId);
         LoanModel loanModel = loanMapper.findById(currentLoanRepayModel.getLoanId());
         List<LoanRepayModel> loanRepayModels = this.loanRepayMapper.findByLoanIdOrderByPeriodAsc(currentLoanRepayModel.getLoanId());
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanModel.getId(), Arrays.asList(CouponType.NEWBIE_COUPON, CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON));
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanModel.getId(),
+                Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON, CouponType.BIRTHDAY_COUPON));
 
         for (UserCouponModel userCouponModel : userCouponModels) {
             CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
             long actualInterest = this.calculateActualInterest(couponModel, userCouponModel, loanModel, currentLoanRepayModel, loanRepayModels);
+            if (actualInterest < 0) {
+                continue;
+            }
             long actualFee = (long) (actualInterest * loanModel.getInvestFeeRate());
             long transferAmount = actualInterest - actualFee;
             boolean isSuccess = transferAmount == 0;
@@ -120,7 +127,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     }
 
     private long calculateActualInterest(CouponModel couponModel, UserCouponModel userCouponModel, LoanModel loanModel, LoanRepayModel currentLoanRepayModel, List<LoanRepayModel> loanRepayModels) {
-
         DateTime currentRepayDate = new DateTime(currentLoanRepayModel.getActualRepayDate());
 
         LoanRepayModel lastLoanRepayModel = null;
@@ -149,6 +155,27 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             case INTEREST_COUPON:
                 expectedInterest = new BigDecimal(periodDuration * investMapper.findById(userCouponModel.getInvestId()).getAmount())
                         .multiply(new BigDecimal(couponModel.getRate()))
+                        .divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
+                break;
+            case BIRTHDAY_COUPON:
+                boolean isNotFirstPeriod = currentLoanRepayModel.getPeriod() != 1;
+                if (isNotFirstPeriod) {
+                    DateTime theFirstRepayDate = new DateTime(Iterators.tryFind(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
+                        @Override
+                        public boolean apply(LoanRepayModel input) {
+                            return input.getPeriod() == 1;
+                        }
+                    }).get().getRepayDate());
+
+                    if (lastRepayDate.withTimeAtStartOfDay().isBefore(theFirstRepayDate.withTimeAtStartOfDay())) {
+                        periodDuration = Days.daysBetween(lastRepayDate.withTimeAtStartOfDay(), theFirstRepayDate.withTimeAtStartOfDay()).getDays();
+                    } else {
+                        return -1;
+                    }
+                }
+                expectedInterest = new BigDecimal(periodDuration * investMapper.findById(userCouponModel.getInvestId()).getAmount())
+                        .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
+                        .multiply(new BigDecimal(couponModel.getBirthdayBenefit()))
                         .divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
                 break;
         }
