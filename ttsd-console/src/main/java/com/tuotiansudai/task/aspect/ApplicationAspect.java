@@ -52,7 +52,7 @@ public class ApplicationAspect {
 
     public static final String NOTIFY_KEY = "console:notify:";
 
-    private static String DES_TEMPLATE = "'{'loginName:{0}, mobile:{1}, email:{2}, referrer:{3}, status:{4}, roles:[{5}]'}'";
+    private static String DES_TEMPLATE = "\"loginName\":{0}, \"mobile\":{1}, \"email\":{2}, \"referrer\":{3}, \"status\":{4}, \"roles\":[{5}]";
 
     static Logger logger = Logger.getLogger(ApplicationAspect.class);
 
@@ -163,31 +163,32 @@ public class ApplicationAspect {
             String senderRealName = sender != null ? sender.getUserName() : operatorLoginName;
             UserModel beforeUpdateUserModel = userMapper.findByLoginName(editUserDto.getLoginName());
             List<UserRoleModel> beforeUpdateUserRoleModels = userRoleMapper.findByLoginName(editUserDto.getLoginName());
+            StringBuffer before = new StringBuffer();
             String beforeUpdate = MessageFormat.format(DES_TEMPLATE,
-                    beforeUpdateUserModel.getLoginName(),
-                    beforeUpdateUserModel.getMobile(),
-                    beforeUpdateUserModel.getEmail(),
-                    beforeUpdateUserModel.getReferrer(),
-                    beforeUpdateUserModel.getStatus().name(),
+                    "\""+beforeUpdateUserModel.getLoginName()+"\"",
+                    "\""+beforeUpdateUserModel.getMobile()+"\"",
+                    "\""+beforeUpdateUserModel.getEmail()+"\"",
+                    "\""+beforeUpdateUserModel.getReferrer()+"\"",
+                    "\""+beforeUpdateUserModel.getStatus().name()+"\"",
                     Joiner.on(",").join(Lists.transform(beforeUpdateUserRoleModels, new Function<UserRoleModel, String>() {
                         @Override
                         public String apply(UserRoleModel input) {
-                            return input.getRole().name();
+                            return "\""+input.getRole().name()+"\"";
                         }
                     })));
             String afterUpdate = MessageFormat.format(DES_TEMPLATE,
-                    editUserDto.getLoginName(),
-                    editUserDto.getMobile(),
-                    editUserDto.getEmail() != null ? editUserDto.getEmail() : "",
-                    editUserDto.getReferrer() != null ? editUserDto.getReferrer() : "",
-                    editUserDto.getStatus().name(),
+                    "\""+editUserDto.getLoginName()+"\"",
+                    "\""+editUserDto.getMobile()+"\"",
+                    editUserDto.getEmail() != null ? "\""+editUserDto.getEmail()+"\"" : "\"\"",
+                    editUserDto.getReferrer() != null ? "\""+editUserDto.getReferrer()+"\"" : "\"\"",
+                    "\""+editUserDto.getStatus().name()+"\"",
                     Joiner.on(",").join(Lists.transform(editUserDto.getRoles(), new Function<Role, String>() {
                         @Override
                         public String apply(Role input) {
-                            return input.name();
+                            return "\""+input.name()+"\"";
                         }
                     })));
-            task.setDescription(senderRealName + "申请修改用户" + editUserDto.getLoginName() + "的信息。操作详情为：" + beforeUpdate + " => " + afterUpdate);
+            task.setDescription(senderRealName + "申请修改用户" + editUserDto.getLoginName() + "的信息。操作详情为：" + "{" + beforeUpdate + "}" + " => " + "{" + afterUpdate + "}");
             redisWrapperClient.hsetSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId, task);
             return true;
         }

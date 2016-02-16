@@ -150,7 +150,7 @@
         </div>
         </@global.role>
 
-        <@global.role hasRole="'OPERATOR_ADMIN'">
+        <@global.role hasRole="'ADMIN','OPERATOR_ADMIN'">
         <#if taskId??>
         <input type="hidden" value="${taskId}" class="taskId">
         <div class="form-group">
