@@ -157,7 +157,7 @@ public class ApplicationAspect {
             task.setId(taskId);
             task.setObjId(editUserDto.getLoginName());
             task.setCreatedTime(new Date());
-            task.setOperateURL("/user-manage/user/" + editUserDto.getLoginName() + "/task");
+            task.setOperateURL("/user-manage/user/" + editUserDto.getLoginName());
             task.setSender(operatorLoginName);
             AccountModel sender = accountService.findByLoginName(operatorLoginName);
             String senderRealName = sender != null ? sender.getUserName() : operatorLoginName;
