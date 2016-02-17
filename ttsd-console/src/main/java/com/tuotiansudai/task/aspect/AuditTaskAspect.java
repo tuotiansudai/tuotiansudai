@@ -4,13 +4,13 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.AbstractRedisWrapperClient;
-import com.tuotiansudai.console.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
@@ -314,7 +314,7 @@ public class AuditTaskAspect {
     }
 
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.console.jpush.service.JPushAlertService.buildJPushAlert(..))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.jpush.service.JPushAlertService.buildJPushAlert(..))")
     public void afterReturningBuildJPush(JoinPoint joinPoint) {
         logger.debug("after build JPush aspect.");
         try {
@@ -350,7 +350,7 @@ public class AuditTaskAspect {
         }
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.console.jpush.service.JPushAlertService.send(..))")
+    @AfterReturning(value = "execution(* com.tuotiansudai.jpush.service.JPushAlertService.send(..))")
     public void afterReturningSendJPush(JoinPoint joinPoint) {
         logger.debug("after send JPush aspect.");
         try {
