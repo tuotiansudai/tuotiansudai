@@ -151,29 +151,4 @@ public class HomeController {
         return baseDto;
     }
 
-
-//    @RequestMapping(value = "/addTask", method = RequestMethod.GET)
-//    public ModelAndView addTask() {
-//        OperationTask<LoanDto> task = new OperationTask<>();
-//
-//        task.setTaskType(TaskType.TASK);
-//        task.setOperationType(OperationType.PROJECT);
-//
-//        String taskId = OperationType.PROJECT.toString() + "-" + "27224451230128";
-//        task.setId(taskId);
-//        task.setObjId("27224451230128");
-//        task.setCreatedTime(new Date());
-//
-//        String senderLoginName = "test_coupon";
-//        AccountModel sender = accountService.findByLoginName(senderLoginName);
-//        String senderRealName = sender != null ? sender.getUserName() : senderLoginName;
-//
-//        task.setSender(senderLoginName);
-//        task.setOperateURL("/project-manage/loan/" + "27224451230128");
-//        task.setDescription(senderRealName + "创建了新的标的，请审核。");
-//
-//        redisWrapperClient.hsetSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
-//
-//        return new ModelAndView("redirect:/");
-//    }
 }

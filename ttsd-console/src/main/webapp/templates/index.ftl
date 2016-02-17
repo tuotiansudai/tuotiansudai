@@ -2,7 +2,7 @@
 <@global.main pageCss="" pageJavascript="index.js" headLab="sys-manage" sideLab="myTasks" title="系统首页">
 <div class="col-md-10 home-report">
     <div class="title-type">
-        <h4 class="title-task">我的任务 <!--&nbsp;&nbsp;<a href="/addTask">添加假任务(test)</a>--></h4>
+        <h4 class="title-task">我的任务</h4>
     </div>
     <div class="table-data">
         <#if taskList ?? && (taskList?size>0)>
