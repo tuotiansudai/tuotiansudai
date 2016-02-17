@@ -97,6 +97,7 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
         });
     };
 
+    changeDatePicker();
     loadLoanData();
 
     $dateFilter.find(".select-item").click(function () {
@@ -109,10 +110,9 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
         loadLoanData();
     });
 
-    $dateFilter.find(".select-item").eq(2).trigger('click');
-
     //define calendar
     $('.apply-btn').click(function () {
         loadLoanData();
+        $(".date-filter .select-item").removeClass("current");
     });
 });
