@@ -24,7 +24,7 @@ public class JPushAlertServiceImpl implements JPushAlertService{
     private MobileAppJPushClient mobileAppJPushClient;
 
     @Override
-//    @Transactional
+    @Transactional
     public void buildJPushAlert(String loginName, JPushAlertDto jPushAlertDto) {
         JPushAlertModel jPushAlertModel = new JPushAlertModel(jPushAlertDto);
         if(StringUtils.isNotEmpty(jPushAlertDto.getId())){
