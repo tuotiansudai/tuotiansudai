@@ -20,12 +20,6 @@
             <li><a href="/about/qa">常见问题</a></li>
         </ul>
         <ul>
-            <li class="f-title">友情链接</li>
-            <li><a href="http://www.tuotianzichan.com/" target="_blank">拓天伟业</a></li>
-            <li><a href="https://www.zuiyidai.com/" target="_blank">最易贷</a></li>
-            <li><a href="https://www.p2l.com.cn/" target="_blank">融租e投</a></li>
-        </ul>
-        <ul>
             <li class="f-title">联系我们</li>
             <li>客服电话：400-169-1188（服务时间：9:00－20:00）</li>
             <li>客服邮箱：kefu@tuotiansudai.com</li>
@@ -38,6 +32,17 @@
                 APP下载
 
             </li>
+        </ul>
+    </div>
+    <div class="link-list page-width clearfix">
+        <ul>
+            <li class="f-title">友情链接</li>
+            <li><a href="http://www.tuotianzichan.com/" target="_blank">拓天资产</a></li>
+            <li><a href="https://www.zuiyidai.com/" target="_blank">最易贷</a></li>
+            <li><a href="https://www.p2l.com.cn/" target="_blank">融租e投</a></li>
+            <li><a href="http://www.liyedai.cn/" target="_blank">立业贷</a></li>
+            <li><a href="http://www.8ncb.com" target="_blank">农村宝理财</a></li>
+            <li><a href="http://www.diyizhibo.com/" target="_blank">第一直播</a></li>
         </ul>
     </div>
     <div class="copyright page-width">
@@ -59,6 +64,5 @@
             <span>京ICP备14008676号 <br/>
             拓天伟业(北京)金融信息服务有限公司 版权所有</span>
         </div>
-
     </div>
 </div>

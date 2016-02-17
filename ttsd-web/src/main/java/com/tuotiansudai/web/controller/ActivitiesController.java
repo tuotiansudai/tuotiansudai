@@ -6,11 +6,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping(path = "/activity")
 public class ActivitiesController {
-    @RequestMapping(path = "/{item:^recruit|awards|guide|redbag$}", method = RequestMethod.GET)
-    public ModelAndView activities(@PathVariable String item) {
-        return new ModelAndView("/activities/" + item, "responsive", true);
+    @RequestMapping(path = "/{item:^recruit|awards|guide|red-envelope$}", method = RequestMethod.GET)
+    public ModelAndView activities(HttpServletRequest request, @PathVariable String item) {
+        ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
+        modelAndView.addObject("channel", request.getParameter("channel"));
+        modelAndView.addObject("source", request.getParameter("source"));
+        return modelAndView;
     }
 }

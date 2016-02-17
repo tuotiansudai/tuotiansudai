@@ -109,27 +109,5 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','load-swiper','lay
                 }
             });
         }
-
-        if($('#redEnvelope').length) {
-            $('#redEnvelope').click(function() {
-                layer.open({
-                    type: 1,
-                    title: '',
-                    area: ['490px', '240px'],
-                    skin:'red-envelope-box',
-                    closeBtn: 0,
-                    shadeClose: true,
-                    move: false,
-                    content: $('#redEnvelopePopWindow'),
-                    success: function (layero, index) {
-                        $('#redEnvelopePopWindow').find('.close-tip').click(function() {
-                            layer.closeAll();
-                        });
-                    }
-                });
-                return false;
-            });
-        }
-
     });
 });

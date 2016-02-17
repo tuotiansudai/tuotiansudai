@@ -256,6 +256,7 @@ public class NormalRepayServiceTest {
         userCouponMapper.create(userCouponModel);
         userCouponModel.setLoanId(fakeNormalLoan.getId());
         userCouponModel.setUsedTime(today.minusDays(5).toDate());
+        userCouponModel.setStatus(InvestStatus.SUCCESS);
         userCouponMapper.update(userCouponModel);
 
         this.generateMockResponse(10);
@@ -358,6 +359,7 @@ public class NormalRepayServiceTest {
         UserCouponModel userCouponModel = new UserCouponModel(investor1.getLoginName(), coupon.getId());
         userCouponMapper.create(userCouponModel);
         userCouponModel.setLoanId(fakeNormalLoan.getId());
+        userCouponModel.setStatus(InvestStatus.SUCCESS);
         userCouponModel.setUsedTime(today.minusDays(5).toDate());
         userCouponMapper.update(userCouponModel);
 
@@ -1207,8 +1209,10 @@ public class NormalRepayServiceTest {
     private CouponModel getFakeCoupon(long amount, String loginName) {
         CouponModel couponModel = new CouponModel();
         couponModel.setAmount(amount);
-        couponModel.setTotalCount(1);
+        couponModel.setTotalCount(1L);
         couponModel.setActive(true);
+        couponModel.setStartTime(new DateTime().minusDays(1).toDate());
+        couponModel.setEndTime(new DateTime().plusDays(1).toDate());
         couponModel.setCreatedBy(loginName);
         couponModel.setCreatedTime(new Date());
         couponModel.setProductTypes(Lists.newArrayList(ProductType.JYF));

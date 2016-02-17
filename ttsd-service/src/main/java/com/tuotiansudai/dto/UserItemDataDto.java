@@ -29,6 +29,7 @@ public class UserItemDataDto implements Serializable {
     private String province;
     private String city;
     private String balance;
+    private Date lastBillTime;
 
 
     public String getLoginName() {
@@ -175,6 +176,14 @@ public class UserItemDataDto implements Serializable {
         this.balance = balance;
     }
 
+    public Date getLastBillTime() {
+        return lastBillTime;
+    }
+
+    public void setLastBillTime(Date lastBillTime) {
+        this.lastBillTime = lastBillTime;
+    }
+
     public String getBirthday() {
         if (identityNumber == null) {
             return "";
@@ -204,6 +213,7 @@ public class UserItemDataDto implements Serializable {
         this.identityNumber = userModel.getAccount().getIdentityNumber();
         this.province = userModel.getProvince();
         this.city = userModel.getCity();
+        this.lastBillTime = userModel.getLastBillTime();
     }
 }
 

@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         LoanRepayModel currentLoanRepayModel = loanRepayMapper.findById(loanRepayId);
         LoanModel loanModel = loanMapper.findById(currentLoanRepayModel.getLoanId());
         List<LoanRepayModel> loanRepayModels = this.loanRepayMapper.findByLoanIdOrderByPeriodAsc(currentLoanRepayModel.getLoanId());
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanModel.getId());
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanModel.getId(), Arrays.asList(CouponType.NEWBIE_COUPON, CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON));
 
         for (UserCouponModel userCouponModel : userCouponModels) {
             CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
@@ -78,7 +79,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             long transferAmount = actualInterest - actualFee;
             boolean isSuccess = transferAmount == 0;
             if (transferAmount > 0) {
-                TransferRequestModel requestModel = TransferRequestModel.newCouponRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(userCouponModel.getId()), String.valueOf(new Date().getTime())) ,
+                TransferRequestModel requestModel = TransferRequestModel.newRequest(MessageFormat.format(COUPON_ORDER_ID_TEMPLATE, String.valueOf(userCouponModel.getId()), String.valueOf(new Date().getTime())) ,
                         accountMapper.findByLoginName(userCouponModel.getLoginName()).getPayUserId(),
                         String.valueOf(transferAmount));
                 try {

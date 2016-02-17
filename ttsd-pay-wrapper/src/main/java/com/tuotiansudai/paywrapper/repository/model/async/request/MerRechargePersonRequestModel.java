@@ -24,11 +24,13 @@ public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
     private String amount;
 
     private String gateId;
-    public MerRechargePersonRequestModel(){
+
+    public MerRechargePersonRequestModel() {
 
     }
-    public MerRechargePersonRequestModel(Source source,String mobileAppPayFrontServiceName){
-        super(source,mobileAppPayFrontServiceName);
+
+    public MerRechargePersonRequestModel(Source source, String mobileAppPayFrontServiceName) {
+        super(source, mobileAppPayFrontServiceName);
     }
 
     public static MerRechargePersonRequestModel newRecharge(String orderId, String userId, String amount, String gateId) {
@@ -45,8 +47,8 @@ public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
         return model;
     }
 
-    public static MerRechargePersonRequestModel newFastRecharge(String orderId, String userId, String amount,Source source) {
-        MerRechargePersonRequestModel model = new MerRechargePersonRequestModel(source,"mer_recharge_person");
+    public static MerRechargePersonRequestModel newFastRecharge(String orderId, String userId, String amount, Source source) {
+        MerRechargePersonRequestModel model = new MerRechargePersonRequestModel(source, "mer_recharge_person");
         model.setService("mer_recharge_person");
         model.setOrderId(orderId);
         model.setUserId(userId);

@@ -6,6 +6,7 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.exception.CreateCouponException;
 
+import java.util.Date;
 import java.util.List;
 
 public interface CouponService {
@@ -24,7 +25,9 @@ public interface CouponService {
 
     long findEstimatedCount(UserGroup userGroup);
 
-    List<UserCouponModel> findCouponDetail(long couponId, Boolean isUsed);
+    List<UserCouponModel> findCouponDetail(long couponId, Boolean isUsed, String loginName, String mobile, Date registerStartTime, Date registerEndTime, int index, int pageSize);
+
+    int findCouponDetailCount(long couponId, Boolean isUsed, String loginName, String mobile, Date registerStartTime, Date registerEndTime);
 
     void deleteCoupon(String loginName, long couponId);
 
@@ -32,5 +35,9 @@ public interface CouponService {
 
     int findInterestCouponsCount();
 
-    long estimateCouponExpectedInterest(long loanId, long couponId, long amount);
+    List<CouponDto> findRedEnvelopeCoupons(int index, int pageSize);
+
+    int findRedEnvelopeCouponsCount();
+
+    long estimateCouponExpectedInterest(long loanId, List<Long> couponIds, long amount);
 }

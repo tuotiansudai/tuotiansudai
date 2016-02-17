@@ -22,6 +22,8 @@ public class AutoLoanOutJob implements Job {
 
     public final static int AUTO_LOAN_OUT_DELAY_MINUTES = 30;
 
+    public static String ALREADY_OUT = "0001";
+
     @Autowired
     private PayWrapperClient payWrapperClient;
 
@@ -47,7 +49,7 @@ public class AutoLoanOutJob implements Job {
         }
 
         BaseDto<PayDataDto> dto = payWrapperClient.autoLoanOutAfterRaisingComplete(loanId);
-        if (!dto.getData().getStatus()) {
+        if (!dto.getData().getStatus() && !this.ALREADY_OUT.equals(dto.getData().getCode())) {
             throw new JobExecutionException();
         }
     }

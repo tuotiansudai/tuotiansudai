@@ -5,7 +5,7 @@
         position: absolute;
         top: 0;
         width: 100%;
-        z-index: 100;
+        z-index: 102;
         display: block;
     }
     .nav-container {
