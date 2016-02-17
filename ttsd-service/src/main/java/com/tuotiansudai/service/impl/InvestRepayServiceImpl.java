@@ -1,10 +1,15 @@
 package com.tuotiansudai.service.impl;
 
 
+import com.tuotiansudai.console.util.LoginUserInfo;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.model.LatestInvestView;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.service.InvestRepayService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +21,12 @@ public class InvestRepayServiceImpl implements InvestRepayService{
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
+
+    @Autowired
+    private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private CouponMapper couponMapper;
 
     @Override
     public long findByLoginNameAndTimeAndSuccessInvestRepay(String loginName,Date startTime,Date endTime) {
@@ -39,7 +50,15 @@ public class InvestRepayServiceImpl implements InvestRepayService{
 
     @Override
     public List<LatestInvestView> findLatestInvestByLoginName(String loginName, int startLimit, int endLimit) {
-        return investRepayMapper.findLatestInvestByLoginName(loginName, startLimit, endLimit);
+        List<LatestInvestView> latestInvestViews = investRepayMapper.findLatestInvestByLoginName(loginName, startLimit, endLimit);
+        for (LatestInvestView latestInvestView : latestInvestViews) {
+            List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndLoanId(LoginUserInfo.getLoginName(), latestInvestView.getLoanId());
+            latestInvestView.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
+            if (CollectionUtils.isNotEmpty(userCouponModels)) {
+                latestInvestView.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
+            }
+        }
+        return latestInvestViews;
     }
 
     @Override
