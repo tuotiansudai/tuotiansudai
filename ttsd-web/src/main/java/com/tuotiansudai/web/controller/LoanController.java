@@ -35,7 +35,8 @@ public class LoanController {
         if (dto == null) {
             return new ModelAndView("/error/404");
         }
-        ModelAndView modelAndView = new ModelAndView("/loan", "loan", dto);
+        ModelAndView modelAndView = new ModelAndView("/loan", "responsive", true);
+        modelAndView.addObject("loan", dto);
         modelAndView.addObject("coupons", userCouponService.getUsableCoupons(LoginUserInfo.getLoginName(), loanId));
         modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName()));
         return modelAndView;
