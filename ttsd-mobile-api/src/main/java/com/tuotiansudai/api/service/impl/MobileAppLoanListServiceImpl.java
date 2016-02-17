@@ -59,6 +59,25 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         return dto;
     }
 
+    @Override
+    public BaseResponseDto generateIndexLoan(BaseParamDto baseParamDto) {
+        BaseResponseDto dto = new BaseResponseDto();
+        LoanListResponseDataDto loanListResponseDataDto = new LoanListResponseDataDto();
+        List<LoanModel> loanModels = loanMapper.findHomeLoan();
+        List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(loanModels)) {
+            loanDtoList = convertLoanDto(loanModels);
+            loanListResponseDataDto.setLoanList(loanDtoList);
+            dto.setData(loanListResponseDataDto);
+        }else{
+            loanListResponseDataDto.setLoanList(new ArrayList<LoanResponseDataDto>());
+            dto.setData(loanListResponseDataDto);
+        }
+        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        return dto;
+    }
+
 
     private List<LoanResponseDataDto> convertLoanDto(List<LoanModel> loanList) {
         List<LoanResponseDataDto> loanDtoList = new ArrayList<LoanResponseDataDto>();
