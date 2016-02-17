@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.AbstractRedisWrapperClient;
+import com.tuotiansudai.console.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.dto.BaseDto;
@@ -129,20 +130,20 @@ public class ApplicationAspect {
 
     @Around(value = "execution(* com.tuotiansudai.service.UserService.editUser(..))")
     public Object aroundEditUser(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        String operatorLoginName = (String)proceedingJoinPoint.getArgs()[0];
-        EditUserDto editUserDto = (EditUserDto)proceedingJoinPoint.getArgs()[1];
+        String operatorLoginName = (String) proceedingJoinPoint.getArgs()[0];
+        EditUserDto editUserDto = (EditUserDto) proceedingJoinPoint.getArgs()[1];
         String taskId = OperationType.USER + "-" + editUserDto.getLoginName();
         String loginName = LoginUserInfo.getLoginName();
         List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(loginName);
         boolean flag = false;
         for (UserRoleModel userRoleModel : userRoleModels) {
-            if (userRoleModel.getRole() == Role.OPERATOR_ADMIN || userRoleModel.getRole() == Role.ADMIN){
+            if (userRoleModel.getRole() == Role.OPERATOR_ADMIN || userRoleModel.getRole() == Role.ADMIN) {
                 flag = true;
                 break;
             }
         }
         if (redisWrapperClient.hexistsSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId) && flag) {
-            OperationTask<EditUserDto> task = (OperationTask<EditUserDto>)redisWrapperClient.hgetSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+            OperationTask<EditUserDto> task = (OperationTask<EditUserDto>) redisWrapperClient.hgetSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             redisWrapperClient.hdelSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             OperationTask notify = new OperationTask();
             notify.setTaskType(TaskType.NOTIFY);
@@ -174,27 +175,27 @@ public class ApplicationAspect {
             UserModel beforeUpdateUserModel = userMapper.findByLoginName(editUserDto.getLoginName());
             List<UserRoleModel> beforeUpdateUserRoleModels = userRoleMapper.findByLoginName(editUserDto.getLoginName());
             String beforeUpdate = MessageFormat.format(DES_TEMPLATE,
-                    "\""+beforeUpdateUserModel.getLoginName()+"\"",
-                    "\""+beforeUpdateUserModel.getMobile()+"\"",
-                    "\""+beforeUpdateUserModel.getEmail()+"\"",
-                    "\""+beforeUpdateUserModel.getReferrer()+"\"",
-                    "\""+beforeUpdateUserModel.getStatus().name()+"\"",
+                    "\"" + beforeUpdateUserModel.getLoginName() + "\"",
+                    "\"" + beforeUpdateUserModel.getMobile() + "\"",
+                    "\"" + beforeUpdateUserModel.getEmail() + "\"",
+                    "\"" + beforeUpdateUserModel.getReferrer() + "\"",
+                    "\"" + beforeUpdateUserModel.getStatus().name() + "\"",
                     Joiner.on(",").join(Lists.transform(beforeUpdateUserRoleModels, new Function<UserRoleModel, String>() {
                         @Override
                         public String apply(UserRoleModel input) {
-                            return "\""+input.getRole().name()+"\"";
+                            return "\"" + input.getRole().name() + "\"";
                         }
                     })));
             String afterUpdate = MessageFormat.format(DES_TEMPLATE,
-                    "\""+editUserDto.getLoginName()+"\"",
-                    "\""+editUserDto.getMobile()+"\"",
-                    editUserDto.getEmail() != null ? "\""+editUserDto.getEmail()+"\"" : "\"\"",
-                    editUserDto.getReferrer() != null ? "\""+editUserDto.getReferrer()+"\"" : "\"\"",
-                    "\""+editUserDto.getStatus().name()+"\"",
+                    "\"" + editUserDto.getLoginName() + "\"",
+                    "\"" + editUserDto.getMobile() + "\"",
+                    editUserDto.getEmail() != null ? "\"" + editUserDto.getEmail() + "\"" : "\"\"",
+                    editUserDto.getReferrer() != null ? "\"" + editUserDto.getReferrer() + "\"" : "\"\"",
+                    "\"" + editUserDto.getStatus().name() + "\"",
                     Joiner.on(",").join(Lists.transform(editUserDto.getRoles(), new Function<Role, String>() {
                         @Override
                         public String apply(Role input) {
-                            return "\""+input.name()+"\"";
+                            return "\"" + input.name() + "\"";
                         }
                     })));
             task.setDescription(senderRealName + "申请修改用户" + editUserDto.getLoginName() + "的信息。操作详情为：</br>" + "{" + beforeUpdate + "}" + " =></br> " + "{" + afterUpdate + "}");
@@ -312,6 +313,82 @@ public class ApplicationAspect {
             redisWrapperClient.hdelSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
         } catch (Exception e) {
             logger.error("after delete coupon aspect fail ", e);
+        }
+    }
+
+
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.jpush.service.JPushAlertService.buildJPushAlert(..))")
+    public void afterReturningBuildJPush(JoinPoint joinPoint) {
+        logger.debug("after build JPush aspect.");
+        try {
+
+            String creator = (String) joinPoint.getArgs()[0];
+            JPushAlertDto jPushAlertDto = (JPushAlertDto) joinPoint.getArgs()[1];
+
+            String taskId = OperationType.PUSH.toString() + "-" + jPushAlertDto.getId();
+
+            if (!redisWrapperClient.hexistsSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
+
+                OperationTask<LoanDto> task = new OperationTask<>();
+
+                task.setId(taskId);
+                task.setTaskType(TaskType.TASK);
+                task.setOperationType(OperationType.PUSH);
+                task.setObjId(String.valueOf(jPushAlertDto.getId()));
+                task.setObjName(jPushAlertDto.getName());
+                task.setCreatedTime(new Date());
+
+                String senderLoginName = creator;
+                AccountModel sender = accountService.findByLoginName(senderLoginName);
+                String senderRealName = sender != null ? sender.getUserName() : senderLoginName;
+
+                task.setSender(senderLoginName);
+                task.setOperateURL("/app-push-manage/manual-app-push-list");
+                task.setDescription(senderRealName + "创建了一个APP推送'" + jPushAlertDto.getName() + "'，请审核。");
+
+                redisWrapperClient.hsetSeri(TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
+            }
+        } catch (Exception e) {
+            logger.error("after build JPush aspect fail ", e);
+        }
+    }
+
+    @AfterReturning(value = "execution(* com.tuotiansudai.console.jpush.service.JPushAlertService.send(..))")
+    public void afterReturningSendJPush(JoinPoint joinPoint) {
+        logger.debug("after send JPush aspect.");
+        try {
+            String operator = (String) joinPoint.getArgs()[0];
+            long jPushId = (long) joinPoint.getArgs()[1];
+
+            String taskId = OperationType.PUSH + "-" + jPushId;
+
+            if (redisWrapperClient.hexistsSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
+
+                OperationTask task = (OperationTask) redisWrapperClient.hgetSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+
+                OperationTask notify = new OperationTask();
+                String notifyId = taskId;
+
+                notify.setId(notifyId);
+                notify.setTaskType(TaskType.NOTIFY);
+                notify.setOperationType(OperationType.COUPON);
+
+                String senderLoginName = operator;
+                notify.setSender(senderLoginName);
+                notify.setReceiver(task.getSender());
+                notify.setCreatedTime(new Date());
+                notify.setObjId(task.getObjId());
+
+                AccountModel sender = accountService.findByLoginName(senderLoginName);
+                String senderRealName = sender != null ? sender.getUserName() : senderLoginName;
+
+                notify.setDescription(senderRealName + "发送了您创建的APP推送'" + task.getObjName() + "'。");
+
+                redisWrapperClient.hdelSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+                redisWrapperClient.hsetSeri(NOTIFY_KEY + task.getSender(), notifyId, notify);
+            }
+        } catch (Exception e) {
+            logger.error("after send JPush aspect fail ", e);
         }
     }
 
