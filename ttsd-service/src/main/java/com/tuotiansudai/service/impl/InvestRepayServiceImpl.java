@@ -39,12 +39,25 @@ public class InvestRepayServiceImpl implements InvestRepayService{
 
     @Override
     public List<InvestRepayModel> findByLoginNameAndTimeSuccessInvestRepayList(String loginName, Date startTime, Date endTime, int startLimit, int endLimit) {
-        return investRepayMapper.findByLoginNameAndTimeSuccessInvestRepayList(loginName, startTime, endTime, startLimit, endLimit);
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndTimeSuccessInvestRepayList(loginName, startTime, endTime, startLimit, endLimit);
+        return investRepayAddBirthday(investRepayModels, loginName);
     }
 
     @Override
     public List<InvestRepayModel> findByLoginNameAndTimeNotSuccessInvestRepayList(String loginName, Date startTime, Date endTime, int startLimit, int endLimit) {
-        return investRepayMapper.findByLoginNameAndTimeNotSuccessInvestRepayList(loginName, startTime, endTime, startLimit, endLimit);
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndTimeNotSuccessInvestRepayList(loginName, startTime, endTime, startLimit, endLimit);
+        return investRepayAddBirthday(investRepayModels, loginName);
+    }
+
+    private List<InvestRepayModel> investRepayAddBirthday(List<InvestRepayModel> investRepayModels, String loginName) {
+        for (InvestRepayModel investRepayModel : investRepayModels) {
+            List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndLoanId(loginName, investRepayModel.getLoan().getId());
+            investRepayModel.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
+            if (CollectionUtils.isNotEmpty(userCouponModels)) {
+                investRepayModel.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
+            }
+        }
+        return investRepayModels;
     }
 
     @Override
