@@ -15,6 +15,8 @@ import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.*;
+import com.tuotiansudai.task.OperationType;
+import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.commons.collections4.CollectionUtils;
@@ -30,6 +32,9 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+//import com.tuotiansudai.task.OperationType;
+//import com.tuotiansudai.task.aspect.ApplicationAspect;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -320,12 +325,14 @@ public class UserServiceImpl implements UserService {
 
             List<UserRoleModel> referrerRoleModels = userRoleMapper.findByLoginName(userModel.getReferrer());
             for (UserRoleModel referrerRoleModel : referrerRoleModels) {
-                if (referrerRoleModel.getRole()==Role.STAFF) {
+                if (referrerRoleModel.getRole() == Role.STAFF) {
                     userItemDataDto.setReferrerStaff(true);
                     break;
                 }
             }
             userItemDataDto.setBankCard(bindBankCardService.getPassedBankCard(userModel.getLoginName()) != null);
+            String taskId = OperationType.USER + "-" + userModel.getLoginName();
+            userItemDataDto.setModify(redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId));
             userItemDataDtos.add(userItemDataDto);
         }
         int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel);
@@ -464,4 +471,5 @@ public class UserServiceImpl implements UserService {
         }
         return new int[]{min, max};
     }
+
 }

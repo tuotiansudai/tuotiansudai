@@ -57,6 +57,7 @@ public class CouponServiceImpl implements CouponService {
         couponModel.setCreatedBy(loginName);
         couponModel.setCreatedTime(new Date());
         couponMapper.create(couponModel);
+        couponDto.setId(couponModel.getId());
         if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
             redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "success"));
             redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "failed"));
@@ -86,7 +87,7 @@ public class CouponServiceImpl implements CouponService {
                 throw new CreateCouponException("使用条件金额应大于0!");
             }
         }
-        
+
         Date startTime = couponModel.getStartTime();
         Date endTime = couponModel.getEndTime();
         if (CouponType.isNewBieCoupon(couponDto.getCouponType())) {
@@ -111,7 +112,7 @@ public class CouponServiceImpl implements CouponService {
         couponModel.setUpdatedBy(loginName);
         couponModel.setUpdatedTime(new Date());
         if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() != UserGroup.IMPORT_USER
-                && redisWrapperClient.exists(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())))){
+                && redisWrapperClient.exists(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())))) {
             redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())));
         }
         if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() == UserGroup.IMPORT_USER && StringUtils.isNotEmpty(couponDto.getFile())) {
@@ -166,7 +167,7 @@ public class CouponServiceImpl implements CouponService {
         for (CouponModel couponModel : couponModels) {
             couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
             if (couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
-                if (StringUtils.isNotEmpty(redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())),"failed"))) {
+                if (StringUtils.isNotEmpty(redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed"))) {
                     couponModel.setImportIsRight(false);
                 } else {
                     couponModel.setImportIsRight(true);

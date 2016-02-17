@@ -3,13 +3,18 @@
 
 <!-- content area begin -->
 <div class="col-md-10">
+    <#if sender??>
+        <div class="user-operate">
+            该用户正在被${sender}修改
+        </div>
+    </#if>
     <form class="form-horizontal" action="/user-manage/user/edit" method="post">
         <div class="form-group">
             <label class="col-sm-2 control-label">登录名：</label>
 
             <div class="col-sm-3">
                 <p class="form-control-static">${user.loginName}</p>
-                <input type="hidden" name="loginName" value="${user.loginName}"/>
+                <input type="hidden" class="loginName" name="loginName" value="${user.loginName}"/>
             </div>
         </div>
         <div class="form-group">
@@ -40,7 +45,7 @@
             <label for="mobile" class="col-sm-2 control-label">手机号码：</label>
 
             <div class="col-sm-3">
-                <@global.role hasRole="'ADMIN'">
+                <@global.role hasRole="'ADMIN','OPERATOR','OPERATOR_ADMIN'">
                 <input name="mobile" id="mobile" type="text" class="form-control" maxlength="11" value="${(user.mobile)!}"/>
                 </@global.role>
 
@@ -53,7 +58,7 @@
             <label for="email" class="col-sm-2 control-label">电子邮件：</label>
 
             <div class="col-sm-3">
-                <@global.role hasRole="'ADMIN'">
+                <@global.role hasRole="'ADMIN','OPERATOR','OPERATOR_ADMIN'">
                 <input name="email" id="email" type="email" class="form-control" value="${(user.email)!}"/>
                 </@global.role>
 
@@ -71,7 +76,7 @@
             </label>
 
             <div class="col-sm-3">
-                <@global.role hasRole="'ADMIN'">
+                <@global.role hasRole="'ADMIN','OPERATOR','OPERATOR_ADMIN'">
                 <input name="referrer" id="referrer" type="text" class="form-control" value="${(user.referrer)!}"/>
                 </@global.role>
 
@@ -97,19 +102,19 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="col-sm-2 control-label">已开通自动投标：</label>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">已开通自动投标：</label>
 
-            <div class="col-sm-3">
-                <p class="form-control-static"><#if user.autoInvestStatus=="1">是<#else>否</#if></p>
-                <input type="hidden" name="autoInvestStatus" value="${user.autoInvestStatus!}"/>
-            </div>
-        </div>
+                    <div class="col-sm-3">
+                        <p class="form-control-static"><#if user.autoInvestStatus=="1">是<#else>否</#if></p>
+                        <input type="hidden" name="autoInvestStatus" value="${user.autoInvestStatus!}"/>
+                    </div>
+                </div>
 
-        <div class="form-group">
-            <label for="referrer" class="col-sm-2 control-label">角色：</label>
+                <div class="form-group">
+                    <label for="referrer" class="col-sm-2 control-label">角色：</label>
 
-            <div class="col-sm-3">
+                    <div class="col-sm-3">
                 <input type="hidden" name="roles" value="USER"/>
                 <#list roles as roleItem>
                     <#if roleItem.name() != 'USER'>
@@ -139,15 +144,29 @@
             </div>
         </div>
 
-        <@global.role hasRole="'ADMIN'">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
+        <@global.role hasRole="'ADMIN','OPERATOR'">
+        <#if showCommit?? && showCommit>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-3">
                 <input class="btn btn-default btn-submit" type="submit" value="提交">
                 <input class="btn btn-default" type="reset" value="重置">
             </div>
         </div>
+        </#if>
+        </@global.role>
+
+        <@global.role hasRole="'ADMIN','OPERATOR_ADMIN'">
+        <#if taskId??>
+        <input type="hidden" value="${taskId}" class="taskId">
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-3">
+                <input class="btn btn-default btn-submit" type="submit" value="同意">
+                <input class="btn btn-default btn-refuse" type="button" value="拒绝">
+            </div>
+        </div>
+        </#if>
         </@global.role>
     </form>
 </div>

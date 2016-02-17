@@ -1,348 +1,138 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="index.js" headLab="sys-manage" sideLab="userDate" title="系统首页">
+<@global.main pageCss="" pageJavascript="index.js" headLab="sys-manage" sideLab="myTasks" title="系统首页">
 <div class="col-md-10 home-report">
+    <div class="title-type">
+        <h4 class="title-task">我的任务</h4>
+    </div>
+    <div class="table-data">
+        <#if taskList ?? && (taskList?size>0)>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>发起者</th>
+                    <th>内容</th>
+                    <th>发起时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <#list taskList as task>
+                    <tr>
+                        <td>${task.sender}</td>
+                        <td><a href="${task.operateURL!}">${task.description}</a></td>
+                        <td>${task.createdTime?string("yyyy-MM-dd HH:mm:ss")!}</td>
+                        <td>
+                            <#if task.taskType == "TASK" >
+                                <a class="btn btn-primary btn-xs" href="${task.operateURL!}">去审核</a>
+                                <a class="btn btn-danger btn-xs" href="javascript:void(0);" data-taskId="${task.id}">拒绝</a>
+                            </#if>
+                            <#if task.taskType == "NOTIFY" >
+                                <a class="btn btn-info btn-xs" href="javascript:void(0);" data-taskId="${task.id}">知道了</a>
+                            </#if>
+                        </td>
+                    </tr>
+                </#list>
+                </tbody>
+            </table>
+        <#else>
+            没有待处理的任务。</br></br>
+        </#if>
 
-    <div class="row">
-
-        <div class="col-lg-12 col-sm-12">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">用户注册时间分布</h3>
-                </div>
-                <div class="panel-body">
-                    <form class="form-inline" id="formUserDateReport">
-                                <select class="form-control search-category" name="granularity">
-                                    <option value="Daily" selected>日</option>
-                                    <option value="Weekly">周</option>
-                                    <option value="Monthly">月</option>
-                                </select>
-                                开始时间： <input type="text" class="form-control start-date" name="startTime">
-                                结束时间：<input type="text" class="form-control end-date" name="endTime">
-                                <select class="form-control" name="province"></select>
-                                <select class="form-control" name="userStage">
-                                    <option value="ALL" selected>全部</option>
-                                    <option value="Certification">实名认证</option>
-                                    <option value="BindCard">绑卡</option>
-                                </select>
-                                <select class="form-control" name="roleStage">
-                                    <option value="ALL" selected>全部用户</option>
-                                    <option value="STAFF">业务员</option>
-                                    <option value="RECOMMENDATION">业务员的一级推荐</option>
-                                    <option value="AGENT">代理商</option>
-                                    <option value="OTHERS">其他用户</option>
-                                </select>
-                                <select class="form-control" name="channel"></select>
-                        <#--<select class="form-control" name=""></select>-->
-                        <button class="btn btn-primary" type="button">查询</button>
-                    </form>
-                    <div  id="userDateDistribution" style="width:100%; height:400px;">
-
-                    </div>
-                </div>
+    </div>
+    <div class="table-data">
+        <div class="two-flex">
+            <div class="title-type">
+                <h4 class="person-num">新增用户 (人)</h4>
+            </div>
+            <div class="table-data">
+                <ul class="data-list yellow-bg">
+                    <li>
+                        <p class="num-text">${userToday!}</p>
+                        <p class="name-text">今日新增</p>
+                    </li>
+                    <li>
+                        <p class="num-text">${user7Days!}</p>
+                        <p class="name-text">本周新增</p>
+                    </li>
+                    <li>
+                        <p class="num-text">${user30Days!}</p>
+                        <p class="name-text">本月新增</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="two-flex">
+            <div class="title-type">
+                <h4 class="send-money">平台累计交易金额 (元)</h4>
+            </div>
+            <div class="table-data">
+                <ul class="data-list red-bg">
+                    <li>
+                        <p class="num-text">${totalInvest!}</p>
+                        <p class="name-text">累计交易总额</p>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">用户充值时间分布</h3>
-                </div>
-                <div class="panel-body">
-                    <form class="form-inline" id="formUserRechargeReport">
-                            <select class="form-control search-category" name="granularity">
-                                <option value="Daily" selected>日</option>
-                                <option value="Weekly">周</option>
-                                <option value="Monthly">月</option>
-                            </select>
-                            开始时间： <input type="text" class="form-control start-date" name="startTime">
-                            结束时间：<input type="text" class="form-control end-date" name="endTime">
-                        <select class="form-control" name="province">
-                            <option value="">请选择</option>
-                            <option>北京</option>
-                            <option>天津</option>
-                        </select>
-
-
-                        <button class="btn btn-primary" type="button">查询</button>
-                    </form>
-
-                   <div id="UserRechargeDistribution" style="width:100%; height:400px;">
-
-                   </div>
-                </div>
-            </div>
-        </div>
+    <div class="title-type">
+        <h4 class="give-charge">充值金额 (元)</h4>
     </div>
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">用户提现时间分布</h3>
-                </div>
-                <div class="panel-body">
-                    <form class="form-inline" id="formWithdrawReport">
-                        <select class="form-control search-category" name="granularity">
-                            <option value="Daily" selected>日</option>
-                            <option value="Weekly">周</option>
-                            <option value="Monthly">月</option>
-                        </select>
-
-                            开始时间： <input type="text" class="form-control start-date" name="startTime">
-                            结束时间：<input type="text" class="form-control end-date" name="endTime">
-                        <select class="form-control" name="province">
-                            <option value="">请选择</option>
-                            <option>北京</option>
-                            <option>天津</option>
-                        </select>
-                        <button class="btn btn-primary" type="button">查询</button>
-                    </form>
-
-                    <div id="userWithdrawDistribution" style="width:100%; height:400px;">
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="table-data">
+        <ul class="data-list list-width blue-bg">
+            <li>
+                <p class="num-text">${rechargeToday!}</p>
+                <p class="name-text">今日充值</p>
+            </li>
+            <li>
+                <p class="num-text">${recharge7Days!}</p>
+                <p class="name-text">本周充值</p>
+            </li>
+            <li>
+                <p class="num-text">${recharge30Days!}</p>
+                <p class="name-text">本月充值</p>
+            </li>
+        </ul>
+    </div>
+    <div class="title-type">
+        <h4 class="get-money">提现金额 (元)</h4>
+    </div>
+    <div class="table-data">
+        <ul class="data-list list-width green-bg">
+            <li>
+                <p class="num-text">${withdrawToday!}</p>
+                <p class="name-text">今日提现</p>
+            </li>
+            <li>
+                <p class="num-text">${withdraw7Days!}</p>
+                <p class="name-text">本周提现</p>
+            </li>
+            <li>
+                <p class="num-text">${withdraw30Days!}</p>
+                <p class="name-text">本月提现</p>
+            </li>
+        </ul>
+    </div>
+    <div class="title-type">
+        <h4 class="send-money">投资金额 (元)</h4>
+    </div>
+    <div class="table-data">
+        <ul class="data-list list-width loan-bg">
+            <li>
+                <p class="num-text">${investToday!}</p>
+                <p class="name-text">今日投资</p>
+            </li>
+            <li>
+                <p class="num-text">${invest7Days!}</p>
+                <p class="name-text">本周投资</p>
+            </li>
+            <li>
+                <p class="num-text">${invest30Days!}</p>
+                <p class="name-text">本月投资</p>
+            </li>
+        </ul>
     </div>
 
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">提现人数分布</h3>
-                </div>
-                <div class="panel-body">
-                    <form class="form-inline" id="formWithdrawUserCountReport">
-                        <select class="form-control search-category" name="granularity">
-                            <option value="Daily" selected>日</option>
-                            <option value="Weekly">周</option>
-                            <option value="Monthly">月</option>
-                        </select>
-
-                        开始时间： <input type="text" class="form-control start-date" name="startTime">
-                        结束时间：<input type="text" class="form-control end-date" name="endTime">
-                        <button class="btn btn-primary" type="button">查询</button>
-                    </form>
-
-                    <div id="withdrawUserCountDistribution" style="width:100%; height:400px;">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">用户续投情况</h3>
-                </div>
-                <div class="panel-body" id="">
-                    <form class="form-inline" id="formUserInvestViscosityReport">
-                        开始时间： <input type="text" class="form-control start-date" name="startTime">
-                        结束时间：<input type="text" class="form-control end-date" name="endTime">
-                        <select class="form-control" name="province">
-                            <option value="">请选择</option>
-                            <option>北京</option>
-                            <option>天津</option>
-                        </select>
-                        <button class="btn btn-primary" type="button">查询</button>
-                    </form>
-                    <div id="userInvestViscosity" style="width:100%; height:400px;">
-                    </div>
-
-                    <div class="row" id="boxUserInvest" style="display: none">
-                    <div class="title-list">
-                        <span>合计投资金额： <em class="sumAmount"></em> 元</span>
-                    </div>
-                    <table class="table table-bordered" >
-                        <thead>
-                        <tr>
-                            <th>用户名</th>
-                            <th>真实姓名</th>
-                            <th>电话</th>
-                            <th>推荐人id</th>
-                            <th>推荐人姓名</th>
-                            <th>投资总金额(元)</th>
-                            <th>投资次数</th>
-                            <th>上次投资时间</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <td class="pageNumber" colspan="10">
-                                <span class="pageBtn"></span>总共<span class="TotalRecords"></span>条
-                            </td>
-                        </tr>
-                        </tfoot>
-                    </table>
-
-                    <button class="btn btn-default pull-left down-load viscosity-export" type="button">导出Excel</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">用户投资金额时间分布</h3>
-                </div>
-                <div class="panel-body" id="">
-                    <form class="form-inline" id="formUserInvestAmountReport">
-                        <select class="form-control search-category" name="granularity">
-                            <option value="Daily" selected>日</option>
-                            <option value="Weekly">周</option>
-                            <option value="Monthly">月</option>
-                        </select>
-                        开始时间： <input type="text" class="form-control start-date" name="startTime">
-                        结束时间：<input type="text" class="form-control end-date" name="endTime">
-                        <select class="form-control" name="province">
-                            <option value="">请选择</option>
-                            <option>北京</option>
-                            <option>天津</option>
-                        </select>
-                        <select class="form-control" name="roleStage">
-                            <option value="ALL" selected>全部用户</option>
-                            <option value="STAFF">业务员</option>
-                            <option value="RECOMMENDATION">业务员的一级推荐</option>
-                            <option value="AGENT">代理商</option>
-                            <option value="OTHERS">其他用户</option>
-                        </select>
-                        <select class="form-control" name="channel"></select>
-                        <button class="btn btn-primary" type="button">查询</button>
-                    </form>
-                    <div id="userInvestAmountDistribution" style="width:100%; height:400px;">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">用户投资时间分布</h3>
-                </div>
-                <div class="panel-body" id="">
-                    <form class="form-inline" id="formUserInvestCountReport">
-                        <select class="form-control search-category" name="granularity">
-                            <option value="Hourly" selected>时</option>
-                        </select>
-                        开始时间： <input type="text" class="form-control start-date" name="startTime">
-                        结束时间：<input type="text" class="form-control end-date" name="endTime">
-                        <select class="form-control" name="province">
-                            <option value="">请选择</option>
-                            <option>北京</option>
-                            <option>天津</option>
-                        </select>
-                        <button class="btn btn-primary" type="button">查询</button>
-                    </form>
-
-                    <div id="userInvestCountDistribution" style="width:100%; height:400px;">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-
-        <div class="col-lg-6 col-sm-6">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">实名认证用户年龄分布</h3>
-                </div>
-                <div class="panel-body" id="">
-                    <form class="form-inline" id="formRegisterUserAgeReport">
-                        开始时间： <input type="text" class="form-control start-date" name="startTime">
-                        结束时间：<input type="text" class="form-control end-date" name="endTime">
-                        <select class="form-control" name="province">
-                            <option value="">请选择</option>
-                            <option>北京</option>
-                            <option>天津</option>
-                        </select>
-                        <button class="btn btn-primary" type="button">查询</button>
-                    </form>
-
-                    <div id="registerUserAgeDistribution" style="width:100%; height:400px;">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-6 col-sm-6">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">投资人用户年龄分布</h3>
-                </div>
-                <div class="panel-body" id="">
-                    <form class="form-inline" id="formInvestorUserAgeReport">
-                        开始时间： <input type="text" class="form-control start-date" name="startTime">
-                        结束时间：<input type="text" class="form-control end-date" name="endTime">
-                        <select class="form-control" name="province">
-                            <option value="">请选择</option>
-                            <option>北京</option>
-                            <option>天津</option>
-                        </select>
-                        <button class="btn btn-primary" type="button">查询</button>
-                    </form>
-
-                    <div id="investorUserAgeDistribution" style="width:100%; height:400px;">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-12 col-sm-12">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">标的满标周期分布</h3>
-                    </div>
-                    <div class="panel-body">
-                        <form class="form-inline" id="formLoanRaisingTimeCostingReport">
-                            开始时间： <input type="text" class="form-control start-date" name="startTime">
-                            结束时间：<input type="text" class="form-control end-date" name="endTime">
-                            <button class="btn btn-primary" type="button">查询</button>
-                        </form>
-
-                        <div id="loanRaisingTimeCostingDistribution" style="width:100%; height:400px;">
-
-                            <span class="loading-report">加载中...</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">标的资金分布</h3>
-                </div>
-                <div class="panel-body" id="">
-                    <form class="form-inline" id="formLoanAmountReport">
-                        开始时间： <input type="text" class="form-control start-date" name="startTime">
-                        结束时间：<input type="text" class="form-control end-date" name="endTime">
-                        <button class="btn btn-primary" type="button">查询</button>
-                    </form>
-
-                    <div id="loanAmountDistribution" style="width:100%; height:400px;">
-                        <span class="loading-report">加载中...</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
 </div>
 
 </@global.main>

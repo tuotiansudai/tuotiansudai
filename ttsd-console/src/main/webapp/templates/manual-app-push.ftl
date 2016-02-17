@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="manual-app-push.js" headLab="app-push-manage" sideLab="createManualAppPush" title="创建手动推送">
 
@@ -38,10 +39,10 @@
         </div>
         <div class="form-group">
             <label  class="col-sm-2 control-label"></label>
-            <div class="col-sm-5 province <#if jPushAlert??&&!(jPushAlert.pushObjects?has_content)>app-push-link</#if>">
+            <div class="col-sm-5 province <#if !(jPushAlert??)|| (jPushAlert??&&!(jPushAlert.pushObjects?has_content))>app-push-link</#if>">
 
                 <#list provinces?keys as key>
-                    <#if jPushAlert??&&jPushAlert.pushObjects?has_content>
+                    <#if jPushAlert??&&jPushAlert.pushObjects?has_content&&jPushAlert.pushObjects?size gt 0>
                         <label for="${key}"> <input type="checkbox" name="pushObjects" class="pushObject"
                                id="${key}"
                                <#if jPushAlert?? && jPushAlert.pushObjects?seq_contains('${key}')>checked="checked"</#if> value="${key}"/>
@@ -96,8 +97,8 @@
         <div class="form-group">
             <label  class="col-sm-2 control-label">操作: </label>
             <div class="col-sm-4">
-                <button type="button" class="btn btn-sm btn-primary btnSearch" id="btnSave">保存</button>
-                <button type="reset" class="btn btn-sm btn-primary btnSearch" id="btnReset">重置</button>
+                <button type="button" class="btn btn-sm btn-primary btnSearch" id="btnSave" <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN')">disabled</@security.authorize>>保存</button>
+                <button type="reset" class="btn btn-sm btn-primary btnSearch" id="btnReset" <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN')">disabled</@security.authorize>>重置</button>
             </div>
         </div>
     </form>
