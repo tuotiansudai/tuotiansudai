@@ -4,7 +4,6 @@ import com.tuotiansudai.client.AbstractRedisWrapperClient;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.AccountService;
@@ -12,8 +11,8 @@ import com.tuotiansudai.service.ConsoleHomeService;
 import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
+import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.task.TaskType;
-import com.tuotiansudai.task.aspect.ApplicationAspect;
 import com.tuotiansudai.util.SerializeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -74,14 +73,14 @@ public class HomeController {
         List<Role> roles = userRoleService.findRoleNameByLoginName(loginName);
         List<OperationTask> taskList = new ArrayList<>();
         for (Role role : roles) {
-            List<byte[]> tasks = redisWrapperClient.hgetValuesSeri(ApplicationAspect.TASK_KEY + role);
+            List<byte[]> tasks = redisWrapperClient.hgetValuesSeri(TaskConstant.TASK_KEY + role);
 
             for (byte[] bs : tasks) {
                 taskList.add((OperationTask) SerializeUtil.deserialize(bs));
             }
         }
 
-        List<byte[]> notifies = redisWrapperClient.hgetValuesSeri(ApplicationAspect.NOTIFY_KEY + loginName);
+        List<byte[]> notifies = redisWrapperClient.hgetValuesSeri(TaskConstant.NOTIFY_KEY + loginName);
         for (byte[] bs : notifies) {
             taskList.add((OperationTask) SerializeUtil.deserialize(bs));
         }
@@ -99,9 +98,9 @@ public class HomeController {
         BaseDataDto baseDataDto = new BaseDataDto();
         baseDto.setData(baseDataDto);
 
-        if (redisWrapperClient.hexists(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
+        if (redisWrapperClient.hexists(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
 
-            OperationTask task = (OperationTask) redisWrapperClient.hgetSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+            OperationTask task = (OperationTask) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
 
             OperationTask notify = new OperationTask();
             String notifyId = taskId;
@@ -124,8 +123,8 @@ public class HomeController {
 
             notify.setDescription(senderRealName + "拒绝了您" + operationType.getDescription() + "'" + task.getObjName() + "'的申请。");
 
-            redisWrapperClient.hdelSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
-            redisWrapperClient.hsetSeri(ApplicationAspect.NOTIFY_KEY + task.getSender(), notifyId, notify);
+            redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+            redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), notifyId, notify);
 
             baseDto.setSuccess(true);
             baseDataDto.setStatus(true);
@@ -141,7 +140,7 @@ public class HomeController {
     @ResponseBody
     @RequestMapping(value = "/deleteNotify", method = RequestMethod.GET, params = {"taskId"})
     public BaseDto<BaseDataDto> deleteNotify(String taskId) {
-        redisWrapperClient.hdelSeri(ApplicationAspect.NOTIFY_KEY + LoginUserInfo.getLoginName(), taskId);
+        redisWrapperClient.hdelSeri(TaskConstant.NOTIFY_KEY + LoginUserInfo.getLoginName(), taskId);
 
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         baseDto.setSuccess(true);

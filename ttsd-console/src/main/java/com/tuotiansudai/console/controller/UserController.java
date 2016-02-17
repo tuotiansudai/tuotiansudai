@@ -18,7 +18,7 @@ import com.tuotiansudai.service.ImpersonateService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
-import com.tuotiansudai.task.aspect.ApplicationAspect;
+import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
 import com.tuotiansudai.util.RequestIPParser;
@@ -70,7 +70,7 @@ public class UserController {
     public ModelAndView editUser(@PathVariable String loginName, Model model) throws Exception{
         String taskId = OperationType.USER + "-" + loginName;
         ModelAndView modelAndView = new ModelAndView("/user-edit");
-        if (!redisWrapperClient.hexistsSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
+        if (!redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
             if (!model.containsAttribute("user")) {
                 EditUserDto editUserDto = userService.getEditUser(loginName);
                 modelAndView.addObject("user", editUserDto);
@@ -79,7 +79,7 @@ public class UserController {
             }
             return modelAndView;
         } else {
-            OperationTask<EditUserDto> task = (OperationTask<EditUserDto>)redisWrapperClient.hgetSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+            OperationTask<EditUserDto> task = (OperationTask<EditUserDto>)redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             String description = task.getDescription();
             String afterUpdate = description.split(" =></br> ")[1];
             ObjectMapper objectMapper = new ObjectMapper();

@@ -17,6 +17,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
+import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.task.TaskType;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
@@ -33,7 +34,7 @@ import java.util.List;
 
 @Aspect
 @Component
-public class ApplicationAspect {
+public class AuditTaskAspect {
 
     @Autowired
     AbstractRedisWrapperClient redisWrapperClient;
@@ -47,13 +48,9 @@ public class ApplicationAspect {
     @Autowired
     private UserRoleMapper userRoleMapper;
 
-    public static final String TASK_KEY = "console:task:";
-
-    public static final String NOTIFY_KEY = "console:notify:";
-
     private static String DES_TEMPLATE = "\"loginName\":{0}, \"mobile\":{1}, \"email\":{2}, \"referrer\":{3}, \"status\":{4}, \"roles\":[{5}]";
 
-    static Logger logger = Logger.getLogger(ApplicationAspect.class);
+    static Logger logger = Logger.getLogger(AuditTaskAspect.class);
 
     @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanService.createLoan(*))", returning = "returnValue")
     public void afterReturningCreateLoan(JoinPoint joinPoint, Object returnValue) {
@@ -81,7 +78,7 @@ public class ApplicationAspect {
                 task.setOperateURL("/project-manage/loan/" + loanDto.getId());
                 task.setDescription(senderRealName + "创建了新的标的'" + loanDto.getProjectName() + "'，请审核。");
 
-                redisWrapperClient.hsetSeri(TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
+                redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
             }
         } catch (Exception e) {
             logger.error("after create loan aspect fail ", e);
@@ -97,9 +94,9 @@ public class ApplicationAspect {
                 LoanDto loanDto = (LoanDto) joinPoint.getArgs()[0];
                 String taskId = OperationType.PROJECT + "-" + loanDto.getId();
 
-                if (redisWrapperClient.hexistsSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
+                if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
 
-                    OperationTask task = (OperationTask) redisWrapperClient.hgetSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+                    OperationTask task = (OperationTask) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
 
                     OperationTask notify = new OperationTask();
                     String notifyId = taskId;
@@ -119,8 +116,8 @@ public class ApplicationAspect {
 
                     notify.setDescription(senderRealName + "通过了您" + OperationType.PROJECT.getDescription() + "'" + task.getObjName() + "'的申请。");
 
-                    redisWrapperClient.hdelSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
-                    redisWrapperClient.hsetSeri(NOTIFY_KEY + loanDto.getCreatedLoginName(), notifyId, notify);
+                    redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+                    redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + loanDto.getCreatedLoginName(), notifyId, notify);
                 }
             }
         } catch (Exception e) {
@@ -142,9 +139,9 @@ public class ApplicationAspect {
                 break;
             }
         }
-        if (redisWrapperClient.hexistsSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId) && flag) {
-            OperationTask<EditUserDto> task = (OperationTask<EditUserDto>) redisWrapperClient.hgetSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
-            redisWrapperClient.hdelSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+        if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId) && flag) {
+            OperationTask<EditUserDto> task = (OperationTask<EditUserDto>) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+            redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             OperationTask notify = new OperationTask();
             notify.setTaskType(TaskType.NOTIFY);
             notify.setOperationType(OperationType.USER);
@@ -159,7 +156,7 @@ public class ApplicationAspect {
             AccountModel account = accountService.findByLoginName(editUserDto.getLoginName());
             String editUserRealName = account != null ? account.getUserName() : editUserDto.getLoginName();
             notify.setDescription(senderRealName + "通过了您修改用户'" + editUserRealName + "'的申请。");
-            redisWrapperClient.hsetSeri(NOTIFY_KEY + task.getSender(), taskId, notify);
+            redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), taskId, notify);
             return proceedingJoinPoint.proceed();
         } else {
             OperationTask<EditUserDto> task = new OperationTask<>();
@@ -199,7 +196,7 @@ public class ApplicationAspect {
                         }
                     })));
             task.setDescription(senderRealName + "申请修改用户" + editUserDto.getLoginName() + "的信息。操作详情为：</br>" + "{" + beforeUpdate + "}" + " =></br> " + "{" + afterUpdate + "}");
-            redisWrapperClient.hsetSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId, task);
+            redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId, task);
             return true;
         }
     }
@@ -233,7 +230,7 @@ public class ApplicationAspect {
     private void couponAspect(String creator, CouponDto couponDto) {
         String taskId = OperationType.COUPON.toString() + "-" + couponDto.getId();
 
-        if (!redisWrapperClient.hexistsSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
+        if (!redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
 
             OperationTask<CouponDto> task = new OperationTask<>();
 
@@ -262,7 +259,7 @@ public class ApplicationAspect {
             task.setOperateURL(operateURL);
             task.setDescription(senderRealName + "创建了一张'" + couponDto.getCouponType().getName() + "'，请审核。");
 
-            redisWrapperClient.hsetSeri(TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
+            redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
         }
     }
 
@@ -274,9 +271,9 @@ public class ApplicationAspect {
             long couponId = (long) joinPoint.getArgs()[1];
             String taskId = OperationType.COUPON + "-" + couponId;
 
-            if (redisWrapperClient.hexistsSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
+            if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
 
-                OperationTask task = (OperationTask) redisWrapperClient.hgetSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+                OperationTask task = (OperationTask) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
 
                 OperationTask notify = new OperationTask();
                 String notifyId = taskId;
@@ -296,8 +293,8 @@ public class ApplicationAspect {
 
                 notify.setDescription(senderRealName + "激活了您创建的" + task.getObjName() + "。");
 
-                redisWrapperClient.hdelSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
-                redisWrapperClient.hsetSeri(NOTIFY_KEY + task.getSender(), notifyId, notify);
+                redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+                redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), notifyId, notify);
             }
         } catch (Exception e) {
             logger.error("after active coupon aspect fail ", e);
@@ -310,7 +307,7 @@ public class ApplicationAspect {
         try {
             long couponId = (long) joinPoint.getArgs()[1];
             String taskId = OperationType.COUPON + "-" + couponId;
-            redisWrapperClient.hdelSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+            redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
         } catch (Exception e) {
             logger.error("after delete coupon aspect fail ", e);
         }
@@ -327,7 +324,7 @@ public class ApplicationAspect {
 
             String taskId = OperationType.PUSH.toString() + "-" + jPushAlertDto.getId();
 
-            if (!redisWrapperClient.hexistsSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
+            if (!redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
 
                 OperationTask<LoanDto> task = new OperationTask<>();
 
@@ -346,7 +343,7 @@ public class ApplicationAspect {
                 task.setOperateURL("/app-push-manage/manual-app-push-list");
                 task.setDescription(senderRealName + "创建了一个APP推送'" + jPushAlertDto.getName() + "'，请审核。");
 
-                redisWrapperClient.hsetSeri(TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
+                redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
             }
         } catch (Exception e) {
             logger.error("after build JPush aspect fail ", e);
@@ -362,9 +359,9 @@ public class ApplicationAspect {
 
             String taskId = OperationType.PUSH + "-" + jPushId;
 
-            if (redisWrapperClient.hexistsSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
+            if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
 
-                OperationTask task = (OperationTask) redisWrapperClient.hgetSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+                OperationTask task = (OperationTask) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
 
                 OperationTask notify = new OperationTask();
                 String notifyId = taskId;
@@ -384,8 +381,8 @@ public class ApplicationAspect {
 
                 notify.setDescription(senderRealName + "发送了您创建的APP推送'" + task.getObjName() + "'。");
 
-                redisWrapperClient.hdelSeri(TASK_KEY + Role.OPERATOR_ADMIN, taskId);
-                redisWrapperClient.hsetSeri(NOTIFY_KEY + task.getSender(), notifyId, notify);
+                redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+                redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), notifyId, notify);
             }
         } catch (Exception e) {
             logger.error("after send JPush aspect fail ", e);
