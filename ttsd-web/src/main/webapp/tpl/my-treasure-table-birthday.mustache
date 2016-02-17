@@ -5,6 +5,7 @@
         <th>首月翻倍倍数</th>
         <th>使用时间</th>
         <th>投资金额(元)</th>
+        <th>预计收益(元)</th>
     </tr>
     </thead>
     <tbody>
@@ -14,10 +15,11 @@
         <td>{{birthdayBenefit}}</td>
         <td>{{usedTime}}</td>
         <td>{{investAmountStr}}</td>
+        <td>{{expectedIncomeStr}}</td>
     </tr>
     {{/records}}
     {{^records}}
-    <td colspan="4" class="no-data">暂时没有使用记录</td>
+    <td colspan="5" class="no-data">暂时没有使用记录</td>
     {{/records}}
     </tbody>
 </table>
