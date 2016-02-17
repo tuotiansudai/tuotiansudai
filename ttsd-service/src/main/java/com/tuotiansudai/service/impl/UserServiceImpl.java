@@ -15,8 +15,8 @@ import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.*;
-import com.tuotiansudai.task.OperationType;
-import com.tuotiansudai.task.aspect.ApplicationAspect;
+//import com.tuotiansudai.task.OperationType;
+//import com.tuotiansudai.task.aspect.ApplicationAspect;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.commons.collections4.CollectionUtils;
@@ -328,8 +328,10 @@ public class UserServiceImpl implements UserService {
                 }
             }
             userItemDataDto.setBankCard(bindBankCardService.getPassedBankCard(userModel.getLoginName()) != null);
-            String taskId = OperationType.USER + "-" + userModel.getLoginName();
-            userItemDataDto.setModify(redisWrapperClient.hexistsSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId));
+//            String taskId = OperationType.USER + "-" + userModel.getLoginName();
+//            userItemDataDto.setModify(redisWrapperClient.hexistsSeri(ApplicationAspect.TASK_KEY + Role.OPERATOR_ADMIN, taskId));
+            String taskId = "USER-" + userModel.getLoginName();
+            userItemDataDto.setModify(redisWrapperClient.hexistsSeri("console:task:" + Role.OPERATOR_ADMIN, taskId));
             userItemDataDtos.add(userItemDataDto);
         }
         int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel);

@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="app-push-list.js" headLab="app-push-manage" sideLab="manualAppPushManage" title="手动推送管理">
 
@@ -102,7 +103,15 @@
             </td>
             <td>
                 <#if pushAlert.status != "SEND_SUCCESS">
-                    <a href="/app-push-manage/manual-app-push/${pushAlert.id?string('0')}/edit">编辑</a>|<a class="send-push-link" href="/app-push-manage/manual-app-push/${pushAlert.id?string('0')}/send">推送</a>
+                    <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
+                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?string('0')}/edit">编辑</a>
+                    </@security.authorize>
+
+                    <@security.authorize access="hasAuthority('ADMIN')">&nbsp;|&nbsp;</@security.authorize>
+
+                    <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                        <a class="send-push-link" href="/app-push-manage/manual-app-push/${pushAlert.id?string('0')}/send">推送</a>
+                    </@security.authorize>
                 </#if>
             </td>
             <td>

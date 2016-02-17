@@ -22,8 +22,10 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.service, com.tuotiansudai.repository, com.tuotiansudai.client, com.tuotiansudai.security,
-                    com.tuotiansudai.util,com.tuotiansudai.coupon,com.tuotiansudai.console.jpush,com.tuotiansudai.task.aspect"/>
+    <context:component-scan base-package="com.tuotiansudai.console.jpush, com.tuotiansudai.service, com.tuotiansudai.repository, com.tuotiansudai.client, com.tuotiansudai.security,
+                    com.tuotiansudai.util,com.tuotiansudai.coupon,com.tuotiansudai.task.aspect">
+        <context:exclude-filter type="regex" expression="com.tuotiansudai.console.jpush.controller"/>
+    </context:component-scan>
 
     <aop:aspectj-autoproxy expose-proxy="true"/>
 
