@@ -22,7 +22,7 @@ public interface AccountMapper {
 
     void update(AccountModel model);
 
-    AccountModel findByIdentityNumber(String identityNumber);
+    List<AccountModel> findByIdentityNumber(String identityNumber);
 
     List<String> findLoginNames();
 }

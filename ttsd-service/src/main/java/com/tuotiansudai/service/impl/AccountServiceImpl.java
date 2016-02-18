@@ -3,9 +3,12 @@ package com.tuotiansudai.service.impl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.AccountService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -33,8 +36,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public boolean isIdentityNumberExist(String identityNumber) {
-        AccountModel accountModel = accountMapper.findByIdentityNumber(identityNumber);
-        return accountModel != null;
+        List<AccountModel> accountModels = accountMapper.findByIdentityNumber(identityNumber);
+        return CollectionUtils.isNotEmpty(accountModels);
     }
 
 }
