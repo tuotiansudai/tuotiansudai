@@ -160,7 +160,11 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 $couponExpectedInterest.text("");
 
                 if (couponItem.data('coupon-id')) {
-                    calExpectedCouponInterest(couponItem.data('coupon-id'));
+                    if (couponItem.attr('data-coupon-type') != 'BIRTHDAY_COUPON') {
+                        calExpectedCouponInterest(couponItem.data('coupon-id'));
+                    } else {
+                        calExpectedCouponInterest();
+                    }
                 }
                 $ticketList.addClass('hide');
             });

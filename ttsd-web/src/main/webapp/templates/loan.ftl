@@ -86,7 +86,7 @@
                                             <#if !coupon.shared>
                                                 <li data-coupon-id="${coupon.couponId?string.computer}"
                                                     data-coupon-type="${coupon.couponType}"
-                                                    data-coupon-created-time="${coupon.createdTime?string("yyyy-MM-dd HH:mm:ss")}"
+                                                    data-coupon-created-time="${coupon.createdTime?string("yyyy-MM-dd HH:mm:ss")}" data-shared="${coupon.shared?then('y','n')}"
                                                     <#if coupon.investLowerLimit!=0 && coupon.investUpperLimit!=0>class="lower-upper-limit"</#if>>
                                                     <input type="radio"
                                                            id="${coupon.id?string.computer}"
@@ -141,7 +141,7 @@
                                         </#list>
                                     </ul>
                                     <#list coupons as coupon>
-                                        <#if coupon.shared && coupon.investLowerLimit==0 && coupon.investUpperLimit==0>
+                                        <#if (coupon.shared && coupon.investLowerLimit==0 && coupon.investUpperLimit==0) || coupon.couponType == 'BIRTHDAY_COUPON'>
                                             <input type="hidden" id="${coupon.id?string.computer}" name="userCouponIds" value="${coupon.id?string.computer}" data-coupon-id="${coupon.couponId?string.computer}" />
                                             <p class="red-tiptext clearfix">
                                                 <i class="icon-redbag"></i>
