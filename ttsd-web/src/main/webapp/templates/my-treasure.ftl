@@ -36,7 +36,7 @@
                 <div class="sign-seal sign-used"><span>已<br/>使用</span></div>
             </div>
         <#else>
-            <p class="no-treasure-tip tc pad-m">您当前没有宝藏，敬请期待！</p>
+            <p class="no-treasure-tip tc pad-m">您当前没有现金红包，敬请期待！</p>
         </#list>
 
         <div class="ticket-use-help clear-blank-m">
@@ -80,7 +80,7 @@
             <div class="sign-seal sign-expired"><span>已<br/>过期</span></div>
         </div>
         <#else>
-        <p class="no-treasure-tip tc pad-m">您当前没有宝藏，敬请期待！</p>
+        <p class="no-treasure-tip tc pad-m">您当前没有体验券，敬请期待！</p>
         </#list>
 
         <div class="ticket-use-help clear-blank-m">
@@ -123,7 +123,7 @@
                 <div class="sign-seal sign-expired"><span>已<br/>过期</span></div>
             </div>
         <#else>
-            <p class="no-treasure-tip tc pad-m">您当前没有宝藏，敬请期待！</p>
+            <p class="no-treasure-tip tc pad-m">您当前没有加息券，敬请期待！</p>
         </#list>
 
         <div class="ticket-use-help clear-blank-m">
