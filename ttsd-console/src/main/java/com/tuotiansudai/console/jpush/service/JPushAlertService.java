@@ -18,5 +18,5 @@ public interface JPushAlertService {
 
     JPushAlertModel findJPushAlertModelById(long id);
 
-    void send(String loginName,long id);
+    void send(String loginName,long id, String ip);
 }

@@ -15,6 +15,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.task.TaskConstant;
@@ -48,6 +49,9 @@ public class AuditTaskAspect {
     @Autowired
     private UserRoleMapper userRoleMapper;
 
+    @Autowired
+    private AuditLogService auditLogService;
+
     private static String DES_TEMPLATE = "\"loginName\":{0}, \"mobile\":{1}, \"email\":{2}, \"referrer\":{3}, \"status\":{4}, \"roles\":[{5}]";
 
     static Logger logger = Logger.getLogger(AuditTaskAspect.class);
@@ -76,7 +80,7 @@ public class AuditTaskAspect {
 
                 task.setSender(senderLoginName);
                 task.setOperateURL("/project-manage/loan/" + loanDto.getId());
-                task.setDescription(senderRealName + "创建了新的标的'" + loanDto.getProjectName() + "'，请审核。");
+                task.setDescription(senderRealName + "创建了新的标的［" + loanDto.getProjectName() + "］，请审核。");
 
                 redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
             }
@@ -86,12 +90,13 @@ public class AuditTaskAspect {
     }
 
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanService.openLoan(*))", returning = "returnValue")
+    @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanService.openLoan(..))", returning = "returnValue")
     public void afterReturningOpenLoan(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after open loan aspect.");
         try {
             if (((BaseDto<PayDataDto>) returnValue).getData().getStatus()) {
                 LoanDto loanDto = (LoanDto) joinPoint.getArgs()[0];
+                String ip = (String) joinPoint.getArgs()[1];
                 String taskId = OperationType.PROJECT + "-" + loanDto.getId();
 
                 if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
@@ -107,17 +112,22 @@ public class AuditTaskAspect {
 
                     String senderLoginName = LoginUserInfo.getLoginName();
                     notify.setSender(senderLoginName);
-                    notify.setReceiver(task.getSender());
+
+                    String receiverLoginName = task.getSender();
+                    notify.setReceiver(receiverLoginName);
                     notify.setCreatedTime(new Date());
                     notify.setObjId(task.getObjId());
 
                     AccountModel sender = accountService.findByLoginName(senderLoginName);
                     String senderRealName = sender != null ? sender.getUserName() : senderLoginName;
 
-                    notify.setDescription(senderRealName + "通过了您" + OperationType.PROJECT.getDescription() + "'" + task.getObjName() + "'的申请。");
+                    notify.setDescription(senderRealName + "通过了您" + OperationType.PROJECT.getDescription() + "［" + task.getObjName() + "］的申请。");
 
                     redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
                     redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + loanDto.getCreatedLoginName(), notifyId, notify);
+
+                    String description = senderRealName + "审核通过了标的［" + task.getObjName() + "］。" + "［ID：" + task.getObjId() + "］";
+                    auditLogService.createAuditLog(senderLoginName, receiverLoginName, description, ip);
                 }
             }
         } catch (Exception e) {
@@ -129,6 +139,7 @@ public class AuditTaskAspect {
     public Object aroundEditUser(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         String operatorLoginName = (String) proceedingJoinPoint.getArgs()[0];
         EditUserDto editUserDto = (EditUserDto) proceedingJoinPoint.getArgs()[1];
+        String ip = (String) proceedingJoinPoint.getArgs()[2];
         String taskId = OperationType.USER + "-" + editUserDto.getLoginName();
         String loginName = LoginUserInfo.getLoginName();
         List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(loginName);
@@ -149,14 +160,21 @@ public class AuditTaskAspect {
             notify.setObjId(editUserDto.getLoginName());
             notify.setId(taskId);
             notify.setSender(operatorLoginName);
-            notify.setReceiver(task.getSender());
+
+            String receiverLoginName = task.getSender();
+            notify.setReceiver(receiverLoginName);
             AccountModel sender = accountService.findByLoginName(operatorLoginName);
             String senderRealName = sender != null ? sender.getUserName() : operatorLoginName;
 
             AccountModel account = accountService.findByLoginName(editUserDto.getLoginName());
             String editUserRealName = account != null ? account.getUserName() : editUserDto.getLoginName();
-            notify.setDescription(senderRealName + "通过了您修改用户'" + editUserRealName + "'的申请。");
+            notify.setDescription(senderRealName + "通过了您修改用户［" + editUserRealName + "］的申请。");
             redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), taskId, notify);
+
+            String description = senderRealName + "通过了修改用户［" + task.getObjName() + "］的申请。";
+            description += task.getDescription().split("的信息。")[1];
+            auditLogService.createAuditLog(operatorLoginName, receiverLoginName, description, ip);
+
             return proceedingJoinPoint.proceed();
         } else {
             OperationTask<EditUserDto> task = new OperationTask<>();
@@ -164,6 +182,7 @@ public class AuditTaskAspect {
             task.setOperationType(OperationType.USER);
             task.setId(taskId);
             task.setObjId(editUserDto.getLoginName());
+            task.setObjName(editUserDto.getUserName());
             task.setCreatedTime(new Date());
             task.setOperateURL("/user-manage/user/" + editUserDto.getLoginName());
             task.setSender(operatorLoginName);
@@ -171,34 +190,42 @@ public class AuditTaskAspect {
             String senderRealName = sender != null ? sender.getUserName() : operatorLoginName;
             UserModel beforeUpdateUserModel = userMapper.findByLoginName(editUserDto.getLoginName());
             List<UserRoleModel> beforeUpdateUserRoleModels = userRoleMapper.findByLoginName(editUserDto.getLoginName());
-            String beforeUpdate = MessageFormat.format(DES_TEMPLATE,
-                    "\"" + beforeUpdateUserModel.getLoginName() + "\"",
-                    "\"" + beforeUpdateUserModel.getMobile() + "\"",
-                    "\"" + beforeUpdateUserModel.getEmail() + "\"",
-                    "\"" + beforeUpdateUserModel.getReferrer() + "\"",
-                    "\"" + beforeUpdateUserModel.getStatus().name() + "\"",
-                    Joiner.on(",").join(Lists.transform(beforeUpdateUserRoleModels, new Function<UserRoleModel, String>() {
-                        @Override
-                        public String apply(UserRoleModel input) {
-                            return "\"" + input.getRole().name() + "\"";
-                        }
-                    })));
-            String afterUpdate = MessageFormat.format(DES_TEMPLATE,
-                    "\"" + editUserDto.getLoginName() + "\"",
-                    "\"" + editUserDto.getMobile() + "\"",
-                    editUserDto.getEmail() != null ? "\"" + editUserDto.getEmail() + "\"" : "\"\"",
-                    editUserDto.getReferrer() != null ? "\"" + editUserDto.getReferrer() + "\"" : "\"\"",
-                    "\"" + editUserDto.getStatus().name() + "\"",
-                    Joiner.on(",").join(Lists.transform(editUserDto.getRoles(), new Function<Role, String>() {
-                        @Override
-                        public String apply(Role input) {
-                            return "\"" + input.name() + "\"";
-                        }
-                    })));
+            String beforeUpdate = getUserJsonString(beforeUpdateUserModel, beforeUpdateUserRoleModels);
+            String afterUpdate = getUserJsonStringDto(editUserDto);
             task.setDescription(senderRealName + "申请修改用户" + editUserDto.getLoginName() + "的信息。操作详情为：</br>" + "{" + beforeUpdate + "}" + " =></br> " + "{" + afterUpdate + "}");
             redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId, task);
             return true;
         }
+    }
+
+    private String getUserJsonStringDto(EditUserDto editUserDto) {
+        return MessageFormat.format(DES_TEMPLATE,
+                "\"" + editUserDto.getLoginName() + "\"",
+                "\"" + editUserDto.getMobile() + "\"",
+                editUserDto.getEmail() != null ? "\"" + editUserDto.getEmail() + "\"" : "\"\"",
+                editUserDto.getReferrer() != null ? "\"" + editUserDto.getReferrer() + "\"" : "\"\"",
+                "\"" + editUserDto.getStatus().name() + "\"",
+                Joiner.on(",").join(Lists.transform(editUserDto.getRoles(), new Function<Role, String>() {
+                    @Override
+                    public String apply(Role input) {
+                        return "\"" + input.name() + "\"";
+                    }
+                })));
+    }
+
+    private String getUserJsonString(UserModel userModel, List<UserRoleModel> beforeUpdateUserRoleModels) {
+        return MessageFormat.format(DES_TEMPLATE,
+                "\"" + userModel.getLoginName() + "\"",
+                "\"" + userModel.getMobile() + "\"",
+                "\"" + userModel.getEmail() + "\"",
+                "\"" + userModel.getReferrer() + "\"",
+                "\"" + userModel.getStatus().name() + "\"",
+                Joiner.on(",").join(Lists.transform(beforeUpdateUserRoleModels, new Function<UserRoleModel, String>() {
+                    @Override
+                    public String apply(UserRoleModel input) {
+                        return "\"" + input.getRole().name() + "\"";
+                    }
+                })));
     }
 
     @AfterReturning(value = "execution(* com.tuotiansudai.coupon.service.CouponService.createCoupon(..))")
@@ -257,7 +284,7 @@ public class AuditTaskAspect {
             }
 
             task.setOperateURL(operateURL);
-            task.setDescription(senderRealName + "创建了一张'" + couponDto.getCouponType().getName() + "'，请审核。");
+            task.setDescription(senderRealName + "创建了一张 " + couponDto.getCouponType().getName() + "，请审核。");
 
             redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
         }
@@ -269,6 +296,7 @@ public class AuditTaskAspect {
         try {
             String operator = (String) joinPoint.getArgs()[0];
             long couponId = (long) joinPoint.getArgs()[1];
+            String ip = (String) joinPoint.getArgs()[2];
             String taskId = OperationType.COUPON + "-" + couponId;
 
             if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
@@ -284,7 +312,9 @@ public class AuditTaskAspect {
 
                 String senderLoginName = operator;
                 notify.setSender(senderLoginName);
-                notify.setReceiver(task.getSender());
+
+                String receiverLoginName = task.getSender();
+                notify.setReceiver(receiverLoginName);
                 notify.setCreatedTime(new Date());
                 notify.setObjId(task.getObjId());
 
@@ -295,6 +325,11 @@ public class AuditTaskAspect {
 
                 redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
                 redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), notifyId, notify);
+
+                AccountModel receiver = accountService.findByLoginName(receiverLoginName);
+                String receiverRealName = receiver != null ? receiver.getUserName() : receiverLoginName;
+                String description = senderRealName + " 激活了 " + receiverRealName + " 创建的 " + task.getObjName() + "。［ID：" + task.getObjId() + "］";
+                auditLogService.createAuditLog(senderLoginName, receiverLoginName, description, ip);
             }
         } catch (Exception e) {
             logger.error("after active coupon aspect fail ", e);
@@ -341,7 +376,7 @@ public class AuditTaskAspect {
 
                 task.setSender(senderLoginName);
                 task.setOperateURL("/app-push-manage/manual-app-push-list");
-                task.setDescription(senderRealName + "创建了一个APP推送'" + jPushAlertDto.getName() + "'，请审核。");
+                task.setDescription(senderRealName + "创建了一个APP推送［" + jPushAlertDto.getName() + "］，请审核。");
 
                 redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, String.valueOf(taskId), task);
             }
@@ -356,6 +391,7 @@ public class AuditTaskAspect {
         try {
             String operator = (String) joinPoint.getArgs()[0];
             long jPushId = (long) joinPoint.getArgs()[1];
+            String ip = (String) joinPoint.getArgs()[2];
 
             String taskId = OperationType.PUSH + "-" + jPushId;
 
@@ -372,17 +408,25 @@ public class AuditTaskAspect {
 
                 String senderLoginName = operator;
                 notify.setSender(senderLoginName);
-                notify.setReceiver(task.getSender());
+
+                String receiverLoginName = task.getSender();
+                notify.setReceiver(receiverLoginName);
                 notify.setCreatedTime(new Date());
                 notify.setObjId(task.getObjId());
 
                 AccountModel sender = accountService.findByLoginName(senderLoginName);
                 String senderRealName = sender != null ? sender.getUserName() : senderLoginName;
 
-                notify.setDescription(senderRealName + "发送了您创建的APP推送'" + task.getObjName() + "'。");
+                notify.setDescription(senderRealName + "发送了您创建的APP推送［" + task.getObjName() + "］。");
 
                 redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
                 redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), notifyId, notify);
+
+                AccountModel receiver = accountService.findByLoginName(receiverLoginName);
+                String receiverRealName = receiver != null ? receiver.getUserName() : receiverLoginName;
+                String description = senderRealName + " 审核通过了 " + receiverRealName + " 创建的APP推送［" + task.getObjName() + "］。［ID：" + task.getObjId() + "］";
+                auditLogService.createAuditLog(senderLoginName, receiverLoginName, description, ip);
+
             }
         } catch (Exception e) {
             logger.error("after send JPush aspect fail ", e);
