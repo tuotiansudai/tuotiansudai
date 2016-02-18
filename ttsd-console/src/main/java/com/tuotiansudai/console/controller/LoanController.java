@@ -13,12 +13,14 @@ import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.util.RequestIPParser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -88,9 +90,10 @@ public class LoanController {
 
     @RequestMapping(value = "/ok", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> openLoan(@RequestBody LoanDto loanDto) {
+    public BaseDto<PayDataDto> openLoan(@RequestBody LoanDto loanDto, HttpServletRequest request) {
+        String ip = RequestIPParser.parse(request);
         loanDto.setVerifyLoginName(LoginUserInfo.getLoginName());
-        return loanService.openLoan(loanDto);
+        return loanService.openLoan(loanDto, ip);
     }
 
     @RequestMapping(value = "/delay", method = RequestMethod.POST)

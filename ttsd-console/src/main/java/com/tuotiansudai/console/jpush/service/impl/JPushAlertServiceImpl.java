@@ -60,7 +60,7 @@ public class JPushAlertServiceImpl implements JPushAlertService{
     }
 
     @Override
-    public void send(String loginName,long id) {
+    public void send(String loginName,long id, String ip) {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertModelById(id);
         JPushAlertDto jPushAlertDto = new JPushAlertDto(jPushAlertModel);
         PushSource pushSource = jPushAlertDto.getPushSource();

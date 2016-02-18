@@ -9,12 +9,14 @@ import com.tuotiansudai.console.jpush.repository.model.PushType;
 import com.tuotiansudai.console.jpush.service.JPushAlertService;
 import com.tuotiansudai.console.util.DistrictUtil;
 import com.tuotiansudai.console.util.LoginUserInfo;
+import com.tuotiansudai.util.RequestIPParser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -48,9 +50,10 @@ public class JPushAlertController {
         return modelAndView;
     }
     @RequestMapping(value="/manual-app-push/{id}/send",method = RequestMethod.GET)
-    public String send(@PathVariable long id){
+    public String send(@PathVariable long id, HttpServletRequest request){
+        String ip = RequestIPParser.parse(request);
         String loginName = LoginUserInfo.getLoginName();
-        jPushAlertService.send(loginName,id);
+        jPushAlertService.send(loginName, id, ip);
         return "redirect:/app-push-manage/manual-app-push-list";
     }
     @RequestMapping(value = "/manual-app-push",method = RequestMethod.POST)

@@ -219,7 +219,7 @@ public class UserServiceImpl implements UserService {
         userMapper.updateUser(userModel);
 
         //generate audit
-        auditLogService.generateAuditLog(operatorLoginName, beforeUpdateUserModel, beforeUpdateUserRoleModels, userModel, afterUpdateUserRoleModels, ip);
+//        auditLogService.createUserActiveLog(operatorLoginName, beforeUpdateUserModel, beforeUpdateUserRoleModels, userModel, afterUpdateUserRoleModels, ip);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (!mobile.equals(beforeUpdateUserModel.getMobile()) && accountModel != null) {
@@ -238,14 +238,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void updateUserStatus(String loginName, UserStatus userStatus, String ip, String operatorLoginName) {
         UserModel userModel = userMapper.findByLoginName(loginName);
-        UserModel beforeUpdateUserModel;
-        try {
-            beforeUpdateUserModel = userModel.clone();
-        } catch (CloneNotSupportedException e) {
-            logger.error(e.getLocalizedMessage(), e);
-            return;
-        }
-
         userModel.setStatus(userStatus);
         userModel.setLastModifiedTime(new Date());
         userModel.setLastModifiedUser(operatorLoginName);
@@ -256,9 +248,8 @@ public class UserServiceImpl implements UserService {
         } else {
             redisWrapperClient.set(redisKey, String.valueOf(times));
         }
-        List<UserRoleModel> userRoles = userRoleMapper.findByLoginName(loginName);
 
-        auditLogService.generateAuditLog(operatorLoginName, beforeUpdateUserModel, userRoles, userModel, userRoles, ip);
+        auditLogService.createUserActiveLog(loginName, operatorLoginName, userStatus, ip);
     }
 
     private void checkUpdateUserData(EditUserDto editUserDto) throws EditUserException {
