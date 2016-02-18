@@ -3,6 +3,7 @@ package com.tuotiansudai.api.dto;
 public class LoanResponseDataDto {
     private String loanId;
     private String loanType;
+    private String loanTypeName;
     private String loanName;
     private String repayTypeCode;
     private String repayTypeName;
@@ -180,5 +181,13 @@ public class LoanResponseDataDto {
 
     public void setRaiseCompletedTime(String raiseCompletedTime) {
         this.raiseCompletedTime = raiseCompletedTime;
+    }
+
+    public String getLoanTypeName() {
+        return loanTypeName;
+    }
+
+    public void setLoanTypeName(String loanTypeName) {
+        this.loanTypeName = loanTypeName;
     }
 }
