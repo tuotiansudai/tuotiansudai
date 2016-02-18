@@ -64,4 +64,8 @@
         select login_name from account where substring(identity_number,11,2) =  DATE_FORMAT(now(),'%m')
     </select>
 
+    <select id="findBirthOfAccountInDay" resultType="java.lang.String">
+        select login_name from account where substring(identity_number,13,2) =  DATE_FORMAT(now(),'%d')
+    </select>
+
 </mapper>

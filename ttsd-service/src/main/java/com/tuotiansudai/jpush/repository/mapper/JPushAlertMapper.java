@@ -23,6 +23,6 @@ public interface JPushAlertMapper {
 
     JPushAlertModel findJPushAlertModelById(long id);
 
-    JPushAlertModel findJPushAlertByPushType();
+    JPushAlertModel findJPushAlertByPushType(@Param("pushType") PushType pushType);
 
 }

@@ -28,6 +28,8 @@ public enum JobType {
     CalculateDefaultInterest("计算逾期罚息"),
     AutoReFreshAreaByMobile("获取手机归属地"),
     AutoJPushAlertBirthMonth("每月1日推送当月生日用户"),
+    AutoJPushAlertBirthDay("用户生日当天"),
+    AutoJPushNoInvestAlert("持续30天未投资，提醒一次"),
     NormalRepay("正常还款"),
     LoanRepayNotify("还款提醒"),
     AdvanceRepay("提前还款"),

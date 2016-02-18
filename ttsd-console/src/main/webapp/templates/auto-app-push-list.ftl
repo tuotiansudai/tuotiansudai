@@ -52,15 +52,35 @@
                 <tr>
                     <td>${pushAlert.id?string('0')}</td>
                     <td>${(pushAlert.name)!}</td>
-                    <td>用户生日当月1日，进行提醒</td>
+                    <td>
+                        <#switch pushAlert.pushType>
+                            <#case 'BIRTHDAY_ALERT_MONTH'>
+                                用户生日当月1日，进行提醒
+                                <#break>
+                            <#case 'BIRTHDAY_ALERT_DAY'>
+                                用户生日当天
+                                <#break>
+                            <#case 'LOAN_ALERT'>
+                                用户所投标的放款时
+                                <#break>
+                            <#case 'INVEST_ALERT'>
+                                持续30天未投资，提醒一次
+                                <#break>
+                        </#switch>
+                    </td>
                     <td>Android / IOS</td>
                     <td>
-                        <#if pushAlert.pushType.name()=='BIRTHDAY_ALERT_MONTH'>
-                            生日月加息活动专题页
+                        <#if pushAlert.jumpTo??>
+                        ${pushAlert.jumpTo.getDescription()}
                         </#if>
+                       <#if pushAlert.jumpToLink??>
+                    ${pushAlert.jumpToLink!}
+                    </#if>
                     </td>
                     <td>${(pushAlert.content)!}</td>
-                    <td><div class="${(pushAlert.status.name()=='ENABLED')?string('text-success','text-danger')}">${pushAlert.status.getDescription()}</div></td>
+                    <td>
+                        <div class="${(pushAlert.status.name()=='ENABLED')?string('text-success','text-danger')}">${pushAlert.status.getDescription()}</div>
+                    </td>
                     <td>
                         <#if pushAlert.status=='ENABLED'>
                             <button class="btn btn-danger btn-xs disabled-link"
@@ -97,7 +117,8 @@
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <textarea rows="4" cols="50" maxlength="40" class="content" name="content" placeholder="（长度请不要超过40个字）"></textarea>
+                    <textarea rows="4" cols="50" maxlength="40" class="content" name="content"
+                              placeholder="（长度请不要超过40个字）"></textarea>
                     <input type="hidden" name="jPushAlertId" class="jPushAlertId"/>
                 </div>
                 <div class="text-danger web-error-message alertMessage"></div>
@@ -109,9 +130,11 @@
                         提交更改
                     </button>
                 </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal -->
 
-</div>
-<!-- content area end -->
+    </div>
+    <!-- content area end -->
 </@global.main>

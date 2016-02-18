@@ -32,8 +32,6 @@ public class CouponServiceImpl implements CouponService {
 
     static Logger logger = Logger.getLogger(CouponServiceImpl.class);
 
-    private static String redisKeyTemplate = "console:{0}:importcouponuser";
-
     @Autowired
     private CouponMapper couponMapper;
 
@@ -48,6 +46,8 @@ public class CouponServiceImpl implements CouponService {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
     @Override
     @Transactional
