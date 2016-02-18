@@ -92,7 +92,7 @@
                                                            id="${coupon.id?string.computer}"
                                                            name="userCouponIds"
                                                            value="${coupon.id?string.computer}"
-                                                           class="input-use-ticket"
+                                                           class="input-use-ticket" data-type="${coupon.couponType}"
                                                            <#if coupon.couponType == "BIRTHDAY_COUPON">
                                                            checked
                                                            </#if>

@@ -222,8 +222,17 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
         amountInputElement.keyup(function (event) {
             if (isInvestor) {
-                $ticketList.find('input[type="radio"]').prop('checked', false);
-                $useExperienceTicket.find('span').text('请选择优惠券');
+                var flag;
+                $ticketList.find('input[type="radio"]').each(function(index,item){
+                    if ($(item).attr("data-type") != 'BIRTHDAY_COUPON') {
+                        $(item).prop('checked', false);
+                    } else {
+                        flag = true;
+                    }
+                });
+                if (flag) {
+                    $useExperienceTicket.find('span').text('请选择优惠券');
+                }
             }
         });
 
