@@ -41,7 +41,7 @@
     </insert>
 
     <select id="findById" resultMap="couponResultMap" parameterType="long">
-        select * from coupon where id = #{id} and deleted is FALSE
+        select * from coupon where id = #{id}
     </select>
 
     <select id="findNewbieCoupon" resultMap="couponResultMap">
@@ -53,7 +53,7 @@
     </select>
 
     <select useCache="false" id="lockById" parameterType="java.lang.Long" resultMap="couponResultMap">
-        select * from coupon where id = #{id} and deleted is FALSE for update
+        select * from coupon where id = #{id} for update
     </select>
 
     <select id="findCoupons" parameterType="map" resultMap="couponResultMap">

@@ -206,7 +206,7 @@
         select * from user_coupon where login_name = #{loginName} and coupon_id = #{couponId}
     </select>
 
-    <select id="findSuccessByLoginNameAndLoanId" parameterType="map" resultMap="userCouponResultMap">
-        select * from user_coupon t join coupon m on t.coupon_id = m.id and m.coupon_type = 'BIRTHDAY_COUPON' where t.login_name = #{loginName} and t.loan_id = #{loanId} and t.status = 'SUCCESS'
+    <select id="findBirthdaySuccessByLoginNameAndLoanId" parameterType="map" resultMap="userCouponResultMap">
+        select t.* from user_coupon t join coupon m on t.coupon_id = m.id and m.coupon_type = 'BIRTHDAY_COUPON' where t.login_name = #{loginName} and t.loan_id = #{loanId} and t.status = 'SUCCESS'
     </select>
 </mapper>

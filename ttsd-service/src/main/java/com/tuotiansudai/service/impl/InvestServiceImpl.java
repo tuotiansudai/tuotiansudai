@@ -3,7 +3,9 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
@@ -52,6 +54,9 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private CouponMapper couponMapper;
 
     @Override
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
@@ -175,7 +180,11 @@ public class InvestServiceImpl implements InvestService {
             index = index > totalPages ? totalPages : index;
             items = investMapper.findInvestPagination(loanId, investorLoginName, channel, strSource, role, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus);
             for (InvestPaginationItemView investPaginationItemView : items) {
-                investPaginationItemView.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponMapper.findSuccessByLoginNameAndLoanId(investorLoginName, investPaginationItemView.getLoanId())));
+                List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndLoanId(investorLoginName, investPaginationItemView.getLoanId());
+                investPaginationItemView.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
+                if (CollectionUtils.isNotEmpty(userCouponModels)) {
+                    investPaginationItemView.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
+                }
             }
             investAmountSum = investMapper.sumInvestAmount(loanId, investorLoginName, channel, strSource, role, startTime, endTime, investStatus, loanStatus);
         }
