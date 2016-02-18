@@ -141,12 +141,15 @@
                                         </#list>
                                     </ul>
                                     <#list coupons as coupon>
-                                        <#if (coupon.shared && coupon.investLowerLimit==0 && coupon.investUpperLimit==0) || coupon.couponType == 'BIRTHDAY_COUPON'>
+                                        <#if (coupon.shared && coupon.investLowerLimit==0 && coupon.investUpperLimit==0)>
                                             <input type="hidden" id="${coupon.id?string.computer}" name="userCouponIds" value="${coupon.id?string.computer}" data-coupon-id="${coupon.couponId?string.computer}" />
                                             <p class="red-tiptext clearfix">
                                                 <i class="icon-redbag"></i>
                                                 <span>${coupon.couponType.getName()}${(coupon.amount / 100)?string("0.00")}元（投资即可返现）</span>
                                             </p>
+                                        </#if>
+                                        <#if coupon.couponType == 'BIRTHDAY_COUPON'>
+                                            <input type="hidden" id="${coupon.id?string.computer}" name="birthdayCouponIds" value="${coupon.id?string.computer}" data-coupon-id="${coupon.couponId?string.computer}" />
                                         </#if>
                                     </#list>
                                 </#if>

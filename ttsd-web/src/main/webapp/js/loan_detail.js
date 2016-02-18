@@ -161,7 +161,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
                 if (couponItem.data('coupon-id')) {
                     if (couponItem.attr('data-coupon-type') != 'BIRTHDAY_COUPON') {
-                        calExpectedCouponInterest(couponItem.data('coupon-id'));
+                        calExpectedCouponInterest(couponItem.data('coupon-id'),true);
                     } else {
                         calExpectedCouponInterest();
                     }
@@ -176,7 +176,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             return amount > 0 && amountNeedRaised >= amount;
         };
 
-        var calExpectedCouponInterest = function (couponId) {
+        var calExpectedCouponInterest = function (couponId, flag) {
             var queryParams = [];
             if ($.isNumeric(couponId)) {
                 queryParams.push({'name': 'couponIds', 'value': couponId});
@@ -185,6 +185,12 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             $.each($('input[type="hidden"][name="userCouponIds"]'), function(index, item) {
                 queryParams.push({'name': 'couponIds', 'value': $(item).data("coupon-id")})
             });
+
+            if (!flag) {
+                $.each($('input[type="hidden"][name="birthdayCouponIds"]'), function (index, item) {
+                    queryParams.push({'name': 'couponIds', 'value': $(item).data("coupon-id")})
+                });
+            }
 
             if (queryParams.length == 0) {
                 $couponExpectedInterest.text("");
@@ -230,12 +236,15 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 $ticketList.find('input[type="radio"]').each(function(index,item){
                     if ($(item).attr("data-type") == 'BIRTHDAY_COUPON') {
                         flag = false;
+                        $(item).prop('checked', true);
                     } else {
                         $(item).prop('checked', false);
                     }
                 });
                 if (flag) {
                     $useExperienceTicket.find('span').text('请选择优惠券');
+                } else {
+                    $useExperienceTicket.find('span').text('生日福利');
                 }
             }
         });
