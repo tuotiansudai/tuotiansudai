@@ -86,6 +86,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());
             loanResponseDataDto.setLoanType(loan.getProductType() != null ? loan.getProductType().name() : "");
+            loanResponseDataDto.setLoanTypeName(loan.getProductType() != null ? loan.getProductType().getName() : "");
             loanResponseDataDto.setLoanName(loan.getName());
             loanResponseDataDto.setRepayTypeCode("");
             loanResponseDataDto.setRepayTypeName(loan.getType().getName());
