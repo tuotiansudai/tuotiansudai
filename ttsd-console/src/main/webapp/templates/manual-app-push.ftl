@@ -29,7 +29,8 @@
             <div class="col-sm-10">
                 <#if jPushAlert??>
                     <input type="radio"  class="push_object_choose" value="all" name="pushObjectChoose" <#if jPushAlert??&&!(jPushAlert.pushObjects?has_content)>checked</#if> placeholder=""  datatype="*" >全部
-                    <input type="radio"  class="push_object_choose" value="district" <#if jPushAlert??&&(jPushAlert.pushObjects?has_content)&&jPushAlert.pushObjects?size gt 0>checked</#if> name="pushObjectChoose" placeholder=""  datatype="*" >地区
+
+                    <input type="radio"  class="push_object_choose" value="district" <#if jPushAlert??&&jPushAlert.pushObjects?has_content&&jPushAlert.pushObjects?size gt 0>checked</#if> name="pushObjectChoose" placeholder=""  datatype="*" >地区
                 <#else>
                     <input type="radio"  class="push_object_choose" value="all" checked name="pushObjectChoose" placeholder=""  datatype="*" >全部
                     <input type="radio"  class="push_object_choose" value="district" name="pushObjectChoose" placeholder=""  datatype="*" >地区

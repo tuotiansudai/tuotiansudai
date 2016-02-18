@@ -38,6 +38,8 @@ public class InvestPaginationItemView extends InvestModel {
 
     private boolean birthdayCoupon;
 
+    private double birthdayBenefit;
+
     public String getLoanName() {
         return loanName;
     }
@@ -172,5 +174,13 @@ public class InvestPaginationItemView extends InvestModel {
 
     public void setBirthdayCoupon(boolean birthdayCoupon) {
         this.birthdayCoupon = birthdayCoupon;
+    }
+
+    public double getBirthdayBenefit() {
+        return birthdayBenefit;
+    }
+
+    public void setBirthdayBenefit(double birthdayBenefit) {
+        this.birthdayBenefit = birthdayBenefit;
     }
 }
