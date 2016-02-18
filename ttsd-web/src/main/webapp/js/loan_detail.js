@@ -222,12 +222,12 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
         amountInputElement.keyup(function (event) {
             if (isInvestor) {
-                var flag;
+                var flag = true;
                 $ticketList.find('input[type="radio"]').each(function(index,item){
-                    if ($(item).attr("data-type") != 'BIRTHDAY_COUPON') {
-                        $(item).prop('checked', false);
+                    if ($(item).attr("data-type") == 'BIRTHDAY_COUPON') {
+                        flag = false;
                     } else {
-                        flag = true;
+                        $(item).prop('checked', false);
                     }
                 });
                 if (flag) {
