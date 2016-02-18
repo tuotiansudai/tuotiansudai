@@ -13,7 +13,9 @@ import com.tuotiansudai.coupon.util.UserCollector;
 import com.tuotiansudai.dto.SmsCouponNotifyDto;
 import com.tuotiansudai.job.CouponNotifyJob;
 import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.util.AmountConverter;
@@ -65,6 +67,9 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
+
+    @Autowired
+    private AccountMapper accountMapper;
 
     @Transactional
     @Override
@@ -134,7 +139,15 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     public void assignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
-        List<CouponModel> coupons = couponMapper.findAllActiveCoupons();
+        List<CouponModel> coupons;
+
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+
+        if (Integer.parseInt(accountModel.getIdentityNumber().substring(10, 12)) != new DateTime().getMonthOfYear()) {
+            coupons = couponMapper.findAllActiveCouponsNotExistsBirthday();
+        } else {
+            coupons = couponMapper.findAllActiveCoupons();
+        }
 
         List<CouponModel> couponModels = Lists.newArrayList(Iterators.filter(coupons.iterator(), new Predicate<CouponModel>() {
             @Override

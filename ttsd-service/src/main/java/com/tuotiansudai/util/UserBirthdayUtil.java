@@ -20,10 +20,11 @@ public class UserBirthdayUtil {
 
         String identityNumber = accountModel.getIdentityNumber();
 
-        int birthMonth = Integer.parseInt(identityNumber.substring(11, 12));
+        int birthMonth = Integer.parseInt(identityNumber.substring(10, 12));
 
         int monthOfYear = new DateTime().getMonthOfYear();
 
         return monthOfYear == birthMonth;
     }
+
 }
