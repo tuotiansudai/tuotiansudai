@@ -35,12 +35,15 @@
   text-align: center;
   overflow: auto;
   height: auto;
-
   dl {
     margin-bottom: 12px;
     height: auto;
     overflow: auto;
     clear: both;
+    &.identityCodeError{
+      color: #ff0000;
+      display: none;
+    }
     dt, dd {
       float: left;
     }
@@ -61,6 +64,15 @@
     border: 0;
     border-radius: 0;
     background: none;
+  }
+  .birth-icon{
+    float: left;
+    width: 20px;
+    height: 20px;
+    background: url(/images/sign/birthday.png) no-repeat center;
+    background-size: 15px;
+    left: 50px;
+    position: relative;
   }
   .accountImg {
     margin-right: 10px;
@@ -192,6 +204,15 @@
           padding-top: 5px;
         }
       }
+    }
+    .birth-icon{
+      float: left;
+      width: 20px;
+      height: 20px;
+      background: url(/images/sign/birthday.png) no-repeat center;
+      background-size: 15px;
+      left: 50px;
+      position: relative;
     }
     .trade-detail{
       width: 170px;
@@ -767,6 +788,13 @@
   table.invest-list {
     td {
       font-size: 12px;
+      i.birth-icon{
+        float: left;
+        width: 20px;
+        height: 20px;
+        background: url(/images/sign/birthday.png) no-repeat center;
+        background-size: 15px;
+      }
       .loan-name-col {
         display: inline-block;
         width: 170px;
@@ -958,6 +986,22 @@
                 }
               }
             }
+            .red-tiptext{
+              margin-bottom: 0;
+              i.icon-redbag{
+                float:left;
+                width:18px;
+                height:14px;
+                margin-top: 5px;
+                background: url(/images/sign/icon-red-sm.png) no-repeat center;
+              }
+              span{
+                float:left;
+                font-size:12px;
+                color:#ff752a;
+                margin-left:6px;
+              }
+            }
             .ticket-list {
               position: absolute;
               z-index: 100;
@@ -1018,6 +1062,7 @@
         }
         &.expected-interest-dd {
           padding:2px;
+          line-height: 30px;
           .principal-income {
             font-size: 25px;
             color: #ff7200;

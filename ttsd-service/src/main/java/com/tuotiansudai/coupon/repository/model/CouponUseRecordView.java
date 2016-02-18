@@ -39,6 +39,8 @@ public class CouponUseRecordView implements Serializable {
 
     private String expectedIncomeStr;
 
+    private String birthdayBenefit;
+
     public CouponUseRecordView() {
     }
 
@@ -172,5 +174,13 @@ public class CouponUseRecordView implements Serializable {
 
     public void setExpectedIncomeStr(String expectedIncomeStr) {
         this.expectedIncomeStr = expectedIncomeStr;
+    }
+
+    public String getBirthdayBenefit() {
+        return birthdayBenefit;
+    }
+
+    public void setBirthdayBenefit(String birthdayBenefit) {
+        this.birthdayBenefit = birthdayBenefit;
     }
 }

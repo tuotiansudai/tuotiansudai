@@ -18,17 +18,9 @@
   {
     "pictureId": "",
     "title": "",
-    "url": "{web}/activity/awards?source=app",
-    "seqNum": 3,
-    "picture": "{static}/images/app-banner/activity-awards.jpg",
-    "noticeId": ""
-  },
-  {
-    "pictureId": "",
-    "title": "",
     "url": "{web}/activity/recruit?source=app",
-    "seqNum": 4,
-    "picture": "{static}/images/app-banner/activity-recruit.png",
+    "seqNum": 3,
+    "picture": "{static}/images/app-banner/ph-a03.jpg",
     "noticeId": ""
   }
 ]

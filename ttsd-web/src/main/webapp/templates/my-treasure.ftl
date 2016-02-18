@@ -21,7 +21,7 @@
                     </#list>
                     产品线可用 <br/>
                     <#if redEnvelope.investLowerLimit == 0>
-                        <em>投资即可返现</em>
+                        <em>投资成功放款后返现</em>
                     <#else>
                         <em>单笔投资满&nbsp;<span class="red-amount-exceed"><@amount>${redEnvelope.investLowerLimit?string(0)}</@amount></span>&nbsp;元可用</em>
                     </#if>
@@ -42,9 +42,9 @@
         <div class="ticket-use-help clear-blank-m">
             <b>红包使用规则：</b>
             <p>
-                1.  在投资过程中使用红包，投资成功后即可返现；<br/>
+                1.  在投资过程中使用红包，投资成功放款后即可返现；<br/>
                 2.  现金红包不可与平台其他优惠券同时使用（3元现金红包除外）；<br/>
-                3.  投资成功后用户获得的现金可在“我的账户”中查询，提现；<br/>
+                3.  投资成功放款后用户获得的现金可在“我的账户”中查询，提现；<br/>
                 4.  如红包有使用条件，用户需要按照条件使用。<br/>
             </p>
         </div>
@@ -145,6 +145,7 @@
             <span class="select-item current" data-status="touzi">现金红包</span>
             <span class="select-item" data-status="touzi">体验券</span>
             <span class="select-item" data-status="jiaxi">加息券</span>
+            <span class="select-item" data-status="birthday">生日福利</span>
         </div>
         <div class="clear-blank"></div>
         <div class="record-tab tab-show">
@@ -162,6 +163,12 @@
         <div class="record-tab">
             <div class="invest-list-interest"></div>
             <div id="use-record-interest" class="pagination" data-url="/coupon/use-record" data-page-size="10">
+            </div>
+        </div>
+
+        <div class="record-tab">
+            <div class="invest-list-birthday"></div>
+            <div id="use-record-birthday" class="pagination" data-url="/coupon/use-record" data-page-size="10">
             </div>
         </div>
     </div>
