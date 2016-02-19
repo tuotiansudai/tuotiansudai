@@ -39,10 +39,10 @@
             <li class="f-title">友情链接</li>
             <li><a href="http://www.tuotianzichan.com/" target="_blank">拓天资产</a></li>
             <li><a href="https://www.zuiyidai.com/" target="_blank">最易贷</a></li>
-            <li><a href="https://www.p2l.com.cn/" target="_blank">融租e投</a></li>
+            <li><a href="http://www.51wangdai.com/" target="_blank">51网贷</a></li>
             <li><a href="http://www.liyedai.cn/" target="_blank">立业贷</a></li>
             <li><a href="http://www.8ncb.com" target="_blank">农村宝理财</a></li>
-            <li><a href="http://www.diyizhibo.com/" target="_blank">第一直播</a></li>
+            <li><a href="http://www.wdzj.com/" target="_blank">网贷之家</a></li>
         </ul>
     </div>
     <div class="copyright page-width">
