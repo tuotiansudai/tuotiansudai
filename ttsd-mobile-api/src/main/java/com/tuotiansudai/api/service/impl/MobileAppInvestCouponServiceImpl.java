@@ -93,11 +93,11 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
 
         for (int i = 0; i < userCouponModels.size(); i++) {
             UserCouponModel item = userCouponModels.get(i);
-//            CouponModel couponModel = couponMapper.findById(item.getCouponId());
-//            if (couponModel.getCouponType().equals(CouponType.RED_ENVELOPE) && couponModel.isShared()) {
-//                listDel.add(item);
-//                continue;
-//            }
+            CouponModel couponModel = couponMapper.findById(item.getCouponId());
+            if (couponModel.getCouponType().equals(CouponType.RED_ENVELOPE) && couponModel.isShared()) {
+                listDel.add(item);
+                continue;
+            }
             boolean isSupportedLoanType = false;
             for (ProductType type : ProductType.values()) {
                 if (type.equals(loanProductType)) {
@@ -140,13 +140,13 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
     private int compareCouponType(CouponType typeFirst, CouponType typeSecond) {
         try {
             if (dicRule.get(typeFirst) >= dicRule.get(typeSecond)) {
-                return 1;
+                return -1;
             }
         } catch (Exception e) {
             log.error(e.getLocalizedMessage(),e);
         }
 
-        return -1;
+        return 1;
     }
 
     private boolean isAvailableCoupon(CouponModel couponModel,long investMoney) {
