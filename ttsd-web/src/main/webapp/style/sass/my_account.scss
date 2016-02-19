@@ -1701,6 +1701,11 @@
   .account-info{
     width:96%!important;
     padding:0 2%!important;
+    border-left:none!important;
+    border-top: 1px solid #ccc;
+    .l-title{
+      display:none;
+    }
     .account-list{
       margin-left:0!important;
     }
