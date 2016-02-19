@@ -6,18 +6,17 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.UnmodifiableIterator;
 import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.MobileAppUserCouponService;
+import com.tuotiansudai.api.service.MobileAppInvestCouponService;
+
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.AmountConverter;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,23 +25,27 @@ import java.util.Iterator;
 import java.util.List;
 
 @Service
-public class MobileAppUserCouponServiceImpl implements MobileAppUserCouponService {
-
+public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponService {
+    @Autowired
+    private UserCouponMapper userCouponMapper;
+    @Autowired
+    private LoanMapper loanMapper;
     @Autowired
     private CouponMapper couponMapper;
 
-    @Autowired
-    private UserCouponMapper userCouponMapper;
-
-    @Autowired
-    private LoanMapper loanMapper;
-
-    @Autowired
-    private InvestMapper investMapper;
-
     @Override
-    public BaseResponseDto<UserCouponListResponseDataDto> getUserCoupons(final UserCouponRequestDto requestDto) {
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(requestDto.getBaseParam().getUserId(), null);
+    public BaseResponseDto getInvestCoupons(InvestRequestDto dto) {
+        String loanId = dto.getLoanId();
+        String investMoney = dto.getInvestMoney();
+        if(StringUtils.isEmpty(loanId) || StringUtils.isEmpty(investMoney)){
+            return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(),ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+        }
+
+
+        LoanModel loanModel = loanMapper.findById(Long.parseLong(loanId));
+        long investMoneyLong = AmountConverter.convertStringToCent(dto.getInvestMoney());
+
+        List<UserCouponModel> userCouponModels =  userCouponMapper.findInvestCouponByLoginName(dto.getBaseParam().getUserId(), loanModel.getProductType(), investMoneyLong);
 
         UnmodifiableIterator<UserCouponModel> filter = Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
             @Override
@@ -51,35 +54,21 @@ public class MobileAppUserCouponServiceImpl implements MobileAppUserCouponServic
                 boolean used = InvestStatus.SUCCESS == userCouponModel.getStatus();
                 boolean expired = !used && new DateTime(couponModel.getEndTime()).plusDays(1).withTimeAtStartOfDay().isBeforeNow();
                 boolean unused = !used && !expired;
-                return (used && requestDto.isUsed()) || (unused && requestDto.isUnused() && !CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType())) || (expired && requestDto.isExpired());
+                return unused;
 
             }
         });
-
         Iterator<UserCouponResponseDataDto> items = Iterators.transform(filter, new Function<UserCouponModel, UserCouponResponseDataDto>() {
             @Override
             public UserCouponResponseDataDto apply(UserCouponModel userCouponModel) {
                 UserCouponResponseDataDto dataDto = new UserCouponResponseDataDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel);
-                if (InvestStatus.SUCCESS == userCouponModel.getStatus()) {
-                    LoanModel loanModel = loanMapper.findById(userCouponModel.getLoanId());
-                    dataDto.setLoanId(String.valueOf(loanModel.getId()));
-                    dataDto.setLoanName(loanModel.getName());
-                    dataDto.setLoanProductType(loanModel.getProductType());
-                    InvestModel investModel = investMapper.findById(userCouponModel.getInvestId());
-                    if (investModel != null) {
-                        dataDto.setInvestAmount(AmountConverter.convertCentToString(investModel.getAmount()));
-                    }
-
-                }
                 return dataDto;
             }
         });
-
         BaseResponseDto<UserCouponListResponseDataDto> responseDto = new BaseResponseDto<>();
         responseDto.setCode(ReturnMessage.SUCCESS.getCode());
         responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         responseDto.setData(new UserCouponListResponseDataDto(Lists.newArrayList(items)));
-
         return responseDto;
     }
 }
