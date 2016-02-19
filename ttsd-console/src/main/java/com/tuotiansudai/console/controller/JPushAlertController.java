@@ -30,6 +30,7 @@ public class JPushAlertController {
         JPushAlertDto jPushAlertDto = new JPushAlertDto(jPushAlertModel);
         modelAndView.addObject("jPushAlert", jPushAlertDto);
         modelAndView.addObject("pushSources", Lists.newArrayList(PushSource.values()));
+        modelAndView.addObject("pushUserTypes", Lists.newArrayList(PushUserType.values()));
         modelAndView.addObject("pushTypes", Lists.newArrayList(PushType.values()));
         modelAndView.addObject("jumpTos", Lists.newArrayList(JumpTo.values()));
         modelAndView.addObject("provinces", DistrictUtil.getProvinces());
@@ -40,6 +41,7 @@ public class JPushAlertController {
     public ModelAndView appPush() {
         ModelAndView modelAndView = new ModelAndView("/manual-app-push");
         modelAndView.addObject("pushSources", Lists.newArrayList(PushSource.values()));
+        modelAndView.addObject("pushUserTypes", Lists.newArrayList(PushUserType.values()));
         modelAndView.addObject("pushTypes", Lists.newArrayList(PushType.values()));
         modelAndView.addObject("jumpTos", Lists.newArrayList(JumpTo.values()));
         modelAndView.addObject("provinces", DistrictUtil.getProvinces());
