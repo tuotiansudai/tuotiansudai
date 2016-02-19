@@ -67,12 +67,11 @@
     </div>
 </div>
 <div class="footer-responsive">
-    <p>客服电话:400-169-1188(服务时间:9:00-20:00)</p>
     <ul>
         <li><a href="/about/refer-reward">推荐奖励</a></li>
         <li><a href="/about/guide">新手指引</a></li>
         <li><a href="/about/assurance">安全保障</a></li>
     </ul>
-    <p>联动优势提供安全稳健的资金监管保障</p>
-    <p>京ICP备15035567号-1</br>拓天伟业(北京)金融信息服务有限公司</p>
+    <p>客服电话:400-169-1188(服务时间:9:00-20:00)</p>
+    <p>拓天伟业(北京)金融信息服务有限公司 版权所有</p>
 </div>

@@ -149,12 +149,20 @@
     color:#999;
   }
   ul{
-    float:left;
-    width:100%;
+    width: 300px;
+    margin: 0 auto;
+    overflow: hidden;
+    margin-bottom: 5px;
     li{
       float:left;
       width:33.333333%;
       text-align:center;
+      border-right:1px solid #ccc;
+      box-sizing:border-box;
+      line-height:14px;
+      &:last-child{
+        border-right:none;
+      }
       a{
         font-size:12px;
         color:#999;
