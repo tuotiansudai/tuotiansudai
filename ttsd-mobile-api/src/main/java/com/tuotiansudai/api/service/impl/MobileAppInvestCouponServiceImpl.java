@@ -16,6 +16,7 @@ import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -38,6 +39,9 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
             .put(CouponType.NEWBIE_COUPON, 98)
             .put(CouponType.INVEST_COUPON, 97)
             .put(CouponType.INTEREST_COUPON, 96).build());
+
+    @Autowired
+    private UserBirthdayUtil userBirthdayUtil;
 
     @Override
     public BaseResponseDto getInvestCoupons(InvestRequestDto dto) {
@@ -98,6 +102,10 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
         for (int i = 0; i < userCouponModels.size(); i++) {
             UserCouponModel item = userCouponModels.get(i);
             CouponModel couponModel = couponMapper.findById(item.getCouponId());
+            if(CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType()) && !userBirthdayUtil.isBirthMonth(item.getLoginName())){
+                listDel.add(item);
+                continue;
+            }
             boolean isSupportedLoanType = false;
             for (ProductType type : couponModel.getProductTypes()) {
                 if (type.equals(loanProductType)) {
