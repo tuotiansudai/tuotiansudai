@@ -28,8 +28,7 @@ public class InterestCalculator {
             return 0;
         }
 
-        DateTime loanDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
-        int daysOfYear = loanDate.dayOfYear().getMaximumValue();
+        int daysOfYear = 365;
         int repayTimes = loanModel.calculateLoanRepayTimes();
         int daysOfMonth = 30;
         int duration = loanModel.getPeriods();
@@ -71,6 +70,7 @@ public class InterestCalculator {
             case NEWBIE_COUPON:
             case INVEST_COUPON:
             case INTEREST_COUPON:
+            case BIRTHDAY_COUPON:
                 expectedFee = new BigDecimal(estimateCouponExpectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
                 break;
             default:

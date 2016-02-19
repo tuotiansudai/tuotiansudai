@@ -8,6 +8,7 @@ import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
 import org.omg.CORBA.PRIVATE_MEMBER;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -57,6 +58,7 @@ public class UserCouponResponseDataDto {
 
     public UserCouponResponseDataDto(CouponModel couponModel, UserCouponModel userCouponModel) {
         super();
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         this.userCouponId = String.valueOf(userCouponModel.getId());
         this.type = couponModel.getCouponType();
         this.name = couponModel.getCouponType().getName();
@@ -67,7 +69,7 @@ public class UserCouponResponseDataDto {
         this.productTypes = couponModel.getProductTypes();
         this.usedTime = userCouponModel.getUsedTime();
         this.expectedInterest = AmountConverter.convertCentToString(userCouponModel.getExpectedInterest());
-        this.rate = String.valueOf(couponModel.getRate() * 100);
+        this.rate = decimalFormat.format(couponModel.getRate() * 100);
         this.investUpperLimit = AmountConverter.convertCentToString(couponModel.getInvestUpperLimit());
         this.shared = couponModel.isShared();
         this.birthdayRate = String.valueOf(couponModel.getBirthdayBenefit());
