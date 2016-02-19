@@ -22,6 +22,16 @@ require(['jquery','echarts','commonFun', 'csrf','layerWrapper'], function ($) {
 
         tipshow('#tMonthBox','.month-title',6);
         tipshow('.newProjects','.trade-detail',15);
+        $('.birth-icon').on('mouseenter',function() {
+            layer.closeAll('tips');
+            layer.tips('您已享受生日福利，首月收益翻'+$(this).attr('data-benefit')+'倍', $(this), {
+                tips: [1, '#efbf5c'],
+                time: 2000,
+                tipsMore: true,
+                area: 'auto',
+                maxWidth: '500'
+            });
+        });
 
         /**
          * @dom  {[string]}		当前列表的DOM节点

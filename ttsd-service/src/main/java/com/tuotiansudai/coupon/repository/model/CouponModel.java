@@ -19,6 +19,10 @@ public class CouponModel implements Serializable {
 
     private double rate;
 
+    private double birthdayBenefit;
+
+    private boolean multiple;
+
     private Date startTime;
 
     private Date endTime;
@@ -91,6 +95,22 @@ public class CouponModel implements Serializable {
 
     public void setRate(double rate) {
         this.rate = rate;
+    }
+
+    public double getBirthdayBenefit() {
+        return birthdayBenefit;
+    }
+
+    public void setBirthdayBenefit(double birthdayBenefit) {
+        this.birthdayBenefit = birthdayBenefit;
+    }
+
+    public boolean isMultiple() {
+        return multiple;
+    }
+
+    public void setMultiple(boolean multiple) {
+        this.multiple = multiple;
     }
 
     public Date getStartTime() {
@@ -300,14 +320,8 @@ public class CouponModel implements Serializable {
         this.shared = couponDto.isShared();
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
         this.startTime = couponDto.getStartTime();
-        if (couponDto.getEndTime() != null) {
-            this.endTime = new DateTime(couponDto.getEndTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate();
-        }
-        if (couponDto.getTotalCount() != null) {
-            this.totalCount = couponDto.getTotalCount();
-        } else {
-            this.totalCount = 0L;
-        }
+        this.endTime = couponDto.getEndTime() != null ? new DateTime(couponDto.getEndTime()).withTimeAtStartOfDay().plusDays(1).minusSeconds(1).toDate() : null;
+        this.totalCount = couponDto.getTotalCount() != null ? couponDto.getTotalCount() : 0;
         this.productTypes = couponDto.getProductTypes() ;
         this.couponType = couponDto.getCouponType();
         this.investLowerLimit = AmountConverter.convertStringToCent(couponDto.getInvestLowerLimit());
@@ -315,6 +329,8 @@ public class CouponModel implements Serializable {
         this.smsAlert = couponDto.isSmsAlert();
         this.deadline = couponDto.getDeadline();
         this.userGroup = couponDto.getUserGroup();
-        this.rate = couponDto.getRate() == null ? 0 : new BigDecimal(couponDto.getRate()).divide(new BigDecimal(100)).doubleValue();
+        this.rate = couponDto.getRate() == null ? 0 : new BigDecimal(couponDto.getRate()).divide(new BigDecimal(100), 3, BigDecimal.ROUND_HALF_UP).doubleValue();
+        this.birthdayBenefit = couponDto.getBirthdayBenefit() == null ? 0 : new BigDecimal(couponDto.getBirthdayBenefit()).subtract(new BigDecimal(1)).doubleValue();
+        this.multiple = couponDto.getCouponType() == CouponType.BIRTHDAY_COUPON;
     }
 }

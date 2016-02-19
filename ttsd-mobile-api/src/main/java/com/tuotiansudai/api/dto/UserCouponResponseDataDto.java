@@ -50,6 +50,8 @@ public class UserCouponResponseDataDto {
 
     private String investAmount;
 
+    private String birthdayRate;
+
     public UserCouponResponseDataDto() {
     }
 
@@ -68,7 +70,7 @@ public class UserCouponResponseDataDto {
         this.rate = String.valueOf(couponModel.getRate() * 100);
         this.investUpperLimit = AmountConverter.convertCentToString(couponModel.getInvestUpperLimit());
         this.shared = couponModel.isShared();
-
+        this.birthdayRate = String.valueOf(couponModel.getBirthdayBenefit());
 
     }
 
@@ -206,5 +208,13 @@ public class UserCouponResponseDataDto {
 
     public void setInvestAmount(String investAmount) {
         this.investAmount = investAmount;
+    }
+
+    public String getBirthdayRate() {
+        return birthdayRate;
+    }
+
+    public void setBirthdayRate(String birthdayRate) {
+        this.birthdayRate = birthdayRate;
     }
 }

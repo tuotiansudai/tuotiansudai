@@ -1,10 +1,7 @@
 package com.tuotiansudai.coupon.service.impl;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.google.common.collect.*;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
@@ -16,10 +13,14 @@ import com.tuotiansudai.coupon.util.UserCollector;
 import com.tuotiansudai.dto.SmsCouponNotifyDto;
 import com.tuotiansudai.job.CouponNotifyJob;
 import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.JobManager;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,9 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
+
+    @Autowired
+    private AccountMapper accountMapper;
 
     @Transactional
     @Override
@@ -135,14 +139,32 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     public void assignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
-        List<CouponModel> coupons = couponMapper.findAllActiveCoupons();
+        List<CouponModel> coupons;
+
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+
+        if (Integer.parseInt(accountModel.getIdentityNumber().substring(10, 12)) != new DateTime().getMonthOfYear()) {
+            coupons = couponMapper.findAllActiveCouponsNotExistsBirthday();
+        } else {
+            coupons = couponMapper.findAllActiveCoupons();
+        }
 
         List<CouponModel> couponModels = Lists.newArrayList(Iterators.filter(coupons.iterator(), new Predicate<CouponModel>() {
             @Override
             public boolean apply(CouponModel couponModel) {
-                return userGroups.contains(couponModel.getUserGroup())
-                        && userCouponMapper.findByLoginNameAndCouponId(loginName, couponModel.getId()) == null
+                boolean isInUserGroup = userGroups.contains(couponModel.getUserGroup())
                         && CouponActivationServiceImpl.this.getCollector(couponModel.getUserGroup()).contains(couponModel.getId(), loginName);
+                List<UserCouponModel> existingUserCouponModels = userCouponMapper.findByLoginNameAndCouponId(loginName, couponModel.getId());
+                boolean hasNoUsableCoupon = CollectionUtils.isEmpty(existingUserCouponModels);
+                if (CollectionUtils.isNotEmpty(existingUserCouponModels) && couponModel.isMultiple()) {
+                    hasNoUsableCoupon = Iterables.all(existingUserCouponModels, new Predicate<UserCouponModel>() {
+                        @Override
+                        public boolean apply(UserCouponModel input) {
+                            return input.getStatus() == InvestStatus.SUCCESS;
+                        }
+                    });
+                }
+                return isInUserGroup && hasNoUsableCoupon;
             }
         }));
 

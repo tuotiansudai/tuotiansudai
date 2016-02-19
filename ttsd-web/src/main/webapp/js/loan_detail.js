@@ -108,11 +108,18 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 return $(ticket).hasClass('disabled') ? "disabled" : "enabled";
             });
 
-            var notSharedCoupons = _.groupBy($ticketList.find("li[data-coupon-type!='RED_ENVELOPE']"), function(ticket) {
+            var notSharedCoupons = _.groupBy($ticketList.find("li[data-coupon-type!='RED_ENVELOPE'][data-coupon-type!='BIRTHDAY_COUPON']"), function(ticket) {
                 return $(ticket).hasClass('disabled') ? "disabled" : "enabled";
             });
 
+            var birthdayCoupon = $ticketList.find("li[data-coupon-type='BIRTHDAY_COUPON']");
+
             $ticketList.empty();
+
+            if (birthdayCoupon.length > 0) {
+                $ticketList.append(birthdayCoupon);
+            }
+
             if (notSharedRedEnvelopes['enabled']) {
                 $ticketList.append(_.sortBy(notSharedRedEnvelopes['enabled'], function (ticket) {
                     var $ticket = $(ticket);
