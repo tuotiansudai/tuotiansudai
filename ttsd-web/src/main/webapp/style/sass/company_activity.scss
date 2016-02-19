@@ -339,6 +339,48 @@
     }
   }
 }
+/*birth-month*/
+.birth-month-container{
+  float:left;
+  width:100%;
+  .wp-img{
+    float:left;
+    width:100%;
+  }
+  .wp{
+    width:1000px;
+    margin:0 auto;
+    p{
+      font-size:40px;
+      color:#fff;
+      text-align:center;
+      &.text-bg{
+        font-size:40px;
+        color:#fff;
+        background:url('/images/sign/actor/birth/text-bg.png') center no-repeat;
+      }
+      &.text-font{
+        font-size:20px;
+      }
+      &.img-position{
+        margin-top:-110px;
+      }
+      &.text-gift{
+        margin-bottom:60px;
+      }
+    }
+    .rule-list{
+      background:#cc3929;
+      padding:20px 50px;
+      border-radius:10px;
+      margin-bottom:60px;
+      li{
+        color:#fff;
+        font-size:18px;
+      }
+    }
+  }
+}
 @media screen and (max-width: 700px){
   .red-envelope-container {
     .mobile {

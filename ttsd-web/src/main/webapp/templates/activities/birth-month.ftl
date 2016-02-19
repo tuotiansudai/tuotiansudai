@@ -1,36 +1,35 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.company_activity}" pageJavascript="${js.about_us}" activeNav="" activeLeftNav="" title="现金红包">
+<@global.main pageCss="${css.company_activity}" pageJavascript="${js.birth_month}" activeNav="" activeLeftNav="" title="生日月特权">
 <style type="text/css">
     body {
-        background: #8e0500 url('/images/sign/actor/redbag/red-bg.png') center top repeat-y;
+        background: url('/images/sign/actor/birth/bg-web.png') center top repeat-y;
     }
 </style>
 
-<div class="red-envelope-container" id="WhetherApp">
-    <div class="actor-img">
-        <img src="${staticServer}/images/sign/actor/redbag/re-top.png" alt="注册即送红包" class="red-top">
-        <img src="${staticServer}/images/sign/actor/redbag/red-top-mobile.png" alt="注册即送红包" class="red-top-mobile">
-        <img src="${staticServer}/images/sign/actor/redbag/red_envelope.png" alt="注册即送红包">
+<div class="birth-month-container">
+    <div class="wp-img">
+        <img src="${staticServer}/images/sign/actor/birth/top-picture.png" alt="生日月banner" width="100%">
     </div>
-    <div class="line-date-box">
-        <div class="line-date">
-            <div class="date-info">
-                <i class="fa fa-circle left"></i><span>活动时间：2016年2月3日至2016年5月3日</span><i class="fa fa-circle right"></i>
-            </div>
-        </div>
+    <div class="wp">
+        <p>生日想要什么礼物？</p>
+        <p class="text-gift"><img src="${staticServer}/images/sign/actor/birth/party.png" alt="生日月banner" width="100%"></p>
+        <p class="text-bg">通通都需要!!!</p>
+        <p>
+            <span><img src="${staticServer}/images/sign/actor/birth/monkey.png" alt=""></span>
+            <span>拓天速贷为你准备了</span>
+        </p>
+        <p class="img-position"><img src="${staticServer}/images/sign/actor/birth/huihuo.png"></p>
+        <p class="text-font">不会赚怎么花？</br>超高的收益等你拿。</p>
+        <p class="text-bg">Let's go！！！</p>
+        <p class="text-bg">活动规则</p>
+        <ul class="rule-list">
+            <li>1.本活动适用于平台注册用户生日当月（以绑定的身份证为准）；</li>
+            <li>2.活动期间投资产品享受首月收益加倍福利；</li>
+            <li>3.翻倍所得收益，体现在该笔投资项目收益中，可在“我的账户”中查询;</li>
+            <li>4.本次活动不限买入金额，不限购买笔数，多买多得;</li>
+            <li>5.本次活动不可与平台其他优惠券同时使用。</li>
+            <li>***活动遵循拓天速贷法律声明，最终解释权归拓天速贷平台所有。</li>
+        </ul>
     </div>
-    <div <#if source?? && source=='app'>class="mobile"</#if>>
-        <a <@global.isNotAnonymous>href="/my-treasure"</@global.isNotAnonymous>
-            <@global.isAnonymous>
-                <#if channel??>
-                    href="/register/user?channel=${channel}"
-                <#else>
-                    href="/register/user"
-                </#if>
-            </@global.isAnonymous>>
-            <img src="${staticServer}/images/sign/actor/redbag/red-get.png" alt="注册即送红包">
-        </a>
-    </div>
-    <img src="${staticServer}/images/sign/actor/redbag/red-info.png" alt="注册即送红包">
 </div>
 </@global.main>
