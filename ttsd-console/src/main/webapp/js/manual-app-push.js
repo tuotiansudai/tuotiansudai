@@ -11,6 +11,7 @@ require(['jquery', 'template', 'csrf', 'bootstrap', 'bootstrapDatetimepicker', '
         //渲染select表单
         $selectDom.selectpicker();
 
+        $('#datetimepicker6').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
         /**
          * @msg  {[string]} //文字信息
          * @obj  {[object]} //传入的dom节点

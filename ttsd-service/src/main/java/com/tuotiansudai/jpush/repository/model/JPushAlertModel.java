@@ -3,6 +3,7 @@ package com.tuotiansudai.jpush.repository.model;
 
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.format.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,10 +16,12 @@ public class JPushAlertModel implements Serializable{
     private PushType pushType;
     private List<String> pushObjects;
     private PushSource pushSource;
+    private PushUserType pushUserType;
     private PushStatus status;
     private String content;
     private JumpTo jumpTo;
     private String jumpToLink;
+    private Date expectPushTime;
     private Date createdTime;
     private String createdBy;
     private Date updatedTime;
@@ -138,6 +141,22 @@ public class JPushAlertModel implements Serializable{
         this.isAutomatic = isAutomatic;
     }
 
+    public PushUserType getPushUserType() {
+        return pushUserType;
+    }
+
+    public void setPushUserType(PushUserType pushUserType) {
+        this.pushUserType = pushUserType;
+    }
+
+    public Date getExpectPushTime() {
+        return expectPushTime;
+    }
+
+    public void setExpectPushTime(Date expectPushTime) {
+        this.expectPushTime = expectPushTime;
+    }
+
     public JPushAlertModel(){
 
     }
@@ -149,10 +168,12 @@ public class JPushAlertModel implements Serializable{
         this.pushType = jPushAlertDto.getPushType();
         this.pushObjects = jPushAlertDto.getPushObjects();
         this.pushSource = jPushAlertDto.getPushSource();
+        this.pushUserType = jPushAlertDto.getPushUserType();
         this.status = PushStatus.CREATED;
         this.content = jPushAlertDto.getContent();
         this.jumpTo = jPushAlertDto.getJumpTo();
         this.jumpToLink = jPushAlertDto.getJumpToLink();
-
+        this.expectPushTime = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm").parseDateTime(jPushAlertDto.getExpectPushTime()).toDate();
+        this.isAutomatic = jPushAlertDto.isAutomatic();
     }
 }
