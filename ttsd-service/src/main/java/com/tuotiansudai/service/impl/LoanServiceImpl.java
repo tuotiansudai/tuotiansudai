@@ -639,7 +639,7 @@ public class LoanServiceImpl implements LoanService {
                 }
                 if (LoanStatus.RAISING == loanModel.getStatus()) {
                     loanItemDto.setAlert(MessageFormat.format("{0} 元", AmountConverter.convertCentToString(loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanModel.getId()))));
-                    loanItemDto.setProgress(sumInvestAmountBigDecimal.divide(loanAmountBigDecimal, 2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue());
+                    loanItemDto.setProgress(sumInvestAmountBigDecimal.divide(loanAmountBigDecimal, 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue());
                 }
                 if (LoanStatus.RECHECK == loanModel.getStatus()) {
                     loanItemDto.setAlert("放款审核");

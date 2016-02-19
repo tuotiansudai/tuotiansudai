@@ -39,7 +39,7 @@ public class CertificationRequestDto extends BaseParamDto {
      * @return
      */
     public String getUserIdCardNumber() {
-        return userIdCardNumber;
+        return userIdCardNumber.trim();
     }
 
     /**
