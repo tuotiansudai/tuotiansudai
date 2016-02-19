@@ -51,7 +51,7 @@ public class MobileAppUserCouponServiceImpl implements MobileAppUserCouponServic
                 boolean used = InvestStatus.SUCCESS == userCouponModel.getStatus();
                 boolean expired = !used && new DateTime(couponModel.getEndTime()).plusDays(1).withTimeAtStartOfDay().isBeforeNow();
                 boolean unused = !used && !expired;
-                return (used && requestDto.isUsed()) || (unused && requestDto.isUnused() && !CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType())) || (expired && requestDto.isExpired());
+                return (used && requestDto.isUsed()) || (unused && requestDto.isUnused() && !CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType())) || (expired && requestDto.isExpired()&& !CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType()));
 
             }
         });
