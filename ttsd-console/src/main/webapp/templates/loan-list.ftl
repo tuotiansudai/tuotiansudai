@@ -93,17 +93,17 @@
 
                 <li>
                     <#if hasPreviousPage >
-                    <a href="?status=${status!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}" aria-label="Previous">
+                    <a href="?status=${status!}&index=${index-1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}" aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
                     <span aria-hidden="true">&laquo; Prev</span>
                 </a>
                 </li>
-                <li><a>${currentPageNo}</a></li>
+                <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="?status=${status!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}" aria-label="Next">
+                    <a href="?status=${status!}&index=${index+1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}" aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>
