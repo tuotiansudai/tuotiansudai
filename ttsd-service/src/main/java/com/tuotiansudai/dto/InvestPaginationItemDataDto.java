@@ -65,6 +65,10 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     private String city;
 
+    private boolean birthdayCoupon;
+
+    private double birthdayBenefit;
+
     public InvestPaginationItemDataDto(InvestPaginationItemView view) {
         this.investId = view.getId();
         this.loanId = view.getLoanId();
@@ -91,6 +95,8 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.identityNumber = view.getIdentityNumber();
         this.province = view.getProvince();
         this.city = view.getCity();
+        this.birthdayCoupon = view.isBirthdayCoupon();
+        this.birthdayBenefit = view.getBirthdayBenefit();
     }
 
     public boolean isStaff() {
@@ -255,5 +261,21 @@ public class InvestPaginationItemDataDto implements Serializable {
         } else {
             return "";
         }
+    }
+
+    public boolean isBirthdayCoupon() {
+        return birthdayCoupon;
+    }
+
+    public void setBirthdayCoupon(boolean birthdayCoupon) {
+        this.birthdayCoupon = birthdayCoupon;
+    }
+
+    public double getBirthdayBenefit() {
+        return birthdayBenefit;
+    }
+
+    public void setBirthdayBenefit(double birthdayBenefit) {
+        this.birthdayBenefit = birthdayBenefit;
     }
 }
