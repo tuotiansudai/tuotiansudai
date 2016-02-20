@@ -32,7 +32,8 @@ public enum JobType {
     AdvanceRepay("提前还款"),
     AutoLoanOut("满标自动放款"),
     SendRedEnvelope("放款发红包"),
-    CouponNotify("优惠券通知");
+    CouponNotify("优惠券通知"),
+    LoanBirthdayNotify("生日月用户短信提醒");
 
 
     private final String description;
