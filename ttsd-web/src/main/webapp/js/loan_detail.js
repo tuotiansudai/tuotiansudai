@@ -159,9 +159,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 couponItem.find("input").prop('checked', true);
                 $couponExpectedInterest.text("");
 
-                if (couponItem.data('coupon-id')) {
-                    calExpectedCouponInterest(couponItem.data('coupon-id'));
-                }
+                calExpectedCouponInterest();
                 $ticketList.addClass('hide');
             });
         };
@@ -172,18 +170,15 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             return amount > 0 && amountNeedRaised >= amount;
         };
 
-        var calExpectedCouponInterest = function (couponId) {
+        var calExpectedCouponInterest = function () {
             var queryParams = [];
-            if ($.isNumeric(couponId)) {
-                queryParams.push({'name': 'couponIds', 'value': couponId});
-            }
 
             $.each($('input[type="hidden"][name="userCouponIds"]'), function(index, item) {
                 queryParams.push({'name': 'couponIds', 'value': $(item).data("coupon-id")})
             });
 
             $ticketList.find('li').each(function(index, item) {
-                if($(item).find('input[type="radio"]').prop('checked') == true && $(item).data("coupon-id") != couponId){
+                if($(item).find('input[type="radio"]:checked').length > 0){
                     queryParams.push({'name': 'couponIds', 'value': $(item).data("coupon-id")});
                 }
             });
