@@ -132,13 +132,13 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
                 CouponModel secondCoupon = couponMapper.findById(second.getCouponId());
 
                 if (isAvailableCoupon(firstCoupon,investMoney) && isAvailableCoupon(secondCoupon,investMoney)) {
-                    return compareCouponType(firstCoupon.getCouponType(), firstCoupon.getCouponType());
+                    return compareCouponType(firstCoupon.getCouponType(), secondCoupon.getCouponType());
                 } else if (isAvailableCoupon(firstCoupon,investMoney) && !isAvailableCoupon(secondCoupon,investMoney)) {
                     return -1;
                 } else if (!isAvailableCoupon(firstCoupon,investMoney) && isAvailableCoupon(secondCoupon,investMoney)) {
                     return 1;
                 } else if (!isAvailableCoupon(firstCoupon,investMoney) && !isAvailableCoupon(secondCoupon,investMoney)) {
-                    return compareCouponType(firstCoupon.getCouponType(), firstCoupon.getCouponType());
+                    return compareCouponType(firstCoupon.getCouponType(), secondCoupon.getCouponType());
                 }
                 return 0;
             }
@@ -159,7 +159,7 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
 
     private boolean isAvailableCoupon(CouponModel couponModel,long investMoney) {
         boolean result = false;
-        if(couponModel.getCouponType().equals(CouponType.INTEREST_COUPON) && investMoney <= couponModel.getInvestUpperLimit()){
+        if(couponModel.getCouponType().equals(CouponType.INTEREST_COUPON) && investMoney <= couponModel.getInvestUpperLimit() && investMoney >= couponModel.getInvestLowerLimit()){
             return true;
         }else if(!couponModel.getCouponType().equals(CouponType.INTEREST_COUPON) && investMoney >= couponModel.getInvestLowerLimit()){
             return true;
