@@ -1,12 +1,23 @@
 package com.tuotiansudai.coupon.util;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.util.UserBirthdayUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class AllUserCollector implements UserCollector {
+
+    @Autowired
+    private UserBirthdayUtil userBirthdayUtil;
+
+    @Autowired
+    private CouponMapper couponMapper;
 
     @Override
     public List<String> collect(long couponId) {
@@ -20,6 +31,11 @@ public class AllUserCollector implements UserCollector {
 
     @Override
     public boolean contains(long couponId, String loginName) {
-        return true;
+        CouponModel couponModel = couponMapper.findById(couponId);
+        if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && !userBirthdayUtil.isBirthMonth(loginName)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

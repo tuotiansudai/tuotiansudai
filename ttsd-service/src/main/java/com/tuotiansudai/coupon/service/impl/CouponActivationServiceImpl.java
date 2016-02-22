@@ -13,13 +13,11 @@ import com.tuotiansudai.coupon.util.UserCollector;
 import com.tuotiansudai.dto.SmsCouponNotifyDto;
 import com.tuotiansudai.job.CouponNotifyJob;
 import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.JobManager;
-import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -67,12 +65,6 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
-
-    @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
-    private UserBirthdayUtil userBirthdayUtil;
 
     @Transactional
     @Override
@@ -159,7 +151,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
                         }
                     });
                 }
-                return isInUserGroup && hasNoUsableCoupon && userBirthdayUtil.isBirthMonth(loginName);
+                return isInUserGroup && hasNoUsableCoupon;
             }
         }));
 
