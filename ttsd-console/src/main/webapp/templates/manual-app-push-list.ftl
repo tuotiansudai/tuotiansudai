@@ -73,9 +73,6 @@
                     编号
                 </th>
                 <th>
-                    创建日期
-                </th>
-                <th>
                     通知类型
                 </th>
                 <th>
@@ -94,19 +91,28 @@
                     推送模板
                 </th>
                 <th>
-                    状态
+                    推送时间
                 </th>
                 <th>
-                    操作
+                    定位到页面
+                </th>
+                <th>
+                    (IOS)目标 | 送达 | 打开
+                </th>
+                <th>
+                    (Android)目标 | 送达 | 打开
                 </th>
                 <th>
                     创建人
                 </th>
                 <th>
-                    发送日期
+                    审核人
                 </th>
                 <th>
-                    最后操作人
+                    状态
+                </th>
+                <th>
+                    操作
                 </th>
             </tr>
             </thead>
@@ -115,9 +121,6 @@
                 <tr>
                     <td>
                     ${pushAlert.id?string('0')}
-                    </td>
-                    <td>
-                    ${pushAlert.createdTime?string('yyyy-MM-dd')}
                     </td>
                     <td>
                     ${pushAlert.pushType.getDescription()}
@@ -146,7 +149,15 @@
                     ${(pushAlert.content)!}
                     </td>
                     <td>
-                    ${pushAlert.status.getDescription()}
+                    ${pushAlert.expectPushTime?string('yyyy-MM-dd HH:mm:ss')}
+                    </td>
+                    <td>
+                        <#if pushAlert.jumpTo??>
+                            ${pushAlert.jumpTo.getDescription()}
+                        </#if>
+                        <#if pushAlert.jumpToLink??>
+                            ${pushAlert.jumpToLink!}
+                        </#if>
                     </td>
                     <td>
                         <#if pushAlert.status != "SEND_SUCCESS">
