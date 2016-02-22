@@ -185,6 +185,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 return;
             }
             autoJPushByBatchRegistrationId(jPushAlertModel, loginNames, jPushAlertModel.getPushSource());
+            jPushAlertMapper.updateStatus(PushStatus.SEND_SUCCESS, id);
         } else {
             logger.debug("this JPush is disabled, id = " + id);
         }
