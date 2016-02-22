@@ -1,5 +1,6 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.company_activity}" pageJavascript="${js.about_us}" activeNav="" activeLeftNav="" title="现金红包">
+<@global.main pageCss="${css.company_activity}" pageJavascript="${js.
+}" activeNav="" activeLeftNav="" title="现金红包">
 <style type="text/css">
     body {
         background: #8e0500 url('/images/sign/actor/redbag/red-bg.png') center top repeat-y;
