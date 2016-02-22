@@ -20,6 +20,7 @@ import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.JobManager;
+import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -70,6 +71,9 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private UserBirthdayUtil userBirthdayUtil;
 
     @Transactional
     @Override
@@ -139,15 +143,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     public void assignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
-        List<CouponModel> coupons;
-
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-
-        if (Integer.parseInt(accountModel.getIdentityNumber().substring(10, 12)) != new DateTime().getMonthOfYear()) {
-            coupons = couponMapper.findAllActiveCouponsNotExistsBirthday();
-        } else {
-            coupons = couponMapper.findAllActiveCoupons();
-        }
+        List<CouponModel> coupons = couponMapper.findAllActiveCoupons();
 
         List<CouponModel> couponModels = Lists.newArrayList(Iterators.filter(coupons.iterator(), new Predicate<CouponModel>() {
             @Override
@@ -160,7 +156,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
                     hasNoUsableCoupon = Iterables.all(existingUserCouponModels, new Predicate<UserCouponModel>() {
                         @Override
                         public boolean apply(UserCouponModel input) {
-                            return input.getStatus() == InvestStatus.SUCCESS;
+                            return input.getStatus() == InvestStatus.SUCCESS && userBirthdayUtil.isBirthMonth(input.getLoginName());
                         }
                     });
                 }

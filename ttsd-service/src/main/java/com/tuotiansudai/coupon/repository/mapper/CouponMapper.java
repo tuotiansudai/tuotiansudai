@@ -37,6 +37,4 @@ public interface CouponMapper {
 
     List<CouponModel> findAllActiveCoupons();
 
-    List<CouponModel> findAllActiveCouponsNotExistsBirthday();
-
 }
