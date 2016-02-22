@@ -156,6 +156,24 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
+    public void manualJPushAlert(long id) {
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertModelById(id);
+        if (jPushAlertModel.isAutomatic()) {
+            logger.debug("JPush is failed, this JPush is not manual, id = " + id);
+            return;
+        }
+        if (jPushAlertModel.getExpectPushTime().after(new Date())) {
+            logger.debug("JPush is failed, expect time is before now, id = " + id);
+            return;
+        }
+        if (jPushAlertModel != null) {
+
+        } else {
+            logger.debug("this JPush is disabled, id = " + id);
+        }
+    }
+
+    @Override
     public void autoJPushAlertBirthMonth() {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.BIRTHDAY_ALERT_MONTH);
         if(jPushAlertModel != null){

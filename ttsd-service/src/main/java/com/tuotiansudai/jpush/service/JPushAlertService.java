@@ -1,7 +1,6 @@
 package com.tuotiansudai.jpush.service;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.repository.model.JPushAlertModel;
 import com.tuotiansudai.jpush.repository.model.PushStatus;
@@ -26,6 +25,8 @@ public interface JPushAlertService {
     void changeJPushAlertStatus(long id,PushStatus status,String loginName);
 
     void changeJPushAlertContent(long id,String content,String loginName);
+
+    void manualJPushAlert(long id);
 
     void autoJPushAlertBirthMonth();
 
