@@ -10,17 +10,33 @@
     <div class="wp-img">
         <img src="${staticServer}/images/sign/actor/birth/top-picture.png" alt="生日月banner" width="100%">
     </div>
+    <div class="wp-img-phone">
+        <img src="${staticServer}/images/sign/actor/birth/app-top.png" alt="生日月banner" width="100%">
+    </div>
     <div class="wp">
         <p>生日想要什么礼物？</p>
-        <p class="text-gift"><img src="${staticServer}/images/sign/actor/birth/party.png" alt="生日月banner" width="100%"></p>
+        <p class="text-gift">
+            <img src="${staticServer}/images/sign/actor/birth/party.png" alt="生日月banner" width="100%" class="party-img">
+            <img src="${staticServer}/images/sign/actor/birth/app-party.png" alt="生日月banner" width="100%" class="party-img-phone">
+        </p>
         <p class="text-bg">通通都需要!!!</p>
         <p>
-            <span><img src="${staticServer}/images/sign/actor/birth/monkey.png" alt=""></span>
+            <span><img src="${staticServer}/images/sign/actor/birth/monkey.png" alt="" class="monkey-phone"></span>
             <span>拓天速贷为你准备了</span>
         </p>
         <p class="img-position"><img src="${staticServer}/images/sign/actor/birth/huihuo.png"></p>
         <p class="text-font">不会赚怎么花？</br>超高的收益等你拿。</p>
         <p class="text-bg">Let's go！！！</p>
+        <p class="text-pro">
+            <span class="product-left">
+                <img src="${staticServer}/images/sign/actor/birth/product-three.png">
+                <a href="#" class="click-btn"></a>
+            </span>
+            <span class="product-right">
+                <img src="${staticServer}/images/sign/actor/birth/product-six.png">
+                <a href="#" class="click-btn"></a>
+            </span>
+        </p>
         <p class="text-bg">活动规则</p>
         <ul class="rule-list">
             <li>1.本活动适用于平台注册用户生日当月（以绑定的身份证为准）；</li>
