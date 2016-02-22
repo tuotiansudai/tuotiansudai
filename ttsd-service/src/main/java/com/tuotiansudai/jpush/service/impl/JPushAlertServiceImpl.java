@@ -14,6 +14,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +38,9 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private RedisWrapperClient redisWrapperClient;
 
     private static final String JPUSH_ID_KEY = "api:jpushId:store";
+
+    @Value("${web.server}")
+    private String domainName;
 
     @Override
     @Transactional
@@ -180,7 +184,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         String jumpToLink = jPushAlertDto.getJumpToLink();
         if (StringUtils.isNotEmpty(jumpToLink)) {
             jumpToOrLink[0] = "jumpToLink";
-            jumpToOrLink[1] = jumpToLink;
+            jumpToOrLink[1] = domainName + jumpToLink;
             return jumpToOrLink;
         }
         if (jumpTo != null) {
