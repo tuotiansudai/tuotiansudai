@@ -155,11 +155,11 @@ public class CouponActivationServiceImpl implements CouponActivationService {
                     hasNoUsableCoupon = Iterables.all(existingUserCouponModels, new Predicate<UserCouponModel>() {
                         @Override
                         public boolean apply(UserCouponModel input) {
-                            return input.getStatus() == InvestStatus.SUCCESS && userBirthdayUtil.isBirthMonth(loginName);
+                            return input.getStatus() == InvestStatus.SUCCESS;
                         }
                     });
                 }
-                return isInUserGroup && hasNoUsableCoupon;
+                return isInUserGroup && hasNoUsableCoupon && userBirthdayUtil.isBirthMonth(loginName);
             }
         }));
 
