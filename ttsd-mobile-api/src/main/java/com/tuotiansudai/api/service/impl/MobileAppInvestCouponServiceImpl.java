@@ -147,8 +147,11 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
 
     private int compareCouponType(CouponType typeFirst, CouponType typeSecond) {
         try {
-            if (dicRule.get(typeFirst) >= dicRule.get(typeSecond)) {
+            if (dicRule.get(typeFirst) > dicRule.get(typeSecond)) {
                 return -1;
+            }
+            if(dicRule.get(typeFirst) == dicRule.get(typeSecond)){
+                return 0;
             }
         } catch (Exception e) {
             log.error(e.getLocalizedMessage(),e);
