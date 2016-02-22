@@ -8,6 +8,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.job.ManualJPushAlertJob;
 import com.tuotiansudai.jpush.client.MobileAppJPushClient;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper;
@@ -16,9 +18,11 @@ import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +61,9 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
+
+    @Autowired
+    private JobManager jobManager;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -171,17 +178,13 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             logger.debug("JPush is failed, this JPush is not manual, id = " + id);
             return;
         }
-        if (jPushAlertModel.getExpectPushTime().after(new Date())) {
-            logger.debug("JPush is failed, expect time is before now, id = " + id);
-            return;
-        }
         if (jPushAlertModel != null) {
             List<String> loginNames = findManualJPushAlertUserLoginName(jPushAlertModel.getPushUserType());
             if(CollectionUtils.isEmpty(loginNames)){
                 logger.debug("this JPush without data, id = " + id);
                 return;
             }
-            autoJPushByBatchRegistrationId(jPushAlertModel, loginNames);
+            autoJPushByBatchRegistrationId(jPushAlertModel, loginNames, jPushAlertModel.getPushSource());
         } else {
             logger.debug("this JPush is disabled, id = " + id);
         }
@@ -248,7 +251,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 logger.debug("accountMapper.findBirthOfAccountInMonth() without data");
                 return;
             }
-            autoJPushByBatchRegistrationId(jPushAlertModel, loginNames);
+            autoJPushByBatchRegistrationId(jPushAlertModel, loginNames, PushSource.ALL);
         }else{
             logger.debug("autoJPushAlertBirthMonthJob is disabled");
         }
@@ -264,7 +267,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 logger.debug("accountMapper.findBirthOfAccountInDay() without data");
                 return;
             }
-            autoJPushByBatchRegistrationId(jPushAlertModel, loginNames);
+            autoJPushByBatchRegistrationId(jPushAlertModel, loginNames, PushSource.ALL);
         }else{
             logger.debug("AutoJPushAlertBirthDayJob is disabled");
         }
@@ -293,7 +296,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
                 redisWrapperClient.set(NO_INVEST_LOGIN_NAME, objectMapper.writeValueAsString(loginNames));
                 if(CollectionUtils.isNotEmpty(jPushAlertSet)){
-                    autoJPushByBatchRegistrationId(jPushAlertModel, Lists.newArrayList(jPushAlertSet));
+                    autoJPushByBatchRegistrationId(jPushAlertModel, Lists.newArrayList(jPushAlertSet), PushSource.ALL);
                 }
             }catch (IOException e){
                 logger.error(e.getLocalizedMessage(),e);
@@ -343,7 +346,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
 
-    private void autoJPushByBatchRegistrationId(JPushAlertModel jPushAlertModel, List<String> pushObjects) {
+    private void autoJPushByBatchRegistrationId(JPushAlertModel jPushAlertModel, List<String> pushObjects, PushSource pushSource) {
         JPushAlertDto jPushAlertDto = new JPushAlertDto(jPushAlertModel);
         String[] jumpToOrLink = chooseJumpToOrLink(jPushAlertDto);
         List<String> registrationIds = Lists.newArrayList();
@@ -354,7 +357,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 registrationIds.add(registrationId);
             }
             if (registrationIds.size() == 1000 || (i == pushObjects.size() - 1 && registrationIds.size() > 0)) {
-                boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, jPushAlertModel.getContent(), jumpToOrLink[0], jumpToOrLink[1]);
+                boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, jPushAlertModel.getContent(), jumpToOrLink[0], jumpToOrLink[1], pushSource);
                 if (sendResult) {
                     logger.debug(MessageFormat.format("第{0}个用户推送成功", i + 1));
                 }else{
@@ -385,14 +388,28 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
                     }
                 }
-                boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, content, jumpToOrLink[0], jumpToOrLink[1]);
+                boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, content, jumpToOrLink[0], jumpToOrLink[1], PushSource.ALL);
                 registrationIds.clear();
             }
         }
 
     }
 
-
-
+    private boolean ManualJPushAlertJob(JPushAlertModel jPushAlertModel) {
+        if (!jPushAlertModel.getExpectPushTime().after(new Date())) {
+            logger.debug("manualJPushAlertJob create failed, expect push time is before now, id = " + jPushAlertModel.getId());
+            return false;
+        }
+        try {
+            jobManager.newJob(JobType.ManualJPushAlert, ManualJPushAlertJob.class)
+                    .withIdentity(JobType.ManualJPushAlert.name(), "JPush-" + jPushAlertModel.getId())
+                    .replaceExistingJob(true)
+                    .addJobData("JPUSH_ID", jPushAlertModel.getId())
+                    .runOnceAt(jPushAlertModel.getExpectPushTime()).submit();
+        } catch (SchedulerException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return true;
+    }
 
 }
