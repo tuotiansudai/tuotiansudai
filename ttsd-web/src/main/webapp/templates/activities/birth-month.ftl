@@ -7,6 +7,12 @@
 </style>
 
 <div class="birth-month-container">
+    <div class="birth-time">
+        <div class="time-list">
+            <img src="${staticServer}/images/sign/actor/birth/birth-time.png" class="tip-time" alt="">
+            <img src="${staticServer}/images/sign/actor/birth/close-btn.png" class="time-close" alt="">
+        </div>
+    </div>
     <div class="wp-img">
         <img src="${staticServer}/images/sign/actor/birth/top-picture.png" alt="生日月banner" width="100%">
     </div>
@@ -30,11 +36,11 @@
         <p class="text-pro">
             <span class="product-left">
                 <img src="${staticServer}/images/sign/actor/birth/product-three.png">
-                <a href="#" class="click-btn"></a>
+                <a href="#" class="click-btn time-btn"></a>
             </span>
             <span class="product-right">
                 <img src="${staticServer}/images/sign/actor/birth/product-six.png">
-                <a href="#" class="click-btn"></a>
+                <a href="#" class="click-btn time-btn"></a>
             </span>
         </p>
         <p class="text-bg">活动规则</p>
