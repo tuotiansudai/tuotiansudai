@@ -245,9 +245,9 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     @Override
     public void autoJPushAlertBirthMonth() {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.BIRTHDAY_ALERT_MONTH);
-        if(jPushAlertModel != null){
+        if (jPushAlertModel != null) {
             List<String> loginNames = accountMapper.findBirthOfAccountInMonth();
-            if(CollectionUtils.isEmpty(loginNames)){
+            if (CollectionUtils.isEmpty(loginNames)) {
                 logger.debug("accountMapper.findBirthOfAccountInMonth() without data");
                 return;
             }
@@ -261,9 +261,9 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     @Override
     public void autoJPushAlertBirthDay() {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.BIRTHDAY_ALERT_DAY);
-        if(jPushAlertModel != null){
+        if (jPushAlertModel != null) {
             List<String> loginNames = accountMapper.findBirthOfAccountInDay();
-            if(CollectionUtils.isEmpty(loginNames)){
+            if (CollectionUtils.isEmpty(loginNames)) {
                 logger.debug("accountMapper.findBirthOfAccountInDay() without data");
                 return;
             }
@@ -274,11 +274,11 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
-    public void autoJPushNoInvestAlert()  {
+    public void autoJPushNoInvestAlert() {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.NO_INVEST_ALERT);
-        if(jPushAlertModel != null){
+        if (jPushAlertModel != null) {
             try {
-                Set<String> jPushAlertSet ;
+                Set<String> jPushAlertSet;
                 Set<String> loginNames = investMapper.findNoInvestInThirtyDay();
                 if (CollectionUtils.isEmpty(loginNames)) {
                     logger.debug("investMapper.findNoInvestInThirtyDay() without data");
@@ -290,7 +290,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                     });
                     Sets.SetView<String> diffSetHandle = Sets.difference(loginNames, oldLoginNames);
                     jPushAlertSet = diffSetHandle.immutableCopy();
-                }else{
+                } else {
                     jPushAlertSet = loginNames;
                 }
 
@@ -298,13 +298,14 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 if(CollectionUtils.isNotEmpty(jPushAlertSet)){
                     autoJPushByBatchRegistrationId(jPushAlertModel, Lists.newArrayList(jPushAlertSet), PushSource.ALL);
                 }
-            }catch (IOException e){
-                logger.error(e.getLocalizedMessage(),e);
+            } catch (IOException e) {
+                logger.error(e.getLocalizedMessage(), e);
             }
-        }else{
+        } else {
             logger.debug("AutoJPushNoInvestAlertJob is disabled");
         }
     }
+
     @Override
     public void autoJPushLoanAlert(List<InvestNotifyInfo> notifyInfos) {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.LOAN_ALERT);
@@ -317,7 +318,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
             for (InvestNotifyInfo notifyInfo : notifyInfos) {
                 List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(notifyInfo.getAmount()));
-                loginNameMap.put(notifyInfo.getLoanName(),amountLists);
+                loginNameMap.put(notifyInfo.getLoanName(), amountLists);
                 autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
                 loginNameMap.clear();
             }
@@ -340,9 +341,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             jumpToOrLink[1] = jumpTo.getIndex();
             return jumpToOrLink;
         }
-
         return jumpToOrLink;
-
     }
 
 
@@ -360,7 +359,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, jPushAlertModel.getContent(), jumpToOrLink[0], jumpToOrLink[1], pushSource);
                 if (sendResult) {
                     logger.debug(MessageFormat.format("第{0}个用户推送成功", i + 1));
-                }else{
+                } else {
                     logger.debug(MessageFormat.format("第{0}个用户推送失败", i + 1));
                 }
                 registrationIds.clear();
@@ -374,7 +373,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         String[] jumpToOrLink = chooseJumpToOrLink(jPushAlertDto);
         Iterator iterator = pushObjects.entrySet().iterator();
         List<String> registrationIds = Lists.newArrayList();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             Map.Entry<String, List<String>> entry = (Map.Entry<String, List<String>>) iterator.next();
             String loginName = entry.getKey();
             if (redisWrapperClient.hexists(JPUSH_ID_KEY, loginName)) {
@@ -392,7 +391,6 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 registrationIds.clear();
             }
         }
-
     }
 
     private boolean ManualJPushAlertJob(JPushAlertModel jPushAlertModel) {
@@ -410,6 +408,26 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             logger.error(e.getLocalizedMessage(), e);
         }
         return true;
+    }
+
+    @Override
+    public void pass(String loginName, long id, String ip) {
+        logger.debug("JPush audit pass, auditor:" + loginName + ", JPush id:" + id);
+        // TODO: create sending job
+        jPushAlertMapper.updateStatus(PushStatus.WILL_SEND, id);
+    }
+
+    @Override
+    public void reject(String loginName, long id) {
+        logger.debug("JPush audit reject, auditor:" + loginName + ", JPush id:" + id);
+        jPushAlertMapper.updateStatus(PushStatus.REJECTED, id);
+    }
+
+    @Override
+    public void delete(String loginName, long id) {
+        logger.debug("JPush audit delete, operator:" + loginName + ", JPush id:" + id);
+        jPushAlertMapper.delete(id);
+        // TODO: stop the sending job
     }
 
 }

@@ -32,34 +32,46 @@
                 创建日期
             </th>
             <th>
-                通知类型
+                推送类型
             </th>
             <th>
-                通知名称
+                推送名称
             </th>
             <th>
                 推送渠道
             </th>
             <th>
-                推送对象
+                推送地区
+            </th>
+            <th>
+                用户类型
             </th>
             <th>
                 推送模板
+            </th>
+            <th>
+                推送时间
+            </th>
+            <th>
+                定位到页面
+            </th>
+            <th>
+                IOS 目标｜送达｜打开
+            </th>
+            <th>
+                Android 目标｜送达｜打开
+            </th>
+            <th>
+                创建人｜最后编辑人
+            </th>
+            <th>
+                审核人
             </th>
             <th>
                 状态
             </th>
             <th>
                 操作
-            </th>
-            <th>
-                创建人
-            </th>
-            <th>
-                发送日期
-            </th>
-            <th>
-                最后操作人
             </th>
         </tr>
         </thead>
@@ -95,35 +107,64 @@
                     全部
                 </#if>
             </td>
+            <th>
+                <#if pushAlert.pushUserType ??>
+                    ${pushAlert.pushUserType.getDescription()!}
+                </#if>
+            </th>
             <td>
                 ${(pushAlert.content)!}
             </td>
             <td>
-                ${pushAlert.status.getDescription()}
+                ${(pushAlert.expectPushTime?string('yyyy-MM-dd HH:mm:ss'))!}
+            </td>
+            <th>
+                ${pushAlert.jumpTo.getDescription()}
+            </th>
+            <th>
+                目标｜送达｜打开
+            </th>
+            <th>
+                目标｜送达｜打开
+            </th>
+            <td>
+                ${(pushAlert.createdBy)!}｜<#if (pushAlert.updatedBy)??>${pushAlert.updatedBy}<#else>无</#if>
+            </td>
+            <th>
+                ${(pushAlert.auditor)!}
+            </th>
+            <td>
+                <span class="push-status-${pushAlert.status}">${pushAlert.status.getDescription()}</span>
             </td>
             <td>
-                <#if pushAlert.status != "SEND_SUCCESS">
-                    <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
-                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?string('0')}/edit">编辑</a>
-                    </@security.authorize>
-
-                    <@security.authorize access="hasAuthority('ADMIN')">&nbsp;|&nbsp;</@security.authorize>
-
+                <#if pushAlert.status == "WAIT_AUDIT" || pushAlert.status == "CREATED">
                     <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                        <a class="send-push-link" href="/app-push-manage/manual-app-push/${pushAlert.id?string('0')}/send">推送</a>
+                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/pass" onclick="return confirm('确定同意吗?')">同意</a>｜
+                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/reject" onclick="return confirm('确定驳回吗?')">驳回</a>
+                    </@security.authorize>
+                    <@security.authorize access="hasAuthority('ADMIN')">｜</@security.authorize>
+                    <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
+                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/edit">编辑</a>｜
+                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/delete" onclick="return confirm('确定删除吗?')">删除</a>
                     </@security.authorize>
                 </#if>
-            </td>
-            <td>
-                ${(pushAlert.createdBy)!}
-            </td>
-            <td>
-                <#if pushAlert.status == "SEND_SUCCESS">
-                    ${(pushAlert.updatedTime?string('yyyy-MM-dd'))!}
+                <#if pushAlert.status == "WILL_SEND">
+                    <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/delete" onclick="return confirm('确定删除吗?')">删除</a>
+                    </@security.authorize>
                 </#if>
-            </td>
-            <td>
-                ${(pushAlert.updatedBy)!}
+                <#if pushAlert.status == "REJECTED">
+                    <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
+                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/edit">编辑</a>
+                    </@security.authorize>
+                    <@security.authorize access="hasAuthority('ADMIN')">｜</@security.authorize>
+                    <@security.authorize access="hasAnyAuthority('OPERATOR','OPERATOR_ADMIN','ADMIN')">
+                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/delete" onclick="return confirm('确定删除吗?')">删除</a>
+                    </@security.authorize>
+                </#if>
+                <#if pushAlert.status == "SEND_SUCCESS">
+                    <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/clone">复用</a>
+                </#if>
             </td>
         </tr>
         </#list>
