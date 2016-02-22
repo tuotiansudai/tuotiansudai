@@ -118,14 +118,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public long estimateInvestIncome(long loanId, long amount) {
         LoanModel loanModel = loanMapper.findById(loanId);
-        int repayTimes = loanModel.calculateLoanRepayTimes();
-
-        int daysOfMonth = 30;
-        int duration = loanModel.getPeriods();
-        if (loanModel.getType().getLoanPeriodUnit() == LoanPeriodUnit.MONTH) {
-            duration = repayTimes * daysOfMonth;
-        }
-        long expectedInterest = InterestCalculator.calculateInterest(loanModel, amount * duration);
+        long expectedInterest = InterestCalculator.estimateExpectedInterest(loanModel, amount);
         long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
         return expectedInterest - expectedFee;
     }
