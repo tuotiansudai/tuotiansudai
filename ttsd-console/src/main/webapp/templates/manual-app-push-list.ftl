@@ -128,38 +128,38 @@
                 目标｜送达｜打开
             </th>
             <td>
-                ${(pushAlert.createdBy)!}｜${(pushAlert.updatedBy)!}
+                ${(pushAlert.createdBy)!}｜<#if (pushAlert.updatedBy)??>${pushAlert.updatedBy}<#else>无</#if>
             </td>
             <th>
                 ${(pushAlert.auditor)!}
             </th>
             <td>
-                ${pushAlert.status.getDescription()}
+                <span class="push-status-${pushAlert.status}">${pushAlert.status.getDescription()}</span>
             </td>
             <td>
                 <#if pushAlert.status == "WAIT_AUDIT" || pushAlert.status == "CREATED">
                     <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/pass">同意</a>｜
-                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/reject">驳回</a>
+                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/pass" onclick="return confirm('确定同意吗?')">同意</a>｜
+                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/reject" onclick="return confirm('确定驳回吗?')">驳回</a>
                     </@security.authorize>
                     <@security.authorize access="hasAuthority('ADMIN')">｜</@security.authorize>
                     <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
-                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/pass">编辑</a>｜
-                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/reject">删除</a>
+                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/edit">编辑</a>｜
+                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/delete" onclick="return confirm('确定删除吗?')">删除</a>
                     </@security.authorize>
                 </#if>
                 <#if pushAlert.status == "WILL_SEND">
                     <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/delete">删除</a>
+                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/delete" onclick="return confirm('确定删除吗?')">删除</a>
                     </@security.authorize>
                 </#if>
                 <#if pushAlert.status == "REJECTED">
                     <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
-                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/edit">编辑</a>｜
+                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/edit">编辑</a>
                     </@security.authorize>
                     <@security.authorize access="hasAuthority('ADMIN')">｜</@security.authorize>
                     <@security.authorize access="hasAnyAuthority('OPERATOR','OPERATOR_ADMIN','ADMIN')">
-                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/delete">删除</a>
+                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/delete" onclick="return confirm('确定删除吗?')">删除</a>
                     </@security.authorize>
                 </#if>
                 <#if pushAlert.status == "SEND_SUCCESS">
