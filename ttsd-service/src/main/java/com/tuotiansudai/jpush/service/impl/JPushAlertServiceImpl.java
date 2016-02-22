@@ -3,6 +3,7 @@ package com.tuotiansudai.jpush.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -12,9 +13,8 @@ import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper;
 import com.tuotiansudai.jpush.repository.model.*;
 import com.tuotiansudai.jpush.service.JPushAlertService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.InvestNotifyInfo;
+import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -48,6 +48,15 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     @Autowired
     private InvestMapper investMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
+
+    @Autowired
+    private ReferrerRelationMapper referrerRelationMapper;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -167,10 +176,67 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             return;
         }
         if (jPushAlertModel != null) {
-
+            List<String> loginNames = findManualJPushAlertUserLoginName(jPushAlertModel.getPushUserType());
+            if(CollectionUtils.isEmpty(loginNames)){
+                logger.debug("this JPush without data, id = " + id);
+                return;
+            }
+            autoJPushByBatchRegistrationId(jPushAlertModel, loginNames);
         } else {
             logger.debug("this JPush is disabled, id = " + id);
         }
+    }
+
+    private List<String> findManualJPushAlertUserLoginName(PushUserType pushUserType) {
+        List<String> loginNames = null;
+        switch (pushUserType) {
+            case ALL:
+                List<UserModel> users = userMapper.findAllUsers();
+                loginNames = Lists.transform(users, new Function<UserModel, String>() {
+                    @Override
+                    public String apply(UserModel input) {
+                        return input.getLoginName();
+                    }
+                });
+                break;
+            case STAFF:
+                List<UserRoleModel> staffs = userRoleMapper.findAllByRole(Role.STAFF);
+                loginNames = Lists.transform(staffs, new Function<UserRoleModel, String>() {
+                    @Override
+                    public String apply(UserRoleModel input) {
+                        return input.getLoginName();
+                    }
+                });
+                break;
+            case AGENT:
+                List<UserRoleModel> agents = userRoleMapper.findAllByRole(Role.AGENT);
+                loginNames = Lists.transform(agents, new Function<UserRoleModel, String>() {
+                    @Override
+                    public String apply(UserRoleModel input) {
+                        return input.getLoginName();
+                    }
+                });
+                break;
+            case RECOMMENDATION:
+                List<ReferrerRelationModel> recommendations = referrerRelationMapper.findAllRecommendation();
+                loginNames = Lists.transform(recommendations, new Function<ReferrerRelationModel, String>() {
+                    @Override
+                    public String apply(ReferrerRelationModel input) {
+                        return input.getLoginName();
+                    }
+                });
+                break;
+            case OTHERS:
+                List<UserModel> others = userMapper.findNaturalUser();
+                loginNames = Lists.transform(others, new Function<UserModel, String>() {
+                    @Override
+                    public String apply(UserModel input) {
+                        return input.getLoginName();
+                    }
+                });
+                break;
+        }
+        return loginNames;
     }
 
     @Override

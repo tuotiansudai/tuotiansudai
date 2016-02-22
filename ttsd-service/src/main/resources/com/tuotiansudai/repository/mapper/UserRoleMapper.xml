@@ -31,5 +31,9 @@
         delete from user_role where login_name = #{loginName};
     </delete>
 
+    <select id="findAllByRole" parameterType="map" resultMap="userRoleResultMap">
+        SELECT * FROM user_role WHERE role = #{role};
+    </select>
+
 
 </mapper>

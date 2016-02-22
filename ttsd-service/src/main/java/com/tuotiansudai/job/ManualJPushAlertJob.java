@@ -16,9 +16,14 @@ public class ManualJPushAlertJob implements Job{
     @Autowired
     private JPushAlertService jPushAlertService;
 
+    public final static String JPUSH_ID = "JPUSH_ID";
+
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-
+        long id = (long) context.getJobDetail().getJobDataMap().get(JPUSH_ID);
+        logger.debug("ManualJPushAlertJob===========in, id = " + id);
+        jPushAlertService.manualJPushAlert(id);
+        logger.debug("ManualJPushAlertJob===========out, id = " + id );
     }
 
 }

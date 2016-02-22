@@ -75,4 +75,10 @@ public interface UserMapper {
     int findUsersAccountBalanceCount(@Param(value = "loginName") String loginName,
                                      @Param(value = "balanceMin") int balanceMin,
                                      @Param(value = "balanceMax") int balanceMax);
+
+    List<UserModel> findAllUsers();
+
+    List<UserModel> findNaturalUser();
+
+
 }
