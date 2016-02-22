@@ -36,11 +36,16 @@
         <p class="text-pro">
             <span class="product-left">
                 <img src="${staticServer}/images/sign/actor/birth/product-three.png">
-                <a href="#" class="click-btn time-btn"></a>
+                
+                <a href="javascript:void(0)" class="click-btn time-btn"></a>
+
+                <a href="" class="click-btn"></a>
             </span>
             <span class="product-right">
                 <img src="${staticServer}/images/sign/actor/birth/product-six.png">
-                <a href="#" class="click-btn time-btn"></a>
+
+                <a href="javascript:void(0)" class="click-btn time-btn"></a>
+                <a href="" class="click-btn"></a>
             </span>
         </p>
         <p class="text-bg">活动规则</p>
