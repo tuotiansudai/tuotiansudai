@@ -22,6 +22,7 @@ public class LoanResponseDataDto {
     private String investBeginTime;
     private String investBeginSeconds;
     private String raiseCompletedTime;
+    private String investFeeRate;
 
     public String getLoanId() {
         return loanId;
@@ -189,5 +190,13 @@ public class LoanResponseDataDto {
 
     public void setLoanTypeName(String loanTypeName) {
         this.loanTypeName = loanTypeName;
+    }
+
+    public String getInvestFeeRate() {
+        return investFeeRate;
+    }
+
+    public void setInvestFeeRate(String investFeeRate) {
+        this.investFeeRate = investFeeRate;
     }
 }
