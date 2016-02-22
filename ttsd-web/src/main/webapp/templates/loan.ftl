@@ -86,13 +86,13 @@
                                             <#if !coupon.shared>
                                                 <li data-coupon-id="${coupon.couponId?string.computer}"
                                                     data-coupon-type="${coupon.couponType}"
-                                                    data-coupon-created-time="${coupon.createdTime?string("yyyy-MM-dd HH:mm:ss")}" data-shared="${coupon.shared?then('y','n')}"
+                                                    data-coupon-created-time="${coupon.createdTime?string("yyyy-MM-dd HH:mm:ss")}"
                                                     <#if coupon.investLowerLimit!=0 && coupon.investUpperLimit!=0>class="lower-upper-limit"</#if>>
                                                     <input type="radio"
                                                            id="${coupon.id?string.computer}"
                                                            name="userCouponIds"
                                                            value="${coupon.id?string.computer}"
-                                                           class="input-use-ticket" data-type="${coupon.couponType}"
+                                                           class="input-use-ticket"
                                                            <#if coupon.couponType == "BIRTHDAY_COUPON">
                                                            checked
                                                            </#if>
@@ -147,9 +147,6 @@
                                                 <i class="icon-redbag"></i>
                                                 <span>${coupon.couponType.getName()}${(coupon.amount / 100)?string("0.00")}元（投资即可返现）</span>
                                             </p>
-                                        </#if>
-                                        <#if coupon.couponType == 'BIRTHDAY_COUPON'>
-                                            <input type="hidden" id="${coupon.id?string.computer}" name="birthdayCouponIds" value="${coupon.id?string.computer}" data-coupon-id="${coupon.couponId?string.computer}" />
                                         </#if>
                                     </#list>
                                 </#if>
