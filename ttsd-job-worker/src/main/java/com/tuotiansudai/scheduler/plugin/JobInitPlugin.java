@@ -95,7 +95,9 @@ public class JobInitPlugin implements SchedulerPlugin {
     private void createAutoJPushAlertBirthMonth() {
         try {
             jobManager.newJob(JobType.AutoJPushAlertBirthMonth, AutoJPushAlertBirthMonthJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 10 1 * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+                    //TEST
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 30 17 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+//                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 10 1 * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
                     .withIdentity(JobType.AutoJPushAlertBirthMonth.name(), JobType.AutoJPushAlertBirthMonth.name()).submit();
 
         } catch (SchedulerException e) {
