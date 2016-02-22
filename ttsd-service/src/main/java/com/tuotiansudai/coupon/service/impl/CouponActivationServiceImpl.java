@@ -15,7 +15,6 @@ import com.tuotiansudai.job.CouponNotifyJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.util.AmountConverter;
@@ -156,7 +155,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
                     hasNoUsableCoupon = Iterables.all(existingUserCouponModels, new Predicate<UserCouponModel>() {
                         @Override
                         public boolean apply(UserCouponModel input) {
-                            return input.getStatus() == InvestStatus.SUCCESS && userBirthdayUtil.isBirthMonth(input.getLoginName());
+                            return input.getStatus() == InvestStatus.SUCCESS && userBirthdayUtil.isBirthMonth(loginName);
                         }
                     });
                 }
