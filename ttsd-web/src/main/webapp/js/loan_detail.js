@@ -160,11 +160,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 $couponExpectedInterest.text("");
 
                 if (couponItem.data('coupon-id')) {
-                    if (couponItem.attr('data-coupon-type') != 'BIRTHDAY_COUPON') {
-                        calExpectedCouponInterest(couponItem.data('coupon-id'),true);
-                    } else {
-                        calExpectedCouponInterest();
-                    }
+                    calExpectedCouponInterest(couponItem.data('coupon-id'));
                 }
                 $ticketList.addClass('hide');
             });
@@ -176,7 +172,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             return amount > 0 && amountNeedRaised >= amount;
         };
 
-        var calExpectedCouponInterest = function (couponId, flag) {
+        var calExpectedCouponInterest = function (couponId) {
             var queryParams = [];
             if ($.isNumeric(couponId)) {
                 queryParams.push({'name': 'couponIds', 'value': couponId});
@@ -186,11 +182,11 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 queryParams.push({'name': 'couponIds', 'value': $(item).data("coupon-id")})
             });
 
-            if (!flag) {
-                $.each($('input[type="hidden"][name="birthdayCouponIds"]'), function (index, item) {
-                    queryParams.push({'name': 'couponIds', 'value': $(item).data("coupon-id")})
-                });
-            }
+            $ticketList.find('li').each(function(index, item) {
+                if($(item).find('input[type="radio"]').prop('checked') == true && $(item).data("coupon-id") != couponId){
+                    queryParams.push({'name': 'couponIds', 'value': $(item).data("coupon-id")});
+                }
+            });
 
             if (queryParams.length == 0) {
                 $couponExpectedInterest.text("");
@@ -233,12 +229,12 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         amountInputElement.keyup(function (event) {
             if (isInvestor) {
                 var flag = true;
-                $ticketList.find('input[type="radio"]').each(function(index,item){
-                    if ($(item).attr("data-type") == 'BIRTHDAY_COUPON') {
+                $ticketList.find('li').each(function(index,item){
+                    if ($(item).attr("data-coupon-type") == 'BIRTHDAY_COUPON') {
                         flag = false;
-                        $(item).prop('checked', true);
+                        $(item).find('input[type="radio"]').prop('checked', true);
                     } else {
-                        $(item).prop('checked', false);
+                        $(item).find('input[type="radio"]').prop('checked', false);
                     }
                 });
                 if (flag) {
