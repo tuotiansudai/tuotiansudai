@@ -78,8 +78,13 @@ public class JPushAlertController {
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("name", name);
+
+
         modelAndView.addObject("pushAlerts", jPushAlertService.findPushAlerts(index, pageSize, name, false));
         modelAndView.addObject("provinces", DistrictUtil.getProvinces());
+        modelAndView.addObject("pushSources", Lists.newArrayList(PushSource.values()));
+        modelAndView.addObject("pushUserTypes", Lists.newArrayList(PushUserType.values()));
+        modelAndView.addObject("pushTypes", Lists.newArrayList(PushType.values()));
         int jPushAlertCount = jPushAlertService.findPushAlertCount(name, false);
         modelAndView.addObject("jPushAlertCount", jPushAlertCount);
         long totalPages = jPushAlertCount / pageSize + (jPushAlertCount % pageSize > 0 ? 1 : 0);

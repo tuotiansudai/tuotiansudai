@@ -1,4 +1,8 @@
-require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
+require(['jquery','bootstrap', 'bootstrapDatetimepicker','bootstrapSelect','csrf'], function($) {
+    $('.selectpicker').selectpicker();
+
+    $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD'});
+    $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});
     $(function() {
         $('.send-push-link').click(function(){
             if (!confirm("确认要推送吗?")) {
