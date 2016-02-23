@@ -1390,285 +1390,106 @@
         color: #ff7200;
       }
     }
-  }
-  .record-tab{
-    display:none;
-  }
-  .list-tab{
-    display:none;
-  }
-  .tab-show{
-    display:block;
-  }
-  .no-treasure-tip {
-    color: #7f7f7f;
-    font-size:18px;
-
-  }
-  .sign-seal {
-    display: none;
-    width: 80px;
-    height: 80px;
-    border: 2px solid #7f7f7f;
-    color: #7f7f7f;
-    text-align: center;
-    line-height: 80px;
-    position: absolute;
-    left: 45%;
-    top: 20%;
-    border-radius: 50%;
-    span {
-      -webkit-transform: rotate(30deg);
-      -moz-transform: rotate(30deg);
-      transform: rotate(-30deg);
-      font-weight: bold;
-      font-size: 20px;
-      line-height: 1.2;
-      padding-top: 16px;
-      display: block;
-      letter-spacing: 8px;
-    }
-  }
-  .experience-ticket-box {
-    width:500px;
-    height: 160px;
-    position: relative;
-    background: url("/images/icons/logo-transport.png") -14px -20px no-repeat;
-    margin-top:12px;
-
-    .vertical-line {
-      height:94%;
-      width:1px;
-      border-right:1px dashed #ff752a;
-      position: absolute;
-      top: 3px;
-      left: 270px;
-    }
-    .ticket-amount {
-      box-sizing: border-box;
-      width:280px;
-      height:100%;
-      border:1px solid #e7eaee;
-      color: #ff752a;
-      h3 {
-        text-align: left;
-        font-size:20px;
-        letter-spacing: 2px;
-        padding-left: 33px;
-        padding-top: 5px;
-        font-weight: bold;
-      }
-      strong {
-        font-size: 50px;
-        display: block;
-        line-height: 1.3;
-        letter-spacing: 6px;
-        padding-top: 3px;
-        padding-bottom: 5px;
-        em {
-          font-size:12px;
-          color: #adafb2;
-          letter-spacing: 0;
-        }
-      }
-      time {
-        color: #adafb2;
-        font-size: 12px;
-        letter-spacing: 2px;
-      }
-    }
-    .ticket-info {
-      width:220px;
-      height:100%;
-      background:#ff752a url("/images/icons/line-wheel.png") right -1px no-repeat;
-      color: #fff;
-      line-height: 2.5;
-      font-size: 12px;
-      dl {
-        dt {
-          letter-spacing: 3px;
-        }
-        dd {
-          padding-left: 2.4em;
-          &.tc  {
-            padding-left: 0;
-            .btn-action {
-              background: #fdd738;
-              border-color: #fdd738;
-              color: #594b14!important;
-              margin-top:10px;
-            }
-          }
-        }
-      }
-    }
-    &.ticket-status-used,&.ticket-status-expired {
-      .ticket-info dl dd.tc .btn-action {
-          background: #ccc!important;
-          border-color: #ccc!important;
-          color: #808080!important;
-          cursor: not-allowed;
-      }
-    }
-    &.ticket-status-expired {
-      color: #b2b2b2;
-      .ticket-info {
-        background: #989898 url("/images/icons/line-wheel.png") right -162px no-repeat;
-      }
-      .sign-seal {
-        &.sign-expired {
-          display: block;
-        }
-        border: 2px solid #ff752a;
-        color: #ff752a;
-      }
-      .vertical-line {
-        border-right:1px dashed #ccc;
-      }
-      .ticket-amount {
-        color: #b2b2b2;
-      }
-
-    }
-    &.ticket-status-used {
-      .sign-seal {
-        &.sign-used {
-          display: block;
-        }
-      }
-    }
-  }
-
-  .red-envelope-frame {
-    margin-left: -20px;
-    .red-envelope-box {
-      font-size: 11px;
-      width:240px;
-      height:240px;
-      float: left;
-      margin-left: 20px;
-      margin-bottom: 20px;
-      background: url("/images/sign/actor/red-envelope-valid.png") 0 0 no-repeat;
-      position: relative;
-      .red-amount {
-        position: absolute;
-        width:100%;
-        text-align: center;
-        top:-2px;
-        font-size: 20px;
-        color: #f4e823;
-        em {
-          font-size: 30px;
-          font-weight: bold;
-        }
-      }
-      .use-status {
-        position: absolute;
-        left:50px;
-        top:120px;
-        color: #fff;
-
-        img {
-          display: inline-block;
-        }
-        span {
-          color: #f4e823;
-        }
-      }
-      .red-button {
-        position: absolute;
-        width:100%;
-        text-align: center;
-        top:172px;
-        font-weight: bold;
-        .btn-action {
-          background: #fdd738;
-          border-color: #fdd738;
-          color: #ff0737 !important;
-          font-weight: bold;
-        }
-      }
-      .use-time {
-        position: absolute;
-        text-align: center;
-        top:211px;
-        width:100%;
-        color: #95000a;
-        span {
-          color: #fadde3;
-        }
-      }
-      &.red-status-expired {
-        background: url("/images/sign/actor/red-envelope-expired.png") 0 0 no-repeat;
-        .red-amount,.use-status span,.use-time,.use-time span {
-          color: #fff;
-        }
-        .sign-seal {
-          color: #df002c;
-          border: 2px solid #df002c;
-          left: 58%;
-          top: 20px;
-          &.sign-expired {
-            display: block;
-          }
-        }
-        .red-button {
-          .btn-action {
-            background: #cccccc;
-            border-color: #cccccc;
-            color: #808080 !important;
-            font-weight: bold;
-            cursor: default;
-          }
-        }
-      }
-      &.red-status-used {
-        border-radius: 10px;
-        .layer-mask {
-          width: 100%;
-          height: 100%;
-          background-color: rgba(77,77,77,0.6);
-          position: absolute;
-          z-index: 10;
-          border-radius: 10px;
-        }
-        .sign-seal {
-          color: #b7b7b7;
-          border: 2px solid #b7b7b7;
-          left: 58%;
-          top: 20px;
-          z-index: 15;
-          &.sign-used {
-            display: block;
-          }
-        }
-      }
-
-      &:hover {
-        -moz-box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
-        -webkit-box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
-        box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
-      }
-    }
-    .ticket-use-help {
-      margin-top:70px;
-    }
-  }
-
-  .ticket-use-help {
-    width:470px;
-    padding:10px 15px;
-    border:1px dashed #e7eaee;
-    color: #adafb2;
-    font-size: 12px;
-    b {
+    span{
+      float:right;
+      border-bottom: none;
       font-size: 14px;
+      font-weight:normal;
+      color: #666;
+      cursor:pointer;
     }
-    p {
-      color: #adafb2;
-      margin-bottom: 0;
+  }
+  .rule-list{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background:rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display:none;
+    .rule-com{
+      position: absolute;
+      top:50%;
+      left:50%;
+      margin-top:-260px;
+      margin-left:-320px;
+      width:510px;
+      height:520px;
+      background:#fff;
+      padding:10px 60px;
+      border:1px solid #ccc;
+      h3{
+        font-size:18px;
+        text-align:center;
+        margin-bottom:20px;
+        span{
+          color:#ff7200;
+          padding:10px 65px;
+          line-height:35px;
+          border-bottom:1px solid #ff7200;
+        }
+      }
+      dl{
+        margin-bottom:25px;
+        dt{
+          font-size:14px;
+          color:#333;
+        }
+        dd{
+          font-size:12px;
+          color:#666;
+        }
+      }
+      .close-icon{
+        width:15px;
+        height:15px;
+        position: absolute;
+        top:15px;
+        right:15px;
+        cursor:pointer;
+        background:url("/images/sign/close-btn.png") no-repeat center;
+      }
+      .close-text{
+        text-align:center;
+        span{
+          padding:10px 25px;
+          color:#fff;
+          background:#ff7200;
+          border-radius:5px;
+          cursor:pointer;
+        }
+      }
     }
-
+  }
+  .filters-list{
+    float:left;
+    width:100%;
+    li{
+      float:left;
+      color:#4c4c4c;
+      font-size:12px;
+      padding:5px 15px;
+      margin-right:10px;
+      cursor:pointer;
+      &.active{
+        color:#fff;
+        background:#ff752a;
+        border-radius:5px;
+      }
+    }
+  }
+  .model-list{
+    float:left;
+    width:100%;
+    .coupon-com{
+      float:left;
+      width:100%;
+      display:none;
+      &.active{
+        display:block;
+      }
+    }
   }
 }
 @media screen and (max-width: 700px) {
