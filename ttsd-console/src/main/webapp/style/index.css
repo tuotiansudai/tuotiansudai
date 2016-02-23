@@ -482,3 +482,15 @@ td.td {
     padding-left: 100px;
     color:#cc0000;
 }
+.push-status-WAIT_AUDIT {
+    color: #ec971f;
+}
+.push-status-REJECTED {
+    color: #ff1f15;
+}
+.push-status-WILL_SEND {
+    color: #1bff23;
+}
+.push-status-SEND_SUCCESS {
+    color: #979897;
+}

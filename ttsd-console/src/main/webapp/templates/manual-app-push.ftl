@@ -77,7 +77,7 @@
             <div class="col-sm-2">
                 <select class="selectpicker" name="pushUserType">
                     <#list pushUserTypes as pushUserType>
-                        <option <#if jPushAlert?? && jPushAlert.pushUserType == pushUserType>selected</#if> value="${pushUserType.name()}">${pushUserType.getDescription()}</option>
+                        <option <#if jPushAlert?? && jPushAlert.pushUserType?? && jPushAlert.pushUserType == pushUserType>selected</#if> value="${pushUserType.name()}">${pushUserType.getDescription()}</option>
                     </#list>
                 </select>
             </div>

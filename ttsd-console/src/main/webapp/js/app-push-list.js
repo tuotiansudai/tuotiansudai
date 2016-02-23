@@ -4,10 +4,12 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','bootstrapSelect','csrf
     $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD'});
     $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});
     $(function() {
-        $('.send-push-link').click(function(){
-            if (!confirm("确认要推送吗?")) {
-                return false;
-            }
-        });
+        //$('.send-push-link').click(function(event){
+        //    event.preventDefault();
+        //    if (!confirm("确认要推送吗?")) {
+        //        return false;
+        //    }
+        //});
+
     });
 });

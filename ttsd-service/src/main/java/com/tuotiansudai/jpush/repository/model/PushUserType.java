@@ -1,7 +1,7 @@
 package com.tuotiansudai.jpush.repository.model;
 
 public enum PushUserType {
-    ALL("ALL"),
+    ALL("全部"),
     STAFF("业务员"),
     AGENT("渠道用户"),
     RECOMMENDATION("业务员的一级推荐"),

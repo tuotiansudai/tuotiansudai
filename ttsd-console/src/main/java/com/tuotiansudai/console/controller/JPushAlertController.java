@@ -8,13 +8,17 @@ import com.tuotiansudai.jpush.repository.model.*;
 import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.util.DistrictUtil;
+import com.tuotiansudai.util.RequestIPParser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Date;
 
 @Controller
 @RequestMapping(value = "/app-push-manage")
@@ -73,7 +77,12 @@ public class JPushAlertController {
     @ResponseBody
     public ModelAndView appPushList(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                     @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
-                                    @RequestParam(value = "name", required = false) String name) {
+                                    @RequestParam(value = "name", required = false) String name,
+                                    @RequestParam(value = "pushType", required = false) PushType pushType,
+                                    @RequestParam(value = "pushSource", required = false) PushSource pushSource,
+                                    @RequestParam(value = "pushUserType", required = false) PushUserType pushUserType,
+                                    @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                    @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
         ModelAndView modelAndView = new ModelAndView("/manual-app-push-list");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
@@ -140,6 +149,38 @@ public class JPushAlertController {
         jPushAlertService.changeJPushAlertContent(jPushAlertId, content, loginName);
         baseDataDto.setStatus(true);
         return baseDto;
+    }
+
+    @RequestMapping(value = "/manual-app-push/{id}/pass", method = RequestMethod.GET)
+    public String pass(@PathVariable long id, HttpServletRequest request) {
+        String loginName = LoginUserInfo.getLoginName();
+        String ip = RequestIPParser.parse(request);
+        jPushAlertService.pass(loginName, id, ip);
+        return "redirect:/app-push-manage/manual-app-push-list";
+    }
+
+    @RequestMapping(value = "/manual-app-push/{id}/reject", method = RequestMethod.GET)
+    public String reject(@PathVariable long id) {
+        String loginName = LoginUserInfo.getLoginName();
+        jPushAlertService.reject(loginName, id);
+        return "redirect:/app-push-manage/manual-app-push-list";
+    }
+
+    @RequestMapping(value = "/manual-app-push/{id}/delete", method = RequestMethod.GET)
+    public String delete(@PathVariable long id) {
+        String loginName = LoginUserInfo.getLoginName();
+        jPushAlertService.delete(loginName, id);
+        return "redirect:/app-push-manage/manual-app-push-list";
+    }
+
+    @RequestMapping(value = "/manual-app-push/{id}/clone", method = RequestMethod.GET)
+    public String clone(@PathVariable long id) {
+        String loginName = LoginUserInfo.getLoginName();
+        JPushAlertModel jPushModel = jPushAlertService.findJPushAlertModelById(id);
+        JPushAlertDto jPushDto = new JPushAlertDto(jPushModel);
+        jPushDto.setId(null);
+        jPushAlertService.buildJPushAlert(loginName, jPushDto);
+        return "redirect:/app-push-manage/manual-app-push-list";
     }
 
 }

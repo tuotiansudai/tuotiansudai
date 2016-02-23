@@ -47,6 +47,24 @@
         <if test="name != null and name != '' ">
             and name like CONCAT(CONCAT('%', #{name}), '%')
         </if>
+        <if test="pushType != null and pushType != ''">
+            and push_type = #{pushType}
+        </if>
+        <if test="pushSource != null">
+            and push_source = #{pushSource}
+        </if>
+        <if test="pushUserType != null">
+            and push_user_type = #{pushUserType}
+        </if>
+        <if test="startTime != null">
+            and expect_push_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            <![CDATA[ and expect_push_time <= #{endTime} ]]>
+
+        </if>
+
+
         ORDER BY created_time DESC
         LIMIT #{index},#{pageSize}
     </select>
@@ -63,5 +81,13 @@
     <select id="findJPushAlertByPushType"  parameterType="map" resultMap="jPushAlertResultMap">
         select * from jpush_alert where push_type = #{pushType} and status = 'ENABLED' and is_automatic = true
     </select>
+
+    <update id="updateStatus" parameterType="map">
+        update jpush_alert set status = #{status} where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        delete from jpush_alert where id = #{id}
+    </delete>
 
 </mapper>

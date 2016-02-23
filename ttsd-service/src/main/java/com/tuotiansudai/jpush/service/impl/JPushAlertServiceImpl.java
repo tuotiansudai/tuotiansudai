@@ -3,22 +3,26 @@ package com.tuotiansudai.jpush.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.job.ManualJPushAlertJob;
 import com.tuotiansudai.jpush.client.MobileAppJPushClient;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper;
 import com.tuotiansudai.jpush.repository.model.*;
 import com.tuotiansudai.jpush.service.JPushAlertService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.InvestNotifyInfo;
+import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +52,18 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     @Autowired
     private InvestMapper investMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
+
+    @Autowired
+    private ReferrerRelationMapper referrerRelationMapper;
+
+    @Autowired
+    private JobManager jobManager;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -156,15 +172,87 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
+    public void manualJPushAlert(long id) {
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertModelById(id);
+        if (jPushAlertModel.isAutomatic()) {
+            logger.debug("JPush is failed, this JPush is not manual, id = " + id);
+            return;
+        }
+        if (jPushAlertModel != null) {
+            List<String> loginNames = findManualJPushAlertUserLoginName(jPushAlertModel.getPushUserType());
+            if(CollectionUtils.isEmpty(loginNames)){
+                logger.debug("this JPush without data, id = " + id);
+                return;
+            }
+            autoJPushByBatchRegistrationId(jPushAlertModel, loginNames, jPushAlertModel.getPushSource());
+            jPushAlertMapper.updateStatus(PushStatus.SEND_SUCCESS, id);
+        } else {
+            logger.debug("this JPush is disabled, id = " + id);
+        }
+    }
+
+    private List<String> findManualJPushAlertUserLoginName(PushUserType pushUserType) {
+        List<String> loginNames = null;
+        switch (pushUserType) {
+            case ALL:
+                List<UserModel> users = userMapper.findAllUsers();
+                loginNames = Lists.transform(users, new Function<UserModel, String>() {
+                    @Override
+                    public String apply(UserModel input) {
+                        return input.getLoginName();
+                    }
+                });
+                break;
+            case STAFF:
+                List<UserRoleModel> staffs = userRoleMapper.findAllByRole(Role.STAFF);
+                loginNames = Lists.transform(staffs, new Function<UserRoleModel, String>() {
+                    @Override
+                    public String apply(UserRoleModel input) {
+                        return input.getLoginName();
+                    }
+                });
+                break;
+            case AGENT:
+                List<UserRoleModel> agents = userRoleMapper.findAllByRole(Role.AGENT);
+                loginNames = Lists.transform(agents, new Function<UserRoleModel, String>() {
+                    @Override
+                    public String apply(UserRoleModel input) {
+                        return input.getLoginName();
+                    }
+                });
+                break;
+            case RECOMMENDATION:
+                List<ReferrerRelationModel> recommendations = referrerRelationMapper.findAllRecommendation();
+                loginNames = Lists.transform(recommendations, new Function<ReferrerRelationModel, String>() {
+                    @Override
+                    public String apply(ReferrerRelationModel input) {
+                        return input.getLoginName();
+                    }
+                });
+                break;
+            case OTHERS:
+                List<UserModel> others = userMapper.findNaturalUser();
+                loginNames = Lists.transform(others, new Function<UserModel, String>() {
+                    @Override
+                    public String apply(UserModel input) {
+                        return input.getLoginName();
+                    }
+                });
+                break;
+        }
+        return loginNames;
+    }
+
+    @Override
     public void autoJPushAlertBirthMonth() {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.BIRTHDAY_ALERT_MONTH);
-        if(jPushAlertModel != null){
+        if (jPushAlertModel != null) {
             List<String> loginNames = accountMapper.findBirthOfAccountInMonth();
-            if(CollectionUtils.isEmpty(loginNames)){
+            if (CollectionUtils.isEmpty(loginNames)) {
                 logger.debug("accountMapper.findBirthOfAccountInMonth() without data");
                 return;
             }
-            autoJPushByBatchRegistrationId(jPushAlertModel, loginNames);
+            autoJPushByBatchRegistrationId(jPushAlertModel, loginNames, PushSource.ALL);
         }else{
             logger.debug("autoJPushAlertBirthMonthJob is disabled");
         }
@@ -174,24 +262,24 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     @Override
     public void autoJPushAlertBirthDay() {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.BIRTHDAY_ALERT_DAY);
-        if(jPushAlertModel != null){
+        if (jPushAlertModel != null) {
             List<String> loginNames = accountMapper.findBirthOfAccountInDay();
-            if(CollectionUtils.isEmpty(loginNames)){
+            if (CollectionUtils.isEmpty(loginNames)) {
                 logger.debug("accountMapper.findBirthOfAccountInDay() without data");
                 return;
             }
-            autoJPushByBatchRegistrationId(jPushAlertModel, loginNames);
+            autoJPushByBatchRegistrationId(jPushAlertModel, loginNames, PushSource.ALL);
         }else{
             logger.debug("AutoJPushAlertBirthDayJob is disabled");
         }
     }
 
     @Override
-    public void autoJPushNoInvestAlert()  {
+    public void autoJPushNoInvestAlert() {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.NO_INVEST_ALERT);
-        if(jPushAlertModel != null){
+        if (jPushAlertModel != null) {
             try {
-                Set<String> jPushAlertSet ;
+                Set<String> jPushAlertSet;
                 Set<String> loginNames = investMapper.findNoInvestInThirtyDay();
                 if (CollectionUtils.isEmpty(loginNames)) {
                     logger.debug("investMapper.findNoInvestInThirtyDay() without data");
@@ -203,21 +291,22 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                     });
                     Sets.SetView<String> diffSetHandle = Sets.difference(loginNames, oldLoginNames);
                     jPushAlertSet = diffSetHandle.immutableCopy();
-                }else{
+                } else {
                     jPushAlertSet = loginNames;
                 }
 
                 redisWrapperClient.set(NO_INVEST_LOGIN_NAME, objectMapper.writeValueAsString(loginNames));
                 if(CollectionUtils.isNotEmpty(jPushAlertSet)){
-                    autoJPushByBatchRegistrationId(jPushAlertModel, Lists.newArrayList(jPushAlertSet));
+                    autoJPushByBatchRegistrationId(jPushAlertModel, Lists.newArrayList(jPushAlertSet), PushSource.ALL);
                 }
-            }catch (IOException e){
-                logger.error(e.getLocalizedMessage(),e);
+            } catch (IOException e) {
+                logger.error(e.getLocalizedMessage(), e);
             }
-        }else{
+        } else {
             logger.debug("AutoJPushNoInvestAlertJob is disabled");
         }
     }
+
     @Override
     public void autoJPushLoanAlert(List<InvestNotifyInfo> notifyInfos) {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.LOAN_ALERT);
@@ -230,7 +319,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
             for (InvestNotifyInfo notifyInfo : notifyInfos) {
                 List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(notifyInfo.getAmount()));
-                loginNameMap.put(notifyInfo.getLoanName(),amountLists);
+                loginNameMap.put(notifyInfo.getLoanName(), amountLists);
                 autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
                 loginNameMap.clear();
             }
@@ -253,13 +342,11 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             jumpToOrLink[1] = jumpTo.getIndex();
             return jumpToOrLink;
         }
-
         return jumpToOrLink;
-
     }
 
 
-    private void autoJPushByBatchRegistrationId(JPushAlertModel jPushAlertModel, List<String> pushObjects) {
+    private void autoJPushByBatchRegistrationId(JPushAlertModel jPushAlertModel, List<String> pushObjects, PushSource pushSource) {
         JPushAlertDto jPushAlertDto = new JPushAlertDto(jPushAlertModel);
         String[] jumpToOrLink = chooseJumpToOrLink(jPushAlertDto);
         List<String> registrationIds = Lists.newArrayList();
@@ -270,10 +357,10 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 registrationIds.add(registrationId);
             }
             if (registrationIds.size() == 1000 || (i == pushObjects.size() - 1 && registrationIds.size() > 0)) {
-                boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, jPushAlertModel.getContent(), jumpToOrLink[0], jumpToOrLink[1]);
+                boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, jPushAlertModel.getContent(), jumpToOrLink[0], jumpToOrLink[1], pushSource);
                 if (sendResult) {
                     logger.debug(MessageFormat.format("第{0}个用户推送成功", i + 1));
-                }else{
+                } else {
                     logger.debug(MessageFormat.format("第{0}个用户推送失败", i + 1));
                 }
                 registrationIds.clear();
@@ -287,7 +374,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         String[] jumpToOrLink = chooseJumpToOrLink(jPushAlertDto);
         Iterator iterator = pushObjects.entrySet().iterator();
         List<String> registrationIds = Lists.newArrayList();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             Map.Entry<String, List<String>> entry = (Map.Entry<String, List<String>>) iterator.next();
             String loginName = entry.getKey();
             if (redisWrapperClient.hexists(JPUSH_ID_KEY, loginName)) {
@@ -301,14 +388,47 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
                     }
                 }
-                boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, content, jumpToOrLink[0], jumpToOrLink[1]);
+                boolean sendResult = mobileAppJPushClient.sendPushAlertByRegistrationIds("" + jPushAlertModel.getId(), registrationIds, content, jumpToOrLink[0], jumpToOrLink[1], PushSource.ALL);
                 registrationIds.clear();
             }
         }
-
     }
 
+    private boolean ManualJPushAlertJob(JPushAlertModel jPushAlertModel) {
+        if (!jPushAlertModel.getExpectPushTime().after(new Date())) {
+            logger.debug("manualJPushAlertJob create failed, expect push time is before now, id = " + jPushAlertModel.getId());
+            return false;
+        }
+        try {
+            jobManager.newJob(JobType.ManualJPushAlert, ManualJPushAlertJob.class)
+                    .withIdentity(JobType.ManualJPushAlert.name(), "JPush-" + jPushAlertModel.getId())
+                    .replaceExistingJob(true)
+                    .addJobData("JPUSH_ID", jPushAlertModel.getId())
+                    .runOnceAt(jPushAlertModel.getExpectPushTime()).submit();
+        } catch (SchedulerException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return true;
+    }
 
+    @Override
+    public void pass(String loginName, long id, String ip) {
+        logger.debug("JPush audit pass, auditor:" + loginName + ", JPush id:" + id);
+        // TODO: create sending job
+        jPushAlertMapper.updateStatus(PushStatus.WILL_SEND, id);
+    }
 
+    @Override
+    public void reject(String loginName, long id) {
+        logger.debug("JPush audit reject, auditor:" + loginName + ", JPush id:" + id);
+        jPushAlertMapper.updateStatus(PushStatus.REJECTED, id);
+    }
+
+    @Override
+    public void delete(String loginName, long id) {
+        logger.debug("JPush audit delete, operator:" + loginName + ", JPush id:" + id);
+        jPushAlertMapper.delete(id);
+        // TODO: stop the sending job
+    }
 
 }

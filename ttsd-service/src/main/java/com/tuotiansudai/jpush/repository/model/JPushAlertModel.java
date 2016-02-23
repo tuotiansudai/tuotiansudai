@@ -28,6 +28,14 @@ public class JPushAlertModel implements Serializable{
     private String updatedBy;
     private boolean isAutomatic;
 
+    private String auditor;
+    private int iosTargetNum;
+    private int iosArriveNum;
+    private int iosOpenNum;
+    private int androidTargetNum;
+    private int androidArriveNum;
+    private int androidOpenNum;
+
     public long getId() {
         return id;
     }
@@ -157,6 +165,62 @@ public class JPushAlertModel implements Serializable{
         this.expectPushTime = expectPushTime;
     }
 
+    public String getAuditor() {
+        return auditor;
+    }
+
+    public void setAuditor(String auditor) {
+        this.auditor = auditor;
+    }
+
+    public int getIosTargetNum() {
+        return iosTargetNum;
+    }
+
+    public void setIosTargetNum(int iosTargetNum) {
+        this.iosTargetNum = iosTargetNum;
+    }
+
+    public int getIosArriveNum() {
+        return iosArriveNum;
+    }
+
+    public void setIosArriveNum(int iosArriveNum) {
+        this.iosArriveNum = iosArriveNum;
+    }
+
+    public int getIosOpenNum() {
+        return iosOpenNum;
+    }
+
+    public void setIosOpenNum(int iosOpenNum) {
+        this.iosOpenNum = iosOpenNum;
+    }
+
+    public int getAndroidTargetNum() {
+        return androidTargetNum;
+    }
+
+    public void setAndroidTargetNum(int androidTargetNum) {
+        this.androidTargetNum = androidTargetNum;
+    }
+
+    public int getAndroidArriveNum() {
+        return androidArriveNum;
+    }
+
+    public void setAndroidArriveNum(int androidArriveNum) {
+        this.androidArriveNum = androidArriveNum;
+    }
+
+    public int getAndroidOpenNum() {
+        return androidOpenNum;
+    }
+
+    public void setAndroidOpenNum(int androidOpenNum) {
+        this.androidOpenNum = androidOpenNum;
+    }
+
     public JPushAlertModel(){
 
     }
@@ -169,7 +233,7 @@ public class JPushAlertModel implements Serializable{
         this.pushObjects = jPushAlertDto.getPushObjects();
         this.pushSource = jPushAlertDto.getPushSource();
         this.pushUserType = jPushAlertDto.getPushUserType();
-        this.status = PushStatus.CREATED;
+        this.status = PushStatus.WAIT_AUDIT;
         this.content = jPushAlertDto.getContent();
         this.jumpTo = jPushAlertDto.getJumpTo();
         this.jumpToLink = jPushAlertDto.getJumpToLink();
