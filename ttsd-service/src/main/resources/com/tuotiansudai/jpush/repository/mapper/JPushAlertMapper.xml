@@ -21,7 +21,13 @@
         <result column="created_by" property="createdBy"></result>
         <result column="updated_time" property="updatedTime"></result>
         <result column="updated_by" property="updatedBy"></result>
-        <result column="is_automatic" property="isAutomatic"></result>
+        <result column="auditor" property="auditor"></result>
+        <result column="ios_target_num" property="iosTargetNum"></result>
+        <result column="ios_arrive_num" property="iosArriveNum"></result>
+        <result column="ios_open_num" property="iosOpenNum"></result>
+        <result column="android_target_num" property="androidTargetNum"></result>
+        <result column="android_arrive_num" property="androidArriveNum"></result>
+        <result column="android_open_num" property="androidOpenNum"></result>
 
     </resultMap>
 
@@ -53,7 +59,7 @@
 
     <update id="update" parameterType="jPushAlertModel">
         update jpush_alert set name=#{name},push_type=#{pushType},push_objects=#{pushObjects,typeHandler=com.tuotiansudai.util.mybatis.PushObjectHandler},push_source=#{pushSource},push_user_type=#{pushUserType},status=#{status},content=#{content},
-        jump_to = #{jumpTo},jump_to_link=#{jumpToLink},expect_push_time=#{expectPushTime},updated_time=#{updatedTime},updated_by=#{updatedBy} where id = #{id}
+        jump_to = #{jumpTo},jump_to_link=#{jumpToLink},expect_push_time=#{expectPushTime},updated_time=#{updatedTime},updated_by=#{updatedBy},auditor=#{auditor} where id = #{id}
     </update>
 
     <select id="findJPushAlertModelById" parameterType="long" resultMap="jPushAlertResultMap">
@@ -63,10 +69,6 @@
     <select id="findJPushAlertByPushType"  parameterType="map" resultMap="jPushAlertResultMap">
         select * from jpush_alert where push_type = #{pushType} and status = 'ENABLED' and is_automatic = true
     </select>
-
-    <update id="updateStatus" parameterType="map">
-        update jpush_alert set status = #{status} where id = #{id}
-    </update>
 
     <delete id="delete" parameterType="long">
         delete from jpush_alert where id = #{id}

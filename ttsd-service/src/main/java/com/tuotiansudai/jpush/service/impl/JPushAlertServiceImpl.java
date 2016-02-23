@@ -8,6 +8,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.ManualJPushAlertJob;
 import com.tuotiansudai.jpush.client.MobileAppJPushClient;
@@ -81,6 +83,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             jPushAlertModel.setCreatedTime(new Date());
             jPushAlertModel.setIsAutomatic(false);
             jPushAlertMapper.create(jPushAlertModel);
+            jPushAlertDto.setId(String.valueOf(jPushAlertModel.getId()));
         }
     }
 
@@ -180,12 +183,13 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         }
         if (jPushAlertModel != null) {
             List<String> loginNames = findManualJPushAlertUserLoginName(jPushAlertModel.getPushUserType());
-            if(CollectionUtils.isEmpty(loginNames)){
+            if (CollectionUtils.isEmpty(loginNames)) {
                 logger.debug("this JPush without data, id = " + id);
                 return;
             }
             autoJPushByBatchRegistrationId(jPushAlertModel, loginNames, jPushAlertModel.getPushSource());
-            jPushAlertMapper.updateStatus(PushStatus.SEND_SUCCESS, id);
+            jPushAlertModel.setStatus(PushStatus.SEND_SUCCESS);
+            jPushAlertMapper.update(jPushAlertModel);
         } else {
             logger.debug("this JPush is disabled, id = " + id);
         }
@@ -253,7 +257,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 return;
             }
             autoJPushByBatchRegistrationId(jPushAlertModel, loginNames, PushSource.ALL);
-        }else{
+        } else {
             logger.debug("autoJPushAlertBirthMonthJob is disabled");
         }
 
@@ -269,7 +273,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 return;
             }
             autoJPushByBatchRegistrationId(jPushAlertModel, loginNames, PushSource.ALL);
-        }else{
+        } else {
             logger.debug("AutoJPushAlertBirthDayJob is disabled");
         }
     }
@@ -296,7 +300,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 }
 
                 redisWrapperClient.set(NO_INVEST_LOGIN_NAME, objectMapper.writeValueAsString(loginNames));
-                if(CollectionUtils.isNotEmpty(jPushAlertSet)){
+                if (CollectionUtils.isNotEmpty(jPushAlertSet)) {
                     autoJPushByBatchRegistrationId(jPushAlertModel, Lists.newArrayList(jPushAlertSet), PushSource.ALL);
                 }
             } catch (IOException e) {
@@ -412,23 +416,42 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
-    public void pass(String loginName, long id, String ip) {
+    public BaseDto<BaseDataDto> pass(String loginName, long id, String ip) {
         logger.debug("JPush audit pass, auditor:" + loginName + ", JPush id:" + id);
-        // TODO: create sending job
-        jPushAlertMapper.updateStatus(PushStatus.WILL_SEND, id);
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto baseDataDto = new BaseDataDto();
+        baseDto.setData(baseDataDto);
+
+        JPushAlertModel jPushModel = jPushAlertMapper.findJPushAlertModelById(id);
+        if (ManualJPushAlertJob(jPushModel)) {
+            jPushModel.setStatus(PushStatus.WILL_SEND);
+            jPushModel.setAuditor(loginName);
+            jPushAlertMapper.update(jPushModel);
+            baseDataDto.setStatus(true);
+            baseDto.setSuccess(true);
+            return baseDto;
+        } else {
+            baseDataDto.setStatus(false);
+            baseDto.setSuccess(false);
+            baseDataDto.setMessage("审核失败：发送时间已经过期，请核实。");
+            return baseDto;
+        }
     }
 
     @Override
     public void reject(String loginName, long id) {
         logger.debug("JPush audit reject, auditor:" + loginName + ", JPush id:" + id);
-        jPushAlertMapper.updateStatus(PushStatus.REJECTED, id);
+        JPushAlertModel jPushModel = jPushAlertMapper.findJPushAlertModelById(id);
+        jPushModel.setStatus(PushStatus.REJECTED);
+        jPushModel.setAuditor(loginName);
+        jPushAlertMapper.update(jPushModel);
     }
 
     @Override
     public void delete(String loginName, long id) {
         logger.debug("JPush audit delete, operator:" + loginName + ", JPush id:" + id);
+        jobManager.deleteJob(JobType.ManualJPushAlert, JobType.ManualJPushAlert.name(), "JPush-" + id);
         jPushAlertMapper.delete(id);
-        // TODO: stop the sending job
     }
 
 }
