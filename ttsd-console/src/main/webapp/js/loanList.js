@@ -20,7 +20,7 @@ require(['jquery', 'bootstrap','bootstrapDatetimepicker'], function ($) {
             $(".loanId").val('0');
         }
         var formData=$("#formLoanList").serialize(),
-            allData=formData+'&currentPageNo=1&pageSize=10';
+            allData=formData+'&index=1&pageSize=10';
         window.location.href = "/project-manage/loan-list?"+allData;
 
     });
