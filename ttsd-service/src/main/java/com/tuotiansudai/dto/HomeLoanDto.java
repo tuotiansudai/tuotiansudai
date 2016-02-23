@@ -27,7 +27,7 @@ public class HomeLoanDto {
 
     private String amount;
 
-    private String progress;
+    private double progress;
 
     private String status;
 
@@ -43,7 +43,7 @@ public class HomeLoanDto {
         this.periods = periods;
         this.amount = new BigDecimal(amount).toString();
         this.isPeriodMonthUnit = periodUnit == LoanPeriodUnit.MONTH;
-        this.progress = String.valueOf(new BigDecimal(investAmount).divide(new BigDecimal(amount), 2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).intValue());
+        this.progress = new BigDecimal(investAmount).divide(new BigDecimal(amount), 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue();
         this.status = status.name();
     }
 
@@ -119,11 +119,11 @@ public class HomeLoanDto {
         this.amount = amount;
     }
 
-    public String getProgress() {
+    public double getProgress() {
         return progress;
     }
 
-    public void setProgress(String progress) {
+    public void setProgress(double progress) {
         this.progress = progress;
     }
 
