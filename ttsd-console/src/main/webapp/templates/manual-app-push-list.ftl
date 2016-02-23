@@ -139,7 +139,7 @@
             <td>
                 <#if pushAlert.status == "WAIT_AUDIT" || pushAlert.status == "CREATED">
                     <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
-                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/pass" onclick="return confirm('确定同意吗?')">同意</a>｜
+                        <a class="pass" href="#" data-pushId="${pushAlert.id?c}">同意</a>｜
                         <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/reject" onclick="return confirm('确定驳回吗?')">驳回</a>
                     </@security.authorize>
                     <@security.authorize access="hasAuthority('ADMIN')">｜</@security.authorize>
@@ -163,7 +163,9 @@
                     </@security.authorize>
                 </#if>
                 <#if pushAlert.status == "SEND_SUCCESS">
-                    <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/clone">复用</a>
+                    <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
+                        <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/clone">复用</a>
+                    </@security.authorize>
                 </#if>
             </td>
         </tr>
