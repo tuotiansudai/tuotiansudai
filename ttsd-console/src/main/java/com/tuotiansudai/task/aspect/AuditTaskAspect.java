@@ -6,10 +6,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.AbstractRedisWrapperClient;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.EditUserDto;
-import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
@@ -385,36 +382,37 @@ public class AuditTaskAspect {
         }
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.jpush.service.JPushAlertService.pass(..))")
-    public void afterReturningPassJPush(JoinPoint joinPoint) {
+    @AfterReturning(value = "execution(* com.tuotiansudai.jpush.service.JPushAlertService.pass(..))", returning = "returnValue")
+    public void afterReturningPassJPush(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after pass JPush aspect.");
         try {
-            String operator = (String) joinPoint.getArgs()[0];
-            long jPushId = (long) joinPoint.getArgs()[1];
-            String ip = (String) joinPoint.getArgs()[2];
+            if (((BaseDto<BaseDataDto>) returnValue).getData().getStatus()) {
+                String operator = (String) joinPoint.getArgs()[0];
+                long jPushId = (long) joinPoint.getArgs()[1];
+                String ip = (String) joinPoint.getArgs()[2];
 
-            String taskId = OperationType.PUSH + "-" + jPushId;
+                String taskId = OperationType.PUSH + "-" + jPushId;
 
-            if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
+                if (redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
 
-                OperationTask task = (OperationTask) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+                    OperationTask task = (OperationTask) redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
 
-                OperationTask notify = getOperationTask(operator, taskId, task);
+                    OperationTask notify = getOperationTask(operator, taskId, task);
 
-                AccountModel sender = accountService.findByLoginName(operator);
-                String senderRealName = sender != null ? sender.getUserName() : operator;
+                    AccountModel sender = accountService.findByLoginName(operator);
+                    String senderRealName = sender != null ? sender.getUserName() : operator;
 
-                notify.setDescription(senderRealName + "审核通过了您创建的APP推送［" + task.getObjName() + "］。");
+                    notify.setDescription(senderRealName + "审核通过了您创建的APP推送［" + task.getObjName() + "］。");
 
-                redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
-                redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), taskId, notify);
+                    redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+                    redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), taskId, notify);
 
-                String receiverLoginName = task.getSender();
-                AccountModel receiver = accountService.findByLoginName(receiverLoginName);
-                String receiverRealName = receiver != null ? receiver.getUserName() : receiverLoginName;
-                String description = senderRealName + " 审核通过了 " + receiverRealName + " 创建的APP推送［" + task.getObjName() + "］。［ID：" + task.getObjId() + "］";
-                auditLogService.createAuditLog(operator, receiverLoginName, description, ip);
-
+                    String receiverLoginName = task.getSender();
+                    AccountModel receiver = accountService.findByLoginName(receiverLoginName);
+                    String receiverRealName = receiver != null ? receiver.getUserName() : receiverLoginName;
+                    String description = senderRealName + " 审核通过了 " + receiverRealName + " 创建的APP推送［" + task.getObjName() + "］。［ID：" + task.getObjId() + "］";
+                    auditLogService.createAuditLog(operator, receiverLoginName, description, ip);
+                }
             }
         } catch (Exception e) {
             logger.error("after pass JPush aspect fail ", e);
@@ -443,10 +441,21 @@ public class AuditTaskAspect {
 
                 redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
                 redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), taskId, notify);
-
             }
         } catch (Exception e) {
             logger.error("after reject JPush aspect fail ", e);
+        }
+    }
+
+    @AfterReturning(value = "execution(* com.tuotiansudai.jpush.service.JPushAlertService.delete(..))")
+    public void afterReturningDeleteJPush(JoinPoint joinPoint) {
+        logger.debug("after delete JPush aspect.");
+        try {
+            long jPushId = (long) joinPoint.getArgs()[1];
+            String taskId = OperationType.PUSH + "-" + jPushId;
+            redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+        } catch (Exception e) {
+            logger.error("after delete JPush aspect fail ", e);
         }
     }
 

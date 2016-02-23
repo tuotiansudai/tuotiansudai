@@ -1,6 +1,8 @@
 package com.tuotiansudai.jpush.service;
 
 
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.repository.model.*;
 import com.tuotiansudai.repository.model.InvestNotifyInfo;
@@ -39,7 +41,7 @@ public interface JPushAlertService {
 
     void autoJPushLoanAlert(List<InvestNotifyInfo> notifyInfos);
 
-    void pass(String loginName, long id, String ip);
+    BaseDto<BaseDataDto> pass(String loginName, long id, String ip);
 
     void reject(String loginName, long id);
 

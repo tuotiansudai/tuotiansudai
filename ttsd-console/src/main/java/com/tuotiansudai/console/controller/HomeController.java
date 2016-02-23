@@ -121,7 +121,7 @@ public class HomeController {
             AccountModel sender = accountService.findByLoginName(senderLoginName);
             String senderRealName = sender != null ? sender.getUserName() : senderLoginName;
 
-            notify.setDescription(senderRealName + "拒绝了您" + operationType.getDescription() + "'" + task.getObjName() + "'的申请。");
+            notify.setDescription(senderRealName + "拒绝了您" + operationType.getDescription() + "［" + task.getObjName() + "］的申请。");
 
             redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), notifyId, notify);

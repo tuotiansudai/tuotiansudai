@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Controller
@@ -157,12 +158,12 @@ public class JPushAlertController {
         return baseDto;
     }
 
+    @ResponseBody
     @RequestMapping(value = "/manual-app-push/{id}/pass", method = RequestMethod.GET)
-    public String pass(@PathVariable long id, HttpServletRequest request) {
+    public BaseDto<BaseDataDto> pass(@PathVariable long id, HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
         String ip = RequestIPParser.parse(request);
-        jPushAlertService.pass(loginName, id, ip);
-        return "redirect:/app-push-manage/manual-app-push-list";
+        return jPushAlertService.pass(loginName, id, ip);
     }
 
     @RequestMapping(value = "/manual-app-push/{id}/reject", method = RequestMethod.GET)
@@ -185,8 +186,14 @@ public class JPushAlertController {
         JPushAlertModel jPushModel = jPushAlertService.findJPushAlertModelById(id);
         JPushAlertDto jPushDto = new JPushAlertDto(jPushModel);
         jPushDto.setId(null);
+        jPushDto.setName(clonePushName(jPushDto.getPushType()));
         jPushAlertService.buildJPushAlert(loginName, jPushDto);
         return "redirect:/app-push-manage/manual-app-push-list";
     }
 
+    private String clonePushName(PushType pushType) {
+        int serialNo = jPushAlertService.findPushTypeCount(pushType) + 1;
+        String today = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        return today + "-" + pushType.getDescription() + "-" + serialNo;
+    }
 }

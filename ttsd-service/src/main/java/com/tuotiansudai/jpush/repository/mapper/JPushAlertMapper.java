@@ -38,7 +38,5 @@ public interface JPushAlertMapper {
 
     JPushAlertModel findJPushAlertByPushType(@Param("pushType") PushType pushType);
 
-    void updateStatus(@Param("status") PushStatus status, @Param("id") long id);
-
     void delete(@Param("id") long id);
 }
