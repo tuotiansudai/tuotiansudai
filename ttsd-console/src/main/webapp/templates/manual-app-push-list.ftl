@@ -14,17 +14,12 @@
     </div>
     <form action="/app-push-manage/manual-app-push-list" class="form-inline query-build">
         <div class="form-group">
-            <label for="name">通知名称</label>
-            <input type="text" id="name" name="name" class="form-control ui-autocomplete-input" datatype="*"
-                   autocomplete="off" value="${name!}"/>
-        </div>
-        <div class="form-group">
             <label>推送类型</label>
             <select class="selectpicker" name="pushType">
-                <option value="">全部</option>
+                <option value="" <#if !(pushTypeInput??)>selected</#if>>全部</option>
                 <#list pushTypes as pushType>
                     <#if pushType.getType()=='MANUAL'>
-                        <option value="${pushType.name()}">${pushType.getDescription()}</option>
+                        <option value="${pushType.name()}" <#if pushTypeInput?? && pushType==pushTypeInput>selected</#if>>${pushType.getDescription()}</option>
                     </#if>
                 </#list>
             </select>
@@ -32,16 +27,30 @@
         <div class="form-group">
             <label>推送渠道</label>
             <select class="selectpicker" name="pushSource">
+                <option value="" <#if !(pushSourceInput??)>selected</#if>>全部</option>
                 <#list pushSources as pushSource>
-                    <option value="${pushSource.name()}">${pushSource.name()}</option>
+                    <option value="${pushSource.name()}" <#if pushSourceInput?? && pushSource==pushSourceInput>selected</#if>>${pushSource.name()}</option>
                 </#list>
             </select>
         </div>
         <div class="form-group">
             <label>用户类型</label>
+
             <select class="selectpicker" name="pushUserType">
+                <option value="" <#if !(pushUserTypeInput??)>selected</#if>>所有</option>
                 <#list pushUserTypes as pushUserType>
-                    <option value="${pushUserType.name()}">${pushUserType.getDescription()}</option>
+                    <option value="${pushUserType.name()}" <#if pushUserTypeInput?? && pushUserType==pushUserTypeInput>selected</#if>>${pushUserType.getDescription()}</option>
+                </#list>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>状态</label>
+            <select class="selectpicker" name="pushStatus">
+                <option value="" <#if !(pushStatusInput??)>selected</#if>>全部</option>
+                <#list pushStatuses as pushStatus>
+                    <#if pushStatus.name() != 'ENABLED' && pushStatus.name() != 'DISABLED'  >
+                        <option value="${pushStatus.name()}" <#if pushStatusInput?? && pushStatus==pushStatusInput>selected</#if>>${pushStatus.getDescription()}</option>
+                    </#if>
                 </#list>
             </select>
         </div>
@@ -49,14 +58,14 @@
             <label>推送时间</label>
 
             <div class='input-group date' id='datetimepicker1'>
-                <input type='text' class="form-control" name="startTime"/>
+                <input type='text' class="form-control" name="startTime" value="${(startTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
             </div>
             -
             <div class='input-group date' id='datetimepicker2'>
-                <input type='text' class="form-control" name="endTime"/>
+                <input type='text' class="form-control" name="endTime" value="${(endTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -166,10 +175,10 @@
                 ${pushAlert.jumpTo.getDescription()}
             </th>
             <th>
-                目标｜送达｜打开
+                100｜200｜300
             </th>
             <th>
-                目标｜送达｜打开
+                400｜500｜600
             </th>
             <td>
                 ${(pushAlert.createdBy)!}｜<#if (pushAlert.updatedBy)??>${pushAlert.updatedBy}<#else>无</#if>
@@ -225,7 +234,7 @@
             <ul class="pagination">
                 <li>
                     <#if hasPreviousPage>
-                    <a href="?index=${index-1}&pageSize=${pageSize}&name=${name!}" aria-label="Previous">
+                    <a href="?index=${index-1}&pageSize=${pageSize} <#if pushTypeInput??>&pushType=#{pushTypeInput}</#if> <#if pushSourceInput??>&pushSource=#{pushSourceInput}</#if> <#if pushUserTypeInput??>&pushUserType=#{pushUserTypeInput}</#if> <#if pushStatusInput??>&pushStatus=#{pushStatusInput}</#if> <#if startTime??>&startTime=${startTime?string('yyyy-MM-dd')}</#if> <#if endTime??>&endTime=${endTime?string('yyyy-MM-dd')}</#if>" aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
@@ -235,7 +244,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage>
-                    <a href="?index=${index+1}&pageSize=${pageSize}&name=${name!}" aria-label="Next">
+                    <a href="?index=${index+1}&pageSize=${pageSize} <#if pushTypeInput??>&pushType=#{pushTypeInput}</#if> <#if pushSourceInput??>&pushSource=#{pushSourceInput}</#if> <#if pushUserTypeInput??>&pushUserType=#{pushUserTypeInput}</#if> <#if pushStatusInput??>&pushStatus=#{pushStatusInput}</#if> <#if startTime??>&startTime=${startTime?string('yyyy-MM-dd')}</#if> <#if endTime??>&endTime=${endTime?string('yyyy-MM-dd')}</#if>" aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>
