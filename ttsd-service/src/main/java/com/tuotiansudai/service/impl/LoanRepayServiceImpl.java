@@ -127,10 +127,16 @@ public class LoanRepayServiceImpl implements LoanRepayService {
 
         for (LoanRepayNotifyModel model : loanRepayNotifyModelList) {
 
-            BaseDto<PayDataDto> response = payWrapperClient.autoRepay(model.getLoanId());
-            if (response.isSuccess() && response.getData().getStatus()) {
+            try {
+                BaseDto<PayDataDto> response = payWrapperClient.autoRepay(model.getLoanId());
+                if (response.isSuccess() && response.getData().getStatus()) {
+                    continue;
+                }
+            } catch (Exception e) {
+                logger.error(e.getLocalizedMessage(), e);
                 continue;
             }
+
             logger.info("sent loan repay notify sms message to " + model.getMobile() + ", loan name:" + model.getLoanName().trim());
 
             LoanRepayNotifyDto dto = new LoanRepayNotifyDto();

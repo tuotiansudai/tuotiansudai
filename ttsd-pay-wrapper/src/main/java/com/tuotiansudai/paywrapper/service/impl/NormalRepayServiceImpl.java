@@ -115,10 +115,12 @@ public class NormalRepayServiceImpl implements RepayService {
             return false;
         }
         AccountModel accountModel = accountMapper.findByLoginName(loanModel.getAgentLoginName());
+        if (!accountModel.isAutoRepay()) {
+            logger.info("can not auto repay, because agent is not open auto repay , loanId : " + loanId);
+            return false;
+        }
         long balance = accountModel.getBalance();
-        List<InvestModel> successInvestModels = investMapper.findSuccessInvestsByLoanId(loanId);
-        LoanRepayModel enabledLoanRepay = loanRepayMapper.findEnabledLoanRepayByLoanId(loanId);
-        setEnabledLoanRepay(loanId, loanModel, successInvestModels, enabledLoanRepay);
+        LoanRepayModel enabledLoanRepay = setEnabledLoanRepay(loanId, loanModel);
         if (balance < enabledLoanRepay.getCorpus() + enabledLoanRepay.getActualInterest() + enabledLoanRepay.getDefaultInterest()) {
             logger.info("can not auto repay, because agent balance is not enough , loanId : " + loanId);
             return false;
@@ -152,15 +154,13 @@ public class NormalRepayServiceImpl implements RepayService {
         baseDto.setData(payFormDataDto);
 
         LoanModel loanModel = loanMapper.findById(loanId);
-        List<InvestModel> successInvestModels = investMapper.findSuccessInvestsByLoanId(loanId);
-        LoanRepayModel enabledLoanRepay = loanRepayMapper.findEnabledLoanRepayByLoanId(loanId);
+        LoanRepayModel enabledLoanRepay = setEnabledLoanRepay(loanId, loanModel);
 
         if (enabledLoanRepay == null) {
             logger.error(MessageFormat.format("[Normal Repay] There is no enabled loan repay (loanId = {0})", String.valueOf(loanId)));
             return baseDto;
         }
 
-        setEnabledLoanRepay(loanId, loanModel, successInvestModels, enabledLoanRepay);
         loanRepayMapper.update(enabledLoanRepay);
 
         ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newRepayRequest(String.valueOf(loanId),
@@ -176,7 +176,9 @@ public class NormalRepayServiceImpl implements RepayService {
         return baseDto;
     }
 
-    private void setEnabledLoanRepay(long loanId, LoanModel loanModel, List<InvestModel> successInvestModels, LoanRepayModel enabledLoanRepay) {
+    private LoanRepayModel setEnabledLoanRepay(long loanId, LoanModel loanModel) {
+        LoanRepayModel enabledLoanRepay = loanRepayMapper.findEnabledLoanRepayByLoanId(loanId);
+        List<InvestModel> successInvestModels = investMapper.findSuccessInvestsByLoanId(loanId);
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
 
         DateTime actualRepayDate = new DateTime();
@@ -188,6 +190,7 @@ public class NormalRepayServiceImpl implements RepayService {
         enabledLoanRepay.setActualInterest(actualInterest);
         enabledLoanRepay.setActualRepayDate(actualRepayDate.toDate());
         enabledLoanRepay.setDefaultInterest(defaultInterest);
+        return enabledLoanRepay;
     }
 
     @Override
