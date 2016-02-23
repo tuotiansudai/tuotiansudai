@@ -3,6 +3,10 @@
 <div class="home-page-container">
     <div class="banner-box">
         <div class="banner-img-list">
+            <a href="/activity/birth-month" target="_blank">
+                <img src="${staticServer}/images/sign/actor/birth/birth-month.jpg" alt="生日月投资收益翻倍" class="pc-img">
+                <img src="${staticServer}/images/sign/actor/birth/birth-month-phone.jpg" alt="生日月投资收益翻倍" class="iphone-img">
+            </a>
             <a href="/activity/red-envelope" target="_blank">
                 <img src="${staticServer}/images/sign/actor/redbag/red-bag-pc.png" alt="宝马大奖颁奖典礼" class="pc-img">
                 <img src="${staticServer}/images/sign/actor/redbag/red-bag-phone.png" alt="宝马大奖颁奖典礼" class="iphone-img">
@@ -15,7 +19,6 @@
                 <img src="${staticServer}/images/sign/actor/awards/ttimg-awards.jpg" alt="宝马大奖颁奖典礼" class="pc-img">
                 <img src="${staticServer}/images/sign/actor/awards/ph-awards.jpg" alt="宝马大奖颁奖典礼" class="iphone-img">
             </a>
-
             <a href="/activity/recruit" target="_blank">
                 <img src="${staticServer}/images/ttimg/ttimg-home03.png" alt="招募代理" class="pc-img">
                 <img src="${staticServer}/images/ttimg/ph-a03.jpg" alt="招募代理" class="iphone-img">
@@ -24,6 +27,7 @@
         </div>
         <ul class="scroll-num">
             <li class="selected"></li>
+            <li></li>
             <li></li>
             <li></li>
             <li></li>

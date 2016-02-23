@@ -98,16 +98,16 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/finance-manage/user-funds?loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&userBillOperationType=${userBillOperationType!}&userBillBusinessType=${userBillBusinessType!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/user-funds?loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&userBillOperationType=${userBillOperationType!}&userBillBusinessType=${userBillBusinessType!}&index=${index-1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
                     <span>« Prev</span></a>
                 </li>
-                <li><a>${currentPageNo}</a></li>
+                <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="/finance-manage/user-funds?loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&userBillOperationType=${userBillOperationType!}&userBillBusinessType=${userBillBusinessType!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/user-funds?loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm:ss'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm:ss'))!}&userBillOperationType=${userBillOperationType!}&userBillBusinessType=${userBillBusinessType!}&index=${index+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
