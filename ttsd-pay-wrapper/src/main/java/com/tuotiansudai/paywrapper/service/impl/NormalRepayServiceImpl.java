@@ -18,11 +18,14 @@ import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNopwdMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.paywrapper.service.LoanService;
@@ -104,20 +107,76 @@ public class NormalRepayServiceImpl implements RepayService {
 
     @Override
     @Transactional
-    public BaseDto<PayFormDataDto> repay(long loanId) {
+    public boolean autoRepay(long loanId) {
+        logger.info("auto repay start , loanId : " + loanId);
         LoanModel loanModel = loanMapper.findById(loanId);
+        if (LoanStatus.REPAYING != loanModel.getStatus()) {
+            logger.info("can not auto repay, because loan status is not repaying , loanId : " + loanId);
+            return false;
+        }
+        AccountModel accountModel = accountMapper.findByLoginName(loanModel.getAgentLoginName());
+        long balance = accountModel.getBalance();
         List<InvestModel> successInvestModels = investMapper.findSuccessInvestsByLoanId(loanId);
         LoanRepayModel enabledLoanRepay = loanRepayMapper.findEnabledLoanRepayByLoanId(loanId);
+        setEnabledLoanRepay(loanId, loanModel, successInvestModels, enabledLoanRepay);
+        if (balance < enabledLoanRepay.getCorpus() + enabledLoanRepay.getActualInterest() + enabledLoanRepay.getDefaultInterest()) {
+            logger.info("can not auto repay, because agent balance is not enough , loanId : " + loanId);
+            return false;
+        }
+        loanRepayMapper.update(enabledLoanRepay);
+        ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newRepayNopwdRequest(
+                String.valueOf(loanId),
+                MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(enabledLoanRepay.getId()), String.valueOf(new DateTime(enabledLoanRepay.getActualRepayDate()).getMillis())),
+                accountModel.getPayUserId(),
+                String.valueOf(enabledLoanRepay.getCorpus() + enabledLoanRepay.getActualInterest() + enabledLoanRepay.getDefaultInterest())
+        );
+        ProjectTransferNopwdResponseModel responseModel;
+        try {
+            responseModel = paySyncClient.send(
+                    ProjectTransferNopwdMapper.class,
+                    requestModel,
+                    ProjectTransferNopwdResponseModel.class);
+        } catch (PayException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            return false;
+        }
+        return responseModel.isSuccess();
+    }
+
+    @Override
+    @Transactional
+    public BaseDto<PayFormDataDto> repay(long loanId) {
 
         BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         baseDto.setData(payFormDataDto);
+
+        LoanModel loanModel = loanMapper.findById(loanId);
+        List<InvestModel> successInvestModels = investMapper.findSuccessInvestsByLoanId(loanId);
+        LoanRepayModel enabledLoanRepay = loanRepayMapper.findEnabledLoanRepayByLoanId(loanId);
 
         if (enabledLoanRepay == null) {
             logger.error(MessageFormat.format("[Normal Repay] There is no enabled loan repay (loanId = {0})", String.valueOf(loanId)));
             return baseDto;
         }
 
+        setEnabledLoanRepay(loanId, loanModel, successInvestModels, enabledLoanRepay);
+        loanRepayMapper.update(enabledLoanRepay);
+
+        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newRepayRequest(String.valueOf(loanId),
+                MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(enabledLoanRepay.getId()), String.valueOf(new DateTime(enabledLoanRepay.getActualRepayDate()).getMillis())),
+                accountMapper.findByLoginName(loanModel.getAgentLoginName()).getPayUserId(),
+                String.valueOf(enabledLoanRepay.getCorpus() + enabledLoanRepay.getActualInterest() + enabledLoanRepay.getDefaultInterest()));
+        try {
+            baseDto = payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
+        } catch (PayException e) {
+            logger.error(MessageFormat.format("[Normal Repay] Generate loan repay form data is failed (loanRepayId = {0})", String.valueOf(enabledLoanRepay.getId())), e);
+        }
+
+        return baseDto;
+    }
+
+    private void setEnabledLoanRepay(long loanId, LoanModel loanModel, List<InvestModel> successInvestModels, LoanRepayModel enabledLoanRepay) {
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
 
         DateTime actualRepayDate = new DateTime();
@@ -128,19 +187,7 @@ public class NormalRepayServiceImpl implements RepayService {
         enabledLoanRepay.setStatus(RepayStatus.WAIT_PAY);
         enabledLoanRepay.setActualInterest(actualInterest);
         enabledLoanRepay.setActualRepayDate(actualRepayDate.toDate());
-        loanRepayMapper.update(enabledLoanRepay);
-
-        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newRepayRequest(String.valueOf(loanId),
-                MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(enabledLoanRepay.getId()), String.valueOf(actualRepayDate.getMillis())),
-                accountMapper.findByLoginName(loanModel.getAgentLoginName()).getPayUserId(),
-                String.valueOf(enabledLoanRepay.getCorpus() + actualInterest + defaultInterest));
-        try {
-            baseDto = payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
-        } catch (PayException e) {
-            logger.error(MessageFormat.format("[Normal Repay] Generate loan repay form data is failed (loanRepayId = {0})", String.valueOf(enabledLoanRepay.getId())), e);
-        }
-
-        return baseDto;
+        enabledLoanRepay.setDefaultInterest(defaultInterest);
     }
 
     @Override

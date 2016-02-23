@@ -49,6 +49,8 @@ public class PayWrapperClient extends BaseClient {
 
     private String autoInvestPath = "/auto-invest";
 
+    private String autoRepayPath = "/auto-repay";
+
     private String agreementPath = "/agreement";
 
     private String repayPath = "/repay";
@@ -104,6 +106,10 @@ public class PayWrapperClient extends BaseClient {
 
     public BaseDto<PayDataDto> autoInvest(long loanId) {
         return syncExecute(String.valueOf(loanId), autoInvestPath, "POST");
+    }
+
+    public BaseDto<PayDataDto> autoRepay(long loanId) {
+        return syncExecute(String.valueOf(loanId), autoRepayPath, "POST");
     }
 
     public BaseDto<PayDataDto> createLoan(LoanDto dto) {

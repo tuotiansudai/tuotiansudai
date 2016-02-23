@@ -10,6 +10,8 @@ public class LoanRepayNotifyModel implements Serializable {
 
     private String mobile;
 
+    private long loanId;
+
     public long getRepayAmount() {
         return repayAmount;
     }
@@ -32,5 +34,13 @@ public class LoanRepayNotifyModel implements Serializable {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public long getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(long loanId) {
+        this.loanId = loanId;
     }
 }
