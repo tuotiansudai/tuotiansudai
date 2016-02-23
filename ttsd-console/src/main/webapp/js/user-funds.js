@@ -50,7 +50,7 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker','jque
             var endTime = $('.jq-endTime').val();
             var operationType = $('.operationType').val();
             var businessType = $('.businessType').val();
-            window.location.href = "/finance-manage/user-funds?loginName="+loginName+"&startTime="+startTime+"&endTime="+endTime+"&userBillOperationType="+operationType+"&userBillBusinessType="+businessType+"&currentPageNo=1&pageSize=10";
+            window.location.href = "/finance-manage/user-funds?loginName="+loginName+"&startTime="+startTime+"&endTime="+endTime+"&userBillOperationType="+operationType+"&userBillBusinessType="+businessType+"&index=1&pageSize=10";
         });
 
         $('.down-load').click(function(){

@@ -50,17 +50,17 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/announce-manage/announce?id=${(id?string('0'))!}&title=${title!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}">
+                    <a href="/announce-manage/announce?id=${(id?string('0'))!}&title=${title!}&index=${index-1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
                     <span>« Prev</span>
                 </a>
                 </li>
-                <li><a>${currentPageNo}</a></li>
+                <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage>
-                    <a href="/announce-manage/announce?id=${(id?string('0'))!}&title=${title!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}">
+                    <a href="/announce-manage/announce?id=${(id?string('0'))!}&title=${title!}&index=${index+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
