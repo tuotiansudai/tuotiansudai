@@ -83,6 +83,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             jPushAlertModel.setCreatedTime(new Date());
             jPushAlertModel.setIsAutomatic(false);
             jPushAlertMapper.create(jPushAlertModel);
+            jPushAlertDto.setId(String.valueOf(jPushAlertModel.getId()));
         }
     }
 
@@ -187,7 +188,8 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 return;
             }
             autoJPushByBatchRegistrationId(jPushAlertModel, loginNames, jPushAlertModel.getPushSource());
-            jPushAlertMapper.updateStatus(PushStatus.SEND_SUCCESS, id);
+            jPushAlertModel.setStatus(PushStatus.SEND_SUCCESS);
+            jPushAlertMapper.update(jPushAlertModel);
         } else {
             logger.debug("this JPush is disabled, id = " + id);
         }
@@ -422,7 +424,9 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
         JPushAlertModel jPushModel = jPushAlertMapper.findJPushAlertModelById(id);
         if (ManualJPushAlertJob(jPushModel)) {
-            jPushAlertMapper.updateStatus(PushStatus.WILL_SEND, id);
+            jPushModel.setStatus(PushStatus.WILL_SEND);
+            jPushModel.setAuditor(loginName);
+            jPushAlertMapper.update(jPushModel);
             baseDataDto.setStatus(true);
             baseDto.setSuccess(true);
             return baseDto;
@@ -437,7 +441,10 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     @Override
     public void reject(String loginName, long id) {
         logger.debug("JPush audit reject, auditor:" + loginName + ", JPush id:" + id);
-        jPushAlertMapper.updateStatus(PushStatus.REJECTED, id);
+        JPushAlertModel jPushModel = jPushAlertMapper.findJPushAlertModelById(id);
+        jPushModel.setStatus(PushStatus.REJECTED);
+        jPushModel.setAuditor(loginName);
+        jPushAlertMapper.update(jPushModel);
     }
 
     @Override
