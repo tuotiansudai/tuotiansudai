@@ -120,7 +120,7 @@ public class NormalRepayServiceImpl implements RepayService {
             return false;
         }
         long balance = accountModel.getBalance();
-        LoanRepayModel enabledLoanRepay = setEnabledLoanRepay(loanModel);
+        LoanRepayModel enabledLoanRepay = getEnabledLoanRepay(loanModel);
         if (balance < enabledLoanRepay.getCorpus() + enabledLoanRepay.getActualInterest() + enabledLoanRepay.getDefaultInterest()) {
             logger.info("can not auto repay, because agent balance is not enough , loanId : " + loanId);
             return false;
@@ -154,7 +154,7 @@ public class NormalRepayServiceImpl implements RepayService {
         baseDto.setData(payFormDataDto);
 
         LoanModel loanModel = loanMapper.findById(loanId);
-        LoanRepayModel enabledLoanRepay = setEnabledLoanRepay(loanModel);
+        LoanRepayModel enabledLoanRepay = getEnabledLoanRepay(loanModel);
 
         if (enabledLoanRepay == null) {
             logger.error(MessageFormat.format("[Normal Repay] There is no enabled loan repay (loanId = {0})", String.valueOf(loanId)));
@@ -176,7 +176,7 @@ public class NormalRepayServiceImpl implements RepayService {
         return baseDto;
     }
 
-    private LoanRepayModel setEnabledLoanRepay(LoanModel loanModel) {
+    private LoanRepayModel getEnabledLoanRepay(LoanModel loanModel) {
         LoanRepayModel enabledLoanRepay = loanRepayMapper.findEnabledLoanRepayByLoanId(loanModel.getId());
         List<InvestModel> successInvestModels = investMapper.findSuccessInvestsByLoanId(loanModel.getId());
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
