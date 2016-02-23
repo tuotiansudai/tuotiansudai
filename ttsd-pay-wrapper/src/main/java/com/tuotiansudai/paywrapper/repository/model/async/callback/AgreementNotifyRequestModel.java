@@ -28,19 +28,15 @@ public class AgreementNotifyRequestModel extends BaseCallbackRequestModel {
     }
 
     public boolean isAutoInvest(){
-        if (this.getUserBindAgreementList().contains(AgreementType.ZTBB0G00.name())){
-            return true;
-        } else {
-            return false;
-        }
+        return this.getUserBindAgreementList().contains(AgreementType.ZTBB0G00.name());
     }
 
     public boolean isFastPay(){
-        if (this.getUserBindAgreementList().contains(AgreementType.ZKJP0700.name())){
-            return true;
-        } else {
-            return false;
-        }
+        return this.getUserBindAgreementList().contains(AgreementType.ZKJP0700.name());
+    }
+
+    public boolean isAutoRepay() {
+        return this.getUserBindAgreementList().contains(AgreementType.ZHKB0H01.name());
     }
     
 }
