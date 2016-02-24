@@ -44,14 +44,19 @@
         <div class="coupon-com active">
             <ul class="coupon-list">
                 <li>
-                    <div class="left-name">
-                        现金红包
-                    </div>
-                    <div class="right-coupon">
-                        dsd
+                    <div class="top-com">
+                        <div class="left-name">
+                            <span>现金红包</span>
+                            <i class="circle-top"></i>
+                            <i class="circle-bottom"></i>
+                        </div>
+                        <div class="right-coupon">
+                            dsd
+                        </div>
                     </div>
                     <div class="bottom-time">
-                        
+                        <span>请在2016-05-03前使用</span>
+                        <a href="#">立即使用</a>
                     </div>
                 </li>
                 <li></li>

@@ -1496,21 +1496,50 @@
       li{
         float:left;
         width:285px;
-        .left-name{
+        margin-top:35px;
+        .top-com{
           float:left;
-          width: 30px;
-          height: 125px;
-          background: #ff752a;
-          color: #fff;
-          font-size: 16px;
-          padding: 0 10px;
-          text-align: center;
-          line-height: 22px;
-        }
-        .right-coupon{
-          float:left;
-          width:235px;
+          width:285px;
           height:125px;
+          overflow:hidden;
+          .left-name{
+            float:left;
+            width: 30px;
+            height: 110px;
+            background: #ff752a;
+            color: #fff;
+            font-size: 16px;
+            padding: 0 10px;
+            text-align: center;
+            line-height: 22px;
+            padding-top:15px;
+            border-radius:5px;
+            position: relative;
+            i{
+              position: absolute;
+              left:45px;
+              width:10px;
+              height:10px;
+              border:1px solid #ff752a;
+              background:#fff;
+              border-radius:50%;
+              &.circle-top{
+                top:-5px;
+              }
+              &.circle-bottom{
+                bottom:-5px;
+              }
+            }
+          }
+          .right-coupon{
+            float:left;
+            width:233px;
+            height:123px;
+            border:1px solid #ff752a;
+            border-radius:5px;
+            background:url("/images/sign/yellow-bg.png") no-repeat;
+            background-position: 165px 10px;
+          }
         }
         .bottom-time{
           float:left;
