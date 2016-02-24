@@ -21,5 +21,4 @@ public interface LoanRepayService {
 
     void loanRepayNotify();
 
-    void loanBirthdayNotify();
 }

@@ -44,8 +44,8 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.LoanRepayNotify.name().equalsIgnoreCase(schedulerName)) {
             createLoanRepayNotifyJob();
         }
-        if (JobType.LoanBirthdayNotify.name().equalsIgnoreCase(schedulerName)) {
-            createLoanBirthdayNotifyJob();
+        if (JobType.BirthdayNotify.name().equalsIgnoreCase(schedulerName)) {
+            createBirthdayNotifyJob();
         }
         if(JobType.AutoJPushAlertBirthMonth.name().equalsIgnoreCase(schedulerName)) {
             createAutoJPushAlertBirthMonth();
@@ -116,11 +116,11 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
     }
 
-    private void createLoanBirthdayNotifyJob() {
+    private void createBirthdayNotifyJob() {
         try {
-            jobManager.newJob(JobType.LoanBirthdayNotify, LoanBirthdayNotifyJob.class).replaceExistingJob(true)
+            jobManager.newJob(JobType.BirthdayNotify, BirthdayNotifyJob.class).replaceExistingJob(true)
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 10 1 * ?").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
-                    .withIdentity(JobType.LoanBirthdayNotify.name(), JobType.LoanBirthdayNotify.name()).submit();
+                    .withIdentity(JobType.BirthdayNotify.name(), JobType.BirthdayNotify.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }

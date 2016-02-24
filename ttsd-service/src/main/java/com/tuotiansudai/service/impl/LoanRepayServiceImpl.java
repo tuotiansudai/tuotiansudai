@@ -143,16 +143,4 @@ public class LoanRepayServiceImpl implements LoanRepayService {
         }
     }
 
-    @Override
-    public void loanBirthdayNotify() {
-
-        List<String> userMobileList = userMapper.findUsersBirthdayMobile();
-        for (String mobile : userMobileList) {
-
-            logger.info("sent user birthday notify sms message to " + mobile );
-
-            SmsCouponNotifyDto notifyDto = new SmsCouponNotifyDto();
-            smsWrapperClient.sendCouponNotify(notifyDto);
-        }
-    }
 }

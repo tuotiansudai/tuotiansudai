@@ -1,23 +1,23 @@
 package com.tuotiansudai.job;
 
-import com.tuotiansudai.service.LoanRepayService;
+import com.tuotiansudai.coupon.service.CouponAlertService;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class LoanBirthdayNotifyJob implements Job {
+public class BirthdayNotifyJob implements Job {
 
-    static Logger logger = Logger.getLogger(LoanBirthdayNotifyJob.class);
+    static Logger logger = Logger.getLogger(BirthdayNotifyJob.class);
 
     @Autowired
-    private LoanRepayService loanRepayService;
+    private CouponAlertService couponAlertServiceService;
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        logger.info("trigger LoanBirthdayNotifyJob job");
-        loanRepayService.loanBirthdayNotify();
+        logger.info("trigger BirthdayNotifyJob job");
+        couponAlertServiceService.BirthdayNotify();
     }
 
 }
