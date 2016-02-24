@@ -108,6 +108,15 @@
                     {"name":"createManualAppPush","text":"创建手动推送","link":"/app-push-manage/manual-app-push","role":"'ADMIN'"},
                     {"name":"autoAppPushManage","text":"自动推送管理","link":"/app-push-manage/auto-app-push-list","role":"'ADMIN'"}
                 ]
+            },
+            {
+                "name":"point-manage",
+                "header":{"text":"财豆管理"},
+                "sidebar":[
+                    {"name":"","text":"用户财豆查询","link":"","role":""},
+                    {"name":"createCouponExchange","text":"优惠券兑换创建","link":"/point-manage/coupon-exchange","role":"'ADMIN'"},
+                    {"name":"","text":"优惠券兑换管理","link":"","role":""}
+                ]
             }
         ]
 >
