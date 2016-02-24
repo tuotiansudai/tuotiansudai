@@ -9,6 +9,8 @@ require(['jquery'], function ($) {
             if (serverTime < new Date("2016-03-01 00:00:00").getTime()) {
                 $birthTip.show();
                 return false;
+            }else{
+                location.href=$(this).attr('data-href');
             }
         });
 

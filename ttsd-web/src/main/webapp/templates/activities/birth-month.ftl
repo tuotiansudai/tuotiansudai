@@ -36,11 +36,11 @@
         <p class="text-pro">
             <span class="product-left">
                 <img src="${staticServer}/images/sign/actor/birth/product-three.png">
-                <a href="/loan-list?productType=WYX" class="click-btn time-btn" data-kick-off-date="${.now}"></a>
+                <a href="javascript:void(0)" class="click-btn time-btn" data-kick-off-date="${.now}" data-href="/loan-list?productType=WYX"></a>
             </span>
             <span class="product-right">
                 <img src="${staticServer}/images/sign/actor/birth/product-six.png">
-                <a href="/loan-list?productType=JYF" class="click-btn time-btn" data-kick-off-date="${.now}"></a>
+                <a href="javascript:void(0)" class="click-btn time-btn" data-kick-off-date="${.now}" data-href="/loan-list?productType=JYF"></a>
             </span>
         </p>
         <p class="text-bg">活动规则</p>
