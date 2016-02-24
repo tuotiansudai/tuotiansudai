@@ -24,6 +24,7 @@ import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -94,13 +95,23 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
-    public int findPushAlertCount(String name, boolean isAutomatic) {
-        return jPushAlertMapper.findPushAlertCount(name, false);
+    public int findPushAlertCount(PushType pushType,
+                                  PushSource pushSource, PushUserType pushUserType,PushStatus pushStatus,
+                                  Date startTime, Date endTime, boolean isAutomatic) {
+        if (endTime != null) {
+            endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+        }
+        return jPushAlertMapper.findPushAlertCount(pushType,pushSource,pushUserType,pushStatus,startTime,endTime, false);
     }
 
     @Override
-    public List<JPushAlertModel> findPushAlerts(int index, int pageSize, String name, boolean isAutomatic) {
-        return jPushAlertMapper.findPushAlerts((index - 1) * pageSize, pageSize, name, isAutomatic);
+    public List<JPushAlertModel> findPushAlerts(int index, int pageSize, PushType pushType,
+                   PushSource pushSource, PushUserType pushUserType,PushStatus pushStatus,
+                   Date startTime, Date endTime, boolean isAutomatic){
+        if (endTime != null) {
+            endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+        }
+        return jPushAlertMapper.findPushAlerts((index - 1) * pageSize, pageSize,pushType,pushSource,pushUserType,pushStatus,startTime,endTime, isAutomatic);
     }
 
     @Override

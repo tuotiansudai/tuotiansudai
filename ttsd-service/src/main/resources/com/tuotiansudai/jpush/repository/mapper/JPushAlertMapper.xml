@@ -43,15 +43,48 @@
 
     <select id="findPushAlertCount" resultType="int" parameterType="map">
         select COUNT(*) from jpush_alert where is_automatic = #{isAutomatic}
-        <if test="name != null and name != '' ">
-            and name like CONCAT(CONCAT('%', #{name}), '%')
+        <if test="pushType != null">
+            and push_type = #{pushType}
+        </if>
+        <if test="pushSource != null">
+            and push_source = #{pushSource}
+        </if>
+        <if test="pushUserType != null">
+            and push_user_type = #{pushUserType}
+        </if>
+        <if test="pushStatus != null">
+            and status = #{pushStatus}
+        </if>
+        <if test="startTime != null">
+            and expect_push_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            <![CDATA[ and expect_push_time <= #{endTime} ]]>
+
         </if>
     </select>
 
     <select id="findPushAlerts" resultMap="jPushAlertResultMap" parameterType="map">
         select * from jpush_alert where is_automatic = #{isAutomatic}
-        <if test="name != null and name != '' ">
-            and name like CONCAT(CONCAT('%', #{name}), '%')
+
+        <if test="pushType != null">
+            and push_type = #{pushType}
+        </if>
+        <if test="pushSource != null">
+            and push_source = #{pushSource}
+        </if>
+        <if test="pushUserType != null">
+            and push_user_type = #{pushUserType}
+        </if>
+        <if test="pushStatus != null">
+            and status = #{pushStatus}
+        </if>
+        <if test="startTime != null">
+            and expect_push_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            <![CDATA[ and expect_push_time <= #{endTime} ]]>
+
         </if>
         ORDER BY created_time DESC
         LIMIT #{index},#{pageSize}
