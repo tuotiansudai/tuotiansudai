@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.point.repository.mapper.UserPointTaskMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="userPointTaskResultMap" type="UserPointTaskModel">
+        <result property="loginName" column="login_name"/>
+        <result property="pointTaskId" column="point_task_id"/>
+        <result property="createdTime" column="created_time"/>
+        <association property="pointTask" javaType="PointTaskModel">
+            <id property="id" column="point_task_id"/>
+            <result property="name" column="point_task_name"/>
+            <result property="point" column="point_task_point"/>
+            <result property="createdTime" column="point_task_created_time"/>
+        </association>
+    </resultMap>
+
+    <insert id="create" parameterType="UserPointTaskModel">
+        insert into user_point_task (login_name, point_task_id, created_time)
+        value(#{loginName}, #{pointTaskId}, #{createdTime})
+    </insert>
+
+    <select id="findByLoginName" parameterType="java.lang.String" resultMap="userPointTaskResultMap">
+        select
+         user_point_task.login_name as login_name,
+         user_point_task.created_time as created_time,
+         point_task.id as point_task_id,
+         point_task.name as point_task_name,
+         point_task.point as point_task_point,
+         point_task.created_time as point_task_created_time
+        from user_point_task inner join point_task on user_point_task.point_task_id = point_task.id
+        where user_point_task.login_name = #{loginName} order by created_time desc;
+    </select>
+
+</mapper>

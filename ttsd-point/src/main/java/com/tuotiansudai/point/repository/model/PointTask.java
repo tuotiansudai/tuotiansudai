@@ -1,0 +1,16 @@
+package com.tuotiansudai.point.repository.model;
+
+public enum PointTask {
+    REGISTER("注册认证"),
+    BIND_EMAIL("绑定邮箱"),
+    BIND_BANK_CARD("绑定银行卡"),
+    FIRST_RECHARGE("首次充值"),
+    FIRST_INVEST("首次投资"),
+    SUM_INVEST_10000("累计投资10000元");
+
+    private final String description;
+
+    PointTask(String description) {
+        this.description = description;
+    }
+}
