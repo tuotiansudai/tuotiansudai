@@ -42,9 +42,6 @@ public class LoanRepayServiceImpl implements LoanRepayService {
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
-    @Autowired
-    private UserMapper userMapper;
-
     @Value("#{'${repay.remind.mobileList}'.split('\\|')}")
     private List<String> repayRemindMobileList;
 
