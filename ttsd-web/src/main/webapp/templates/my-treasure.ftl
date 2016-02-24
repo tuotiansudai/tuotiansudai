@@ -42,7 +42,20 @@
      </ul> 
      <div class="model-list">
         <div class="coupon-com active">
-            
+            <ul class="coupon-list">
+                <li>
+                    <div class="left-name">
+                        现金红包
+                    </div>
+                    <div class="right-coupon">
+                        dsd
+                    </div>
+                    <div class="bottom-time">
+                        
+                    </div>
+                </li>
+                <li></li>
+            </ul>
         </div>
         <div class="coupon-com">
             2

@@ -1490,6 +1490,35 @@
         display:block;
       }
     }
+    .coupon-list{
+      float:left;
+      width:100%;
+      li{
+        float:left;
+        width:285px;
+        .left-name{
+          float:left;
+          width: 30px;
+          height: 125px;
+          background: #ff752a;
+          color: #fff;
+          font-size: 16px;
+          padding: 0 10px;
+          text-align: center;
+          line-height: 22px;
+        }
+        .right-coupon{
+          float:left;
+          width:235px;
+          height:125px;
+        }
+        .bottom-time{
+          float:left;
+          width:285px;
+          height:60px;
+        }
+      }
+    }
   }
 }
 @media screen and (max-width: 700px) {
