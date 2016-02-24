@@ -27,4 +27,8 @@ public class AgreementController {
         return new ModelAndView("/pay", "pay", baseDto);
     }
 
+    @RequestMapping(value = "/repay", method = RequestMethod.GET)
+    public ModelAndView agreementRepay() {
+        return new ModelAndView("/auto-repay-agreement");
+    }
 }
