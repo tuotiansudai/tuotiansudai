@@ -115,15 +115,10 @@ public class CouponAlertServiceImpl implements CouponAlertService {
     public void BirthdayNotify() {
 
         List<String> userMobileList = userMapper.findUsersBirthdayMobile();
-        logger.info("userMobileList =" +  userMobileList.size());
         for (String mobile : userMobileList) {
-            logger.info("userMobile =" +  mobile);
-            logger.info("sent user birthday notify sms message to " + mobile );
-
             SmsCouponNotifyDto notifyDto = new SmsCouponNotifyDto();
             notifyDto.setMobile(mobile.trim());
-            logger.info(" notifyDto.getMobile() " +  notifyDto.getMobile());
-            //smsWrapperClient.sendBirthdayNotify(notifyDto);
+            smsWrapperClient.sendBirthdayNotify(notifyDto);
         }
     }
 }
