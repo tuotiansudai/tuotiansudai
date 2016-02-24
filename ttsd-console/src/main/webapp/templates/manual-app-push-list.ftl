@@ -7,19 +7,72 @@
     <div class="tip-container">
         <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+                <span aria-hidden="true">&times;</span>
             </button>
             <span class="txt"></span>
         </div>
     </div>
     <form action="/app-push-manage/manual-app-push-list" class="form-inline query-build">
-    <div class="form-group">
-        <label for="name">通知名称</label>
-        <input type="text" id="name" name="name" class="form-control ui-autocomplete-input" datatype="*"
-               autocomplete="off" value="${name!}"/>
-    </div>
-    <button class="btn btn-sm btn-primary query">查询</button>
-    <a href="/app-push-manage/manual-app-push-list" class="btn btn-sm btn-default">重置</a>
+        <div class="form-group">
+            <label>推送类型</label>
+            <select class="selectpicker" name="pushType">
+                <option value="" <#if !(pushTypeInput??)>selected</#if>>全部</option>
+                <#list pushTypes as pushType>
+                    <#if pushType.getType()=='MANUAL'>
+                        <option value="${pushType.name()}" <#if pushTypeInput?? && pushType==pushTypeInput>selected</#if>>${pushType.getDescription()}</option>
+                    </#if>
+                </#list>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>推送渠道</label>
+            <select class="selectpicker" name="pushSource">
+                <option value="" <#if !(pushSourceInput??)>selected</#if>>全部</option>
+                <#list pushSources as pushSource>
+                    <option value="${pushSource.name()}" <#if pushSourceInput?? && pushSource==pushSourceInput>selected</#if>>${pushSource.name()}</option>
+                </#list>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>用户类型</label>
+
+            <select class="selectpicker" name="pushUserType">
+                <option value="" <#if !(pushUserTypeInput??)>selected</#if>>所有</option>
+                <#list pushUserTypes as pushUserType>
+                    <option value="${pushUserType.name()}" <#if pushUserTypeInput?? && pushUserType==pushUserTypeInput>selected</#if>>${pushUserType.getDescription()}</option>
+                </#list>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>状态</label>
+            <select class="selectpicker" name="pushStatus">
+                <option value="" <#if !(pushStatusInput??)>selected</#if>>全部</option>
+                <#list pushStatuses as pushStatus>
+                    <#if pushStatus.name() != 'ENABLED' && pushStatus.name() != 'DISABLED'  >
+                        <option value="${pushStatus.name()}" <#if pushStatusInput?? && pushStatus==pushStatusInput>selected</#if>>${pushStatus.getDescription()}</option>
+                    </#if>
+                </#list>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>推送时间</label>
+
+            <div class='input-group date' id='datetimepicker1'>
+                <input type='text' class="form-control" name="startTime" value="${(startTime?string('yyyy-MM-dd'))!}"/>
+					                <span class="input-group-addon">
+					                    <span class="glyphicon glyphicon-calendar"></span>
+					                </span>
+            </div>
+            -
+            <div class='input-group date' id='datetimepicker2'>
+                <input type='text' class="form-control" name="endTime" value="${(endTime?string('yyyy-MM-dd'))!}"/>
+					                <span class="input-group-addon">
+					                    <span class="glyphicon glyphicon-calendar"></span>
+					                </span>
+            </div>
+        </div>
+        <button class="btn btn-sm btn-primary query">查询</button>
+        <a href="/app-push-manage/manual-app-push-list" class="btn btn-sm btn-default">重置</a>
     </form>
     <div class="table-responsive">
         <table class="table table-bordered table-hover ">
@@ -176,32 +229,32 @@
 
     <!-- pagination  -->
     <nav>
-    <div>
-        <span class="bordern">总共${jPushAlertCount}条,每页显示${pageSize}条</span>
-    </div>
-    <#if pushAlerts?has_content>
-    <ul class="pagination">
-        <li>
-        <#if hasPreviousPage>
-        <a href="?index=${index-1}&pageSize=${pageSize}&name=${name!}" aria-label="Previous">
-        <#else>
-        <a href="#" aria-label="Previous">
+        <div>
+            <span class="bordern">总共${jPushAlertCount}条,每页显示${pageSize}条</span>
+        </div>
+        <#if pushAlerts?has_content>
+            <ul class="pagination">
+                <li>
+                    <#if hasPreviousPage>
+                    <a href="?index=${index-1}&pageSize=${pageSize} <#if pushTypeInput??>&pushType=#{pushTypeInput}</#if> <#if pushSourceInput??>&pushSource=#{pushSourceInput}</#if> <#if pushUserTypeInput??>&pushUserType=#{pushUserTypeInput}</#if> <#if pushStatusInput??>&pushStatus=#{pushStatusInput}</#if> <#if startTime??>&startTime=${startTime?string('yyyy-MM-dd')}</#if> <#if endTime??>&endTime=${endTime?string('yyyy-MM-dd')}</#if>" aria-label="Previous">
+                    <#else>
+                    <a href="#" aria-label="Previous">
+                    </#if>
+                    <span aria-hidden="true">&laquo; Prev</span>
+                </a>
+                </li>
+                <li><a>${index}</a></li>
+                <li>
+                    <#if hasNextPage>
+                    <a href="?index=${index+1}&pageSize=${pageSize} <#if pushTypeInput??>&pushType=#{pushTypeInput}</#if> <#if pushSourceInput??>&pushSource=#{pushSourceInput}</#if> <#if pushUserTypeInput??>&pushUserType=#{pushUserTypeInput}</#if> <#if pushStatusInput??>&pushStatus=#{pushStatusInput}</#if> <#if startTime??>&startTime=${startTime?string('yyyy-MM-dd')}</#if> <#if endTime??>&endTime=${endTime?string('yyyy-MM-dd')}</#if>" aria-label="Next">
+                    <#else>
+                    <a href="#" aria-label="Next">
+                    </#if>
+                    <span aria-hidden="true">Next &raquo;</span>
+                </a>
+                </li>
+            </ul>
         </#if>
-        <span aria-hidden="true">&laquo; Prev</span>
-        </a>
-        </li>
-        <li><a>${index}</a></li>
-        <li>
-        <#if hasNextPage>
-        <a href="?index=${index+1}&pageSize=${pageSize}&name=${name!}" aria-label="Next">
-        <#else>
-        <a href="#" aria-label="Next">
-        </#if>
-        <span aria-hidden="true">Next &raquo;</span>
-        </a>
-        </li>
-    </ul>
-    </#if>
     </nav>
     <!-- pagination -->
 </div>

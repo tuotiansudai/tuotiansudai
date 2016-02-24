@@ -4,11 +4,10 @@ package com.tuotiansudai.jpush.service;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
-import com.tuotiansudai.jpush.repository.model.JPushAlertModel;
-import com.tuotiansudai.jpush.repository.model.PushStatus;
-import com.tuotiansudai.jpush.repository.model.PushType;
+import com.tuotiansudai.jpush.repository.model.*;
 import com.tuotiansudai.repository.model.InvestNotifyInfo;
 
+import java.util.Date;
 import java.util.List;
 
 public interface JPushAlertService {
@@ -16,9 +15,13 @@ public interface JPushAlertService {
 
     int findPushTypeCount(PushType pushType);
 
-    int findPushAlertCount(String name, boolean isAutomatic);
+    int findPushAlertCount(PushType pushType,
+                           PushSource pushSource, PushUserType pushUserType,PushStatus pushStatus,
+                           Date startTime, Date endTime,boolean isAutomatic);
 
-    List<JPushAlertModel> findPushAlerts(int index, int pageSize, String name, boolean isAutomatic);
+    List<JPushAlertModel> findPushAlerts(int index, int pageSize, PushType pushType,
+                                         PushSource pushSource, PushUserType pushUserType,PushStatus pushStatus,
+                                         Date startTime, Date endTime, boolean isAutomatic);
 
     JPushAlertModel findJPushAlertModelById(long id);
 
