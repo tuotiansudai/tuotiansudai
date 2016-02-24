@@ -263,6 +263,26 @@ public abstract class AbstractRedisWrapperClient {
         }).toString());
     }
 
+    public Long sadd(final String key, final String... values) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Long>() {
+            @Override
+            public Long action(Jedis jedis) {
+                return jedis.sadd(key, values);
+            }
+        });
+    }
+
+    public Set smembers(final String key) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Set>() {
+            @Override
+            public Set action(Jedis jedis) {
+                return jedis.smembers(key);
+            }
+        });
+    }
+
     public void hmset(final String key, final Map map) {
         this.setJedisPool(getPool());
         execute(new JedisActionNoResult() {

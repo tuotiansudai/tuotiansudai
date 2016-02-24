@@ -59,7 +59,8 @@
 
     <update id="update" parameterType="jPushAlertModel">
         update jpush_alert set name=#{name},push_type=#{pushType},push_objects=#{pushObjects,typeHandler=com.tuotiansudai.util.mybatis.PushObjectHandler},push_source=#{pushSource},push_user_type=#{pushUserType},status=#{status},content=#{content},
-        jump_to = #{jumpTo},jump_to_link=#{jumpToLink},expect_push_time=#{expectPushTime},updated_time=#{updatedTime},updated_by=#{updatedBy},auditor=#{auditor} where id = #{id}
+        jump_to = #{jumpTo},jump_to_link=#{jumpToLink},expect_push_time=#{expectPushTime},updated_time=#{updatedTime},updated_by=#{updatedBy},auditor=#{auditor},
+        android_target_num=#{androidTargetNum},ios_target_num=#{iosTargetNum},android_arrive_num=#{androidArriveNum},ios_arrive_num=#{iosArriveNum} where id = #{id}
     </update>
 
     <select id="findJPushAlertModelById" parameterType="long" resultMap="jPushAlertResultMap">

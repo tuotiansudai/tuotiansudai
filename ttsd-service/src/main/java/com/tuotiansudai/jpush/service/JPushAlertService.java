@@ -22,6 +22,8 @@ public interface JPushAlertService {
 
     JPushAlertModel findJPushAlertModelById(long id);
 
+    void refreshPushReport(long jpushId);
+
     void send(String loginName, long id);
 
     void changeJPushAlertStatus(long id, PushStatus status, String loginName);

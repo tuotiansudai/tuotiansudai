@@ -56,10 +56,10 @@
                 定位到页面
             </th>
             <th>
-                IOS 目标｜送达｜打开
+                <span class="invest-IOS"></span>&nbsp;目标｜送达
             </th>
             <th>
-                Android 目标｜送达｜打开
+                <span class="invest-ANDROID"></span>&nbsp;目标｜送达
             </th>
             <th>
                 创建人｜最后编辑人
@@ -122,10 +122,10 @@
                 ${pushAlert.jumpTo.getDescription()}
             </th>
             <th>
-                目标｜送达｜打开
+                <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/refreshReport">${pushAlert.iosTargetNum!}｜${pushAlert.iosArriveNum!}</a>
             </th>
             <th>
-                目标｜送达｜打开
+                <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/refreshReport">${pushAlert.androidTargetNum!}｜${pushAlert.androidArriveNum!}</a>
             </th>
             <td>
                 ${(pushAlert.createdBy)!}｜<#if (pushAlert.updatedBy)??>${pushAlert.updatedBy}<#else>无</#if>

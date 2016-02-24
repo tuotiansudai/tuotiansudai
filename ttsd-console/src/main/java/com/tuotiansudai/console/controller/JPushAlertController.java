@@ -179,4 +179,10 @@ public class JPushAlertController {
         String today = new SimpleDateFormat("yyyyMMdd").format(new Date());
         return today + "-" + pushType.getDescription() + "-" + serialNo;
     }
+
+    @RequestMapping(value = "/manual-app-push/{id}/refreshReport", method = RequestMethod.GET)
+    public String refreshReport(@PathVariable long id) {
+        jPushAlertService.refreshPushReport(id);
+        return "redirect:/app-push-manage/manual-app-push-list";
+    }
 }
