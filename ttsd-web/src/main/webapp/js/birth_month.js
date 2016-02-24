@@ -22,7 +22,7 @@ require(['jquery'], function ($) {
 
         if($('.birth-month-container').length) {
             if(/app/gi.test(location.search)) {
-                $('.header-container,.nav-container,.footer-container').remove();
+                $('.header-container,.nav-container,.footer-container,.footer-responsive').remove();
             }
         }
 
