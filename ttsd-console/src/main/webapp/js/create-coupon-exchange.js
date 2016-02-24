@@ -22,7 +22,7 @@ require(['jquery', 'template', 'csrf','bootstrap', 'jquery-ui', 'bootstrapSelect
         var rep = /^\d+$/;
         var rep_point2 = /^[0-9]+\.[0-9]*$/;
 
-        $('.give-number,.coupon-deadline,.coupon-number').blur(function () {
+        $('.give-number,.coupon-deadline,.coupon-number,.exchange-point').blur(function () {
             var _this = $(this),
                 text = _this.val(),
                 num = text.replace(rep, "$1");
@@ -96,7 +96,6 @@ require(['jquery', 'template', 'csrf','bootstrap', 'jquery-ui', 'bootstrapSelect
             $('.coupon-deadline').val('');
             $('.give-number').val('');
             $('.invest-quota').val('');
-            $('.productType').prop('checked',false).eq(0).prop('checked',true);
         }
 
         $('.couponType').change(function(){

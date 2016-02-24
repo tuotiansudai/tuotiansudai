@@ -76,6 +76,8 @@
             </div>
         </div>
 
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
         <div class="form-group">
             <label  class="col-sm-2 control-label">操作: </label>
             <div class="col-sm-4">
