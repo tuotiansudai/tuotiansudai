@@ -247,7 +247,7 @@
       .award-product-box {
         height: 380px;
         margin-top:50px;
-        background: url("/images/sign/actor/awards/award-product.jpg") center top no-repeat;
+        background: url("/images/sign/actor/awards/award-product.png") center top no-repeat;
       }
       .trophy-box {
         text-align: center;
@@ -437,6 +437,9 @@
       li{
         color:#fff;
         font-size:18px;
+        &.intro-text{
+          font-size:14px;
+        }
       }
     }
   }
@@ -638,6 +641,9 @@
         padding: 0;
         li{
           font-size:12px;
+          &.intro-text{
+            font-size:12px!important;
+          }
         }
       }
     }
