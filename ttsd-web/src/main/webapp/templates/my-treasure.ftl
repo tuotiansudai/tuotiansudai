@@ -59,7 +59,7 @@
                                 <span class="unit-text">元</span>
                             </p>
                             <p>[投资成功放款返现]</p>
-                            <p>产品限制：<i class="pro-icon">稳</i><i class="pro-icon">久</i>产品线可用</p>
+                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
                         </div>
                     </div>
                     <div class="bottom-time">
@@ -81,7 +81,7 @@
                                 <span class="unit-text">元</span>
                             </p>
                             <p>[单笔投资满3000元可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳</i><i class="pro-icon">久</i>产品线可用</p>
+                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
                         </div>
                     </div>
                     <div class="bottom-time">
@@ -103,7 +103,7 @@
                                 <span class="unit-text">元</span>
                             </p>
                             <p>[单笔投资满1万元可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳</i><i class="pro-icon">久</i>产品线可用</p>
+                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
                         </div>
                     </div>
                     <div class="bottom-time">
@@ -125,7 +125,7 @@
                                 <span class="unit-text">元</span>
                             </p>
                             <p>[单笔投资满3万元可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳</i><i class="pro-icon">久</i>产品线可用</p>
+                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
                         </div>
                     </div>
                     <div class="bottom-time">
@@ -147,7 +147,7 @@
                                 <span class="unit-text">元</span>
                             </p>
                             <p>[单笔投资满5万元可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳</i><i class="pro-icon">久</i>产品线可用</p>
+                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
                         </div>
                     </div>
                     <div class="bottom-time">
@@ -169,7 +169,7 @@
                                 <span class="unit-text">元</span>
                             </p>
                             <p>[单笔投资满10万元可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳</i><i class="pro-icon">久</i>产品线可用</p>
+                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
                         </div>
                     </div>
                     <div class="bottom-time">
@@ -191,7 +191,7 @@
                                 <span class="unit-text">元</span>
                             </p>
                             <p>[在拓天平台投资可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳</i><i class="pro-icon">久</i>产品线可用</p>
+                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
                         </div>
                     </div>
                     <div class="bottom-time">
@@ -213,7 +213,7 @@
                                 <span class="unit-text">元</span>
                             </p>
                             <p>[单笔投资满5万元可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳</i><i class="pro-icon">久</i>产品线可用</p>
+                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
                         </div>
                     </div>
                     <div class="bottom-time">
@@ -235,7 +235,7 @@
                                 <span class="unit-text">年化收益</span>
                             </p>
                             <p>[限投资5万元以内可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳</i><i class="pro-icon">久</i>产品线可用</p>
+                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
                         </div>
                     </div>
                     <div class="bottom-time">
@@ -261,7 +261,7 @@
                                 <span class="unit-text">元</span>
                             </p>
                             <p>[投资成功放款返现]</p>
-                            <p>产品限制：<i class="pro-icon">稳</i><i class="pro-icon">久</i>产品线可用</p>
+                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
                         </div>
                     </div>
                     <div class="detail-com">
@@ -293,7 +293,7 @@
                                 <span class="unit-text">元</span>
                             </p>
                             <p>[单笔投资满3000元可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳</i><i class="pro-icon">久</i>产品线可用</p>
+                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
                         </div>
                     </div>
                     <div class="detail-com">
@@ -325,7 +325,7 @@
                                 <span class="unit-text">元</span>
                             </p>
                             <p>[单笔投资满1万元可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳</i><i class="pro-icon">久</i>产品线可用</p>
+                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
                         </div>
                     </div>
                     <div class="detail-com">
@@ -356,7 +356,7 @@
                                 <span class="birth-text">收益翻倍</span>
                             </p>
                             <p>[仅限发券当月使用]</p>
-                            <p>产品限制：<i class="pro-icon">稳</i><i class="pro-icon">久</i>产品线可用</p>
+                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
                         </div>
                     </div>
                     <div class="detail-com">
@@ -392,7 +392,7 @@
                                 <span class="unit-text">元</span>
                             </p>
                             <p>[投资成功放款返现]</p>
-                            <p>产品限制：<i class="pro-icon">稳</i><i class="pro-icon">久</i>产品线可用</p>
+                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
                         </div>
                     </div>
                     <div class="bottom-time">
@@ -414,7 +414,7 @@
                                 <span class="unit-text">元</span>
                             </p>
                             <p>[单笔投资满3000元可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳</i><i class="pro-icon">久</i>产品线可用</p>
+                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
                         </div>
                     </div>
                     <div class="bottom-time">

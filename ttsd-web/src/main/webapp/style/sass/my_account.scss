@@ -1521,6 +1521,11 @@
                 color:#ff752a;
                 .pro-icon{
                   border: 1px solid #ff752a;
+                  em{
+                    &.circle-com{
+                      background: #ff752a;
+                    }
+                  }
                 }
               }
             }
@@ -1562,6 +1567,11 @@
                 color:#ffae00;
                 .pro-icon{
                   border: 1px solid #ffae00;
+                  em{
+                    &.circle-com{
+                      background: #ffae00;
+                    }
+                  }
                 }
               }
             }
@@ -1603,6 +1613,11 @@
                 color:#ff7b7b;
                 .pro-icon{
                   border: 1px solid #ff7b7b;
+                  em{
+                    &.circle-com{
+                      background: #ff7b7b;
+                    }
+                  }
                 }
               }
             }
@@ -1647,6 +1662,11 @@
                 }
                 .pro-icon{
                   border: 1px solid #ff5984;
+                  em{
+                    &.circle-com{
+                      background: #ff5984;
+                    }
+                  }
                 }
               }
             }
@@ -1746,6 +1766,26 @@
                 margin: 0 2px;
                 line-height: 21px;
                 padding: 2px 4px;
+                position: relative;
+                overflow: hidden;
+                em{
+                  position: absolute;
+                  &.bg-com{
+                    bottom: -7px;
+                    right: -2px;
+                    width: 10px;
+                    height: 10px;
+                    background: #fff;
+                  }
+                  &.circle-com{
+                    bottom: 2px;
+                    right: 1px;
+                    width: 2px;
+                    height: 2px;
+                    background: #ccc;
+                    border-radius: 2px;
+                  }
+                }
               }
             }
           }
