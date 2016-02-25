@@ -1,5 +1,10 @@
-require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'csrf'], function ($) {
+require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect','csrf'], function ($) {
     $(function () {
+
+        $('.selectpicker').selectpicker();
+
+        $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD'});
+        $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});
         $('.pass').click(function (event) {
             event.preventDefault();
             if (!confirm("确定同意吗?")) {

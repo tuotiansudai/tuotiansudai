@@ -43,15 +43,48 @@
 
     <select id="findPushAlertCount" resultType="int" parameterType="map">
         select COUNT(*) from jpush_alert where is_automatic = #{isAutomatic}
-        <if test="name != null and name != '' ">
-            and name like CONCAT(CONCAT('%', #{name}), '%')
+        <if test="pushType != null">
+            and push_type = #{pushType}
+        </if>
+        <if test="pushSource != null">
+            and push_source = #{pushSource}
+        </if>
+        <if test="pushUserType != null">
+            and push_user_type = #{pushUserType}
+        </if>
+        <if test="pushStatus != null">
+            and status = #{pushStatus}
+        </if>
+        <if test="startTime != null">
+            and expect_push_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            <![CDATA[ and expect_push_time <= #{endTime} ]]>
+
         </if>
     </select>
 
     <select id="findPushAlerts" resultMap="jPushAlertResultMap" parameterType="map">
         select * from jpush_alert where is_automatic = #{isAutomatic}
-        <if test="name != null and name != '' ">
-            and name like CONCAT(CONCAT('%', #{name}), '%')
+
+        <if test="pushType != null">
+            and push_type = #{pushType}
+        </if>
+        <if test="pushSource != null">
+            and push_source = #{pushSource}
+        </if>
+        <if test="pushUserType != null">
+            and push_user_type = #{pushUserType}
+        </if>
+        <if test="pushStatus != null">
+            and status = #{pushStatus}
+        </if>
+        <if test="startTime != null">
+            and expect_push_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            <![CDATA[ and expect_push_time <= #{endTime} ]]>
+
         </if>
         ORDER BY created_time DESC
         LIMIT #{index},#{pageSize}
@@ -59,7 +92,8 @@
 
     <update id="update" parameterType="jPushAlertModel">
         update jpush_alert set name=#{name},push_type=#{pushType},push_objects=#{pushObjects,typeHandler=com.tuotiansudai.util.mybatis.PushObjectHandler},push_source=#{pushSource},push_user_type=#{pushUserType},status=#{status},content=#{content},
-        jump_to = #{jumpTo},jump_to_link=#{jumpToLink},expect_push_time=#{expectPushTime},updated_time=#{updatedTime},updated_by=#{updatedBy},auditor=#{auditor} where id = #{id}
+        jump_to = #{jumpTo},jump_to_link=#{jumpToLink},expect_push_time=#{expectPushTime},updated_time=#{updatedTime},updated_by=#{updatedBy},auditor=#{auditor},
+        android_target_num=#{androidTargetNum},ios_target_num=#{iosTargetNum},android_arrive_num=#{androidArriveNum},ios_arrive_num=#{iosArriveNum} where id = #{id}
     </update>
 
     <select id="findJPushAlertModelById" parameterType="long" resultMap="jPushAlertResultMap">

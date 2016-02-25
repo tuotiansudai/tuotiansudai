@@ -11,6 +11,7 @@ import com.tuotiansudai.util.DistrictUtil;
 import com.tuotiansudai.util.RequestIPParser;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -77,14 +78,30 @@ public class JPushAlertController {
     @ResponseBody
     public ModelAndView appPushList(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                     @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
-                                    @RequestParam(value = "name", required = false) String name) {
+                                    @RequestParam(value = "pushType", required = false) PushType pushType,
+                                    @RequestParam(value = "pushSource", required = false) PushSource pushSource,
+                                    @RequestParam(value = "pushUserType", required = false) PushUserType pushUserType,
+                                    @RequestParam(value = "pushStatus", required = false) PushStatus pushStatus,
+                                    @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                    @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
         ModelAndView modelAndView = new ModelAndView("/manual-app-push-list");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
-        modelAndView.addObject("name", name);
-        modelAndView.addObject("pushAlerts", jPushAlertService.findPushAlerts(index, pageSize, name, false));
+        modelAndView.addObject("pushTypeInput", pushType);
+        modelAndView.addObject("pushSourceInput", pushSource);
+        modelAndView.addObject("pushUserTypeInput", pushUserType);
+        modelAndView.addObject("pushStatusInput", pushStatus);
+        modelAndView.addObject("startTime", startTime);
+        modelAndView.addObject("endTime", endTime);
+
+
+        modelAndView.addObject("pushAlerts", jPushAlertService.findPushAlerts(index, pageSize, pushType, pushSource, pushUserType,pushStatus,startTime,endTime, false));
         modelAndView.addObject("provinces", DistrictUtil.getProvinces());
-        int jPushAlertCount = jPushAlertService.findPushAlertCount(name, false);
+        modelAndView.addObject("pushSources", Lists.newArrayList(PushSource.values()));
+        modelAndView.addObject("pushUserTypes", Lists.newArrayList(PushUserType.values()));
+        modelAndView.addObject("pushStatuses", Lists.newArrayList(PushStatus.values()));
+        modelAndView.addObject("pushTypes", Lists.newArrayList(PushType.values()));
+        int jPushAlertCount = jPushAlertService.findPushAlertCount(pushType, pushSource, pushUserType,pushStatus,startTime,endTime, false);
         modelAndView.addObject("jPushAlertCount", jPushAlertCount);
         long totalPages = jPushAlertCount / pageSize + (jPushAlertCount % pageSize > 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
@@ -100,7 +117,7 @@ public class JPushAlertController {
     public ModelAndView autoAppPushList(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                         @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/auto-app-push-list");
-        modelAndView.addObject("pushAlerts", jPushAlertService.findPushAlerts(index, pageSize, null, true));
+        modelAndView.addObject("pushAlerts", jPushAlertService.findPushAlerts(index, pageSize,null,null,null,null,null,null, true));
 
         return modelAndView;
     }
@@ -178,5 +195,11 @@ public class JPushAlertController {
         int serialNo = jPushAlertService.findPushTypeCount(pushType) + 1;
         String today = new SimpleDateFormat("yyyyMMdd").format(new Date());
         return today + "-" + pushType.getDescription() + "-" + serialNo;
+    }
+
+    @RequestMapping(value = "/manual-app-push/{id}/refreshReport", method = RequestMethod.GET)
+    public String refreshReport(@PathVariable long id) {
+        jPushAlertService.refreshPushReport(id);
+        return "redirect:/app-push-manage/manual-app-push-list";
     }
 }

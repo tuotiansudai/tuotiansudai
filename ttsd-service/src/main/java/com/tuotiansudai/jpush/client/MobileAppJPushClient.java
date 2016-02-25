@@ -12,9 +12,12 @@ import cn.jpush.api.push.model.audience.Audience;
 import cn.jpush.api.push.model.notification.AndroidNotification;
 import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
+import cn.jpush.api.report.ReceivedsResult;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.jpush.repository.model.PushSource;
 import com.tuotiansudai.repository.model.Environment;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -33,12 +36,16 @@ public class MobileAppJPushClient {
     @Value("${common.environment}")
     private Environment environment;
 
+    @Autowired
+    private RedisWrapperClient redisClient;
+
+    public static final String APP_PUSH_MSG_ID_KEY = "console:push-msg-ids:";
 
     private static JPushClient jPushClient;
 
     public JPushClient getJPushClient() {
         if (jPushClient == null) {
-            jPushClient = new JPushClient(masterSecret, appKey,null, ClientConfig.getInstance());
+            jPushClient = new JPushClient(masterSecret, appKey, null, ClientConfig.getInstance());
         }
         return jPushClient;
     }
@@ -154,7 +161,6 @@ public class MobileAppJPushClient {
 
     public boolean sendPushAlertByAndroidTags(String jPushAlertId, List<String> tags, String alert, String extraKey, String extraValue) {
         PushPayload payload = buildPushObject_android_tags_alertWithExtras(tags, alert, extraKey, extraValue);
-
         return sendPush(payload, jPushAlertId);
     }
 
@@ -168,8 +174,9 @@ public class MobileAppJPushClient {
         PushPayload payload = buildPushObject_all_all_alertWithExtras(alert, extraKey, extraValue);
         return sendPush(payload, jPushAlertId);
     }
-    public boolean sendPushAlertByRegistrationIds(String jPushAlertId,List<String> registrationIds, String alert, String extraKey, String extraValue, PushSource pushSource) {
-        PushPayload payload = buildPushObject_all_registration_id_alertWithExtras(registrationIds,alert, extraKey, extraValue, pushSource);
+
+    public boolean sendPushAlertByRegistrationIds(String jPushAlertId, List<String> registrationIds, String alert, String extraKey, String extraValue, PushSource pushSource) {
+        PushPayload payload = buildPushObject_all_registration_id_alertWithExtras(registrationIds, alert, extraKey, extraValue, pushSource);
         return sendPush(payload, jPushAlertId);
     }
 
@@ -190,12 +197,23 @@ public class MobileAppJPushClient {
             logger.debug(MessageFormat.format("request:{0}:{1} begin", jPushAlertId, payload.toJSON()));
             PushResult result = jPushClient.sendPush(payload);
             logger.debug(MessageFormat.format("request:{0}:{1}:{2} end", jPushAlertId, result.msg_id, result.sendno));
+            redisClient.sadd(APP_PUSH_MSG_ID_KEY + jPushAlertId, String.valueOf(result.msg_id));
             return true;
         } catch (APIConnectionException | APIRequestException e) {
             logger.debug(MessageFormat.format("response:{0}:{1}", jPushAlertId, e.getMessage()));
         }
         return false;
 
+    }
+
+    public ReceivedsResult getReportReceived(String msgIds) {
+        setjPushClient(getJPushClient());
+        try {
+            return jPushClient.getReportReceiveds(msgIds);
+        } catch (APIConnectionException | APIRequestException e) {
+            logger.debug(MessageFormat.format("get report error, msgIds:{0}:{1}", msgIds, e.getMessage()));
+            return null;
+        }
     }
 
     public static JPushClient getjPushClient() {
