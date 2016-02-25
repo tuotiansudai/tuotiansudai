@@ -1,4 +1,4 @@
-package com.tuotiansudai.point.repository.model;
+package com.tuotiansudai.coupon.repository.model;
 
 
 import java.io.Serializable;

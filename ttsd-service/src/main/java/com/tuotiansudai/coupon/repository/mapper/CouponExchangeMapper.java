@@ -1,6 +1,6 @@
-package com.tuotiansudai.point.repository.mapper;
+package com.tuotiansudai.coupon.repository.mapper;
 
-import com.tuotiansudai.point.repository.model.CouponExchangeModel;
+import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import org.springframework.stereotype.Repository;
 
 @Repository

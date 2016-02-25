@@ -1,7 +1,5 @@
-package com.tuotiansudai.point.repository.model;
+package com.tuotiansudai.coupon.dto;
 
-
-import com.tuotiansudai.coupon.dto.CouponDto;
 
 import java.io.Serializable;
 
