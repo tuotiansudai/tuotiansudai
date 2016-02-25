@@ -1,4 +1,4 @@
-package com.tuotiansudai.point.dto;
+package com.tuotiansudai.point.repository.model;
 
 
 import com.tuotiansudai.coupon.dto.CouponDto;

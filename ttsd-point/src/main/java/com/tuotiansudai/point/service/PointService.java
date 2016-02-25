@@ -1,7 +1,7 @@
 package com.tuotiansudai.point.service;
 
 
-import com.tuotiansudai.point.dto.ExchangeCouponDto;
+import com.tuotiansudai.point.repository.model.ExchangeCouponDto;
 
 public interface PointService {
 

@@ -2,7 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.util.LoginUserInfo;
-import com.tuotiansudai.point.dto.ExchangeCouponDto;
+import com.tuotiansudai.point.repository.model.ExchangeCouponDto;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;

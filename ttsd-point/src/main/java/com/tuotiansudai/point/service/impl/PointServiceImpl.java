@@ -3,9 +3,9 @@ package com.tuotiansudai.point.service.impl;
 
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.point.dto.ExchangeCouponDto;
 import com.tuotiansudai.point.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.point.repository.model.CouponExchangeModel;
+import com.tuotiansudai.point.repository.model.ExchangeCouponDto;
 import com.tuotiansudai.point.service.PointService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
