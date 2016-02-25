@@ -279,18 +279,24 @@
     </select>
 
     <select id="findAllUsers" resultMap="userResultMap">
-        select * from user;
+        select * from user
+        <if test="districtName != null and districtName.size != 0">
+            where province in
+            <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
     </select>
 
     <select id="findNaturalUser" resultMap="userResultMap">
         SELECT
           us.*
         FROM
-          USER us
+          user us
           JOIN invest t
             ON us.`login_name` = t.`login_name`
-        WHERE t.`status` = 'SUCCESS'
-          AND NOT EXISTS
+        and t.`status` = 'SUCCESS'
+          where NOT EXISTS
           (SELECT
             1
           FROM
@@ -307,6 +313,12 @@
             user_role ur
           WHERE ur.role IN ('STAFF', 'AGENT')
             AND t.`login_name` = ur.`login_name`)
+        <if test="districtName != null and districtName.size != 0">
+            and us.province in
+            <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
     </select>
 
 </mapper>

@@ -32,7 +32,14 @@
     </delete>
 
     <select id="findAllByRole" parameterType="map" resultMap="userRoleResultMap">
-        SELECT * FROM user_role WHERE role = #{role};
+        SELECT t.* FROM user_role t join user u on t.login_name = u.login_name
+        <if test="districtName != null and districtName.size != 0">
+             and u.province in
+            <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+         WHERE t.role = #{role};
     </select>
 
 

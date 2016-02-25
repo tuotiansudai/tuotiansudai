@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface ReferrerRelationMapper {
@@ -25,5 +26,5 @@ public interface ReferrerRelationMapper {
     void delete(@Param(value = "referrerLoginName") String referrerLoginName,
                 @Param(value = "loginName") String loginName);
 
-    List<ReferrerRelationModel> findAllRecommendation();
+    List<ReferrerRelationModel> findAllRecommendation(Map<String, Object> params);
 }

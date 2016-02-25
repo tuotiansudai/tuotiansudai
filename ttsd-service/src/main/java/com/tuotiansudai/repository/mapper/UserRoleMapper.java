@@ -1,11 +1,11 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface UserRoleMapper {
@@ -19,6 +19,6 @@ public interface UserRoleMapper {
 
     void deleteByLoginName(@Param("loginName") String loginName);
 
-    List<UserRoleModel> findAllByRole(@Param("role") Role role);
+    List<UserRoleModel> findAllByRole(Map<String, Object> params);
 
 }

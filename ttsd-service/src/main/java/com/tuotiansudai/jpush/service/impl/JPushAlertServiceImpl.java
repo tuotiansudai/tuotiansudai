@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -23,6 +24,7 @@ import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.DistrictUtil;
 import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -196,7 +198,17 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             return;
         }
         if (jPushAlertModel != null) {
-            List<String> loginNames = findManualJPushAlertUserLoginName(jPushAlertModel.getPushUserType());
+            List<String> districtCode = jPushAlertModel.getPushObjects();
+            List<String> districtName = null;
+            if (CollectionUtils.isNotEmpty(districtCode)) {
+                districtName = Lists.transform(districtCode, new Function<String, String>() {
+                    @Override
+                    public String apply(String input) {
+                        return DistrictUtil.convertCodeToName(input);
+                    }
+                });
+            }
+            List<String> loginNames = findManualJPushAlertUserLoginName(jPushAlertModel.getPushUserType(), districtName);
             if (CollectionUtils.isEmpty(loginNames)) {
                 logger.debug("this JPush without data, id = " + id);
                 return;
@@ -209,11 +221,11 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         }
     }
 
-    private List<String> findManualJPushAlertUserLoginName(PushUserType pushUserType) {
+    private List<String> findManualJPushAlertUserLoginName(PushUserType pushUserType, List<String> districtName) {
         List<String> loginNames = null;
         switch (pushUserType) {
             case ALL:
-                List<UserModel> users = userMapper.findAllUsers();
+                List<UserModel> users = userMapper.findAllUsers(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", districtName).build()));
                 loginNames = Lists.transform(users, new Function<UserModel, String>() {
                     @Override
                     public String apply(UserModel input) {
@@ -222,7 +234,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 });
                 break;
             case STAFF:
-                List<UserRoleModel> staffs = userRoleMapper.findAllByRole(Role.STAFF);
+                List<UserRoleModel> staffs = userRoleMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.STAFF).put("districtName", districtName).build()));
                 loginNames = Lists.transform(staffs, new Function<UserRoleModel, String>() {
                     @Override
                     public String apply(UserRoleModel input) {
@@ -231,7 +243,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 });
                 break;
             case AGENT:
-                List<UserRoleModel> agents = userRoleMapper.findAllByRole(Role.AGENT);
+                List<UserRoleModel> agents = userRoleMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.AGENT).put("districtName", districtName).build()));
                 loginNames = Lists.transform(agents, new Function<UserRoleModel, String>() {
                     @Override
                     public String apply(UserRoleModel input) {
@@ -240,7 +252,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 });
                 break;
             case RECOMMENDATION:
-                List<ReferrerRelationModel> recommendations = referrerRelationMapper.findAllRecommendation();
+                List<ReferrerRelationModel> recommendations = referrerRelationMapper.findAllRecommendation(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", districtName).build()));
                 loginNames = Lists.transform(recommendations, new Function<ReferrerRelationModel, String>() {
                     @Override
                     public String apply(ReferrerRelationModel input) {
@@ -249,7 +261,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 });
                 break;
             case OTHERS:
-                List<UserModel> others = userMapper.findNaturalUser();
+                List<UserModel> others = userMapper.findNaturalUser(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", districtName).build()));
                 loginNames = Lists.transform(others, new Function<UserModel, String>() {
                     @Override
                     public String apply(UserModel input) {
