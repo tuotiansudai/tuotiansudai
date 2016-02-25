@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.point.repository.mapper.CouponExchangeMapper">
+
+    <resultMap id="couponExchangeResultMap" type="CouponExchangeModel">
+        <id column="id" property="id"/>
+        <result column="coupon_id" property="couponId"/>
+        <result column="exchange_point" property="exchangePoint"/>
+    </resultMap>
+
+    <insert id="create" parameterType="CouponExchangeModel" useGeneratedKeys="true" keyProperty="id">
+        insert into coupon_exchange (coupon_id, exchange_point)
+        value(#{couponId}, #{exchangePoint})
+    </insert>
+
+</mapper>
