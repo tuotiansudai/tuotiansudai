@@ -36,11 +36,11 @@
         <p class="text-pro">
             <span class="product-left">
                 <img src="${staticServer}/images/sign/actor/birth/product-three.png">
-                <a href="/loan-list?productType=WYX" class="click-btn time-btn" data-kick-off-date="${.now}"></a>
+                <a href="javascript:void(0)" class="click-btn time-btn" data-kick-off-date="${.now}" data-href="/loan-list?productType=WYX"></a>
             </span>
             <span class="product-right">
                 <img src="${staticServer}/images/sign/actor/birth/product-six.png">
-                <a href="/loan-list?productType=JYF" class="click-btn time-btn" data-kick-off-date="${.now}"></a>
+                <a href="javascript:void(0)" class="click-btn time-btn" data-kick-off-date="${.now}" data-href="/loan-list?productType=JYF"></a>
             </span>
         </p>
         <p class="text-bg">活动规则</p>
@@ -50,7 +50,7 @@
             <li>3.翻倍所得收益，体现在该笔投资项目收益中，可在“我的账户”中查询;</li>
             <li>4.本次活动不限买入金额，不限购买笔数，多买多得;</li>
             <li>5.本次活动不可与平台其他优惠券同时使用。</li>
-            <li>***活动遵循拓天速贷法律声明，最终解释权归拓天速贷平台所有。</li>
+            <li class="intro-text">***活动遵循拓天速贷法律声明，最终解释权归拓天速贷平台所有。</li>
         </ul>
         
     </div>

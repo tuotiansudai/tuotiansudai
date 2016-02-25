@@ -34,7 +34,7 @@ public class PercentFractionDirective implements TemplateDirectiveModel {
 
         @Override
         public void write(char[] cbuf, int off, int len) throws IOException {
-            if (new String(cbuf, off, len).indexOf(".") >= 0) {
+            if (new String(cbuf, off, len).contains(".")) {
                 String percent = new String(cbuf, off, len).split("\\.")[1].replaceAll("0+?$", "");
                 out.write(!percent.equals("") ? "." + percent : percent);
             } else {
