@@ -1627,6 +1627,50 @@
             }
           }
         }
+        &.birth-type{
+          .top-com{
+            .left-name{
+              background: #ff5984;
+              color: #fff;
+              i{
+                border:1px solid #ff5984;
+              }
+            }
+            .right-coupon{
+              border:1px solid #ff5984;
+              background:url("/images/sign/birth-bg.png") no-repeat;
+              background-position: 165px 10px;
+              p{
+                color:#ff5984;
+                .birth-text{
+                  font-size:30px;
+                }
+                .pro-icon{
+                  border: 1px solid #ff5984;
+                }
+              }
+            }
+          }
+          .bottom-time{
+            a{
+              background:#ff5984;
+              cursor:pointer;
+            }
+          }
+          .detail-com{
+            p{
+              &.bottom-line{
+                border-bottom: 1px dashed #ff5984;
+              }
+              span{
+                color:#ff5984;
+              }
+              .see-detail{
+                background: #ff5984;
+              }
+            }
+          }
+        }
         .top-com{
           float:left;
           width:285px;
