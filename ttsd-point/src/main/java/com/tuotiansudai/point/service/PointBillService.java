@@ -4,5 +4,5 @@ import com.tuotiansudai.point.repository.model.PointBusinessType;
 
 public interface PointBillService {
 
-    void createPointBill(String loginName, PointBusinessType businessType, long point);
+    void createPointBill(String loginName, Long orderId, PointBusinessType businessType, long point);
 }

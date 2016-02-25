@@ -35,7 +35,7 @@ public class PointBillMapperTest {
     public void shouldCreatePointBillModel() throws Exception {
         UserModel fakeUserModel = this.createFakeUserModel();
 
-        PointBillModel pointBillModel = new PointBillModel(fakeUserModel.getLoginName(), 1, PointBusinessType.EXCHANGE, "note");
+        PointBillModel pointBillModel = new PointBillModel(fakeUserModel.getLoginName(), null, 1, PointBusinessType.EXCHANGE, "note");
 
         pointBillMapper.create(pointBillModel);
 

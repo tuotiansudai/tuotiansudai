@@ -8,6 +8,7 @@
 
     <resultMap id="pointBillResultMap" type="PointBillModel">
         <id column="id" property="id"></id>
+        <result column="order_id" property="orderId"></result>
         <result column="login_name" property="loginName"></result>
         <result column="point" property="point"></result>
         <result column="business_type" property="businessType"></result>
@@ -16,8 +17,8 @@
     </resultMap>
 
     <insert id="create" parameterType="PointBillModel" useGeneratedKeys="true" keyProperty="id">
-        insert into point_bill (login_name, point, business_type, note, created_time)
-        value(#{loginName}, #{point}, #{businessType}, #{note}, #{createdTime})
+        insert into point_bill (order_id, login_name, point, business_type, note, created_time)
+        value(#{orderId} #{loginName}, #{point}, #{businessType}, #{note}, #{createdTime})
     </insert>
 
     <select id="findByLoginName" parameterType="java.lang.String" resultMap="pointBillResultMap">

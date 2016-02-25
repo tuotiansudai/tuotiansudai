@@ -17,8 +17,12 @@
         select * from point_task
     </select>
 
+    <select id="findById" resultMap="pointTaskResultMap">
+        select * from point_task where id = #{id}
+    </select>
+
     <select id="findByName" resultMap="pointTaskResultMap">
-        select * from point_task where name = ${pointTask}
+        select * from point_task where name = #{pointTask}
     </select>
 
 </mapper>

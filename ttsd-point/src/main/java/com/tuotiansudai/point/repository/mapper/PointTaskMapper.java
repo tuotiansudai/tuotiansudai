@@ -12,4 +12,6 @@ public interface PointTaskMapper {
     List<PointTaskModel> find();
 
     PointTaskModel findByName(PointTask pointTask);
+
+    PointTaskModel findById(long id);
 }

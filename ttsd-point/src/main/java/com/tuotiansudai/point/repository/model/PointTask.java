@@ -13,4 +13,8 @@ public enum PointTask {
     PointTask(String description) {
         this.description = description;
     }
+
+    public String getDescription() {
+        return description;
+    }
 }

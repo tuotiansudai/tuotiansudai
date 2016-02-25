@@ -55,10 +55,9 @@ public class PointTaskServiceImpl implements PointTaskService {
         if (isCompletedTaskConditions(pointTask, loginName)) {
             PointTaskModel pointTaskModel = pointTaskMapper.findByName(pointTask);
             userPointTaskMapper.create(new UserPointTaskModel(loginName,  pointTaskModel.getId()));
-            pointBillService.createPointBill(loginName, PointBusinessType.TASK, pointTaskModel.getPoint());
+            pointBillService.createPointBill(loginName, pointTaskModel.getId(), PointBusinessType.TASK, pointTaskModel.getPoint());
+            logger.debug(MessageFormat.format("{0} has completed task {1}", loginName, pointTask.name()));
         }
-
-        logger.debug(MessageFormat.format("{0} has completed task {1}", loginName, pointTask.name()));
     }
 
     private boolean isCompletedTaskConditions(final PointTask pointTask, String loginName) {

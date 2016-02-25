@@ -7,6 +7,8 @@ public class PointBillModel implements Serializable {
 
     private long id;
 
+    private Long orderId;
+
     private String loginName;
 
     private long point;
@@ -20,8 +22,9 @@ public class PointBillModel implements Serializable {
     public PointBillModel() {
     }
 
-    public PointBillModel(String loginName, long point, PointBusinessType businessType, String note) {
+    public PointBillModel(String loginName, Long orderId, long point, PointBusinessType businessType, String note) {
         this.loginName = loginName;
+        this.orderId = orderId;
         this.point = point;
         this.businessType = businessType;
         this.note = note;
@@ -34,6 +37,14 @@ public class PointBillModel implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
     public String getLoginName() {
