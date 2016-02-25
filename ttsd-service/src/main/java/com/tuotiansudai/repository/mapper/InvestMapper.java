@@ -144,7 +144,7 @@ public interface InvestMapper {
                          @Param(value = "loanStatus") LoanStatus loanStatus);
 
 
-    long sumSuccessInvestAmountByLoginName(@Param(value = "loanId") long loanId, @Param(value = "loginName") String loginName);
+    long sumSuccessInvestAmountByLoginName(@Param(value = "loanId") Long loanId, @Param(value = "loginName") String loginName);
 
     int sumSuccessNewbieInvestCountByLoginName(@Param(value = "loginName") String loginName);
 
@@ -161,6 +161,4 @@ public interface InvestMapper {
     long findInvestorCount();
 
     long findRegisteredNotInvestCount();
-
-    boolean hasSuccessInvest(String loginName);
 }

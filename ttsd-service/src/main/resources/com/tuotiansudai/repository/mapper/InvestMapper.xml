@@ -140,7 +140,14 @@
     <select id="sumSuccessInvestAmountByLoginName" parameterType="map" resultType="long">
         select IFNULL(sum(amount),0)
         from invest
-        where loan_id = #{loanId} and login_name = #{loginName}
+        <where>
+            <if test="loanId != null">
+                and loan_id = #{loanId}
+            </if>
+            <if test="loginName != null">
+                and login_name = #{loginName}
+            </if>
+        </where>
         and status = 'SUCCESS'
     </select>
 
@@ -305,15 +312,4 @@
     <select id="findRegisteredNotInvestCount" resultType="long">
         select count(*) from account a where not exists(select 1 from invest i where a.login_name = i.login_name and i.status='SUCCESS');
     </select>
-
-    <select id="hasSuccessInvest" resultType="boolean" parameterType="string">
-        select case count(1)
-               when 0
-                   then 0
-               else 1
-               end
-        from invest
-        where login_name = #{loginName} and status = 'SUCCESS';
-    </select>
-
 </mapper>

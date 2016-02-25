@@ -84,8 +84,9 @@ public class PointTaskServiceImpl implements PointTaskService {
             case FIRST_RECHARGE:
                 return rechargeMapper.findSumSuccessRechargeByLoginName(loginName) > 0;
             case FIRST_INVEST:
-
+                return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) > 0;
             case SUM_INVEST_10000:
+                return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) > 1000000;
         }
 
         return false;
