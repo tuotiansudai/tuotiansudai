@@ -41,7 +41,7 @@ public interface JPushAlertService {
 
     void autoJPushNoInvestAlert();
 
-    void autoJPushLoanAlert(List<InvestNotifyInfo> notifyInfos);
+    void autoJPushLoanAlert(long loanId);
 
     BaseDto<BaseDataDto> pass(String loginName, long id, String ip);
 
