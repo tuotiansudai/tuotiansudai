@@ -1,15 +1,18 @@
 package com.tuotiansudai.jpush.service.impl;
 
 
+import cn.jpush.api.report.ReceivedsResult;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.job.JPushReportFetchingJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.ManualJPushAlertJob;
 import com.tuotiansudai.jpush.client.MobileAppJPushClient;
@@ -271,7 +274,6 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         } else {
             logger.debug("autoJPushAlertBirthMonthJob is disabled");
         }
-
     }
 
     @Override
@@ -365,10 +367,29 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         JPushAlertDto jPushAlertDto = new JPushAlertDto(jPushAlertModel);
         String[] jumpToOrLink = chooseJumpToOrLink(jPushAlertDto);
         List<String> registrationIds = Lists.newArrayList();
+        int iosTargetNum = 0;
+        int androidTargetNum = 0;
+
+        redisWrapperClient.del(MobileAppJPushClient.APP_PUSH_MSG_ID_KEY + jPushAlertModel.getId());
+
         for (int i = 0; i < pushObjects.size(); i++) {
             String loginName = pushObjects.get(i);
             if (redisWrapperClient.hexists(JPUSH_ID_KEY, loginName)) {
-                String registrationId = redisWrapperClient.hget(JPUSH_ID_KEY, loginName);
+                String value = redisWrapperClient.hget(JPUSH_ID_KEY, loginName);
+                String registrationId;
+                String platform;
+                if (value.indexOf("-") < 0) {
+                    registrationId = value;
+                    platform = registrationId.length() == 11 ? "ios" : "android";
+                } else {
+                    registrationId = value.split("-")[1];
+                    platform = value.split("-")[0];
+                }
+                if ("ios".equals(platform)) {
+                    iosTargetNum++;
+                } else if ("android".equals(platform)) {
+                    androidTargetNum++;
+                }
                 registrationIds.add(registrationId);
             }
             if (registrationIds.size() == 1000 || (i == pushObjects.size() - 1 && registrationIds.size() > 0)) {
@@ -380,8 +401,41 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 }
                 registrationIds.clear();
             }
-
         }
+        jPushAlertModel.setAndroidTargetNum(androidTargetNum);
+        jPushAlertModel.setIosTargetNum(iosTargetNum);
+        jPushAlertMapper.update(jPushAlertModel);
+        createGetPushRecordJob(jPushAlertModel.getId());
+    }
+
+    private void createGetPushRecordJob(long jpushId) {
+        try {
+            Date triggerTime = new DateTime().plusHours(25).toDate();
+            jobManager.newJob(JobType.GetPushReport, JPushReportFetchingJob.class)
+                    .withIdentity(JobType.GetPushReport.name(), "JPush-" + jpushId)
+                    .replaceExistingJob(true)
+                    .addJobData("JPUSH_ID", jpushId)
+                    .runOnceAt(triggerTime).submit();
+        } catch (SchedulerException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+    }
+
+    public void refreshPushReport(long jpushId) {
+        Set<String> msgIdList = redisWrapperClient.smembers(MobileAppJPushClient.APP_PUSH_MSG_ID_KEY + jpushId);
+        String msgIds = Joiner.on(",").join(msgIdList);
+        ReceivedsResult result = mobileAppJPushClient.getReportReceived(msgIds);
+
+        int iosArriveNum = 0;
+        int androidArriveNum = 0;
+        for (ReceivedsResult.Received received : result.received_list) {
+            iosArriveNum += received.ios_apns_sent;
+            androidArriveNum += received.android_received;
+        }
+        JPushAlertModel model = jPushAlertMapper.findJPushAlertModelById(jpushId);
+        model.setIosArriveNum(iosArriveNum);
+        model.setAndroidArriveNum(androidArriveNum);
+        jPushAlertMapper.update(model);
     }
 
     private void autoJPushByRegistrationId(JPushAlertModel jPushAlertModel, Map<String, List<String>> pushObjects) {

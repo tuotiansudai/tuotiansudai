@@ -36,6 +36,7 @@ public enum JobType {
     AutoLoanOut("满标自动放款"),
     SendRedEnvelope("放款发红包"),
     CouponNotify("优惠券通知"),
+    GetPushReport("获取推送统计数据"),
     ManualJPushAlert("手动推送");
 
 
