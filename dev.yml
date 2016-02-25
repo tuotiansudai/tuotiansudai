@@ -83,8 +83,6 @@ worker-jpush:
     - ./ttsd-job-worker/build/distributions:/workspace/tuotian
   command: bash -c "./ttsd-job-worker-jpush/bin/ttsd-job-worker"
   links:
-    - "pay-wrapper"
-    - "sms-wrapper"
     - "redis-server"
 static-server:
   image: "nginx"
