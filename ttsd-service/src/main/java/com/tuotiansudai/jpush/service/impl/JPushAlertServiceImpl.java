@@ -325,7 +325,8 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
-    public void autoJPushLoanAlert(List<InvestNotifyInfo> notifyInfos) {
+    public void autoJPushLoanAlert(long loanId) {
+        List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.LOAN_ALERT);
         if (jPushAlertModel != null) {
             if (CollectionUtils.isEmpty(notifyInfos)) {

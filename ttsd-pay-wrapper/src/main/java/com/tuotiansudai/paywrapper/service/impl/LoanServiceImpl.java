@@ -377,9 +377,6 @@ public class LoanServiceImpl implements LoanService {
         logger.debug(MessageFormat.format("标的: {0} 放款邮件通知", loanId));
         notifyInvestorsLoanOutSuccessfulByEmail(notifies);
 
-        logger.debug(MessageFormat.format("标的: {0} 放款推送通知", loanId));
-        notifyInvestorsLoanOutSuccessfulByJPush(notifies);
-
     }
 
     private void notifyInvestorsLoanOutSuccessfulBySMS(List<InvestNotifyInfo> notifyInfos) {
@@ -401,10 +398,6 @@ public class LoanServiceImpl implements LoanService {
             }
         }
     }
-    private void notifyInvestorsLoanOutSuccessfulByJPush(List<InvestNotifyInfo> notifyInfos) {
-        jPushAlertService.autoJPushLoanAlert(notifyInfos);
-    }
-
     private void processLoanStatusForLoanOut(LoanModel loan) {
         BaseDto<PayDataDto> dto = updateLoanStatus(loan.getId(), LoanStatus.REPAYING);
         if(dto.getData().getStatus()){
