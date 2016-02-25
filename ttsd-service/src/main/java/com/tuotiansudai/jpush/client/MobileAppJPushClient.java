@@ -79,9 +79,9 @@ public class MobileAppJPushClient {
         return platform;
     }
 
-    public PushPayload buildPushObject_all_all_alertWithExtras(String alert, String extraKey, String extraValue) {
+    public PushPayload buildPushObject_all_all_alertWithExtras(String alert, String extraKey, String extraValue, PushSource pushSource) {
         return PushPayload.newBuilder()
-                .setPlatform(Platform.all())
+                .setPlatform(getPlatform(pushSource))
                 .setAudience(Audience.all())
                 .setNotification(Notification.newBuilder()
                         .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).setBadge(0).addExtra(extraKey, extraValue).build())
@@ -170,8 +170,8 @@ public class MobileAppJPushClient {
         return sendPush(payload, jPushAlertId);
     }
 
-    public boolean sendPushAlertByAll(String jPushAlertId, String alert, String extraKey, String extraValue) {
-        PushPayload payload = buildPushObject_all_all_alertWithExtras(alert, extraKey, extraValue);
+    public boolean sendPushAlertByAll(String jPushAlertId, String alert, String extraKey, String extraValue, PushSource pushSource) {
+        PushPayload payload = buildPushObject_all_all_alertWithExtras(alert, extraKey, extraValue, pushSource);
         return sendPush(payload, jPushAlertId);
     }
 

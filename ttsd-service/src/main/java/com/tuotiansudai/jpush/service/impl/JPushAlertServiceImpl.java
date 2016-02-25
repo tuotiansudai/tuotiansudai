@@ -32,6 +32,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,6 +73,9 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     @Autowired
     private JobManager jobManager;
+
+    @Value("web.server")
+    private String domain;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -126,52 +130,6 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     @Override
     @Transactional
-    public void send(String loginName, long id) {
-        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertModelById(id);
-        JPushAlertDto jPushAlertDto = new JPushAlertDto(jPushAlertModel);
-        PushSource pushSource = jPushAlertDto.getPushSource();
-        String[] jumpToOrLink = chooseJumpToOrLink(jPushAlertDto);
-        String alert = jPushAlertDto.getContent();
-        boolean sendResult = false;
-        List<String> pushObjects = jPushAlertDto.getPushObjects();
-
-        if (pushSource == PushSource.ALL) {
-
-            if (CollectionUtils.isNotEmpty(pushObjects)) {
-                sendResult = mobileAppJPushClient.sendPushAlertByTags(jPushAlertDto.getId(), pushObjects, alert, jumpToOrLink[0], jumpToOrLink[1]);
-            } else {
-                sendResult = mobileAppJPushClient.sendPushAlertByAll(jPushAlertDto.getId(), alert, jumpToOrLink[0], jumpToOrLink[1]);
-            }
-
-        } else if (pushSource == PushSource.ANDROID) {
-            if (CollectionUtils.isNotEmpty(pushObjects)) {
-                sendResult = mobileAppJPushClient.sendPushAlertByAndroidTags(jPushAlertDto.getId(), pushObjects, alert, jumpToOrLink[0], jumpToOrLink[1]);
-            } else {
-                sendResult = mobileAppJPushClient.sendPushAlertByAndroid(jPushAlertDto.getId(), alert, jumpToOrLink[0], jumpToOrLink[1]);
-            }
-        } else if (pushSource == PushSource.IOS) {
-            if (CollectionUtils.isNotEmpty(pushObjects)) {
-                sendResult = mobileAppJPushClient.sendPushAlertByIosTags(jPushAlertDto.getId(), pushObjects, alert, jumpToOrLink[0], jumpToOrLink[1]);
-            } else {
-                sendResult = mobileAppJPushClient.sendPushAlertByIos(jPushAlertDto.getId(), alert, jumpToOrLink[0], jumpToOrLink[1]);
-            }
-        }
-
-        if (sendResult) {
-            jPushAlertModel.setUpdatedBy(loginName);
-            jPushAlertModel.setUpdatedTime(new Date());
-            jPushAlertModel.setStatus(PushStatus.SEND_SUCCESS);
-            jPushAlertMapper.update(jPushAlertModel);
-        } else {
-            jPushAlertModel.setUpdatedBy(loginName);
-            jPushAlertModel.setUpdatedTime(new Date());
-            jPushAlertModel.setStatus(PushStatus.SEND_FAIL);
-            jPushAlertMapper.update(jPushAlertModel);
-        }
-    }
-
-    @Override
-    @Transactional
     public void changeJPushAlertStatus(long id, PushStatus status, String loginName) {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertModelById(id);
         jPushAlertModel.setStatus(status);
@@ -213,7 +171,12 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 logger.debug("this JPush without data, id = " + id);
                 return;
             }
-            autoJPushByBatchRegistrationId(jPushAlertModel, loginNames, jPushAlertModel.getPushSource());
+            if (jPushAlertModel.getPushUserType() == PushUserType.ALL && jPushAlertModel.getPushObjects() == null) {
+                String[] jumpToOrLink = chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel));
+                mobileAppJPushClient.sendPushAlertByAll(String.valueOf(jPushAlertModel.getId()), jPushAlertModel.getContent(), jumpToOrLink[0], jumpToOrLink[1], jPushAlertModel.getPushSource());
+            } else {
+                autoJPushByBatchRegistrationId(jPushAlertModel, loginNames, jPushAlertModel.getPushSource());
+            }
             jPushAlertModel.setStatus(PushStatus.SEND_SUCCESS);
             jPushAlertMapper.update(jPushAlertModel);
         } else {
@@ -364,7 +327,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         String jumpToLink = jPushAlertDto.getJumpToLink();
         if (StringUtils.isNotEmpty(jumpToLink)) {
             jumpToOrLink[0] = "jumpToLink";
-            jumpToOrLink[1] = jumpToLink;
+            jumpToOrLink[1] = domain + jumpToLink;
             return jumpToOrLink;
         }
         if (jumpTo != null) {

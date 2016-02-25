@@ -5,7 +5,6 @@ import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.repository.model.*;
-import com.tuotiansudai.repository.model.InvestNotifyInfo;
 
 import java.util.Date;
 import java.util.List;
@@ -26,8 +25,6 @@ public interface JPushAlertService {
     JPushAlertModel findJPushAlertModelById(long id);
 
     void refreshPushReport(long jpushId);
-
-    void send(String loginName, long id);
 
     void changeJPushAlertStatus(long id, PushStatus status, String loginName);
 

@@ -54,13 +54,6 @@ public class JPushAlertController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/manual-app-push/{id}/send", method = RequestMethod.GET)
-    public String send(@PathVariable long id) {
-        String loginName = LoginUserInfo.getLoginName();
-        jPushAlertService.send(loginName, id);
-        return "redirect:/app-push-manage/manual-app-push-list";
-    }
-
     @RequestMapping(value = "/manual-app-push", method = RequestMethod.POST)
     public String buildAppPush(@Valid @ModelAttribute JPushAlertDto jPushAlertDto) {
         String loginName = LoginUserInfo.getLoginName();
