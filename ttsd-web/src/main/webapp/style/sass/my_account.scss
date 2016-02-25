@@ -1493,6 +1493,12 @@
     .coupon-list{
       float:left;
       width:100%;
+      &.used-card{
+        li{
+          width:100%;
+          margin-right:0;
+        }
+      }
       li{
         float:left;
         width:285px;
@@ -1500,289 +1506,124 @@
         margin-right: 90px;
         &.yellow-type{
           .top-com{
-            float:left;
-            width:285px;
-            height:125px;
-            overflow:hidden;
             .left-name{
-              float:left;
-              width: 30px;
-              height: 110px;
               background: #ff752a;
               color: #fff;
-              font-size: 16px;
-              padding: 0 10px;
-              text-align: center;
-              line-height: 22px;
-              padding-top:15px;
-              border-radius:5px;
-              position: relative;
               i{
-                position: absolute;
-                left:45px;
-                width:10px;
-                height:10px;
                 border:1px solid #ff752a;
-                background:#fff;
-                border-radius:50%;
-                &.circle-top{
-                  top:-5px;
-                }
-                &.circle-bottom{
-                  bottom:-5px;
-                }
               }
             }
             .right-coupon{
-              float:left;
-              width:213px;
-              height:123px;
-              padding-left:20px;
               border:1px solid #ff752a;
-              border-radius:5px;
               background:url("/images/sign/yellow-bg.png") no-repeat;
               background-position: 165px 10px;
               p{
-                margin-bottom:0;
                 color:#ff752a;
-                &.mt-10{
-                  margin-top:10px;
-                }
-                span{
-                  line-height:40px;
-                  &.num-text{
-                    font-size:40px;
-                  }
-                  &.unit-text{
-                    font-size:16px;
-                  }
-                }
                 .pro-icon{
                   border: 1px solid #ff752a;
-                  border-radius: 20px;
-                  text-align: center;
-                  margin: 0 2px;
-                  line-height: 21px;
-                  padding: 2px 4px;
                 }
               }
             }
           }
           .bottom-time{
-            float:left;
-            width:285px;
-            height:30px;
-            padding:15px 0;
-            line-height:30px;
-            span{
-              float:left;
-              width:190px;
-              text-align:right;
-              font-size:12px;
-              color:#999;
-            }
             a{
-              float:left;
-              width:80px;
-              margin-left:15px;
               background:#ff752a;
-              font-size:12px;
-              color:#fff;
-              text-align:center;
-              border-radius:5px;
               cursor:pointer;
+            }
+          }
+          .detail-com{
+            p{
+              &.bottom-line{
+                border-bottom: 1px dashed #ff752a;
+              }
+              span{
+                color:#ff752a;
+              }
+              .see-detail{
+                background: #ff752a;
+              }
             }
           }
         }
         &.new-type{
           .top-com{
-            float:left;
-            width:285px;
-            height:125px;
-            overflow:hidden;
             .left-name{
-              float:left;
-              width: 30px;
-              height: 120px;
               background: #ffae00;
               color: #fff;
-              font-size: 16px;
-              padding: 0 10px;
-              text-align: center;
-              line-height: 22px;
-              padding-top:5px;
-              border-radius:5px;
-              position: relative;
               i{
-                position: absolute;
-                left:45px;
-                width:10px;
-                height:10px;
                 border:1px solid #ffae00;
-                background:#fff;
-                border-radius:50%;
-                &.circle-top{
-                  top:-5px;
-                }
-                &.circle-bottom{
-                  bottom:-5px;
-                }
               }
             }
             .right-coupon{
-              float:left;
-              width:213px;
-              height:123px;
-              padding-left:20px;
               border:1px solid #ffae00;
-              border-radius:5px;
               background:url("/images/sign/new-bg.png") no-repeat;
               background-position: 165px 10px;
               p{
-                margin-bottom:0;
                 color:#ffae00;
-                &.mt-10{
-                  margin-top:10px;
-                }
-                span{
-                  line-height:40px;
-                  &.num-text{
-                    font-size:40px;
-                  }
-                  &.unit-text{
-                    font-size:16px;
-                  }
-                }
                 .pro-icon{
                   border: 1px solid #ffae00;
-                  border-radius: 20px;
-                  text-align: center;
-                  margin: 0 2px;
-                  line-height: 21px;
-                  padding: 2px 4px;
                 }
               }
             }
           }
           .bottom-time{
-            float:left;
-            width:285px;
-            height:30px;
-            padding:15px 0;
-            line-height:30px;
-            span{
-              float:left;
-              width:190px;
-              text-align:right;
-              font-size:12px;
-              color:#999;
-            }
             a{
-              float:left;
-              width:80px;
-              margin-left:15px;
               background:#ffae00;
-              font-size:12px;
-              color:#fff;
-              text-align:center;
-              border-radius:5px;
               cursor:pointer;
+            }
+          }
+          .detail-com{
+            p{
+              &.bottom-line{
+                border-bottom: 1px dashed #ffae00;
+              }
+              span{
+                color:#ffae00;
+              }
+              .see-detail{
+                background: #ffae00;
+              }
             }
           }
         }
         &.bite-type{
           .top-com{
-            float:left;
-            width:285px;
-            height:125px;
-            overflow:hidden;
             .left-name{
-              float:left;
-              width: 30px;
-              height: 95px;
               background: #ff7b7b;
               color: #fff;
-              font-size: 16px;
-              padding: 0 10px;
-              text-align: center;
-              line-height: 22px;
-              padding-top:30px;
-              border-radius:5px;
-              position: relative;
               i{
-                position: absolute;
-                left:45px;
-                width:10px;
-                height:10px;
                 border:1px solid #ff7b7b;
-                background:#fff;
-                border-radius:50%;
-                &.circle-top{
-                  top:-5px;
-                }
-                &.circle-bottom{
-                  bottom:-5px;
-                }
               }
             }
             .right-coupon{
-              float:left;
-              width:213px;
-              height:123px;
-              padding-left:20px;
               border:1px solid #ff7b7b;
-              border-radius:5px;
               background:url("/images/sign/bite-bg.png") no-repeat;
               background-position: 165px 10px;
               p{
-                margin-bottom:0;
                 color:#ff7b7b;
-                &.mt-10{
-                  margin-top:10px;
-                }
-                span{
-                  line-height:40px;
-                  &.num-text{
-                    font-size:40px;
-                  }
-                  &.unit-text{
-                    font-size:16px;
-                  }
-                }
                 .pro-icon{
                   border: 1px solid #ff7b7b;
-                  border-radius: 20px;
-                  text-align: center;
-                  margin: 0 2px;
-                  line-height: 21px;
-                  padding: 2px 4px;
                 }
               }
             }
           }
           .bottom-time{
-            float:left;
-            width:285px;
-            height:30px;
-            padding:15px 0;
-            line-height:30px;
-            span{
-              float:left;
-              width:190px;
-              text-align:right;
-              font-size:12px;
-              color:#999;
-            }
             a{
-              float:left;
-              width:80px;
-              margin-left:15px;
               background:#ff7b7b;
-              font-size:12px;
-              color:#fff;
-              text-align:center;
-              border-radius:5px;
               cursor:pointer;
+            }
+          }
+          .detail-com{
+            p{
+              &.bottom-line{
+                border-bottom: 1px dashed #ff7b7b;
+              }
+              span{
+                color:#ff7b7b;
+              }
+              .see-detail{
+                background: #ff7b7b;
+              }
             }
           }
         }
@@ -1793,17 +1634,27 @@
           overflow:hidden;
           .left-name{
             float:left;
-            width: 30px;
-            height: 110px;
+            width: 50px;
+            height: 125px;
             background: #ccc;
             color: #fff;
             font-size: 16px;
-            padding: 0 10px;
             text-align: center;
             line-height: 22px;
-            padding-top:15px;
             border-radius:5px;
             position: relative;
+            span{
+              display: inline-block;
+              vertical-align: middle;
+              width: 30px;
+              margin-left: 5px;
+            }
+            em{
+              display: inline-block;
+              width: 1px;
+              height: 100%;
+              vertical-align: middle;
+            }
             i{
               position: absolute;
               left:45px;
@@ -1878,6 +1729,48 @@
             text-align:center;
             border-radius:5px;
             cursor: no-drop;
+          }
+        }
+        .detail-com{
+          float:left;
+          width:410px;
+          margin-left:30px;
+          p{
+            float:left;
+            width:100%;
+            margin-bottom:0;
+            line-height:30px;
+            &.bottom-line{
+              padding: 10px 0 15px 0;
+              border-bottom: 1px dashed #ff752a;
+              margin-bottom: 10px;
+            }
+            span{
+              font-size:12px;
+              color:#ff752a;
+              &.status-text{
+                float:left;
+                color:#999;
+              }
+              &.left-text{
+                float:left;
+              }
+              &.right-text{
+                float:right;
+              }
+            }
+            .see-detail{
+              float:right;
+              width: 80px;
+              margin-left: 15px;
+              background: #ff752a;
+              font-size: 12px;
+              color: #fff;
+              line-height:30px;
+              text-align: center;
+              border-radius: 5px;
+              cursor: pointer;
+            }
           }
         }
       }

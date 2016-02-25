@@ -46,7 +46,10 @@
                 <li class="yellow-type">
                     <div class="top-com">
                         <div class="left-name">
-                            <span>现金红包</span>
+                            <span>
+                                现金红包
+                            </span>
+                            <em></em>
                             <i class="circle-top"></i>
                             <i class="circle-bottom"></i>
                         </div>
@@ -68,6 +71,7 @@
                     <div class="top-com">
                         <div class="left-name">
                             <span>现金红包</span>
+                            <em></em>
                             <i class="circle-top"></i>
                             <i class="circle-bottom"></i>
                         </div>
@@ -89,6 +93,7 @@
                     <div class="top-com">
                         <div class="left-name">
                             <span>现金红包</span>
+                            <em></em>
                             <i class="circle-top"></i>
                             <i class="circle-bottom"></i>
                         </div>
@@ -110,6 +115,7 @@
                     <div class="top-com">
                         <div class="left-name">
                             <span>现金红包</span>
+                            <em></em>
                             <i class="circle-top"></i>
                             <i class="circle-bottom"></i>
                         </div>
@@ -131,6 +137,7 @@
                     <div class="top-com">
                         <div class="left-name">
                             <span>现金红包</span>
+                            <em></em>
                             <i class="circle-top"></i>
                             <i class="circle-bottom"></i>
                         </div>
@@ -152,6 +159,7 @@
                     <div class="top-com">
                         <div class="left-name">
                             <span>现金红包</span>
+                            <em></em>
                             <i class="circle-top"></i>
                             <i class="circle-bottom"></i>
                         </div>
@@ -173,6 +181,7 @@
                     <div class="top-com">
                         <div class="left-name">
                             <span>新手体验券</span>
+                            <em></em>
                             <i class="circle-top"></i>
                             <i class="circle-bottom"></i>
                         </div>
@@ -194,6 +203,7 @@
                     <div class="top-com">
                         <div class="left-name">
                             <span>新手体验券</span>
+                            <em></em>
                             <i class="circle-top"></i>
                             <i class="circle-bottom"></i>
                         </div>
@@ -215,6 +225,7 @@
                     <div class="top-com">
                         <div class="left-name">
                             <span>加息券</span>
+                            <em></em>
                             <i class="circle-top"></i>
                             <i class="circle-bottom"></i>
                         </div>
@@ -235,11 +246,12 @@
             </ul>
         </div>
         <div class="coupon-com">
-            <ul class="coupon-list">
+            <ul class="coupon-list used-card">
                 <li class="yellow-type">
                     <div class="top-com">
                         <div class="left-name">
                             <span>现金红包</span>
+                            <em></em>
                             <i class="circle-top"></i>
                             <i class="circle-bottom"></i>
                         </div>
@@ -252,15 +264,26 @@
                             <p>产品限制：<i class="pro-icon">稳</i><i class="pro-icon">久</i>产品线可用</p>
                         </div>
                     </div>
-                    <div class="bottom-time">
-                        <span>请在2016-05-03前使用</span>
-                        <a href="#">立即使用</a>
+                    <div class="detail-com">
+                        <p class="bottom-line">
+                            <span class="status-text">已使用</span>
+                            <a href="#" class="see-detail">查看详情</a>
+                        </p>
+                        <p>
+                            <span class="left-text">所投标的： 速盈利个人借款</span>
+                            <span class="right-text">投资金额： 10000.00元</span>
+                        </p>
+                        <p>
+                            <span class="left-text">使用时间： 2015-12-12</span>
+                            <span class="right-text">预计收益： 32.00元</span>
+                        </p>
                     </div>
                 </li>
                 <li class="new-type">
                     <div class="top-com">
                         <div class="left-name">
                             <span>现金红包</span>
+                            <em></em>
                             <i class="circle-top"></i>
                             <i class="circle-bottom"></i>
                         </div>
@@ -273,15 +296,26 @@
                             <p>产品限制：<i class="pro-icon">稳</i><i class="pro-icon">久</i>产品线可用</p>
                         </div>
                     </div>
-                    <div class="bottom-time">
-                        <span>请在2016-05-03前使用</span>
-                        <a href="#">立即使用</a>
+                    <div class="detail-com">
+                        <p class="bottom-line">
+                            <span class="status-text">已使用</span>
+                            <a href="#" class="see-detail">查看详情</a>
+                        </p>
+                        <p>
+                            <span class="left-text">所投标的： 速盈利个人借款</span>
+                            <span class="right-text">投资金额： 10000.00元</span>
+                        </p>
+                        <p>
+                            <span class="left-text">使用时间： 2015-12-12</span>
+                            <span class="right-text">预计收益： 32.00元</span>
+                        </p>
                     </div>
                 </li>
                 <li class="bite-type">
                     <div class="top-com">
                         <div class="left-name">
                             <span>加息券</span>
+                            <em></em>
                             <i class="circle-top"></i>
                             <i class="circle-bottom"></i>
                         </div>
@@ -294,9 +328,19 @@
                             <p>产品限制：<i class="pro-icon">稳</i><i class="pro-icon">久</i>产品线可用</p>
                         </div>
                     </div>
-                    <div class="bottom-time">
-                        <span>请在2016-05-03前使用</span>
-                        <a href="#">立即使用</a>
+                    <div class="detail-com">
+                        <p class="bottom-line">
+                            <span class="status-text">已使用</span>
+                            <a href="#" class="see-detail">查看详情</a>
+                        </p>
+                        <p>
+                            <span class="left-text">所投标的： 速盈利个人借款</span>
+                            <span class="right-text">投资金额： 10000.00元</span>
+                        </p>
+                        <p>
+                            <span class="left-text">使用时间： 2015-12-12</span>
+                            <span class="right-text">预计收益： 32.00元</span>
+                        </p>
                     </div>
                 </li>
             </ul>
@@ -307,6 +351,7 @@
                     <div class="top-com">
                         <div class="left-name">
                             <span>现金红包</span>
+                            <em></em>
                             <i class="circle-top"></i>
                             <i class="circle-bottom"></i>
                         </div>
@@ -328,6 +373,7 @@
                     <div class="top-com">
                         <div class="left-name">
                             <span>现金红包</span>
+                            <em></em>
                             <i class="circle-top"></i>
                             <i class="circle-bottom"></i>
                         </div>
