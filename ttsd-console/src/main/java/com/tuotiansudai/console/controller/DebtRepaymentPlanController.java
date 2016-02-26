@@ -22,10 +22,6 @@ public class DebtRepaymentPlanController {
         if(repayStatus == null){
             repayStatus = RepayStatus.REPAYING;
         }
-        if(repayStatus == RepayStatus.ALL){
-            repayStatus = null;
-        }
-
         modelAndView.addObject("debtRepaymentPlans", this.debtRepaymentPlanService.findDebtRepaymentPlan(repayStatus));
         modelAndView.addObject("repayStatus",repayStatus);
         return modelAndView;
@@ -36,9 +32,6 @@ public class DebtRepaymentPlanController {
         ModelAndView modelAndView = new ModelAndView("/debt-repayment-detail");
         if(repayStatus == null){
             repayStatus = RepayStatus.REPAYING;
-        }
-        if(repayStatus == RepayStatus.ALL){
-            repayStatus = null;
         }
         modelAndView.addObject("debtRepaymentPlanDetails",this.debtRepaymentPlanService.findDebtRepaymentPlanDetail(repayStatus,date));
         modelAndView.addObject("repayStatus",repayStatus);
