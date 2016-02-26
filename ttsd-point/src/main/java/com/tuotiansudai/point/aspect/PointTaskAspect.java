@@ -52,14 +52,16 @@ public class PointTaskAspect {
         logger.debug("after returning invest success, point task aspect completed");
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.service.BindEmailService.verifyEmail(..))")
-    public void afterReturningVerifyEmail(JoinPoint joinPoint) {
-        logger.debug("after returning bind email success, point task aspect starting...");
+    @AfterReturning(value = "execution(* com.tuotiansudai.service.BindEmailService.verifyEmail(..))", returning = "returnValue")
+    public void afterReturningVerifyEmail(JoinPoint joinPoint, Object returnValue) {
+        if (returnValue != null) {
+            logger.debug("after returning bind email success, point task aspect starting...");
 
-        String loginName = (String)joinPoint.getArgs()[0];
-        pointTaskService.completeTask(PointTask.BIND_EMAIL, loginName);
+            String loginName = (String) joinPoint.getArgs()[0];
+            pointTaskService.completeTask(PointTask.BIND_EMAIL, loginName);
 
-        logger.debug("after returning bind email success, point task aspect completed");
+            logger.debug("after returning bind email success, point task aspect completed");
+        }
     }
 
     @AfterReturning(value = "execution(* *..RechargeService.rechargeCallback(..))")
