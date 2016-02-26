@@ -44,5 +44,4 @@ public interface UserCouponMapper {
 
     List<UserCouponModel> findBirthdaySuccessByLoginNameAndLoanId(@Param("loginName") String loginName, @Param("loanId") long loanId);
 
-    List<UserCouponModel> findInvestCouponByLoginName(@Param("loginName") String loginName, @Param("productType") ProductType productType,@Param("investMoney") long investMoney);
 }

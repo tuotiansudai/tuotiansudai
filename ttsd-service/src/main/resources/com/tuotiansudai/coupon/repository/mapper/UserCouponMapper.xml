@@ -71,44 +71,6 @@
         where uc.login_name = #{loginName}
     </select>
 
-    <select id="findInvestCouponByLoginName" resultMap="userCouponResultMap" parameterType="map">
-        (SELECT
-        *
-        FROM
-        user_coupon uc
-        JOIN
-        coupon c ON uc.coupon_id = c.id
-        AND uc.login_name = #{loginName}
-        AND c.product_types LIKE  CONCAT(CONCAT('%', #{productType}), '%')
-        <![CDATA[ AND c.invest_lower_limit <= #{investMoney} ]]>
-        ORDER BY shared DESC , CASE c.coupon_type
-        WHEN 'RED_ENVELOPE' THEN '1'
-        WHEN 'BIRTHDAY_COUPON' THEN '2'
-        WHEN 'NEWBIE_COUPON' THEN '3'
-        WHEN 'INVEST_COUPON' THEN '4'
-        WHEN 'INTEREST_COUPON' THEN '5'
-        ELSE '6'
-        END) UNION ALL (SELECT
-        *
-        FROM
-        user_coupon uc
-        JOIN
-        coupon c ON uc.coupon_id = c.id
-        AND uc.login_name = #{loginName}
-        AND c.product_types LIKE  CONCAT(CONCAT('%', #{productType}), '%')
-        AND c.invest_lower_limit > #{investMoney}
-        ORDER BY shared DESC , CASE c.coupon_type
-        WHEN 'RED_ENVELOPE' THEN '1'
-        WHEN 'BIRTHDAY_COUPON' THEN '2'
-        WHEN 'NEWBIE_COUPON' THEN '3'
-        WHEN 'INVEST_COUPON' THEN '4'
-        WHEN 'INTEREST_COUPON' THEN '5'
-        ELSE '6'
-        END)
-
-    </select>
-
-
     <select id="findById" resultMap="userCouponResultMap" parameterType="long">
         select * from user_coupon where id = #{id}
     </select>
