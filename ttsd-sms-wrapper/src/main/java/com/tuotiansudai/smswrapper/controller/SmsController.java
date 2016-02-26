@@ -52,7 +52,7 @@ public class SmsController {
 
     @RequestMapping(value = "/birthday-notify", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<SmsDataDto> birthdayNotify(@Valid @RequestBody SmsCouponNotifyDto notifyDto) {
+    public BaseDto<SmsDataDto> birthdayNotify(@RequestBody SmsCouponNotifyDto notifyDto) {
         return smsService.birthdayNotify(notifyDto);
     }
 

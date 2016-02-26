@@ -19,8 +19,8 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.service, com.tuotiansudai.repository, com.tuotiansudai.client, com.tuotiansudai.security, com.tuotiansudai.console.util,
-                    com.tuotiansudai.util,com.tuotiansudai.coupon,com.tuotiansudai.jpush,com.tuotiansudai.point"/>
+    <context:component-scan base-package="com.tuotiansudai.service, com.tuotiansudai.repository, com.tuotiansudai.client, com.tuotiansudai.security,
+                    com.tuotiansudai.util,com.tuotiansudai.coupon,com.tuotiansudai.jpush,com.tuotiansudai.console.util,com.tuotiansudai.point"/>
 
     <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>

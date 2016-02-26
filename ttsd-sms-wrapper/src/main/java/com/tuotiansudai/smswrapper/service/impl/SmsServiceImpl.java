@@ -98,11 +98,7 @@ public class SmsServiceImpl implements SmsService {
 
     @Override
     public BaseDto<SmsDataDto> birthdayNotify(SmsCouponNotifyDto notifyDto) {
-        Map<String, String> map = ImmutableMap.<String, String>builder()
-                .put("coupon", (notifyDto.getCouponType() == CouponType.INTEREST_COUPON ? MessageFormat.format("+{0}%", notifyDto.getRate()) : MessageFormat.format("{0}元", notifyDto.getAmount())) + notifyDto.getCouponType().getName())
-                .put("expiredDate", notifyDto.getExpiredDate())
-                .build();
-        String content = SmsTemplate.SMS_BIRTHDAY_NOTIFY_TEMPLATE.generateContent(map);
+        String content = SmsTemplate.SMS_BIRTHDAY_NOTIFY_TEMPLATE.generateContent(new HashMap<String, String>());
         return smsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(), content, "");
     }
 
