@@ -14,10 +14,13 @@ import java.util.List;
 public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
     private long id;
     private long couponId;
+    private String loginName;
     private CouponType couponType;
     private String name;
     private long amount;
     private double rate;
+    private double birthdayBenefit;
+    private boolean multiple;
     private Date startTime;
     private Date endTime;
     private Date usedTime;
@@ -36,17 +39,20 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
 
     public UserCouponDto(CouponModel coupon, UserCouponModel userCoupon) {
         this.id = userCoupon.getId();
+        this.couponId = coupon.getId();
+        this.loginName = userCoupon.getLoginName();
         this.couponType = coupon.getCouponType();
         this.name = coupon.getCouponType().getName();
-        this.rate = coupon.getRate();
-        this.couponId = coupon.getId();
         this.amount = coupon.getAmount();
+        this.rate = coupon.getRate();
+        this.birthdayBenefit = coupon.getBirthdayBenefit();
+        this.multiple = coupon.isMultiple();
         this.startTime = coupon.getStartTime();
         this.endTime = coupon.getEndTime();
         this.usedTime = userCoupon.getUsedTime();
         this.loanId = userCoupon.getLoanId();
         this.used = InvestStatus.SUCCESS == userCoupon.getStatus();
-        this.expired = !this.used && new DateTime(this.endTime).plusDays(1).withTimeAtStartOfDay().isBeforeNow();
+        this.expired = !this.used && new DateTime(this.endTime).isBeforeNow();
         this.unused = !this.used && !this.expired;
         this.shared = coupon.isShared();
         this.investLowerLimit = coupon.getInvestLowerLimit();
@@ -63,6 +69,10 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
         return couponId;
     }
 
+    public String getLoginName() {
+        return loginName;
+    }
+
     public CouponType getCouponType() {
         return couponType;
     }
@@ -77,6 +87,14 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
 
     public double getRate() {
         return rate;
+    }
+
+    public double getBirthdayBenefit() {
+        return birthdayBenefit;
+    }
+
+    public boolean isMultiple() {
+        return multiple;
     }
 
     public Date getStartTime() {
@@ -133,18 +151,39 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
         else return 1;
     }
 
-    private Date getCompareTime() {
-        if (this.expired) return this.endTime;
-        else if (this.used) return this.usedTime;
-        else return this.createdTime;
+    private long getCompareBenefitValue() {
+        switch (this.couponType) {
+            case RED_ENVELOPE:
+            case NEWBIE_COUPON:
+            case INVEST_COUPON:
+                return amount;
+            case INTEREST_COUPON:
+                return (long) (rate * 100);
+            case BIRTHDAY_COUPON:
+                return (long) (birthdayBenefit * 100);
+            default:
+                return amount;
+        }
     }
 
     @Override
     public int compareTo(UserCouponDto dto) {
         if (this.getStatusCode() == dto.getStatusCode()) {
-            long diff = this.getCompareTime().getTime() - dto.getCompareTime().getTime();
-            int opposite = this.getStatusCode() == 1 ? 1 : -1;
-            return diff == 0 ? 0 : diff > 0 ? opposite * 1 : opposite * -1;
+            if (this.getCouponType().getOrder() == dto.getCouponType().getOrder()) {
+                if (this.getStatusCode() == 2) {
+                    return this.usedTime.after(dto.getUsedTime()) ? -1 : 1;
+                } else if (this.getStatusCode() == 1) {
+                    if (this.getCompareBenefitValue() == dto.getCompareBenefitValue()) {
+                        return this.getEndTime().after(dto.getEndTime()) ? 1 : -1;
+                    } else {
+                        return this.getCompareBenefitValue() - dto.getCompareBenefitValue() > 0 ? 1 : -1;
+                    }
+                } else {
+                    return this.getEndTime().after(dto.getEndTime()) ? -1 : 1;
+                }
+            } else {
+                return this.getCouponType().getOrder() - dto.getCouponType().getOrder();
+            }
         } else {
             return this.getStatusCode() - dto.getStatusCode();
         }

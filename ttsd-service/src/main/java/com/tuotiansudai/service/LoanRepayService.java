@@ -20,4 +20,5 @@ public interface LoanRepayService {
     void calculateDefaultInterest();
 
     void loanRepayNotify();
+
 }

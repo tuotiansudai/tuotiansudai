@@ -3,6 +3,7 @@ package com.tuotiansudai.coupon.repository.mapper;
 import com.tuotiansudai.coupon.repository.model.CouponUseRecordView;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.ProductType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -22,13 +23,7 @@ public interface UserCouponMapper {
 
     List<UserCouponModel> findByLoanId(@Param("loanId") Long loanId, @Param("couponTypeList") List<CouponType> couponTypeList);
 
-    int findUseRecordsCount(@Param(value = "couponTypeList") List<CouponType> couponTypeList,
-                            @Param(value = "loginName") String loginName);
-
-    List<CouponUseRecordView> findUseRecords(@Param(value = "couponTypeList") List<CouponType> couponTypeList,
-                                             @Param(value = "loginName") String loginName,
-                                             @Param(value = "index") int index,
-                                             @Param(value = "pageSize") int pageSize);
+    List<CouponUseRecordView> findUseRecords(@Param(value = "loginName") String loginName);
 
     List<UserCouponModel> findByInvestId(@Param("investId") long investId);
 
@@ -45,5 +40,9 @@ public interface UserCouponMapper {
 
     List<UserCouponModel> findByCouponId(long couponId);
 
-    UserCouponModel findByLoginNameAndCouponId(@Param("loginName") String loginName, @Param("couponId") long couponId);
+    List<UserCouponModel> findByLoginNameAndCouponId(@Param("loginName") String loginName, @Param("couponId") long couponId);
+
+    List<UserCouponModel> findBirthdaySuccessByLoginNameAndLoanId(@Param("loginName") String loginName, @Param("loanId") long loanId);
+
+    List<UserCouponModel> findInvestCouponByLoginName(@Param("loginName") String loginName, @Param("productType") ProductType productType,@Param("investMoney") long investMoney);
 }

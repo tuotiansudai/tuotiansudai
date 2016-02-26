@@ -65,6 +65,15 @@
     border-radius: 0;
     background: none;
   }
+  .birth-icon{
+    float: left;
+    width: 20px;
+    height: 20px;
+    background: url(/images/sign/birthday.png) no-repeat center;
+    background-size: 15px;
+    left: 50px;
+    position: relative;
+  }
   .accountImg {
     margin-right: 10px;
     width: 71px;
@@ -195,6 +204,15 @@
           padding-top: 5px;
         }
       }
+    }
+    .birth-icon{
+      float: left;
+      width: 20px;
+      height: 20px;
+      background: url(/images/sign/birthday.png) no-repeat center;
+      background-size: 15px;
+      left: 50px;
+      position: relative;
     }
     .trade-detail{
       width: 170px;
@@ -770,6 +788,13 @@
   table.invest-list {
     td {
       font-size: 12px;
+      i.birth-icon{
+        float: left;
+        width: 20px;
+        height: 20px;
+        background: url(/images/sign/birthday.png) no-repeat center;
+        background-size: 15px;
+      }
       .loan-name-col {
         display: inline-block;
         width: 170px;
@@ -1516,7 +1541,7 @@
             .right-coupon{
               border:1px solid #ff752a;
               background:url("/images/sign/yellow-bg.png") no-repeat;
-              background-position: 165px 10px;
+              background-position: 180px 10px;
               p{
                 color:#ff752a;
                 .pro-icon{
@@ -1562,7 +1587,7 @@
             .right-coupon{
               border:1px solid #ffae00;
               background:url("/images/sign/new-bg.png") no-repeat;
-              background-position: 165px 10px;
+              background-position: 180px 10px;
               p{
                 color:#ffae00;
                 .pro-icon{
@@ -1608,7 +1633,7 @@
             .right-coupon{
               border:1px solid #ff7b7b;
               background:url("/images/sign/bite-bg.png") no-repeat;
-              background-position: 165px 10px;
+              background-position: 180px 10px;
               p{
                 color:#ff7b7b;
                 .pro-icon{
@@ -1654,7 +1679,7 @@
             .right-coupon{
               border:1px solid #ff5984;
               background:url("/images/sign/birth-bg.png") no-repeat;
-              background-position: 165px 10px;
+              background-position: 180px 10px;
               p{
                 color:#ff5984;
                 .birth-text{
@@ -1693,7 +1718,7 @@
         }
         .top-com{
           float:left;
-          width:285px;
+          width:300px;
           height:125px;
           overflow:hidden;
           .left-name{
@@ -1737,13 +1762,13 @@
           }
           .right-coupon{
             float:left;
-            width:213px;
+            width:228px;
             height:123px;
             padding-left:20px;
             border:1px solid #ccc;
             border-radius:5px;
             background:url("/images/sign/default-bg.png") no-repeat;
-            background-position: 165px 10px;
+            background-position: 180px 10px;
             p{
               margin-bottom:0;
               color:#ccc;
@@ -1792,7 +1817,7 @@
         }
         .bottom-time{
           float:left;
-          width:285px;
+          width:300px;
           height:30px;
           padding:15px 0;
           line-height:30px;

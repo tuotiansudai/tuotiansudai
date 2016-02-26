@@ -35,6 +35,8 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String COUPON_NOTIFY_URI = "/sms/coupon-notify";
 
+    private final static String BIRTHDAY_NOTIFY_URI = "/sms/birthday-notify";
+
     private final static String LOAN_REPAY_NOTIFY_URL = "/sms/loan-repay-notify";
 
     public BaseDto<SmsDataDto> sendRegisterCaptchaSms(SmsCaptchaDto dto) {
@@ -63,6 +65,10 @@ public class SmsWrapperClient extends BaseClient {
 
     public BaseDto<SmsDataDto> sendCouponNotify(SmsCouponNotifyDto dto) {
         return send(dto, COUPON_NOTIFY_URI);
+    }
+
+    public BaseDto<SmsDataDto> sendBirthdayNotify(SmsCouponNotifyDto dto) {
+        return send(dto, BIRTHDAY_NOTIFY_URI);
     }
 
     private BaseDto<SmsDataDto> send(Object requestData, String requestPath) {

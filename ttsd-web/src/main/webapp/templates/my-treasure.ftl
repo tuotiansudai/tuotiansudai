@@ -36,395 +36,230 @@
         <span class="rule-show">使用规则？</span>
     </h4>
     <ul class="filters-list">
-         <li class="active">未使用</li>
-         <li>已使用</li>
-         <li>已过期</li>
-     </ul> 
-     <div class="model-list">
+        <li class="active">未使用</li>
+        <li>已使用</li>
+        <li>已过期</li>
+    </ul>
+    <div class="model-list">
+
+    <#-- 未使用的优惠券 -->
         <div class="coupon-com active">
             <ul class="coupon-list">
-                <li class="yellow-type">
-                    <div class="top-com">
-                        <div class="left-name">
-                            <span>
-                                现金红包
-                            </span>
-                            <em></em>
-                            <i class="circle-top"></i>
-                            <i class="circle-bottom"></i>
+                <#list unusedCoupons as coupon>
+                    <#assign unusedCouponClass = ''>
+                    <#if coupon.couponType == 'RED_ENVELOPE'>
+                        <#assign unusedCouponClass = 'yellow-type'>
+                    <#elseif coupon.couponType == 'NEWBIE_COUPON'>
+                        <#assign unusedCouponClass = 'new-type'>
+                    <#elseif coupon.couponType == 'INVEST_COUPON'>
+                        <#assign unusedCouponClass = 'new-type'>
+                    <#elseif coupon.couponType == 'INTEREST_COUPON'>
+                        <#assign unusedCouponClass = 'bite-type'>
+                    </#if>
+                    <li class="${unusedCouponClass}">
+                        <div class="top-com">
+                            <div class="left-name">
+                                <span>${coupon.name}</span>
+                                <em></em>
+                                <i class="circle-top"></i>
+                                <i class="circle-bottom"></i>
+                            </div>
+                            <div class="right-coupon">
+                                <p class="mt-10">
+                                    <#if coupon.couponType == 'RED_ENVELOPE' || coupon.couponType == 'NEWBIE_COUPON' ||coupon.couponType == 'INVEST_COUPON'>
+                                        <span class="num-text">${(coupon.amount/100)?string("0")}</span>
+                                        <span class="unit-text">元</span>
+                                    <#elseif coupon.couponType == 'INTEREST_COUPON'>
+                                        <span class="num-text">${coupon.rate*100?float}%</span>
+                                        <span class="unit-text">年化收益</span>
+                                    </#if>
+                                </p>
+
+                                <p>
+                                    <#if coupon.couponType == 'RED_ENVELOPE'>
+                                        <#if coupon.investLowerLimit == 0>
+                                            ［投资成功放款返现］
+                                        <#else>
+                                            ［单笔投资满 <@amount>${coupon.investLowerLimit?string(0)}</@amount> 元可用］
+                                        </#if>
+                                    <#elseif coupon.couponType == 'NEWBIE_COUPON'>
+                                        ［在拓天平台投资可用］
+                                    <#elseif coupon.couponType == 'INVEST_COUPON'>
+                                        ［单笔投资满 <@amount>${coupon.investLowerLimit?string(0)}</@amount> 元可用］
+                                    <#elseif coupon.couponType == 'INTEREST_COUPON'>
+                                        ［限投资 <@amount>${coupon.investUpperLimit?string(0)}</@amount> 元以内可用］
+                                    </#if>
+                                </p>
+
+                                <p>产品限制：
+                                    <#list coupon.productTypeList as productType>
+                                        <#if productType == 'SYL'><i class="pro-icon">速<em class="bg-com"></em><em
+                                                class="circle-com"></em></i>
+                                        <#elseif productType == 'WYX'><i class="pro-icon">稳<em class="bg-com"></em><em
+                                                class="circle-com"></em></i>
+                                        <#elseif productType == 'JYF'><i class="pro-icon">久<em class="bg-com"></em><em
+                                                class="circle-com"></em></i>
+                                        </#if>
+                                    </#list>
+                                    产品线可用
+                                </p>
+                            </div>
                         </div>
-                        <div class="right-coupon">
-                            <p class="mt-10">
-                                <span class="num-text">2</span>
-                                <span class="unit-text">元</span>
-                            </p>
-                            <p>[投资成功放款返现]</p>
-                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
+                        <div class="bottom-time">
+                            <span>请在 ${coupon.endTime?date} 前使用</span>
+                            <a href="/loan-list">立即使用</a>
                         </div>
-                    </div>
-                    <div class="bottom-time">
-                        <span>请在2016-05-03前使用</span>
-                        <a href="#">立即使用</a>
-                    </div>
-                </li>
-                <li class="yellow-type">
-                    <div class="top-com">
-                        <div class="left-name">
-                            <span>现金红包</span>
-                            <em></em>
-                            <i class="circle-top"></i>
-                            <i class="circle-bottom"></i>
-                        </div>
-                        <div class="right-coupon">
-                            <p class="mt-10">
-                                <span class="num-text">15</span>
-                                <span class="unit-text">元</span>
-                            </p>
-                            <p>[单笔投资满3000元可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
-                        </div>
-                    </div>
-                    <div class="bottom-time">
-                        <span>请在2016-05-03前使用</span>
-                        <a href="#">立即使用</a>
-                    </div>
-                </li>
-                <li class="yellow-type">
-                    <div class="top-com">
-                        <div class="left-name">
-                            <span>现金红包</span>
-                            <em></em>
-                            <i class="circle-top"></i>
-                            <i class="circle-bottom"></i>
-                        </div>
-                        <div class="right-coupon">
-                            <p class="mt-10">
-                                <span class="num-text">50</span>
-                                <span class="unit-text">元</span>
-                            </p>
-                            <p>[单笔投资满1万元可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
-                        </div>
-                    </div>
-                    <div class="bottom-time">
-                        <span>请在2016-05-03前使用</span>
-                        <a href="#">立即使用</a>
-                    </div>
-                </li>
-                <li class="yellow-type">
-                    <div class="top-com">
-                        <div class="left-name">
-                            <span>现金红包</span>
-                            <em></em>
-                            <i class="circle-top"></i>
-                            <i class="circle-bottom"></i>
-                        </div>
-                        <div class="right-coupon">
-                            <p class="mt-10">
-                                <span class="num-text">120</span>
-                                <span class="unit-text">元</span>
-                            </p>
-                            <p>[单笔投资满3万元可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
-                        </div>
-                    </div>
-                    <div class="bottom-time">
-                        <span>请在2016-05-03前使用</span>
-                        <a href="#">立即使用</a>
-                    </div>
-                </li>
-                <li class="yellow-type">
-                    <div class="top-com">
-                        <div class="left-name">
-                            <span>现金红包</span>
-                            <em></em>
-                            <i class="circle-top"></i>
-                            <i class="circle-bottom"></i>
-                        </div>
-                        <div class="right-coupon">
-                            <p class="mt-10">
-                                <span class="num-text">200</span>
-                                <span class="unit-text">元</span>
-                            </p>
-                            <p>[单笔投资满5万元可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
-                        </div>
-                    </div>
-                    <div class="bottom-time">
-                        <span>请在2016-05-03前使用</span>
-                        <a href="#">立即使用</a>
-                    </div>
-                </li>
-                <li class="yellow-type">
-                    <div class="top-com">
-                        <div class="left-name">
-                            <span>现金红包</span>
-                            <em></em>
-                            <i class="circle-top"></i>
-                            <i class="circle-bottom"></i>
-                        </div>
-                        <div class="right-coupon">
-                            <p class="mt-10">
-                                <span class="num-text">500</span>
-                                <span class="unit-text">元</span>
-                            </p>
-                            <p>[单笔投资满10万元可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
-                        </div>
-                    </div>
-                    <div class="bottom-time">
-                        <span>请在2016-05-03前使用</span>
-                        <a href="#">立即使用</a>
-                    </div>
-                </li>
-                <li class="new-type">
-                    <div class="top-com">
-                        <div class="left-name">
-                            <span>新手体验券</span>
-                            <em></em>
-                            <i class="circle-top"></i>
-                            <i class="circle-bottom"></i>
-                        </div>
-                        <div class="right-coupon">
-                            <p class="mt-10">
-                                <span class="num-text">5000</span>
-                                <span class="unit-text">元</span>
-                            </p>
-                            <p>[在拓天平台投资可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
-                        </div>
-                    </div>
-                    <div class="bottom-time">
-                        <span>请在2016-05-03前使用</span>
-                        <a href="#">立即使用</a>
-                    </div>
-                </li>
-                <li class="new-type">
-                    <div class="top-com">
-                        <div class="left-name">
-                            <span>投资体验券</span>
-                            <em></em>
-                            <i class="circle-top"></i>
-                            <i class="circle-bottom"></i>
-                        </div>
-                        <div class="right-coupon">
-                            <p class="mt-10">
-                                <span class="num-text">10000</span>
-                                <span class="unit-text">元</span>
-                            </p>
-                            <p>[单笔投资满5万元可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
-                        </div>
-                    </div>
-                    <div class="bottom-time">
-                        <span>请在2016-05-03前使用</span>
-                        <a href="#">立即使用</a>
-                    </div>
-                </li>
-                <li class="bite-type">
-                    <div class="top-com">
-                        <div class="left-name">
-                            <span>加息券</span>
-                            <em></em>
-                            <i class="circle-top"></i>
-                            <i class="circle-bottom"></i>
-                        </div>
-                        <div class="right-coupon">
-                            <p class="mt-10">
-                                <span class="num-text">0.2%</span>
-                                <span class="unit-text">年化收益</span>
-                            </p>
-                            <p>[限投资5万元以内可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
-                        </div>
-                    </div>
-                    <div class="bottom-time">
-                        <span>请在2016-05-03前使用</span>
-                        <a href="#">立即使用</a>
-                    </div>
-                </li>
+                    </li>
+                <#else>
+                    <p class="no-treasure-tip tc pad-m">您现在没有可用的优惠券。</p>
+                </#list>
             </ul>
         </div>
+
+        <#-- 已使用的优惠券 -->
         <div class="coupon-com">
             <ul class="coupon-list used-card">
-                <li class="yellow-type">
-                    <div class="top-com">
-                        <div class="left-name">
-                            <span>现金红包</span>
-                            <em></em>
-                            <i class="circle-top"></i>
-                            <i class="circle-bottom"></i>
+                <#list useRecords as record>
+                    <#assign usedCouponClass = ''>
+                    <#if record.couponType == 'RED_ENVELOPE'>
+                        <#assign usedCouponClass = 'yellow-type'>
+                    <#elseif record.couponType == 'NEWBIE_COUPON'>
+                        <#assign usedCouponClass = 'new-type'>
+                    <#elseif record.couponType == 'INVEST_COUPON'>
+                        <#assign usedCouponClass = 'new-type'>
+                    <#elseif record.couponType == 'INTEREST_COUPON'>
+                        <#assign usedCouponClass = 'bite-type'>
+                    </#if>
+                    <li class="${usedCouponClass}">
+                        <div class="top-com">
+                            <div class="left-name">
+                                <span>${record.couponType.getName()}</span>
+                                <em></em>
+                                <i class="circle-top"></i>
+                                <i class="circle-bottom"></i>
+                            </div>
+                            <div class="right-coupon">
+                                <p class="mt-10">
+                                    <#if record.couponType == 'RED_ENVELOPE' || record.couponType == 'NEWBIE_COUPON' ||record.couponType == 'INVEST_COUPON'>
+                                        <span class="num-text">${(record.couponAmount/100)?string("0")}</span>
+                                        <span class="unit-text">元</span>
+                                    <#elseif record.couponType == 'INTEREST_COUPON'>
+                                        <span class="num-text">${record.rate*100?float}%</span>
+                                        <span class="unit-text">年化收益</span>
+                                    </#if>
+                                </p>
+
+                                <p>
+                                    <#if record.couponType == 'RED_ENVELOPE'>
+                                        ［投资成功放款返现］
+                                    <#elseif record.couponType == 'NEWBIE_COUPON'>
+                                        ［在拓天平台投资可用］
+                                    <#elseif record.couponType == 'INVEST_COUPON'>
+                                        ［单笔投资满 <@amount>${record.investLowerLimit?string(0)}</@amount> 元可用］
+                                    <#elseif record.couponType == 'INTEREST_COUPON'>
+                                        ［限投资 <@amount>${record.investUpperLimit?string(0)}</@amount> 元以内可用］
+                                    <#elseif record.couponType == 'BIRTHDAY_COUPON'>
+                                        ［仅限发券当月使用］
+                                    </#if>
+                                </p>
+
+                                <p>产品限制：
+                                    <#list record.productTypeList as productType>
+                                        <#if productType == 'SYL'><i class="pro-icon">速<em class="bg-com"></em><em
+                                                class="circle-com"></em></i>
+                                        <#elseif productType == 'WYX'><i class="pro-icon">稳<em class="bg-com"></em><em
+                                                class="circle-com"></em></i>
+                                        <#elseif productType == 'JYF'><i class="pro-icon">久<em class="bg-com"></em><em
+                                                class="circle-com"></em></i>
+                                        </#if>
+                                    </#list>
+                                    产品线可用
+                                </p>
+                            </div>
                         </div>
-                        <div class="right-coupon">
-                            <p class="mt-10">
-                                <span class="num-text">2</span>
-                                <span class="unit-text">元</span>
+                        <div class="detail-com">
+                            <p class="bottom-line">
+                                <span class="status-text">已使用</span>
+                                <a href="/loan/${record.loanId?c}" class="see-detail">查看详情</a>
                             </p>
-                            <p>[投资成功放款返现]</p>
-                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
-                        </div>
-                    </div>
-                    <div class="detail-com">
-                        <p class="bottom-line">
-                            <span class="status-text">已使用</span>
-                            <a href="#" class="see-detail">查看详情</a>
-                        </p>
-                        <p>
-                            <span class="left-text">所投标的： 速盈利个人借款</span>
-                            <span class="right-text">投资金额： 10000.00元</span>
-                        </p>
-                        <p>
-                            <span class="left-text">使用时间： 2015-12-12</span>
-                            <span class="right-text">预计收益： 32.00元</span>
-                        </p>
-                    </div>
-                </li>
-                <li class="new-type">
-                    <div class="top-com">
-                        <div class="left-name">
-                            <span>新手体验券</span>
-                            <em></em>
-                            <i class="circle-top"></i>
-                            <i class="circle-bottom"></i>
-                        </div>
-                        <div class="right-coupon">
-                            <p class="mt-10">
-                                <span class="num-text">15</span>
-                                <span class="unit-text">元</span>
+
+                            <p>
+                                <span class="left-text">所投标的： ${record.loanName!}</span>
+                                <span class="right-text">投资金额： ${(record.investAmount/100)?string("0")}元</span>
                             </p>
-                            <p>[单笔投资满3000元可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
-                        </div>
-                    </div>
-                    <div class="detail-com">
-                        <p class="bottom-line">
-                            <span class="status-text">已使用</span>
-                            <a href="#" class="see-detail">查看详情</a>
-                        </p>
-                        <p>
-                            <span class="left-text">所投标的： 速盈利个人借款</span>
-                            <span class="right-text">投资金额： 10000.00元</span>
-                        </p>
-                        <p>
-                            <span class="left-text">使用时间： 2015-12-12</span>
-                            <span class="right-text">预计收益： 32.00元</span>
-                        </p>
-                    </div>
-                </li>
-                <li class="bite-type">
-                    <div class="top-com">
-                        <div class="left-name">
-                            <span>加息券</span>
-                            <em></em>
-                            <i class="circle-top"></i>
-                            <i class="circle-bottom"></i>
-                        </div>
-                        <div class="right-coupon">
-                            <p class="mt-10">
-                                <span class="num-text">50</span>
-                                <span class="unit-text">元</span>
+
+                            <p>
+                                <span class="left-text">使用时间： ${record.usedTime?date}</span>
+                                <span class="right-text">预计收益： ${(record.expectedIncome/100)?string("0")}元</span>
                             </p>
-                            <p>[单笔投资满1万元可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
                         </div>
-                    </div>
-                    <div class="detail-com">
-                        <p class="bottom-line">
-                            <span class="status-text">已使用</span>
-                            <a href="#" class="see-detail">查看详情</a>
-                        </p>
-                        <p>
-                            <span class="left-text">所投标的： 速盈利个人借款</span>
-                            <span class="right-text">投资金额： 10000.00元</span>
-                        </p>
-                        <p>
-                            <span class="left-text">使用时间： 2015-12-12</span>
-                            <span class="right-text">预计收益： 32.00元</span>
-                        </p>
-                    </div>
-                </li>
-                <li class="birth-type">
-                    <div class="top-com">
-                        <div class="left-name">
-                            <span>生日福利</span>
-                            <em></em>
-                            <i class="circle-top"></i>
-                            <i class="circle-bottom"></i>
-                        </div>
-                        <div class="right-coupon">
-                            <p class="mt-10">
-                                <span class="birth-text">收益翻倍</span>
-                            </p>
-                            <p>[仅限发券当月使用]</p>
-                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
-                        </div>
-                    </div>
-                    <div class="detail-com">
-                        <p class="bottom-line">
-                            <span class="status-text">已使用</span>
-                            <a href="#" class="see-detail">查看详情</a>
-                        </p>
-                        <p>
-                            <span class="left-text">所投标的： 速盈利个人借款</span>
-                            <span class="right-text">投资金额： 10000.00元</span>
-                        </p>
-                        <p>
-                            <span class="left-text">使用时间： 2015-12-12</span>
-                            <span class="right-text">预计收益： 32.00元</span>
-                        </p>
-                    </div>
-                </li>
+                    </li>
+                <#else>
+                    <p class="no-treasure-tip tc pad-m">您还没有使用过优惠券。</p>
+                </#list>
             </ul>
         </div>
+
+    <#-- 已过期的优惠券 -->
         <div class="coupon-com">
             <ul class="coupon-list">
-                <li>
-                    <div class="top-com">
-                        <div class="left-name">
-                            <span>现金红包</span>
-                            <em></em>
-                            <i class="circle-top"></i>
-                            <i class="circle-bottom"></i>
+                <#list expiredCoupons as coupon>
+                    <li>
+                        <div class="top-com">
+                            <div class="left-name">
+                                <span>${coupon.name}</span>
+                                <em></em>
+                                <i class="circle-top"></i>
+                                <i class="circle-bottom"></i>
+                            </div>
+                            <div class="right-coupon">
+                                <p class="mt-10">
+                                    <#if coupon.couponType == 'RED_ENVELOPE' || coupon.couponType == 'NEWBIE_COUPON' ||coupon.couponType == 'INVEST_COUPON'>
+                                        <span class="num-text">${(coupon.amount/100)?string("0")}</span>
+                                        <span class="unit-text">元</span>
+                                    <#elseif coupon.couponType == 'INTEREST_COUPON'>
+                                        <span class="num-text">${coupon.rate*100?float}%</span>
+                                        <span class="unit-text">年化收益</span>
+                                    </#if>
+                                </p>
+
+                                <p>
+                                    <#if coupon.couponType == 'RED_ENVELOPE'>
+                                        ［投资成功放款返现］
+                                    <#elseif coupon.couponType == 'NEWBIE_COUPON'>
+                                        ［在拓天平台投资可用］
+                                    <#elseif coupon.couponType == 'INVEST_COUPON'>
+                                        ［单笔投资满 <@amount>${coupon.investLowerLimit?string(0)}</@amount> 元可用］
+                                    <#elseif coupon.couponType == 'INTEREST_COUPON'>
+                                        ［限投资 <@amount>${coupon.investUpperLimit?string(0)}</@amount> 元以内可用］
+                                    </#if>
+                                </p>
+
+                                <p>产品限制：
+                                    <#list coupon.productTypeList as productType>
+                                        <#if productType == 'SYL'><i class="pro-icon">速<em class="bg-com"></em><em
+                                                class="circle-com"></em></i>
+                                        <#elseif productType == 'WYX'><i class="pro-icon">稳<em class="bg-com"></em><em
+                                                class="circle-com"></em></i>
+                                        <#elseif productType == 'JYF'><i class="pro-icon">久<em class="bg-com"></em><em
+                                                class="circle-com"></em></i>
+                                        </#if>
+                                    </#list>
+                                    产品线可用
+                                </p>
+                            </div>
                         </div>
-                        <div class="right-coupon">
-                            <p class="mt-10">
-                                <span class="num-text">2</span>
-                                <span class="unit-text">元</span>
-                            </p>
-                            <p>[投资成功放款返现]</p>
-                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
+                        <div class="bottom-time">
+                            <span>过期时间：${coupon.endTime?date}</span>
+                            <a href="javascript:void(0)">立即使用</a>
                         </div>
-                    </div>
-                    <div class="bottom-time">
-                        <span>过期时间：2016-05-03</span>
-                        <a href="javascript:void(0)">立即使用</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="top-com">
-                        <div class="left-name">
-                            <span>现金红包</span>
-                            <em></em>
-                            <i class="circle-top"></i>
-                            <i class="circle-bottom"></i>
-                        </div>
-                        <div class="right-coupon">
-                            <p class="mt-10">
-                                <span class="num-text">15</span>
-                                <span class="unit-text">元</span>
-                            </p>
-                            <p>[单笔投资满3000元可用]</p>
-                            <p>产品限制：<i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i><i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>产品线可用</p>
-                        </div>
-                    </div>
-                    <div class="bottom-time">
-                        <span>过期时间：2016-05-03</span>
-                        <a href="javascript:void(0)">立即使用</a>
-                    </div>
-                </li>
+                    </li>
+                <#else>
+                    <p class="no-treasure-tip tc pad-m">您现在没有已过期的优惠券。</p>
+                </#list>
             </ul>
         </div>
-     </div>
+    </div>
     <#include "coupon-alert.ftl" />
 </div>
 </@global.main>

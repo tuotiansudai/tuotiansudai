@@ -1,25 +1,34 @@
 [
+
   {
     "pictureId": "",
-    "title": "",
-    "url": "{web}/activity/red-envelope?source=app",
+    "title": "生日月投资收益翻倍，年化收益率最高可达26%",
+    "url": "{web}/activity/birth-month?source=app",
     "seqNum": 1,
+    "picture": "{static}/images/app-banner/birth-month-phone.jpg",
+    "noticeId": ""
+  },
+  {
+    "pictureId": "",
+    "title": "猛戳领取888元现金红包",
+    "url": "{web}/activity/red-envelope?source=app",
+    "seqNum": 2,
     "picture": "{static}/images/app-banner/red-bag-phone.png",
     "noticeId": ""
   },
   {
     "pictureId": "",
-    "title": "",
+    "title": "拓天伟业（北京）资产管理有限公司挂牌上市",
     "url": "http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1",
-    "seqNum": 2,
+    "seqNum": 3,
     "picture": "{static}/images/app-banner/banner-ipo.png",
     "noticeId": ""
   },
   {
     "pictureId": "",
-    "title": "",
+    "title": "您准备好成为下一个成功的人吗？",
     "url": "{web}/activity/recruit?source=app",
-    "seqNum": 3,
+    "seqNum": 4,
     "picture": "{static}/images/app-banner/ph-a03.jpg",
     "noticeId": ""
   }
