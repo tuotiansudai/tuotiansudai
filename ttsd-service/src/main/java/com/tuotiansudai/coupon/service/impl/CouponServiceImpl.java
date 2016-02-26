@@ -4,8 +4,11 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.CouponDto;
+import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
+import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
@@ -49,18 +52,27 @@ public class CouponServiceImpl implements CouponService {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
+    @Autowired
+    private CouponExchangeMapper couponExchangeMapper;
+
     @Override
     @Transactional
-    public void createCoupon(String loginName, CouponDto couponDto) throws CreateCouponException {
-        this.checkCoupon(couponDto);
-        CouponModel couponModel = new CouponModel(couponDto);
+    public void createCoupon(String loginName, ExchangeCouponDto exchangeCouponDto) throws CreateCouponException {
+        this.checkCoupon(exchangeCouponDto);
+        CouponModel couponModel = new CouponModel(exchangeCouponDto);
         couponModel.setCreatedBy(loginName);
         couponModel.setCreatedTime(new Date());
         couponMapper.create(couponModel);
         if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
-            redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "success"));
-            redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "failed"));
-            redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, couponDto.getFile()));
+            redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, exchangeCouponDto.getFile()), "success"));
+            redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, exchangeCouponDto.getFile()), "failed"));
+            redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, exchangeCouponDto.getFile()));
+        }
+        if (exchangeCouponDto.getExchangePoint() != null && exchangeCouponDto.getExchangePoint() > 0) {
+            CouponExchangeModel couponExchangeModel = new CouponExchangeModel();
+            couponExchangeModel.setCouponId(couponModel.getId());
+            couponExchangeModel.setExchangePoint(exchangeCouponDto.getExchangePoint());
+            couponExchangeMapper.create(couponExchangeModel);
         }
     }
 
