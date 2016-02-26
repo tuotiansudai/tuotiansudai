@@ -144,8 +144,8 @@
         join loan l on l.id=uc.loan_id
         join invest i on i.id = uc.invest_id
         where
-            uc.status='SUCCESS'
-            and uc.login_name = #{loginName}
+        uc.status='SUCCESS'
+        and uc.login_name = #{loginName}
         ORDER BY used_time DESC
     </select>
 
@@ -232,10 +232,6 @@
 
     <select id="findBirthdaySuccessByLoginNameAndLoanId" parameterType="map" resultMap="userCouponResultMap">
         select t.* from user_coupon t join coupon m on t.coupon_id = m.id and m.coupon_type = 'BIRTHDAY_COUPON' where t.login_name = #{loginName} and t.loan_id = #{loanId} and t.status = 'SUCCESS'
-    </select>
-
-    <select id="findUnuseCoupons" parameterType="String" resultMap="userCouponResultMap">
-        select uc.* from user_coupon uc join coupon c on t where t.login_name = #{loginName} and t.status!='SUCCESS' and
     </select>
 
 </mapper>

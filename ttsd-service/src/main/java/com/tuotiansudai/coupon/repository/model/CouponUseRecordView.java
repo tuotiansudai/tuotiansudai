@@ -37,6 +37,8 @@ public class CouponUseRecordView implements Serializable {
 
     private long investUpperLimit;
 
+    private String birthdayBenefit;
+
     public CouponUseRecordView() {
     }
 
@@ -142,5 +144,13 @@ public class CouponUseRecordView implements Serializable {
 
     public void setInvestUpperLimit(long investUpperLimit) {
         this.investUpperLimit = investUpperLimit;
+    }
+
+    public String getBirthdayBenefit() {
+        return birthdayBenefit;
+    }
+
+    public void setBirthdayBenefit(String birthdayBenefit) {
+        this.birthdayBenefit = birthdayBenefit;
     }
 }

@@ -259,6 +259,12 @@
                 </#list>
             </ul>
         </div>
+
+        <div class="record-tab">
+            <div class="invest-list-birthday"></div>
+            <div id="use-record-birthday" class="pagination" data-url="/coupon/use-record" data-page-size="10">
+            </div>
+        </div>
     </div>
     <#include "coupon-alert.ftl" />
 </div>
