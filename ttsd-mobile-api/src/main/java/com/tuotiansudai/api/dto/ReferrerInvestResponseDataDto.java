@@ -15,6 +15,7 @@ public class ReferrerInvestResponseDataDto {
     private String investTime;
     private String rewardMoney;
     private String rewardTime;
+    private String loanType;
 
     public String getUserId() {
         return userId;
@@ -88,6 +89,14 @@ public class ReferrerInvestResponseDataDto {
         this.loanId = loanId;
     }
 
+    public String getLoanType() {
+        return loanType;
+    }
+
+    public void setLoanType(String loanType) {
+        this.loanType = loanType;
+    }
+
     public ReferrerInvestResponseDataDto() {
 
     }
@@ -103,6 +112,7 @@ public class ReferrerInvestResponseDataDto {
         this.rewardMoney = AmountConverter.convertCentToString(input.getRewardAmount());
         this.rewardTime = simpleDateFormat.format(input.getRewardTime());
         this.loanId = input.getLoanId();
+        this.loanType = input.getProductType() != null ? input.getProductType().name() : "";
     }
 
 }

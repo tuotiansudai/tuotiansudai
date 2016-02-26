@@ -15,7 +15,4 @@ public interface UserCouponService {
     List<UserCouponDto> getUsableCoupons(String loginName, final long loanId);
 
     BaseDto<BasePaginationDataDto> findUseRecords(List<CouponType> couponTypeList, String loginName, int index, int pageSize);
-
-    List<UserCouponModel> findUserCouponByCouponId(long couponId);
-
 }

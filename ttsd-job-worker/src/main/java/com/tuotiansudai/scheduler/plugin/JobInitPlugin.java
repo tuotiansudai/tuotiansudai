@@ -44,6 +44,12 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.LoanRepayNotify.name().equalsIgnoreCase(schedulerName)) {
             createLoanRepayNotifyJob();
         }
+        if (JobType.BirthdayNotify.name().equalsIgnoreCase(schedulerName)) {
+            createBirthdayNotifyJob();
+        }
+        if(JobType.AutoJPushAlertBirthMonth.name().equalsIgnoreCase(schedulerName)) {
+            createAutoJPushAlertBirthMonth();
+        }
     }
 
     @Override
@@ -88,11 +94,31 @@ public class JobInitPlugin implements SchedulerPlugin {
         }
     }
 
+    private void createAutoJPushAlertBirthMonth() {
+        try {
+            jobManager.newJob(JobType.AutoJPushAlertBirthMonth, AutoJPushAlertBirthMonthJob.class).replaceExistingJob(true)
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 12 1 * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+                    .withIdentity(JobType.AutoJPushAlertBirthMonth.name(), JobType.AutoJPushAlertBirthMonth.name()).submit();
+
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
     private void createLoanRepayNotifyJob() {
         try {
             jobManager.newJob(JobType.LoanRepayNotify, LoanRepayNotifyJob.class).replaceExistingJob(true)
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 14 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
                     .withIdentity(JobType.LoanRepayNotify.name(), JobType.LoanRepayNotify.name()).submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createBirthdayNotifyJob() {
+        try {
+            jobManager.newJob(JobType.BirthdayNotify, BirthdayNotifyJob.class).replaceExistingJob(true)
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 00 12 1 * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+                    .withIdentity(JobType.BirthdayNotify.name(), JobType.BirthdayNotify.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }

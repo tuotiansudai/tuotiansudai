@@ -25,4 +25,6 @@ public interface SmsService {
     BaseDto<SmsDataDto> loanRepayNotify(String mobile, String loanName, String repayAmount);
 
     BaseDto<SmsDataDto> couponNotify(SmsCouponNotifyDto notifyDto);
+
+    BaseDto<SmsDataDto> birthdayNotify(SmsCouponNotifyDto notifyDto);
 }
