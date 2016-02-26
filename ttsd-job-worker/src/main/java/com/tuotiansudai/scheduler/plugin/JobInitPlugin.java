@@ -119,7 +119,7 @@ public class JobInitPlugin implements SchedulerPlugin {
     private void createBirthdayNotifyJob() {
         try {
             jobManager.newJob(JobType.BirthdayNotify, BirthdayNotifyJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 12 1 * ?").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 30 17 25 * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
                     .withIdentity(JobType.BirthdayNotify.name(), JobType.BirthdayNotify.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
