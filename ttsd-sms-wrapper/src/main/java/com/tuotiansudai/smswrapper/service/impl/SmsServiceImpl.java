@@ -2,6 +2,7 @@ package com.tuotiansudai.smswrapper.service.impl;
 
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.SmsCouponNotifyDto;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +31,11 @@ public class SmsServiceImpl implements SmsService {
     @Autowired
     private SmsClient smsClient;
 
-    @Value("#{'${sms.fatal.mobile}'.split('\\|')}")
-    private List<String> fatalNotifyMobiles;
+    @Value("#{'${sms.fatal.dev.mobile}'.split('\\|')}")
+    private List<String> fatalNotifyDevMobiles;
+
+    @Value("#{'${sms.fatal.qa.mobile}'.split('\\|')}")
+    private List<String> fatalNotifyQAMobiles;
 
     @Value("${common.environment}")
     private Environment environment;
@@ -72,7 +77,12 @@ public class SmsServiceImpl implements SmsService {
         result.setData(dataDto);
         dataDto.setStatus(true);
 
-        for (String mobile : fatalNotifyMobiles) {
+        List<String> mobiles = Lists.newArrayList(fatalNotifyQAMobiles);
+        if (Environment.PRODUCTION == environment) {
+            mobiles.addAll(fatalNotifyDevMobiles);
+        }
+
+        for (String mobile : mobiles) {
             Map<String, String> map = ImmutableMap.<String, String>builder()
                     .put("env", environment.name())
                     .put("errorMessage", notify.getErrorMessage())
