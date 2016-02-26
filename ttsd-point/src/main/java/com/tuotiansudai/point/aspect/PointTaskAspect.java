@@ -44,5 +44,4 @@ public class PointTaskAspect {
 
         logger.debug("after returning invest success, point task aspect completed");
     }
-
 }

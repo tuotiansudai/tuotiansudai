@@ -44,12 +44,12 @@
         select * from coupon where id = #{id}
     </select>
 
-    <select id="findNewbieCoupon" resultMap="couponResultMap">
-        select * from coupon where coupon_type = 'NEWBIE_COUPON' and deleted is FALSE;
-    </select>
-
     <select id="findAllActiveCoupons" resultMap="couponResultMap">
-        select * from coupon where active is TRUE and deleted is FALSE and now() between start_time and end_time;
+        select * from coupon
+        where active is TRUE
+              and deleted is FALSE
+              and ((total_count is null or total_count = 0) or (total_count > issued_count))
+              and ((start_time is null or end_time is null) or (now() between start_time and end_time));
     </select>
 
     <select useCache="false" id="lockById" parameterType="java.lang.Long" resultMap="couponResultMap">
