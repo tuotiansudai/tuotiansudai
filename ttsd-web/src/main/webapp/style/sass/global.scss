@@ -189,8 +189,46 @@
 .layer-tip-box {
   position: fixed;
   right: 10px;
-  bottom: 60px;
+  bottom: 360px;
   z-index: 100;
+}
+.fix-nav-list{
+  position:fixed;
+  right:22px;
+  bottom:160px;
+  width:60px;
+  height:179px;
+  z-index:100;
+  border:1px solid #fff;
+  border-bottom:none;
+  li{
+    float:left;
+    width:60px;
+    height:60px;
+    background:#e6e6e6;
+    border-bottom:1px solid #fff;
+    &:hover{
+      background:#ff9c1b;
+    }
+    i{
+      float:left;
+      width:60px;
+      height:60px;
+      background:url("/images/sign/fix-icon.png") no-repeat;
+      &.icon-phone{
+        background-position:0 0;
+      }
+      &.icon-qq{
+        background-position:0 -60px;
+      }
+      &.icon-calculator{
+        background-position:0 -120px;
+      }
+      &.icon-top{
+        background-position:0 -180px;
+      }
+    }
+  }
 }
 /********************** Responsive Page ****************************/
 
