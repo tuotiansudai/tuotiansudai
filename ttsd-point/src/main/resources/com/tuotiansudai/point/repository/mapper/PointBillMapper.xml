@@ -18,7 +18,7 @@
 
     <insert id="create" parameterType="PointBillModel" useGeneratedKeys="true" keyProperty="id">
         insert into point_bill (order_id, login_name, point, business_type, note, created_time)
-        value(#{orderId} #{loginName}, #{point}, #{businessType}, #{note}, #{createdTime})
+        value(#{orderId}, #{loginName}, #{point}, #{businessType}, #{note}, #{createdTime})
     </insert>
 
     <select id="findByLoginName" parameterType="java.lang.String" resultMap="pointBillResultMap">
