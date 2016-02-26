@@ -10,6 +10,8 @@
         <id column="id" property="id"/>
         <result column="login_name" property="loginName"/>
         <result column="coupon_id" property="couponId"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
         <result column="loan_id" property="loanId"/>
         <result column="used_time" property="usedTime"/>
         <result column="expected_interest" property="expectedInterest"/>
@@ -36,8 +38,8 @@
     </resultMap>
 
     <insert id="create" parameterType="UserCouponModel" useGeneratedKeys="true" keyProperty="id">
-        insert into user_coupon (login_name, coupon_id, created_time)
-        value(#{loginName}, #{couponId}, #{createdTime})
+        insert into user_coupon (login_name, coupon_id, start_time, end_time, created_time)
+        value(#{loginName}, #{couponId}, #{startTime}, #{endTime} #{createdTime})
     </insert>
 
     <update id="update" parameterType="UserCouponModel">

@@ -47,12 +47,12 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
         this.rate = coupon.getRate();
         this.birthdayBenefit = coupon.getBirthdayBenefit();
         this.multiple = coupon.isMultiple();
-        this.startTime = coupon.getStartTime();
-        this.endTime = coupon.getEndTime();
+        this.startTime = userCoupon.getStartTime();
+        this.endTime = userCoupon.getEndTime();
         this.usedTime = userCoupon.getUsedTime();
         this.loanId = userCoupon.getLoanId();
         this.used = InvestStatus.SUCCESS == userCoupon.getStatus();
-        this.expired = !this.used && new DateTime(this.endTime).plusDays(1).withTimeAtStartOfDay().isBeforeNow();
+        this.expired = !this.used && this.endTime.before(new Date());
         this.unused = !this.used && !this.expired;
         this.shared = coupon.isShared();
         this.investLowerLimit = coupon.getInvestLowerLimit();
