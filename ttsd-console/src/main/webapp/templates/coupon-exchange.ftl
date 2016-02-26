@@ -3,7 +3,7 @@
 
 <div class="col-md-10">
 
-    <form action="/point-manage/coupon-exchange" method="post" class="form-horizontal form-list">
+    <form action="/activity-manage/coupon-exchange" method="post" class="form-horizontal form-list">
 
         <div class="form-group">
             <label class="col-sm-2 control-label">优惠券类型:</label>
@@ -77,7 +77,7 @@
         </div>
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
+        <input type="hidden" name="multiple" value="1">
         <div class="form-group">
             <label  class="col-sm-2 control-label">操作: </label>
             <div class="col-sm-4">
