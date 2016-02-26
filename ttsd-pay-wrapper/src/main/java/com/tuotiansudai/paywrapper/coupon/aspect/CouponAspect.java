@@ -1,6 +1,8 @@
 package com.tuotiansudai.paywrapper.coupon.aspect;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -41,7 +43,7 @@ public class CouponAspect {
     private CouponInvestService couponInvestService;
 
     @Autowired
-    private CouponLoanOutService couponLoanOutService;
+    private CouponActivationService couponActivationService;
 
     @Autowired
     private JobManager jobManager;
@@ -104,6 +106,10 @@ public class CouponAspect {
         InvestModel investModel = (InvestModel) joinPoint.getArgs()[1];
         try {
             couponInvestService.investCallback(investModel.getId());
+            couponActivationService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER,
+                    UserGroup.INVESTED_USER,
+                    UserGroup.REGISTERED_NOT_INVESTED_USER,
+                    UserGroup.IMPORT_USER));
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }

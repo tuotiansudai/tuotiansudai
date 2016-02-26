@@ -80,7 +80,7 @@ require(['jquery','bootstrap', 'bootstrapDatetimepicker','csrf'], function($) {
                     .done(function(res) {
                         if(res.data.status){
                             $parentTd.html('<i class="check-btn add-check"></i><button class="loan_repay already-btn btn-link inactive-btn" data-id="'+thisId+'">已生效</button>');
-                            if (couponType != 'NEWBIE_COUPON' && couponType != 'RED_ENVELOPE') {
+                            if (couponType != 'NEWBIE_COUPON' && couponType != 'RED_ENVELOPE' && couponType != 'BIRTHDAY_COUPON') {
                                 $parentTd.find('button').prop('disabled',true);
                             }
                             $parentTd.prev().html('-');
