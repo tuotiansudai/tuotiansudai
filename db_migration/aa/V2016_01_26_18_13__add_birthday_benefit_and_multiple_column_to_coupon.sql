@@ -1,0 +1,5 @@
+ALTER TABLE coupon ADD COLUMN birthday_benefit DOUBLE DEFAULT 0
+AFTER rate;
+
+ALTER TABLE coupon ADD COLUMN multiple BOOLEAN DEFAULT FALSE
+AFTER birthday_benefit;

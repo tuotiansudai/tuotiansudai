@@ -3,12 +3,16 @@ package com.tuotiansudai.api.dto;
 
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.repository.model.Source;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 public class InvestRequestDto extends BaseParamDto {
     private String userId;
+
     private String investMoney;
+
     private String loanId;
     @Deprecated
     private String password;

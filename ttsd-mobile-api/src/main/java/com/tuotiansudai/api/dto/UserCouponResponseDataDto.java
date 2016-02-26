@@ -8,6 +8,7 @@ import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
 import org.omg.CORBA.PRIVATE_MEMBER;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -50,11 +51,14 @@ public class UserCouponResponseDataDto {
 
     private String investAmount;
 
+    private String birthdayRate;
+
     public UserCouponResponseDataDto() {
     }
 
     public UserCouponResponseDataDto(CouponModel couponModel, UserCouponModel userCouponModel) {
         super();
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         this.userCouponId = String.valueOf(userCouponModel.getId());
         this.type = couponModel.getCouponType();
         this.name = couponModel.getCouponType().getName();
@@ -65,10 +69,10 @@ public class UserCouponResponseDataDto {
         this.productTypes = couponModel.getProductTypes();
         this.usedTime = userCouponModel.getUsedTime();
         this.expectedInterest = AmountConverter.convertCentToString(userCouponModel.getExpectedInterest());
-        this.rate = String.valueOf(couponModel.getRate() * 100);
+        this.rate = decimalFormat.format(couponModel.getRate() * 100);
         this.investUpperLimit = AmountConverter.convertCentToString(couponModel.getInvestUpperLimit());
         this.shared = couponModel.isShared();
-
+        this.birthdayRate = String.valueOf(couponModel.getBirthdayBenefit());
 
     }
 
@@ -206,5 +210,13 @@ public class UserCouponResponseDataDto {
 
     public void setInvestAmount(String investAmount) {
         this.investAmount = investAmount;
+    }
+
+    public String getBirthdayRate() {
+        return birthdayRate;
+    }
+
+    public void setBirthdayRate(String birthdayRate) {
+        this.birthdayRate = birthdayRate;
     }
 }
