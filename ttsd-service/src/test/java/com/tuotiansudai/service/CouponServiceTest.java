@@ -66,7 +66,7 @@ public class CouponServiceTest {
     public void shouldCreateCouponIsSuccess() throws CreateCouponException {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
-        ExchangeCouponDto exchangeCouponDto = (ExchangeCouponDto)fakeCouponDto();
+        ExchangeCouponDto exchangeCouponDto = fakeCouponDto();
         DateTime dateTime = new DateTime().plusDays(1);
         exchangeCouponDto.setStartTime(dateTime.toDate());
         exchangeCouponDto.setEndTime(dateTime.toDate());
@@ -78,7 +78,7 @@ public class CouponServiceTest {
     public void shouldCreateCouponAmountIsInvalid() {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
-        ExchangeCouponDto exchangeCouponDto = (ExchangeCouponDto)fakeCouponDto();
+        ExchangeCouponDto exchangeCouponDto = fakeCouponDto();
         exchangeCouponDto.setAmount("0.00");
         try {
             couponService.createCoupon("couponTest", exchangeCouponDto);
@@ -92,7 +92,7 @@ public class CouponServiceTest {
     public void shouldCreateCouponStartTimeIsInvalid() {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
-        ExchangeCouponDto exchangeCouponDto = (ExchangeCouponDto)fakeCouponDto();
+        ExchangeCouponDto exchangeCouponDto = fakeCouponDto();
         DateTime dateTime = new DateTime().plusDays(-1);
         exchangeCouponDto.setStartTime(dateTime.toDate());
         try {
@@ -153,19 +153,19 @@ public class CouponServiceTest {
         return userModelTest;
     }
 
-    private CouponDto fakeCouponDto() {
-        CouponDto couponDto = new CouponDto();
-        couponDto.setAmount("1000.00");
-        couponDto.setTotalCount(100L);
-        couponDto.setEndTime(new Date());
-        couponDto.setStartTime(new Date());
-        couponDto.setInvestLowerLimit("1000.00");
-        couponDto.setCouponType(CouponType.INVEST_COUPON);
+    private ExchangeCouponDto fakeCouponDto() {
+        ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto();
+        exchangeCouponDto.setAmount("1000.00");
+        exchangeCouponDto.setTotalCount(100L);
+        exchangeCouponDto.setEndTime(new Date());
+        exchangeCouponDto.setStartTime(new Date());
+        exchangeCouponDto.setInvestLowerLimit("1000.00");
+        exchangeCouponDto.setCouponType(CouponType.INVEST_COUPON);
         List<ProductType> productTypes = Lists.newArrayList();
         productTypes.add(ProductType.JYF);
-        couponDto.setProductTypes(productTypes);
-        couponDto.setInvestLowerLimit("1000.00");
-        return couponDto;
+        exchangeCouponDto.setProductTypes(productTypes);
+        exchangeCouponDto.setInvestLowerLimit("1000.00");
+        return exchangeCouponDto;
     }
 
     private RegisterUserDto fakeRegisterUserDto() {
