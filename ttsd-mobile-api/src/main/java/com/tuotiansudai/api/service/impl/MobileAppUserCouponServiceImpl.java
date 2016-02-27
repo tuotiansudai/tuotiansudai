@@ -42,7 +42,7 @@ public class MobileAppUserCouponServiceImpl implements MobileAppUserCouponServic
 
     @Override
     public BaseResponseDto<UserCouponListResponseDataDto> getUserCoupons(final UserCouponRequestDto requestDto) {
-        List<UserCouponModel> userCouponModels =  userCouponMapper.findByLoginName(requestDto.getBaseParam().getUserId(),null);
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(requestDto.getBaseParam().getUserId(), null);
 
         UnmodifiableIterator<UserCouponModel> filter = Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
             @Override
@@ -51,7 +51,7 @@ public class MobileAppUserCouponServiceImpl implements MobileAppUserCouponServic
                 boolean used = InvestStatus.SUCCESS == userCouponModel.getStatus();
                 boolean expired = !used && new DateTime(couponModel.getEndTime()).plusDays(1).withTimeAtStartOfDay().isBeforeNow();
                 boolean unused = !used && !expired;
-                return (used && requestDto.isUsed()) || (unused && requestDto.isUnused()) || (expired && requestDto.isExpired());
+                return (used && requestDto.isUsed()) || (unused && requestDto.isUnused() && !CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType())) || (expired && requestDto.isExpired()&& !CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType()));
 
             }
         });
@@ -65,13 +65,11 @@ public class MobileAppUserCouponServiceImpl implements MobileAppUserCouponServic
                     dataDto.setLoanId(String.valueOf(loanModel.getId()));
                     dataDto.setLoanName(loanModel.getName());
                     dataDto.setLoanProductType(loanModel.getProductType());
-                    if(CouponType.RED_ENVELOPE.equals(dataDto.getType())){
-                        InvestModel investModel = investMapper.findById(userCouponModel.getInvestId());
-                        if(investModel != null){
-                            dataDto.setInvestAmount(AmountConverter.convertCentToString(investModel.getAmount()));
-                        }
-
+                    InvestModel investModel = investMapper.findById(userCouponModel.getInvestId());
+                    if (investModel != null) {
+                        dataDto.setInvestAmount(AmountConverter.convertCentToString(investModel.getAmount()));
                     }
+
                 }
                 return dataDto;
             }

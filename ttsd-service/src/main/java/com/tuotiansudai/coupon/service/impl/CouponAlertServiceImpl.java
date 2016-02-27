@@ -6,12 +6,15 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.dto.CouponAlertDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponAlertService;
+import com.tuotiansudai.dto.SmsCouponNotifyDto;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -40,6 +43,12 @@ public class CouponAlertServiceImpl implements CouponAlertService {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public CouponAlertDto getCouponAlert(String loginName) {
@@ -100,5 +109,16 @@ public class CouponAlertServiceImpl implements CouponAlertService {
         }
 
         return null;
+    }
+
+    @Override
+    public void BirthdayNotify() {
+
+        List<String> userMobileList = userMapper.findUsersBirthdayMobile();
+        for (String mobile : userMobileList) {
+            SmsCouponNotifyDto notifyDto = new SmsCouponNotifyDto();
+            notifyDto.setMobile(mobile.trim());
+            smsWrapperClient.sendBirthdayNotify(notifyDto);
+        }
     }
 }

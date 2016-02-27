@@ -52,6 +52,8 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
      */
     private String investInterest;
 
+    private String loanType;
+
     public UserInvestRecordResponseDataDto() {
     }
 
@@ -68,6 +70,7 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
         this.investStatus = investStatus.getCode();
         this.investStatusDesc = investStatus.getMessage();
         this.investRate = String.format("%.1f", loan.getActivityRate() + loan.getBaseRate());
+        this.loanType = loan.getProductType() != null ? loan.getProductType().name() : "";
     }
 
     public String getLoanId() {
@@ -156,5 +159,13 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
 
     public void setInvestInterest(String investInterest) {
         this.investInterest = investInterest;
+    }
+
+    public String getLoanType() {
+        return loanType;
+    }
+
+    public void setLoanType(String loanType) {
+        this.loanType = loanType;
     }
 }

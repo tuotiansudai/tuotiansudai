@@ -59,6 +59,25 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         return dto;
     }
 
+    @Override
+    public BaseResponseDto generateIndexLoan(BaseParamDto baseParamDto) {
+        BaseResponseDto dto = new BaseResponseDto();
+        LoanListResponseDataDto loanListResponseDataDto = new LoanListResponseDataDto();
+        List<LoanModel> loanModels = loanMapper.findHomeLoan();
+        List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(loanModels)) {
+            loanDtoList = convertLoanDto(loanModels);
+            loanListResponseDataDto.setLoanList(loanDtoList);
+            dto.setData(loanListResponseDataDto);
+        }else{
+            loanListResponseDataDto.setLoanList(new ArrayList<LoanResponseDataDto>());
+            dto.setData(loanListResponseDataDto);
+        }
+        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        return dto;
+    }
+
 
     private List<LoanResponseDataDto> convertLoanDto(List<LoanModel> loanList) {
         List<LoanResponseDataDto> loanDtoList = new ArrayList<LoanResponseDataDto>();
@@ -67,6 +86,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());
             loanResponseDataDto.setLoanType(loan.getProductType() != null ? loan.getProductType().name() : "");
+            loanResponseDataDto.setLoanTypeName(loan.getProductType() != null ? loan.getProductType().getName() : "");
             loanResponseDataDto.setLoanName(loan.getName());
             loanResponseDataDto.setRepayTypeCode("");
             loanResponseDataDto.setRepayTypeName(loan.getType().getName());
@@ -92,7 +112,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setInvestedMoney(AmountConverter.convertCentToString(investedAmount));
             loanResponseDataDto.setBaseRatePercent(decimalFormat.format(loan.getBaseRate() * 100));
             loanResponseDataDto.setActivityRatePercent(decimalFormat.format(loan.getActivityRate() * 100));
-
+            loanResponseDataDto.setInvestFeeRate("" + loan.getInvestFeeRate());
             loanDtoList.add(loanResponseDataDto);
         }
         return loanDtoList;
