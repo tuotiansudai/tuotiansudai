@@ -197,7 +197,7 @@
   right:22px;
   bottom:160px;
   width:60px;
-  height:179px;
+  height:182px;
   z-index:100;
   border:1px solid #fff;
   border-bottom:none;
@@ -206,9 +206,17 @@
     width:60px;
     height:60px;
     background:#e6e6e6;
+    cursor:pointer;
     border-bottom:1px solid #fff;
-    &:hover{
+    position: relative;
+    &.active,&:hover{
       background:#ff9c1b;
+      i{
+        display:none;
+      }
+      .nav-text,.fix-nav{
+        display:block;
+      }
     }
     i{
       float:left;
@@ -224,9 +232,71 @@
       &.icon-calculator{
         background-position:0 -120px;
       }
+    }
+    .nav-text{
+      float:left;
+      width: 100%;
+      margin-top: 10px;
+      color: #fff;
+      font-size: 14px;
+      line-height: 20px;
+      text-align: center;
+      display:none;
+    }
+    .fix-nav{
+      display:none;
+      position: absolute;
+      &.app-img{
+        top:-25px;
+        right:60px;
+        width:191px;
+        height:220px;
+      }
+    }
+  }
+}
+.back-top{
+  position:fixed;
+  right:22px;
+  bottom:20px;
+  width:60px;
+  height:60px;
+  z-index:100;
+  border:1px solid #fff;
+  visibility:hidden;
+  li{
+    float:left;
+    width:60px;
+    height:60px;
+    background:#e6e6e6;
+    cursor:pointer;
+    &.active,&:hover{
+      background:#ccc;
+      i{
+        display:none;
+      }
+      .nav-text{
+        display:block;
+      }
+    }
+    i{
+      float:left;
+      width:60px;
+      height:60px;
+      background:url("/images/sign/fix-icon.png") no-repeat;
       &.icon-top{
         background-position:0 -180px;
       }
+    }
+    .nav-text{
+      float:left;
+      width: 100%;
+      margin-top: 10px;
+      color: #fff;
+      font-size: 14px;
+      line-height: 20px;
+      text-align: center;
+      display:none;
     }
   }
 }
