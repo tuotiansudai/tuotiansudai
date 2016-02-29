@@ -26,15 +26,18 @@
 
     <resultMap id="useRecordMap" type="CouponUseRecordView">
         <id column="id" property="id"/>
-        <result column="loan_id" property="loanId"/>
-        <result column="loan_name" property="loanName"/>
-        <result column="rate" property="rate"/>
         <result column="coupon_type" property="couponType"/>
         <result column="coupon_amount" property="couponAmount"/>
+        <result column="rate" property="rate"/>
+        <result column="product_types" property="productTypeList" typeHandler="com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler"/>
+        <result column="loan_id" property="loanId"/>
+        <result column="loan_name" property="loanName"/>
         <result column="invest_amount" property="investAmount"/>
         <result column="used_time" property="usedTime"/>
         <result column="expected_income" property="expectedIncome"/>
         <result column="birthday_benefit" property="birthdayBenefit"/>
+        <result column="invest_lower_limit" property="investLowerLimit"/>
+        <result column="invest_upper_limit" property="investUpperLimit"/>
     </resultMap>
 
     <insert id="create" parameterType="UserCouponModel" useGeneratedKeys="true" keyProperty="id">
@@ -70,44 +73,6 @@
         where uc.login_name = #{loginName}
     </select>
 
-    <select id="findInvestCouponByLoginName" resultMap="userCouponResultMap" parameterType="map">
-        (SELECT
-        *
-        FROM
-        user_coupon uc
-        JOIN
-        coupon c ON uc.coupon_id = c.id
-        AND uc.login_name = #{loginName}
-        AND c.product_types LIKE  CONCAT(CONCAT('%', #{productType}), '%')
-        <![CDATA[ AND c.invest_lower_limit <= #{investMoney} ]]>
-        ORDER BY shared DESC , CASE c.coupon_type
-        WHEN 'RED_ENVELOPE' THEN '1'
-        WHEN 'BIRTHDAY_COUPON' THEN '2'
-        WHEN 'NEWBIE_COUPON' THEN '3'
-        WHEN 'INVEST_COUPON' THEN '4'
-        WHEN 'INTEREST_COUPON' THEN '5'
-        ELSE '6'
-        END) UNION ALL (SELECT
-        *
-        FROM
-        user_coupon uc
-        JOIN
-        coupon c ON uc.coupon_id = c.id
-        AND uc.login_name = #{loginName}
-        AND c.product_types LIKE  CONCAT(CONCAT('%', #{productType}), '%')
-        AND c.invest_lower_limit > #{investMoney}
-        ORDER BY shared DESC , CASE c.coupon_type
-        WHEN 'RED_ENVELOPE' THEN '1'
-        WHEN 'BIRTHDAY_COUPON' THEN '2'
-        WHEN 'NEWBIE_COUPON' THEN '3'
-        WHEN 'INVEST_COUPON' THEN '4'
-        WHEN 'INTEREST_COUPON' THEN '5'
-        ELSE '6'
-        END)
-
-    </select>
-
-
     <select id="findById" resultMap="userCouponResultMap" parameterType="long">
         select * from user_coupon where id = #{id}
     </select>
@@ -123,47 +88,30 @@
         where loan_id = #{loanId} and status = 'SUCCESS'
     </select>
 
-    <select id="findUseRecordsCount" resultType="int" parameterType="map">
-        select
-        count(1)
-        from user_coupon uc
-        join coupon c on uc.coupon_id=c.id and c.deleted is FALSE and c.coupon_type in
-        <foreach collection="couponTypeList" item="couponType" open="(" separator="," close=")">
-            #{couponType}
-        </foreach>
-        join loan l on l.id=uc.loan_id
-        join invest i on i.id = uc.invest_id
-        where
-        uc.status='SUCCESS'
-        and uc.login_name = #{loginName}
-    </select>
-
     <select id="findUseRecords" resultMap="useRecordMap" parameterType="map">
         select
-        uc.id as id,
-        l.id as loan_id,
-        l.name as loan_name,
-        c.coupon_type as coupon_type,
-        c.rate as rate,
-        i.amount as invest_amount,
-        c.amount as coupon_amount,
-        uc.used_time as used_time,
-        uc.expected_interest - uc.expected_fee as expected_income,
-        (c.birthday_benefit + 1) as birthday_benefit
+            uc.id as id,
+            c.amount as coupon_amount,
+            c.rate as rate,
+            c.product_types as product_types,
+            l.id as loan_id,
+            l.name as loan_name,
+            c.coupon_type as coupon_type,
+            i.amount as invest_amount,
+            uc.used_time as used_time,
+            uc.expected_interest - uc.expected_fee as expected_income,
+            (c.birthday_benefit + 1) as birthday_benefit,
+            c.invest_lower_limit as invest_lower_limit,
+            c.invest_upper_limit as invest_upper_limit
         from user_coupon uc
-        join coupon c on uc.coupon_id=c.id and c.deleted is FALSE and c.coupon_type in
-        <foreach collection="couponTypeList" item="couponType" open="(" separator="," close=")">
-            #{couponType}
-        </foreach>
+        join coupon c on uc.coupon_id=c.id and c.deleted is FALSE
         join loan l on l.id=uc.loan_id
         join invest i on i.id = uc.invest_id
         where
         uc.status='SUCCESS'
         and uc.login_name = #{loginName}
         ORDER BY used_time DESC
-        limit #{index}, #{pageSize}
     </select>
-
 
     <select id="findByInvestId" parameterType="map" resultMap="userCouponResultMap">
         select * from user_coupon where invest_id = #{investId}
@@ -249,6 +197,5 @@
     <select id="findBirthdaySuccessByLoginNameAndLoanId" parameterType="map" resultMap="userCouponResultMap">
         select t.* from user_coupon t join coupon m on t.coupon_id = m.id and m.coupon_type = 'BIRTHDAY_COUPON' where t.login_name = #{loginName} and t.loan_id = #{loanId} and t.status = 'SUCCESS'
     </select>
-
 
 </mapper>

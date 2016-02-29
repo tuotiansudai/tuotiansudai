@@ -151,18 +151,39 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
         else return 1;
     }
 
-    private Date getCompareTime() {
-        if (this.expired) return this.endTime;
-        else if (this.used) return this.usedTime;
-        else return this.createdTime;
+    private long getCompareBenefitValue() {
+        switch (this.couponType) {
+            case RED_ENVELOPE:
+            case NEWBIE_COUPON:
+            case INVEST_COUPON:
+                return amount;
+            case INTEREST_COUPON:
+                return (long) (rate * 100);
+            case BIRTHDAY_COUPON:
+                return (long) (birthdayBenefit * 100);
+            default:
+                return amount;
+        }
     }
 
     @Override
     public int compareTo(UserCouponDto dto) {
         if (this.getStatusCode() == dto.getStatusCode()) {
-            long diff = this.getCompareTime().getTime() - dto.getCompareTime().getTime();
-            int opposite = this.getStatusCode() == 1 ? 1 : -1;
-            return diff == 0 ? 0 : diff > 0 ? opposite * 1 : opposite * -1;
+            if (this.getCouponType().getOrder() == dto.getCouponType().getOrder()) {
+                if (this.getStatusCode() == 2) {
+                    return this.usedTime.after(dto.getUsedTime()) ? -1 : 1;
+                } else if (this.getStatusCode() == 1) {
+                    if (this.getCompareBenefitValue() == dto.getCompareBenefitValue()) {
+                        return this.getEndTime().after(dto.getEndTime()) ? 1 : -1;
+                    } else {
+                        return this.getCompareBenefitValue() - dto.getCompareBenefitValue() > 0 ? 1 : -1;
+                    }
+                } else {
+                    return this.getEndTime().after(dto.getEndTime()) ? -1 : 1;
+                }
+            } else {
+                return this.getCouponType().getOrder() - dto.getCouponType().getOrder();
+            }
         } else {
             return this.getStatusCode() - dto.getStatusCode();
         }

@@ -74,7 +74,7 @@
                             </button>
                         </#if>
                     </td>
-                    <td>${(pushAlert.createdBy)!}</td>
+                    <td>系统</td>
                     <td>${(pushAlert.updatedBy)!}</td>
                 </tr>
                 </#list>
