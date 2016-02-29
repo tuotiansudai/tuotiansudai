@@ -331,6 +331,6 @@ public class CouponModel implements Serializable {
         this.userGroup = couponDto.getUserGroup();
         this.rate = couponDto.getRate() == null ? 0 : new BigDecimal(couponDto.getRate()).divide(new BigDecimal(100), 3, BigDecimal.ROUND_HALF_UP).doubleValue();
         this.birthdayBenefit = couponDto.getBirthdayBenefit() == null ? 0 : new BigDecimal(couponDto.getBirthdayBenefit()).subtract(new BigDecimal(1)).doubleValue();
-        this.multiple = couponDto.getCouponType() == CouponType.BIRTHDAY_COUPON;
+        this.multiple = (couponDto.getCouponType() == CouponType.BIRTHDAY_COUPON || couponDto.getMultiple());
     }
 }

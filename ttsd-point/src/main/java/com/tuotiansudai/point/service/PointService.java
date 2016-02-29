@@ -11,4 +11,5 @@ public interface PointService {
     SignInPointDto signIn(String loginName);
 
     boolean signInIsSuccess(String loginName);
+
 }
