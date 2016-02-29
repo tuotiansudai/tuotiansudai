@@ -198,7 +198,7 @@
   bottom:160px;
   width:60px;
   height:182px;
-  z-index:100;
+  z-index:1000;
   border:1px solid #fff;
   border-bottom:none;
   li{
@@ -206,7 +206,6 @@
     width:60px;
     height:60px;
     background:#e6e6e6;
-    cursor:pointer;
     border-bottom:1px solid #fff;
     position: relative;
     &.active,&:hover{
@@ -222,6 +221,7 @@
       float:left;
       width:60px;
       height:60px;
+      cursor:pointer;
       background:url("/images/sign/fix-icon.png") no-repeat;
       &.icon-phone{
         background-position:0 0;
@@ -236,6 +236,7 @@
     .nav-text{
       float:left;
       width: 100%;
+      cursor:pointer;
       margin-top: 10px;
       color: #fff;
       font-size: 14px;
@@ -253,6 +254,105 @@
         height:220px;
       }
     }
+  }
+}
+.count-form{
+  position: fixed;
+  width:330px;
+  height:400px;
+  bottom:20px;
+  right:110px;
+  background:#fff;
+  border:1px solid #ccc;
+  border-radius:10px;
+  overflow:hidden;
+  z-index:99;
+  display:none;
+  h3{
+    position: relative;
+    text-align:center;
+    background:#ffc527;
+    line-height:60px;
+    span{
+      font-size:24px;
+      color:#fff;
+    }
+    .close-count{
+      display:block;
+      position: absolute;
+      top:5px;
+      right:5px;
+      width:25px;
+      height:25px;
+      background:url("/images/sign/fix-icon.png") no-repeat;
+      background-position:0 -240px;
+      z-index: 999;
+      cursor: pointer;
+    }
+  }
+  .form-text{
+    float:left;
+    width:250px;
+    margin:10px 40px;
+    position: relative;
+    .int-text{
+      float:left;
+      width:178px;
+      height:28px;
+      padding:5px 35px;
+      border:1px solid #ccc;
+      border-radius:5px;
+    }
+    .unit-text{
+      position: absolute;
+      top: 0;
+      right: 10px;
+      font-size: 16px;
+      line-height: 40px;
+      color:#808080;
+    }
+    .submit-btn{
+      float:left;
+      width:110px;
+      height:30px;
+      border:none;
+      color:#fff;
+      cursor:pointer;
+      text-align:center;
+      background:#ffc527;
+      margin-right:30px
+    }
+    .reset-btn{
+      float:left;
+      width:110px;
+      height:30px;
+      border:none;
+      cursor:pointer;
+      color:#fff;
+      text-align:center;
+      background:#ccc;
+    }
+    .result-text{
+      font-size:20px;
+      color:#808080;
+      line-height:30px;
+      margin-bottom:0;
+      span{
+        font-size:26px;
+        color:#ff7200;
+      }
+    }
+    .tip-text{
+      font-size:12px;
+      color:#ccc;
+      line-height:20px;
+      margin-bottom:0;
+    }
+  }
+  label.error{
+    float:left;
+    width:250px;
+    margin-left:40px;
   }
 }
 .back-top{
