@@ -54,6 +54,7 @@ public class PointBillServiceImpl implements PointBillService {
         accountModel.setPoint(accountModel.getPoint() + point);
         String note = this.generatePointBillNote(businessType, orderId);
         pointBillMapper.create(new PointBillModel(loginName, orderId, point, businessType, note));
+        accountMapper.update(accountModel);
     }
 
     private String generatePointBillNote(PointBusinessType businessType, Long orderId) {
