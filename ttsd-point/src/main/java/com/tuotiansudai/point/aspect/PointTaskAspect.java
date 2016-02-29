@@ -64,20 +64,16 @@ public class PointTaskAspect {
         }
     }
 
+    @SuppressWarnings(value = "unchecked")
     @AfterReturning(value = "execution(* *..RechargeService.rechargeCallback(..))")
     public void afterReturningRechargeCallback(JoinPoint joinPoint) {
-        Map<String, String> paramsMap = (Map<String, String>)joinPoint.getArgs()[0];
-        if ("0000".equals(String.valueOf(paramsMap.get("ret_code"))) && paramsMap.get("order_id") != null) {
-            long orderId = Long.parseLong(paramsMap.get("order_id"));
-            RechargeModel rechargeModel = rechargeMapper.findById(orderId);
-            if (!rechargeModel.isPublicPay()) {
-                logger.debug("after returning recharge success, point task aspect starting...");
+        logger.debug("after returning recharge, point task aspect starting...");
 
-                pointTaskService.completeTask(PointTask.FIRST_RECHARGE, rechargeModel.getLoginName());
+        Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
+        RechargeModel rechargeModel = rechargeMapper.findById(Long.parseLong(paramsMap.get("order_id")));
+        pointTaskService.completeTask(PointTask.FIRST_RECHARGE, rechargeModel.getLoginName());
 
-                logger.debug("after returning recharge success, point task aspect completed");
-            }
-        }
+        logger.debug("after returning recharge, point task aspect completed");
     }
 
 }
