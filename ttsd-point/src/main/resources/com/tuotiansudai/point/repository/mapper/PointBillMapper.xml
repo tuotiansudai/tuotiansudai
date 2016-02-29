@@ -27,7 +27,7 @@
         select * from point_bill where login_name = #{loginName} order by created_time desc;
     </select>
 
-    <select useCache="false" id="findPointBillPagination" parameterType="map" resultMap="pointBillPaginationItemView">
+    <select id="findPointBillPagination" parameterType="map" resultMap="pointBillPaginationItemView">
         select * from point_bill
         <where>
             <if test="loginName != null and loginName != ''">
@@ -47,7 +47,7 @@
         limit #{index}, #{pageSize}
     </select>
 
-    <select useCache="false" id="findCountPointBillPagination" parameterType="map" resultType="long">
+    <select id="findCountPointBillPagination" parameterType="map" resultType="long">
         select count(1)
         from point_bill
         <where>

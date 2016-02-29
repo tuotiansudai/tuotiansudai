@@ -39,10 +39,10 @@ require(['jquery', 'mustache', 'text!/tpl/point-bill-table.mustache', 'moment', 
         var businessType = $('.status-filter .select-item.current').data('status');
 
         var requestData = {startTime: startTime, endTime: endTime, businessType: businessType, index: currentPage || 1};
+
         paginationElement.loadPagination(requestData, function (data) {
             if(data.status){
                 _.each(data.records, function (item) {
-                    console.info("item = " + item.businessType)
                     switch (item.businessType) {
                         case 'SIGN_IN':
                             item.businessType = '签到奖励';
@@ -57,11 +57,10 @@ require(['jquery', 'mustache', 'text!/tpl/point-bill-table.mustache', 'moment', 
                             item.businessType = '财豆兑换';
                             break;
                     }
-                    var html = Mustache.render(pointBillListTemplate, data);
-                    $('.point-bill-list').html(html);
                 });
-
             }
+            var html = Mustache.render(pointBillListTemplate, data);
+            $('.point-bill-list').html(html);
         });
     };
 
