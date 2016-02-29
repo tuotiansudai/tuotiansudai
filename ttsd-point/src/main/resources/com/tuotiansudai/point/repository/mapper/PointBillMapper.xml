@@ -15,6 +15,8 @@
         <result column="note" property="note"></result>
         <result column="created_time" property="createdTime"></result>
     </resultMap>
+    <resultMap id="pointBillPaginationItemView" type="PointBillPaginationItemView" extends="pointBillResultMap">
+    </resultMap>
 
     <insert id="create" parameterType="PointBillModel" useGeneratedKeys="true" keyProperty="id">
         insert into point_bill (order_id, login_name, point, business_type, note, created_time)
@@ -24,5 +26,45 @@
     <select id="findByLoginName" parameterType="java.lang.String" resultMap="pointBillResultMap">
         select * from point_bill where login_name = #{loginName} order by created_time desc;
     </select>
+
+    <select useCache="false" id="findPointBillPagination" parameterType="map" resultMap="pointBillPaginationItemView">
+        select * from point_bill
+        <where>
+            <if test="loginName != null and loginName != ''">
+                and login_name = #{loginName}
+            </if>
+            <if test="businessType == 'obtain'">
+                and business_type IN ('SIGN_IN','TASK','INVEST')
+            </if>
+            <if test="businessType == 'use'">
+                and business_type = 'EXCHANGE'
+            </if>
+            <if test="startTime != null  &amp;&amp;  endTime != null">
+                and created_time between #{startTime} and #{endTime}
+            </if>
+        </where>
+        order by created_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select useCache="false" id="findCountPointBillPagination" parameterType="map" resultType="long">
+        select count(1)
+        from point_bill
+        <where>
+            <if test="loginName != null and loginName != ''">
+                and login_name = #{loginName}
+            </if>
+            <if test="businessType == 'obtain'">
+                and business_type IN ('SIGN_IN','TASK','INVEST')
+            </if>
+            <if test="businessType == 'use'">
+                and business_type = 'EXCHANGE'
+            </if>
+            <if test="startTime != null &amp;&amp; endTime != null">
+                and created_time between #{startTime} and #{endTime}
+            </if>
+        </where>
+    </select>
+
 
 </mapper>

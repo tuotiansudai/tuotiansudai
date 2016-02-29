@@ -1,0 +1,25 @@
+<table class="point-bill-list table-striped">
+    <thead>
+        <tr>
+            <th>时间</th>
+            <th class="tr">行为</th>
+            <th>财豆数(个)</th>
+            <th>备注</th>
+        </tr>
+    </thead>
+    <tbody>
+       {{#records}}
+        <tr>
+            <td>{{createdTime}}</td>
+            <td>{{businessType}}</td>
+            <td>{{point}}</td>
+            <td>{{note}}</td>
+        </tr>
+        {{/records}}
+
+        {{^records}}
+         <td colspan="4" class="no-data">暂时没有投资记录</td>
+        {{/records}}
+    </tbody>
+</table>
+

@@ -15,6 +15,7 @@
         <result column="pay_account_id" property="payAccountId"></result>
         <result column="balance" property="balance"></result>
         <result column="freeze" property="freeze"></result>
+        <result column="point" property="point"></result>
         <result column="register_time" property="registerTime"></result>
         <result column="auto_invest" property="autoInvest"></result>
     </resultMap>

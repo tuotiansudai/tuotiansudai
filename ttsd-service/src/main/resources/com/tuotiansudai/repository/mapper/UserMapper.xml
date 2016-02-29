@@ -35,6 +35,7 @@
             <result column="pay_account_id" property="payAccountId"></result>
             <result column="balance" property="balance"></result>
             <result column="freeze" property="freeze"></result>
+            <result column="point" property="point"></result>
             <result column="register_time" property="registerTime"></result>
             <result column="auto_invest" property="autoInvest"></result>
         </association>
@@ -286,5 +287,44 @@
         AND iv.`status`='SUCCESS';
     </select>
 
+    <select id="findUsersAccountPoint" parameterType="map" resultMap="userResultMap">
+        SELECT
+        a.*, u.mobile
+        FROM user u
+        JOIN account a ON u.login_name = a.login_name
+        WHERE a.point > 0
+        <if test="loginName != null and loginName != '' ">
+            AND a.login_name = #{loginName}
+        </if>
+        <if test="userName != null and userName != '' ">
+            AND a.user_name = #{userName}
+        </if>
+        <if test="mobile != null and mobile != '' ">
+            AND u.mobile = #{mobile}
+        </if>
+        ORDER BY a.point DESC
+        limit #{startLimit}, #{endLimit}
+    </select>
+
+    <select id="findUsersAccountPointCount" parameterType="map" resultType="int">
+        SELECT
+        COUNT(1)
+        FROM user u
+        JOIN account a ON u.login_name = a.login_name
+        WHERE a.point > 0
+        <if test="loginName != null and loginName != '' ">
+            AND a.login_name = #{loginName}
+        </if>
+        <if test="userName != null and userName != '' ">
+            AND a.user_name = #{userName}
+        </if>
+        <if test="mobile != null and mobile != '' ">
+            AND u.mobile = #{mobile}
+        </if>
+    </select>
+
+    <select id="findUsersAccountAvailablePoint" parameterType="java.lang.String" resultType="int">
+        SELECT  IFNULL(SUM(point),0) FROM point_bill WHERE login_name = #{loginName}
+    </select>
 
 </mapper>

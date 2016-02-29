@@ -30,6 +30,8 @@ public class UserItemDataDto implements Serializable {
     private String city;
     private String balance;
     private Date lastBillTime;
+    private Long point;
+    private int availablePoint;
 
 
     public String getLoginName() {
@@ -184,6 +186,14 @@ public class UserItemDataDto implements Serializable {
         this.lastBillTime = lastBillTime;
     }
 
+    public Long getPoint() {return point;}
+
+    public void setPoint(Long point) { this.point = point; }
+
+    public int getAvailablePoint() { return availablePoint; }
+
+    public void setAvailablePoint(int availablePoint) { this.availablePoint = availablePoint; }
+
     public String getBirthday() {
         if (identityNumber == null) {
             return "";
@@ -206,6 +216,7 @@ public class UserItemDataDto implements Serializable {
         this.registerTime = userModel.getRegisterTime();
         if (userModel.getAccount() != null) {
             this.userName = userModel.getAccount().getUserName();
+            this.point = userModel.getAccount().getPoint();
         }
         this.balance = AmountConverter.convertCentToString(userModel.getAccount().getBalance());
         this.status = userModel.getStatus();

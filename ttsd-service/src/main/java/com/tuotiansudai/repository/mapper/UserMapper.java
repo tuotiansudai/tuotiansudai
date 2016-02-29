@@ -68,6 +68,12 @@ public interface UserMapper {
                                             @Param(value = "startLimit") int startLimit,
                                             @Param(value = "endLimit") int endLimit);
 
+    List<UserModel> findUsersAccountPoint(@Param(value = "loginName") String loginName,
+                                            @Param(value = "userName") String userName,
+                                            @Param(value = "mobile") String mobile,
+                                            @Param(value = "startLimit") int startLimit,
+                                            @Param(value = "endLimit") int endLimit);
+
     long findUsersAccountBalanceSum(@Param(value = "loginName") String loginName,
                                     @Param(value = "balanceMin") int balanceMin,
                                     @Param(value = "balanceMax") int balanceMax);
@@ -75,6 +81,12 @@ public interface UserMapper {
     int findUsersAccountBalanceCount(@Param(value = "loginName") String loginName,
                                      @Param(value = "balanceMin") int balanceMin,
                                      @Param(value = "balanceMax") int balanceMax);
+
+    int findUsersAccountPointCount(@Param(value = "loginName") String loginName,
+                                   @Param(value = "userName") String userName,
+                                   @Param(value = "mobile") String mobile);
+
+    int findUsersAccountAvailablePoint(String loginName);
 
     List<String> findUsersBirthdayMobile();
 }
