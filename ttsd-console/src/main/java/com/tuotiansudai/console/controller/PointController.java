@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping(value = "/point-manage")
@@ -51,7 +52,7 @@ public class PointController {
     }
 
     @RequestMapping(value = "/user-point-list")
-    public ModelAndView accountBalance(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
+    public ModelAndView usersAccountPointList(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                        @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
                                        @RequestParam(value = "loginName", required = false) String loginName,
                                        @RequestParam(value = "userName", required = false) String userName,

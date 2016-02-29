@@ -114,7 +114,7 @@
                 "header":{"text":"财豆管理"},
                 "sidebar":[
                     {"name":"userPointList","text":"用户财豆查询","link":"/point-manage/user-point-list","role":"'ADMIN'"},
-                    {"name":"createCouponExchange","text":"优惠券兑换创建","link":"/point-manage/coupon-exchange","role":"'ADMIN'"},
+                    {"name":"createCouponExchange","text":"优惠券兑换创建","link":"/activity-manage/coupon-exchange","role":"'ADMIN'"},
                     {"name":"","text":"优惠券兑换管理","link":"","role":""}
                 ]
             }
