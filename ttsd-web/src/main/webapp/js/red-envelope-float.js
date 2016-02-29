@@ -3,9 +3,9 @@ define(['jquery', 'jquery.validate', 'jquery.validate.extension','drag'], functi
         $countForm=$('.count-form'),
         $calBtn=$('.cal-btn');
 
-    $(window).scrollTop()>0?$('.back-top').fadeIn('fast'):$('.back-top').fadeOut('fast');
+    $(window).scrollTop()>$(window).scrollTop()>($(window).height()/2)?$('.back-top').fadeIn('fast'):$('.back-top').fadeOut('fast');
     $(window).scroll(function() {
-        if($(window).scrollTop()>0){
+        if($(window).scrollTop()>($(window).height()/2)){
             $('.back-top').fadeIn('fast');
         }else{
             $('.back-top').fadeOut('fast');
