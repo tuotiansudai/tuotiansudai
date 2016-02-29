@@ -49,7 +49,7 @@ define(['jquery', 'jquery.validate', 'jquery.validate.extension','drag'], functi
         submitHandler: function(form) {
             var moneyNum=Math.round($('#moneyNum').val()),
                 monthNum=Math.round($('#monthNum').val()),
-                biteNum=Math.round($('#biteNum').val())*0.1,
+                biteNum=Math.round($('#biteNum').val())/100,
                 $resultNum=$('#resultNum'),
                 resultNum=moneyNum+moneyNum*monthNum*biteNum*0.9;
             $resultNum.text(resultNum.toFixed(2));
@@ -75,7 +75,7 @@ define(['jquery', 'jquery.validate', 'jquery.validate.extension','drag'], functi
     //reset form
     $("#resetBtn").on('click', function(event) {
         event.preventDefault();
-        $countForm.find('input').val('');
+        $countForm.find('.int-text').val('');
         $('#resultNum').text('0');
     });
     //calculator drag
