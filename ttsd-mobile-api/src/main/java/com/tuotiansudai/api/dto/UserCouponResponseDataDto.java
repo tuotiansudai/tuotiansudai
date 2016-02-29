@@ -2,6 +2,7 @@ package com.tuotiansudai.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.CouponUseRecordView;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
@@ -74,6 +75,28 @@ public class UserCouponResponseDataDto {
         this.shared = couponModel.isShared();
         this.birthdayRate = String.valueOf(couponModel.getBirthdayBenefit());
 
+    }
+    public UserCouponResponseDataDto(CouponUseRecordView couponUseRecordView) {
+        super();
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
+        this.userCouponId = String.valueOf(couponUseRecordView.getId());
+        this.name = couponUseRecordView.getCouponType().getName();
+        this.type = couponUseRecordView.getCouponType();
+        this.amount = AmountConverter.convertCentToString(couponUseRecordView.getCouponAmount());
+        this.investLowerLimit = AmountConverter.convertCentToString(couponUseRecordView.getInvestLowerLimit());
+        this.productTypes = couponUseRecordView.getProductTypeList();
+        this.usedTime = couponUseRecordView.getUsedTime();
+        this.expectedInterest = AmountConverter.convertCentToString(couponUseRecordView.getExpectedIncome());
+        this.rate = decimalFormat.format(couponUseRecordView.getRate() * 100);
+        this.birthdayRate = String.valueOf(couponUseRecordView.getBirthdayBenefit());
+        this.investUpperLimit = AmountConverter.convertCentToString(couponUseRecordView.getInvestUpperLimit());
+        this.shared = couponUseRecordView.isShared();
+        this.startDate = couponUseRecordView.getStartTime();
+        this.endDate = couponUseRecordView.getEndTime();
+        this.loanId = String.valueOf(couponUseRecordView.getLoanId());
+        this.loanName = couponUseRecordView.getLoanName();
+        this.loanProductType = couponUseRecordView.getLoanProductType();
+        this.investAmount = AmountConverter.convertCentToString(couponUseRecordView.getInvestAmount());
     }
 
     public String getUserCouponId() {

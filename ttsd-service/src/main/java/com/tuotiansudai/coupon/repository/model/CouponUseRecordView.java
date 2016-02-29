@@ -1,5 +1,6 @@
 package com.tuotiansudai.coupon.repository.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 
@@ -37,8 +38,19 @@ public class CouponUseRecordView implements Serializable {
 
     private String birthdayBenefit;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date startTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date endTime;
+
+    private boolean shared;
+
+    private ProductType loanProductType;
+
     public CouponUseRecordView() {
     }
+
 
     public long getId() {
         return id;
@@ -142,5 +154,37 @@ public class CouponUseRecordView implements Serializable {
 
     public void setBirthdayBenefit(String birthdayBenefit) {
         this.birthdayBenefit = birthdayBenefit;
+    }
+
+    public ProductType getLoanProductType() {
+        return loanProductType;
+    }
+
+    public void setLoanProductType(ProductType loanProductType) {
+        this.loanProductType = loanProductType;
+    }
+
+    public boolean isShared() {
+        return shared;
+    }
+
+    public void setShared(boolean shared) {
+        this.shared = shared;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 }
