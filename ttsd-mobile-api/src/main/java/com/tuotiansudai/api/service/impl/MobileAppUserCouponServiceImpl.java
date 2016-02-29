@@ -72,17 +72,6 @@ public class MobileAppUserCouponServiceImpl implements MobileAppUserCouponServic
                 public UserCouponResponseDataDto apply(UserCouponDto userCouponDto) {
                     UserCouponModel userCouponModel = userCouponMapper.findById(userCouponDto.getId());
                     UserCouponResponseDataDto dataDto = new UserCouponResponseDataDto(couponMapper.findById(userCouponDto.getCouponId()), userCouponModel);
-                    if (InvestStatus.SUCCESS == userCouponModel.getStatus()) {
-                        LoanModel loanModel = loanMapper.findById(userCouponModel.getLoanId());
-                        dataDto.setLoanId(String.valueOf(loanModel.getId()));
-                        dataDto.setLoanName(loanModel.getName());
-                        dataDto.setLoanProductType(loanModel.getProductType());
-                        InvestModel investModel = investMapper.findById(userCouponModel.getInvestId());
-                        if (investModel != null) {
-                            dataDto.setInvestAmount(AmountConverter.convertCentToString(investModel.getAmount()));
-                        }
-
-                    }
                     return dataDto;
                 }
             });
