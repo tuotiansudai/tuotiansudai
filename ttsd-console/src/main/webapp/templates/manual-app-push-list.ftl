@@ -236,7 +236,7 @@
             <ul class="pagination">
                 <li>
                     <#if hasPreviousPage>
-                    <a href="?index=${index-1}&pageSize=${pageSize} <#if pushTypeInput??>&pushType=#{pushTypeInput}</#if> <#if pushSourceInput??>&pushSource=#{pushSourceInput}</#if> <#if pushUserTypeInput??>&pushUserType=#{pushUserTypeInput}</#if> <#if pushStatusInput??>&pushStatus=#{pushStatusInput}</#if> <#if startTime??>&startTime=${startTime?string('yyyy-MM-dd')}</#if> <#if endTime??>&endTime=${endTime?string('yyyy-MM-dd')}</#if>" aria-label="Previous">
+                    <a href="?index=${index-1}&pageSize=${pageSize} <#if pushTypeInput??>&pushType=${pushTypeInput}</#if> <#if pushSourceInput??>&pushSource=${pushSourceInput}</#if> <#if pushUserTypeInput??>&pushUserType=${pushUserTypeInput}</#if> <#if pushStatusInput??>&pushStatus=${pushStatusInput}</#if> <#if startTime??>&startTime=${startTime?string('yyyy-MM-dd')}</#if> <#if endTime??>&endTime=${endTime?string('yyyy-MM-dd')}</#if>" aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
@@ -246,7 +246,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage>
-                    <a href="?index=${index+1}&pageSize=${pageSize} <#if pushTypeInput??>&pushType=#{pushTypeInput}</#if> <#if pushSourceInput??>&pushSource=#{pushSourceInput}</#if> <#if pushUserTypeInput??>&pushUserType=#{pushUserTypeInput}</#if> <#if pushStatusInput??>&pushStatus=#{pushStatusInput}</#if> <#if startTime??>&startTime=${startTime?string('yyyy-MM-dd')}</#if> <#if endTime??>&endTime=${endTime?string('yyyy-MM-dd')}</#if>" aria-label="Next">
+                    <a href="?index=${index+1}&pageSize=${pageSize} <#if pushTypeInput??>&pushType=${pushTypeInput}</#if> <#if pushSourceInput??>&pushSource=${pushSourceInput}</#if> <#if pushUserTypeInput??>&pushUserType=${pushUserTypeInput}</#if> <#if pushStatusInput??>&pushStatus=${pushStatusInput}</#if> <#if startTime??>&startTime=${startTime?string('yyyy-MM-dd')}</#if> <#if endTime??>&endTime=${endTime?string('yyyy-MM-dd')}</#if>" aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>
