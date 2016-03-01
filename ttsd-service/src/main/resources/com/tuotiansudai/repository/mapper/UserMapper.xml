@@ -323,8 +323,8 @@
         </if>
     </select>
 
-    <select id="findUsersAccountAvailablePoint" parameterType="java.lang.String" resultType="int">
-        SELECT  IFNULL(SUM(point),0) FROM point_bill WHERE login_name = #{loginName}
+    <select id="findUsersAccountTotalPoint" parameterType="java.lang.String" resultType="int">
+        SELECT  IFNULL(SUM(point),0) FROM point_bill WHERE point > 0 AND login_name = #{loginName}
     </select>
 
 </mapper>

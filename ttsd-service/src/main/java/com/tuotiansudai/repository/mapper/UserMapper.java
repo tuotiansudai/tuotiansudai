@@ -86,7 +86,7 @@ public interface UserMapper {
                                    @Param(value = "userName") String userName,
                                    @Param(value = "mobile") String mobile);
 
-    int findUsersAccountAvailablePoint(String loginName);
+    int findUsersAccountTotalPoint(String loginName);
 
     List<String> findUsersBirthdayMobile();
 }

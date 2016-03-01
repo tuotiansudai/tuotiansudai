@@ -438,7 +438,7 @@ public class UserServiceImpl implements UserService {
         List<UserItemDataDto> userItemDataDtoList = new ArrayList<>();
         for(UserModel userModel : userModels) {
             UserItemDataDto userItemDataDto = new UserItemDataDto(userModel);
-            userItemDataDto.setAvailablePoint(userMapper.findUsersAccountAvailablePoint(userModel.getLoginName()));
+            userItemDataDto.setTotalPoint(userMapper.findUsersAccountTotalPoint(userModel.getLoginName()));
             userItemDataDto.setStaff(userRoleService.judgeUserRoleExist(userModel.getLoginName(), Role.STAFF));
             userItemDataDtoList.add(userItemDataDto);
         }
@@ -451,8 +451,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int findUsersAccountAvailablePoint(String loginName){
-        return userMapper.findUsersAccountAvailablePoint(loginName);
+    public int findUsersAccountTotalPoint(String loginName){
+        return userMapper.findUsersAccountTotalPoint(loginName);
     }
 
     @Override

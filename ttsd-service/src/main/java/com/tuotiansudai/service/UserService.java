@@ -75,7 +75,7 @@ public interface UserService {
 
     int findUsersAccountPointCount(String loginName, String userName, String mobile);
 
-    int findUsersAccountAvailablePoint(String loginName);
+    int findUsersAccountTotalPoint(String loginName);
 
     boolean resetUmpayPassword(String loginName, String identityNumber);
 

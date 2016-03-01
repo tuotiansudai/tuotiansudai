@@ -43,8 +43,8 @@
                     </td>
                     <td>${userPointItem.userName!''}</td>
                     <td>${userPointItem.mobile}</td>
-                    <td>${userPointItem.availablePoint!''}</td>
                     <td>${userPointItem.point!''}</td>
+                    <td>${userPointItem.totalPoint!''}</td>
                     <td><a href="#">查看明细</a></td>
                 </tr>
                 </#list>
