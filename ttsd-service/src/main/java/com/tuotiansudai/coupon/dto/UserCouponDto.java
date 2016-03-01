@@ -53,7 +53,7 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
         this.loanId = userCoupon.getLoanId();
         this.used = InvestStatus.SUCCESS == userCoupon.getStatus();
         this.expired = !this.used && this.endTime.before(new Date());
-        this.unused = !this.used && !this.expired;
+        this.unused = !this.used && this.endTime.after(new Date());
         this.shared = coupon.isShared();
         this.investLowerLimit = coupon.getInvestLowerLimit();
         this.investUpperLimit = coupon.getInvestUpperLimit();
