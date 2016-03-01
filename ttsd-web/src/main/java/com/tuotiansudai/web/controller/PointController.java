@@ -11,12 +11,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(path = "/point")
 public class PointController {
     @Autowired
     private SignInService signInService;
+    @Autowired
+    private PointService pointService;
 
     @RequestMapping(path = "/sign-in", method = RequestMethod.POST)
     @ResponseBody
@@ -28,5 +31,14 @@ public class PointController {
         baseDto.setData(baseDataDto);
         baseDto.setSuccess(true);
         return baseDto;
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ModelAndView myPoint(){
+        String loginName = LoginUserInfo.getLoginName();
+        ModelAndView modelAndView = new ModelAndView("/my-point");
+
+        return modelAndView;
+
     }
 }
