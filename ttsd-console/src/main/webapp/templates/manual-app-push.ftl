@@ -128,7 +128,7 @@
             <label  class="col-sm-2 control-label">操作: </label>
             <div class="col-sm-4">
                 <button type="button" class="btn btn-sm btn-primary btnSearch" id="btnSave" <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN')">disabled</@security.authorize>>保存</button>
-                <button type="reset" class="btn btn-sm btn-primary btnSearch" id="btnReset" <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN')">disabled</@security.authorize>>重置</button>
+                <button type="reset" onclick="javascript:window.location.reload();" class="btn btn-sm btn-primary btnSearch" id="btnReset" <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN')">disabled</@security.authorize>>重置</button>
             </div>
         </div>
     </form>
