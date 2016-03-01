@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
+import com.tuotiansudai.jpush.dto.JpushReportDto;
 import com.tuotiansudai.jpush.repository.model.*;
 import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.console.util.LoginUserInfo;
@@ -190,9 +191,9 @@ public class JPushAlertController {
         return today + "-" + pushType.getDescription() + "-" + serialNo;
     }
 
+    @ResponseBody
     @RequestMapping(value = "/manual-app-push/{id}/refreshReport", method = RequestMethod.GET)
-    public String refreshReport(@PathVariable long id) {
-        jPushAlertService.refreshPushReport(id);
-        return "redirect:/app-push-manage/manual-app-push-list";
+    public BaseDto<JpushReportDto> refreshReport(@PathVariable long id) {
+        return jPushAlertService.refreshPushReport(id);
     }
 }

@@ -4,6 +4,7 @@ package com.tuotiansudai.jpush.service;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
+import com.tuotiansudai.jpush.dto.JpushReportDto;
 import com.tuotiansudai.jpush.repository.model.*;
 
 import java.util.Date;
@@ -24,7 +25,7 @@ public interface JPushAlertService {
 
     JPushAlertModel findJPushAlertModelById(long id);
 
-    void refreshPushReport(long jpushId);
+    BaseDto<JpushReportDto> refreshPushReport(long jpushId);
 
     void changeJPushAlertStatus(long id, PushStatus status, String loginName);
 

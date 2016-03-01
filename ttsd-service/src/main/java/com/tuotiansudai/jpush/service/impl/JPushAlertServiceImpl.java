@@ -18,6 +18,7 @@ import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.ManualJPushAlertJob;
 import com.tuotiansudai.jpush.client.MobileAppJPushClient;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
+import com.tuotiansudai.jpush.dto.JpushReportDto;
 import com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper;
 import com.tuotiansudai.jpush.repository.model.*;
 import com.tuotiansudai.jpush.service.JPushAlertService;
@@ -110,7 +111,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         if (endTime != null) {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
-        return jPushAlertMapper.findPushAlertCount(pushType,pushSource,pushUserType,pushStatus,startTime,endTime, false);
+        return jPushAlertMapper.findPushAlertCount(pushType, pushSource, pushUserType, pushStatus, startTime, endTime, false);
     }
 
     @Override
@@ -120,7 +121,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         if (endTime != null) {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
-        return jPushAlertMapper.findPushAlerts((index - 1) * pageSize, pageSize,pushType,pushSource,pushUserType,pushStatus,startTime,endTime, isAutomatic);
+        return jPushAlertMapper.findPushAlerts((index - 1) * pageSize, pageSize, pushType, pushSource, pushUserType, pushStatus, startTime, endTime, isAutomatic);
     }
 
     @Override
@@ -397,8 +398,21 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         }
     }
 
-    public void refreshPushReport(long jpushId) {
+    public BaseDto<JpushReportDto> refreshPushReport(long jpushId) {
+
+        BaseDto<JpushReportDto> baseDto = new BaseDto<>();
+        JpushReportDto jpushReportDto = new JpushReportDto();
+        baseDto.setData(jpushReportDto);
+
         Set<String> msgIdList = redisWrapperClient.smembers(MobileAppJPushClient.APP_PUSH_MSG_ID_KEY + jpushId);
+
+        if (msgIdList == null || msgIdList.size() == 0) {
+            jpushReportDto.setMessage("此推送为历史推送，无法更新统计数据");
+            jpushReportDto.setStatus(false);
+            baseDto.setSuccess(false);
+            return baseDto;
+        }
+
         String msgIds = Joiner.on(",").join(msgIdList);
         ReceivedsResult result = mobileAppJPushClient.getReportReceived(msgIds);
 
@@ -408,10 +422,17 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             iosArriveNum += received.ios_apns_sent;
             androidArriveNum += received.android_received;
         }
+
         JPushAlertModel model = jPushAlertMapper.findJPushAlertModelById(jpushId);
         model.setIosArriveNum(iosArriveNum);
         model.setAndroidArriveNum(androidArriveNum);
         jPushAlertMapper.update(model);
+
+        jpushReportDto.setAndroidReceived(androidArriveNum);
+        jpushReportDto.setIosReceived(iosArriveNum);
+        jpushReportDto.setStatus(true);
+        baseDto.setSuccess(true);
+        return baseDto;
     }
 
     private void autoJPushByRegistrationId(JPushAlertModel jPushAlertModel, Map<String, List<String>> pushObjects) {

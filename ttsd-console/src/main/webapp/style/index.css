@@ -561,3 +561,7 @@ td.td {
     height: 20px;
     background: url("/images/ico_loan.png") 0px -65px no-repeat;
 }
+.jpushReport {
+    text-decoration: underline;
+    cursor:pointer;
+}

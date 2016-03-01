@@ -1,4 +1,4 @@
-require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect','csrf'], function ($) {
+require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'csrf'], function ($) {
     $(function () {
 
         $('.selectpicker').selectpicker();
@@ -16,9 +16,9 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect','cs
                 dataType: 'json',
                 data: {}
             }).done(function (res) {
-                if(res.data.status){
-                    location.href='/app-push-manage/manual-app-push-list';
-                }else{
+                if (res.data.status) {
+                    location.href = '/app-push-manage/manual-app-push-list';
+                } else {
                     var msg = res.data.message || '服务端校验失败';
                     alert(msg);
                 }
@@ -27,6 +27,27 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect','cs
             }).always(function () {
                 console.log("complete");
             });
+        });
+
+        $('.jpushReport').click(function (event) {
+            event.preventDefault();
+            $.ajax({
+                url: "/app-push-manage/manual-app-push/" + $(this).attr('data-pushId') + "/refreshReport",
+                type: 'GET',
+                dataType: 'json'
+            }).done(function (res) {
+                if (res.data.status) {
+                    $('.iosReport').val(res.data.iosReceived);
+                    $('.androidReport').val(res.data.androidReceived);
+                } else {
+                    var msg = res.data.message || '服务器校验失败';
+                    alert(msg);
+                }
+            }).fail(function () {
+                console.log("error");
+            }).always(function () {
+                console.log("complete");
+            })
         });
     });
 

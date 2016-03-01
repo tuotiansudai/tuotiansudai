@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="auto-app-push-list.js" headLab="app-push-manage" sideLab="autoAppPushManage" title="自动推送管理">
 
@@ -48,6 +49,11 @@
             </tr>
             </thead>
             <tbody>
+                <#assign adminRole = false/>
+                <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                    <#assign adminRole = true/>
+                </@security.authorize>
+
                 <#list pushAlerts as pushAlert>
                 <tr>
                     <td>${pushAlert.id?string('0')}</td>
@@ -83,12 +89,12 @@
                     </td>
                     <td>
                         <#if pushAlert.status=='ENABLED'>
-                            <button class="btn btn-danger btn-xs disabled-link"
+                            <button class="btn btn-danger btn-xs disabled-link" <#if !adminRole>disabled</#if>
                                     data-link="/app-push-manage/auto-app-push/${pushAlert.id?string('0')}/disabled">
                                 暂停
                             </button>
                         <#else>
-                            <button class="btn btn-success btn-xs enabled-link"
+                            <button class="btn btn-success btn-xs enabled-link" <#if !adminRole>disabled</#if>
                                     data-link="/app-push-manage/auto-app-push/${pushAlert.id?string('0')}/enabled">
                                 启用
                             </button>

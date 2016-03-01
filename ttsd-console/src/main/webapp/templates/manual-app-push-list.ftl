@@ -175,10 +175,10 @@
                 ${pushAlert.jumpTo.getDescription()}
             </th>
             <th>
-                <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/refreshReport">${pushAlert.iosTargetNum!}｜${pushAlert.iosArriveNum!}</a>
+                <div class="jpushReport" data-pushId="${pushAlert.id?c}">${pushAlert.iosTargetNum!}｜<span class="iosReport">${pushAlert.iosArriveNum!}</span></div>
             </th>
             <th>
-                <a href="/app-push-manage/manual-app-push/${pushAlert.id?c}/refreshReport">${pushAlert.androidTargetNum!}｜${pushAlert.androidArriveNum!}</a>
+                <div class="jpushReport" data-pushId="${pushAlert.id?c}">${pushAlert.androidTargetNum!}｜<span class="androidReport">${pushAlert.androidArriveNum!}</span></div>
             </th>
             <td>
                 ${(pushAlert.createdBy)!}｜<#if (pushAlert.updatedBy)??>${pushAlert.updatedBy}<#else>无</#if>
