@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="edit-user.js" headLab="user-manage" sideLab="user-manage" title="用户编辑">
 
@@ -88,15 +89,18 @@
         <div class="form-group">
             <label for="status" class="col-sm-2 control-label">状态：</label>
 
+            <#assign editRole = false/>
+            <@global.role hasRole="'ADMIN','OPERATOR','OPERATOR_ADMIN'">
+                <#assign editRole = true/>
+            </@global.role>
+
             <div class="col-sm-3">
                 <label class="radio-inline">
-                    <input type="radio" name="status" id="status-active" value="ACTIVE"
-                           <@global.role hasRole="'CUSTOMER_SERVICE'">disabled="disabled"</@global.role>
+                    <input type="radio" name="status" id="status-active" value="ACTIVE" <#if !editRole>disabled="disabled" </#if>
                            <#if user.status?? && user.status=="ACTIVE">checked="checked"</#if>>正常
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="status" id="status-in-active" value="INACTIVE"
-                           <@global.role hasRole="'CUSTOMER_SERVICE'">disabled="disabled"</@global.role>
+                    <input type="radio" name="status" id="status-in-active" value="INACTIVE" <#if !editRole>disabled="disabled" </#if>
                            <#if user.status?? && user.status=="INACTIVE">checked="checked"</#if>>禁用
                 </label>
             </div>
