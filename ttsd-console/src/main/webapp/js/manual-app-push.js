@@ -73,8 +73,11 @@ require(['jquery', 'template', 'csrf', 'bootstrap', 'bootstrapDatetimepicker', '
                 var serialNo = data + 1;
                 $('.name').val(String.format(nameTemplate, yyyyMMdd, pushTypeText, serialNo));
             });
+        });
 
-        }).trigger('change');
+        if (!!!$('.name').val()) {
+            $('select.pushType').trigger('change');
+        }
 
         $('select.jumpTo').change(function () {
             var jumpTo = $(this).val();

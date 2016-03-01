@@ -14,7 +14,7 @@ public interface JPushAlertMapper {
 
     void update(JPushAlertModel jPushAlertModel);
 
-    int findPushTypeCount(@Param("pushType") PushType pushType);
+    int findMaxSerialNumByType(@Param("pushType") PushType pushType);
 
     int findPushAlertCount(@Param(value = "pushType") PushType pushType,
                            @Param(value = "pushSource") PushSource pushSource,

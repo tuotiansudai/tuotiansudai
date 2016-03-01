@@ -13,7 +13,7 @@ import java.util.List;
 public interface JPushAlertService {
     void buildJPushAlert(String loginName, JPushAlertDto jPushAlertDto);
 
-    int findPushTypeCount(PushType pushType);
+    int findMaxSerialNumByType(PushType pushType);
 
     int findPushAlertCount(PushType pushType,
                            PushSource pushSource, PushUserType pushUserType,PushStatus pushStatus,

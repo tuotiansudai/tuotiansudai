@@ -37,8 +37,8 @@
         #{jumpToLink}, #{expectPushTime}, #{createdTime}, #{createdBy}, #{updatedTime}, #{updatedBy},#{isAutomatic})
     </insert>
 
-    <select id="findPushTypeCount" resultType="int" parameterType="map">
-        select count(*) from jpush_alert where push_type = #{pushType} and is_automatic = false;
+    <select id="findMaxSerialNumByType" resultType="int" parameterType="map">
+        select SUBSTRING_INDEX(name, '-', -1) from jpush_alert where push_type = #{pushType} and is_automatic = false ORDER BY ID DESC limit 1;
     </select>
 
     <select id="findPushAlertCount" resultType="int" parameterType="map">

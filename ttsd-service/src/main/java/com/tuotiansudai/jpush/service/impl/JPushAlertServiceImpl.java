@@ -100,8 +100,8 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
 
     @Override
-    public int findPushTypeCount(PushType pushType) {
-        return jPushAlertMapper.findPushTypeCount(pushType);
+    public int findMaxSerialNumByType(PushType pushType) {
+        return jPushAlertMapper.findMaxSerialNumByType(pushType);
     }
 
     @Override
