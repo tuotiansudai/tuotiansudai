@@ -29,6 +29,10 @@ public class UserCouponModel implements Serializable{
 
     private long actualFee;
 
+    private Date startTime;
+
+    private Date endTime;
+
     private Date createdTime;
 
     private InvestStatus status;
@@ -40,9 +44,11 @@ public class UserCouponModel implements Serializable{
     public UserCouponModel() {
     }
 
-    public UserCouponModel(String loginName, long couponId) {
+    public UserCouponModel(String loginName, long couponId, Date startTime, Date endTime) {
         this.loginName = loginName;
         this.couponId = couponId;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.createdTime = new Date();
     }
 
@@ -124,6 +130,22 @@ public class UserCouponModel implements Serializable{
 
     public void setActualFee(long actualFee) {
         this.actualFee = actualFee;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public Date getCreatedTime() {
