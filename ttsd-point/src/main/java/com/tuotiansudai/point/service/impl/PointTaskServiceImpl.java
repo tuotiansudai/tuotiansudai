@@ -15,6 +15,7 @@ import com.tuotiansudai.point.repository.model.UserPointTaskModel;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointTaskService;
 import com.tuotiansudai.repository.mapper.*;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,6 +67,9 @@ public class PointTaskServiceImpl implements PointTaskService {
     @Override
     public List<PointTaskDto> displayPointTask(int index, int pageSize,final String loginName) {
         List<PointTaskModel> pointTaskModels = pointTaskMapper.find((index-1) * pageSize,pageSize);
+        if(CollectionUtils.isEmpty(pointTaskModels)){
+            return Lists.newArrayList();
+        }
         List<PointTaskDto> pointTaskDtos = Lists.transform(pointTaskModels, new Function<PointTaskModel, PointTaskDto>() {
             @Override
             public PointTaskDto apply(PointTaskModel pointTaskModel) {
