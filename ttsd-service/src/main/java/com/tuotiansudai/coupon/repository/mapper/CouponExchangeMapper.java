@@ -7,4 +7,9 @@ import org.springframework.stereotype.Repository;
 public interface CouponExchangeMapper {
 
     void create(CouponExchangeModel couponExchangeModel);
+
+    void update(CouponExchangeModel couponExchangeModel);
+
+    CouponExchangeModel findByCouponId(long couponId);
+
 }

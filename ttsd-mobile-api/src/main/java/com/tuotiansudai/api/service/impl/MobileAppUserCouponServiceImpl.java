@@ -22,6 +22,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class MobileAppUserCouponServiceImpl implements MobileAppUserCouponServic
             public boolean apply(UserCouponModel userCouponModel) {
                 CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
                 boolean used = InvestStatus.SUCCESS == userCouponModel.getStatus();
-                boolean expired = !used && new DateTime(couponModel.getEndTime()).plusDays(1).withTimeAtStartOfDay().isBeforeNow();
+                boolean expired = !used && userCouponModel.getEndTime().before(new Date());
                 boolean unused = !used && !expired;
                 return (used && requestDto.isUsed()) || (unused && requestDto.isUnused() && !CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType())) || (expired && requestDto.isExpired()&& !CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType()));
 

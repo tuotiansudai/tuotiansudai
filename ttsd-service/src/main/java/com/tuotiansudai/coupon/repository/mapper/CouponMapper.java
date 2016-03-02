@@ -13,13 +13,11 @@ public interface CouponMapper {
 
     CouponModel findById(long id);
 
-    List<CouponModel> findNewbieCoupon();
-
     CouponModel lockById(@Param(value = "id") long id);
 
     void updateCoupon(CouponModel couponModel);
 
-    List<CouponModel> findCoupons(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
+    List<CouponModel> findNewbieAndInvestCoupons(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
 
     List<CouponModel> findInterestCoupons(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
 
@@ -27,7 +25,7 @@ public interface CouponMapper {
 
     List<CouponModel> findBirthdayCoupons(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
 
-    int findCouponsCount();
+    int findNewbieAndInvestCouponsCount();
 
     int findInterestCouponsCount();
 
@@ -36,5 +34,9 @@ public interface CouponMapper {
     int findBirthdayCouponsCount();
 
     List<CouponModel> findAllActiveCoupons();
+
+    List<CouponModel> findCouponExchanges(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
+
+    int findCouponExchangeCount();
 
 }

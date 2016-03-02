@@ -15,4 +15,12 @@
         value(#{couponId}, #{exchangePoint})
     </insert>
 
+    <update id="update" parameterType="CouponExchangeModel">
+        update coupon_exchange set coupon_id = #{couponId}, exchange_point = #{exchangePoint} where id = #{id}
+    </update>
+
+    <select id="findByCouponId" resultMap="couponExchangeResultMap" parameterType="long">
+        select * from coupon_exchange where coupon_id = #{couponId}
+    </select>
+
 </mapper>
