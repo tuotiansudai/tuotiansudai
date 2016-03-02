@@ -63,8 +63,8 @@ public class UserCouponResponseDataDto {
         this.type = couponModel.getCouponType();
         this.name = couponModel.getCouponType().getName();
         this.amount = AmountConverter.convertCentToString(couponModel.getAmount());
-        this.startDate = couponModel.getStartTime();
-        this.endDate = couponModel.getEndTime();
+        this.startDate = userCouponModel.getStartTime();
+        this.endDate = userCouponModel.getEndTime();
         this.investLowerLimit = AmountConverter.convertCentToString(couponModel.getInvestLowerLimit());
         this.productTypes = couponModel.getProductTypes();
         this.usedTime = userCouponModel.getUsedTime();

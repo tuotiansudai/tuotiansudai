@@ -75,9 +75,9 @@ public class CouponAlertServiceImpl implements CouponAlertService {
                             newbieCouponAlertDto.getCouponIds().add(userCouponModel.getCouponId());
                             newbieCouponAlertDto.setAmount(newbieCouponAlertDto.getAmount() + couponModel.getAmount());
                             if (newbieCouponAlertDto.getExpiredDate() == null) {
-                                newbieCouponAlertDto.setExpiredDate(couponModel.getEndTime());
+                                newbieCouponAlertDto.setExpiredDate(userCouponModel.getEndTime());
                             } else {
-                                newbieCouponAlertDto.setExpiredDate(newbieCouponAlertDto.getExpiredDate().after(couponModel.getEndTime()) ? couponModel.getEndTime() : newbieCouponAlertDto.getExpiredDate());
+                                newbieCouponAlertDto.setExpiredDate(newbieCouponAlertDto.getExpiredDate().after(userCouponModel.getEndTime()) ? userCouponModel.getEndTime() : newbieCouponAlertDto.getExpiredDate());
                             }
                         }
 
@@ -85,9 +85,9 @@ public class CouponAlertServiceImpl implements CouponAlertService {
                             redEnvelopeCouponAlertDto.getCouponIds().add(userCouponModel.getCouponId());
                             redEnvelopeCouponAlertDto.setAmount(redEnvelopeCouponAlertDto.getAmount() + couponModel.getAmount());
                             if (redEnvelopeCouponAlertDto.getExpiredDate() == null) {
-                                redEnvelopeCouponAlertDto.setExpiredDate(couponModel.getEndTime());
+                                redEnvelopeCouponAlertDto.setExpiredDate(userCouponModel.getEndTime());
                             } else {
-                                redEnvelopeCouponAlertDto.setExpiredDate(redEnvelopeCouponAlertDto.getExpiredDate().after(couponModel.getEndTime()) ? couponModel.getEndTime() : redEnvelopeCouponAlertDto.getExpiredDate());
+                                redEnvelopeCouponAlertDto.setExpiredDate(redEnvelopeCouponAlertDto.getExpiredDate().after(userCouponModel.getEndTime()) ? userCouponModel.getEndTime() : redEnvelopeCouponAlertDto.getExpiredDate());
                             }
                         }
                     }

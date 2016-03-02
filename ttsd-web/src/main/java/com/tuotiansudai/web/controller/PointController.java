@@ -1,15 +1,12 @@
 package com.tuotiansudai.web.controller;
 
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.point.dto.SignInPointDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
-import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.web.util.LoginUserInfo;
@@ -29,7 +26,7 @@ import java.util.Map;
 public class PointController {
     @Autowired
     private SignInService signInService;
-
+    @Autowired
     private PointService pointService;
     @Autowired
     private PointBillMapper pointBillMapper;
@@ -53,11 +50,11 @@ public class PointController {
         List<PointBillModel> pointBillModels = pointBillMapper.findByLoginName(loginName);
         if(pointBillModels != null){
             pointBillModels =  pointBillModels.size() > 3 ?pointBillModels.subList(0,3):pointBillModels;
-            List<Map<Date,Long>> obtainedPoints = Lists.newArrayList();
+            List<Map<String,Date>> obtainedPoints = Lists.newArrayList();
             for(PointBillModel pointBillModel : pointBillModels){
-                obtainedPoints.add(Maps.newHashMap(ImmutableMap.<Date, Long>builder().put(pointBillModel.getCreatedTime(),pointBillModel.getPoint()).build()));
+                obtainedPoints.add(Maps.newHashMap(ImmutableMap.<String,Date>builder().put("" + pointBillModel.getPoint(),pointBillModel.getCreatedTime()).build()));
             }
-            modelAndView.addObject("obtainedPoint",obtainedPoints);
+            modelAndView.addObject("obtainedPoints",obtainedPoints);
 
         }
         boolean signedIn = signInService.signInIsSuccess(loginName);

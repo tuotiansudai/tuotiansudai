@@ -43,25 +43,23 @@ public class PointTaskAspect {
 
     @AfterReturning(value = "execution(* *..InvestService.investSuccess(..))")
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
-        logger.debug("after returning invest success, point task aspect starting...");
+        logger.debug("after returning invest, point task aspect starting...");
 
         InvestModel investModel = (InvestModel) joinPoint.getArgs()[1];
         pointTaskService.completeTask(PointTask.FIRST_INVEST, investModel.getLoginName());
         pointTaskService.completeTask(PointTask.SUM_INVEST_10000, investModel.getLoginName());
 
-        logger.debug("after returning invest success, point task aspect completed");
+        logger.debug("after returning invest, point task aspect completed");
     }
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.service.BindEmailService.verifyEmail(..))", returning = "returnValue")
-    public void afterReturningVerifyEmail(JoinPoint joinPoint, Object returnValue) {
-        if (returnValue != null) {
-            logger.debug("after returning bind email success, point task aspect starting...");
+    @AfterReturning(value = "execution(* *..BindEmailService.verifyEmail(..))")
+    public void afterReturningVerifyEmail(JoinPoint joinPoint) {
+        logger.debug("after returning bind email, point task aspect starting...");
 
-            String loginName = (String) joinPoint.getArgs()[0];
-            pointTaskService.completeTask(PointTask.BIND_EMAIL, loginName);
+        String loginName = (String) joinPoint.getArgs()[0];
+        pointTaskService.completeTask(PointTask.BIND_EMAIL, loginName);
 
-            logger.debug("after returning bind email success, point task aspect completed");
-        }
+        logger.debug("after returning bind email, point task aspect completed");
     }
 
     @SuppressWarnings(value = "unchecked")
@@ -75,5 +73,4 @@ public class PointTaskAspect {
 
         logger.debug("after returning recharge, point task aspect completed");
     }
-
 }
