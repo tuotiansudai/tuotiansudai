@@ -14,7 +14,7 @@ public interface CouponService {
 
     void createCoupon(String loginName,ExchangeCouponDto exchangeCouponDto) throws CreateCouponException;
 
-    void editCoupon(String loginName,CouponDto couponDto) throws CreateCouponException;
+    void editCoupon(String loginName,ExchangeCouponDto exchangeCouponDto) throws CreateCouponException;
 
     List<CouponDto> findCoupons(int index, int pageSize);
 

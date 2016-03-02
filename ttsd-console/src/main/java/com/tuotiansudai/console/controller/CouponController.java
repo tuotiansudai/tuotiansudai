@@ -407,14 +407,15 @@ public class CouponController {
     public ModelAndView createCouponExchange(@Valid @ModelAttribute ExchangeCouponDto exchangeCouponDto, RedirectAttributes redirectAttributes) {
 
         String loginName = LoginUserInfo.getLoginName();
-        ModelAndView modelAndView = new ModelAndView("/coupon-exchanges");
+        ModelAndView modelAndView = new ModelAndView();
         Long id = exchangeCouponDto.getId();
         try {
             if (id != null) {
-                //todo edit
+                couponService.editCoupon(loginName, exchangeCouponDto);
             } else {
                 couponService.createCoupon(loginName, exchangeCouponDto);
             }
+            modelAndView.setViewName("redirect:/activity-manage/coupon-exchange-manage");
         } catch (CreateCouponException e) {
             logger.error(e.getLocalizedMessage(), e);
         }

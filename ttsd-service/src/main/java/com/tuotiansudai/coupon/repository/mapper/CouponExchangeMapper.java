@@ -9,6 +9,8 @@ public interface CouponExchangeMapper {
 
     void create(CouponExchangeModel couponExchangeModel);
 
+    void update(CouponExchangeModel couponExchangeModel);
+
     CouponExchangeModel findCouponExchangeByCouponId(@Param("couponId") long couponId);
 
 }

@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="" headLab="point-manage" sideLab="createCouponExchange" title="优惠券兑换创建">
+<@global.main pageCss="" pageJavascript="create-coupon-exchange.js" headLab="point-manage" sideLab="createCouponExchange" title="优惠券兑换创建">
 
 <div class="col-md-10">
 
@@ -8,13 +8,11 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">优惠券类型:</label>
             <div class="col-sm-4">
-                <select class="selectpicker jq-b-type couponType" name="couponType">
                     <input type="text" class="form-control invest-coupon-total_count couponType" name="couponTypeDesc"
                            placeholder="" <#if exchangeCouponDto??>value="${exchangeCouponDto.couponType.getName()!}"</#if> readonly="true"/>
 
                     <input type="hidden" class="form-control coupon-type-hid" name="couponType" placeholder=""
                            <#if exchangeCouponDto??>value="${exchangeCouponDto.couponType.name()!}"</#if> />
-                </select>
             </div>
         </div>
 
