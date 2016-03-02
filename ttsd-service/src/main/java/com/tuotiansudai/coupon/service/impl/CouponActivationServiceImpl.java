@@ -89,9 +89,11 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
         UserCollector collector = this.getCollector(couponModel.getUserGroup());
 
-        couponModel.setTotalCount(collector.count(couponId));
+        if (collector != null) {
+            couponModel.setTotalCount(collector.count(couponId));
+        }
 
-        if (couponModel.getDeadline() != null) {
+        if (couponModel.getDeadline() != null && couponModel.getUserGroup() != UserGroup.EXCHANGER) {
             Date now = new Date();
             couponModel.setStartTime(new DateTime(now).withTimeAtStartOfDay().toDate());
             couponModel.setEndTime(new DateTime(now).plusDays(couponModel.getDeadline()).withTimeAtStartOfDay().minusSeconds(1).toDate());

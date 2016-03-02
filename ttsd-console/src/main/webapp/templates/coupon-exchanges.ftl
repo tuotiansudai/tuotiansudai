@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="" headLab="point-manage" sideLab="couponExchangeManage" title="优惠券兑换管理">
+<@global.main pageCss="" pageJavascript="coupon-exchanges.js" headLab="point-manage" sideLab="couponExchangeManage" title="优惠券兑换管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -112,12 +112,12 @@
             <#if exchangeCoupon.active>
                 <label>
                     <i class="check-btn add-check"></i>
-                    <button class="loan_repay already-btn btn-link inactive-btn" disabled data-id="${exchangeCoupon.id?string('0')}" data-type="${exchangeCoupon.couponType}">已生效</button>
+                    <button class="loan_repay already-btn btn-link inactive-btn" disabled data-id="${exchangeCoupon.id?string('0')}" >已生效</button>
                 </label>
             <#else>
                 <label>
                     <i class="check-btn"></i>
-                    <a class="loan_repay confirm-btn" href="javascript:void(0)" data-id="${exchangeCoupon.id?string('0')}" data-type="${exchangeCoupon.couponType}">确认生效</a>
+                    <a class="loan_repay confirm-btn" href="javascript:void(0)" data-id="${exchangeCoupon.id?string('0')}" >确认生效</a>
                 </label>
             </#if>
         </td>
