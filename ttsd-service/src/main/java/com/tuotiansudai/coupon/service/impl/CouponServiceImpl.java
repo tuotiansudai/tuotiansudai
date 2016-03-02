@@ -134,7 +134,7 @@ public class CouponServiceImpl implements CouponService {
         couponMapper.updateCoupon(couponModel);
         if (exchangeCouponDto.getExchangePoint() != null && exchangeCouponDto.getExchangePoint() > 0) {
 
-            CouponExchangeModel couponExchangeModel = couponExchangeMapper.findCouponExchangeByCouponId(exchangeCouponDto.getId());
+            CouponExchangeModel couponExchangeModel = couponExchangeMapper.findByCouponId(exchangeCouponDto.getId());
             couponExchangeModel.setExchangePoint(exchangeCouponDto.getExchangePoint());
             couponExchangeMapper.update(couponExchangeModel);
         }
@@ -296,7 +296,7 @@ public class CouponServiceImpl implements CouponService {
             @Override
             public ExchangeCouponDto apply(CouponModel input) {
                 ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto(input);
-                exchangeCouponDto.setExchangePoint(couponExchangeMapper.findCouponExchangeByCouponId(input.getId()).getExchangePoint());
+                exchangeCouponDto.setExchangePoint(couponExchangeMapper.findByCouponId(input.getId()).getExchangePoint());
                 return exchangeCouponDto;
             }
         });
