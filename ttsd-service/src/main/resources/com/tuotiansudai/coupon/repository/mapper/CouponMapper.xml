@@ -200,4 +200,23 @@
         where id = #{id}
     </update>
 
+    <select id="findCouponExchanges" parameterType="map" resultMap="couponResultMap">
+        SELECT
+          c.*
+        FROM
+          coupon c
+          JOIN coupon_exchange e
+            ON c.`id` = e.`coupon_id`
+        LIMIT #{index},#{pageSize}
+    </select>
+
+    <select id="findCouponExchangeCount" resultType="int">
+        SELECT
+          IFNULL(count(*), 0)
+        FROM
+          coupon c
+          JOIN coupon_exchange e
+            ON c.`id` = e.`coupon_id` ;
+    </select>
+
 </mapper>

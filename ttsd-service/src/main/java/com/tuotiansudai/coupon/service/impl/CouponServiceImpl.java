@@ -282,4 +282,21 @@ public class CouponServiceImpl implements CouponService {
 
         return totalInterest;
     }
+
+    @Override
+    public List<ExchangeCouponDto> findCouponExchanges(int index, int pageSize) {
+        List<CouponModel> couponModels = couponMapper.findCouponExchanges((index - 1) * pageSize, pageSize);
+        return Lists.transform(couponModels, new Function<CouponModel, ExchangeCouponDto>() {
+            @Override
+            public ExchangeCouponDto apply(CouponModel input) {
+                ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto(input);
+                exchangeCouponDto.setExchangePoint(couponExchangeMapper.findCouponExchangeByCouponId(input.getId()).getExchangePoint());
+                return exchangeCouponDto;
+            }
+        });
+    }
+
+    public int findCouponExchangeCount() {
+        return couponMapper.findCouponExchangeCount();
+    }
 }

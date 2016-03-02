@@ -43,5 +43,10 @@ public class PointServiceImpl implements PointService {
 
     }
 
+    @Override
+    public CouponExchangeModel findCouponExchangeByCouponId(long couponId) {
+        return couponExchangeMapper.findCouponExchangeByCouponId(couponId);
+    }
+
 
 }

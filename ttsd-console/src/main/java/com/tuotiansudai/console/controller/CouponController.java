@@ -5,6 +5,7 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
+import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
@@ -388,6 +389,19 @@ public class CouponController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/coupon-exchange/{id:^\\d+$}/edit", method = RequestMethod.GET)
+    public ModelAndView edit(@PathVariable long id) {
+        CouponModel couponModel = couponService.findCouponById(id);
+        CouponExchangeModel couponExchangeModel = pointService.findCouponExchangeByCouponId(id);
+        ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto(couponModel);
+        exchangeCouponDto.setExchangePoint(couponExchangeModel.getExchangePoint());
+        ModelAndView modelAndView = new ModelAndView("/coupon-exchange-edit");
+        modelAndView.addObject("exchangeCouponDto", exchangeCouponDto);
+        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
+        modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON));
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/coupon-exchange", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView createCouponExchange(@Valid @ModelAttribute ExchangeCouponDto exchangeCouponDto, RedirectAttributes redirectAttributes) {
@@ -404,6 +418,25 @@ public class CouponController {
         } catch (CreateCouponException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/coupon-exchange-manage", method = RequestMethod.GET)
+    public ModelAndView couponExchangeManage(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
+                                             @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+
+        ModelAndView modelAndView = new ModelAndView("/coupon-exchanges");
+        List<ExchangeCouponDto> exchangeCouponDtos = couponService.findCouponExchanges(index, pageSize);
+        modelAndView.addObject("exchangeCoupons", exchangeCouponDtos);
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+        int exchangeCouponCount = couponService.findCouponExchangeCount();
+        modelAndView.addObject("exchangeCouponCount", exchangeCouponCount);
+        long totalPages = exchangeCouponCount / pageSize + (exchangeCouponCount % pageSize > 0 ? 1 : 0);
+        boolean hasPreviousPage = index > 1 && index <= totalPages;
+        boolean hasNextPage = index < totalPages;
+        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
+        modelAndView.addObject("hasNextPage", hasNextPage);
         return modelAndView;
     }
 

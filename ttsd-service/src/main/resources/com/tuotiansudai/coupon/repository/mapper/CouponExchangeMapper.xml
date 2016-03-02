@@ -15,4 +15,8 @@
         value(#{couponId}, #{exchangePoint})
     </insert>
 
+    <select id="findCouponExchangeByCouponId" resultMap="couponExchangeResultMap" parameterType="map">
+        select * from coupon_exchange where coupon_id = #{couponId}
+    </select>
+
 </mapper>

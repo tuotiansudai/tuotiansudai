@@ -37,4 +37,8 @@ public interface CouponMapper {
 
     List<CouponModel> findAllActiveCoupons();
 
+    List<CouponModel> findCouponExchanges(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
+
+    int findCouponExchangeCount();
+
 }
