@@ -32,8 +32,12 @@
         select * from account where pay_user_id = #{payUserId}
     </select>
 
-    <select id="findAllLoginNamesByLike" parameterType="java.lang.String" resultType="java.lang.String">
+    <select id="findAllLoanerLikeLoginName" parameterType="java.lang.String" resultType="java.lang.String">
         select t.login_name from account t JOIN user_role r ON t.`login_name` = r.`login_name` AND r.`role` = 'LOANER' where t.login_name like CONCAT(CONCAT('%', #{loginName}), '%')
+    </select>
+
+    <select id="findAccountLikeLoginName" parameterType="java.lang.String" resultType="java.lang.String">
+        select login_name from account where login_name like CONCAT(CONCAT('%', #{loginName}), '%')
     </select>
 
     <select useCache="false" id="lockByLoginName" parameterType="java.lang.String" resultMap="accountResultMap">
@@ -50,6 +54,14 @@
 
     <select id="findByIdentityNumber" parameterType="java.lang.String" resultMap="accountResultMap">
         select * from account where identity_number = #{identityNumber}
+    </select>
+
+    <select id="findLoginNames" resultType="java.lang.String">
+        select login_name from account
+    </select>
+
+    <select id="findBirthOfAccountInMonth" resultType="java.lang.String">
+        select login_name from account where (if(length(identity_number) = 18,substring(identity_number,11,2),substring(identity_number,9,2))) = DATE_FORMAT(now(),'%m')
     </select>
 
 </mapper>

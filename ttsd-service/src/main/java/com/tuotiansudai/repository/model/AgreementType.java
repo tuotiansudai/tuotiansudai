@@ -1,8 +1,5 @@
 package com.tuotiansudai.repository.model;
 
-/**
- * Created by Administrator on 2015/9/15.
- */
 public enum AgreementType {
 
     ZCZP0800("无密快捷协议"),

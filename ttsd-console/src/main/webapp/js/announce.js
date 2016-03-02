@@ -7,7 +7,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
             }
             var id = $('.jq-id').val();
             var title = $('.jq-title').val();
-            window.location.href = '/announce-manage/announce?id='+id+'&title='+title+'&currentPageNo=1&pageSize=10';
+            window.location.href = '/announce-manage/announce?id='+id+'&title='+title+'&index=1&pageSize=10';
         });
 
         $('.publishAD').click(function(){

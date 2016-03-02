@@ -1,5 +1,6 @@
 package com.tuotiansudai.web.controller;
 
+import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.text.MessageFormat;
+import java.util.List;
 
 @Controller
 public class InvestController {
@@ -25,7 +27,7 @@ public class InvestController {
     private InvestService investService;
 
     @Autowired
-    private LoanController loanController;
+    private CouponService couponService;
 
     @RequestMapping(value = "/invest", method = RequestMethod.POST)
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, RedirectAttributes redirectAttributes) {
@@ -53,11 +55,19 @@ public class InvestController {
         return new ModelAndView(MessageFormat.format("redirect:/loan/{0}", investDto.getLoanId()));
     }
 
-    @RequestMapping(value = "/calculate-expected-interest/loan/{loanId}/amount/{amount:^\\d+\\.\\d{2}$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/calculate-expected-interest/loan/{loanId:^\\d+$}/amount/{amount:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
-    public String calculateExpectedInterest(@PathVariable long loanId, @PathVariable String amount) {
-        long expectedInterest = investService.estimateInvestIncome(loanId, AmountConverter.convertStringToCent(amount));
+    public String calculateExpectedInterest(@PathVariable long loanId, @PathVariable long amount) {
+        long expectedInterest = investService.estimateInvestIncome(loanId, amount);
         return AmountConverter.convertCentToString(expectedInterest);
     }
 
+    @RequestMapping(value = "/calculate-expected-coupon-interest/loan/{loanId:^\\d+$}/amount/{amount:^\\d+$}", method = RequestMethod.GET)
+    @ResponseBody
+    public String calculateCouponExpectedInterest(@PathVariable long loanId,
+                                                  @PathVariable long amount,
+                                                  @RequestParam List<Long> couponIds) {
+        long expectedInterest = couponService.estimateCouponExpectedInterest(loanId, couponIds, amount);
+        return AmountConverter.convertCentToString(expectedInterest);
+    }
 }

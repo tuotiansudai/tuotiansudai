@@ -84,8 +84,8 @@
 
     <div class="row">
         <div class="title-list">
-            <span>合计投资金额： ${investAmountSum/100} </span>
-            <span>合计推荐奖励金额： ${rewardAmountSum/100}</span>
+            <span>合计投资金额： ${investAmountSum/100} 元</span>
+            <span>合计推荐奖励金额： ${rewardAmountSum/100} 元</span>
         </div>
         <table class="table table-bordered table-hover">
             <thead>
@@ -94,14 +94,14 @@
                 <th>期数</th>
                 <th>投资人</th>
                 <th>投资人姓名</th>
-                <th>投资金额</th>
+                <th>投资金额(元)</th>
                 <th>投资时间</th>
                 <th>来源</th>
                 <th>推荐人</th>
                 <th>推荐人姓名</th>
                 <th>推荐人是否业务员</th>
                 <th>推荐层级</th>
-                <th>推荐奖励</th>
+                <th>推荐奖励(元)</th>
                 <th>奖励状态</th>
                 <th>奖励时间</th>
             </tr>
@@ -137,17 +137,17 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage>
-                    <a href="/user-manage/referrer?referrerLoginName=${referrerLoginName!}&investLoginName=${investLoginName!}&investStartTime=${(investStartTime?string('yyyy-MM-dd'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd'))!}&level=${(level?string('0'))!}&rewardStartTime=${(rewardStartTime?string('yyyy-MM-dd'))!}&rewardEndTime=${(rewardEndTime?string('yyyy-MM-dd'))!}&role=${role!}&source=${source!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}">
+                    <a href="/user-manage/referrer?referrerLoginName=${referrerLoginName!}&investLoginName=${investLoginName!}&investStartTime=${(investStartTime?string('yyyy-MM-dd'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd'))!}&level=${(level?string('0'))!}&rewardStartTime=${(rewardStartTime?string('yyyy-MM-dd'))!}&rewardEndTime=${(rewardEndTime?string('yyyy-MM-dd'))!}&role=${role!}&source=${source!}&index=${index-1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
                     <span>« Prev</span>
                 </a>
                 </li>
-                <li><a>${currentPageNo}</a></li>
+                <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage>
-                    <a href="/user-manage/referrer?referrerLoginName=${referrerLoginName!}&investLoginName=${investLoginName!}&investStartTime=${(investStartTime?string('yyyy-MM-dd'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd'))!}&level=${(level?string('0'))!}&rewardStartTime=${(rewardStartTime?string('yyyy-MM-dd'))!}&rewardEndTime=${(rewardEndTime?string('yyyy-MM-dd'))!}&role=${role!}&source=${source!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}">
+                    <a href="/user-manage/referrer?referrerLoginName=${referrerLoginName!}&investLoginName=${investLoginName!}&investStartTime=${(investStartTime?string('yyyy-MM-dd'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd'))!}&level=${(level?string('0'))!}&rewardStartTime=${(rewardStartTime?string('yyyy-MM-dd'))!}&rewardEndTime=${(rewardEndTime?string('yyyy-MM-dd'))!}&role=${role!}&source=${source!}&index=${index+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>

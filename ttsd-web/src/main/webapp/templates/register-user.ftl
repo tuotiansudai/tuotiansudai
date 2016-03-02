@@ -8,6 +8,7 @@
         <li class="last"><s></s>3 开始投资<g></g></li>
     </ul>
     <div class="clear-blank"></div>
+    <nav></nav>
     <div class="register-box">
         <form class="register-user-form" action="/register/user" method="post" autocomplete="off" >
         <ul class="reg-list tl register-step-one">
@@ -41,6 +42,7 @@
 
                 </li>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <input type="hidden" name="channel" value="${(channel)!(originalFormData.channel)!}"/>
 
                 <#if success?? && success == false>
                     <div class="error">注册失败，请检查您提交的信息是否正确！</div>

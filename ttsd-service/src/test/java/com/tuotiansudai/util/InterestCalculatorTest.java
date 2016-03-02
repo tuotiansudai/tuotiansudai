@@ -1,8 +1,13 @@
 package com.tuotiansudai.util;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.ProductType;
 import org.joda.time.DateTime;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;

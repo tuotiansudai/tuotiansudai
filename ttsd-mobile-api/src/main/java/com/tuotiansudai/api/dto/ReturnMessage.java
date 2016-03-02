@@ -58,7 +58,7 @@ public enum ReturnMessage {
     NO_MATCH_XS_INVEST_CONDITION("0050","不符合新手标投资条件"),
     ILLEGAL_INVEST_AMOUNT("0051","投资金额不符合递增金额要求"),
     MORE_THAN_MAX_INVEST_AMOUNT("0052","投资金额超过了用户投资限额"),
-    LOAN_IS_FULL("0052","标的已满"),
+    LOAN_IS_FULL("0053","标的已满"),
     LESS_THAN_MIN_INVEST_AMOUNT("0054","投资金额小于标的最小投资金额"),
     OUT_OF_NOVICE_INVEST_LIMIT("0055","新手标投资已超上限"),
     INVEST_FAILED("0056","投资失败"),
@@ -73,6 +73,7 @@ public enum ReturnMessage {
     /******签约失败******/
     BANK_CARD_SIGN_FAIL("0027","签约失败"),
     NOT_BIND_CARD("0039","该用户尚未绑卡，签约失败"),
+    AUTO_INVEST("0088","已经签约自动投标"),
     /******签约失败******/
 
     /******手机端请求第三方接口时，出现网络异常******/
@@ -97,9 +98,24 @@ public enum ReturnMessage {
 
     USER_IS_DISABLED("0049", "登录尝试次数过多，用户已被禁用"),
     CANNOT_GET_APK_VERSION("0060", "查找不到版本信息"),
+    /******自动投标******/
+    AUTO_INVEST_PLAN_NOT_EXIST("0061","自动投标计划不存在"),
+    MIN_NOT_EXCEED_MAX_INVEST_AMOUNT("0062","最小投资金额不能超过最大投资金额"),
+    MIN_INVEST_AMOUNT_NOT_NULL("0063","最小投资金额不能空"),
+    MAX_INVEST_AMOUNT_NOT_NULL("0064","最大投资金额不能空"),
+    RETENTION_AMOUNT_NOT_NULL("0065","保留金额不能空"),
+    AUTO_INVEST_PERIODS_NOT_NULL("0066","保留金额不能空"),
+
 
     /******提现******/
-    WITHDRAW_AMOUNT_NOT_REACH_FEE("0050","提现金额需大于手续费"),
+    WITHDRAW_AMOUNT_NOT_REACH_FEE("0070","提现金额需大于手续费"),
+
+    /******意见反馈******/
+    FEEDBACK_CAN_NOT_BE_EMPTY("0080", "内容不能为空"),
+
+    /******手机端修改密码******/
+    CHANGEPASSWORD_INVALID_PASSWORD("0090", "原密码错误"),
+
 
     BAD_REQUEST("0400", "非法请求"),
     UNAUTHORIZED("0401", "未授权");

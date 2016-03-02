@@ -9,7 +9,7 @@
             <#list loanTitleRelationModel.applicationMaterialUrls?split(",") as title>
             initialPreview.push("<img src='${title}' class='file-preview-image' alt='${title}' title='${title}'>");
             </#list>
-        rereq['${loanTitleRelationModel.titleId}'] = initialPreview;
+        rereq['${loanTitleRelationModel.titleId?string.computer}'] = initialPreview;
         </#list>
     </#if>
 </script>
@@ -64,6 +64,24 @@
                        value="${loanInfo.name}" <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if>>
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">产品线类型: </label>
+            <div class="col-sm-4">
+                <select class="selectpicker b-width" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
+                    <option value="">请选择</option>
+                    <#list productTypes as productType>
+                        <option value="${productType.name()}"
+                                <#if loanInfo.productType?? && productType.name() == loanInfo.productType>selected</#if>
+                                data-period="${productType.getPeriods()}" data-baserate="${productType.getRate()?string('0.00')}">
+                            ${productType.getName()}
+                        </option>
+                    </#list>
+                </select>
+                <input type="hidden" class="jq-product-type" value="${loanInfo.productType!}"/>
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="col-sm-2 control-label">代理用户: </label>
 
@@ -120,8 +138,8 @@
             <label class="col-sm-2 control-label">借款期限: </label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control jq-timer" placeholder="" datatype="num" errormsg="借款期限需要填写数字"
-                       value="${loanInfo.periods}" <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if>>
+                <input type="text" class="form-control jq-timer" placeholder="" datatype="num" errormsg="请选择产品线类型"
+                       value="${loanInfo.periods}" disabled="disabled">
 
             </div>
             <div class="col-sm-3">
@@ -216,6 +234,9 @@
                 <input type="hidden" class="jq-impact-type" value="${loanInfo.activityType}"/>
             </div>
         </div>
+
+
+
         <div class="form-group">
             <label class="col-sm-2 control-label">活动利率（%）: </label>
 
@@ -233,8 +254,8 @@
 
             <div class="col-sm-4">
                 <input type="text" class="form-control jq-base-percent jq-money" placeholder="" datatype="money_fl"
-                       errormsg="基本利率需要正确填写" value="${(loanInfo.baseRate*100)?string('0.00')}"
-                       <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
+                       errormsg="请选择产品线类型" value="${(loanInfo.baseRate*100)?string('0.00')}"
+                       disabled="disabled">
             </div>
         </div>
         <div class="form-group input-append">
@@ -265,6 +286,50 @@
                 </div>
             </div>
         </div>
+
+        <#if loanInfo.verifyTime??>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">
+                初审时间:
+            </label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" disabled="disabled" value="${loanInfo.verifyTime?string('yyyy-MM-dd HH:mm:ss')}"/>
+            </div>
+        </div>
+        </#if>
+
+        <#if loanInfo.verifyLoginName??>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">
+                初审人员:
+            </label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" disabled="disabled" value="${loanInfo.verifyLoginName}"/>
+            </div>
+        </div>
+        </#if>
+
+        <#if loanInfo.recheckTime??>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">
+                复审时间:
+            </label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" disabled="disabled" value="${loanInfo.recheckTime?string('yyyy-MM-dd HH:mm:ss')}"/>
+            </div>
+        </div>
+        </#if>
+
+        <#if loanInfo.recheckLoginName??>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">
+                复审人员:
+            </label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" disabled="disabled" value="${loanInfo.recheckLoginName}"/>
+            </div>
+        </div>
+        </#if>
 
         <!--<div class="form-group">-->
         <!--<label  class="col-sm-2 control-label">初审是否通过: </label>-->

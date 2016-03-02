@@ -1,7 +1,9 @@
 package com.tuotiansudai.paywrapper.service;
 
+import com.google.common.base.Joiner;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.SmsFatalNotifyDto;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -71,7 +73,7 @@ public class InvestService_PaybackExceptionTest {
     @Mock
     InvestNotifyRequestMapper investNotifyRequestMapper;
 
-    @Autowired
+    @Mock
     private SmsWrapperClient smsWrapperClient;
 
     @Mock
@@ -95,10 +97,10 @@ public class InvestService_PaybackExceptionTest {
         model.setOrderId(orderId);
         model.setRetCode("0000");
 
-        List<InvestNotifyRequestModel> toDoList = new ArrayList<InvestNotifyRequestModel>();
-        toDoList.add(model);
+//        List<InvestNotifyRequestModel> toDoList = new ArrayList<InvestNotifyRequestModel>();
+//        toDoList.add(model);
 
-        when(this.investNotifyRequestMapper.getTodoList(anyInt())).thenReturn(toDoList);
+//        when(this.investNotifyRequestMapper.getTodoList(anyInt())).thenReturn(toDoList);
 
         long loanId = 77777777L;
         long investId = 1;
@@ -127,7 +129,9 @@ public class InvestService_PaybackExceptionTest {
         when(this.paySyncClient.send(Matchers.<Class<? extends ProjectTransferMapper>>any(), any(ProjectTransferRequestModel.class), Matchers.<Class<ProjectTransferResponseModel>>any())).thenThrow(PayException.class);
 
         when(this.redisWrapperClient.incr(any(String.class))).thenCallRealMethod();
+        when(this.smsWrapperClient.sendFatalNotify(any(SmsFatalNotifyDto.class))).thenReturn(null);
         investService.asyncInvestCallback();
+        investService.processOneCallback(model);
 
         ArgumentCaptor<Long> accountModelArgumentCaptor1 = ArgumentCaptor.forClass(Long.class);
         ArgumentCaptor<InvestStatus> accountModelArgumentCaptor2 = ArgumentCaptor.forClass(InvestStatus.class);
@@ -135,8 +139,6 @@ public class InvestService_PaybackExceptionTest {
         long investModelId = accountModelArgumentCaptor1.getValue();
         InvestStatus investModelStatus = accountModelArgumentCaptor2.getValue();
         assertThat(investModelStatus, is(InvestStatus.OVER_INVEST_PAYBACK_FAIL));
-
-
     }
 
     // case7: 超投，返款抛出 Exception 异常，需要集成测试中验证

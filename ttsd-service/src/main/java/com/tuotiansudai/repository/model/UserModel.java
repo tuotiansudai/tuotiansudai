@@ -38,7 +38,13 @@ public class UserModel implements Cloneable, Serializable {
 
     private String city;
 
+    private String autoInvestStatus;
+
+    private boolean staff;
+
     private AccountModel account;
+
+    private Date lastBillTime;
 
     public String getSalt() {
         return salt;
@@ -178,6 +184,30 @@ public class UserModel implements Cloneable, Serializable {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getAutoInvestStatus() {
+        return autoInvestStatus;
+    }
+
+    public void setAutoInvestStatus(String autoInvestStatus) {
+        this.autoInvestStatus = autoInvestStatus;
+    }
+
+    public boolean isStaff() {
+        return staff;
+    }
+
+    public void setStaff(boolean staff) {
+        this.staff = staff;
+    }
+
+    public Date getLastBillTime() {
+        return lastBillTime;
+    }
+
+    public void setLastBillTime(Date lastBillTime) {
+        this.lastBillTime = lastBillTime;
     }
 
     @Override

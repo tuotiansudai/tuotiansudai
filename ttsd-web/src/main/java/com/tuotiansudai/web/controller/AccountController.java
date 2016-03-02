@@ -5,6 +5,7 @@ import com.tuotiansudai.service.*;
 import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.apache.commons.lang3.time.DateUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +36,7 @@ public class AccountController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView account() {
         ModelAndView modelAndView = new ModelAndView("/account");
-        Date startTime =  DateUtil.getFirstDayOfMonth(new Date());
+        Date startTime = new DateTime().dayOfMonth().withMinimumValue().toDate();
         Date endTime = DateUtils.addMonths(startTime, 1);
         String loginName = LoginUserInfo.getLoginName();
         modelAndView.addObject("loginName",loginName);
@@ -56,5 +57,4 @@ public class AccountController {
         modelAndView.addObject("latestInvestList", investRepayService.findLatestInvestByLoginName(loginName, 0, 6));
         return modelAndView;
     }
-
 }

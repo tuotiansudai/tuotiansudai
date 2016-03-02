@@ -1,23 +1,19 @@
 <#import "../macro/global.ftl" as global>
-    <@global.main pageCss="${css.about_us}" pageJavascript="" activeNav="关于我们" activeLeftNav="联系我们" title="联系我们">
+    <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="关于我们" activeLeftNav="联系我们" title="联系我们">
     <div class="about-us-container">
         <h2 class="column-title"><em>联系我们</em></h2>
         <b class="text-m">客户服务</b>
         <div class="clear-blank"></div>
         <span class="text-s">
-            客服热线：400-169-1188（沟通时间：9:00－21:00）<br/>
+            客服热线：400-169-1188（沟通时间：9:00－20:00）<br/>
             客服邮箱：kefu@tuotiansudai.com <br/>
-            客服微信：tuotiansudai02 &nbsp;&nbsp;
-tuotiansudai03&nbsp;&nbsp;
-tuotiansudai05<br/>
-            微信公众号：tuotiansudai<br/>
         </span>
         <div class="clear-blank"></div>
         <h2 class="column-title"><em>关注我们</em></h2>
         <b class="text-m">实时关注</b>
 
         <ul class="real-attention clearfix">
-            <li><img src="${staticServer}/images/sign/micro-code.png" class="responsive-width" alt="" title=""/><span>微信二维码</span></li>
+            <!--<li><img src="${staticServer}/images/sign/micro-code.png" class="responsive-width" alt="" title=""/><span>微信二维码</span></li>-->
             <li><img src="${staticServer}/images/sign/blog-code.png" class="responsive-width" alt="" title=""/><span>微博二维码</span></li>
         </ul>
 
@@ -28,7 +24,7 @@ tuotiansudai05<br/>
 
         <span class="text-s">
             拓天速贷 <br/>
-地址：北京市丰台区洋桥12号天路蓝图大厦5层<br/>
+地址：北京市丰台区洋桥12号天路蓝图大厦8层<br/>
 邮编：100068<br/>
 电话：53387992<br/>
         </span>

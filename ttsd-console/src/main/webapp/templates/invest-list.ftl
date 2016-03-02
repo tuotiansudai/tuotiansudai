@@ -84,21 +84,25 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th colspan="12">合计投资金额：${data.sumAmount/100} 元</th>
+                <th colspan="16">合计投资金额：${data.sumAmount/100} 元</th>
             </tr>
             <tr>
                 <th>项目编号</th>
                 <th>项目名称</th>
                 <th>期数</th>
                 <th>投资人</th>
-                <th>业务员</th>
+                <th>投资人姓名</th>
+                <th>投资人手机号</th>
                 <th>推荐人</th>
+                <th>推荐人姓名</th>
+                <th>推荐人手机号</th>
                 <th>渠道</th>
                 <th>来源</th>
                 <th>投资时间</th>
                 <th>自动投标</th>
-                <th>投资金额</th>
+                <th>投资金额(元)</th>
                 <th>投资状态</th>
+                <th>回款记录</th>
             </tr>
             </thead>
             <tbody>
@@ -108,18 +112,30 @@
                     <td>${invest.loanName}</td>
                     <td>${invest.loanPeriods?string('0')}</td>
                     <td>${invest.investorLoginName!}</td>
-                    <td>${invest.isStaff()?string('是','否')}</td>
-                    <td>${invest.referrerLoginName!}</td>
+                    <td>${invest.investorUserName!}
+                        <#if invest.isStaff()>
+                            <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
+                        </#if>
+                    </td>
+                    <td>${invest.investorMobile!}</td>
+                    <td>${invest.referrerLoginName!}
+                        <#if invest.isReferrerStaff()>
+                            <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
+                        </#if>
+                    </td>
+                    <td>${invest.referrerUserName!}</td>
+                    <td>${invest.referrerMobile!}</td>
                     <td>${invest.channel!}</td>
                     <td>${invest.source}</td>
                     <td>${invest.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                     <td>${invest.autoInvest?then('是','否')}</td>
                     <td>${invest.amount}</td>
                     <td>${invest.status}</td>
+                    <td><a href="/finance-manage/invest-repay/${invest.investId?string.computer}">回款记录</a></td>
                 </tr>
                 <#else>
                 <tr>
-                    <td colspan="12">Empty</td>
+                    <td colspan="16">Empty</td>
                 </tr>
                 </#list>
             </tbody>
@@ -136,7 +152,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if data.hasPreviousPage >
-                    <a href="?index=${data.index - 1}&<#if loanId??>loanId=${loanId}&</#if><#if loginName??>loginName=${loginName}&</#if><#if startTime??>startTime=${startTime}&</#if><#if endTime??>endTime=${endTime!}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if>" aria-label="Previous">
+                    <a href="?index=${data.index - 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if loginName??>loginName=${loginName}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if>" aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
                     </#if>
@@ -146,7 +162,7 @@
                 <li><a>${data.index}</a></li>
                 <li>
                     <#if data.hasNextPage>
-                    <a href="?index=${data.index + 1}&<#if loanId??>loanId=${loanId}&</#if><#if loginName??>loginName=${loginName}&</#if><#if startTime??>startTime=${startTime}&</#if><#if endTime??>endTime=${endTime!}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if>" aria-label="Next">
+                    <a href="?index=${data.index + 1}&<#if loanId??>loanId=${loanId?string.computer}&</#if><#if loginName??>loginName=${loginName}&</#if><#if startTime??>startTime=${startTime?string('yyyy-MM-dd')}&</#if><#if endTime??>endTime=${endTime?string('yyyy-MM-dd')}&</#if><#if investStatus??>investStatus=${investStatus}&</#if><#if channel??>channel=${channel}&</#if><#if source??>source=${source}&</#if><#if role??>role=${role}&</#if>" aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">
                     </#if>

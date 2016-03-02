@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class BindBankCardDto implements Serializable {
 
     @NotEmpty
-    @Pattern(regexp = "^\\d{16,19}$")
+    @Pattern(regexp = "^\\d+$")
     private String cardNumber;
 
     private String loginName;

@@ -1,6 +1,13 @@
 package com.tuotiansudai.paywrapper.repository.model.async.callback;
 
+import com.tuotiansudai.repository.model.AgreementType;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+
 public class BankCardNotifyRequestModel extends BaseCallbackRequestModel {
+
     private String userId;
 
     private String lastFourCardid;
@@ -8,6 +15,15 @@ public class BankCardNotifyRequestModel extends BaseCallbackRequestModel {
     private String userBindAgreementList;
 
     private String gateId;
+
+    public boolean isOpenPay() {
+        try {
+            return userBindAgreementList != null && userBindAgreementList.contains(AgreementType.ZKJP0700.name())
+                    && URLDecoder.decode(userBindAgreementList, StandardCharsets.UTF_8.toString()).split(",")[1].equals(SUCCESS_CODE);
+        } catch (UnsupportedEncodingException e) {
+            return false;
+        }
+    }
 
     public String getUserId() {
         return userId;

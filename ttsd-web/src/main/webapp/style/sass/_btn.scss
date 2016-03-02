@@ -57,8 +57,8 @@
     //box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
   }
   &:disabled, &:disabled:hover {
-    background: #666 !important;
-    border:1px solid #666!important;
+    background: #ccc !important;
+    border:1px solid #ccc!important;
     cursor: default;
     color: #fff;
   }
@@ -73,8 +73,8 @@
     background: rgba(255,117,42,0.8);
   }
   &:disabled, &:disabled:hover {
-    background: #666 !important;
-    border:1px solid #666!important;
+    background: #ccc !important;
+    border:1px solid #ccc!important;
     cursor: default;
     color: #fff;
   }
@@ -88,8 +88,8 @@
     background: rgba(244,105,22,0.8);
   }
   &:disabled, &:disabled:hover {
-    background: #666;
-    border:1px solid #666;
+    background: #ccc;
+    border:1px solid #ccc;
     cursor: default;
   }
 }
@@ -110,7 +110,7 @@
   @extend .btn;
   background: rgba(85,190,229,1);
   border:1px solid rgba(85,190,229,1);
-  color: #fff!important;
+  color: #fff;
   &:hover {
     background: rgba(85,190,229,0.8);
     border:1px solid rgba(85,190,229,0.8);
@@ -146,14 +146,13 @@
 
 select {
   vertical-align: middle;
-  background: none repeat scroll 0 0 nth($baseColor, 5);
+  background: none;
   border: {
-    color: nth($btnColor, 2) nth($btnColor, 3) nth($btnColor, 3) nth($btnColor, 2);
+    color: #ccc;
     style: solid;
     width: 1px;
   }
   color: nth($btnColor, 1);
-  padding: 4px;
 }
 
 input {
@@ -170,6 +169,10 @@ input[type="radio"] {
   margin-right: 5px;
 }
 
+input[type="checkbox"] {
+  margin-right: 5px;
+}
+
 .input-control {
   width: 200px;
   border-radius: 4px;
@@ -180,7 +183,6 @@ input[type="radio"] {
   input[type="checkbox"] {
     display: none;
   }
-
 }
 
 label.radio {

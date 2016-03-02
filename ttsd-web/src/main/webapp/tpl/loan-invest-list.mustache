@@ -3,17 +3,17 @@
     <tr>
         <th>出借人</th>
         <th class="tr">出借金额（元）</th>
-        <th>出借方式</th>
-        <th class="tr">预期利息（元）</th>
+        <th class="responsive-hide">出借方式</th>
+        <th class="responsive-hide tr">预期利息（元）</th>
         <th>出借时间</th>
     </tr>
     </thead>
     <tbody>
     {{#records}}
         <tr>
-            <td class="loan-invest-loginName">{{loginName}}</td>
-            <td class="tr loan-invest-amount">{{amount}}</td>
-            <td>
+            <td>{{loginName}}</td>
+            <td class="tr">{{amount}}</td>
+            <td class="responsive-hide">
                 {{#autoInvest}}
                 自动
                 {{/autoInvest}}
@@ -22,8 +22,8 @@
                 {{/autoInvest}}
                 <span class="invest-{{source}}"></span>
             </td>
-            <td class="tr">{{expectedInterest}}</td>
-            <td class="tr loan-invest-time">{{createdTime}}</td>
+            <td class="responsive-hide tr">{{expectedInterest}}</td>
+            <td>{{createdTime}}</td>
         </tr>
     {{/records}}
     </tbody>

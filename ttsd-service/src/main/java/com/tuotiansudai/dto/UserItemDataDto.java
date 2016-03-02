@@ -4,6 +4,7 @@ import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -16,10 +17,20 @@ public class UserItemDataDto implements Serializable {
     private String mobile;
     private String referrer;
     private String channel;
+    private boolean staff;
     private Date registerTime;
     private List<UserRoleModel> userRoles;
     private UserStatus status;
     private Source source;
+    private String autoInvestStatus;
+    private boolean referrerStaff;
+    private boolean bankCard;
+    private String identityNumber;
+    private String province;
+    private String city;
+    private String balance;
+    private Date lastBillTime;
+
 
     public String getLoginName() {
         return loginName;
@@ -69,6 +80,14 @@ public class UserItemDataDto implements Serializable {
         this.channel = channel;
     }
 
+    public boolean isStaff() {
+        return staff;
+    }
+
+    public void setStaff(boolean staff) {
+        this.staff = staff;
+    }
+
     public Date getRegisterTime() {
         return registerTime;
     }
@@ -101,6 +120,82 @@ public class UserItemDataDto implements Serializable {
         this.source = source;
     }
 
+    public String getAutoInvestStatus() {
+        return autoInvestStatus;
+    }
+
+    public void setAutoInvestStatus(String autoInvestStatus) {
+        this.autoInvestStatus = autoInvestStatus;
+    }
+
+    public boolean isReferrerStaff() {
+        return referrerStaff;
+    }
+
+    public void setReferrerStaff(boolean referrerStaff) {
+        this.referrerStaff = referrerStaff;
+    }
+
+    public boolean isBankCard() {
+        return bankCard;
+    }
+
+    public void setBankCard(boolean bankCard) {
+        this.bankCard = bankCard;
+    }
+
+    public String getIdentityNumber() {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getBalance() {
+        return balance;
+    }
+
+    public void setBalance(String balance) {
+        this.balance = balance;
+    }
+
+    public Date getLastBillTime() {
+        return lastBillTime;
+    }
+
+    public void setLastBillTime(Date lastBillTime) {
+        this.lastBillTime = lastBillTime;
+    }
+
+    public String getBirthday() {
+        if (identityNumber == null) {
+            return "";
+        } else if (identityNumber.length() == 18) {
+            return identityNumber.substring(6, 14);
+        } else if (identityNumber.length() == 15) {
+            return identityNumber.substring(6, 12);
+        } else {
+            return "";
+        }
+    }
+
     public UserItemDataDto(UserModel userModel) {
         this.loginName = userModel.getLoginName();
         this.email = userModel.getEmail();
@@ -112,8 +207,13 @@ public class UserItemDataDto implements Serializable {
         if (userModel.getAccount() != null) {
             this.userName = userModel.getAccount().getUserName();
         }
+        this.balance = AmountConverter.convertCentToString(userModel.getAccount().getBalance());
         this.status = userModel.getStatus();
-
+        this.autoInvestStatus = userModel.getAutoInvestStatus();
+        this.identityNumber = userModel.getAccount().getIdentityNumber();
+        this.province = userModel.getProvince();
+        this.city = userModel.getCity();
+        this.lastBillTime = userModel.getLastBillTime();
     }
 }
 

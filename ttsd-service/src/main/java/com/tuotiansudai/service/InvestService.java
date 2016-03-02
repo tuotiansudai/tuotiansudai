@@ -3,11 +3,7 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
-import com.tuotiansudai.repository.model.AutoInvestPlanModel;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.*;
 
 import java.util.Date;
 import java.util.List;
@@ -52,4 +48,8 @@ public interface InvestService {
     AutoInvestPlanModel findUserAutoInvestPlan(String loginName);
 
     List<String> findAllChannel();
+
+    List<String> findAllInvestChannels();
+
+    InvestModel findById(long investId);
 }

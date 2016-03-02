@@ -7,8 +7,6 @@ from fabric.contrib.project import upload_project
 env.use_ssh_config = True
 env.ssh_config_path = '/workspace/v2config/config'
 env.roledefs = {
-    'db': ['web1'],
-    'web': ['web1', 'web2'],
     'portal': ['beijing', 'shanghai'],
     'pay': ['chongqing', 'tianjin'],
     'worker': ['changchun'],
@@ -20,52 +18,7 @@ env.roledefs = {
 }
 
 
-@roles('web')
-def pull():
-    with cd('/workspace/tuotian'):
-        sudo('chmod -R g=u .')
-        run('git checkout master')
-        run('git pull')
-
-
-def mkwar():
-    with cd('/workspace/tuotian/v1'):
-        run('/opt/gradle/latest/bin/gradle clean')
-        run('/opt/gradle/latest/bin/gradle war')
-
-
-def stop_tomcat():
-    sudo('kill -9 `cat /var/run/tomcat6.pid`')
-    sudo('rm /var/run/tomcat6.pid')
-    sudo('rm /var/lock/subsys/tomcat6')
-
-
-def deploy_tomcat():
-    with cd('/workspace/tuotian/v1'):
-        stop_tomcat()
-        sudo('rm -rf /usr/share/tomcat6/webapps/ROOT')
-        sudo('cp war/ROOT.war /usr/share/tomcat6/webapps/')
-        sudo('service tomcat6 start')
-
-
-@roles('web')
-# @parallel
-def build():
-    pull()
-    mkwar()
-    deploy_tomcat()
-
-
-def deploy():
-    """
-        Usage: fab deploy -p password --show=debug
-    """
-    execute(pull)
-    execute(migrate)
-    execute(build)
-
-
-def v2migrate():
+def migrate():
     local('/opt/gradle/latest/bin/gradle clean')
     local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=aa ttsd-service:flywayMigrate')
     local('/opt/gradle/latest/bin/gradle -PconfigPath=/workspace/v2config/default/ -Pdatabase=ump_operations ttsd-service:flywayMigrate')
@@ -85,19 +38,20 @@ def mk_war():
 def mk_worker_zip():
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/')
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle -Prop=invest distZip -PconfigPath=/workspace/v2config/default/')
+    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle -Prop=jpush distZip -PconfigPath=/workspace/v2config/default/')
 
 
 def mk_static_zip():
     local('cd ./ttsd-web/src/main/webapp && zip -r static.zip images/ js/ pdf/ style/ tpl/')
 
 
-def v2build():
+def build():
     mk_war()
     mk_worker_zip()
     mk_static_zip()
 
 
-def v2compile():
+def compile():
     local('/opt/gradle/latest/bin/gradle clean')
     local('/usr/bin/git clean -fd')
     local('/opt/gradle/latest/bin/gradle compileJava')
@@ -146,6 +100,7 @@ def deploy_worker():
     with cd('/workspace'):
         sudo('rm -rf ttsd-job-worker-all/')
         sudo('rm -rf ttsd-job-worker-invest/')
+        sudo('rm -rf ttsd-job-worker-jpush/')
         sudo('unzip \*.zip')
         sudo('supervisorctl start all')
 
@@ -178,18 +133,106 @@ def deploy_all():
     execute(deploy_web)
 
 
-def v2deploy():
-    v2compile()
-    v2migrate()
-    v2build()
+def pre_deploy():
+    compile()
+    migrate()
+    build()
+
+
+def all():
+    pre_deploy()
     deploy_all()
 
 
-@roles('db')
-def migrate():
-    with cd('/workspace/tuotian/v1'):
-        run('/opt/gradle/latest/bin/gradle clean')
-        run('/opt/gradle/latest/bin/gradle flywayMigrate')
+def web():
+    pre_deploy()
+    execute(deploy_web)
+    execute(deploy_static)
+
+
+def console():
+    pre_deploy()
+    execute(deploy_console)
+
+
+def api():
+    pre_deploy()
+    execute(deploy_api)
+
+
+def sms():
+    pre_deploy()
+    execute(deploy_sms)
+
+
+def worker():
+    pre_deploy()
+    execute(deploy_worker)
+
+
+def get_30days_before(date_format="%Y-%m-%d"):
+    from datetime import timedelta, date
+    return (date.today() - timedelta(days=30)).strftime(date_format)
+
+
+def remove_tomcat_logs():
+    iso_date = get_30days_before()
+    with cd('/var/log/tomcat'):
+        run('rm -f *{0}.log'.format(iso_date))
+        run('rm -f *{0}.txt'.format(iso_date))
+
+
+def remove_nginx_logs():
+    normal_date = get_30days_before(date_format='%Y%m%d')
+    with cd('/var/log/nginx'):
+        run('rm -f *{0}.gz'.format(normal_date))
+
+
+@roles('portal')
+@parallel
+def remove_web_logs():
+    remove_tomcat_logs()
+    remove_nginx_logs()
+
+
+@roles('pay')
+@parallel
+def remove_pay_logs():
+    remove_tomcat_logs()
+    remove_nginx_logs()
+
+
+@roles('api')
+@parallel
+def remove_api_logs():
+    remove_tomcat_logs()
+    remove_nginx_logs()
+
+
+@roles('worker')
+@parallel
+def remove_worker_logs():
+    iso_date = get_30days_before()
+    with cd('/var/log/job-worker'):
+        run('rm -f *{0}.log'.format(iso_date))
+
+
+@roles('static')
+@parallel
+def remove_static_logs():
+    remove_nginx_logs()
+
+
+def remove_old_logs():
+    """
+    Remove logs which was generated 30 days ago
+    """
+    execute(remove_web_logs)
+    execute(remove_pay_logs)
+    execute(remove_api_logs)
+    execute(remove_worker_logs)
+    execute(remove_static_logs)
+
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
 fab_local_file = os.path.join(ROOT, "fab_local.py")

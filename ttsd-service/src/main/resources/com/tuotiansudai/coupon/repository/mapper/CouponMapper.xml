@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.coupon.repository.mapper.CouponMapper">
+
+    <resultMap id="couponResultMap" type="CouponModel">
+        <id column="id" property="id"/>
+        <result column="amount" property="amount"/>
+        <result column="rate" property="rate"/>
+        <result column="birthday_benefit" property="birthdayBenefit"/>
+        <result column="multiple" property="multiple"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="used_count" property="usedCount"/>
+        <result column="total_count" property="totalCount"/>
+        <result column="active" property="active"/>
+        <result column="shared" property="shared"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="created_by" property="createdBy"/>
+        <result column="activated_by" property="activatedBy"/>
+        <result column="activated_time" property="activatedTime"/>
+        <result column="updated_by" property="updatedBy"/>
+        <result column="updated_time" property="updatedTime"/>
+        <result column="issued_count" property="issuedCount"/>
+        <result column="expected_amount" property="expectedAmount"/>
+        <result column="actual_amount" property="actualAmount"/>
+        <result column="invest_lower_limit" property="investLowerLimit"/>
+        <result column="invest_upper_limit" property="investUpperLimit"/>
+        <result column="coupon_type" property="couponType"/>
+        <result column="product_types" property="productTypes" typeHandler="com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler"/>
+        <result column="deleted" property="deleted"/>
+        <result column="deadline" property="deadline"/>
+        <result column="user_group" property="userGroup"/>
+        <result column="sms_alert" property="smsAlert"/>
+    </resultMap>
+
+    <insert id="create" parameterType="CouponModel" useGeneratedKeys="true" keyProperty="id">
+        insert into coupon (amount, rate, birthday_benefit, multiple, start_time, end_time, used_count, total_count, active, shared, created_by, created_time, activated_by, activated_time, issued_count, invest_lower_limit, invest_upper_limit, coupon_type, product_types, deleted, deadline, user_group, sms_alert)
+        value(#{amount}, #{rate}, #{birthdayBenefit}, #{multiple}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{shared}, #{createdBy}, #{createdTime}, #{activatedBy}, #{activatedTime}, #{issuedCount}, #{investLowerLimit}, #{investUpperLimit}, #{couponType}, #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}, #{deleted}, #{deadline}, #{userGroup}, #{smsAlert})
+    </insert>
+
+    <select id="findById" resultMap="couponResultMap" parameterType="long">
+        select * from coupon where id = #{id}
+    </select>
+
+    <select id="findNewbieCoupon" resultMap="couponResultMap">
+        select * from coupon where coupon_type = 'NEWBIE_COUPON' and deleted is FALSE;
+    </select>
+
+    <select id="findAllActiveCoupons" resultMap="couponResultMap">
+        select * from coupon where active is TRUE and deleted is FALSE and now() between start_time and end_time;
+    </select>
+
+    <select useCache="false" id="lockById" parameterType="java.lang.Long" resultMap="couponResultMap">
+        select * from coupon where id = #{id} for update
+    </select>
+
+    <select id="findCoupons" parameterType="map" resultMap="couponResultMap">
+        SELECT
+          c.*,
+          IFNULL(temp.expected_amount, 0) AS expected_amount,
+          IFNULL(temp.actual_amount, 0) AS actual_amount
+        FROM
+          coupon c
+          LEFT JOIN
+            (SELECT
+              t.coupon_id,
+              SUM(
+                t.expected_interest + t.default_interest - t.expected_fee
+              ) AS expected_amount,
+              SUM(
+                t.actual_interest + t.default_interest - t.actual_fee
+              ) AS actual_amount
+            FROM
+              user_coupon t
+            GROUP BY t.coupon_id) temp
+            ON c.id = temp.coupon_id
+            where c.deleted is FALSE and c.coupon_type in ('NEWBIE_COUPON','INVEST_COUPON')
+        ORDER BY created_time DESC
+        LIMIT #{index},#{pageSize}
+    </select>
+
+    <select id="findInterestCoupons" parameterType="map" resultMap="couponResultMap">
+        SELECT
+        c.*,
+        IFNULL(temp.expected_amount, 0) AS expected_amount,
+        IFNULL(temp.actual_amount, 0) AS actual_amount
+        FROM
+        coupon c
+        LEFT JOIN
+        (SELECT
+        t.coupon_id,
+        SUM(
+        t.expected_interest + t.default_interest - t.expected_fee
+        ) AS expected_amount,
+        SUM(
+        t.actual_interest + t.default_interest - t.actual_fee
+        ) AS actual_amount
+        FROM
+        user_coupon t
+        GROUP BY t.coupon_id) temp
+        ON c.id = temp.coupon_id
+        where c.deleted is FALSE and c.coupon_type = 'INTEREST_COUPON'
+        ORDER BY created_time DESC
+        LIMIT #{index},#{pageSize}
+    </select>
+
+    <select id="findRedEnvelopeCoupons" parameterType="map" resultMap="couponResultMap">
+        SELECT
+        c.*,
+        IFNULL(temp.expected_amount, 0) AS expected_amount,
+        IFNULL(temp.actual_amount, 0) AS actual_amount
+        FROM
+        coupon c
+        LEFT JOIN
+        (SELECT
+        t.coupon_id,
+        SUM(
+        t.expected_interest + t.default_interest - t.expected_fee
+        ) AS expected_amount,
+        SUM(
+        t.actual_interest + t.default_interest - t.actual_fee
+        ) AS actual_amount
+        FROM
+        user_coupon t
+        GROUP BY t.coupon_id) temp
+        ON c.id = temp.coupon_id
+        where c.deleted is FALSE and c.coupon_type = 'RED_ENVELOPE'
+        ORDER BY created_time DESC
+        LIMIT #{index},#{pageSize}
+    </select>
+
+    <select id="findBirthdayCoupons" parameterType="map" resultMap="couponResultMap">
+        SELECT
+        c.*,
+        IFNULL(temp.expected_amount, 0) AS expected_amount,
+        IFNULL(temp.actual_amount, 0) AS actual_amount
+        FROM
+        coupon c
+        LEFT JOIN
+        (SELECT
+        t.coupon_id,
+        SUM(
+        t.expected_interest + t.default_interest - t.expected_fee
+        ) AS expected_amount,
+        SUM(
+        t.actual_interest + t.default_interest - t.actual_fee
+        ) AS actual_amount
+        FROM
+        user_coupon t
+        GROUP BY t.coupon_id) temp
+        ON c.id = temp.coupon_id
+        where c.deleted is FALSE and c.coupon_type = 'BIRTHDAY_COUPON'
+        ORDER BY created_time DESC
+        LIMIT #{index},#{pageSize}
+    </select>
+
+    <select id="findCouponsCount"  resultType="int">
+        select count(*) from coupon where deleted is FALSE and coupon_type in ('NEWBIE_COUPON','INVEST_COUPON')
+    </select>
+
+    <select id="findInterestCouponsCount"  resultType="int">
+        select count(*) from coupon where deleted is FALSE and coupon_type = 'INTEREST_COUPON'
+    </select>
+
+    <select id="findRedEnvelopeCouponsCount"  resultType="int">
+        select count(*) from coupon where deleted is FALSE and coupon_type = 'RED_ENVELOPE'
+    </select>
+
+    <select id="findBirthdayCouponsCount" resultType="int">
+        select count(*) from coupon where deleted is FALSE and coupon_type = 'BIRTHDAY_COUPON'
+    </select>
+
+    <update id="updateCoupon" parameterType="CouponModel">
+        update coupon
+        set
+        amount = #{amount},
+        rate = #{rate},
+        birthday_benefit = #{birthdayBenefit},
+        multiple = #{multiple},
+        start_time = #{startTime},
+        end_time = #{endTime},
+        used_count = #{usedCount},
+        total_count = #{totalCount},
+        issued_count = #{issuedCount},
+        activated_by = #{activatedBy},
+        activated_time = #{activatedTime},
+        deadline = #{deadline},
+        user_group = #{userGroup},
+        sms_alert = #{smsAlert},
+        updated_by = #{updatedBy},
+        updated_time = #{updatedTime},
+        active = #{active},
+        shared = #{shared},
+        invest_lower_limit = #{investLowerLimit},
+        invest_upper_limit = #{investUpperLimit},
+        deleted = #{deleted},
+        product_types = #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}
+        where id = #{id}
+    </update>
+
+</mapper>

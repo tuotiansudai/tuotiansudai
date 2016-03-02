@@ -1,16 +1,15 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.LoanRepayDataItemDto;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanRepayService;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.DateUtil;
+import org.apache.log4j.Logger;
+import org.apache.log4j.spi.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,6 +21,8 @@ import java.util.List;
 
 @Service
 public class LoanRepayServiceImpl implements LoanRepayService {
+
+    static Logger logger = Logger.getLogger(LoanRepayServiceImpl.class);
 
     @Value("${pay.overdue.fee}")
     private double overdueFee;
@@ -38,8 +39,14 @@ public class LoanRepayServiceImpl implements LoanRepayService {
     @Autowired
     private InvestMapper investMapper;
 
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
+
+    @Value("#{'${repay.remind.mobileList}'.split('\\|')}")
+    private List<String> repayRemindMobileList;
+
     @Override
-    public BaseDto<BasePaginationDataDto> findLoanRepayPagination(int index, int pageSize,Long loanId,
+    public BaseDto<BasePaginationDataDto> findLoanRepayPagination(int index, int pageSize, Long loanId,
                                                                   String loginName, Date startTime, Date endTime, RepayStatus repayStatus) {
         if (index < 1) {
             index = 1;
@@ -65,12 +72,12 @@ public class LoanRepayServiceImpl implements LoanRepayService {
     }
 
     @Override
-    public List<LoanRepayModel> findLoanRepayInAccount(String loginName,Date startTime,Date endTime,int startLimit,int endLimit){
-        return this.loanRepayMapper.findByLoginNameAndTimeRepayList(loginName,startTime,endTime,startLimit,endLimit);
+    public List<LoanRepayModel> findLoanRepayInAccount(String loginName, Date startTime, Date endTime, int startLimit, int endLimit) {
+        return this.loanRepayMapper.findByLoginNameAndTimeRepayList(loginName, startTime, endTime, startLimit, endLimit);
     }
 
     @Override
-    public long findByLoginNameAndTimeSuccessRepay(String loginName,Date startTime,Date endTime){
+    public long findByLoginNameAndTimeSuccessRepay(String loginName, Date startTime, Date endTime) {
         return loanRepayMapper.findByLoginNameAndTimeSuccessRepay(loginName, startTime, endTime);
     }
 
@@ -90,8 +97,8 @@ public class LoanRepayServiceImpl implements LoanRepayService {
             if (investRepayModel.getRepayDate().before(new Date())) {
                 investRepayModel.setStatus(RepayStatus.OVERDUE);
                 long investRepayDefaultInterest = new BigDecimal(investMapper.findById(investRepayModel.getInvestId()).getAmount()).multiply(new BigDecimal(overdueFee))
-                        .multiply(new BigDecimal(DateUtil.differenceDay(investRepayModel.getRepayDate(), new Date())+1L))
-                        .setScale(0,BigDecimal.ROUND_DOWN).longValue();
+                        .multiply(new BigDecimal(DateUtil.differenceDay(investRepayModel.getRepayDate(), new Date()) + 1L))
+                        .setScale(0, BigDecimal.ROUND_DOWN).longValue();
                 investRepayModel.setDefaultInterest(investRepayDefaultInterest);
                 investRepayMapper.update(investRepayModel);
             }
@@ -99,11 +106,37 @@ public class LoanRepayServiceImpl implements LoanRepayService {
         if (loanRepayModel.getRepayDate().before(new Date())) {
             loanRepayModel.setStatus(RepayStatus.OVERDUE);
             long loanRepayDefaultInterest = new BigDecimal(loanModel.getLoanAmount()).multiply(new BigDecimal(overdueFee))
-                    .multiply(new BigDecimal(DateUtil.differenceDay(loanRepayModel.getRepayDate(), new Date())+1L)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+                    .multiply(new BigDecimal(DateUtil.differenceDay(loanRepayModel.getRepayDate(), new Date()) + 1L)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
             loanRepayModel.setDefaultInterest(loanRepayDefaultInterest);
             loanRepayMapper.update(loanRepayModel);
             loanModel.setStatus(LoanStatus.OVERDUE);
             loanMapper.update(loanModel);
+        }
+    }
+
+    @Override
+    public void loanRepayNotify() {
+
+        List<LoanRepayNotifyModel> loanRepayNotifyModelList = loanRepayMapper.findLoanRepayNotifyToday();
+
+        for (LoanRepayNotifyModel model : loanRepayNotifyModelList) {
+
+            logger.info("sent loan repay notify sms message to " + model.getMobile() + ", loan name:" + model.getLoanName().trim());
+
+            LoanRepayNotifyDto dto = new LoanRepayNotifyDto();
+            dto.setMobile(model.getMobile().trim());
+            dto.setLoanName(model.getLoanName().trim());
+            dto.setRepayAmount(AmountConverter.convertCentToString(model.getRepayAmount()));
+            smsWrapperClient.sendLoanRepayNotify(dto);
+
+            for (String mobile : repayRemindMobileList) {
+                logger.info("sent loan repay notify sms message to " + mobile + ", loan name:" + model.getLoanName().trim());
+                LoanRepayNotifyDto notifyDto = new LoanRepayNotifyDto();
+                notifyDto.setMobile(mobile.trim());
+                notifyDto.setLoanName(model.getLoanName().trim());
+                notifyDto.setRepayAmount(AmountConverter.convertCentToString(model.getRepayAmount()));
+                smsWrapperClient.sendLoanRepayNotify(notifyDto);
+            }
         }
     }
 

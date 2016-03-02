@@ -1,13 +1,16 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
@@ -22,6 +25,7 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransf
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerBindProjectRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerUpdateProjectRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
@@ -45,7 +49,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -91,6 +94,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private JobManager jobManager;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(long loanId) {
@@ -138,78 +144,107 @@ public class LoanServiceImpl implements LoanService {
                 logger.error(e.getLocalizedMessage(),e);
             }
         }
-        return this.updateLoanStatus(loanId,LoanStatus.CANCEL);
+        return  this.updateLoanStatus(loanId,LoanStatus.CANCEL);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> updateLoanStatus(long loanId, LoanStatus loanStatus) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
+        baseDto.setData(payDataDto);
+
         LoanModel loanModel = loanMapper.findById(loanId);
-        MerUpdateProjectRequestModel merUpdateProjectRequestModel = new MerUpdateProjectRequestModel(loanModel.getLoanAmount(),
-                loanModel.getId(),
-                loanModel.getName(),
-                loanStatus.getCode(),
-                new SimpleDateFormat("yyyyMMdd").format(loanModel.getFundraisingEndTime()));
+        if (loanModel.getStatus() == loanStatus) {
+            payDataDto.setStatus(true);
+            return baseDto;
+        }
+
         try {
-            MerUpdateProjectResponseModel responseModel = paySyncClient.send(MerUpdateProjectMapper.class,
-                    merUpdateProjectRequestModel,
-                    MerUpdateProjectResponseModel.class);
-            if (responseModel.isSuccess()) {
-                LoanModel loan = loanMapper.findById(loanId);
-                loan.setStatus(loanStatus);
-                if(loanStatus == LoanStatus.CANCEL) {
-                    loan.setRecheckTime(new Date());
-                }
-                if (loanStatus == LoanStatus.REPAYING) {
-                    loan.setVerifyTime(new Date());
-                }
-                loanMapper.update(loan);
+            boolean updateSuccess = Strings.isNullOrEmpty(loanStatus.getCode());
+            if (!updateSuccess) {
+                MerUpdateProjectRequestModel merUpdateProjectRequestModel = new MerUpdateProjectRequestModel(String.valueOf(loanModel.getLoanAmount()),
+                        String.valueOf(loanModel.getId()),
+                        loanModel.getName(),
+                        loanStatus.getCode());
+
+                MerUpdateProjectResponseModel responseModel = paySyncClient.send(MerUpdateProjectMapper.class,
+                        merUpdateProjectRequestModel,
+                        MerUpdateProjectResponseModel.class);
+                updateSuccess =  responseModel.isSuccess();
+                payDataDto.setCode(responseModel.getRetCode());
+                payDataDto.setMessage(responseModel.getRetMsg());
             }
-            payDataDto.setStatus(responseModel.isSuccess());
-            payDataDto.setCode(responseModel.getRetCode());
-            payDataDto.setMessage(responseModel.getRetMsg());
+
+            if (updateSuccess) {
+                loanModel.setStatus(loanStatus);
+                if(loanStatus == LoanStatus.CANCEL || loanStatus == LoanStatus.REPAYING) {
+                    loanModel.setRecheckTime(new Date());
+                }
+                loanMapper.update(loanModel);
+            }
+            payDataDto.setStatus(updateSuccess);
         } catch (PayException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-        baseDto.setData(payDataDto);
+
         return baseDto;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> loanOut(long loanId) {
+
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
 
-        try {
-            ProjectTransferResponseModel umPayReturn = doLoanOut(loanId);
-            payDataDto.setStatus(umPayReturn.isSuccess());
-            payDataDto.setCode(umPayReturn.getRetCode());
-            payDataDto.setMessage(umPayReturn.getRetMsg());
-        } catch (PayException e) {
-            payDataDto.setStatus(false);
-            payDataDto.setMessage(e.getLocalizedMessage());
-            logger.error(e.getLocalizedMessage(), e);
+        if(redisWrapperClient.setnx(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId, "1")) {
+            try {
+                ProjectTransferResponseModel umPayReturn = doLoanOut(loanId);
+                payDataDto.setStatus(umPayReturn.isSuccess());
+                payDataDto.setCode(umPayReturn.getRetCode());
+                payDataDto.setMessage(umPayReturn.getRetMsg());
+
+            } catch (PayException e) {
+                payDataDto.setStatus(false);
+                payDataDto.setMessage(e.getLocalizedMessage());
+                logger.error(e.getLocalizedMessage(), e);
+            } finally {
+                redisWrapperClient.del(AutoLoanOutJob.LOAN_OUT_IN_PROCESS_KEY + loanId);
+            }
+        } else {
+            payDataDto.setStatus(true);
+            payDataDto.setCode(BaseSyncResponseModel.SUCCESS_CODE);
+            payDataDto.setMessage("some other loan out process is running.");
+            logger.error("some other thread is loan-outing for this loan, loanId:"+loanId);
         }
         return baseDto;
     }
 
     private ProjectTransferResponseModel doLoanOut(long loanId) throws PayException {
-        // 预处理等待状态的投资记录，检查是否存在等待状态的投资记录
-        proProcessWaitingInvest(loanId);
 
         // 查找借款人
         LoanModel loan = loanMapper.findById(loanId);
         if (loan == null) {
             throw new PayException("loan is not exists [" + loanId + "]");
         }
+
+        if (LoanStatus.REPAYING == loan.getStatus()){
+            logger.warn("loan has already been outed. [" + loanId + "]");
+            ProjectTransferResponseModel umPayReturn = new ProjectTransferResponseModel();
+            umPayReturn.setRetCode(AutoLoanOutJob.ALREADY_OUT);
+            umPayReturn.setRetMsg("loan has already been outed.");
+            return umPayReturn;
+        }
+
         if (LoanStatus.RECHECK != loan.getStatus()){
             throw new PayException("loan is not ready for recheck [" + loanId + "]");
         }
-        String agentPayUserId = accountMapper.findByLoginName(loan.getAgentLoginName()).getPayUserId();
 
+        // 将已失效的投资记录状态置为失败
+        investMapper.cleanWaitingInvest(loanId);
+
+        String agentPayUserId = accountMapper.findByLoginName(loan.getAgentLoginName()).getPayUserId();
 
         // 查找所有投资成功的记录
         List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
@@ -285,20 +320,6 @@ public class LoanServiceImpl implements LoanService {
         }
 
         return true;
-    }
-
-    private void proProcessWaitingInvest(long loanId) throws PayException {
-        // 获取联动优势投资订单的有效时间点（在此时间之前的waiting记录将被清理，如存在在此时间之后的waiting记录，则暂时不允许放款）
-        Date validInvestTime = new DateTime().minusSeconds(UmpayConstants.TIMEOUT_IN_SECOND_PROJECT_TRANSFER).toDate();
-
-        // 检查是否存在未处理完成的投资记录
-        int waitingInvestCount = investMapper.findWaitingInvestCountAfter(loanId, validInvestTime);
-        if (waitingInvestCount > 0) {
-            throw new PayException("exist waiting invest on loan[" + loanId + "]");
-        }
-
-        // 将已失效的投资记录状态置为失败
-        investMapper.cleanWaitingInvestBefore(loanId, validInvestTime);
     }
 
     private ProjectTransferResponseModel doPayRequest(long loanId, String payUserId, long amount) throws PayException {

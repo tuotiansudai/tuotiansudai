@@ -29,7 +29,7 @@ public class TransferRequestModel extends BaseSyncRequestModel {
     public TransferRequestModel() {
     }
 
-    public static TransferRequestModel newReferrerRewardRequest(String orderId, String payUserId, String amount) {
+    public static TransferRequestModel newRequest(String orderId, String payUserId, String amount) {
         TransferRequestModel model = new TransferRequestModel();
         model.service = UmPayService.TRANSFER.getServiceName();
         model.orderId = orderId;

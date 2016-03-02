@@ -21,7 +21,7 @@ public class WithdrawController {
 
     @RequestMapping(value = "/withdraw", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayFormDataDto> recharge(@Valid @RequestBody WithdrawDto dto) {
+    public BaseDto<PayFormDataDto> withdraw(@Valid @RequestBody WithdrawDto dto) {
         return withdrawService.withdraw(dto);
     }
 }

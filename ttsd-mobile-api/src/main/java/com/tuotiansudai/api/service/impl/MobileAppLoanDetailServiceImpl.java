@@ -60,11 +60,10 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         LoanDetailResponseDataDto loanDetailResponseDataDto = new LoanDetailResponseDataDto();
         loanDetailResponseDataDto.setLoanId("" + loan.getId());
-        loanDetailResponseDataDto.setLoanType(loan.getActivityType().name());
+        loanDetailResponseDataDto.setLoanType(loan.getProductType() != null ? loan.getProductType().name() : "");
         loanDetailResponseDataDto.setLoanName(loan.getName());
-        String loanType = loan.getType().getName();
-        String repayTypeName = loanType.substring(0, loanType.lastIndexOf("，"));
-        String interestPointName = loanType.substring(loanType.lastIndexOf("，")+1);
+        String repayTypeName = loan.getType().getRepayType();
+        String interestPointName = loan.getType().getInterestPointName();
         loanDetailResponseDataDto.setRepayTypeCode("");
         loanDetailResponseDataDto.setRepayTypeName(repayTypeName);
         loanDetailResponseDataDto.setInterestPointName(interestPointName);
@@ -121,6 +120,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         if(loan.getRaisingCompleteTime() != null) {
             loanDetailResponseDataDto.setRaiseCompletedTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loan.getRaisingCompleteTime()));
         }
+        loanDetailResponseDataDto.setInvestFeeRate("" + loan.getInvestFeeRate());
         return loanDetailResponseDataDto;
 
     }

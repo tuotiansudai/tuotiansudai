@@ -30,7 +30,7 @@ public class LoanListController {
                                         @RequestParam(value = "loanId", required = false) Long loanId,
                                         @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                         @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                        @RequestParam(value = "currentPageNo", required = false, defaultValue = "1") int currentPageNo,
+                                        @RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                         @RequestParam(value = "loanName", required = false) String loanName,
                                         @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         int loanListCount = loanService.findLoanListCount(status, loanId, loanName,
@@ -39,15 +39,15 @@ public class LoanListController {
         List<LoanListDto> loanListDtos = loanService.findLoanList(status, loanId, loanName,
                 startTime == null ? new DateTime(0).toDate() : startTime,
                 endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : endTime,
-                currentPageNo, pageSize);
+                index, pageSize);
         ModelAndView modelAndView = new ModelAndView("/loan-list");
         modelAndView.addObject("loanListCount", loanListCount);
         modelAndView.addObject("loanListDtos", loanListDtos);
-        modelAndView.addObject("currentPageNo", currentPageNo);
+        modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         long totalPages = loanListCount / pageSize + (loanListCount % pageSize > 0 ? 1 : 0);
-        boolean hasPreviousPage = currentPageNo > 1 && currentPageNo <= totalPages;
-        boolean hasNextPage = currentPageNo < totalPages;
+        boolean hasPreviousPage = index > 1 && index <= totalPages;
+        boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
         modelAndView.addObject("status", status);

@@ -8,10 +8,7 @@ import com.tuotiansudai.api.dto.ReturnMessage;
 import com.tuotiansudai.api.service.impl.MobileAppLoanListServiceImpl;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.ActivityType;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.LoanType;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -42,15 +39,15 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
         loanModels.add(getFakeLoanModel("test2"));
         LoanModel loanModelNovice = getFakeLoanModel("test3");
         loanModelNovice.setActivityType(ActivityType.NEWBIE);
-        when(loanMapper.findLoanListWeb(any(ActivityType.class), any(LoanStatus.class), anyLong(), anyLong(), anyDouble(), anyDouble(), anyInt())).thenReturn(loanModels);
-        when(loanMapper.findLoanListCountWeb(any(ActivityType.class), any(LoanStatus.class), anyLong(), anyLong(), anyDouble(), anyDouble())).thenReturn(2);
+        when(loanMapper.findLoanListWeb(any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble(), anyInt())).thenReturn(loanModels);
+        when(loanMapper.findLoanListCountWeb(any(ProductType.class), any(LoanStatus.class), anyDouble(), anyDouble())).thenReturn(2);
         when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(10000L);
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();
         loanListRequestDto.setIndex(1);
         loanListRequestDto.setPageSize(10);
         BaseResponseDto<LoanListResponseDataDto> dto = mobileAppRegisterService.generateLoanList(loanListRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(),dto.getCode());
-        assertEquals("dx",dto.getData().getLoanList().get(0).getLoanType());
+        assertEquals(ProductType.JYF.name(),dto.getData().getLoanList().get(0).getLoanType());
 
     }
 
@@ -81,6 +78,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
         loanModel.setLoanerLoginName(fakeUserName);
         loanModel.setLoanerUserName("借款人");
         loanModel.setLoanerIdentityNumber("111111111111111111");
+        loanModel.setProductType(ProductType.JYF);
 
         return loanModel;
     }

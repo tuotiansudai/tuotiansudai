@@ -20,7 +20,7 @@
     <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties"/>
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.paywrapper,com.tuotiansudai.util,com.tuotiansudai.client,com.tuotiansudai.aspect"/>
+    <context:component-scan base-package="com.tuotiansudai.paywrapper,com.tuotiansudai.util,com.tuotiansudai.client,com.tuotiansudai.aspect,com.tuotiansudai.coupon.service,com.tuotiansudai.coupon.util"/>
 
     <aop:aspectj-autoproxy expose-proxy="true"/>
 
@@ -35,7 +35,7 @@
         <property name="minConnectionsPerPartition" value="${pay.ump_operations.minConnectionsPerPartition}"/>
         <property name="maxConnectionsPerPartition" value="${pay.ump_operations.maxConnectionsPerPartition}"/>
         <property name="acquireIncrement" value="${pay.ump_operations.acquireIncrement}"/>
-        <property name="idleMaxAgeInSeconds" value="1800"/>
+        <property name="idleMaxAgeInSeconds" value="600"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>
 
@@ -47,7 +47,7 @@
         <property name="minConnectionsPerPartition" value="${pay.aa.minConnectionsPerPartition}"/>
         <property name="maxConnectionsPerPartition" value="${pay.aa.maxConnectionsPerPartition}"/>
         <property name="acquireIncrement" value="${pay.aa.acquireIncrement}"/>
-        <property name="idleMaxAgeInSeconds" value="1800"/>
+        <property name="idleMaxAgeInSeconds" value="600"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>
 
@@ -59,7 +59,7 @@
         <property name="minConnectionsPerPartition" value="${pay.job_worker.minConnectionsPerPartition}"/>
         <property name="maxConnectionsPerPartition" value="${pay.job_worker.maxConnectionsPerPartition}"/>
         <property name="acquireIncrement" value="${pay.job_worker.acquireIncrement}"/>
-        <property name="idleMaxAgeInSeconds" value="1800"/>
+        <property name="idleMaxAgeInSeconds" value="600"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>
 
@@ -84,7 +84,7 @@
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="boneCPDataSource"/>
-        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model"/>
     </bean>
 
     <!-- scan for mappers and let them be autowired -->
@@ -95,7 +95,7 @@
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-        <property name="basePackage" value="com.tuotiansudai.repository.mapper"/>
+        <property name="basePackage" value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper"/>
     </bean>
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>

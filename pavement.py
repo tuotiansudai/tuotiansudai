@@ -58,46 +58,6 @@ def stop():
     sh('pkill python')
 
 
-def copy_files_into_product_config(port):
-    if port:
-        import os
-        import shutil
-
-        src = '/workspace/docker_config_{0}'.format(port)
-        if os.path.isdir(src):
-            src_files = os.listdir(src)
-            for file_name in src_files:
-                full_file_name = os.path.join(src, file_name)
-                if (os.path.isfile(full_file_name)):
-                    dest = '/workspace/production_config/{0}'.format(file_name)
-                    shutil.copy(full_file_name, dest)
-
-
-@task
-def mkwar():
-    run_shell_under_v1('/opt/gradle/latest/bin/gradle clean')
-    run_shell_under_v1('/opt/gradle/latest/bin/gradle war')
-
-
-def stop_tomcat():
-    run_shell_under_v1('sudo kill -9 `cat /var/run/tomcat6.pid`')
-    run_shell_under_v1('sudo rm /var/run/tomcat6.pid')
-    run_shell_under_v1('sudo rm /var/lock/subsys/tomcat6')
-
-
-@task
-def deploy_tomcat():
-    stop_tomcat()
-    run_shell_under_v1('sudo rm -rf /usr/share/tomcat6/webapps/ROOT')
-    run_shell_under_v1('sudo cp war/ROOT.war /usr/share/tomcat6/webapps/')
-    run_shell_under_v1('sudo service tomcat6 start')
-
-
-@task
-def migrate():
-    run_shell_under_v1('/opt/gradle/latest/bin/gradle flywayMigrate')
-
-
 def remove_old_container(name):
     from docker import Client
 
@@ -109,43 +69,16 @@ def remove_old_container(name):
         pass
 
 
-def start_new_container(name, local_port):
-    from docker import Client, utils
-
-    client = Client(base_url='unix://var/run/docker.sock', version="1.17")
-    war_dir = get_v1_war_dir()
-    print "local war dir: {0}".format(war_dir)
-    host_config = utils.create_host_config(port_bindings={8080: local_port}, binds=['{0}:/webapps'.format(war_dir)])
-    container = client.create_container(image='leoshi/ttsd-tomcat6:v1', ports=[8080], volumes=['/webapps'],
-                                        host_config=host_config, name=name)
-    print "Container id:{0}".format(container['Id'])
-    client.start(container)
-
-
 @task
-@needs('migrate')
-@cmdopts([
-    ('port=', 'p', 'Local port which is mapped to containers 8080')
-])
-def deploy_to_docker(options):
+def qa():
     """
-    Deploy web apps to Tomcat6 container, NEED sudo run!
-    Usage:
-        sudo paver deploy_to_docker.port=30001 deploy_to_docker
+    Deploy Staging/QA environment
     """
-    copy_files_into_product_config(options.port)
-    mkwar()
-    name = "ttsd-{0}".format(options.port)
-    remove_old_container(name)
-    start_new_container(name, options.port)
+    from scripts.deployment import QADeployment
 
+    qa_env = QADeployment()
+    qa_env.deploy()
 
-@task
-def v2deploy():
-    from scripts.deployment import NewVersionDeployment
-
-    v2 = NewVersionDeployment()
-    v2.deploy()
 
 @task
 @cmdopts([
@@ -154,59 +87,75 @@ def v2deploy():
     ('redishost=', '', 'redis host'),
     ('redisport=', '', 'redis port'),
 ])
-def v2unittest(options):
-    from scripts.unit_test import NewVersionUnitTest
+def ut(options):
+    """
+    Run Unit Test
+    e.g. paver ut.dbhost=127.0.0.1 ut.dbport=40020 ut.redishost=127.0.0.1 ut.redisport=40016 ut
+    """
+    from scripts.unit_test import UTRunner
 
-
-    v2 = NewVersionUnitTest(options.dbhost, options.dbport, options.redishost, options.redisport)
+    v2 = UTRunner(options.dbhost, options.dbport, options.redishost, options.redisport)
     v2.test()
 
-@task
-@needs('mkwar', 'deploy_tomcat')
-def deploy():
-    """
-    Deploy to production environment
-    """
 
-
-@task
-@needs('migrate', 'deploy')
-def devdeploy():
-    """
-    Deploy to dev/test environment
-    """
-
-
-@task
-def cideploy():
-    """
-    Deploy to PROD from CI
-    """
-    from paver.shell import sh
-
-    try:
-        ci_file = open('/workspace/ci/abc', 'rb')
-        pwd = ci_file.readline().strip()
-        sh("/usr/local/bin/fab deploy -p {0} --show=debug".format(pwd))
-        ci_file.close()
-    except IOError as e:
-        print e
-
-
-@task
-def deployall():
-    """
-    Deploy all components to PROD from CI
-    """
+def fab_command(command):
     from paver.shell import sh
 
     try:
         ci_file = open('/workspace/ci/def', 'rb')
         pwd = ci_file.readline().strip()
-        sh("/usr/local/bin/fab v2deploy -p {0} --show=debug".format(pwd))
+        sh("/usr/local/bin/fab {1} -p {0} --show=debug".format(pwd, command))
         ci_file.close()
     except IOError as e:
         print e
+
+
+@task
+def prod():
+    """
+    Deploy all components to PROD from CI
+    """
+    fab_command('all')
+
+
+@task
+def only_web():
+    """
+    Deploy web component to PROD from CI
+    """
+    fab_command("web")
+
+
+@task
+def only_console():
+    """
+    Deploy console component to PROD from CI
+    """
+    fab_command("console")
+
+
+@task
+def only_api():
+    """
+    Deploy api component to PROD from CI
+    """
+    fab_command("api")
+
+
+@task
+def only_sms():
+    """
+    Deploy sms component to PROD from CI
+    """
+    fab_command("sms")
+
+
+@task
+def only_worker():
+    """
+    Deploy worker component to PROD from CI
+    """
+    fab_command("worker")
 
 
 def generate_git_log_file():
@@ -246,19 +195,8 @@ def jcversion():
     versioning_min_files('ttsd-web/src/main/webapp/style/dest/*.min.css')
 
 
-def run_shell_under_v1(command):
-    from paver.shell import sh
-
-    return sh(command, cwd='v1')
-
-
 def get_current_dir():
     return os.path.dirname(os.path.realpath(__file__))
-
-
-def get_v1_war_dir():
-    current_dir = get_current_dir()
-    return os.path.join(current_dir, 'v1', 'war')
 
 
 def get_base_dir():

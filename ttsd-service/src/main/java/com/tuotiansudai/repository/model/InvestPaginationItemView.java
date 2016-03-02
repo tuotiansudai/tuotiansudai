@@ -14,11 +14,31 @@ public class InvestPaginationItemView extends InvestModel {
 
     private String roles;
 
+    private String investorUserName;
+
+    private String investorMobile;
+
     private String referrerLoginName;
+
+    private String referrerUserName;
+
+    private String referrerMobile;
+
+    private String referrerRoles;
 
     private Date nextRepayDate;
 
     private long nextRepayAmount;
+
+    private String identityNumber;
+
+    private String province;
+
+    private String city;
+
+    private boolean birthdayCoupon;
+
+    private double birthdayBenefit;
 
     public String getLoanName() {
         return loanName;
@@ -82,5 +102,85 @@ public class InvestPaginationItemView extends InvestModel {
 
     public void setNextRepayAmount(long nextRepayAmount) {
         this.nextRepayAmount = nextRepayAmount;
+    }
+
+    public String getInvestorUserName() {
+        return investorUserName;
+    }
+
+    public void setInvestorUserName(String investorUserName) {
+        this.investorUserName = investorUserName;
+    }
+
+    public String getInvestorMobile() {
+        return investorMobile;
+    }
+
+    public void setInvestorMobile(String investorMobile) {
+        this.investorMobile = investorMobile;
+    }
+
+    public String getReferrerUserName() {
+        return referrerUserName;
+    }
+
+    public void setReferrerUserName(String referrerUserName) {
+        this.referrerUserName = referrerUserName;
+    }
+
+    public String getReferrerMobile() {
+        return referrerMobile;
+    }
+
+    public void setReferrerMobile(String referrerMobile) {
+        this.referrerMobile = referrerMobile;
+    }
+
+    public String getReferrerRoles() {
+        return referrerRoles;
+    }
+
+    public void setReferrerRoles(String referrerRoles) {
+        this.referrerRoles = referrerRoles;
+    }
+
+    public String getIdentityNumber() {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public boolean isBirthdayCoupon() {
+        return birthdayCoupon;
+    }
+
+    public void setBirthdayCoupon(boolean birthdayCoupon) {
+        this.birthdayCoupon = birthdayCoupon;
+    }
+
+    public double getBirthdayBenefit() {
+        return birthdayBenefit;
+    }
+
+    public void setBirthdayBenefit(double birthdayBenefit) {
+        this.birthdayBenefit = birthdayBenefit;
     }
 }

@@ -18,4 +18,7 @@ public interface LoanRepayService {
     List<LoanRepayModel> findLoanRepayInAccount(String loginName,Date startTime,Date endTime,int startLimit,int endLimit);
 
     void calculateDefaultInterest();
+
+    void loanRepayNotify();
+
 }

@@ -18,19 +18,19 @@ public class AnnounceController {
 
     @RequestMapping(value = "/announce", method = RequestMethod.GET)
     public ModelAndView announceManage(@RequestParam(value = "id",required = false) Long id,@RequestParam(value = "title",required = false) String title,
-                                                @RequestParam(value = "currentPageNo",defaultValue = "1",required = false) int currentPageNo,
+                                                @RequestParam(value = "index",defaultValue = "1",required = false) int index,
                                                 @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/announce-list");
         int announceCount = announceService.findAnnounceCount(id, title);
         modelAndView.addObject("announceCount", announceCount);
-        modelAndView.addObject("announceList", announceService.findAnnounce(id, title, (currentPageNo - 1) * pageSize, pageSize));
+        modelAndView.addObject("announceList", announceService.findAnnounce(id, title, (index - 1) * pageSize, pageSize));
         modelAndView.addObject("id",id);
         modelAndView.addObject("title",title);
-        modelAndView.addObject("currentPageNo",currentPageNo);
+        modelAndView.addObject("index",index);
         modelAndView.addObject("pageSize",pageSize);
         long totalPages = announceCount / pageSize + (announceCount % pageSize > 0 ? 1 : 0);
-        boolean hasPreviousPage = currentPageNo > 1 && currentPageNo <= totalPages;
-        boolean hasNextPage = currentPageNo < totalPages;
+        boolean hasPreviousPage = index > 1 && index <= totalPages;
+        boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage",hasPreviousPage);
         modelAndView.addObject("hasNextPage",hasNextPage);
         return modelAndView;

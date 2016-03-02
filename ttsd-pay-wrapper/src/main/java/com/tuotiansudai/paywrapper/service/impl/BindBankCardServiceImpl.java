@@ -198,6 +198,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
                 bankCardModel.setStatus(BankCardStatus.PASSED);
                 String bankCode = callbackRequestModel.getGateId();
                 bankCardModel.setBankCode(bankCode);
+                bankCardModel.setIsFastPayOn(callbackRequestModel.isOpenPay());
                 if (BankCardUtil.getBindCardOneCentBanks().contains(bankCode)) {
                     String detail = MessageFormat.format(SystemBillDetailTemplate.BIND_BANK_CARD_DETAIL_TEMPLATE.getTemplate(),
                             bankCardModel.getLoginName(),

@@ -104,6 +104,9 @@ public class LoanDto extends BaseDataDto {
     @NotEmpty
     private ActivityType activityType;
 
+    @NotEmpty
+    private ProductType productType;
+
     /***
      * 活动利率
      ***/
@@ -202,6 +205,12 @@ public class LoanDto extends BaseDataDto {
     private long expectedTotalIncome;
 
     private long preheatSeconds;
+
+    private String createdLoginName;
+
+    private String verifyLoginName;
+
+    private String recheckLoginName;
 
     public LoanDto() {
     }
@@ -487,4 +496,35 @@ public class LoanDto extends BaseDataDto {
         this.maxAvailableInvestAmount = maxAvailableInvestAmount;
     }
 
+    public ProductType getProductType() {
+        return productType;
+    }
+
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
+    }
+
+    public String getCreatedLoginName() {
+        return createdLoginName;
+    }
+
+    public void setCreatedLoginName(String createdLoginName) {
+        this.createdLoginName = createdLoginName;
+    }
+
+    public String getVerifyLoginName() {
+        return verifyLoginName;
+    }
+
+    public void setVerifyLoginName(String verifyLoginName) {
+        this.verifyLoginName = verifyLoginName;
+    }
+
+    public String getRecheckLoginName() {
+        return recheckLoginName;
+    }
+
+    public void setRecheckLoginName(String recheckLoginName) {
+        this.recheckLoginName = recheckLoginName;
+    }
 }

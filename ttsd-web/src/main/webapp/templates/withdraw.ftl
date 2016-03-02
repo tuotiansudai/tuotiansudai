@@ -4,8 +4,8 @@
     <h4 class="column-title"><em class="tc">我要提现</em></h4>
     <div class="pad-s">
         <div class="borderBox withdraw">
-            提现额度：<i class="color-note">${balance}</i>元<br/>
-            提现金额：<input type="text" class="amount-display" data-d-group="4" data-l-zero="deny" data-v-min="0.00" data-v-max="${balance}" placeholder="0.00"> 元
+            可提现额度：<i class="color-note">${balance}</i>元<br/>
+            <span class="pad-l-15">提现金额：</span><input type="text" class="amount-display" data-d-group="4" data-l-zero="deny" data-v-min="0.00" data-v-max="${balance}" placeholder="0.00"> 元
                 <span class="error" style="display: none;"><i class="fa fa-times-circle"></i> 金额必须大于2.00元</span>
 
             <div class="calculate">
@@ -13,7 +13,6 @@
                 实际到账：<em class="actual-amount">0.00</em> 元
             </div>
             <button class="withdraw-submit btn-normal" type="button" disabled="disabled">确认提现</button>
-
             <div class="clear-blank"></div>
             <form action="/withdraw" method="post" target="_blank">
                 <input name="amount" type="hidden" value=""/>
@@ -39,7 +38,7 @@
         <p>充值失败：<a href="/withdraw" class="btn-normal" data-category="重新提现" data-label="withdraw">重新提现</a>
             <span class="help">查看<a href="/about/qa"  target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
         </p>
-        <span>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</span>
+        <span>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-20:00）</span>
     </div>
 </div>
 </@global.main>

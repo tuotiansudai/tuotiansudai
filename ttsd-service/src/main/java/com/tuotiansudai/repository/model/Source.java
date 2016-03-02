@@ -9,6 +9,10 @@ public enum Source {
      */
     WEB,
     /**
+     * 不能区分Android及iOS时使用 MOBILE
+     */
+    MOBILE,
+    /**
      * Android
      */
     ANDROID,
@@ -20,6 +24,4 @@ public enum Source {
      * 自动投资
      */
     AUTO
-
-
 }

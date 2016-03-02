@@ -10,6 +10,8 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 
+    <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties" />
+
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="false">
             <bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
@@ -33,10 +35,19 @@
     <mvc:resources mapping="/upload/**" location="/upload/"/>
     <mvc:resources mapping="/js/**" location="/js/"/>
 
+    <bean id="freeMarkerVariablesMap" class="org.springframework.beans.factory.config.MapFactoryBean">
+        <property name="sourceMap">
+            <map>
+                <entry key="webServer" value="${web.server}"/>
+            </map>
+        </property>
+    </bean>
+
     <!-- freemarker config -->
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="templateLoaderPath" value="/templates"/>
         <property name="defaultEncoding" value="utf-8"/>
+        <property name="freemarkerVariables" ref="freeMarkerVariablesMap"/>
     </bean>
 
     <!--

@@ -1,0 +1,1 @@
+ALTER TABLE `aa`.`coupon` CHANGE `invest_quota` `invest_lower_limit` BIGINT UNSIGNED DEFAULT 0;

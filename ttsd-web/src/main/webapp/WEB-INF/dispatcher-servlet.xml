@@ -10,7 +10,7 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 
-    <context:property-placeholder location="classpath*:ttsd-env.properties, classpath*:ttsd-biz.properties" />
+    <context:property-placeholder location="classpath*:ttsd-env.properties, classpath*:ttsd-biz.properties"/>
 
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="false">
@@ -33,19 +33,34 @@
 
     <context:component-scan base-package="com.tuotiansudai.web"/>
 
+    <mvc:resources mapping="/html/**" location="/html/"/>
     <mvc:resources mapping="/style/**" location="/style/"/>
     <mvc:resources mapping="/images/**" location="/images/"/>
     <mvc:resources mapping="/js/**" location="/js/"/>
     <mvc:resources mapping="/pdf/**" location="/pdf/"/>
     <mvc:resources mapping="/tpl/**" location="/tpl/"/>
     <mvc:resources mapping="/upload/**" location="/upload/"/>
+    <mvc:resources mapping="/robots.txt" location="/robots.txt"/>
 
 
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.configuration.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
         <property name="staticServer" value="${web.static.server}"/>
-        <property name="javascriptLocation" value="/js/dest"/>
-        <property name="cssLocation" value="/style/dest"/>
+        <property name="javascriptLocation" value="${web.js.path}"/>
+        <property name="cssLocation" value="${web.css.path}"/>
+        <property name="sourceMap">
+            <map>
+                <entry key="percentFraction">
+                    <bean class="com.tuotiansudai.web.freemarker.directive.PercentFractionDirective"/>
+                </entry>
+                <entry key="percentInteger">
+                    <bean class="com.tuotiansudai.web.freemarker.directive.PercentIntegerDirective"/>
+                </entry>
+                <entry key="amount">
+                    <bean class="com.tuotiansudai.web.freemarker.directive.AmountDirective"/>
+                </entry>
+            </map>
+        </property>
     </bean>
 
     <!-- freemarker config -->

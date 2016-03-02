@@ -6,13 +6,12 @@ import com.tuotiansudai.api.service.MobileAppLoanListService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.tuotiansudai.repository.model.LoanStatus;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -37,8 +36,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(),ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
         index = (loanListRequestDto.getIndex() - 1) * pageSize;
-        List<LoanModel> loanModels = loanMapper.findLoanListWeb(null, null, 0, 0, 0,
-                0, index);
+        List<LoanModel> loanModels = loanMapper.findLoanListWeb(null, null, 0, 0, index);
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(loanModels)) {
             loanDtoList = convertLoanDto(loanModels);
@@ -49,7 +47,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         LoanListResponseDataDto loanListResponseDataDto = new LoanListResponseDataDto();
         loanListResponseDataDto.setIndex(loanListRequestDto.getIndex());
         loanListResponseDataDto.setPageSize(loanListRequestDto.getPageSize());
-        loanListResponseDataDto.setTotalCount(loanMapper.findLoanListCountWeb(null,null,0,0,0,0));
+        loanListResponseDataDto.setTotalCount(loanMapper.findLoanListCountWeb(null,null,0,0));
 
         if(CollectionUtils.isNotEmpty(loanDtoList)){
             loanListResponseDataDto.setLoanList(loanDtoList);
@@ -61,6 +59,25 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         return dto;
     }
 
+    @Override
+    public BaseResponseDto generateIndexLoan(BaseParamDto baseParamDto) {
+        BaseResponseDto dto = new BaseResponseDto();
+        LoanListResponseDataDto loanListResponseDataDto = new LoanListResponseDataDto();
+        List<LoanModel> loanModels = loanMapper.findHomeLoan();
+        List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(loanModels)) {
+            loanDtoList = convertLoanDto(loanModels);
+            loanListResponseDataDto.setLoanList(loanDtoList);
+            dto.setData(loanListResponseDataDto);
+        }else{
+            loanListResponseDataDto.setLoanList(new ArrayList<LoanResponseDataDto>());
+            dto.setData(loanListResponseDataDto);
+        }
+        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        return dto;
+    }
+
 
     private List<LoanResponseDataDto> convertLoanDto(List<LoanModel> loanList) {
         List<LoanResponseDataDto> loanDtoList = new ArrayList<LoanResponseDataDto>();
@@ -68,7 +85,8 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         for (LoanModel loan : loanList) {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());
-            loanResponseDataDto.setLoanType(loan.getActivityType().name());
+            loanResponseDataDto.setLoanType(loan.getProductType() != null ? loan.getProductType().name() : "");
+            loanResponseDataDto.setLoanTypeName(loan.getProductType() != null ? loan.getProductType().getName() : "");
             loanResponseDataDto.setLoanName(loan.getName());
             loanResponseDataDto.setRepayTypeCode("");
             loanResponseDataDto.setRepayTypeName(loan.getType().getName());
@@ -94,7 +112,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setInvestedMoney(AmountConverter.convertCentToString(investedAmount));
             loanResponseDataDto.setBaseRatePercent(decimalFormat.format(loan.getBaseRate() * 100));
             loanResponseDataDto.setActivityRatePercent(decimalFormat.format(loan.getActivityRate() * 100));
-
+            loanResponseDataDto.setInvestFeeRate("" + loan.getInvestFeeRate());
             loanDtoList.add(loanResponseDataDto);
         }
         return loanDtoList;

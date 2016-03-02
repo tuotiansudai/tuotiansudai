@@ -2,8 +2,8 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.UserBillBusinessType;
-import com.tuotiansudai.repository.model.UserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
+import com.tuotiansudai.repository.model.UserBillPaginationView;
 import com.tuotiansudai.service.UserBillService;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
@@ -34,12 +34,12 @@ public class UserFundsController {
     public ModelAndView userFunds(@RequestParam(value = "userBillBusinessType", required = false) UserBillBusinessType userBillBusinessType,
                                   @RequestParam(value = "userBillOperationType", required = false) UserBillOperationType userBillOperationType,
                                   @RequestParam(value = "loginName", required = false) String loginName,
-                                  @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-                                  @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                  @RequestParam(value = "currentPageNo", defaultValue = "1", required = false) int currentPageNo,
+                                  @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
+                                  @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
+                                  @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
                                   @RequestParam(value = "export", required = false) String export,
-                                  HttpServletResponse response) throws IOException{
+                                  HttpServletResponse response) throws IOException {
         if (export != null && !export.equals("")) {
             response.setCharacterEncoding("UTF-8");
             try {
@@ -49,41 +49,44 @@ public class UserFundsController {
             }
             response.setContentType("application/csv");
             int userFundsCount = userBillService.findUserFundsCount(userBillBusinessType, userBillOperationType, loginName, startTime, endTime);
-            List<UserBillModel> userBillModels = userBillService.findUserFunds(userBillBusinessType, userBillOperationType, loginName, startTime, endTime, 1, userFundsCount);
+            List<UserBillPaginationView> userBillModels = userBillService.findUserFunds(userBillBusinessType, userBillOperationType, loginName, startTime, endTime, 1, userFundsCount);
             List<List<String>> data = Lists.newArrayList();
-            for (UserBillModel userBillModel : userBillModels) {
+            for (UserBillPaginationView userBillView : userBillModels) {
                 List<String> dataModel = Lists.newArrayList();
-                DateTime dateTime = new DateTime(userBillModel.getCreatedTime());
-                dataModel.add(dateTime != null ? dateTime.toString("yyyy-MM-dd") : "");
-                dataModel.add(String.valueOf(userBillModel.getId()));
-                dataModel.add(userBillModel.getLoginName());
-                dataModel.add(userBillModel.getOperationType().getDescription());
-                dataModel.add(userBillModel.getBusinessType().getDescription());
-                dataModel.add(String.valueOf(new BigDecimal(userBillModel.getAmount()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
-                dataModel.add(String.valueOf(new BigDecimal(userBillModel.getBalance()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
-                dataModel.add(String.valueOf(new BigDecimal(userBillModel.getFreeze()).divide(new BigDecimal(100),2,BigDecimal.ROUND_DOWN).doubleValue()));
+                DateTime dateTime = new DateTime(userBillView.getCreatedTime());
+                dataModel.add(dateTime != null ? dateTime.toString("yyyy-MM-dd HH:mm:ss") : "");
+                dataModel.add(String.valueOf(userBillView.getId()));
+                dataModel.add(userBillView.getLoginName());
+                dataModel.add(userBillView.isStaff() ? "是" : "否");
+                dataModel.add(userBillView.getUserName());
+                dataModel.add(userBillView.getMobile());
+                dataModel.add(userBillView.getOperationType().getDescription());
+                dataModel.add(userBillView.getBusinessType().getDescription());
+                dataModel.add(String.valueOf(new BigDecimal(userBillView.getAmount()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+                dataModel.add(String.valueOf(new BigDecimal(userBillView.getBalance()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+                dataModel.add(String.valueOf(new BigDecimal(userBillView.getFreeze()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
                 data.add(dataModel);
             }
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUserFundsCsvHeader, data, response.getOutputStream());
             return null;
         } else {
             ModelAndView modelAndView = new ModelAndView("/user-funds");
-            List<UserBillModel> userBillModels = userBillService.findUserFunds(userBillBusinessType, userBillOperationType, loginName, startTime, endTime, currentPageNo, pageSize);
+            List<UserBillPaginationView> userBillModels = userBillService.findUserFunds(userBillBusinessType, userBillOperationType, loginName, startTime, endTime, index, pageSize);
             int userFundsCount = userBillService.findUserFundsCount(userBillBusinessType, userBillOperationType, loginName, startTime, endTime);
             modelAndView.addObject("loginName", loginName);
             modelAndView.addObject("startTime", startTime);
             modelAndView.addObject("endTime", endTime);
             modelAndView.addObject("userBillBusinessType", userBillBusinessType);
             modelAndView.addObject("userBillOperationType", userBillOperationType);
-            modelAndView.addObject("currentPageNo", currentPageNo);
+            modelAndView.addObject("index", index);
             modelAndView.addObject("pageSize", pageSize);
             modelAndView.addObject("userBillModels", userBillModels);
             modelAndView.addObject("userFundsCount", userFundsCount);
             modelAndView.addObject("businessTypeList", UserBillBusinessType.values());
             modelAndView.addObject("operationTypeList", UserBillOperationType.values());
             long totalPages = userFundsCount / pageSize + (userFundsCount % pageSize > 0 ? 1 : 0);
-            boolean hasPreviousPage = currentPageNo > 1 && currentPageNo <= totalPages;
-            boolean hasNextPage = currentPageNo < totalPages;
+            boolean hasPreviousPage = index > 1 && index <= totalPages;
+            boolean hasNextPage = index < totalPages;
             modelAndView.addObject("hasPreviousPage", hasPreviousPage);
             modelAndView.addObject("hasNextPage", hasNextPage);
             return modelAndView;

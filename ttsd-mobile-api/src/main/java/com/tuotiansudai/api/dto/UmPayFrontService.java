@@ -13,6 +13,9 @@ public enum UmPayFrontService {
      * 签约协议
      */
     PTP_MER_BIND_AGREEMENT("ptp_mer_bind_agreement"),
+
+    PTP_MER_NO_PASSWORD_INVEST("ptp_mer_no_password_invest"),
+
     /**
      * 个人账户充值
      */

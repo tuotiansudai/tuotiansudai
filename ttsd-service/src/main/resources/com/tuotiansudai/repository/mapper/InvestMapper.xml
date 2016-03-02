@@ -37,6 +37,14 @@
         <result column="referrer_login_name" property="referrerLoginName"></result>
         <result column="next_repay_date" property="nextRepayDate"></result>
         <result column="next_repay_amount" property="nextRepayAmount"></result>
+        <result column="investor_user_name" property="investorUserName"></result>
+        <result column="investor_mobile" property="investorMobile"></result>
+        <result column="referrer_roles" property="referrerRoles"></result>
+        <result column="referrer_user_name" property="referrerUserName"></result>
+        <result column="referrer_mobile" property="referrerMobile"></result>
+        <result column="identity_number" property="identityNumber"></result>
+        <result column="province" property="province"></result>
+        <result column="city" property="city"></result>
     </resultMap>
 
     <sql id="columns">
@@ -106,11 +114,10 @@
         and status = '${status}'
     </select>
 
-    <update id="cleanWaitingInvestBefore" parameterType="map">
+    <update id="cleanWaitingInvest" parameterType="long">
         update invest set status = 'FAIL'
         where loan_id = #{loanId}
         and status = 'WAIT_PAY'
-        and created_time &lt; #{beforeTime}
     </update>
 
     <select id="findWaitingInvestCountAfter" parameterType="map" resultType="int">
@@ -143,8 +150,16 @@
         loan.status as loan_status,
         loan.type as loan_type,
         loan.periods as loan_periods,
+        a.user_name as investor_user_name,
+        u.mobile as investor_mobile,
+        a.identity_number as identity_number,
+        u.province as province,
+        u.city as city,
         u.referrer as referrer_login_name,
+        ra.user_name as referrer_user_name,
+        ru.mobile as referrer_mobile,
         (select group_concat(role order by role separator ", ") from user_role where login_name = invest.login_name) as roles,
+        (select group_concat(role order by role separator ", ") from user_role where login_name = u.referrer) as referrerRoles,
         (select min(repay_date) from invest_repay where invest_repay.invest_id = invest.id and invest_repay.status = 'REPAYING') as next_repay_date,
         (select invest_repay.expected_interest + invest_repay.corpus - invest_repay.expected_fee
           from invest_repay where invest_repay.invest_id = invest.id and invest_repay.status = 'REPAYING'
@@ -153,6 +168,9 @@
         from invest
         inner join loan on invest.loan_id = loan.id
         inner join user u on u.login_name = invest.login_name
+        left join account a on a.login_name = u.login_name
+        left join user ru on ru.login_name = u.referrer
+        left join account ra on ra.login_name = u.referrer
         <where>
             <if test="loanId != null">
                 and loan.id = #{loanId}
@@ -264,6 +282,10 @@
         select distinct channel from invest where channel is not NULL
     </select>
 
+    <select id="findAllInvestChannels" resultType="java.lang.String">
+        select IFNULL(channel,'其他') from invest group by channel order by channel desc
+    </select>
+
     <select id="countAutoInvest" parameterType="map" resultType="long">
         select count(*)
         from invest
@@ -271,4 +293,27 @@
         and invest.login_name = #{loginName}
         and source = 'AUTO'
     </select>
+
+    <select id="findInvestorLoginNames" resultType="java.lang.String">
+        select login_name from invest where invest.status = 'SUCCESS'
+    </select>
+
+    <select id="findInvestorCount" resultType="long">
+        select count(distinct(login_name)) from invest where invest.status = 'SUCCESS'
+    </select>
+
+    <select id="findRegisteredNotInvestCount" resultType="long">
+        select count(*) from account a where not exists(select 1 from invest i where a.login_name = i.login_name and i.status='SUCCESS');
+    </select>
+
+    <select id="hasSuccessInvest" resultType="boolean" parameterType="string">
+        select case count(1)
+               when 0
+                   then 0
+               else 1
+               end
+        from invest
+        where login_name = #{loginName} and status = 'SUCCESS';
+    </select>
+
 </mapper>

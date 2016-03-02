@@ -29,35 +29,80 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="col-sm-2 control-label">银行卡：</label>
+
+            <div class="col-sm-3">
+                <p class="form-control-static">${user.bankCardNumber!}</p>
+                <input type="hidden" name="identityNumber" value="${user.bankCardNumber!}"/>
+            </div>
+        </div>
+        <div class="form-group">
             <label for="mobile" class="col-sm-2 control-label">手机号码：</label>
 
             <div class="col-sm-3">
-                <input name="mobile" id="mobile" type="text" class="form-control" maxlength="11"
-                       value="${(user.mobile)!}"/>
+                <@global.role hasRole="'ADMIN'">
+                <input name="mobile" id="mobile" type="text" class="form-control" maxlength="11" value="${(user.mobile)!}"/>
+                </@global.role>
+
+                <@global.role hasRole="'CUSTOMER_SERVICE'">
+                <p class="form-control-static">${(user.mobile)!}</p>
+                </@global.role>
             </div>
         </div>
         <div class="form-group">
             <label for="email" class="col-sm-2 control-label">电子邮件：</label>
 
             <div class="col-sm-3">
+                <@global.role hasRole="'ADMIN'">
                 <input name="email" id="email" type="email" class="form-control" value="${(user.email)!}"/>
+                </@global.role>
+
+                <@global.role hasRole="'CUSTOMER_SERVICE'">
+                <p class="form-control-static">${(user.email)!}</p>
+                </@global.role>
             </div>
         </div>
         <div class="form-group">
-            <label for="referrer" class="col-sm-2 control-label">推荐人：</label>
+            <label for="referrer" class="col-sm-2 control-label">
+                <#if user.isReferrerStaff>
+                <span class="glyphicon glyphicon-user"></span>
+                </#if>
+                推荐人：
+            </label>
 
             <div class="col-sm-3">
+                <@global.role hasRole="'ADMIN'">
                 <input name="referrer" id="referrer" type="text" class="form-control" value="${(user.referrer)!}"/>
+                </@global.role>
+
+                <@global.role hasRole="'CUSTOMER_SERVICE'">
+                <p class="form-control-static">${(user.referrer)!}</p>
+                </@global.role>
             </div>
         </div>
         <div class="form-group">
             <label for="status" class="col-sm-2 control-label">状态：</label>
 
             <div class="col-sm-3">
-                <label class="radio-inline"><input type="radio" name="status" id="status-active" value="ACTIVE"
-                                                   <#if user.status?? && user.status=="ACTIVE">checked="checked"</#if>>正常</label>
-                <label class="radio-inline"><input type="radio" name="status" id="status-in-active" value="INACTIVE"
-                                                   <#if user.status?? && user.status=="INACTIVE">checked="checked"</#if>>禁用</label>
+                <label class="radio-inline">
+                    <input type="radio" name="status" id="status-active" value="ACTIVE"
+                           <@global.role hasRole="'CUSTOMER_SERVICE'">disabled="disabled"</@global.role>
+                           <#if user.status?? && user.status=="ACTIVE">checked="checked"</#if>>正常
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="status" id="status-in-active" value="INACTIVE"
+                           <@global.role hasRole="'CUSTOMER_SERVICE'">disabled="disabled"</@global.role>
+                           <#if user.status?? && user.status=="INACTIVE">checked="checked"</#if>>禁用
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">已开通自动投标：</label>
+
+            <div class="col-sm-3">
+                <p class="form-control-static"><#if user.autoInvestStatus=="1">是<#else>否</#if></p>
+                <input type="hidden" name="autoInvestStatus" value="${user.autoInvestStatus!}"/>
             </div>
         </div>
 
@@ -71,7 +116,9 @@
                         <div class="checkbox">
                             <label><input type="checkbox" name="roles"
                                           <#if user.roles?? && user.roles?seq_contains(roleItem.name())>checked="checked"</#if>
-                                          value="${roleItem.name()}">${roleItem.getDescription()}</label>
+                                          <@global.role hasRole="'CUSTOMER_SERVICE'">disabled="disabled"</@global.role>
+                                          value="${roleItem.name()}">${roleItem.getDescription()}
+                            </label>
                         </div>
                     </#if>
                 </#list>
@@ -92,6 +139,7 @@
             </div>
         </div>
 
+        <@global.role hasRole="'ADMIN'">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
         <div class="form-group">
@@ -100,6 +148,7 @@
                 <input class="btn btn-default" type="reset" value="重置">
             </div>
         </div>
+        </@global.role>
     </form>
 </div>
 

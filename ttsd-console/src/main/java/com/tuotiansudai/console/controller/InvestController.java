@@ -1,20 +1,20 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.InvestPaginationDataDto;
-import com.tuotiansudai.dto.InvestPaginationItemDataDto;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Min;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +34,12 @@ public class InvestController {
 
     @Autowired
     private InvestService investService;
+
+    @Autowired
+    private LoanService loanService;
+
+    @Autowired
+    private RepayService repayService;
 
     @RequestMapping(value = "/invests", method = RequestMethod.GET)
     public ModelAndView getInvestList(@RequestParam(name = "loanId", required = false) Long loanId,
@@ -46,7 +53,7 @@ public class InvestController {
                                       @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                       @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                       @RequestParam(value = "export", required = false) String export,
-                                      HttpServletResponse response) throws IOException{
+                                      HttpServletResponse response) throws IOException {
 
         Source enumSource = StringUtils.isEmpty(source) ? null : Source.valueOf(source);
         if (export != null && !export.equals("")) {
@@ -58,23 +65,32 @@ public class InvestController {
             }
             response.setContentType("application/csv");
             long count = investService.findCountInvestPagination(loanId, investorLoginName, channel, enumSource, role, startTime, endTime, investStatus, null);
-            InvestPaginationDataDto dataDto = investService.getInvestPagination(loanId, investorLoginName, channel, enumSource, role, 1, (int)count, startTime, endTime, investStatus, null);
+            InvestPaginationDataDto dataDto = investService.getInvestPagination(loanId, investorLoginName, channel, enumSource, role, 1, (int) count, startTime, endTime, investStatus, null);
             List<List<String>> data = Lists.newArrayList();
             List<InvestPaginationItemDataDto> investPaginationItemDataDtos = dataDto.getRecords();
-            for (int i = 0 ;i < investPaginationItemDataDtos.size(); i++) {
+            for (int i = 0; i < investPaginationItemDataDtos.size(); i++) {
                 List<String> dataModel = Lists.newArrayList();
-                dataModel.add(String.valueOf(investPaginationItemDataDtos.get(i).getLoanId()));
-                dataModel.add(investPaginationItemDataDtos.get(i).getLoanName());
-                dataModel.add(String.valueOf(investPaginationItemDataDtos.get(i).getLoanPeriods()));
-                dataModel.add(investPaginationItemDataDtos.get(i).getInvestorLoginName());
-                dataModel.add(investPaginationItemDataDtos.get(i).isStaff() ? "是" : "否");
-                dataModel.add(investPaginationItemDataDtos.get(i).getReferrerLoginName());
-                dataModel.add(investPaginationItemDataDtos.get(i).getChannel());
-                dataModel.add(investPaginationItemDataDtos.get(i).getSource());
-                dataModel.add(new DateTime(investPaginationItemDataDtos.get(i).getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
-                dataModel.add(investPaginationItemDataDtos.get(i).isAutoInvest() ? "是" : "否");
-                dataModel.add(investPaginationItemDataDtos.get(i).getAmount());
-                dataModel.add(investPaginationItemDataDtos.get(i).getStatus());
+                InvestPaginationItemDataDto itemDataDto = investPaginationItemDataDtos.get(i);
+                dataModel.add(String.valueOf(itemDataDto.getLoanId()));
+                dataModel.add(itemDataDto.getLoanName());
+                dataModel.add(String.valueOf(itemDataDto.getLoanPeriods()));
+                dataModel.add(itemDataDto.getInvestorLoginName());
+                dataModel.add(itemDataDto.isStaff() ? "是" : "否");
+                dataModel.add(itemDataDto.getInvestorUserName());
+                dataModel.add(itemDataDto.getInvestorMobile());
+                dataModel.add(itemDataDto.getBirthday());
+                dataModel.add(itemDataDto.getProvince());
+                dataModel.add(itemDataDto.getCity());
+                dataModel.add(itemDataDto.getReferrerLoginName());
+                dataModel.add(itemDataDto.getReferrerLoginName() != null ? itemDataDto.isReferrerStaff() ? "是" : "否" : "");
+                dataModel.add(itemDataDto.getReferrerUserName());
+                dataModel.add(itemDataDto.getReferrerMobile());
+                dataModel.add(itemDataDto.getChannel());
+                dataModel.add(itemDataDto.getSource());
+                dataModel.add(new DateTime(itemDataDto.getCreatedTime()).toString("yyyy-MM-dd HH:mm:ss"));
+                dataModel.add(itemDataDto.isAutoInvest() ? "是" : "否");
+                dataModel.add(itemDataDto.getAmount());
+                dataModel.add(itemDataDto.getStatus());
                 data.add(dataModel);
             }
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleInvests, data, response.getOutputStream());
@@ -99,5 +115,23 @@ public class InvestController {
             mv.addObject("roleList", Role.values());
             return mv;
         }
+    }
+
+    @RequestMapping(value = "/invest-repay/{investId:^\\d+$}", method = RequestMethod.GET)
+    public ModelAndView getInvestRepayList(@PathVariable long investId) {
+        InvestModel investModel = investService.findById(investId);
+        LoanModel loanModel = loanService.findLoanById(investModel.getLoanId());
+
+        BaseDto<InvestRepayDataDto> investRepayDto = repayService.findInvestorInvestRepay(investModel.getLoginName(), investModel.getId());
+        List<InvestRepayDataItemDto> repayDataItems = investRepayDto.getData().getRecords();
+        if (repayDataItems == null) {
+            repayDataItems = new ArrayList<>(0);
+        }
+
+        ModelAndView mv = new ModelAndView("invest-repay-list");
+        mv.addObject("repayList", repayDataItems);
+        mv.addObject("invest", investModel);
+        mv.addObject("loan", loanModel);
+        return mv;
     }
 }

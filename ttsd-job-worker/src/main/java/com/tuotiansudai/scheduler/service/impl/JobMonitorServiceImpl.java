@@ -3,8 +3,9 @@ package com.tuotiansudai.scheduler.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.SmsJobFatalNotifyDto;
+import com.tuotiansudai.dto.SmsFatalNotifyDto;
 import com.tuotiansudai.job.InvestCallback;
+import com.tuotiansudai.repository.model.Environment;
 import com.tuotiansudai.scheduler.repository.mapper.ExecutionLogMapper;
 import com.tuotiansudai.scheduler.repository.model.ExecuteStatus;
 import com.tuotiansudai.scheduler.repository.model.ExecutionLogModel;
@@ -17,7 +18,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
-import java.util.List;
 
 @Service
 public class JobMonitorServiceImpl implements JobMonitorService {
@@ -28,8 +28,8 @@ public class JobMonitorServiceImpl implements JobMonitorService {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    @Value("#{'${pay.invest.notify.fatal.mobile}'.split('\\|')}")
-    private List<String> fatalNotifyMobiles;
+    @Value("${common.environment}")
+    private Environment environment;
 
     @Autowired
     private ExecutionLogMapper executionLogMapper;
@@ -98,19 +98,14 @@ public class JobMonitorServiceImpl implements JobMonitorService {
             } catch (JsonProcessingException e) {
                 logger.warn("cannot parse jobData to json", e);
             }
-            String errorMessage = MessageFormat.format("{0}-{1},params:{2}", jobKey.getGroup(), jobKey.getName(), jobParams);
-            sendSmsErrNotify(fatalNotifyMobiles, errorMessage);
+            String errorMessage = MessageFormat.format("{0},{1},{2},{3}", environment, jobKey.getGroup(), jobKey.getName(), jobParams);
+            sendSmsFatalNotify(errorMessage);
         }
     }
 
-    private void sendSmsErrNotify(List<String> mobiles, String errMsg) {
-        for (String mobile : mobiles) {
-            logger.info("sent job fatal sms message to " + mobile);
-
-            SmsJobFatalNotifyDto dto = new SmsJobFatalNotifyDto();
-            dto.setMobile(mobile);
-            dto.setErrMsg(errMsg);
-            smsWrapperClient.sendJobFatalNotify(dto);
-        }
+    private void sendSmsFatalNotify(String errMsg) {
+        logger.info("sent job fatal sms message");
+        SmsFatalNotifyDto dto = new SmsFatalNotifyDto(MessageFormat.format("Job执行错误。详细信息：{0}", errMsg));
+        smsWrapperClient.sendFatalNotify(dto);
     }
 }
