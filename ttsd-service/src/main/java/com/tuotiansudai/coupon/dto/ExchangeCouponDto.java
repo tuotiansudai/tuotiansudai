@@ -5,13 +5,13 @@ import java.io.Serializable;
 
 public class ExchangeCouponDto extends CouponDto implements Serializable{
 
-    private long exchangePoint;
+    private Long exchangePoint;
 
-    public long getExchangePoint() {
+    public Long getExchangePoint() {
         return exchangePoint;
     }
 
-    public void setExchangePoint(long exchangePoint) {
+    public void setExchangePoint(Long exchangePoint) {
         this.exchangePoint = exchangePoint;
     }
 

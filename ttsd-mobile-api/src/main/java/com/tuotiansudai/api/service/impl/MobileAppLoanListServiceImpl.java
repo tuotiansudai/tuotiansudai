@@ -36,18 +36,18 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(),ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
         index = (loanListRequestDto.getIndex() - 1) * pageSize;
-        List<LoanModel> loanModels = loanMapper.findLoanListWeb(null, null, 0, 0, index);
+        List<LoanModel> loanModels = loanMapper.findLoanListWeb(loanListRequestDto.getProductType(), loanListRequestDto.getLoanStatus(),loanListRequestDto.getRateLower(),loanListRequestDto.getRateUpper(), index);
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(loanModels)) {
             loanDtoList = convertLoanDto(loanModels);
         }
         dto.setCode(ReturnMessage.SUCCESS.getCode());
-        dto.setMessage("");
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
 
         LoanListResponseDataDto loanListResponseDataDto = new LoanListResponseDataDto();
         loanListResponseDataDto.setIndex(loanListRequestDto.getIndex());
         loanListResponseDataDto.setPageSize(loanListRequestDto.getPageSize());
-        loanListResponseDataDto.setTotalCount(loanMapper.findLoanListCountWeb(null,null,0,0));
+        loanListResponseDataDto.setTotalCount(loanMapper.findLoanListCountWeb(loanListRequestDto.getProductType(), loanListRequestDto.getLoanStatus(),loanListRequestDto.getRateLower(),loanListRequestDto.getRateUpper()));
 
         if(CollectionUtils.isNotEmpty(loanDtoList)){
             loanListResponseDataDto.setLoanList(loanDtoList);

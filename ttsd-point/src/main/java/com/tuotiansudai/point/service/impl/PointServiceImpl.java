@@ -7,20 +7,26 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.point.service.PointService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
+
 @Service
-public class PointServiceImpl implements PointService{
+public class PointServiceImpl implements PointService {
+    static Logger logger = Logger.getLogger(PointServiceImpl.class);
 
     @Autowired
     private CouponMapper couponMapper;
 
     @Autowired
     private CouponExchangeMapper couponExchangeMapper;
+
+
+
 
     @Override
     @Transactional
@@ -36,5 +42,6 @@ public class PointServiceImpl implements PointService{
         couponExchangeMapper.create(couponExchangeModel);
 
     }
+
 
 }
