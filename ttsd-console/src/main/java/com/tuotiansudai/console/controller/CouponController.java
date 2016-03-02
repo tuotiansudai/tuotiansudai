@@ -299,6 +299,7 @@ public class CouponController {
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
         String sideLabType;
+        String headLab;
         if (couponModel.getCouponType() == CouponType.INTEREST_COUPON) {
             sideLabType = "statisticsInterestCoupon";
         } else if (couponModel.getCouponType() == CouponType.RED_ENVELOPE) {
@@ -308,7 +309,14 @@ public class CouponController {
         } else {
             sideLabType = "statisticsCoupon";
         }
+        if (couponModel.getUserGroup() == UserGroup.EXCHANGER) {
+            sideLabType = "couponExchangeManage";
+            headLab = "point-manage";
+        } else {
+            headLab = "activity-manage";
+        }
         modelAndView.addObject("sideLabType", sideLabType);
+        modelAndView.addObject("headLab", headLab);
         return modelAndView;
     }
 
