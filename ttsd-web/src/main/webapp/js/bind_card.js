@@ -1,4 +1,4 @@
-require(['jquery', 'layerWrapper', 'csrf'], function ($,layer) {
+require(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function ($, layer) {
         var $bindCardBox = $('#bindCardBox'),
             $inputBankcard = $('.input-bankcard', $bindCardBox),
             $btnBindCard = $('.bind-card-submit', $bindCardBox),

@@ -1,4 +1,4 @@
-require(['jquery', 'layerWrapper', 'moment', 'pagination', 'mustache', 'text!/tpl/my-treasure-table.mustache', 'text!/tpl/my-treasure-table-interest.mustache', 'text!/tpl/my-treasure-table-red.mustache', 'text!/tpl/my-treasure-table-birthday.mustache', 'csrf', 'coupon-alert'],
+require(['jquery', 'layerWrapper', 'moment', 'pagination', 'mustache', 'text!/tpl/my-treasure-table.mustache', 'text!/tpl/my-treasure-table-interest.mustache', 'text!/tpl/my-treasure-table-red.mustache', 'text!/tpl/my-treasure-table-birthday.mustache', 'jquery.ajax.extension', 'coupon-alert'],
     function ($, layer, moment, pagination, Mustache, treasureListTemplate, treasureListTemplateInterest, treasureListTemplateRedEnvelope, treasureListTemplateBirthdayCoupon) {
         $(function () {
             var $navLi = $('.column-title .title-navli'),

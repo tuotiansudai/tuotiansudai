@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'csrf','commonFun', 'coupon-alert'], function ($, _) {
+require(['jquery', 'underscore', 'jquery.ajax.extension','commonFun', 'coupon-alert'], function ($, _) {
     $(function () {
         var $bannerBox = $('.banner-box'),
             $imgScroll = $('.banner-img-list', $bannerBox),
