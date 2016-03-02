@@ -6,7 +6,7 @@ public class PointBillResponseDataDto extends BaseResponseDataDto {
 
     private Integer index;
     private Integer pageSize;
-    private Integer totalCount;
+    private Long totalCount;
     private List<PointBillRecordResponseDataDto> pointBills;
 
     public Integer getIndex() {
@@ -25,11 +25,11 @@ public class PointBillResponseDataDto extends BaseResponseDataDto {
         this.pageSize = pageSize;
     }
 
-    public Integer getTotalCount() {
+    public Long getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(Integer totalCount) {
+    public void setTotalCount(Long totalCount) {
         this.totalCount = totalCount;
     }
 

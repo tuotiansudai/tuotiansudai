@@ -38,8 +38,8 @@ public class MobileAppPointServiceImpl implements MobileAppPointService{
         PointBillResponseDataDto pointBillResponseDataDto = new PointBillResponseDataDto();
         pointBillResponseDataDto.setIndex(index);
         pointBillResponseDataDto.setPageSize(pageSize);
-        pointBillResponseDataDto.setPointBills(convertPointBillRecordDto(pointBillMapper.findByLoginName(loginName)));
-        pointBillResponseDataDto.setTotalCount(pointBillMapper.findByLoginName(loginName).size());
+        pointBillResponseDataDto.setPointBills(convertPointBillRecordDto(pointBillMapper.findPointBillPagination(loginName, (index - 1) * pageSize, pageSize, null, null, null)));
+        pointBillResponseDataDto.setTotalCount(pointBillMapper.findCountPointBillPagination(loginName, null, null, null));
         dto.setData(pointBillResponseDataDto);
         return dto;
     }
