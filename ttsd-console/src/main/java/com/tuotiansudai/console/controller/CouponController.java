@@ -5,6 +5,7 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
+import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
@@ -259,8 +260,8 @@ public class CouponController {
         ModelAndView modelAndView = new ModelAndView("/coupons");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
-        modelAndView.addObject("coupons", couponService.findCoupons(index, pageSize));
-        int couponsCount = couponService.findCouponsCount();
+        modelAndView.addObject("coupons", couponService.findNewbieAndInvestCoupons(index, pageSize));
+        int couponsCount = couponService.findNewbieAndInvestCouponsCount();
         modelAndView.addObject("couponsCount", couponsCount);
         long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
@@ -298,6 +299,7 @@ public class CouponController {
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
         String sideLabType;
+        String headLab;
         if (couponModel.getCouponType() == CouponType.INTEREST_COUPON) {
             sideLabType = "statisticsInterestCoupon";
         } else if (couponModel.getCouponType() == CouponType.RED_ENVELOPE) {
@@ -307,7 +309,14 @@ public class CouponController {
         } else {
             sideLabType = "statisticsCoupon";
         }
+        if (couponModel.getUserGroup() == UserGroup.EXCHANGER) {
+            sideLabType = "couponExchangeManage";
+            headLab = "point-manage";
+        } else {
+            headLab = "activity-manage";
+        }
         modelAndView.addObject("sideLabType", sideLabType);
+        modelAndView.addObject("headLab", headLab);
         return modelAndView;
     }
 
@@ -388,22 +397,55 @@ public class CouponController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/coupon-exchange/{id:^\\d+$}/edit", method = RequestMethod.GET)
+    public ModelAndView edit(@PathVariable long id) {
+        CouponModel couponModel = couponService.findCouponById(id);
+        CouponExchangeModel couponExchangeModel = couponService.findCouponExchangeByCouponId(id);
+        ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto(couponModel);
+        exchangeCouponDto.setExchangePoint(couponExchangeModel.getExchangePoint());
+        ModelAndView modelAndView = new ModelAndView("/coupon-exchange-edit");
+        modelAndView.addObject("exchangeCouponDto", exchangeCouponDto);
+        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
+        modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON));
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/coupon-exchange", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView createCouponExchange(@Valid @ModelAttribute ExchangeCouponDto exchangeCouponDto, RedirectAttributes redirectAttributes) {
 
         String loginName = LoginUserInfo.getLoginName();
-        ModelAndView modelAndView = new ModelAndView("/coupon-exchanges");
+        ModelAndView modelAndView = new ModelAndView();
         Long id = exchangeCouponDto.getId();
         try {
             if (id != null) {
-                //todo edit
+                couponService.editCoupon(loginName, exchangeCouponDto);
             } else {
                 couponService.createCoupon(loginName, exchangeCouponDto);
             }
+            modelAndView.setViewName("redirect:/activity-manage/coupon-exchange-manage");
         } catch (CreateCouponException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/coupon-exchange-manage", method = RequestMethod.GET)
+    public ModelAndView couponExchangeManage(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
+                                             @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+
+        ModelAndView modelAndView = new ModelAndView("/coupon-exchanges");
+        List<ExchangeCouponDto> exchangeCouponDtos = couponService.findCouponExchanges(index, pageSize);
+        modelAndView.addObject("exchangeCoupons", exchangeCouponDtos);
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+        int exchangeCouponCount = couponService.findCouponExchangeCount();
+        modelAndView.addObject("exchangeCouponCount", exchangeCouponCount);
+        long totalPages = exchangeCouponCount / pageSize + (exchangeCouponCount % pageSize > 0 ? 1 : 0);
+        boolean hasPreviousPage = index > 1 && index <= totalPages;
+        boolean hasNextPage = index < totalPages;
+        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
+        modelAndView.addObject("hasNextPage", hasNextPage);
         return modelAndView;
     }
 

@@ -115,7 +115,7 @@
                 "sidebar":[
                     {"name":"","text":"用户财豆查询","link":"","role":""},
                     {"name":"createCouponExchange","text":"优惠券兑换创建","link":"/activity-manage/coupon-exchange","role":"'ADMIN'"},
-                    {"name":"","text":"优惠券兑换管理","link":"","role":""}
+                    {"name":"couponExchangeManage","text":"优惠券兑换管理","link":"/activity-manage/coupon-exchange-manage","role":"'ADMIN'"}
                 ]
             }
         ]

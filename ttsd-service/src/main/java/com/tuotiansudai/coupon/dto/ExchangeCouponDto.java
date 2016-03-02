@@ -1,6 +1,8 @@
 package com.tuotiansudai.coupon.dto;
 
 
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+
 import java.io.Serializable;
 
 public class ExchangeCouponDto extends CouponDto implements Serializable{
@@ -15,4 +17,11 @@ public class ExchangeCouponDto extends CouponDto implements Serializable{
         this.exchangePoint = exchangePoint;
     }
 
+    public ExchangeCouponDto() {
+
+    }
+
+    public ExchangeCouponDto(CouponModel couponModel) {
+        super(couponModel);
+    }
 }
