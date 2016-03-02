@@ -21,8 +21,9 @@
         value(#{orderId}, #{loginName}, #{point}, #{businessType}, #{note}, #{createdTime})
     </insert>
 
-    <select id="findByLoginName" parameterType="java.lang.String" resultMap="pointBillResultMap">
-        select * from point_bill where login_name = #{loginName} order by created_time desc;
+    <select id="findByLoginName" parameterType="string" resultMap="pointBillResultMap">
+        select * from point_bill where login_name = #{loginName}
+        order by created_time desc;
     </select>
 
 </mapper>

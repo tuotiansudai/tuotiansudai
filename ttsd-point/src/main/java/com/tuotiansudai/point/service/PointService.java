@@ -8,4 +8,6 @@ public interface PointService {
 
     void createCouponAndExchange(String loginName, ExchangeCouponDto exchangeCouponDto);
 
+    long getAvailablePoint(String loginName);
+
 }
