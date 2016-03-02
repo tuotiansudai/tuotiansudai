@@ -92,7 +92,7 @@
             <when test="roleStage == null ">
                 user u
             </when>
-            <when test="roleStage.name() == 'NATURAL_USER' ">
+            <when test="roleStage.name() == 'NORMAL_USER' ">
                 (SELECT
                 j.*
                 FROM
@@ -133,7 +133,7 @@
         left join account a on u.login_name = a.login_name
         left join auto_invest_plan au on u.login_name = au.login_name and enabled=1
         <where>
-            <if test="roleStage !=null and roleStage.name() != 'RECOMMENDATION' and  roleStage.name()!='NATURAL_USER' ">
+            <if test="roleStage !=null and roleStage.name() != 'RECOMMENDATION' and  roleStage.name()!='NORMAL_USER' ">
                 and r.role = #{roleStage}
             </if>
             <if test="email !=null and email !='' ">
@@ -172,7 +172,7 @@
             <when test="roleStage == null">
                 user u
             </when>
-            <when test="roleStage.name() == 'NATURAL_USER' ">
+            <when test="roleStage.name() == 'NORMAL_USER' ">
                 (SELECT
                 j.*
                 FROM
@@ -213,7 +213,7 @@
 
         <where>
 
-            <if test="roleStage !=null and roleStage.name() != 'RECOMMENDATION' and  roleStage.name()!='NATURAL_USER' ">
+            <if test="roleStage !=null and roleStage.name() != 'RECOMMENDATION' and  roleStage.name()!='NORMAL_USER' ">
                 and r.role = #{roleStage}
             </if>
             <if test="email !=null and email !='' ">

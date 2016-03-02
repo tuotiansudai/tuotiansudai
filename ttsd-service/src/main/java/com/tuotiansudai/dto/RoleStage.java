@@ -9,7 +9,7 @@ public enum RoleStage {
     STAFF("业务员"),
     CUSTOMER_SERVICE("客服"),
     AGENT("渠道用户"),
-    NATURAL_USER("自然用户"),
+    NORMAL_USER("自然用户"),
     RECOMMENDATION("业务员的一级推荐"),
     ADMIN("管理员"),
     OTHERS("其他用户");

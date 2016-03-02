@@ -29,7 +29,7 @@
                                     <option value="STAFF">业务员</option>
                                     <option value="RECOMMENDATION">业务员的一级推荐</option>
                                     <option value="AGENT">渠道用户</option>
-                                    <option value="NATURAL_USER">自然用户</option>
+                                    <option value="NORMAL_USER">自然用户</option>
                                     <option value="OTHERS">其他用户</option>
                                 </select>
                                 <select class="form-control" name="channel"></select>
@@ -212,7 +212,7 @@
                             <option value="STAFF">业务员</option>
                             <option value="RECOMMENDATION">业务员的一级推荐</option>
                             <option value="AGENT">渠道用户</option>
-                            <option value="NATURAL_USER">自然用户</option>
+                            <option value="NORMAL_USER">自然用户</option>
                         </select>
                         <select class="form-control" name="channel"></select>
                         <button class="btn btn-primary" type="button">查询</button>
