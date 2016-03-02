@@ -14,8 +14,10 @@ import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,11 +39,15 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
     @Autowired
     private LoanMapper loanMapper;
 
+    @Value("#{'${show.random.loginName.list}'.split('\\|')}")
+    private List<String> showRandomloginNameList;
+
     @Override
     public BaseResponseDto generateInvestList(InvestListRequestDto investListRequestDto) {
         BaseResponseDto dto = new BaseResponseDto();
         Integer index = investListRequestDto.getIndex();
         Integer pageSize = investListRequestDto.getPageSize();
+        final String loginName = investListRequestDto.getBaseParam().getUserId();
         long loanId = Long.parseLong(investListRequestDto.getLoanId());
 
         long count = investMapper.findCountByStatus(loanId, InvestStatus.SUCCESS);
@@ -59,6 +65,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
             investRecordResponseDataDto = Lists.transform(investModels, new Function<InvestModel, InvestRecordResponseDataDto>() {
                 @Override
                 public InvestRecordResponseDataDto apply(InvestModel input) {
+                    input.setLoginName(RandomUtils.encryptLoginName(loginName, showRandomloginNameList, input.getLoginName(), 3));
                     return new InvestRecordResponseDataDto(input);
                 }
             });
