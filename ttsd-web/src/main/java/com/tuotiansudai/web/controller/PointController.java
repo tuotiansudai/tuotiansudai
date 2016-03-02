@@ -36,7 +36,7 @@ public class PointController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView myPoint(){
         String loginName = LoginUserInfo.getLoginName();
-        ModelAndView modelAndView = new ModelAndView("/my-point");
+        ModelAndView modelAndView = new ModelAndView("/point");
 
         return modelAndView;
 

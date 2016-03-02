@@ -1696,6 +1696,260 @@
 
   }
 }
+/*my choi beans*/
+.my-choi-beans {
+  .column-title{
+    em{
+      &.title-navli{
+        border-bottom: 4px solid #999;
+        color: #999;
+        cursor:pointer;
+        margin-right:40px;
+      }
+      &.active{
+        border-bottom: 4px solid #ff7200;
+        color: #ff7200;
+      }
+    }
+  }
+  .icon-result{
+    background:url("/images/sign/choi-beans.png") no-repeat;
+  }
+  .choi-beans-list{
+    float:left;
+    width:100%;
+    .beans-intro{
+      float:left;
+      width:723px;
+      height:188px;
+      padding:20px;
+      border:1px solid #f2f2f2;
+      .beans-list{
+        float:left;
+        width:100%;
+        &.mt-20{
+          margin-top:20px;
+        }
+        i{
+          &.icon-beans{
+            float:left;
+            width:30px;
+            height:30px;
+            background-position: 0px -53px;
+          }
+          &.icon-dou{
+            float:left;
+            width:21px;
+            height:19px;
+            margin: 5px 0 0 5px;
+            background-position: 0px -120px;
+          }
+        }
+        span{
+          line-height:30px;
+          &.title-text{
+            float:left;
+            font-size:18px;
+            color:#ff7200;
+            margin-left:5px;
+          }
+          &.title-href{
+            float:right;
+            font-size:14px;
+            color:#4f8df5;
+            cursor:pointer;
+          }
+          &.beans-num{
+            float:left;
+            font-size:18px;
+            color:#ff7200;
+          }
+        }
+        .beans-recent{
+          float:left;
+          width:408px;
+          height:13px;
+          border:1px solid #f2f2f2;
+          li{
+            float:left;
+            width:136px;
+            height:13px;
+            position: relative;
+            &.one-day{
+              background:#ff7200;
+              p{
+                border-left:1px dashed #ff7200;
+                .icon-circle{
+                  background: #ff7200;
+                }
+              }
+            }
+            &.two-day{
+              background:#ffa862;
+              p{
+                border-left:1px dashed #ffa862;
+                .icon-circle{
+                  background: #ffa862;
+                }
+              }
+            }
+            &.three-day{
+              background:#feda7a;
+              p{
+                border-left:1px dashed #feda7a;
+                .icon-circle{
+                  background: #feda7a;
+                }
+              }
+            }
+            p{
+              float:left;
+              width:0;
+              height:15px;
+              border-left:1px dashed #ccc;
+              margin-top: 15px;
+              margin-left: 68px;
+              position: relative;
+              .icon-circle{
+                position: absolute;
+                top: 15px;
+                left: -3px;
+                width: 5px;
+                height: 5px;
+                background: #ff7200;
+                border-radius: 10px;
+              }
+              span{
+                position: absolute;
+                font-size:12px;
+                color:#ffa862;
+                &.text-date{
+                  top: 20px;
+                  left: -20px;
+                  width: 100px;
+                }
+                &.text-money{
+                  top:40px;
+                  left:-20px;
+                  width:100px;
+                }
+                strong{
+                  float:left;
+                }
+                .icon-sm-dou{
+                  float:left;
+                  width:18px;
+                  height:18px;
+                  margin-top: 8px;
+                  background-position: 0px -94px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .beans-operat{
+      float:left;
+      width:100%;
+      margin-top:50px;
+      border-top:1px dashed #f2f2f2;
+      h3{
+        float:left;
+        width:100%;
+        margin:30px 0;
+        text-align:left;
+        color:#ff0000;
+        font-size:18px;
+      }
+      .object-list{
+        float:left;
+        width:100%;
+        li{
+          float:left;
+          width:200px;
+          margin-right:50px;
+          p{
+            text-align:center;
+            &.invest-bg{
+              background:#ff7171;
+            }
+            &.sign-bg{
+              background:#53d7aa;
+            }
+            &.task-bg{
+              background:#feda7a;
+            }
+            &.icon-com{
+              float:left;
+              width:100%;
+              height:110px;
+              border-radius:50px;
+              .icon-result{
+                float:left;
+                margin-left: 55px;
+                margin-top: 15px;
+                &.icon-invest{
+                  width: 83px;
+                  height: 76px;
+                  background-position: 0px -149px;
+                }
+                &.icon-sign{
+                  margin-top: 30px;
+                  width: 93px;
+                  height: 43px;
+                  background-position: 0px 0px;
+                }
+                &.icon-task{
+                  width: 85px;
+                  height: 86px;
+                  background-position: 0px -235px;
+                }
+              }
+            }
+            &.btn-list{
+              float:left;
+              width:100%;
+              text-align:center;
+              margin-top:10px;
+              span{
+                padding:10px 25px;
+                color:#fff;
+                font-size:16px;
+                border-radius:10px;
+                &.btn-invest{
+                  background:#ff7171;
+                }
+                &.btn-sign{
+                  background:#53d7aa;
+                }
+                &.btn-task{
+                  background:#feda7a;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .beans-infotext{
+      float:left;
+      width:100%;
+      margin-top:50px;
+      border:1px dashed #f2f2f2;
+      dl{
+        padding:20px;
+        color:#adafb2;
+        dt{
+          font-size:14px;
+        }
+        dd{
+          font-size:12px;
+        }
+      }
+    }
+  }
+}
 @media screen and (max-width: 700px) {
   .chart-info-responsive{
     display:block!important;
