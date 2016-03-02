@@ -37,7 +37,7 @@ public class UserPointTaskMapperTest {
     public void shouldCreatePointBillModel() throws Exception {
         UserModel fakeUserModel = this.createFakeUserModel();
 
-        List<PointTaskModel> pointTaskModels = pointTaskMapper.find();
+        List<PointTaskModel> pointTaskModels = pointTaskMapper.find(0,1);
         for (PointTaskModel pointTaskModel : pointTaskModels) {
             userPointTaskMapper.create(new UserPointTaskModel(fakeUserModel.getLoginName(), pointTaskModel.getId()));
         }
