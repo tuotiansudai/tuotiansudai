@@ -31,6 +31,7 @@
             </div>
         </div>
     </div>
+
     <h4 class="column-title">
         <em class="tc title-navli active">我的宝藏</em>
         <span class="rule-show">使用规则？</span>
@@ -39,8 +40,8 @@
          <li class="active">未使用</li>
          <li>已使用</li>
          <li>已过期</li>
-     </ul> 
-     <div class="model-list">
+     </ul>
+    <div class="model-list">
         <div class="coupon-com active">
             <ul class="coupon-list">
                 <li class="yellow-type">
@@ -424,7 +425,7 @@
                 </li>
             </ul>
         </div>
-     </div>
+    </div>
     <#include "coupon-alert.ftl" />
 </div>
 </@global.main>
