@@ -205,8 +205,8 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<CouponDto> findCoupons(int index, int pageSize) {
-        List<CouponModel> couponModels = couponMapper.findCoupons((index - 1) * pageSize, pageSize);
+    public List<CouponDto> findNewbieAndInvestCoupons(int index, int pageSize) {
+        List<CouponModel> couponModels = couponMapper.findNewbieAndInvestCoupons((index - 1) * pageSize, pageSize);
         for (CouponModel couponModel : couponModels) {
             couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
         }
@@ -219,8 +219,8 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public int findCouponsCount() {
-        return couponMapper.findCouponsCount();
+    public int findNewbieAndInvestCouponsCount() {
+        return couponMapper.findNewbieAndInvestCouponsCount();
     }
 
 
@@ -304,5 +304,10 @@ public class CouponServiceImpl implements CouponService {
 
     public int findCouponExchangeCount() {
         return couponMapper.findCouponExchangeCount();
+    }
+
+    @Override
+    public CouponExchangeModel findCouponExchangeByCouponId(long couponId) {
+        return couponExchangeMapper.findByCouponId(couponId);
     }
 }

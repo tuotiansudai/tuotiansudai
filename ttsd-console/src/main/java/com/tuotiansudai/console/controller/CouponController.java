@@ -260,8 +260,8 @@ public class CouponController {
         ModelAndView modelAndView = new ModelAndView("/coupons");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
-        modelAndView.addObject("coupons", couponService.findCoupons(index, pageSize));
-        int couponsCount = couponService.findCouponsCount();
+        modelAndView.addObject("coupons", couponService.findNewbieAndInvestCoupons(index, pageSize));
+        int couponsCount = couponService.findNewbieAndInvestCouponsCount();
         modelAndView.addObject("couponsCount", couponsCount);
         long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
@@ -400,7 +400,7 @@ public class CouponController {
     @RequestMapping(value = "/coupon-exchange/{id:^\\d+$}/edit", method = RequestMethod.GET)
     public ModelAndView edit(@PathVariable long id) {
         CouponModel couponModel = couponService.findCouponById(id);
-        CouponExchangeModel couponExchangeModel = pointService.findCouponExchangeByCouponId(id);
+        CouponExchangeModel couponExchangeModel = couponService.findCouponExchangeByCouponId(id);
         ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto(couponModel);
         exchangeCouponDto.setExchangePoint(couponExchangeModel.getExchangePoint());
         ModelAndView modelAndView = new ModelAndView("/coupon-exchange-edit");

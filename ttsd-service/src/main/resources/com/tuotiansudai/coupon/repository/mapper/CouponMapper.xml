@@ -56,7 +56,7 @@
         select * from coupon where id = #{id} for update
     </select>
 
-    <select id="findCoupons" parameterType="map" resultMap="couponResultMap">
+    <select id="findNewbieAndInvestCoupons" parameterType="map" resultMap="couponResultMap">
         SELECT
           c.*,
           IFNULL(temp.expected_amount, 0) AS expected_amount,
@@ -156,7 +156,7 @@
         LIMIT #{index},#{pageSize}
     </select>
 
-    <select id="findCouponsCount"  resultType="int">
+    <select id="findNewbieAndInvestCouponsCount"  resultType="int">
         select count(*) from coupon where deleted is FALSE and coupon_type in ('NEWBIE_COUPON','INVEST_COUPON') and user_group != 'EXCHANGER'
     </select>
 

@@ -8,6 +8,4 @@ public interface PointService {
 
     void createCouponAndExchange(String loginName, ExchangeCouponDto exchangeCouponDto);
 
-    CouponExchangeModel findCouponExchangeByCouponId(long couponId);
-
 }

@@ -17,7 +17,7 @@ public interface CouponMapper {
 
     void updateCoupon(CouponModel couponModel);
 
-    List<CouponModel> findCoupons(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
+    List<CouponModel> findNewbieAndInvestCoupons(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
 
     List<CouponModel> findInterestCoupons(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
 
@@ -25,7 +25,7 @@ public interface CouponMapper {
 
     List<CouponModel> findBirthdayCoupons(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
 
-    int findCouponsCount();
+    int findNewbieAndInvestCouponsCount();
 
     int findInterestCouponsCount();
 
