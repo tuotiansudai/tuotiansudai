@@ -57,7 +57,7 @@ public class MobileAppJPushClient {
                 .setAudience(Audience.registrationId(registrationIds))
                 .setNotification(Notification.newBuilder()
                         .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).setBadge(0).build())
-                        .addPlatformNotification(AndroidNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
+                        .addPlatformNotification(AndroidNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).setBuilderId(2).build())
                         .build())
                 .setOptions(Options.newBuilder().setApnsProduction(Environment.isProduction(environment)).build())
                 .build();
@@ -85,7 +85,8 @@ public class MobileAppJPushClient {
                 .setAudience(Audience.all())
                 .setNotification(Notification.newBuilder()
                         .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).setBadge(0).addExtra(extraKey, extraValue).build())
-                        .addPlatformNotification(AndroidNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).build())
+                        .addPlatformNotification(AndroidNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).setBuilderId(2).build())
+
                         .build())
                 .setOptions(Options.newBuilder().setApnsProduction(Environment.isProduction(environment)).build())
                 .build();

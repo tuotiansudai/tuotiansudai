@@ -61,7 +61,7 @@
     </select>
 
     <select id="findBirthOfAccountInMonth" resultType="java.lang.String">
-        select login_name from account where substring(identity_number,11,2) =  DATE_FORMAT(now(),'%m')
+        select login_name from account where (if(length(identity_number) = 18,substring(identity_number,11,2),substring(identity_number,9,2))) = DATE_FORMAT(now(),'%m')
     </select>
 
     <select id="findBirthOfAccountInDay" resultType="java.lang.String">

@@ -85,7 +85,7 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
         });
         $('.invest-list').on('mouseenter','.project-name',function() {
             layer.closeAll('tips');
-            if($(this).text().length>15){
+            if($.trim($(this).text()).length>15){
                 layer.tips($(this).text(), $(this), {
                     tips: [1, '#efbf5c'],
                     time: 2000,
@@ -97,7 +97,9 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
         });
         $('.invest-list').on('mouseenter','.birth-icon',function() {
             layer.closeAll('tips');
-            layer.tips('您已享受生日福利，首月收益翻'+$(this).attr('data-benefit')+'倍', $(this), {
+            var num = parseFloat($(this).attr('data-benefit'));
+            var benefit = num + 1;
+            layer.tips('您已享受生日福利，首月收益翻'+benefit+'倍', $(this), {
                 tips: [1, '#efbf5c'],
                 time: 2000,
                 tipsMore: true,
@@ -107,6 +109,7 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
         });
     };
 
+    changeDatePicker();
     loadLoanData();
 
     $dateFilter.find(".select-item").click(function () {
@@ -119,10 +122,9 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
         loadLoanData();
     });
 
-    $dateFilter.find(".select-item").eq(2).trigger('click');
-
     //define calendar
     $('.apply-btn').click(function () {
         loadLoanData();
+        $(".date-filter .select-item").removeClass("current");
     });
 });

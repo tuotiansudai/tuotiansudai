@@ -320,5 +320,13 @@
             </foreach>
         </if>
     </select>
+    <select id="findUsersBirthdayMobile" resultType="java.lang.String">
+        SELECT DISTINCT(u.mobile) FROM user u
+        INNER JOIN account a ON a.`login_name` = u.`login_name`
+        INNER JOIN invest iv on a.`login_name` = iv.`login_name`
+        WHERE IF(LENGTH(identity_number)=18,SUBSTRING(identity_number,11,2),SUBSTRING(identity_number,9,2)) - DATE_FORMAT(now(),'%m') = 0
+        AND iv.`status`='SUCCESS';
+    </select>
+
 
 </mapper>

@@ -38,8 +38,8 @@ public enum JobType {
     SendRedEnvelope("放款发红包"),
     CouponNotify("优惠券通知"),
     GetPushReport("获取推送统计数据"),
-    ManualJPushAlert("手动推送");
-
+    ManualJPushAlert("手动推送"),
+    BirthdayNotify("生日月用户短信提醒");
 
     private final String description;
 

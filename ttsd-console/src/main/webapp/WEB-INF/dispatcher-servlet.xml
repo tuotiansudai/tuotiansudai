@@ -10,7 +10,7 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 
-    <context:property-placeholder location="classpath*:ttsd-env.properties" />
+    <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties" />
 
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="false">

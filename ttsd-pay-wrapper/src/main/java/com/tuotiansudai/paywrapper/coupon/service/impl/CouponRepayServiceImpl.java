@@ -8,11 +8,11 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
-import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -29,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -158,21 +157,19 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                         .divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
                 break;
             case BIRTHDAY_COUPON:
-                boolean isNotFirstPeriod = currentLoanRepayModel.getPeriod() != 1;
-                if (isNotFirstPeriod) {
-                    DateTime theFirstRepayDate = new DateTime(Iterators.tryFind(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
-                        @Override
-                        public boolean apply(LoanRepayModel input) {
-                            return input.getPeriod() == 1;
-                        }
-                    }).get().getRepayDate());
-
-                    if (lastRepayDate.withTimeAtStartOfDay().isBefore(theFirstRepayDate.withTimeAtStartOfDay())) {
-                        periodDuration = Days.daysBetween(lastRepayDate.withTimeAtStartOfDay(), theFirstRepayDate.withTimeAtStartOfDay()).getDays();
-                    } else {
-                        return -1;
-                    }
+                if (lastLoanRepayModel != null) {
+                    return -1;
                 }
+
+                DateTime theFirstRepayDate = new DateTime(Iterators.tryFind(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
+                    @Override
+                    public boolean apply(LoanRepayModel input) {
+                        return input.getPeriod() == 1;
+                    }
+                }).get().getRepayDate());
+
+                periodDuration = Days.daysBetween(lastRepayDate.withTimeAtStartOfDay(), theFirstRepayDate.withTimeAtStartOfDay()).getDays();
+
                 expectedInterest = new BigDecimal(periodDuration * investMapper.findById(userCouponModel.getInvestId()).getAmount())
                         .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
                         .multiply(new BigDecimal(couponModel.getBirthdayBenefit()))

@@ -75,10 +75,9 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     @Autowired
     private JobManager jobManager;
 
-    @Value("web.server")
-    private String domain;
-
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    @Value("${web.server}")
+    private String domainName;
 
     @Override
     @Transactional
@@ -328,7 +327,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         String jumpToLink = jPushAlertDto.getJumpToLink();
         if (StringUtils.isNotEmpty(jumpToLink)) {
             jumpToOrLink[0] = "jumpToLink";
-            jumpToOrLink[1] = domain + jumpToLink;
+            jumpToOrLink[1] = domainName + jumpToLink;
             return jumpToOrLink;
         }
         if (jumpTo != null) {

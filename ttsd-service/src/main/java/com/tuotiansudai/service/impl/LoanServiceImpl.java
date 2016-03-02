@@ -619,8 +619,8 @@ public class LoanServiceImpl implements LoanService {
                 loanItemDto.setId(loanModel.getId());
                 loanItemDto.setName(loanModel.getName());
                 loanItemDto.setProductType(loanModel.getProductType());
-                loanItemDto.setBaseRate(new BigDecimal(loanModel.getBaseRate() * 100).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
-                loanItemDto.setActivityRate(new BigDecimal(loanModel.getActivityRate() * 100).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
+                loanItemDto.setBaseRate(new BigDecimal(loanModel.getBaseRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+                loanItemDto.setActivityRate(new BigDecimal(loanModel.getActivityRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
                 loanItemDto.setPeriods(loanModel.getPeriods());
                 loanItemDto.setType(loanModel.getType());
                 loanItemDto.setStatus(loanModel.getStatus());
@@ -639,7 +639,7 @@ public class LoanServiceImpl implements LoanService {
                 }
                 if (LoanStatus.RAISING == loanModel.getStatus()) {
                     loanItemDto.setAlert(MessageFormat.format("{0} 元", AmountConverter.convertCentToString(loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanModel.getId()))));
-                    loanItemDto.setProgress(sumInvestAmountBigDecimal.divide(loanAmountBigDecimal, 2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue());
+                    loanItemDto.setProgress(sumInvestAmountBigDecimal.divide(loanAmountBigDecimal, 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue());
                 }
                 if (LoanStatus.RECHECK == loanModel.getStatus()) {
                     loanItemDto.setAlert("放款审核");

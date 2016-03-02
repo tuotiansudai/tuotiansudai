@@ -82,4 +82,5 @@ public interface UserMapper {
     List<UserModel> findNaturalUser(Map<String, Object> params);
 
 
+    List<String> findUsersBirthdayMobile();
 }

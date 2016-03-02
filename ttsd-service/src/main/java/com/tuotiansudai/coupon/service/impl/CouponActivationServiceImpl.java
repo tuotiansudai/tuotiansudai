@@ -70,7 +70,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     @Override
     public void inactive(String loginNameLoginName, long couponId) {
         CouponModel couponModel = couponMapper.findById(couponId);
-        if (!couponModel.isActive() || (couponModel.getCouponType() != CouponType.NEWBIE_COUPON && couponModel.getCouponType() != CouponType.RED_ENVELOPE)) {
+        if (!couponModel.isActive() || (couponModel.getCouponType() != CouponType.NEWBIE_COUPON && couponModel.getCouponType() != CouponType.RED_ENVELOPE && couponModel.getCouponType() != CouponType.BIRTHDAY_COUPON)) {
             return;
         }
         couponModel.setActive(false);

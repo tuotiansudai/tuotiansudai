@@ -44,6 +44,9 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.LoanRepayNotify.name().equalsIgnoreCase(schedulerName)) {
             createLoanRepayNotifyJob();
         }
+        if (JobType.BirthdayNotify.name().equalsIgnoreCase(schedulerName)) {
+            createBirthdayNotifyJob();
+        }
         if(JobType.AutoJPushAlertBirthMonth.name().equalsIgnoreCase(schedulerName)) {
             createAutoJPushAlertBirthMonth();
         }
@@ -53,7 +56,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         if(JobType.AutoJPushNoInvestAlert.name().equalsIgnoreCase(schedulerName)){
             createAutoJPushNoInvestAlert();
         }
-
 
     }
 
@@ -102,7 +104,7 @@ public class JobInitPlugin implements SchedulerPlugin {
     private void createAutoJPushAlertBirthMonth() {
         try {
             jobManager.newJob(JobType.AutoJPushAlertBirthMonth, AutoJPushAlertBirthMonthJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 10 1 * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 12 5 * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
                     .withIdentity(JobType.AutoJPushAlertBirthMonth.name(), JobType.AutoJPushAlertBirthMonth.name()).submit();
 
         } catch (SchedulerException e) {
@@ -134,6 +136,16 @@ public class JobInitPlugin implements SchedulerPlugin {
             jobManager.newJob(JobType.LoanRepayNotify, LoanRepayNotifyJob.class).replaceExistingJob(true)
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 14 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
                     .withIdentity(JobType.LoanRepayNotify.name(), JobType.LoanRepayNotify.name()).submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createBirthdayNotifyJob() {
+        try {
+            jobManager.newJob(JobType.BirthdayNotify, BirthdayNotifyJob.class).replaceExistingJob(true)
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 12 5 * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+                    .withIdentity(JobType.BirthdayNotify.name(), JobType.BirthdayNotify.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }

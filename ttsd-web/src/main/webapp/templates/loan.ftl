@@ -141,7 +141,7 @@
                                         </#list>
                                     </ul>
                                     <#list coupons as coupon>
-                                        <#if coupon.shared && coupon.investLowerLimit==0 && coupon.investUpperLimit==0>
+                                        <#if (coupon.shared && coupon.investLowerLimit==0 && coupon.investUpperLimit==0)>
                                             <input type="hidden" id="${coupon.id?string.computer}" name="userCouponIds" value="${coupon.id?string.computer}" data-coupon-id="${coupon.couponId?string.computer}" />
                                             <p class="red-tiptext clearfix">
                                                 <i class="icon-redbag"></i>
@@ -193,9 +193,19 @@
                 </form>
             </#if>
         </div>
+        <div class="chart-info-responsive">
+            项目金额：<@amount>${loan.loanAmount?string.computer}</@amount> 元<br/>
+            代理人：${loan.agentLoginName}<br/>
+            借款人：${loan.loanerLoginName}<br/>
+            项目期限：${loan.periods}<#if loan.type.getLoanPeriodUnit() == "MONTH"> 月<#else> 天</#if><br/>
+            还款方式：${loan.type.getName()}<br/>
+            投资要求：<@amount>${loan.minInvestAmount?string.computer}</@amount> 元起投，投资金额为<@amount>${loan.investIncreasingAmount?string.computer}</@amount> 元的整数倍<br/>
+            <a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a>
+        </div>
         <div class="bg-w clear-blank">
             <div class="loan-nav">
                 <ul>
+
                     <li class="active">借款详情<i class="fa fa-caret-up"></i></li>
                     <li>出借记录<i class="fa fa-caret-up"></i></li>
                 </ul>
