@@ -4,8 +4,10 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppPointService;
+import com.tuotiansudai.point.dto.SignInPointDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
+import com.tuotiansudai.point.service.SignInService;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,26 @@ public class MobileAppPointServiceImpl implements MobileAppPointService{
     static Logger logger = Logger.getLogger(MobileAppPointServiceImpl.class);
 
     @Autowired
+    private SignInService signInService;
+
+    @Autowired
     private PointBillMapper pointBillMapper;
+
+    public BaseResponseDto signIn(BaseParamDto baseParamDto){
+        String loginName = baseParamDto.getBaseParam().getUserId();
+        SignInPointDto signInPointDto = signInService.signIn(loginName);
+
+        SignInResponseDataDto dataDto = new SignInResponseDataDto();
+        dataDto.setPoint(signInPointDto.getPoint());
+        dataDto.setSignInTimes(signInPointDto.getSignInCount());
+
+        BaseResponseDto dto = new BaseResponseDto();
+        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        dto.setData(dataDto);
+
+        return dto;
+    }
 
     @Override
     public BaseResponseDto queryPointBillList(PointBillRequestDto pointBillRequestDto) {

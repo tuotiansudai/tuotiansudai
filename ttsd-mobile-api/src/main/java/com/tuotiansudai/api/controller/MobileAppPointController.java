@@ -1,8 +1,10 @@
 package com.tuotiansudai.api.controller;
 
+import com.tuotiansudai.api.dto.BaseParamDto;
 import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.PointBillRequestDto;
 import com.tuotiansudai.api.service.MobileAppPointService;
+import com.tuotiansudai.point.service.SignInService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,12 @@ public class MobileAppPointController extends MobileAppBaseController{
 
     @Autowired
     private MobileAppPointService mobileAppPointService;
+
+    @RequestMapping(value = "/sign-in", method = RequestMethod.POST)
+    public BaseResponseDto signIn(@RequestBody BaseParamDto baseParamDto) {
+        baseParamDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppPointService.signIn(baseParamDto);
+    }
 
     @RequestMapping(value = "/get/point-bill", method = RequestMethod.POST)
     public BaseResponseDto getPointBillData(@RequestBody PointBillRequestDto pointBillRequestDto) {
