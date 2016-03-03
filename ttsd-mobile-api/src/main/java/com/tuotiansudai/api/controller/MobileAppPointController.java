@@ -17,6 +17,12 @@ public class MobileAppPointController extends MobileAppBaseController{
     @Autowired
     private MobileAppPointService mobileAppPointService;
 
+    @RequestMapping(value = "/sign-in", method = RequestMethod.POST)
+    public BaseResponseDto signIn(@RequestBody BaseParamDto baseParamDto) {
+        baseParamDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppPointService.signIn(baseParamDto);
+    }
+
     @RequestMapping(value = "/get/point-bill", method = RequestMethod.POST)
     public BaseResponseDto getPointBillData(@RequestBody PointBillRequestDto pointBillRequestDto) {
         pointBillRequestDto.getBaseParam().setUserId(getLoginName());
