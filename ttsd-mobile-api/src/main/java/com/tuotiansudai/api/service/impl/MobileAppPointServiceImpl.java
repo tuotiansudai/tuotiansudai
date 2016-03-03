@@ -8,6 +8,8 @@ import com.tuotiansudai.point.dto.SignInPointDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.point.repository.model.PointTaskModel;
 import com.tuotiansudai.point.service.SignInService;
 import org.apache.commons.collections.CollectionUtils;
@@ -28,6 +30,9 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
 
     @Autowired
     private PointBillMapper pointBillMapper;
+
+    @Autowired
+    private AccountMapper accountMapper;
 
     @Autowired
     private PointTaskMapper pointTaskMapper;
@@ -126,7 +131,21 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
                 return pointBillRecordResponseDataDto;
             }
         });
-
     }
 
+    @Override
+    public BaseResponseDto queryPoint(BaseParamDto baseParamDto) {
+        String loginName = baseParamDto.getBaseParam().getUserId();
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+
+        PointResponseDataDto dataDto = new PointResponseDataDto();
+        dataDto.setPoint(accountModel.getPoint());
+
+        BaseResponseDto dto = new BaseResponseDto();
+        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        dto.setData(dataDto);
+
+        return dto;
+    }
 }

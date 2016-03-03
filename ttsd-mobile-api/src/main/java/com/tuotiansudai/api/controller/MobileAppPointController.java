@@ -29,11 +29,15 @@ public class MobileAppPointController extends MobileAppBaseController{
         return mobileAppPointService.queryPointBillList(pointBillRequestDto);
     }
 
+    @RequestMapping(value = "/get/point", method = RequestMethod.POST)
+    public BaseResponseDto getPointBillData(@RequestBody BaseParamDto baseParamDto) {
+        baseParamDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppPointService.queryPoint(baseParamDto);
+    }
+
     @RequestMapping(value = "/get/point-task", method = RequestMethod.POST)
     public BaseResponseDto getPointTask(@RequestBody PointTaskRequestDto pointTaskRequestDto) {
         pointTaskRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppPointService.queryPointTaskList(pointTaskRequestDto);
     }
-
-
 }
