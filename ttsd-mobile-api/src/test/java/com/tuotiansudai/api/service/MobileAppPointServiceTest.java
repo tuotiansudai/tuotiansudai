@@ -5,8 +5,11 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.impl.MobileAppPointServiceImpl;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
+import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
+import com.tuotiansudai.point.repository.model.PointTask;
+import com.tuotiansudai.point.repository.model.PointTaskModel;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -17,9 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 
 public class MobileAppPointServiceTest extends ServiceTestBase {
@@ -29,6 +30,9 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
 
     @Mock
     private PointBillMapper pointBillMapper;
+
+    @Mock
+    private PointTaskMapper pointTaskMapper;
 
     @Autowired
     private IdGenerator idGenerator;
@@ -61,5 +65,35 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
         assertEquals("TASK", baseResponseDto.getData().getPointBills().get(0).getBusinessType());
         assertEquals(1000, Long.parseLong(baseResponseDto.getData().getPointBills().get(0).getPoint()));
     }
+
+    @Test
+    public void shouldQueryPointTaskIsOk(){
+        PointTaskModel pointTaskModel = new PointTaskModel();
+        pointTaskModel.setPoint(60);
+        pointTaskModel.setName(PointTask.BIND_BANK_CARD);
+        pointTaskModel.setCreatedTime(new Date());
+        pointTaskModel.setId(111);
+
+        List<PointTaskModel> pointTaskModels =  Lists.newArrayList();
+        pointTaskModels.add(pointTaskModel);
+
+        when(pointTaskMapper.findCountPointTaskPagination()).thenReturn(1);
+        when(pointTaskMapper.findPointTaskPagination(anyInt(), anyInt())).thenReturn(pointTaskModels);
+
+        PointTaskRequestDto pointTaskRequestDto = new PointTaskRequestDto();
+        pointTaskRequestDto.setIndex(1);
+        pointTaskRequestDto.setPageSize(10);
+        BaseParam baseParam = new BaseParam();
+        baseParam.setUserId("admin");
+        pointTaskRequestDto.setBaseParam(baseParam);
+
+        BaseResponseDto<PointTaskListResponseDataDto> baseResponseDto = mobileAppPointService.queryPointTaskList(pointTaskRequestDto);
+
+        assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
+        assertEquals(PointTask.BIND_BANK_CARD, baseResponseDto.getData().getPointTasks().get(0).getPointTaskType());
+        assertEquals(60, Long.parseLong(baseResponseDto.getData().getPointTasks().get(0).getPoint()));
+
+    }
+
 
 }
