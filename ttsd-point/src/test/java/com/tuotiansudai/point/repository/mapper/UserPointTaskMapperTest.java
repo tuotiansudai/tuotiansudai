@@ -1,5 +1,6 @@
 package com.tuotiansudai.point.repository.mapper;
 
+import com.tuotiansudai.point.repository.model.PointTask;
 import com.tuotiansudai.point.repository.model.PointTaskModel;
 import com.tuotiansudai.point.repository.model.UserPointTaskModel;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -37,7 +38,7 @@ public class UserPointTaskMapperTest {
     public void shouldCreatePointBillModel() throws Exception {
         UserModel fakeUserModel = this.createFakeUserModel();
 
-        List<PointTaskModel> pointTaskModels = pointTaskMapper.find(0,1);
+        List<PointTaskModel> pointTaskModels = pointTaskMapper.findPointTaskPagination(0, 10);
         for (PointTaskModel pointTaskModel : pointTaskModels) {
             userPointTaskMapper.create(new UserPointTaskModel(fakeUserModel.getLoginName(), pointTaskModel.getId()));
         }
@@ -57,4 +58,5 @@ public class UserPointTaskMapperTest {
         userMapper.create(fakeUserModel);
         return fakeUserModel;
     }
+
 }

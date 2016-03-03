@@ -66,7 +66,7 @@ public class PointTaskServiceImpl implements PointTaskService {
 
     @Override
     public List<PointTaskDto> displayPointTask(int index, int pageSize,final String loginName) {
-        List<PointTaskModel> pointTaskModels = pointTaskMapper.find((index-1) * pageSize,pageSize);
+        List<PointTaskModel> pointTaskModels = pointTaskMapper.findPointTaskPagination((index - 1) * pageSize, pageSize);
         if(CollectionUtils.isEmpty(pointTaskModels)){
             return Lists.newArrayList();
         }
