@@ -312,7 +312,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
             for (InvestNotifyInfo notifyInfo : notifyInfos) {
                 List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(notifyInfo.getAmount()));
-                loginNameMap.put(notifyInfo.getLoanName(), amountLists);
+                loginNameMap.put(notifyInfo.getLoginName(), amountLists);
                 autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
                 loginNameMap.clear();
             }
