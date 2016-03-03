@@ -50,6 +50,12 @@ public class SmsController {
         return smsService.couponNotify(notifyDto);
     }
 
+    @RequestMapping(value = "/birthday-notify", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> birthdayNotify(@RequestBody SmsCouponNotifyDto notifyDto) {
+        return smsService.birthdayNotify(notifyDto);
+    }
+
     @RequestMapping(value = "/loan-repay-notify", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<SmsDataDto> loanRepayNotify(@Valid @RequestBody LoanRepayNotifyDto notifyDto) {

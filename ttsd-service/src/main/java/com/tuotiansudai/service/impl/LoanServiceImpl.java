@@ -237,7 +237,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public BaseDto<PayDataDto> openLoan(LoanDto loanDto) {
+    public BaseDto<PayDataDto> openLoan(LoanDto loanDto, String ip) {
         BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
         PayDataDto payDataDto = new PayDataDto();
         if (!baseDto.getData().getStatus()) {
@@ -619,8 +619,8 @@ public class LoanServiceImpl implements LoanService {
                 loanItemDto.setId(loanModel.getId());
                 loanItemDto.setName(loanModel.getName());
                 loanItemDto.setProductType(loanModel.getProductType());
-                loanItemDto.setBaseRate(new BigDecimal(loanModel.getBaseRate() * 100).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
-                loanItemDto.setActivityRate(new BigDecimal(loanModel.getActivityRate() * 100).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
+                loanItemDto.setBaseRate(new BigDecimal(loanModel.getBaseRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+                loanItemDto.setActivityRate(new BigDecimal(loanModel.getActivityRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
                 loanItemDto.setPeriods(loanModel.getPeriods());
                 loanItemDto.setType(loanModel.getType());
                 loanItemDto.setStatus(loanModel.getStatus());

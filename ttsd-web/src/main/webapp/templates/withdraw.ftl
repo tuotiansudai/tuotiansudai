@@ -13,7 +13,6 @@
                 实际到账：<em class="actual-amount">0.00</em> 元
             </div>
             <button class="withdraw-submit btn-normal" type="button" disabled="disabled">确认提现</button>
-            <p style="font-size: 13px; line-height: 2; color:red;">注：由于春节期间第三方支付平台联动优势放假，2月7日至13日提现申请将在13日之后到账，给您造成不便，敬请谅解！</p>
             <div class="clear-blank"></div>
             <form action="/withdraw" method="post" target="_blank">
                 <input name="amount" type="hidden" value=""/>

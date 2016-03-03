@@ -3,13 +3,16 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-4.2.xsd
         http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+        http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!-- enable autowire -->
     <context:annotation-config/>
@@ -20,7 +23,11 @@
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan base-package="com.tuotiansudai.service, com.tuotiansudai.repository, com.tuotiansudai.client, com.tuotiansudai.security,
-                    com.tuotiansudai.util,com.tuotiansudai.coupon,com.tuotiansudai.console.jpush,com.tuotiansudai.console.util"/>
+                    com.tuotiansudai.util, com.tuotiansudai.coupon, com.tuotiansudai.jpush,com.tuotiansudai.console.util, com.tuotiansudai.task.aspect">
+    </context:component-scan>
+
+    <aop:aspectj-autoproxy expose-proxy="true"/>
+
 
     <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
@@ -57,7 +64,7 @@
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="boneCPDataSource"/>
-        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.console.jpush.repository.model"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.jpush.repository.model"/>
     </bean>
 
     <!-- define the SqlSessionFactory -->
@@ -67,7 +74,7 @@
 
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.console.jpush.repository.mapper"/>
+        <property name="basePackage" value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.jpush.repository.mapper"/>
     </bean>
 
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient"/>

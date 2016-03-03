@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface UserMapper {
@@ -75,4 +76,11 @@ public interface UserMapper {
     int findUsersAccountBalanceCount(@Param(value = "loginName") String loginName,
                                      @Param(value = "balanceMin") int balanceMin,
                                      @Param(value = "balanceMax") int balanceMax);
+
+    List<UserModel> findAllUsers(Map<String, Object> params);
+
+    List<UserModel> findNaturalUser(Map<String, Object> params);
+
+
+    List<String> findUsersBirthdayMobile();
 }

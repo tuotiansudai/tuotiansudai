@@ -1,10 +1,7 @@
 package com.tuotiansudai.coupon.service.impl;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.google.common.collect.*;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
@@ -18,8 +15,10 @@ import com.tuotiansudai.job.CouponNotifyJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.JobManager;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +70,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     @Override
     public void inactive(String loginNameLoginName, long couponId) {
         CouponModel couponModel = couponMapper.findById(couponId);
-        if (!couponModel.isActive() || (couponModel.getCouponType() != CouponType.NEWBIE_COUPON && couponModel.getCouponType() != CouponType.RED_ENVELOPE)) {
+        if (!couponModel.isActive() || (couponModel.getCouponType() != CouponType.NEWBIE_COUPON && couponModel.getCouponType() != CouponType.RED_ENVELOPE && couponModel.getCouponType() != CouponType.BIRTHDAY_COUPON)) {
             return;
         }
         couponModel.setActive(false);
@@ -82,7 +81,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Transactional
     @Override
-    public void active(String operatorLoginName, long couponId) {
+    public void active(String operatorLoginName, long couponId, String ip) {
         CouponModel couponModel = couponMapper.findById(couponId);
         if (couponModel.isActive()) {
             return;
@@ -140,9 +139,19 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         List<CouponModel> couponModels = Lists.newArrayList(Iterators.filter(coupons.iterator(), new Predicate<CouponModel>() {
             @Override
             public boolean apply(CouponModel couponModel) {
-                return userGroups.contains(couponModel.getUserGroup())
-                        && userCouponMapper.findByLoginNameAndCouponId(loginName, couponModel.getId()) == null
+                boolean isInUserGroup = userGroups.contains(couponModel.getUserGroup())
                         && CouponActivationServiceImpl.this.getCollector(couponModel.getUserGroup()).contains(couponModel.getId(), loginName);
+                List<UserCouponModel> existingUserCouponModels = userCouponMapper.findByLoginNameAndCouponId(loginName, couponModel.getId());
+                boolean hasNoUsableCoupon = CollectionUtils.isEmpty(existingUserCouponModels);
+                if (CollectionUtils.isNotEmpty(existingUserCouponModels) && couponModel.isMultiple()) {
+                    hasNoUsableCoupon = Iterables.all(existingUserCouponModels, new Predicate<UserCouponModel>() {
+                        @Override
+                        public boolean apply(UserCouponModel input) {
+                            return input.getStatus() == InvestStatus.SUCCESS;
+                        }
+                    });
+                }
+                return isInUserGroup && hasNoUsableCoupon;
             }
         }));
 

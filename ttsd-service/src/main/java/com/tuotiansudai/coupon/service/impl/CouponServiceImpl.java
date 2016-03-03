@@ -1,9 +1,6 @@
 package com.tuotiansudai.coupon.service.impl;
 
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.CouponDto;
@@ -17,18 +14,16 @@ import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.InterestCalculator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -62,6 +57,7 @@ public class CouponServiceImpl implements CouponService {
         couponModel.setCreatedBy(loginName);
         couponModel.setCreatedTime(new Date());
         couponMapper.create(couponModel);
+        couponDto.setId(couponModel.getId());
         if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
             redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "success"));
             redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "failed"));
@@ -71,26 +67,27 @@ public class CouponServiceImpl implements CouponService {
 
     private void checkCoupon(CouponDto couponDto) throws CreateCouponException {
         CouponModel couponModel = new CouponModel(couponDto);
-        if (couponDto.getCouponType() != CouponType.INTEREST_COUPON) {
+        if (!Lists.newArrayList(CouponType.INTEREST_COUPON, CouponType.BIRTHDAY_COUPON).contains(couponDto.getCouponType())) {
             long amount = couponModel.getAmount();
             if (amount <= 0) {
                 throw new CreateCouponException("投资体验券金额应大于0!");
             }
         }
 
-        if (couponDto.getCouponType() != CouponType.RED_ENVELOPE) {
+        if (!Lists.newArrayList(CouponType.RED_ENVELOPE, CouponType.BIRTHDAY_COUPON).contains(couponDto.getCouponType())) {
             long totalCount = couponModel.getTotalCount();
             if (totalCount <= 0) {
                 throw new CreateCouponException("发放数量应大于0!");
             }
         }
 
-        if (couponDto.getCouponType() != CouponType.INTEREST_COUPON && couponDto.getCouponType() != CouponType.RED_ENVELOPE) {
+        if (!Lists.newArrayList(CouponType.BIRTHDAY_COUPON, CouponType.INTEREST_COUPON, CouponType.RED_ENVELOPE).contains(couponDto.getCouponType())) {
             long investLowerLimit = couponModel.getInvestLowerLimit();
             if (investLowerLimit <= 0) {
                 throw new CreateCouponException("使用条件金额应大于0!");
             }
         }
+
         Date startTime = couponModel.getStartTime();
         Date endTime = couponModel.getEndTime();
         if (CouponType.isNewBieCoupon(couponDto.getCouponType())) {
@@ -115,7 +112,7 @@ public class CouponServiceImpl implements CouponService {
         couponModel.setUpdatedBy(loginName);
         couponModel.setUpdatedTime(new Date());
         if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() != UserGroup.IMPORT_USER
-                && redisWrapperClient.exists(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())))){
+                && redisWrapperClient.exists(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())))) {
             redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())));
         }
         if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() == UserGroup.IMPORT_USER && StringUtils.isNotEmpty(couponDto.getFile())) {
@@ -127,27 +124,22 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    @Transactional
-    public void assignNewbieCoupon(String loginName) {
-        List<CouponModel> newbieCoupons = couponMapper.findNewbieCoupon();
-        Optional<CouponModel> found = Iterators.tryFind(newbieCoupons.iterator(), new Predicate<CouponModel>() {
+    public List<CouponDto> findBirthdayCoupons(int index, int pageSize) {
+        List<CouponModel> couponModels = couponMapper.findBirthdayCoupons((index - 1) * pageSize, pageSize);
+        for (CouponModel couponModel : couponModels) {
+            couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
+        }
+        return Lists.transform(couponModels, new Function<CouponModel, CouponDto>() {
             @Override
-            public boolean apply(CouponModel couponModel) {
-                return couponModel.isActive()
-                        && couponModel.getStartTime().compareTo(new DateTime().withTimeAtStartOfDay().toDate()) <= 0
-                        && couponModel.getEndTime().after(new DateTime().withTimeAtStartOfDay().toDate());
+            public CouponDto apply(CouponModel input) {
+                return new CouponDto(input);
             }
         });
+    }
 
-        if (found.isPresent()) {
-            CouponModel couponModel = couponMapper.lockById(found.get().getId());
-            couponModel.setIssuedCount(couponModel.getIssuedCount() + 1);
-            couponModel.setTotalCount(couponModel.getTotalCount() + 1);
-            couponMapper.updateCoupon(couponModel);
-
-            UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId());
-            userCouponMapper.create(userCouponModel);
-        }
+    @Override
+    public int findBirthdayCouponsCount() {
+        return couponMapper.findBirthdayCouponsCount();
     }
 
     @Override
@@ -175,7 +167,7 @@ public class CouponServiceImpl implements CouponService {
         for (CouponModel couponModel : couponModels) {
             couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
             if (couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
-                if (StringUtils.isNotEmpty(redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())),"failed"))) {
+                if (StringUtils.isNotEmpty(redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed"))) {
                     couponModel.setImportIsRight(false);
                 } else {
                     couponModel.setImportIsRight(true);
@@ -248,13 +240,18 @@ public class CouponServiceImpl implements CouponService {
 
 
     @Override
-    public void deleteCoupon(String loginName, long couponId) {
+    @Transactional
+    public boolean deleteCoupon(String loginName, long couponId) {
+        if (CollectionUtils.isEmpty(userCouponMapper.findByCouponId(couponId))) {
+            return false;
+        }
         CouponModel couponModel = couponMapper.findById(couponId);
         couponModel.setUpdatedBy(loginName);
         couponModel.setUpdatedTime(new Date());
         couponModel.setDeleted(true);
         couponModel.setActive(false);
         couponMapper.updateCoupon(couponModel);
+        return true;
     }
 
     @Override

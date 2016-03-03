@@ -13,8 +13,6 @@ public interface CouponService {
 
     void createCoupon(String loginName,CouponDto couponDto) throws CreateCouponException;
 
-    void assignNewbieCoupon(String loginName);
-
     void editCoupon(String loginName,CouponDto couponDto) throws CreateCouponException;
 
     List<CouponDto> findCoupons(int index, int pageSize);
@@ -29,7 +27,7 @@ public interface CouponService {
 
     int findCouponDetailCount(long couponId, Boolean isUsed, String loginName, String mobile, Date registerStartTime, Date registerEndTime);
 
-    void deleteCoupon(String loginName, long couponId);
+    boolean deleteCoupon(String loginName, long couponId);
 
     List<CouponDto> findInterestCoupons(int index, int pageSize);
 
@@ -38,6 +36,10 @@ public interface CouponService {
     List<CouponDto> findRedEnvelopeCoupons(int index, int pageSize);
 
     int findRedEnvelopeCouponsCount();
+
+    List<CouponDto> findBirthdayCoupons(int index, int pageSize);
+
+    int findBirthdayCouponsCount();
 
     long estimateCouponExpectedInterest(long loanId, List<Long> couponIds, long amount);
 }

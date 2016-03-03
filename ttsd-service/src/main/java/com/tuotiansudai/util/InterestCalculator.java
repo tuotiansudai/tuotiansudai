@@ -84,8 +84,15 @@ public class InterestCalculator {
                         .multiply(new BigDecimal(couponModel.getRate()))
                         .divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
                 break;
+            case BIRTHDAY_COUPON:
+                expectedInterest = new BigDecimal(30 * amount)
+                        .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
+                        .multiply(new BigDecimal(couponModel.getBirthdayBenefit()))
+                        .divide(new BigDecimal(DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
+                break;
             case RED_ENVELOPE:
                 expectedInterest = couponModel.getAmount();
+                break;
         }
         return expectedInterest;
     }
@@ -98,6 +105,7 @@ public class InterestCalculator {
             case NEWBIE_COUPON:
             case INVEST_COUPON:
             case INTEREST_COUPON:
+            case BIRTHDAY_COUPON:
                 expectedFee = new BigDecimal(estimateCouponExpectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
                 break;
             default:
