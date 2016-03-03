@@ -7,7 +7,6 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
-import com.tuotiansudai.point.repository.dto.PointBillPaginationDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
@@ -123,7 +122,7 @@ public class PointBillServiceImpl implements PointBillService {
             }
         });
 
-        PointBillPaginationDataDto dto = new PointBillPaginationDataDto(index, pageSize, count, records);
+        BasePaginationDataDto<PointBillPaginationItemDataDto> dto = new BasePaginationDataDto<PointBillPaginationItemDataDto>(index, pageSize, count, records);
         dto.setStatus(true);
         return dto;
     }

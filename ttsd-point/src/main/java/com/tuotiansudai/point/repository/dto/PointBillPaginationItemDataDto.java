@@ -1,6 +1,7 @@
 package com.tuotiansudai.point.repository.dto;
 
 import com.tuotiansudai.point.repository.model.PointBillModel;
+import com.tuotiansudai.point.repository.model.PointBusinessType;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,7 +18,7 @@ public class PointBillPaginationItemDataDto implements Serializable{
 
     private long point;
 
-    private String businessType;
+    private PointBusinessType businessType;
 
     private String note;
 
@@ -28,7 +29,7 @@ public class PointBillPaginationItemDataDto implements Serializable{
         this.loginName = view.getLoginName();
         this.orderId = view.getOrderId();
         this.point = view.getPoint();
-        this.businessType = view.getBusinessType().name();
+        this.businessType = view.getBusinessType();
         this.note = view.getNote();
         this.createdTime = view.getCreatedTime();
     }
@@ -65,13 +66,9 @@ public class PointBillPaginationItemDataDto implements Serializable{
         this.point = point;
     }
 
-    public String getBusinessType() {
-        return businessType;
-    }
+    public PointBusinessType getBusinessType() { return businessType; }
 
-    public void setBusinessType(String businessType) {
-        this.businessType = businessType;
-    }
+    public void setBusinessType(PointBusinessType businessType) { this.businessType = businessType; }
 
     public String getNote() {
         return note;
