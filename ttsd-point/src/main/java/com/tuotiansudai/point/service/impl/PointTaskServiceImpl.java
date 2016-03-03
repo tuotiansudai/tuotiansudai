@@ -1,8 +1,11 @@
 package com.tuotiansudai.point.service.impl;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
+import com.tuotiansudai.point.dto.PointTaskDto;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
@@ -12,6 +15,7 @@ import com.tuotiansudai.point.repository.model.UserPointTaskModel;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointTaskService;
 import com.tuotiansudai.repository.mapper.*;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +62,25 @@ public class PointTaskServiceImpl implements PointTaskService {
             pointBillService.createPointBill(loginName, pointTaskModel.getId(), PointBusinessType.TASK, pointTaskModel.getPoint());
             logger.debug(MessageFormat.format("{0} has completed task {1}", loginName, pointTask.name()));
         }
+    }
+
+    @Override
+    public List<PointTaskDto> displayPointTask(int index, int pageSize,final String loginName) {
+        List<PointTaskModel> pointTaskModels = pointTaskMapper.findPointTaskPagination((index - 1) * pageSize, pageSize);
+        if(CollectionUtils.isEmpty(pointTaskModels)){
+            return Lists.newArrayList();
+        }
+        List<PointTaskDto> pointTaskDtos = Lists.transform(pointTaskModels, new Function<PointTaskModel, PointTaskDto>() {
+            @Override
+            public PointTaskDto apply(PointTaskModel pointTaskModel) {
+                PointTaskDto pointTaskDto = new PointTaskDto(pointTaskModel);
+                UserPointTaskModel userPointTaskModel = userPointTaskMapper.findByLoginNameAndId(pointTaskModel.getId(),loginName);
+                pointTaskDto.setCompleted(userPointTaskModel != null ? true : false);
+                return pointTaskDto;
+            }
+        });
+
+        return pointTaskDtos;
     }
 
     private boolean isCompletedTaskConditions(final PointTask pointTask, String loginName) {
