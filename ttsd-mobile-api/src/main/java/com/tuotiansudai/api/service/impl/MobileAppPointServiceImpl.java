@@ -4,10 +4,12 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppPointService;
+import com.tuotiansudai.point.dto.SignInPointDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointTaskModel;
+import com.tuotiansudai.point.service.SignInService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -17,9 +19,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class MobileAppPointServiceImpl implements MobileAppPointService{
+public class MobileAppPointServiceImpl implements MobileAppPointService {
 
     static Logger logger = Logger.getLogger(MobileAppPointServiceImpl.class);
+
+    @Autowired
+    private SignInService signInService;
 
     @Autowired
     private PointBillMapper pointBillMapper;
@@ -27,16 +32,32 @@ public class MobileAppPointServiceImpl implements MobileAppPointService{
     @Autowired
     private PointTaskMapper pointTaskMapper;
 
+    public BaseResponseDto signIn(BaseParamDto baseParamDto) {
+        String loginName = baseParamDto.getBaseParam().getUserId();
+        SignInPointDto signInPointDto = signInService.signIn(loginName);
+
+        SignInResponseDataDto dataDto = new SignInResponseDataDto();
+        dataDto.setPoint(signInPointDto.getPoint());
+        dataDto.setSignInTimes(signInPointDto.getSignInCount());
+
+        BaseResponseDto dto = new BaseResponseDto();
+        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        dto.setData(dataDto);
+
+        return dto;
+    }
+
     @Override
     public BaseResponseDto queryPointBillList(PointBillRequestDto pointBillRequestDto) {
         BaseResponseDto dto = new BaseResponseDto();
         String loginName = pointBillRequestDto.getBaseParam().getUserId();
         Integer index = pointBillRequestDto.getIndex();
         Integer pageSize = pointBillRequestDto.getPageSize();
-        if(index == null || index <= 0){
+        if (index == null || index <= 0) {
             index = 1;
         }
-        if(pageSize == null || pageSize <= 0){
+        if (pageSize == null || pageSize <= 0) {
             pageSize = 10;
         }
         dto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -55,10 +76,10 @@ public class MobileAppPointServiceImpl implements MobileAppPointService{
         BaseResponseDto dto = new BaseResponseDto();
         Integer index = pointTaskRequestDto.getIndex();
         Integer pageSize = pointTaskRequestDto.getPageSize();
-        if(index == null || index <= 0){
+        if (index == null || index <= 0) {
             index = 1;
         }
-        if(pageSize == null || pageSize <= 0){
+        if (pageSize == null || pageSize <= 0) {
             pageSize = 10;
         }
         dto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -71,8 +92,9 @@ public class MobileAppPointServiceImpl implements MobileAppPointService{
         dto.setData(pointTaskListResponseDataDto);
         return dto;
     }
+
     private List<PointTaskRecordResponseDataDto> convertPointTaskRecordDto(List<PointTaskModel> pointTaskList) {
-        if(CollectionUtils.isEmpty(pointTaskList)){
+        if (CollectionUtils.isEmpty(pointTaskList)) {
             return Lists.newArrayList();
         }
         return Lists.transform(pointTaskList, new Function<PointTaskModel, PointTaskRecordResponseDataDto>() {
