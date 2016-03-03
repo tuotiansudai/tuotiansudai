@@ -27,63 +27,76 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <tx:annotation-driven transaction-manager="payTransactionManager"/>
 
-    <bean id="payBoneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+    <bean id="payHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/ump_operations?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${common.jdbc.username}"/>
         <property name="password" value="${common.jdbc.password}"/>
-        <property name="minConnectionsPerPartition" value="${pay.ump_operations.minConnectionsPerPartition}"/>
-        <property name="maxConnectionsPerPartition" value="${pay.ump_operations.maxConnectionsPerPartition}"/>
-        <property name="acquireIncrement" value="${pay.ump_operations.acquireIncrement}"/>
-        <property name="idleMaxAgeInSeconds" value="600"/>
-        <property name="statementsCacheSize" value="100"/>
+        <property name="minimumIdle" value="${pay.ump_operations.minimumIdle}"/>
+        <property name="maximumPoolSize" value="${pay.ump_operations.maximumPoolSize}"/>
+        <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+            </props>
+        </property>
     </bean>
 
-    <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+    <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${common.jdbc.username}"/>
         <property name="password" value="${common.jdbc.password}"/>
-        <property name="minConnectionsPerPartition" value="${pay.aa.minConnectionsPerPartition}"/>
-        <property name="maxConnectionsPerPartition" value="${pay.aa.maxConnectionsPerPartition}"/>
-        <property name="acquireIncrement" value="${pay.aa.acquireIncrement}"/>
-        <property name="idleMaxAgeInSeconds" value="600"/>
-        <property name="statementsCacheSize" value="100"/>
+        <property name="minimumIdle" value="${pay.aa.minimumIdle}"/>
+        <property name="maximumPoolSize" value="${pay.aa.maximumPoolSize}"/>
+        <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+            </props>
+        </property>
     </bean>
 
-    <bean id="jobBoneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+    <bean id="jobHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${common.jdbc.username}"/>
         <property name="password" value="${common.jdbc.password}"/>
-        <property name="minConnectionsPerPartition" value="${pay.job_worker.minConnectionsPerPartition}"/>
-        <property name="maxConnectionsPerPartition" value="${pay.job_worker.maxConnectionsPerPartition}"/>
-        <property name="acquireIncrement" value="${pay.job_worker.acquireIncrement}"/>
-        <property name="idleMaxAgeInSeconds" value="600"/>
-        <property name="statementsCacheSize" value="100"/>
+        <property name="minimumIdle" value="${pay.job_worker.minimumIdle}"/>
+        <property name="maximumPoolSize" value="${pay.job_worker.maximumPoolSize}"/>
+        <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+            </props>
+        </property>
     </bean>
+
 
     <!-- transaction manager, use JtaTransactionManager for global tx -->
     <bean id="payTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="payBoneCPDataSource"/>
+        <property name="dataSource" ref="payHikariCPDataSource"/>
     </bean>
 
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="boneCPDataSource"/>
+        <property name="dataSource" ref="hikariCPDataSource"/>
     </bean>
 
     <bean id="jobStoreBuilder" class="com.tuotiansudai.util.quartz.JobStoreBuilder">
-        <property name="dataSource" ref="jobBoneCPDataSource"/>
+        <property name="dataSource" ref="jobHikariCPDataSource"/>
     </bean>
 
     <bean id="paySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="payBoneCPDataSource"/>
+        <property name="dataSource" ref="payHikariCPDataSource"/>
         <property name="typeAliasesPackage"
                   value="com.tuotiansudai.paywrapper.repository.model.sync.request,com.tuotiansudai.paywrapper.repository.model.sync.response,com.tuotiansudai.paywrapper.repository.model.async.request,com.tuotiansudai.paywrapper.repository.model.async.callback"/>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="boneCPDataSource"/>
+        <property name="dataSource" ref="hikariCPDataSource"/>
         <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model"/>
     </bean>
 
