@@ -2,7 +2,9 @@ package com.tuotiansudai.api.controller;
 
 import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.PointBillRequestDto;
+import com.tuotiansudai.api.dto.PointTaskRequestDto;
 import com.tuotiansudai.api.service.MobileAppPointService;
+import com.tuotiansudai.point.repository.model.PointTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,5 +22,12 @@ public class MobileAppPointController extends MobileAppBaseController{
         pointBillRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppPointService.queryPointBillList(pointBillRequestDto);
     }
+
+    @RequestMapping(value = "/get/point-task", method = RequestMethod.POST)
+    public BaseResponseDto getPointTask(@RequestBody PointTaskRequestDto pointTaskRequestDto) {
+        pointTaskRequestDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppPointService.queryPointTaskList(pointTaskRequestDto);
+    }
+
 
 }

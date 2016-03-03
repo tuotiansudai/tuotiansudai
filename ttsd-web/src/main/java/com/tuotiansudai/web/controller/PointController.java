@@ -5,8 +5,11 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+<<<<<<< HEAD
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
+=======
+>>>>>>> point_master
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.web.util.LoginUserInfo;
@@ -55,7 +58,6 @@ public class PointController {
                 obtainedPoints.add(Maps.newHashMap(ImmutableMap.<String,Date>builder().put("" + pointBillModel.getPoint(),pointBillModel.getCreatedTime()).build()));
             }
             modelAndView.addObject("obtainedPoints",obtainedPoints);
-
         }
         boolean signedIn = signInService.signInIsSuccess(loginName);
         modelAndView.addObject("signedIn",signedIn);
