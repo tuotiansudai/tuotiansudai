@@ -1,5 +1,6 @@
 package com.tuotiansudai.client;
 
+import com.tuotiansudai.util.SerializeUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -262,6 +263,26 @@ public abstract class AbstractRedisWrapperClient {
         }).toString());
     }
 
+    public Long sadd(final String key, final String... values) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Long>() {
+            @Override
+            public Long action(Jedis jedis) {
+                return jedis.sadd(key, values);
+            }
+        });
+    }
+
+    public Set smembers(final String key) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Set>() {
+            @Override
+            public Set action(Jedis jedis) {
+                return jedis.smembers(key);
+            }
+        });
+    }
+
     public void hmset(final String key, final Map map) {
         this.setJedisPool(getPool());
         execute(new JedisActionNoResult() {
@@ -372,4 +393,84 @@ public abstract class AbstractRedisWrapperClient {
         });
     }
 
+
+    public void setSeri(final String key, final Object value) {
+        this.setJedisPool(getPool());
+        execute(new JedisActionNoResult() {
+            @Override
+            public void action(Jedis jedis) {
+                jedis.set(key.getBytes(), SerializeUtil.serialize(value));
+            }
+        });
+    }
+
+    public Object getSeri(final String key) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction() {
+            @Override
+            public Object action(Jedis jedis) {
+                return SerializeUtil.deserialize(jedis.get(key.getBytes()));
+            }
+        });
+    }
+
+    public void hsetSeri(final String key, final String field, final Object value) {
+        this.setJedisPool(getPool());
+        execute(new JedisActionNoResult() {
+            @Override
+            public void action(Jedis jedis) {
+                jedis.hset(key.getBytes(), field.getBytes(), SerializeUtil.serialize(value));
+            }
+        });
+    }
+
+    public Boolean hexistsSeri(final String key, final String field) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Boolean>() {
+            @Override
+            public Boolean action(Jedis jedis) {
+                return jedis.hexists(key.getBytes(), field.getBytes());
+            }
+        });
+    }
+
+    public Object hgetSeri(final String key, final String field) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction() {
+            @Override
+            public Object action(Jedis jedis) {
+                return SerializeUtil.deserialize(jedis.hget(key.getBytes(), field.getBytes()));
+            }
+        });
+    }
+
+    public Map<byte[], byte[]> hgetAllSeri(final String key) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Map<byte[], byte[]>>() {
+            @Override
+            public Map<byte[], byte[]> action(Jedis jedis) {
+                return jedis.hgetAll(key.getBytes());
+            }
+        });
+    }
+
+    public List<byte[]> hgetValuesSeri(final String key) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<List<byte[]>>() {
+            @Override
+            public List<byte[]> action(Jedis jedis) {
+                return jedis.hvals(key.getBytes());
+            }
+        });
+    }
+
+    public Long hdelSeri(final String key, final String field) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Long>() {
+            @Override
+            public Long action(Jedis jedis) {
+                return jedis.hdel(key.getBytes(), field.getBytes());
+            }
+        });
+    }
 }
