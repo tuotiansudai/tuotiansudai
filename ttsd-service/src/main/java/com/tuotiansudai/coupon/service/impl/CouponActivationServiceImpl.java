@@ -93,7 +93,16 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
         UserCollector collector = this.getCollector(couponModel.getUserGroup());
 
-        couponModel.setTotalCount(collector.count(couponId));
+        if (collector != null) {
+            couponModel.setTotalCount(collector.count(couponId));
+        }
+
+        if (couponModel.getDeadline() != null && couponModel.getUserGroup() != UserGroup.EXCHANGER) {
+            Date now = new Date();
+            couponModel.setStartTime(new DateTime(now).withTimeAtStartOfDay().toDate());
+            couponModel.setEndTime(new DateTime(now).plusDays(couponModel.getDeadline()).withTimeAtStartOfDay().minusSeconds(1).toDate());
+        }
+
         couponModel.setActive(true);
         couponModel.setActivatedBy(operatorLoginName);
         couponModel.setActivatedTime(new Date());
@@ -137,7 +146,6 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         List<CouponModel> couponModels = Lists.newArrayList(Iterators.filter(coupons.iterator(), new Predicate<CouponModel>() {
             @Override
             public boolean apply(CouponModel couponModel) {
-                boolean isNotExchangeCoupon = CollectionUtils.isEmpty(couponExchangeMapper.findByCouponId(couponModel.getId()));
                 boolean isInUserGroup = userGroups.contains(couponModel.getUserGroup())
                         && CouponActivationServiceImpl.this.getCollector(couponModel.getUserGroup()).contains(couponModel.getId(), loginName);
                 List<UserCouponModel> existingUserCouponModels = userCouponMapper.findByLoginNameAndCouponId(loginName, couponModel.getId());
@@ -150,7 +158,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
                         }
                     });
                 }
-                return isNotExchangeCoupon && isInUserGroup && hasNoUsableCoupon;
+                return isInUserGroup && hasNoUsableCoupon;
             }
         }));
 

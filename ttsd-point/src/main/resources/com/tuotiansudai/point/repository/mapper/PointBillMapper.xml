@@ -26,4 +26,44 @@
         order by created_time desc;
     </select>
 
+    <select id="findPointBillPagination" parameterType="map" resultMap="pointBillResultMap">
+        select * from point_bill
+        <where>
+            <if test="loginName != null and loginName != ''">
+                and login_name = #{loginName}
+            </if>
+            <if test="businessType != null and businessType.name() == 'SIGN_IN'">
+                and business_type IN ('SIGN_IN','TASK','INVEST')
+            </if>
+            <if test="businessType != null and businessType.name() == 'EXCHANGE'">
+                and business_type = 'EXCHANGE'
+            </if>
+            <if test="startTime != null  &amp;&amp;  endTime != null">
+                and created_time between #{startTime} and #{endTime}
+            </if>
+        </where>
+        order by created_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountPointBillPagination" parameterType="map" resultType="long">
+        select count(1)
+        from point_bill
+        <where>
+            <if test="loginName != null and loginName != ''">
+                and login_name = #{loginName}
+            </if>
+            <if test="businessType != null and businessType.name() == 'SIGN_IN'">
+                and business_type IN ('SIGN_IN','TASK','INVEST')
+            </if>
+            <if test="businessType != null and businessType.name() == 'EXCHANGE'">
+                and business_type = 'EXCHANGE'
+            </if>
+            <if test="startTime != null &amp;&amp; endTime != null">
+                and created_time between #{startTime} and #{endTime}
+            </if>
+        </where>
+    </select>
+
+
 </mapper>

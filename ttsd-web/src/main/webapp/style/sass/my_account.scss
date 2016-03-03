@@ -1905,6 +1905,10 @@
   .icon-result{
     background:url("/images/sign/choi-beans.png") no-repeat;
   }
+  .content-list{
+    float:left;
+    width:100%;
+  }
   .choi-beans-list{
     float:left;
     width:100%;
@@ -2105,6 +2109,7 @@
               span{
                 padding:10px 25px;
                 color:#fff;
+                cursor:pointer;
                 font-size:16px;
                 border-radius:10px;
                 &.btn-invest{
@@ -2139,7 +2144,207 @@
       }
     }
   }
+  .sign-layer{
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.5);
+    z-index:999;
+    display:none;
+    .sign-layer-list{
+      position: absolute;
+      top:50%;
+      left:50%;
+      margin-top:-150px;
+      margin-left:-250px;
+      width:500px;
+      height:300px;
+      background:#fff;
+      border:1px solid #ccc;
+      border-radius:5px;
+      overflow:hidden;
+      .sign-top{
+        float:left;
+        width:100%;
+        height:250px;
+        position: relative;
+        .close-btn{
+          position: absolute;
+          top:15px;
+          right:15px;
+          width:15px;
+          height:15px;
+          background:url("/images/sign/bean-bg.png") no-repeat;
+          background-position: 0px -23px;
+          cursor:pointer;
+        }
+        p{
+          text-align:center;
+          &.sign-text{
+            margin-top:10px;
+            color:#ff7200;
+            font-size:18px;
+            margin-bottom:0;
+          }
+          &.tomorrow-text{
+            font-size:14px;
+            color:#4c4c4c;
+          }
+          &.img-beans{
+            position: relative;
+            .add-dou{
+              position: absolute;
+              left:50%;
+              margin-left:-30px;
+              bottom:0;
+              width:40px;
+              height:30px;
+              padding-right:20px;
+              font-size:20px;
+              line-height:25px;
+              color:#fff;
+              text-align:center;
+              background:url("/images/sign/add-bean.png") no-repeat right;
+            }
+          }
+          &.intro-text{
+            font-size:14px;
+            color:#4d4d4d;
+            span{
+              color:#ff7200;
+            }
+          }
+        }
+      }
+      .sign-bottom{
+        float:left;
+        width:100%;
+        height:50px;
+        ul{
+          float:left;
+          width:100%;
+          border-top:1px solid #e6e6e6;
+          li{
+            float:left;
+            width:59px;
+            height:50px;
+            text-align: center;
+            border-right:1px solid #e6e6e6;
+            &.last-day{
+              width:79px;
+              .day-beans{
+                span{
+                  margin-left: 30px;
+                  line-height: 15px;
+                  margin-top: -5px;
+                }
+              }
+            }
+            p{
+              margin-bottom:0;
+              line-height:25px;
+              &.day-name{
+                font-size:12px;
+                color:#7f7f7f;
+              }
+              &.day-beans{
+                font-size:14px;
+                color:#4d4d4d;
+                span{
+                  float:left;
+                  width: 20px;
+                  text-align:right;
+                  line-height: 15px;
+                  margin-left: 10px;
+                }
+                .bean-img{
+                  float:left;
+                  width:15px;
+                  height:15px;
+                  background:url("/images/sign/bean-bg.png") no-repeat;
+                  background-position:0 0;
+                  margin-top: 2px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .task-layer{
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.5);
+    z-index:999;
+    display:none;
+    .task-layer-list{
+      position: absolute;
+      top:50%;
+      left:50%;
+      margin-top:-280px;
+      margin-left:-250px;
+      width:460px;
+      height:520px;
+      background:#fff;
+      border:1px solid #ccc;
+      border-radius:5px;
+      padding:20px;
+      overflow:hidden;
+      h3{
+        float:left;
+        width:100%;
+        font-size:18px;
+        color:#000;
+        text-align:center;
+        .close-btn{
+          position: absolute;
+          top:15px;
+          right:15px;
+          width:15px;
+          height:15px;
+          background:url("/images/sign/bean-bg.png") no-repeat;
+          background-position: 0px -23px;
+          cursor:pointer;
+        }
+      }
+      ul{
+        float:left;
+        width:100%;
+        li{
+          float:left;
+          width:158px;
+          height:108px;
+          margin:15px 20px;
+          background:#fff7e9;
+          border:1px solid #dadada;
+          padding:10px 15px;
+          p{
+            float:left;
+            width:100%;
+            margin-bottom:0;
+            font-size:12px;
+            a{
+              float: left;
+              padding: 3px 35px;
+              border-radius: 5px;
+              color: #fff;
+              margin: 5px 8px 0;
+              text-align: center;
+              background: #ff7200;
+            }
+          }
+        }
+      }
+    }
+  }
 }
+
 @media screen and (max-width: 700px) {
   .chart-info-responsive{
     display:block!important;

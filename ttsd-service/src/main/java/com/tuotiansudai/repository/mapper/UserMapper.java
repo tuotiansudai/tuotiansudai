@@ -68,6 +68,8 @@ public interface UserMapper {
                                             @Param(value = "startLimit") int startLimit,
                                             @Param(value = "endLimit") int endLimit);
 
+
+
     long findUsersAccountBalanceSum(@Param(value = "loginName") String loginName,
                                     @Param(value = "balanceMin") int balanceMin,
                                     @Param(value = "balanceMax") int balanceMax);
@@ -77,4 +79,6 @@ public interface UserMapper {
                                      @Param(value = "balanceMax") int balanceMax);
 
     List<String> findUsersBirthdayMobile();
+
+    String findUsersMobileByLoginName(@Param(value = "loginName") String loginName);
 }
