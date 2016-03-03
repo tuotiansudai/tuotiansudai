@@ -15,5 +15,5 @@ public interface PointBillService {
                                                                               int pageSize,
                                                                               Date startTime,
                                                                               Date endTime,
-                                                                              String businessType);
+                                                                              PointBusinessType businessType);
 }

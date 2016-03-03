@@ -11,7 +11,6 @@ import com.tuotiansudai.point.repository.dto.PointBillPaginationDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
-import com.tuotiansudai.point.repository.model.PointBillPaginationItemView;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.PointTaskModel;
 import com.tuotiansudai.point.service.PointBillService;
@@ -96,7 +95,7 @@ public class PointBillServiceImpl implements PointBillService {
                                                                                  int pageSize,
                                                                                  Date startTime,
                                                                                  Date endTime,
-                                                                                 String businessType){
+                                                                                 PointBusinessType businessType){
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
@@ -109,7 +108,7 @@ public class PointBillServiceImpl implements PointBillService {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
 
-        List<PointBillPaginationItemView> items = Lists.newArrayList();
+        List<PointBillModel> items = Lists.newArrayList();
 
         long count = pointBillMapper.findCountPointBillPagination(loginName, startTime, endTime, businessType);
         if (count > 0) {
@@ -117,9 +116,9 @@ public class PointBillServiceImpl implements PointBillService {
             index = index > totalPages ? totalPages : index;
             items = pointBillMapper.findPointBillPagination(loginName, (index - 1) * pageSize, pageSize, startTime, endTime, businessType);
         }
-        List<PointBillPaginationItemDataDto> records = Lists.transform(items, new Function<PointBillPaginationItemView, PointBillPaginationItemDataDto>() {
+        List<PointBillPaginationItemDataDto> records = Lists.transform(items, new Function<PointBillModel, PointBillPaginationItemDataDto>() {
             @Override
-            public PointBillPaginationItemDataDto apply(PointBillPaginationItemView view) {
+            public PointBillPaginationItemDataDto apply(PointBillModel view) {
                 return new PointBillPaginationItemDataDto(view);
             }
         });

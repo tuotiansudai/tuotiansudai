@@ -15,8 +15,6 @@
         <result column="note" property="note"></result>
         <result column="created_time" property="createdTime"></result>
     </resultMap>
-    <resultMap id="pointBillPaginationItemView" type="PointBillPaginationItemView" extends="pointBillResultMap">
-    </resultMap>
 
     <insert id="create" parameterType="PointBillModel" useGeneratedKeys="true" keyProperty="id">
         insert into point_bill (order_id, login_name, point, business_type, note, created_time)
@@ -27,16 +25,16 @@
         select * from point_bill where login_name = #{loginName} order by created_time desc;
     </select>
 
-    <select id="findPointBillPagination" parameterType="map" resultMap="pointBillPaginationItemView">
+    <select id="findPointBillPagination" parameterType="map" resultMap="pointBillResultMap">
         select * from point_bill
         <where>
             <if test="loginName != null and loginName != ''">
                 and login_name = #{loginName}
             </if>
-            <if test="businessType == 'obtain'">
+            <if test="businessType != null and businessType.name() == 'SIGN_IN'">
                 and business_type IN ('SIGN_IN','TASK','INVEST')
             </if>
-            <if test="businessType == 'use'">
+            <if test="businessType != null and businessType.name() == 'EXCHANGE'">
                 and business_type = 'EXCHANGE'
             </if>
             <if test="startTime != null  &amp;&amp;  endTime != null">
@@ -54,10 +52,10 @@
             <if test="loginName != null and loginName != ''">
                 and login_name = #{loginName}
             </if>
-            <if test="businessType == 'obtain'">
+            <if test="businessType != null and businessType.name() == 'SIGN_IN'">
                 and business_type IN ('SIGN_IN','TASK','INVEST')
             </if>
-            <if test="businessType == 'use'">
+            <if test="businessType != null and businessType.name() == 'EXCHANGE'">
                 and business_type = 'EXCHANGE'
             </if>
             <if test="startTime != null &amp;&amp; endTime != null">

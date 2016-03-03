@@ -1,7 +1,7 @@
 package com.tuotiansudai.point.repository.mapper;
 
 import com.tuotiansudai.point.repository.model.PointBillModel;
-import com.tuotiansudai.point.repository.model.PointBillPaginationItemView;
+import com.tuotiansudai.point.repository.model.PointBusinessType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -18,12 +18,12 @@ public interface PointBillMapper {
     long findCountPointBillPagination(@Param(value = "loginName") String loginName,
                                    @Param(value = "startTime") Date startTime,
                                    @Param(value = "endTime") Date endTime,
-                                   @Param(value = "businessType") String businessType);
+                                   @Param(value = "businessType") PointBusinessType businessType);
 
-    List<PointBillPaginationItemView> findPointBillPagination(@Param(value = "loginName") String loginName,
+    List<PointBillModel> findPointBillPagination(@Param(value = "loginName") String loginName,
                                                         @Param(value = "index") int index,
                                                         @Param(value = "pageSize") int pageSize,
                                                         @Param(value = "startTime") Date startTime,
                                                         @Param(value = "endTime") Date endTime,
-                                                        @Param(value = "businessType") String businessType);
+                                                        @Param(value = "businessType") PointBusinessType businessType);
 }

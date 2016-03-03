@@ -431,29 +431,6 @@ public class UserServiceImpl implements UserService {
         return userMapper.findUsersAccountBalanceCount(loginName, balance[0], balance[1]);
     }
 
-    @Override
-    public List<UserItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, int currentPageNo, int pageSize){
-        List<UserModel> userModels =  userMapper.findUsersAccountPoint(loginName, userName, mobile, (currentPageNo - 1) * pageSize, pageSize);
-
-        List<UserItemDataDto> userItemDataDtoList = new ArrayList<>();
-        for(UserModel userModel : userModels) {
-            UserItemDataDto userItemDataDto = new UserItemDataDto(userModel);
-            userItemDataDto.setTotalPoint(userMapper.findUsersAccountTotalPoint(userModel.getLoginName()));
-            userItemDataDto.setStaff(userRoleService.judgeUserRoleExist(userModel.getLoginName(), Role.STAFF));
-            userItemDataDtoList.add(userItemDataDto);
-        }
-        return userItemDataDtoList;
-    }
-
-    @Override
-    public int findUsersAccountPointCount(String loginName, String userName, String mobile){
-        return userMapper.findUsersAccountPointCount(loginName, userName, mobile);
-    }
-
-    @Override
-    public int findUsersAccountTotalPoint(String loginName){
-        return userMapper.findUsersAccountTotalPoint(loginName);
-    }
 
     @Override
     public long findUsersAccountBalanceSum(String loginName, String balanceMin, String balanceMax) {

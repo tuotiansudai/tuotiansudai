@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.dto.UserItemDataDto;
-import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.dto.AccountItemDataDto;
+import com.tuotiansudai.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PointController {
 
     @Autowired
-    private UserService userService;
+    private AccountService accountService;
 
     @RequestMapping(value = "/user-point-list")
     public ModelAndView usersAccountPointList(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
@@ -27,9 +27,9 @@ public class PointController {
             ModelAndView modelAndView = new ModelAndView("/user-point-list");
             modelAndView.addObject("index", index);
             modelAndView.addObject("pageSize", pageSize);
-            List<UserItemDataDto> userItemDataDtoList = userService.findUsersAccountPoint(loginName, userName, mobile, index, pageSize);
-            modelAndView.addObject("userPointList", userItemDataDtoList);
-            int count = userService.findUsersAccountPointCount(loginName, userName, mobile);
+            List<AccountItemDataDto> accountItemDataDtoList = accountService.findUsersAccountPoint(loginName, userName, mobile, index, pageSize);
+            modelAndView.addObject("userPointList", accountItemDataDtoList);
+            int count = accountService.findUsersAccountPointCount(loginName, userName, mobile);
             long totalPages = count / pageSize + (count % pageSize > 0 ? 1 : 0);
             boolean hasPreviousPage = index > 1 && index <= totalPages;
             boolean hasNextPage = index < totalPages;

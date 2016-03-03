@@ -1,7 +1,6 @@
 package com.tuotiansudai.point.repository.dto;
 
-import com.tuotiansudai.point.repository.model.PointBillPaginationItemView;
-import com.tuotiansudai.point.repository.model.PointBusinessType;
+import com.tuotiansudai.point.repository.model.PointBillModel;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -24,7 +23,7 @@ public class PointBillPaginationItemDataDto implements Serializable{
 
     private Date createdTime;
 
-    public PointBillPaginationItemDataDto(PointBillPaginationItemView view){
+    public PointBillPaginationItemDataDto(PointBillModel view){
         this.id = view.getId();
         this.loginName = view.getLoginName();
         this.orderId = view.getOrderId();

@@ -71,12 +71,6 @@ public interface UserService {
 
     int findUsersAccountBalanceCount(String loginName, String balanceMin, String balanceMax);
 
-    List<UserItemDataDto> findUsersAccountPoint(String loginName, String userName, String mobile, int currentPageNo, int pageSize);
-
-    int findUsersAccountPointCount(String loginName, String userName, String mobile);
-
-    int findUsersAccountTotalPoint(String loginName);
-
     boolean resetUmpayPassword(String loginName, String identityNumber);
 
     long findUsersAccountBalanceSum(String loginName, String balanceMin, String balanceMax);

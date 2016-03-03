@@ -36,11 +36,7 @@
             <tbody>
                 <#list userPointList as userPointItem>
                 <tr>
-                    <td>${userPointItem.loginName!''}
-                        <#if userPointItem.staff>
-                            <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
-                        </#if>
-                    </td>
+                    <td>${userPointItem.loginName!''}</td>
                     <td>${userPointItem.userName!''}</td>
                     <td>${userPointItem.mobile}</td>
                     <td>${userPointItem.point!''}</td>
