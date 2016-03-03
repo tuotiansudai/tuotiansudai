@@ -80,8 +80,8 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private JobManager jobManager;
 
-    @Value("#{'${show.random.loginName.list}'.split('\\|')}")
-    private List<String> showRandomloginNameList;
+    @Value("#{'${web.random.investor.list}'.split('\\|')}")
+    private List<String> showRandomLoginNameList;
 
     /**
      * @param loanTitleDto
@@ -440,7 +440,7 @@ public class LoanServiceImpl implements LoanService {
                 @Override
                 public InvestPaginationItemDto apply(InvestModel input) {
                     InvestPaginationItemDto item = new InvestPaginationItemDto();
-                    item.setLoginName(RandomUtils.encryptLoginName(loginName, showRandomloginNameList, input.getLoginName(), 6));
+                    item.setLoginName(RandomUtils.encryptLoginName(loginName, showRandomLoginNameList, input.getLoginName(), 6));
                     item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
                     item.setSource(input.getSource());
                     item.setAutoInvest(input.isAutoInvest());

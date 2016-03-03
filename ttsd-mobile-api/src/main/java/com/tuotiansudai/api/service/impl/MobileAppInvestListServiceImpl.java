@@ -20,8 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,8 +37,8 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
     @Autowired
     private LoanMapper loanMapper;
 
-    @Value("#{'${show.random.loginName.list}'.split('\\|')}")
-    private List<String> showRandomloginNameList;
+    @Value("#{'${web.random.investor.list}'.split('\\|')}")
+    private List<String> showRandomLoginNameList;
 
     @Override
     public BaseResponseDto generateInvestList(InvestListRequestDto investListRequestDto) {
@@ -52,11 +50,11 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
 
         long count = investMapper.findCountByStatus(loanId, InvestStatus.SUCCESS);
 
-        if (index == null || index.intValue() <= 0) {
+        if (index == null || index <= 0) {
             index = 1;
         }
 
-        if (pageSize == null || pageSize.intValue() <= 0) {
+        if (pageSize == null || pageSize <= 0) {
             pageSize = 10;
         }
         List<InvestModel> investModels = investMapper.findByStatus(loanId, (index - 1) * pageSize, pageSize, InvestStatus.SUCCESS);
@@ -65,7 +63,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
             investRecordResponseDataDto = Lists.transform(investModels, new Function<InvestModel, InvestRecordResponseDataDto>() {
                 @Override
                 public InvestRecordResponseDataDto apply(InvestModel input) {
-                    input.setLoginName(RandomUtils.encryptLoginName(loginName, showRandomloginNameList, input.getLoginName(), 3));
+                    input.setLoginName(RandomUtils.encryptLoginName(loginName, showRandomLoginNameList, input.getLoginName(), 3));
                     return new InvestRecordResponseDataDto(input);
                 }
             });
