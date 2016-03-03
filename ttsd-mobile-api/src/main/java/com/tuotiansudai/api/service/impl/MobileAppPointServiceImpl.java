@@ -6,6 +6,8 @@ import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppPointService;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class MobileAppPointServiceImpl implements MobileAppPointService{
 
     @Autowired
     private PointBillMapper pointBillMapper;
+
+    @Autowired
+    private AccountMapper accountMapper;
 
     @Override
     public BaseResponseDto queryPointBillList(PointBillRequestDto pointBillRequestDto) {
@@ -58,7 +63,21 @@ public class MobileAppPointServiceImpl implements MobileAppPointService{
                 return pointBillRecordResponseDataDto;
             }
         });
-
     }
 
+    @Override
+    public BaseResponseDto queryPoint(BaseParamDto baseParamDto) {
+        String loginName = baseParamDto.getBaseParam().getUserId();
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+
+        PointResponseDataDto dataDto = new PointResponseDataDto();
+        dataDto.setPoint(accountModel.getPoint());
+
+        BaseResponseDto dto = new BaseResponseDto();
+        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        dto.setData(dataDto);
+
+        return dto;
+    }
 }

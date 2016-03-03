@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.controller;
 
+import com.tuotiansudai.api.dto.BaseParamDto;
 import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.PointBillRequestDto;
 import com.tuotiansudai.api.service.MobileAppPointService;
@@ -19,6 +20,12 @@ public class MobileAppPointController extends MobileAppBaseController{
     public BaseResponseDto getPointBillData(@RequestBody PointBillRequestDto pointBillRequestDto) {
         pointBillRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppPointService.queryPointBillList(pointBillRequestDto);
+    }
+
+    @RequestMapping(value = "/get/point", method = RequestMethod.POST)
+    public BaseResponseDto getPointBillData(@RequestBody BaseParamDto baseParamDto) {
+        baseParamDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppPointService.queryPoint(baseParamDto);
     }
 
 }
