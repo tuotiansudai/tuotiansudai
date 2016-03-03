@@ -25,11 +25,15 @@ public interface CouponMapper {
 
     List<CouponModel> findRedEnvelopeCoupons(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
 
+    List<CouponModel> findBirthdayCoupons(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
+
     int findCouponsCount();
 
     int findInterestCouponsCount();
 
     int findRedEnvelopeCouponsCount();
+
+    int findBirthdayCouponsCount();
 
     List<CouponModel> findAllActiveCoupons();
 
