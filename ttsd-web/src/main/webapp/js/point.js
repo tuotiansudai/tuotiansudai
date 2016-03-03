@@ -12,7 +12,7 @@ require(['jquery', 'moment', 'pagination', 'mustache'],
                     $(this).find('.add-dou').animate({
                         'bottom': '50px',
                         'opacity': '0'
-                    }, 'slow');
+                    }, 800);
                 });
             });
             $closeSign.on('click', function(event) {
