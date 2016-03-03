@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MobileAppPointController extends MobileAppBaseController{
+public class MobileAppPointController extends MobileAppBaseController {
 
     @Autowired
     private MobileAppPointService mobileAppPointService;
