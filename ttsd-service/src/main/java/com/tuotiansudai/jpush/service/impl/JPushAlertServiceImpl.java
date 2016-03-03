@@ -444,6 +444,9 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             String loginName = entry.getKey();
             if (redisWrapperClient.hexists(JPUSH_ID_KEY, loginName)) {
                 String registrationId = redisWrapperClient.hget(JPUSH_ID_KEY, loginName);
+                if (registrationId.indexOf("-") > 0) {
+                    registrationId = registrationId.split("-")[1];
+                }
                 registrationIds.add(registrationId);
                 List<String> params = entry.getValue();
                 String content = jPushAlertModel.getContent();
