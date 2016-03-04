@@ -15,6 +15,7 @@ import com.tuotiansudai.repository.model.AccountModel;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +51,21 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         dto.setData(dataDto);
 
+        return dto;
+    }
+
+    public BaseResponseDto getLastSignInTime(BaseParamDto baseParamDto) {
+        String loginName = baseParamDto.getBaseParam().getUserId();
+        SignInPointDto lastSignInPointDto = signInService.getLastSignIn(loginName);
+
+        LastSignInTimeResponseDataDto dataDto = new LastSignInTimeResponseDataDto();
+        dataDto.setSignIn(signInService.signInIsSuccess(loginName));
+        dataDto.setSignInTimes(lastSignInPointDto.getSignInCount());
+
+        BaseResponseDto dto = new BaseResponseDto();
+        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        dto.setData(dataDto);
         return dto;
     }
 
