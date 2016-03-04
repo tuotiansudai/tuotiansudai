@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.point.dto.SignInPoint;
 import com.tuotiansudai.point.dto.SignInPointDto;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
@@ -20,10 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 
 @Service
@@ -46,13 +41,14 @@ public class SignInServiceImpl implements SignInService {
         DateTime today = new DateTime().withTimeAtStartOfDay();
 
         try {
-            SignInPointDto signInPointDto = new SignInPointDto(SignInPoint.FIRST_SIGN_IN.getTimes(), today.toDate(), SignInPoint.FIRST_SIGN_IN.getPoint());;
+            SignInPointDto signInPointDto = new SignInPointDto(SignInPoint.FIRST_SIGN_IN.getTimes(), today.toDate(), SignInPoint.FIRST_SIGN_IN.getPoint());
+            ;
             String redisValue = redisWrapperClient.hget(POINT_SIGN_IN_KEY, loginName);
             SignInPointDto lastSignInPointDto = Strings.isNullOrEmpty(redisValue) ? null : (SignInPointDto) objectMapper.readValue(redisValue, new TypeReference<SignInPointDto>() {
             });
 
             if (lastSignInPointDto != null) {
-                if (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), new DateTime().withTimeAtStartOfDay()) == Days.ZERO) {
+                if (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ZERO) {
                     return lastSignInPointDto;
                 }
                 if (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ONE) {

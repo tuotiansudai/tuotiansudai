@@ -2,7 +2,6 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.point.dto.SignInPointDto;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.web.util.LoginUserInfo;
@@ -38,6 +37,7 @@ public class PointController {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/point");
 
+        
         return modelAndView;
 
     }

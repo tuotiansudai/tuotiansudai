@@ -24,6 +24,8 @@ public class InvestNotifyInfo implements Serializable {
 
     private int periods;
 
+    private String loginName;
+
     public String getLoanName() {
         return loanName;
     }
@@ -72,5 +74,11 @@ public class InvestNotifyInfo implements Serializable {
         this.investId = investId;
     }
 
+    public String getLoginName() {
+        return loginName;
+    }
 
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
 }

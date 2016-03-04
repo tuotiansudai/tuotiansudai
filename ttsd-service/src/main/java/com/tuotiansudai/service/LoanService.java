@@ -37,7 +37,7 @@ public interface LoanService {
 
     void startFundraising(long loanId);
 
-    BaseDto<PayDataDto> openLoan(LoanDto loanDto);
+    BaseDto<PayDataDto> openLoan(LoanDto loanDto, String ip);
 
     BaseDto<PayDataDto> cancelLoan(LoanDto loanDto);
 
