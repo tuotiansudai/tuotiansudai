@@ -8,7 +8,7 @@
         <em class="tc title-navli">财豆明细</em>
     </h4>
     <div class="content-list">
-		<div class="choi-beans-list">
+		<div class="choi-beans-list active">
 			<div class="beans-intro">
 				<div class="beans-list">
 					<i class="icon-result icon-beans"></i>
