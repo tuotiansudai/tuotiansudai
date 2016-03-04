@@ -5,10 +5,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class LoanDto extends BaseDataDto {
+public class LoanDto extends BaseDataDto implements Serializable {
 
     private long id;
 
