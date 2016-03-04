@@ -116,6 +116,8 @@ public enum ReturnMessage {
     /******手机端修改密码******/
     CHANGEPASSWORD_INVALID_PASSWORD("0090", "原密码错误"),
 
+    /******签到******/
+    MULTIPLE_SIGN_IN("0100", "今日已经签到过，不可重复签到"),
 
     BAD_REQUEST("0400", "非法请求"),
     UNAUTHORIZED("0401", "未授权");

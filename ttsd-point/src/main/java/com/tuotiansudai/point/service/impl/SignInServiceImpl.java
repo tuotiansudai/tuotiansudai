@@ -38,6 +38,8 @@ public class SignInServiceImpl implements SignInService {
 
         if (lastSignInPointDto != null) {
             if (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ZERO) {
+                lastSignInPointDto.setStatus(false);
+                lastSignInPointDto.setMessage("今天已经签到过了，请明天再来！");
                 return lastSignInPointDto;
             }
             if (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ONE) {

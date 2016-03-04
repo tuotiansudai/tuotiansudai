@@ -12,6 +12,7 @@ import com.tuotiansudai.point.repository.model.PointTaskModel;
 import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import freemarker.core.ReturnInstruction;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -47,8 +48,13 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
         dataDto.setSignInTimes(signInPointDto.getSignInCount());
 
         BaseResponseDto dto = new BaseResponseDto();
-        dto.setCode(ReturnMessage.SUCCESS.getCode());
-        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        if (signInPointDto.getStatus()) {
+            dto.setCode(ReturnMessage.SUCCESS.getCode());
+            dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        } else {
+            dto.setCode(ReturnMessage.MULTIPLE_SIGN_IN.getCode());
+            dto.setMessage(ReturnMessage.MULTIPLE_SIGN_IN.getMsg());
+        }
         dto.setData(dataDto);
 
         return dto;
