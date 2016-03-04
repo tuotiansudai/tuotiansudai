@@ -1,4 +1,4 @@
-require(['jquery', 'mustache', 'text!/tpl/point-bill-table.mustache', 'moment', 'pagination', 'daterangepicker'],
+require(['jquery', 'csrf','mustache', 'text!/tpl/point-bill-table.mustache', 'moment', 'pagination', 'daterangepicker'],
     function($, Mustache, pointBillListTemplate, moment, pagination) {
         $(function() {
             var $navBtn = $('.column-title .title-navli'),
@@ -26,7 +26,7 @@ require(['jquery', 'mustache', 'text!/tpl/point-bill-table.mustache', 'moment', 
 
                 $.ajax({
                     url: _this.data('url'),
-                    type: 'GET',
+                    type: 'POST',
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'
                 }).done(function (response) {

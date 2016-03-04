@@ -69,7 +69,7 @@ require(['jquery','echarts','commonFun', 'csrf','layerWrapper'], function ($) {
             }else{
                 $.ajax({
                     url: _this.data('url'),
-                    type: 'GET',
+                    type: 'POST',
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'
                 })
