@@ -3,8 +3,8 @@ package com.tuotiansudai.console.bi.service;
 import com.tuotiansudai.console.bi.dto.Granularity;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.bi.dto.UserStage;
-import com.tuotiansudai.console.bi.model.InvestViscosityDetailTableView;
-import com.tuotiansudai.console.bi.model.KeyValueModel;
+import com.tuotiansudai.console.bi.repository.model.InvestViscosityDetailTableView;
+import com.tuotiansudai.console.bi.repository.model.KeyValueModel;
 
 import java.util.Date;
 import java.util.List;

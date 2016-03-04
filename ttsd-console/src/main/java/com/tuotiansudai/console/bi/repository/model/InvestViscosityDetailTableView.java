@@ -1,4 +1,4 @@
-package com.tuotiansudai.console.bi.model;
+package com.tuotiansudai.console.bi.repository.model;
 
 import java.io.Serializable;
 import java.util.List;
