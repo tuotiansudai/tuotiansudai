@@ -36,7 +36,7 @@ public class PointController {
     @Autowired
     private PointTaskService pointTaskService;
 
-    @RequestMapping(path = "/sign-in", method = RequestMethod.GET)
+    @RequestMapping(path = "/sign-in", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> signIn() {
         String loginName = LoginUserInfo.getLoginName();
