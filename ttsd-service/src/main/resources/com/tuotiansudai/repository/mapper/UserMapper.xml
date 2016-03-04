@@ -62,8 +62,8 @@
     </select>
 
     <insert id="create" parameterType="UserModel" useGeneratedKeys="true" keyProperty="id">
-      insert into user (login_name, password, mobile, email, register_time, referrer, status, salt, channel, source)
-      value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source})
+      insert into user (login_name, password, mobile, email, register_time, last_modified_time, referrer, status, salt, channel, source)
+      value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{lastModifiedTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source})
     </insert>
 
     <update id="updatePasswordByLoginName" parameterType="map">
