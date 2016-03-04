@@ -20,6 +20,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
+import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -140,7 +141,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             lastRepayDate = new DateTime(lastLoanRepayModel.getActualRepayDate());
         }
 
-        int daysOfYear = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().dayOfYear().getMaximumValue();
         int periodDuration = Days.daysBetween(lastRepayDate.withTimeAtStartOfDay(), currentRepayDate.withTimeAtStartOfDay()).getDays();
 
         long expectedInterest = 0;
@@ -149,12 +149,12 @@ public class CouponRepayServiceImpl implements CouponRepayService {
             case INVEST_COUPON:
                 expectedInterest = new BigDecimal(periodDuration * couponModel.getAmount())
                         .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
-                        .divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
+                        .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
                 break;
             case INTEREST_COUPON:
                 expectedInterest = new BigDecimal(periodDuration * investMapper.findById(userCouponModel.getInvestId()).getAmount())
                         .multiply(new BigDecimal(couponModel.getRate()))
-                        .divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
+                        .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
                 break;
             case BIRTHDAY_COUPON:
                 if (lastLoanRepayModel != null) {
