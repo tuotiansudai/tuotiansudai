@@ -4,7 +4,7 @@ import com.tuotiansudai.console.bi.service.BusinessIntelligenceService;
 import com.tuotiansudai.console.bi.dto.Granularity;
 import com.tuotiansudai.console.bi.dto.RoleStage;
 import com.tuotiansudai.console.bi.dto.UserStage;
-import com.tuotiansudai.console.bi.repository.model.mapper.BusinessIntelligenceMapper;
+import com.tuotiansudai.console.bi.repository.mapper.BusinessIntelligenceMapper;
 import com.tuotiansudai.console.bi.repository.model.InvestViscosityDetailTableView;
 import com.tuotiansudai.console.bi.repository.model.InvestViscosityDetailView;
 import com.tuotiansudai.console.bi.repository.model.KeyValueModel;
