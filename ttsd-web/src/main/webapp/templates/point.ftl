@@ -208,7 +208,7 @@
                 <#if pointTaskDtos?? && pointTaskDtos?size gt 0>
                     <#list pointTaskDtos as pointTaskDto>
                         <li>
-                            <p>任务${pointTaskDto_index}：${pointTaskDto.name.getTitle()}</p>
+                            <p>任务${pointTaskDto_index + 1}：${pointTaskDto.name.getTitle()}</p>
 
                             <p>说明：${pointTaskDto.name.getDescription()}</p>
 

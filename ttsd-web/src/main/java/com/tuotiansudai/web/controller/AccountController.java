@@ -1,5 +1,7 @@
 package com.tuotiansudai.web.controller;
 
+import com.tuotiansudai.point.service.PointService;
+import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.util.DateUtil;
@@ -33,6 +35,12 @@ public class AccountController {
     @Autowired
     private UserBillService userBillService;
 
+    @Autowired
+    private SignInService signInService;
+
+    @Autowired
+    private PointService pointService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView account() {
         ModelAndView modelAndView = new ModelAndView("/account");
@@ -55,7 +63,8 @@ public class AccountController {
         modelAndView.addObject("notSuccessSumInvestRepay", investRepayService.findByLoginNameAndTimeAndNotSuccessInvestRepay(loginName, startTime, endTime));
         modelAndView.addObject("notSuccessSumInvestRepayList", investRepayService.findByLoginNameAndTimeNotSuccessInvestRepayList(loginName, startTime, endTime, 0, 6));
         modelAndView.addObject("latestInvestList", investRepayService.findLatestInvestByLoginName(loginName, 0, 6));
-        
+        modelAndView.addObject("signedIn",signInService.signInIsSuccess(loginName));
+        modelAndView.addObject("myPoint", pointService.getAvailablePoint(loginName));
         return modelAndView;
     }
 }

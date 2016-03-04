@@ -60,6 +60,136 @@
 //Account Overview
 .account-overview {
   padding:0!important;
+  .sign-layer{
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.5);
+    z-index:999;
+    display:none;
+    .sign-layer-list{
+      position: absolute;
+      top:50%;
+      left:50%;
+      margin-top:-150px;
+      margin-left:-250px;
+      width:500px;
+      height:300px;
+      background:#fff;
+      border:1px solid #ccc;
+      border-radius:5px;
+      overflow:hidden;
+      .sign-top{
+        float:left;
+        width:100%;
+        height:250px;
+        position: relative;
+        .close-btn{
+          position: absolute;
+          top:15px;
+          right:15px;
+          width:15px;
+          height:15px;
+          background:url("/images/sign/bean-bg.png") no-repeat;
+          background-position: 0px -23px;
+          cursor:pointer;
+        }
+        p{
+          text-align:center;
+          &.sign-text{
+            margin-top:10px;
+            color:#ff7200;
+            font-size:18px;
+            margin-bottom:0;
+          }
+          &.tomorrow-text{
+            font-size:14px;
+            color:#4c4c4c;
+          }
+          &.img-beans{
+            position: relative;
+            .add-dou{
+              position: absolute;
+              left:50%;
+              margin-left:-30px;
+              bottom:0;
+              width:40px;
+              height:30px;
+              padding-right:20px;
+              font-size:20px;
+              line-height:25px;
+              color:#fff;
+              text-align:center;
+              background:url("/images/sign/add-bean.png") no-repeat right;
+            }
+          }
+          &.intro-text{
+            font-size:14px;
+            color:#4d4d4d;
+            span{
+              color:#ff7200;
+            }
+          }
+        }
+      }
+      .sign-bottom{
+        float:left;
+        width:100%;
+        height:50px;
+        ul{
+          float:left;
+          width:100%;
+          border-top:1px solid #e6e6e6;
+          li{
+            float:left;
+            width:59px;
+            height:50px;
+            text-align: center;
+            border-right:1px solid #e6e6e6;
+            &.last-day{
+              width:79px;
+              .day-beans{
+                span{
+                  margin-left: 30px;
+                  line-height: 15px;
+                  margin-top: -5px;
+                }
+              }
+            }
+            p{
+              margin-bottom:0;
+              line-height:25px;
+              &.day-name{
+                font-size:12px;
+                color:#7f7f7f;
+              }
+              &.day-beans{
+                font-size:14px;
+                color:#4d4d4d;
+                span{
+                  float:left;
+                  width: 20px;
+                  text-align:right;
+                  line-height: 15px;
+                  margin-left: 10px;
+                }
+                .bean-img{
+                  float:left;
+                  width:15px;
+                  height:15px;
+                  background:url("/images/sign/bean-bg.png") no-repeat;
+                  background-position:0 0;
+                  margin-top: 2px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
   &.content-container {
     border: 0;
     border-radius: 0;
@@ -92,6 +222,45 @@
       li {
         a {
           display: block;
+        }
+        &.sign-top{
+          margin-top:5px!important;
+          padding: 5px 0;
+          background: #ff7200;
+          color: #fff;
+          border-radius: 5px;
+          width: 80px;
+          height: 20px;
+          line-height: 20px;
+          text-align: center;
+          span{
+            float: left;
+            text-align: center;
+            line-height: 20px;
+            font-size: 14px;
+            &.will-sign{
+              float: left;
+              width: 60px;
+              text-align: center;
+              line-height: 20px;
+              background: url("/images/sign/icon-sign.png") no-repeat left;
+              background-position: 15px 2px;
+              padding-left: 20px;
+              font-size: 14px;
+              cursor:pointer;
+            }
+            &.finish-sign{
+              width:100%;
+              cursor:no-drop;
+            }
+          }
+        }
+        &.beans-number{
+          margin-top: 18px!important;
+          margin-left: 25px!important;
+          font-size:14px!important;
+          color:#4c4c4c;
+          line-height:14px!important;
         }
         &.fl {
           font-size: 20px;

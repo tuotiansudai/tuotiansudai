@@ -20,8 +20,9 @@ require(['jquery', 'mustache', 'text!/tpl/point-bill-table.mustache', 'moment', 
             $signBtn.on('click', function (event) {
                 event.preventDefault();
                 var _this = $(this),
-                    signText = $(".sign-text");
-                tomorrowText = $(".tomorrow-text");
+                    $signText = $(".sign-text");
+                    $tomorrowText = $(".tomorrow-text");
+                    $addDou = $(".add-dou");
 
                 $.ajax({
                     url: _this.data('url'),
@@ -30,8 +31,9 @@ require(['jquery', 'mustache', 'text!/tpl/point-bill-table.mustache', 'moment', 
                     contentType: 'application/json; charset=UTF-8'
                 }).done(function (response) {
                     if (response.data.status) {
-                        signText.html("签到成功，领取" + response.data.signInPoint + "财豆！");
-                        tomorrowText.html("明日可领" + response.data.nextSignInPoint + "财豆");
+                        $signText.html("签到成功，领取" + response.data.signInPoint + "财豆！");
+                        $tomorrowText.html("明日可领" + response.data.nextSignInPoint + "财豆");
+                        $addDou.html("+" + response.data.signInPoint);
                         $signTip.fadeIn('fast', function () {
                             $(this).find('.add-dou').animate({
                                 'bottom': '50px',
