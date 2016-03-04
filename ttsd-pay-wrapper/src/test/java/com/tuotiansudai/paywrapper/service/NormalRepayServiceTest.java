@@ -349,7 +349,7 @@ public class NormalRepayServiceTest {
         assertThat(actualBirthdayUserCouponModel.getActualInterest(), is(53L));
         assertThat(actualBirthdayUserCouponModel.getActualFee(), is(5L));
         SystemBillModel systemBillModel5 = systemBillMapper.findByOrderId(birthdayUserCouponModel.getId(), SystemBillBusinessType.COUPON);
-        assertThat(systemBillModel5.getAmount(), is(45L));
+        assertThat(systemBillModel5.getAmount(), is(48L));
     }
 
     @Test

@@ -1,11 +1,10 @@
-package com.tuotiansudai.service;
+package com.tuotiansudai.console.bi.service;
 
-import com.tuotiansudai.dto.Granularity;
-import com.tuotiansudai.dto.RoleStage;
-import com.tuotiansudai.dto.UserStage;
-import com.tuotiansudai.repository.model.InvestViscosityDetailTableView;
-import com.tuotiansudai.repository.model.InvestViscosityDetailView;
-import com.tuotiansudai.repository.model.KeyValueModel;
+import com.tuotiansudai.console.bi.dto.Granularity;
+import com.tuotiansudai.console.bi.dto.RoleStage;
+import com.tuotiansudai.console.bi.dto.UserStage;
+import com.tuotiansudai.console.bi.model.InvestViscosityDetailTableView;
+import com.tuotiansudai.console.bi.model.KeyValueModel;
 
 import java.util.Date;
 import java.util.List;

@@ -1,0 +1,1 @@
+ALTER TABLE `aa`.`recharge` DROP column `fee`;
