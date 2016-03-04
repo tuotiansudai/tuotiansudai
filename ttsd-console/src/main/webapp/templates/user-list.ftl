@@ -33,12 +33,15 @@
         </div>
         <div class="form-group">
             <label for="project">角色</label>
-            <select class="selectpicker" name="role">
+            <select class="selectpicker" name="roleStage">
                 <option value="">全部</option>
-                <#list roleList as roleItem>
-                    <option value="${roleItem.name()}"
-                            <#if (role.name())?has_content && role.name() == roleItem.name()>selected</#if>
-                            >${roleItem.description}</option>
+                <#list roleStageList as roleItem>
+                    <#if roleItem.name()!='OTHERS' && roleItem.name()!='ALL'>
+                        <option value="${roleItem.name()}"
+                                <#if (roleStage.name())?has_content && roleStage.name() == roleItem.name()>selected</#if>
+                                >${roleItem.description}</option>
+
+                    </#if>
                 </#list>
             </select>
         </div>
