@@ -58,7 +58,7 @@
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="boneCPDataSource"/>
-        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.jpush.repository.model"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.console.bi.model,com.tuotiansudai.jpush.repository.model"/>
     </bean>
 
     <!-- define the SqlSessionFactory -->
