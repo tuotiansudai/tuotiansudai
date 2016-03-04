@@ -14,6 +14,8 @@
             <span><em>您好：${loginName!}</em></span>
             <ul class="proList">
                 <li class="fl"><a class="fa fa-envelope-o fa-fw" href="/personal-info"></a></li>
+                <li class="fl"><span class="btn-sign" data-url="/point/sign-in" id="signBtn">签到</span></li>
+                <li class="fl">可用财豆:${}</li>
                 <li class="fr"><a class="btn-normal" href="/recharge">充值</a></li>
                 <li class="fr"><a class="btn-primary" href="/withdraw">提现</a></li>
             </ul>

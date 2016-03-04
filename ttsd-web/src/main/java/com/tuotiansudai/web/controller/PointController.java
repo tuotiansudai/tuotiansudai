@@ -5,12 +5,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-<<<<<<< HEAD
+import com.tuotiansudai.point.dto.PointTaskDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
-=======
->>>>>>> point_master
+
 import com.tuotiansudai.point.service.PointService;
+import com.tuotiansudai.point.service.PointTaskService;
 import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +33,10 @@ public class PointController {
     private PointService pointService;
     @Autowired
     private PointBillMapper pointBillMapper;
+    @Autowired
+    private PointTaskService pointTaskService;
 
-    @RequestMapping(path = "/sign-in", method = RequestMethod.POST)
+    @RequestMapping(path = "/sign-in", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BaseDataDto> signIn() {
         String loginName = LoginUserInfo.getLoginName();
@@ -60,6 +62,8 @@ public class PointController {
             modelAndView.addObject("obtainedPoints",obtainedPoints);
         }
         boolean signedIn = signInService.signInIsSuccess(loginName);
+        List<PointTaskDto> pointTaskDtos = pointTaskService.displayPointTask(1,10,loginName);
+        modelAndView.addObject("pointTaskDtos",pointTaskDtos);
         modelAndView.addObject("signedIn",signedIn);
         modelAndView.addObject("myPoint",myPoint);
         return modelAndView;
