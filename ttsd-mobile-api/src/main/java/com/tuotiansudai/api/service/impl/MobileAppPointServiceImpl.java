@@ -4,16 +4,20 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppPointService;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.point.dto.SignInPointDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointTaskModel;
 import com.tuotiansudai.point.repository.model.UserPointTaskModel;
+import com.tuotiansudai.point.service.SignInService;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,13 +31,49 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
     static Logger logger = Logger.getLogger(MobileAppPointServiceImpl.class);
 
     @Autowired
+    private SignInService signInService;
+
+    @Autowired
     private PointBillMapper pointBillMapper;
+
+    @Autowired
+    private AccountMapper accountMapper;
 
     @Autowired
     private PointTaskMapper pointTaskMapper;
 
     @Autowired
     private UserPointTaskMapper userPointTaskMapper;
+    public BaseResponseDto signIn(BaseParamDto baseParamDto) {
+        String loginName = baseParamDto.getBaseParam().getUserId();
+        SignInPointDto signInPointDto = signInService.signIn(loginName);
+
+        SignInResponseDataDto dataDto = new SignInResponseDataDto();
+        dataDto.setPoint(signInPointDto.getSignInPoint());
+        dataDto.setSignInTimes(signInPointDto.getSignInCount());
+
+        BaseResponseDto dto = new BaseResponseDto();
+        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        dto.setData(dataDto);
+
+        return dto;
+    }
+
+    public BaseResponseDto getLastSignInTime(BaseParamDto baseParamDto) {
+        String loginName = baseParamDto.getBaseParam().getUserId();
+        SignInPointDto lastSignInPointDto = signInService.getLastSignIn(loginName);
+
+        LastSignInTimeResponseDataDto dataDto = new LastSignInTimeResponseDataDto();
+        dataDto.setSignIn(signInService.signInIsSuccess(loginName));
+        dataDto.setSignInTimes(lastSignInPointDto == null ? 0 : lastSignInPointDto.getSignInCount());
+
+        BaseResponseDto dto = new BaseResponseDto();
+        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        dto.setData(dataDto);
+        return dto;
+    }
 
     @Override
     public BaseResponseDto queryPointBillList(PointBillRequestDto pointBillRequestDto) {
@@ -96,25 +136,11 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
             pointTaskRecordResponseDataDto.setCompleted(userPointTaskModel != null ? true : false);
             pointTaskRecords.add(pointTaskRecordResponseDataDto);
         }
-
         return pointTaskRecords;
 
     }
 
-    //    private void sortPointTaskRecord(List<PointTaskRecordResponseDataDto> pointTaskRecordDtoList) {
-//        Collections.sort(pointTaskRecordDtoList, new Comparator<PointTaskRecordResponseDataDto>() {
-//            @Override
-//            public int compare(PointTaskRecordResponseDataDto first, PointTaskRecordResponseDataDto second) {
-//                if (first.isCompleted() && !second.isCompleted()) {
-//                    return -1;
-//                }
-//                if (!first.isCompleted() && second.isCompleted()) {
-//                    return 1;
-//                }
-//                return 0;
-//            }
-//        });
-//    }
+    
     private void sortPointTaskRecord(List<PointTaskRecordResponseDataDto> pointTaskRecordDtoList) {
         Collections.sort(pointTaskRecordDtoList, new Comparator<PointTaskRecordResponseDataDto>() {
             @Override
@@ -144,7 +170,21 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
                 return pointBillRecordResponseDataDto;
             }
         });
-
     }
 
+    @Override
+    public BaseResponseDto queryPoint(BaseParamDto baseParamDto) {
+        String loginName = baseParamDto.getBaseParam().getUserId();
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+
+        PointResponseDataDto dataDto = new PointResponseDataDto();
+        dataDto.setPoint(accountModel.getPoint());
+
+        BaseResponseDto dto = new BaseResponseDto();
+        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        dto.setData(dataDto);
+
+        return dto;
+    }
 }

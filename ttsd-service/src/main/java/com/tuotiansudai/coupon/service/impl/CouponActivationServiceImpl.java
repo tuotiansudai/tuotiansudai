@@ -85,7 +85,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Transactional
     @Override
-    public void active(String operatorLoginName, long couponId) {
+    public void active(String operatorLoginName, long couponId, String ip) {
         CouponModel couponModel = couponMapper.findById(couponId);
         if (couponModel.isActive()) {
             return;

@@ -19,6 +19,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.util.RequestIPParser;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -171,9 +172,10 @@ public class CouponController {
 
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/active", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> activeCoupon(@PathVariable long couponId) {
+    public BaseDto<BaseDataDto> activeCoupon(@PathVariable long couponId, HttpServletRequest request){
+        String ip = RequestIPParser.parse(request);
         String loginName = LoginUserInfo.getLoginName();
-        couponActivationService.active(loginName, couponId);
+        couponActivationService.active(loginName, couponId, ip);
 
         BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(true);

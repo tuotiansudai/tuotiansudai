@@ -5,7 +5,7 @@ import com.tuotiansudai.dto.BaseDataDto;
 import java.io.Serializable;
 import java.util.Date;
 
-public class SignInPointDto extends BaseDataDto {
+public class SignInPointDto extends BaseDataDto implements Serializable {
 
     private int signInCount;
 

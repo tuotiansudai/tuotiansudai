@@ -77,6 +77,13 @@ worker-invest:
     - "pay-wrapper"
     - "sms-wrapper"
     - "redis-server"
+worker-jpush:
+  image: "leoshi/ttsd-java7:UTC8"
+  volumes:
+    - ./ttsd-job-worker/build/distributions:/workspace/tuotian
+  command: bash -c "./ttsd-job-worker-jpush/bin/ttsd-job-worker"
+  links:
+    - "redis-server"
 static-server:
   image: "nginx"
   volumes:
