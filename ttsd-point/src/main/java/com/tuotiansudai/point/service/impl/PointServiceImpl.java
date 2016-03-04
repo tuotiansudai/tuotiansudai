@@ -7,6 +7,8 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.point.service.PointService;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,9 @@ public class PointServiceImpl implements PointService {
     @Autowired
     private CouponExchangeMapper couponExchangeMapper;
 
+    @Autowired
+    private AccountMapper accountMapper;
+
 
 
 
@@ -42,6 +47,12 @@ public class PointServiceImpl implements PointService {
         couponExchangeModel.setExchangePoint(exchangeCouponDto.getExchangePoint());
         couponExchangeMapper.create(couponExchangeModel);
 
+    }
+
+    @Override
+    public long getAvailablePoint(String loginName) {
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        return accountModel.getPoint();
     }
 
 }

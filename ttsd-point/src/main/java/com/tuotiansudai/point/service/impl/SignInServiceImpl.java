@@ -32,7 +32,7 @@ public class SignInServiceImpl implements SignInService {
     public SignInPointDto signIn(String loginName) {
         DateTime today = new DateTime().withTimeAtStartOfDay();
 
-        SignInPointDto signInPointDto = new SignInPointDto(SignInPoint.FIRST_SIGN_IN.getTimes(), today.toDate(), SignInPoint.FIRST_SIGN_IN.getPoint());
+        SignInPointDto signInPointDto = new SignInPointDto(SignInPoint.FIRST_SIGN_IN.getTimes(), today.toDate(), SignInPoint.FIRST_SIGN_IN.getPoint(),SignInPoint.SECOND_SIGN_IN.getPoint());
 
         SignInPointDto lastSignInPointDto = (SignInPointDto) redisWrapperClient.hgetSeri(POINT_SIGN_IN_KEY, loginName);
 
@@ -42,11 +42,11 @@ public class SignInServiceImpl implements SignInService {
             }
             if (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ONE) {
                 int signInCount = lastSignInPointDto.getSignInCount() + 1;
-                signInPointDto = new SignInPointDto(signInCount, today.toDate(), SignInPoint.getPointByTimes(signInCount));
+                signInPointDto = new SignInPointDto(signInCount, today.toDate(), SignInPoint.getPointByTimes(signInCount),SignInPoint.getPointByTimes(signInCount + 1));
             }
         }
         redisWrapperClient.hsetSeri(POINT_SIGN_IN_KEY, loginName, signInPointDto);
-        pointBillService.createPointBill(loginName, null, PointBusinessType.SIGN_IN, signInPointDto.getPoint());
+        pointBillService.createPointBill(loginName, null, PointBusinessType.SIGN_IN, signInPointDto.getSignInPoint());
         logger.debug(MessageFormat.format("{0} sign in success {1} 次", loginName, signInPointDto.getSignInCount()));
         return signInPointDto;
     }
