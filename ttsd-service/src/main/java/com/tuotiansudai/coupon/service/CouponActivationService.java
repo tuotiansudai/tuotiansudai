@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CouponActivationService {
 
-    void active(String loginNameLoginName, long couponId);
+    void active(String loginNameLoginName, long couponId, String ip);
 
     void inactive(String loginNameLoginName, long couponId);
 
