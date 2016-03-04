@@ -3,2147 +3,65 @@
 @import "coupon_alert";
 
 .layui-layer-btn {
-  text-align: center;
+  text-align: center!important;
   .layui-layer-btn0 {
     padding: 3px 35px;
-    background: nth($CK1, 2);
+    background: nth($CK1, 2)!important;
     border-radius: 4px;
-    border: 1px solid nth($CK1, 2);
+    border: 1px solid nth($CK1, 2)!important;
     letter-spacing: 3px;
     color: #fff;
     &:hover {
-      // background: nth($CK1,3);
       color: #fff;
     }
+  }
+  .layui-layer-btn1 {
+    padding: 3px 35px;
   }
 }
 .layui-layer-content {
-  //loaner record
-  .layer-content {
-    .repay-total {
-      vertical-align: bottom;
-      color: #666;
-    }
-    .repay-alert {
-      vertical-align: bottom;
-      margin-left: 180px;
-      color: red;
-    }
+//loaner record
+.layer-content {
+  .repay-total {
+    vertical-align: bottom;
+    color: #666;
   }
+  .repay-alert {
+    vertical-align: bottom;
+    margin-left: 180px;
+    color: red;
+  }
+}
 }
 .popLayer {
-  text-align: center;
-  overflow: auto;
-  height: auto;
-  dl {
-    margin-bottom: 12px;
-    height: auto;
-    overflow: auto;
-    clear: both;
-    &.identityCodeError{
-      color: #ff0000;
-      display: none;
-    }
-    dt, dd {
-      float: left;
-    }
-    dd {
-      padding-left: 5px;
-    }
+text-align: center;
+overflow: auto;
+height: auto;
 
+dl {
+  margin-bottom: 12px;
+  height: auto;
+  overflow: auto;
+  clear: both;
+
+  &.identityCodeError {
+    color: #ff0000;
+    display: none;
   }
-  button {
-    margin: 20px auto 0 auto;
+  dt, dd {
+    float: left;
+  }
+  dd {
+    padding-left: 5px;
   }
 }
-
+button {
+  margin: 20px auto 0 auto;
+}
+}
 //Account Overview
 .account-overview {
   padding:0!important;
-  &.content-container {
-    border: 0;
-    border-radius: 0;
-    background: none;
-  }
-  .birth-icon{
-    float: left;
-    width: 20px;
-    height: 20px;
-    background: url(/images/sign/birthday.png) no-repeat center;
-    background-size: 15px;
-    left: 50px;
-    position: relative;
-  }
-  .accountImg {
-    margin-right: 10px;
-    width: 71px;
-    height: 71px;
-  }
-  .profile-box {
-    span {
-      font-size: nth($fontSize, 1);
-      em {
-        font-size: nth($fontSize, 4);
-        padding-right: 5px;
-      }
-    }
-    .proList {
-      margin-top: 4px;
-      li {
-        a {
-          display: block;
-        }
-        &.fl {
-          font-size: 20px;
-          line-height: 0;
-          margin-top: 14px;
-          margin-right: 3px;
-          a {
-            color: nth($CK1, 1);
-            cursor: pointer;
-            &.fa-mobile {
-              font-size: 24px;
-              margin-top: -3px;
-            }
-            &.fa-envelope-o {
-              color: nth($CK2, 2);
-            }
-          }
-
-        }
-        .btn-primary, .btn-normal {
-          margin-left: 10px;
-          padding: 8px 20px;
-        }
-      }
-    }
-  }
-  .assets-box {
-    height: 171px;
-    box-sizing: border-box;
-    .assets-report {
-      width: 39%;
-      height: 142px;
-      h3 {
-        line-height: 15px;
-        padding-bottom: 10px;
-      }
-    }
-    .assets-detail {
-      height: 142px;
-      width: 53%;
-      .detail-list {
-        margin-top: 30px;
-        li {
-          float: left;
-          width: 50%;
-          box-sizing: border-box;
-          padding-left: 20px;
-          b {
-            font-weight: normal;
-          }
-          span {
-            display: inline-block;
-            padding-left: 20px;
-            color: nth($CK1, 1);
-            padding-right: 3px;
-          }
-
-        }
-      }
-    }
-  }
-  .LastMonth, .tMonthPayment {
-    table {
-      border: 1px solid nth($CK1, 1);
-      caption {
-        border-color: nth($CK1, 1);
-        color: nth($CK1, 1);
-      }
-      tr:nth-last-child(1) > td {
-        border-bottom-width: 0;
-      }
-    }
-  }
-  .tMonthPayment {
-    table {
-      tr:nth-last-child(1) > td {
-        border-bottom-width: 0px;
-      }
-      tfoot tr td {
-        border-top: 1px solid nth($CK1, 1);
-        border-bottom: 1px solid nth($CK1, 1);
-      }
-    }
-
-  }
-  .PaymentSwitch {
-    li {
-      float: left;
-      font-size: nth($fontSize, 4);
-      margin-right: 18px;
-      margin-bottom: 10px;
-      a {
-        color: nth($CK2, 5);
-      }
-      &.current a {
-        color: nth($CK1, 1);
-      }
-    }
-  }
-  .newProjects {
-    &.bRadiusBox {
-      padding: 0;
-      border-bottom-width: 0px;
-      caption {
-        border-width: 0px;
-        font-size: nth($fontSize, 4);
-        padding-left: 15px;
-        .fr {
-          font-size: nth($fontSize, 2);
-          padding-top: 5px;
-        }
-      }
-    }
-    .birth-icon{
-      float: left;
-      width: 20px;
-      height: 20px;
-      background: url(/images/sign/birthday.png) no-repeat center;
-      background-size: 15px;
-      left: 50px;
-      position: relative;
-    }
-    .trade-detail{
-      width: 170px;
-      display: inline-block;
-      @include text-overflow;
-    }
-  }
-  .month-title{
-    width: 80px;
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-}
-
-//auto invest
-.auto-invest {
-  .CertifiedImg {
-    background: url('/images/sign/re-s01.png') center top no-repeat;
-    margin: 40px;
-    height: 170px;
-  }
-  .panel {
-    color: nth($baseColor, 6);
-    padding-left: 40px;
-  }
-  p.notice {
-    b {
-      font-size: nth($fontSize, 4);
-    }
-  }
-  .btnBox {
-    margin-top: 30px;
-    margin-bottom: 20px;
-  }
-  .planSwitch {
-    color: nth($baseColor, 3);
-    form {
-      margin-left: 28px;
-      margin-top: 15px;
-    }
-    dl {
-      margin-bottom: 15px;
-      clear: both;
-      dt {
-        color: nth($baseColor, 4);
-        display: inline-block;
-        float: left;
-        width: 80px;
-        text-align: right;
-      }
-      dd.projectLimit {
-        float: left;
-        width: 50%;
-        label {
-          margin-right: 5px;
-        }
-        span {
-          display: inline-block;
-          color: nth($baseColor, 4);
-          width: 60px;
-          text-align: center;
-          margin-right: 10px;
-          margin-bottom: 10px;
-          border: 1px solid #e1e1e1;
-          position: relative;
-          cursor: pointer;
-          & .badge {
-            background-image: url("/images/icons/spr.png");
-            background-position: -387px -172px;
-            background-repeat: no-repeat;
-            width: 13px;
-            height: 13px;
-            position: absolute;
-            top: 0;
-            right: 0;
-            display: none;
-          }
-          &.active {
-            border: 1px solid nth($btnColor, 5);
-            color: nth($btnColor, 5);
-            & .badge {
-              display: inline-block;
-            }
-
-          }
-
-        }
-      }
-
-    }
-    & .agreeStatus {
-      margin-bottom: 20px;
-      color: nth($baseColor, 4);
-      label {
-        vertical-align: middle;
-      }
-    }
-  }
-  .borderBox:nth-child(2) {
-    margin-top: 10px;
-  }
-  .planSet {
-    i {
-      color: nth($btnColor, 5);
-    }
-  }
-}
-
-//recharge and bind-card pages
-.recharge-bind-card {
-  & ul.payment-mode {
-    border-bottom: 1px solid #ccc;
-    li {
-      width: 114px;
-      height: 48px;
-      line-height: 48px;
-      border: 1px solid #ccc;
-      font-size: 17px;
-      float: left;
-      margin-right: 10px;
-      cursor: pointer;
-      position: relative;
-      bottom: -1px;
-      text-align: center;
-    }
-
-    li.active {
-      border-bottom: #fff 1px solid;
-      border-top: #ff7200 1px solid;
-    }
-    .hot-flag {
-      position: absolute;
-      z-index: 8;
-      right: 3px;
-      top: 0;
-      background: url("/images/icons/hot.jpg") no-repeat center center;
-      width: 23px;
-      height: 23px;
-    }
-  }
-  & .e-bank-recharge {
-    overflow: hidden;
-  }
-  & ol.fast-pay li {
-    width: auto;
-  }
-  & ol {
-    z-index: 1;
-    float: left;
-    overflow: hidden;
-    padding: 10px 0;
-    & p {
-      line-height: 30px;
-      padding-left: 25px;
-      font-size: 15px;
-    }
-    & li {
-      height: 38px;
-      float: left;
-      margin-right: 10px;
-      cursor: pointer;
-      position: relative;
-      bottom: -1px;
-      .hot-flag {
-        position: absolute;
-        z-index: 8;
-        right: 3px;
-        top: -14px;
-      }
-    }
-    li.active {
-      border-bottom: #fff 1px solid;
-      border-top: #e06b0c 1px solid;
-    }
-  }
-  .recharge-wrapper {
-    border: 1px solid #ddd;
-    border-top-width: 0;
-    padding: 15px 10px;
-    .recharge-form, .fast-recharge-form {
-      clear: both;
-      font-size: 15px;
-      color: #353535;
-      line-height: 2.5;
-      .pad-m {
-        line-height: 40px;
-      }
-    }
-    .fast-recharge, .e-bank-recharge {
-      display: none;
-      border-top: none;
-      overflow: hidden;
-      &.active {
-        display: block;
-      }
-    }
-    .fast-recharge {
-      .bind-card-nav {
-        span {
-          margin: 20px auto;
-          display: block;
-          text-align: center;
-          font-size: 15px;
-        }
-        input {
-          margin: 0 auto;
-          display: block;
-        }
-      }
-    }
-    .e-bank-recharge {
-      ol {
-
-        z-index: 1;
-        float: left;
-        overflow: hidden;
-        padding: 10px 0;
-
-        p {
-          line-height: 30px;
-          padding-left: 25px;
-          font-size: 15px;
-        }
-        li {
-          float: left;
-          margin: 10px 15px 5px 10px;
-          cursor: pointer;
-          label {
-            width: 123px;
-            height: 38px;
-            img {
-              width: 123px;
-              height: 36px;
-              border: #dddddd 1px solid;
-              cursor: pointer;
-            }
-          }
-        }
-      }
-    }
-
-  }
-  .recharge-form, .fast-recharge-form {
-    clear: both;
-    p {
-      margin: 10px 0 0 35px;
-      color: #353535;
-      font-size: 15px;
-      i {
-        color: #ffac2a;
-        margin-left: 10px;
-      }
-      .recharge-form, .fast-recharge-form {
-        width: 50%;
-        margin: 0 auto;
-        overflow: hidden;
-        p {
-          height: 34px;
-          line-height: 35px;
-          margin: 10px 0 0 35px;
-          color: #353535;
-          font-size: 15px;
-          i {
-            color: #ffac2a;
-            margin-left: 10px;
-          }
-          input {
-            width: 160px;
-            margin: 0 10px;
-            padding: 0 15px;
-            line-height: 30px;
-          }
-        }
-      }
-      .submit {
-        margin: 30px auto;
-        width: 150px;
-        height: 40px;
-        background: #cc0000;
-        color: #fff;
-        display: block;
-        line-height: 30px;
-      }
-    }
-  }
-}
-.bind-card-frame {
-  border-top-width: 1px!important;
-  .e-bank-recharge {
-    display: block!important;
-    .input-bankcard {
-      width:200px;
-    }
-  }
-}
-
-/* withdraw page*/
-.withdraw {
-  line-height: 3!important;
-  font-size: 15px;
-   .calculate {
-     font-size: 14px;
-     color: #979797;
-     margin-left: 77px;
-  }
-  .withdraw-submit {
-    margin-left: 77px;
-  }
-}
-
-//tips will be removed
-.tips {
-  border: 1px solid #ccc;
-  margin: 15px 10px;
-  font-size: 14px;
-  padding: 15px;
-  line-height: 30px;
-}
-
-//Personal Info Page
-.personal-info {
-  .info-list {
-    color: nth($CK2, 6);
-    line-height: 38px;
-    .fa {
-      font-size: nth($fontSize, 4);
-      padding-right: 5px;
-    }
-    .info-title {
-      font-weight: bold;
-      display: inline-block;
-      width: 70px;
-      text-align: right;
-      margin-right: 20px;
-      color: nth($CK2, 5);
-    }
-    .binding-set {
-      display: inline-block;
-      width: 130px;
-      float: right;
-      .ok {
-        color: #2ac30c;
-      }
-      .no {
-        color: #ff1010;
-      }
-      a.setlink {
-        color: nth($CK1, 1);
-        padding-left: 10px;
-      }
-    }
-
-  }
-}
-
-/*loaner loan list ,invest box content*/
-.loan-list-content, .invest-list-content, .user-bill-list-content {
-  .item-block {
-    display: block;
-    margin-top: 10px;
-    line-height: 30px;
-    font-size: 12px;
-    .select-item {
-      display: inline-block;
-      padding: 0 10px;
-      margin-left: 10px;
-      color: #333;
-      cursor: pointer;
-      &.current {
-        background: #ffac2a;
-        color: #fff;
-        border-radius: 3px;
-      }
-    }
-
-  }
-
-}
-
-/* I want to invest page*/
-.loan-list-content {
-  .wrapper-list {
-    li {
-      border-bottom: 1px solid #e6e6e6;
-      padding:12px;
-      span {
-        padding-right: 10px;
-      }
-      a {
-        color: #000;
-        font-size: 12px;
-        padding: 7px 13px;
-        &:hover, &.active {
-          color: #fff;
-          background: #ffac2a;
-          border-radius: 3px;
-        }
-      }
-      &:nth-child(1) {
-        padding-top:0;
-      }
-    }
-
-  }
-  .loan-list-box ul {
-    & li {
-      border-radius: 8px;
-      border: 1px solid #e5e5e5;
-      padding: 5px 2px;
-      margin-top: 10px;
-      position: relative;
-      cursor: pointer;
-      background: #fff;
-      &:hover{
-       // border:1px solid #cc0000;
-        background: #fff;
-        box-shadow: 1px 1px 5px rgba(0,0,0,0.1),-1px -1px 5px rgba(0,0,0,0.1);
-      }
-       .hot {
-        width: 71px;
-        height: 71px;
-        background: url("/images/icons/hot-n.png") no-repeat;
-        position: absolute;
-         left: -5px;
-         top: -6px;
-      }
-      .syl {
-        width: 71px;
-        height: 71px;
-        background: url("/images/icons/img-syl.png") no-repeat;
-        position: absolute;
-         left: -5px;
-         top: -6px;
-      }
-      .wyx {
-        width: 71px;
-        height: 71px;
-        background: url("/images/icons/img-wyx.png") no-repeat;
-        position: absolute;
-         left: -5px;
-         top: -6px;
-      }
-      .jyf {
-        width: 71px;
-        height: 71px;
-        background: url("/images/icons/img-jyf.png") no-repeat;
-        position: absolute;
-         left: -5px;
-         top: -6px;
-      }
-       .loan-info-frame {
-        width: 690px;
-         padding-bottom: 10px;
-        border-right: 1px solid #ccc;
-        text-align: center;
-         .loan-top {
-           padding:3px 20px 0 60px;
-           height: auto;
-           overflow: auto;
-           line-height: 50px;
-           .l-title {
-             font-size: 20px;
-             color: #4e4e4e;
-             display: inline-block;
-             width: 300px;
-             text-align: left;
-             overflow:hidden;
-             text-overflow:ellipsis;
-             white-space:nowrap;
-           }
-           .l-way {
-             font-size: 12px;
-             color: #b3b3b3;
-             border-radius: 12px;
-             border: 1px solid #e5e5e5;
-             display: inline;
-             line-height: 1;
-             padding: 6px 15px;
-             margin-top:12px;
-           }
-         }
-         .loan-info-dl {
-           width: 90%;
-           margin: 0px auto;
-           line-height: 1.4;
-           dl {
-             width:33%;
-             float: left;
-             color: #808080;
-             font-size: 17px;
-             dd {
-               color: #999;
-               em {
-                 font-size: 26px;
-                 color: #ff7200;
-               }
-               i {
-                 font-size: 16px;
-                 color: #ff7200;
-               }
-             }
-
-           }
-         }
-      }
-       .loan-process {
-         float: left;
-         width: 240px;
-         margin: 10px 30px 0px 30px;
-
-         .rest-amount {
-           color: #ff752a;
-           font-size: 13px;
-           padding-top: 10px;
-           line-height: 1.3;
-           i {
-             font-size: 20px;
-           }
-           .btn-normal {
-             padding:7px 0;
-             width:100%;
-             font-size: 16px;
-             font-weight: bold;
-             margin-top: 8px;
-           }
-           &.wait-invest {
-             color: #999;
-             margin-top:15px;
-             .btn-normal {
-               background: rgba(255,156,27,1);
-               border-color:rgba(255,156,27,1);
-               &:hover {
-                 background: rgba(255,156,27,0.8);
-                 border-color: rgba(255,156,27,0.8);
-               }
-             }
-
-           }
-           &.finish-invest {
-             color: #999;
-             button:disabled {
-               background: #ccc!important;
-               border-color: #ccc!important;
-             }
-           }
-          }
-      }
-    }
-  }
-}
-
-/* refer page */
-.invest-list-content {
-.date-filter {
-  margin-bottom: 20px;
-  input {
-    margin-left: 3px;
-    margin-right: 8px;
-    &.login-name {
-      width:160px;
-    }
-    &.btn-normal,&.btn-primary {
-      padding: 8px 25px;
-    }
-    &.btn-primary {
-      margin-right:0;
-    }
-  }
-
-}
-  table.invest-list {
-    td {
-      font-size: 12px;
-      i.birth-icon{
-        float: left;
-        width: 20px;
-        height: 20px;
-        background: url(/images/sign/birthday.png) no-repeat center;
-        background-size: 15px;
-      }
-      .loan-name-col {
-        display: inline-block;
-        width: 170px;
-
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      .project-name{
-        width: 175px;
-        display: inline-block;
-        @include text-overflow;
-      }
-    }
-  }
-
-}
-/* loan detail */
-.loan-detail-content {
-  .borderBox { padding:0;}
-  color: #8c8c8c;
-  .news-share {
-    width: 620px;
-
-    padding-bottom: 15px;
-    position: relative;
-    .hd {
-      margin: -3px 10px 0;
-      position: relative;
-      line-height: 55px;
-      padding-left: 40px;
-      border-bottom: 2px solid #ccc;
-      font-size: 14px;
-      .hot {
-        width: 55px;
-        height: 55px;
-        position: absolute;
-        left: -10px;
-        top: 0;
-        z-index: 99;
-        background: url("/images/icons/hot.png") no-repeat;
-      }
-    }
-    .chart-box {
-      width: 200px;
-      margin: 20px 50px;
-      border-collapse: collapse;
-      border-radius: 50%;
-      border: 1px solid #ff752a;
-      float: left;
-      display: inline-block;
-       .box {
-        width: 180px;
-        height: 180px;
-        position: relative;
-        margin: 10px;
-         div {
-          position: absolute;
-          top: 0;
-          left: 0;
-          border-radius: 50%;
-          height: 160px;
-          width: 160px;
-          -webkit-transition: all .2s ease-in-out;
-          -moz-transition: all .2s ease-in-out;
-        }
-         .bg {
-          border: #ccc 10px solid
-        }
-         .bg2 {
-          border: #ccc 10px solid;
-          clip: rect(0, 90px, 180px, 0);
-        }
-         .rount {
-          border: #f24712 10px solid;
-          clip: rect(0, 90px, 180px, 0);
-          -webkit-transform: rotate(0deg);
-        }
-         .rount2 {
-          border: #f24712 10px solid;
-          clip: rect(0, 180px, 180px, 90px);
-          -webkit-transform: rotate(0deg);
-          display: none
-        }
-
-      .pr-square-in {
-        left: 13px;
-        top: 30px;
-        font-size: 15px;
-        display: inline-block;
-        text-align: center;
-        em {
-          color: #ff3333;
-          font-size: 17px;
-          line-height: 1;
-          font-weight: bold;
-          padding-top: 40px;
-          display: inline-block;
-          b {
-            font-size: 40px;
-            line-height:0.5;
-          }
-        }
-        i {
-          color: #999;
-          clear: both;
-          display: block;
-          margin-top: -6px;
-        }
-      }
-      }
-    }
-    .chart-info {
-      float:left;
-      width:315px;
-      color: #a4a4a4;
-      padding-top: 20px;
-      line-height: 30px;
-    }
-    .product-type-text{
-      position: absolute;
-      left: 108px;
-      bottom: 2px;
-      width: 86px;
-      text-align: center;
-      border: 1px dashed #ff752a;
-      border-radius: 34px;
-      font-size: 16px;
-      color: #ff752a;
-      line-height: 26px;
-    }
-  }
-  .account-info {
-    border-left: 1px solid #ccc;
-    padding: 10px;
-    width: 350px;
-    text-align: center;
-    font-size: 12px;
-    color: #949494;
-    .l-title {
-      padding: 10px 0;
-      border-bottom: 2px solid #ccc;
-      font-size: 12px;
-      text-align: right;
-    }
-    .account-list {
-      margin-left: 10px;
-      dd {
-        clear:both;
-        margin-bottom: 5px;
-        .position-width {
-          width:230px;
-          text-align: right;
-        }
-        &.invest-amount {
-          overflow: hidden;
-          margin-bottom: 14px;
-        }
-        &.experience-ticket {
-          .experience-ticket-box {
-            width: 244px;
-            position: relative;
-            color: #d35010;
-            .experience-ticket-input {
-              display: inline-block;
-              border: solid 1px #fdd8bd;
-              width: 100%;
-              height: 28px;
-              line-height: 28px;
-              text-align: center;
-              font-size: 14px;
-              background: #fff2e9;
-              cursor: pointer;
-              .fa {
-                font-size: 18px;
-                vertical-align: top;
-                color: #ffc89b;
-              }
-              .fa-sort-up {
-                margin-top: 7px;
-              }
-              &.disabled {
-                border:1px solid #e6e6e6;
-                cursor: default;
-                color: #b2b2b2;
-                background: #f2f2f2;
-                .fa-sort-down {
-                  color:#cbcbcb;
-                }
-              }
-            }
-            .red-tiptext{
-              margin-bottom: 0;
-              i.icon-redbag{
-                float:left;
-                width:18px;
-                height:14px;
-                margin-top: 5px;
-                background: url(/images/sign/icon-red-sm.png) no-repeat center;
-              }
-              span{
-                float:left;
-                font-size:12px;
-                color:#ff752a;
-                margin-left:6px;
-              }
-            }
-            .ticket-list {
-              position: absolute;
-              z-index: 100;
-              left: 0px;
-              top: 29px;
-              border: solid 1px #fdd8bd;
-              background: #fff2e9;
-              width:100%;
-              text-align: left;
-              font-size: 13px;
-
-              li {
-                padding:5px 10px;
-                line-height: 1.6;
-                &.lower-upper-limit {
-                  .input-use-ticket,label .sign{
-                    position: relative;
-                    top:-8px;
-                  }
-                }
-                .input-use-ticket {
-                   margin-bottom: 12px;
-                }
-                .sign {
-                  width: 13px;
-                  display: inline-block;
-                  background: #ff7101;
-                  word-wrap: break-word;
-                  word-break: normal;
-                  padding: 3px;
-                  color: #fff;
-                }
-                .ticket-info {
-                  display: inline-block;
-                  .ticket-term {
-                    font-size: 10px;
-                  }
-                }
-                &:hover {
-                  background: #ffead9;
-                }
-                &.disabled {
-                  color: #8f8f8f;
-                  background: #f2f2f2;
-                  .sign {
-                    background: #909090;
-                  }
-                  &:hover {
-                    background: #f2f2f2;
-                  }
-                }
-
-              }
-            }
-          }
-
-
-        }
-        &.expected-interest-dd {
-          padding:2px;
-          line-height: 30px;
-          .principal-income {
-            font-size: 25px;
-            color: #ff7200;
-          }
-          .experience-income {
-            font-size:15px;
-            color: #ff7200;
-          }
-        }
-        &.experience-revenue {
-          margin-bottom: 0;
-        }
-        &.img-status {
-          padding:30px 10px;
-        }
-        &.time-item {
-          display: inline-block;
-          border-radius: 10px;
-          border: 1px dashed red;
-          margin-top: 15px;
-          padding: 1px 40px;
-          font-size: 13px;
-          .time-clock {
-            background: url(/images/icons/time-clock.png) center -1px no-repeat;
-            display: inline-block;
-            width: 29px;
-            height: 27px;
-            vertical-align: middle;
-            margin-top: -3px;
-          }
-          strong,em {
-            display: inline-block;
-          }
-          strong {
-            color:#f24713;
-            font-size:18px;
-            font-weight: bold;
-          }
-
-        }
-        .btn-normal {
-          width: 100%;
-          padding: 8px 0;
-        }
-        .account-amount{
-          color: #f24712;
-        }
-      }
-    }
-  }
-  .chart-info-responsive {
-    float:left;
-    width:96%;
-    padding:0 2%;
-    color: #a4a4a4;
-    line-height: 30px;
-    display:none;
-  }
-  .loan-nav {
-    overflow: hidden;
-    border-bottom: 1px solid #ccc;
-    border-top: 1px solid #ccc;
-    li {
-      float: left;
-      padding: 8px 30px;
-      border-right: 1px solid #ccc;
-      position: relative;
-      cursor: pointer;
-      i {
-        display: none;
-        position: absolute;
-        bottom: -6px;
-        left: 45%;
-        font-size: 18px;
-        color: #ed9c30;
-      }
-      &.active {
-        border-bottom: 2px solid #ed9c30;
-        i {
-          display: block;
-        }
-      }
-      &:nth-last-child(1) {
-        border-right-width:0px;
-      }
-    }
-  }
-  .loan-list {
-    .borderBox { padding: 10px;}
-    .loan-list-con {
-      display: none;
-      .b-title {
-        color: #000;
-        font-size: 14px;
-        padding-bottom: 10px;
-      }
-      .loan-material {
-        margin-top:10px;
-        h3 {
-          padding: 10px;
-          background: #eaeaea;
-          color: #ed9c30;
-          font-size: 14px;
-        }
-        .title {
-          padding-top: 10px;
-          line-height: 36px;
-        }
-        .pic-list {
-          img { display: inline-block;
-            margin:0px 10px 10px 0;
-            height:100px;
-            cursor: pointer;
-          }
-
-        }
-      }
-    }
-    .invest-WEB {
-      display: inline-block;
-      vertical-align: middle;
-      width:18px;
-      height:18px;
-      background: url("/images/icons/ico_loan.png") 0 0 no-repeat;
-    }
-    .invest-ANDROID {
-      display: inline-block;
-      vertical-align: middle;
-      width:18px;
-      height:22px;
-      background: url("/images/icons/ico_loan.png") 0px -32px no-repeat;
-    }
-    .invest-IOS {
-      display: inline-block;
-      vertical-align: middle;
-      width:18px;
-      height:20px;
-      background: url("/images/icons/ico_loan.png") 0px -65px no-repeat;
-    }
-  }
-}
-.bind-card-layer {
-  width: 540px;
-  height: 244px;
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  margin-left: -270px;
-  margin-top: -122px;
-  background: #f2f3f5;
-  z-index: 9999;
-  border: 1px solid #ccc;
-  display: none;
-  & span {
-    width: 26px;
-    height: 26px;
-    display: block;
-    cursor: pointer;
-    background: rgba(0, 0, 0, 1);
-    border-radius: 50%;
-    position: absolute;
-    right: -10px;
-    top: -13px;
-    text-align: center;
-    line-height: 26px;
-    color: #fff;
-  }
-  & h4 {
-    width: 510px;
-    height: 50px;
-    line-height: 50px;
-    padding-left: 28px;
-    font-size: 14px;
-    color: #666;
-    font-weight: normal;
-  }
-  & p {
-    height: 120px;
-    width: 100%;
-    line-height: 120px;
-    background: url("/images/cash/tan.jpg") no-repeat 64px center #fff;
-    text-align: center;
-  }
-  & .btn-box-layer {
-    text-align: center;
-  }
-  & a {
-    width: 158px;
-    height: 36px;
-    display: inline-block;
-    text-align: center;
-    line-height: 36px;
-    color: #fff;
-    background: #ff6c00;
-    margin: 20px 10px;
-    border-radius: 3px;
-  }
-}
-
-.money-box {
-  font-size: 12px;
-  background: url("/images/sign/invest-record.png") 360px 30px no-repeat;
-  a {
-    display: inline-block;
-    margin-right: 10px;
-    line-height: 1;
-    padding: 8px 10px;
-    letter-spacing: 0px;
-  }
-   .balance {
-    color: #ffac2a;  padding: 0px 0 20px;
-  }
-}
-
-.fund-box {
-  width: 815px;
-  float: right;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  min-height: 500px;
-  & .hd {
-    height: 44px;
-    line-height: 44px;
-    margin-right: 20px;
-    border-bottom: 2px solid #ccc;
-    font-size: 16px;
-    color: #ffac2a;
-    & .line {
-      padding-left: 20px;
-      border-bottom: 2px solid #e06b0c;
-      margin-bottom: -2px;
-      height: 42px;
-      padding-bottom: 2px;
-      padding-right: 40px;
-      display: inline-block;
-    }
-  }
-  & .item-block {
-    display: block;
-    margin-top: 10px;
-    line-height: 30px;
-    font-size: 12px;
-    & .sub-hd {
-      padding-left: 20px;
-    }
-    & .btn {
-      background: #ffac2a;
-      color: #fff;
-      border-radius: 3px;
-      padding: 8px 10px;
-      display: inline-block;
-      border: none;
-      cursor: pointer;
-    }
-    & .jq-n {
-      display: inline-block;
-      padding: 0 10px;
-      margin-left: 10px;
-      color: #333;
-      cursor: pointer;
-      &.current {
-        background: #ffac2a;
-        color: #fff;
-        border-radius: 3px;
-      }
-    }
-
-  }
-  & .fund-list {
-    border-collapse: collapse;
-    width: 100%;
-    text-align: center;
-    font-size: 12px;
-    margin-top: 20px;
-    & th {
-      line-height: 30px;
-      background: #e1e1e1;
-      &:first-child {
-        padding-left: 20px;
-        text-align: left;
-        width: 13%;
-      }
-    }
-    & tr:nth-child(even) {
-      background: #e1e1e1;
-    }
-    & td {
-      line-height: 30px;
-      color: #999;
-      &:first-child {
-        padding-left: 20px;
-        text-align: left;
-      }
-      &:last-child {
-        width: 150px;
-      }
-      &.txtc {
-        text-align: center;
-        line-height: 100px;
-      }
-      & .plan {
-        color: #cc0000;
-        cursor: pointer;
-      }
-    }
-  }
-}
-.card-box {
-  margin:20px;
-  border:1px solid #ccc;
-  border-radius:5px;
-  width: 280px;
-  height: 150px;
-  position: relative;
-  .user {
-    margin-top: 6px;
-    margin-right: 5px;
-  }
-  .card-num {
-    border-top:1px solid #ccc;
-    padding-top: 20px;
-    clear:both;
-  }
-.card-link {
-  position: absolute;
-  bottom: 0;
-  background: #ccc;
-  width:100%;
-  box-sizing: border-box;
-  a {
-    display: inline-block;
-    padding:5px;
-  }
-}
-
-}
-
-/* my treasure*/
-.my-treasure-content {
-  .column-title{
-    em{
-      &.title-navli{
-        border-bottom: 4px solid #999;
-        color: #999;
-        cursor:pointer;
-        margin-right:40px;
-      }
-      &.active{
-        border-bottom: 4px solid #ff7200;
-        color: #ff7200;
-      }
-    }
-    span{
-      float:right;
-      border-bottom: none;
-      font-size: 14px;
-      font-weight:normal;
-      color: #666;
-      cursor:pointer;
-    }
-  }
-  .rule-list{
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background:rgba(0, 0, 0, 0.5);
-    z-index: 999;
-    display:none;
-    .rule-com{
-      position: absolute;
-      top:50%;
-      left:50%;
-      margin-top:-260px;
-      margin-left:-320px;
-      width:510px;
-      height:520px;
-      background:#fff;
-      padding:10px 60px;
-      border:1px solid #ccc;
-      h3{
-        font-size:18px;
-        text-align:center;
-        margin-bottom:20px;
-        span{
-          color:#ff7200;
-          padding:10px 65px;
-          line-height:35px;
-          border-bottom:1px solid #ff7200;
-        }
-      }
-      dl{
-        margin-bottom:25px;
-        dt{
-          font-size:14px;
-          color:#333;
-        }
-        dd{
-          font-size:12px;
-          color:#666;
-        }
-      }
-      .close-icon{
-        width:15px;
-        height:15px;
-        position: absolute;
-        top:15px;
-        right:15px;
-        cursor:pointer;
-        background:url("/images/sign/close-btn.png") no-repeat center;
-      }
-      .close-text{
-        text-align:center;
-        span{
-          padding:10px 25px;
-          color:#fff;
-          background:#ff7200;
-          border-radius:5px;
-          cursor:pointer;
-        }
-      }
-    }
-  }
-  .filters-list{
-    float:left;
-    width:100%;
-    li{
-      float:left;
-      color:#4c4c4c;
-      font-size:12px;
-      padding:5px 15px;
-      margin-right:10px;
-      cursor:pointer;
-      &.active{
-        color:#fff;
-        background:#ff752a;
-        border-radius:5px;
-      }
-    }
-  }
-  .model-list{
-    float:left;
-    width:100%;
-    .coupon-com{
-      float:left;
-      width:100%;
-      display:none;
-      &.active{
-        display:block;
-      }
-    }
-    .coupon-list{
-      float:left;
-      width:100%;
-      &.used-card{
-        li{
-          width:100%;
-          margin-right:0;
-        }
-      }
-      li{
-        float:left;
-        width:285px;
-        margin-top:35px;
-        margin-right: 90px;
-        &.yellow-type{
-          .top-com{
-            .left-name{
-              background: #ff752a;
-              color: #fff;
-              i{
-                border:1px solid #ff752a;
-              }
-            }
-            .right-coupon{
-              border:1px solid #ff752a;
-              background:url("/images/sign/yellow-bg.png") no-repeat;
-              background-position: 180px 10px;
-              p{
-                color:#ff752a;
-                .pro-icon{
-                  border: 1px solid #ff752a;
-                  em{
-                    &.circle-com{
-                      background: #ff752a;
-                    }
-                  }
-                }
-              }
-            }
-          }
-          .bottom-time{
-            a{
-              background:#ff752a;
-              cursor:pointer;
-            }
-          }
-          .detail-com{
-            p{
-              &.bottom-line{
-                border-bottom: 1px dashed #ff752a;
-              }
-              span{
-                color:#ff752a;
-              }
-              .see-detail{
-                background: #ff752a;
-              }
-            }
-          }
-        }
-        &.new-type{
-          .top-com{
-            .left-name{
-              background: #ffae00;
-              color: #fff;
-              i{
-                border:1px solid #ffae00;
-              }
-            }
-            .right-coupon{
-              border:1px solid #ffae00;
-              background:url("/images/sign/new-bg.png") no-repeat;
-              background-position: 180px 10px;
-              p{
-                color:#ffae00;
-                .pro-icon{
-                  border: 1px solid #ffae00;
-                  em{
-                    &.circle-com{
-                      background: #ffae00;
-                    }
-                  }
-                }
-              }
-            }
-          }
-          .bottom-time{
-            a{
-              background:#ffae00;
-              cursor:pointer;
-            }
-          }
-          .detail-com{
-            p{
-              &.bottom-line{
-                border-bottom: 1px dashed #ffae00;
-              }
-              span{
-                color:#ffae00;
-              }
-              .see-detail{
-                background: #ffae00;
-              }
-            }
-          }
-        }
-        &.bite-type{
-          .top-com{
-            .left-name{
-              background: #ff7b7b;
-              color: #fff;
-              i{
-                border:1px solid #ff7b7b;
-              }
-            }
-            .right-coupon{
-              border:1px solid #ff7b7b;
-              background:url("/images/sign/bite-bg.png") no-repeat;
-              background-position: 180px 10px;
-              p{
-                color:#ff7b7b;
-                .pro-icon{
-                  border: 1px solid #ff7b7b;
-                  em{
-                    &.circle-com{
-                      background: #ff7b7b;
-                    }
-                  }
-                }
-              }
-            }
-          }
-          .bottom-time{
-            a{
-              background:#ff7b7b;
-              cursor:pointer;
-            }
-          }
-          .detail-com{
-            p{
-              &.bottom-line{
-                border-bottom: 1px dashed #ff7b7b;
-              }
-              span{
-                color:#ff7b7b;
-              }
-              .see-detail{
-                background: #ff7b7b;
-              }
-            }
-          }
-        }
-        &.birth-type{
-          .top-com{
-            .left-name{
-              background: #ff5984;
-              color: #fff;
-              i{
-                border:1px solid #ff5984;
-              }
-            }
-            .right-coupon{
-              border:1px solid #ff5984;
-              background:url("/images/sign/birth-bg.png") no-repeat;
-              background-position: 180px 10px;
-              p{
-                color:#ff5984;
-                .birth-text{
-                  font-size:30px;
-                }
-                .pro-icon{
-                  border: 1px solid #ff5984;
-                  em{
-                    &.circle-com{
-                      background: #ff5984;
-                    }
-                  }
-                }
-              }
-            }
-          }
-          .bottom-time{
-            a{
-              background:#ff5984;
-              cursor:pointer;
-            }
-          }
-          .detail-com{
-            p{
-              &.bottom-line{
-                border-bottom: 1px dashed #ff5984;
-              }
-              span{
-                color:#ff5984;
-              }
-              .see-detail{
-                background: #ff5984;
-              }
-            }
-          }
-        }
-        .top-com{
-          float:left;
-          width:300px;
-          height:125px;
-          overflow:hidden;
-          .left-name{
-            float:left;
-            width: 50px;
-            height: 125px;
-            background: #ccc;
-            color: #fff;
-            font-size: 16px;
-            text-align: center;
-            line-height: 22px;
-            border-radius:5px;
-            position: relative;
-            span{
-              display: inline-block;
-              vertical-align: middle;
-              width: 30px;
-              margin-left: 5px;
-            }
-            em{
-              display: inline-block;
-              width: 1px;
-              height: 100%;
-              vertical-align: middle;
-            }
-            i{
-              position: absolute;
-              left:45px;
-              width:10px;
-              height:10px;
-              border:1px solid #ccc;
-              background:#fff;
-              border-radius:50%;
-              &.circle-top{
-                top:-5px;
-              }
-              &.circle-bottom{
-                bottom:-5px;
-              }
-            }
-          }
-          .right-coupon{
-            float:left;
-            width:228px;
-            height:123px;
-            padding-left:20px;
-            border:1px solid #ccc;
-            border-radius:5px;
-            background:url("/images/sign/default-bg.png") no-repeat;
-            background-position: 180px 10px;
-            p{
-              margin-bottom:0;
-              color:#ccc;
-              &.mt-10{
-                margin-top:10px;
-              }
-              span{
-                line-height:40px;
-                &.num-text{
-                  font-size:40px;
-                }
-                &.unit-text{
-                  font-size:16px;
-                }
-              }
-              .pro-icon{
-                border: 1px solid #ccc;
-                border-radius: 20px;
-                text-align: center;
-                margin: 0 2px;
-                line-height: 21px;
-                padding: 2px 4px;
-                position: relative;
-                overflow: hidden;
-                em{
-                  position: absolute;
-                  &.bg-com{
-                    bottom: -7px;
-                    right: -2px;
-                    width: 10px;
-                    height: 10px;
-                    background: #fff;
-                  }
-                  &.circle-com{
-                    bottom: 2px;
-                    right: 1px;
-                    width: 2px;
-                    height: 2px;
-                    background: #ccc;
-                    border-radius: 2px;
-                  }
-                }
-              }
-            }
-          }
-        }
-        .bottom-time{
-          float:left;
-          width:300px;
-          height:30px;
-          padding:15px 0;
-          line-height:30px;
-          span{
-            float:left;
-            width:190px;
-            text-align:right;
-            font-size:12px;
-            color:#999;
-          }
-          a{
-            float:left;
-            width:80px;
-            margin-left:15px;
-            background:#ccc;
-            font-size:12px;
-            color:#fff;
-            text-align:center;
-            border-radius:5px;
-            cursor: no-drop;
-          }
-        }
-        .detail-com{
-          float:left;
-          width:410px;
-          margin-left:30px;
-          p{
-            float:left;
-            width:100%;
-            margin-bottom:0;
-            line-height:30px;
-            &.bottom-line{
-              padding: 10px 0 15px 0;
-              border-bottom: 1px dashed #ff752a;
-              margin-bottom: 10px;
-            }
-            span{
-              font-size:12px;
-              color:#ff752a;
-              &.status-text{
-                float:left;
-                color:#999;
-              }
-              &.left-text{
-                float:left;
-              }
-              &.right-text{
-                float:right;
-              }
-            }
-            .see-detail{
-              float:right;
-              width: 80px;
-              margin-left: 15px;
-              background: #ff752a;
-              font-size: 12px;
-              color: #fff;
-              line-height:30px;
-              text-align: center;
-              border-radius: 5px;
-              cursor: pointer;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-/*my choi beans*/
-.my-choi-beans {
-  .column-title{
-    em{
-      &.title-navli{
-        border-bottom: 4px solid #999;
-        color: #999;
-        cursor:pointer;
-        margin-right:40px;
-      }
-      &.active{
-        border-bottom: 4px solid #ff7200;
-        color: #ff7200;
-      }
-    }
-  }
-  .icon-result{
-    background:url("/images/sign/choi-beans.png") no-repeat;
-  }
-  .content-list{
-    float:left;
-    width:100%;
-  }
-  .choi-beans-list{
-    float:left;
-    width:100%;
-    .beans-intro{
-      float:left;
-      width:723px;
-      height:188px;
-      padding:20px;
-      border:1px solid #f2f2f2;
-      .beans-list{
-        float:left;
-        width:100%;
-        &.mt-20{
-          margin-top:20px;
-        }
-        i{
-          &.icon-beans{
-            float:left;
-            width:30px;
-            height:30px;
-            background-position: 0px -53px;
-          }
-          &.icon-dou{
-            float:left;
-            width:21px;
-            height:19px;
-            margin: 5px 0 0 5px;
-            background-position: 0px -120px;
-          }
-        }
-        span{
-          line-height:30px;
-          &.title-text{
-            float:left;
-            font-size:18px;
-            color:#ff7200;
-            margin-left:5px;
-          }
-          &.title-href{
-            float:right;
-            font-size:14px;
-            color:#4f8df5;
-            cursor:pointer;
-          }
-          &.beans-num{
-            float:left;
-            font-size:18px;
-            color:#ff7200;
-          }
-        }
-        .beans-recent{
-          float:left;
-          width:408px;
-          height:13px;
-          border:1px solid #f2f2f2;
-          li{
-            float:left;
-            width:136px;
-            height:13px;
-            position: relative;
-            &.one-day{
-              background:#ff7200;
-              p{
-                border-left:1px dashed #ff7200;
-                .icon-circle{
-                  background: #ff7200;
-                }
-              }
-            }
-            &.two-day{
-              background:#ffa862;
-              p{
-                border-left:1px dashed #ffa862;
-                .icon-circle{
-                  background: #ffa862;
-                }
-              }
-            }
-            &.three-day{
-              background:#feda7a;
-              p{
-                border-left:1px dashed #feda7a;
-                .icon-circle{
-                  background: #feda7a;
-                }
-              }
-            }
-            p{
-              float:left;
-              width:0;
-              height:15px;
-              border-left:1px dashed #ccc;
-              margin-top: 15px;
-              margin-left: 68px;
-              position: relative;
-              .icon-circle{
-                position: absolute;
-                top: 15px;
-                left: -3px;
-                width: 5px;
-                height: 5px;
-                background: #ff7200;
-                border-radius: 10px;
-              }
-              span{
-                position: absolute;
-                font-size:12px;
-                color:#ffa862;
-                &.text-date{
-                  top: 20px;
-                  left: -20px;
-                  width: 100px;
-                }
-                &.text-money{
-                  top:40px;
-                  left:-20px;
-                  width:100px;
-                }
-                strong{
-                  float:left;
-                }
-                .icon-sm-dou{
-                  float:left;
-                  width:18px;
-                  height:18px;
-                  margin-top: 8px;
-                  background-position: 0px -94px;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    .beans-operat{
-      float:left;
-      width:100%;
-      margin-top:50px;
-      border-top:1px dashed #f2f2f2;
-      h3{
-        float:left;
-        width:100%;
-        margin:30px 0;
-        text-align:left;
-        color:#ff0000;
-        font-size:18px;
-      }
-      .object-list{
-        float:left;
-        width:100%;
-        li{
-          float:left;
-          width:200px;
-          margin-right:50px;
-          p{
-            text-align:center;
-            &.invest-bg{
-              background:#ff7171;
-            }
-            &.sign-bg{
-              background:#53d7aa;
-            }
-            &.task-bg{
-              background:#feda7a;
-            }
-            &.icon-com{
-              float:left;
-              width:100%;
-              height:110px;
-              border-radius:50px;
-              .icon-result{
-                float:left;
-                margin-left: 55px;
-                margin-top: 15px;
-                &.icon-invest{
-                  width: 83px;
-                  height: 76px;
-                  background-position: 0px -149px;
-                }
-                &.icon-sign{
-                  margin-top: 30px;
-                  width: 93px;
-                  height: 43px;
-                  background-position: 0px 0px;
-                }
-                &.icon-task{
-                  width: 85px;
-                  height: 86px;
-                  background-position: 0px -235px;
-                }
-              }
-            }
-            &.btn-list{
-              float:left;
-              width:100%;
-              text-align:center;
-              margin-top:10px;
-              span{
-                padding:10px 25px;
-                color:#fff;
-                cursor:pointer;
-                font-size:16px;
-                border-radius:10px;
-                &.btn-invest{
-                  background:#ff7171;
-                }
-                &.btn-sign{
-                  background:#53d7aa;
-                }
-                &.btn-task{
-                  background:#feda7a;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    .beans-infotext{
-      float:left;
-      width:100%;
-      margin-top:50px;
-      border:1px dashed #f2f2f2;
-      dl{
-        padding:20px;
-        color:#adafb2;
-        dt{
-          font-size:14px;
-        }
-        dd{
-          font-size:12px;
-        }
-      }
-    }
-  }
   .sign-layer{
     position: fixed;
     top:0;
@@ -2274,69 +192,2827 @@
       }
     }
   }
-  .task-layer{
-    position: fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,.5);
-    z-index:999;
-    display:none;
-    .task-layer-list{
-      position: absolute;
-      top:50%;
-      left:50%;
-      margin-top:-280px;
-      margin-left:-250px;
-      width:460px;
-      height:520px;
-      background:#fff;
-      border:1px solid #ccc;
-      border-radius:5px;
-      padding:20px;
-      overflow:hidden;
-      h3{
-        float:left;
-        width:100%;
-        font-size:18px;
-        color:#000;
-        text-align:center;
-        .close-btn{
-          position: absolute;
-          top:15px;
-          right:15px;
-          width:15px;
-          height:15px;
-          background:url("/images/sign/bean-bg.png") no-repeat;
-          background-position: 0px -23px;
-          cursor:pointer;
+  &.content-container {
+    border: 0;
+    border-radius: 0;
+    background: none;
+  }
+  .birth-icon{
+    float:left;
+    width: 20px;
+    height: 20px;
+    background: url(/images/sign/birthday.png) no-repeat center;
+    background-size: 15px;
+    left: 50px;
+    position: relative;
+  }
+  .accountImg {
+    margin-right: 10px;
+    width: 71px;
+    height: 71px;
+  }
+  .proList {
+    margin-top: 4px;
+
+    li {
+      a {
+        display: block;
+      }
+      &.fl {
+        font-size: 20px;
+        line-height: 0;
+        margin-top: 14px;
+        margin-right: 3px;
+
+        a {
+          display: block;
+        }
+        &.sign-top{
+          margin-top:5px!important;
+          padding: 5px 0;
+          background: #ff7200;
+          color: #fff;
+          border-radius: 5px;
+          width: 80px;
+          height: 20px;
+          line-height: 20px;
+          text-align: center;
+          span{
+            float: left;
+            text-align: center;
+            line-height: 20px;
+            font-size: 14px;
+            &.will-sign{
+              float: left;
+              width: 60px;
+              text-align: center;
+              line-height: 20px;
+              background: url("/images/sign/icon-sign.png") no-repeat left;
+              background-position: 15px 2px;
+              padding-left: 20px;
+              font-size: 14px;
+              cursor:pointer;
+            }
+            &.finish-sign{
+              width:100%;
+              cursor:no-drop;
+            }
+          }
+        }
+        &.beans-number{
+          margin-top: 18px!important;
+          margin-left: 25px!important;
+          font-size:14px!important;
+          color:#4c4c4c;
+          line-height:14px!important;
+        }
+        &.fl {
+          font-size: 20px;
+          line-height: 0;
+          margin-top: 14px;
+          margin-right: 3px;
+          a {
+            color: nth($CK1, 1);
+            cursor: pointer;
+            &.fa-mobile {
+              font-size: 24px;
+              margin-top: -3px;
+            }
+            &.fa-envelope-o {
+              color: nth($CK2, 2);
+            }
+          }
+          &.fa-mobile {
+            font-size: 24px;
+            margin-top: -3px;
+          }
+          &.fa-envelope-o {
+            color: nth($CK2, 2);
+          }
         }
       }
-      ul{
-        float:left;
-        width:100%;
-        li{
-          float:left;
-          width:158px;
-          height:108px;
-          margin:15px 20px;
-          background:#fff7e9;
-          border:1px solid #dadada;
-          padding:10px 15px;
-          p{
-            float:left;
-            width:100%;
-            margin-bottom:0;
-            font-size:12px;
-            a{
+      .btn-primary, .btn-normal {
+        margin-left: 10px;
+        padding: 8px 20px;
+      }
+    }
+  }
+}
+.assets-box {
+  height: 171px;
+  box-sizing: border-box;
+
+  .assets-report {
+    width: 39%;
+    height: 142px;
+
+    h3 {
+      line-height: 15px;
+      padding-bottom: 10px;
+    }
+  }
+  .assets-detail {
+    height: 142px;
+    width: 53%;
+
+    .detail-list {
+      margin-top: 30px;
+
+      li {
+        float: left;
+        width: 50%;
+        box-sizing: border-box;
+        padding-left: 20px;
+
+        b {
+          font-weight: normal;
+        }
+        span {
+          display: inline-block;
+          padding-left: 20px;
+          color: nth($CK1, 1);
+          padding-right: 3px;
+        }
+      }
+    }
+  }
+}
+.LastMonth, .tMonthPayment {
+  table {
+    border: 1px solid nth($CK1, 1);
+
+    caption {
+      border-color: nth($CK1, 1);
+      color: nth($CK1, 1);
+    }
+    tr:nth-last-child(1) > td {
+      border-bottom-width: 0;
+    }
+  }
+}
+.tMonthPayment {
+  table {
+    tr:nth-last-child(1) > td {
+      border-bottom-width: 0px;
+    }
+    tfoot tr td {
+      border-top: 1px solid nth($CK1, 1);
+      border-bottom: 1px solid nth($CK1, 1);
+    }
+  }
+}
+.PaymentSwitch {
+  li {
+    float: left;
+    font-size: nth($fontSize, 4);
+    margin-right: 18px;
+    margin-bottom: 10px;
+
+    a {
+      color: nth($CK2, 5);
+    }
+    &.current a {
+      color: nth($CK1, 1);
+    }
+  }
+}
+.newProjects {
+  &.bRadiusBox {
+    padding: 0;
+    border-bottom-width: 0px;
+
+    caption {
+      border-width: 0px;
+      font-size: nth($fontSize, 4);
+      padding-left: 15px;
+
+      .fr {
+        font-size: nth($fontSize, 2);
+        padding-top: 5px;
+      }
+    }
+  }
+  .birth-icon {
+    float: left;
+    width: 20px;
+    height: 20px;
+    background: url(/images/sign/birthday.png) no-repeat center;
+    background-size: 15px;
+    left: 50px;
+    position: relative;
+  }
+  .trade-detail {
+    width: 170px;
+    display: inline-block;
+    @include text-overflow;
+  }
+}
+.month-title {
+  width: 80px;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+//auto invest
+.auto-invest {
+.CertifiedImg {
+  background: url('/images/sign/re-s01.png') center top no-repeat;
+  margin: 40px;
+  height: 170px;
+}
+.panel {
+  color: nth($baseColor, 6);
+  padding-left: 40px;
+}
+p.notice {
+  b {
+    font-size: nth($fontSize, 4);
+  }
+}
+.btnBox {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+.planSwitch {
+  color: nth($baseColor, 3);
+
+  form {
+    margin-left: 28px;
+    margin-top: 15px;
+  }
+  dl {
+    margin-bottom: 15px;
+    clear: both;
+
+    dt {
+      color: nth($baseColor, 4);
+      display: inline-block;
+      float: left;
+      width: 80px;
+      text-align: right;
+    }
+    dd.projectLimit {
+      float: left;
+      width: 50%;
+
+      label {
+        margin-right: 5px;
+      }
+      span {
+        display: inline-block;
+        color: nth($baseColor, 4);
+        width: 60px;
+        text-align: center;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #e1e1e1;
+        position: relative;
+        cursor: pointer;
+
+        & .badge {
+          background-image: url("/images/icons/spr.png");
+          background-position: -387px -172px;
+          background-repeat: no-repeat;
+          width: 13px;
+          height: 13px;
+          position: absolute;
+          top: 0;
+          right: 0;
+          display: none;
+        }
+        &.active {
+          border: 1px solid nth($btnColor, 5);
+          color: nth($btnColor, 5);
+
+          & .badge {
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
+  & .agreeStatus {
+    margin-bottom: 20px;
+    color: nth($baseColor, 4);
+
+    label {
+      vertical-align: middle;
+    }
+  }
+}
+.borderBox:nth-child(2) {
+  margin-top: 10px;
+}
+.planSet {
+  i {
+    color: nth($btnColor, 5);
+  }
+}
+}
+//recharge and bind-card pages
+.recharge-bind-card {
+& ul.payment-mode {
+  border-bottom: 1px solid #ccc;
+
+  li {
+    width: 114px;
+    height: 48px;
+    line-height: 48px;
+    border: 1px solid #ccc;
+    font-size: 17px;
+    float: left;
+    margin-right: 10px;
+    cursor: pointer;
+    position: relative;
+    bottom: -1px;
+    text-align: center;
+  }
+  li.active {
+    border-bottom: #fff 1px solid;
+    border-top: #ff7200 1px solid;
+  }
+  .hot-flag {
+    position: absolute;
+    z-index: 8;
+    right: 3px;
+    top: 0;
+    background: url("/images/icons/hot.jpg") no-repeat center center;
+    width: 23px;
+    height: 23px;
+  }
+}
+& .e-bank-recharge {
+  overflow: hidden;
+}
+& ol.fast-pay li {
+  width: auto;
+}
+& ol {
+  z-index: 1;
+  float: left;
+  overflow: hidden;
+  padding: 10px 0;
+
+  & p {
+    line-height: 30px;
+    padding-left: 25px;
+    font-size: 15px;
+  }
+  & li {
+    height: 38px;
+    float: left;
+    margin-right: 10px;
+    cursor: pointer;
+    position: relative;
+    bottom: -1px;
+
+    .hot-flag {
+      position: absolute;
+      z-index: 8;
+      right: 3px;
+      top: -14px;
+    }
+  }
+  li.active {
+    border-bottom: #fff 1px solid;
+    border-top: #e06b0c 1px solid;
+  }
+}
+.recharge-wrapper {
+  border: 1px solid #ddd;
+  border-top-width: 0;
+  padding: 15px 10px;
+
+  .recharge-form, .fast-recharge-form {
+    clear: both;
+    font-size: 15px;
+    color: #353535;
+    line-height: 2.5;
+
+    .pad-m {
+      line-height: 40px;
+    }
+  }
+  .fast-recharge, .e-bank-recharge {
+    display: none;
+    border-top: none;
+    overflow: hidden;
+
+    &.active {
+      display: block;
+    }
+  }
+  .fast-recharge {
+    .bind-card-nav {
+      span {
+        margin: 20px auto;
+        display: block;
+        text-align: center;
+        font-size: 15px;
+      }
+      input {
+        margin: 0 auto;
+        display: block;
+      }
+    }
+  }
+  .e-bank-recharge {
+    ol {
+      z-index: 1;
+      float: left;
+      overflow: hidden;
+      padding: 10px 0;
+
+      p {
+        line-height: 30px;
+        padding-left: 25px;
+        font-size: 15px;
+      }
+      li {
+        float: left;
+        margin: 10px 15px 5px 10px;
+        cursor: pointer;
+
+        label {
+          width: 123px;
+          height: 38px;
+
+          img {
+            width: 123px;
+            height: 36px;
+            border: #dddddd 1px solid;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
+.recharge-form, .fast-recharge-form {
+  clear: both;
+
+  p {
+    margin: 10px 0 0 35px;
+    color: #353535;
+    font-size: 15px;
+
+    i {
+      color: #ffac2a;
+      margin-left: 10px;
+    }
+    .recharge-form, .fast-recharge-form {
+      width: 50%;
+      margin: 0 auto;
+      overflow: hidden;
+
+      p {
+        height: 34px;
+        line-height: 35px;
+        margin: 10px 0 0 35px;
+        color: #353535;
+        font-size: 15px;
+
+        i {
+          color: #ffac2a;
+          margin-left: 10px;
+        }
+        input {
+          width: 160px;
+          margin: 0 10px;
+          padding: 0 15px;
+          line-height: 30px;
+        }
+      }
+    }
+    .submit {
+      margin: 30px auto;
+      width: 150px;
+      height: 40px;
+      background: #cc0000;
+      color: #fff;
+      display: block;
+      line-height: 30px;
+    }
+  }
+}
+}
+.bind-card-frame {
+border-top-width: 1px !important;
+
+.e-bank-recharge {
+  display: block !important;
+
+  .input-bankcard {
+    width: 200px;
+  }
+}
+}
+
+/* withdraw page*/
+.withdraw {
+line-height: 3 !important;
+font-size: 15px;
+
+.calculate {
+  font-size: 14px;
+  color: #979797;
+  margin-left: 77px;
+}
+.withdraw-submit {
+  margin-left: 77px;
+}
+}
+//tips will be removed
+.tips {
+border: 1px solid #ccc;
+margin: 15px 10px;
+font-size: 14px;
+padding: 15px;
+line-height: 30px;
+}
+//Personal Info Page
+.personal-info {
+.info-list {
+  color: nth($CK2, 6);
+  line-height: 38px;
+
+  .fa {
+    font-size: nth($fontSize, 4);
+    padding-right: 5px;
+  }
+  .info-title {
+    font-weight: bold;
+    display: inline-block;
+    width: 70px;
+    text-align: right;
+    margin-right: 20px;
+    color: nth($CK2, 5);
+  }
+  .binding-set {
+    display: inline-block;
+    width: 130px;
+    float: right;
+
+    .ok {
+      color: #2ac30c;
+    }
+    .no {
+      color: #ff1010;
+    }
+    a.setlink {
+      color: nth($CK1, 1);
+      padding-left: 10px;
+    }
+  }
+}
+}
+
+/*loaner loan list ,invest box content*/
+.loan-list-content, .invest-list-content, .user-bill-list-content {
+.item-block {
+  display: block;
+  margin-top: 10px;
+  line-height: 30px;
+  font-size: 12px;
+
+  .select-item {
+    display: inline-block;
+    padding: 0 10px;
+    margin-left: 10px;
+    color: #333;
+    cursor: pointer;
+
+    &.current {
+      background: #ffac2a;
+      color: #fff;
+      border-radius: 3px;
+    }
+  }
+}
+}
+
+/* I want to invest page*/
+.loan-list-content {
+.wrapper-list {
+  li {
+    border-bottom: 1px solid #e6e6e6;
+    padding: 12px;
+
+    span {
+      padding-right: 10px;
+    }
+    a {
+      color: #000;
+      font-size: 12px;
+      padding: 7px 13px;
+
+      &:hover, &.active {
+        color: #fff;
+        background: #ffac2a;
+        border-radius: 3px;
+      }
+    }
+    &:nth-child(1) {
+      padding-top: 0;
+    }
+  }
+}
+.loan-list-box ul {
+  & li {
+    border-radius: 8px;
+    border: 1px solid #e5e5e5;
+    padding: 5px 2px;
+    margin-top: 10px;
+    position: relative;
+    cursor: pointer;
+    background: #fff;
+
+    &:hover {
+      // border: 1px solid #cc0000;
+      background: #fff;
+      box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1), -1px -1px 5px rgba(0, 0, 0, 0.1);
+    }
+    .hot {
+      width: 71px;
+      height: 71px;
+      background: url("/images/icons/hot-n.png") no-repeat;
+      position: absolute;
+      left: -5px;
+      top: -6px;
+    }
+    .syl {
+      width: 71px;
+      height: 71px;
+      background: url("/images/icons/img-syl.png") no-repeat;
+      position: absolute;
+      left: -5px;
+      top: -6px;
+    }
+    .wyx {
+      width: 71px;
+      height: 71px;
+      background: url("/images/icons/img-wyx.png") no-repeat;
+      position: absolute;
+      left: -5px;
+      top: -6px;
+    }
+    .jyf {
+      width: 71px;
+      height: 71px;
+      background: url("/images/icons/img-jyf.png") no-repeat;
+      position: absolute;
+      left: -5px;
+      top: -6px;
+    }
+    .loan-info-frame {
+      width: 690px;
+      padding-bottom: 10px;
+      border-right: 1px solid #ccc;
+      text-align: center;
+
+      .loan-top {
+        padding: 3px 20px 0 60px;
+        height: auto;
+        overflow: auto;
+        line-height: 50px;
+
+        .l-title {
+          font-size: 20px;
+          color: #4e4e4e;
+          display: inline-block;
+          width: 300px;
+          text-align: left;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .l-way {
+          font-size: 12px;
+          color: #b3b3b3;
+          border-radius: 12px;
+          border: 1px solid #e5e5e5;
+          display: inline;
+          line-height: 1;
+          padding: 6px 15px;
+          margin-top: 12px;
+        }
+      }
+      .loan-info-dl {
+        width: 90%;
+        margin: 0px auto;
+        line-height: 1.4;
+
+        dl {
+          width: 33%;
+          float: left;
+          color: #808080;
+          font-size: 17px;
+
+          dd {
+            color: #999;
+
+            em {
+              font-size: 26px;
+              color: #ff7200;
+            }
+            i {
+              font-size: 16px;
+              color: #ff7200;
+            }
+          }
+        }
+      }
+    }
+    .loan-process {
+      float: left;
+      width: 240px;
+      margin: 10px 30px 0px 30px;
+
+      .rest-amount {
+        color: #ff752a;
+        font-size: 13px;
+        padding-top: 10px;
+        line-height: 1.3;
+
+        i {
+          font-size: 20px;
+        }
+        .btn-normal {
+          padding: 7px 0;
+          width: 100%;
+          font-size: 16px;
+          font-weight: bold;
+          margin-top: 8px;
+        }
+        &.wait-invest {
+          color: #999;
+          margin-top: 15px;
+
+          .btn-normal {
+            background: rgba(255, 156, 27, 1);
+            border-color: rgba(255, 156, 27, 1);
+
+            &:hover {
+              background: rgba(255, 156, 27, 0.8);
+              border-color: rgba(255, 156, 27, 0.8);
+            }
+          }
+        }
+        &.finish-invest {
+          color: #999;
+
+          button:disabled {
+            background: #ccc !important;
+            border-color: #ccc !important;
+          }
+        }
+      }
+    }
+  }
+}
+}
+
+/* refer page */
+.invest-list-content {
+.date-filter {
+  margin-bottom: 20px;
+
+  input {
+    margin-left: 3px;
+    margin-right: 8px;
+
+    &.login-name {
+      width: 160px;
+    }
+    &.btn-normal, &.btn-primary {
+      padding: 8px 25px;
+    }
+    &.btn-primary {
+      margin-right: 0;
+    }
+  }
+}
+table.invest-list {
+  td {
+    font-size: 12px;
+
+    i.birth-icon {
+      float: left;
+      width: 20px;
+      height: 20px;
+      background: url(/images/sign/birthday.png) no-repeat center;
+      background-size: 15px;
+    }
+    .loan-name-col {
+      display: inline-block;
+      width: 170px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .project-name {
+      width: 175px;
+      display: inline-block;
+      @include text-overflow;
+    }
+  }
+}
+}
+
+/* loan detail */
+.loan-detail-content {
+.borderBox {
+  padding: 0;
+}
+color: #8c8c8c;
+
+.news-share {
+  width: 620px;
+  padding-bottom: 15px;
+  position: relative;
+
+  .hd {
+    margin: -3px 10px 0;
+    position: relative;
+    line-height: 55px;
+    padding-left: 40px;
+    border-bottom: 2px solid #ccc;
+    font-size: 14px;
+
+    .hot {
+      width: 55px;
+      height: 55px;
+      position: absolute;
+      left: -10px;
+      top: 0;
+      z-index: 99;
+      background: url("/images/icons/hot.png") no-repeat;
+    }
+  }
+  .chart-box {
+    width: 200px;
+    margin: 20px 50px;
+    border-collapse: collapse;
+    border-radius: 50%;
+    border: 1px solid #ff752a;
+    float: left;
+    display: inline-block;
+
+    .box {
+      width: 180px;
+      height: 180px;
+      position: relative;
+      margin: 10px;
+
+      div {
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: 50%;
+        height: 160px;
+        width: 160px;
+        -webkit-transition: all .2s ease-in-out;
+        -moz-transition: all .2s ease-in-out;
+      }
+      .bg {
+        border: #ccc 10px solid
+      }
+      .bg2 {
+        border: #ccc 10px solid;
+        clip: rect(0, 90px, 180px, 0);
+      }
+      .rount {
+        border: #f24712 10px solid;
+        clip: rect(0, 90px, 180px, 0);
+        -webkit-transform: rotate(0deg);
+      }
+      .rount2 {
+        border: #f24712 10px solid;
+        clip: rect(0, 180px, 180px, 90px);
+        -webkit-transform: rotate(0deg);
+        display: none
+      }
+      .pr-square-in {
+        left: 13px;
+        top: 30px;
+        font-size: 15px;
+        display: inline-block;
+        text-align: center;
+
+        em {
+          color: #ff3333;
+          font-size: 17px;
+          line-height: 1;
+          font-weight: bold;
+          padding-top: 40px;
+          display: inline-block;
+
+          b {
+            font-size: 40px;
+            line-height: 0.5;
+          }
+        }
+        i {
+          color: #999;
+          clear: both;
+          display: block;
+          margin-top: -6px;
+        }
+      }
+    }
+  }
+  .chart-info {
+    float: left;
+    width: 315px;
+    color: #a4a4a4;
+    padding-top: 20px;
+    line-height: 30px;
+  }
+  .product-type-text {
+    position: absolute;
+    left: 108px;
+    bottom: 2px;
+    width: 86px;
+    text-align: center;
+    border: 1px dashed #ff752a;
+    border-radius: 34px;
+    font-size: 16px;
+    color: #ff752a;
+    line-height: 26px;
+  }
+}
+.account-info {
+  border-left: 1px solid #ccc;
+  padding: 10px;
+  width: 350px;
+  text-align: center;
+  font-size: 12px;
+  color: #949494;
+
+  .l-title {
+    padding: 10px 0;
+    border-bottom: 2px solid #ccc;
+    font-size: 12px;
+    text-align: right;
+  }
+  .account-list {
+    margin-left: 10px;
+
+    dd {
+      clear: both;
+      margin-bottom: 5px;
+
+      .position-width {
+        width: 230px;
+        text-align: right;
+      }
+      &.invest-amount {
+        overflow: hidden;
+        margin-bottom: 14px;
+      }
+      &.experience-ticket {
+        .experience-ticket-box {
+          width: 244px;
+          position: relative;
+          color: #d35010;
+
+          .experience-ticket-input {
+            display: inline-block;
+            border: solid 1px #fdd8bd;
+            width: 100%;
+            height: 28px;
+            line-height: 28px;
+            text-align: center;
+            font-size: 14px;
+            background: #fff2e9;
+            cursor: pointer;
+
+            .fa {
+              font-size: 18px;
+              vertical-align: top;
+              color: #ffc89b;
+            }
+            .fa-sort-up {
+              margin-top: 7px;
+            }
+            &.disabled {
+              border: 1px solid #e6e6e6;
+              cursor: default;
+              color: #b2b2b2;
+              background: #f2f2f2;
+
+              .fa-sort-down {
+                color: #cbcbcb;
+              }
+            }
+          }
+          .red-tiptext {
+            margin-bottom: 0;
+
+            i.icon-redbag {
               float: left;
-              padding: 3px 35px;
-              border-radius: 5px;
-              color: #fff;
-              margin: 5px 8px 0;
+              width: 18px;
+              height: 14px;
+              margin-top: 5px;
+              background: url(/images/sign/icon-red-sm.png) no-repeat center;
+            }
+            span {
+              float: left;
+              font-size: 12px;
+              color: #ff752a;
+              margin-left: 6px;
+            }
+          }
+          .ticket-list {
+            position: absolute;
+            z-index: 100;
+            left: 0px;
+            top: 29px;
+            border: solid 1px #fdd8bd;
+            background: #fff2e9;
+            width: 100%;
+            text-align: left;
+            font-size: 13px;
+
+            li {
+              padding: 5px 10px;
+              line-height: 1.6;
+
+              &.lower-upper-limit {
+                .input-use-ticket, label .sign {
+                  position: relative;
+                  top: -8px;
+                }
+              }
+              .input-use-ticket {
+                margin-bottom: 12px;
+              }
+              .sign {
+                width: 13px;
+                display: inline-block;
+                background: #ff7101;
+                word-wrap: break-word;
+                word-break: normal;
+                padding: 3px;
+                color: #fff;
+              }
+              .ticket-info {
+                display: inline-block;
+
+                .ticket-term {
+                  font-size: 10px;
+                }
+              }
+              &:hover {
+                background: #ffead9;
+              }
+              &.disabled {
+                color: #8f8f8f;
+                background: #f2f2f2;
+
+                .sign {
+                  background: #909090;
+                }
+                &:hover {
+                  background: #f2f2f2;
+                }
+              }
+            }
+          }
+        }
+      }
+      &.expected-interest-dd {
+        padding: 2px;
+        line-height: 30px;
+
+        .principal-income {
+          font-size: 25px;
+          color: #ff7200;
+        }
+        .experience-income {
+          font-size: 15px;
+          color: #ff7200;
+        }
+      }
+      &.experience-revenue {
+        margin-bottom: 0;
+      }
+      &.img-status {
+        padding: 30px 10px;
+      }
+      &.time-item {
+        display: inline-block;
+        border-radius: 10px;
+        border: 1px dashed red;
+        margin-top: 15px;
+        padding: 1px 40px;
+        font-size: 13px;
+
+        .time-clock {
+          background: url(/images/icons/time-clock.png) center -1px no-repeat;
+          display: inline-block;
+          width: 29px;
+          height: 27px;
+          vertical-align: middle;
+          margin-top: -3px;
+        }
+        strong, em {
+          display: inline-block;
+        }
+        strong {
+          color: #f24713;
+          font-size: 18px;
+          font-weight: bold;
+        }
+      }
+      .btn-normal {
+        width: 100%;
+        padding: 8px 0;
+      }
+      .account-amount {
+        color: #f24712;
+      }
+    }
+  }
+}
+.chart-info-responsive {
+  float: left;
+  width: 96%;
+  padding: 0 2%;
+  color: #a4a4a4;
+  line-height: 30px;
+  display: none;
+}
+.loan-nav {
+  overflow: hidden;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+
+  li {
+    float: left;
+    padding: 8px 30px;
+    border-right: 1px solid #ccc;
+    position: relative;
+    cursor: pointer;
+
+    i {
+      display: none;
+      position: absolute;
+      bottom: -6px;
+      left: 45%;
+      font-size: 18px;
+      color: #ed9c30;
+    }
+    &.active {
+      border-bottom: 2px solid #ed9c30;
+
+      i {
+        display: block;
+      }
+    }
+    &:nth-last-child(1) {
+      border-right-width: 0px;
+    }
+  }
+}
+.loan-list {
+  .borderBox {
+    padding: 10px;
+  }
+  .loan-list-con {
+    display: none;
+
+    .b-title {
+      color: #000;
+      font-size: 14px;
+      padding-bottom: 10px;
+    }
+    .loan-material {
+      margin-top: 10px;
+
+      h3 {
+        padding: 10px;
+        background: #eaeaea;
+        color: #ed9c30;
+        font-size: 14px;
+      }
+      .title {
+        padding-top: 10px;
+        line-height: 36px;
+      }
+      .pic-list {
+        img {
+          display: inline-block;
+          margin: 0px 10px 10px 0;
+          height: 100px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .invest-WEB {
+    display: inline-block;
+    vertical-align: middle;
+    width: 18px;
+    height: 18px;
+    background: url("/images/icons/ico_loan.png") 0 0 no-repeat;
+  }
+  .invest-ANDROID {
+    display: inline-block;
+    vertical-align: middle;
+    width: 18px;
+    height: 22px;
+    background: url("/images/icons/ico_loan.png") 0px -32px no-repeat;
+  }
+  .invest-IOS {
+    display: inline-block;
+    vertical-align: middle;
+    width: 18px;
+    height: 20px;
+    background: url("/images/icons/ico_loan.png") 0px -65px no-repeat;
+  }
+}
+}
+.bind-card-layer {
+width: 540px;
+height: 244px;
+position: fixed;
+left: 50%;
+top: 50%;
+margin-left: -270px;
+margin-top: -122px;
+background: #f2f3f5;
+z-index: 9999;
+border: 1px solid #ccc;
+display: none;
+
+& span {
+  width: 26px;
+  height: 26px;
+  display: block;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 1);
+  border-radius: 50%;
+  position: absolute;
+  right: -10px;
+  top: -13px;
+  text-align: center;
+  line-height: 26px;
+  color: #fff;
+}
+& h4 {
+  width: 510px;
+  height: 50px;
+  line-height: 50px;
+  padding-left: 28px;
+  font-size: 14px;
+  color: #666;
+  font-weight: normal;
+}
+& p {
+  height: 120px;
+  width: 100%;
+  line-height: 120px;
+  background: url("/images/cash/tan.jpg") no-repeat 64px center #fff;
+  text-align: center;
+}
+& .btn-box-layer {
+  text-align: center;
+}
+& a {
+  width: 158px;
+  height: 36px;
+  display: inline-block;
+  text-align: center;
+  line-height: 36px;
+  color: #fff;
+  background: #ff6c00;
+  margin: 20px 10px;
+  border-radius: 3px;
+}
+}
+.money-box {
+font-size: 12px;
+background: url("/images/sign/invest-record.png") 360px 30px no-repeat;
+
+a {
+  display: inline-block;
+  margin-right: 10px;
+  line-height: 1;
+  padding: 8px 10px;
+  letter-spacing: 0px;
+}
+.balance {
+  color: #ffac2a;
+  padding: 0px 0 20px;
+}
+}
+.fund-box {
+width: 815px;
+float: right;
+border: 1px solid #ccc;
+border-radius: 3px;
+min-height: 500px;
+
+& .hd {
+  height: 44px;
+  line-height: 44px;
+  margin-right: 20px;
+  border-bottom: 2px solid #ccc;
+  font-size: 16px;
+  color: #ffac2a;
+
+  & .line {
+    padding-left: 20px;
+    border-bottom: 2px solid #e06b0c;
+    margin-bottom: -2px;
+    height: 42px;
+    padding-bottom: 2px;
+    padding-right: 40px;
+    display: inline-block;
+  }
+}
+& .item-block {
+  display: block;
+  margin-top: 10px;
+  line-height: 30px;
+  font-size: 12px;
+
+  & .sub-hd {
+    padding-left: 20px;
+  }
+  & .btn {
+    background: #ffac2a;
+    color: #fff;
+    border-radius: 3px;
+    padding: 8px 10px;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+  }
+  & .jq-n {
+    display: inline-block;
+    padding: 0 10px;
+    margin-left: 10px;
+    color: #333;
+    cursor: pointer;
+
+    &.current {
+      background: #ffac2a;
+      color: #fff;
+      border-radius: 3px;
+    }
+  }
+}
+& .fund-list {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  margin-top: 20px;
+
+  & th {
+    line-height: 30px;
+    background: #e1e1e1;
+
+    &:first-child {
+      padding-left: 20px;
+      text-align: left;
+      width: 13%;
+    }
+  }
+  & tr:nth-child(even) {
+    background: #e1e1e1;
+  }
+  & td {
+    line-height: 30px;
+    color: #999;
+
+    &:first-child {
+      padding-left: 20px;
+      text-align: left;
+    }
+    &:last-child {
+      width: 150px;
+    }
+    &.txtc {
+      text-align: center;
+      line-height: 100px;
+    }
+    & .plan {
+      color: #cc0000;
+      cursor: pointer;
+    }
+  }
+}
+}
+.card-box {
+margin: 20px;
+border: 1px solid #ccc;
+border-radius: 5px;
+width: 280px;
+height: 150px;
+position: relative;
+
+.user {
+  margin-top: 6px;
+  margin-right: 5px;
+}
+.card-num {
+  border-top: 1px solid #ccc;
+  padding-top: 20px;
+  clear: both;
+}
+.card-link {
+  position: absolute;
+  bottom: 0;
+  background: #ccc;
+  width: 100%;
+  box-sizing: border-box;
+
+  a {
+    display: inline-block;
+    padding: 5px;
+  }
+}
+}
+
+/* my treasure*/
+.my-treasure-content {
+.column-title {
+  em {
+    &.title-navli {
+      border-bottom: 4px solid #999;
+      color: #999;
+      cursor: pointer;
+      margin-right: 40px;
+    }
+    &.active {
+      border-bottom: 4px solid #ff7200;
+      color: #ff7200;
+    }
+  }
+  span {
+    float: right;
+    border-bottom: none;
+    font-size: 14px;
+    font-weight: normal;
+    color: #666;
+    cursor: pointer;
+  }
+}
+.rule-list {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: none;
+
+  .rule-com {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -260px;
+    margin-left: -320px;
+    width: 510px;
+    height: 520px;
+    background: #fff;
+    padding: 10px 60px;
+    border: 1px solid #ccc;
+
+    h3 {
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 20px;
+
+      span {
+        color: #ff7200;
+        padding: 10px 65px;
+        line-height: 35px;
+        border-bottom: 1px solid #ff7200;
+      }
+    }
+    dl {
+      margin-bottom: 25px;
+
+      dt {
+        font-size: 14px;
+        color: #333;
+      }
+      dd {
+        font-size: 12px;
+        color: #666;
+      }
+    }
+    .close-icon {
+      width: 15px;
+      height: 15px;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      cursor: pointer;
+      background: url("/images/sign/close-btn.png") no-repeat center;
+    }
+    .close-text {
+      text-align: center;
+
+      span {
+        padding: 10px 25px;
+        color: #fff;
+        background: #ff7200;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+.filters-list {
+  float: left;
+  width: 100%;
+
+  li {
+    float: left;
+    color: #4c4c4c;
+    font-size: 12px;
+    padding: 5px 15px;
+    margin-right: 10px;
+    cursor: pointer;
+
+    &.active {
+      color: #fff;
+      background: #ff752a;
+      border-radius: 5px;
+    }
+  }
+}
+.model-list {
+  float: left;
+  width: 100%;
+
+  .coupon-com {
+    float: left;
+    width: 100%;
+    display: none;
+
+    &.active {
+      display: block;
+    }
+  }
+  .coupon-list {
+    float: left;
+    width: 100%;
+
+    &.used-card {
+      li {
+        width: 100%;
+        margin-right: 0;
+      }
+    }
+    li {
+      float: left;
+      width: 285px;
+      margin-top: 35px;
+      margin-right: 90px;
+
+      &.yellow-type {
+        .top-com {
+          .left-name {
+            background: #ff752a;
+            color: #fff;
+
+            i {
+              border: 1px solid #ff752a;
+            }
+          }
+          .right-coupon {
+            border: 1px solid #ff752a;
+            background: url("/images/sign/yellow-bg.png") no-repeat;
+            background-position: 180px 10px;
+
+            p {
+              color: #ff752a;
+
+              .pro-icon {
+                border: 1px solid #ff752a;
+
+                em {
+                  &.circle-com {
+                    background: #ff752a;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .bottom-time {
+          a {
+            background: #ff752a;
+            cursor: pointer;
+          }
+        }
+        .detail-com {
+          p {
+            &.bottom-line {
+              border-bottom: 1px dashed #ff752a;
+            }
+            span {
+              color: #ff752a;
+            }
+            .see-detail {
+              background: #ff752a;
+            }
+          }
+        }
+      }
+      &.new-type {
+        .top-com {
+          .left-name {
+            background: #ffae00;
+            color: #fff;
+
+            i {
+              border: 1px solid #ffae00;
+            }
+          }
+          .right-coupon {
+            border: 1px solid #ffae00;
+            background: url("/images/sign/new-bg.png") no-repeat;
+            background-position: 180px 10px;
+
+            p {
+              color: #ffae00;
+
+              .pro-icon {
+                border: 1px solid #ffae00;
+
+                em {
+                  &.circle-com {
+                    background: #ffae00;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .bottom-time {
+          a {
+            background: #ffae00;
+            cursor: pointer;
+          }
+        }
+        .detail-com {
+          p {
+            &.bottom-line {
+              border-bottom: 1px dashed #ffae00;
+            }
+            span {
+              color: #ffae00;
+            }
+            .see-detail {
+              background: #ffae00;
+            }
+          }
+        }
+      }
+      &.bite-type {
+        .top-com {
+          .left-name {
+            background: #ff7b7b;
+            color: #fff;
+
+            i {
+              border: 1px solid #ff7b7b;
+            }
+          }
+          .right-coupon {
+            border: 1px solid #ff7b7b;
+            background: url("/images/sign/bite-bg.png") no-repeat;
+            background-position: 180px 10px;
+
+            p {
+              color: #ff7b7b;
+
+              .pro-icon {
+                border: 1px solid #ff7b7b;
+
+                em {
+                  &.circle-com {
+                    background: #ff7b7b;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .bottom-time {
+          a {
+            background: #ff7b7b;
+            cursor: pointer;
+          }
+        }
+        .detail-com {
+          p {
+            &.bottom-line {
+              border-bottom: 1px dashed #ff7b7b;
+            }
+            span {
+              color: #ff7b7b;
+            }
+            .see-detail {
+              background: #ff7b7b;
+            }
+          }
+        }
+      }
+      &.birth-type {
+        .top-com {
+          .left-name {
+            background: #ff5984;
+            color: #fff;
+
+            i {
+              border: 1px solid #ff5984;
+            }
+          }
+          .right-coupon {
+            border: 1px solid #ff5984;
+            background: url("/images/sign/birth-bg.png") no-repeat;
+            background-position: 180px 10px;
+
+            p {
+              color: #ff5984;
+
+              .birth-text {
+                font-size: 30px;
+              }
+              .pro-icon {
+                border: 1px solid #ff5984;
+
+                em {
+                  &.circle-com {
+                    background: #ff5984;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .bottom-time {
+          a {
+            background: #ff5984;
+            cursor: pointer;
+          }
+        }
+        .detail-com {
+          p {
+            &.bottom-line {
+              border-bottom: 1px dashed #ff5984;
+            }
+            span {
+              color: #ff5984;
+            }
+            .see-detail {
+              background: #ff5984;
+            }
+          }
+        }
+      }
+      .top-com {
+        float: left;
+        width: 300px;
+        height: 125px;
+        overflow: hidden;
+
+        .left-name {
+          float: left;
+          width: 50px;
+          height: 125px;
+          background: #ccc;
+          color: #fff;
+          font-size: 16px;
+          text-align: center;
+          line-height: 22px;
+          border-radius: 5px;
+          position: relative;
+
+          span {
+            display: inline-block;
+            vertical-align: middle;
+            width: 30px;
+            margin-left: 5px;
+          }
+          em {
+            display: inline-block;
+            width: 1px;
+            height: 100%;
+            vertical-align: middle;
+          }
+          i {
+            position: absolute;
+            left: 45px;
+            width: 10px;
+            height: 10px;
+            border: 1px solid #ccc;
+            background: #fff;
+            border-radius: 50%;
+
+            &.circle-top {
+              top: -5px;
+            }
+            &.circle-bottom {
+              bottom: -5px;
+            }
+          }
+        }
+        .right-coupon {
+          float: left;
+          width: 228px;
+          height: 123px;
+          padding-left: 20px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          background: url("/images/sign/default-bg.png") no-repeat;
+          background-position: 180px 10px;
+
+          p {
+            margin-bottom: 0;
+            color: #ccc;
+
+            &.mt-10 {
+              margin-top: 10px;
+            }
+            span {
+              line-height: 40px;
+
+              &.num-text {
+                font-size: 40px;
+              }
+              &.unit-text {
+                font-size: 16px;
+              }
+            }
+            .pro-icon {
+              border: 1px solid #ccc;
+              border-radius: 20px;
               text-align: center;
+              margin: 0 2px;
+              line-height: 21px;
+              padding: 2px 4px;
+              position: relative;
+              overflow: hidden;
+
+              em {
+                position: absolute;
+
+                &.bg-com {
+                  bottom: -7px;
+                  right: -2px;
+                  width: 10px;
+                  height: 10px;
+                  background: #fff;
+                }
+                &.circle-com {
+                  bottom: 2px;
+                  right: 1px;
+                  width: 2px;
+                  height: 2px;
+                  background: #ccc;
+                  border-radius: 2px;
+                }
+              }
+            }
+          }
+        }
+      }
+      .bottom-time {
+        float: left;
+        width: 300px;
+        height: 30px;
+        padding: 15px 0;
+        line-height: 30px;
+
+        span {
+          float: left;
+          width: 190px;
+          text-align: right;
+          font-size: 12px;
+          color: #999;
+        }
+        a {
+          float: left;
+          width: 80px;
+          margin-left: 15px;
+          background: #ccc;
+          font-size: 12px;
+          color: #fff;
+          text-align: center;
+          border-radius: 5px;
+          cursor: no-drop;
+        }
+      }
+      .detail-com {
+        float: left;
+        width: 410px;
+        margin-left: 30px;
+
+        p {
+          float: left;
+          width: 100%;
+          margin-bottom: 0;
+          line-height: 30px;
+
+          &.bottom-line {
+            padding: 10px 0 15px 0;
+            border-bottom: 1px dashed #ff752a;
+            margin-bottom: 10px;
+          }
+          span {
+            font-size: 12px;
+            color: #ff752a;
+
+            &.status-text {
+              float: left;
+              color: #999;
+            }
+            &.left-text {
+              float: left;
+            }
+            &.right-text {
+              float: right;
+            }
+          }
+          .see-detail {
+            float: right;
+            width: 80px;
+            margin-left: 15px;
+            background: #ff752a;
+            font-size: 12px;
+            color: #fff;
+            line-height: 30px;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
+}
+
+/*my choi beans*/
+.my-choi-beans {
+.column-title {
+  em {
+    &.title-navli {
+      border-bottom: 4px solid #999;
+      color: #999;
+      cursor: pointer;
+      margin-right: 40px;
+    }
+    &.active {
+      border-bottom: 4px solid #ff7200;
+      color: #ff7200;
+    }
+  }
+}
+.icon-result {
+  background: url("/images/sign/choi-beans.png") no-repeat;
+}
+.content-list {
+  float: left;
+  width: 100%;
+}
+.choi-beans-list {
+  float: left;
+  width: 100%;
+  display: none;
+
+  &.active {
+    display: block;
+  }
+  .beans-intro {
+    float: left;
+    width: 723px;
+    height: 188px;
+    padding: 20px;
+    border: 1px solid #f2f2f2;
+
+    .beans-list {
+      float: left;
+      width: 100%;
+
+      &.mt-20 {
+        margin-top: 20px;
+      }
+      i {
+        &.icon-beans {
+          float: left;
+          width: 30px;
+          height: 30px;
+          background-position: 0px -53px;
+        }
+        &.icon-dou {
+          float: left;
+          width: 21px;
+          height: 19px;
+          margin: 5px 0 0 5px;
+          background-position: 0px -120px;
+        }
+      }
+      span {
+        line-height: 30px;
+
+        &.title-text {
+          float: left;
+          font-size: 18px;
+          color: #ff7200;
+          margin-left: 5px;
+        }
+        &.title-href {
+          float: right;
+          font-size: 14px;
+          color: #4f8df5;
+          cursor: pointer;
+        }
+        &.beans-num {
+          float: left;
+          font-size: 18px;
+          color: #ff7200;
+        }
+      }
+      .beans-recent {
+        float: left;
+        width: 408px;
+        height: 13px;
+        border: 1px solid #f2f2f2;
+
+        li {
+          float: left;
+          width: 136px;
+          height: 13px;
+          position: relative;
+
+          &.one-day {
+            background: #ff7200;
+
+            p {
+              border-left: 1px dashed #ff7200;
+
+              .icon-circle {
+                background: #ff7200;
+              }
+            }
+          }
+          &.two-day {
+            background: #ffa862;
+
+            p {
+              border-left: 1px dashed #ffa862;
+
+              .icon-circle {
+                background: #ffa862;
+              }
+            }
+          }
+          &.three-day {
+            background: #feda7a;
+
+            p {
+              border-left: 1px dashed #feda7a;
+
+              .icon-circle {
+                background: #feda7a;
+              }
+            }
+          }
+          p {
+            float: left;
+            width: 0;
+            height: 15px;
+            border-left: 1px dashed #ccc;
+            margin-top: 15px;
+            margin-left: 68px;
+            position: relative;
+
+            .icon-circle {
+              position: absolute;
+              top: 15px;
+              left: -3px;
+              width: 5px;
+              height: 5px;
               background: #ff7200;
+              border-radius: 10px;
+            }
+            span {
+              position: absolute;
+              font-size: 12px;
+              color: #ffa862;
+
+              &.text-date {
+                top: 20px;
+                left: -20px;
+                width: 100px;
+              }
+              &.text-money {
+                top: 40px;
+                left: -20px;
+                width: 100px;
+              }
+              strong {
+                float: left;
+              }
+              .icon-sm-dou {
+                float: left;
+                width: 18px;
+                height: 18px;
+                margin-top: 8px;
+                background-position: 0px -94px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .beans-operat {
+    float: left;
+    width: 100%;
+    margin-top: 50px;
+    border-top: 1px dashed #f2f2f2;
+
+    h3 {
+      float: left;
+      width: 100%;
+      margin: 30px 0;
+      text-align: left;
+      color: #ff0000;
+      font-size: 18px;
+    }
+    .object-list {
+      float: left;
+      width: 100%;
+
+      li {
+        float: left;
+        width: 200px;
+        margin-right: 50px;
+
+        p {
+          text-align: center;
+
+          &.invest-bg {
+            background: #ff7171;
+          }
+          &.sign-bg {
+            background: #53d7aa;
+          }
+          &.task-bg {
+            background: #feda7a;
+          }
+          &.icon-com {
+            float: left;
+            width: 100%;
+            height: 110px;
+            border-radius: 50px;
+
+            .icon-result {
+              float: left;
+              margin-left: 55px;
+              margin-top: 15px;
+
+              &.icon-invest {
+                width: 83px;
+                height: 76px;
+                background-position: 0px -149px;
+              }
+              &.icon-sign {
+                margin-top: 30px;
+                width: 93px;
+                height: 43px;
+                background-position: 0px 0px;
+              }
+              &.icon-task {
+                width: 85px;
+                height: 86px;
+                background-position: 0px -235px;
+              }
+            }
+          }
+          &.btn-list {
+            float: left;
+            width: 100%;
+            text-align: center;
+            margin-top: 10px;
+
+            span {
+              padding: 10px 25px;
+              color: #fff;
+              cursor: pointer;
+              font-size: 16px;
+              border-radius: 10px;
+
+              &.btn-invest {
+                background: #ff7171;
+              }
+              &.btn-sign {
+                background: #53d7aa;
+              }
+              &.btn-task {
+                background: #feda7a;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .beans-infotext {
+    float: left;
+    width: 100%;
+    margin-top: 50px;
+    border: 1px dashed #f2f2f2;
+
+    dl {
+      padding: 20px;
+      color: #adafb2;
+
+      dt {
+        font-size: 14px;
+      }
+      dd {
+        font-size: 12px;
+      }
+    }
+  }
+  .coupon-list {
+    float: left;
+    width: 100%;
+
+    &.used-card {
+      li {
+        width: 100%;
+        margin-right: 0;
+      }
+    }
+    li {
+      float: left;
+      width: 285px;
+      margin-top: 35px;
+      margin-right: 90px;
+
+      &.yellow-type {
+        .top-com {
+          .left-name {
+            background: #ff752a;
+            color: #fff;
+
+            i {
+              border: 1px solid #ff752a;
+            }
+          }
+          .right-coupon {
+            border: 1px solid #ff752a;
+            background: url("/images/sign/yellow-bg.png") no-repeat;
+            background-position: 180px 10px;
+
+            .coupon-time {
+              color: #ff752a;
+            }
+            p {
+              color: #ff752a;
+
+              .pro-icon {
+                border: 1px solid #ff752a;
+
+                em {
+                  &.circle-com {
+                    background: #ff752a;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .bottom-time {
+          a {
+            background: #ff752a;
+            cursor: pointer;
+          }
+        }
+        .detail-com {
+          p {
+            &.bottom-line {
+              border-bottom: 1px dashed #ff752a;
+            }
+            span {
+              color: #ff752a;
+            }
+            .see-detail {
+              background: #ff752a;
+            }
+          }
+        }
+      }
+      &.new-type {
+        .top-com {
+          .left-name {
+            background: #ffae00;
+            color: #fff;
+
+            i {
+              border: 1px solid #ffae00;
+            }
+          }
+          .right-coupon {
+            border: 1px solid #ffae00;
+            background: url("/images/sign/new-bg.png") no-repeat;
+            background-position: 180px 10px;
+
+            .coupon-time {
+              color: #ffae00;
+            }
+            p {
+              color: #ffae00;
+
+              .pro-icon {
+                border: 1px solid #ffae00;
+
+                em {
+                  &.circle-com {
+                    background: #ffae00;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .bottom-time {
+          a {
+            background: #ffae00;
+            cursor: pointer;
+          }
+        }
+        .detail-com {
+          p {
+            &.bottom-line {
+              border-bottom: 1px dashed #ffae00;
+            }
+            span {
+              color: #ffae00;
+            }
+            .see-detail {
+              background: #ffae00;
+            }
+          }
+        }
+      }
+      &.bite-type {
+        .top-com {
+          .left-name {
+            background: #ff7b7b;
+            color: #fff;
+
+            i {
+              border: 1px solid #ff7b7b;
+            }
+          }
+          .right-coupon {
+            border: 1px solid #ff7b7b;
+            background: url("/images/sign/bite-bg.png") no-repeat;
+            background-position: 180px 10px;
+
+            .coupon-time {
+              color: #ff7b7b;
+            }
+            p {
+              color: #ff7b7b;
+
+              .pro-icon {
+                border: 1px solid #ff7b7b;
+
+                em {
+                  &.circle-com {
+                    background: #ff7b7b;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .bottom-time {
+          a {
+            background: #ff7b7b;
+            cursor: pointer;
+          }
+        }
+        .detail-com {
+          p {
+            &.bottom-line {
+              border-bottom: 1px dashed #ff7b7b;
+            }
+            span {
+              color: #ff7b7b;
+            }
+            .see-detail {
+              background: #ff7b7b;
+            }
+          }
+        }
+      }
+      &.birth-type {
+        .top-com {
+          .left-name {
+            background: #ff5984;
+            color: #fff;
+
+            i {
+              border: 1px solid #ff5984;
+            }
+          }
+          .right-coupon {
+            border: 1px solid #ff5984;
+            background: url("/images/sign/birth-bg.png") no-repeat;
+            background-position: 180px 10px;
+
+            .coupon-time {
+              color: #ff5984;
+            }
+            p {
+              color: #ff5984;
+
+              .birth-text {
+                font-size: 30px;
+              }
+              .pro-icon {
+                border: 1px solid #ff5984;
+
+                em {
+                  &.circle-com {
+                    background: #ff5984;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .bottom-time {
+          a {
+            background: #ff5984;
+            cursor: pointer;
+          }
+        }
+        .detail-com {
+          p {
+            &.bottom-line {
+              border-bottom: 1px dashed #ff5984;
+            }
+            span {
+              color: #ff5984;
+            }
+            .see-detail {
+              background: #ff5984;
+            }
+          }
+        }
+      }
+      .top-com {
+        float: left;
+        width: 300px;
+        height: 125px;
+        overflow: hidden;
+
+        .left-name {
+          float: left;
+          width: 50px;
+          height: 125px;
+          background: #ccc;
+          color: #fff;
+          font-size: 16px;
+          text-align: center;
+          line-height: 22px;
+          border-radius: 5px;
+          position: relative;
+
+          span {
+            display: inline-block;
+            vertical-align: middle;
+            width: 30px;
+            margin-left: 5px;
+          }
+          em {
+            display: inline-block;
+            width: 1px;
+            height: 100%;
+            vertical-align: middle;
+          }
+          i {
+            position: absolute;
+            left: 45px;
+            width: 10px;
+            height: 10px;
+            border: 1px solid #ccc;
+            background: #fff;
+            border-radius: 50%;
+            z-index: 99;
+
+            &.circle-top {
+              top: -5px;
+            }
+            &.circle-bottom {
+              bottom: -5px;
+            }
+          }
+        }
+        .right-coupon {
+          float: left;
+          width: 228px;
+          height: 123px;
+          padding-left: 20px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          background: url("/images/sign/default-bg.png") no-repeat;
+          background-position: 180px 10px;
+          position: relative;
+
+          .coupon-time {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 12px;
+            color: #ccc;
+          }
+          p {
+            margin-bottom: 0;
+            color: #ccc;
+
+            &.mt-10 {
+              margin-top: 10px;
+            }
+            span {
+              line-height: 40px;
+
+              &.num-text {
+                font-size: 40px;
+              }
+              &.unit-text {
+                font-size: 16px;
+              }
+            }
+            .pro-icon {
+              border: 1px solid #ccc;
+              border-radius: 20px;
+              text-align: center;
+              margin: 0 2px;
+              line-height: 21px;
+              padding: 2px 4px;
+              position: relative;
+              overflow: hidden;
+
+              em {
+                position: absolute;
+
+                &.bg-com {
+                  bottom: -7px;
+                  right: -2px;
+                  width: 10px;
+                  height: 10px;
+                  background: #fff;
+                }
+                &.circle-com {
+                  bottom: 2px;
+                  right: 1px;
+                  width: 2px;
+                  height: 2px;
+                  background: #ccc;
+                  border-radius: 2px;
+                }
+              }
+            }
+          }
+        }
+      }
+      .bottom-time {
+        float: left;
+        width: 300px;
+        height: 30px;
+        padding: 15px 0;
+        line-height: 30px;
+
+        span {
+          float: left;
+          text-align: left;
+          font-size: 14px;
+          color: #ff0000;
+          padding-left: 50px;
+        }
+        a {
+          float: right;
+          width: 80px;
+          margin-right: 15px;
+          background: #ccc;
+          font-size: 12px;
+          color: #fff;
+          text-align: center;
+          border-radius: 5px;
+          cursor: no-drop;
+        }
+        .icon-dou {
+          float: left;
+          width: 21px;
+          height: 19px;
+          margin: 5px 0 0 5px;
+          background: url("/images/sign/choi-beans.png") no-repeat;
+          background-position: 0px -120px;
+        }
+      }
+      .detail-com {
+        float: left;
+        width: 410px;
+        margin-left: 30px;
+
+        p {
+          float: left;
+          width: 100%;
+          margin-bottom: 0;
+          line-height: 30px;
+
+          &.bottom-line {
+            padding: 10px 0 15px 0;
+            border-bottom: 1px dashed #ff752a;
+            margin-bottom: 10px;
+          }
+          span {
+            font-size: 12px;
+            color: #ff752a;
+
+            &.status-text {
+              float: left;
+              color: #999;
+            }
+            &.left-text {
+              float: left;
+            }
+            &.right-text {
+              float: right;
+            }
+          }
+          .see-detail {
+            float: right;
+            width: 80px;
+            margin-left: 15px;
+            background: #ff752a;
+            font-size: 12px;
+            color: #fff;
+            line-height: 30px;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
+.sign-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, .5);
+  z-index: 999;
+  display: none;
+
+  .sign-layer-list {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -150px;
+    margin-left: -250px;
+    width: 500px;
+    height: 300px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+
+    .sign-top {
+      float: left;
+      width: 100%;
+      height: 250px;
+      position: relative;
+
+      .close-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 15px;
+        height: 15px;
+        background: url("/images/sign/bean-bg.png") no-repeat;
+        background-position: 0px -23px;
+        cursor: pointer;
+      }
+      p {
+        text-align: center;
+
+        &.sign-text {
+          margin-top: 10px;
+          color: #ff7200;
+          font-size: 18px;
+          margin-bottom: 0;
+        }
+        &.tomorrow-text {
+          font-size: 14px;
+          color: #4c4c4c;
+        }
+        &.img-beans {
+          position: relative;
+
+          .add-dou {
+            position: absolute;
+            left: 50%;
+            margin-left: -30px;
+            bottom: 0;
+            width: 40px;
+            height: 30px;
+            padding-right: 20px;
+            font-size: 20px;
+            line-height: 25px;
+            color: #fff;
+            text-align: center;
+            background: url("/images/sign/add-bean.png") no-repeat right;
+          }
+        }
+        &.intro-text {
+          font-size: 14px;
+          color: #4d4d4d;
+
+          span {
+            color: #ff7200;
+          }
+        }
+      }
+    }
+    .sign-bottom {
+      float: left;
+      width: 100%;
+      height: 50px;
+
+      ul {
+        float: left;
+        width: 100%;
+        border-top: 1px solid #e6e6e6;
+
+        li {
+          float: left;
+          width: 59px;
+          height: 50px;
+          text-align: center;
+          border-right: 1px solid #e6e6e6;
+
+          &.last-day {
+            width: 79px;
+
+            .day-beans {
+              span {
+                margin-left: 30px;
+                line-height: 15px;
+                margin-top: -5px;
+              }
+            }
+          }
+          p {
+            margin-bottom: 0;
+            line-height: 25px;
+
+            &.day-name {
+              font-size: 12px;
+              color: #7f7f7f;
+            }
+            &.day-beans {
+              font-size: 14px;
+              color: #4d4d4d;
+
+              span {
+                float: left;
+                width: 20px;
+                text-align: right;
+                line-height: 15px;
+                margin-left: 10px;
+              }
+              .bean-img {
+                float: left;
+                width: 15px;
+                height: 15px;
+                background: url("/images/sign/bean-bg.png") no-repeat;
+                background-position: 0 0;
+                margin-top: 2px;
+              }
             }
           }
         }
@@ -2344,69 +3020,145 @@
     }
   }
 }
+.task-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, .5);
+  z-index: 999;
+  display: none;
 
-@media screen and (max-width: 700px) {
-  .chart-info-responsive{
-    display:block!important;
-  }
-  .news-share{
-    width:100%!important;
-    padding-bottom:0!important;
-    .hd{
-      margin:0!important;
-      padding-left:0!important;
-      text-align:center;
-    }
-    .chart-info{
-      display:none;
-    }
-    .product-type-text{
-      left:50%!important;
-      bottom:55px!important;
-      border:none!important;
-      margin-left:-44px!important;
-    }
-    .chart-box{
-      position: relative;
-      left: 50%;
-      margin-left: -100px!important;
-    }
-  }
-  .account-info{
-    width:96%!important;
-    padding:0 2%!important;
-    border-left:none!important;
-    border-top: 1px solid #ccc;
-    .l-title{
-      display:none;
-    }
-    .account-list{
-      margin-left:0!important;
-    }
-  }
-  .loan-nav{
-    li{
-      width: 50%;
-      box-sizing: border-box;
+  .task-layer-list {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -280px;
+    margin-left: -250px;
+    width: 460px;
+    height: 520px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    overflow: hidden;
+
+    h3 {
+      float: left;
+      width: 100%;
+      font-size: 18px;
+      color: #000;
       text-align: center;
-      padding: 8px 0!important;
+
+      .close-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 15px;
+        height: 15px;
+        background: url("/images/sign/bean-bg.png") no-repeat;
+        background-position: 0px -23px;
+        cursor: pointer;
+      }
     }
-  }
-  .loan-list{
-    .table-striped{
-      .responsive-hide{
-        display:none;
+    ul {
+      float: left;
+      width: 100%;
+
+      li {
+        float: left;
+        width: 158px;
+        height: 108px;
+        margin: 15px 20px;
+        background: #fff7e9;
+        border: 1px solid #dadada;
+        padding: 10px 15px;
+
+        p {
+          float: left;
+          width: 100%;
+          margin-bottom: 0;
+          font-size: 12px;
+
+          a {
+            float: left;
+            padding: 3px 35px;
+            border-radius: 5px;
+            color: #fff;
+            margin: 5px 8px 0;
+            text-align: center;
+            background: #ff7200;
+          }
+        }
       }
     }
   }
 }
-@media screen \0
-{
-  //IE8-10
-  .activity-coupon-model{
-    background-color:#000000;
-    filter:Alpha(opacity=50);
-    position:static;
-    *zoom:1;
+}
+@media screen and (max-width:700px) {
+.chart-info-responsive {
+  display: block !important;
+}
+.news-share {
+  width: 100% !important;
+  padding-bottom: 0 !important;
+
+  .hd {
+    margin: 0 !important;
+    padding-left: 0 !important;
+    text-align: center;
   }
+  .chart-info {
+    display: none;
+  }
+  .product-type-text {
+    left: 50% !important;
+    bottom: 55px !important;
+    border: none !important;
+    margin-left: -44px !important;
+  }
+  .chart-box {
+    position: relative;
+    left: 50%;
+    margin-left: -100px !important;
+  }
+}
+.account-info {
+  width: 96% !important;
+  padding: 0 2% !important;
+  border-left: none !important;
+  border-top: 1px solid #ccc;
+
+  .l-title {
+    display: none;
+  }
+  .account-list {
+    margin-left: 0 !important;
+  }
+}
+.loan-nav {
+  li {
+    width: 50%;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 8px 0 !important;
+  }
+}
+.loan-list {
+  .table-striped {
+    .responsive-hide {
+      display: none;
+    }
+  }
+}
+}
+@media screen \0 {
+//IE8-10
+.activity-coupon-model {
+  background-color: #000000;
+  filter: Alpha(opacity=50);
+  position: static;
+  *zoom: 1;
+}
 }
