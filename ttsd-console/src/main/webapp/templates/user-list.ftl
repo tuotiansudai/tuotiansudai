@@ -104,7 +104,7 @@
             </thead>
             <tbody>
                 <#list userList as userItem>
-                <tr <#if userItem.status!='ACTIVE'> class="bg-warning" </#if> >
+                <tr class="<#if userItem.status!='ACTIVE'>bg-danger</#if> <#if userItem.modify>bg-warning</#if>" >
                     <td>${userItem.loginName}
                         <#if userItem.bankCard>
                         <span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span>

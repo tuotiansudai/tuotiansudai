@@ -116,7 +116,7 @@
             <![CDATA[ and (l.base_rate + l.activity_rate) <= #{rateEnd} ]]>
         </if>
         ) temp
-        order by case temp.status when 'RAISING' then '1' when 'PREHEAT' then '2' when 'RECHECK' then '3' when 'REPAYING' then '4' when 'COMPLETE' then '5' else '6' end,temp.created_time desc
+        order by case temp.status when 'RAISING' then '1' when 'PREHEAT' then '2' when 'RECHECK' then '3' when 'REPAYING' then '4' when 'COMPLETE' then '5' else '6' end,temp.verify_time desc,temp.created_time desc
         limit #{index} , 10
     </select>
 
@@ -396,19 +396,19 @@
         (select * from loan
         where <![CDATA[ loan.status <> 'WAITING_VERIFY' ]]>
         and loan.product_type = 'SYL'
-        order by loan.created_time desc, loan.id desc
+        order by case loan.status when 'RAISING' then '1' when 'PREHEAT' then '2' when 'RECHECK' then '3' when 'REPAYING' then '4' when 'COMPLETE' then '5' else '6' end,loan.verify_time desc, loan.created_time desc, loan.id desc
         limit 0, 1)
         UNION
         (select * from loan
         where <![CDATA[ loan.status <> 'WAITING_VERIFY' ]]>
         and loan.product_type = 'WYX'
-        order by loan.created_time desc, loan.id desc
+        order by case loan.status when 'RAISING' then '1' when 'PREHEAT' then '2' when 'RECHECK' then '3' when 'REPAYING' then '4' when 'COMPLETE' then '5' else '6' end, loan.verify_time desc,loan.created_time desc, loan.id desc
         limit 0, 1)
         UNION
         (select * from loan
         where <![CDATA[ loan.status <> 'WAITING_VERIFY' ]]>
         and loan.product_type = 'JYF'
-        order by loan.created_time desc, loan.id desc
+        order by case loan.status when 'RAISING' then '1' when 'PREHEAT' then '2' when 'RECHECK' then '3' when 'REPAYING' then '4' when 'COMPLETE' then '5' else '6' end, loan.verify_time desc,loan.created_time desc, loan.id desc
         limit 0, 1)
     </select>
 </mapper>

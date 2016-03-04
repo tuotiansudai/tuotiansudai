@@ -41,7 +41,7 @@ public class ReferrerManageController {
                                         @RequestParam(value = "rewardEndTime",required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date rewardEndTime,
                                         @RequestParam(value = "role",required = false) Role role,
                                         @RequestParam(value = "source",required = false) Source source,
-                                        @RequestParam(value = "currentPageNo",defaultValue = "1",required = false) int currentPageNo,
+                                        @RequestParam(value = "index",defaultValue = "1",required = false) int index,
                                         @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize,
                                         @RequestParam(value = "export", required = false) String export,
                                         HttpServletResponse response) throws IOException{
@@ -80,7 +80,7 @@ public class ReferrerManageController {
             return null;
         } else {
             ModelAndView modelAndView = new ModelAndView("/referrer-manage");
-            List<ReferrerManageView> referrerManageViews = referrerManageService.findReferrerManage(referrerLoginName, investLoginName, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : investEndTime, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : rewardEndTime, role, source, currentPageNo, pageSize);
+            List<ReferrerManageView> referrerManageViews = referrerManageService.findReferrerManage(referrerLoginName, investLoginName, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : investEndTime, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : rewardEndTime, role, source, index, pageSize);
             int referrerManageCount = referrerManageService.findReferrerManageCount(referrerLoginName, investLoginName, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : investEndTime, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : rewardEndTime, role, source);
             long investAmountSum = referrerManageService.findReferrerManageInvestAmountSum(referrerLoginName, investLoginName, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : investEndTime, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : rewardEndTime, role, source);
             long rewardAmountSum = referrerManageService.findReferrerManageRewardAmountSum(referrerLoginName, investLoginName, investStartTime, investEndTime != null ? investDateTime.plusDays(1).toDate() : investEndTime, level, rewardStartTime, rewardEndTime != null ? rewardDateTime.plusDays(1).toDate() : rewardEndTime, role, source);
@@ -93,13 +93,13 @@ public class ReferrerManageController {
             modelAndView.addObject("rewardEndTime", rewardEndTime);
             modelAndView.addObject("role", role);
             modelAndView.addObject("source", source);
-            modelAndView.addObject("currentPageNo", currentPageNo);
+            modelAndView.addObject("index", index);
             modelAndView.addObject("pageSize", pageSize);
             modelAndView.addObject("referrerManageViews", referrerManageViews);
             modelAndView.addObject("referrerManageCount", referrerManageCount);
             long totalPages = referrerManageCount / pageSize + (referrerManageCount % pageSize > 0 ? 1 : 0);
-            boolean hasPreviousPage = currentPageNo > 1 && currentPageNo <= totalPages;
-            boolean hasNextPage = currentPageNo < totalPages;
+            boolean hasPreviousPage = index > 1 && index <= totalPages;
+            boolean hasNextPage = index < totalPages;
             modelAndView.addObject("hasPreviousPage", hasPreviousPage);
             modelAndView.addObject("hasNextPage", hasNextPage);
             Source[] sources = Source.values();

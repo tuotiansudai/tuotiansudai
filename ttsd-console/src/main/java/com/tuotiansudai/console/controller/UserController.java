@@ -1,17 +1,21 @@
 package com.tuotiansudai.console.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.repository.model.UserRoleModel;
-import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.ImpersonateService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.task.OperationTask;
+import com.tuotiansudai.task.OperationType;
+import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
 import com.tuotiansudai.util.RequestIPParser;
@@ -47,19 +51,52 @@ public class UserController {
     @Autowired
     private ImpersonateService impersonateService;
 
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private BindBankCardService bindBankCardService;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
     @Value("${web.server}")
     private String webServer;
 
-
     @RequestMapping(value = "/user/{loginName}", method = RequestMethod.GET)
-    public ModelAndView editUser(@PathVariable String loginName, Model model) {
+    public ModelAndView editUser(@PathVariable String loginName, Model model) throws Exception{
+        String taskId = OperationType.USER + "-" + loginName;
         ModelAndView modelAndView = new ModelAndView("/user-edit");
-        if (!model.containsAttribute("user")) {
-            EditUserDto editUserDto = userService.getEditUser(loginName);
+        if (!redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
+            if (!model.containsAttribute("user")) {
+                EditUserDto editUserDto = userService.getEditUser(loginName);
+                modelAndView.addObject("user", editUserDto);
+                modelAndView.addObject("roles", Role.values());
+                modelAndView.addObject("showCommit", true);
+            }
+            return modelAndView;
+        } else {
+            OperationTask<EditUserDto> task = (OperationTask<EditUserDto>)redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+            String description = task.getDescription();
+            String afterUpdate = description.split(" =></br> ")[1];
+            ObjectMapper objectMapper = new ObjectMapper();
+            EditUserDto editUserDto = objectMapper.readValue(afterUpdate, EditUserDto.class);
+            AccountModel accountModel = accountService.findByLoginName(loginName);
+            UserModel userModel = userMapper.findByLoginName(loginName);
+            BankCardModel bankCard = bindBankCardService.getPassedBankCard(loginName);
+            if (bankCard != null) {
+                editUserDto.setBankCardNumber(bankCard.getCardNumber());
+            }
+            editUserDto.setAutoInvestStatus(userModel.getAutoInvestStatus());
+            editUserDto.setIdentityNumber(accountModel == null ? "" : accountModel.getIdentityNumber());
+            editUserDto.setUserName(accountModel == null ? "" : accountModel.getUserName());
             modelAndView.addObject("user", editUserDto);
             modelAndView.addObject("roles", Role.values());
+            modelAndView.addObject("taskId", taskId);
+            modelAndView.addObject("sender", task.getSender());
+            modelAndView.addObject("showCommit", LoginUserInfo.getLoginName().equals(task.getSender()));
+            return modelAndView;
         }
-        return modelAndView;
     }
 
     @RequestMapping(value = "/account/{loginName}/search", method = RequestMethod.GET)
@@ -221,4 +258,5 @@ public class UserController {
         String securityCode = impersonateService.plantSecurityCode(LoginUserInfo.getLoginName(), loginName);
         return new ModelAndView("redirect:" + webServer + "/impersonate?securityCode=" + securityCode);
     }
+
 }

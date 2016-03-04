@@ -16,6 +16,7 @@ public class LoginUserInfo {
         return null;
     }
 
+
     public static String getMobile() {
         Object principal = LoginUserInfo.getPrincipal();
 

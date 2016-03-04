@@ -1,0 +1,1 @@
+alter table jpush_alert add column is_automatic TINYINT(1) not null ;

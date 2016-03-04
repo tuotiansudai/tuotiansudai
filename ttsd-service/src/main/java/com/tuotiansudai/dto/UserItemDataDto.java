@@ -25,6 +25,7 @@ public class UserItemDataDto implements Serializable {
     private String autoInvestStatus;
     private boolean referrerStaff;
     private boolean bankCard;
+    private boolean modify;
     private String identityNumber;
     private String province;
     private String city;
@@ -182,6 +183,14 @@ public class UserItemDataDto implements Serializable {
 
     public void setLastBillTime(Date lastBillTime) {
         this.lastBillTime = lastBillTime;
+    }
+
+    public boolean isModify() {
+        return modify;
+    }
+
+    public void setModify(boolean modify) {
+        this.modify = modify;
     }
 
     public String getBirthday() {

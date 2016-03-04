@@ -10,7 +10,6 @@
                         第一期排行榜活动中奖名单<b>马上揭晓</b>，<img src="${staticServer}/images/sign/actor/awards/trophy-small.png"><span><b>宝马X1</b>究竟花落谁家？</span>
                         <span class="last-word">“落榜”的小伙伴又将何去何从？排行榜第二期一定不负众望！</span>
                     </div>
-
                     <div class="award-product-box">
                     </div>
                     <div class="trophy-box">

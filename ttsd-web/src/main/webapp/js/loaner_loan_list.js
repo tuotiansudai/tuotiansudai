@@ -155,6 +155,7 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
 //define calendar
     $('.apply-btn').click(function () {
         loadLoanData();
+        $(".date-filter .select-item").removeClass("current");
     });
 });
 

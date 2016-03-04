@@ -19,14 +19,14 @@ public class FeedbackController {
 
     @RequestMapping(value = "/feedback", method = RequestMethod.GET)
     public ModelAndView announceManage(@RequestParam(value = "loginName", required = false) String loginName,
-                                       @RequestParam(value = "currentPageNo", defaultValue = "1", required = false) int currentPageNo,
+                                       @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                        @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        BasePaginationDataDto<FeedbackModel> feedbackModelPaginationData = feedbackService.getFeedbackPagination(loginName, currentPageNo, pageSize);
+        BasePaginationDataDto<FeedbackModel> feedbackModelPaginationData = feedbackService.getFeedbackPagination(loginName, index, pageSize);
         ModelAndView mv = new ModelAndView("feedback-list");
         mv.addObject("loginName", loginName);
         mv.addObject("feedbackCount", feedbackModelPaginationData.getCount());
         mv.addObject("feedbackList", feedbackModelPaginationData.getRecords());
-        mv.addObject("currentPageNo", currentPageNo);
+        mv.addObject("index", index);
         mv.addObject("pageSize", pageSize);
         mv.addObject("hasNextPage", feedbackModelPaginationData.isHasNextPage());
         mv.addObject("hasPreviousPage", feedbackModelPaginationData.isHasPreviousPage());

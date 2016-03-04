@@ -26,6 +26,10 @@ public class LatestInvestView implements Serializable{
 
     private RepayStatus status;
 
+    private boolean birthdayCoupon;
+
+    private double birthdayBenefit;
+
     public Date getInvestTime() {
         return investTime;
     }
@@ -104,5 +108,21 @@ public class LatestInvestView implements Serializable{
 
     public void setExpectedFee(long expectedFee) {
         this.expectedFee = expectedFee;
+    }
+
+    public boolean isBirthdayCoupon() {
+        return birthdayCoupon;
+    }
+
+    public void setBirthdayCoupon(boolean birthdayCoupon) {
+        this.birthdayCoupon = birthdayCoupon;
+    }
+
+    public double getBirthdayBenefit() {
+        return birthdayBenefit;
+    }
+
+    public void setBirthdayBenefit(double birthdayBenefit) {
+        this.birthdayBenefit = birthdayBenefit;
     }
 }

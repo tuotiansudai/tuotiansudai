@@ -247,7 +247,7 @@
       .award-product-box {
         height: 380px;
         margin-top:50px;
-        background: url("/images/sign/actor/awards/award-product.jpg") center top no-repeat;
+        background: url("/images/sign/actor/awards/award-product.png") center top no-repeat;
       }
       .trophy-box {
         text-align: center;
@@ -339,6 +339,111 @@
     }
   }
 }
+/*birth-month*/
+.birth-month-container{
+  float:left;
+  width:100%;
+  .birth-time{
+    position: fixed;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    display:none;
+    background:url("/images/sign/actor/birth/tip-bg.png") repeat;
+    z-index:88;
+    .time-list{
+      position: absolute;
+      top:50%;
+      left:50%;
+      margin-top:-182px;
+      margin-left:-264px;
+      z-index:99;
+    }
+    .tip-time{
+      float:left;
+    }
+    .time-close{
+      width:50px;
+      height:50px;
+      position: absolute;
+      top:20px;
+      right:0;
+      cursor:pointer;
+    }
+  }
+  .wp-img{
+    float:left;
+    width:100%;
+  }
+  .wp-img-phone{
+    float:left;
+    width:100%;
+    display:none;
+  }
+  .wp{
+    width:1000px;
+    margin:0 auto;
+    p{
+      font-size:40px;
+      color:#fff;
+      text-align:center;
+      &.text-pro{
+        overflow:hidden;
+        margin:40px 0 70px 0;
+        span{
+          position: relative;
+          .click-btn{
+            position: absolute;
+            left: 25px;
+            bottom: 20px;
+            width:300px;
+            height:58px;
+          }
+          &.product-left{
+            float:left;
+            margin-left:100px;
+          }
+          &.product-right{
+            float:right;
+            margin-right:100px;
+          }
+        }
+      }
+      &.text-bg{
+        font-size:40px;
+        color:#fff;
+        background:url('/images/sign/actor/birth/text-bg.png') center no-repeat;
+      }
+      &.text-font{
+        font-size:20px;
+        margin-bottom:50px;
+      }
+      &.img-position{
+        margin-top:-110px;
+      }
+      &.text-gift{
+        margin-bottom:60px;
+        .party-img-phone{
+          display:none;
+        }
+      }
+    }
+    .rule-list{
+      background:#cc3929;
+      padding:20px 50px;
+      border-radius:10px;
+      margin:50px 100px 60px 100px;
+      li{
+        color:#fff;
+        font-size:18px;
+        &.intro-text{
+          font-size:14px;
+        }
+      }
+    }
+  }
+}
 @media screen and (max-width: 700px){
   .red-envelope-container {
     .mobile {
@@ -375,8 +480,6 @@
     background: url("/images/ttimg/ph-a03.jpg") center top no-repeat!important;
     background-size: cover!important;
   }
-
-  
   .res-comtainer{
     display: block!important;
     float: none;
@@ -386,7 +489,6 @@
       }
     }
   }
-
   .activity-award-container {
     .actor-award-img {
       height: 150px !important;
@@ -453,7 +555,99 @@
     }
 
   }
-
+  .birth-month-container{
+    .time-list{
+      width:240px;
+      height:170px;
+      margin-top:-85px!important;
+      margin-left:-120px!important;
+    }
+    .tip-time{
+      width:100%!important;
+    }
+    .time-close{
+      width:10%!important;
+      height:auto!important;
+    }
+    .wp-img{
+      display:none;
+    }
+    .wp-img-phone{
+      display:block;
+    }
+    .wp{
+      float:left;
+      width:100%;
+      margin-top: 25px;
+      p{
+        float:left;
+        width:100%;
+        font-size:20px;
+        .monkey-phone{
+          width:20%;
+        }
+        &.img-position{
+          margin-top:-55px;
+          img{
+            width:80%;
+          }
+        }
+        &.text-bg{
+          font-size:20px;
+          background-size:65%;
+        }
+        &.text-font{
+          font-size:14px;
+          margin-bottom:30px;
+        }
+        &.text-pro{
+          margin:20px 0;
+          span{
+            width:46%;
+            margin:0 2%;
+            .click-btn{
+              left:0;
+              bottom:0;
+              width:100%;
+            }
+            &.product-left{
+              margin-left:2%;
+              img{
+                width:100%;
+              }
+            }
+            &.product-right{
+              margin-right:2%;
+              img{
+                width:100%;
+              }
+            }
+          }
+        }
+        &.text-gift{
+          margin-bottom:30px;
+          .party-img{
+            display:none;
+          }
+          .party-img-phone{
+            display:block;
+          }
+        }
+      }
+      .rule-list{
+        float:left;
+        width: 96%;
+        margin: 20px 2%;
+        padding: 0;
+        li{
+          font-size:12px;
+          &.intro-text{
+            font-size:12px!important;
+          }
+        }
+      }
+    }
+  }
 
 }
 

@@ -54,6 +54,8 @@ public class InvestRepayRecordResponseDataDto {
      */
     private String interest;
 
+    private String loanType;
+
     public InvestRepayRecordResponseDataDto() {
     }
 
@@ -77,6 +79,7 @@ public class InvestRepayRecordResponseDataDto {
         } else {
             this.interest = AmountConverter.convertCentToString(investRepay.getExpectedInterest());
         }
+        this.loanType = loan.getProductType() != null ? loan.getProductType().name() : "";
     }
 
     public String getLoanId() {
@@ -165,5 +168,13 @@ public class InvestRepayRecordResponseDataDto {
 
     public void setInterest(String interest) {
         this.interest = interest;
+    }
+
+    public String getLoanType() {
+        return loanType;
+    }
+
+    public void setLoanType(String loanType) {
+        this.loanType = loanType;
     }
 }

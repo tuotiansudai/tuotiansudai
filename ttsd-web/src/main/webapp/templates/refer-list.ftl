@@ -4,7 +4,7 @@
     <h4 class="column-title"><em class="tc">推荐管理</em></h4>
 
         <p class="notice">
-            用户在平台采用2级推荐机制，每级奖励金额为被推荐人投资本金年化的1％，推荐奖励在放款后一次性发放。详细推荐奖励细则请点 <a href="/activity/refer-reward">此处链接</a>。<br/>
+            用户在平台采用2级推荐机制，每级奖励金额为被推荐人投资本金年化的1％，推荐奖励在放款后一次性发放。详细推荐奖励细则请点 <a href="/about/refer-reward">此处链接</a>。<br/>
             您的推荐链接：<a href="/register/user?referrer=${referrer}" target="_blank">https://tuotiansudai.com/register/user?referrer=${referrer}</a> <br/>
         </p>
 
