@@ -54,7 +54,7 @@ public class SignInServiceImpl implements SignInService {
     @Override
     public boolean signInIsSuccess(String loginName) {
         SignInPointDto signInPointDto = (SignInPointDto) redisWrapperClient.hgetSeri(POINT_SIGN_IN_KEY, loginName);
-        return signInPointDto == null ? false : Days.daysBetween(new DateTime(signInPointDto.getSignInDate()), new DateTime().withTimeAtStartOfDay()) == Days.ZERO;
+        return signInPointDto != null && Days.daysBetween(new DateTime(signInPointDto.getSignInDate()), new DateTime().withTimeAtStartOfDay()) == Days.ZERO;
     }
 
     @Override
