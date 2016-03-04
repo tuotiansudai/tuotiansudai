@@ -9,4 +9,6 @@ public interface SignInService {
 
     boolean signInIsSuccess(String loginName);
 
+    SignInPointDto getLastSignIn(String loginName);
+
 }

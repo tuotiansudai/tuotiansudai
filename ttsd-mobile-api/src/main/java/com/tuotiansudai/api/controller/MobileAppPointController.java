@@ -23,6 +23,12 @@ public class MobileAppPointController extends MobileAppBaseController {
         return mobileAppPointService.signIn(baseParamDto);
     }
 
+    @RequestMapping(value = "/get/last-sign-in-time", method = RequestMethod.POST)
+    public BaseResponseDto lastSignInTime(@RequestBody BaseParamDto baseParamDto) {
+        baseParamDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppPointService.getLastSignInTime(baseParamDto);
+    }
+
     @RequestMapping(value = "/get/point-bill", method = RequestMethod.POST)
     public BaseResponseDto getPointBillData(@RequestBody PointBillRequestDto pointBillRequestDto) {
         pointBillRequestDto.getBaseParam().setUserId(getLoginName());
