@@ -8,7 +8,12 @@ dependencies {
 startScripts {
     def default_jmx_port = 2911;
     if (project.hasProperty('rop')) {
-        default_jmx_port = 2912;
+        if("invest".equals(rop)){
+            default_jmx_port = 2912;
+        }
+        if("jpush".equals(rop)){
+            default_jmx_port = 2913;
+        }
     }
     classpath = files('conf') + classpath
     defaultJvmOpts = [

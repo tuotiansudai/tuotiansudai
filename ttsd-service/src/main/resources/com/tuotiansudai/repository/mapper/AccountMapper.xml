@@ -40,9 +40,6 @@
         select login_name from account where login_name like CONCAT(CONCAT('%', #{loginName}), '%')
     </select>
 
-
-
-
     <select useCache="false" id="lockByLoginName" parameterType="java.lang.String" resultMap="accountResultMap">
         select * from account where login_name = #{loginName} for update
     </select>
@@ -57,6 +54,18 @@
 
     <select id="findByIdentityNumber" parameterType="java.lang.String" resultMap="accountResultMap">
         select * from account where identity_number = #{identityNumber}
+    </select>
+
+    <select id="findLoginNames" resultType="java.lang.String">
+        select login_name from account
+    </select>
+
+    <select id="findBirthOfAccountInMonth" resultType="java.lang.String">
+        select login_name from account where (if(length(identity_number) = 18,substring(identity_number,11,2),substring(identity_number,9,2))) = DATE_FORMAT(now(),'%m')
+    </select>
+
+    <select id="findBirthOfAccountInDay" resultType="java.lang.String">
+        select login_name from account where (if(length(identity_number) = 18,substring(identity_number,13,2),substring(identity_number,11,2))) = DATE_FORMAT(now(),'%d')
     </select>
 
 </mapper>

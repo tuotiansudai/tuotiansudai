@@ -5,7 +5,7 @@
         position: absolute;
         top: 0;
         width: 100%;
-        z-index: 100;
+        z-index: 102;
         display: block;
     }
     .nav-container {
@@ -47,7 +47,7 @@
                     </P>
                     <p>拓天速贷投资门槛低，50元即可起投。</p>
                 </div>
-                <div class="down clearfix"><b>试试鼠标滚动</b><img src="/images/sign/assure/down.png" alt=""></div>
+                <div class="down clearfix"><b>试试鼠标滚动</b><img src="/images/sign/assure/down.png" class="down-icon" alt=""></div>
             </div>
 
     </div>
@@ -75,7 +75,7 @@
 
                 </p>
 
-                <div class="down clearfix"><b>试试鼠标滚动</b><img src="/images/sign/assure/down.png" alt=""></div>
+                <div class="down clearfix"><b>试试鼠标滚动</b><img src="/images/sign/assure/down.png" class="down-icon" alt=""></div>
             </div>
     </div>
     <div class="section box-insurance">
@@ -135,7 +135,7 @@
 
                 </p>
             </div>
-            <div class="down clearfix"><b>试试鼠标滚动</b><img src="/images/sign/assure/up.png" alt=""></div>
+            <div class="down clearfix"><b>试试鼠标滚动</b><img src="/images/sign/assure/up.png" class="down-icon" alt=""></div>
          </div>
     </div>
 </div>

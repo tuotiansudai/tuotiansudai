@@ -20,6 +20,7 @@
         <result column="reward_amount" property="rewardAmount"></result>
         <result column="status" property="status"></result>
         <result column="reward_time" property="rewardTime"></result>
+        <result column="product_type" property="productType"></result>
     </resultMap>
 
     <select id="findReferrerManage" parameterType="map" resultMap="referrerManageMap">
@@ -492,7 +493,8 @@
             l.periods,
             i.created_time AS invest_time,
             irr.amount AS reward_amount,
-            irr.created_time AS reward_time
+            irr.created_time AS reward_time,
+            l.product_type AS product_type
         from
             invest_referrer_reward irr
         left join invest i

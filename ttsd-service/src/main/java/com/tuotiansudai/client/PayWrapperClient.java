@@ -6,11 +6,13 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.*;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.Map;
 
 @Component
@@ -53,6 +55,13 @@ public class PayWrapperClient extends BaseClient {
 
     private String cancelLoanPath = "/loan/{0}/cancel";
 
+    private String resetUmpayPassword = "/reset-umpay-password";
+
+    public boolean resetUmpayPassword(ResetUmpayPasswordDto resetUmpayPasswordDto) {
+        BaseDto<PayDataDto> baseDto = syncExecute(resetUmpayPasswordDto, resetUmpayPassword, "POST");
+        return baseDto.isSuccess();
+    }
+
     public BaseDto<PayDataDto> register(RegisterAccountDto dto) {
         return syncExecute(dto, registerPath, "POST");
     }
@@ -82,7 +91,7 @@ public class PayWrapperClient extends BaseClient {
     }
 
     public BaseDto<PayDataDto> cancelLoan(Long loanId) {
-        return syncExecute(null, MessageFormat.format(cancelLoanPath,loanId.toString()), "POST");
+        return syncExecute(null, MessageFormat.format(cancelLoanPath, loanId.toString()), "POST");
     }
 
     public BaseDto<PayFormDataDto> agreement(AgreementDto dto) {
@@ -105,8 +114,16 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(dto, loanPath, "PUT");
     }
 
+    public BaseDto<PayDataDto> investCallback() {
+        return syncExecute(null, "/job/async_invest_notify", "POST");
+    }
+
     public BaseDto<PayDataDto> loanOut(LoanOutDto dto) {
         return syncExecute(dto, loanOutPath, "POST");
+    }
+
+    public BaseDto<PayDataDto> checkLoanAmount(long loanId) {
+        return syncExecute(null, MessageFormat.format("/real-time/loan/{0}/check-amount", String.valueOf(loanId)), "GET");
     }
 
     public BaseDto<PayDataDto> loanOutSuccessNotify(long loanId){
@@ -123,10 +140,6 @@ public class PayWrapperClient extends BaseClient {
         return Maps.newHashMap();
     }
 
-    public BaseDto<PayDataDto> investCallback() {
-        return syncExecute(null, "/job/async_invest_notify", "POST");
-    }
-
     public Map<String, String> getLoanStatus(long loanId) {
         String json = this.execute(MessageFormat.format("/real-time/loan/{0}", String.valueOf(loanId)), null, "GET");
         try {
@@ -135,6 +148,16 @@ public class PayWrapperClient extends BaseClient {
             logger.error(e.getLocalizedMessage(), e);
         }
         return Maps.newHashMap();
+    }
+
+    public Map<String, String> getTransferStatus(String orderId, Date merDate, String businessType) {
+        String json = this.execute(MessageFormat.format("/real-time/transfer/order-id/{0}/mer-date/{1}/business-type/{2}", orderId, new DateTime(merDate).toString("yyyyMMdd"), businessType), null, "GET");
+        try {
+            return objectMapper.readValue(json, new TypeReference<Map<String, String>>() {});
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
     }
 
     public Map<String, String> getPlatformStatus() {
@@ -245,5 +268,13 @@ public class PayWrapperClient extends BaseClient {
 
     public void setApplicationContext(String applicationContext) {
         this.applicationContext = applicationContext;
+    }
+
+    public BaseDto<PayDataDto> autoLoanOutAfterRaisingComplete(long loanId){
+        return syncExecute(String.valueOf(loanId), "/job/auto-loan-out-after-raising-complete", "POST");
+    }
+
+    public BaseDto<PayDataDto> sendRedEnvelopeAfterLoanOut(long loanId){
+        return syncExecute(String.valueOf(loanId), "/job/sed-red-envelope-after-loan-out", "POST");
     }
 }

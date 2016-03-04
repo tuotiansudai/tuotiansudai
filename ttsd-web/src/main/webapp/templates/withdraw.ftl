@@ -13,7 +13,6 @@
                 实际到账：<em class="actual-amount">0.00</em> 元
             </div>
             <button class="withdraw-submit btn-normal" type="button" disabled="disabled">确认提现</button>
-
             <div class="clear-blank"></div>
             <form action="/withdraw" method="post" target="_blank">
                 <input name="amount" type="hidden" value=""/>

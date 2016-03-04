@@ -3,6 +3,9 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
@@ -14,6 +17,7 @@ import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -48,6 +52,12 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private IdGenerator idGenerator;
 
+    @Autowired
+    private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private CouponMapper couponMapper;
+
     @Override
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
         checkInvestAmount(investDto);
@@ -56,7 +66,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private void checkInvestAmount(InvestDto investDto) throws InvestException {
-        long loanId = investDto.getLoanIdLong();
+        long loanId = Long.parseLong(investDto.getLoanId());
         LoanModel loan = loanMapper.findById(loanId);
         long userInvestMinAmount = loan.getMinInvestAmount();
         long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());
@@ -65,13 +75,6 @@ public class InvestServiceImpl implements InvestService {
         // 标的状态不对
         if (LoanStatus.RAISING != loan.getStatus()) {
             throw new InvestException(InvestExceptionType.ILLEGAL_LOAN_STATUS);
-        }
-
-        // 不满足新手标投资限制约束
-        if (ActivityType.NEWBIE == loan.getActivityType()) {
-            if (!canInvestNewbieLoan(investDto.getLoginName())) {
-                throw new InvestException(InvestExceptionType.OUT_OF_NOVICE_INVEST_LIMIT);
-            }
         }
 
         // 不满足最小投资限制
@@ -105,14 +108,6 @@ public class InvestServiceImpl implements InvestService {
             throw new InvestException(InvestExceptionType.MORE_THAN_MAX_INVEST_AMOUNT);
         }
 
-    }
-
-    private boolean canInvestNewbieLoan(String loginName) {
-        if (newbieInvestLimit == 0) {
-            return true;
-        }
-        int newbieInvestCount = investMapper.sumSuccessNewbieInvestCountByLoginName(loginName);
-        return (newbieInvestCount < newbieInvestLimit);
     }
 
     @Override
@@ -184,7 +179,13 @@ public class InvestServiceImpl implements InvestService {
             int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
             items = investMapper.findInvestPagination(loanId, investorLoginName, channel, strSource, role, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus);
-
+            for (InvestPaginationItemView investPaginationItemView : items) {
+                List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndLoanId(investorLoginName, investPaginationItemView.getLoanId());
+                investPaginationItemView.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
+                if (CollectionUtils.isNotEmpty(userCouponModels)) {
+                    investPaginationItemView.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
+                }
+            }
             investAmountSum = investMapper.sumInvestAmount(loanId, investorLoginName, channel, strSource, role, startTime, endTime, investStatus, loanStatus);
         }
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoginDto;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.LoginLogService;
 import com.tuotiansudai.service.UserRoleService;
@@ -33,13 +34,16 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
     @Autowired
     private UserRoleService userRoleService;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Value("${web.login.max.failed.times}")
     private int times;
 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        String loginName = request.getParameter("username");
+        String loginName =  userMapper.findByLoginNameOrMobile(request.getParameter("username")).getLoginName();
         loginLogService.generateLoginLog(loginName, Source.WEB, RequestIPParser.parse(request), null, true);
 
         String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", loginName);

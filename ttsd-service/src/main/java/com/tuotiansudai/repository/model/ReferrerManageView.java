@@ -39,6 +39,8 @@ public class ReferrerManageView {
 
     private Date rewardTime;
 
+    private ProductType productType;
+
     public String getLoanName() {
         return loanName;
     }
@@ -173,5 +175,13 @@ public class ReferrerManageView {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public ProductType getProductType() {
+        return productType;
+    }
+
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
     }
 }

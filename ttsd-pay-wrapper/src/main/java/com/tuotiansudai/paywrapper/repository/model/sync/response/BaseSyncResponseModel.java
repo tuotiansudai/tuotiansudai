@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class BaseSyncResponseModel {
 
-    private static String SUCCESS_CODE = "0000";
+    public static String SUCCESS_CODE = "0000";
 
     private Long id;
 

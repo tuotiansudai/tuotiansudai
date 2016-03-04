@@ -2,13 +2,10 @@ package com.tuotiansudai.api.controller;
 
 import com.google.common.collect.Maps;
 import com.tuotiansudai.api.dto.UmPayFrontService;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -79,6 +76,9 @@ public class MobileAppCallBackController {
             message = "换卡成功";
             href = MessageFormat.format("tuotian://changecard/{0}",callBackStatus);
 
+        } else if (UmPayFrontService.PTP_MER_NO_PASSWORD_INVEST.getServiceName().equals(service)) {
+            message = "开通无密投资成功";
+            href = MessageFormat.format("tuotian://nopasswordinvest/{0}",callBackStatus);
         }
         if("fail".equals(callBackStatus)){
             message = retMsg;

@@ -13,16 +13,21 @@ import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.util.RequestIPParser;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
 @RequestMapping(value = "/project-manage/loan")
 public class LoanController {
+
+    static Logger logger = Logger.getLogger(LoanController.class);
 
     private static final String DEFAULT_CONTRACT_ID = "789098123"; // 四方合同
 
@@ -36,7 +41,7 @@ public class LoanController {
     public ModelAndView createLoan() {
         ModelAndView modelAndView = new ModelAndView("/loan-create");
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
-        modelAndView.addObject("productTypes",Lists.newArrayList(ProductType.values()));
+        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
         return modelAndView;
@@ -69,7 +74,7 @@ public class LoanController {
         }
         ModelAndView modelAndView = new ModelAndView("/loan-edit");
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
-        modelAndView.addObject("productTypes",Lists.newArrayList(ProductType.values()));
+        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
         modelAndView.addObject("loanInfo", loanService.findLoanById(loanId));
@@ -85,9 +90,10 @@ public class LoanController {
 
     @RequestMapping(value = "/ok", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> openLoan(@RequestBody LoanDto loanDto) {
+    public BaseDto<PayDataDto> openLoan(@RequestBody LoanDto loanDto, HttpServletRequest request) {
+        String ip = RequestIPParser.parse(request);
         loanDto.setVerifyLoginName(LoginUserInfo.getLoginName());
-        return loanService.openLoan(loanDto);
+        return loanService.openLoan(loanDto, ip);
     }
 
     @RequestMapping(value = "/delay", method = RequestMethod.POST)
@@ -99,14 +105,8 @@ public class LoanController {
     @RequestMapping(value = "/recheck", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> recheckLoan(@RequestBody LoanDto loanDto) {
-        BaseDto<PayDataDto> baseDto = null;
-        try {
-            loanDto.setRecheckLoginName(LoginUserInfo.getLoginName());
-            baseDto = loanService.loanOut(loanDto);
-        } catch (BaseException e) {
-            e.printStackTrace();
-        }
-        return baseDto;
+        loanDto.setRecheckLoginName(LoginUserInfo.getLoginName());
+        return loanService.loanOut(loanDto);
     }
 
     @RequestMapping(value = "/cancel", method = RequestMethod.POST)

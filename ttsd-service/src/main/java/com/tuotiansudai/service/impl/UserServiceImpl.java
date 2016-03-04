@@ -15,6 +15,8 @@ import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.*;
+import com.tuotiansudai.task.OperationType;
+import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.commons.collections4.CollectionUtils;
@@ -27,8 +29,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+//import com.tuotiansudai.task.OperationType;
+//import com.tuotiansudai.task.aspect.ApplicationAspect;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,6 +43,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserRoleService userRoleService;
 
     @Autowired
     private UserRoleMapper userRoleMapper;
@@ -210,7 +219,7 @@ public class UserServiceImpl implements UserService {
         userMapper.updateUser(userModel);
 
         //generate audit
-        auditLogService.generateAuditLog(operatorLoginName, beforeUpdateUserModel, beforeUpdateUserRoleModels, userModel, afterUpdateUserRoleModels, ip);
+//        auditLogService.createUserActiveLog(operatorLoginName, beforeUpdateUserModel, beforeUpdateUserRoleModels, userModel, afterUpdateUserRoleModels, ip);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (!mobile.equals(beforeUpdateUserModel.getMobile()) && accountModel != null) {
@@ -229,14 +238,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void updateUserStatus(String loginName, UserStatus userStatus, String ip, String operatorLoginName) {
         UserModel userModel = userMapper.findByLoginName(loginName);
-        UserModel beforeUpdateUserModel;
-        try {
-            beforeUpdateUserModel = userModel.clone();
-        } catch (CloneNotSupportedException e) {
-            logger.error(e.getLocalizedMessage(), e);
-            return;
-        }
-
         userModel.setStatus(userStatus);
         userModel.setLastModifiedTime(new Date());
         userModel.setLastModifiedUser(operatorLoginName);
@@ -247,9 +248,8 @@ public class UserServiceImpl implements UserService {
         } else {
             redisWrapperClient.set(redisKey, String.valueOf(times));
         }
-        List<UserRoleModel> userRoles = userRoleMapper.findByLoginName(loginName);
 
-        auditLogService.generateAuditLog(operatorLoginName, beforeUpdateUserModel, userRoles, userModel, userRoles, ip);
+        auditLogService.createUserActiveLog(loginName, operatorLoginName, userStatus, ip);
     }
 
     private void checkUpdateUserData(EditUserDto editUserDto) throws EditUserException {
@@ -310,18 +310,20 @@ public class UserServiceImpl implements UserService {
         List<UserItemDataDto> userItemDataDtos = Lists.newArrayList();
         for (UserModel userModel : userModels) {
 
-            boolean staff = false;
             UserItemDataDto userItemDataDto = new UserItemDataDto(userModel);
-            userItemDataDto.setUserRoles(userRoleMapper.findByLoginName(userModel.getLoginName()));
-            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(userModel.getReferrer());
-            for (UserRoleModel userRoleModel : userRoleModels) {
-                if (userRoleModel.getRole()==Role.STAFF) {
-                    staff = true;
+            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(userModel.getLoginName());
+            userItemDataDto.setUserRoles(userRoleModels);
+
+            List<UserRoleModel> referrerRoleModels = userRoleMapper.findByLoginName(userModel.getReferrer());
+            for (UserRoleModel referrerRoleModel : referrerRoleModels) {
+                if (referrerRoleModel.getRole() == Role.STAFF) {
+                    userItemDataDto.setReferrerStaff(true);
                     break;
                 }
             }
-            userItemDataDto.setStaff(staff);
             userItemDataDto.setBankCard(bindBankCardService.getPassedBankCard(userModel.getLoginName()) != null);
+            String taskId = OperationType.USER + "-" + userModel.getLoginName();
+            userItemDataDto.setModify(redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId));
             userItemDataDtos.add(userItemDataDto);
         }
         int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel);
@@ -335,11 +337,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<String> findStaffNameFromUserLike(String loginName) {
         return userMapper.findStaffByLikeLoginName(loginName);
-    }
-
-    @Override
-    public int findUserCount() {
-        return userMapper.findUserCount();
     }
 
     @Override
@@ -413,18 +410,57 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserModel> findUsersAccountBalance(String loginName, int currentPageNo, int pageSize) {
-        return userMapper.findUsersAccountBalance(loginName, (currentPageNo - 1) * pageSize, pageSize);
+    public List<UserItemDataDto> findUsersAccountBalance(String loginName, String balanceMin, String balanceMax, int currentPageNo, int pageSize) {
+        int[] balance = parseBalanceInt(balanceMin, balanceMax);
+        List<UserModel> userModels =  userMapper.findUsersAccountBalance(loginName,balance[0], balance[1],  (currentPageNo - 1) * pageSize, pageSize);
+
+        List<UserItemDataDto> userItemDataDtoList = new ArrayList<>();
+        for(UserModel userModel : userModels) {
+            UserItemDataDto userItemDataDto = new UserItemDataDto(userModel);
+            userItemDataDto.setStaff(userRoleService.judgeUserRoleExist(userModel.getLoginName(), Role.STAFF));
+            userItemDataDtoList.add(userItemDataDto);
+        }
+        return userItemDataDtoList;
     }
 
     @Override
-    public int findUsersAccountBalanceCount(String loginName) {
-        return userMapper.findUsersAccountBalanceCount(loginName);
+    public int findUsersAccountBalanceCount(String loginName, String balanceMin, String balanceMax) {
+        int[] balance = parseBalanceInt(balanceMin, balanceMax);
+        return userMapper.findUsersAccountBalanceCount(loginName, balance[0], balance[1]);
     }
 
     @Override
-    public long findUsersAccountBalanceSum(String loginName) {
-        return userMapper.findUsersAccountBalanceSum(loginName);
+    public long findUsersAccountBalanceSum(String loginName, String balanceMin, String balanceMax) {
+        int[] balance = parseBalanceInt(balanceMin, balanceMax);
+        return userMapper.findUsersAccountBalanceSum(loginName, balance[0], balance[1]);
+    }
+
+    @Override
+    public boolean resetUmpayPassword(String loginName, String identityNumber) {
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        if (accountModel == null || !accountModel.getIdentityNumber().equals(identityNumber)) {
+            return false;
+        }
+        ResetUmpayPasswordDto resetUmpayPasswordDto = new ResetUmpayPasswordDto(loginName, identityNumber);
+        return payWrapperClient.resetUmpayPassword(resetUmpayPasswordDto);
+    }
+
+    private int[] parseBalanceInt(String balanceMin, String balanceMax) {
+        int min, max;
+        try {
+            min = Integer.parseInt(balanceMin) * 100;
+        } catch (NumberFormatException e) {
+            min = 0;
+            logger.warn("user account balance search parameter wrong, balanceMin is not an integer, balanceMin:" + balanceMin);
+        }
+
+        try {
+            max = Integer.parseInt(balanceMax) * 100;
+        } catch (NumberFormatException e) {
+            max = Integer.MAX_VALUE;
+            logger.warn("user account balance search parameter wrong, balanceMax is not an integer, balanceMax:" + balanceMax);
+        }
+        return new int[]{min, max};
     }
 
 }

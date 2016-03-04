@@ -4,6 +4,7 @@ import com.tuotiansudai.repository.model.AccountModel;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface AccountMapper {
@@ -14,7 +15,6 @@ public interface AccountMapper {
 
     AccountModel findByPayUserId(String payUserId);
 
-
     List<String> findAllLoanerLikeLoginName(String loginName);
 
     List<String> findAccountLikeLoginName(String loginName);
@@ -24,5 +24,11 @@ public interface AccountMapper {
     void update(AccountModel model);
 
     AccountModel findByIdentityNumber(String identityNumber);
+
+    List<String> findLoginNames();
+
+    List<String> findBirthOfAccountInMonth();
+
+    List<String> findBirthOfAccountInDay();
 
 }

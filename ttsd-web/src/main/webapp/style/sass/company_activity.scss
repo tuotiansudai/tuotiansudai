@@ -5,24 +5,6 @@
 .footer-container {
   margin-top:0;
 }
-
-.actor-img img{
-  margin: 0 auto;
-
-}
-.actor-recruit-img,.actor-recruit-img img {
-  height:350px;
-  background: url("/images/sign/actor/daili/ba-daili.jpg") center top no-repeat;
-  background-size: cover;
-}
-.actor-grand-img {
-  height:350px;
-  background: url("/images/sign/actor/grand/ba-grand.jpg") center top no-repeat;
-}
-.actor-ranking-img {
-  height: 439px;
-  background: url("/images/sign/actor/ranking/ba-rank.jpg") center top no-repeat;
-}
 .main-width {
   width:1010px;
   margin: 0 auto;
@@ -36,101 +18,14 @@
 .activity-date {
   padding:43px 0px 10px 0px;
 }
-.grand-content {
-  width:1002px;
-  background: #f3db6f;
-  margin:0 auto;
-  padding-top:30px;
-  overflow: hidden;
-  text-align: center;
-}
 .responsive-rule{
   margin-top: 30px;
 }
 .padding-top {
   padding-top:30px;
 }
-.product-show {
-  width:860px;
-  margin:0 auto;
-  padding-bottom: 30px;
-}
 .p-title { text-align: left;
   padding:60px;}
-.img-big {
-  width:400px;
-  height: 400px;
-  float: left;
-  position: relative;
-  cursor: pointer;
-}
-
-.img-small-box {
-  width:425px;
-  float: left;
-  margin-left: 15px;
-  font-size: 0;
-}
-.small-inner {
-  cursor: pointer;
-  display: inline-block;
-  position: relative;
-  width:190px;
-  height:190px;
-  margin-right:15px;
-  margin-bottom:20px;
-
-}
-.small-inner img,.img-big img{
-  position: absolute;
-  left: 0;
-  top:0;
-  right:0;
-  bottom:0;
-  z-index: 2;
-}
-
-img.icon-mark {
-  z-index: 20!important;
-  top:-4px;
-  left:-4px;
-  right:auto;
-  bottom:auto;
-}
-.shadow-box {
-  display: none;
-  text-align: center;
-  line-height: 1.3;
-  width:100%;
-  height:100%;
-  background: rgba(0,0,0,0.5);
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 5;
-  font-size: 16px;
-  font-family: "microsoft yahei";
-  color: #ffffff;
-  vertical-align:middle;
-}
-.img-big .shadow-box { font-size: 36px;}
-.shadow-box span {
-  display: inline-block;
-  margin-top:45%;
-}
-.small-inner:hover .shadow-box,
-.img-big:hover .shadow-box{
-  display: block;
-}
-.small-box-out {
-  margin-bottom: 20px;
-  .small-inner:nth-child(2),
-  .small-inner:nth-child(3)
-  {
-    margin-right: 13px;
-  }
-
-}
 
 /* steps */
 .steps-content {
@@ -253,38 +148,9 @@ img.icon-mark {
 
 .qualifications,.apply,.give-more { padding-top:30px;}
 
-.hot-link {
-  position: relative;
-  width:752px;
-  height:60px;
-  margin:0 auto;
-  img {
-    position: absolute;
-    left:0;
-    top: 0;
-    z-index: 1;
-  }
-  a {
-    display: block;
-    width:230px;
-    height:50px;
-    cursor: pointer;
-    float:left;
-    margin-right:20px;
-    cursor: pointer;
-  }
-}
 
-.img-hot-link {
-  width:100%;
-  height:100%;
-  position: absolute;
-  z-index: 10;
-}
-.activity-ranking-container,
-.activity-grand-container{
-  background: #fffbd9;
-}
+
+
 /*responsive picture*/
 .res-comtainer{
   display: none;
@@ -340,148 +206,279 @@ img.icon-mark {
   }
 }
 
+.activity-award-container {
+  overflow: hidden;
+  background: #a30716;
+  color: #fff1b5;
+  .wide-screen-out {
+    position: relative;
+    .wide-screen-left,.wide-screen-right {
+      position: absolute;
+      left:-1px;
+      top:0;
+      background: url("/images/sign/actor/awards/award-left.jpg") right 0 no-repeat;
+      height:520px;
+      display: none;
+    }
+    .wide-screen-right {
+      right:0;
+      left:auto;
+      background: url("/images/sign/actor/awards/award-right.jpg") left 0 no-repeat;
+    }
+    .wide-screen-inner {
+      width:1000px;
+      margin:0px auto;
+      padding-top:30px;
+      .activity-info {
+        margin:20px;
+        padding:15px;
+        font-size: 22px;
+        border:1px dashed #fff1b5;
+        border-radius:10px;
+
+        text-align: center;
+        b {
+          font-size: 34px;
+        }
+        .last-word {
+          display: block;
+        }
+      }
+      .award-product-box {
+        height: 380px;
+        margin-top:50px;
+        background: url("/images/sign/actor/awards/award-product.png") center top no-repeat;
+      }
+      .trophy-box {
+        text-align: center;
+        margin-top:30px;
+        .trophy-text {
+          font-size: 30px;
+          line-height: 1.5;
+          padding-top: 30px;
+          display: inline-block;
+
+          b {
+            font-size: 38px;
+          }
+        }
+      }
+      .activity-table {
+        margin:20px;
+        border:1px solid #fff1b5;
+        border-radius:10px;
+      }
+      .table-awards td {
+        border-bottom:1px dashed #fff1b5;
+        padding:10px;
+        font-size: 22px;
+        color: #fff1b5;
+      }
+      .table-awards td.last {
+        border-bottom-width: 0;
+      }
+      .table-awards td[scope="col"] {
+        width:180px;
+        border-right: 1px dashed #fff1b5;
+      }
+
+      .button-bar {
+        margin-top:60px;
+        .btn-primary {
+          color: #801616!important;
+          font-size: 30px;
+          background: #ffcc00;
+          font-weight: bold;
+          letter-spacing: 0;
+        }
+      }
+      .time {
+        font-size: 13px;
+        padding-top: 40px;
+        display: inline-block;
+        padding-bottom:60px;
+      }
+
+    }
+  }
+  .actor-award-img {
+    height:477px;
+    background: url("/images/sign/actor/awards/img-award.jpg") center top no-repeat;
+    clear:both;
+  }
+}
+
+.red-envelope-container {
+  text-align: center;
+.red-top {
+  margin-bottom: 15px;
+}
+  .red-top-mobile {
+    display: none;
+  }
+  .line-date {
+    border-top: 1px dotted #fff831;
+    width: 100%;
+    position: relative;
+    margin-top: 40px;
+    margin-bottom: 0px;
+    .date-info {
+      background: #be0000;
+      color: #fff831;
+      width: 272px;
+      margin: -14px auto 10px auto;
+      .fa {
+        color: #fff831;
+        &.left {
+          margin-left: -10px;
+        }
+        &.right {
+          margin-right:-10px;
+        }
+      }
+    }
+  }
+}
+/*birth-month*/
+.birth-month-container{
+  float:left;
+  width:100%;
+  .birth-time{
+    position: fixed;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    display:none;
+    background:url("/images/sign/actor/birth/tip-bg.png") repeat;
+    z-index:88;
+    .time-list{
+      position: absolute;
+      top:50%;
+      left:50%;
+      margin-top:-182px;
+      margin-left:-264px;
+      z-index:99;
+    }
+    .tip-time{
+      float:left;
+    }
+    .time-close{
+      width:50px;
+      height:50px;
+      position: absolute;
+      top:20px;
+      right:0;
+      cursor:pointer;
+    }
+  }
+  .wp-img{
+    float:left;
+    width:100%;
+  }
+  .wp-img-phone{
+    float:left;
+    width:100%;
+    display:none;
+  }
+  .wp{
+    width:1000px;
+    margin:0 auto;
+    p{
+      font-size:40px;
+      color:#fff;
+      text-align:center;
+      &.text-pro{
+        overflow:hidden;
+        margin:40px 0 70px 0;
+        span{
+          position: relative;
+          .click-btn{
+            position: absolute;
+            left: 25px;
+            bottom: 20px;
+            width:300px;
+            height:58px;
+          }
+          &.product-left{
+            float:left;
+            margin-left:100px;
+          }
+          &.product-right{
+            float:right;
+            margin-right:100px;
+          }
+        }
+      }
+      &.text-bg{
+        font-size:40px;
+        color:#fff;
+        background:url('/images/sign/actor/birth/text-bg.png') center no-repeat;
+      }
+      &.text-font{
+        font-size:20px;
+        margin-bottom:50px;
+      }
+      &.img-position{
+        margin-top:-110px;
+      }
+      &.text-gift{
+        margin-bottom:60px;
+        .party-img-phone{
+          display:none;
+        }
+      }
+    }
+    .rule-list{
+      background:#cc3929;
+      padding:20px 50px;
+      border-radius:10px;
+      margin:50px 100px 60px 100px;
+      li{
+        color:#fff;
+        font-size:18px;
+        &.intro-text{
+          font-size:14px;
+        }
+      }
+    }
+  }
+}
 @media screen and (max-width: 700px){
+  .red-envelope-container {
+    .mobile {
+      display: none;
+    }
+    img {
+      width: 100%;
+    }
+    .red-top {
+      display: none;
+    }
+    .red-top-mobile {
+      display: block;
+    }
+    .line-date-box {
+      height: 40px;
+      background: #b00100;
+      padding-top: 30px;
+    }
+    .line-date {
+      margin-top:0;
+    }
+    .line-date .date-info {
+      background: #b00100;
+    }
+  }
   .activity-ranking-container {
     .res-no-app {
       display: none;
     }
   }
-  .actor-ranking-img {
-    height: 150px!important;
-    background: url("/images/ttimg/ph-a01.jpg") center top no-repeat!important;
-    background-size: cover!important;
-  }
-  .actor-grand-img{
-    height: 150px!important;
-    background: url("/images/ttimg/ph-a02.jpg") center top no-repeat!important;
-    background-size: cover!important;
-  }
   .actor-recruit-img {
     height: 150px;
     background: url("/images/ttimg/ph-a03.jpg") center top no-repeat!important;
     background-size: cover!important;
-  }
-
-  .recruit-content{
-    width:100%;
-    padding:0;
-    .hot-link{
-      width: 100%;
-      height: auto;
-      background: blue;
-      img{
-        position: absolute;
-        width:100%;
-        top: -4px;
-      }
-      .img-hot-link{
-        display: none;
-      }
-    }
-    .r-time {
-      padding:24px 0px 0 10px;
-      b {
-        font-size: 15px;
-      }
-      p {
-        margin-left: 3px;
-        font-size: 13px;
-      }
-    }
-    .qualifications{
-      padding-top: 10px;
-      img{
-        width:100%;
-      }
-    }
-    .apply{
-      padding-top: 10px;
-      img{
-        width:100%;
-      }
-    }
-    .give-more{
-      padding-top: 10px;
-      img{
-        width:100%;
-      }
-    }
-  }
-
-  .grand-content{
-    width:100%!important;
-    padding-top: 10px!important;
-    background: #f2f2f2!important;
-    img{
-      &.responsive-picture{
-        width:100%!important;
-      }
-      &.responsive-rule{
-        width:100%!important;
-        margin-top:10px!important;
-      }
-    }
-    .product-show{
-      width:100%;
-      padding-bottom: 10px;
-      .p-title{
-        padding:20px 10px;
-      }
-      .img-big{
-        width:100%;
-        height:auto;
-        margin-bottom: 10px;
-        &:hover .shadow-box{
-          display: none;
-        }
-        .icon-mark{
-          width:30%;
-        }
-        .product-img{
-          width:100%;
-          position:static;
-        }
-      }
-      .img-small-box{
-        width:100%;
-        margin-left:0;
-        .small-inner{
-          float:left;
-          width:50%;
-          height:auto;
-          margin: 0 0 10px 0;
-          &:hover .shadow-box{
-            display:none;
-          }
-          img{
-            &.product-img{
-              position: static;
-              width:100%;
-            }
-          }
-        }
-      }
-      .small-box-out{
-        float:left;
-        width:100%;
-        margin-bottom: 10px;
-        .small-inner{
-          float:left;
-          width:50%;
-          height:auto;
-          margin: 0 0 10px 0;
-          &:hover .shadow-box{
-            display:none;
-          }
-          img{
-            &.product-img{
-              position: static;
-              width:100%;
-            }
-          }
-        }
-      }
-    }
   }
   .res-comtainer{
     display: block!important;
@@ -489,6 +486,165 @@ img.icon-mark {
     .responsive-picture {
       img {
         width:100%;
+      }
+    }
+  }
+  .activity-award-container {
+    .actor-award-img {
+      height: 150px !important;
+      background: url("/images/sign/actor/awards/ph-awards.jpg") center top no-repeat;
+      clear: both;
+      background-size: contain !important;
+    }
+    .wide-screen-out {
+      .wide-screen-inner {
+        width: 98%;
+        margin:0 auto;
+        padding-top:10px;
+        .activity-info {
+          font-size: 14px;
+          margin: 10px;
+          padding: 9px;
+          span {
+            display: block;
+          }
+          img {
+            display: none;
+          }
+          b {
+            font-size: 18px;
+          }
+        }
+        .award-product-box {
+          height: 425px;
+          margin-top:20px;
+          background: url("/images/sign/actor/awards/app-product.jpg") center top no-repeat;
+          background-size: contain;
+        }
+        .trophy-box {
+          .trophy-big {
+            width:70px;
+          }
+          .trophy-text {
+            font-size: 15px;
+            b {
+              font-size: 18px;
+            }
+          }
+        }
+        .activity-table {
+          margin:30px 5px 5px 5px;
+          border-radius: 5px;
+          .table-awards td {
+              padding: 5px;
+              font-size: 12px;
+            }
+          .table-awards td[scope="col"] {
+            width:70px;
+            border-right: 1px dashed #fff1b5;
+          }
+        }
+        .button-bar {
+          margin-top:30px;
+          time {
+            padding-top:20px;
+            padding-bottom: 20px;
+          }
+        }
+      }
+    }
+
+  }
+  .birth-month-container{
+    .time-list{
+      width:240px;
+      height:170px;
+      margin-top:-85px!important;
+      margin-left:-120px!important;
+    }
+    .tip-time{
+      width:100%!important;
+    }
+    .time-close{
+      width:10%!important;
+      height:auto!important;
+    }
+    .wp-img{
+      display:none;
+    }
+    .wp-img-phone{
+      display:block;
+    }
+    .wp{
+      float:left;
+      width:100%;
+      margin-top: 25px;
+      p{
+        float:left;
+        width:100%;
+        font-size:20px;
+        .monkey-phone{
+          width:20%;
+        }
+        &.img-position{
+          margin-top:-55px;
+          img{
+            width:80%;
+          }
+        }
+        &.text-bg{
+          font-size:20px;
+          background-size:65%;
+        }
+        &.text-font{
+          font-size:14px;
+          margin-bottom:30px;
+        }
+        &.text-pro{
+          margin:20px 0;
+          span{
+            width:46%;
+            margin:0 2%;
+            .click-btn{
+              left:0;
+              bottom:0;
+              width:100%;
+            }
+            &.product-left{
+              margin-left:2%;
+              img{
+                width:100%;
+              }
+            }
+            &.product-right{
+              margin-right:2%;
+              img{
+                width:100%;
+              }
+            }
+          }
+        }
+        &.text-gift{
+          margin-bottom:30px;
+          .party-img{
+            display:none;
+          }
+          .party-img-phone{
+            display:block;
+          }
+        }
+      }
+      .rule-list{
+        float:left;
+        width: 96%;
+        margin: 20px 2%;
+        padding: 0;
+        li{
+          font-size:12px;
+          &.intro-text{
+            font-size:12px!important;
+          }
+        }
       }
     }
   }

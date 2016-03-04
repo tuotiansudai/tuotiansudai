@@ -33,7 +33,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
         super.additionalAuthenticationChecks(userDetails, authentication);
 
-        UserModel userModel = userMapper.findByLoginNameOrMobile(httpServletRequest.getParameter(usernameParameter));
+        UserModel userModel = userMapper.findByLoginNameOrMobile(httpServletRequest.getParameter(usernameParameter) != null ? httpServletRequest.getParameter(usernameParameter) : userDetails.getUsername());
         boolean enabled = userModel.isActive();
         if (!enabled) {
             String errorMessage = MessageFormat.format("Login Error: {0} is locked!", httpServletRequest.getParameter(usernameParameter));

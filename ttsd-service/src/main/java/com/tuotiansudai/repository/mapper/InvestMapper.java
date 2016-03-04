@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface InvestMapper {
@@ -86,13 +87,11 @@ public interface InvestMapper {
     List<InvestModel> findSuccessInvestsByLoanId(@Param(value = "loanId") long loanId);
 
     /**
-     * 将指定时间前创建的，目前仍处于waiting状态的投资记录标记为失败
+     * 将目前仍处于waiting状态的投资记录标记为失败
      *
      * @param loanId
-     * @param beforeTime
      */
-    void cleanWaitingInvestBefore(@Param(value = "loanId") long loanId,
-                                  @Param(value = "beforeTime") Date beforeTime);
+    void cleanWaitingInvest(@Param(value = "loanId") long loanId);
 
     /**
      * 获取标的是否存在在指定时间后创建，目前仍处于waiting状态的投资记录
@@ -157,4 +156,16 @@ public interface InvestMapper {
     List<String> findAllInvestChannels();
 
     long countAutoInvest(@Param(value = "loanId") Long loanId, @Param(value = "loginName") String loginName);
+
+    List<String> findInvestorLoginNames();
+
+    long findInvestorCount();
+
+    long findRegisteredNotInvestCount();
+
+    boolean hasSuccessInvest(String loginName);
+
+    Set<String> findNoInvestInThirtyDay();
+
+
 }

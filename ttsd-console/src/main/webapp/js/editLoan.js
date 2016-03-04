@@ -254,7 +254,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     showErrorMessage('借款期限最小为1',$('.jq-timer',curform));
                     return false;
                 }
-                var loanAmount = parseInt($('.jq-pay',curform).val());
+                var loanAmount = parseFloat($('.jq-pay',curform).val());
                 if(loanAmount <= 0){
                     showErrorMessage('预计出借金额应大于0',$('.jq-pay',curform));
                     return false;
@@ -264,12 +264,12 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     showErrorMessage('投资递增金额应大于0', $('.jq-add-pay', curform));
                     return false;
                 }
-                var minPay = parseInt($('.jq-min-pay',curform).val());
+                var minPay = parseFloat($('.jq-min-pay',curform).val());
                 if(minPay <= 0){
                     showErrorMessage('最小投资金额应大于0',$('.jq-min-pay',curform));
                     return false;
                 }
-                var maxPay = parseInt($('.jq-max-pay',curform).val());
+                var maxPay = parseFloat($('.jq-max-pay',curform).val());
                 if(minPay > maxPay){
                     showErrorMessage('最小投资金额不得大于最大投资金额',$('.jq-min-pay',curform));
                     return false;
@@ -289,7 +289,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
         var currentErrorObj = null;
         function showErrorMessage(msg, obj){
             currentErrorObj = obj;
-            var htm = '<div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <span class="txt">建标失败：'+msg+'</span></div>';
+            var htm = '<div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <span class="txt">' + msg + '</span></div>';
             $('.form-error').append(htm);
         }
 
@@ -342,33 +342,60 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     "fundraisingEndTime": new Date(Date.parse(endTime.replace(/-/g, "/"))),
                     "showOnHome": showOnHome,
                     "loanAmount": $('.jq-pay').val(),
-                    "loanTitles": uploadFile
+                    "loanTitles": uploadFile,
+                    "createdLoginName": $('.jq-creator').val()
                 });
                 $.ajax({
-                    url: API_FORM+operate,
+                    url: API_FORM + operate,
                     type: 'POST',
                     dataType: 'json',
                     data: dataForm,
                     contentType: 'application/json; charset=UTF-8'
-                })
-                    .done(function (res) {
-                        if(res.data.status){
-                            formFlag =true;
-                            location.href='/project-manage/loan-list';
-                        }else{
-                            formFlag =false;
-                            var msg = res.data.message || '服务端校验失败';
-                            showErrorMessage(msg);
-                        }
-                    })
-                    .fail(function () {
-                        console.log("error");
-                        $('.jq-btn-form').removeAttr('disabled');
-                    })
-                    .always(function () {
-                        console.log("complete");
-                    });
+                }).done(function (res) {
+                    if(res.data.status){
+                        formFlag =true;
+                        location.href='/project-manage/loan-list';
+                    }else{
+                        formFlag =false;
+                        var msg = res.data.message || '服务端校验失败';
+                        showErrorMessage(msg);
+                    }
+                }).fail(function () {
+                    console.log("error");
+                    $('.jq-btn-form').removeAttr('disabled');
+                }).always(function () {
+                    console.log("complete");
+                });
             }
         });
+
+        $('.jq-btn-refuse').click(function (event) {
+
+            if (!confirm("确认要执行此操作吗?")) {
+                return;
+            }
+
+            event.preventDefault();
+            var $self=$(this);
+            $.ajax({
+                url: '/refuse?taskId=PROJECT-'+$(this).attr('data-loanId'),
+                type: 'GET',
+                dataType: 'json',
+                data: {}
+            }).done(function(res) {
+                if(res.data.status){
+                    formFlag =true;
+                    location.href='/project-manage/loan-list';
+                }else{
+                    formFlag =false;
+                    var msg = res.data.message || '服务端校验失败';
+                    showErrorMessage(msg);
+                }
+            }).fail(function() {
+                console.log("error");
+                $('.jq-btn-refuse').removeAttr('disabled');
+            });
+        });
+
     });
 });

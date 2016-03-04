@@ -1,5 +1,6 @@
 @import 'variables';
 @import 'daterangepicker';
+@import "coupon_alert";
 
 .layui-layer-btn {
   text-align: center;
@@ -34,12 +35,15 @@
   text-align: center;
   overflow: auto;
   height: auto;
-
   dl {
     margin-bottom: 12px;
     height: auto;
     overflow: auto;
     clear: both;
+    &.identityCodeError{
+      color: #ff0000;
+      display: none;
+    }
     dt, dd {
       float: left;
     }
@@ -60,6 +64,15 @@
     border: 0;
     border-radius: 0;
     background: none;
+  }
+  .birth-icon{
+    float: left;
+    width: 20px;
+    height: 20px;
+    background: url(/images/sign/birthday.png) no-repeat center;
+    background-size: 15px;
+    left: 50px;
+    position: relative;
   }
   .accountImg {
     margin-right: 10px;
@@ -191,6 +204,15 @@
           padding-top: 5px;
         }
       }
+    }
+    .birth-icon{
+      float: left;
+      width: 20px;
+      height: 20px;
+      background: url(/images/sign/birthday.png) no-repeat center;
+      background-size: 15px;
+      left: 50px;
+      position: relative;
     }
     .trade-detail{
       width: 170px;
@@ -766,6 +788,13 @@
   table.invest-list {
     td {
       font-size: 12px;
+      i.birth-icon{
+        float: left;
+        width: 20px;
+        height: 20px;
+        background: url(/images/sign/birthday.png) no-repeat center;
+        background-size: 15px;
+      }
       .loan-name-col {
         display: inline-block;
         width: 170px;
@@ -903,24 +932,21 @@
     padding: 10px;
     width: 350px;
     text-align: center;
-    position: relative;
     font-size: 12px;
     color: #949494;
     .l-title {
-      margin-top: 43px;
-      padding: 10px;
-      border-top: 2px solid #ccc;
+      padding: 10px 0;
+      border-bottom: 2px solid #ccc;
       font-size: 12px;
-
+      text-align: right;
     }
     .account-list {
       margin-left: 10px;
       dd {
-        overflow: auto;
-        height:auto;
+        clear:both;
         margin-bottom: 5px;
-        .text-input-amount {
-          width:95%;
+        .position-width {
+          width:230px;
           text-align: right;
         }
         &.invest-amount {
@@ -928,10 +954,122 @@
           margin-bottom: 14px;
         }
         &.experience-ticket {
-          color: #f24712;
-          line-height: 20px;
-          i.fa {
-            font-size:17px;
+          .experience-ticket-box {
+            width: 244px;
+            position: relative;
+            color: #d35010;
+            .experience-ticket-input {
+              display: inline-block;
+              border: solid 1px #fdd8bd;
+              width: 100%;
+              height: 28px;
+              line-height: 28px;
+              text-align: center;
+              font-size: 14px;
+              background: #fff2e9;
+              cursor: pointer;
+              .fa {
+                font-size: 18px;
+                vertical-align: top;
+                color: #ffc89b;
+              }
+              .fa-sort-up {
+                margin-top: 7px;
+              }
+              &.disabled {
+                border:1px solid #e6e6e6;
+                cursor: default;
+                color: #b2b2b2;
+                background: #f2f2f2;
+                .fa-sort-down {
+                  color:#cbcbcb;
+                }
+              }
+            }
+            .red-tiptext{
+              margin-bottom: 0;
+              i.icon-redbag{
+                float:left;
+                width:18px;
+                height:14px;
+                margin-top: 5px;
+                background: url(/images/sign/icon-red-sm.png) no-repeat center;
+              }
+              span{
+                float:left;
+                font-size:12px;
+                color:#ff752a;
+                margin-left:6px;
+              }
+            }
+            .ticket-list {
+              position: absolute;
+              z-index: 100;
+              left: 0px;
+              top: 29px;
+              border: solid 1px #fdd8bd;
+              background: #fff2e9;
+              width:100%;
+              text-align: left;
+              font-size: 13px;
+
+              li {
+                padding:5px 10px;
+                line-height: 1.6;
+                &.lower-upper-limit {
+                  .input-use-ticket,label .sign{
+                    position: relative;
+                    top:-8px;
+                  }
+                }
+                .input-use-ticket {
+                   margin-bottom: 12px;
+                }
+                .sign {
+                  width: 13px;
+                  display: inline-block;
+                  background: #ff7101;
+                  word-wrap: break-word;
+                  word-break: normal;
+                  padding: 3px;
+                  color: #fff;
+                }
+                .ticket-info {
+                  display: inline-block;
+                  .ticket-term {
+                    font-size: 10px;
+                  }
+                }
+                &:hover {
+                  background: #ffead9;
+                }
+                &.disabled {
+                  color: #8f8f8f;
+                  background: #f2f2f2;
+                  .sign {
+                    background: #909090;
+                  }
+                  &:hover {
+                    background: #f2f2f2;
+                  }
+                }
+
+              }
+            }
+          }
+
+
+        }
+        &.expected-interest-dd {
+          padding:2px;
+          line-height: 30px;
+          .principal-income {
+            font-size: 25px;
+            color: #ff7200;
+          }
+          .experience-income {
+            font-size:15px;
+            color: #ff7200;
           }
         }
         &.experience-revenue {
@@ -944,7 +1082,7 @@
           display: inline-block;
           border-radius: 10px;
           border: 1px dashed red;
-          margin-top: -8px;
+          margin-top: 15px;
           padding: 1px 40px;
           font-size: 13px;
           .time-clock {
@@ -974,6 +1112,14 @@
         }
       }
     }
+  }
+  .chart-info-responsive {
+    float:left;
+    width:96%;
+    padding:0 2%;
+    color: #a4a4a4;
+    line-height: 30px;
+    display:none;
   }
   .loan-nav {
     overflow: hidden;
@@ -1270,6 +1416,9 @@
       }
     }
   }
+  .record-tab{
+    display:none;
+  }
   .list-tab{
     display:none;
   }
@@ -1281,35 +1430,37 @@
     font-size:18px;
 
   }
+  .sign-seal {
+    display: none;
+    width: 80px;
+    height: 80px;
+    border: 2px solid #7f7f7f;
+    color: #7f7f7f;
+    text-align: center;
+    line-height: 80px;
+    position: absolute;
+    left: 45%;
+    top: 20%;
+    border-radius: 50%;
+    span {
+      -webkit-transform: rotate(30deg);
+      -moz-transform: rotate(30deg);
+      transform: rotate(-30deg);
+      font-weight: bold;
+      font-size: 20px;
+      line-height: 1.2;
+      padding-top: 16px;
+      display: block;
+      letter-spacing: 8px;
+    }
+  }
   .experience-ticket-box {
     width:500px;
     height: 160px;
     position: relative;
     background: url("/images/icons/logo-transport.png") -14px -20px no-repeat;
     margin-top:12px;
-    .sign-seal {
-      display: none;
-      width: 80px;
-      height: 80px;
-      border: 3px solid #7f7f7f;
-      color: #7f7f7f;
-      text-align: center;
-      line-height: 80px;
-      position: absolute;
-      left: 45%;
-      top: 20%;
-      border-radius: 40px;
-      span {
-        -webkit-transform: rotate(30deg);
-        -moz-transform: rotate(30deg);
-        transform: rotate(-30deg);
-        font-weight: bold;
-        font-size: 20px;
-        line-height: 1.2;
-        padding-top: 16px;
-        display: block;
-      }
-    }
+
     .vertical-line {
       height:94%;
       width:1px;
@@ -1339,10 +1490,16 @@
         letter-spacing: 6px;
         padding-top: 3px;
         padding-bottom: 5px;
+        em {
+          font-size:12px;
+          color: #adafb2;
+          letter-spacing: 0;
+        }
       }
       time {
-        color: #808080;
+        color: #adafb2;
         font-size: 12px;
+        letter-spacing: 2px;
       }
     }
     .ticket-info {
@@ -1350,14 +1507,14 @@
       height:100%;
       background:#ff752a url("/images/icons/line-wheel.png") right -1px no-repeat;
       color: #fff;
-      line-height: 1.5;
+      line-height: 2.5;
       font-size: 12px;
       dl {
         dt {
           letter-spacing: 3px;
         }
         dd {
-          padding-left: 2em;
+          padding-left: 2.4em;
           &.tc  {
             padding-left: 0;
             .btn-action {
@@ -1387,11 +1544,11 @@
         &.sign-expired {
           display: block;
         }
-        border: 3px solid #ff752a;
+        border: 2px solid #ff752a;
         color: #ff752a;
       }
       .vertical-line {
-        border-right:1px dashed #ff752a;
+        border-right:1px dashed #ccc;
       }
       .ticket-amount {
         color: #b2b2b2;
@@ -1406,6 +1563,123 @@
       }
     }
   }
+
+  .red-envelope-frame {
+    margin-left: -20px;
+    .red-envelope-box {
+      font-size: 11px;
+      width:240px;
+      height:240px;
+      float: left;
+      margin-left: 20px;
+      margin-bottom: 20px;
+      background: url("/images/sign/actor/red-envelope-valid.png") 0 0 no-repeat;
+      position: relative;
+      .red-amount {
+        position: absolute;
+        width:100%;
+        text-align: center;
+        top:-2px;
+        font-size: 20px;
+        color: #f4e823;
+        em {
+          font-size: 30px;
+          font-weight: bold;
+        }
+      }
+      .use-status {
+        position: absolute;
+        left:50px;
+        top:120px;
+        color: #fff;
+
+        img {
+          display: inline-block;
+        }
+        span {
+          color: #f4e823;
+        }
+      }
+      .red-button {
+        position: absolute;
+        width:100%;
+        text-align: center;
+        top:172px;
+        font-weight: bold;
+        .btn-action {
+          background: #fdd738;
+          border-color: #fdd738;
+          color: #ff0737 !important;
+          font-weight: bold;
+        }
+      }
+      .use-time {
+        position: absolute;
+        text-align: center;
+        top:211px;
+        width:100%;
+        color: #95000a;
+        span {
+          color: #fadde3;
+        }
+      }
+      &.red-status-expired {
+        background: url("/images/sign/actor/red-envelope-expired.png") 0 0 no-repeat;
+        .red-amount,.use-status span,.use-time,.use-time span {
+          color: #fff;
+        }
+        .sign-seal {
+          color: #df002c;
+          border: 2px solid #df002c;
+          left: 58%;
+          top: 20px;
+          &.sign-expired {
+            display: block;
+          }
+        }
+        .red-button {
+          .btn-action {
+            background: #cccccc;
+            border-color: #cccccc;
+            color: #808080 !important;
+            font-weight: bold;
+            cursor: default;
+          }
+        }
+      }
+      &.red-status-used {
+        border-radius: 10px;
+        .layer-mask {
+          width: 100%;
+          height: 100%;
+          background-color: rgba(77,77,77,0.6);
+          position: absolute;
+          z-index: 10;
+          border-radius: 10px;
+        }
+        .sign-seal {
+          color: #b7b7b7;
+          border: 2px solid #b7b7b7;
+          left: 58%;
+          top: 20px;
+          z-index: 15;
+          &.sign-used {
+            display: block;
+          }
+        }
+      }
+
+      &:hover {
+        -moz-box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
+        -webkit-box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
+        box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
+      }
+    }
+    .ticket-use-help {
+      margin-top:70px;
+    }
+  }
+
   .ticket-use-help {
     width:470px;
     padding:10px 15px;
@@ -1422,6 +1696,68 @@
 
   }
 }
-
-
-
+@media screen and (max-width: 700px) {
+  .chart-info-responsive{
+    display:block!important;
+  }
+  .news-share{
+    width:100%!important;
+    padding-bottom:0!important;
+    .hd{
+      margin:0!important;
+      padding-left:0!important;
+      text-align:center;
+    }
+    .chart-info{
+      display:none;
+    }
+    .product-type-text{
+      left:50%!important;
+      bottom:55px!important;
+      border:none!important;
+      margin-left:-44px!important;
+    }
+    .chart-box{
+      position: relative;
+      left: 50%;
+      margin-left: -100px!important;
+    }
+  }
+  .account-info{
+    width:96%!important;
+    padding:0 2%!important;
+    border-left:none!important;
+    border-top: 1px solid #ccc;
+    .l-title{
+      display:none;
+    }
+    .account-list{
+      margin-left:0!important;
+    }
+  }
+  .loan-nav{
+    li{
+      width: 50%;
+      box-sizing: border-box;
+      text-align: center;
+      padding: 8px 0!important;
+    }
+  }
+  .loan-list{
+    .table-striped{
+      .responsive-hide{
+        display:none;
+      }
+    }
+  }
+}
+@media screen \0
+{
+  //IE8-10
+  .activity-coupon-model{
+    background-color:#000000;
+    filter:Alpha(opacity=50);
+    position:static;
+    *zoom:1;
+  }
+}

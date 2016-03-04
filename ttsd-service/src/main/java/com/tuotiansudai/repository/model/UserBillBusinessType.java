@@ -16,7 +16,11 @@ public enum UserBillBusinessType {
     OVER_INVEST_PAYBACK("超投返款"),
     CANCEL_INVEST_PAYBACK("流标返款"),
     ADMIN_INTERVENTION("管理员干预"),
-    NEWBIE_COUPON("体验券"),
+    NEWBIE_COUPON("新手体验券"),
+    INVEST_COUPON("投资体验券"),
+    INTEREST_COUPON("加息优惠券"),
+    BIRTHDAY_COUPON("生日福利"),
+    RED_ENVELOPE("现金红包"),
     SYSTEM_RECHARGE("平台充值");
 
     private final String description;

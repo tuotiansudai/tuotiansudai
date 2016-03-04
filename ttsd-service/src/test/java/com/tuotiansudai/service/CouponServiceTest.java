@@ -1,11 +1,14 @@
 package com.tuotiansudai.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.exception.ReferrerRelationException;
@@ -70,8 +73,9 @@ public class CouponServiceTest {
         couponService.createCoupon("couponTest", couponDto);
 
     }
+
     @Test
-    public void shouldCreateCouponAmountIsInvalid(){
+    public void shouldCreateCouponAmountIsInvalid() {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
         CouponDto couponDto = fakeCouponDto();
@@ -79,13 +83,13 @@ public class CouponServiceTest {
         try {
             couponService.createCoupon("couponTest", couponDto);
         } catch (CreateCouponException e) {
-            assertEquals("投资体验券金额应大于0!",e.getMessage());
+            assertEquals("投资体验券金额应大于0!", e.getMessage());
         }
 
     }
 
     @Test
-    public void shouldCreateCouponStartTimeIsInvalid()  {
+    public void shouldCreateCouponStartTimeIsInvalid() {
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
         CouponDto couponDto = fakeCouponDto();
@@ -96,26 +100,6 @@ public class CouponServiceTest {
         } catch (CreateCouponException e) {
             assertEquals("活动起期不能早于当前日期!", e.getMessage());
         }
-    }
-    @Test
-    public void shouldAfterReturningUserRegisteredIsSuccess() throws CreateCouponException {
-        UserModel userModel = fakeUserModel();
-        userMapper.create(userModel);
-        CouponDto couponDto = fakeCouponDto();
-        DateTime startDateTime = new DateTime().plusDays(-1);
-        DateTime endDateTime = new DateTime().plusDays(1);
-        couponDto.setStartTime(startDateTime.toDate());
-        couponDto.setEndTime(endDateTime.toDate());
-        CouponModel couponModel = new CouponModel(couponDto);
-        couponModel.setCreateUser("couponTest");
-        couponModel.setActive(true);
-        couponMapper.create(couponModel);
-
-        couponService.afterReturningUserRegistered(userModel.getLoginName());
-        CouponModel couponModel2 = couponMapper.findById(couponModel.getId());
-
-        assertEquals(1, couponModel2.getIssuedCount());
-
     }
 
     @Test
@@ -140,17 +124,20 @@ public class CouponServiceTest {
         couponDto.setStartTime(startDateTime.toDate());
         couponDto.setEndTime(endDateTime.toDate());
         CouponModel couponModel = new CouponModel(couponDto);
-        couponModel.setCreateUser(userModel.getLoginName());
+        couponModel.setCreatedBy(userModel.getLoginName());
         couponModel.setActive(true);
+        couponModel.setCouponType(CouponType.NEWBIE_COUPON);
+        couponModel.setUserGroup(UserGroup.NEW_REGISTERED_USER);
+        couponModel.setCreatedTime(new Date());
         couponMapper.create(couponModel);
 
         userService.registerUser(registerUserDto);
 
 
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(registerUserDto.getLoginName());
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(registerUserDto.getLoginName(), null);
         CouponModel couponModel1 = couponMapper.findById(couponModel.getId());
         assertEquals(true, CollectionUtils.isNotEmpty(userCouponModels));
-        assertEquals(1,couponModel1.getIssuedCount());
+        assertEquals(1, couponModel1.getIssuedCount());
 
     }
 
@@ -166,18 +153,22 @@ public class CouponServiceTest {
         return userModelTest;
     }
 
-    private CouponDto fakeCouponDto(){
+    private CouponDto fakeCouponDto() {
         CouponDto couponDto = new CouponDto();
         couponDto.setAmount("1000.00");
-        couponDto.setTotalCount("100");
+        couponDto.setTotalCount(100L);
         couponDto.setEndTime(new Date());
         couponDto.setStartTime(new Date());
-        couponDto.setName("优惠券");
-        couponDto.setInvestQuota("1000.00");
+        couponDto.setInvestLowerLimit("1000.00");
+        couponDto.setCouponType(CouponType.INVEST_COUPON);
+        List<ProductType> productTypes = Lists.newArrayList();
+        productTypes.add(ProductType.JYF);
+        couponDto.setProductTypes(productTypes);
+        couponDto.setInvestLowerLimit("1000.00");
         return couponDto;
     }
 
-    private RegisterUserDto fakeRegisterUserDto(){
+    private RegisterUserDto fakeRegisterUserDto() {
         RegisterUserDto registerUserDto = new RegisterUserDto();
         registerUserDto.setCaptcha("111111");
         registerUserDto.setLoginName("couponTest1");
@@ -186,7 +177,7 @@ public class CouponServiceTest {
         return registerUserDto;
     }
 
-    private LoanModel fakeLoanModel(String loginName){
+    private LoanModel fakeLoanModel(String loginName) {
         LoanModel loanModel = new LoanModel();
         loanModel.setAgentLoginName(loginName);
         loanModel.setBaseRate(16.00);
@@ -206,7 +197,7 @@ public class CouponServiceTest {
         loanModel.setInvestIncreasingAmount(1);
         loanModel.setLoanAmount(10000);
         loanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
-        loanModel.setMaxInvestAmount(100000000000l);
+        loanModel.setMaxInvestAmount(100000000000L);
         loanModel.setMinInvestAmount(0);
         loanModel.setCreatedTime(new Date());
         loanModel.setStatus(LoanStatus.RAISING);
@@ -215,6 +206,4 @@ public class CouponServiceTest {
         loanModel.setLoanerIdentityNumber("111111111111111111");
         return loanModel;
     }
-
-
 }

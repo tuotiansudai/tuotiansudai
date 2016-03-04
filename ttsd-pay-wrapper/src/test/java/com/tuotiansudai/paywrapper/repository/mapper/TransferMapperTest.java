@@ -25,7 +25,7 @@ public class TransferMapperTest {
 
     @Test
     public void shouldCreateTransferRequest() {
-        TransferRequestModel model = TransferRequestModel.newReferrerRewardRequest(String.valueOf(System.currentTimeMillis()), "payUserId", "1");
+        TransferRequestModel model = TransferRequestModel.newRequest(String.valueOf(System.currentTimeMillis()), "payUserId", "1");
         model.setMerDate("2015-05-05");
         model.setSign("sign");
         model.setRequestUrl("url");
@@ -38,7 +38,7 @@ public class TransferMapperTest {
 
     @Test
     public void shouldCreateTransferResponse(){
-        TransferRequestModel model = TransferRequestModel.newReferrerRewardRequest(String.valueOf(System.currentTimeMillis()), "payUserId", "1");
+        TransferRequestModel model = TransferRequestModel.newRequest(String.valueOf(System.currentTimeMillis()), "payUserId", "1");
         model.setMerDate("2015-05-05");
         model.setSign("sign");
         model.setRequestUrl("url");

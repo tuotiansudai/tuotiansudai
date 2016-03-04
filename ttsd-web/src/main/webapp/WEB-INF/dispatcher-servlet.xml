@@ -40,13 +40,14 @@
     <mvc:resources mapping="/pdf/**" location="/pdf/"/>
     <mvc:resources mapping="/tpl/**" location="/tpl/"/>
     <mvc:resources mapping="/upload/**" location="/upload/"/>
+    <mvc:resources mapping="/robots.txt" location="/robots.txt"/>
 
 
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.configuration.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
         <property name="staticServer" value="${web.static.server}"/>
-        <property name="javascriptLocation" value="/js/dest"/>
-        <property name="cssLocation" value="/style/dest"/>
+        <property name="javascriptLocation" value="${web.js.path}"/>
+        <property name="cssLocation" value="${web.css.path}"/>
         <property name="sourceMap">
             <map>
                 <entry key="percentFraction">

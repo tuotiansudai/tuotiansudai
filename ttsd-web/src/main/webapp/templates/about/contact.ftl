@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-    <@global.main pageCss="${css.about_us}" pageJavascript="" activeNav="关于我们" activeLeftNav="联系我们" title="联系我们">
+    <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="关于我们" activeLeftNav="联系我们" title="联系我们">
     <div class="about-us-container">
         <h2 class="column-title"><em>联系我们</em></h2>
         <b class="text-m">客户服务</b>
@@ -24,7 +24,7 @@
 
         <span class="text-s">
             拓天速贷 <br/>
-地址：北京市丰台区洋桥12号天路蓝图大厦5层<br/>
+地址：北京市丰台区洋桥12号天路蓝图大厦8层<br/>
 邮编：100068<br/>
 电话：53387992<br/>
         </span>

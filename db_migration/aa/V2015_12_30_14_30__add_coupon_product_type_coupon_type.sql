@@ -1,0 +1,3 @@
+ALTER TABLE coupon ADD COLUMN product_types VARCHAR(32) NOT NULL;
+
+ALTER TABLE coupon ADD COLUMN coupon_type VARCHAR(32) NOT NULL;

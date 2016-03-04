@@ -30,6 +30,16 @@ public class InvestPaginationItemView extends InvestModel {
 
     private long nextRepayAmount;
 
+    private String identityNumber;
+
+    private String province;
+
+    private String city;
+
+    private boolean birthdayCoupon;
+
+    private double birthdayBenefit;
+
     public String getLoanName() {
         return loanName;
     }
@@ -132,5 +142,45 @@ public class InvestPaginationItemView extends InvestModel {
 
     public void setReferrerRoles(String referrerRoles) {
         this.referrerRoles = referrerRoles;
+    }
+
+    public String getIdentityNumber() {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public boolean isBirthdayCoupon() {
+        return birthdayCoupon;
+    }
+
+    public void setBirthdayCoupon(boolean birthdayCoupon) {
+        this.birthdayCoupon = birthdayCoupon;
+    }
+
+    public double getBirthdayBenefit() {
+        return birthdayBenefit;
+    }
+
+    public void setBirthdayBenefit(double birthdayBenefit) {
+        this.birthdayBenefit = birthdayBenefit;
     }
 }

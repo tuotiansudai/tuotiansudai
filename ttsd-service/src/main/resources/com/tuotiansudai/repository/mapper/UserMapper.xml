@@ -25,6 +25,7 @@
         <result column="province" property="province"></result>
         <result column="city" property="city"></result>
         <result column="auto_invest_status" property="autoInvestStatus"></result>
+        <result column="last_bill_time" property="lastBillTime"></result>
         <association property="account" javaType="com.tuotiansudai.repository.model.AccountModel">
             <id column="id" property="id"></id>
             <result column="login_name" property="loginName"></result>
@@ -187,10 +188,6 @@
         select * from user where province is NULL or province = '' order by register_time DESC limit 0,100
     </select>
 
-    <select id="findUserCount" resultType="int">
-        select count(*) from user
-    </select>
-
     <select id="searchAllUsers" parameterType="map" resultMap="userResultMap">
         SELECT
           *
@@ -217,12 +214,14 @@
 
     <select id="findUsersAccountBalance" parameterType="map" resultMap="userResultMap">
         SELECT
-          *
+          *,
+          (SELECT max(created_time) FROM user_bill ub where ub.login_name = u.login_name) as last_bill_time
         FROM
           user u
            JOIN account a
             ON u.`login_name` = a.`login_name`
-            AND a.`balance` > 0
+            AND a.`balance` >= #{balanceMin}
+            AND a.`balance` &lt;= #{balanceMax}
             <if test="loginName != null and loginName != '' ">
             AND a.`login_name` = #{loginName}
             </if>
@@ -244,10 +243,11 @@
           user u
            JOIN account a
             ON u.`login_name` = a.`login_name`
-            AND a.`balance` > 0
-        <if test="loginName != null and loginName != '' ">
-            AND a.`login_name` = #{loginName}
-        </if>
+            AND a.`balance` >= #{balanceMin}
+            AND a.`balance` &lt;= #{balanceMax}
+            <if test="loginName != null and loginName != '' ">
+                AND a.`login_name` = #{loginName}
+            </if>
             WHERE NOT EXISTS
         (SELECT
             1
@@ -264,10 +264,11 @@
           user u
            JOIN account a
             ON u.`login_name` = a.`login_name`
-            AND a.`balance` > 0
-        <if test="loginName != null and loginName != '' ">
-            AND a.`login_name` = #{loginName}
-        </if>
+            AND a.`balance` >= #{balanceMin}
+            AND a.`balance` &lt;= #{balanceMax}
+            <if test="loginName != null and loginName != '' ">
+                AND a.`login_name` = #{loginName}
+            </if>
             WHERE NOT EXISTS
         (SELECT
             1
@@ -276,5 +277,56 @@
           WHERE u.`login_name` = r.`login_name`
           AND r.`role` = 'LOANER')
     </select>
+
+    <select id="findAllUsers" resultMap="userResultMap">
+        select * from user
+        <if test="districtName != null and districtName.size != 0">
+            where province in
+            <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="findNaturalUser" resultMap="userResultMap">
+        SELECT
+          us.*
+        FROM
+          user us
+          JOIN invest t
+            ON us.`login_name` = t.`login_name`
+        and t.`status` = 'SUCCESS'
+          where NOT EXISTS
+          (SELECT
+            1
+          FROM
+            referrer_relation r
+            JOIN user_role u
+              ON r.`referrer_login_name` = u.`login_name`
+              AND u.`role` = 'STAFF'
+          WHERE r.`level` = '1'
+            AND t.`login_name` = r.`login_name`)
+          AND NOT EXISTS
+          (SELECT
+            1
+          FROM
+            user_role ur
+          WHERE ur.role IN ('STAFF', 'AGENT')
+            AND t.`login_name` = ur.`login_name`)
+        <if test="districtName != null and districtName.size != 0">
+            and us.province in
+            <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+    <select id="findUsersBirthdayMobile" resultType="java.lang.String">
+        SELECT DISTINCT(u.mobile) FROM user u
+        INNER JOIN account a ON a.`login_name` = u.`login_name`
+        INNER JOIN invest iv on a.`login_name` = iv.`login_name`
+        WHERE IF(LENGTH(identity_number)=18,SUBSTRING(identity_number,11,2),SUBSTRING(identity_number,9,2)) - DATE_FORMAT(now(),'%m') = 0
+        AND iv.`status`='SUCCESS';
+    </select>
+
 
 </mapper>

@@ -59,6 +59,16 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     private boolean hasInvestRepay;
 
+    private String identityNumber;
+
+    private String province;
+
+    private String city;
+
+    private boolean birthdayCoupon;
+
+    private double birthdayBenefit;
+
     public InvestPaginationItemDataDto(InvestPaginationItemView view) {
         this.investId = view.getId();
         this.loanId = view.getLoanId();
@@ -82,6 +92,11 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.nextRepayDate = view.getNextRepayDate();
         this.nextRepayAmount = AmountConverter.convertCentToString(view.getNextRepayAmount());
         this.hasInvestRepay = view.getStatus() == InvestStatus.SUCCESS && Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.COMPLETE).contains(view.getLoanStatus());
+        this.identityNumber = view.getIdentityNumber();
+        this.province = view.getProvince();
+        this.city = view.getCity();
+        this.birthdayCoupon = view.isBirthdayCoupon();
+        this.birthdayBenefit = view.getBirthdayBenefit();
     }
 
     public boolean isStaff() {
@@ -210,5 +225,57 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     public void setReferrerRoles(String referrerRoles) {
         this.referrerRoles = referrerRoles;
+    }
+
+    public String getIdentityNumber() {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber) {
+        this.identityNumber = identityNumber;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getBirthday() {
+        if (identityNumber == null) {
+            return "";
+        } else if (identityNumber.length() == 18) {
+            return identityNumber.substring(6, 14);
+        } else if (identityNumber.length() == 15) {
+            return identityNumber.substring(6, 12);
+        } else {
+            return "";
+        }
+    }
+
+    public boolean isBirthdayCoupon() {
+        return birthdayCoupon;
+    }
+
+    public void setBirthdayCoupon(boolean birthdayCoupon) {
+        this.birthdayCoupon = birthdayCoupon;
+    }
+
+    public double getBirthdayBenefit() {
+        return birthdayBenefit;
+    }
+
+    public void setBirthdayBenefit(double birthdayBenefit) {
+        this.birthdayBenefit = birthdayBenefit;
     }
 }

@@ -122,5 +122,7 @@
                   data-url="/loan-list?status=${status!}&productType=${productType!}&rateStart=${rateStart!}&rateEnd=${rateEnd!}&index=${index + 1}">下一页</span>
         </div>
     </div>
+    <#include "coupon-alert.ftl" />
 </div>
+    <#include "red-envelope-float.ftl" />
 </@global.main>
