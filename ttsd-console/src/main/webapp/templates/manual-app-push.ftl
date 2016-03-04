@@ -74,12 +74,20 @@
 
         <div class="form-group">
             <label  class="col-sm-2 control-label">用户类型: </label>
-            <div class="col-sm-2">
-                <select class="selectpicker" name="pushUserType">
-                    <#list pushUserTypes as pushUserType>
-                        <option <#if jPushAlert?? && jPushAlert.pushUserType?? && jPushAlert.pushUserType == pushUserType>selected</#if> value="${pushUserType.name()}">${pushUserType.getDescription()}</option>
-                    </#list>
-                </select>
+            <div class="col-sm-5 user-type">
+                <#--<select class="selectpicker" name="pushUserType">-->
+                    <#--<#list pushUserTypes as pushUserType>-->
+                        <#--<option <#if jPushAlert?? && jPushAlert.pushUserType?? && jPushAlert.pushUserType == pushUserType>selected</#if> -->
+                                <#--value="${pushUserType.name()}">${pushUserType.getDescription()}</option>-->
+                        <#---->
+                    <#--</#list>-->
+                <#--</select>-->
+                <#list pushUserTypes as pushUserType>
+                    <label>
+                        <input type="checkbox" name="pushUserType" class="" value="${pushUserType.name()}">${pushUserType.getDescription()}
+                    </label>
+                </#list>
+
             </div>
         </div>
 
