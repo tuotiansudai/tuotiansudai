@@ -2,7 +2,9 @@ package com.tuotiansudai.api.dto;
 
 import com.tuotiansudai.point.repository.model.PointTask;
 
-public class PointTaskRecordResponseDataDto {
+import java.io.Serializable;
+
+public class PointTaskRecordResponseDataDto implements Serializable{
     private String pointTaskId;
     private PointTask pointTaskType;
     private String pointTaskDesc;

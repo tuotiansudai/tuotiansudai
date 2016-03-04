@@ -9,7 +9,7 @@ require(['jquery', 'mustache', 'layerWrapper', 'text!/tpl/point-bill-table.musta
                 $taskTip = $('#taskLayer'),
                 $closeTask = $('#closeTask');
             //change model
-            $navBtn.on('click', function(event) {
+            $navBtn.on('click', function (event) {
                 event.preventDefault();
                 var $self = $(this),
                     index = $self.index();
@@ -17,32 +17,44 @@ require(['jquery', 'mustache', 'layerWrapper', 'text!/tpl/point-bill-table.musta
                 $('.content-list .choi-beans-list:eq(' + index + ')').show().siblings().hide();
             });
             //show sign tip
-            $signBtn.on('click', function(event) {
+            $signBtn.on('click', function (event) {
                 event.preventDefault();
-                $signTip.fadeIn('fast', function() {
-                    $(this).find('.add-dou').animate({
-                        'bottom': '50px',
-                        'opacity': '0'
-                    }, 800);
-                });
+                var _this = $(this),
+                    $signText = $(".sign-text");
+                    $tomorrowText = $(".tomorrow-text");
+                    $addDou = $(".add-dou");
+
+                $.ajax({
+                    url: _this.data('url'),
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
+                }).done(function (response) {
+                    if (response.data.status) {
+                        $signText.html("签到成功，领取" + response.data.signInPoint + "财豆！");
+                        $tomorrowText.html("明日可领" + response.data.nextSignInPoint + "财豆");
+                        $addDou.html("+" + response.data.signInPoint);
+                        $signTip.fadeIn('fast', function () {
+                            $(this).find('.add-dou').animate({
+                                'bottom': '50px',
+                                'opacity': '0'
+                            }, 800);
+                        });
+                    }
+                })
             });
             //hide sign tip
-            $closeSign.on('click', function(event) {
+            $closeSign.on('click', function (event) {
                 event.preventDefault();
-                $signTip.fadeOut('fast', function() {
-                    $(this).find('.add-dou').css({
-                        'bottom': '0',
-                        'opacity': '1'
-                    });
-                });
+                location.href = "/point";
             });
             //show task tip
-            $taskBtn.on('click', function(event) {
+            $taskBtn.on('click', function (event) {
                 event.preventDefault();
                 $taskTip.fadeIn('fast');
             });
             //hide task tip
-            $closeTask.on('click', function(event) {
+            $closeTask.on('click', function (event) {
                 event.preventDefault();
                 $taskTip.fadeOut('fast');
             });

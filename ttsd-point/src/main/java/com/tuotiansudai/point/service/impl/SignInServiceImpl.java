@@ -1,9 +1,5 @@
 package com.tuotiansudai.point.service.impl;
 
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Strings;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.point.dto.SignInPoint;
 import com.tuotiansudai.point.dto.SignInPointDto;
@@ -17,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.text.MessageFormat;
-
 
 @Service
 public class SignInServiceImpl implements SignInService {
@@ -31,8 +25,6 @@ public class SignInServiceImpl implements SignInService {
     @Autowired
     private PointBillService pointBillService;
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
-
     private static final String POINT_SIGN_IN_KEY = "web:point:signin";
 
     @Override
@@ -40,50 +32,33 @@ public class SignInServiceImpl implements SignInService {
     public SignInPointDto signIn(String loginName) {
         DateTime today = new DateTime().withTimeAtStartOfDay();
 
-        try {
-            SignInPointDto signInPointDto = new SignInPointDto(SignInPoint.FIRST_SIGN_IN.getTimes(), today.toDate(), SignInPoint.FIRST_SIGN_IN.getPoint());
-            ;
-            String redisValue = redisWrapperClient.hget(POINT_SIGN_IN_KEY, loginName);
-            SignInPointDto lastSignInPointDto = Strings.isNullOrEmpty(redisValue) ? null : (SignInPointDto) objectMapper.readValue(redisValue, new TypeReference<SignInPointDto>() {
-            });
+        SignInPointDto signInPointDto = new SignInPointDto(SignInPoint.FIRST_SIGN_IN.getTimes(), today.toDate(), SignInPoint.FIRST_SIGN_IN.getPoint(),SignInPoint.SECOND_SIGN_IN.getPoint());
 
-            if (lastSignInPointDto != null) {
-                if (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ZERO) {
-                    return lastSignInPointDto;
-                }
-                if (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ONE) {
-                    int signInCount = lastSignInPointDto.getSignInCount() + 1;
-                    signInPointDto = new SignInPointDto(signInCount, today.toDate(), SignInPoint.getPointByTimes(signInCount));
-                }
+        SignInPointDto lastSignInPointDto = (SignInPointDto) redisWrapperClient.hgetSeri(POINT_SIGN_IN_KEY, loginName);
+
+        if (lastSignInPointDto != null) {
+            if (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ZERO) {
+                return lastSignInPointDto;
             }
-            redisWrapperClient.hset(POINT_SIGN_IN_KEY, loginName, objectMapper.writeValueAsString(signInPointDto));
-            pointBillService.createPointBill(loginName, null, PointBusinessType.SIGN_IN, signInPointDto.getPoint());
-            logger.debug(MessageFormat.format("{0} sign in success {1} 次", loginName, signInPointDto.getSignInCount()));
-            return signInPointDto;
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
+            if (Days.daysBetween(new DateTime(lastSignInPointDto.getSignInDate()), today) == Days.ONE) {
+                int signInCount = lastSignInPointDto.getSignInCount() + 1;
+                signInPointDto = new SignInPointDto(signInCount, today.toDate(), SignInPoint.getPointByTimes(signInCount),SignInPoint.getPointByTimes(signInCount + 1));
+            }
         }
-        return null;
-
+        redisWrapperClient.hsetSeri(POINT_SIGN_IN_KEY, loginName, signInPointDto);
+        pointBillService.createPointBill(loginName, null, PointBusinessType.SIGN_IN, signInPointDto.getSignInPoint());
+        logger.debug(MessageFormat.format("{0} sign in success {1} 次", loginName, signInPointDto.getSignInCount()));
+        return signInPointDto;
     }
 
     @Override
     public boolean signInIsSuccess(String loginName) {
-        try {
-            if (!redisWrapperClient.hexists(POINT_SIGN_IN_KEY, loginName)) {
-                return false;
-            } else {
-                String redisValue = redisWrapperClient.hget(POINT_SIGN_IN_KEY, loginName);
-                SignInPointDto signInPointDto = objectMapper.readValue(redisValue, new TypeReference<SignInPointDto>() {
-                });
+        SignInPointDto signInPointDto = (SignInPointDto) redisWrapperClient.hgetSeri(POINT_SIGN_IN_KEY, loginName);
+        return signInPointDto != null && Days.daysBetween(new DateTime(signInPointDto.getSignInDate()), new DateTime().withTimeAtStartOfDay()) == Days.ZERO;
+    }
 
-                return Days.daysBetween(new DateTime(signInPointDto.getSignInDate()), new DateTime().withTimeAtStartOfDay()) == Days.ZERO;
-            }
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-
-        return true;
-
+    @Override
+    public SignInPointDto getLastSignIn(String loginName) {
+        return (SignInPointDto) redisWrapperClient.hgetSeri(POINT_SIGN_IN_KEY, loginName);
     }
 }
