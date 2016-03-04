@@ -70,7 +70,7 @@
             <div class="table-data">
                 <ul class="data-list red-bg">
                     <li>
-                        <p class="num-text">${totalInvest!}</p>
+                        <p class="num-text"><@amount>${totalInvest!}</@amount></p>
                         <p class="name-text">累计交易总额</p>
                     </li>
                 </ul>
@@ -83,15 +83,15 @@
     <div class="table-data">
         <ul class="data-list list-width blue-bg">
             <li>
-                <p class="num-text">${rechargeToday!}</p>
+                <p class="num-text"><@amount>${rechargeToday!}</@amount></p>
                 <p class="name-text">今日充值</p>
             </li>
             <li>
-                <p class="num-text">${recharge7Days!}</p>
+                <p class="num-text"><@amount>${recharge7Days!}</@amount></p>
                 <p class="name-text">本周充值</p>
             </li>
             <li>
-                <p class="num-text">${recharge30Days!}</p>
+                <p class="num-text"><@amount>${recharge30Days!}</@amount></p>
                 <p class="name-text">本月充值</p>
             </li>
         </ul>
@@ -102,15 +102,15 @@
     <div class="table-data">
         <ul class="data-list list-width green-bg">
             <li>
-                <p class="num-text">${withdrawToday!}</p>
+                <p class="num-text"><@amount>${withdrawToday!}</@amount></p>
                 <p class="name-text">今日提现</p>
             </li>
             <li>
-                <p class="num-text">${withdraw7Days!}</p>
+                <p class="num-text"><@amount>${withdraw7Days!}</@amount></p>
                 <p class="name-text">本周提现</p>
             </li>
             <li>
-                <p class="num-text">${withdraw30Days!}</p>
+                <p class="num-text"><@amount>${withdraw30Days!}</@amount></p>
                 <p class="name-text">本月提现</p>
             </li>
         </ul>
@@ -121,15 +121,15 @@
     <div class="table-data">
         <ul class="data-list list-width loan-bg">
             <li>
-                <p class="num-text">${investToday!}</p>
+                <p class="num-text"><@amount>${investToday!}</@amount></p>
                 <p class="name-text">今日投资</p>
             </li>
             <li>
-                <p class="num-text">${invest7Days!}</p>
+                <p class="num-text"><@amount>${invest7Days!}</@amount></p>
                 <p class="name-text">本周投资</p>
             </li>
             <li>
-                <p class="num-text">${invest30Days!}</p>
+                <p class="num-text"><@amount>${invest30Days!}</@amount></p>
                 <p class="name-text">本月投资</p>
             </li>
         </ul>
