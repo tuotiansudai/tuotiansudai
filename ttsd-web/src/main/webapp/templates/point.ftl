@@ -113,7 +113,7 @@
 		    <div class="point-bill-list">
 
 		    </div>
-		    <div class="pagination" data-url="/point" data-page-size="10">
+            <div class="pagination" data-url="/point/point-bill-list-data" data-page-size="10">
 		    </div>
     	</div>
     </div>

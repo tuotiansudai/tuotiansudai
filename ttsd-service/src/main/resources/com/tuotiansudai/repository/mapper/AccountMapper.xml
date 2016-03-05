@@ -107,6 +107,13 @@
         SELECT  IFNULL(SUM(point),0) FROM point_bill WHERE point > 0 AND login_name = #{loginName}
     </select>
 
+    <select id="findUsersAccountAvailablePoint" parameterType="java.lang.String" resultType="int">
+        SELECT  IFNULL(point, 0) FROM account WHERE login_name = #{loginName}
+    </select>
 
-
+    <update id="updateByLoginName" parameterType="map">
+        UPDATE account SET
+        point = point - #{exchangePoint}
+        WHERE login_name = #{loginName}
+    </update>
 </mapper>

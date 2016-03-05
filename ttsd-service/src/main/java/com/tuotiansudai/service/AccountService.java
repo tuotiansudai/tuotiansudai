@@ -20,5 +20,7 @@ public interface AccountService {
 
     int findUsersAccountTotalPoint(String loginName);
 
+    int findUsersAccountAvailablePoint(String loginName);
 
+    void updateByLoginName(String loginName, long exchangePoint);
 }

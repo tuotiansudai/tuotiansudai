@@ -39,6 +39,10 @@ public interface AccountMapper {
                                    @Param(value = "userName") String userName,
                                    @Param(value = "mobile") String mobile);
 
-    int findUsersAccountTotalPoint(String loginName);
+    int findUsersAccountTotalPoint(@Param(value = "loginName") String loginName);
+
+    int findUsersAccountAvailablePoint(@Param(value = "loginName") String loginName);
+
+    void updateByLoginName(@Param(value = "loginName") String loginName, @Param(value = "exchangePoint" ) long exchangePoint);
 
 }
