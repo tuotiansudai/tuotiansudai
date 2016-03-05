@@ -4,7 +4,6 @@ import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.point.service.PointExchangeService;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.SignInService;
 import com.tuotiansudai.web.util.LoginUserInfo;
@@ -23,7 +22,7 @@ public class PointController {
     @Autowired
     private SignInService signInService;
     @Autowired
-    private PointExchangeService pointExchangeService;
+    private PointService pointService;
 
     @Autowired
     private CouponService couponService;
@@ -52,11 +51,7 @@ public class PointController {
 
     @RequestMapping(value = "/exchange_coupon_list", method = RequestMethod.GET)
     public ModelAndView exchangeCouponList(){
-        String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/point_exchange_list");
-        List<ExchangeCouponDto> ExchangeCouponDtos = pointExchangeService.findExchangeableCouponList();
-        System.out.println(ExchangeCouponDtos.size());
-
         return modelAndView;
 
     }
