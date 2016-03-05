@@ -233,6 +233,17 @@
         LIMIT #{index},#{pageSize}
     </select>
 
+    <select id="findCouponExchangeableCount" resultType="int">
+        SELECT
+         IFNULL(count(1), 0)
+        FROM
+        coupon c
+        JOIN coupon_exchange e
+        ON c.`id` = e.`coupon_id`
+        AND c.`total_count` > c.`issued_count`
+        AND c.`coupon_Type` IN ('INVEST_COUPON','INTEREST_COUPON')
+    </select>
+
     <update id="updateCouponIssuedCountById" parameterType="java.lang.String">
         UPDATE coupon
         SET
