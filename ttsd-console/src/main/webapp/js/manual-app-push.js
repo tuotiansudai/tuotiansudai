@@ -99,6 +99,14 @@ require(['jquery', 'template', 'csrf', 'bootstrap', 'bootstrapDatetimepicker', '
             }
         });
 
+        $('.push_user_type_all').click(function () {
+            if ($(this).is(':checked') == true) {
+                $(this).parent().siblings().children().prop('checked',false).attr('disabled', 'disabled');
+            } else {
+                $(this).parent().siblings().children().removeAttr('disabled');
+            }
+        });
+
         //表单校验初始化参数
         $(".form-list").Validform({
             btnSubmit: '#btnSave',
