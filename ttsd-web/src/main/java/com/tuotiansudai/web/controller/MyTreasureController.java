@@ -1,6 +1,5 @@
 package com.tuotiansudai.web.controller;
 
-import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.model.CouponUseRecordView;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.UserCouponService;
@@ -27,9 +26,9 @@ public class MyTreasureController {
     public ModelAndView getUserCoupon() {
         String loginName = LoginUserInfo.getLoginName();
 
-        List<UserCouponDto> unusedUserCoupons = userCouponService.getUnusedUserCoupons(loginName);
+        List<CouponUseRecordView> unusedUserCoupons = userCouponService.getUnusedUserCoupons(loginName);
         List<CouponUseRecordView> useRecords = userCouponService.findUseRecords(loginName);
-        List<UserCouponDto> expiredUserCoupons = userCouponService.getExpiredUserCoupons(loginName);
+        List<CouponUseRecordView> expiredUserCoupons = userCouponService.getExpiredUserCoupons(loginName);
 
         ModelAndView modelAndView = new ModelAndView("/my-treasure");
         modelAndView.addObject("unusedCoupons", unusedUserCoupons);

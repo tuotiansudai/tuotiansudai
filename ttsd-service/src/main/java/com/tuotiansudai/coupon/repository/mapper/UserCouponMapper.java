@@ -23,7 +23,11 @@ public interface UserCouponMapper {
 
     List<UserCouponModel> findByLoanId(@Param("loanId") Long loanId, @Param("couponTypeList") List<CouponType> couponTypeList);
 
+    List<CouponUseRecordView> findUnusedCoupons(@Param(value = "loginName") String loginName);
+
     List<CouponUseRecordView> findUseRecords(@Param(value = "loginName") String loginName);
+
+    List<CouponUseRecordView> findExpiredCoupons(@Param(value = "loginName") String loginName);
 
     List<UserCouponModel> findByInvestId(@Param("investId") long investId);
 

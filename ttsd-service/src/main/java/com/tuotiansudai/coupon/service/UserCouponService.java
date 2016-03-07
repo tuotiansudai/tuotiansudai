@@ -9,9 +9,9 @@ public interface UserCouponService {
 
     List<UserCouponDto> getUsableCoupons(String loginName, final long loanId);
 
-    List<UserCouponDto> getUnusedUserCoupons(String loginName);
+    List<CouponUseRecordView> getUnusedUserCoupons(String loginName);
 
     List<CouponUseRecordView> findUseRecords(String loginName);
 
-    List<UserCouponDto> getExpiredUserCoupons(String loginName);
+    List<CouponUseRecordView> getExpiredUserCoupons(String loginName);
 }
