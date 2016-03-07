@@ -69,7 +69,7 @@
                             <#case 'LOAN_ALERT'>
                                 用户所投标的放款时
                                 <#break>
-                            <#case 'INVEST_ALERT'>
+                            <#case 'NO_INVEST_ALERT'>
                                 持续30天未投资，提醒一次
                                 <#break>
                         </#switch>

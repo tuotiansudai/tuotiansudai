@@ -22,7 +22,7 @@
         <result column="status" property="status"/>
     </resultMap>
 
-    <resultMap id="useRecordMap" type="CouponUseRecordView">
+    <resultMap id="useRecordMap" type="UserCouponView">
         <id column="id" property="id"/>
         <result column="coupon_type" property="couponType"/>
         <result column="coupon_amount" property="couponAmount"/>
