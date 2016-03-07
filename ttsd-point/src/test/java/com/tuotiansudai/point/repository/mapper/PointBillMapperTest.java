@@ -1,5 +1,6 @@
 package com.tuotiansudai.point.repository.mapper;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.repository.model.UserPointTaskModel;

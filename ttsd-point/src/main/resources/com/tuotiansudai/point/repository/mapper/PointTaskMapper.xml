@@ -17,8 +17,8 @@
         select * from point_task ORDER by created_time DESC limit #{index},#{pageSize}
     </select>
 
-    <select id="findCountPointTaskPagination" resultMap="pointTaskResultMap">
-        select count(*) from point_task
+    <select id="findCountPointTaskPagination" resultType="int">
+        select count(*)  from point_task
     </select>
 
     <select id="findById" resultMap="pointTaskResultMap">

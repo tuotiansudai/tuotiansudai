@@ -5,13 +5,15 @@ import com.tuotiansudai.dto.BaseDataDto;
 import java.io.Serializable;
 import java.util.Date;
 
-public class SignInPointDto extends BaseDataDto {
+public class SignInPointDto extends BaseDataDto implements Serializable {
 
     private int signInCount;
 
     private Date signInDate;
 
-    private int point;
+    private int signInPoint;
+
+    private int nextSignInPoint;
 
     public int getSignInCount() {
         return signInCount;
@@ -29,18 +31,27 @@ public class SignInPointDto extends BaseDataDto {
         this.signInDate = signInDate;
     }
 
-    public int getPoint() {
-        return point;
+    public int getSignInPoint() {
+        return signInPoint;
     }
 
-    public void setPoint(int point) {
-        this.point = point;
+    public void setSignInPoint(int signInPoint) {
+        this.signInPoint = signInPoint;
     }
 
-    public SignInPointDto(int signInCount, Date signInDate, int point) {
+    public int getNextSignInPoint() {
+        return nextSignInPoint;
+    }
+
+    public void setNextSignInPoint(int nextSignInPoint) {
+        this.nextSignInPoint = nextSignInPoint;
+    }
+
+    public SignInPointDto(int signInCount, Date signInDate, int signInPoint,int nextSignInPoint) {
         this.signInCount = signInCount;
         this.signInDate = signInDate;
-        this.point = point;
+        this.nextSignInPoint = nextSignInPoint;
+        this.signInPoint = signInPoint;
     }
 
     public SignInPointDto() {

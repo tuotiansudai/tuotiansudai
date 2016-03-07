@@ -1,5 +1,5 @@
-require(['jquery', 'mustache', 'text!/tpl/point-bill-table.mustache', 'moment', 'pagination', 'daterangepicker'],
-    function($, Mustache, pointBillListTemplate, moment, pagination) {
+require(['jquery', 'csrf','mustache', 'layerWrapper', 'text!/tpl/point-bill-table.mustache', 'moment', 'pagination', 'daterangepicker'],
+    function($, Mustache, layer, pointBillListTemplate, moment, pagination) {
         $(function() {
             var $navBtn = $('.column-title .title-navli'),
                 $signBtn = $('#signBtn'),
@@ -9,7 +9,7 @@ require(['jquery', 'mustache', 'text!/tpl/point-bill-table.mustache', 'moment', 
                 $taskTip = $('#taskLayer'),
                 $closeTask = $('#closeTask');
             //change model
-            $navBtn.on('click', function(event) {
+            $navBtn.on('click', function (event) {
                 event.preventDefault();
                 var $self = $(this),
                     index = $self.index();
@@ -17,32 +17,44 @@ require(['jquery', 'mustache', 'text!/tpl/point-bill-table.mustache', 'moment', 
                 $('.content-list .choi-beans-list:eq(' + index + ')').show().siblings().hide();
             });
             //show sign tip
-            $signBtn.on('click', function(event) {
+            $signBtn.on('click', function (event) {
                 event.preventDefault();
-                $signTip.fadeIn('fast', function() {
-                    $(this).find('.add-dou').animate({
-                        'bottom': '50px',
-                        'opacity': '0'
-                    }, 800);
-                });
+                var _this = $(this),
+                    $signText = $(".sign-text");
+                    $tomorrowText = $(".tomorrow-text");
+                    $addDou = $(".add-dou");
+
+                $.ajax({
+                    url: _this.data('url'),
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
+                }).done(function (response) {
+                    if (response.data.status) {
+                        $signText.html("签到成功，领取" + response.data.signInPoint + "财豆！");
+                        $tomorrowText.html("明日可领" + response.data.nextSignInPoint + "财豆");
+                        $addDou.html("+" + response.data.signInPoint);
+                        $signTip.fadeIn('fast', function () {
+                            $(this).find('.add-dou').animate({
+                                'bottom': '50px',
+                                'opacity': '0'
+                            }, 800);
+                        });
+                    }
+                })
             });
             //hide sign tip
-            $closeSign.on('click', function(event) {
+            $closeSign.on('click', function (event) {
                 event.preventDefault();
-                $signTip.fadeOut('fast', function() {
-                    $(this).find('.add-dou').css({
-                        'bottom': '0',
-                        'opacity': '1'
-                    });
-                });
+                location.href = "/point";
             });
             //show task tip
-            $taskBtn.on('click', function(event) {
+            $taskBtn.on('click', function (event) {
                 event.preventDefault();
                 $taskTip.fadeIn('fast');
             });
             //hide task tip
-            $closeTask.on('click', function(event) {
+            $closeTask.on('click', function (event) {
                 event.preventDefault();
                 $taskTip.fadeOut('fast');
             });
@@ -137,6 +149,62 @@ require(['jquery', 'mustache', 'text!/tpl/point-bill-table.mustache', 'moment', 
                 event.preventDefault();
                 loadPointBillData();
                 $(".date-filter .select-item").removeClass("current");
+            });
+
+            $('.reedom-now').on('click', function(event) {
+                event.preventDefault();
+                var $self=$(this),
+                    dataId=$self.attr('data-id'),
+                    couponName=$self.attr('data-bite');
+                $.ajax({
+                    url: '/path/to/file',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        dataId: dataId,
+                        couponName:couponName
+                    }
+                })
+                .done(function(data) {
+                    if(data.status==true){
+                        layer.open({
+                            title: '温馨提示',
+                            content: '确认兑换'+couponName+'？',
+                            btn: ['确定', '取消'],
+                            yes:function(index,layero){
+                                console.log(dataId+','+couponName);
+                                layer.close(index);
+                                $.ajax({
+                                    url: '/path/to/file',
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    data: {
+                                        dataId: dataId,
+                                        couponName:couponName
+                                    }
+                                })
+                                .done(function(data) {
+                                    layer.alert('兑换成功！',{title:'温馨提示'});
+                                })
+                                .fail(function() {
+                                    layer.alert('兑换失败，请重试！',{title:'温馨提示'});
+                                });
+                            }
+                        });
+                    }else{
+                        layer.open({
+                            title: '温馨提示',
+                            content: '您的财豆不足，赚取足够多的财豆后再来兑换吧！',
+                            btn: ['赚取财豆', '取消'],
+                            yes:function(index,layero){
+                                location.href='';
+                            }
+                        });
+                    }
+                })
+                .fail(function() {
+                    layer.alert('请求失败，请重试！',{title:'温馨提示'});
+                });
             });
         });
     });
