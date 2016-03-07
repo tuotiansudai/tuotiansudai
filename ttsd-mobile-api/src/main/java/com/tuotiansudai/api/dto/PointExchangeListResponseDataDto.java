@@ -7,6 +7,14 @@ public class PointExchangeListResponseDataDto extends BaseResponseDataDto {
     private Integer pageSize;
     private Integer totalCount;
 
+    public List<PointExchangeRecordResponseDataDto> getPointExchange() {
+        return pointExchange;
+    }
+
+    public void setPointExchange(List<PointExchangeRecordResponseDataDto> pointExchange) {
+        this.pointExchange = pointExchange;
+    }
+
     private List<PointExchangeRecordResponseDataDto> pointExchange;
 
     public Integer getIndex() {
@@ -33,7 +41,7 @@ public class PointExchangeListResponseDataDto extends BaseResponseDataDto {
         this.totalCount = totalCount;
     }
 
-    public List<PointExchangeRecordResponseDataDto> getPointExchange() { return pointExchange; }
 
-    public void setPointExchange(List<PointExchangeRecordResponseDataDto> pointExchange) { this.pointExchange = pointExchange; }
+
+
 }
