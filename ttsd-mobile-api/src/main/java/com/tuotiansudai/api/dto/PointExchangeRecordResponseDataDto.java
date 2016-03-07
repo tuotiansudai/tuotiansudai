@@ -99,17 +99,17 @@ public class PointExchangeRecordResponseDataDto {
     public PointExchangeRecordResponseDataDto(){
 
     }
-    public PointExchangeRecordResponseDataDto(CouponModel input, long point){
-        this.setCouponId(String.valueOf(input.getId()));
-        this.setCouponType(input.getCouponType());
-        this.setName(input.getCouponType().getName());
-        this.setAmount(AmountConverter.convertCentToString(input.getAmount()));
-        this.setRate(String.valueOf(input.getRate()));
-        this.setInvestLowerLimit(AmountConverter.convertCentToString(input.getInvestLowerLimit()));
-        this.setInvestUpperLimit(AmountConverter.convertCentToString(input.getInvestUpperLimit()));
-        this.setProductTypes(input.getProductTypes());
+    public PointExchangeRecordResponseDataDto(CouponModel couponModel, long point){
+        this.setCouponId(String.valueOf(couponModel.getId()));
+        this.setCouponType(couponModel.getCouponType());
+        this.setName(couponModel.getCouponType().getName());
+        this.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
+        this.setRate(String.valueOf(couponModel.getRate()));
+        this.setInvestLowerLimit(AmountConverter.convertCentToString(couponModel.getInvestLowerLimit()));
+        this.setInvestUpperLimit(AmountConverter.convertCentToString(couponModel.getInvestUpperLimit()));
+        this.setProductTypes(couponModel.getProductTypes());
         this.setPoint(point);
-        this.setDeadline(input.getDeadline()==null?0:input.getDeadline());
+        this.setDeadline(couponModel.getDeadline()==null?0:couponModel.getDeadline());
     }
 
 }

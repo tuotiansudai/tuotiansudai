@@ -6,27 +6,20 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointExchangeService;
-import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.util.DateUtil;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 
@@ -60,23 +53,6 @@ public class PointExchangeServiceImpl implements PointExchangeService {
                 return exchangeCouponDto;
             }
         });
-    }
-
-    @Override
-    public ExchangeCouponDto exchangeableCoupon(long couponId, String loginName, double rate, CouponType couponType){
-        ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto();
-        long exchange_point = couponExchangeMapper.findByCouponId(couponId).getExchangePoint();
-        long availablePoint = accountMapper.findUsersAccountAvailablePoint(loginName);
-        if(availablePoint > exchange_point && couponType.equals(CouponType.INVEST_COUPON)){
-            exchangeCouponDto.setCouponType(couponType);
-        }
-        else if(availablePoint > exchange_point && couponType.equals(CouponType.INTEREST_COUPON)){
-
-        }
-        else{
-
-        }
-        return exchangeCouponDto;
     }
 
     @Override

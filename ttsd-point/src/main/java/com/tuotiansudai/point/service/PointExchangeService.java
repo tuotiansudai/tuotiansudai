@@ -11,6 +11,4 @@ public interface PointExchangeService {
 
     void exchangeCoupon(long couponId, String loginName, long exchange_point, int deadLine);
 
-    ExchangeCouponDto exchangeableCoupon(long couponId, String loginName, double rate, CouponType couponType);
-
 }

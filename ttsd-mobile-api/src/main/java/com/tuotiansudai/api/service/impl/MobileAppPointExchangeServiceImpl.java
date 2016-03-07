@@ -4,14 +4,18 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppPointExchangeService;
 import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
+import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MobileAppPointExchangeServiceImpl implements MobileAppPointExchangeService {
@@ -21,11 +25,12 @@ public class MobileAppPointExchangeServiceImpl implements MobileAppPointExchange
     @Autowired
     private AccountMapper accountMapper;
     @Autowired
-    private PointBillMapper pointBillMapper;
-    @Autowired
     private CouponActivationService couponActivationService;
+    @Autowired
+    private PointBillService pointBillService;
 
     @Override
+    @Transactional
     public BaseResponseDto generatePointExchange(PointExchangeRequestDto pointExchangeRequestDto) {
         BaseResponseDto dto = new BaseResponseDto();
         String couponId = pointExchangeRequestDto.getCouponId();
@@ -40,9 +45,7 @@ public class MobileAppPointExchangeServiceImpl implements MobileAppPointExchange
                     UserGroup.REGISTERED_NOT_INVESTED_USER,
                     UserGroup.IMPORT_USER));
 
-            PointBillModel pointBillModel = new PointBillModel(loginName, Long.parseLong(couponId), CouponExchangePoint, PointBusinessType.EXCHANGE, PointBusinessType.EXCHANGE.getDescription());
-            pointBillMapper.create(pointBillModel);
-            accountMapper.updateByLoginName(loginName, CouponExchangePoint);
+            pointBillService.createPointBill(loginName, Long.parseLong(couponId), PointBusinessType.EXCHANGE, (-CouponExchangePoint));
 
             pointExchangeResponseDataDto.setPoint((userPoint - CouponExchangePoint));
             dto.setCode(ReturnMessage.SUCCESS.getCode());
