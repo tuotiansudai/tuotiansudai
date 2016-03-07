@@ -11,6 +11,7 @@ require(['jquery', 'template', 'csrf', 'bootstrap', 'bootstrapDatetimepicker', '
         //渲染select表单
         $selectDom.selectpicker();
 
+        $('#datetimepicker6').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
         /**
          * @msg  {[string]} //文字信息
          * @obj  {[object]} //传入的dom节点
@@ -72,8 +73,11 @@ require(['jquery', 'template', 'csrf', 'bootstrap', 'bootstrapDatetimepicker', '
                 var serialNo = data + 1;
                 $('.name').val(String.format(nameTemplate, yyyyMMdd, pushTypeText, serialNo));
             });
+        });
 
-        }).trigger('change');
+        if (!!!$('.name').val()) {
+            $('select.pushType').trigger('change');
+        }
 
         $('select.jumpTo').change(function () {
             var jumpTo = $(this).val();

@@ -1,32 +1,21 @@
 package com.tuotiansudai.api.service.impl;
 
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.google.common.collect.UnmodifiableIterator;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppUserCouponService;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.CouponUseRecordView;
+import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections.CollectionUtils;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -49,14 +38,14 @@ public class MobileAppUserCouponServiceImpl implements MobileAppUserCouponServic
 
     @Override
     public BaseResponseDto<UserCouponListResponseDataDto> getUserCoupons(UserCouponRequestDto requestDto) {
-        List<UserCouponDto> userCouponDtos = null;
-        List<CouponUseRecordView> useRecords = null;
-        List<UserCouponResponseDataDto> coupons = null;
+        List<UserCouponView> unUserCouponDtos = null;
+        List<UserCouponView> useUserCouponDtos = null;
+        List<UserCouponView> expiredUserDtos = null;
 
         BaseResponseDto<UserCouponListResponseDataDto> responseDto = new BaseResponseDto<>();
 
         if(requestDto.isUnused()){
-            userCouponDtos = userCouponService.getUnusedUserCoupons(requestDto.getBaseParam().getUserId());
+            unUserCouponDtos = userCouponService.getUnusedUserCoupons(requestDto.getBaseParam().getUserId());
         }
         if(requestDto.isExpired()){
             userCouponDtos = userCouponService.getExpiredUserCoupons(requestDto.getBaseParam().getUserId());

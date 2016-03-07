@@ -19,6 +19,7 @@
     </resultMap>
 
     <resultMap id="investNotifyInfoMap" type="InvestNotifyInfo">
+        <result column="login_name" property="loginName"></result>
         <result column="loan_name" property="loanName"></result>
         <result column="mobile" property="mobile"></result>
         <result column="email" property="email"></result>
@@ -129,7 +130,7 @@
     </select>
 
     <select id="findSuccessInvestMobileEmailAndAmount" parameterType="long" resultMap="investNotifyInfoMap">
-        select invest.id as invest_id, invest.amount, loan.name as loan_name, loan.periods, user.mobile, user.email
+        select invest.id as invest_id, invest.amount, loan.name as loan_name,invest.login_name as login_name, loan.periods, user.mobile, user.email
         from invest
         inner join loan on invest.loan_id = loan.id
         inner join user on user.login_name = invest.login_name
@@ -314,6 +315,15 @@
                end
         from invest
         where login_name = #{loginName} and status = 'SUCCESS';
+    </select>
+    <select id="findNoInvestInThirtyDay" resultType="string" >
+        SELECT
+        t.`login_name`
+        FROM
+        invest t
+        WHERE t.`status` = 'SUCCESS'
+        GROUP BY t.`login_name`
+        HAVING MAX(t.`created_time`) &lt; DATE_SUB(curdate(), INTERVAL 30 DAY)
     </select>
 
 </mapper>
