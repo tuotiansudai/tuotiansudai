@@ -14,51 +14,35 @@ import java.util.List;
 
 public class BaseCouponResponseDataDto {
 
-    private String userCouponId;
+    protected String userCouponId;
 
-    private CouponType type;
+    protected CouponType type;
 
-    private String name;
+    protected String name;
 
-    private String amount;
-
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date startDate;
+    protected String amount;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date endDate;
+    protected Date startDate;
 
-    private String investLowerLimit;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    protected Date endDate;
 
-    private List<ProductType> productTypes;
+    protected String investLowerLimit;
 
-    private String rate;
+    protected List<ProductType> productTypes;
 
-    private String investUpperLimit;
+    protected String rate;
 
-    private boolean shared;
+    protected String investUpperLimit;
 
-    private String investAmount;
+    protected boolean shared;
 
-    private String birthdayRate;
+    protected String investAmount;
+
+    protected String birthdayRate;
 
     public BaseCouponResponseDataDto() {
-    }
-
-    public BaseCouponResponseDataDto(UserCouponView userCouponView) {
-        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
-        this.name = userCouponView.getCouponType().getName();
-        this.type = userCouponView.getCouponType();
-        this.amount = AmountConverter.convertCentToString(userCouponView.getCouponAmount());
-        this.investLowerLimit = AmountConverter.convertCentToString(userCouponView.getInvestLowerLimit());
-        this.productTypes = userCouponView.getProductTypeList();
-        this.rate = decimalFormat.format(userCouponView.getRate() * 100);
-        this.birthdayRate = String.valueOf(userCouponView.getBirthdayBenefit());
-        this.investUpperLimit = AmountConverter.convertCentToString(userCouponView.getInvestUpperLimit());
-        this.shared = userCouponView.isShared();
-        this.startDate = userCouponView.getStartTime();
-        this.endDate = userCouponView.getEndTime();
-        this.investAmount = AmountConverter.convertCentToString(userCouponView.getInvestAmount());
     }
 
     public BaseCouponResponseDataDto(CouponModel couponModel, UserCouponModel userCouponModel) {
