@@ -20,8 +20,8 @@ public class MyHandlerExceptionResolver implements HandlerExceptionResolver{
     private ObjectMapper objectMapper = new ObjectMapper();
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        log.error(ex.getLocalizedMessage(),ex);
-
+        log.error(ex.getLocalizedMessage(), ex);
+        response.reset();
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         PrintWriter out = null;

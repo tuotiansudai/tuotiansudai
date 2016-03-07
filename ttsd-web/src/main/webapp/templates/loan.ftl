@@ -205,6 +205,7 @@
         <div class="bg-w clear-blank">
             <div class="loan-nav">
                 <ul>
+
                     <li class="active">借款详情<i class="fa fa-caret-up"></i></li>
                     <li>出借记录<i class="fa fa-caret-up"></i></li>
                 </ul>

@@ -38,6 +38,7 @@ def mk_war():
 def mk_worker_zip():
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/')
     local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle -Prop=invest distZip -PconfigPath=/workspace/v2config/default/')
+    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle -Prop=jpush distZip -PconfigPath=/workspace/v2config/default/')
 
 
 def mk_static_zip():
@@ -99,6 +100,7 @@ def deploy_worker():
     with cd('/workspace'):
         sudo('rm -rf ttsd-job-worker-all/')
         sudo('rm -rf ttsd-job-worker-invest/')
+        sudo('rm -rf ttsd-job-worker-jpush/')
         sudo('unzip \*.zip')
         sudo('supervisorctl start all')
 
