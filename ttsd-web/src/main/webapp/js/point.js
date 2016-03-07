@@ -1,4 +1,4 @@
-require(['jquery', 'mustache', 'layerWrapper', 'text!/tpl/point-bill-table.mustache', 'moment', 'pagination', 'daterangepicker'],
+require(['jquery', 'mustache', 'layerWrapper', 'text!/tpl/point-bill-table.mustache', 'moment', 'pagination', 'daterangepicker','csrf'],
     function($, Mustache, layer, pointBillListTemplate, moment, pagination) {
         $(function() {
             var $navBtn = $('.column-title .title-navli'),
@@ -156,51 +156,40 @@ require(['jquery', 'mustache', 'layerWrapper', 'text!/tpl/point-bill-table.musta
                 var $self=$(this),
                     dataId=$self.attr('data-id'),
                     couponName=$self.attr('data-bite');
-                $.ajax({
-                    url: '/point/exchange_able_coupon/'+dataId,
-                    type: 'POST',
-                    dataType: 'json'
-                })
-                .done(function(data) {
-                    if(data==true){
-                        layer.open({
-                            title: '温馨提示',
-                            content: '确认兑换'+couponName+'？',
-                            btn: ['确定', '取消'],
-                            yes:function(index,layero){
-                                console.log(dataId+','+couponName);
-                                layer.close(index);
-                                $.ajax({
-                                    url: '/point/exchange_coupon/'+dataId,
-                                    type: 'POST',
-                                    dataType: 'json'
-                                })
-                                .done(function(data) {
-                                    if(data == true) {
-                                        layer.alert('兑换成功！', {title: '温馨提示'});
-                                    } else {
-                                        layer.alert('兑换失败，请重试！',{title:'温馨提示'});
+                layer.open({
+                    title: '温馨提示',
+                    content: '确认兑换'+couponName+'？',
+                    btn: ['确定', '取消'],
+                    yes:function(index,layero){
+                        layer.close(index);
+                        $.ajax({
+                            url: '/point/'+dataId+'/exchange',
+                            type: 'POST',
+                            dataType: 'json'
+                        })
+                        .done(function(data) {
+                            if(data.status) {
+                                layer.alert('兑换成功！', {title: '温馨提示'});
+                            } else if (!data.status && data.message == 'point insufficient') {
+                                layer.open({
+                                    title: '温馨提示',
+                                    content: '您的财豆不足，赚取足够多的财豆后再来兑换吧！',
+                                    btn: ['赚取财豆', '取消'],
+                                    yes:function(index,layero){
+                                        location.href='/point';
                                     }
-                                })
-                                .fail(function() {
-                                    layer.alert('兑换失败，请重试！',{title:'温馨提示'});
                                 });
+                            } else {
+                                layer.alert('兑换失败，请重试！',{title:'温馨提示'});
                             }
-                        });
-                    }else{
-                        layer.open({
-                            title: '温馨提示',
-                            content: '您的财豆不足，赚取足够多的财豆后再来兑换吧！',
-                            btn: ['赚取财豆', '取消'],
-                            yes:function(index,layero){
-                                location.href='/point';
-                            }
+                        })
+                        .fail(function() {
+                            layer.alert('兑换失败，请重试！',{title:'温馨提示'});
                         });
                     }
-                })
-                .fail(function() {
-                    layer.alert('请求失败，请重试！',{title:'温馨提示'});
                 });
             });
+
+
         });
     });

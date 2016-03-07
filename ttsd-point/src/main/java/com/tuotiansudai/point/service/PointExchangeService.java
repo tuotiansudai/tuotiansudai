@@ -8,7 +8,7 @@ public interface PointExchangeService {
 
     List<ExchangeCouponDto> findExchangeableCouponList();
 
-    void exchangeCoupon(long couponId, String loginName, long exchangePoint);
+    boolean exchangeCoupon(long couponId, String loginName, long exchangePoint);
 
     boolean exchangeableCoupon(long couponId, String loginName);
 

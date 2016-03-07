@@ -121,6 +121,9 @@
 				</#if>
 			</ul>
     	</div>
+
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
     	<div class="choi-beans-list invest-list-content">
     		<div class="item-block date-filter">
 		        <span class="sub-hd">起止时间:</span>

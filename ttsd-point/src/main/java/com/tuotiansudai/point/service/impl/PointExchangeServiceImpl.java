@@ -63,11 +63,17 @@ public class PointExchangeServiceImpl implements PointExchangeService {
 
     @Override
     @Transactional
-    public void exchangeCoupon(long couponId, String loginName, long exchangePoint){
-        couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.EXCHANGER));
-        PointBillModel pointBillModel = new PointBillModel(loginName, couponId, exchangePoint, PointBusinessType.EXCHANGE, PointBusinessType.EXCHANGE.name());
-        pointBillMapper.create(pointBillModel);
-        accountMapper.updateByLoginName(loginName, exchangePoint);
-        couponMapper.updateByLoginName(loginName);
+    public boolean exchangeCoupon(long couponId, String loginName, long exchangePoint){
+        try {
+            couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.EXCHANGER));
+            PointBillModel pointBillModel = new PointBillModel(loginName, couponId, exchangePoint, PointBusinessType.EXCHANGE, PointBusinessType.EXCHANGE.name());
+            pointBillMapper.create(pointBillModel);
+            accountMapper.updateByLoginName(loginName, exchangePoint);
+            couponMapper.updateByLoginName(loginName);
+            return true;
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+            return false;
+        }
     }
 }

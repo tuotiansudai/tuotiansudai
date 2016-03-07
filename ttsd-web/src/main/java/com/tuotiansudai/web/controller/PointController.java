@@ -92,23 +92,21 @@ public class PointController {
 
     }
 
-    @RequestMapping(value = "/exchange_able_coupon/{couponId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{couponId}/exchange", method = RequestMethod.POST)
     @ResponseBody
-    public boolean exchangeableCoupon(@PathVariable long couponId) {
-        return pointExchangeService.exchangeableCoupon(couponId, LoginUserInfo.getLoginName());
-    }
-
-    @RequestMapping(value = "/exchange_coupon/{couponId}", method = RequestMethod.POST)
-    @ResponseBody
-    public boolean exchangeCoupon(@PathVariable long couponId) {
+    public BaseDataDto exchangeCoupon(@PathVariable long couponId) {
+        BaseDataDto baseDataDto = new BaseDataDto();
         long exchangePoint = couponService.findCouponExchangeByCouponId(couponId).getExchangePoint();
-        try {
-            pointExchangeService.exchangeCoupon(couponId, LoginUserInfo.getLoginName(), exchangePoint);
-            return true;
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-            return false;
+        boolean sufficient = pointExchangeService.exchangeableCoupon(couponId, LoginUserInfo.getLoginName());
+        if (sufficient && pointExchangeService.exchangeCoupon(couponId, LoginUserInfo.getLoginName(), exchangePoint)) {
+            baseDataDto.setStatus(true);
+        } else {
+            baseDataDto.setStatus(false);
+            if (!sufficient) {
+                baseDataDto.setMessage("point insufficient");
+            }
         }
+        return baseDataDto;
     }
 
 }
