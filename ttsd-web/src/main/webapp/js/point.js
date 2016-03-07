@@ -157,16 +157,12 @@ require(['jquery', 'mustache', 'layerWrapper', 'text!/tpl/point-bill-table.musta
                     dataId=$self.attr('data-id'),
                     couponName=$self.attr('data-bite');
                 $.ajax({
-                    url: '/path/to/file',
+                    url: '/point/exchange_able_coupon/'+dataId,
                     type: 'POST',
-                    dataType: 'json',
-                    data: {
-                        dataId: dataId,
-                        couponName:couponName
-                    }
+                    dataType: 'json'
                 })
                 .done(function(data) {
-                    if(data.status==true){
+                    if(data==true){
                         layer.open({
                             title: '温馨提示',
                             content: '确认兑换'+couponName+'？',
@@ -175,16 +171,16 @@ require(['jquery', 'mustache', 'layerWrapper', 'text!/tpl/point-bill-table.musta
                                 console.log(dataId+','+couponName);
                                 layer.close(index);
                                 $.ajax({
-                                    url: '/path/to/file',
+                                    url: '/point/exchange_coupon/'+dataId,
                                     type: 'POST',
-                                    dataType: 'json',
-                                    data: {
-                                        dataId: dataId,
-                                        couponName:couponName
-                                    }
+                                    dataType: 'json'
                                 })
                                 .done(function(data) {
-                                    layer.alert('兑换成功！',{title:'温馨提示'});
+                                    if(data == true) {
+                                        layer.alert('兑换成功！', {title: '温馨提示'});
+                                    } else {
+                                        layer.alert('兑换失败，请重试！',{title:'温馨提示'});
+                                    }
                                 })
                                 .fail(function() {
                                     layer.alert('兑换失败，请重试！',{title:'温馨提示'});
@@ -197,7 +193,7 @@ require(['jquery', 'mustache', 'layerWrapper', 'text!/tpl/point-bill-table.musta
                             content: '您的财豆不足，赚取足够多的财豆后再来兑换吧！',
                             btn: ['赚取财豆', '取消'],
                             yes:function(index,layero){
-                                location.href='';
+                                location.href='/point';
                             }
                         });
                     }

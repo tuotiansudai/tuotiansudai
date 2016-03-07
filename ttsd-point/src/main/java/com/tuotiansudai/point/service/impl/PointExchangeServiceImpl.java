@@ -14,7 +14,6 @@ import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointExchangeService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.CouponType;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,29 +55,19 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     }
 
     @Override
-    public ExchangeCouponDto exchangeableCoupon(long couponId, String loginName, double rate, CouponType couponType){
-        ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto();
+    public boolean exchangeableCoupon(long couponId, String loginName){
         long exchange_point = couponExchangeMapper.findByCouponId(couponId).getExchangePoint();
         long availablePoint = accountMapper.findUsersAccountAvailablePoint(loginName);
-        if(availablePoint > exchange_point && couponType.equals(CouponType.INVEST_COUPON)){
-            exchangeCouponDto.setCouponType(couponType);
-        }
-        else if(availablePoint > exchange_point && couponType.equals(CouponType.INTEREST_COUPON)){
-
-        }
-        else{
-
-        }
-        return exchangeCouponDto;
+        return availablePoint >= exchange_point;
     }
 
     @Override
     @Transactional
-    public void exchangeCoupon(long couponId, String loginName, long exchange_point, int deadLine){
+    public void exchangeCoupon(long couponId, String loginName, long exchangePoint){
         couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.EXCHANGER));
-        PointBillModel pointBillModel = new PointBillModel(loginName, couponId, exchange_point, PointBusinessType.EXCHANGE, PointBusinessType.EXCHANGE.name());
+        PointBillModel pointBillModel = new PointBillModel(loginName, couponId, exchangePoint, PointBusinessType.EXCHANGE, PointBusinessType.EXCHANGE.name());
         pointBillMapper.create(pointBillModel);
-        accountMapper.updateByLoginName(loginName, exchange_point);
+        accountMapper.updateByLoginName(loginName, exchangePoint);
         couponMapper.updateByLoginName(loginName);
     }
 }
