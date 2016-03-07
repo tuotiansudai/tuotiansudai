@@ -47,6 +47,7 @@ public class SignInServiceImpl implements SignInService {
                 signInPointDto = new SignInPointDto(signInCount, today.toDate(), SignInPoint.getPointByTimes(signInCount),SignInPoint.getPointByTimes(signInCount + 1));
             }
         }
+        signInPointDto.setStatus(true);
         redisWrapperClient.hsetSeri(POINT_SIGN_IN_KEY, loginName, signInPointDto);
         pointBillService.createPointBill(loginName, null, PointBusinessType.SIGN_IN, signInPointDto.getSignInPoint());
         logger.debug(MessageFormat.format("{0} sign in success {1} 次", loginName, signInPointDto.getSignInCount()));
