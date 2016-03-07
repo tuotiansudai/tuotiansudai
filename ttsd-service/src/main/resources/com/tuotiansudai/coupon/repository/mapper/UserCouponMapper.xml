@@ -95,6 +95,7 @@
     <select id="findUnusedCoupons" resultMap="useRecordMap" parameterType="map">
         select
             uc.id as id,
+            c.shared as shared,
             c.coupon_type as coupon_type,
             c.amount as coupon_amount,
             c.rate as rate,

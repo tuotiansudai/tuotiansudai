@@ -81,10 +81,10 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
 
             }
         });
-        Iterator<UserCouponResponseDataDto> items = Iterators.transform(filter, new Function<UserCouponModel, UserCouponResponseDataDto>() {
+        Iterator<BaseCouponResponseDataDto> items = Iterators.transform(filter, new Function<UserCouponModel, BaseCouponResponseDataDto>() {
             @Override
-            public UserCouponResponseDataDto apply(UserCouponModel userCouponModel) {
-                UserCouponResponseDataDto dataDto = new UserCouponResponseDataDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel);
+            public BaseCouponResponseDataDto apply(UserCouponModel userCouponModel) {
+                BaseCouponResponseDataDto dataDto = new BaseCouponResponseDataDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel);
                 return dataDto;
             }
         });

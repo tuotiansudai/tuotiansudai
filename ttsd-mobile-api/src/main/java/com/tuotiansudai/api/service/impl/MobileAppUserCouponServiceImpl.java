@@ -38,43 +38,33 @@ public class MobileAppUserCouponServiceImpl implements MobileAppUserCouponServic
 
     @Override
     public BaseResponseDto<UserCouponListResponseDataDto> getUserCoupons(UserCouponRequestDto requestDto) {
-        List<UserCouponView> unUserCouponDtos = null;
-        List<UserCouponView> useUserCouponDtos = null;
-        List<UserCouponView> expiredUserDtos = null;
+        List<UserCouponView> couponDtos = null;
 
         BaseResponseDto<UserCouponListResponseDataDto> responseDto = new BaseResponseDto<>();
 
         if(requestDto.isUnused()){
-            unUserCouponDtos = userCouponService.getUnusedUserCoupons(requestDto.getBaseParam().getUserId());
+            couponDtos = userCouponService.getUnusedUserCoupons(requestDto.getBaseParam().getUserId());
         }
         if(requestDto.isExpired()){
-            userCouponDtos = userCouponService.getExpiredUserCoupons(requestDto.getBaseParam().getUserId());
+            couponDtos = userCouponService.getExpiredUserCoupons(requestDto.getBaseParam().getUserId());
         }
 
         if(requestDto.isUsed()){
-            useRecords = userCouponService.findUseRecords(requestDto.getBaseParam().getUserId());
+            couponDtos = userCouponService.findUseRecords(requestDto.getBaseParam().getUserId());
         }
+        List<BaseCouponResponseDataDto> coupons = null;
 
-        if(CollectionUtils.isNotEmpty(userCouponDtos)){
-            coupons = Lists.transform(userCouponDtos, new Function<UserCouponDto, UserCouponResponseDataDto>() {
+        if(CollectionUtils.isNotEmpty(couponDtos)){
+            coupons = Lists.transform(couponDtos, new Function<UserCouponView, BaseCouponResponseDataDto>() {
                 @Override
-                public UserCouponResponseDataDto apply(UserCouponDto userCouponDto) {
-                    UserCouponModel userCouponModel = userCouponMapper.findById(userCouponDto.getId());
-                    UserCouponResponseDataDto dataDto = new UserCouponResponseDataDto(couponMapper.findById(userCouponDto.getCouponId()), userCouponModel);
+                public BaseCouponResponseDataDto apply(UserCouponView userCouponView) {
+                    UserCouponResponseDataDto dataDto = new UserCouponResponseDataDto(userCouponView);
                     return dataDto;
                 }
             });
 
         }
 
-        if(CollectionUtils.isNotEmpty(useRecords)){
-            coupons = Lists.transform(useRecords, new Function<CouponUseRecordView, UserCouponResponseDataDto>() {
-                @Override
-                public UserCouponResponseDataDto apply(CouponUseRecordView couponUseRecordView) {
-                    return new UserCouponResponseDataDto(couponUseRecordView);
-                }
-            });
-        }
         if(CollectionUtils.isNotEmpty(coupons)){
             responseDto.setData(new UserCouponListResponseDataDto(coupons));
         }else{

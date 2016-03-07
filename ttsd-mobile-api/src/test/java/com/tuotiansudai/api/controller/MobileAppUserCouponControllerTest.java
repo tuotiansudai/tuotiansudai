@@ -50,7 +50,7 @@ public class MobileAppUserCouponControllerTest extends ControllerTestBase {
         item.setLoanProductType(ProductType.JYF);
         item.setExpectedInterest("1.00");
 
-        UserCouponListResponseDataDto dataDto = new UserCouponListResponseDataDto(Lists.newArrayList(item));
+        UserCouponListResponseDataDto dataDto = new UserCouponListResponseDataDto(Lists.newArrayList((BaseCouponResponseDataDto)item));
         responseDto.setData(dataDto);
 
         when(mobileAppUserCouponService.getUserCoupons(any(UserCouponRequestDto.class))).thenReturn(responseDto);
