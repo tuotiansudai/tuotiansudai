@@ -16,44 +16,30 @@
 					<span class="title-text">财豆总览</span>
 					<span class="title-href">财豆明细></span>
 				</div>
-				<div class="beans-list mt-20">
-					<span class="beans-num">可用财豆：10000</span>
-					<i class="icon-result icon-dou"></i>
-				</div>
-				<div class="beans-list mt-20">
-					<ul class="beans-recent">
-						<li class="one-day">
-							<p>
-								<i class="icon-circle"></i>
-								<span class="text-date">2月16日</span>
-								<span class="text-money">
-									<strong>+1000</strong>
-									<i class="icon-result icon-sm-dou"></i>
-								</span>
-							</p>
-						</li>
-						<li class="two-day">
-							<p>
-								<i class="icon-circle"></i>
-								<span class="text-date">2月16日</span>
-								<span class="text-money">
-									<strong>+1000</strong>
-									<i class="icon-result icon-sm-dou"></i>
-								</span>
-							</p>
-						</li>
-						<li class="three-day">
-							<p>
-								<i class="icon-circle"></i>
-								<span class="text-date">2月16日</span>
-								<span class="text-money">
-									<strong>+1000</strong>
-									<i class="icon-result icon-sm-dou"></i>
-								</span>
-							</p>
-						</li>
-					</ul>
-				</div>
+                <div class="beans-list mt-20">
+                    <span class="beans-num">可用财豆：${myPoint!}</span>
+                    <i class="icon-result icon-dou"></i>
+                </div>
+                <div class="beans-list mt-20">
+                    <ul class="beans-recent">
+                        <if obtainedPoint??>
+							<#list obtainedPoints as obtainedPoint>
+								<#list obtainedPoint?keys as key>
+                                    <li class="one-day">
+                                        <p>
+                                            <i class="icon-circle"></i>
+                                            <span class="text-date">${obtainedPoint[key]?string('MM月dd日')}</span>
+                                <span class="text-money">
+                                    <strong>${key}</strong>
+                                    <i class="icon-result icon-sm-dou"></i>
+                                </span>
+                                        </p>
+                                    </li>
+								</#list>
+							</#list>
+                        </if>
+                    </ul>
+                </div>
 			</div>
 			<div class="beans-operat">
 				<h3>赚取财豆</h3>
