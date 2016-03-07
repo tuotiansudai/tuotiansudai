@@ -156,38 +156,40 @@ require(['jquery', 'mustache', 'layerWrapper', 'text!/tpl/point-bill-table.musta
                 var $self=$(this),
                     dataId=$self.attr('data-id'),
                     couponName=$self.attr('data-bite');
-                layer.open({
-                    title: '温馨提示',
-                    content: '确认兑换'+couponName+'？',
-                    btn: ['确定', '取消'],
-                    yes:function(index,layero){
-                        layer.close(index);
-                        $.ajax({
-                            url: '/point/'+dataId+'/exchange',
-                            type: 'POST',
-                            dataType: 'json'
-                        })
-                        .done(function(data) {
-                            if(data.status) {
-                                layer.alert('兑换成功！', {title: '温馨提示'});
-                            } else if (!data.status && data.message == 'point insufficient') {
-                                layer.open({
-                                    title: '温馨提示',
-                                    content: '您的财豆不足，赚取足够多的财豆后再来兑换吧！',
-                                    btn: ['赚取财豆', '取消'],
-                                    yes:function(index,layero){
-                                        location.href='/point';
+                if (!$(this).hasClass('no-click')) {
+                    layer.open({
+                        title: '温馨提示',
+                        content: '确认兑换'+couponName+'？',
+                        btn: ['确定', '取消'],
+                        yes:function(index,layero){
+                            layer.close(index);
+                            $.ajax({
+                                url: '/point/'+dataId+'/exchange',
+                                type: 'POST',
+                                dataType: 'json'
+                            })
+                                .done(function(data) {
+                                    if(data.status) {
+                                        layer.alert('兑换成功！', {title: '温馨提示'});
+                                    } else if (!data.status && data.message == 'point insufficient') {
+                                        layer.open({
+                                            title: '温馨提示',
+                                            content: '您的财豆不足，赚取足够多的财豆后再来兑换吧！',
+                                            btn: ['赚取财豆', '取消'],
+                                            yes:function(index,layero){
+                                                location.href='/point';
+                                            }
+                                        });
+                                    } else {
+                                        layer.alert('兑换失败，请重试！',{title:'温馨提示'});
                                     }
+                                })
+                                .fail(function() {
+                                    layer.alert('兑换失败，请重试！',{title:'温馨提示'});
                                 });
-                            } else {
-                                layer.alert('兑换失败，请重试！',{title:'温馨提示'});
-                            }
-                        })
-                        .fail(function() {
-                            layer.alert('兑换失败，请重试！',{title:'温馨提示'});
-                        });
-                    }
-                });
+                        }
+                    });
+                }
             });
 
 
