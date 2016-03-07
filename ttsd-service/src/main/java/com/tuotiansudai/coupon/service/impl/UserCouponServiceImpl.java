@@ -7,7 +7,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponUseRecordView;
+import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -38,8 +38,8 @@ public class UserCouponServiceImpl implements UserCouponService {
     @Autowired
     private UserBirthdayUtil userBirthdayUtil;
 
-    public List<CouponUseRecordView> getUnusedUserCoupons(String loginName) {
-        List<CouponUseRecordView> unusedCoupons = userCouponMapper.findUnusedCoupons(loginName);
+    public List<UserCouponView> getUnusedUserCoupons(String loginName) {
+        List<UserCouponView> unusedCoupons = userCouponMapper.findUnusedCoupons(loginName);
 
         for (int i = unusedCoupons.size() - 1; i >= 0; i--) {
             if (unusedCoupons.get(i).getCouponType() == CouponType.BIRTHDAY_COUPON) {
@@ -50,13 +50,13 @@ public class UserCouponServiceImpl implements UserCouponService {
         return unusedCoupons;
     }
 
-    public List<CouponUseRecordView> findUseRecords(String loginName) {
-        List<CouponUseRecordView> useRecordViews = userCouponMapper.findUseRecords(loginName);
+    public List<UserCouponView> findUseRecords(String loginName) {
+        List<UserCouponView> useRecordViews = userCouponMapper.findUseRecords(loginName);
         return useRecordViews;
     }
 
-    public List<CouponUseRecordView> getExpiredUserCoupons(String loginName) {
-        List<CouponUseRecordView> expiredCoupons = userCouponMapper.findExpiredCoupons(loginName);
+    public List<UserCouponView> getExpiredUserCoupons(String loginName) {
+        List<UserCouponView> expiredCoupons = userCouponMapper.findExpiredCoupons(loginName);
 
         for (int i = expiredCoupons.size() - 1; i >= 0; i--) {
             if (expiredCoupons.get(i).getCouponType() == CouponType.BIRTHDAY_COUPON) {

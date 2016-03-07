@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class CouponUseRecordView implements Serializable, Comparable<CouponUseRecordView> {
+public class UserCouponView implements Serializable, Comparable<UserCouponView> {
 
     private static final long serialVersionUID = 6557972198633723582L;
 
@@ -43,7 +43,7 @@ public class CouponUseRecordView implements Serializable, Comparable<CouponUseRe
 
     private InvestStatus status;
 
-    public CouponUseRecordView() {
+    public UserCouponView() {
     }
 
     public long getId() {
@@ -188,7 +188,7 @@ public class CouponUseRecordView implements Serializable, Comparable<CouponUseRe
     }
 
     @Override
-    public int compareTo(CouponUseRecordView dto) {
+    public int compareTo(UserCouponView dto) {
         if (this.getStatusCode() == dto.getStatusCode()) {
             if (this.getCouponType().getOrder() == dto.getCouponType().getOrder()) {
                 if (this.getStatusCode() == 2) {

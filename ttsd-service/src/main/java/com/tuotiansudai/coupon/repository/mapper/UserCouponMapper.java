@@ -1,9 +1,8 @@
 package com.tuotiansudai.coupon.repository.mapper;
 
-import com.tuotiansudai.coupon.repository.model.CouponUseRecordView;
+import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.repository.model.ProductType;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -23,11 +22,11 @@ public interface UserCouponMapper {
 
     List<UserCouponModel> findByLoanId(@Param("loanId") Long loanId, @Param("couponTypeList") List<CouponType> couponTypeList);
 
-    List<CouponUseRecordView> findUnusedCoupons(@Param(value = "loginName") String loginName);
+    List<UserCouponView> findUnusedCoupons(@Param(value = "loginName") String loginName);
 
-    List<CouponUseRecordView> findUseRecords(@Param(value = "loginName") String loginName);
+    List<UserCouponView> findUseRecords(@Param(value = "loginName") String loginName);
 
-    List<CouponUseRecordView> findExpiredCoupons(@Param(value = "loginName") String loginName);
+    List<UserCouponView> findExpiredCoupons(@Param(value = "loginName") String loginName);
 
     List<UserCouponModel> findByInvestId(@Param("investId") long investId);
 
