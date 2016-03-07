@@ -16,68 +16,61 @@
 					<span class="title-text">财豆总览</span>
 					<span class="title-href">财豆明细></span>
 				</div>
-				<div class="beans-list mt-20">
-					<span class="beans-num">可用财豆：10000</span>
-					<i class="icon-result icon-dou"></i>
-				</div>
-				<div class="beans-list mt-20">
-					<ul class="beans-recent">
-						<li class="one-day">
-							<p>
-								<i class="icon-circle"></i>
-								<span class="text-date">2月16日</span>
-								<span class="text-money">
-									<strong>+1000</strong>
-									<i class="icon-result icon-sm-dou"></i>
-								</span>
-							</p>
-						</li>
-						<li class="two-day">
-							<p>
-								<i class="icon-circle"></i>
-								<span class="text-date">2月16日</span>
-								<span class="text-money">
-									<strong>+1000</strong>
-									<i class="icon-result icon-sm-dou"></i>
-								</span>
-							</p>
-						</li>
-						<li class="three-day">
-							<p>
-								<i class="icon-circle"></i>
-								<span class="text-date">2月16日</span>
-								<span class="text-money">
-									<strong>+1000</strong>
-									<i class="icon-result icon-sm-dou"></i>
-								</span>
-							</p>
-						</li>
-					</ul>
-				</div>
+                <div class="beans-list mt-20">
+                    <span class="beans-num">可用财豆：${myPoint!}</span>
+                    <i class="icon-result icon-dou"></i>
+                </div>
+                <div class="beans-list mt-20">
+                    <ul class="beans-recent">
+                        <if obtainedPoints??>
+							<#list obtainedPoints as obtainedPoint>
+								<#list obtainedPoint?keys as key>
+                                    <li class="<#if obtainedPoint_index == 0>one-day</#if><#if obtainedPoint_index == 1>two-day</#if><#if obtainedPoint_index == 2>three-day</#if>">
+                                        <p>
+                                            <i class="icon-circle"></i>
+                                            <span class="text-date">${obtainedPoint[key]?string('MM月dd日')}</span>
+                                <span class="text-money">
+                                    <strong>${key}</strong>
+                                    <i class="icon-result icon-sm-dou"></i>
+                                </span>
+                                        </p>
+                                    </li>
+								</#list>
+							</#list>
+                        </if>
+                    </ul>
+                </div>
 			</div>
-			<div class="beans-operat">
-				<h3>赚取财豆</h3>
-				<ul class="object-list">
-					<li>
-						<p class="icon-com invest-bg"><i class="icon-result icon-invest"></i></p>
-						<p class="btn-list">
-							<a href="#"><span class="btn-invest">去投资</span></a>
-						</p>
-					</li>
-					<li>
-						<p class="icon-com sign-bg"><i class="icon-result icon-sign"></i></p>
-						<p class="btn-list">
-							<span class="btn-sign" id="signBtn">签到</span>
-						</p>
-					</li>
-					<li>
-						<p class="icon-com task-bg"><i class="icon-result icon-task"></i></p>
-						<p class="btn-list">
-							<span class="btn-task" id="taskBtn">做任务</span>
-						</p>
-					</li>
-				</ul>
-			</div>
+            <div class="beans-operat">
+                <h3>赚取财豆</h3>
+                <ul class="object-list">
+                    <li>
+                        <p class="icon-com invest-bg"><i class="icon-result icon-invest"></i></p>
+
+                        <p class="btn-list">
+                            <a href="/loan-list"><span class="btn-invest">去投资</span></a>
+                        </p>
+                    </li>
+                    <li>
+                        <p class="icon-com sign-bg"><i class="icon-result icon-sign"></i></p>
+
+                        <p class="btn-list">
+							<#if signedIn?? && signedIn>
+                                <span class="btn-sign" id="signBtn">今日已签到</span>
+							<#else >
+                                <span class="btn-sign" data-url="/point/sign-in" id="signBtn">签到</span>
+							</#if>
+                        </p>
+                    </li>
+                    <li>
+                        <p class="icon-com task-bg"><i class="icon-result icon-task"></i></p>
+
+                        <p class="btn-list">
+                            <span class="btn-task" id="taskBtn">做任务</span>
+                        </p>
+                    </li>
+                </ul>
+            </div>
 			<div class="beans-infotext">
 				<dl>
 					<dt>财豆说明：</dt>
