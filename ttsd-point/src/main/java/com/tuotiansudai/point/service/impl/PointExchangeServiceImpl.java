@@ -6,27 +6,20 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointExchangeService;
-import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.util.DateUtil;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 
@@ -82,10 +75,7 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     @Override
     @Transactional
     public void exchangeCoupon(long couponId, String loginName, long exchange_point, int deadLine){
-        couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.ALL_USER,
-                UserGroup.INVESTED_USER,
-                UserGroup.REGISTERED_NOT_INVESTED_USER,
-                UserGroup.IMPORT_USER));
+        couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.EXCHANGER));
         PointBillModel pointBillModel = new PointBillModel(loginName, couponId, exchange_point, PointBusinessType.EXCHANGE, PointBusinessType.EXCHANGE.name());
         pointBillMapper.create(pointBillModel);
         accountMapper.updateByLoginName(loginName, exchange_point);
