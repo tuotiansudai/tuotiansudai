@@ -27,6 +27,10 @@
         <result column="coupon_type" property="couponType"/>
         <result column="coupon_amount" property="couponAmount"/>
         <result column="rate" property="rate"/>
+        <result column="shared" property="shared"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="loan_product_type" property="loanProductType"/>
         <result column="product_types" property="productTypeList" typeHandler="com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler"/>
         <result column="loan_id" property="loanId"/>
         <result column="loan_name" property="loanName"/>
@@ -91,6 +95,7 @@
     <select id="findUnusedCoupons" resultMap="useRecordMap" parameterType="map">
         select
             uc.id as id,
+            c.shared as shared,
             c.coupon_type as coupon_type,
             c.amount as coupon_amount,
             c.rate as rate,
@@ -109,11 +114,15 @@
     <select id="findUseRecords" resultMap="useRecordMap" parameterType="map">
         select
             uc.id as id,
+            c.shared as shared,
+            c.start_time as start_time,
+            c.end_time as end_time,
             c.amount as coupon_amount,
             c.rate as rate,
             c.product_types as product_types,
             c.end_time as end_time,
             l.id as loan_id,
+            l.product_type as loan_product_type,
             l.name as loan_name,
             c.coupon_type as coupon_type,
             i.amount as invest_amount,
