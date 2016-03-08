@@ -161,8 +161,10 @@
                 </#if>
             </td>
             <th>
-                <#if pushAlert.pushUserType ??>
-                    ${pushAlert.pushUserType.getDescription()!}
+                <#if pushAlert.pushUserType?has_content>
+                    <#list pushAlert.pushUserType as userType>
+                        ${userType.getDescription()!}<#sep>, </#sep>
+                    </#list>
                 </#if>
             </th>
             <td>
