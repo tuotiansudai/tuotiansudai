@@ -16,7 +16,7 @@ define(['jquery', 'jquery.validate', 'jquery.validate.extension','drag'], functi
         $('body,html').animate({scrollTop:0},'fast');
     });
 
-    var $validator = $("#countForm").validate({
+    $("#countForm").validate({
         debug:true,
         rules: {
             money: {
