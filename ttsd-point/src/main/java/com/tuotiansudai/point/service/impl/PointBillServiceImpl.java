@@ -71,7 +71,7 @@ public class PointBillServiceImpl implements PointBillService {
                 PointTaskModel pointTaskModel = pointTaskMapper.findById(orderId);
                 return pointTaskModel.getName().getDescription();
             case EXCHANGE:
-                CouponModel couponModel = couponMapper.findById(userCouponMapper.findById(orderId).getCouponId());
+                CouponModel couponModel = couponMapper.findById(orderId);
                 switch (couponModel.getCouponType()) {
                     case INTEREST_COUPON:
                         double rate = new BigDecimal(couponModel.getRate()).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_UP).doubleValue();

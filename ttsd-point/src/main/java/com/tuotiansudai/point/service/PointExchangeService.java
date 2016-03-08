@@ -11,5 +11,4 @@ public interface PointExchangeService {
     boolean exchangeCoupon(long couponId, String loginName, long exchangePoint);
 
     boolean exchangeableCoupon(long couponId, String loginName);
-
 }

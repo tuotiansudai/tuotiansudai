@@ -6,6 +6,7 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
@@ -51,6 +52,9 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Resource(name = "importUserCollector")
     private UserCollector importUserCollector;
+
+    @Resource(name = "exchangerCollector")
+    private UserCollector exchangerCollector;
 
     @Autowired
     private UserMapper userMapper;
@@ -138,9 +142,8 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Override
     @Transactional
-    public void assignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
+    public void assignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups, final String couponId) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
-
         List<CouponModel> coupons = couponMapper.findAllActiveCoupons();
 
         List<CouponModel> couponModels = Lists.newArrayList(Iterators.filter(coupons.iterator(), new Predicate<CouponModel>() {
@@ -149,16 +152,27 @@ public class CouponActivationServiceImpl implements CouponActivationService {
                 boolean isInUserGroup = userGroups.contains(couponModel.getUserGroup())
                         && CouponActivationServiceImpl.this.getCollector(couponModel.getUserGroup()).contains(couponModel.getId(), loginName);
                 List<UserCouponModel> existingUserCouponModels = userCouponMapper.findByLoginNameAndCouponId(loginName, couponModel.getId());
-                boolean hasNoUsableCoupon = CollectionUtils.isEmpty(existingUserCouponModels);
+
+                boolean isExchangeableCoupon = this.isExchangeableCoupon(couponModel);
+                boolean isAssignableCoupon = this.isAssignableCoupon(couponModel, existingUserCouponModels);
+                return isInUserGroup && (isAssignableCoupon || isExchangeableCoupon);
+            }
+
+            private boolean isExchangeableCoupon(CouponModel couponModel) {
+                return CouponActivationServiceImpl.this.couponExchangeMapper.findByCouponId(couponModel.getId()==Long.parseLong(couponId==null?"0":couponId)?Long.parseLong(couponId):0L) != null;
+            }
+
+            private boolean isAssignableCoupon(CouponModel couponModel, List<UserCouponModel> existingUserCouponModels) {
+                boolean isAssignableCoupon = CollectionUtils.isEmpty(existingUserCouponModels);
                 if (CollectionUtils.isNotEmpty(existingUserCouponModels) && couponModel.isMultiple()) {
-                    hasNoUsableCoupon = Iterables.all(existingUserCouponModels, new Predicate<UserCouponModel>() {
+                    isAssignableCoupon = Iterables.all(existingUserCouponModels, new Predicate<UserCouponModel>() {
                         @Override
                         public boolean apply(UserCouponModel input) {
                             return input.getStatus() == InvestStatus.SUCCESS;
                         }
                     });
                 }
-                return isInUserGroup && hasNoUsableCoupon;
+                return isAssignableCoupon;
             }
         }));
 
@@ -180,6 +194,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
                 .put(UserGroup.INVESTED_USER, this.investedUserCollector)
                 .put(UserGroup.REGISTERED_NOT_INVESTED_USER, this.registeredNotInvestedUserCollector)
                 .put(UserGroup.IMPORT_USER, this.importUserCollector)
+                .put(UserGroup.EXCHANGER, this.exchangerCollector)
                 .build()).get(userGroup);
     }
 

@@ -39,7 +39,7 @@ public class CouponAspect {
         try {
             if ((boolean) returnValue) {
                 RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
-                couponActivationService.assignUserCoupon(registerUserDto.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER, UserGroup.NEW_REGISTERED_USER));
+                couponActivationService.assignUserCoupon(registerUserDto.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER, UserGroup.NEW_REGISTERED_USER),null);
             }
         } catch (Exception e) {
             logger.error("after user register aspect fail ", e);
@@ -54,7 +54,7 @@ public class CouponAspect {
             couponActivationService.assignUserCoupon(request.getParameter("username"), Lists.newArrayList(UserGroup.ALL_USER,
                     UserGroup.INVESTED_USER,
                     UserGroup.REGISTERED_NOT_INVESTED_USER,
-                    UserGroup.IMPORT_USER));
+                    UserGroup.IMPORT_USER),null);
         } catch (Exception e) {
             logger.error("after user login aspect fail ", e);
         }

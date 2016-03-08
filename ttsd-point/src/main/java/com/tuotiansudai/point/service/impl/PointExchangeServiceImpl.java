@@ -10,8 +10,8 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
-import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
+import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointExchangeService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import org.apache.log4j.Logger;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
 
 @Service
 public class PointExchangeServiceImpl implements PointExchangeService {
@@ -33,13 +32,12 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private PointBillMapper pointBillMapper;
-
-    @Autowired
     private CouponExchangeMapper couponExchangeMapper;
 
     @Autowired
     private CouponActivationService couponActivationService;
+    @Autowired
+    private PointBillService pointBillService;
 
     @Override
     public List<ExchangeCouponDto> findExchangeableCouponList(){
@@ -65,11 +63,8 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     @Transactional
     public boolean exchangeCoupon(long couponId, String loginName, long exchangePoint){
         try {
-            couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.EXCHANGER));
-            PointBillModel pointBillModel = new PointBillModel(loginName, couponId, exchangePoint, PointBusinessType.EXCHANGE, PointBusinessType.EXCHANGE.name());
-            pointBillMapper.create(pointBillModel);
-            accountMapper.updateByLoginName(loginName, exchangePoint);
-            couponMapper.updateByLoginName(loginName);
+            couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.EXCHANGER), String.valueOf(couponId));
+            pointBillService.createPointBill(loginName,couponId,PointBusinessType.EXCHANGE,(-exchangePoint));
             return true;
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
