@@ -10,18 +10,16 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
-import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
+import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointExchangeService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.CouponType;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
 
 @Service
 public class PointExchangeServiceImpl implements PointExchangeService {
@@ -34,13 +32,12 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private PointBillMapper pointBillMapper;
-
-    @Autowired
     private CouponExchangeMapper couponExchangeMapper;
 
     @Autowired
     private CouponActivationService couponActivationService;
+    @Autowired
+    private PointBillService pointBillService;
 
     @Override
     public List<ExchangeCouponDto> findExchangeableCouponList(){
@@ -56,15 +53,22 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     }
 
     @Override
+    public boolean exchangeableCoupon(long couponId, String loginName){
+        long exchange_point = couponExchangeMapper.findByCouponId(couponId).getExchangePoint();
+        long availablePoint = accountMapper.findUsersAccountAvailablePoint(loginName);
+        return availablePoint >= exchange_point;
+    }
+
+    @Override
     @Transactional
-    public void exchangeCoupon(long couponId, String loginName, long exchange_point, int deadLine){
-        couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.ALL_USER,
-                UserGroup.INVESTED_USER,
-                UserGroup.REGISTERED_NOT_INVESTED_USER,
-                UserGroup.IMPORT_USER),null);
-        PointBillModel pointBillModel = new PointBillModel(loginName, couponId, exchange_point, PointBusinessType.EXCHANGE, PointBusinessType.EXCHANGE.name());
-        pointBillMapper.create(pointBillModel);
-        accountMapper.updateByLoginName(loginName, exchange_point);
-        couponMapper.updateByLoginName(loginName);
+    public boolean exchangeCoupon(long couponId, String loginName, long exchangePoint){
+        try {
+            couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.EXCHANGER), String.valueOf(couponId));
+            pointBillService.createPointBill(loginName,couponId,PointBusinessType.EXCHANGE,(-exchangePoint));
+            return true;
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+            return false;
+        }
     }
 }
