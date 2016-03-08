@@ -100,7 +100,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     @Override
     public int findMaxSerialNumByType(PushType pushType) {
-        return jPushAlertMapper.findMaxSerialNumByType(pushType);
+        return jPushAlertMapper.findMaxSerialNumByType(pushType) == null ? 0 : jPushAlertMapper.findMaxSerialNumByType(pushType);
     }
 
     @Override
