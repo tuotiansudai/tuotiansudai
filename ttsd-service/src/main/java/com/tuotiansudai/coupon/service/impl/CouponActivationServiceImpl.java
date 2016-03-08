@@ -6,7 +6,6 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
@@ -97,7 +96,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
         UserCollector collector = this.getCollector(couponModel.getUserGroup());
 
-        if (collector != null) {
+        if (collector != null && couponModel.getUserGroup() != UserGroup.EXCHANGER) {
             couponModel.setTotalCount(collector.count(couponId));
         }
 
