@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +38,10 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     private LoanTitleRelationMapper loanTitleRelationMapper;
     @Value("${web.server}")
     private String domainName;
+
+    private String title = "拓天速贷引领投资热，开启互金新概念";
+
+    private String content = "个人经营借款理财项目，总额{0}元期限{1}{2}，年化利率{3}%，先到先抢！！！";
 
     @Override
     public BaseResponseDto generateLoanDetail(LoanDetailRequestDto loanDetailRequestDto) {
@@ -71,8 +76,8 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setRepayUnit(loan.getType().getLoanPeriodUnit().getDesc());
         loanDetailResponseDataDto.setRatePercent(decimalFormat.format((loan.getBaseRate() + loan.getActivityRate()) * 100));
         loanDetailResponseDataDto.setLoanMoney(AmountConverter.convertCentToString(loan.getLoanAmount()));
-        loanDetailResponseDataDto.setTitle("title");
-        loanDetailResponseDataDto.setContent("content");
+        loanDetailResponseDataDto.setTitle(title);
+        loanDetailResponseDataDto.setContent(MessageFormat.format(content,loanDetailResponseDataDto.getLoanMoney(),loanDetailResponseDataDto.getDeadline(),loanDetailResponseDataDto.getRepayUnit(),loanDetailResponseDataDto.getRatePercent()));
         if(LoanStatus.PREHEAT.equals(loan.getStatus())){
             loanDetailResponseDataDto.setLoanStatus(LoanStatus.RAISING.name().toLowerCase());
             loanDetailResponseDataDto.setLoanStatusDesc(LoanStatus.RAISING.getDescription());
