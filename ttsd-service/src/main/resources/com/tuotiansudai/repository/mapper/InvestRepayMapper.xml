@@ -34,6 +34,7 @@
         <result column="repay_date" property="repayDate"></result>
         <result column="actual_repay_date" property="actualRepayDate"></result>
         <result column="status" property="status"></result>
+        <result column="is_transferred" property="isTransferred"></result>
     </resultMap>
 
     <resultMap id="investRepayResultMapWithLoanResultMap" type="InvestRepayModel">
@@ -80,7 +81,7 @@
     </resultMap>
 
     <sql id="columns">
-        id, invest_id, corpus, default_interest, expected_interest, actual_interest, expected_fee, actual_fee, period, repay_date, actual_repay_date, status, created_time
+        id, invest_id, corpus, default_interest, expected_interest, actual_interest, expected_fee, actual_fee, period, repay_date, actual_repay_date, status, is_transferred, created_time
     </sql>
 
     <insert id="create" parameterType = "java.util.List">
@@ -123,8 +124,9 @@
             actual_interest = #{actualInterest},
             actual_fee = #{actualFee},
             actual_repay_date = #{actualRepayDate},
+            default_interest = #{defaultInterest},
             status = #{status},
-            default_interest = #{defaultInterest}
+            is_transferred = #{isTransferred},
         where id = #{id}
     </update>
 

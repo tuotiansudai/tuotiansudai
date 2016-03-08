@@ -27,6 +27,15 @@ public interface InvestMapper {
                       @Param(value = "status") InvestStatus status);
 
     /**
+     * 更新转让记录的状态
+     *
+     * @param id
+     * @param transferStatus
+     */
+    void updateTransferStatus(@Param(value = "id") long id,
+                      @Param(value = "transferStatus") TransferStatus transferStatus);
+
+    /**
      * 根据ID查找对应的投资
      *
      * @param id

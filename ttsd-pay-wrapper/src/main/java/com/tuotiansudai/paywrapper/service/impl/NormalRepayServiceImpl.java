@@ -302,9 +302,9 @@ public class NormalRepayServiceImpl implements RepayService {
         long loanRepayId = loanRepayJobResultDto.getLoanRepayId();
         try {
             if (this.storeJobData(loanRepayJobResultDto) && loanRepayJobResultDto.jobRetry()) {
-                Date temMinutesLater = new DateTime().plusMinutes(delayMinutes).toDate();
+                Date minutesLater = new DateTime().plusMinutes(delayMinutes).toDate();
                 jobManager.newJob(JobType.NormalRepay, NormalRepayJob.class)
-                        .runOnceAt(temMinutesLater)
+                        .runOnceAt(minutesLater)
                         .addJobData(NormalRepayJob.LOAN_REPAY_ID, loanRepayId)
                         .withIdentity(JobType.NormalRepay.name(), MessageFormat.format(REPAY_JOB_NAME_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new DateTime().getMillis())))
                         .submit();

@@ -18,6 +18,8 @@ public enum SystemBillBusinessType {
 
     INVEST_FEE("利息管理费"),
 
+    TRANSFER_FEE("债权转让手续费"),
+
     ADMIN_INTERVENTION("管理员干预"),
 
     REFERRER_REWARD("推荐人奖励"),

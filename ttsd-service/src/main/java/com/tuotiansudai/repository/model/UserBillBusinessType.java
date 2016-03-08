@@ -5,6 +5,8 @@ public enum UserBillBusinessType {
     WITHDRAW_SUCCESS("提现成功"),
     WITHDRAW_FAIL("提现失败"),
     INVEST_SUCCESS("投资成功"),
+    INVEST_TRANSFER_OUT("债权转让"),
+    INVEST_TRANSFER_IN("债权购买"),
     LOAN_SUCCESS("借款成功"),
     NORMAL_REPAY("正常还款"),
     ADVANCE_REPAY("提前还款"),

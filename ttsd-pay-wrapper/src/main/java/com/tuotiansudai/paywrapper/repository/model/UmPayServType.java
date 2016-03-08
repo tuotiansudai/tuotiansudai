@@ -10,6 +10,11 @@ public enum UmPayServType {
     TRANSFER_IN_INVEST("01"),
 
     /**
+     * 债权购买
+     */
+    TRANSFER_IN_TRANSFER("02"),
+
+    /**
      * 还款
      */
     TRANSFER_IN_REPAY("03"),
@@ -33,6 +38,11 @@ public enum UmPayServType {
      * 还款后返款
      */
     TRANSFER_OUT_REPAY_PAYBACK("54"),
+
+    /**
+     * 债权转让的返款
+     */
+    TRANSFER_OUT_TRANSFER("56"),
 
     /**
      * 超投返款（撤资后返款）

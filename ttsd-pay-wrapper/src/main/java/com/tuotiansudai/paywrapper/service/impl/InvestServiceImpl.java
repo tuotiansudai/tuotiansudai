@@ -28,13 +28,11 @@ import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.*;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
 import org.springframework.aop.framework.AopContext;
-import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -111,8 +109,7 @@ public class InvestServiceImpl implements InvestService {
         // TODO : 这个方法里的事务如何处理
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
 
-        InvestModel investModel = new InvestModel(dto);
-        investModel.setId(idGenerator.generate());
+        InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(dto.getLoanId()), Long.parseLong(dto.getAmount()), dto.getLoginName(), dto.getSource(), dto.getChannel());
         ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newInvestRequest(
                 dto.getLoanId(),
                 String.valueOf(investModel.getId()),
@@ -138,9 +135,7 @@ public class InvestServiceImpl implements InvestService {
         baseDto.setData(payDataDto);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        InvestModel investModel = new InvestModel(loanId, amount, loginName, Source.AUTO, null);
-        investModel.setIsAutoInvest(true);
-        investModel.setId(idGenerator.generate());
+        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, amount, loginName, Source.AUTO, null);
         investMapper.create(investModel);
         ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newInvestNopwdRequest(
                 String.valueOf(loanId),

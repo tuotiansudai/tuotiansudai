@@ -29,6 +29,8 @@ public class InvestRepayModel implements Serializable {
 
     private RepayStatus status;
 
+    private boolean isTransferred;
+
     private Date createdTime = new Date();
 
     private boolean birthdayCoupon;
@@ -128,6 +130,14 @@ public class InvestRepayModel implements Serializable {
 
     public void setStatus(RepayStatus status) {
         this.status = status;
+    }
+
+    public boolean isTransferred() {
+        return isTransferred;
+    }
+
+    public void setTransferred(boolean transferred) {
+        isTransferred = transferred;
     }
 
     public long getExpectedFee() {
