@@ -1,0 +1,1 @@
+ALTER TABLE jpush_alert MODIFY COLUMN push_user_type VARCHAR(50);
