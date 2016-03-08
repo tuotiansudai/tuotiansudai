@@ -12,5 +12,5 @@ public interface CouponActivationService {
 
     void sendSms(long couponId);
 
-    void assignUserCoupon(String loginName, List<UserGroup> userGroups);
+    void assignUserCoupon(String loginName, List<UserGroup> userGroups, String couponId);
 }

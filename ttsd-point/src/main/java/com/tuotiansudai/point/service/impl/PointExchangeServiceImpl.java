@@ -61,7 +61,7 @@ public class PointExchangeServiceImpl implements PointExchangeService {
         couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.ALL_USER,
                 UserGroup.INVESTED_USER,
                 UserGroup.REGISTERED_NOT_INVESTED_USER,
-                UserGroup.IMPORT_USER));
+                UserGroup.IMPORT_USER),null);
         PointBillModel pointBillModel = new PointBillModel(loginName, couponId, exchange_point, PointBusinessType.EXCHANGE, PointBusinessType.EXCHANGE.name());
         pointBillMapper.create(pointBillModel);
         accountMapper.updateByLoginName(loginName, exchange_point);

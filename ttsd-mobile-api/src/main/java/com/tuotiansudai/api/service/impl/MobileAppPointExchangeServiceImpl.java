@@ -13,6 +13,7 @@ import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,16 +38,13 @@ public class MobileAppPointExchangeServiceImpl implements MobileAppPointExchange
         String loginName = pointExchangeRequestDto.getBaseParam().getUserId();
 
         PointExchangeResponseDataDto pointExchangeResponseDataDto = new PointExchangeResponseDataDto();
-        long userPoint = accountMapper.findUsersAccountAvailablePoint(loginName);
+        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         long CouponExchangePoint = couponExchangeMapper.findByCouponId(Long.parseLong(couponId)).getExchangePoint();
+        long userPoint = accountModel.getPoint();
         if(userPoint > CouponExchangePoint){
             couponActivationService.assignUserCoupon(pointExchangeRequestDto.getBaseParam().getUserId(),Lists.newArrayList(UserGroup.ALL_USER,
-                    UserGroup.INVESTED_USER,
-                    UserGroup.REGISTERED_NOT_INVESTED_USER,
-                    UserGroup.IMPORT_USER));
-
+                    UserGroup.EXCHANGER),couponId);
             pointBillService.createPointBill(loginName, Long.parseLong(couponId), PointBusinessType.EXCHANGE, (-CouponExchangePoint));
-
             pointExchangeResponseDataDto.setPoint((userPoint - CouponExchangePoint));
             dto.setCode(ReturnMessage.SUCCESS.getCode());
             dto.setMessage(ReturnMessage.SUCCESS.getMsg());

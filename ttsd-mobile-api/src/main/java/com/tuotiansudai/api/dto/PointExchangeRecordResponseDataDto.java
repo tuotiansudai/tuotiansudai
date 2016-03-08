@@ -104,7 +104,7 @@ public class PointExchangeRecordResponseDataDto {
         this.setCouponType(couponModel.getCouponType());
         this.setName(couponModel.getCouponType().getName());
         this.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
-        this.setRate(String.valueOf(couponModel.getRate()));
+        this.setRate(String.valueOf(couponModel.getRate()*100));
         this.setInvestLowerLimit(AmountConverter.convertCentToString(couponModel.getInvestLowerLimit()));
         this.setInvestUpperLimit(AmountConverter.convertCentToString(couponModel.getInvestUpperLimit()));
         this.setProductTypes(couponModel.getProductTypes());
