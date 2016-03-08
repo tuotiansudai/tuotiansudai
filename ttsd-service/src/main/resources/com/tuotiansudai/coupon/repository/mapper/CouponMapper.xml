@@ -220,4 +220,24 @@
             ON c.`id` = e.`coupon_id` ;
     </select>
 
+    <select id="findCouponExchangeableList" parameterType="map" resultMap="couponResultMap">
+        SELECT
+        c.*
+        FROM
+        coupon c
+        JOIN coupon_exchange e
+        ON c.`id` = e.`coupon_id`
+        AND c.`total_count` > c.`issued_count`
+        AND c.`coupon_Type` IN ('INVEST_COUPON','INTEREST_COUPON')
+        ORDER BY c.created_time desc
+        LIMIT #{index},#{pageSize}
+    </select>
+
+    <update id="updateCouponIssuedCountById" parameterType="java.lang.String">
+        UPDATE coupon
+        SET
+        issued_count = issued_count + 1
+        WHERE id = #{id}
+    </update>
+
 </mapper>

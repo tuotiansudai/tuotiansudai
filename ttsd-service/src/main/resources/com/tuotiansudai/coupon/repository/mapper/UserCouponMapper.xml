@@ -42,7 +42,7 @@
 
     <insert id="create" parameterType="UserCouponModel" useGeneratedKeys="true" keyProperty="id">
         insert into user_coupon (login_name, coupon_id, start_time, end_time, created_time)
-        value(#{loginName}, #{couponId}, #{startTime}, #{endTime} #{createdTime})
+        value(#{loginName}, #{couponId}, #{startTime}, #{endTime}, #{createdTime})
     </insert>
 
     <update id="update" parameterType="UserCouponModel">

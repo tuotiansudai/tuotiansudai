@@ -156,55 +156,42 @@ require(['jquery', 'csrf','mustache', 'layerWrapper', 'text!/tpl/point-bill-tabl
                 var $self=$(this),
                     dataId=$self.attr('data-id'),
                     couponName=$self.attr('data-bite');
-                $.ajax({
-                    url: '/path/to/file',
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {
-                        dataId: dataId,
-                        couponName:couponName
-                    }
-                })
-                .done(function(data) {
-                    if(data.status==true){
-                        layer.open({
-                            title: '温馨提示',
-                            content: '确认兑换'+couponName+'？',
-                            btn: ['确定', '取消'],
-                            yes:function(index,layero){
-                                console.log(dataId+','+couponName);
-                                layer.close(index);
-                                $.ajax({
-                                    url: '/path/to/file',
-                                    type: 'POST',
-                                    dataType: 'json',
-                                    data: {
-                                        dataId: dataId,
-                                        couponName:couponName
-                                    }
-                                })
+                if (!$(this).hasClass('no-click')) {
+                    layer.open({
+                        title: '温馨提示',
+                        content: '确认兑换'+couponName+'？',
+                        btn: ['确定', '取消'],
+                        yes:function(index,layero){
+                            layer.close(index);
+                            $.ajax({
+                                url: '/point/'+dataId+'/exchange',
+                                type: 'POST',
+                                dataType: 'json'
+                            })
                                 .done(function(data) {
-                                    layer.alert('兑换成功！',{title:'温馨提示'});
+                                    if(data.status) {
+                                        layer.alert('兑换成功！', {title: '温馨提示'});
+                                    } else if (!data.status && data.message == 'point insufficient') {
+                                        layer.open({
+                                            title: '温馨提示',
+                                            content: '您的财豆不足，赚取足够多的财豆后再来兑换吧！',
+                                            btn: ['赚取财豆', '取消'],
+                                            yes:function(index,layero){
+                                                location.href='/point';
+                                            }
+                                        });
+                                    } else {
+                                        layer.alert('兑换失败，请重试！',{title:'温馨提示'});
+                                    }
                                 })
                                 .fail(function() {
                                     layer.alert('兑换失败，请重试！',{title:'温馨提示'});
                                 });
-                            }
-                        });
-                    }else{
-                        layer.open({
-                            title: '温馨提示',
-                            content: '您的财豆不足，赚取足够多的财豆后再来兑换吧！',
-                            btn: ['赚取财豆', '取消'],
-                            yes:function(index,layero){
-                                location.href='';
-                            }
-                        });
-                    }
-                })
-                .fail(function() {
-                    layer.alert('请求失败，请重试！',{title:'温馨提示'});
-                });
+                        }
+                    });
+                }
             });
+
+
         });
     });
