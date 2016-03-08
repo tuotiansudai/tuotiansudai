@@ -23,6 +23,7 @@ var require = {
         'swiper':staticServer+'/js/libs/swiper-3.2.7.jquery.min',
         'load-swiper':staticServer+'/js/dest/load_swiper.min',
         'coupon-alert': staticServer+'/js/dest/coupon_alert.min',
+        'red-envelope-float': staticServer+'/js/dest/red-envelope-float.min',
         'drag': staticServer+'/js/libs/drag'
     },
     'waitSeconds':0,
