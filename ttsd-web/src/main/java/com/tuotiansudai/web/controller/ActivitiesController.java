@@ -13,9 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 public class ActivitiesController {
     @RequestMapping(path = "/{item:^recruit|awards|guide|birth-month|red-envelope$}", method = RequestMethod.GET)
     public ModelAndView activities(HttpServletRequest request, @PathVariable String item) {
-        ModelAndView modelAndView = new ModelAndView("/activities/" + item, "responsive", true);
-        modelAndView.addObject("channel", request.getParameter("channel"));
-        modelAndView.addObject("source", request.getParameter("source"));
-        return modelAndView;
+        return new ModelAndView("/activities/" + item, "responsive", true);
     }
 }
