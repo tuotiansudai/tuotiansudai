@@ -9,9 +9,7 @@
 </head>
 <body>
     <div class="main">
-        <div class="img">
-            <img src="/images/${service}.png" alt=""/>
-        </div>
+       <img src="/images/${service}.png" alt="" class="img"/>
         <div class="info">${message} </div>
         <a href="${href}" class="btn-success">确认</a>
     </div>
