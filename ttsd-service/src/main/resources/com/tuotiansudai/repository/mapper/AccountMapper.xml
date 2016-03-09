@@ -118,7 +118,7 @@
     </update>
 
     <select id="findBirthOfAccountInDay" resultType="java.lang.String">
-        select login_name from account where (if(length(identity_number) = 18,substring(identity_number,13,2),substring(identity_number,11,2))) = DATE_FORMAT(now(),'%d')
+        select login_name from account where (if(length(identity_number) = 18,substring(identity_number,11,4),substring(identity_number,9,4))) = DATE_FORMAT(now(),'%m%d')
     </select>
 
 </mapper>

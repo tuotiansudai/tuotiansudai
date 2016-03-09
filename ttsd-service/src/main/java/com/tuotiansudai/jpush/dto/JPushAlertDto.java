@@ -19,7 +19,7 @@ public class JPushAlertDto {
     @NotNull
     private PushSource pushSource;
 
-    private PushUserType pushUserType;
+    private List<PushUserType> pushUserType;
 
     private String content;
 
@@ -95,11 +95,11 @@ public class JPushAlertDto {
         this.id = id;
     }
 
-    public PushUserType getPushUserType() {
+    public List<PushUserType> getPushUserType() {
         return pushUserType;
     }
 
-    public void setPushUserType(PushUserType pushUserType) {
+    public void setPushUserType(List<PushUserType> pushUserType) {
         this.pushUserType = pushUserType;
     }
 

@@ -14,8 +14,6 @@ public class RechargeModel implements Serializable {
 
     private long amount;
 
-    private long fee;
-
     private String bankCode;
 
     private RechargeStatus status;
@@ -60,14 +58,6 @@ public class RechargeModel implements Serializable {
 
     public void setAmount(long amount) {
         this.amount = amount;
-    }
-
-    public long getFee() {
-        return fee;
-    }
-
-    public void setFee(long fee) {
-        this.fee = fee;
     }
 
     public String getBankCode() {
