@@ -11,4 +11,6 @@ public interface AccountService {
     boolean isIdentityNumberExist(String identityNumber);
 
     long getFreeze(String loginName);
+
+    String getRealName(String loginName);
 }

@@ -16,6 +16,9 @@ import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.AuditLogService;
+import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections4.CollectionUtils;
@@ -66,17 +69,29 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
+    @Autowired
+    AccountService accountService;
+
+    @Autowired
+    private AuditLogService auditLogService;
+
     @Transactional
     @Override
-    public void inactive(String loginNameLoginName, long couponId) {
+    public void inactive(String loginName, long couponId, String ip) {
         CouponModel couponModel = couponMapper.findById(couponId);
         if (!couponModel.isActive() || (couponModel.getCouponType() != CouponType.NEWBIE_COUPON && couponModel.getCouponType() != CouponType.RED_ENVELOPE && couponModel.getCouponType() != CouponType.BIRTHDAY_COUPON)) {
             return;
         }
         couponModel.setActive(false);
-        couponModel.setActivatedBy(loginNameLoginName);
+        couponModel.setActivatedBy(loginName);
         couponModel.setActivatedTime(new Date());
         couponMapper.updateCoupon(couponModel);
+
+        String auditor = accountService.getRealName(loginName);
+        String operator = accountService.getRealName(couponModel.getCreatedBy());
+
+        String description = auditor + " 撤销了 " + operator + " 创建的 " + couponModel.getCouponType().getName() + "。ID：［" + couponId + "］";
+        auditLogService.createAuditLog(loginName, couponModel.getCreatedBy(), OperationType.COUPON, String.valueOf(couponId), description, ip);
     }
 
     @Transactional

@@ -503,7 +503,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
-    public void reject(String loginName, long id) {
+    public void reject(String loginName, long id, String ip) {
         logger.debug("JPush audit reject, auditor:" + loginName + ", JPush id:" + id);
         JPushAlertModel jPushModel = jPushAlertMapper.findJPushAlertModelById(id);
         jPushModel.setStatus(PushStatus.REJECTED);

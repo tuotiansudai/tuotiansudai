@@ -37,4 +37,10 @@ public class AccountServiceImpl implements AccountService {
         return accountModel != null;
     }
 
+    @Override
+    public String getRealName(String loginName) {
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        return accountModel == null ? loginName : accountModel.getUserName();
+    }
+
 }

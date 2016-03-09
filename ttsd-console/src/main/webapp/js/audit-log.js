@@ -1,126 +1,35 @@
-require(['jquery', 'csrf', 'jquery-ui', 'bootstrapDatetimepicker', 'bootstrap', 'moment'], function ($) {
+require(['jquery', 'csrf', 'jquery-ui', 'bootstrapDatetimepicker', 'bootstrapSelect', 'bootstrap', 'moment'], function ($) {
 
-    var $loginName = $('#login-name');
-    var $operatorLoginName = $('#operator-login-name');
+    $('.selectpicker').selectpicker();
 
     var $startTime = $('#startTime');
     var $endTime = $('#endTime');
-    var $startTimeInput = $('input[name="startTime"]');
-    var $endTimeInput = $('input[name="endTime"]');
 
     $startTime.datetimepicker({format: 'YYYY-MM-DD', locale: 'zh-cn'});
     $endTime.datetimepicker({format: 'YYYY-MM-DD', locale: 'zh-cn'});
 
-    //$startTime.on("dp.change", function (e) {
-    //    $endTime.data("DateTimePicker").minDate(e.date);
-    //});
-    //$endTime.on("dp.change", function (e) {
-    //    $startTime.data("DateTimePicker").maxDate(e.date);
-    //});
+    $('form button[type="reset"]').click(function () {
+        location.href = "/security-log/audit-log";
+    });
 
-    $loginName.autocomplete({
-        minLength: 3,
+    //自动完成提示
+    var autoValue = '';
+    $("#operator-login-name, #auditor-login-name").autocomplete({
         source: function (query, process) {
-            //var matchCount = this.options.items;//返回结果集最大数量
             $.get('/user-manage/user/' + query.term + '/search', function (respData) {
+                autoValue = respData;
                 return process(respData);
             });
-        },
-        change: function (event, ui) {
-            if (!ui.item) {
-                this.value = '';
+        }
+    });
+    $("#operator-login-name, #auditor-login-name").blur(function () {
+        for (var i = 0; i < autoValue.length; i++) {
+            if ($(this).val() == autoValue[i]) {
+                $(this).removeClass('Validform_error');
+                return false;
+            } else {
+                $(this).addClass('Validform_error');
             }
         }
     });
-
-    $operatorLoginName.autocomplete({
-        minLength: 3,
-        source: function (query, process) {
-            //var matchCount = this.options.items;//返回结果集最大数量
-            $.get('/user/' + query.term + '/search', function (respData) {
-                return process(respData);
-            });
-        },
-        change: function (event, ui) {
-            if (!ui.item) {
-                this.value = '';
-            }
-        }
-    });
-
-    $('form .query').click(function () {
-        var params = [];
-        if ($loginName.val()) {
-            params.push("loginName=" + $loginName.val());
-        }
-
-        if ($operatorLoginName.val()) {
-            params.push("operatorLoginName=" + $operatorLoginName.val());
-        }
-
-        if ($startTimeInput.val()) {
-            params.push("startTime=" + $startTimeInput.val());
-        }
-
-        if ($endTimeInput.val()) {
-            params.push("endTime=" + $endTimeInput.val());
-        }
-        window.location.href = "?" + params.join("&");
-        return false;
-    });
-
-    $('.pagination .previous').click(function () {
-        if ($(this).hasClass("disabled")) {
-            return false;
-        }
-
-        var params = [];
-        params.push("index=" + (parseInt($('.current-page').data('index')) - 1));
-        if ($loginName.val()) {
-            params.push("loginName=" + $loginName.val());
-        }
-
-        if ($operatorLoginName.val()) {
-            params.push("operatorLoginName=" + $operatorLoginName.val());
-        }
-
-        if ($startTimeInput.val()) {
-            params.push("startTime=" + $startTimeInput.val());
-        }
-
-        if ($endTimeInput.val()) {
-            params.push("endTime=" + $endTimeInput.val());
-        }
-
-        window.location.href = "?" + params.join("&");
-        return false;
-    });
-
-    $('.pagination .next').click(function () {
-        if ($(this).hasClass("disabled")) {
-            return false;
-        }
-
-        var params = [];
-        params.push("index=" + (parseInt($('.current-page').data('index')) + 1));
-        if ($loginName.val()) {
-            params.push("loginName=" + $loginName.val());
-        }
-
-        if ($operatorLoginName.val()) {
-            params.push("operatorLoginName=" + $operatorLoginName.val());
-        }
-
-        if ($startTimeInput.val()) {
-            params.push("startTime=" + $startTimeInput.val());
-        }
-
-        if ($endTimeInput.val()) {
-            params.push("endTime=" + $endTimeInput.val());
-        }
-
-        window.location.href = "?" + params.join("&");
-        return false;
-    });
-
 });
