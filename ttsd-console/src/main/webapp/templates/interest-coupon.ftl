@@ -38,7 +38,7 @@
 
                 <select class="selectpicker jq-b-type userGroup" name="userGroup">
                     <#list userGroups as userGroup>
-                        <#if userGroup.name() != 'NEW_REGISTERED_USER' && userGroup.name() != 'ALL_USER'>
+                        <#if userGroup.name() != 'NEW_REGISTERED_USER'>
                             <option value="${userGroup.name()}">${userGroup.getDescription()}</option>
                         </#if>
                     </#list>
@@ -54,6 +54,20 @@
             <label class="col-sm-2 control-label">预计发放数量(张): </label>
             <div class="col-sm-4">
                 <input type="text" readonly class="form-control give-number" name="totalCount" placeholder="" <#if coupon??>value="${coupon.totalCount?string('0')!}"</#if>  datatype="n" errormsg="发放数量需要填写数字" >
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2"></label>
+            <div class="col-sm-4">
+                <label class="label-name"><input type="radio">代理商</label>
+                <label class="label-name"><input type="radio">代理商</label>
+                <label class="label-name"><input type="radio">代理商</label>
+                <label class="label-name"><input type="radio">代理商</label>
+                <label class="label-name"><input type="radio">代理商</label>
+                <label class="label-name"><input type="radio">代理商</label>
+                <label class="label-name"><input type="radio">代理商</label>
+                <label class="label-name"><input type="radio">代理商</label>
             </div>
         </div>
 

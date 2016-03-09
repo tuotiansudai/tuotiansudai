@@ -565,3 +565,6 @@ td.td {
     text-decoration: underline;
     cursor:pointer;
 }
+.label-name{
+    width: 80px;
+}
