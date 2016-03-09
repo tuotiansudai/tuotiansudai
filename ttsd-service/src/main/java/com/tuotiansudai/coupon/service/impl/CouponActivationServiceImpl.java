@@ -90,13 +90,13 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         String auditor = accountService.getRealName(loginName);
         String operator = accountService.getRealName(couponModel.getCreatedBy());
 
-        String description = auditor + " 撤销了 " + operator + " 创建的 " + couponModel.getCouponType().getName() + "。ID：［" + couponId + "］";
+        String description = auditor + " 撤销了 " + operator + " 创建的 " + couponModel.getCouponType().getName() + "。";
         auditLogService.createAuditLog(loginName, couponModel.getCreatedBy(), OperationType.COUPON, String.valueOf(couponId), description, ip);
     }
 
     @Transactional
     @Override
-    public void active(String operatorLoginName, long couponId, String ip) {
+    public void active(String loginName, long couponId, String ip) {
         CouponModel couponModel = couponMapper.findById(couponId);
         if (couponModel.isActive()) {
             return;
@@ -113,9 +113,14 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         }
 
         couponModel.setActive(true);
-        couponModel.setActivatedBy(operatorLoginName);
+        couponModel.setActivatedBy(loginName);
         couponModel.setActivatedTime(new Date());
         couponMapper.updateCoupon(couponModel);
+
+        String auditor = accountService.getRealName(loginName);
+        String operator = accountService.getRealName(couponModel.getCreatedBy());
+        String description = auditor + " 激活了 " + operator + " 创建的 " + couponModel.getCouponType().getName() + "。";
+        auditLogService.createAuditLog(loginName, couponModel.getCreatedBy(), OperationType.COUPON, String.valueOf(couponId), description, ip);
 
         if (couponModel.isSmsAlert()) {
             this.createSmsNotifyJob(couponId);

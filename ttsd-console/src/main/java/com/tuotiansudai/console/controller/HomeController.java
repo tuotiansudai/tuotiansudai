@@ -128,14 +128,14 @@ public class HomeController {
 
             String senderRealName = accountService.getRealName(senderLoginName);
 
-            notify.setDescription(senderRealName + "拒绝了您" + operationType.getDescription() + "［" + task.getObjName() + "］的申请。");
+            notify.setDescription(senderRealName + " 拒绝了您 " + operationType.getDescription() + "［" + task.getObjName() + "］的申请。");
 
             redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), notifyId, notify);
 
             String operator = task.getSender();
             String operatorRealName = accountService.getRealName(operator);
-            String description = senderRealName + " 拒绝了 " + operatorRealName + operationType.getDescription() + "［" + task.getObjName() + "］的申请。";
+            String description = senderRealName + " 拒绝了 " + operatorRealName + " " + operationType.getDescription() + "［" + task.getObjName() + "］的申请。";
             auditLogService.createAuditLog(senderLoginName, operator, operationType, task.getObjId(), description, ip);
 
             baseDto.setSuccess(true);

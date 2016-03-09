@@ -5,7 +5,6 @@ import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.task.TaskConstant;
@@ -28,9 +27,6 @@ public class AuditTaskAspectCoupon {
 
     @Autowired
     AccountService accountService;
-
-    @Autowired
-    private AuditLogService auditLogService;
 
     static Logger logger = Logger.getLogger(AuditTaskAspectCoupon.class);
 
@@ -128,10 +124,6 @@ public class AuditTaskAspectCoupon {
 
                 redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
                 redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), notifyId, notify);
-
-                String receiverRealName = accountService.getRealName(receiverLoginName);
-                String description = senderRealName + " 激活了 " + receiverRealName + " 创建的 " + task.getObjName() + "。";
-                auditLogService.createAuditLog(senderLoginName, receiverLoginName, OperationType.COUPON, task.getObjId(), description, ip);
             }
         } catch (Exception e) {
             logger.error("after active coupon aspect fail ", e);

@@ -18,6 +18,7 @@ import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.task.TaskType;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -84,12 +85,12 @@ public class AuditTaskAspectUser {
             AccountModel sender = accountService.findByLoginName(operatorLoginName);
             String senderRealName = sender != null ? sender.getUserName() : operatorLoginName;
 
-            AccountModel account = accountService.findByLoginName(editUserDto.getLoginName());
-            String editUserRealName = account != null ? account.getUserName() : editUserDto.getLoginName();
+            String editUserRealName = accountService.getRealName(editUserDto.getLoginName());
             notify.setDescription(senderRealName + " 通过了您修改用户［" + editUserRealName + "］的申请。");
             redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), taskId, notify);
 
-            String description = senderRealName + " 通过了修改用户［" + task.getObjName() + "］的申请。";
+            String receiverRealName = accountService.getRealName(receiverLoginName);
+            String description = senderRealName + " 通过了 " + receiverRealName + " 修改用户［" + task.getObjName() + "］的申请。";
             description += task.getDescription().split("的信息。")[1];
             auditLogService.createAuditLog(operatorLoginName, receiverLoginName, OperationType.USER, task.getObjId(), description, ip);
 
@@ -100,7 +101,7 @@ public class AuditTaskAspectUser {
             task.setOperationType(OperationType.USER);
             task.setId(taskId);
             task.setObjId(editUserDto.getLoginName());
-            task.setObjName(editUserDto.getUserName() == null ? editUserDto.getLoginName() : editUserDto.getUserName());
+            task.setObjName(StringUtils.isEmpty(editUserDto.getUserName()) ? editUserDto.getLoginName() : editUserDto.getUserName());
             task.setCreatedTime(new Date());
             task.setOperateURL("/user-manage/user/" + editUserDto.getLoginName());
             task.setSender(operatorLoginName);

@@ -62,7 +62,8 @@
             <tr>
                 <th>操作时间</th>
                 <th>IP</th>
-                <th>操作对象</th>
+                <th>业务类型</th>
+                <th>操作对象（ID）</th>
                 <th>操作人</th>
                 <th>审核人</th>
                 <th>操作详情</th>
@@ -74,7 +75,8 @@
                 <tr>
                     <td>${record.operationTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                     <td>${record.ip}</td>
-                    <td>${record.operationType.getTargetType()}<br>${record.targetId}</td>
+                    <td>${record.operationType.getTargetType()}</td>
+                    <td>${record.targetId}</td>
                     <td>${record.operatorLoginName!}</td>
                     <td>${record.auditorLoginName!}</td>
                     <td>${record.description}</td>
