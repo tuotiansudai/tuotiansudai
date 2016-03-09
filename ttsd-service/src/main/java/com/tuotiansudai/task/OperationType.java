@@ -10,7 +10,7 @@ public enum OperationType implements Serializable{
 
     USER("用户", "修改用户"),
 
-    PUSH("App推送", "新建推送");
+    PUSH("App推送", "新建App推送");
 
     private String targetType;
 

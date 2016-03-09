@@ -16,8 +16,8 @@
     </resultMap>
 
     <insert id="create" parameterType="AuditLogModel">
-        insert into audit_log (login_name, operator_login_name, object_id, ip, operation_time, description)
-        value(#{loginName}, #{operatorLoginName}, #{objectId}, #{ip}, #{operationTime}, #{description})
+        insert into audit_log (auditor_login_name, operator_login_name, target_id, operation_type, ip, operation_time, description)
+        value(#{auditorLoginName}, #{operatorLoginName}, #{targetId}, #{operationType}, #{ip}, #{operationTime}, #{description})
     </insert>
 
     <select id="getPaginationData" parameterType="map" resultMap="auditLogModelResultMap">

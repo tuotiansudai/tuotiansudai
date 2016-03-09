@@ -49,12 +49,12 @@ public class AuditLogServiceImpl implements AuditLogService {
     }
 
     @Override
-    public void createAuditLog(String auditorLoginName, String operatorLoginName, OperationType operationType, String objectId, String description, String auditorIp) {
+    public void createAuditLog(String auditorLoginName, String operatorLoginName, OperationType operationType, String targetId, String description, String auditorIp) {
         AuditLogModel log = new AuditLogModel();
         log.setId(idGenerator.generate());
         log.setOperatorLoginName(operatorLoginName);
         log.setAuditorLoginName(auditorLoginName);
-        log.setTargetId(objectId);
+        log.setTargetId(targetId);
         log.setOperationType(operationType);
         log.setIp(auditorIp);
         log.setDescription(description);
