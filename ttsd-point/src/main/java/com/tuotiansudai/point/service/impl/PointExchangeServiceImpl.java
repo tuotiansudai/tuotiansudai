@@ -63,7 +63,7 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     @Transactional
     public boolean exchangeCoupon(long couponId, String loginName, long exchangePoint){
         try {
-            couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.EXCHANGER), String.valueOf(couponId));
+            couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.EXCHANGER), couponId);
             pointBillService.createPointBill(loginName,couponId,PointBusinessType.EXCHANGE,(-exchangePoint));
             return true;
         } catch (Exception e) {

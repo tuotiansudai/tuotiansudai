@@ -43,7 +43,7 @@ public class MobileAppPointExchangeServiceImpl implements MobileAppPointExchange
         long userPoint = accountModel.getPoint();
         if(userPoint > CouponExchangePoint){
             couponActivationService.assignUserCoupon(pointExchangeRequestDto.getBaseParam().getUserId(),Lists.newArrayList(UserGroup.ALL_USER,
-                    UserGroup.EXCHANGER),couponId);
+                    UserGroup.EXCHANGER),Long.parseLong(couponId));
             pointBillService.createPointBill(loginName, Long.parseLong(couponId), PointBusinessType.EXCHANGE, (-CouponExchangePoint));
             pointExchangeResponseDataDto.setPoint((userPoint - CouponExchangePoint));
             dto.setCode(ReturnMessage.SUCCESS.getCode());
