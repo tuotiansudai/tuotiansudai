@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface InvestMapper {
@@ -161,4 +162,6 @@ public interface InvestMapper {
     long findInvestorCount();
 
     long findRegisteredNotInvestCount();
+
+    Set<String> findNoInvestInThirtyDay();
 }

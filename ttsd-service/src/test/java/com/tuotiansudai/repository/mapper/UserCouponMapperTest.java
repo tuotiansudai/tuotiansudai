@@ -60,7 +60,7 @@ public class UserCouponMapperTest {
     }
 
     private UserCouponModel fakeUserCouponModel(long couponId) {
-        return new UserCouponModel("couponTest", couponId);
+        return new UserCouponModel("couponTest", couponId, new Date(), new Date());
     }
 
     private CouponModel fakeCouponModel() {

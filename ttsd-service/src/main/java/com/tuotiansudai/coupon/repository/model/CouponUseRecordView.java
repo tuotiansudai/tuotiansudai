@@ -1,43 +1,39 @@
 package com.tuotiansudai.coupon.repository.model;
 
 import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.ProductType;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class CouponUseRecordView implements Serializable {
 
+    private static final long serialVersionUID = 6557972198633723582L;
+
     private long id;
+
+    private CouponType couponType;
+
+    private long couponAmount;
+
+    private double rate;
+
+    private List<ProductType> productTypeList;
 
     private long loanId;
 
     private String loanName;
 
-    private CouponType couponType;
-
     private long investAmount;
-
-    private String investAmountStr;
-
-    private String rate;
-
-    private long couponAmount;
-
-    private String couponAmountStr;
 
     private Date usedTime;
 
-    private long expectInterest;
-
-    private String expectInterestStr;
-
-    private long expectedFee;
-
-    private String expectedFeeStr;
-
     private long expectedIncome;
 
-    private String expectedIncomeStr;
+    private long investLowerLimit;
+
+    private long investUpperLimit;
 
     private String birthdayBenefit;
 
@@ -50,26 +46,6 @@ public class CouponUseRecordView implements Serializable {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getCouponName() {
-        return couponType.getName();
-    }
-
-    public long getLoanId() {
-        return loanId;
-    }
-
-    public void setLoanId(long loanId) {
-        this.loanId = loanId;
-    }
-
-    public String getLoanName() {
-        return loanName;
-    }
-
-    public void setLoanName(String loanName) {
-        this.loanName = loanName;
     }
 
     public CouponType getCouponType() {
@@ -88,36 +64,36 @@ public class CouponUseRecordView implements Serializable {
         this.couponAmount = couponAmount;
     }
 
-    public String getCouponAmountStr() {
-        return couponAmountStr;
+    public double getRate() {
+        return rate;
     }
 
-    public void setCouponAmountStr(String couponAmountStr) {
-        this.couponAmountStr = couponAmountStr;
+    public void setRate(double rate) {
+        this.rate = rate;
     }
 
-    public Date getUsedTime() {
-        return usedTime;
+    public List<ProductType> getProductTypeList() {
+        return productTypeList;
     }
 
-    public void setUsedTime(Date usedTime) {
-        this.usedTime = usedTime;
+    public void setProductTypeList(List<ProductType> productTypeList) {
+        this.productTypeList = productTypeList;
     }
 
-    public long getExpectInterest() {
-        return expectInterest;
+    public long getLoanId() {
+        return loanId;
     }
 
-    public void setExpectInterest(long expectInterest) {
-        this.expectInterest = expectInterest;
+    public void setLoanId(long loanId) {
+        this.loanId = loanId;
     }
 
-    public String getExpectInterestStr() {
-        return expectInterestStr;
+    public String getLoanName() {
+        return loanName;
     }
 
-    public void setExpectInterestStr(String expectInterestStr) {
-        this.expectInterestStr = expectInterestStr;
+    public void setLoanName(String loanName) {
+        this.loanName = loanName;
     }
 
     public long getInvestAmount() {
@@ -128,36 +104,12 @@ public class CouponUseRecordView implements Serializable {
         this.investAmount = investAmount;
     }
 
-    public String getInvestAmountStr() {
-        return investAmountStr;
+    public Date getUsedTime() {
+        return usedTime;
     }
 
-    public void setInvestAmountStr(String investAmountStr) {
-        this.investAmountStr = investAmountStr;
-    }
-
-    public String getRate() {
-        return rate;
-    }
-
-    public void setRate(String rate) {
-        this.rate = rate;
-    }
-
-    public long getExpectedFee() {
-        return expectedFee;
-    }
-
-    public void setExpectedFee(long expectedFee) {
-        this.expectedFee = expectedFee;
-    }
-
-    public String getExpectedFeeStr() {
-        return expectedFeeStr;
-    }
-
-    public void setExpectedFeeStr(String expectedFeeStr) {
-        this.expectedFeeStr = expectedFeeStr;
+    public void setUsedTime(Date usedTime) {
+        this.usedTime = usedTime;
     }
 
     public long getExpectedIncome() {
@@ -168,12 +120,20 @@ public class CouponUseRecordView implements Serializable {
         this.expectedIncome = expectedIncome;
     }
 
-    public String getExpectedIncomeStr() {
-        return expectedIncomeStr;
+    public long getInvestLowerLimit() {
+        return investLowerLimit;
     }
 
-    public void setExpectedIncomeStr(String expectedIncomeStr) {
-        this.expectedIncomeStr = expectedIncomeStr;
+    public void setInvestLowerLimit(long investLowerLimit) {
+        this.investLowerLimit = investLowerLimit;
+    }
+
+    public long getInvestUpperLimit() {
+        return investUpperLimit;
+    }
+
+    public void setInvestUpperLimit(long investUpperLimit) {
+        this.investUpperLimit = investUpperLimit;
     }
 
     public String getBirthdayBenefit() {

@@ -9,6 +9,7 @@ public class BannerPictureResponseDataDto extends BaseResponseDataDto {
     private Integer seqNum;
     private String picture;
     private String noticeId;
+    private String content;
 
     public String getPictureId() {
         return pictureId;
@@ -56,5 +57,13 @@ public class BannerPictureResponseDataDto extends BaseResponseDataDto {
 
     public void setNoticeId(String noticeId) {
         this.noticeId = noticeId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

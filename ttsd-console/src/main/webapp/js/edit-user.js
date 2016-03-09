@@ -35,6 +35,21 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrap'], function ($) {
         $("form").submit();
     });
 
+    $('.btn-refuse').click(function () {
+        $.ajax({
+            url: '/refuse?taskId='+$('.taskId').val(),
+            type: 'GET',
+            dataType: 'json',
+            data: {}
+        })
+        .done(function() {
+            window.location="/user-manage/users";
+        })
+        .fail(function() {
+            window.location="/";
+        });
+    });
+
     $('input[type="reset"]').click(function () {
         location.reload();
         return false;

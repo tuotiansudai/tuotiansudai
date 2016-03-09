@@ -10,11 +10,9 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.*;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -25,10 +23,8 @@ import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 public class MobileAppUserCouponServiceTest extends ServiceTestBase {
@@ -45,6 +41,9 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
     @Mock
     private LoanMapper loanMapper;
 
+    @Mock
+    private InvestMapper investMapper;
+
     @Test
     public void shouldGetUsedUserCoupons() {
         CouponModel unusedCouponModel = new CouponModel();
@@ -59,8 +58,8 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         usedCouponModel.setId(2);
         usedCouponModel.setCouponType(CouponType.INVEST_COUPON);
         usedCouponModel.setProductTypes(Lists.newArrayList(ProductType.SYL, ProductType.WYX, ProductType.JYF));
-        unusedCouponModel.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
-        unusedCouponModel.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
+        usedCouponModel.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
+        usedCouponModel.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
         usedCouponModel.setAmount(200);
 
         CouponModel expiredCouponModel = new CouponModel();
@@ -80,6 +79,10 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         loanModel.setId(1);
         loanModel.setName("name");
         loanModel.setProductType(ProductType.JYF);
+        InvestModel investModel = new InvestModel();
+        investModel.setId(1);
+        investModel.setLoanId(1);
+        investModel.setAmount(1000);
         UserCouponModel usedUserCouponModel = new UserCouponModel();
         usedUserCouponModel.setId(2);
         usedUserCouponModel.setStatus(InvestStatus.SUCCESS);
@@ -87,6 +90,8 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         usedUserCouponModel.setCouponId(usedCouponModel.getId());
         usedUserCouponModel.setUsedTime(new Date());
         usedUserCouponModel.setExpectedInterest(100);
+        usedUserCouponModel.setInvestId(1L);
+        usedUserCouponModel.setInvestAmount(1000L);
 
         UserCouponModel expiredUserCouponModel = new UserCouponModel();
         expiredUserCouponModel.setId(3);
@@ -100,6 +105,7 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         when(couponMapper.findById(usedCouponModel.getId())).thenReturn(usedCouponModel);
         when(couponMapper.findById(expiredUserCouponModel.getId())).thenReturn(expiredCouponModel);
         when(loanMapper.findById(loanModel.getId())).thenReturn(loanModel);
+        when(investMapper.findById(loanModel.getId())).thenReturn(investModel);
 
         UserCouponRequestDto requestDto = new UserCouponRequestDto();
         requestDto.setBaseParam(new BaseParam());

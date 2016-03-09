@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuotiansudai.point.repository.mapper.CouponExchangeMapper">
+<mapper namespace="com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper">
 
     <resultMap id="couponExchangeResultMap" type="CouponExchangeModel">
         <id column="id" property="id"/>
@@ -14,5 +14,13 @@
         insert into coupon_exchange (coupon_id, exchange_point)
         value(#{couponId}, #{exchangePoint})
     </insert>
+
+    <update id="update" parameterType="CouponExchangeModel">
+        update coupon_exchange set coupon_id = #{couponId}, exchange_point = #{exchangePoint} where id = #{id}
+    </update>
+
+    <select id="findByCouponId" resultMap="couponExchangeResultMap" parameterType="long">
+        select * from coupon_exchange where coupon_id = #{couponId}
+    </select>
 
 </mapper>

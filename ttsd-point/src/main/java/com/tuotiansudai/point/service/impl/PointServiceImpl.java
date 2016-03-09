@@ -10,6 +10,8 @@ import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
+
 
 @Service
-public class PointServiceImpl implements PointService{
+public class PointServiceImpl implements PointService {
     static Logger logger = Logger.getLogger(PointServiceImpl.class);
 
     @Autowired
@@ -31,6 +35,8 @@ public class PointServiceImpl implements PointService{
 
     @Autowired
     private PointBillService pointBillService;
+
+    private AccountMapper accountMapper;
 
     @Override
     @Transactional
@@ -50,9 +56,13 @@ public class PointServiceImpl implements PointService{
     @Override
     @Transactional
     public void obtainPointInvest(InvestModel investModel) {
-        long point = new BigDecimal(investModel.getAmount()).divide(new BigDecimal(100)).setScale(0,BigDecimal.ROUND_DOWN).longValue();
-        pointBillService.createPointBill(investModel.getLoginName(),investModel.getId(), PointBusinessType.INVEST, point);
+        long point = new BigDecimal(investModel.getAmount()).divide(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        pointBillService.createPointBill(investModel.getLoginName(), investModel.getId(), PointBusinessType.INVEST, point);
         logger.debug(MessageFormat.format("{0} has obtained point {1}", investModel.getId(), point));
+    }
+    public long getAvailablePoint(String loginName) {
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        return accountModel.getPoint();
     }
 
 }

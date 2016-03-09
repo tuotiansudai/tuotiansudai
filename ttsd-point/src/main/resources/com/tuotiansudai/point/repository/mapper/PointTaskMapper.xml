@@ -13,8 +13,12 @@
         <result property="createdTime" column="created_time"/>
     </resultMap>
 
-    <select id="find" resultMap="pointTaskResultMap">
-        select * from point_task
+    <select id="findPointTaskPagination" resultMap="pointTaskResultMap" parameterType="map">
+        select * from point_task ORDER by created_time DESC limit #{index},#{pageSize}
+    </select>
+
+    <select id="findCountPointTaskPagination" resultType="int">
+        select count(*)  from point_task
     </select>
 
     <select id="findById" resultMap="pointTaskResultMap">

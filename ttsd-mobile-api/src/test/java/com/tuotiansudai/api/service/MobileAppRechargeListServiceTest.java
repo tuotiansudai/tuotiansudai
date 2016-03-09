@@ -60,7 +60,6 @@ public class MobileAppRechargeListServiceTest extends ServiceTestBase {
         rechargeModel.setId(idGenerator.generate());
         rechargeModel.setLoginName("loginName");
         rechargeModel.setAmount(1200l);
-        rechargeModel.setFee(100l);
         rechargeModel.setBankCode("CMB");
         rechargeModel.setStatus(RechargeStatus.SUCCESS);
         rechargeModel.setSource(Source.WEB);

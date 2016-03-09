@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.job.AutoJPushAlertLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.SendRedEnvelopeJob;
 import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
@@ -109,7 +110,7 @@ public class CouponAspect {
             couponActivationService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER,
                     UserGroup.INVESTED_USER,
                     UserGroup.REGISTERED_NOT_INVESTED_USER,
-                    UserGroup.IMPORT_USER));
+                    UserGroup.IMPORT_USER),null);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -123,6 +124,10 @@ public class CouponAspect {
         BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
         if (baseDto.getData() != null && baseDto.getData().getStatus()) {
             createSendRedEnvelopeJob(loanId);
+
+            createAutoJPushAlertLoanOutJob(loanId);
+
+
         }
     }
 
@@ -139,5 +144,21 @@ public class CouponAspect {
             logger.error("create send red envelope job for loan[" + loanId + "] fail", e);
         }
     }
+
+    private void createAutoJPushAlertLoanOutJob(long loanId) {
+        try {
+            Date triggerTime = new DateTime().plusMinutes(AutoJPushAlertLoanOutJob.JPUSH_ALERT_LOAN_OUT_DELAY_MINUTES)
+                    .toDate();
+            jobManager.newJob(JobType.AutoJPushAlertLoanOut, AutoJPushAlertLoanOutJob.class)
+                    .addJobData(AutoJPushAlertLoanOutJob.LOAN_ID_KEY, loanId)
+                    .withIdentity(JobType.AutoJPushAlertLoanOut.name(), "Loan-" + loanId)
+                    .runOnceAt(triggerTime)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create send red AutoJPushAlertLoanOut job for loan[" + loanId + "] fail", e);
+        }
+    }
+
+
 }
 
