@@ -72,6 +72,7 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
                 dataDto.setSeqNum(Integer.valueOf(String.valueOf(inputData.get("seqNum"))));
                 dataDto.setPictureId(inputData.get("pictureId"));
                 dataDto.setTitle(inputData.get("title"));
+                dataDto.setContent(inputData.get("content"));
                 String bannerUrl = inputData.get("url");
                 if (StringUtils.isNotEmpty(bannerUrl)) {
                     bannerUrl = bannerUrl.replaceFirst("\\{web\\}", domainName);
