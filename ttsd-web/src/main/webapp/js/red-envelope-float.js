@@ -51,7 +51,7 @@ define(['jquery', 'jquery.validate', 'jquery.validate.extension','drag'], functi
                 monthNum=Math.round($('#monthNum').val()),
                 biteNum=Math.round($('#biteNum').val())/100,
                 $resultNum=$('#resultNum'),
-                resultNum=moneyNum+moneyNum*monthNum*biteNum*0.9;
+                resultNum=moneyNum+moneyNum*monthNum*biteNum*30*0.9/365;
             $resultNum.text(resultNum.toFixed(2));
         },
         errorPlacement: function(error, element) {
