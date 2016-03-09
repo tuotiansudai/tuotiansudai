@@ -87,7 +87,7 @@
 			<ul class="coupon-list">
 				<#if exchangeCouponDtos??>
 					<#list exchangeCouponDtos as exchangeCouponDto>
-                        <li class="<#if myPoint lt (exchangeCouponDto.exchangePoint?string('0'))>no-click<#else><#if exchangeCouponDto.couponType == 'INVEST_COUPON'>new-type<#else>bite-type</#if></#if>">
+                        <li class="<#if myPoint lt exchangeCouponDto.exchangePoint>no-click<#else><#if exchangeCouponDto.couponType == 'INVEST_COUPON'>new-type<#else>bite-type</#if></#if>">
                             <div class="top-com">
                                 <div class="left-name">
                                     <span>${exchangeCouponDto.couponType.getName()!}</span>

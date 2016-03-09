@@ -2,6 +2,7 @@ package com.tuotiansudai.point.aspect;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.point.repository.model.PointTask;
 import com.tuotiansudai.point.service.PointTaskService;
@@ -34,8 +35,8 @@ public class PointTaskAspect {
         logger.debug("after returning register account, point task aspect starting...");
 
         if (returnValue.getData().getStatus()) {
-            RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
-            pointTaskService.completeTask(PointTask.REGISTER, registerUserDto.getLoginName());
+            RegisterAccountDto registerAccountDto = (RegisterAccountDto) joinPoint.getArgs()[0];
+            pointTaskService.completeTask(PointTask.REGISTER, registerAccountDto.getLoginName());
         }
 
         logger.debug("after returning register account, point task aspect completed");

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.UserMapper">
 
-    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
     <resultMap id="userResultMap" type="UserModel">
         <id column="id" property="id"></id>
@@ -63,8 +63,8 @@
     </select>
 
     <insert id="create" parameterType="UserModel" useGeneratedKeys="true" keyProperty="id">
-      insert into user (login_name, password, mobile, email, register_time, referrer, status, salt, channel, source)
-      value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source})
+      insert into user (login_name, password, mobile, email, register_time, last_modified_time, referrer, status, salt, channel, source)
+      value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{lastModifiedTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source})
     </insert>
 
     <update id="updatePasswordByLoginName" parameterType="map">
@@ -85,20 +85,57 @@
 
     <select id="findAllUser" parameterType="map" resultMap="userResultMap">
         select
-            u.*,
-            a.*,
-            IF(au.login_name is null, "0", "1") as auto_invest_status
-        from user u
-            left join account a on u.login_name = a.login_name
+        u.*,
+        a.*,
+        IF(au.login_name is null, "0", "1") as auto_invest_status
+        from
+        <choose>
+            <when test="roleStage == null ">
+                user u
+            </when>
+            <when test="roleStage.name() == 'NORMAL_USER' ">
+                (SELECT
+                j.*
+                FROM
+                user j
+                WHERE
+                NOT EXISTS( SELECT
+                1
+                FROM
+                (SELECT
+                ff.login_name
+                FROM
+                (SELECT
+                k.login_name
+                FROM
+                user_role o
+                RIGHT JOIN referrer_relation k ON o.login_name = k.referrer_login_name
+                AND k.level = 1
+                WHERE
+                o.role = 'STAFF' UNION SELECT
+                h.login_name
+                FROM
+                user_role h
+                WHERE
+                h.role IN ('STAFF' , 'AGENT')) ff) gg
+                WHERE
+                gg.login_name = j.login_name) and EXISTS(select 1 from invest i where j.login_name = i.login_name) ) u
 
-        <if test="role !=null" >
-            join user_role r on u.login_name = r.login_name
-        </if>
-
-            left join auto_invest_plan au on u.login_name = au.login_name and enabled=1
+            </when>
+            <when test="roleStage.name() == 'RECOMMENDATION' ">
+                (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
+                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'STAFF') gg on j.login_name = gg.login_name)
+                u
+            </when>
+            <otherwise>
+                user u join user_role r on u.login_name = r.login_name
+            </otherwise>
+        </choose>
+        left join account a on u.login_name = a.login_name
+        left join auto_invest_plan au on u.login_name = au.login_name and enabled=1
         <where>
-            <if test="role !=null" >
-                and r.role = #{role}
+            <if test="roleStage !=null and roleStage.name() != 'RECOMMENDATION' and  roleStage.name()!='NORMAL_USER' ">
+                and r.role = #{roleStage}
             </if>
             <if test="email !=null and email !='' ">
                 and u.email like '${email}%'
@@ -109,7 +146,7 @@
             <if test="loginName !=null and loginName != '' ">
                 and u.login_name = #{loginName}
             </if>
-            <if test="beginTime !=null" >
+            <if test="beginTime !=null">
                 and u.register_time >= #{beginTime}
             </if>
             <if test="endTime !=null ">
@@ -131,15 +168,54 @@
     </select>
 
     <select id="findAllUserCount" parameterType="map" resultType="int">
-        select count(1) from user u
+        select count(1) from
+        <choose>
+            <when test="roleStage == null">
+                user u
+            </when>
+            <when test="roleStage.name() == 'NORMAL_USER' ">
+                (SELECT
+                j.*
+                FROM
+                user j
+                WHERE
+                NOT EXISTS( SELECT
+                1
+                FROM
+                (SELECT
+                ff.login_name
+                FROM
+                (SELECT
+                k.login_name
+                FROM
+                user_role o
+                RIGHT JOIN referrer_relation k ON o.login_name = k.referrer_login_name
+                AND k.level = 1
+                WHERE
+                o.role = 'STAFF' UNION SELECT
+                h.login_name
+                FROM
+                user_role h
+                WHERE
+                h.role IN ('STAFF' , 'AGENT')) ff) gg
+                WHERE
+                gg.login_name = j.login_name) and EXISTS(select 1 from invest i where j.login_name = i.login_name) ) u
 
-        <if test="role !=null" >
-            join user_role r on u.login_name = r.login_name
-        </if>
+            </when>
+            <when test="roleStage.name() == 'RECOMMENDATION' ">
+                (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
+                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'STAFF') gg on j.login_name = gg.login_name)
+                u
+            </when>
+            <otherwise>
+                user u join user_role r on u.login_name = r.login_name
+            </otherwise>
+        </choose>
+
         <where>
 
-            <if test="role !=null" >
-                and r.role = #{role}
+            <if test="roleStage !=null and roleStage.name() != 'RECOMMENDATION' and  roleStage.name()!='NORMAL_USER' ">
+                and r.role = #{roleStage}
             </if>
             <if test="email !=null and email !='' ">
                 and u.email like '${email}%'
@@ -150,7 +226,7 @@
             <if test="loginName !=null and loginName != '' ">
                 and u.login_name = #{loginName}
             </if>
-            <if test="beginTime !=null" >
+            <if test="beginTime !=null">
                 and u.register_time >= #{beginTime}
             </if>
             <if test="endTime !=null ">
@@ -191,13 +267,13 @@
 
     <select id="searchAllUsers" parameterType="map" resultMap="userResultMap">
         SELECT
-          *
+        *
         FROM
-          user u
-          LEFT JOIN account a
-            ON u.`login_name` = a.`login_name`
+        user u
+        LEFT JOIN account a
+        ON u.`login_name` = a.`login_name`
         <where>
-            <if test="identityNumber != null and identityNumber != '' " >
+            <if test="identityNumber != null and identityNumber != '' ">
                 AND a.`identity_number` = #{identityNumber}
             </if>
             <if test="loginName != null and loginName != '' ">
@@ -215,24 +291,24 @@
 
     <select id="findUsersAccountBalance" parameterType="map" resultMap="userResultMap">
         SELECT
-          *,
-          (SELECT max(created_time) FROM user_bill ub where ub.login_name = u.login_name) as last_bill_time
+        *,
+        (SELECT max(created_time) FROM user_bill ub where ub.login_name = u.login_name) as last_bill_time
         FROM
-          user u
-           JOIN account a
-            ON u.`login_name` = a.`login_name`
-            AND a.`balance` >= #{balanceMin}
-            AND a.`balance` &lt;= #{balanceMax}
-            <if test="loginName != null and loginName != '' ">
+        user u
+        JOIN account a
+        ON u.`login_name` = a.`login_name`
+        AND a.`balance` >= #{balanceMin}
+        AND a.`balance` &lt;= #{balanceMax}
+        <if test="loginName != null and loginName != '' ">
             AND a.`login_name` = #{loginName}
-            </if>
+        </if>
         WHERE NOT EXISTS
         (SELECT
-            1
-          FROM
-            user_role r
-          WHERE u.`login_name` = r.`login_name`
-          AND r.`role` = 'LOANER')
+        1
+        FROM
+        user_role r
+        WHERE u.`login_name` = r.`login_name`
+        AND r.`role` = 'LOANER')
         ORDER BY a.`balance` DESC
         limit #{startLimit}, #{endLimit}
     </select>
@@ -241,42 +317,42 @@
         SELECT
         IFNULL(SUM(a.`balance`), 0)
         FROM
-          user u
-           JOIN account a
-            ON u.`login_name` = a.`login_name`
-            AND a.`balance` >= #{balanceMin}
-            AND a.`balance` &lt;= #{balanceMax}
-            <if test="loginName != null and loginName != '' ">
-                AND a.`login_name` = #{loginName}
-            </if>
-            WHERE NOT EXISTS
+        user u
+        JOIN account a
+        ON u.`login_name` = a.`login_name`
+        AND a.`balance` >= #{balanceMin}
+        AND a.`balance` &lt;= #{balanceMax}
+        <if test="loginName != null and loginName != '' ">
+            AND a.`login_name` = #{loginName}
+        </if>
+        WHERE NOT EXISTS
         (SELECT
-            1
-          FROM
-            user_role r
-          WHERE u.`login_name` = r.`login_name`
-          AND r.`role` = 'LOANER')
+        1
+        FROM
+        user_role r
+        WHERE u.`login_name` = r.`login_name`
+        AND r.`role` = 'LOANER')
     </select>
 
     <select id="findUsersAccountBalanceCount" parameterType="map" resultType="int">
         SELECT
         IFNULL(count(*), 0)
         FROM
-          user u
-           JOIN account a
-            ON u.`login_name` = a.`login_name`
-            AND a.`balance` >= #{balanceMin}
-            AND a.`balance` &lt;= #{balanceMax}
-            <if test="loginName != null and loginName != '' ">
-                AND a.`login_name` = #{loginName}
-            </if>
-            WHERE NOT EXISTS
+        user u
+        JOIN account a
+        ON u.`login_name` = a.`login_name`
+        AND a.`balance` >= #{balanceMin}
+        AND a.`balance` &lt;= #{balanceMax}
+        <if test="loginName != null and loginName != '' ">
+            AND a.`login_name` = #{loginName}
+        </if>
+        WHERE NOT EXISTS
         (SELECT
-            1
-          FROM
-            user_role r
-          WHERE u.`login_name` = r.`login_name`
-          AND r.`role` = 'LOANER')
+        1
+        FROM
+        user_role r
+        WHERE u.`login_name` = r.`login_name`
+        AND r.`role` = 'LOANER')
     </select>
 
     <select id="findAllUsers" resultMap="userResultMap">
