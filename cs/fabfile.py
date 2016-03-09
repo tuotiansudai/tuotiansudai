@@ -9,13 +9,23 @@ env.roledefs = {
 }
 
 
-@roles('cs')
-def run():
-    with cd('/workspace/tuotian/cs'):
+def pull():
+    with cd('/workspace/tuotian'):
+        sudo('chmod -R g=u .')
         run('/usr/bin/git pull')
+
+
+def start_docker_container():
+    with cd('/workspace/tuotian/cs'):
         sudo('/usr/local/bin/docker-compose -f cs.yml stop')
         sudo('/usr/local/bin/docker-compose -f cs.yml rm -f')
         sudo('/usr/local/bin/docker-compose -f cs.yml up -d')
+
+
+@roles('cs')
+def pull_and_start_container():
+    pull()
+    start_docker_container()
 
 
 def deploy():
@@ -24,7 +34,7 @@ def deploy():
         pwd = ci_file.readline().strip()
         env.password = pwd
         ci_file.close()
-        execute(run)
+        execute(pull_and_start_container)
     except IOError as e:
         print e
 
