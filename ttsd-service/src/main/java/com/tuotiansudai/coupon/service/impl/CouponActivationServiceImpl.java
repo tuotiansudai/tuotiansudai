@@ -1,6 +1,7 @@
 package com.tuotiansudai.coupon.service.impl;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.*;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
@@ -142,9 +143,10 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Override
     @Transactional
-    public void assignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups, final String couponId) {
+    public void assignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups, final Long couponId) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
-        List<CouponModel> coupons = couponMapper.findAllActiveCoupons();
+
+        List<CouponModel> coupons = couponId == null ? couponMapper.findAllActiveCoupons() : Lists.newArrayList(couponMapper.findById(couponId));
 
         List<CouponModel> couponModels = Lists.newArrayList(Iterators.filter(coupons.iterator(), new Predicate<CouponModel>() {
             @Override
@@ -159,7 +161,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
             }
 
             private boolean isExchangeableCoupon(CouponModel couponModel) {
-                return CouponActivationServiceImpl.this.couponExchangeMapper.findByCouponId(couponModel.getId()==Long.parseLong(couponId==null?"0":couponId)?Long.parseLong(couponId):0L) != null;
+                return CouponActivationServiceImpl.this.couponExchangeMapper.findByCouponId(couponModel.getId()) != null;
             }
 
             private boolean isAssignableCoupon(CouponModel couponModel, List<UserCouponModel> existingUserCouponModels) {
@@ -172,7 +174,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
                         }
                     });
                 }
-                return isAssignableCoupon;
+                return isAssignableCoupon && !this.isExchangeableCoupon(couponModel);
             }
         }));
 
