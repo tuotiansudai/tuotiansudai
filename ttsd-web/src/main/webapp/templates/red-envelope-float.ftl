@@ -28,7 +28,6 @@
 	</form>
 	<div class="form-text">
 		<p class="result-text">本息合计 <span id="resultNum">0</span> 元</p>
-		<p class="tip-text">(提示：提现手续费为收益的10%)</p>
 		<p class="tip-text">计算结果仅供参考，以实际收益为准</p>
 	</div>
 </div>
