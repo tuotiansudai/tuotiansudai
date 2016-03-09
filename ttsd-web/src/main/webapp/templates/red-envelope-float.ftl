@@ -15,7 +15,7 @@
 		</div>
 		<div class="form-text">
 			<input type="text" placeholder="投资时长" class="int-text" name="month" id="monthNum">
-			<span class="unit-text">月</span>
+			<span class="unit-text">期</span>
 		</div>
 		<div class="form-text">
 			<input type="text" placeholder="年化利率" class="int-text" name="bite" id="biteNum">
