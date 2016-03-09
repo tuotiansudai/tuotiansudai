@@ -5,6 +5,7 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.point.repository.model.PointTask;
+import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.PointTaskService;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -30,6 +31,9 @@ public class PointTaskAspect {
     @Autowired
     private RechargeMapper rechargeMapper;
 
+    @Autowired
+    private PointService pointService;
+
     @AfterReturning(value = "execution(* *..RegisterService.register(..))", returning = "returnValue")
     public void afterReturningRegisterAccount(JoinPoint joinPoint, BaseDto<PayDataDto> returnValue) {
         logger.debug("after returning register account, point task aspect starting...");
@@ -49,6 +53,7 @@ public class PointTaskAspect {
         InvestModel investModel = (InvestModel) joinPoint.getArgs()[1];
         pointTaskService.completeTask(PointTask.FIRST_INVEST, investModel.getLoginName());
         pointTaskService.completeTask(PointTask.SUM_INVEST_10000, investModel.getLoginName());
+        pointService.obtainPointInvest(investModel);
 
         logger.debug("after returning invest, point task aspect completed");
     }
