@@ -131,6 +131,7 @@ public class UserServiceImpl implements UserService {
         String encodePassword = myShaPasswordEncoder.encodePassword(dto.getPassword(), salt);
         userModel.setSalt(salt);
         userModel.setPassword(encodePassword);
+        userModel.setLastModifiedTime(new Date());
         this.userMapper.create(userModel);
 
         UserRoleModel userRoleModel = new UserRoleModel();
@@ -389,6 +390,7 @@ public class UserServiceImpl implements UserService {
                 userModel.setProvince("未知");
                 userModel.setCity("未知");
             }
+            userModel.setLastModifiedTime(new Date());
             userMapper.updateUser(userModel);
         }
     }
