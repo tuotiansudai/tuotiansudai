@@ -1,4 +1,4 @@
-package com.tuotiansudai.dto;
+package com.tuotiansudai.console.bi.dto;
 
 public enum RoleStage {
 

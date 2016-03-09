@@ -131,6 +131,7 @@ public class UserServiceImpl implements UserService {
         String encodePassword = myShaPasswordEncoder.encodePassword(dto.getPassword(), salt);
         userModel.setSalt(salt);
         userModel.setPassword(encodePassword);
+        userModel.setLastModifiedTime(new Date());
         this.userMapper.create(userModel);
 
         UserRoleModel userRoleModel = new UserRoleModel();
@@ -302,11 +303,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public BaseDto<BasePaginationDataDto> findAllUser(String loginName, String email, String mobile, Date beginTime, Date endTime,
                                                       Source source,
-                                                      Role role, String referrer, String channel, Integer index, Integer pageSize) {
+                                                      RoleStage roleStage, String referrer, String channel, Integer index, Integer pageSize) {
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
         List<UserModel> userModels = userMapper.findAllUser(loginName, email, mobile, beginTime, endTime,
                 source,
-                role, referrer, channel, (index - 1) * pageSize, pageSize);
+                roleStage, referrer, channel, (index - 1) * pageSize, pageSize);
         List<UserItemDataDto> userItemDataDtos = Lists.newArrayList();
         for (UserModel userModel : userModels) {
 
@@ -326,7 +327,7 @@ public class UserServiceImpl implements UserService {
             userItemDataDto.setModify(redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId));
             userItemDataDtos.add(userItemDataDto);
         }
-        int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel);
+        int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, roleStage, referrer, channel);
         BasePaginationDataDto<UserItemDataDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, userItemDataDtos);
         basePaginationDataDto.setStatus(true);
         baseDto.setData(basePaginationDataDto);
@@ -389,6 +390,7 @@ public class UserServiceImpl implements UserService {
                 userModel.setProvince("未知");
                 userModel.setCity("未知");
             }
+            userModel.setLastModifiedTime(new Date());
             userMapper.updateUser(userModel);
         }
     }
