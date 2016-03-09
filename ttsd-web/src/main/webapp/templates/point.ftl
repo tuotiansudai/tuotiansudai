@@ -14,7 +14,7 @@
 				<div class="beans-list">
 					<i class="icon-result icon-beans"></i>
 					<span class="title-text">财豆总览</span>
-					<span class="title-href">财豆明细></span>
+					<span class="title-href" id="beansDetail">财豆明细></span>
 				</div>
                 <div class="beans-list mt-20">
                     <span class="beans-num">可用财豆：${myPoint!}</span>

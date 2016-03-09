@@ -1,5 +1,5 @@
-require(['jquery', 'csrf','mustache', 'layerWrapper', 'text!/tpl/point-bill-table.mustache', 'moment', 'pagination', 'daterangepicker'],
-    function($, Mustache, layer, pointBillListTemplate, moment, pagination) {
+require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-table.mustache', 'pagination', 'daterangepicker', 'csrf'],
+    function($, moment, Mustache, layer, pointBillListTemplate, pagination) {
         $(function() {
             var $navBtn = $('.column-title .title-navli'),
                 $signBtn = $('#signBtn'),
@@ -7,7 +7,8 @@ require(['jquery', 'csrf','mustache', 'layerWrapper', 'text!/tpl/point-bill-tabl
                 $closeSign = $('#closeSign'),
                 $taskBtn = $('#taskBtn'),
                 $taskTip = $('#taskLayer'),
-                $closeTask = $('#closeTask');
+                $closeTask = $('#closeTask'),
+                $beanDetail=$('#beansDetail');
             //change model
             $navBtn.on('click', function (event) {
                 event.preventDefault();
@@ -57,6 +58,10 @@ require(['jquery', 'csrf','mustache', 'layerWrapper', 'text!/tpl/point-bill-tabl
             $closeTask.on('click', function (event) {
                 event.preventDefault();
                 $taskTip.fadeOut('fast');
+            });
+            $beanDetail.on('click', function (event) {
+                event.preventDefault();
+                $('.column-title .title-navli:eq(2)').trigger('click');
             });
 
             var today = moment().format('YYYY-MM-DD'), // 今天
