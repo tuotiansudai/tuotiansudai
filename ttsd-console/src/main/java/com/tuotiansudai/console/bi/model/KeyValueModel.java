@@ -1,4 +1,4 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.console.bi.model;
 
 public class KeyValueModel {
 

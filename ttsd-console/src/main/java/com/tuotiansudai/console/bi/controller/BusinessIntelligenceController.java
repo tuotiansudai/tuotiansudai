@@ -1,13 +1,13 @@
-package com.tuotiansudai.console.controller;
+package com.tuotiansudai.console.bi.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.Granularity;
-import com.tuotiansudai.dto.RoleStage;
-import com.tuotiansudai.dto.UserStage;
-import com.tuotiansudai.repository.model.InvestViscosityDetailTableView;
-import com.tuotiansudai.repository.model.InvestViscosityDetailView;
-import com.tuotiansudai.repository.model.KeyValueModel;
-import com.tuotiansudai.service.BusinessIntelligenceService;
+import com.tuotiansudai.console.bi.dto.Granularity;
+import com.tuotiansudai.console.bi.dto.RoleStage;
+import com.tuotiansudai.console.bi.dto.UserStage;
+import com.tuotiansudai.console.bi.model.InvestViscosityDetailTableView;
+import com.tuotiansudai.console.bi.model.InvestViscosityDetailView;
+import com.tuotiansudai.console.bi.model.KeyValueModel;
+import com.tuotiansudai.console.bi.service.BusinessIntelligenceService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
