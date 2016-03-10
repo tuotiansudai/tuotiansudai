@@ -19,7 +19,7 @@ CREATE TABLE `aa`.`point_task` (
   `id`           INT(32)         NOT NULL AUTO_INCREMENT,
   `name`         VARCHAR(100)    NOT NULL,
   `point`        BIGINT UNSIGNED NOT NULL,
-  `created_time` DATETIME        NOT NULL DEFAULT now(),
+  `created_time` DATETIME        NOT NULL,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
@@ -32,6 +32,8 @@ INSERT INTO `aa`.point_task (name, point) VALUES ('BIND_BANK_CARD', 50);
 INSERT INTO `aa`.point_task (name, point) VALUES ('FIRST_RECHARGE', 100);
 INSERT INTO `aa`.point_task (name, point) VALUES ('FIRST_INVEST', 200);
 INSERT INTO `aa`.point_task (name, point) VALUES ('SUM_INVEST_10000', 500);
+
+UPDATE `aa`.`point_task` SET `created_time` = now();
 
 CREATE TABLE `aa`.`user_point_task` (
   `login_name`    VARCHAR(25) NOT NULL,
