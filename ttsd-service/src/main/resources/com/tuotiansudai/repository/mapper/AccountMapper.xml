@@ -17,7 +17,6 @@
         <result column="freeze" property="freeze"></result>
         <result column="register_time" property="registerTime"></result>
         <result column="auto_invest" property="autoInvest"></result>
-        <result column="no_password_invest" property="noPasswordInvest"></result>
     </resultMap>
 
     <insert id="create" parameterType="AccountModel" useGeneratedKeys="true" keyProperty="id">
