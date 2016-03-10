@@ -36,6 +36,7 @@ public class PointServiceImpl implements PointService {
     @Autowired
     private PointBillService pointBillService;
 
+    @Autowired
     private AccountMapper accountMapper;
 
     @Override
@@ -56,13 +57,14 @@ public class PointServiceImpl implements PointService {
     @Override
     @Transactional
     public void obtainPointInvest(InvestModel investModel) {
-        long point = new BigDecimal(investModel.getAmount()).divide(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        long point = new BigDecimal(investModel.getAmount()).divide(new BigDecimal(100), 0, BigDecimal.ROUND_DOWN).longValue();
         pointBillService.createPointBill(investModel.getLoginName(), investModel.getId(), PointBusinessType.INVEST, point);
         logger.debug(MessageFormat.format("{0} has obtained point {1}", investModel.getId(), point));
     }
+
+    @Override
     public long getAvailablePoint(String loginName) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         return accountModel.getPoint();
     }
-
 }
