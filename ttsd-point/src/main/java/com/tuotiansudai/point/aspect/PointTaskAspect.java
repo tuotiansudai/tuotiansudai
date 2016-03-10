@@ -3,11 +3,12 @@ package com.tuotiansudai.point.aspect;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
-import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.point.repository.model.PointTask;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.PointTaskService;
+import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
+import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.RechargeModel;
 import org.apache.log4j.Logger;
@@ -26,13 +27,16 @@ public class PointTaskAspect {
     static Logger logger = Logger.getLogger(PointTaskAspect.class);
 
     @Autowired
+    private PointService pointService;
+
+    @Autowired
     private PointTaskService pointTaskService;
 
     @Autowired
     private RechargeMapper rechargeMapper;
 
     @Autowired
-    private PointService pointService;
+    private BankCardMapper bankCardMapper;
 
     @AfterReturning(value = "execution(* *..RegisterService.register(..))", returning = "returnValue")
     public void afterReturningRegisterAccount(JoinPoint joinPoint, BaseDto<PayDataDto> returnValue) {
@@ -78,5 +82,17 @@ public class PointTaskAspect {
         pointTaskService.completeTask(PointTask.FIRST_RECHARGE, rechargeModel.getLoginName());
 
         logger.debug("after returning recharge, point task aspect completed");
+    }
+
+    @SuppressWarnings(value = "unchecked")
+    @AfterReturning(value = "execution(* *..BindBankCardService.bindBankCardCallback(..))")
+    public void afterReturningBindBankCardCallback(JoinPoint joinPoint) {
+        logger.debug("after returning bind card, point task aspect starting...");
+
+        Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
+        BankCardModel bankCardModel = bankCardMapper.findById(Long.parseLong(paramsMap.get("order_id")));
+        pointTaskService.completeTask(PointTask.BIND_BANK_CARD, bankCardModel.getLoginName());
+
+        logger.debug("after returning bind card, point task aspect completed");
     }
 }

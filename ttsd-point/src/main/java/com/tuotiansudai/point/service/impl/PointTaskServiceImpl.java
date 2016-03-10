@@ -71,17 +71,16 @@ public class PointTaskServiceImpl implements PointTaskService {
         if(CollectionUtils.isEmpty(pointTaskModels)){
             return Lists.newArrayList();
         }
-        List<PointTaskDto> pointTaskDtos = Lists.transform(pointTaskModels, new Function<PointTaskModel, PointTaskDto>() {
+
+        return Lists.transform(pointTaskModels, new Function<PointTaskModel, PointTaskDto>() {
             @Override
             public PointTaskDto apply(PointTaskModel pointTaskModel) {
                 PointTaskDto pointTaskDto = new PointTaskDto(pointTaskModel);
                 UserPointTaskModel userPointTaskModel = userPointTaskMapper.findByLoginNameAndId(pointTaskModel.getId(),loginName);
-                pointTaskDto.setCompleted(userPointTaskModel != null ? true : false);
+                pointTaskDto.setCompleted(userPointTaskModel != null);
                 return pointTaskDto;
             }
         });
-
-        return pointTaskDtos;
     }
 
     private boolean isCompletedTaskConditions(final PointTask pointTask, String loginName) {
@@ -109,7 +108,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             case FIRST_INVEST:
                 return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) > 0;
             case SUM_INVEST_10000:
-                return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) > 1000000;
+                return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) > 5;
         }
 
         return false;
