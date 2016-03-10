@@ -39,6 +39,11 @@ public class InvestModel implements Serializable {
      * 应用安装来源渠道
      */
     private String channel;
+
+    /**
+     * 是否为免密投资
+     */
+    private boolean isNoPasswordInvest;
     /**
      * 创建时间
      */
@@ -141,4 +146,9 @@ public class InvestModel implements Serializable {
     public void setChannel(String channel) {
         this.channel = channel;
     }
+
+    public boolean isNoPasswordInvest() { return isNoPasswordInvest; }
+
+    public void setNoPasswordInvest(boolean noPasswordInvest) { isNoPasswordInvest = noPasswordInvest; }
+
 }
