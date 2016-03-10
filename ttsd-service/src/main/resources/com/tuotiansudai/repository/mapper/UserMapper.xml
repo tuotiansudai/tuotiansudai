@@ -328,5 +328,8 @@
         AND iv.`status`='SUCCESS';
     </select>
 
+    <select id="findUsersCountByChannel" parameterType="java.lang.String" resultType="long">
+        select ifnull(count(*),0) from user where channel = #{channel}
+    </select>
 
 </mapper>

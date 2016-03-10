@@ -9,7 +9,6 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.exception.CreateCouponException;
@@ -345,8 +344,15 @@ public class CouponController {
         redisWrapperClient.hset(redisKey, "failed", StringUtils.join(listFailed, ","));
         redisWrapperClient.hset(redisKey, "success", StringUtils.join(listSuccess, ","));
         List<Object> list = new ArrayList<>();
-        list.add(uuid);
-        list.add(hssfSheet.getLastRowNum() + 1);
+        if (CollectionUtils.isNotEmpty(listFailed)) {
+            list.add(false);
+            list.add(StringUtils.join(listFailed, ","));
+        } else {
+            list.add(true);
+            list.add(uuid);
+            list.add(hssfSheet.getLastRowNum() + 1);
+            list.add(listSuccess);
+        }
         return list;
     }
 

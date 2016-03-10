@@ -7,8 +7,10 @@ import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.CouponUserGroupMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.CouponUserGroupModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
@@ -58,6 +60,9 @@ public class CouponServiceImpl implements CouponService {
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
 
+    @Autowired
+    private CouponUserGroupMapper couponUserGroupMapper;
+
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
     @Override
@@ -69,10 +74,16 @@ public class CouponServiceImpl implements CouponService {
         couponModel.setCreatedTime(new Date());
         couponMapper.create(couponModel);
         couponDto.setId(couponModel.getId());
-        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
+        if (couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
             redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "success"));
             redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "failed"));
             redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, couponDto.getFile()));
+        } else if (Lists.newArrayList(UserGroup.AGENT, UserGroup.CHANNEL).contains(couponModel.getUserGroup())) {
+            CouponUserGroupModel couponUserGroupModel = new CouponUserGroupModel();
+            couponUserGroupModel.setCouponId(couponModel.getId());
+            couponUserGroupModel.setUserGroup(couponModel.getUserGroup());
+            couponUserGroupModel.setUserGroupItems();
+            couponUserGroupMapper.create(couponUserGroupModel);
         }
     }
 

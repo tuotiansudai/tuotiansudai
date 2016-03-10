@@ -51,22 +51,10 @@
             <input type="hidden" name="file" id="import-file">
         </div>
 
-        <div class="form-group">
+        <div class="form-group coupon-hide coupon-table">
             <label class="col-sm-2"></label>
             <div class="col-sm-4 data-table">
                 <table class="table table-bordered">
-                    <tr><td>1</td><td>2</td></tr>
-                    <tr><td>1</td><td>2</td></tr>
-                    <tr><td>1</td><td>2</td></tr>
-                    <tr><td>1</td><td>2</td></tr>
-                    <tr><td>1</td><td>2</td></tr>
-                    <tr><td>1</td><td>2</td></tr>
-                    <tr><td>1</td><td>2</td></tr>
-                    <tr><td>1</td><td>2</td></tr>
-                    <tr><td>1</td><td>2</td></tr>
-                    <tr><td>1</td><td>2</td></tr>
-                    <tr><td>1</td><td>2</td></tr>
-                    <tr><td>1</td><td>2</td></tr>
                 </table>
             </div>
         </div>

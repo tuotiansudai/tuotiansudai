@@ -268,7 +268,7 @@ public class UserController {
         return new ModelAndView("redirect:" + webServer + "/impersonate?securityCode=" + securityCode);
     }
 
-    @RequestMapping(value = "/user/agent", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/agents", method = RequestMethod.GET)
     @ResponseBody
     public List<String> queryAllAgent() {
         List<UserRoleModel> userRoleModels = userRoleMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.AGENT).put("districtName", Lists.newArrayList()).build()));
@@ -280,9 +280,16 @@ public class UserController {
         });
     }
 
-    @RequestMapping(value = "/user/channel", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/channels", method = RequestMethod.GET)
     @ResponseBody
     public List<String> queryAllChannel() {
-        return userMapper.findAllUserChannels();
+        return userMapper.findAllChannels();
     }
+
+    @RequestMapping(value = "/user/{channel}/channel", method = RequestMethod.GET)
+    @ResponseBody
+    public long queryUserByChannel(@PathVariable String channel) {
+        return userMapper.findUsersCountByChannel(channel);
+    }
+
 }
