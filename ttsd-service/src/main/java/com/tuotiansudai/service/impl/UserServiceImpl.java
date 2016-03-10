@@ -391,7 +391,6 @@ public class UserServiceImpl implements UserService {
                 userModel.setCity("未知");
             }
             userModel.setLastModifiedTime(new Date());
-            logger.debug("now = " + new Date() + " userModel LastModifiedTime = " + userModel.getLastModifiedTime());
             userMapper.updateUser(userModel);
         }
     }

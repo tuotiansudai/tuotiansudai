@@ -21,7 +21,7 @@ public class AutoReFreshAreaByMobileJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.debug("AutoReFleshAreaByMobileJob===========in");
-        logger.debug("autoDate="+new Date());
+
         userService.refreshAreaByMobileInJob();
 
         logger.debug("AutoReFleshAreaByMobileJob===========out");
