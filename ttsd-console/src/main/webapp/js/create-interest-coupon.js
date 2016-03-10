@@ -130,17 +130,38 @@ require(['jquery', 'template', 'csrf','bootstrap', 'jquery-ui', 'bootstrapSelect
         }
 
         $('.userGroup').change(function(){
+            $('.coupon-agent-channel').children().remove();
+            $('.coupon-deposit').hide();
+            $('.file-btn').find('input').val('');
+            $('.file-btn').hide();
             var userGroup = this.value;
-            var $fileBtn = $('.file-btn');
-            if(userGroup != "IMPORT_USER"){
-                $fileBtn.hide();
-                $('.file-btn').find('input').val('');
+            if(userGroup != "IMPORT_USER" && userGroup != 'AGENT' && userGroup != 'CHANNEL'){
                 $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
                     $('.give-number').val(data);
                 })
+            } else if (userGroup == 'AGENT') {
+                $.get('/user-manage/user/agent', function(data) {
+                    if (data.length > 0 ) {
+                        $('.coupon-deposit').show();
+                    }
+                    for (var i=0; i < data.length; i++) {
+                        $('.coupon-agent-channel').append('<label class="label-name"><input type="radio">'+data[i]+'</label>');
+                    }
+                })
+                $('.give-number').val('0');
+            } else if (userGroup == 'CHANNEL') {
+                $.get('/user-manage/user/channel', function(data) {
+                    if (data.length > 0) {
+                        $('.coupon-deposit').show();
+                    }
+                    for (var i=0; i < data.length; i++) {
+                        $('.coupon-agent-channel').append('<label class="label-name"><input type="radio">'+data[i]+'</label>');
+                    }
+                })
+                $('.give-number').val('0');
             } else {
-                $fileBtn.show();
-                $('.give-number').val('');
+                $('#file-in').trigger('click');
+                $('.file-btn').show();
             }
         });
 

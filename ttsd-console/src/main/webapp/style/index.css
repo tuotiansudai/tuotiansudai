@@ -568,3 +568,10 @@ td.td {
 .label-name{
     width: 80px;
 }
+.data-table{
+    float:left;
+    width:345px;
+    height:341px;
+    overflow: hidden;
+    overflow-y: scroll;
+}

@@ -34,7 +34,7 @@
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">发放对象:</label>
-            <div class="col-sm-4 invest-coupon">
+            <div class="col-sm-2 invest-coupon">
 
                 <select class="selectpicker jq-b-type userGroup" name="userGroup">
                     <#list userGroups as userGroup>
@@ -44,12 +44,33 @@
                     </#list>
                 </select>
             </div>
-            <div class="file-btn">
-                <input type="file">
-                导入用户名单
+            <div class="file-btn coupon-hide">
+                <input type="file" id="file-in">
+                重新导入
             </div>
             <input type="hidden" name="file" id="import-file">
         </div>
+
+        <div class="form-group">
+            <label class="col-sm-2"></label>
+            <div class="col-sm-4 data-table">
+                <table class="table table-bordered">
+                    <tr><td>1</td><td>2</td></tr>
+                    <tr><td>1</td><td>2</td></tr>
+                    <tr><td>1</td><td>2</td></tr>
+                    <tr><td>1</td><td>2</td></tr>
+                    <tr><td>1</td><td>2</td></tr>
+                    <tr><td>1</td><td>2</td></tr>
+                    <tr><td>1</td><td>2</td></tr>
+                    <tr><td>1</td><td>2</td></tr>
+                    <tr><td>1</td><td>2</td></tr>
+                    <tr><td>1</td><td>2</td></tr>
+                    <tr><td>1</td><td>2</td></tr>
+                    <tr><td>1</td><td>2</td></tr>
+                </table>
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="col-sm-2 control-label">预计发放数量(张): </label>
             <div class="col-sm-4">
@@ -57,17 +78,9 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group coupon-hide coupon-deposit">
             <label class="col-sm-2"></label>
-            <div class="col-sm-4">
-                <label class="label-name"><input type="radio">代理商</label>
-                <label class="label-name"><input type="radio">代理商</label>
-                <label class="label-name"><input type="radio">代理商</label>
-                <label class="label-name"><input type="radio">代理商</label>
-                <label class="label-name"><input type="radio">代理商</label>
-                <label class="label-name"><input type="radio">代理商</label>
-                <label class="label-name"><input type="radio">代理商</label>
-                <label class="label-name"><input type="radio">代理商</label>
+            <div class="col-sm-4 coupon-agent-channel">
             </div>
         </div>
 
