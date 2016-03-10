@@ -66,6 +66,12 @@
                        <i class="fa fa-check-circle ok"></i> 已设置 <a class="setlink setUmpayPass" href="javascript:void(0);">重置</a>
                     </span>
                 </li>
+                <li><span class="info-title"> 免密投资</span>
+                    <em class="info">开通免密投资后，您可及时选择心仪标的，理财快人一步</em>
+                    <span class="binding-set">
+                       <i class="fa fa-check-circle ok"></i>未开启  <a class="" href="javascript:void(0);">开启</a>
+                    </span>
+                </li>
             </ul>
 
 </div>

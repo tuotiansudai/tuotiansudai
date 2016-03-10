@@ -24,6 +24,8 @@ public class AccountModel implements Serializable{
 
     private boolean autoInvest;
 
+    private boolean noPasswordInvest;
+
     public AccountModel() {
     }
 
@@ -86,6 +88,14 @@ public class AccountModel implements Serializable{
 
     public void setAutoInvest(boolean autoInvest) {
         this.autoInvest = autoInvest;
+    }
+
+    public boolean isNoPasswordInvest() {
+        return noPasswordInvest;
+    }
+
+    public void setNoPasswordInvest(boolean noPasswordInvest) {
+        this.noPasswordInvest = noPasswordInvest;
     }
 
     @Override
