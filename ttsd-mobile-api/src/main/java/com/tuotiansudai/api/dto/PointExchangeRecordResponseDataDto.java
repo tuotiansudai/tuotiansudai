@@ -5,6 +5,7 @@ import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class PointExchangeRecordResponseDataDto {
@@ -100,11 +101,12 @@ public class PointExchangeRecordResponseDataDto {
 
     }
     public PointExchangeRecordResponseDataDto(CouponModel couponModel, long point){
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         this.setCouponId(String.valueOf(couponModel.getId()));
         this.setCouponType(couponModel.getCouponType());
         this.setName(couponModel.getCouponType().getName());
         this.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
-        this.setRate(String.valueOf(couponModel.getRate()*100));
+        this.setRate(String.valueOf(decimalFormat.format(couponModel.getRate()*100)));
         this.setInvestLowerLimit(AmountConverter.convertCentToString(couponModel.getInvestLowerLimit()));
         this.setInvestUpperLimit(AmountConverter.convertCentToString(couponModel.getInvestUpperLimit()));
         this.setProductTypes(couponModel.getProductTypes());
