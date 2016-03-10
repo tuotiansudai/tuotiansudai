@@ -147,7 +147,7 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'jquery-ui', 'bootstra
                         $('.coupon-deposit').show();
                     }
                     for (var i=0; i < data.length; i++) {
-                        $('.coupon-agent-channel').append('<label class="label-name"><input type="radio" class="agent" value="'+data[i]+'">'+data[i]+'</label>');
+                        $('.coupon-agent-channel').append('<label class="label-name"><input type="radio" class="agent" name="agents" value="'+data[i]+'">'+data[i]+'</label>');
                     }
                 })
                 $('.give-number').val('0');
@@ -157,7 +157,7 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'jquery-ui', 'bootstra
                         $('.coupon-deposit').show();
                     }
                     for (var i=0; i < data.length; i++) {
-                        $('.coupon-agent-channel').append('<label class="label-name"><input type="radio" class="channel" value="'+data[i]+'">'+data[i]+'</label>');
+                        $('.coupon-agent-channel').append('<label class="label-name"><input type="radio" class="channel" name="channels" value="'+data[i]+'">'+data[i]+'</label>');
                     }
                 })
                 $('.give-number').val('0');

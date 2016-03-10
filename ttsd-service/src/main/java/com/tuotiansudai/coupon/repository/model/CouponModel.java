@@ -73,6 +73,10 @@ public class CouponModel implements Serializable {
 
     private Boolean importIsRight;
 
+    private List<String> agents;
+
+    private List<String> channels;
+
     public long getId() {
         return id;
     }
@@ -316,6 +320,22 @@ public class CouponModel implements Serializable {
         this.deadline = deadline;
     }
 
+    public List<String> getAgents() {
+        return agents;
+    }
+
+    public void setAgents(List<String> agents) {
+        this.agents = agents;
+    }
+
+    public List<String> getChannels() {
+        return channels;
+    }
+
+    public void setChannels(List<String> channels) {
+        this.channels = channels;
+    }
+
     public CouponModel(CouponDto couponDto){
         this.shared = couponDto.isShared();
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
@@ -332,5 +352,7 @@ public class CouponModel implements Serializable {
         this.rate = couponDto.getRate() == null ? 0 : new BigDecimal(couponDto.getRate()).divide(new BigDecimal(100), 3, BigDecimal.ROUND_HALF_UP).doubleValue();
         this.birthdayBenefit = couponDto.getBirthdayBenefit() == null ? 0 : new BigDecimal(couponDto.getBirthdayBenefit()).subtract(new BigDecimal(1)).doubleValue();
         this.multiple = couponDto.getCouponType() == CouponType.BIRTHDAY_COUPON;
+        this.agents = couponDto.getAgents();
+        this.channels = couponDto.getChannels();
     }
 }

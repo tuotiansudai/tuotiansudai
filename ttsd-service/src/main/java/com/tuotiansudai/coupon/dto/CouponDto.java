@@ -72,6 +72,10 @@ public class CouponDto implements Serializable {
 
     private boolean multiple;
 
+    private List<String> agents;
+
+    private List<String> channels;
+
     public String getAmount() {
         return amount;
     }
@@ -264,6 +268,22 @@ public class CouponDto implements Serializable {
         this.multiple = multiple;
     }
 
+    public List<String> getAgents() {
+        return agents;
+    }
+
+    public void setAgents(List<String> agents) {
+        this.agents = agents;
+    }
+
+    public List<String> getChannels() {
+        return channels;
+    }
+
+    public void setChannels(List<String> channels) {
+        this.channels = channels;
+    }
+
     public CouponDto(){
 
     }
@@ -294,5 +314,7 @@ public class CouponDto implements Serializable {
         this.shared = couponModel.isShared();
         this.birthdayBenefit = couponModel.getBirthdayBenefit();
         this.multiple = couponModel.isMultiple();
+        this.agents = couponModel.getAgents();
+        this.channels = couponModel.getChannels();
     }
 }

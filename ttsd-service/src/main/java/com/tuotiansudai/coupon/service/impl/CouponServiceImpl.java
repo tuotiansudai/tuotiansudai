@@ -82,7 +82,7 @@ public class CouponServiceImpl implements CouponService {
             CouponUserGroupModel couponUserGroupModel = new CouponUserGroupModel();
             couponUserGroupModel.setCouponId(couponModel.getId());
             couponUserGroupModel.setUserGroup(couponModel.getUserGroup());
-            couponUserGroupModel.setUserGroupItems();
+            couponUserGroupModel.setUserGroupItems(couponModel.getUserGroup() == UserGroup.AGENT ? couponModel.getAgents() : couponModel.getChannels());
             couponUserGroupMapper.create(couponUserGroupModel);
         }
     }
