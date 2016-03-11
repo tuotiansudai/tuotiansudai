@@ -123,7 +123,7 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                                     item.businessType = '任务奖励';
                                     break;
                                 case 'INVEST':
-                                    item.businessType = '任务奖励';
+                                    item.businessType = '投资奖励';
                                     break;
                                 case 'EXCHANGE':
                                     item.businessType = '财豆兑换';
