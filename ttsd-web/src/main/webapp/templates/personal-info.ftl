@@ -67,10 +67,24 @@
                     </span>
                 </li>
                 <li><span class="info-title"> 免密投资</span>
-                    <em class="info">开通免密投资后，您可及时选择心仪标的，理财快人一步</em>
-                    <span class="binding-set">
-                       <i class="fa fa-check-circle ok"></i>未开启  <a class="" href="javascript:void(0);">开启</a>
-                    </span>
+
+                    <#if !(noPasswordInvest??)>
+                        <em class="info">开启免密投资后，您可及时选择心仪标的，理财快人一步</em>
+                        <span class="binding-set">
+                            <i class="fa fa-times-circle no"></i>未开启  <a class="setlink turnOnNoPasswordInvest" href="javascript:void(0);">开启</a>
+                        </span>
+                    <#elseif noPasswordInvest>
+                        <em class="info">您已开启免密投资，投资理财快人一步</em>
+                        <span class="binding-set">
+                            <i class="fa fa-check-circle ok"></i>已开启  <a class="setlink turnOffNoPasswordInvest" href="javascript:void(0);">关闭</a>
+                        </span>
+                    <#else >
+                        <em class="info">您已授权自动投标，可直接开启免密投资，及时选择心仪标的，理财快人一步</em>
+                        <span class="binding-set">
+                            <i class="fa fa-times-circle no"></i>未开启  <a class="setlink" href="javascript:void(0);">开启</a>
+                        </span>
+                    </#if>
+
                 </li>
             </ul>
 
@@ -133,6 +147,37 @@
 <div id="change-email-success" class="pad-m popLayer" style="display: none;">
     验证邮件已发送至您的邮箱，请登录邮箱完成验证。
 </div>
+
+<div id="turnOnNoPasswordInvestDOM" class="pad-m popLayer" style="display: none;">
+    <form name="turnOnNoPasswordInvestForm" action="${requestContext.getContextPath()}/no-password-invest" method="post">
+        <dl>
+            <dt class="requireOpt">推荐您开通免密投资功能，简化投资过程，理财快人一步，确认开通吗？</dt>
+        </dl>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <input type="hidden" name="noPasswordInvest" value="true"/>
+        <button type="submit" class="btn btn-normal">去联动优势授权</button>
+    </form>
+</div>
+<div id="turnOffNoPasswordInvestDOM" class="pad-m popLayer" style="display: none;">
+    <form name="turnOffNoPasswordInvestForm" action="${requestContext.getContextPath()}/disabled" method="post">
+        <dl>
+            <dt class="requireOpt">推荐您开通免密投资功能，简化投资过程，理财快人一步，确认关闭吗？</dt>
+        </dl>
+        <dl>
+            <dt class="requireOpt">短信验证码：</dt>
+            <dd><input type="email" name="email" class="input-control" placeholder="请输入短信验证码">
+            <button type="button" class="btn btn-normal get-code">获取验证码</button></dd>
+        </dl>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    </form>
+</div>
+<div id="noPasswordInvestDOM" class="pad-m" style="display: none;">
+    <p>请在新打开的联动优势页面充值完成后选择：</p>
+    <p><a href="/personal-info" class="btn-success" data-category="确认成功" data-label="noPasswordInvest">继续</a>(授权后视情况可能会有一秒或更长的延迟)</p>
+    <span>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-20:00）</span>
+</div>
+
+
 
 </@global.main>
 
