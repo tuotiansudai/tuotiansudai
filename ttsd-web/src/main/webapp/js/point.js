@@ -14,8 +14,12 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                 event.preventDefault();
                 var $self = $(this),
                     index = $self.index();
-                $self.addClass('active').siblings().removeClass('active');
-                $('.content-list .choi-beans-list:eq(' + index + ')').show().siblings().hide();
+                if (index == 0) {
+                    location.href = "/point";
+                } else {
+                    $self.addClass('active').siblings().removeClass('active');
+                    $('.content-list .choi-beans-list:eq(' + index + ')').show().siblings().hide();
+                }
             });
             //show sign tip
             $signBtn.on('click', function (event) {
@@ -177,8 +181,17 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                             })
                                 .done(function(data) {
                                     if(data.status) {
-                                        layer.alert('兑换成功！', {title: '温馨提示'}, function() {
-                                            location.href='/point';
+                                        layer.open({
+                                            title: '温馨提示',
+                                            content: '兑换成功！您可前去我的宝藏中查看。',
+                                            btn: ['去看看'],
+                                            yes:function() {
+                                                location.href = '/my-treasure';
+                                            },
+                                            end:function() {
+                                                changeDatePicker();
+                                                loadPointBillData();
+                                            }
                                         });
                                     } else if (!data.status && data.message == 'point insufficient') {
                                         layer.open({
