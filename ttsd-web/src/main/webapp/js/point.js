@@ -21,9 +21,10 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
             $signBtn.on('click', function (event) {
                 event.preventDefault();
                 var _this = $(this),
-                    $signText = $(".sign-text");
-                    $tomorrowText = $(".tomorrow-text");
-                    $addDou = $(".add-dou");
+                    $signText = $(".sign-text"),
+                    $tomorrowText = $(".tomorrow-text"),
+                    $addDou = $(".add-dou"),
+                    $signBtn = $("#signBtn");
 
                 $.ajax({
                     url: _this.data('url'),
@@ -34,6 +35,7 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                     if (response.data.status) {
                         $signText.html("签到成功，领取" + response.data.signInPoint + "财豆！");
                         $tomorrowText.html("明日可领" + response.data.nextSignInPoint + "财豆");
+                        $signBtn.addClass("no-click").html("今日已签到");
                         $addDou.html("+" + response.data.signInPoint);
                         $signTip.fadeIn('fast', function () {
                             $(this).find('.add-dou').animate({
