@@ -237,6 +237,9 @@ button {
           height: 20px;
           line-height: 20px;
           text-align: center;
+          &.no-click{
+            background: #ccc;
+          }
           span{
             float: left;
             text-align: center;

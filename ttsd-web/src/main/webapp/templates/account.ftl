@@ -15,7 +15,7 @@
             <ul class="proList">
                 <li class="fl"><a class="fa fa-envelope-o fa-fw" href="/personal-info"></a></li>
                 <#if signedIn?? && signedIn>
-                    <li class="fl sign-top"><span class="btn-sign finish-sign" id="signBtn">已签到</span></li>
+                    <li class="fl sign-top no-click"><span class="btn-sign finish-sign">已签到</span></li>
                 <#else >
                     <li class="fl sign-top"><span class="btn-sign will-sign" data-url="/point/sign-in" id="signBtn">签到</span></li>
                 </#if>
