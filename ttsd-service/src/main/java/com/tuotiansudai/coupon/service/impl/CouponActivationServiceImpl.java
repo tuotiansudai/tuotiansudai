@@ -51,6 +51,18 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     @Resource(name = "importUserCollector")
     private UserCollector importUserCollector;
 
+    @Resource(name = "agentCollector")
+    private UserCollector agentCollector;
+
+    @Resource(name = "staffCollector")
+    private UserCollector staffCollector;
+
+    @Resource(name = "channelCollector")
+    private UserCollector channelCollector;
+
+    @Resource(name = "staffRecommendLevelOneCollector")
+    private UserCollector staffRecommendLevelOneCollector;
+
     @Autowired
     private UserMapper userMapper;
 
@@ -171,6 +183,10 @@ public class CouponActivationServiceImpl implements CouponActivationService {
                 .put(UserGroup.INVESTED_USER, this.investedUserCollector)
                 .put(UserGroup.REGISTERED_NOT_INVESTED_USER, this.registeredNotInvestedUserCollector)
                 .put(UserGroup.IMPORT_USER, this.importUserCollector)
+                .put(UserGroup.AGENT, this.agentCollector)
+                .put(UserGroup.CHANNEL, this.channelCollector)
+                .put(UserGroup.STAFF, this.staffCollector)
+                .put(UserGroup.STAFF_RECOMMEND_LEVEL_ONE, this.staffRecommendLevelOneCollector)
                 .build()).get(userGroup);
     }
 

@@ -69,11 +69,10 @@
             </div>
         </div>
 
-        <#if agentsOrChannels?? && agentsOrChannels?size gt 0>
-
-        <div class="form-group coupon-deposit">
+        <div class="form-group coupon-deposit <#if !(agentsOrChannels?? && agentsOrChannels?size gt 0)>coupon-hide</#if>">
             <label class="col-sm-2"></label>
             <div class="col-sm-4 coupon-agent-channel">
+                <#if agentsOrChannels?? && agentsOrChannels?size gt 0>
                 <#if coupon.userGroup == 'AGENT'>
                     <#list agents as agent>
                     <label><input type="checkbox" class="agent" name="agents" value="${agent!}" <#if agentsOrChannels?seq_contains(agent)>checked</#if>>${agent!}</label>
@@ -83,10 +82,9 @@
                     <label><input type="checkbox" class="channel" name="channels" value="${channel!}" <#if agentsOrChannels?seq_contains(channel)>checked</#if>>${channel!}</label>
                     </#list>
                 </#if>
+                </#if>
             </div>
         </div>
-
-        </#if>
 
         <div class="form-group">
             <label  class="col-sm-2 control-label">可投资标的: </label>
