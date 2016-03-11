@@ -37,11 +37,11 @@ class UTRunner(object):
         self._start_new_container()
 
     def _remove_old_container(self):
-        sh('sudo /usr/local/bin/docker-compose -f unit_test.yml stop')
-        sh('sudo /usr/local/bin/docker-compose -f unit_test.yml rm -f')
+        sh('/usr/local/bin/docker-compose -f unit_test.yml stop')
+        sh('/usr/local/bin/docker-compose -f unit_test.yml rm -f')
 
     def _start_new_container(self):
-        sh('sudo /usr/local/bin/docker-compose -f unit_test.yml up -d')
+        sh('/usr/local/bin/docker-compose -f unit_test.yml up -d')
 
     def run_test(self):
         print "Starting test..."
