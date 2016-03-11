@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.company_activity}" pageJavascript="${js.birth_month}" activeNav="" activeLeftNav="" title="生日月特权">
+<@global.main pageCss="${css.company_activity}" pageJavascript="" activeNav="" activeLeftNav="" title="生日月特权">
 <style type="text/css">
     body {
         background: url('/images/sign/actor/birth/bg-web.png') center top repeat-y;
