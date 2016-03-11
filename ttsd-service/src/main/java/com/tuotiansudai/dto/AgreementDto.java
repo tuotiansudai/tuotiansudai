@@ -12,6 +12,8 @@ public class AgreementDto implements Serializable {
 
     private boolean fastPay;
 
+    private boolean noPasswordInvest;
+
     private Source source = Source.WEB;
 
     public String getLoginName() {
@@ -44,5 +46,13 @@ public class AgreementDto implements Serializable {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public boolean isNoPasswordInvest() {
+        return noPasswordInvest;
+    }
+
+    public void setNoPasswordInvest(boolean noPasswordInvest) {
+        this.noPasswordInvest = noPasswordInvest;
     }
 }

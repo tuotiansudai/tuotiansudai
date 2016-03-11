@@ -48,6 +48,7 @@ public class PersonalInfoController {
         if (bankCard != null) {
             mv.addObject("bankCard", bankCard.getCardNumber());
         }
+        mv.addObject("noPasswordInvest",true);
 
         return mv;
     }

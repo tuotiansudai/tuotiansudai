@@ -3,18 +3,22 @@
 @import "coupon_alert";
 
 .layui-layer-btn {
-  text-align: center;
+  text-align: center!important;
   .layui-layer-btn0 {
     padding: 3px 35px;
-    background: nth($CK1, 2);
+    background: nth($CK1, 2)!important;
     border-radius: 4px;
-    border: 1px solid nth($CK1, 2);
+    border: 1px solid nth($CK1, 2)!important;
+    border-color: nth($CK1, 2)!important;
     letter-spacing: 3px;
     color: #fff;
     &:hover {
       // background: nth($CK1,3);
       color: #fff;
     }
+  }
+  .layui-layer-btn1{
+    padding:3px 35px;
   }
 }
 .layui-layer-content {
@@ -49,6 +53,12 @@
     }
     dd {
       padding-left: 5px;
+      .get-code{
+        margin: 0;
+        width: 90px;
+        font-size: 12px;
+        padding:8px 0;
+      }
     }
 
   }

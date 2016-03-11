@@ -43,7 +43,7 @@ public class AgreementServiceImpl implements AgreementService {
     public BaseDto<PayFormDataDto> agreement(AgreementDto dto) {
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
         AgreementType agreementType = null;
-        if (dto.isAutoInvest()) {
+        if (dto.isAutoInvest() || dto.isNoPasswordInvest()) {
             agreementType = AgreementType.ZTBB0G00;
         } else if (dto.isFastPay()) {
             agreementType = AgreementType.ZKJP0700;
@@ -79,6 +79,11 @@ public class AgreementServiceImpl implements AgreementService {
             if (agreementNotifyRequestModel.isAutoInvest()) {
                 accountModel.setAutoInvest(true);
             }
+            if(agreementNotifyRequestModel.isNoPasswordInvest()){
+                accountModel.setNoPasswordInvest(true);
+                accountModel.setAutoInvest(true);
+            }
+            
             if (agreementNotifyRequestModel.isFastPay()) {
                 String loginName = accountModel.getLoginName();
                 BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(loginName);
