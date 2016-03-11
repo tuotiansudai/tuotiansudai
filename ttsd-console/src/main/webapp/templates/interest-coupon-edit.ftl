@@ -33,11 +33,11 @@
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">发放对象:</label>
-            <div class="col-sm-4 invest-coupon">
+            <div class="col-sm-2 invest-coupon">
 
                 <select class="selectpicker jq-b-type userGroup" name="userGroup">
                     <#list userGroups as userGroup>
-                        <#if userGroup.name() != 'NEW_REGISTERED_USER' && userGroup.name() != 'ALL_USER'>
+                        <#if userGroup.name() != 'NEW_REGISTERED_USER'>
                             <option value="${userGroup.name()}"
                                 <#if coupon??&&coupon.userGroup==userGroup>selected</#if>>${userGroup.getDescription()}</option>
                         </#if>
@@ -45,17 +45,48 @@
                 </select>
             </div>
             <div class="file-btn <#if coupon.userGroup != 'IMPORT_USER'>import-hidden</#if>">
-                <input type="file">
-                导入用户名单
+                <input type="file" id="file-in">
+                重新导入
             </div>
             <input type="hidden" name="file" id="import-file" >
         </div>
+
+        <div class="form-group <#if coupon.userGroup != 'IMPORT_USER'>coupon-hide</#if> coupon-table">
+            <label class="col-sm-2"></label>
+            <div class="col-sm-4 data-table">
+                <table class="table table-bordered">
+                    <#list importUsers as importUser>
+                        <tr class="name-tr"><td>${(importUser_index+1)!}</td><td>${importUser!}</td></tr>
+                    </#list>
+                </table>
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="col-sm-2 control-label">预计发放数量(张): </label>
             <div class="col-sm-4">
                 <input type="text" readonly class="form-control give-number" name="totalCount" placeholder="" <#if coupon??>value="${coupon.totalCount?string('0')!}"</#if>  datatype="n" errormsg="发放数量需要填写数字" >
             </div>
         </div>
+
+        <#if agentsOrChannels?? && agentsOrChannels?size gt 0>
+
+        <div class="form-group coupon-deposit">
+            <label class="col-sm-2"></label>
+            <div class="col-sm-4 coupon-agent-channel">
+                <#if coupon.userGroup == 'AGENT'>
+                    <#list agents as agent>
+                    <label><input type="checkbox" class="agent" name="agents" value="${agent!}" <#if agentsOrChannels?seq_contains(agent)>checked</#if>>${agent!}</label>
+                    </#list>
+                <#else>
+                    <#list channels as channel>
+                    <label><input type="checkbox" class="channel" name="channels" value="${channel!}" <#if agentsOrChannels?seq_contains(channel)>checked</#if>>${channel!}</label>
+                    </#list>
+                </#if>
+            </div>
+        </div>
+
+        </#if>
 
         <div class="form-group">
             <label  class="col-sm-2 control-label">可投资标的: </label>

@@ -23,4 +23,8 @@
         select * from coupon_user_group where coupon_id = #{couponId}
     </select>
 
+    <delete id="delete" parameterType="long">
+        delete from coupon_user_group where id = #{id}
+    </delete>
+
 </mapper>

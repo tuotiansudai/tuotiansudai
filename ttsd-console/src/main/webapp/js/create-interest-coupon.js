@@ -147,7 +147,7 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'jquery-ui', 'bootstra
                         $('.coupon-deposit').show();
                     }
                     for (var i=0; i < data.length; i++) {
-                        $('.coupon-agent-channel').append('<label class="label-name"><input type="radio" class="agent" name="agents" value="'+data[i]+'">'+data[i]+'</label>');
+                        $('.coupon-agent-channel').append('<label><input type="checkbox" class="agent" name="agents" value="'+data[i]+'">'+data[i]+'</label>');
                     }
                 })
                 $('.give-number').val('0');
@@ -157,7 +157,7 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'jquery-ui', 'bootstra
                         $('.coupon-deposit').show();
                     }
                     for (var i=0; i < data.length; i++) {
-                        $('.coupon-agent-channel').append('<label class="label-name"><input type="radio" class="channel" name="channels" value="'+data[i]+'">'+data[i]+'</label>');
+                        $('.coupon-agent-channel').append('<label><input type="checkbox" class="channel" name="channels" value="'+data[i]+'">'+data[i]+'</label>');
                     }
                 })
                 $('.give-number').val('0');
@@ -167,12 +167,12 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'jquery-ui', 'bootstra
             }
         });
 
-        $('.agent').on('click', function() {
-            var num = $("input.agent:radio:checked").length;
+        $('.coupon-agent-channel').on('click','.agent', function() {
+            var num = $("input.agent:checkbox:checked").length;
             $('.give-number').val(num);
         });
 
-        $('.channel').on('click', function() {
+        $('.coupon-agent-channel').on('click','.channel', function() {
             var num = 0;
             $('.channel').each(function(index,item) {
                 if($(item).attr("checked")){
@@ -204,9 +204,8 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'jquery-ui', 'bootstra
                     $('.give-number').val(data[2]);
                     $('.coupon-table').show();
                     var names = data[3];
-                    for (var i = 0; i < names.length; i+=2) {
-                        var temp = names[i+1]!=undefined ? names[i+1] : '';
-                        $('.table-bordered').append('<tr class="name-tr"><td>'+names[i]+'</td><td>'+temp+'</td></tr>');
+                    for (var i = 0; i < names.length; i++) {
+                        $('.table-bordered').append('<tr class="name-tr"><td>'+parseInt(i+1)+'</td><td>'+names[i]+'</td></tr>');
                     }
                     layer.msg('用户导入成功!');
                 }  else {

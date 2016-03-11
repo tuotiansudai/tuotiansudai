@@ -2,9 +2,7 @@ package com.tuotiansudai.console.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDto;
@@ -13,12 +11,8 @@ import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.dto.UserItemDataDto;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.BindBankCardService;
-import com.tuotiansudai.service.ImpersonateService;
-import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.service.*;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.task.TaskConstant;
@@ -67,7 +61,7 @@ public class UserController {
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
-    private UserRoleMapper userRoleMapper;
+    private UserRoleService userRoleService;
 
     @Value("${web.server}")
     private String webServer;
@@ -271,13 +265,7 @@ public class UserController {
     @RequestMapping(value = "/user/agents", method = RequestMethod.GET)
     @ResponseBody
     public List<String> queryAllAgent() {
-        List<UserRoleModel> userRoleModels = userRoleMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.AGENT).put("districtName", Lists.newArrayList()).build()));
-        return Lists.transform(userRoleModels, new Function<UserRoleModel, String>() {
-            @Override
-            public String apply(UserRoleModel input) {
-                return input.getLoginName();
-            }
-        });
+        return userRoleService.queryAllAgent();
     }
 
     @RequestMapping(value = "/user/channels", method = RequestMethod.GET)

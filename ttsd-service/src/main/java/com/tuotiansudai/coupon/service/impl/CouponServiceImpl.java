@@ -133,16 +133,35 @@ public class CouponServiceImpl implements CouponService {
         couponModel.setId(couponDto.getId());
         couponModel.setUpdatedBy(loginName);
         couponModel.setUpdatedTime(new Date());
-        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() != UserGroup.IMPORT_USER
+        if (couponModel.getUserGroup() != UserGroup.IMPORT_USER
                 && redisWrapperClient.exists(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())))) {
             redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())));
         }
-        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() == UserGroup.IMPORT_USER && StringUtils.isNotEmpty(couponDto.getFile())) {
+        if (couponModel.getUserGroup() == UserGroup.IMPORT_USER && StringUtils.isNotEmpty(couponDto.getFile())) {
             redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "success"));
             redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "failed"));
             redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, couponDto.getFile()));
         }
         couponMapper.updateCoupon(couponModel);
+        if (Lists.newArrayList(UserGroup.AGENT, UserGroup.CHANNEL).contains(couponModel.getUserGroup())) {
+            CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponDto.getId());
+            if (couponUserGroupModel != null) {
+                couponUserGroupModel.setUserGroup(couponDto.getUserGroup());
+                couponUserGroupModel.setUserGroupItems(couponDto.getUserGroup() == UserGroup.AGENT ? couponDto.getAgents() : couponDto.getChannels());
+                couponUserGroupMapper.update(couponUserGroupModel);
+            } else {
+                CouponUserGroupModel couponUserGroup = new CouponUserGroupModel();
+                couponUserGroup.setCouponId(couponDto.getId());
+                couponUserGroup.setUserGroup(couponDto.getUserGroup());
+                couponUserGroup.setUserGroupItems(couponDto.getUserGroup() == UserGroup.AGENT ? couponDto.getAgents() : couponDto.getChannels());
+                couponUserGroupMapper.create(couponUserGroup);
+            }
+        } else {
+            CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponDto.getId());
+            if (couponUserGroupModel != null) {
+                couponUserGroupMapper.delete(couponUserGroupModel.getId());
+            }
+        }
     }
 
     @Override

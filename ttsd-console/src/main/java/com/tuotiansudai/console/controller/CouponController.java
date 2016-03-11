@@ -4,7 +4,9 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
+import com.tuotiansudai.coupon.repository.mapper.CouponUserGroupMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.CouponUserGroupModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
@@ -16,6 +18,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.util.RequestIPParser;
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.collections.CollectionUtils;
@@ -59,6 +62,12 @@ public class CouponController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private CouponUserGroupMapper couponUserGroupMapper;
+
+    @Autowired
+    private UserRoleService userRoleService;
 
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
@@ -158,6 +167,16 @@ public class CouponController {
 
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
+        CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponModel.getId());
+        if (couponUserGroupModel != null) {
+            modelAndView.addObject("agents", userRoleService.queryAllAgent());
+            modelAndView.addObject("channels",userMapper.findAllChannels());
+            modelAndView.addObject("agentsOrChannels", couponUserGroupModel.getUserGroupItems());
+        }
+        if (couponModel.getUserGroup() == UserGroup.IMPORT_USER && redisWrapperClient.hexists(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success")) {
+            String importUsers = redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success");
+            modelAndView.addObject("importUsers", Lists.newArrayList(importUsers.split(",")));
+        }
         return modelAndView;
 
     }
