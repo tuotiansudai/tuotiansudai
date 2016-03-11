@@ -73,7 +73,10 @@ public class CouponController {
 
     @RequestMapping(value = "/red-envelope", method = RequestMethod.GET)
     public ModelAndView redEnvelope() {
-        return new ModelAndView("/red-envelope", "productTypes", Lists.newArrayList(ProductType.values()));
+        ModelAndView modelAndView = new ModelAndView("/red-envelope");
+        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
+        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
+        return modelAndView;
     }
 
     @RequestMapping(value = "/coupon", method = RequestMethod.GET)

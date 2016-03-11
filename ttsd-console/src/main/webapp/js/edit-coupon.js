@@ -1,4 +1,4 @@
-require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstrapSelect', 'moment', 'Validform', 'Validform_Datatype'], function($) {
+require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstrapSelect', 'moment', 'Validform', 'Validform_Datatype'], function($, layer) {
     $(function() {
         var $selectDom = $('.selectpicker'), //select表单
             $dateStart = $('#startTime'), //开始时间
@@ -118,14 +118,88 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
         });
 
         $('.userGroup').change(function(){
+            $('.coupon-table').hide();
+            $('.name-tr').remove();
+            $('.coupon-agent-channel').children().remove();
+            $('.coupon-deposit').hide();
+            $('.file-btn').find('input').val('');
+            $('.file-btn').hide();
             var userGroup = this.value;
-            var couponType = $('.coupon-type-hid').val();
-            if(couponType == "INVEST_COUPON"){
+            if(userGroup != "IMPORT_USER" && userGroup != 'AGENT' && userGroup != 'CHANNEL'){
                 $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
                     $('.give-number').val(data);
                 })
+            } else if (userGroup == 'AGENT') {
+                $.get('/user-manage/user/agents', function(data) {
+                    if (data.length > 0 ) {
+                        $('.coupon-deposit').show();
+                    }
+                    for (var i=0; i < data.length; i++) {
+                        $('.coupon-agent-channel').append('<label><input type="checkbox" class="agent" name="agents" value="'+data[i]+'">'+data[i]+'</label>');
+                    }
+                })
+                $('.give-number').val('0');
+            } else if (userGroup == 'CHANNEL') {
+                $.get('/user-manage/user/channels', function(data) {
+                    if (data.length > 0) {
+                        $('.coupon-deposit').show();
+                    }
+                    for (var i=0; i < data.length; i++) {
+                        $('.coupon-agent-channel').append('<label><input type="checkbox" class="channel" name="channels" value="'+data[i]+'">'+data[i]+'</label>');
+                    }
+                })
+                $('.give-number').val('0');
+            } else {
+                $('#file-in').trigger('click');
+                $('.file-btn').show();
             }
+        });
 
+        $('.coupon-agent-channel').on('click','.agent', function() {
+            var num = $("input.agent:checkbox:checked").length;
+            $('.give-number').val(num);
+        });
+
+        $('.coupon-agent-channel').on('click','.channel', function() {
+            var num = 0;
+            $('.channel').each(function(index,item) {
+                if($(item).attr("checked")){
+                    $.get('/user-manage/user/'+$(item).val()+'/channel',function(data) {
+                        num += parseInt(data);
+                    })
+                }
+            });
+            $('.give-number').val(num);
+        });
+
+        $('.file-btn').on('change',function(){
+            $('.coupon-table').hide();
+            $('.name-tr').remove();
+            var file = $(this).find('input').get(0).files[0];
+            var formData = new FormData();
+            formData.append('file',file);
+            $.ajax({
+                url:'/activity-manage/import-excel',
+                type:'POST',
+                data:formData,
+                dataType:'JSON',
+                contentType: false,
+                processData: false
+            })
+                .done(function(data){
+                    if (data[0]) {
+                        $('#import-file').val(data[1]);
+                        $('.give-number').val(data[2]);
+                        $('.coupon-table').show();
+                        var names = data[3];
+                        for (var i = 0; i < names.length; i++) {
+                            $('.table-bordered').append('<tr class="name-tr"><td>'+parseInt(i+1)+'</td><td>'+names[i]+'</td></tr>');
+                        }
+                        layer.msg('用户导入成功!');
+                    }  else {
+                        layer.msg('用户导入失败,'+data[1]+'等用户导入有误!');
+                    }
+                });
         });
 
     });

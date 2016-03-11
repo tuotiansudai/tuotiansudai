@@ -33,28 +33,51 @@
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">发放对象:</label>
-            <div class="col-sm-4 coupon-hide invest-coupon">
+            <div class="col-sm-2 coupon-hide invest-coupon">
 
-                <select class="selectpicker jq-b-type userGroup" name="userGroup" disabled>
+                <select class="selectpicker jq-b-type userGroup" name="userGroup">
 					<#list userGroups as userGroup>
-						<#if userGroup.name() != 'NEW_REGISTERED_USER' && userGroup.name() != 'IMPORT_USER' && userGroup.name() != 'ALL_USER'>
+						<#if userGroup.name() != 'NEW_REGISTERED_USER'>
                             <option value="${userGroup.name()}">${userGroup.getDescription()}</option>
 						</#if>
 					</#list>
                 </select>
 
             </div>
+
+            <div class="file-btn coupon-hide">
+                <input type="file" id="file-in">
+                重新导入
+            </div>
+            <input type="hidden" name="file" id="import-file">
+
             <div class="col-sm-4 newbie-coupon">
                 <input type="text" class="form-control invest-coupon-total_count"  value="新注册用户"  readonly="true">
                 <input type="hidden" class="user-group-hid" name="userGroup" value="NEW_REGISTERED_USER"  >
             </div>
         </div>
+
+        <div class="form-group coupon-hide coupon-table">
+            <label class="col-sm-2"></label>
+            <div class="col-sm-4 data-table">
+                <table class="table table-bordered">
+                </table>
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="col-sm-2 control-label">预计发放数量(张): </label>
             <div class="col-sm-4">
                 <input type="text" class="form-control give-number" name="totalCount" placeholder="" <#if coupon??>value="${coupon.totalCount?string('0')!}"</#if>  datatype="n" errormsg="发放数量需要填写数字" >
             </div>
         </div>
+
+        <div class="form-group coupon-hide coupon-deposit">
+            <label class="col-sm-2"></label>
+            <div class="col-sm-4 coupon-agent-channel">
+            </div>
+        </div>
+
 		<div class="form-group newbie-coupon">
 			<label  class="col-sm-2 control-label ">活动期限: </label>
 			<div class="col-sm-2">

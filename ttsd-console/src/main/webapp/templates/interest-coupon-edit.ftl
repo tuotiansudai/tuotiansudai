@@ -55,9 +55,11 @@
             <label class="col-sm-2"></label>
             <div class="col-sm-4 data-table">
                 <table class="table table-bordered">
+                    <#if coupon.userGroup == 'IMPORT_USER'>
                     <#list importUsers as importUser>
                         <tr class="name-tr"><td>${(importUser_index+1)!}</td><td>${importUser!}</td></tr>
                     </#list>
+                    </#if>
                 </table>
             </div>
         </div>
