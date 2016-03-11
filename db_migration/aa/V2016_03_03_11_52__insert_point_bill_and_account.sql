@@ -13,7 +13,7 @@ INSERT INTO point_bill (
     t.`login_name`,
     50,
     'TASK',
-    'REGISTER',
+    '完成注册并实名认证',
     t.`register_time`
   FROM
     account t;
@@ -31,7 +31,7 @@ INSERT INTO point_bill (
     u.`login_name`,
     50,
     'TASK',
-    'BIND_EMAIL',
+    '完成绑定邮箱',
     IFNULL(
         u.`last_modified_time`,
         u.`register_time`
@@ -54,7 +54,7 @@ INSERT INTO point_bill (
     b.`login_name`,
     50,
     'TASK',
-    'BIND_BANK_CARD',
+    '绑定您的常用银行卡',
     b.`created_time`
   FROM
     bank_card b
@@ -73,7 +73,7 @@ INSERT INTO point_bill (
     r.`login_name`,
     100,
     'TASK',
-    'FIRST_RECHARGE',
+    '完成在平台的首次充值',
     MIN(r.`created_time`)
   FROM
     recharge r
@@ -93,7 +93,7 @@ INSERT INTO point_bill (
     i.`login_name`,
     200,
     'TASK',
-    'FIRST_INVEST',
+    '完成在平台的首次投资',
     MIN(i.`created_time`)
   FROM
     invest i
@@ -113,7 +113,7 @@ INSERT INTO point_bill (
     it.`login_name`,
     500,
     'TASK',
-    'SUM_INVEST_10000',
+    '累计投资满10000元',
     MAX(it.`created_time`)
   FROM
     invest it

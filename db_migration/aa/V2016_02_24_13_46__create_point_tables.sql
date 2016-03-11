@@ -19,19 +19,19 @@ CREATE TABLE `aa`.`point_task` (
   `id`           INT(32)         NOT NULL AUTO_INCREMENT,
   `name`         VARCHAR(100)    NOT NULL,
   `point`        BIGINT UNSIGNED NOT NULL,
-  `created_time` DATETIME        NOT NULL DEFAULT now(),
+  `created_time` DATETIME        NOT NULL,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
 
-INSERT INTO `aa`.point_task (name, point) VALUES ('REGISTER', 50);
-INSERT INTO `aa`.point_task (name, point) VALUES ('BIND_EMAIL', 50);
-INSERT INTO `aa`.point_task (name, point) VALUES ('BIND_BANK_CARD', 50);
-INSERT INTO `aa`.point_task (name, point) VALUES ('FIRST_RECHARGE', 100);
-INSERT INTO `aa`.point_task (name, point) VALUES ('FIRST_INVEST', 200);
-INSERT INTO `aa`.point_task (name, point) VALUES ('SUM_INVEST_10000', 500);
+INSERT INTO `aa`.point_task (name, point, created_time) VALUES ('REGISTER', 50, now());
+INSERT INTO `aa`.point_task (name, point, created_time) VALUES ('BIND_EMAIL', 50, now());
+INSERT INTO `aa`.point_task (name, point, created_time) VALUES ('BIND_BANK_CARD', 50, now());
+INSERT INTO `aa`.point_task (name, point, created_time) VALUES ('FIRST_RECHARGE', 100, now());
+INSERT INTO `aa`.point_task (name, point, created_time) VALUES ('FIRST_INVEST', 200, now());
+INSERT INTO `aa`.point_task (name, point, created_time) VALUES ('SUM_INVEST_10000', 500, now());
 
 CREATE TABLE `aa`.`user_point_task` (
   `login_name`    VARCHAR(25) NOT NULL,
