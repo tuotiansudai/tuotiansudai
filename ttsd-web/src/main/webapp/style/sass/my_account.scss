@@ -2415,7 +2415,10 @@ position: relative;
               cursor: pointer;
               font-size: 16px;
               border-radius: 10px;
-
+              &.no-click{
+                background: #ccc!important;
+                cursor: no-drop;
+              }
               &.btn-invest {
                 background: #ff7171;
               }
