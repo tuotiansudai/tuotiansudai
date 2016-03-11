@@ -175,7 +175,9 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                             })
                                 .done(function(data) {
                                     if(data.status) {
-                                        layer.alert('兑换成功！', {title: '温馨提示'});
+                                        layer.alert('兑换成功！', {title: '温馨提示'}, function() {
+                                            location.href='/point';
+                                        });
                                     } else if (!data.status && data.message == 'point insufficient') {
                                         layer.open({
                                             title: '温馨提示',
