@@ -67,13 +67,13 @@
             拓天伟业(北京)金融信息服务有限公司 版权所有</span>
         </div>
     </div>
-</div>
-<div class="footer-responsive">
-    <ul>
-        <li><a href="/about/refer-reward">推荐奖励</a></li>
-        <li><a href="/about/guide">新手指引</a></li>
-        <li><a href="/about/assurance">安全保障</a></li>
-    </ul>
-    <p>客服电话:400-169-1188(服务时间:9:00-20:00)</p>
-    <p>拓天伟业(北京)金融信息服务有限公司 版权所有</p>
+    <div class="footer-responsive">
+        <ul>
+            <li><a href="/about/refer-reward">推荐奖励</a></li>
+            <li><a href="/about/guide">新手指引</a></li>
+            <li><a href="/about/assurance">安全保障</a></li>
+        </ul>
+        <p>客服电话:400-169-1188(服务时间:9:00-20:00)</p>
+        <p>拓天伟业(北京)金融信息服务有限公司 版权所有</p>
+    </div>
 </div>
