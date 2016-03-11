@@ -13,15 +13,18 @@ import com.tuotiansudai.coupon.util.UserCollector;
 import com.tuotiansudai.dto.SmsCouponNotifyDto;
 import com.tuotiansudai.job.CouponNotifyJob;
 import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.AuditLogUtil;
 import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,10 +73,10 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     private SmsWrapperClient smsWrapperClient;
 
     @Autowired
-    AccountService accountService;
+    AccountMapper accountMapper;
 
     @Autowired
-    private AuditLogService auditLogService;
+    AuditLogUtil auditLogUtil;
 
     @Transactional
     @Override
@@ -87,11 +90,14 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         couponModel.setActivatedTime(new Date());
         couponMapper.updateCoupon(couponModel);
 
-        String auditor = accountService.getRealName(loginName);
-        String operator = accountService.getRealName(couponModel.getCreatedBy());
+        AccountModel auditor = accountMapper.findByLoginName(loginName);
+        String auditorRealName = StringUtils.isEmpty(auditor.getUserName()) ? loginName : auditor.getUserName();
 
-        String description = auditor + " 撤销了 " + operator + " 创建的 " + couponModel.getCouponType().getName() + "。";
-        auditLogService.createAuditLog(loginName, couponModel.getCreatedBy(), OperationType.COUPON, String.valueOf(couponId), description, ip);
+        AccountModel operator = accountMapper.findByLoginName(couponModel.getCreatedBy());
+        String operatorRealName = StringUtils.isEmpty(operator.getUserName()) ? couponModel.getCreatedBy() : operator.getUserName();
+
+        String description = auditorRealName + " 撤销了 " + operatorRealName + " 创建的 " + couponModel.getCouponType().getName() + "。";
+        auditLogUtil.createAuditLog(loginName, couponModel.getCreatedBy(), OperationType.COUPON, String.valueOf(couponId), description, ip);
     }
 
     @Transactional
@@ -117,10 +123,14 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         couponModel.setActivatedTime(new Date());
         couponMapper.updateCoupon(couponModel);
 
-        String auditor = accountService.getRealName(loginName);
-        String operator = accountService.getRealName(couponModel.getCreatedBy());
-        String description = auditor + " 激活了 " + operator + " 创建的 " + couponModel.getCouponType().getName() + "。";
-        auditLogService.createAuditLog(loginName, couponModel.getCreatedBy(), OperationType.COUPON, String.valueOf(couponId), description, ip);
+        AccountModel auditor = accountMapper.findByLoginName(loginName);
+        String auditorRealName = StringUtils.isEmpty(auditor.getUserName()) ? loginName : auditor.getUserName();
+
+        AccountModel operator = accountMapper.findByLoginName(couponModel.getCreatedBy());
+        String operatorRealName = StringUtils.isEmpty(operator.getUserName()) ? couponModel.getCreatedBy() : operator.getUserName();
+
+        String description = auditorRealName + " 激活了 " + operatorRealName + " 创建的 " + couponModel.getCouponType().getName() + "。";
+        auditLogUtil.createAuditLog(loginName, couponModel.getCreatedBy(), OperationType.COUPON, String.valueOf(couponId), description, ip);
 
         if (couponModel.isSmsAlert()) {
             this.createSmsNotifyJob(couponId);
