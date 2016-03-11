@@ -147,10 +147,11 @@ public class InterestCalculator {
 
     private static long calculateInterest(LoanModel loanModel, long corpusMultiplyPeriodDays) {
         int daysOfYear = DAYS_OF_YEAR;
-//        if (loanModel.getRecheckTime() != null && loanModel.getRecheckTime().before(releaseDate)) {
-//            DateTime loanDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
-//            daysOfYear = loanDate.dayOfYear().getMaximumValue();
-//        }
+        new DateTime(2016, 3, 9, 21, 0, 0);
+        if (loanModel.getRecheckTime() != null && loanModel.getRecheckTime().before(new DateTime(2016, 3, 9, 21, 0, 0).toDate())) {
+            DateTime loanDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
+            daysOfYear = loanDate.dayOfYear().getMaximumValue();
+        }
 
         BigDecimal loanRate = new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate()));
         return new BigDecimal(corpusMultiplyPeriodDays).multiply(loanRate).divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();

@@ -15,7 +15,7 @@
 		</div>
 		<div class="form-text">
 			<input type="text" placeholder="投资时长" class="int-text" name="month" id="monthNum">
-			<span class="unit-text">月</span>
+			<span class="unit-text">期</span>
 		</div>
 		<div class="form-text">
 			<input type="text" placeholder="年化利率" class="int-text" name="bite" id="biteNum">
@@ -28,7 +28,6 @@
 	</form>
 	<div class="form-text">
 		<p class="result-text">本息合计 <span id="resultNum">0</span> 元</p>
-		<p class="tip-text">(提示：提现手续费为收益的10%)</p>
 		<p class="tip-text">计算结果仅供参考，以实际收益为准</p>
 	</div>
 </div>
@@ -46,7 +45,7 @@
 	</li>
 	<li>
 		<i class="icon-qq"></i>
-		<a href="http://wpa.qq.com/msgrd?v=3&uin=800036446&site=qq&menu=yes" target="_blank"><span class="nav-text">在线<br/>沟通</span></a>
+		<a href="tencent://message/?Menu=yes&amp;uin=800036446&amp;Service=58&amp;SigT=A7F6FEA02730C988DA2483CA6903A080CC7905D38ECC80415E377A30894437533088F17869028B5CF9675930F948083A76B63C5509B87F7EC6D325A5AC42065850DEB02195B1A62893F12BB501EFB8062A12A1EC83EA4837B54D2A32184DC73715B1B8246CA1C8CE93962A2D19C00D74096B80DB3886760B&amp;SigU=30E5D5233A443AB2258601C95FEA1C12147CDD66AEBDE12C0FF13E859174956236CF419B4F779D9F7E6649DCEB6A0C0D2A42D4EEF76E7C429E51CFEEEB22AAC2FBCC4F686D2CFE3D" target="_blank"><span class="nav-text">在线<br/>沟通</span></a>
 	</li>
 </ul>
 <ul class="back-top">

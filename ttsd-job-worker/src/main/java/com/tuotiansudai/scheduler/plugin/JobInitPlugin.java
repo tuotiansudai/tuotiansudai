@@ -90,12 +90,12 @@ public class JobInitPlugin implements SchedulerPlugin {
             logger.debug(e.getLocalizedMessage(), e);
         }
     }
+    
 
     private void createRefreshAreaByMobile() {
         try {
             jobManager.newJob(JobType.AutoReFreshAreaByMobile, AutoReFreshAreaByMobileJob.class).replaceExistingJob(true)
-                   // .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 2 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0/5 * * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 2 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
                     .withIdentity(JobType.AutoReFreshAreaByMobile.name(), JobType.AutoReFreshAreaByMobile.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);

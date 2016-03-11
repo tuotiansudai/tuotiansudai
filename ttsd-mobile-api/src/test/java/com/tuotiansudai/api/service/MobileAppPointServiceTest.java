@@ -6,10 +6,8 @@ import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.impl.MobileAppPointServiceImpl;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
-import com.tuotiansudai.point.repository.model.PointBillModel;
-import com.tuotiansudai.point.repository.model.PointBusinessType;
-import com.tuotiansudai.point.repository.model.PointTask;
-import com.tuotiansudai.point.repository.model.PointTaskModel;
+import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
+import com.tuotiansudai.point.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -36,6 +34,9 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
 
     @Autowired
     private IdGenerator idGenerator;
+
+    @Mock
+    private UserPointTaskMapper userPointTaskMapper;
 
     @Test
     public void shouldQueryPointBillsIsOk() {
@@ -77,9 +78,14 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
         List<PointTaskModel> pointTaskModels =  Lists.newArrayList();
         pointTaskModels.add(pointTaskModel);
 
+        UserPointTaskModel userPointTaskModel = new UserPointTaskModel();
+        userPointTaskModel.setLoginName("loginName");
+        userPointTaskModel.setCreatedTime(new Date());
+        userPointTaskModel.setPointTask(pointTaskModel);
+
         when(pointTaskMapper.findCountPointTaskPagination()).thenReturn(1);
         when(pointTaskMapper.findPointTaskPagination(anyInt(), anyInt())).thenReturn(pointTaskModels);
-
+        when(userPointTaskMapper.findByLoginNameAndId(anyLong(),anyString())).thenReturn(userPointTaskModel);
         PointTaskRequestDto pointTaskRequestDto = new PointTaskRequestDto();
         pointTaskRequestDto.setIndex(1);
         pointTaskRequestDto.setPageSize(10);
