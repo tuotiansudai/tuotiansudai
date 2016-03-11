@@ -61,8 +61,7 @@ define(['jquery', 'jquery.validate', 'jquery.validate.extension','drag'], functi
     //close calculator
     $closeBtn.on('click', function(event) {
         event.preventDefault();
-        var $self=$(this),
-            $navList=$('.fix-nav-list li');
+        var $navList=$('.fix-nav-list li');
         $countForm.hide();
         $navList.removeClass('active');
     });
