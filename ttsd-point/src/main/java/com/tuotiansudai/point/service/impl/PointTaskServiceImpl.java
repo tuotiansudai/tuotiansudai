@@ -108,7 +108,7 @@ public class PointTaskServiceImpl implements PointTaskService {
             case FIRST_INVEST:
                 return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) > 0;
             case SUM_INVEST_10000:
-                return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) > 5;
+                return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) > 500;
         }
 
         return false;
