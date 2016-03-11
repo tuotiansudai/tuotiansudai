@@ -192,7 +192,7 @@
                                 <div class="project-schedule clear-blank clearfix">
                                     <div class="p-title">
                                         <span class="fl">项目进度</span>
-                                        <span class="point fr">${loan.progress}%</span>
+                                        <span class="point fr">${loan.progress?string("0.00")}%</span>
                                     </div>
                                     <div class="process-percent">
                                         <div class="percent" style="width:${loan.progress}%"></div>

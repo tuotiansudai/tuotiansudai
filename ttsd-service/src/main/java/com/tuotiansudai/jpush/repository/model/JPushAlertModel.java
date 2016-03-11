@@ -16,7 +16,7 @@ public class JPushAlertModel implements Serializable{
     private PushType pushType;
     private List<String> pushObjects;
     private PushSource pushSource;
-    private PushUserType pushUserType;
+    private List<PushUserType> pushUserType;
     private PushStatus status;
     private String content;
     private JumpTo jumpTo;
@@ -149,11 +149,11 @@ public class JPushAlertModel implements Serializable{
         this.isAutomatic = isAutomatic;
     }
 
-    public PushUserType getPushUserType() {
+    public List<PushUserType> getPushUserType() {
         return pushUserType;
     }
 
-    public void setPushUserType(PushUserType pushUserType) {
+    public void setPushUserType(List<PushUserType> pushUserType) {
         this.pushUserType = pushUserType;
     }
 

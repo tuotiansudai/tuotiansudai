@@ -1,6 +1,7 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="index.js" headLab="sys-manage" sideLab="myTasks" title="系统首页">
 <div class="col-md-10 home-report">
+
     <div class="title-type">
         <h4 class="title-task">我的任务</h4>
     </div>
@@ -67,6 +68,7 @@
             <div class="title-type">
                 <h4 class="send-money">平台累计交易金额 (元)</h4>
             </div>
+
             <div class="table-data">
                 <ul class="data-list red-bg">
                     <li>
