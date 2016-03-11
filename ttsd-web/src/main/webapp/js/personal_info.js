@@ -1,9 +1,14 @@
 require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.form'], function ($,layer) {
         var $InfoBox = $('#personInfoBox'),
             $changeEmailLayer = $('.setEmail', $InfoBox),
+            $turnOnNoPasswordInvestLayer = $('.turnOnNoPasswordInvest', $InfoBox),
+            $turnOffNoPasswordInvestLayer = $('.turnOffNoPasswordInvest', $InfoBox),
             $changePasswordLayer = $('.setPass', $InfoBox),
             $resetUmpayPasswordLayer = $('.setUmpayPass', $InfoBox),
             $changeEmailDOM = $('#changeEmailDOM'),
+            $turnOnNoPasswordInvestDOM = $('#turnOnNoPasswordInvestDOM'),
+            $turnOffNoPasswordInvestDOM = $('#turnOffNoPasswordInvestDOM'),
+
             $changePassDOM = $('#changePassDOM'),
             $resetUmpayPassDOM = $('#resetUmpayPassDOM'),
             $successUmpayPass = $('#successUmpayPass'),
@@ -22,6 +27,39 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                 content: $changeEmailDOM,
                 cancel: function () {
                     $EmailForm.validate().resetForm();
+                }
+            });
+        });
+        $turnOnNoPasswordInvestLayer.on('click', function () {
+            layer.open({
+                type: 1,
+                move: false,
+                offset: "200px",
+                title: '免密投资',
+                area: ['490px', '220px'],
+                shadeClose: false,
+                content: $turnOnNoPasswordInvestDOM,
+                cancel: function () {
+                    //$EmailForm.validate().resetForm();
+                }
+            });
+        });
+        $turnOffNoPasswordInvestLayer.on('click', function () {
+            layer.open({
+                type: 1,
+                move: false,
+                area:'500px',
+                title: '免密投资',
+                closeBtn:0,
+                btn:['取消','我要关闭'],
+                shadeClose: false,
+                content: $turnOffNoPasswordInvestDOM,
+                btn1:function(){
+
+                },
+                btn2: function () {
+                    //$EmailForm.validate().resetForm();
+
                 }
             });
         });
