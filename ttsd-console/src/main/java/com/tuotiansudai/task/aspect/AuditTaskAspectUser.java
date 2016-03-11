@@ -82,15 +82,14 @@ public class AuditTaskAspectUser {
 
             String receiverLoginName = task.getSender();
             notify.setReceiver(receiverLoginName);
-            AccountModel sender = accountService.findByLoginName(operatorLoginName);
-            String senderRealName = sender != null ? sender.getUserName() : operatorLoginName;
+            String senderRealName = accountService.getRealName(operatorLoginName);
 
             String editUserRealName = accountService.getRealName(editUserDto.getLoginName());
             notify.setDescription(senderRealName + " 通过了您修改用户［" + editUserRealName + "］的申请。");
             redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), taskId, notify);
 
             String receiverRealName = accountService.getRealName(receiverLoginName);
-            String description = senderRealName + " 通过了 " + receiverRealName + " 修改用户［" + task.getObjName() + "］的申请。";
+            String description = senderRealName + " 通过了 " + receiverRealName + " 修改用户［" + editUserRealName + "］的申请。";
             description += task.getDescription().split("的信息。")[1];
             auditLogService.createAuditLog(operatorLoginName, receiverLoginName, OperationType.USER, task.getObjId(), description, ip);
 
@@ -101,17 +100,20 @@ public class AuditTaskAspectUser {
             task.setOperationType(OperationType.USER);
             task.setId(taskId);
             task.setObjId(editUserDto.getLoginName());
-            task.setObjName(StringUtils.isEmpty(editUserDto.getUserName()) ? editUserDto.getLoginName() : editUserDto.getUserName());
+
+            String editUserRealName = StringUtils.isEmpty(editUserDto.getUserName()) ? editUserDto.getLoginName() : editUserDto.getUserName();
+            task.setObjName(editUserRealName);
             task.setCreatedTime(new Date());
             task.setOperateURL("/user-manage/user/" + editUserDto.getLoginName());
             task.setSender(operatorLoginName);
-            AccountModel sender = accountService.findByLoginName(operatorLoginName);
-            String senderRealName = sender != null ? sender.getUserName() : operatorLoginName;
+
+            String senderRealName = accountService.getRealName(operatorLoginName);
+
             UserModel beforeUpdateUserModel = userMapper.findByLoginName(editUserDto.getLoginName());
             List<UserRoleModel> beforeUpdateUserRoleModels = userRoleMapper.findByLoginName(editUserDto.getLoginName());
             String beforeUpdate = getUserJsonString(beforeUpdateUserModel, beforeUpdateUserRoleModels);
             String afterUpdate = getUserJsonStringDto(editUserDto);
-            task.setDescription(senderRealName + " 申请修改用户［" + editUserDto.getLoginName() + "］的信息。操作详情为：</br>" + "{" + beforeUpdate + "}" + " =></br> " + "{" + afterUpdate + "}");
+            task.setDescription(senderRealName + " 申请修改用户［" + editUserRealName + "］的信息。操作详情为：</br>" + "{" + beforeUpdate + "}" + " =></br> " + "{" + afterUpdate + "}");
             redisWrapperClient.hsetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId, task);
             return true;
         }

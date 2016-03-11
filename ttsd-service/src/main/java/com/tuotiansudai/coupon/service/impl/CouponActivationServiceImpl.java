@@ -18,13 +18,11 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AuditLogUtil;
 import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,10 +89,10 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         couponMapper.updateCoupon(couponModel);
 
         AccountModel auditor = accountMapper.findByLoginName(loginName);
-        String auditorRealName = StringUtils.isEmpty(auditor.getUserName()) ? loginName : auditor.getUserName();
+        String auditorRealName = auditor == null ? loginName : auditor.getUserName();
 
         AccountModel operator = accountMapper.findByLoginName(couponModel.getCreatedBy());
-        String operatorRealName = StringUtils.isEmpty(operator.getUserName()) ? couponModel.getCreatedBy() : operator.getUserName();
+        String operatorRealName = operator == null ? couponModel.getCreatedBy() : operator.getUserName();
 
         String description = auditorRealName + " 撤销了 " + operatorRealName + " 创建的 " + couponModel.getCouponType().getName() + "。";
         auditLogUtil.createAuditLog(loginName, couponModel.getCreatedBy(), OperationType.COUPON, String.valueOf(couponId), description, ip);
@@ -124,10 +122,10 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         couponMapper.updateCoupon(couponModel);
 
         AccountModel auditor = accountMapper.findByLoginName(loginName);
-        String auditorRealName = StringUtils.isEmpty(auditor.getUserName()) ? loginName : auditor.getUserName();
+        String auditorRealName = auditor == null ? loginName : auditor.getUserName();
 
         AccountModel operator = accountMapper.findByLoginName(couponModel.getCreatedBy());
-        String operatorRealName = StringUtils.isEmpty(operator.getUserName()) ? couponModel.getCreatedBy() : operator.getUserName();
+        String operatorRealName = operator == null ? couponModel.getCreatedBy() : operator.getUserName();
 
         String description = auditorRealName + " 激活了 " + operatorRealName + " 创建的 " + couponModel.getCouponType().getName() + "。";
         auditLogUtil.createAuditLog(loginName, couponModel.getCreatedBy(), OperationType.COUPON, String.valueOf(couponId), description, ip);

@@ -99,8 +99,7 @@ public class AuditTaskAspectLoan {
                     notify.setCreatedTime(new Date());
                     notify.setObjId(task.getObjId());
 
-                    AccountModel sender = accountService.findByLoginName(senderLoginName);
-                    String senderRealName = sender != null ? sender.getUserName() : senderLoginName;
+                    String senderRealName = accountService.getRealName(senderLoginName);
 
                     notify.setDescription(senderRealName + " 通过了您 " + OperationType.PROJECT.getDescription() + "［" + task.getObjName() + "］的申请。");
 
