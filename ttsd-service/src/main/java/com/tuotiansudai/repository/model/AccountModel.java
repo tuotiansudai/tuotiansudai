@@ -87,7 +87,7 @@ public class AccountModel implements Serializable{
     public void setAutoInvest(boolean autoInvest) {
         this.autoInvest = autoInvest;
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

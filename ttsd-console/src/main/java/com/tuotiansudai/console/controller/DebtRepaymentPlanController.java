@@ -19,6 +19,9 @@ public class DebtRepaymentPlanController {
     @RequestMapping(value = "/debt-repayment-plan", method = RequestMethod.GET)
     public ModelAndView debtRepaymentPlan(@RequestParam(value = "repayStatus",required = false) RepayStatus repayStatus) {
         ModelAndView modelAndView = new ModelAndView("/debt-repayment-plan");
+        if(repayStatus == null){
+            repayStatus = RepayStatus.REPAYING;
+        }
         modelAndView.addObject("debtRepaymentPlans", this.debtRepaymentPlanService.findDebtRepaymentPlan(repayStatus));
         modelAndView.addObject("repayStatus",repayStatus);
         return modelAndView;
@@ -27,6 +30,9 @@ public class DebtRepaymentPlanController {
     @RequestMapping(value = "/debt-repayment-detail", method = RequestMethod.GET)
     public ModelAndView debtRepaymentPlanDetail(@RequestParam(value = "repayStatus",required = false) RepayStatus repayStatus,@RequestParam("date") String date) {
         ModelAndView modelAndView = new ModelAndView("/debt-repayment-detail");
+        if(repayStatus == null){
+            repayStatus = RepayStatus.REPAYING;
+        }
         modelAndView.addObject("debtRepaymentPlanDetails",this.debtRepaymentPlanService.findDebtRepaymentPlanDetail(repayStatus,date));
         modelAndView.addObject("repayStatus",repayStatus);
         modelAndView.addObject("date",date);

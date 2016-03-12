@@ -240,7 +240,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public BaseDto<PayDataDto> openLoan(LoanDto loanDto) {
+    public BaseDto<PayDataDto> openLoan(LoanDto loanDto, String ip) {
         BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
         PayDataDto payDataDto = new PayDataDto();
         if (!baseDto.getData().getStatus()) {
