@@ -56,7 +56,7 @@
 
                         <p class="btn-list">
 							<#if signedIn?? && signedIn>
-                                <span class="btn-sign" id="signBtn">今日已签到</span>
+                                <span class="btn-sign no-click" >今日已签到</span>
 							<#else >
                                 <span class="btn-sign" data-url="/point/sign-in" id="signBtn">签到</span>
 							</#if>

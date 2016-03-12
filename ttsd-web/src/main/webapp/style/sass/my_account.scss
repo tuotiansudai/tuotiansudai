@@ -237,6 +237,9 @@ button {
           height: 20px;
           line-height: 20px;
           text-align: center;
+          &.no-click{
+            background: #ccc;
+          }
           span{
             float: left;
             text-align: center;
@@ -2415,7 +2418,10 @@ position: relative;
               cursor: pointer;
               font-size: 16px;
               border-radius: 10px;
-
+              &.no-click{
+                background: #ccc!important;
+                cursor: no-drop;
+              }
               &.btn-invest {
                 background: #ff7171;
               }
