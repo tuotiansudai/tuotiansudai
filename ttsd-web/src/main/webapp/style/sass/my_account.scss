@@ -53,11 +53,16 @@
     }
     dd {
       padding-left: 5px;
-      .get-code{
+      .get-captcha{
         margin: 0;
-        width: 90px;
+        width: 96px;
         font-size: 12px;
         padding:8px 0;
+      }
+      &.code-number{
+        font-size:14px;
+        color:#ccc;
+        padding-left: 100px;
       }
     }
 

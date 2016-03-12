@@ -1,20 +1,27 @@
-require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.form'], function ($,layer) {
+require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'csrf', 'jquery.form'], function ($,layer) {
         var $InfoBox = $('#personInfoBox'),
             $changeEmailLayer = $('.setEmail', $InfoBox),
-            $turnOnNoPasswordInvestLayer = $('.turnOnNoPasswordInvest', $InfoBox),
-            $turnOffNoPasswordInvestLayer = $('.turnOffNoPasswordInvest', $InfoBox),
+            $turnOnNoPasswordInvestLayer = $('.setTurnOnNoPasswordInvest', $InfoBox),
+            $turnOffNoPasswordInvestLayer = $('.setTurnOffNoPasswordInvest', $InfoBox),
             $changePasswordLayer = $('.setPass', $InfoBox),
             $resetUmpayPasswordLayer = $('.setUmpayPass', $InfoBox),
             $changeEmailDOM = $('#changeEmailDOM'),
             $turnOnNoPasswordInvestDOM = $('#turnOnNoPasswordInvestDOM'),
             $turnOffNoPasswordInvestDOM = $('#turnOffNoPasswordInvestDOM'),
-
+            $noPasswordInvestDOM = $('#noPasswordInvestDOM'),
+            $imageCaptchaElement = $('.image-captcha', $turnOffNoPasswordInvestDOM),
+            $imageCaptchaTextElement = $('.image-captcha-text', $turnOffNoPasswordInvestDOM),
+            $getCaptcha = $('.get-captcha'),
             $changePassDOM = $('#changePassDOM'),
             $resetUmpayPassDOM = $('#resetUmpayPassDOM'),
             $successUmpayPass = $('#successUmpayPass'),
+            $noPasswordInvest = $('.setNoPasswordInvest'),
             $EmailForm = $('form', $changeEmailDOM),
             $passwordForm = $('form', $changePassDOM),
-            $umpayPasswordForm = $('form', $resetUmpayPassDOM);
+            $umpayPasswordForm = $('form', $resetUmpayPassDOM),
+            $turnOnNoPasswordInvestForm = $('form', $turnOnNoPasswordInvestDOM),
+            $turnOffNoPasswordInvestForm = $('form', $turnOffNoPasswordInvestDOM);
+
 
         $changeEmailLayer.on('click', function () {
             layer.open({
@@ -38,10 +45,24 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                 title: '免密投资',
                 area: ['490px', '220px'],
                 shadeClose: false,
+                closeBtn:0,
+                btn:['取消','去联动优势授权'],
                 content: $turnOnNoPasswordInvestDOM,
-                cancel: function () {
-                    //$EmailForm.validate().resetForm();
+                btn1:function(){
+                },
+                btn2: function () {
+                    $turnOnNoPasswordInvestForm.submit();
+                    layer.open({
+                        type: 1,
+                        move: false,
+                        offset: "200px",
+                        title: '免密投资',
+                        area: ['490px', '220px'],
+                        shadeClose: true,
+                        content: $noPasswordInvestDOM
+                    });
                 }
+
             });
         });
         $turnOffNoPasswordInvestLayer.on('click', function () {
@@ -58,10 +79,70 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
 
                 },
                 btn2: function () {
-                    //$EmailForm.validate().resetForm();
+
 
                 }
             });
+        });
+        $getCaptcha.on('click',function(){
+            time($(this));
+
+
+        });
+        $noPasswordInvest.on('click', function () {
+            var _this = $(this);
+            $.ajax({
+                url: _this.data('url'),
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8'
+            }).done(function (response){
+                if (response.data.status) {
+                    location.href = "/personal-info";
+                }
+            });
+        });
+        var wait = 30;
+
+        function time(o) {
+            if (wait == 0) {
+                o.prop("disabled", false).text("重新发送");
+                wait = 30;
+            } else {
+                o.prop("disabled", true).text("" + wait + "s后重新发送");
+                wait--;
+                setTimeout(function() {
+                    time(o)
+                }, 1000)
+            }
+        }
+        //$imageCaptchaTextElement.on('onfocusout',function(){
+        //
+        //});
+        $turnOffNoPasswordInvestForm.validate({
+            focusInvalid: false,
+            onFocusOut: function (element) {
+                if (!this.checkable(element) && !this.optional(element)) {
+                    this.element(element);
+                }
+            },
+            errorPlacement: function(error, element) {
+                error.appendTo(element.parent());
+            },
+
+            rules: {
+                imageCaptcha: {
+                    required: true,
+                    regex: /^[a-zA-Z0-9]{5}$/
+
+                }
+            },
+            messages: {
+                imageCaptcha: {
+                    required: "请输入图形验证码",
+                    regex: "图形验证码位数不对"
+                }
+            }
         });
 
         $EmailForm.validate({
@@ -90,7 +171,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                     required: "请输入有效邮箱",
                     regex:'请输入有效邮箱',
                     isExist: "邮箱已存在",
-                    email: "请输入有效邮箱",
+                    email: "请输入有效邮箱"
                 }
             },
             success:'valid',
@@ -290,8 +371,16 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             }
         });
 
+        var refreshCaptcha = function () {
+            $imageCaptchaElement.attr('src', '/register/user/image-captcha?' + new Date().getTime().toString());
+        };
+
+        $imageCaptchaElement.click(function () {
+            refreshCaptcha();
+        });
         $('#readUmpayPass').on('click', function () {
             layer.closeAll();
         });
+
 
     });

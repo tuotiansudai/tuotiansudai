@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -25,6 +26,7 @@ public class NoPasswordInvestController {
     private AgreementService agreementService;
 
     @RequestMapping(path = "/enabled",method = RequestMethod.POST)
+    @ResponseBody
     public BaseDto<BaseDataDto> enabledNoPasswordInvest(){
         String loginName = LoginUserInfo.getLoginName();
         noPasswordInvestService.enabledNoPasswordInvest(loginName);
@@ -35,7 +37,9 @@ public class NoPasswordInvestController {
         baseDto.setSuccess(true);
         return baseDto;
     }
+
     @RequestMapping(path = "/disabled",method = RequestMethod.POST)
+    @ResponseBody
     public BaseDto<BaseDataDto> disabledNoPasswordInvest(){
         String loginName = LoginUserInfo.getLoginName();
         noPasswordInvestService.disabledNoPasswordInvest(loginName);

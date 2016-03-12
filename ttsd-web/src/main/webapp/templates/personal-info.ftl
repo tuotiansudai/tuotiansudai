@@ -68,20 +68,21 @@
                 </li>
                 <li><span class="info-title"> 免密投资</span>
 
-                    <#if !(noPasswordInvest??)>
-                        <em class="info">开启免密投资后，您可及时选择心仪标的，理财快人一步</em>
-                        <span class="binding-set">
-                            <i class="fa fa-times-circle no"></i>未开启  <a class="setlink turnOnNoPasswordInvest" href="javascript:void(0);">开启</a>
-                        </span>
-                    <#elseif noPasswordInvest>
+                    <#if noPasswordInvest>
                         <em class="info">您已开启免密投资，投资理财快人一步</em>
                         <span class="binding-set">
-                            <i class="fa fa-check-circle ok"></i>已开启  <a class="setlink turnOffNoPasswordInvest" href="javascript:void(0);">关闭</a>
+                            <i class="fa fa-check-circle ok"></i>已开启  <a class="setlink setTurnOffNoPasswordInvest" href="javascript:void(0);">关闭</a>
                         </span>
-                    <#else >
+
+                    <#elseif autoInvest>
                         <em class="info">您已授权自动投标，可直接开启免密投资，及时选择心仪标的，理财快人一步</em>
                         <span class="binding-set">
-                            <i class="fa fa-times-circle no"></i>未开启  <a class="setlink" href="javascript:void(0);">开启</a>
+                            <i class="fa fa-times-circle no"></i>未开启  <a class="setlink setNoPasswordInvest" data-url="/no-password-invest/enabled" href="javascript:void(0);">开启</a>
+                        </span>
+                    <#else >
+                        <em class="info">开启免密投资后，您可及时选择心仪标的，理财快人一步</em>
+                        <span class="binding-set">
+                            <i class="fa fa-times-circle no"></i>未开启  <a class="setlink setTurnOnNoPasswordInvest" href="javascript:void(0);">开启</a>
                         </span>
                     </#if>
 
@@ -149,25 +150,31 @@
 </div>
 
 <div id="turnOnNoPasswordInvestDOM" class="pad-m popLayer" style="display: none;">
-    <form name="turnOnNoPasswordInvestForm" action="${requestContext.getContextPath()}/no-password-invest" method="post">
+    <form name="turnOnNoPasswordInvestForm" action="${requestContext.getContextPath()}/no-password-invest" method="post" target="_blank">
         <dl>
-            <dt class="requireOpt">推荐您开通免密投资功能，简化投资过程，理财快人一步，确认开通吗？</dt>
+            <dt class="requireOpt">推荐您开通免密投资功能，简化投资过程，理财快人一步。</dt>
         </dl>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="noPasswordInvest" value="true"/>
-        <button type="submit" class="btn btn-normal">去联动优势授权</button>
     </form>
 </div>
 <div id="turnOffNoPasswordInvestDOM" class="pad-m popLayer" style="display: none;">
     <form name="turnOffNoPasswordInvestForm" action="${requestContext.getContextPath()}/disabled" method="post">
         <dl>
-            <dt class="requireOpt">推荐您开通免密投资功能，简化投资过程，理财快人一步，确认关闭吗？</dt>
+            <dt >推荐您开通免密投资功能，简化投资过程，理财快人一步，确认关闭吗？</dt>
+            <dd>
+                <span >图形验证码：</span>
+                <input type="text" class="input-control image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
+                <img src="/register/user/image-captcha" alt="" class="image-captcha"/>
+            </dd>
+            <dd class="code-number">验证码发送到${mobile?replace("^(\\d{3}).*(\\d{4})$","$1****$2","r")}</dd>
+            <dd>
+                <span >短信验证码：</span>
+                <input type="captcha" name="captcha" class="input-control" placeholder="请输入短信验证码">
+                <button type="button" class="btn btn-normal get-captcha" disabled>获取验证码</button>
+            </dd>
         </dl>
-        <dl>
-            <dt class="requireOpt">短信验证码：</dt>
-            <dd><input type="email" name="email" class="input-control" placeholder="请输入短信验证码">
-            <button type="button" class="btn btn-normal get-code">获取验证码</button></dd>
-        </dl>
+        <input type="hidden" name="mobile" value="${mobile}"/>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     </form>
 </div>
