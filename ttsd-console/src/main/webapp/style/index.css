@@ -340,7 +340,7 @@ td.td {
     background-color: transparent;
 }
 
-.province label {
+.province label,.user-type label{
     font-weight: normal;
 }
 
