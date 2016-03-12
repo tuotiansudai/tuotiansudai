@@ -145,7 +145,7 @@
 		    <div class="item-block status-filter">
 		        <span class="sub-hd">往来类型:</span>
 		        <span class="select-item current" data-status="">全部</span>
-		        <span class="select-item" data-status="SIGN_IN">已获得</span>
+		        <span class="select-item" data-status="SIGN_IN">已获取</span>
 		        <span class="select-item" data-status="EXCHANGE">已使用</span>
 		    </div>
 		    <div class="clear-blank"></div>
