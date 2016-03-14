@@ -109,6 +109,33 @@ public class NormalRepayServiceTest {
     }
 
     @Test
+    public void shouldAutoRepay() throws Exception {
+        DateTime today = new DateTime();
+        UserModel fakeUser = this.getFakeUser("loginName");
+        userMapper.create(fakeUser);
+        AccountModel fakeAccount = getFakeAccount(fakeUser);
+        accountMapper.create(fakeAccount);
+        fakeAccount.setAutoRepay(true);
+        accountMapper.update(fakeAccount);
+        long loanAmount = 10000;
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, loanAmount, 3, 0.09, 0.03, 0.1, fakeUser.getLoginName(), today.toDate());
+        loanMapper.create(fakeNormalLoan);
+        InvestModel fakeInvestModel = getFakeInvestModel(fakeNormalLoan.getId(), loanAmount, fakeUser.getLoginName(), today.minusDays(10).toDate());
+        investMapper.create(fakeInvestModel);
+        repayGeneratorService.generateRepay(fakeNormalLoan.getId());
+
+        assertTrue(normalRepayService.autoRepay(fakeNormalLoan.getId()));
+
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
+
+        assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.WAIT_PAY));
+        assertThat(loanRepayModels.get(0).getActualInterest(), is(3L));
+        assertThat(new DateTime(loanRepayModels.get(0).getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(today.withTimeAtStartOfDay().getMillis()));
+        assertThat(loanRepayModels.get(1).getStatus(), is(RepayStatus.REPAYING));
+        assertThat(loanRepayModels.get(2).getStatus(), is(RepayStatus.REPAYING));
+    }
+
+    @Test
     public void shouldRepayFirstPeriodWhenLoanTypeIsType1() throws Exception {
         DateTime today = new DateTime();
         UserModel fakeUser = this.getFakeUser("loginName");
