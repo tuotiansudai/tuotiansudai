@@ -43,6 +43,8 @@
             <li><a href="http://www.liyedai.cn/" target="_blank">立业贷</a></li>
             <li><a href="http://www.8ncb.com" target="_blank">农村宝理财</a></li>
             <li><a href="http://www.wdzj.com/" target="_blank">网贷之家</a></li>
+            <li><a href="http://www.p2peye.com" target="_blank">网贷天眼</a></li>
+            <li><a href="http://www.1yqlg.cc/" target="_blank">1元夺宝</a></li>
         </ul>
     </div>
     <div class="copyright page-width">

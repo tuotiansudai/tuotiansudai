@@ -31,6 +31,7 @@ class QADeployment(object):
         print "Making worker build..."
         sh('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle distZip')
         sh('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle -Prop=invest distZip')
+        sh('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle -Prop=jpush distZip')
         sh('cd ./ttsd-job-worker/build/distributions && unzip \*.zip')
 
     def mkwar(self):

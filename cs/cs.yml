@@ -1,0 +1,9 @@
+cs:
+  image: "leoshi/tornado"
+  env_file: .env
+  volumes:
+    - .:/workspace/tuotian
+    - /var/log/cs:/workspace/logs
+  ports:
+    - "30020:9999"
+  command: bash -c "python web.py --port=9999 --mysql_host=$DB:3306 --mysql_user=$USER --mysql_password=$PASSWORD --access_key=$ACCESSKEY  --log_file_prefix=/workspace/logs/cs.log"
