@@ -84,6 +84,13 @@
 			</div>
 		</div>
     	<div class="choi-beans-list">
+            <div class="beans-coupon">
+                <div class="beans-list">
+                    <i class="icon-result icon-beans"></i>
+                    <span class="beans-num">可用财豆：${myPoint!}</span>
+                    <i class="icon-result icon-dou"></i>
+                </div>
+            </div>
 			<ul class="coupon-list">
 				<#if exchangeCouponDtos??>
 					<#list exchangeCouponDtos as exchangeCouponDto>
