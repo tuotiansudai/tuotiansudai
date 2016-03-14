@@ -33,13 +33,13 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
     public BaseResponseDto generateBannerList() {
         BaseResponseDto baseDto = new BaseResponseDto();
 
-        baseDto.setData(getLastestBannerInfo());
+        baseDto.setData(getLatestBannerInfo());
         baseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         return baseDto;
     }
 
-    private BannerResponseDataDto getLastestBannerInfo() {
+    private BannerResponseDataDto getLatestBannerInfo() {
         if (banners == null) {
             List rawData = loadPictureListFromConfigFile();
             banners = convertMapToDto(rawData);
