@@ -151,11 +151,11 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     @Override
     public void manualJPushAlert(long id) {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertModelById(id);
-        if (jPushAlertModel.isAutomatic()) {
-            logger.debug("JPush is failed, this JPush is not manual, id = " + id);
-            return;
-        }
         if (jPushAlertModel != null) {
+            if (jPushAlertModel.isAutomatic()) {
+                logger.debug("JPush is failed, this JPush is not manual, id = " + id);
+                return;
+            }
             List<String> districtCode = jPushAlertModel.getPushObjects();
             List<String> districtName = null;
             if (CollectionUtils.isNotEmpty(districtCode)) {
@@ -166,15 +166,15 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                     }
                 });
             }
-            List<String> loginNames = findManualJPushAlertUserLoginName(jPushAlertModel.getPushUserType(), districtName);
-            if (CollectionUtils.isEmpty(loginNames)) {
-                logger.debug("this JPush without data, id = " + id);
-                return;
-            }
             if (jPushAlertModel.getPushUserType().contains(PushUserType.ALL) && jPushAlertModel.getPushObjects() == null) {
                 String[] jumpToOrLink = chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel));
                 mobileAppJPushClient.sendPushAlertByAll(String.valueOf(jPushAlertModel.getId()), jPushAlertModel.getContent(), jumpToOrLink[0], jumpToOrLink[1], jPushAlertModel.getPushSource());
             } else {
+                List<String> loginNames = findManualJPushAlertUserLoginName(jPushAlertModel.getPushUserType(), districtName);
+                if (CollectionUtils.isEmpty(loginNames)) {
+                    logger.debug("this JPush without data, id = " + id);
+                    return;
+                }
                 autoJPushByBatchRegistrationId(jPushAlertModel, loginNames, jPushAlertModel.getPushSource());
             }
             jPushAlertModel.setStatus(PushStatus.SEND_SUCCESS);
