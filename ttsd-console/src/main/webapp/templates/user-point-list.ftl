@@ -64,7 +64,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="/point-manage/user-point-list?loginName=${loginName!}&userName=${userName!}&mobile=${mobbile!}&index=${index-1}&pageSize=${pageSize}">
+                    <a href="/point-manage/user-point-list?loginName=${loginName!}&userName=${userName!}&mobile=${mobbile!}&index=${index+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
