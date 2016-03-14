@@ -189,9 +189,12 @@ public class NormalRepayServiceTest {
         investMapper.create(fakeInvestModel);
         repayGeneratorService.generateRepay(fakeNormalLoan.getId());
 
-        List<LoanRepayModel> beforeLoanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
 
-        assertTrue(normalRepayService.autoRepay(beforeLoanRepayModels.get(0).getId()));
+        List<LoanRepayModel> beforeLoanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
+        this.generateMockResponse(10);
+        boolean flag = normalRepayService.autoRepay(beforeLoanRepayModels.get(0).getId());
+
+        assertTrue(flag);
 
         List<LoanRepayModel> afterloanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
 
