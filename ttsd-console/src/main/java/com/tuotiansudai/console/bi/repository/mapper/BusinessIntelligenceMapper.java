@@ -1,10 +1,10 @@
-package com.tuotiansudai.repository.mapper;
+package com.tuotiansudai.console.bi.repository.mapper;
 
-import com.tuotiansudai.dto.Granularity;
-import com.tuotiansudai.dto.RoleStage;
-import com.tuotiansudai.dto.UserStage;
-import com.tuotiansudai.repository.model.InvestViscosityDetailView;
-import com.tuotiansudai.repository.model.KeyValueModel;
+import com.tuotiansudai.console.bi.dto.Granularity;
+import com.tuotiansudai.console.bi.dto.RoleStage;
+import com.tuotiansudai.console.bi.dto.UserStage;
+import com.tuotiansudai.console.bi.repository.model.InvestViscosityDetailView;
+import com.tuotiansudai.console.bi.repository.model.KeyValueModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

@@ -13,25 +13,25 @@ $(function() {
         return this.replace(/(^\s*)|(\s*$)/g, "");
     };
 
-    var redirectByRoles = function(roles){
-        var url = null;
-        if(!!roles && roles instanceof Array) {
-            for (idx in roles) {
-                if (roles[idx] === 'ADMIN') {
-                    url = '/';
-                    break;
-                }
-                if (roles[idx] === 'CUSTOMER_SERVICE') {
-                    url = '/';
-                }
-            }
-        }
-        if(!!url){
-            window.location.href = url;
-        } else {
-            window.location.reload();
-        }
-    };
+    //var redirectByRoles = function(roles){
+    //    var url = null;
+    //    if(!!roles && roles instanceof Array) {
+    //        for (idx in roles) {
+    //            if (roles[idx] === 'ADMIN') {
+    //                url = '/';
+    //                break;
+    //            }
+    //            if (roles[idx] === 'CUSTOMER_SERVICE') {
+    //                url = '/';
+    //            }
+    //        }
+    //    }
+    //    if(!!url){
+    //        window.location.href = url;
+    //    } else {
+    //        window.location.reload();
+    //    }
+    //};
 
     var login = function () {
         if ($('input[name="username"]').val().trim() === ''
@@ -46,7 +46,8 @@ $(function() {
             data: $('.form-login').serialize()
         }).done(function (response) {
             if (response.data.status) {
-                redirectByRoles(response.data.roles);
+                //redirectByRoles(response.data.roles);
+                window.location.href = "/";
             } else {
                 refreshCaptcha();
                 if (response.data.isCaptchaNotMatch) {
