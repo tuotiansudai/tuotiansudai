@@ -81,6 +81,9 @@ public interface UserMapper {
 
     List<String> findNaturalUser(Map<String, Object> params);
 
+    List<String> findAllByRole(Map<String, Object> params);
+
+    List<String> findAllRecommendation(Map<String, Object> params);
 
     List<String> findUsersBirthdayMobile();
 }
