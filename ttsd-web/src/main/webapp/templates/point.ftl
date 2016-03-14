@@ -7,7 +7,6 @@
         <em class="tc title-navli">财豆兑换</em>
         <em class="tc title-navli">财豆明细</em>
     </h4>
-
     <div class="content-list">
 		<div class="choi-beans-list active">
 			<div class="beans-intro">
