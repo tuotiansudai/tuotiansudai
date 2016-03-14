@@ -23,6 +23,6 @@ require(['jquery', 'bootstrap','jquery-ui'], function ($) {
 
 
     $('form button[type="reset"]').click(function () {
-        window.location.href = "/point-manage/user-ponit-list";
+        window.location.href = "/point-manage/user-point-list";
     });
 })
