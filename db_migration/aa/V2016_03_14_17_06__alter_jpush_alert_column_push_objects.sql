@@ -1,0 +1,1 @@
+ALTER TABLE jpush_alert CHANGE push_objects push_districts VARCHAR(200);
