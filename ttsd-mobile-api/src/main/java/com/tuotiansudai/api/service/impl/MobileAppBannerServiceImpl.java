@@ -57,7 +57,7 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
                     banner.setSharedUrl(banner.getSharedUrl().replaceFirst("\\{web\\}", domainName));
                 }
 
-                if (Strings.isNullOrEmpty(banner.getPicture())) {
+                if (!Strings.isNullOrEmpty(banner.getPicture())) {
                     banner.setPicture(banner.getPicture().replaceFirst("\\{static\\}", staticDomainName));
                 }
             }
