@@ -860,7 +860,7 @@ public class AdvanceRepayServiceTest {
 
         CouponModel coupon = this.getFakeCoupon(loanAmount, loaner.getLoginName());
         couponMapper.create(coupon);
-        UserCouponModel userCouponModel = new UserCouponModel(investor.getLoginName(), coupon.getId());
+        UserCouponModel userCouponModel = new UserCouponModel(investor.getLoginName(), coupon.getId(), new Date(), new Date());
         userCouponMapper.create(userCouponModel);
         userCouponModel.setLoanId(fakeNormalLoan.getId());
         userCouponModel.setUsedTime(today.minusDays(10).toDate());
@@ -948,7 +948,7 @@ public class AdvanceRepayServiceTest {
 
         CouponModel coupon = this.getFakeCoupon(loanAmount, loaner.getLoginName());
         couponMapper.create(coupon);
-        UserCouponModel userCouponModel = new UserCouponModel(investor.getLoginName(), coupon.getId());
+        UserCouponModel userCouponModel = new UserCouponModel(investor.getLoginName(), coupon.getId(), new Date(), new Date());
         userCouponMapper.create(userCouponModel);
         userCouponModel.setLoanId(fakeNormalLoan.getId());
         userCouponModel.setUsedTime(today.minusDays(10).toDate());

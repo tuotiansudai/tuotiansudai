@@ -1,10 +1,10 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.AccountModel;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Set;
 
 @Repository
 public interface AccountMapper {
@@ -28,6 +28,22 @@ public interface AccountMapper {
     List<String> findLoginNames();
 
     List<String> findBirthOfAccountInMonth();
+
+    List<AccountModel> findUsersAccountPoint(@Param(value = "loginName") String loginName,
+                                             @Param(value = "userName") String userName,
+                                             @Param(value = "mobile") String mobile,
+                                             @Param(value = "startLimit") int startLimit,
+                                             @Param(value = "endLimit") int endLimit);
+
+    int findUsersAccountPointCount(@Param(value = "loginName") String loginName,
+                                   @Param(value = "userName") String userName,
+                                   @Param(value = "mobile") String mobile);
+
+    int findUsersAccountTotalPoint(@Param(value = "loginName") String loginName);
+
+    int findUsersAccountAvailablePoint(@Param(value = "loginName") String loginName);
+
+    void updateByLoginName(@Param(value = "loginName") String loginName, @Param(value = "exchangePoint" ) long exchangePoint);
 
     List<String> findBirthOfAccountInDay();
 
