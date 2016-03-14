@@ -69,11 +69,13 @@
 
 <#if !isAppSource>
     <#include "../header.ftl"/>
-    <#include "../navigation.ftl"/>
+    <#include "../top-menus.ftl"/>
 </#if>
 
 <div class="main-frame full-screen">
-    <#include "../main-frame.ftl"/>
+    <#if !isAppSource>
+        <#include "../left-menus.ftl"/>
+    </#if>
     <#nested>
 </div>
 
