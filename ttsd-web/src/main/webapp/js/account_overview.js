@@ -86,6 +86,7 @@ require(['jquery','echarts','commonFun', 'csrf','layerWrapper'], function ($) {
                             });
                             _this.removeClass("will-sign").addClass("finish-sign").html("已签到");
                             _this.addClass('active');
+                            _this.parent('.sign-top').addClass('no-click');
                         }
                     })
             }
