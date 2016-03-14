@@ -19,6 +19,6 @@ public interface UserRoleMapper {
 
     void deleteByLoginName(@Param("loginName") String loginName);
 
-    List<UserRoleModel> findAllByRole(Map<String, Object> params);
+    List<String> findAllByRole(Map<String, Object> params);
 
 }

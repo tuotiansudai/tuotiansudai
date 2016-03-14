@@ -31,8 +31,8 @@
         delete from user_role where login_name = #{loginName};
     </delete>
 
-    <select id="findAllByRole" parameterType="map" resultMap="userRoleResultMap">
-        SELECT t.* FROM user_role t join user u on t.login_name = u.login_name
+    <select id="findAllByRole" parameterType="map" resultType="java.lang.String">
+        SELECT t.login_name FROM user_role t join user u on t.login_name = u.login_name
         <if test="districtName != null and districtName.size != 0">
              and u.province in
             <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">

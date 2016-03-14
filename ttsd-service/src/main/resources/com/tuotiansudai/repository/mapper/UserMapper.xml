@@ -354,8 +354,8 @@
         AND r.`role` = 'LOANER')
     </select>
 
-    <select id="findAllUsers" resultMap="userResultMap">
-        select * from user
+    <select id="findAllUsers" resultType="java.lang.String">
+        select login_name from user
         <if test="districtName != null and districtName.size != 0">
             where province in
             <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">
@@ -364,9 +364,9 @@
         </if>
     </select>
 
-    <select id="findNaturalUser" resultMap="userResultMap">
+    <select id="findNaturalUser" resultType="java.lang.String">
         SELECT
-          us.*
+          us.login_name
         FROM
           user us
           JOIN invest t

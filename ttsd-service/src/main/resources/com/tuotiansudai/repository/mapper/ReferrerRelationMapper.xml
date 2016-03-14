@@ -34,9 +34,9 @@
         delete from referrer_relation where referrer_login_name = #{referrerLoginName} and login_name = #{loginName}
     </delete>
 
-    <select id="findAllRecommendation" resultMap="referrerRelationResultMap">
+    <select id="findAllRecommendation" resultType="java.lang.String">
         SELECT
-          r.*
+          r.login_name
         FROM
           referrer_relation r
           JOIN user_role u
