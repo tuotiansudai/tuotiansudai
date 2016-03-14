@@ -158,23 +158,34 @@
         <input type="hidden" name="noPasswordInvest" value="true"/>
     </form>
 </div>
-<div id="turnOffNoPasswordInvestDOM" class="pad-m popLayer" style="display: none;">
-    <form name="turnOffNoPasswordInvestForm" action="${requestContext.getContextPath()}/disabled" method="post">
+<div id="turnOffNoPasswordInvestDOM" class="pad-m popLayer" style="display: none; ">
+    <form id="imageCaptchaForm" name="imageCaptchaForm" action="${requestContext.getContextPath()}/no-password-invest/send-no-password-invest-captcha" method="post">
         <dl>
             <dt >推荐您开通免密投资功能，简化投资过程，理财快人一步，确认关闭吗？</dt>
             <dd>
                 <span >图形验证码：</span>
-                <input type="text" class="input-control image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
-                <img src="/register/user/image-captcha" alt="" class="image-captcha"/>
-            </dd>
-            <dd class="code-number">验证码发送到${mobile?replace("^(\\d{3}).*(\\d{4})$","$1****$2","r")}</dd>
-            <dd>
-                <span >短信验证码：</span>
-                <input type="captcha" name="captcha" class="input-control" placeholder="请输入短信验证码">
-                <button type="button" class="btn btn-normal get-captcha" disabled>获取验证码</button>
+                <input type="text" class="input-control image-captcha-text"  name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
+                <img src="/no-password-invest/image-captcha" alt="" class="image-captcha"/>
+                <input type="hidden" name="mobile" value="${mobile}"/>
             </dd>
         </dl>
-        <input type="hidden" name="mobile" value="${mobile}"/>
+    </form>
+    <form id="turnOffNoPasswordInvestForm" name="turnOffNoPasswordInvestForm" action="${requestContext.getContextPath()}/no-password-invest/disabled" method="post">
+        <dl>
+            <dd class="code-number code-number-hidden" >验证码发送到${mobile?replace("^(\\d{3}).*(\\d{4})$","$1****$2","r")}</dd>
+            <dd>
+                <span >短信验证码：</span>
+                <input type="captcha" name="captcha" class="input-control captcha" placeholder="请输入短信验证码" maxlength="6">
+                <input type="hidden" name="mobile" value="${mobile}"/>
+                <button type="button" class="btn btn-normal get-captcha" disabled="disabled" data-url= "/no-password-invest/send-no-password-invest-captcha">获取验证码</button>
+            </dd>
+        </dl>
+        <div class="error-content" style="visibility: visible; height:30px;text-align:left"></div>
+        <div class="tc person-info-btn">
+            <button class="btn btn-success btn-cancel" >取消</button>
+            <button class="btn btn-close" type="submit" >我要关闭</button>
+        </div>
+
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     </form>
 </div>

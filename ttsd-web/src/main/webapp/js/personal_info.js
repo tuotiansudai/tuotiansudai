@@ -11,7 +11,11 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             $noPasswordInvestDOM = $('#noPasswordInvestDOM'),
             $imageCaptchaElement = $('.image-captcha', $turnOffNoPasswordInvestDOM),
             $imageCaptchaTextElement = $('.image-captcha-text', $turnOffNoPasswordInvestDOM),
-            $getCaptcha = $('.get-captcha'),
+            $getCaptchaElement = $('.get-captcha'),
+            $btnCancelElement = $('.btn-cancel'),
+            $codeNumber = $('.code-number'),
+
+
             $changePassDOM = $('#changePassDOM'),
             $resetUmpayPassDOM = $('#resetUmpayPassDOM'),
             $successUmpayPass = $('#successUmpayPass'),
@@ -20,7 +24,10 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             $passwordForm = $('form', $changePassDOM),
             $umpayPasswordForm = $('form', $resetUmpayPassDOM),
             $turnOnNoPasswordInvestForm = $('form', $turnOnNoPasswordInvestDOM),
-            $turnOffNoPasswordInvestForm = $('form', $turnOffNoPasswordInvestDOM);
+            $turnOffNoPasswordInvestForm = $('#turnOffNoPasswordInvestForm', $turnOffNoPasswordInvestDOM),
+            $imageCaptchaForm = $('#imageCaptchaForm', $turnOffNoPasswordInvestDOM);
+
+
 
 
         $changeEmailLayer.on('click', function () {
@@ -66,28 +73,25 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             });
         });
         $turnOffNoPasswordInvestLayer.on('click', function () {
+            refreshTurnOffNoPasswordInvestLayer();
+
             layer.open({
                 type: 1,
                 move: false,
                 area:'500px',
                 title: '免密投资',
                 closeBtn:0,
-                btn:['取消','我要关闭'],
                 shadeClose: false,
-                content: $turnOffNoPasswordInvestDOM,
-                btn1:function(){
-
-                },
-                btn2: function () {
-
-
-                }
+                content: $turnOffNoPasswordInvestDOM
             });
         });
-        $getCaptcha.on('click',function(){
-            time($(this));
-
-
+        var refreshTurnOffNoPasswordInvestLayer = function(){
+            refreshCaptcha();
+            $('.captcha').val('');
+            $('.error-content').html('');
+        };
+        $getCaptchaElement.on('click',function(){
+            $imageCaptchaForm.submit();
         });
         $noPasswordInvest.on('click', function () {
             var _this = $(this);
@@ -102,34 +106,70 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                 }
             });
         });
-        var wait = 30;
 
-        function time(o) {
-            if (wait == 0) {
-                o.prop("disabled", false).text("重新发送");
-                wait = 30;
-            } else {
-                o.prop("disabled", true).text("" + wait + "s后重新发送");
-                wait--;
-                setTimeout(function() {
-                    time(o)
-                }, 1000)
-            }
-        }
-        //$imageCaptchaTextElement.on('onfocusout',function(){
-        //
-        //});
-        $turnOffNoPasswordInvestForm.validate({
+        $btnCancelElement.on('click',function(){
+            layer.closeAll();
+        });
+        $imageCaptchaForm.validate({
+
             focusInvalid: false,
             onFocusOut: function (element) {
                 if (!this.checkable(element) && !this.optional(element)) {
                     this.element(element);
                 }
+
+            },
+            success:function(label){
+                label.remove();
+                $('#turnOffNoPasswordInvestDOM').find('.get-captcha').prop('disabled',false);
             },
             errorPlacement: function(error, element) {
-                error.appendTo(element.parent());
+                var errorContent = $('.error-content');
+                errorContent.html('');
+                error.appendTo(errorContent);
+                $('#turnOffNoPasswordInvestDOM').find('.get-captcha').prop('disabled',true);
             },
+            submitHandler: function (form) {
+                var self = this;
+                $(form).ajaxSubmit({
+                    data: {mobile: $('.mobile').val()},
+                    dataType: 'json',
+                    success: function (response) {
+                        var data = response.data;
+                        if (data.status && !data.isRestricted) {
+                            $codeNumber.removeClass('code-number-hidden');
+                            var seconds = 60;
+                            var count = setInterval(function () {
+                                $getCaptchaElement.html(seconds + '秒后重新发送').addClass('btn disable-button').removeClass('btn-normal').prop('disabled',true);
+                                if (seconds == 0) {
+                                    clearInterval(count);
+                                    $getCaptchaElement.html('重新发送').removeClass('btn disable-button').addClass('btn-normal').prop('disabled',false);
+                                    refreshCaptcha();
+                                }
+                                seconds--;
+                            }, 1000);
+                            return;
+                        }
 
+                        if (!data.status && data.isRestricted) {
+                            $codeNumber.addClass('code-number-hidden');
+                            self.showErrors({imageCaptcha: '短信发送频繁，请稍后再试'});
+                        }
+
+                        if (!data.status && !data.isRestricted) {
+                            $codeNumber.addClass('code-number-hidden');
+                            self.showErrors({imageCaptcha: '图形验证码不正确'});
+                        }
+                        self.invalid['imageCaptcha'] = true;
+                        refreshCaptcha();
+                    },
+                    error: function () {
+                        self.invalid['imageCaptcha'] = true;
+                        self.showErrors({imageCaptcha: '图形验证码不正确'});
+                        refreshCaptcha();
+                    }
+                });
+            },
             rules: {
                 imageCaptcha: {
                     required: true,
@@ -142,6 +182,52 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                     required: "请输入图形验证码",
                     regex: "图形验证码位数不对"
                 }
+            }
+        });
+
+        $turnOffNoPasswordInvestForm.validate({
+            focusInvalid: false,
+            ignore:".image-captcha-text",
+            rules: {
+                captcha: {
+                    required: true,
+                    digits: true,
+                    maxlength: 6,
+                    minlength: 6,
+                    captchaVerify: {
+                        param: function () {
+                            var mobile = $('input[name="mobile"]').val();
+                            return "/no-password-invest/mobile/" + mobile + "/captcha/{0}/verify"
+                        }
+                    }
+                }
+
+            },
+            messages: {
+                captcha: {
+                    required: '请输入验证码',
+                    digits: '验证码格式不正确',
+                    maxlength: '验证码格式不正确',
+                    minlength: '验证码格式不正确',
+                    captchaVerify: '验证码不正确'
+                }
+            },
+
+            errorPlacement: function(error, element) {
+                var errorContent = $('.error-content');
+                errorContent.html('');
+                error.appendTo(errorContent);
+                $('#turnOffNoPasswordInvestDOM').find('.get-captcha').prop('disabled',true);
+            },
+            submitHandler: function (form) {
+                $(form).ajaxSubmit({
+                    success: function (response) {
+                        var data = response.data;
+                        if (data.status) {
+                            location.href = "/personal-info";
+                        }
+                    }
+                });
             }
         });
 
@@ -372,7 +458,8 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
         });
 
         var refreshCaptcha = function () {
-            $imageCaptchaElement.attr('src', '/register/user/image-captcha?' + new Date().getTime().toString());
+            $imageCaptchaElement.attr('src', '/no-password-invest/image-captcha?' + new Date().getTime().toString());
+            $imageCaptchaTextElement.val('');
         };
 
         $imageCaptchaElement.click(function () {

@@ -55,20 +55,39 @@
       padding-left: 5px;
       .get-captcha{
         margin: 0;
+        letter-spacing: 0px;
         width: 96px;
         font-size: 12px;
         padding:8px 0;
       }
       &.code-number{
+
         font-size:14px;
         color:#ccc;
         padding-left: 100px;
+        &.code-number-hidden{
+          visibility:hidden;
+        }
       }
+
     }
 
   }
   button {
     margin: 20px auto 0 auto;
+  }
+  .person-info-btn {
+    button {
+      margin-top: 0px;
+      width: 37%;
+      &.btn-cancel {
+        margin-right:20px;
+      }
+      &.btn-close {
+        background: #c2c2c2;
+        border-width: 0!important;
+      }
+    }
   }
 }
 
