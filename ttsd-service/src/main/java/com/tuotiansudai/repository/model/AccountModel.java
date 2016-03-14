@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class AccountModel implements Serializable{
+
+    private static final long serialVersionUID = -1887375479975954346L;
+
     private long id;
 
     private String loginName;

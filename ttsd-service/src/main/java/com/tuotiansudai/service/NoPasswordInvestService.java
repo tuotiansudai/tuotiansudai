@@ -11,4 +11,7 @@ public interface NoPasswordInvestService {
     void disabledNoPasswordInvest(String loginName);
 
     BaseDto<PayFormDataDto> agreement(String loginName, AgreementDto agreementDto);
+
+    void writeRemindFlag(String loginName);
+
 }

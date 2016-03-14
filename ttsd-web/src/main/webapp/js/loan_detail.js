@@ -8,6 +8,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         tabs = $('.loan-nav li'),
         $loanList = $('.loan-list', $loanDetail),
         paginationElement = $('.pagination', $loanDetail),
+        openNoPasswordInvest = $('.open-no-password-invest', $loanDetail),
+        hasRemindInvestNoPassword = $('.has-remind-invest-no-password', $loanDetail),
         $error = $('.errorTip');
 
     layer.ready(function () {
@@ -241,6 +243,34 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         });
 
         $('form').submit(function () {
+
+            if(!hasRemindInvestNoPassword.val()) {
+                $.ajax({
+                    url: '/no-password-invest/writeRemindFlag',
+                    type: 'get',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
+                });
+
+                if ($('#freeSecret').data("open-agreement")) {
+                    layer.open({
+                        type: 1,
+                        title: '登录到联动优势支付平台充值',
+                        area: ['500px', '290px'],
+                        shadeClose: true,
+                        content: $('#popInvestNoPassword')
+                    });
+                } else {
+                    layer.open({
+                        type: 1,
+                        title: '登录到联动优势支付平台充值',
+                        area: ['500px', '290px'],
+                        shadeClose: true,
+                        content: $('#popInvestNoPasswordAgree')
+                    });
+                }
+            }
+
             var frm = $(this);
             if (frm.attr('action') === '/invest') {
                 if (!isInvestor) {
@@ -308,4 +338,50 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             time: 0
         });
     }
+
+    // openNoPasswordInvest.click(function () {
+    //     $.ajax({
+    //         url: '/no-password-invest/writeRemindFlag',
+    //         type: 'get',
+    //         dataType: 'json',
+    //         contentType: 'application/json; charset=UTF-8'
+    //     });
+
+    //     if ($(this).data("open-agreement")) {
+    //         layer.open({
+    //             type: 1,
+    //             title: '登录到联动优势支付平台充值',
+    //             area: ['500px', '290px'],
+    //             shadeClose: true,
+    //             content: $('#popInvestNoPassword')
+    //         });
+    //     } else {
+    //         layer.open({
+    //             type: 1,
+    //             title: '登录到联动优势支付平台充值',
+    //             area: ['500px', '290px'],
+    //             shadeClose: true,
+    //             content: $('#popInvestNoPasswordAgree')
+    //         });
+    //     }
+    // })
+
+    $('.btn-open').click(function() {
+        $.ajax({
+            url: '/no-password-invest/enabled',
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json; charset=UTF-8'
+        }).done(function (res) {
+            layer.closeAll();
+            if (res.success) {
+                layer.alert("开启成功！",function(){
+                    
+                    layer.closeAll();
+                });
+            }
+        }).fail(function(){
+            layer.alert("开启失败！");
+        })
+    })
 });

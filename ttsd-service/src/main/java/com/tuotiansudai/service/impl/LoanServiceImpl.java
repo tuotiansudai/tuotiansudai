@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.job.AutoInvestJob;
@@ -79,6 +80,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private JobManager jobManager;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     /**
      * @param loanTitleDto
@@ -214,6 +218,9 @@ public class LoanServiceImpl implements LoanService {
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
+            loanDto.setHasRemindInvestNoPassword(redisWrapperClient.hexists(NoPasswordInvestServiceImpl.INVEST_NO_PASSWORD_REMIND_MAP, loginName));
+            loanDto.setAutoInvest(accountModel.isAutoInvest());
+            loanDto.setInvestNoPassword(accountModel.isNoPasswordInvest());
             long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), loginName);
             loanDto.setUserBalance(accountModel.getBalance());
             loanDto.setMaxAvailableInvestAmount(AmountConverter.convertCentToString(calculateMaxAvailableInvestAmount(

@@ -7,11 +7,13 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.service.AgreementService;
 import com.tuotiansudai.service.NoPasswordInvestService;
 import com.tuotiansudai.web.util.LoginUserInfo;
+import org.omg.CORBA.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -24,8 +26,9 @@ public class NoPasswordInvestController {
     @Autowired
     private AgreementService agreementService;
 
-    @RequestMapping(path = "/enabled",method = RequestMethod.POST)
-    public BaseDto<BaseDataDto> enabledNoPasswordInvest(){
+    @ResponseBody
+    @RequestMapping(path = "/enabled", method = RequestMethod.POST)
+    public BaseDto<BaseDataDto> enabledNoPasswordInvest() {
         String loginName = LoginUserInfo.getLoginName();
         noPasswordInvestService.enabledNoPasswordInvest(loginName);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
@@ -35,8 +38,10 @@ public class NoPasswordInvestController {
         baseDto.setSuccess(true);
         return baseDto;
     }
-    @RequestMapping(path = "/disabled",method = RequestMethod.POST)
-    public BaseDto<BaseDataDto> disabledNoPasswordInvest(){
+
+    @ResponseBody
+    @RequestMapping(path = "/disabled", method = RequestMethod.POST)
+    public BaseDto<BaseDataDto> disabledNoPasswordInvest() {
         String loginName = LoginUserInfo.getLoginName();
         noPasswordInvestService.disabledNoPasswordInvest(loginName);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
@@ -48,9 +53,15 @@ public class NoPasswordInvestController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView agreement(@Valid @ModelAttribute AgreementDto agreementDto){
+    public ModelAndView agreement(@Valid @ModelAttribute AgreementDto agreementDto) {
         BaseDto<PayFormDataDto> baseDto = agreementService.agreement(LoginUserInfo.getLoginName(), agreementDto);
         return new ModelAndView("/pay", "pay", baseDto);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/writeRemindFlag", method = RequestMethod.GET)
+    public void writeRemindFlagInRedis() {
+        String loginName = LoginUserInfo.getLoginName();
+        noPasswordInvestService.writeRemindFlag(loginName);
+    }
 }
