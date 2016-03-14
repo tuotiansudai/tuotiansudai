@@ -134,9 +134,7 @@
 				</#if>
 			</ul>
     	</div>
-
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
     	<div class="choi-beans-list invest-list-content">
     		<div class="item-block date-filter">
 		        <span class="sub-hd">起止时间:</span>
@@ -147,7 +145,6 @@
 		        <span class="select-item" data-day="180">六个月</span>
 		        <span class="select-item" data-day="">全部</span>
 		    </div>
-
 		    <div class="item-block status-filter">
 		        <span class="sub-hd">往来类型:</span>
 		        <span class="select-item current" data-status="">全部</span>
@@ -156,7 +153,6 @@
 		    </div>
 		    <div class="clear-blank"></div>
 		    <div class="point-bill-list">
-
 		    </div>
             <div class="pagination" data-url="/point/point-bill-list-data" data-page-size="10">
 		    </div>
@@ -167,23 +163,19 @@
             <div class="sign-top">
                 <div class="close-btn" id="closeSign"></div>
                 <p class="sign-text">签到成功，领取5财豆！</p>
-
                 <p class="tomorrow-text">明日可领10财豆</p>
-
                 <p class="img-beans">
                     <img src="${staticServer}/images/sign/sign-beans.png"/>
 					<span class="add-dou">
 						+5
 					</span>
                 </p>
-
                 <p class="intro-text">连续签到，财豆翻倍送，最多每天可领<span>80</span>财豆！</p>
             </div>
             <div class="sign-bottom">
                 <ul>
                     <li>
                         <p class="day-name">第1天</p>
-
                         <p class="day-beans">
                             <span>5</span>
                             <i class="bean-img"></i>
@@ -191,7 +183,6 @@
                     </li>
                     <li>
                         <p class="day-name">第2天</p>
-
                         <p class="day-beans">
                             <span>10</span>
                             <i class="bean-img"></i>
@@ -199,7 +190,6 @@
                     </li>
                     <li>
                         <p class="day-name">第3天</p>
-
                         <p class="day-beans">
                             <span>20</span>
                             <i class="bean-img"></i>
@@ -207,7 +197,6 @@
                     </li>
                     <li>
                         <p class="day-name">第4天</p>
-
                         <p class="day-beans">
                             <span>40</span>
                             <i class="bean-img"></i>
@@ -215,7 +204,6 @@
                     </li>
                     <li>
                         <p class="day-name">第5天</p>
-
                         <p class="day-beans">
                             <span>80</span>
                             <i class="bean-img"></i>
@@ -223,7 +211,6 @@
                     </li>
                     <li>
                         <p class="day-name">第6天</p>
-
                         <p class="day-beans">
                             <span>80</span>
                             <i class="bean-img"></i>
@@ -231,7 +218,6 @@
                     </li>
                     <li>
                         <p class="day-name">第7天</p>
-
                         <p class="day-beans">
                             <span>80</span>
                             <i class="bean-img"></i>
@@ -239,7 +225,6 @@
                     </li>
                     <li class="last-day">
                         <p class="day-name">第N天</p>
-
                         <p class="day-beans">
                             <span>...</span>
                         </p>
