@@ -125,7 +125,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
         for (LoanRepayNotifyModel model : loanRepayNotifyModelList) {
 
             try {
-                BaseDto<PayDataDto> response = payWrapperClient.autoRepay(model.getLoanId());
+                BaseDto<PayDataDto> response = payWrapperClient.autoRepay(model.getId());
                 if (response.isSuccess() && response.getData().getStatus()) {
                     continue;
                 }

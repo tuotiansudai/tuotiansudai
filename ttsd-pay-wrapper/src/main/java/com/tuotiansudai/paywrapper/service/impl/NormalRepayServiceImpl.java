@@ -107,11 +107,13 @@ public class NormalRepayServiceImpl implements RepayService {
 
     @Override
     @Transactional
-    public boolean autoRepay(long loanId) {
+    public boolean autoRepay(long loanRepayId) {
+        LoanRepayModel loanRepayModel = loanRepayMapper.findById(loanRepayId);
+        long loanId = loanRepayModel.getLoanId();
         logger.info("auto repay start , loanId : " + loanId);
         LoanModel loanModel = loanMapper.findById(loanId);
-        if (LoanStatus.REPAYING != loanModel.getStatus()) {
-            logger.info("can not auto repay, because loan status is not repaying , loanId : " + loanId);
+        if (RepayStatus.REPAYING != loanRepayModel.getStatus()) {
+            logger.info("can not auto repay, because loan repay status is not repaying , loanId : " + loanId);
             return false;
         }
         AccountModel accountModel = accountMapper.findByLoginName(loanModel.getAgentLoginName());

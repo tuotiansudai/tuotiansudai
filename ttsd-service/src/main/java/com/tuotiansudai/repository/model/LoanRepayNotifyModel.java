@@ -12,6 +12,8 @@ public class LoanRepayNotifyModel implements Serializable {
 
     private long loanId;
 
+    private long id;
+
     public long getRepayAmount() {
         return repayAmount;
     }
@@ -42,5 +44,13 @@ public class LoanRepayNotifyModel implements Serializable {
 
     public void setLoanId(long loanId) {
         this.loanId = loanId;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

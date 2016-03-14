@@ -34,12 +34,12 @@ public class RepayController {
 
     @RequestMapping(value = "/auto-repay", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> autoRepay(@RequestBody long loanId) {
+    public BaseDto<PayDataDto> autoRepay(@RequestBody long loanRepayId) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
         try {
-            payDataDto.setStatus(normalRepayService.autoRepay(loanId));
+            payDataDto.setStatus(normalRepayService.autoRepay(loanRepayId));
         } catch (Exception e) {
             payDataDto.setStatus(false);
             payDataDto.setMessage(e.getLocalizedMessage());

@@ -108,8 +108,8 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(String.valueOf(loanId), autoInvestPath, "POST");
     }
 
-    public BaseDto<PayDataDto> autoRepay(long loanId) {
-        return syncExecute(String.valueOf(loanId), autoRepayPath, "POST");
+    public BaseDto<PayDataDto> autoRepay(long loanRepayId) {
+        return syncExecute(String.valueOf(loanRepayId), autoRepayPath, "POST");
     }
 
     public BaseDto<PayDataDto> createLoan(LoanDto dto) {
