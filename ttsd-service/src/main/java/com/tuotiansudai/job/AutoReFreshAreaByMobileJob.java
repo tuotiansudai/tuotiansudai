@@ -8,6 +8,8 @@ import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 @Component
 public class AutoReFreshAreaByMobileJob implements Job {
     static Logger logger = Logger.getLogger(AutoReFreshAreaByMobileJob.class);

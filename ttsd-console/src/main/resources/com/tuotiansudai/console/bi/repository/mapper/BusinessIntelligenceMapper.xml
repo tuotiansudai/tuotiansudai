@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuotiansudai.repository.mapper.BusinessIntelligenceMapper">
+<mapper namespace="com.tuotiansudai.console.bi.repository.mapper.BusinessIntelligenceMapper">
 
     <resultMap id="keyValueMap" type="KeyValueModel">
         <result column="name" property="name"></result>
@@ -69,6 +69,34 @@
               WHERE o.`role` = 'AGENT'
               GROUP BY o.`login_name`) oo
             ON j.`login_name` = oo.login_name) u
+        </if>
+        <if test="roleStage.name() == 'NORMAL_USER' ">
+            (SELECT
+            j.*
+            FROM
+            user j
+            WHERE NOT EXISTS
+            (SELECT
+            1
+            FROM
+            (SELECT
+            *
+            FROM
+            (SELECT
+            k.`login_name`
+            FROM
+            user_role o
+            RIGHT JOIN referrer_relation k
+            ON o.`login_name` = k.`referrer_login_name`
+            AND k.`level` = 1
+            WHERE o.`role` = 'STAFF'
+            UNION
+            SELECT
+            h.login_name
+            FROM
+            user_role h
+            WHERE h.role IN ('STAFF', 'AGENT')) ff) gg
+            WHERE gg.login_name = j.`login_name`) and  EXISTS(select 1 from invest i where j.login_name = i.login_name)) u
         </if>
         <if test="roleStage.name() == 'OTHERS' ">
             (SELECT
@@ -204,6 +232,34 @@
                   WHERE o.`role` = 'AGENT'
                   GROUP BY o.`login_name`) oo
                 ON j.`login_name` = oo.login_name) u
+            </if>
+            <if test="roleStage.name() == 'NORMAL_USER' ">
+                (SELECT
+                j.*
+                FROM
+                user j
+                WHERE NOT EXISTS
+                (SELECT
+                1
+                FROM
+                (SELECT
+                *
+                FROM
+                (SELECT
+                k.`login_name`
+                FROM
+                user_role o
+                RIGHT JOIN referrer_relation k
+                ON o.`login_name` = k.`referrer_login_name`
+                AND k.`level` = 1
+                WHERE o.`role` = 'STAFF'
+                UNION
+                SELECT
+                h.login_name
+                FROM
+                user_role h
+                WHERE h.role IN ('STAFF', 'AGENT')) ff) gg
+                WHERE gg.login_name = j.`login_name`) and  EXISTS(select 1 from invest i where j.login_name = i.login_name)) u
             </if>
             <if test="roleStage.name() == 'OTHERS' ">
                 (SELECT
@@ -861,7 +917,7 @@
             GROUP BY o.`login_name`) oo
             ON j.`login_name` = oo.login_name) u
         </if>
-        <if test="roleStage.name() == 'OTHERS' ">
+        <if test="roleStage.name() == 'NORMAL_USER' ">
             (SELECT
             j.*
             FROM
@@ -949,7 +1005,7 @@
                             GROUP BY o.`login_name`) oo
                             ON j.`login_name` = oo.login_name) uu
                         </if>
-                        <if test="roleStage.name() == 'OTHERS' ">
+                        <if test="roleStage.name() == 'NORMAL_USER' ">
                             (SELECT
                             j.*
                             FROM
@@ -1062,7 +1118,7 @@
                 GROUP BY o.`login_name`) oo
                 ON j.`login_name` = oo.login_name) u
             </if>
-            <if test="roleStage.name() == 'OTHERS' ">
+            <if test="roleStage.name() == 'NORMAL_USER' ">
                 (SELECT
                 j.*
                 FROM
@@ -1145,7 +1201,7 @@
                         GROUP BY o.`login_name`) oo
                         ON j.`login_name` = oo.login_name) uu
                     </if>
-                    <if test="roleStage.name() == 'OTHERS' ">
+                    <if test="roleStage.name() == 'NORMAL_USER' ">
                         (SELECT
                         j.*
                         FROM
