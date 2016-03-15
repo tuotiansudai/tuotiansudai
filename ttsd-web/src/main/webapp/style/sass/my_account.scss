@@ -80,12 +80,15 @@
     button {
       margin-top: 0px;
       width: 37%;
+      letter-spacing: 2px;
+      font-size: 13px;
       &.btn-cancel {
         margin-right:20px;
       }
       &.btn-close {
-        background: #c2c2c2;
+        background: #e5e5e5;
         border-width: 0!important;
+        color:#808080;
       }
     }
   }
