@@ -145,9 +145,10 @@ public class InterestCalculator {
         return lastRepayDate;
     }
 
-    private static long calculateInterest(LoanModel loanModel, long corpusMultiplyPeriodDays) {
+    public static long calculateInterest(LoanModel loanModel, long corpusMultiplyPeriodDays) {
         int daysOfYear = DAYS_OF_YEAR;
-        new DateTime(2016, 3, 9, 21, 0, 0);
+
+        //2016-03-09 放款后标的按每期30天一年365天计算利息
         if (loanModel.getRecheckTime() != null && loanModel.getRecheckTime().before(new DateTime(2016, 3, 9, 21, 0, 0).toDate())) {
             DateTime loanDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
             daysOfYear = loanDate.dayOfYear().getMaximumValue();
