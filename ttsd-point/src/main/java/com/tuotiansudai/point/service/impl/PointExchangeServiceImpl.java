@@ -26,13 +26,13 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     static Logger logger = Logger.getLogger(PointExchangeServiceImpl.class);
 
     @Autowired
-    private CouponMapper couponMapper;
-
-    @Autowired
     private AccountMapper accountMapper;
 
     @Autowired
     private CouponExchangeMapper couponExchangeMapper;
+
+    @Autowired
+    private CouponMapper couponMapper;
 
     @Autowired
     private CouponActivationService couponActivationService;
@@ -53,10 +53,12 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     }
 
     @Override
+    @Transactional
     public boolean exchangeableCoupon(long couponId, String loginName){
-        long exchange_point = couponExchangeMapper.findByCouponId(couponId).getExchangePoint();
+        long exchangePoint = couponExchangeMapper.findByCouponId(couponId).getExchangePoint();
         long availablePoint = accountMapper.findUsersAccountAvailablePoint(loginName);
-        return availablePoint >= exchange_point;
+        CouponModel couponModel = couponMapper.lockById(couponId);
+        return availablePoint >= exchangePoint && couponModel.getIssuedCount() <= couponModel.getTotalCount();
     }
 
     @Override
