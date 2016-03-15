@@ -8,7 +8,7 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
     private String loanName;
     private String repayTypeCode;
     private String repayTypeName;
-    private Integer deadline;
+    private Integer periods;
     private String repayUnit;
     private String ratePercent;
     private String loanMoney;
@@ -26,12 +26,14 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
     private String remainTime;
     private String investBeginTime;
     private String investBeginSeconds;
+    private String fundRaisingEndTime;
     private String minInvestMoney;
     private String cardinalNumber;
     private String maxInvestMoney;
     private String raiseCompletedTime;
     private String interestPointName;
     private String investFeeRate;
+
 
     private List<EvidenceResponseDataDto> evidence;
 
@@ -77,13 +79,12 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
         this.repayTypeName = repayTypeName;
     }
 
-
-    public Integer getDeadline() {
-        return deadline;
+    public Integer getPeriods() {
+        return periods;
     }
 
-    public void setDeadline(Integer deadline) {
-        this.deadline = deadline;
+    public void setPeriods(Integer periods) {
+        this.periods = periods;
     }
 
     public String getRepayUnit() {
@@ -284,5 +285,13 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
 
     public void setInvestFeeRate(String investFeeRate) {
         this.investFeeRate = investFeeRate;
+    }
+
+    public String getFundRaisingEndTime() {
+        return fundRaisingEndTime;
+    }
+
+    public void setFundRaisingEndTime(String fundRaisingEndTime) {
+        this.fundRaisingEndTime = fundRaisingEndTime;
     }
 }
