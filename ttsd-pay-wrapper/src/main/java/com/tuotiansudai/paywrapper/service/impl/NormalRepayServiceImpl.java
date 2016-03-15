@@ -186,12 +186,10 @@ public class NormalRepayServiceImpl implements RepayService {
         DateTime actualRepayDate = new DateTime();
         DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, actualRepayDate);
         long actualInterest = InterestCalculator.calculateLoanRepayInterest(loanModel, successInvestModels, lastRepayDate, actualRepayDate);
-        long defaultInterest = this.calculateLoanRepayDefaultInterest(loanRepayModels);
 
         enabledLoanRepay.setStatus(RepayStatus.WAIT_PAY);
         enabledLoanRepay.setActualInterest(actualInterest);
         enabledLoanRepay.setActualRepayDate(actualRepayDate.toDate());
-        enabledLoanRepay.setDefaultInterest(defaultInterest);
         return enabledLoanRepay;
     }
 
