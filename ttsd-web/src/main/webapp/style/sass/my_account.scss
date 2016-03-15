@@ -2342,6 +2342,40 @@ position: relative;
       }
     }
   }
+  .beans-coupon {
+    float: left;
+    width: 723px;
+    padding: 20px;
+    border-bottom: 1px dashed #f2f2f2;
+    .beans-list {
+      float: left;
+      width: 100%;
+      i {
+        &.icon-beans {
+          float: left;
+          width: 30px;
+          height: 30px;
+          background-position: 0px -53px;
+        }
+        &.icon-dou {
+          float: left;
+          width: 21px;
+          height: 19px;
+          margin: 5px 0 0 5px;
+          background-position: 0px -120px;
+        }
+      }
+      span {
+        line-height: 30px;
+        &.beans-num {
+          float: left;
+          font-size: 18px;
+          color: #ff0000;
+          margin-left: 10px;
+        }
+      }
+    }
+  }
   .beans-operat {
     float: left;
     width: 100%;
