@@ -36,7 +36,7 @@
         <div class="account-info fl">
             <h5 class="l-title">拓天速贷提醒您：理财非存款，投资需谨慎！</h5>
             <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
-                <form action="/invest" method="post">
+                <form action="/invest" method="post" id="investForm">
                     <dl class="account-list">
                         <dd>
                             <span class="fl">可投金额：</span>
@@ -171,7 +171,7 @@
                         <dd>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string.computer}"/>
-                            <button class="btn-pay btn-normal" type="submit" <#if loan.loanStatus == "PREHEAT">disabled="disabled"</#if>>
+                            <button class="btn-pay btn-normal" type="submit" id="loanInvest" <#if loan.loanStatus == "PREHEAT">disabled="disabled"</#if>>
                                 <#if loan.loanStatus == "PREHEAT">预热中</#if>
                                 <#if loan.loanStatus == "RAISING">马上投资</#if>
                             </button>
@@ -253,8 +253,8 @@
     <div id="popInvestNoPasswordAgree" class="pad-m" style="display: none;">
         <p>推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>
         <p>
-            <a href="javascript:window.location.reload()" class="btn-cancel" data-category="继续投资" data-label="cancel">继续投资</a>
-            <a href="/no-password-invest" class="btn-agreement" data-category="去联动优势授权" data-label="goAgreement">去联动优势授权</a>
+            <a href="javascript:void(0)" class="btn-cancel" data-category="继续投资" data-label="cancel">继续投资</a>
+            <a href="/no-password-invest" class="btn-agreement" data-category="去联动优势授权" data-label="goAgreement" target="_blank">去联动优势授权</a>
         </p>
         <p>
             <span class="help">查看<a href="/about/qa" target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
