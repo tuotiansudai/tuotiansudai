@@ -53,17 +53,44 @@
     }
     dd {
       padding-left: 5px;
-      .get-code{
+      .get-captcha{
         margin: 0;
-        width: 90px;
+        letter-spacing: 0px;
+        width: 96px;
         font-size: 12px;
         padding:8px 0;
       }
+      &.code-number{
+
+        font-size:14px;
+        color:#ccc;
+        padding-left: 100px;
+        &.code-number-hidden{
+          visibility:hidden;
+        }
+      }
+
     }
 
   }
   button {
     margin: 20px auto 0 auto;
+  }
+  .person-info-btn {
+    button {
+      margin-top: 0px;
+      width: 37%;
+      letter-spacing: 2px;
+      font-size: 13px;
+      &.btn-cancel {
+        margin-right:20px;
+      }
+      &.btn-close {
+        background: #e5e5e5;
+        border-width: 0!important;
+        color:#808080;
+      }
+    }
   }
 }
 

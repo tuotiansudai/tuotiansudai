@@ -65,6 +65,13 @@ public class SmsServiceImpl implements SmsService {
     }
 
     @Override
+    public BaseDto<SmsDataDto> sendNoPasswordInvestCaptcha(String mobile, String captcha, String ip) {
+        Map<String, String> map = ImmutableMap.<String, String>builder().put("captcha", captcha).build();
+        String content = SmsTemplate.SMS_NO_PASSWORD_INVEST_CAPTCHA_TEMPLATE.generateContent(map);
+        return smsClient.sendSMS(NoPasswordInvestMapper.class, mobile, content, ip);
+    }
+
+    @Override
     public BaseDto<SmsDataDto> sendPasswordChangedNotify(String mobile) {
         String content = SmsTemplate.SMS_PASSWORD_CHANGED_NOTIFY_TEMPLATE.generateContent(new HashMap<String,String>(0));
         return smsClient.sendSMS(UserPasswordChangedNotifyMapper.class, mobile, content, "");
