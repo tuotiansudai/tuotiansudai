@@ -40,10 +40,11 @@ public class InvestRepayModel implements Serializable {
     public InvestRepayModel() {
     }
 
-    public InvestRepayModel(long id, long investId, int period, long expectedInterest, long expectedFee, Date repayDate, RepayStatus status) {
+    public InvestRepayModel(long id, long investId, int period, long corpus, long expectedInterest, long expectedFee, Date repayDate, RepayStatus status) {
         this.id = id;
         this.investId = investId;
         this.period = period;
+        this.corpus = corpus;
         this.expectedInterest = expectedInterest;
         this.expectedFee = expectedFee;
         this.repayDate = repayDate;

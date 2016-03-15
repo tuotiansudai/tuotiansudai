@@ -72,10 +72,14 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
                 long expectedInvestInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, successInvestModel, lastRepayDate, currentRepayDate);
                 long expectedFee = new BigDecimal(expectedInvestInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(loanModel.getInvestFeeRate())).longValue();
 
-                InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), successInvestModel.getId(), period, expectedInvestInterest, expectedFee, currentRepayDate.toDate(), RepayStatus.REPAYING);
-                if (period == totalPeriods) {
-                    investRepayModel.setCorpus(successInvestModel.getAmount());
-                }
+                InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(),
+                        successInvestModel.getId(),
+                        period,
+                        period == totalPeriods ? successInvestModel.getAmount() : 0,
+                        expectedInvestInterest,
+                        expectedFee,
+                        currentRepayDate.toDate(),
+                        RepayStatus.REPAYING);
                 currentPeriodCorpus += investRepayModel.getCorpus();
                 investRepayModels.add(investRepayModel);
             }

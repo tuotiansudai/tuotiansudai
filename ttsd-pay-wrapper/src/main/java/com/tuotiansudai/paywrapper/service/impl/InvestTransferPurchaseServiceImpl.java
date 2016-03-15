@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
@@ -13,7 +15,7 @@ import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.service.InvestTransferPruchaseService;
+import com.tuotiansudai.paywrapper.service.InvestTransferPurchaseService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -33,7 +35,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class InvestTransferPurchaseServiceImpl implements InvestTransferPruchaseService {
+public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchaseService {
 
     static Logger logger = Logger.getLogger(InvestServiceImpl.class);
 
@@ -96,6 +98,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPruchase
 
         InvestModel investModel = new InvestModel(idGenerator.generate(),
                 transferInvestModel.getLoanId(),
+                transferInvestId,
                 transferInvestModel.getAmount(),
                 transferee,
                 investDto.getSource(),
@@ -144,21 +147,22 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPruchase
         // update transferee invest status
         investMapper.updateStatus(investId, InvestStatus.SUCCESS);
         // generate transferee balance
-        amountTransfer.transferOutBalance(investModel.getLoginName(), investId, investModel.getAmount(), UserBillBusinessType.INVEST_TRANSFER_IN, null, null);
+        amountTransfer.transferOutBalance(investModel.getLoginName(), investId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_IN, null, null);
 
-        // update transferer invest transfer status
+        // update transferrer invest transfer status
         investMapper.updateTransferStatus(transferInvestModel.getId(), TransferStatus.SUCCESS);
 
         // update transfer application
         transferApplicationModel.setInvestId(investModel.getId());
         transferApplicationModel.setStatus(TransferStatus.SUCCESS);
-        transferApplicationModel.setTransferTime(new Date());
+        transferApplicationModel.setTransferTime(investModel.getCreatedTime());
         transferApplicationMapper.update(transferApplicationModel);
 
         try {
             this.updateInvestRepay(transferApplicationModel);
         } catch (Exception e) {
             logger.error(MessageFormat.format("update invest repay failed when post purchase(transferApplicationId={0})", String.valueOf(transferApplicationModel.getId())), e);
+            this.sendFatalNotify(MessageFormat.format("债权转让更新回款计划失败(transferApplicationId={0})", String.valueOf(transferApplicationModel.getId())));
         }
 
         this.transferPayback(transferInvestModel, transferApplicationModel);
@@ -204,7 +208,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPruchase
 
             ProjectTransferResponseModel paybackResponseModel = this.paySyncClient.send(ProjectTransferMapper.class, paybackRequestModel, ProjectTransferResponseModel.class);
             if (paybackResponseModel.isSuccess()) {
-                amountTransfer.transferInBalance(transferInvestModel.getLoginName(), transferApplicationId, paybackAmount, UserBillBusinessType.INVEST_TRANSFER_OUT, null, null);
+                amountTransfer.transferInBalance(transferInvestModel.getLoginName(), transferApplicationId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_OUT, null, null);
+                amountTransfer.transferOutBalance(transferInvestModel.getLoginName(), transferApplicationId, transferFee, UserBillBusinessType.TRANSFER_FEE, null, null);
             }
         } catch (PayException | AmountTransferException e) {
             logger.error(MessageFormat.format("transfer payback is failed (transferApplicationId={0})", String.valueOf(transferApplicationId)), e);
@@ -223,47 +228,55 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPruchase
         long investId = transferApplicationModel.getInvestId();
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
 
-        int transferBeginWithPeriod = transferApplicationModel.getPeriod();
+        final int transferBeginWithPeriod = transferApplicationModel.getPeriod();
         boolean isTransferInterest = transferApplicationModel.isTransferInterest();
 
-        List<InvestRepayModel> transferrerInvestRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferInvestId);
-        List<InvestRepayModel> transfereeInvestRepayModels = Lists.newArrayList();
-        for (InvestRepayModel transferrerInvestRepayModel : transferrerInvestRepayModels) {
-            if (transferApplicationModel.getPeriod() >= transferBeginWithPeriod) {
-                InvestRepayModel transfereeInvestRepayModel = new InvestRepayModel(idGenerator.generate(),
-                        investId,
-                        transferApplicationModel.getPeriod(),
-                        transferrerInvestRepayModel.getExpectedInterest(),
-                        transferrerInvestRepayModel.getExpectedFee(),
-                        transferrerInvestRepayModel.getRepayDate(),
-                        RepayStatus.REPAYING);
-
-                transferrerInvestRepayModel.setExpectedInterest(0);
-                transferrerInvestRepayModel.setExpectedFee(0);
-                transferrerInvestRepayModel.setTransferred(true);
-
-                if (transferApplicationModel.getPeriod() == transferBeginWithPeriod && !isTransferInterest) {
-                    DateTime transferTime = new DateTime(transferApplicationModel.getTransferTime()).withTimeAtStartOfDay();
-                    InvestRepayModel lastInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferInvestId, transferBeginWithPeriod - 1);
-                    DateTime lastRepayDate = loanModel.getType().getInterestInitiateType() == InterestInitiateType.INTEREST_START_AT_INVEST ?
-                            new DateTime(investMapper.findById(transferInvestId).getCreatedTime()).minusDays(1).withTimeAtStartOfDay() :
-                            new DateTime(lastInvestRepayModel.getRepayDate()).minusDays(1).withTimeAtStartOfDay();
-
-                    int currentPeriodPassedDays = Days.daysBetween(lastRepayDate, transferTime).getDays();
-                    long transferrerInterest = InterestCalculator.calculateInterest(loanModel, currentPeriodPassedDays * transferApplicationModel.getInvestAmount());
-                    transferrerInvestRepayModel.setExpectedInterest(transferrerInterest);
-                    transferrerInvestRepayModel.setExpectedFee(new BigDecimal(transferrerInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(loanModel.getInvestFeeRate())).longValue());
-
-                    int currentPeriodRemainingDays = Days.daysBetween(lastRepayDate, new DateTime(transferrerInvestRepayModel.getRepayDate()).plusDays(1).withTimeAtStartOfDay()).getDays() - currentPeriodPassedDays;
-                    long transfereeInterest = InterestCalculator.calculateInterest(loanModel, currentPeriodRemainingDays * transferApplicationModel.getInvestAmount());
-                    transfereeInvestRepayModel.setExpectedInterest(transfereeInterest);
-                    transfereeInvestRepayModel.setExpectedFee(new BigDecimal(transfereeInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(loanModel.getInvestFeeRate())).longValue());
-                }
-                investRepayMapper.update(transferrerInvestRepayModel);
-
-                transfereeInvestRepayModels.add(transfereeInvestRepayModel);
+        List<InvestRepayModel> transferrerTransferredInvestRepayModels = Lists.newArrayList(Iterables.filter(investRepayMapper.findByInvestIdAndPeriodAsc(transferInvestId), new Predicate<InvestRepayModel>() {
+            @Override
+            public boolean apply(InvestRepayModel input) {
+                return input.getPeriod() >= transferBeginWithPeriod;
             }
+        }));
 
+        List<InvestRepayModel> transfereeInvestRepayModels = Lists.newArrayList();
+        for (InvestRepayModel transferrerTransferredInvestRepayModel : transferrerTransferredInvestRepayModels) {
+            InvestRepayModel transfereeInvestRepayModel = new InvestRepayModel(idGenerator.generate(),
+                    investId,
+                    transferrerTransferredInvestRepayModel.getPeriod(),
+                    transferrerTransferredInvestRepayModel.getCorpus(),
+                    transferrerTransferredInvestRepayModel.getExpectedInterest(),
+                    transferrerTransferredInvestRepayModel.getExpectedFee(),
+                    transferrerTransferredInvestRepayModel.getRepayDate(),
+                    transferrerTransferredInvestRepayModel.getStatus());
+
+            transferrerTransferredInvestRepayModel.setExpectedInterest(0);
+            transferrerTransferredInvestRepayModel.setExpectedFee(0);
+            transferrerTransferredInvestRepayModel.setCorpus(0);
+            transferrerTransferredInvestRepayModel.setTransferred(true);
+            transferrerTransferredInvestRepayModel.setStatus(RepayStatus.COMPLETE);
+
+            if (transferrerTransferredInvestRepayModel.getPeriod() == transferBeginWithPeriod && !isTransferInterest) {
+                DateTime transferTime = new DateTime(transferApplicationModel.getTransferTime()).withTimeAtStartOfDay();
+                DateTime firstDateOfCurrentPeriod = loanModel.getType().getInterestInitiateType() == InterestInitiateType.INTEREST_START_AT_INVEST ?
+                        new DateTime(investMapper.findById(transferInvestId).getCreatedTime()).withTimeAtStartOfDay() :
+                        new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
+                InvestRepayModel lastInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferInvestId, transferBeginWithPeriod - 1);
+                firstDateOfCurrentPeriod = lastInvestRepayModel != null ? new DateTime(lastInvestRepayModel.getRepayDate()).plusDays(1).withTimeAtStartOfDay() : firstDateOfCurrentPeriod;
+
+                int currentPeriodPassedDays = Days.daysBetween(firstDateOfCurrentPeriod, transferTime).getDays();
+                long transferrerInterest = InterestCalculator.calculateInterest(loanModel, currentPeriodPassedDays * transferApplicationModel.getInvestAmount());
+                transferrerTransferredInvestRepayModel.setExpectedInterest(transferrerInterest);
+                transferrerTransferredInvestRepayModel.setExpectedFee(new BigDecimal(transferrerInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(loanModel.getInvestFeeRate())).longValue());
+
+                int currentPeriodRemainingDays = Days.daysBetween(firstDateOfCurrentPeriod, new DateTime(transferrerTransferredInvestRepayModel.getRepayDate()).plusDays(1).withTimeAtStartOfDay()).getDays() - currentPeriodPassedDays;
+                long transfereeInterest = InterestCalculator.calculateInterest(loanModel, currentPeriodRemainingDays * transferApplicationModel.getInvestAmount());
+                transfereeInvestRepayModel.setExpectedInterest(transfereeInterest);
+                transfereeInvestRepayModel.setExpectedFee(new BigDecimal(transfereeInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(loanModel.getInvestFeeRate())).longValue());
+                transfereeInvestRepayModel.setStatus(RepayStatus.REPAYING);
+            }
+            investRepayMapper.update(transferrerTransferredInvestRepayModel);
+
+            transfereeInvestRepayModels.add(transfereeInvestRepayModel);
         }
 
         investRepayMapper.create(transfereeInvestRepayModels);

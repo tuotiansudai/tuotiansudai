@@ -6,7 +6,7 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.AmountTransferException;
 import org.springframework.transaction.annotation.Transactional;
 
-public interface InvestTransferPruchaseService {
+public interface InvestTransferPurchaseService {
 
     BaseDto<PayFormDataDto> purchase(InvestDto investDto);
 

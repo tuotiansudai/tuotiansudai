@@ -90,13 +90,7 @@ public class InvestRepayMapperTest {
     public void shouldFindSumRepaidCorpusByLoginNameIsOk() {
         InvestModel investModel = this.getFakeInvestModel();
         investMapper.create(investModel);
-        InvestRepayModel investRepayModel = new InvestRepayModel();
-        investRepayModel.setId(idGenerator.generate());
-        investRepayModel.setInvestId(investModel.getId());
-        investRepayModel.setPeriod(1);
-        investRepayModel.setStatus(RepayStatus.COMPLETE);
-        investRepayModel.setRepayDate(new Date());
-        investRepayModel.setCorpus(1000L);
+        InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), investModel.getId(), 1, 1000L, 0, 0, new Date(), RepayStatus.COMPLETE);
         List<InvestRepayModel> investRepayModels = Lists.newArrayList(investRepayModel);
         investRepayMapper.create(investRepayModels);
 

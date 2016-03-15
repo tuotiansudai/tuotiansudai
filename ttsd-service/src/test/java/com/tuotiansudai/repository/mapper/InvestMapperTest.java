@@ -101,35 +101,6 @@ public class InvestMapperTest {
         return model;
     }
 
-    private List<InvestRepayModel> getFakeInvestRepayModel(long investId) {
-        List<InvestRepayModel> list = new ArrayList<>();
-        InvestRepayModel model = new InvestRepayModel();
-        model.setId(idGenerator.generate());
-        model.setCreatedTime(new Date());
-        model.setCorpus(100);
-        model.setDefaultInterest(1);
-        model.setExpectedInterest(10);
-        model.setExpectedFee(3);
-        model.setInvestId(investId);
-        model.setPeriod(1);
-        model.setRepayDate(new Date());
-        model.setStatus(RepayStatus.REPAYING);
-        list.add(model);
-        InvestRepayModel model2 = new InvestRepayModel();
-        model2.setId(idGenerator.generate());
-        model2.setCreatedTime(new Date());
-        model2.setCorpus(1000);
-        model2.setDefaultInterest(1);
-        model2.setExpectedInterest(10);
-        model2.setExpectedFee(3);
-        model2.setInvestId(investId);
-        model2.setPeriod(1);
-        model2.setRepayDate(new Date());
-        model2.setStatus(RepayStatus.COMPLETE);
-        list.add(model2);
-        return list;
-    }
-
     @Before
     public void createLoan() {
         createLoan(User_ID, Loan_ID, ActivityType.NORMAL);

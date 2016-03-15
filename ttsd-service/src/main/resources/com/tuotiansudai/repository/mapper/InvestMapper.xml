@@ -8,7 +8,7 @@
 
     <resultMap id="investResultMap" type="InvestModel">
         <id column="id" property="id"></id>
-        <id column="transfer_invest_id" property="transferInvestId"></id>
+        <result column="transfer_invest_id" property="transferInvestId"></result>
         <result column="login_name" property="loginName"></result>
         <result column="loan_id" property="loanId"></result>
         <result column="amount" property="amount"></result>
@@ -56,7 +56,7 @@
 
     <insert id="create" parameterType="InvestModel">
         insert into invest ( <include refid="columns"></include> )
-        value(#{id}, #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transfer_status}, #{source}, #{isAutoInvest}, #{channel}, #{createdTime})
+        value(#{id}, #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source}, #{isAutoInvest}, #{channel}, #{createdTime})
     </insert>
 
     <update id="updateStatus" parameterType="map">

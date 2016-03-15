@@ -12,7 +12,7 @@ CREATE TABLE `aa`.`transfer_application` (
   `transfer_fee`       BIGINT UNSIGNED NOT NULL,
   `status`             VARCHAR(100)    NOT NULL,
   `deadline`           DATETIME        NOT NULL,
-  `transfer_time`      DATETIME        NOT NULL,
+  `transfer_time`      DATETIME,
   `application_time`   DATETIME        NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_TRANSFER_APPLICATION_LOAN_ID_REF_LOAN_ID` FOREIGN KEY (`loan_id`) REFERENCES `loan` (`id`),

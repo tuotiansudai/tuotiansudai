@@ -86,7 +86,7 @@
         insert into invest_repay ( <include refid="columns"></include> )
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.id}, #{item.investId}, #{item.corpus}, #{item.defaultInterest}, #{item.expectedInterest}, #{item.actualInterest}, #{item.expectedFee}, #{item.actualFee}, #{item.period}, #{item.repayDate}, #{item.actualRepayDate}, #{item.status}, #{item.createdTime})
+            (#{item.id}, #{item.investId}, #{item.corpus}, #{item.defaultInterest}, #{item.expectedInterest}, #{item.actualInterest}, #{item.expectedFee}, #{item.actualFee}, #{item.period}, #{item.repayDate}, #{item.actualRepayDate}, #{item.status}, #{item.isTransferred}, #{item.createdTime})
         </foreach>
     </insert>
 
@@ -116,7 +116,8 @@
 
     <update id="update" parameterType="InvestRepayModel">
         update invest_repay
-        set expected_interest = #{expectedInterest},
+        set corpus = #{corpus},
+            expected_interest = #{expectedInterest},
             expected_fee = #{expectedFee},
             repay_date = #{repayDate},
             actual_interest = #{actualInterest},
@@ -124,7 +125,7 @@
             actual_repay_date = #{actualRepayDate},
             default_interest = #{defaultInterest},
             status = #{status},
-            is_transferred = #{isTransferred},
+            is_transferred = #{isTransferred}
         where id = #{id}
     </update>
 

@@ -12,6 +12,7 @@ public enum UserBillBusinessType {
     ADVANCE_REPAY("提前还款"),
     OVERDUE_REPAY("逾期还款"),
     INVEST_FEE("利息管理费"),
+    TRANSFER_FEE("债权转让管理费"),
     ACTIVITY_REWARD("活动奖励"),
     REFERRER_REWARD("推荐奖励"),
     APPLY_WITHDRAW("申请提现"),

@@ -32,8 +32,7 @@ public interface InvestMapper {
      * @param id
      * @param transferStatus
      */
-    void updateTransferStatus(@Param(value = "id") long id,
-                      @Param(value = "transferStatus") TransferStatus transferStatus);
+    void updateTransferStatus(@Param(value = "id") long id, @Param(value = "transferStatus") TransferStatus transferStatus);
 
     /**
      * 根据ID查找对应的投资

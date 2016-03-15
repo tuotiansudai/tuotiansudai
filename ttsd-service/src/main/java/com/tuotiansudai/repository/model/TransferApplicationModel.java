@@ -12,7 +12,7 @@ public class TransferApplicationModel {
 
     private long transferInvestId;
 
-    private long investId;
+    private Long investId;
 
     private int period;
 
@@ -37,8 +37,9 @@ public class TransferApplicationModel {
     public TransferApplicationModel() {
     }
 
-    public TransferApplicationModel(InvestModel investModel, int period, long transferAmount, boolean transferInterest, long transferFee, Date deadline) {
+    public TransferApplicationModel(InvestModel investModel, String name, int period, long transferAmount, boolean transferInterest, long transferFee, Date deadline) {
         this.loanId = investModel.getLoanId();
+        this.name = name;
         this.transferInvestId = investModel.getId();
         this.period = period;
         this.loginName = investModel.getLoginName();
@@ -83,11 +84,11 @@ public class TransferApplicationModel {
         this.transferInvestId = transferInvestId;
     }
 
-    public long getInvestId() {
+    public Long getInvestId() {
         return investId;
     }
 
-    public void setInvestId(long investId) {
+    public void setInvestId(Long investId) {
         this.investId = investId;
     }
 

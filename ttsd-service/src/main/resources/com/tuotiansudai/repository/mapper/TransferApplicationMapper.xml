@@ -29,7 +29,7 @@
         value (#{name}, #{loanId}, #{transferInvestId}, #{investId}, #{period}, #{loginName}, #{investAmount}, #{transferAmount}, #{transferInterest}, #{transferFee}, #{status}, #{deadline}, #{transferTime}, #{applicationTime})
     </insert>
 
-    <select id="findByTransferInvestId" parameterType="map" resultMap="systemRechargeResultMap">
+    <select id="findByTransferInvestId" parameterType="map" resultMap="transferApplicationResultMap">
         select * from transfer_application where transfer_invest_id = #{transferInvestId} and status = #{status}
     </select>
 

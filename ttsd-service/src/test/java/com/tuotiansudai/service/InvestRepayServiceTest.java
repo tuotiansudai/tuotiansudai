@@ -110,21 +110,11 @@ public class InvestRepayServiceTest {
 
     private void createInvestRepay(long investId, RepayStatus repayStatus, int period) {
         List<InvestRepayModel> investRepayModelList = Lists.newArrayList();
-        InvestRepayModel investRepayModel = new InvestRepayModel();
-        investRepayModel.setId(idGenerator.generate());
-        investRepayModel.setInvestId(investId);
-        investRepayModel.setStatus(repayStatus);
-        investRepayModel.setCorpus(100);
-        investRepayModel.setExpectedInterest(100);
+        InvestRepayModel investRepayModel = new InvestRepayModel(idGenerator.generate(), investId, period, 100, 100, 100, new Date(), repayStatus);
         investRepayModel.setActualInterest(100);
-        investRepayModel.setDefaultInterest(100);
-        investRepayModel.setExpectedInterest(100);
-        investRepayModel.setExpectedFee(100);
         investRepayModel.setActualFee(100);
-        investRepayModel.setPeriod(period);
-        investRepayModel.setRepayDate(new Date());
+        investRepayModel.setDefaultInterest(100);
         investRepayModel.setActualRepayDate(new Date());
-        investRepayModel.setCreatedTime(new Date());
         investRepayModelList.add(investRepayModel);
         investRepayMapper.create(investRepayModelList);
     }
