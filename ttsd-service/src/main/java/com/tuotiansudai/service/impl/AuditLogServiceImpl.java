@@ -9,6 +9,7 @@ import com.tuotiansudai.repository.mapper.AuditLogMapper;
 import com.tuotiansudai.repository.model.AuditLogModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
+import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.StringUtils;
@@ -34,41 +35,29 @@ public class AuditLogServiceImpl implements AuditLogService {
 
     @Override
     @Transactional
-    public void generateAuditLog(String operatorLoginName, UserModel beforeUpdateUserModel, List<UserRoleModel> beforeUpdateUserRoleModels,
-                                 UserModel afterUpdateUserModel, List<UserRoleModel> afterUpdateUserRoleModels,
-                                 String userIp) {
-        String beforeUpdate = MessageFormat.format(AUDIT_LOG_TEMPLATE,
-                beforeUpdateUserModel.getLoginName(),
-                beforeUpdateUserModel.getMobile(),
-                beforeUpdateUserModel.getEmail(),
-                beforeUpdateUserModel.getReferrer(),
-                beforeUpdateUserModel.getStatus().name(),
-                Joiner.on(",").join(Lists.transform(beforeUpdateUserRoleModels, new Function<UserRoleModel, String>() {
-                    @Override
-                    public String apply(UserRoleModel input) {
-                        return input.getRole().name();
-                    }
-                })));
+    public void createUserActiveLog(String loginName, String operatorLoginName, UserStatus userStatus, String userIp) {
 
-        String afterUpdate = MessageFormat.format(AUDIT_LOG_TEMPLATE,
-                afterUpdateUserModel.getLoginName(),
-                afterUpdateUserModel.getMobile(),
-                afterUpdateUserModel.getEmail(),
-                afterUpdateUserModel.getReferrer(),
-                afterUpdateUserModel.getStatus().name(),
-                Joiner.on(",").join(Lists.transform(afterUpdateUserRoleModels, new Function<UserRoleModel, String>() {
-                    @Override
-                    public String apply(UserRoleModel input) {
-                        return input.getRole().name();
-                    }
-                })));
+        String operation = userStatus == UserStatus.ACTIVE ? "解禁" : "禁止";
+        String description = operatorLoginName + operation + "了用户" + loginName;
 
         AuditLogModel log = new AuditLogModel();
         log.setId(idGenerator.generate());
-        log.setLoginName(beforeUpdateUserModel.getLoginName());
+        log.setLoginName(loginName);
         log.setOperatorLoginName(operatorLoginName);
         log.setIp(userIp);
-        log.setDescription(beforeUpdate + " => " + afterUpdate);
+        log.setDescription(description);
+        auditLogMapper.create(log);
+    }
+
+    @Override
+    public void createAuditLog(String auditorLoginName, String loginName, String description, String auditorIp){
+
+        AuditLogModel log = new AuditLogModel();
+        log.setId(idGenerator.generate());
+        log.setLoginName(loginName);
+        log.setOperatorLoginName(auditorLoginName);
+        log.setIp(auditorIp);
+        log.setDescription(description);
         auditLogMapper.create(log);
     }
 

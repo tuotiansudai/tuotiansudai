@@ -1010,9 +1010,11 @@
               border: solid 1px #fdd8bd;
               background: #fff2e9;
               width:100%;
+              max-height: 285px;
               text-align: left;
               font-size: 13px;
-
+              overflow: hidden;
+              overflow-y: scroll;
               li {
                 padding:5px 10px;
                 line-height: 1.6;

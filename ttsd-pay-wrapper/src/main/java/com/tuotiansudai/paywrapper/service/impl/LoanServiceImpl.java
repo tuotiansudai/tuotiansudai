@@ -13,6 +13,7 @@ import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
+import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -97,6 +98,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private JPushAlertService jPushAlertService;
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(long loanId) {
@@ -216,7 +220,7 @@ public class LoanServiceImpl implements LoanService {
             payDataDto.setStatus(true);
             payDataDto.setCode(BaseSyncResponseModel.SUCCESS_CODE);
             payDataDto.setMessage("some other loan out process is running.");
-            logger.error("some other thread is loan-outing for this loan, loanId:"+loanId);
+            logger.error("some other thread is loan-outing for this loan, loanId:" + loanId);
         }
         return baseDto;
     }
@@ -372,6 +376,7 @@ public class LoanServiceImpl implements LoanService {
 
         logger.debug(MessageFormat.format("标的: {0} 放款邮件通知", loanId));
         notifyInvestorsLoanOutSuccessfulByEmail(notifies);
+
     }
 
     private void notifyInvestorsLoanOutSuccessfulBySMS(List<InvestNotifyInfo> notifyInfos) {
@@ -393,7 +398,6 @@ public class LoanServiceImpl implements LoanService {
             }
         }
     }
-
     private void processLoanStatusForLoanOut(LoanModel loan) {
         BaseDto<PayDataDto> dto = updateLoanStatus(loan.getId(), LoanStatus.REPAYING);
         if(dto.getData().getStatus()){

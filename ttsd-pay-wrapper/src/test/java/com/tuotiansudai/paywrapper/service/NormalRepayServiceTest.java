@@ -322,7 +322,7 @@ public class NormalRepayServiceTest {
         assertThat(investorUserBills2.get(1).getAmount(), is(investRepayModels2.get(0).getActualFee()));
         assertThat(investorUserBills2.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
         assertThat(investorUserBills2.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
-        assertThat(investorUserBills2.get(2).getAmount(), is(50L));
+        assertThat(investorUserBills2.get(2).getAmount(), is(51L));
         assertThat(investorUserBills2.get(2).getBusinessType(), is(UserBillBusinessType.BIRTHDAY_COUPON));
         assertThat(investorUserBills2.get(2).getOperationType(), is(UserBillOperationType.TI_BALANCE));
         assertThat(investorUserBills2.get(3).getAmount(), is(5L));
@@ -346,10 +346,10 @@ public class NormalRepayServiceTest {
         assertThat(systemBillModel3.getAmount(), is(16L));
 
         UserCouponModel actualBirthdayUserCouponModel = userCouponMapper.findById(birthdayUserCouponModel.getId());
-        assertThat(actualBirthdayUserCouponModel.getActualInterest(), is(50L));
+        assertThat(actualBirthdayUserCouponModel.getActualInterest(), is(51L));
         assertThat(actualBirthdayUserCouponModel.getActualFee(), is(5L));
         SystemBillModel systemBillModel5 = systemBillMapper.findByOrderId(birthdayUserCouponModel.getId(), SystemBillBusinessType.COUPON);
-        assertThat(systemBillModel5.getAmount(), is(45L));
+        assertThat(systemBillModel5.getAmount(), is(46L));
     }
 
     @Test
