@@ -6,24 +6,25 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             $changePasswordLayer = $('.setPass', $InfoBox),
             $resetUmpayPasswordLayer = $('.setUmpayPass', $InfoBox),
             $changeEmailDOM = $('#changeEmailDOM'),
+            $noPasswordInvest = $('.setNoPasswordInvest'),
             $turnOnNoPasswordInvestDOM = $('#turnOnNoPasswordInvestDOM'),
             $turnOffNoPasswordInvestDOM = $('#turnOffNoPasswordInvestDOM'),
             $noPasswordInvestDOM = $('#noPasswordInvestDOM'),
             $imageCaptchaElement = $('.image-captcha', $turnOffNoPasswordInvestDOM),
             $imageCaptchaTextElement = $('.image-captcha-text', $turnOffNoPasswordInvestDOM),
             $getCaptchaElement = $('.get-captcha'),
-            $btnCancelElement = $('.btn-cancel'),
+            $btnCancelElement = $('.btn-cancel',$turnOffNoPasswordInvestDOM),
+            $btnCloseTurnOnElement = $('.btn-close-turn-on',$turnOnNoPasswordInvestDOM),
+            $btnTurnOnElement = $('.btn-turn-on',$turnOnNoPasswordInvestDOM),
             $codeNumber = $('.code-number'),
 
 
             $changePassDOM = $('#changePassDOM'),
             $resetUmpayPassDOM = $('#resetUmpayPassDOM'),
             $successUmpayPass = $('#successUmpayPass'),
-            $noPasswordInvest = $('.setNoPasswordInvest'),
             $EmailForm = $('form', $changeEmailDOM),
             $passwordForm = $('form', $changePassDOM),
             $umpayPasswordForm = $('form', $resetUmpayPassDOM),
-            $turnOnNoPasswordInvestForm = $('form', $turnOnNoPasswordInvestDOM),
             $turnOffNoPasswordInvestForm = $('#turnOffNoPasswordInvestForm', $turnOffNoPasswordInvestDOM),
             $imageCaptchaForm = $('#imageCaptchaForm', $turnOffNoPasswordInvestDOM);
 
@@ -53,22 +54,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                 area: ['490px', '220px'],
                 shadeClose: false,
                 closeBtn:0,
-                btn:['取消','去联动优势授权'],
-                content: $turnOnNoPasswordInvestDOM,
-                btn1:function(){
-                },
-                btn2: function () {
-                    $turnOnNoPasswordInvestForm.submit();
-                    layer.open({
-                        type: 1,
-                        move: false,
-                        offset: "200px",
-                        title: '免密投资',
-                        area: ['490px', '220px'],
-                        shadeClose: true,
-                        content: $noPasswordInvestDOM
-                    });
-                }
+                content: $turnOnNoPasswordInvestDOM
 
             });
         });
@@ -110,6 +96,22 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
         $btnCancelElement.on('click',function(){
             layer.closeAll();
         });
+        $btnCloseTurnOnElement.on('click',function(){
+            layer.closeAll();
+        });
+        $btnTurnOnElement.on('click',function(){
+            layer.closeAll();
+            layer.open({
+                type: 1,
+                move: false,
+                offset: "200px",
+                title: '免密投资',
+                area: ['490px', '220px'],
+                shadeClose: true,
+                content: $noPasswordInvestDOM
+            });
+        });
+
         $imageCaptchaForm.validate({
 
             focusInvalid: false,

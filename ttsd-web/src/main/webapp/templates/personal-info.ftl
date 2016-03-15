@@ -151,11 +151,13 @@
 
 <div id="turnOnNoPasswordInvestDOM" class="pad-m popLayer" style="display: none;">
     <form name="turnOnNoPasswordInvestForm" action="${requestContext.getContextPath()}/no-password-invest" method="post" target="_blank">
-        <dl>
-            <dt class="requireOpt">推荐您开通免密投资功能，简化投资过程，理财快人一步。</dt>
-        </dl>
+        <div  class="tc text-m">推荐您开通免密投资功能，简化投资过程，理财快人一步。</div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="noPasswordInvest" value="true"/>
+        <div class="tc person-info-btn" style="margin-top:50px;">
+            <button class="btn  btn-cancel btn-close btn-close-turn-on" type="button" >取消</button>
+            <button class="btn btn-success btn-turn-on" type="submit" >去联动优势授权</button>
+        </div>
     </form>
 </div>
 <div id="turnOffNoPasswordInvestDOM" class="pad-m popLayer" style="display: none; ">
