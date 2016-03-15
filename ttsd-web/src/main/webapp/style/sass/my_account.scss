@@ -2187,8 +2187,9 @@ position: relative;
   background: url("/images/sign/choi-beans.png") no-repeat;
 }
 .content-list {
-  float: left;
+  float:left;
   width: 100%;
+  min-height:500px;
 }
 .choi-beans-list {
   float: left;

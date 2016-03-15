@@ -86,7 +86,7 @@
             <div class="beans-coupon">
                 <div class="beans-list">
                     <i class="icon-result icon-beans"></i>
-                    <span class="beans-num">可用财豆：${myPoint!}</span>
+                    <span class="beans-num">可用财豆：<strong class="bean-use">${myPoint!}</strong></span>
                     <i class="icon-result icon-dou"></i>
                 </div>
             </div>
@@ -127,7 +127,7 @@
                             <div class="bottom-time">
                                 <span>所需财豆：${exchangeCouponDto.exchangePoint?string('0')}</span>
                                 <i class="icon-dou"></i>
-                                <a href="javascript:void(0)" class="reedom-now" data-id="${exchangeCouponDto.id?string('0')}" data-bite="${exchangeCouponDto.couponType.getName()!}">立即兑换</a>
+                                <a href="javascript:void(0)" class="reedom-now" data-id="${exchangeCouponDto.id?string('0')}" data-bite="${exchangeCouponDto.couponType.getName()!}" data-beans="${exchangeCouponDto.exchangePoint?string('0')}">立即兑换</a>
                             </div>
                         </li>
 					</#list>
