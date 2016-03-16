@@ -4,9 +4,9 @@ INSERT INTO user_point_task
 SELECT
   t.`login_name`,
   1,
-  t.`register_time`
+  min(t.`register_time`) as register_time
 FROM
-  account t ;
+  account t group by t.`login_name`;
 
 INSERT INTO user_point_task
   SELECT
