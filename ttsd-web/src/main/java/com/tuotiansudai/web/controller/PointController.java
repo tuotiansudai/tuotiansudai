@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
@@ -95,12 +96,19 @@ public class PointController {
         BaseDataDto baseDataDto = new BaseDataDto();
         long exchangePoint = couponService.findCouponExchangeByCouponId(couponId).getExchangePoint();
         boolean sufficient = pointExchangeService.exchangeableCoupon(couponId, LoginUserInfo.getLoginName());
+        CouponModel couponModel = couponService.findCouponById(couponId);
+        boolean couponExchangeable = couponModel.getIssuedCount() < couponModel.getTotalCount();
         if (sufficient && pointExchangeService.exchangeCoupon(couponId, LoginUserInfo.getLoginName(), exchangePoint)) {
             baseDataDto.setStatus(true);
         } else {
             baseDataDto.setStatus(false);
             if (!sufficient) {
-                baseDataDto.setMessage("point insufficient");
+                if(!couponExchangeable){
+                    baseDataDto.setMessage("coupon exchangeable insufficient");
+                }
+                else{
+                    baseDataDto.setMessage("point insufficient");
+                }
             }
         }
         return baseDataDto;

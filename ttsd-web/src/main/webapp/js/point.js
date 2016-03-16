@@ -202,6 +202,9 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                                                 location.href='/point';
                                             }
                                         });
+                                    } else if (!data.status && data.message == 'coupon exchangeable insufficient') {
+                                        layer.msg('当前优惠券已兑完，请兑换其他优惠券',{icon: 5});
+
                                     } else {
                                         layer.alert('兑换失败，请重试！',{title:'温馨提示'});
                                     }
