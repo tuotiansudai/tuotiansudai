@@ -250,7 +250,11 @@
 </div>
 </div>
 </div>
-
+<div class="pad-m tl hide" id="isAuthorizeSuccess">
+    <p class="mb-0 text-m">请在新打开的联动优势完成操作后选择：</p>
+    <p class="mb-0 text-m">（授权后视情况可能会有一秒或更长的延迟）</p>
+    <p class="mb-0 text-s">遇到问题请拨打我们的客服热线：400-169-1188（工作日9:00-20:00）</p>
+</div>
 
 
     <#include "coupon-alert.ftl" />

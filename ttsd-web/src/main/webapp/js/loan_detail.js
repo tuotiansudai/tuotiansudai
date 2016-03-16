@@ -1,4 +1,4 @@
-require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'csrf', 'autoNumeric', 'coupon-alert'], function($, pagination, Mustache, investListTemplate, layer, _) {
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'autoNumeric', 'coupon-alert', 'csrf'], function($, pagination, Mustache, investListTemplate, layer, _) {
 
     var $loanDetail = $('.loan-detail-content'),
         loanId = $('.hid-loan').val(),
@@ -296,41 +296,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         });
     }
 
-    // openNoPasswordInvest.click(function () {
-    //     isTip();
-    // })
-    //is tip
-    function isTip(){
-        if (hasRemindInvestNoPassword.val()) {
-            $.ajax({
-                url: '/no-password-invest/writeRemindFlag',
-                type: 'get',
-                dataType: 'json',
-                contentType: 'application/json; charset=UTF-8'
-            });
-
-            if ($('#freeSecret').data("open-agreement")) {
-                layer.open({
-                    type: 1,
-                    closeBtn:0,
-                    title: '登录到联动优势支付平台充值',
-                    area: ['500px', '290px'],
-                    shadeClose: true,
-                    content: $('#popInvestNoPassword')
-                });
-            } else {
-                layer.open({
-                    type: 1,
-                    closeBtn:0,
-                    title: '登录到联动优势支付平台充值',
-                    area: ['500px', '290px'],
-                    shadeClose: true,
-                    content: $('#popInvestNoPasswordAgree')
-                });
-            }
-        }
-    }
-    //form submit
+    //submit  form
     function formSubmit(){
         if ($('#investForm').attr('action') === '/invest') {
             if (!isInvestor) {
@@ -358,28 +324,11 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         amountInputElement.val(amountInputElement.autoNumeric("get"));
         $('#investForm').submit();
     }
-    $('.btn-open').click(function() {
-        $.ajax({
-            url: '/no-password-invest/enabled',
-            type: 'POST',
-            dataType: 'json',
-            contentType: 'application/json; charset=UTF-8'
-        }).done(function(res) {
-            layer.closeAll();
-            if (res.success) {
-                layer.alert("开启成功！", function() {
-                    layer.closeAll();
-                    formSubmit();
-                });
-            }
-        }).fail(function() {
-            layer.alert("开启失败！");
-        })
-    });
+
 
     $('#freeSecret').on('click', function(event) {
         event.preventDefault();
-        isAuthorize();
+        openBtn();
     });
     function openBtn(){
         layer.open({
@@ -392,10 +341,43 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             shadeClose: true,
             content: '<p class="pad-m tc">您可直接开启免密投资，简化投资过程，理财快人一步，是否开启？</p>',
             yes:function(){
-
+                if (auto_invest) { // 如果开启过免密支付
+                    $.ajax({
+                        url: '/no-password-invset/enabled',
+                        type: 'POST',
+                        dataType: 'json'
+                    })
+                    .done(function() {
+                        layer.closeAll();
+                        layer.msg('开通成功！');
+                    })
+                    .fail(function() {
+                        layer.closeAll();
+                        layer.msg('开通失败，请重试！');
+                    });
+                } else {
+                    $.ajax({
+                         url: '/no-password-invest/agreement',
+                         type: 'POST',
+                         dataType: 'json',
+                         data: {
+                            noPasswordInvset: true
+                        }
+                     })
+                     .done(function() {
+                        window.open('/no-password-invest/agreement');
+                        layer.closeAll();
+                        isAuthorizeSuccess();
+                     })
+                     .fail(function() {
+                        layer.closeAll();
+                        layer.msg('开通失败，请重试！');
+                     });
+                      
+                }
             },
             cancle:function(){
-
+                layer.closeAll();
             }
         });
     }
@@ -403,18 +385,61 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         layer.open({
             type: 1,
             closeBtn:0,
+            title: '免密投资',
             shadeClose:false,
             btn:['去联动优势授权','继续投资'],
-            title: '免密投资',
             area: ['500px', '200px'],
-            shadeClose: true,
             content: '<p class="pad-m tc">推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>',
             yes:function(){
                 
             },
             cancle:function(){
-
+                formSubmit();
             }
+        });
+    }
+    function isAuthorize(){
+        layer.open({
+            type: 1,
+            closeBtn:0,
+            title: '免密投资',
+            shadeClose:false,
+            btn:['去联动优势授权','继续投资'],
+            area: ['500px', '200px'],
+            content: '<p class="pad-m tc">推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>',
+            yes:function(){
+                
+            },
+            cancle:function(){
+                formSubmit();
+            }
+        });
+    }
+    function isNoPass(){
+        layer.open({
+            type: 1,
+            closeBtn:0,
+            title: '免密投资',
+            shadeClose:false,
+            btn:['开启免密投资','继续投资'],
+            area: ['500px', '200px'],
+            content: '<p class="pad-m tc">推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>',
+            yes:function(){
+                
+            },
+            cancle:function(){
+                formSubmit();
+            }
+        });
+    }
+    function isAuthorizeSuccess(){
+        layer.open({
+            type: 1,
+            closeBtn:0,
+            shadeClose:false,
+            title: '登录到联动优势支付平台开通免密投资',
+            area: ['500px', '220px'],
+            content: $('#isAuthorizeSuccess')
         });
     }
 

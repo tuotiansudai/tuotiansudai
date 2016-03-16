@@ -22,6 +22,16 @@
     color:#808080;
   }
 }
+.layui-layer-content{
+  p{
+    &.color-title{
+      color:#4c4c4c;
+    }
+    &.color-tip{
+      color:#818181;
+    }
+  }
+}
 .layui-layer-content {
   //loaner record
   .layer-content {
