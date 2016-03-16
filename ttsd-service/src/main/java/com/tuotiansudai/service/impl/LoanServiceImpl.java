@@ -685,4 +685,14 @@ public class LoanServiceImpl implements LoanService {
         }
         return dto;
     }
+
+    @Override
+    public BaseDto<PayDataDto> applyAuditLoan(LoanDto loanDto){
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        baseDto.setData(payDataDto);
+        baseDto.setSuccess(true);
+        payDataDto.setStatus(true);
+        return baseDto;
+    }
 }

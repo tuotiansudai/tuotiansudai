@@ -37,7 +37,7 @@ public class AuditTaskAspectLoan {
 
     static Logger logger = Logger.getLogger(AuditTaskAspectLoan.class);
 
-    @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanService.createLoan(*))", returning = "returnValue")
+    @AfterReturning(value = "execution(* com.tuotiansudai.service.LoanService.applyAuditLoan(*))", returning = "returnValue")
     public void afterReturningCreateLoan(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after create loan aspect.");
         try {
