@@ -26,9 +26,6 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     static Logger logger = Logger.getLogger(PointExchangeServiceImpl.class);
 
     @Autowired
-    private CouponMapper couponMapper;
-
-    @Autowired
     private AccountMapper accountMapper;
 
     @Autowired
