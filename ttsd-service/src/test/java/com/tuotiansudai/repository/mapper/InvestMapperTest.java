@@ -6,6 +6,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -87,16 +88,8 @@ public class InvestMapperTest {
     }
 
     private InvestModel getFakeInvestModel() {
-        InvestModel model = new InvestModel();
-        model.setAmount(1000000);
-        // 舍弃毫秒数
-        Date currentDate = new Date((new Date().getTime() / 1000) * 1000);
-        model.setCreatedTime(currentDate);
-        model.setId(idGenerator.generate());
-        model.setIsAutoInvest(false);
-        model.setLoginName(User_ID);
-        model.setLoanId(Loan_ID);
-        model.setSource(Source.ANDROID);
+        InvestModel model = new InvestModel(idGenerator.generate(), Loan_ID, null, 1000000L, User_ID, Source.WEB, null);
+        model.setCreatedTime(new DateTime().withTimeAtStartOfDay().toDate());
         model.setStatus(InvestStatus.SUCCESS);
         return model;
     }
@@ -180,7 +173,7 @@ public class InvestMapperTest {
 
         long result = investMapper.sumSuccessInvestAmount(Loan_ID);
 
-        assertEquals(1000000l, result);
+        assertEquals(1000000L, result);
     }
 
 

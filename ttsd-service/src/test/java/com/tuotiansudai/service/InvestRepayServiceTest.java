@@ -96,14 +96,7 @@ public class InvestRepayServiceTest {
     }
 
     private void createInvest(String loginName, long loanId, long investId) {
-        InvestModel model = new InvestModel();
-        model.setAmount(1000000);
-        model.setCreatedTime(new Date());
-        model.setId(investId);
-        model.setIsAutoInvest(false);
-        model.setLoginName(loginName);
-        model.setLoanId(loanId);
-        model.setSource(Source.WEB);
+        InvestModel model = new InvestModel(investId, loanId, null, 1, loginName, Source.WEB, null);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
     }

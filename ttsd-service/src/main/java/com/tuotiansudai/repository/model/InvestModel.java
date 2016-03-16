@@ -66,6 +66,7 @@ public class InvestModel implements Serializable {
         this.status = InvestStatus.WAIT_PAY;
         this.isAutoInvest = Source.AUTO == source;
         this.createdTime = new Date();
+        this.transferStatus = TransferStatus.TRANSFERABLE;
     }
 
     public long getId() {

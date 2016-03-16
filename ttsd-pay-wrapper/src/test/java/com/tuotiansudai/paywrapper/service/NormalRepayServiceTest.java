@@ -1158,14 +1158,9 @@ public class NormalRepayServiceTest {
     }
 
     private InvestModel getFakeInvestModel(long loanId, long amount, String loginName, Date investTime) {
-        InvestModel model = new InvestModel();
-        model.setId(idGenerator.generate());
-        model.setAmount(amount);
-        model.setLoanId(loanId);
-        model.setLoginName(loginName);
-        model.setSource(Source.ANDROID);
-        model.setStatus(InvestStatus.SUCCESS);
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, Source.WEB, null);
         model.setCreatedTime(investTime);
+        model.setStatus(InvestStatus.SUCCESS);
         return model;
     }
 
