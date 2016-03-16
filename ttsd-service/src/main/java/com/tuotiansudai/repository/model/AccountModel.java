@@ -90,9 +90,7 @@ public class AccountModel implements Serializable{
         this.autoInvest = autoInvest;
     }
 
-    public boolean isNoPasswordInvest() {
-        return noPasswordInvest;
-    }
+    public boolean isNoPasswordInvest() {return noPasswordInvest;}
 
     public void setNoPasswordInvest(boolean noPasswordInvest) {
         this.noPasswordInvest = noPasswordInvest;
