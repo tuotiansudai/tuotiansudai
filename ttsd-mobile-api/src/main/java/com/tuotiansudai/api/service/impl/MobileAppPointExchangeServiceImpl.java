@@ -4,7 +4,9 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppPointExchangeService;
 import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
@@ -26,6 +28,8 @@ public class MobileAppPointExchangeServiceImpl implements MobileAppPointExchange
     @Autowired
     private AccountMapper accountMapper;
     @Autowired
+    private CouponMapper couponMapper;
+    @Autowired
     private CouponActivationService couponActivationService;
     @Autowired
     private PointBillService pointBillService;
@@ -40,8 +44,9 @@ public class MobileAppPointExchangeServiceImpl implements MobileAppPointExchange
         PointExchangeResponseDataDto pointExchangeResponseDataDto = new PointExchangeResponseDataDto();
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         long CouponExchangePoint = couponExchangeMapper.findByCouponId(Long.parseLong(couponId)).getExchangePoint();
+        CouponModel couponModel = couponMapper.lockById(Long.parseLong(couponId));
         long userPoint = accountModel.getPoint();
-        if(userPoint > CouponExchangePoint){
+        if(userPoint > CouponExchangePoint && couponModel.getIssuedCount() <= couponModel.getTotalCount()){
             couponActivationService.assignUserCoupon(pointExchangeRequestDto.getBaseParam().getUserId(),Lists.newArrayList(UserGroup.ALL_USER,
                     UserGroup.EXCHANGER),Long.parseLong(couponId));
             pointBillService.createPointBill(loginName, Long.parseLong(couponId), PointBusinessType.EXCHANGE, (-CouponExchangePoint));
