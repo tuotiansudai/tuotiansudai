@@ -15,7 +15,7 @@
         <result column="source" property="source"></result>
         <result column="is_auto_invest" property="isAutoInvest"></result>
         <result column="channel" property="channel"></result>
-        <result column="is_no_password_invest" property="isNoPpasswordInvest"></result>
+        <result column="is_no_password_invest" property="isNoPasswordInvest"></result>
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
