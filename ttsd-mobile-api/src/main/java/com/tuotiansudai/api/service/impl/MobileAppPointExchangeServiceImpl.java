@@ -1,19 +1,8 @@
 package com.tuotiansudai.api.service.impl;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppPointExchangeService;
 import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.coupon.service.CouponActivationService;
-import com.tuotiansudai.point.service.PointBillService;
-import com.tuotiansudai.point.repository.mapper.PointBillMapper;
-import com.tuotiansudai.point.repository.model.PointBillModel;
-import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointExchangeService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -29,13 +18,8 @@ public class MobileAppPointExchangeServiceImpl implements MobileAppPointExchange
     @Autowired
     private AccountMapper accountMapper;
     @Autowired
-    private CouponMapper couponMapper;
-    @Autowired
-    private CouponActivationService couponActivationService;
-    @Autowired
     private PointExchangeService pointExchangeService;
-    @Autowired
-    private PointBillService pointBillService;
+
 
     @Override
     @Transactional
@@ -64,10 +48,19 @@ public class MobileAppPointExchangeServiceImpl implements MobileAppPointExchange
 
         }
         else{
-            pointExchangeResponseDataDto.setPoint(userPoint);
-            dto.setCode(ReturnMessage.POINT_EXCHANGE_FAIL.getCode());
-            dto.setMessage(ReturnMessage.POINT_EXCHANGE_FAIL.getMsg());
-            dto.setData(pointExchangeResponseDataDto);
+            if(userPoint < CouponExchangePoint){
+                pointExchangeResponseDataDto.setPoint(userPoint);
+                dto.setCode(ReturnMessage.POINT_EXCHANGE_POINT_INSUFFICIENT.getCode());
+                dto.setMessage(ReturnMessage.POINT_EXCHANGE_POINT_INSUFFICIENT.getMsg());
+                dto.setData(pointExchangeResponseDataDto);
+            }
+            else
+            {
+                pointExchangeResponseDataDto.setPoint(userPoint);
+                dto.setCode(ReturnMessage.POINT_COUPON_NUM_INSUFFICIENT.getCode());
+                dto.setMessage(ReturnMessage.POINT_COUPON_NUM_INSUFFICIENT.getMsg());
+                dto.setData(pointExchangeResponseDataDto);
+            }
         }
         return dto;
     }
