@@ -9,6 +9,7 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
     private String repayTypeCode;
     private String repayTypeName;
     private Integer periods;
+    private Integer deadline;
     private String repayUnit;
     private String ratePercent;
     private String loanMoney;
@@ -293,5 +294,13 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
 
     public void setFundRaisingEndTime(String fundRaisingEndTime) {
         this.fundRaisingEndTime = fundRaisingEndTime;
+    }
+
+    public Integer getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Integer deadline) {
+        this.deadline = deadline;
     }
 }
