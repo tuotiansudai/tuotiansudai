@@ -41,7 +41,7 @@
                     <td>${userPointItem.mobile}</td>
                     <td>${userPointItem.point!''}</td>
                     <td>${userPointItem.totalPoint!''}</td>
-                    <td><a href="#">查看明细</a></td>
+                    <td><a href="/point-manage/user-point-detail-list?loginName=${userPointItem.loginName!''}&totalPoint=${userPointItem.totalPoint!''}&point=${userPointItem.point!''}">查看明细</a></td>
                 </tr>
                 </#list>
             </tbody>
@@ -64,7 +64,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="/point-manage/user-point-list?loginName=${loginName!}&userName=${userName!}&mobile=${mobbile!}&index=${index-1}&pageSize=${pageSize}">
+                    <a href="/point-manage/user-point-list?loginName=${loginName!}&userName=${userName!}&mobile=${mobbile!}&index=${index+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>

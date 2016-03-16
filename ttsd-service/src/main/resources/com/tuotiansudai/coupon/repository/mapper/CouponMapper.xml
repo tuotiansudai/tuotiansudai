@@ -228,6 +228,7 @@
         JOIN coupon_exchange e
         ON c.`id` = e.`coupon_id`
         AND c.`total_count` > c.`issued_count`
+        AND c.`active` is TRUE
         AND c.`coupon_Type` IN ('INVEST_COUPON','INTEREST_COUPON')
         ORDER BY c.created_time desc
         LIMIT #{index},#{pageSize}

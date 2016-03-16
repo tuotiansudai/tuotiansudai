@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.dto.AccountItemDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -127,4 +129,22 @@ public class PointBillServiceImpl implements PointBillService {
         dto.setStatus(true);
         return dto;
     }
+
+    @Override
+    public List<PointBillPaginationItemDataDto> getPointBillByLoginName(String loginName, int currentPageNo, int pageSize){
+        List<PointBillModel> pointBillModels =  pointBillMapper.findPointBillByLoginName(loginName, (currentPageNo - 1) * pageSize, pageSize);
+
+        List<PointBillPaginationItemDataDto> pointBillPaginationItemDataDtoList = new ArrayList<>();
+        for(PointBillModel pointBillModel : pointBillModels) {
+            PointBillPaginationItemDataDto pointBillPaginationItemDataDto = new PointBillPaginationItemDataDto(pointBillModel);
+            pointBillPaginationItemDataDtoList.add(pointBillPaginationItemDataDto);
+        }
+        return pointBillPaginationItemDataDtoList;
+    }
+
+    @Override
+    public long getPointBillCountByLoginName(String loginName){
+        return pointBillMapper.findCountPointBillByLoginName(loginName);
+    }
 }
+

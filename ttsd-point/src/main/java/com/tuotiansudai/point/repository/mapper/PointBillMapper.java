@@ -26,4 +26,10 @@ public interface PointBillMapper {
                                                         @Param(value = "startTime") Date startTime,
                                                         @Param(value = "endTime") Date endTime,
                                                         @Param(value = "businessType") PointBusinessType businessType);
+
+    long findCountPointBillByLoginName(@Param(value = "loginName") String loginName);
+
+    List<PointBillModel> findPointBillByLoginName(@Param(value = "loginName") String loginName,
+                                                  @Param(value = "index") int index,
+                                                  @Param(value = "pageSize") int pageSize);
 }

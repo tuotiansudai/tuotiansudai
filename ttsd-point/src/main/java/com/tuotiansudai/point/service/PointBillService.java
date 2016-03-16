@@ -5,6 +5,7 @@ import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 
 import java.util.Date;
+import java.util.List;
 
 public interface PointBillService {
 
@@ -16,4 +17,10 @@ public interface PointBillService {
                                                                               Date startTime,
                                                                               Date endTime,
                                                                               PointBusinessType businessType);
+
+    List<PointBillPaginationItemDataDto> getPointBillByLoginName(String loginName, int currentPageNo, int pageSize);
+
+    long getPointBillCountByLoginName(String loginName);
+
+
 }

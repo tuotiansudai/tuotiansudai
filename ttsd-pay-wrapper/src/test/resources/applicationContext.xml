@@ -99,7 +99,6 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="hikariCPDataSource"/>
         <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.jpush.repository.model,com.tuotiansudai.point.repository.model"/>
->>>>>>> point_master
     </bean>
 
     <!-- scan for mappers and let them be autowired -->

@@ -65,5 +65,25 @@
         </where>
     </select>
 
+    <select id="findPointBillByLoginName" parameterType="map" resultMap="pointBillResultMap">
+        select * from point_bill
+        <where>
+            <if test="loginName != null and loginName != ''">
+                and login_name = #{loginName}
+            </if>
+        </where>
+        order by created_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountPointBillByLoginName" parameterType="map" resultType="long">
+        select count(1)
+        from point_bill
+        <where>
+            <if test="loginName != null and loginName != ''">
+                and login_name = #{loginName}
+            </if>
+        </where>
+    </select>
 
 </mapper>
