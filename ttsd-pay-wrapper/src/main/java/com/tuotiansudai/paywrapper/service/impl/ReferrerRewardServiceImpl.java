@@ -12,6 +12,7 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -143,14 +144,13 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
 
     private long calculateReferrerReward(long amount, int loanDuration, int level, Role role,String referrerLoginName) {
         BigDecimal amountBigDecimal = new BigDecimal(amount);
-        int daysOfYear = new DateTime().dayOfYear().getMaximumValue();
 
         double rewardRate = this.getRewardRate(level, Role.STAFF == role,referrerLoginName);
 
         return amountBigDecimal
                 .multiply(new BigDecimal(rewardRate))
                 .multiply(new BigDecimal(loanDuration))
-                .divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN)
+                .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN)
                 .longValue();
     }
 

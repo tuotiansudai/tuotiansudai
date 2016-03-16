@@ -90,6 +90,7 @@ public class JobInitPlugin implements SchedulerPlugin {
             logger.debug(e.getLocalizedMessage(), e);
         }
     }
+    
 
     private void createRefreshAreaByMobile() {
         try {

@@ -11,8 +11,6 @@ public class RechargePaginationItemDataDto extends RechargeDto implements Serial
 
     private long rechargeId;
 
-    private String fee;
-
     private String status;
 
     private Date createdTime;
@@ -25,7 +23,6 @@ public class RechargePaginationItemDataDto extends RechargeDto implements Serial
 
     public RechargePaginationItemDataDto(RechargeModel rechargeModel) {
         this.rechargeId = rechargeModel.getId();
-        this.fee = AmountConverter.convertCentToString(rechargeModel.getFee());
         this.status = rechargeModel.getStatus().getDescription();
         this.createdTime = rechargeModel.getCreatedTime();
         super.setLoginName(rechargeModel.getLoginName());
@@ -57,14 +54,6 @@ public class RechargePaginationItemDataDto extends RechargeDto implements Serial
 
     public void setRechargeId(long rechargeId) {
         this.rechargeId = rechargeId;
-    }
-
-    public String getFee() {
-        return fee;
-    }
-
-    public void setFee(String fee) {
-        this.fee = fee;
     }
 
     public String getStatus() {

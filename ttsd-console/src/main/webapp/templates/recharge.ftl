@@ -90,7 +90,6 @@
                 <th>姓名</th>
                 <th>手机号</th>
                 <th>充值金额</th>
-                <th>手续费</th>
                 <th>充值渠道</th>
                 <th>快捷充值</th>
                 <th>充值状态</th>
@@ -113,7 +112,6 @@
                         <td>${rechargeItem.userName}</td>
                         <td>${rechargeItem.mobile}</td>
                         <td>${rechargeItem.amount}</td>
-                        <td>${rechargeItem.fee}</td>
                         <td>${rechargeItem.bankCode!}</td>
                         <td><#if rechargeItem.fastPay>是<#else>否</#if></td>
                         <td>${rechargeItem.status}</td>
