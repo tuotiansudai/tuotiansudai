@@ -65,6 +65,12 @@ public class InvestServiceImpl implements InvestService {
         return payWrapperClient.invest(investDto);
     }
 
+    @Override
+    public BaseDto<PayDataDto> noPasswordInvest(InvestDto investDto) throws InvestException {
+        checkInvestAmount(investDto);
+        return payWrapperClient.noPasswordInvest(investDto);
+    }
+
     private void checkInvestAmount(InvestDto investDto) throws InvestException {
         long loanId = Long.parseLong(investDto.getLoanId());
         LoanModel loan = loanMapper.findById(loanId);
