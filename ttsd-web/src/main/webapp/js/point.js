@@ -8,7 +8,9 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                 $taskBtn = $('#taskBtn'),
                 $taskTip = $('#taskLayer'),
                 $closeTask = $('#closeTask'),
-                $beanDetail=$('#beansDetail');
+                $beanDetail=$('#beansDetail'),
+                $beansNum=$('.beans-coupon .bean-use');
+
             //change model
             $navBtn.on('click', function (event) {
                 event.preventDefault();
@@ -166,6 +168,7 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                 event.preventDefault();
                 var $self=$(this),
                     dataId=$self.attr('data-id'),
+                    beansNum=$self.attr('data-beans'),
                     couponName=$self.attr('data-bite');
                 if (!$(this).hasClass('no-click')) {
                     layer.open({
@@ -191,6 +194,7 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                                             end:function() {
                                                 changeDatePicker();
                                                 loadPointBillData();
+                                                $beansNum.text(Math.round($beansNum.text())-Math.round(beansNum));
                                             }
                                         });
                                     } else if (!data.status && data.message == 'point insufficient') {

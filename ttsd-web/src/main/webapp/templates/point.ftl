@@ -86,7 +86,7 @@
             <div class="beans-coupon">
                 <div class="beans-list">
                     <i class="icon-result icon-beans"></i>
-                    <span class="beans-num">可用财豆：${myPoint!}</span>
+                    <span class="beans-num">可用财豆：<strong class="bean-use">${myPoint!}</strong></span>
                     <i class="icon-result icon-dou"></i>
                 </div>
             </div>
@@ -105,16 +105,16 @@
                                     <div class="coupon-time">有效期：${exchangeCouponDto.deadline?string('0')}天</div>
 									<#if exchangeCouponDto.couponType == 'INVEST_COUPON'>
                                         <p class="mt-10">
-                                            <span class="num-text">${exchangeCouponDto.amount}</span>
+                                            <span class="num-text"><@amount>${exchangeCouponDto.amount?string('0')}</@amount></span>
                                             <span class="unit-text">元</span>
                                         </p>
-                                        <p>[单笔投资满${exchangeCouponDto.investLowerLimit}元可用]</p>
+                                        <p>[单笔投资满<@amount>${exchangeCouponDto.investLowerLimit?string('0')}</@amount>元可用]</p>
 									<#else>
                                         <p class="mt-10">
                                             <span class="num-text">${exchangeCouponDto.rate*100}%</span>
                                             <span class="unit-text">年化收益</span>
                                         </p>
-                                        <p>[限投资${exchangeCouponDto.investUpperLimit}以内可用]</p>
+                                        <p>[限投资<@amount>${exchangeCouponDto.investUpperLimit?string('0')}</@amount>以内可用]</p>
 									</#if>
 
                                     <p>产品限制：
@@ -127,7 +127,7 @@
                             <div class="bottom-time">
                                 <span>所需财豆：${exchangeCouponDto.exchangePoint?string('0')}</span>
                                 <i class="icon-dou"></i>
-                                <a href="javascript:void(0)" class="reedom-now" data-id="${exchangeCouponDto.id?string('0')}" data-bite="${exchangeCouponDto.couponType.getName()!}">立即兑换</a>
+                                <a href="javascript:void(0)" class="reedom-now" data-id="${exchangeCouponDto.id?string('0')}" data-bite="${exchangeCouponDto.couponType.getName()!}" data-beans="${exchangeCouponDto.exchangePoint?string('0')}">立即兑换</a>
                             </div>
                         </li>
 					</#list>
