@@ -13,4 +13,6 @@ public interface SmsCaptchaService {
 
     boolean verifyMobileCaptcha(String mobile, String captcha, CaptchaType captchaType);
 
+    BaseDto<SmsDataDto> sendNoPasswordInvestCaptcha(String mobile, String requestIP) ;
+
 }

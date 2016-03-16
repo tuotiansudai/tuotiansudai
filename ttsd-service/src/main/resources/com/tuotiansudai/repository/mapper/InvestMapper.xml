@@ -15,6 +15,7 @@
         <result column="source" property="source"></result>
         <result column="is_auto_invest" property="isAutoInvest"></result>
         <result column="channel" property="channel"></result>
+        <result column="is_no_password_invest" property="isNoPasswordInvest"></result>
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
@@ -49,12 +50,12 @@
     </resultMap>
 
     <sql id="columns">
-        id, login_name, loan_id, amount, status, source, is_auto_invest, channel, created_time
+        id, login_name, loan_id, amount, status, source, is_auto_invest, channel, is_no_password_invest, created_time
     </sql>
 
     <insert id="create" parameterType="InvestModel">
         insert into invest ( <include refid="columns"></include> )
-        value(#{id}, #{loginName}, #{loanId}, #{amount}, #{status}, #{source}, #{isAutoInvest}, #{channel}, #{createdTime})
+        value(#{id}, #{loginName}, #{loanId}, #{amount}, #{status}, #{source}, #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime})
     </insert>
 
     <update id="updateStatus" parameterType="map">
