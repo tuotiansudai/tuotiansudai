@@ -62,7 +62,7 @@ public enum ReturnMessage {
     LESS_THAN_MIN_INVEST_AMOUNT("0054","投资金额小于标的最小投资金额"),
     OUT_OF_NOVICE_INVEST_LIMIT("0055","新手标投资已超上限"),
     INVEST_FAILED("0056","投资失败"),
-    INVEST_FAILED_NOT_OPEN_NO_PASSWORD_INVEST("0057","投资失败，您尚未开通免密投资功能"),
+    INVEST_FAILED_NOT_OPEN_NO_PASSWORD_INVEST("0057","投资失败，您尚未开启免密投资功能"),
 
     /******手机端投资******/
 
