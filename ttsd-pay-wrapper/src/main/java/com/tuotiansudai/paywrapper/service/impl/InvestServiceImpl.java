@@ -28,13 +28,11 @@ import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.*;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
 import org.springframework.aop.framework.AopContext;
-import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -54,6 +52,7 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private IdGenerator idGenerator;
+
 
     @Autowired
     private AccountMapper accountMapper;
@@ -254,6 +253,10 @@ public class InvestServiceImpl implements InvestService {
         InvestModel investModel = investMapper.findById(orderId);
         if (investModel == null) {
             logger.error(MessageFormat.format("invest(project_transfer) callback order is not exist (orderId = {0})", callbackRequestModel.getOrderId()));
+            return;
+        }
+        if (investModel.getStatus() == InvestStatus.SUCCESS) {
+            logger.error(MessageFormat.format("invest callback process fail, because this invest has already been succeed. (orderId = {0}, InvestId={0})", callbackRequestModel.getOrderId(), investModel.getId()));
             return;
         }
         String loginName = investModel.getLoginName();
