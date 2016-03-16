@@ -52,4 +52,6 @@ public interface InvestService {
     List<String> findAllInvestChannels();
 
     InvestModel findById(long investId);
+
+    BaseDto<PayDataDto> noPasswordInvest(InvestDto investDto) throws InvestException;
 }

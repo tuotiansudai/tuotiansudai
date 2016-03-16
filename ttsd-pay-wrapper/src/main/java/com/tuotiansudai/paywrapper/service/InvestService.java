@@ -31,4 +31,6 @@ public interface InvestService {
     void processOneCallback(InvestNotifyRequestModel callbackRequestModel);
 
     void investSuccess(long orderId, InvestModel investModel, String loginName);
+
+    BaseDto<PayDataDto> noPasswordInvest(InvestDto dto);
 }
