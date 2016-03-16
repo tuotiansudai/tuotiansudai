@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="coupon-exchanges.js" headLab="point-manage" sideLab="couponExchangeManage" title="优惠券兑换管理">
 
@@ -105,21 +106,31 @@
             <#if exchangeCoupon.active>
                 -
             <#else>
-                <a href="/activity-manage/coupon-exchange/${exchangeCoupon.id?string('0')}/edit" class="btn-link">编辑</a>
+                <@security.authorize access="hasAuthority('OPERATOR_ADMIN')">
+                    -
+                </@security.authorize>
+                <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
+                    <a href="/activity-manage/coupon-exchange/${exchangeCoupon.id?string('0')}/edit" class="btn-link">编辑</a>
+                </@security.authorize>
             </#if>
         </td>
         <td>
-            <#if exchangeCoupon.active>
-                <label>
-                    <i class="check-btn add-check"></i>
-                    <button class="loan_repay already-btn btn-link inactive-btn" disabled data-id="${exchangeCoupon.id?string('0')}" >已生效</button>
-                </label>
-            <#else>
-                <label>
-                    <i class="check-btn"></i>
-                    <a class="loan_repay confirm-btn" href="javascript:void(0)" data-id="${exchangeCoupon.id?string('0')}" >确认生效</a>
-                </label>
-            </#if>
+            <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                <#if exchangeCoupon.active>
+                    <label>
+                        <i class="check-btn add-check"></i>
+                        <button class="loan_repay already-btn btn-link inactive-btn" disabled data-id="${exchangeCoupon.id?string('0')}" >已生效</button>
+                    </label>
+                <#else>
+                    <label>
+                        <i class="check-btn"></i>
+                        <a class="loan_repay confirm-btn" href="javascript:void(0)" data-id="${exchangeCoupon.id?string('0')}" >确认生效</a>
+                    </label>
+                </#if>
+            </@security.authorize>
+            <@security.authorize access="hasAuthority('OPERATOR')">
+                -
+            </@security.authorize>
         </td>
         <td>
             <a href="/activity-manage/coupon/${exchangeCoupon.id?string('0')}/detail" class="btn-link">查看详情</a>
