@@ -22,4 +22,11 @@ public class MobileAppInvestController extends MobileAppBaseController {
         return mobileAppInvestService.invest(investRequestDto);
     }
 
+    @RequestMapping(value = "/no-password-invest", method = RequestMethod.POST)
+    public BaseResponseDto noPasswordInvest(@RequestBody InvestRequestDto investRequestDto) {
+        investRequestDto.setUserId(getLoginName());
+        investRequestDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppInvestService.noPasswordInvest(investRequestDto);
+    }
+
 }
