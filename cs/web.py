@@ -23,6 +23,7 @@ class Error404Handler(tornado.web.ErrorHandler):
     def write_error(self, *args, **kwargs):
         self.write({'error': "Url not found"})
 
+
 class BaseHandler(RequestHandler):
 
     @gen.coroutine
@@ -258,6 +259,23 @@ class UserHandler(BaseHandler):
         raise HTTPError(400)
 
 
+class BalancesHandler(BaseHandler):
+    SQL = '''
+    SELECT a.`login_name`,
+           a.`user_name`,
+           u.`mobile`,
+           a.`balance`
+      FROM `account` a
+      INNER JOIN `user` u on a.`login_name`= u.`login_name`
+     where `balance`> 5000
+     order by `balance` DESC
+    '''
+
+    def get(self):
+        rows = self.settings['db'].query(self.SQL)
+        return self.write({'balances': rows})
+
+
 if __name__ == '__main__':
     parse_command_line()
 
@@ -273,6 +291,7 @@ if __name__ == '__main__':
         (r'/cs/invest/(\d+)/', InvestHandler),
         (r'/cs/invests', InvestsHandler),
         (r'/cs/user', UserHandler),
+        (r'/cs/balances', BalancesHandler),
         (r'/', BaseHandler),
         (r'/cs/recharges', RechargesHandler)], **settings)
     app.listen(options.port)
