@@ -14,6 +14,7 @@ import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBillModel;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
+import com.tuotiansudai.point.service.PointExchangeService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,8 @@ public class MobileAppPointExchangeServiceImpl implements MobileAppPointExchange
     @Autowired
     private CouponActivationService couponActivationService;
     @Autowired
+    private PointExchangeService pointExchangeService;
+    @Autowired
     private PointBillService pointBillService;
 
     @Override
@@ -44,16 +47,21 @@ public class MobileAppPointExchangeServiceImpl implements MobileAppPointExchange
         PointExchangeResponseDataDto pointExchangeResponseDataDto = new PointExchangeResponseDataDto();
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         long CouponExchangePoint = couponExchangeMapper.findByCouponId(Long.parseLong(couponId)).getExchangePoint();
-        CouponModel couponModel = couponMapper.lockById(Long.parseLong(couponId));
         long userPoint = accountModel.getPoint();
-        if(userPoint > CouponExchangePoint && couponModel.getIssuedCount() <= couponModel.getTotalCount()){
-            couponActivationService.assignUserCoupon(pointExchangeRequestDto.getBaseParam().getUserId(),Lists.newArrayList(UserGroup.ALL_USER,
-                    UserGroup.EXCHANGER),Long.parseLong(couponId));
-            pointBillService.createPointBill(loginName, Long.parseLong(couponId), PointBusinessType.EXCHANGE, (-CouponExchangePoint));
-            pointExchangeResponseDataDto.setPoint((userPoint - CouponExchangePoint));
-            dto.setCode(ReturnMessage.SUCCESS.getCode());
-            dto.setMessage(ReturnMessage.SUCCESS.getMsg());
-            dto.setData(pointExchangeResponseDataDto);
+        if(pointExchangeService.exchangeableCoupon(Long.parseLong(couponId), loginName)){
+            if(pointExchangeService.exchangeCoupon(Long.parseLong(couponId),loginName,CouponExchangePoint)){
+                pointExchangeResponseDataDto.setPoint((userPoint - CouponExchangePoint));
+                dto.setCode(ReturnMessage.SUCCESS.getCode());
+                dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+                dto.setData(pointExchangeResponseDataDto);
+            }
+            else{
+                pointExchangeResponseDataDto.setPoint(userPoint);
+                dto.setCode(ReturnMessage.POINT_EXCHANGE_FAIL.getCode());
+                dto.setMessage(ReturnMessage.POINT_EXCHANGE_FAIL.getMsg());
+                dto.setData(pointExchangeResponseDataDto);
+            }
+
         }
         else{
             pointExchangeResponseDataDto.setPoint(userPoint);

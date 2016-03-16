@@ -53,6 +53,7 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     }
 
     @Override
+    @Transactional
     public boolean exchangeableCoupon(long couponId, String loginName){
         long exchange_point = couponExchangeMapper.findByCouponId(couponId).getExchangePoint();
         long availablePoint = accountMapper.findUsersAccountAvailablePoint(loginName);
