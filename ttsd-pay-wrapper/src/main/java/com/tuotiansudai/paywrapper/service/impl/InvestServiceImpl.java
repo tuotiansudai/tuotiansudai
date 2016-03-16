@@ -256,7 +256,7 @@ public class InvestServiceImpl implements InvestService {
             return;
         }
         if (investModel.getStatus() == InvestStatus.SUCCESS) {
-            logger.error(MessageFormat.format("invest callback process fail, because this invest has already been succeed. (orderId = {0}, InvestId={0})", callbackRequestModel.getOrderId(), investModel.getId()));
+            logger.error(MessageFormat.format("invest callback process fail, because this invest has already succeed. (orderId = {0}, InvestId={0})", callbackRequestModel.getOrderId(), investModel.getId()));
             return;
         }
         String loginName = investModel.getLoginName();
