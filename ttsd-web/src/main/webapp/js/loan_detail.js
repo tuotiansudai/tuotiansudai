@@ -8,9 +8,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         tabs = $('.loan-nav li'),
         $loanList = $('.loan-list', $loanDetail),
         paginationElement = $('.pagination', $loanDetail),
-        openNoPasswordInvest = $('.open-no-password-invest', $loanDetail),
-        hasRemindInvestNoPassword = $('.has-remind-invest-no-password', $loanDetail),
-        $error = $('.errorTip');
+        $error = $('.errorTip'),
+        $investNoPassword=$('#investNoPassword');
 
     layer.ready(function() {
         layer.photos({
@@ -253,33 +252,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             }
         });
 
-        // $('#loanInvest').submit(function () {
-        //     if ($(this).attr('action') === '/invest') {
-        //         if (!isInvestor) {
-        //             location.href = '/login?redirect=' + encodeURIComponent(location.href);
-        //             return false;
-        //         }
-
-        //         var investAmount = getInvestAmount();
-
-        //         if (!validateInvestAmount()) {
-        //             var tipContent = investAmount === 0 ? '投资金额不能为0元！' : '投资金额不能大于可投金额！';
-        //             layer.tips('<i class="fa fa-times-circle"></i>' + tipContent, '.text-input-amount', {
-        //                 tips: [1, '#ff7200'],
-        //                 time: 0
-        //             });
-        //             return false;
-        //         }
-
-        //         var accountAmount = parseInt($('form .account-amount').data("user-balance")) || 0;
-        //         if (investAmount > accountAmount) {
-        //             location.href = '/recharge';
-        //             return false;
-        //         }
-        //     }
-        //     amountInputElement.val(amountInputElement.autoNumeric("get"));
-        //     return true;
-        // });
         $('#loanInvest').on('click', function(event) {
             event.preventDefault();
             isTip();
@@ -324,9 +296,9 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         });
     }
 
-    openNoPasswordInvest.click(function () {
-        isTip();
-    })
+    // openNoPasswordInvest.click(function () {
+    //     isTip();
+    // })
     //is tip
     function isTip(){
         if (hasRemindInvestNoPassword.val()) {
@@ -403,5 +375,63 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         }).fail(function() {
             layer.alert("开启失败！");
         })
-    })
+    });
+
+    $('#freeSecret').on('click', function(event) {
+        event.preventDefault();
+        isAuthorize();
+    });
+    function openBtn(){
+        layer.open({
+            type: 1,
+            closeBtn:0,
+            shadeClose:false,
+            btn:['开启','不开启'],
+            title: '免密投资',
+            area: ['500px', '200px'],
+            shadeClose: true,
+            content: '<p class="pad-m tc">您可直接开启免密投资，简化投资过程，理财快人一步，是否开启？</p>',
+            yes:function(){
+
+            },
+            cancle:function(){
+
+            }
+        });
+    }
+    function isAuthorize(){
+        layer.open({
+            type: 1,
+            closeBtn:0,
+            shadeClose:false,
+            btn:['去联动优势授权','继续投资'],
+            title: '免密投资',
+            area: ['500px', '200px'],
+            shadeClose: true,
+            content: '<p class="pad-m tc">推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>',
+            yes:function(){
+                
+            },
+            cancle:function(){
+
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 });

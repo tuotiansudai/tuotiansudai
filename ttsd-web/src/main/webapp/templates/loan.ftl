@@ -179,6 +179,7 @@
                         <@global.role hasRole="'INVESTOR'">
                             <#if !loan.investNoPassword>
                                 <dd>
+                                    <input type="hidden" id="investNoPassword" value="${loan.investNoPassword?c}">
                                     <input type="hidden" class="has-remind-invest-no-password" value="${loan.hasRemindInvestNoPassword?c}"/>
                                     <a style="float:left" class="open-no-password-invest" data-open-agreement="${loan.autoInvest?c}" id="freeSecret">推荐您开通免密投资？</a>
                                 </dd>
@@ -250,30 +251,6 @@
 </div>
 </div>
 
-    <div id="popInvestNoPasswordAgree" class="pad-m" style="display: none;">
-        <p>推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>
-        <p>
-            <a href="javascript:void(0)" class="btn-cancel" data-category="继续投资" data-label="cancel">继续投资</a>
-            <a href="/no-password-invest" class="btn-agreement" data-category="去联动优势授权" data-label="goAgreement" target="_blank">去联动优势授权</a>
-        </p>
-        <p>
-            <span class="help">查看<a href="/about/qa" target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
-        </p>
-        <span>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-20:00）</span>
-    </div>
-
-
-    <div id="popInvestNoPassword" class="pad-m" style="display: none;">
-        <p>您可直接开启免密投资，简化投资过程，理财快人一步，是否开启？</p>
-        <p>
-            <a href="javascript:window.location.reload()" class="btn-cancel" data-category="不开启" data-label="openNoPassword">不开启</a>
-            <a class="btn-open" data-category="开启" data-label="openNoPassword">开启</a>
-        </p>
-        <p>
-            <span class="help">查看<a href="/about/qa" target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
-        </p>
-        <span>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-20:00）</span>
-    </div>
 
 
     <#include "coupon-alert.ftl" />
