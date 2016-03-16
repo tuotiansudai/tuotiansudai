@@ -15,7 +15,7 @@ public class MobileAppNoPasswordInvestController extends MobileAppBaseController
     private MobileAppNoPasswordInvestService mobileAppNoPasswordInvestService;
 
     @RequestMapping(value = "/get/no-password-invest", method = RequestMethod.POST)
-    public BaseResponseDto getPersonalInfoData(@RequestBody BaseParamDto baseParamDto) {
+    public BaseResponseDto getNoPasswordInvestData(@RequestBody BaseParamDto baseParamDto) {
         baseParamDto.getBaseParam().setUserId(getLoginName());
         return mobileAppNoPasswordInvestService.getNoPasswordInvestData(baseParamDto);
     }
