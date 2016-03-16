@@ -58,7 +58,7 @@ public class CouponInvestServiceImpl implements CouponInvestService {
                 CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
                 if (InvestStatus.SUCCESS == userCouponModel.getStatus()
                         || (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && !userBirthdayUtil.isBirthMonth(investModel.getLoginName()))
-                        || new DateTime(couponModel.getEndTime()).plusDays(1).withTimeAtStartOfDay().isBeforeNow()
+                        || userCouponModel.getEndTime().before(new Date())
                         || !couponModel.getProductTypes().contains(loanModel.getProductType())
                         || (couponModel.getInvestLowerLimit() > 0 && investModel.getAmount() < couponModel.getInvestLowerLimit())
                         || (couponModel.getInvestUpperLimit() > 0 && investModel.getAmount() > couponModel.getInvestUpperLimit())) {

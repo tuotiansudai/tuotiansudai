@@ -1,5 +1,11 @@
 @charset "UTF-8";
-.main{ display: block; text-align: center; padding: 10px;}
-.img{  width: 80%; height: 80%;margin: 8% auto;}
-.info{ font-size: 1.2em; color: #f7b291;  margin: 10% 0 0;}
-.btn-success{ margin-top: 10%; font-size: 1.4em; line-height: 42px; border-radius: 5px; color: #fff; background: #fd9b30; text-decoration: none; display: block;}
+
+body {
+    font-size:14px;
+}
+.main{ display: block; text-align: center; padding: 1rem;}
+.img{  width: 85%; margin: 1rem auto;}
+
+.info{ font-size: 2.0rem; color: #f7b291;  margin: 3rem 0;}
+.btn-success{ margin: 2rem;
+    font-size: 1.8rem; padding:3%; border-radius: 1rem; color: #fff; background: #fd9b30; text-decoration: none; display: block;}
