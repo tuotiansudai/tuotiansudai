@@ -57,9 +57,6 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
     private RedisWrapperClient redisWrapperClient;
 
     private static final String JPUSH_ID_KEY = "api:jpushId:store";
@@ -114,7 +111,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     @Override
     public int findPushAlertCount(PushType pushType,
-                                  PushSource pushSource, PushUserType pushUserType,PushStatus pushStatus,
+                                  PushSource pushSource, PushUserType pushUserType, PushStatus pushStatus,
                                   Date startTime, Date endTime, boolean isAutomatic) {
         if (endTime != null) {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
@@ -124,8 +121,8 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     @Override
     public List<JPushAlertModel> findPushAlerts(int index, int pageSize, PushType pushType,
-                   PushSource pushSource, PushUserType pushUserType,PushStatus pushStatus,
-                   Date startTime, Date endTime, boolean isAutomatic){
+                                                PushSource pushSource, PushUserType pushUserType, PushStatus pushStatus,
+                                                Date startTime, Date endTime, boolean isAutomatic) {
         if (endTime != null) {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
@@ -513,9 +510,13 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             baseDataDto.setStatus(true);
             baseDto.setSuccess(true);
 
-            String auditor = accountService.getRealName(loginName);
-            String operator = accountService.getRealName(jPushModel.getCreatedBy());
-            String description = auditor + " 审核通过了 " + operator + " 创建的APP推送［" + jPushModel.getName() + "］。";
+            AccountModel auditor = accountMapper.findByLoginName(loginName);
+            String auditorRealName = auditor == null ? loginName : auditor.getUserName();
+
+            AccountModel operator = accountMapper.findByLoginName(jPushModel.getCreatedBy());
+            String operatorRealName = operator == null ? jPushModel.getCreatedBy() : operator.getUserName();
+
+            String description = auditorRealName + " 审核通过了 " + operatorRealName + " 创建的APP推送［" + jPushModel.getName() + "］。";
             auditLogService.createAuditLog(loginName, jPushModel.getCreatedBy(), OperationType.PUSH, String.valueOf(id), description, ip);
 
             return baseDto;
@@ -535,9 +536,13 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         jPushModel.setAuditor(loginName);
         jPushAlertMapper.update(jPushModel);
 
-        String auditor = accountService.getRealName(loginName);
-        String operator = accountService.getRealName(jPushModel.getCreatedBy());
-        String description = auditor + " 驳回了 " + operator + " 创建的APP推送［" + jPushModel.getName() + "］。";
+        AccountModel auditor = accountMapper.findByLoginName(loginName);
+        String auditorRealName = auditor == null ? loginName : auditor.getUserName();
+
+        AccountModel operator = accountMapper.findByLoginName(jPushModel.getCreatedBy());
+        String operatorRealName = operator == null ? jPushModel.getCreatedBy() : operator.getUserName();
+
+        String description = auditorRealName + " 驳回了 " + operatorRealName + " 创建的APP推送［" + jPushModel.getName() + "］。";
         auditLogService.createAuditLog(loginName, jPushModel.getCreatedBy(), OperationType.PUSH, String.valueOf(id), description, ip);
     }
 
