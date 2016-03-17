@@ -76,6 +76,6 @@ public class RechargeServiceImpl implements RechargeService {
                                       String channel,
                                       Date startTime,
                                       Date endTime) {
-        return rechargeMapper.findSumRechargeAmount(rechargeId, loginName, source, status, channel, startTime, endTime);
+        return rechargeMapper.findSumRechargeAmount(rechargeId, loginName, source, status, channel, null, startTime, endTime);
     }
 }
