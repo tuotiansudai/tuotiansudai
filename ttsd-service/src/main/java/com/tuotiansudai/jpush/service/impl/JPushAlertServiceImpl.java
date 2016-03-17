@@ -28,6 +28,7 @@ import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.AuditLogUtil;
 import com.tuotiansudai.util.DistrictUtil;
 import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections.CollectionUtils;
@@ -79,11 +80,12 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private JobManager jobManager;
 
     @Autowired
-    private AuditLogService auditLogService;
+    AuditLogUtil auditLogUtil;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     @Value("${web.server}")
     private String domainName;
+
 
     @Override
     @Transactional
@@ -517,7 +519,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             String operatorRealName = operator == null ? jPushModel.getCreatedBy() : operator.getUserName();
 
             String description = auditorRealName + " 审核通过了 " + operatorRealName + " 创建的APP推送［" + jPushModel.getName() + "］。";
-            auditLogService.createAuditLog(loginName, jPushModel.getCreatedBy(), OperationType.PUSH, String.valueOf(id), description, ip);
+            auditLogUtil.createAuditLog(loginName, jPushModel.getCreatedBy(), OperationType.PUSH, String.valueOf(id), description, ip);
 
             return baseDto;
         } else {
@@ -543,7 +545,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         String operatorRealName = operator == null ? jPushModel.getCreatedBy() : operator.getUserName();
 
         String description = auditorRealName + " 驳回了 " + operatorRealName + " 创建的APP推送［" + jPushModel.getName() + "］。";
-        auditLogService.createAuditLog(loginName, jPushModel.getCreatedBy(), OperationType.PUSH, String.valueOf(id), description, ip);
+        auditLogUtil.createAuditLog(loginName, jPushModel.getCreatedBy(), OperationType.PUSH, String.valueOf(id), description, ip);
     }
 
     @Override
