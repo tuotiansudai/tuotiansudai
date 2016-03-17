@@ -113,11 +113,6 @@ public class InvestServiceTest {
 
     @Before
     public void setup() throws Exception {
-<<<<<<< HEAD
-=======
-        ObjectMapper objectMapper = new ObjectMapper();
->>>>>>> master
-
         this.mockServer = mockUmPayService();
 
         MockPayGateWrapper.injectInto(paySyncClient);
