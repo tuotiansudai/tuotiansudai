@@ -19,7 +19,7 @@
             </div>
         </div>
     </div>
-    <div <#if source?? && source=='app'>class="mobile"</#if>>
+    <div <#if isAppSource>class="mobile"</#if>>
         <a <@global.isNotAnonymous>href="/my-treasure"</@global.isNotAnonymous>
             <@global.isAnonymous>
                 <#if channel??>
