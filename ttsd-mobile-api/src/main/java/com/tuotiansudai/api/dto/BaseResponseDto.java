@@ -41,17 +41,17 @@ public class BaseResponseDto<T extends BaseResponseDataDto> {
     }
 
 
-    public BaseResponseDto(String code ,String message){
+    public BaseResponseDto(String code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    public BaseResponseDto(ReturnMessage returnMessage){
+    public BaseResponseDto(ReturnMessage returnMessage) {
         this.code = returnMessage.getCode();
         this.message = returnMessage.getMsg();
     }
 
-    public BaseResponseDto(){
+    public BaseResponseDto() {
 
     }
 }

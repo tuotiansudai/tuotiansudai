@@ -28,6 +28,7 @@
     {"title":"我的投资", "url":"/investor/invest-list", "role":"'INVESTOR'"},
     {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
     {"title":"资金管理", "url":"/user-bill", "role":"'INVESTOR', 'LOANER'"},
+    {"title":"我的财豆", "url":"/point", "role":"'INVESTOR', 'LOANER'"},
     {"title":"个人资料", "url":"/personal-info", "role":"'INVESTOR', 'LOANER'"},
     {"title":"自动投标", "url":"/investor/auto-invest", "role":"'INVESTOR'"},
     {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'INVESTOR', 'LOANER'"},
@@ -66,40 +67,23 @@
     </#if>
 </head>
 <body>
-<#include "../header.ftl"/>
-<div class="nav-container">
-    <div class="nav">
-        <a href="${applicationContext}/" class="logo"></a> <i class="fa fa-navicon show-main-menu fr" id="showMainMenu"></i>
-        <#if activeNav??>
-            <ul id="TopMainMenuList">
-                <#list menus as menu>
-                    <li><a <#if menu.title==activeNav>class="active"</#if> href="${menu.url}">${menu.title}</a></li>
-                </#list>
-            </ul>
-        </#if>
-    </div>
-</div>
-<div class="main-frame full-screen ">
-    <#list menus as menu>
-        <#if activeNav?? && activeNav==menu.title && menu.leftNavs??>
-        <div class="swiper-container">
-            <ul class="left-nav swiper-wrapper">
-                <#list menu.leftNavs as leftNav>
-                    <#if leftNav.role??>
-                        <@role hasRole=leftNav.role>
-                            <li class="swiper-slide"><a <#if leftNav.title==activeLeftNav>class="active"</#if> href="${leftNav.url}">${leftNav.title}</a></li>
-                        </@role>
-                    <#else>
-                        <li class="swiper-slide"><a <#if leftNav.title==activeLeftNav>class="active"</#if> href="${leftNav.url}">${leftNav.title}</a></li>
-                    </#if>
-                </#list>
-            </ul>
-        </div>
-        </#if>
-    </#list>
+
+<#if !isAppSource>
+    <#include "../header.ftl"/>
+    <#include "../top-menus.ftl"/>
+</#if>
+
+<div class="main-frame full-screen">
+    <#if !isAppSource>
+        <#include "../left-menus.ftl"/>
+    </#if>
     <#nested>
 </div>
-<#include "../footer.ftl" />
+
+<#if !isAppSource>
+    <#include "../footer.ftl" />
+</#if>
+
 <script type="text/javascript" charset="utf-8">
     var staticServer = '${staticServer}';
     <@security.authorize access="isAuthenticated()">

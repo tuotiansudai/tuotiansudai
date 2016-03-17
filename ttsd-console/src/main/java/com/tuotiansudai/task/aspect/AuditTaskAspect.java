@@ -6,6 +6,8 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.AbstractRedisWrapperClient;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
+import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -48,6 +50,9 @@ public class AuditTaskAspect {
 
     @Autowired
     private AuditLogService auditLogService;
+
+    @Autowired
+    private CouponExchangeMapper couponExchangeMapper;
 
     private static String DES_TEMPLATE = "\"loginName\":{0}, \"mobile\":{1}, \"email\":{2}, \"referrer\":{3}, \"status\":{4}, \"roles\":[{5}]";
 
@@ -272,12 +277,18 @@ public class AuditTaskAspect {
             task.setSender(senderLoginName);
 
             String operateURL;
-            if (couponDto.getCouponType() == CouponType.INTEREST_COUPON) {
-                operateURL = "/activity-manage/interest-coupons";
-            } else if (couponDto.getCouponType() == CouponType.RED_ENVELOPE) {
-                operateURL = "/activity-manage/red-envelopes";
+            if (couponExchangeMapper.findByCouponId(couponDto.getId()) != null && couponDto.getUserGroup() == UserGroup.EXCHANGER) {
+                operateURL = "/activity-manage/coupon-exchange-manage";
             } else {
-                operateURL = "/activity-manage/coupons";
+                if (couponDto.getCouponType() == CouponType.INTEREST_COUPON) {
+                    operateURL = "/activity-manage/interest-coupons";
+                } else if (couponDto.getCouponType() == CouponType.RED_ENVELOPE) {
+                    operateURL = "/activity-manage/red-envelopes";
+                } else if (couponDto.getCouponType() == CouponType.BIRTHDAY_COUPON) {
+                    operateURL = "/activity-manage/birthday-coupons";
+                } else {
+                    operateURL = "/activity-manage/coupons";
+                }
             }
 
             task.setOperateURL(operateURL);

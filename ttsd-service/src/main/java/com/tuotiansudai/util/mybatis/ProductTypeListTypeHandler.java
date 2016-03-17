@@ -1,8 +1,6 @@
 package com.tuotiansudai.util.mybatis;
 
-import com.google.common.base.Function;
 import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.ProductType;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
@@ -11,6 +9,7 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductTypeListTypeHandler extends BaseTypeHandler<List<ProductType>> {
@@ -51,11 +50,11 @@ public class ProductTypeListTypeHandler extends BaseTypeHandler<List<ProductType
             return null;
         }
 
-        return Lists.transform(Lists.newArrayList(s.split(",")), new Function<String, ProductType>() {
-            @Override
-            public ProductType apply(String value) {
-                return Enum.valueOf(ProductType.class, value);
-            }
-        });
+        List<ProductType> productTypeList = new ArrayList<>();
+        String[] productTypeStr = s.split(",");
+        for (String type : productTypeStr) {
+            productTypeList.add(Enum.valueOf(ProductType.class, type));
+        }
+        return productTypeList;
     }
 }
