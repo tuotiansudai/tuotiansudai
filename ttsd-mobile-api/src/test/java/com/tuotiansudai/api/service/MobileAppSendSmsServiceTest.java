@@ -30,7 +30,7 @@ public class MobileAppSendSmsServiceTest extends ServiceTestBase{
     private SmsCaptchaService smsCaptchaService;
 
     @Test
-    public void shouldSendSmsByRegisterCaptchaMobileIsRepetitive(){
+    public void shouldSendSmsByRegisterCaptchaMobileIsDuplicate(){
         SendSmsCompositeRequestDto sendSmsRequestDto = new SendSmsCompositeRequestDto();
         sendSmsRequestDto.setPhoneNum("12312312312");
         sendSmsRequestDto.setType(CaptchaType.REGISTER_CAPTCHA);
@@ -40,7 +40,7 @@ public class MobileAppSendSmsServiceTest extends ServiceTestBase{
 
     }
     @Test
-    public void shouldSendSmsByRetrievePasswordCaptcha(){
+    public void shouldSendSmsByRetrievePasswordMobileNotExistCaptcha(){
         SendSmsCompositeRequestDto sendSmsRequestDto = new SendSmsCompositeRequestDto();
         sendSmsRequestDto.setPhoneNum("12312312312");
         sendSmsRequestDto.setType(CaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
