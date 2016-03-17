@@ -24,11 +24,45 @@
 }
 .layui-layer-content{
   p{
+    float:left;
+    width:100%;
+    line-height: 40px;
     &.color-title{
       color:#4c4c4c;
     }
     &.color-tip{
       color:#818181;
+    }
+    span{
+      float:left;
+      &.title-text{
+        width:70px;
+      }
+      &.go-on-btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        letter-spacing: 3px;
+        font-size:14px;
+        color: #fff;
+        background: #ff752a;
+        border: 1px solid #ff752a;
+        line-height:20px;
+        cursor:pointer;
+        &:hover {
+          color: #fff;
+        }
+      }
+      &.again-btn{
+        padding: 10px 20px;
+        border-radius: 5px;
+        letter-spacing: 3px;
+        font-size:14px;
+        color: #fff;
+        background: #ffac2a;
+        border: 1px solid #ffac2a;
+        line-height:20px;
+        cursor:pointer;
+      }
     }
   }
 }

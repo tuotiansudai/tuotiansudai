@@ -10,7 +10,10 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         paginationElement = $('.pagination', $loanDetail),
         $error = $('.errorTip'),
         $investNoPassword=$('#investNoPassword'),
-        $loanInvest=$('#loanInvest');
+        $loanInvest=$('#loanInvest'),
+        $freeSecret=$('#freeSecret'),
+        $hasRemindInvestNoPassword=$('#hasRemindInvestNoPassword'),
+        $goAuthorize=$('#goAuthorize');
 
     layer.ready(function() {
         layer.photos({
@@ -255,10 +258,10 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         //click touzi btn
         $loanInvest.on('click', function(event) {
             event.preventDefault();
-            if (hasRemindInvestNoPassword==true) {
+            if ($hasRemindInvestNoPassword.val()==true) {
                 formSubmit();
             } else {
-                isNoPass();
+                isAuthorize();
             }
         });
         $useExperienceTicket.click(function(event) {
@@ -300,41 +303,21 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             time: 0
         });
     }
-
-    //submit  form
-    function formSubmit(){
-        if ($('#investForm').attr('action') === '/invest') {
-            if (!isInvestor) {
-                location.href = '/login?redirect=' + encodeURIComponent(location.href);
-                return false;
-            }
-
-            var investAmount = getInvestAmount();
-
-            if (!validateInvestAmount()) {
-                var tipContent = investAmount === 0 ? '投资金额不能为0元！' : '投资金额不能大于可投金额！';
-                layer.tips('<i class="fa fa-times-circle"></i>' + tipContent, '.text-input-amount', {
-                    tips: [1, '#ff7200'],
-                    time: 0
-                });
-                return false;
-            }
-
-            var accountAmount = parseInt($('#investForm .account-amount').data("user-balance")) || 0;
-            if (investAmount > accountAmount) {
-                location.href = '/recharge';
-                return false;
-            }
-        }
-        amountInputElement.val(amountInputElement.autoNumeric("get"));
-        $('#investForm').submit();
-    }
-
-
-    $('#freeSecret').on('click', function(event) {
+    //click tip red text
+    $freeSecret.on('click', function(event) {
         event.preventDefault();
         openBtn();
     });
+    $('#isAuthorizeSuccess').on('click', '.go-on-btn', function(event) {
+        event.preventDefault();
+        layer.closeAll();
+        location.reload();
+    }).on('click', '.again-btn', function(event) {
+        event.preventDefault();
+        $goAuthorize.submit();
+    });
+
+    //is tip A
     function openBtn(){
         layer.open({
             type: 1,
@@ -346,7 +329,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             shadeClose: true,
             content: '<p class="pad-m tc">您可直接开启免密投资，简化投资过程，理财快人一步，是否开启？</p>',
             yes:function(){
-                if ($investNoPassword.val()==true) { // 如果开启过免密支付
+                if ($freeSecret.attr('data-open-agreement')==true) { // 如果开启过免密支付
                     $.ajax({
                         url: '/no-password-invset/enabled',
                         type: 'POST',
@@ -361,24 +344,9 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                         layer.msg('开通失败，请重试！');
                     });
                 } else {
-                    $.ajax({
-                         url: '/no-password-invest/agreement',
-                         type: 'POST',
-                         dataType: 'json',
-                         data: {
-                            noPasswordInvset: true
-                        }
-                     })
-                     .done(function() {
-                        window.open('/no-password-invest/agreement');
-                        layer.closeAll();
-                        isAuthorizeSuccess();
-                     })
-                     .fail(function() {
-                        layer.closeAll();
-                        layer.msg('开通失败，请重试！');
-                     });
-                      
+                    layer.closeAll();
+                    isAuthorizeSuccess();
+                    $goAuthorize.submit();
                 }
             },
             cancle:function(){
@@ -386,65 +354,102 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             }
         });
     }
+ 
+    //is tip B1 or tip B2?
     function isAuthorize(){
-        layer.open({
-            type: 1,
-            closeBtn:0,
-            title: '免密投资',
-            shadeClose:false,
-            btn:['去联动优势授权','继续投资'],
-            area: ['500px', '200px'],
-            content: '<p class="pad-m tc">推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>',
-            yes:function(){
-                
-            },
-            cancle:function(){
-                formSubmit();
-            }
-        });
+        if($freeSecret.attr('data-open-agreement')==true){
+            layer.open({
+                type: 1,
+                closeBtn:0,
+                title: '免密投资',
+                shadeClose:false,
+                btn:['开启免密投资','继续投资'],
+                area: ['500px', '200px'],
+                content: '<p class="pad-m tc">推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>',
+                yes:function(){
+                    $.ajax({
+                        url: '/no-password-invset/enabled',
+                        type: 'POST',
+                        dataType: 'json'
+                    })
+                    .done(function() {
+                        layer.closeAll();
+                        layer.msg('开通成功！', function(){
+                            $('#investForm').submit();
+                        });
+                    })
+                    .fail(function() {
+                        layer.closeAll();
+                        layer.msg('开通失败，请重试！');
+                    });
+                },
+                cancle:function(){
+                    $('#investForm').submit();
+                    // layer.closeAll();
+                }
+            });
+        }else{
+            layer.open({
+                type: 1,
+                closeBtn:0,
+                title: '免密投资',
+                shadeClose:false,
+                btn:['去联动优势授权','继续投资'],
+                area: ['500px', '200px'],
+                content: '<p class="pad-m tc">推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>',
+                yes:function(){
+                    layer.closeAll();
+                    isAuthorizeSuccess();
+                    $goAuthorize.submit();
+                },
+                cancle:function(){
+                    // layer.closeAll();
+                    $('#investForm').submit();
+                }
+            });
+        }
+        
     }
-    function isNoPass(){
-        layer.open({
-            type: 1,
-            closeBtn:0,
-            title: '免密投资',
-            shadeClose:false,
-            btn:['开启免密投资','继续投资'],
-            area: ['500px', '200px'],
-            content: '<p class="pad-m tc">推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>',
-            yes:function(){
-                
-            },
-            cancle:function(){
-                formSubmit();
-            }
-        });
-    }
+    //is tip C
     function isAuthorizeSuccess(){
         layer.open({
             type: 1,
             closeBtn:0,
             shadeClose:false,
             title: '登录到联动优势支付平台开通免密投资',
-            area: ['500px', '220px'],
+            area: ['500px', '290px'],
             content: $('#isAuthorizeSuccess')
         });
     }
+    //submit  form
+    // function formSubmit(){
+        $('#investForm').submit(function(event) {
+           if ($('#investForm').attr('action') === '/invest') {
+                if (!isInvestor) {
+                    location.href = '/login?redirect=' + encodeURIComponent(location.href);
+                    return false;
+                }
 
+                var investAmount = getInvestAmount();
 
+                if (!validateInvestAmount()) {
+                    var tipContent = investAmount === 0 ? '投资金额不能为0元！' : '投资金额不能大于可投金额！';
+                    layer.tips('<i class="fa fa-times-circle"></i>' + tipContent, '.text-input-amount', {
+                        tips: [1, '#ff7200'],
+                        time: 0
+                    });
+                    return false;
+                }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                var accountAmount = parseInt($('#investForm .account-amount').data("user-balance")) || 0;
+                if (investAmount > accountAmount) {
+                    location.href = '/recharge';
+                    return false;
+                }
+            }
+            amountInputElement.val(amountInputElement.autoNumeric("get"));
+        });
+        
+        
+    // }
 });

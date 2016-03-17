@@ -171,7 +171,7 @@
                         <dd>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string.computer}"/>
-                            <button class="btn-pay btn-normal" type="submit" id="loanInvest" <#if loan.loanStatus == "PREHEAT">disabled="disabled"</#if>>
+                            <button class="btn-pay btn-normal" type="button" id="loanInvest" <#if loan.loanStatus == "PREHEAT">disabled="disabled"</#if>>
                                 <#if loan.loanStatus == "PREHEAT">预热中</#if>
                                 <#if loan.loanStatus == "RAISING">马上投资</#if>
                             </button>
@@ -180,7 +180,7 @@
                             <#if !loan.investNoPassword>
                                 <dd>
                                     <input type="hidden" id="investNoPassword" value="${loan.investNoPassword?c}">
-                                    <input type="hidden" class="has-remind-invest-no-password" value="${loan.hasRemindInvestNoPassword?c}"/>
+                                    <input type="hidden" id="hasRemindInvestNoPassword" value="${loan.hasRemindInvestNoPassword?c}"/>
                                     <a style="float:left" class="open-no-password-invest" data-open-agreement="${loan.autoInvest?c}" id="freeSecret">推荐您开通免密投资？</a>
                                 </dd>
                             </#if>
@@ -250,12 +250,15 @@
 </div>
 </div>
 </div>
-<div class="pad-m tl hide" id="isAuthorizeSuccess">
-    <p class="mb-0 text-m">请在新打开的联动优势完成操作后选择：</p>
-    <p class="mb-0 text-m">（授权后视情况可能会有一秒或更长的延迟）</p>
-    <p class="mb-0 text-s">遇到问题请拨打我们的客服热线：400-169-1188（工作日9:00-20:00）</p>
+<div class="pad-m tl fl hide" id="isAuthorizeSuccess">
+    <p class="mb-0 text-m color-title">请在新打开的联动优势完成操作后选择：</p>
+    <p class="text-m"><span class="title-text">授权成功：</span><span class="go-on-btn">继续投资</span><span class="color-tip">（授权后可能会有几秒的延迟）</span></p>
+    <p class="mb-0"><span class="title-text">授权失败： </span><span class="again-btn">重新授权</span><span> 或 </span><span class="go-on-btn">继续投资</span></p>
+    <p class="text-s color-title">遇到问题请拨打我们的客服热线：400-169-1188（工作日9:00-20:00）</p>
 </div>
-
+<form action="/no-password-invest/agreement" id="goAuthorize" method="post" target="_blank">
+    <input type="hidden" name = "noPasswordInvset" value="true" />
+</form>
 
     <#include "coupon-alert.ftl" />
 </div>
