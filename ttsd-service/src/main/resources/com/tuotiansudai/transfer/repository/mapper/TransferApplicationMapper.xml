@@ -53,7 +53,7 @@
     </update>
 
     <select id="findMaxNameInOneDay" parameterType="java.lang.String" resultType="java.lang.String">
-        SELECT REPLACE(t.`name`,#{name},'') AS NAME FROM transfer_application t WHERE t.`name` LIKE CONCAT(#{name},'%')
+        SELECT max(REPLACE(t.`name`,#{name},'')) AS NAME FROM transfer_application t WHERE t.`name` LIKE CONCAT(#{name},'%')
     </select>
 
     <select id="findById" parameterType="long" resultMap="transferApplicationResultMap">

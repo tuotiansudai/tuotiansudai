@@ -30,7 +30,7 @@ public class InvestTransferController {
         return new ModelAndView("");
     }
 
-    @RequestMapping(value = "/#{transferApplyId}/cancel", method = RequestMethod.POST)
+    @RequestMapping(value = "/{transferApplyId}/cancel", method = RequestMethod.POST)
     @ResponseBody
     public boolean investTransferApplyCancel(@RequestBody long id) {
          return investTransferService.investTransferApplyCancel(id);

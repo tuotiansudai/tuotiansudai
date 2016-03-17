@@ -5,6 +5,7 @@ import com.tuotiansudai.job.TransferApplyAutoCancelJob;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanRepayModel;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
@@ -48,8 +49,15 @@ public class InvestTransferServiceImpl implements InvestTransferService{
 
         InvestModel investModel = investMapper.findById(transferApplicationDto.getTransferInvestId());
 
+        if (investModel.getStatus() != InvestStatus.SUCCESS || investModel.getAmount() < transferApplicationDto.getTransferAmount()) {
+            return;
+        }
+
         LoanRepayModel loanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(investModel.getLoanId());
 
+        if (loanRepayModel == null) {
+            return;
+        }
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, this.generateTransferApplyName(), loanRepayModel.getPeriod(), transferApplicationDto.getTransferAmount(),
                 transferApplicationDto.getTransferInterest(), transferApplicationDto.getTransferFee(), transferApplicationDto.getDeadline());
 
@@ -61,7 +69,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
     @Override
     public boolean investTransferApplyCancel(long id) {
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(id);
-        if (transferApplicationModel.getStatus() == TransferStatus.TRANSFERRING) {
+        if (transferApplicationModel != null && transferApplicationModel.getStatus() == TransferStatus.TRANSFERRING) {
             transferApplicationModel.setStatus(TransferStatus.CANCEL);
             transferApplicationMapper.update(transferApplicationModel);
             return true;
