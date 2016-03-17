@@ -76,10 +76,10 @@
                     <td>${record.operationTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                     <td>${record.ip}</td>
                     <td>${record.operationType.getTargetType()}</td>
-                    <td>${record.targetId}</td>
+                    <td>${record.targetId!}</td>
                     <td>${record.operatorLoginName!}</td>
                     <td>${record.auditorLoginName!}</td>
-                    <td>${record.description}</td>
+                    <td>${record.description!}</td>
                 </tr>
                 <#else>
                 <tr>
