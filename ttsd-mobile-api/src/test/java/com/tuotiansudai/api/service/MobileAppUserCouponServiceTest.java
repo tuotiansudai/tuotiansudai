@@ -1,10 +1,7 @@
 package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.BaseParam;
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.UserCouponListResponseDataDto;
-import com.tuotiansudai.api.dto.UserCouponRequestDto;
+import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.impl.MobileAppUserCouponServiceImpl;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
@@ -13,6 +10,7 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.InvestStatus;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -120,9 +118,9 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
 
         assertThat(responseDto.getData().getCoupons().size(), is(1));
         assertThat(responseDto.getData().getCoupons().get(0).getUserCouponId(), is(String.valueOf(usedUserCouponModel.getId())));
-        assertThat(responseDto.getData().getCoupons().get(0).getLoanId(), is(String.valueOf(loanModel.getId())));
-        assertThat(responseDto.getData().getCoupons().get(0).getLoanName(), is(String.valueOf(loanModel.getName())));
-        assertThat(responseDto.getData().getCoupons().get(0).getLoanProductType(), is(loanModel.getProductType()));
+        assertThat(((UserCouponResponseDataDto)(responseDto.getData().getCoupons().get(0))).getLoanId(), is(String.valueOf(loanModel.getId())));
+        assertThat(((UserCouponResponseDataDto)responseDto.getData().getCoupons().get(0)).getLoanName(), is(String.valueOf(loanModel.getName())));
+        assertThat(((UserCouponResponseDataDto)responseDto.getData().getCoupons().get(0)).getLoanProductType(), is(loanModel.getProductType()));
     }
 
     @Test

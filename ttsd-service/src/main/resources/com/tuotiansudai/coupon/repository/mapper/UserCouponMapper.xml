@@ -24,20 +24,26 @@
         <result column="status" property="status"/>
     </resultMap>
 
-    <resultMap id="useRecordMap" type="CouponUseRecordView">
+    <resultMap id="useRecordMap" type="UserCouponView">
         <id column="id" property="id"/>
         <result column="coupon_type" property="couponType"/>
         <result column="coupon_amount" property="couponAmount"/>
         <result column="rate" property="rate"/>
+        <result column="shared" property="shared"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="loan_product_type" property="loanProductType"/>
         <result column="product_types" property="productTypeList" typeHandler="com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler"/>
         <result column="loan_id" property="loanId"/>
         <result column="loan_name" property="loanName"/>
         <result column="invest_amount" property="investAmount"/>
         <result column="used_time" property="usedTime"/>
+        <result column="end_time" property="endTime"/>
         <result column="expected_income" property="expectedIncome"/>
         <result column="birthday_benefit" property="birthdayBenefit"/>
         <result column="invest_lower_limit" property="investLowerLimit"/>
         <result column="invest_upper_limit" property="investUpperLimit"/>
+        <result column="status" property="status"/>
     </resultMap>
 
     <insert id="create" parameterType="UserCouponModel" useGeneratedKeys="true" keyProperty="id">
@@ -88,13 +94,37 @@
         where loan_id = #{loanId} and status = 'SUCCESS'
     </select>
 
-    <select id="findUseRecords" resultMap="useRecordMap" parameterType="map">
+    <select id="findUnusedCoupons" resultMap="useRecordMap" parameterType="map">
         select
             uc.id as id,
+            c.shared as shared,
+            c.coupon_type as coupon_type,
             c.amount as coupon_amount,
             c.rate as rate,
             c.product_types as product_types,
+            c.end_time as end_time,
+            (c.birthday_benefit + 1) as birthday_benefit,
+            c.invest_lower_limit as invest_lower_limit,
+            c.invest_upper_limit as invest_upper_limit
+        from user_coupon uc
+        join coupon c on uc.coupon_id=c.id and c.deleted is FALSE and c.end_time > now()
+        where
+            (uc.status is null or uc.status != 'SUCCESS')
+            and uc.login_name = #{loginName}
+    </select>
+
+    <select id="findUseRecords" resultMap="useRecordMap" parameterType="map">
+        select
+            uc.id as id,
+            c.shared as shared,
+            c.start_time as start_time,
+            c.end_time as end_time,
+            c.amount as coupon_amount,
+            c.rate as rate,
+            c.product_types as product_types,
+            c.end_time as end_time,
             l.id as loan_id,
+            l.product_type as loan_product_type,
             l.name as loan_name,
             c.coupon_type as coupon_type,
             i.amount as invest_amount,
@@ -111,6 +141,24 @@
         uc.status='SUCCESS'
         and uc.login_name = #{loginName}
         ORDER BY used_time DESC
+    </select>
+
+    <select id="findExpiredCoupons" resultMap="useRecordMap" parameterType="map">
+        select
+            uc.id as id,
+            c.coupon_type as coupon_type,
+            c.amount as coupon_amount,
+            c.rate as rate,
+            c.product_types as product_types,
+            c.end_time as end_time,
+            (c.birthday_benefit + 1) as birthday_benefit,
+            c.invest_lower_limit as invest_lower_limit,
+            c.invest_upper_limit as invest_upper_limit
+        from user_coupon uc
+        join coupon c on uc.coupon_id=c.id and c.deleted is FALSE and c.end_time &lt; now()
+        where
+            (uc.status is null or uc.status != 'SUCCESS')
+            and uc.login_name = #{loginName}
     </select>
 
     <select id="findByInvestId" parameterType="map" resultMap="userCouponResultMap">
