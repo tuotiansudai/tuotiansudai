@@ -8,7 +8,9 @@ public enum RepayStatus {
 
     COMPLETE("完成"),
 
-    OVERDUE("逾期");
+    OVERDUE("逾期"),
+
+    ALL("所有");
 
     private final String description;
 

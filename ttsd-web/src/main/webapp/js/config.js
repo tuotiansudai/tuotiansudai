@@ -22,7 +22,9 @@ var require = {
         'fullPage':staticServer+'/js/libs/jquery.fullPage.min',
         'swiper':staticServer+'/js/libs/swiper-3.2.7.jquery.min',
         'load-swiper':staticServer+'/js/dest/load_swiper.min',
-        'coupon-alert': staticServer+'/js/dest/coupon_alert.min'
+        'coupon-alert': staticServer+'/js/dest/coupon_alert.min',
+        'red-envelope-float': staticServer+'/js/dest/red-envelope-float.min',
+        'drag': staticServer+'/js/libs/drag'
     },
     'waitSeconds':0,
     'shim': {
@@ -38,7 +40,8 @@ var require = {
         'jquery.validate.extension': ['jquery', 'jquery.validate'],
         'fullPage': ['jquery'],
         'swiper':['jquery'],
-        'load-swiper':['swiper']
+        'load-swiper':['swiper'],
+        'drag':['jquery']
     }
 };
 

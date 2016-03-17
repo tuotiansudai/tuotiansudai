@@ -72,6 +72,9 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         UserCouponModel unusedUserCouponModel = new UserCouponModel();
         unusedUserCouponModel.setId(1);
         unusedUserCouponModel.setCouponId(unusedCouponModel.getId());
+        unusedUserCouponModel.setEndTime(unusedCouponModel.getEndTime());
+        unusedUserCouponModel.setStartTime(unusedCouponModel.getStartTime());
+
 
         LoanModel loanModel = new LoanModel();
         loanModel.setId(1);
@@ -90,11 +93,14 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         usedUserCouponModel.setExpectedInterest(100);
         usedUserCouponModel.setInvestId(1L);
         usedUserCouponModel.setInvestAmount(1000L);
+        usedUserCouponModel.setEndTime(usedCouponModel.getEndTime());
+        usedUserCouponModel.setStartTime(usedCouponModel.getStartTime());
 
         UserCouponModel expiredUserCouponModel = new UserCouponModel();
         expiredUserCouponModel.setId(3);
         expiredUserCouponModel.setCouponId(expiredCouponModel.getId());
-
+        expiredUserCouponModel.setStartTime(expiredCouponModel.getStartTime());
+        expiredUserCouponModel.setEndTime(expiredCouponModel.getEndTime());
 
 
         List<UserCouponModel> fakeUserCoupons = Lists.newArrayList(unusedUserCouponModel, usedUserCouponModel, expiredUserCouponModel);
@@ -147,16 +153,22 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         UserCouponModel unusedUserCouponModel = new UserCouponModel();
         unusedUserCouponModel.setId(1);
         unusedUserCouponModel.setCouponId(unusedCouponModel.getId());
+        unusedUserCouponModel.setStartTime(unusedCouponModel.getStartTime());
+        unusedUserCouponModel.setEndTime(unusedCouponModel.getEndTime());
 
 
         UserCouponModel usedUserCouponModel = new UserCouponModel();
         usedUserCouponModel.setId(2);
         usedUserCouponModel.setStatus(InvestStatus.SUCCESS);
         usedUserCouponModel.setCouponId(usedCouponModel.getId());
+        usedUserCouponModel.setStartTime(usedCouponModel.getStartTime());
+        usedUserCouponModel.setEndTime(usedCouponModel.getEndTime());
 
         UserCouponModel expiredUserCouponModel = new UserCouponModel();
         expiredUserCouponModel.setId(3);
         expiredUserCouponModel.setCouponId(expiredCouponModel.getId());
+        expiredUserCouponModel.setStartTime(expiredCouponModel.getStartTime());
+        expiredUserCouponModel.setEndTime(expiredCouponModel.getEndTime());
 
         List<UserCouponModel> fakeUserCoupons = Lists.newArrayList(unusedUserCouponModel, usedUserCouponModel, expiredUserCouponModel);
         when(userCouponMapper.findByLoginName(anyString(),anyList())).thenReturn(fakeUserCoupons);
@@ -203,16 +215,21 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         UserCouponModel unusedUserCouponModel = new UserCouponModel();
         unusedUserCouponModel.setId(1);
         unusedUserCouponModel.setCouponId(unusedCouponModel.getId());
-
+        unusedUserCouponModel.setEndTime(unusedCouponModel.getEndTime());
+        unusedUserCouponModel.setStartTime(unusedCouponModel.getStartTime());
 
         UserCouponModel usedUserCouponModel = new UserCouponModel();
         usedUserCouponModel.setId(2);
         usedUserCouponModel.setStatus(InvestStatus.SUCCESS);
         usedUserCouponModel.setCouponId(usedCouponModel.getId());
+        usedUserCouponModel.setStartTime(unusedCouponModel.getStartTime());
+        usedUserCouponModel.setEndTime(unusedCouponModel.getEndTime());
 
         UserCouponModel expiredUserCouponModel = new UserCouponModel();
         expiredUserCouponModel.setId(3);
         expiredUserCouponModel.setCouponId(expiredCouponModel.getId());
+        expiredUserCouponModel.setEndTime(expiredCouponModel.getEndTime());
+        expiredUserCouponModel.setStartTime(expiredCouponModel.getStartTime());
 
         List<UserCouponModel> fakeUserCoupons = Lists.newArrayList(unusedUserCouponModel, usedUserCouponModel, expiredUserCouponModel);
         when(userCouponMapper.findByLoginName(anyString(),anyList())).thenReturn(fakeUserCoupons);

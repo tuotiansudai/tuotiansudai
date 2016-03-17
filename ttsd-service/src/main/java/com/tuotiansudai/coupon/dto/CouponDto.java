@@ -18,7 +18,6 @@ public class CouponDto implements Serializable {
 
     private Long id;
 
-    @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String amount;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -32,8 +31,6 @@ public class CouponDto implements Serializable {
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String investLowerLimit;
 
-
-    @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String investUpperLimit;
 
     private Double rate;

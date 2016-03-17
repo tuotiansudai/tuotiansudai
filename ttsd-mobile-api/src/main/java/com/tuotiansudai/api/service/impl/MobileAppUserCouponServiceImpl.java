@@ -4,14 +4,8 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppUserCouponService;
-import com.tuotiansudai.coupon.dto.UserCouponDto;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.UserCouponService;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,18 +16,6 @@ import java.util.List;
 public class MobileAppUserCouponServiceImpl implements MobileAppUserCouponService {
 
     @Autowired
-    private CouponMapper couponMapper;
-
-    @Autowired
-    private UserCouponMapper userCouponMapper;
-
-    @Autowired
-    private LoanMapper loanMapper;
-
-    @Autowired
-    private InvestMapper investMapper;
-
-    @Autowired
     private UserCouponService userCouponService;
 
     @Override
@@ -41,6 +23,7 @@ public class MobileAppUserCouponServiceImpl implements MobileAppUserCouponServic
         List<UserCouponView> couponDtos = null;
 
         BaseResponseDto<UserCouponListResponseDataDto> responseDto = new BaseResponseDto<>();
+
 
         if(requestDto.isUnused()){
             couponDtos = userCouponService.getUnusedUserCoupons(requestDto.getBaseParam().getUserId());

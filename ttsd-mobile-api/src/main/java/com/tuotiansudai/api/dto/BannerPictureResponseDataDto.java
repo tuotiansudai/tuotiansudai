@@ -6,9 +6,11 @@ public class BannerPictureResponseDataDto extends BaseResponseDataDto {
     private String pictureId;
     private String title;
     private String url;
+    private String sharedUrl;
     private Integer seqNum;
     private String picture;
     private String noticeId;
+    private String content;
 
     public String getPictureId() {
         return pictureId;
@@ -34,6 +36,14 @@ public class BannerPictureResponseDataDto extends BaseResponseDataDto {
         this.url = url;
     }
 
+    public String getSharedUrl() {
+        return sharedUrl;
+    }
+
+    public void setSharedUrl(String sharedUrl) {
+        this.sharedUrl = sharedUrl;
+    }
+
     public Integer getSeqNum() {
         return seqNum;
     }
@@ -56,5 +66,13 @@ public class BannerPictureResponseDataDto extends BaseResponseDataDto {
 
     public void setNoticeId(String noticeId) {
         this.noticeId = noticeId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }
