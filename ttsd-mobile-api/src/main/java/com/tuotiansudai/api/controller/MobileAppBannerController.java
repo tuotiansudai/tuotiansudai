@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.controller;
 
+import com.tuotiansudai.api.dto.BannerResponseDataDto;
 import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.service.MobileAppBannerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ public class MobileAppBannerController extends MobileAppBaseController {
     private MobileAppBannerService mobileAppBannerService;
 
     @RequestMapping(value = "/get/banner", method = RequestMethod.POST)
-    public BaseResponseDto getAppBanner() {
+    public BaseResponseDto<BannerResponseDataDto> getAppBanner() {
         return mobileAppBannerService.generateBannerList();
     }
 

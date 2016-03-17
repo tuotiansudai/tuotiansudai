@@ -60,7 +60,4 @@ public class AgentControllerTest {
                 .param("loginName", "loginName").param("level", "1").param("rate","2.00"))
                 .andExpect(redirectedUrl("/user-manage/agent/create"));
     }
-
-
-
 }

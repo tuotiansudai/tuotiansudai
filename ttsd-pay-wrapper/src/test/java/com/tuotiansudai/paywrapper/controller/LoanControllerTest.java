@@ -281,7 +281,7 @@ public class LoanControllerTest {
     }
 
     private void mockUserCoupon(String loginName, long couponId, long loanId, long investId) {
-        UserCouponModel userCouponModel = new UserCouponModel(loginName, couponId);
+        UserCouponModel userCouponModel = new UserCouponModel(loginName, couponId, new Date(), new Date());
         userCouponMapper.create(userCouponModel);
         userCouponModel.setLoanId(loanId);
         userCouponModel.setUsedTime(new DateTime().minusDays(10).toDate());

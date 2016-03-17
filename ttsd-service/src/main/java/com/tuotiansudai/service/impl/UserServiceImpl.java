@@ -396,6 +396,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.findUsersAccountBalanceCount(loginName, balance[0], balance[1]);
     }
 
+
     @Override
     public long findUsersAccountBalanceSum(String loginName, String balanceMin, String balanceMax) {
         int[] balance = parseBalanceInt(balanceMin, balanceMax);
