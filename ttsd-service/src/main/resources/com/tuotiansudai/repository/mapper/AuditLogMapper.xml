@@ -23,7 +23,7 @@
     <select id="getPaginationData" parameterType="map" resultMap="auditLogModelResultMap">
         select * from audit_log
         <where>
-            <if test="operationType != null and operationType != ''">
+            <if test="operationType != null">
                 and operation_type = #{operationType}
             </if>
             <if test="targetId != null and targetId != ''">
@@ -46,7 +46,7 @@
     <select id="count" parameterType="map" resultType="long">
         select count(1) from audit_log
         <where>
-            <if test="operationType != null and operationType != ''">
+            <if test="operationType != null">
                 and operation_type = #{operationType}
             </if>
             <if test="targetId != null and targetId != ''">
