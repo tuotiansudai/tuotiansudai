@@ -13,4 +13,6 @@ public interface TransferApplicationMapper {
     void update(TransferApplicationModel model);
 
     TransferApplicationModel findByTransferInvestId(@Param("transferInvestId")long transferInvestId, @Param("status")TransferStatus status);
+
+    TransferApplicationModel findByInvestId(Long investId);
 }

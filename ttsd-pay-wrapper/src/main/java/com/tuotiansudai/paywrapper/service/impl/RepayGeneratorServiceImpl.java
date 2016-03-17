@@ -63,10 +63,6 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
             int currentPeriodDuration = isPeriodUnitDay ? loanModel.getPeriods() : InterestCalculator.DAYS_OF_MONTH;
             DateTime currentRepayDate = lastRepayDate.plusDays(currentPeriodDuration);
 
-            long expectedLoanInterest = InterestCalculator.calculateLoanRepayInterest(loanModel, successInvestModels, lastRepayDate, currentRepayDate);
-
-            LoanRepayModel loanRepayModel = new LoanRepayModel(idGenerator.generate(), loanModel.getId(), period, expectedLoanInterest, currentRepayDate.toDate(), RepayStatus.REPAYING);
-
             long currentPeriodCorpus = 0;
             for (InvestModel successInvestModel : successInvestModels) {
                 long expectedInvestInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, successInvestModel, lastRepayDate, currentRepayDate);
@@ -84,6 +80,8 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
                 investRepayModels.add(investRepayModel);
             }
 
+            long expectedLoanInterest = InterestCalculator.calculateLoanRepayInterest(loanModel, successInvestModels, lastRepayDate, currentRepayDate);
+            LoanRepayModel loanRepayModel = new LoanRepayModel(idGenerator.generate(), loanModel.getId(), period, currentPeriodCorpus, expectedLoanInterest, currentRepayDate.toDate(), RepayStatus.REPAYING);
             loanRepayModel.setCorpus(currentPeriodCorpus);
             loanRepayModels.add(loanRepayModel);
             lastRepayDate = currentRepayDate;

@@ -1057,9 +1057,8 @@ public class AdvanceRepayServiceTest {
     }
 
     private LoanRepayModel getFakeLoanRepayModel(long loanId, int period, long corpus, Date expectedRepayDate, Date actualRepayDate, RepayStatus repayStatus) {
-        LoanRepayModel fakeLoanRepay = new LoanRepayModel(idGenerator.generate(), loanId, period, 0, expectedRepayDate, repayStatus);
+        LoanRepayModel fakeLoanRepay = new LoanRepayModel(idGenerator.generate(), loanId, period, corpus, 0, expectedRepayDate, repayStatus);
         fakeLoanRepay.setActualRepayDate(actualRepayDate);
-        fakeLoanRepay.setCorpus(corpus);
         return fakeLoanRepay;
     }
 
