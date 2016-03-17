@@ -112,7 +112,6 @@ public class SmsServiceImpl implements SmsService {
         return smsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(), content, "");
     }
 
-
     @Override
     public BaseDto<SmsDataDto> loanRepayNotify(String mobile, String loanName, String repayAmount) {
         Map<String, String> map = ImmutableMap.<String, String>builder().put("loanName", loanName).put("repayAmount", repayAmount).build();

@@ -252,7 +252,7 @@ public class NormalRepayServiceTest {
 
         CouponModel coupon = this.getFakeCoupon(9000, loaner.getLoginName());
         couponMapper.create(coupon);
-        UserCouponModel investUserCouponModel = new UserCouponModel(investor1.getLoginName(), coupon.getId());
+        UserCouponModel investUserCouponModel = new UserCouponModel(investor1.getLoginName(), coupon.getId(), new Date(), new Date());
         userCouponMapper.create(investUserCouponModel);
         investUserCouponModel.setLoanId(fakeNormalLoan.getId());
         investUserCouponModel.setInvestId(fakeInvestModel1.getId());
@@ -262,7 +262,7 @@ public class NormalRepayServiceTest {
 
         CouponModel birthdayFakeCoupon = this.getBirthdayFakeCoupon(loaner.getLoginName(), 0.5);
         couponMapper.create(birthdayFakeCoupon);
-        UserCouponModel birthdayUserCouponModel = new UserCouponModel(investor2.getLoginName(), birthdayFakeCoupon.getId());
+        UserCouponModel birthdayUserCouponModel = new UserCouponModel(investor2.getLoginName(), birthdayFakeCoupon.getId(), new Date(), new Date());
         userCouponMapper.create(birthdayUserCouponModel);
         birthdayUserCouponModel.setLoanId(fakeNormalLoan.getId());
         birthdayUserCouponModel.setInvestId(fakeInvestModel2.getId());
@@ -379,7 +379,7 @@ public class NormalRepayServiceTest {
 
         CouponModel coupon = this.getFakeCoupon(9000, loaner.getLoginName());
         couponMapper.create(coupon);
-        UserCouponModel userCouponModel = new UserCouponModel(investor1.getLoginName(), coupon.getId());
+        UserCouponModel userCouponModel = new UserCouponModel(investor1.getLoginName(), coupon.getId(), new Date(), new Date());
         userCouponMapper.create(userCouponModel);
         userCouponModel.setLoanId(fakeNormalLoan.getId());
         userCouponModel.setStatus(InvestStatus.SUCCESS);

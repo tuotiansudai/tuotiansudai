@@ -218,13 +218,13 @@ public class InvestMapperTest {
         InvestModel fakeInvestModel = getFakeInvestModel();
         fakeInvestModel.setStatus(InvestStatus.SUCCESS);
         investMapper.create(fakeInvestModel);
-        boolean hasSuccessInvest = investMapper.hasSuccessInvest(User_ID);
-        assertTrue(hasSuccessInvest);
+        long amount = investMapper.sumSuccessInvestAmountByLoginName(null, User_ID);
+        assertTrue(amount > 0);
     }
 
     @Test
     public void shouldHasNoSuccessInvest() throws Exception {
-        boolean hasSuccessInvest = investMapper.hasSuccessInvest(User_ID);
-        assertFalse(hasSuccessInvest);
+        long amount = investMapper.sumSuccessInvestAmountByLoginName(null, User_ID);
+        assertTrue(amount == 0);
     }
 }

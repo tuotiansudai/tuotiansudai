@@ -6,10 +6,8 @@ import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
 import com.tuotiansudai.util.IdGenerator;
@@ -41,6 +39,9 @@ public class InvestServiceTest {
     private UserMapper userMapper;
 
     @Autowired
+    private AccountMapper accountMapper;
+
+    @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
 
     @Autowired
@@ -57,11 +58,12 @@ public class InvestServiceTest {
     @Autowired
     private PaySyncClient paySyncClient;
 
-    private void createAccountByUserId(String userId) {
+    private AccountModel createAccountByUserId(String userId) {
         AccountModel accountModel = new AccountModel(userId,userId,"120101198810012010","","",new Date());
         accountModel.setAutoInvest(true);
         accountModel.setBalance(10000);
-        accountModel.setFreeze(0);
+        accountModel.setFreeze(10000);
+        return accountModel;
     }
 
     private void createUserByUserId(String userId) {
@@ -111,6 +113,10 @@ public class InvestServiceTest {
 
     @Before
     public void setup() throws Exception {
+<<<<<<< HEAD
+=======
+        ObjectMapper objectMapper = new ObjectMapper();
+>>>>>>> master
 
         this.mockServer = mockUmPayService();
 
@@ -217,5 +223,57 @@ public class InvestServiceTest {
         long amount = investMapper.sumSuccessInvestAmount(loanId);
 
         assert amount == 100;
+    }
+
+    @Test
+    public void shouldName() throws Exception {
+        long loanId = this.idGenerator.generate();
+        this.createUserByUserId("loaner");
+        this.createUserByUserId("investor");
+
+        createAccountByUserId("loaner");
+        AccountModel investorAccountModel = createAccountByUserId("investor");
+        accountMapper.create(investorAccountModel);
+
+        LoanDto loanDto = new LoanDto();
+        loanDto.setLoanerLoginName("loaner");
+        loanDto.setLoanerUserName("借款人");
+        loanDto.setLoanerIdentityNumber("id");
+        loanDto.setAgentLoginName("loaner");
+        loanDto.setBasicRate("16.00");
+        loanDto.setId(loanId);
+        loanDto.setProjectName("店铺资金周转");
+        loanDto.setActivityRate("12");
+        loanDto.setShowOnHome(true);
+        loanDto.setPeriods(1);
+        loanDto.setActivityType(ActivityType.NORMAL);
+        loanDto.setContractId(123);
+        loanDto.setDescriptionHtml("asdfasdf");
+        loanDto.setDescriptionText("asdfasd");
+        loanDto.setFundraisingEndTime(new Date());
+        loanDto.setFundraisingStartTime(new Date());
+        loanDto.setInvestFeeRate("15");
+        loanDto.setInvestIncreasingAmount("1");
+        loanDto.setLoanAmount("1000");
+        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        loanDto.setMaxInvestAmount("100000000000");
+        loanDto.setMinInvestAmount("0");
+        loanDto.setCreatedTime(new Date());
+        loanDto.setLoanStatus(LoanStatus.RAISING);
+        LoanModel loanModel = new LoanModel(loanDto);
+        loanMapper.create(loanModel);
+
+        InvestModel investModel = new InvestModel();
+        investModel.setAmount(100);
+        investModel.setCreatedTime(new Date());
+        investModel.setId(this.idGenerator.generate());
+        investModel.setIsAutoInvest(false);
+        investModel.setLoginName("investor");
+        investModel.setLoanId(loanId);
+        investModel.setSource(Source.WEB);
+        investModel.setStatus(InvestStatus.WAIT_PAY);
+        investMapper.create(investModel);
+
+        investService.investSuccess(investModel.getId(), investModel, investModel.getLoginName());
     }
 }
