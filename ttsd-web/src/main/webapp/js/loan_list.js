@@ -1,4 +1,4 @@
-require(['jquery', 'jquery.ajax.extension', 'coupon-alert'], function ($) {
+require(['jquery', 'jquery.ajax.extension', 'coupon-alert', 'red-envelope-float'], function ($) {
     var $loan = $('.loan-list-box').find('li');
 
     $loan.click(function () {

@@ -104,6 +104,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     }
 
     @Override
+    @Transactional
     public String replaceBankCardCallback(Map<String, String> paramsMap, String originalQueryString) {
 
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, BankCardNotifyMapper.class, BankCardNotifyRequestModel.class);
@@ -125,6 +126,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     }
 
     @Override
+    @Transactional
     public String bindBankCardCallback(Map<String, String> paramsMap, String originalQueryString) {
 
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, BankCardNotifyMapper.class, BankCardNotifyRequestModel.class);
@@ -151,7 +153,6 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         return callbackRequest.getResponseData();
     }
 
-    @Transactional
     private void postReplaceBankCardCallback(BankCardNotifyRequestModel callbackRequestModel) throws AmountTransferException {
         try {
             long orderId = Long.parseLong(callbackRequestModel.getOrderId());
@@ -185,7 +186,6 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         }
     }
 
-    @Transactional
     private void postBindBankCardCallback(BankCardNotifyRequestModel callbackRequestModel) {
         try {
             long orderId = Long.parseLong(callbackRequestModel.getOrderId());

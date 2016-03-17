@@ -1,3 +1,4 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="interest-coupons.js" headLab="activity-manage" sideLab="statisticsInterestCoupon" title="加息券管理">
 
@@ -64,10 +65,8 @@
         <th>
             已发放收益(元)
         </th>
-        <th>
+        <th colspan="2">
             操作
-        </th>
-        <th>
         </th>
         <th>
         </th>
@@ -136,21 +135,31 @@
         <#if coupon.active>
             -
         <#else>
-            <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a> / <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/${coupon.id?string('0')}" >删除</button>
+            <@security.authorize access="hasAuthority('OPERATOR_ADMIN')">
+                -
+            </@security.authorize>
+            <@security.authorize access="hasAnyAuthority('OPERATOR','ADMIN')">
+                <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a> / <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/${coupon.id?string('0')}" >删除</button>
+            </@security.authorize>
         </#if>
         </td>
         <td>
-        <#if coupon.active>
-            <label>
-                <i class="check-btn add-check"></i>
-                <button class="loan_repay already-btn btn-link inactive-btn" <#if coupon.couponType != 'NEWBIE_COUPON'>disabled</#if> data-id="${coupon.id?string('0')}" data-type="${coupon.couponType}">已生效</button>
-            </label>
-        <#else>
-            <label>
-                <i class="check-btn"></i>
-                <a class="loan_repay confirm-btn" href="javascript:void(0)" data-id="${coupon.id?string('0')}" data-type="${coupon.couponType}">确认生效</a>
-            </label>
-        </#if>
+            <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
+                <#if coupon.active>
+                    <label>
+                        <i class="check-btn add-check"></i>
+                        <button class="loan_repay already-btn btn-link inactive-btn" <#if coupon.couponType != 'NEWBIE_COUPON'>disabled</#if> data-id="${coupon.id?string('0')}" data-type="${coupon.couponType}">已生效</button>
+                    </label>
+                <#else>
+                    <label>
+                        <i class="check-btn"></i>
+                        <a class="loan_repay confirm-btn" href="javascript:void(0)" data-id="${coupon.id?string('0')}" data-type="${coupon.couponType}">确认生效</a>
+                    </label>
+                </#if>
+            </@security.authorize>
+            <@security.authorize access="hasAuthority('OPERATOR')">
+                -
+            </@security.authorize>
         </td>
         <td>
             <a href="/activity-manage/coupon/${coupon.id?string('0')}/detail" class="btn-link">查看详情</a>

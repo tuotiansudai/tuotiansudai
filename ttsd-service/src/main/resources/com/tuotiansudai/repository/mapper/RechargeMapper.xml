@@ -8,7 +8,6 @@
         <id column="id" property="id"></id>
         <result column="login_name" property="loginName"></result>
         <result column="amount" property="amount"></result>
-        <result column="fee" property="fee"></result>
         <result column="bank_code" property="bankCode"></result>
         <result column="status" property="status"></result>
         <result column="source" property="source"></result>
@@ -26,8 +25,8 @@
 
 
     <insert id="create" parameterType="RechargeModel">
-        insert into recharge (id, login_name, amount, fee, bank_code, status, source, channel, fast_pay, public_pay, created_time)
-        value(#{id}, #{loginName}, #{amount}, #{fee}, #{bankCode}, #{status}, #{source}, #{channel}, #{fastPay}, #{publicPay}, #{createdTime})
+        insert into recharge (id, login_name, amount, bank_code, status, source, channel, fast_pay, public_pay, created_time)
+        value(#{id}, #{loginName}, #{amount}, #{bankCode}, #{status}, #{source}, #{channel}, #{fastPay}, #{publicPay}, #{createdTime})
     </insert>
 
     <select id="findById" parameterType="long" resultMap="rechargeResultMap">
