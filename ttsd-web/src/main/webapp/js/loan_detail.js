@@ -9,7 +9,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         $loanList = $('.loan-list', $loanDetail),
         paginationElement = $('.pagination', $loanDetail),
         $error = $('.errorTip'),
-        $investNoPassword=$('#investNoPassword');
+        $investNoPassword=$('#investNoPassword'),
+        $loanInvest=$('#loanInvest');
 
     layer.ready(function() {
         layer.photos({
@@ -251,10 +252,14 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 }
             }
         });
-
-        $('#loanInvest').on('click', function(event) {
+        //click touzi btn
+        $loanInvest.on('click', function(event) {
             event.preventDefault();
-            isTip();
+            if (hasRemindInvestNoPassword==true) {
+                formSubmit();
+            } else {
+                isNoPass();
+            }
         });
         $useExperienceTicket.click(function(event) {
             var $this = $(this);
@@ -341,7 +346,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             shadeClose: true,
             content: '<p class="pad-m tc">您可直接开启免密投资，简化投资过程，理财快人一步，是否开启？</p>',
             yes:function(){
-                if (auto_invest) { // 如果开启过免密支付
+                if ($investNoPassword.val()==true) { // 如果开启过免密支付
                     $.ajax({
                         url: '/no-password-invset/enabled',
                         type: 'POST',
@@ -378,23 +383,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             },
             cancle:function(){
                 layer.closeAll();
-            }
-        });
-    }
-    function isAuthorize(){
-        layer.open({
-            type: 1,
-            closeBtn:0,
-            title: '免密投资',
-            shadeClose:false,
-            btn:['去联动优势授权','继续投资'],
-            area: ['500px', '200px'],
-            content: '<p class="pad-m tc">推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>',
-            yes:function(){
-                
-            },
-            cancle:function(){
-                formSubmit();
             }
         });
     }
