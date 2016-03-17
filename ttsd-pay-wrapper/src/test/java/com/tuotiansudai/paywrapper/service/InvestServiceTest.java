@@ -258,15 +258,7 @@ public class InvestServiceTest {
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 
-        InvestModel investModel = new InvestModel();
-        investModel.setAmount(100);
-        investModel.setCreatedTime(new Date());
-        investModel.setId(this.idGenerator.generate());
-        investModel.setIsAutoInvest(false);
-        investModel.setLoginName("investor");
-        investModel.setLoanId(loanId);
-        investModel.setSource(Source.WEB);
-        investModel.setStatus(InvestStatus.WAIT_PAY);
+        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 100L, "investor", Source.WEB, null);
         investMapper.create(investModel);
 
         investService.investSuccess(investModel.getId(), investModel, investModel.getLoginName());

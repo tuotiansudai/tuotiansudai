@@ -226,8 +226,6 @@ public class LoanControllerTest {
         assert amount - mockInitAmount == mockInitAmount * 2 - amount1 - amount2;
     }
 
-
-
     @Test
     public void shouldSendRedEnvelopeWhenLoanOut() throws Exception {
         long mockLoanId = 123451234512345L;
@@ -269,8 +267,8 @@ public class LoanControllerTest {
         long amount1 = am1.getBalance();
         long amount2 = am2.getBalance();
         Thread.sleep(1000 * 5);
-//        assert amount1 == mockInitAmount - mockInvestAmount + mockCouponAmount;
-//        assert amount2 == mockInitAmount - mockInvestAmount + mockCouponAmount;
+        assert amount1 == mockInitAmount - mockInvestAmount + mockCouponAmount;
+        assert amount2 == mockInitAmount - mockInvestAmount + mockCouponAmount;
     }
 
     private void mockUserCouponAndInvest(String[] loginNames, long couponId, long loanId, long investAmount) throws AmountTransferException {
@@ -365,14 +363,7 @@ public class LoanControllerTest {
     }
 
     private long mockInvest(long loanId, String loginName, long amount) throws AmountTransferException {
-        InvestModel im = new InvestModel();
-        im.setAmount(amount);
-        im.setCreatedTime(new Date());
-        im.setId(idGenerator.generate());
-        im.setSource(Source.WEB);
-        im.setLoanId(loanId);
-        im.setIsAutoInvest(false);
-        im.setLoginName(loginName);
+        InvestModel im = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, Source.WEB, null);
         im.setStatus(InvestStatus.SUCCESS);
         investMapper.create(im);
 
