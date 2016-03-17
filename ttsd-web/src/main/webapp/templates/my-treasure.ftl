@@ -31,6 +31,8 @@
             </div>
         </div>
     </div>
+
+
     <h4 class="column-title">
         <em class="tc title-navli active">我的宝藏</em>
         <span class="rule-show">使用规则？</span>
@@ -43,6 +45,7 @@
     <div class="model-list">
 
     <#-- 未使用的优惠券 -->
+
         <div class="coupon-com active">
             <ul class="coupon-list">
                 <#list unusedCoupons as coupon>
@@ -258,12 +261,6 @@
                     <p class="no-treasure-tip tc pad-m">您现在没有已过期的优惠券。</p>
                 </#list>
             </ul>
-        </div>
-
-        <div class="record-tab">
-            <div class="invest-list-birthday"></div>
-            <div id="use-record-birthday" class="pagination" data-url="/coupon/use-record" data-page-size="10">
-            </div>
         </div>
     </div>
     <#include "coupon-alert.ftl" />
