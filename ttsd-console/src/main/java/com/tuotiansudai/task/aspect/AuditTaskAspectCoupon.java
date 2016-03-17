@@ -2,6 +2,8 @@ package com.tuotiansudai.task.aspect;
 
 import com.tuotiansudai.client.AbstractRedisWrapperClient;
 import com.tuotiansudai.coupon.dto.CouponDto;
+import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.AccountService;
@@ -27,6 +29,9 @@ public class AuditTaskAspectCoupon {
 
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    private CouponExchangeMapper couponExchangeMapper;
 
     static Logger logger = Logger.getLogger(AuditTaskAspectCoupon.class);
 
@@ -76,14 +81,19 @@ public class AuditTaskAspectCoupon {
             task.setSender(senderLoginName);
 
             String operateURL;
-            if (couponDto.getCouponType() == CouponType.INTEREST_COUPON) {
-                operateURL = "/activity-manage/interest-coupons";
-            } else if (couponDto.getCouponType() == CouponType.RED_ENVELOPE) {
-                operateURL = "/activity-manage/red-envelopes";
+            if (couponExchangeMapper.findByCouponId(couponDto.getId()) != null && couponDto.getUserGroup() == UserGroup.EXCHANGER) {
+                operateURL = "/activity-manage/coupon-exchange-manage";
             } else {
-                operateURL = "/activity-manage/coupons";
+                if (couponDto.getCouponType() == CouponType.INTEREST_COUPON) {
+                    operateURL = "/activity-manage/interest-coupons";
+                } else if (couponDto.getCouponType() == CouponType.RED_ENVELOPE) {
+                    operateURL = "/activity-manage/red-envelopes";
+                } else if (couponDto.getCouponType() == CouponType.BIRTHDAY_COUPON) {
+                    operateURL = "/activity-manage/birthday-coupons";
+                } else {
+                    operateURL = "/activity-manage/coupons";
+                }
             }
-
             task.setOperateURL(operateURL);
             task.setDescription(senderRealName + " 创建了一张 " + couponDto.getCouponType().getName() + "，请审核。");
 
