@@ -107,6 +107,11 @@ public enum ReturnMessage {
     AUTO_INVEST_PERIODS_NOT_NULL("0066","保留金额不能空"),
 
 
+    /**优惠券兑换**/
+    POINT_EXCHANGE_POINT_INSUFFICIENT("0100","财豆数量不够"),
+    POINT_COUPON_NUM_INSUFFICIENT("0101","当前优惠券已兑完，请兑换其他优惠券"),
+    POINT_EXCHANGE_FAIL("0103","财豆兑换失败"),
+
     /******提现******/
     WITHDRAW_AMOUNT_NOT_REACH_FEE("0070","提现金额需大于手续费"),
 
@@ -116,6 +121,8 @@ public enum ReturnMessage {
     /******手机端修改密码******/
     CHANGEPASSWORD_INVALID_PASSWORD("0090", "原密码错误"),
 
+    /******签到******/
+    MULTIPLE_SIGN_IN("0100", "今日已经签到过，不可重复签到"),
 
     BAD_REQUEST("0400", "非法请求"),
     UNAUTHORIZED("0401", "未授权");

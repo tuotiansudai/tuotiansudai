@@ -185,6 +185,9 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     private List<String> findManualJPushAlertUserLoginName(List<PushUserType> pushUserTypes, List<String> districtName) {
+        if (CollectionUtils.isEmpty(districtName)) {
+            districtName = Lists.newArrayList();
+        }
         List<String> loginNames = null;
         List<String> result = Lists.newArrayList();
         for (PushUserType pushUserType : pushUserTypes) {
