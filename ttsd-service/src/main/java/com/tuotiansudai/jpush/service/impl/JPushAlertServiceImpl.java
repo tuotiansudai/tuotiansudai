@@ -472,6 +472,30 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         }
     }
 
+    @Override
+    public void autoJPushRepayAlert(long loanId){
+        List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.REPAY_ALERT);
+        if (jPushAlertModel != null) {
+            if (CollectionUtils.isEmpty(notifyInfos)) {
+                logger.debug("repay notifyInfos without data");
+                return;
+            }
+            Map<String, List<String>> loginNameMap = Maps.newHashMap();
+
+            for (InvestNotifyInfo notifyInfo : notifyInfos) {
+                List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(notifyInfo.getAmount()));
+                loginNameMap.put(notifyInfo.getLoginName(), amountLists);
+                autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+                loginNameMap.clear();
+            }
+        } else {
+            logger.debug("REPAY_ALERT is disabled");
+        }
+
+    }
+
+
     private boolean ManualJPushAlertJob(JPushAlertModel jPushAlertModel) {
         if (!jPushAlertModel.getExpectPushTime().after(new Date())) {
             logger.debug("manualJPushAlertJob create failed, expect push time is before now, id = " + jPushAlertModel.getId());

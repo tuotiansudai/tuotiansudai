@@ -41,6 +41,8 @@ public interface JPushAlertService {
 
     void autoJPushLoanAlert(long loanId);
 
+    void autoJPushRepayAlert(long loanId);
+
     BaseDto<BaseDataDto> pass(String loginName, long id, String ip);
 
     void reject(String loginName, long id);
