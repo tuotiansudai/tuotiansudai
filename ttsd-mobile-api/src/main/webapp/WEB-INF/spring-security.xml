@@ -72,6 +72,7 @@
 
         <intercept-url pattern="/v1.0/register/sendsms" access="permitAll()" />
         <intercept-url pattern="/v1.0/retrievepassword/sendsms" access="permitAll()" />
+        <intercept-url pattern="/v1.0/sms-captcha/send" access="permitAll()" />
         <intercept-url pattern="/v1.0/retrievepassword" access="permitAll()" />
         <intercept-url pattern="/v1.0/validatecaptcha" access="permitAll()" />
         <intercept-url pattern="/v1.0/get/invests" access="permitAll()" />
