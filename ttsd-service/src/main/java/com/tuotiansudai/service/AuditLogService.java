@@ -16,4 +16,6 @@ public interface AuditLogService {
     void createAuditLog(String auditorLoginName, String operatorLoginName, String description, String auditorIp);
 
     BasePaginationDataDto<AuditLogPaginationItemDataDto> getAuditLogPaginationData(String loginName, String operatorLoginName, Date startTime, Date endTime, int index, int pageSize);
+
+    String clearMybatisCache();
 }

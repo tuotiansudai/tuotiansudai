@@ -31,6 +31,9 @@ public abstract class AbstractRedisWrapperClient {
     @Value("${common.redis.db}")
     private int redisDb;
 
+    @Value("${common.mybatis.cache.db}")
+    private int mybatisDb;
+
     private JedisPool jedisPool;
 
     public void setJedisPool(JedisPool jedisPool) {
@@ -38,7 +41,6 @@ public abstract class AbstractRedisWrapperClient {
     }
 
     public JedisPool getJedisPool() {
-
         return jedisPool;
     }
 
@@ -51,6 +53,25 @@ public abstract class AbstractRedisWrapperClient {
         }
         return pool;
     }
+
+    public String clearMybatisCache() {
+        Jedis jedis = null;
+        boolean broken = false;
+        try {
+            jedis = jedisPool.getResource();
+            if (StringUtils.isNotEmpty(redisPassword)) {
+                jedis.auth(redisPassword);
+            }
+            jedis.select(mybatisDb);
+            return jedis.flushDB();
+        } catch (JedisException e) {
+            broken = handleJedisException(e);
+            throw e;
+        } finally {
+            closeResource(jedis, broken);
+        }
+    }
+
 
     public String getRedisHost() {
         return redisHost;
