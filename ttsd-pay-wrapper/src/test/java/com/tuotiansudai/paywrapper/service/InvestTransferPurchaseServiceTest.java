@@ -348,6 +348,7 @@ public class InvestTransferPurchaseServiceTest {
         InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), loanId, transferInvestId, amount, loginName, Source.WEB, null);
         fakeInvestModel.setStatus(investStatus);
         fakeInvestModel.setTransferStatus(transferStatus);
+        fakeInvestModel.setCreatedTime(investTime);
         investMapper.create(fakeInvestModel);
         return fakeInvestModel;
     }
