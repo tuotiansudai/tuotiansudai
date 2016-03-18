@@ -224,15 +224,15 @@ public class UserCouponView implements Serializable, Comparable<UserCouponView> 
         if (this.getStatusCode() == dto.getStatusCode()) {
             if (this.getCouponType().getOrder() == dto.getCouponType().getOrder()) {
                 if (this.getStatusCode() == 2) {
-                    return this.usedTime.after(dto.getUsedTime()) ? -1 : 1;
+                    return dto.usedTime.compareTo(this.getUsedTime());
                 } else if (this.getStatusCode() == 1) {
                     if (this.getCompareBenefitValue() == dto.getCompareBenefitValue()) {
-                        return this.getEndTime().before(dto.getEndTime()) ? 1 : -1;
+                        return dto.getEndTime().compareTo(this.getEndTime());
                     } else {
                         return this.getCompareBenefitValue() - dto.getCompareBenefitValue() > 0 ? 1 : -1;
                     }
                 } else {
-                    return this.getEndTime().after(dto.getEndTime()) ? -1 : 1;
+                    return dto.getEndTime().compareTo(this.getEndTime());
                 }
             } else {
                 return this.getCouponType().getOrder() - dto.getCouponType().getOrder();
