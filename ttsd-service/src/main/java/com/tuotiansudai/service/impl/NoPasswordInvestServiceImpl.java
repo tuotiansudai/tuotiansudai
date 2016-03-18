@@ -1,6 +1,7 @@
 package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -20,6 +21,11 @@ public class NoPasswordInvestServiceImpl implements NoPasswordInvestService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    public static String INVEST_NO_PASSWORD_REMIND_MAP = "invest_no_password_remind_map";
 
     @Override
     @Transactional
@@ -41,5 +47,10 @@ public class NoPasswordInvestServiceImpl implements NoPasswordInvestService {
     public BaseDto<PayFormDataDto> agreement(String loginName, AgreementDto agreementDto) {
         agreementDto.setLoginName(loginName);
         return payWrapperClient.agreement(agreementDto);
+    }
+
+    @Override
+    public void writeRemindFlag(String loginName) {
+        redisWrapperClient.hsetSeri(INVEST_NO_PASSWORD_REMIND_MAP, loginName, "1");
     }
 }

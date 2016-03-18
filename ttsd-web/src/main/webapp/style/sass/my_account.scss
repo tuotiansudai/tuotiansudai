@@ -4,8 +4,7 @@
 
 .layui-layer-btn {
   text-align: center !important;
-
-  .layui-layer-btn0 {
+  .layui-layer-btn1 {
     padding: 3px 35px;
     background: nth($CK1, 2) !important;
     border-radius: 4px;
@@ -13,104 +12,83 @@
     border-color: nth($CK1, 2) !important;
     letter-spacing: 3px;
     color: #fff;
-
-    &:hover {
-      color: #fff;
-    }
   }
-  .layui-layer-btn1 {
-    padding: 3px 35px;
-  }
-}
-.layui-layer-content {
-  //loaner record
-  .layer-content {
-    .repay-total {
-      vertical-align: bottom;
-      color: #666;
-    }
-    .repay-alert {
-      vertical-align: bottom;
-      margin-left: 180px;
-      color: red;
-    }
+  .layui-layer-btn0{
+    padding:3px 35px;
+    color:#808080!important;
+    border: 1px solid #dedede!important;
+    background: #f1f1f1!important;
+    border-radius: 4px;
   }
 }
-.popLayer {
-  text-align: center;
-  overflow: auto;
-  height: auto;
-
-  dl {
-    margin-bottom: 12px;
-    height: auto;
-
-    dl {
-      margin-bottom: 12px;
-      height: auto;
-      overflow: auto;
-      clear: both;
-
-      &.identityCodeError {
-        color: #ff0000;
-        display: none;
-      }
-      dt, dd {
-        float: left;
-      }
-      dd {
-        padding-left: 5px;
-
-        .get-captcha {
-          margin: 0;
-          letter-spacing: 0px;
-          width: 96px;
-          font-size: 12px;
-          padding: 8px 0;
-        }
-        &.code-number {
-          font-size: 14px;
-          color: #ccc;
-          padding-left: 100px;
-
-          &.code-number-hidden {
-            visibility: hidden;
-          }
-        }
-      }
-      &.identityCodeError {
-        color: #ff0000;
-        display: none;
-      }
-      dt, dd {
-        float: left;
-      }
-      dd {
-        padding-left: 5px;
-      }
-      .person-info-btn {
-        button {
-          margin-top: 0px;
-          width: 37%;
-          letter-spacing: 2px;
-          font-size: 13px;
-
-          &.btn-cancel {
-            margin-right: 20px;
-          }
-          &.btn-close {
-            background: #e5e5e5;
-            border-width: 0 !important;
-            color: #808080;
-          }
-        }
-      }
+.layui-layer-content{
+  p{
+    float:left;
+    width:100%;
+    line-height: 40px;
+    margin-bottom: 10px;
+    &.text-m{
+      margin-bottom:20px;
     }
-    button {
-      margin: 20px auto 0 auto;
+    &.mb-0{
+      margin-bottom:20px;
+    }
+    &.color-title{
+      color:#4c4c4c;
+    }
+    &.color-tip{
+      color:#818181;
+    }
+    span{
+      float:left;
+      &.title-text{
+        width:70px;
+      }
+      &.btn-lr{
+        margin:0 10px;
+      }
+      &.go-on-btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        letter-spacing: 3px;
+        font-size:14px;
+        color: #fff;
+        background: #ff752a;
+        border: 1px solid #ff752a;
+        line-height:20px;
+        cursor:pointer;
+        &:hover {
+          color: #fff;
+        }
+      }
+      &.again-btn{
+        padding: 10px 20px;
+        border-radius: 5px;
+        letter-spacing: 3px;
+        font-size:14px;
+        color: #fff;
+        background: #ffac2a;
+        border: 1px solid #ffac2a;
+        line-height:20px;
+        cursor:pointer;
+      }
     }
   }
 }
+//.layui-layer-content {
+//  //loaner record
+//  .layer-content {
+//    .repay-total {
+//      vertical-align: bottom;
+//      color: #666;
+//    }
+//    .repay-alert {
+//      vertical-align: bottom;
+//      margin-left: 180px;
+//      color: red;
+//    }
+//  }
+//}
 .popLayer {
   text-align: center;
   overflow: auto;
@@ -147,7 +125,6 @@
       }
 
     }
-
   }
   button {
     margin: 20px auto 0 auto;
@@ -169,6 +146,7 @@
     }
   }
 }
+
 //Account Overview
 .account-overview {
   padding: 0 !important;
