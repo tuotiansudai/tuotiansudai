@@ -4,7 +4,8 @@
 
 .layui-layer-btn {
   text-align: center!important;
-  .layui-layer-btn0 {
+  padding:0 10px 30px!important;
+  .layui-layer-btn1 {
     padding: 3px 35px;
     background: nth($CK1, 2)!important;
     border-radius: 4px;
@@ -16,9 +17,11 @@
       color: #fff;
     }
   }
-  .layui-layer-btn1{
+  .layui-layer-btn0{
     padding:3px 35px;
-    color:#808080;
+    color:#808080!important;
+    border: 1px solid #dedede!important;
+    background: #f1f1f1!important;
     border-radius: 4px;
   }
 }
@@ -27,6 +30,13 @@
     float:left;
     width:100%;
     line-height: 40px;
+    margin-bottom: 10px;
+    &.text-m{
+      margin-bottom:20px;
+    }
+    &.mb-0{
+      margin-bottom:20px;
+    }
     &.color-title{
       color:#4c4c4c;
     }
@@ -37,6 +47,9 @@
       float:left;
       &.title-text{
         width:70px;
+      }
+      &.btn-lr{
+        margin:0 10px;
       }
       &.go-on-btn {
         padding: 10px 20px;

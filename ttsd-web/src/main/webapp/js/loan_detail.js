@@ -258,10 +258,14 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         //click touzi btn
         $loanInvest.on('click', function(event) {
             event.preventDefault();
-            if ($hasRemindInvestNoPassword.val()==true) {
-                formSubmit();
-            } else {
-                isAuthorize();
+            if (!isInvestor) {
+                location.href = '/login?redirect=' + encodeURIComponent(location.href);
+            }else{
+                if ($hasRemindInvestNoPassword.val()=='true') {
+                    formSubmit();
+                } else {
+                    isAuthorize();
+                }
             }
         });
         $useExperienceTicket.click(function(event) {
@@ -321,15 +325,17 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
     function openBtn(){
         layer.open({
             type: 1,
-            closeBtn:0,
             shadeClose:false,
-            btn:['开启','不开启'],
+            btn:['不开启','开启'],
             title: '免密投资',
-            area: ['500px', '200px'],
+            area: ['500px', '180px'],
             shadeClose: true,
-            content: '<p class="pad-m tc">您可直接开启免密投资，简化投资过程，理财快人一步，是否开启？</p>',
-            yes:function(){
-                if ($freeSecret.attr('data-open-agreement')==true) { // 如果开启过免密支付
+            content: '<p class="pad-m-tb tc">您可直接开启免密投资，简化投资过程，理财快人一步，是否开启？</p>',
+            btn1:function(){
+                layer.closeAll();
+            },
+            btn2: function(index){
+                if ($freeSecret.attr('data-open-agreement')=='true') { // 如果开启过免密支付
                     $.ajax({
                         url: '/no-password-invset/enabled',
                         type: 'POST',
@@ -348,77 +354,87 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     isAuthorizeSuccess();
                     $goAuthorize.submit();
                 }
-            },
-            cancel: function(index){
-                layer.closeAll();
             }
         });
     }
  
     //is tip B1 or tip B2?
     function isAuthorize(){
-        if($freeSecret.attr('data-open-agreement')==true){
-            layer.open({
-                type: 1,
-                closeBtn:0,
-                title: '免密投资',
-                shadeClose:false,
-                btn:['开启免密投资','继续投资'],
-                area: ['500px', '200px'],
-                content: '<p class="pad-m tc">推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>',
-                yes:function(){
-                    $.ajax({
-                        url: '/no-password-invset/enabled',
-                        type: 'POST',
-                        dataType: 'json'
-                    })
-                    .done(function() {
+        $.ajax({
+            url: '/no-password-invest/writeRemindFlag',
+            type: 'GET',
+            dataType: 'json'
+        })
+        .done(function() {
+            $hasRemindInvestNoPassword.val('true');
+            if($freeSecret.attr('data-open-agreement')=='true'){
+                layer.open({
+                    type: 1,
+                    title: '免密投资',
+                    shadeClose:false,
+                    btn:['继续投资','开启免密投资'],
+                    area: ['500px', '180px'],
+                    content: '<p class="pad-m-tb tc">推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>',
+                    btn1:function(){
+                        formSubmit();
                         layer.closeAll();
-                        layer.msg('开通成功！', function(){
-                            formSubmit();
+                    },
+                    btn2: function(index){
+                        $.ajax({
+                            url: '/no-password-invset/enabled',
+                            type: 'POST',
+                            dataType: 'json'
+                        })
+                        .done(function() {
+                            layer.closeAll();
+                            layer.msg('开通成功！', function(){
+                                formSubmit();
+                            });
+                        })
+                        .fail(function() {
+                            layer.closeAll();
+                            layer.msg('开通失败，请重试！');
                         });
-                    })
-                    .fail(function() {
+                    }
+                });
+            }else{
+                layer.open({
+                    type: 1,
+                    title: '免密投资',
+                    shadeClose:false,
+                    btn:['继续投资','去联动优势授权'],
+                    area: ['500px', '180px'],
+                    content: '<p class="pad-m-tb tc">推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>',
+                    btn1:function(){
+                        formSubmit();
                         layer.closeAll();
-                        layer.msg('开通失败，请重试！');
-                    });
-                },
-                cancel: function(index){
-                    formSubmit();
-                    layer.closeAll();
-                }
-            });
-        }else{
-            layer.open({
-                type: 1,
-                closeBtn:0,
-                title: '免密投资',
-                shadeClose:false,
-                btn:['去联动优势授权','继续投资'],
-                area: ['500px', '200px'],
-                content: '<p class="pad-m tc">推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>',
-                yes:function(){
-                    layer.closeAll();
-                    isAuthorizeSuccess();
-                    $goAuthorize.submit();
-                },
-                cancel: function(index){
-                    formSubmit();
-                    layer.closeAll();
-                }
-            });
-        }
+                    },
+                    btn2: function(index){
+                        layer.closeAll();
+                        isAuthorizeSuccess();
+                        $goAuthorize.submit();
+                    }
+                });
+            }
+        })
+        .fail(function() {
+            layer.msg('请求失败，请重试！');
+        });
+        
+        
         
     }
     //is tip C
     function isAuthorizeSuccess(){
         layer.open({
             type: 1,
-            closeBtn:0,
             shadeClose:false,
             title: '登录到联动优势支付平台开通免密投资',
             area: ['500px', '290px'],
-            content: $('#isAuthorizeSuccess')
+            content: $('#isAuthorizeSuccess'),
+            end:function(){
+                location.reload();
+            }
         });
     }
     //submit  form
