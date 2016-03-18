@@ -1,4 +1,4 @@
-require(['jquery','jquery.validate', 'jquery.validate.extension','jquery.ajax.extension'], function ($) {
+require(['jquery','jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension'], function ($) {
 
     var $inputGetPassword=$('#inputGetPassword'),
         $GetPasswordForm=$('form',$inputGetPassword);

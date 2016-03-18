@@ -1,4 +1,4 @@
-require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension', 'jquery.form','jquery.ajax.extension'], function ($, layer) {
+require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function ($, layer) {
 
     var $retrievePasswordBox=$('#retrievePasswordBox'),
         $retrieveForm=$('.retrieve-form',$retrievePasswordBox),

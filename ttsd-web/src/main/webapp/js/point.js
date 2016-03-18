@@ -1,4 +1,4 @@
-require(['jquery', 'jquery.ajax.extension', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-table.mustache', 'pagination', 'daterangepicker'],
+require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-table.mustache', 'pagination', 'daterangepicker', 'jquery.ajax.extension'],
     function($, moment, Mustache, layer, pointBillListTemplate, pagination) {
         $(function() {
             var $navBtn = $('.column-title .title-navli'),
