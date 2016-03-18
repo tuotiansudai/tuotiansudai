@@ -256,8 +256,9 @@
     <p class="mb-0"><span class="title-text">授权失败： </span><span class="again-btn">重新授权</span><span> 或 </span><span class="go-on-btn">继续投资</span></p>
     <p class="text-s color-title">遇到问题请拨打我们的客服热线：400-169-1188（工作日9:00-20:00）</p>
 </div>
-<form action="/no-password-invest/agreement" id="goAuthorize" method="post" target="_blank">
-    <input type="hidden" name = "noPasswordInvset" value="true" />
+<form action="/agreement" id="goAuthorize" method="post" target="_blank">
+    <input type="hidden" name = "noPasswordInvest" value="true" />
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 </form>
 
     <#include "coupon-alert.ftl" />
