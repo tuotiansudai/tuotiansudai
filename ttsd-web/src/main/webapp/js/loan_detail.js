@@ -349,7 +349,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     $goAuthorize.submit();
                 }
             },
-            cancle:function(){
+            cancel: function(index){
                 layer.closeAll();
             }
         });
@@ -375,7 +375,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     .done(function() {
                         layer.closeAll();
                         layer.msg('开通成功！', function(){
-                            $('#investForm').submit();
+                            formSubmit();
                         });
                     })
                     .fail(function() {
@@ -383,9 +383,9 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                         layer.msg('开通失败，请重试！');
                     });
                 },
-                cancle:function(){
-                    $('#investForm').submit();
-                    // layer.closeAll();
+                cancel: function(index){
+                    formSubmit();
+                    layer.closeAll();
                 }
             });
         }else{
@@ -402,9 +402,9 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     isAuthorizeSuccess();
                     $goAuthorize.submit();
                 },
-                cancle:function(){
-                    // layer.closeAll();
-                    $('#investForm').submit();
+                cancel: function(index){
+                    formSubmit();
+                    layer.closeAll();
                 }
             });
         }
@@ -422,34 +422,31 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         });
     }
     //submit  form
-    // function formSubmit(){
-        $('#investForm').submit(function(event) {
-           if ($('#investForm').attr('action') === '/invest') {
-                if (!isInvestor) {
-                    location.href = '/login?redirect=' + encodeURIComponent(location.href);
-                    return false;
-                }
-
-                var investAmount = getInvestAmount();
-
-                if (!validateInvestAmount()) {
-                    var tipContent = investAmount === 0 ? '投资金额不能为0元！' : '投资金额不能大于可投金额！';
-                    layer.tips('<i class="fa fa-times-circle"></i>' + tipContent, '.text-input-amount', {
-                        tips: [1, '#ff7200'],
-                        time: 0
-                    });
-                    return false;
-                }
-
-                var accountAmount = parseInt($('#investForm .account-amount').data("user-balance")) || 0;
-                if (investAmount > accountAmount) {
-                    location.href = '/recharge';
-                    return false;
-                }
+    function formSubmit(){
+        if ($('#investForm').attr('action') === '/invest') {
+            if (!isInvestor) {
+                location.href = '/login?redirect=' + encodeURIComponent(location.href);
+                return false;
             }
-            amountInputElement.val(amountInputElement.autoNumeric("get"));
-        });
-        
-        
-    // }
+
+            var investAmount = getInvestAmount();
+
+            if (!validateInvestAmount()) {
+                var tipContent = investAmount === 0 ? '投资金额不能为0元！' : '投资金额不能大于可投金额！';
+                layer.tips('<i class="fa fa-times-circle"></i>' + tipContent, '.text-input-amount', {
+                    tips: [1, '#ff7200'],
+                    time: 0
+                });
+                return false;
+            }
+
+            var accountAmount = parseInt($('#investForm .account-amount').data("user-balance")) || 0;
+            if (investAmount > accountAmount) {
+                location.href = '/recharge';
+                return false;
+            }
+        }
+        amountInputElement.val(amountInputElement.autoNumeric("get"));
+        $('#investForm').submit();
+    }
 });
