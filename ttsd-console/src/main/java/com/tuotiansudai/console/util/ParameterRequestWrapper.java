@@ -7,21 +7,23 @@ import java.util.Enumeration;
 import java.util.Map;
 import java.util.Vector;
 
-public class ParameterRequestWrapper extends HttpServletRequestWrapper{
+public class ParameterRequestWrapper extends HttpServletRequestWrapper {
 
-    private Map params;
+    private Map<String, String[]> params;
 
-    public ParameterRequestWrapper(HttpServletRequest request, Map newParams) {
+    public ParameterRequestWrapper(HttpServletRequest request, Map<String, String[]> newParams) {
         super(request);
         this.params = newParams;
     }
 
-    public Map getParameterMap() {
+    @Override
+    public Map<String, String[]> getParameterMap() {
         return params;
     }
 
-    public Enumeration getParameterNames() {
-        Vector vector = new Vector(params.keySet());
+    @Override
+    public Enumeration<String> getParameterNames() {
+        Vector<String> vector = new Vector<>(params.keySet());
         return vector.elements();
     }
 

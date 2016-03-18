@@ -53,6 +53,7 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private IdGenerator idGenerator;
 
+
     @Autowired
     private AccountMapper accountMapper;
 
@@ -253,6 +254,10 @@ public class InvestServiceImpl implements InvestService {
         InvestModel investModel = investMapper.findById(orderId);
         if (investModel == null) {
             logger.error(MessageFormat.format("invest(project_transfer) callback order is not exist (orderId = {0})", callbackRequestModel.getOrderId()));
+            return;
+        }
+        if (investModel.getStatus() == InvestStatus.SUCCESS) {
+            logger.error(MessageFormat.format("invest callback process fail, because this invest has already succeed. (orderId = {0}, InvestId={1})", callbackRequestModel.getOrderId(), investModel.getId()));
             return;
         }
         String loginName = investModel.getLoginName();

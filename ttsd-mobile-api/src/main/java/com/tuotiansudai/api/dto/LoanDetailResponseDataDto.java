@@ -34,6 +34,8 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
     private String raiseCompletedTime;
     private String interestPointName;
     private String investFeeRate;
+    private String title;
+    private String content;
 
 
     private List<EvidenceResponseDataDto> evidence;
@@ -302,5 +304,21 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
 
     public void setDeadline(Integer deadline) {
         this.deadline = deadline;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

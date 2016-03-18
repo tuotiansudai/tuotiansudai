@@ -75,17 +75,15 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
             public boolean apply(UserCouponModel userCouponModel) {
                 CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
                 boolean used = InvestStatus.SUCCESS == userCouponModel.getStatus();
-                boolean expired = !used && new DateTime(couponModel.getEndTime()).plusDays(1).withTimeAtStartOfDay().isBeforeNow();
-                boolean unused = !used && !expired;
-                return unused;
+                boolean expired = !used && userCouponModel.getEndTime().before(new Date());
+                return !used && !expired;
 
             }
         });
         Iterator<UserCouponResponseDataDto> items = Iterators.transform(filter, new Function<UserCouponModel, UserCouponResponseDataDto>() {
             @Override
             public UserCouponResponseDataDto apply(UserCouponModel userCouponModel) {
-                UserCouponResponseDataDto dataDto = new UserCouponResponseDataDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel);
-                return dataDto;
+                return new UserCouponResponseDataDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel);
             }
         });
         BaseResponseDto<UserCouponListResponseDataDto> responseDto = new BaseResponseDto<>();
