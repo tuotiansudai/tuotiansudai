@@ -1,4 +1,4 @@
-require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text!/tpl/investor-invest-repay-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker'], function ($, Mustache, investListTemplate, investRepayTemplate, moment, pagination, layer) {
+require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text!/tpl/investor-invest-repay-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker', 'jquery.ajax.extension'], function ($, Mustache, investListTemplate, investRepayTemplate, moment, pagination, layer) {
     var today = moment().format('YYYY-MM-DD'), // 今天
         week = moment().subtract(1, 'week').format('YYYY-MM-DD'),
         month = moment().subtract(1, 'month').format('YYYY-MM-DD'),
