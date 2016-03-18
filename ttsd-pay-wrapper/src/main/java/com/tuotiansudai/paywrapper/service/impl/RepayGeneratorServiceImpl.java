@@ -1,8 +1,10 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.paywrapper.service.RepayGeneratorService;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
@@ -58,7 +60,7 @@ public class RepayGeneratorServiceImpl implements RepayGeneratorService {
         for (int index = 0; index < totalPeriods; index++) {
             int period = index + 1;
 
-            int currentPeriodDuration = isPeriodUnitDay ? loanModel.getPeriods() : lastRepayDate.plusDays(1).dayOfMonth().getMaximumValue();
+            int currentPeriodDuration = isPeriodUnitDay ? loanModel.getPeriods() : InterestCalculator.DAYS_OF_MONTH;
             DateTime currentRepayDate = lastRepayDate.plusDays(currentPeriodDuration);
 
             long expectedLoanInterest = InterestCalculator.calculateLoanRepayInterest(loanModel, successInvestModels, lastRepayDate, currentRepayDate);

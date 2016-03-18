@@ -110,7 +110,7 @@ public class CouponAspect {
             couponActivationService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER,
                     UserGroup.INVESTED_USER,
                     UserGroup.REGISTERED_NOT_INVESTED_USER,
-                    UserGroup.IMPORT_USER));
+                    UserGroup.IMPORT_USER),null);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }

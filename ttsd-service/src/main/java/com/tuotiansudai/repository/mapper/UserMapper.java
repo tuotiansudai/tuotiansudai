@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.dto.RoleStage;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
@@ -34,7 +35,7 @@ public interface UserMapper {
                                 @Param(value = "beginTime") Date beginTime,
                                 @Param(value = "endTime") Date endTime,
                                 @Param(value = "source") Source source,
-                                @Param(value = "role") Role role,
+                                @Param(value = "roleStage") RoleStage roleStage,
                                 @Param(value = "referrer") String referrer,
                                 @Param(value = "channel") String channel,
                                 @Param(value = "index") Integer index,
@@ -46,7 +47,7 @@ public interface UserMapper {
                          @Param(value = "beginTime") Date beginTime,
                          @Param(value = "endTime") Date endTime,
                          @Param(value = "source") Source source,
-                         @Param(value = "role") Role role,
+                         @Param(value = "roleStage") RoleStage roleStage,
                          @Param(value = "referrer") String referrer,
                          @Param(value = "channel") String channel);
 
@@ -69,6 +70,8 @@ public interface UserMapper {
                                             @Param(value = "startLimit") int startLimit,
                                             @Param(value = "endLimit") int endLimit);
 
+
+
     long findUsersAccountBalanceSum(@Param(value = "loginName") String loginName,
                                     @Param(value = "balanceMin") int balanceMin,
                                     @Param(value = "balanceMax") int balanceMax);
@@ -83,4 +86,6 @@ public interface UserMapper {
 
 
     List<String> findUsersBirthdayMobile();
+
+    String findUsersMobileByLoginName(@Param(value = "loginName") String loginName);
 }

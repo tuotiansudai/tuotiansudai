@@ -1,9 +1,8 @@
 test-db-server:
   image: "ywatase/test-docker-mysql"
   ports:
-    - "40020:3306"
+    - "$UT_DB_PORT:3306"
 test-redis-server:
   image: "grokzen/redis-cluster"
   ports:
-    - "40016:7006"
-    - "40017:7007"
+    - "$UT_REDIS_PORT:7006"
