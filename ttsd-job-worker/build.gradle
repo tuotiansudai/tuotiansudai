@@ -1,3 +1,5 @@
+import java.text.MessageFormat
+
 apply plugin: 'java'
 
 
@@ -7,11 +9,11 @@ dependencies {
 
 startScripts {
     def default_jmx_port = 2911;
-    if (project.hasProperty('rop')) {
-        if ("invest".equals(rop)) {
+    if (project.hasProperty('work')) {
+        if ("invest".equals(work)) {
             default_jmx_port = 2912;
         }
-        if ("jpush".equals(rop)) {
+        if ("jpush".equals(work)) {
             default_jmx_port = 2913;
         }
     }
@@ -26,10 +28,17 @@ startScripts {
 }
 
 processResources {
+
     def defaultProperties = 'all'
-    if (project.hasProperty('rop')) {
-        defaultProperties = rop;
+    if (project.hasProperty('work')) {
+        defaultProperties = work;
     }
+    String params = 'all,jpush,invest';
+
+    if(params.indexOf(defaultProperties) < 0){
+        throw new GradleException("param is error,only all,jpush,invest")
+    }
+
     def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
     from("${innerConfigPath}/log4j.properties") {
         filter { String line ->
@@ -54,8 +63,8 @@ processResources {
 
 distZip {
     def defaultProperties = 'all'
-    if (project.hasProperty('rop')) {
-        defaultProperties = rop;
+    if (project.hasProperty('work')) {
+        defaultProperties = work;
     }
     archiveName baseName + '-' + defaultProperties + '.zip'
 }
