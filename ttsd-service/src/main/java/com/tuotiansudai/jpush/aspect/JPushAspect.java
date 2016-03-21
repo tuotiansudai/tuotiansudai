@@ -31,10 +31,10 @@ public class JPushAspect {
     @Autowired
     private JobManager jobManager;
 
-    @Pointcut("execution(* *..RepayService.postRepayCallback(..)")
+    @Pointcut("execution(* *..RepayService.postRepayCallback(..))")
     public void postRepayCallbackPointcut() {}
 
-    @Pointcut("execution(* *..RechargeService.rechargeCallback(..)")
+    @Pointcut("execution(* *..RechargeService.rechargeCallback(..))")
     public void rechargeCallbackPointcut() {}
 
     @AfterReturning(value = "postRepayCallbackPointcut()", returning = "returnValue")
