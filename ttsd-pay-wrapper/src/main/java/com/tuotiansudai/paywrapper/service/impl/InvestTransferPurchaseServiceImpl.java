@@ -115,13 +115,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                     ProjectTransferNopwdMapper.class,
                     requestModel,
                     ProjectTransferNopwdResponseModel.class);
-            if (responseModel.isSuccess()) {
-                try {
-                    postPurchase(investModel.getId());
-                } catch (AmountTransferException e) {
-                    logger.error(e.getLocalizedMessage(), e);
-                }
-            }
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setCode(responseModel.getRetCode());
             payDataDto.setMessage(responseModel.getRetMsg());

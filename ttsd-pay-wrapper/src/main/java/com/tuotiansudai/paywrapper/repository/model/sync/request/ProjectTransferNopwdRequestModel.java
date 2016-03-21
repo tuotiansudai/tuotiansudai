@@ -45,10 +45,12 @@ public class ProjectTransferNopwdRequestModel extends BaseAsyncRequestModel {
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         this.particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
         this.particType = UmPayParticType.INVESTOR.getCode();
-        if (umPayServType != UmPayServType.TRANSFER_IN_TRANSFER) {
+        if (umPayServType == UmPayServType.TRANSFER_IN_TRANSFER) {
+            this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "invest_transfer_notify");
+        } else if (umPayServType == UmPayServType.TRANSFER_IN_INVEST){
             this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "invest_notify");
         } else {
-            this.notifyUrl = "";
+            //todo merge auto repay
         }
     }
 
