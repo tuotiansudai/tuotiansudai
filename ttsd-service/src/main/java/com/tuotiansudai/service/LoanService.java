@@ -60,4 +60,6 @@ public interface LoanService {
     int findLoanListCount(LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime);
 
     List<LoanListDto> findLoanList(LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime, int currentPageNo, int pageSize);
+
+    BaseDto<PayDataDto> applyAuditLoan(LoanDto loanDto);
 }

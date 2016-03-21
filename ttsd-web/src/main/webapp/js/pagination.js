@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'mustache'], function ($, _, Mustache) {
+define(['jquery', 'underscore', 'mustache', 'jquery.ajax.extension'], function ($, _, Mustache) {
     (function ($) {
         var template = '<span class="count">共 {{count}} 条，当前第 {{index}} 页</span>'
             + '<span class="prev {{#hasPrev}}active{{/hasPrev}}">上一页</span>'
