@@ -344,6 +344,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     })
                     .done(function() {
                         layer.closeAll();
+                        $freeSecret.hide();
                         layer.msg('开通成功！');
                     })
                     .fail(function() {
