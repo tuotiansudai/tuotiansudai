@@ -33,7 +33,7 @@
     </div>
     <h4 class="column-title">
         <em class="tc title-navli active">我的宝藏</em>
-        <span class="rule-show">使用规则？</span>
+        <span class="rule-show">使用规则<i class="fa fa-question-circle text-b"></i></span>
     </h4>
     <ul class="filters-list">
         <li class="active">未使用</li>

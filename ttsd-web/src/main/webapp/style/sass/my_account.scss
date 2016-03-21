@@ -1664,6 +1664,9 @@ position: relative;
     font-weight: normal;
     color: #666;
     cursor: pointer;
+    &.rule-show{
+      color:#ff752a;
+    }
   }
 }
 .rule-list {
