@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class AutoJPushRepayAlertJob implements Job {
     static Logger logger = Logger.getLogger(AutoJPushRepayAlertJob.class);
 
-    public final static String LOAN_ID_KEY = "LOAN_ID";
+    public final static String REPAY_ID_KEY = "REPAY_ID";
 
     public final static int JPUSH_ALERT_REPAY_DELAY_MINUTES = 2;
 
@@ -22,7 +22,7 @@ public class AutoJPushRepayAlertJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.debug("trigger send jPush alert repay job, prepare do job");
-        long loanId = (long) context.getJobDetail().getJobDataMap().get(LOAN_ID_KEY);
+        long loanId = (long) context.getJobDetail().getJobDataMap().get(REPAY_ID_KEY);
         jPushAlertService.autoJPushRepayAlert(loanId);
         logger.debug("trigger send jPush alert repay job, loanId : " + String.valueOf(loanId));
 

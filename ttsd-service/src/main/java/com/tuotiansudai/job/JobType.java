@@ -40,7 +40,8 @@ public enum JobType {
     GetPushReport("获取推送统计数据"),
     ManualJPushAlert("手动推送"),
     BirthdayNotify("生日月用户短信提醒"),
-    AutoJPushRepayAlert("用户资金变动推送-还款");
+    AutoJPushRepayAlert("用户资金变动推送-还款"),
+    AutoJPushRechargeAlert("用户资金变动推送-充值");
 
 
 

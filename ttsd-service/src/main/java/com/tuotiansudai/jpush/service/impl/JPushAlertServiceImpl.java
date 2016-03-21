@@ -13,6 +13,7 @@ import com.google.common.collect.Sets;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.RechargeDto;
 import com.tuotiansudai.job.JPushReportFetchingJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.ManualJPushAlertJob;
@@ -65,6 +66,9 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private RechargeMapper rechargeMapper;
 
     @Autowired
     private UserRoleMapper userRoleMapper;
@@ -493,6 +497,23 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             logger.debug("REPAY_ALERT is disabled");
         }
 
+    }
+
+    @Override
+    public void autoJPushRechargeAlert(RechargeDto rechargeDto){
+        long totalAmount = rechargeMapper.findSumSuccessRechargeByLoginName(rechargeDto.getLoginName());
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.RECHARGE_ALERT);
+        if (jPushAlertModel != null) {
+            Map<String, List<String>> loginNameMap = Maps.newHashMap();
+
+            List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(Long.parseLong(rechargeDto.getAmount())),AmountConverter.convertCentToString(totalAmount));
+            loginNameMap.put(rechargeDto.getLoginName(), amountLists);
+            autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+            loginNameMap.clear();
+
+        } else {
+            logger.debug("RECHARGE_ALERT is disabled");
+        }
     }
 
 
