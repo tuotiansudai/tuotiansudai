@@ -100,8 +100,9 @@ public class NoPasswordInvestController {
 
     @ResponseBody
     @RequestMapping(value = "/writeRemindFlag", method = RequestMethod.GET)
-    public void writeRemindFlagInRedis() {
+    public String writeRemindFlagInRedis() {
         String loginName = LoginUserInfo.getLoginName();
         noPasswordInvestService.writeRemindFlag(loginName);
+        return "";
     }
 }
