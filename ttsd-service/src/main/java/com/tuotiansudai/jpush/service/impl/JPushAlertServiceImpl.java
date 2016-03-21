@@ -71,12 +71,6 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private UserMapper userMapper;
 
     @Autowired
-    private UserRoleMapper userRoleMapper;
-
-    @Autowired
-    private ReferrerRelationMapper referrerRelationMapper;
-
-    @Autowired
     private JobManager jobManager;
 
     @Autowired
@@ -159,12 +153,12 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     @Override
     public void manualJPushAlert(long id) {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertModelById(id);
-        if (jPushAlertModel.isAutomatic()) {
-            logger.debug("JPush is failed, this JPush is not manual, id = " + id);
-            return;
-        }
         if (jPushAlertModel != null) {
-            List<String> districtCode = jPushAlertModel.getPushObjects();
+            if (jPushAlertModel.isAutomatic()) {
+                logger.debug("JPush is failed, this JPush is not manual, id = " + id);
+                return;
+            }
+            List<String> districtCode = jPushAlertModel.getPushDistricts();
             List<String> districtName = null;
             if (CollectionUtils.isNotEmpty(districtCode)) {
                 districtName = Lists.transform(districtCode, new Function<String, String>() {
@@ -174,15 +168,15 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                     }
                 });
             }
-            List<String> loginNames = findManualJPushAlertUserLoginName(jPushAlertModel.getPushUserType(), districtName);
-            if (CollectionUtils.isEmpty(loginNames)) {
-                logger.debug("this JPush without data, id = " + id);
-                return;
-            }
-            if (jPushAlertModel.getPushUserType().contains(PushUserType.ALL) && jPushAlertModel.getPushObjects() == null) {
+            if (jPushAlertModel.getPushUserType().contains(PushUserType.ALL) && jPushAlertModel.getPushDistricts() == null) {
                 String[] jumpToOrLink = chooseJumpToOrLink(new JPushAlertDto(jPushAlertModel));
                 mobileAppJPushClient.sendPushAlertByAll(String.valueOf(jPushAlertModel.getId()), jPushAlertModel.getContent(), jumpToOrLink[0], jumpToOrLink[1], jPushAlertModel.getPushSource());
             } else {
+                List<String> loginNames = findManualJPushAlertUserLoginName(jPushAlertModel.getPushUserType(), districtName);
+                if (CollectionUtils.isEmpty(loginNames)) {
+                    logger.debug("this JPush without data, id = " + id);
+                    return;
+                }
                 autoJPushByBatchRegistrationId(jPushAlertModel, loginNames, jPushAlertModel.getPushSource());
             }
             jPushAlertModel.setStatus(PushStatus.SEND_SUCCESS);
@@ -201,49 +195,19 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         for (PushUserType pushUserType : pushUserTypes) {
             switch (pushUserType) {
                 case ALL:
-                    List<UserModel> users = userMapper.findAllUsers(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", districtName).build()));
-                    loginNames = Lists.transform(users, new Function<UserModel, String>() {
-                        @Override
-                        public String apply(UserModel input) {
-                            return input.getLoginName();
-                        }
-                    });
+                    loginNames = userMapper.findAllUsers(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", districtName).build()));
                     break;
                 case STAFF:
-                    List<UserRoleModel> staffs = userRoleMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.STAFF).put("districtName", districtName).build()));
-                    loginNames = Lists.transform(staffs, new Function<UserRoleModel, String>() {
-                        @Override
-                        public String apply(UserRoleModel input) {
-                            return input.getLoginName();
-                        }
-                    });
+                    loginNames = userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.STAFF).put("districtName", districtName).build()));
                     break;
                 case AGENT:
-                    List<UserRoleModel> agents = userRoleMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.AGENT).put("districtName", districtName).build()));
-                    loginNames = Lists.transform(agents, new Function<UserRoleModel, String>() {
-                        @Override
-                        public String apply(UserRoleModel input) {
-                            return input.getLoginName();
-                        }
-                    });
+                    loginNames = userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.AGENT).put("districtName", districtName).build()));
                     break;
                 case RECOMMENDATION:
-                    List<ReferrerRelationModel> recommendations = referrerRelationMapper.findAllRecommendation(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", districtName).build()));
-                    loginNames = Lists.transform(recommendations, new Function<ReferrerRelationModel, String>() {
-                        @Override
-                        public String apply(ReferrerRelationModel input) {
-                            return input.getLoginName();
-                        }
-                    });
+                    loginNames = userMapper.findAllRecommendation(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", districtName).build()));
                     break;
                 case OTHERS:
-                    List<UserModel> others = userMapper.findNaturalUser(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", districtName).build()));
-                    loginNames = Lists.transform(others, new Function<UserModel, String>() {
-                        @Override
-                        public String apply(UserModel input) {
-                            return input.getLoginName();
-                        }
-                    });
+                    loginNames = userMapper.findNaturalUser(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", districtName).build()));
                     break;
             }
             result.addAll(loginNames);
