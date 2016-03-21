@@ -355,7 +355,7 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     public BaseDto<PayDataDto> noPasswordInvest(InvestDto dto) {
-        return this.investNopwd(Long.parseLong(dto.getLoanId()), Long.parseLong(dto.getAmount()), dto.getLoginName(), dto.getSource());
+        return this.investNopwd(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource());
     }
 
     @Override

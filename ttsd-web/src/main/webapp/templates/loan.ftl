@@ -176,11 +176,11 @@
                                 <#if loan.loanStatus == "RAISING">马上投资</#if>
                             </button>
                         </dd>
+                        <input type="hidden" id="investNoPassword" value="${loan.investNoPassword?c}">
+                        <input type="hidden" id="hasRemindInvestNoPassword" value="${loan.hasRemindInvestNoPassword?c}"/>
                         <@global.role hasRole="'INVESTOR'">
                             <#if !loan.investNoPassword>
                                 <dd>
-                                    <input type="hidden" id="investNoPassword" value="${loan.investNoPassword?c}">
-                                    <input type="hidden" id="hasRemindInvestNoPassword" value="${loan.hasRemindInvestNoPassword?c}"/>
                                     <a class="fl open-no-password-invest" data-open-agreement="${loan.autoInvest?c}" id="freeSecret">推荐您开通免密投资<i class="fa fa-question-circle text-m"></i></a>
                                 </dd>
                             </#if>

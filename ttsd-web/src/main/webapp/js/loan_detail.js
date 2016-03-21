@@ -1,5 +1,4 @@
-require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'csrf', 'autoNumeric', 'coupon-alert','red-envelope-float'], function ($, pagination, Mustache, investListTemplate, layer, _) {
-
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'jquery.ajax.extension', 'autoNumeric', 'coupon-alert','red-envelope-float'], function ($, pagination, Mustache, investListTemplate, layer, _) {
     var $loanDetail = $('.loan-detail-content'),
         loanId = $('.hid-loan').val(),
         amountInputElement = $(".text-input-amount", $loanDetail),
@@ -329,10 +328,11 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
     function openBtn(){
         layer.open({
             type: 1,
+            skin: 'demo-class',
             shadeClose:false,
             btn:['不开启','开启'],
             title: '免密投资',
-            area: ['500px', '180px'],
+            area: ['500px', '160px'],
             shadeClose: true,
             content: '<p class="pad-m-tb tc">您可直接开启免密投资，简化投资过程，理财快人一步，是否开启？</p>',
             btn1:function(){
@@ -343,12 +343,13 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 if ($freeSecret.attr('data-open-agreement')=='true') { // 如果开启过免密支付
                     _czc.push(["_trackEvent","标的详情投资","开启免密投资","用户开启免密投资"]);
                     $.ajax({
-                        url: '/no-password-invset/enabled',
+                        url: '/no-password-invest/enabled',
                         type: 'POST',
                         dataType: 'json'
                     })
                     .done(function() {
                         layer.closeAll();
+                        $freeSecret.hide();
                         layer.msg('开通成功！');
                     })
                     .fail(function() {
@@ -377,10 +378,11 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             if($freeSecret.attr('data-open-agreement')=='true'){
                 layer.open({
                     type: 1,
+                    skin: 'demo-class',
                     title: '免密投资',
                     shadeClose:false,
                     btn:['继续投资','开启免密投资'],
-                    area: ['500px', '180px'],
+                    area: ['500px', '160px'],
                     content: '<p class="pad-m-tb tc">推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>',
                     btn1:function(){
                         _czc.push(["_trackEvent","标的详情投资","继续投资","用户继续投资"]);
@@ -390,7 +392,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     btn2: function(index){
                         _czc.push(["_trackEvent","标的详情投资","开启免密投资","用户开启免密投资"]);
                         $.ajax({
-                            url: '/no-password-invset/enabled',
+                            url: '/no-password-invest/enabled',
                             type: 'POST',
                             dataType: 'json'
                         })
@@ -409,10 +411,11 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             }else{
                 layer.open({
                     type: 1,
+                    skin: 'demo-class',
                     title: '免密投资',
                     shadeClose:false,
                     btn:['继续投资','去联动优势授权'],
-                    area: ['500px', '180px'],
+                    area: ['500px', '160px'],
                     content: '<p class="pad-m-tb tc">推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>',
                     btn1:function(){
                         _czc.push(["_trackEvent","标的详情投资","继续投资","用户继续投资,没进行联动优势授权"]);
@@ -448,6 +451,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
     function isAuthorizeSuccess(){
         layer.open({
             type: 1,
+            skin: 'demo-class',
             shadeClose:false,
             title: '登录到联动优势支付平台开通免密投资',
             area: ['500px', '290px'],

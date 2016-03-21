@@ -18,9 +18,5 @@ public interface AccountService {
 
     int findUsersAccountPointCount(String loginName, String userName, String mobile);
 
-    int findUsersAccountTotalPoint(String loginName);
-
-    int findUsersAccountAvailablePoint(String loginName);
-
-    void updateByLoginName(String loginName, long exchangePoint);
+    String getRealName(String loginName);
 }

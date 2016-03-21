@@ -29,7 +29,7 @@ public class MobileAppNoPasswordInvestServiceImpl implements MobileAppNoPassword
         noPasswordInvestResponseDataDto.setNoPasswordInvest(accountModel.isNoPasswordInvest());
         baseResponseDto.setData(noPasswordInvestResponseDataDto);
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
-        baseResponseDto.setCode(ReturnMessage.SUCCESS.getMsg());
+        baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         return baseResponseDto;
     }
 }

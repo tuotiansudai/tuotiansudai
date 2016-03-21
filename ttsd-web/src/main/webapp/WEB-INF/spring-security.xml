@@ -16,6 +16,7 @@
         <beans:property name="errorPageMapping">
             <beans:map>
                 <beans:entry key="/login" value="/"/>
+                <beans:entry key="/logout" value="/"/>
                 <beans:entry key="/register/user" value="/"/>
                 <beans:entry key="/register/account" value="/"/>
             </beans:map>
