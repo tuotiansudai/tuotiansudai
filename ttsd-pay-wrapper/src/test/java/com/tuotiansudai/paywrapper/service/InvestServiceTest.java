@@ -280,7 +280,7 @@ public class InvestServiceTest {
         InvestDto investDto = new InvestDto();
         investDto.setLoginName("testInvest");
         investDto.setLoanId(String.valueOf(loanId));
-        investDto.setAmount("100");
+        investDto.setAmount("1.0");
         investDto.setSource(Source.WEB);
         BaseDto<PayDataDto> baseDto = investService.noPasswordInvest(investDto);
         assertTrue(baseDto.isSuccess());
