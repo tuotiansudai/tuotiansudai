@@ -1,4 +1,4 @@
-require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric', 'commonFun'], function ($, layer) {
+require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'autoNumeric', 'commonFun'], function ($, layer) {
     var $rechargeCon = $(".recharge-bind-card"),
         $rechargeForm = $('.recharge-form', $rechargeCon),
         $fastRechargeForm = $(".fast-recharge-form", $rechargeCon),

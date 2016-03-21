@@ -31,14 +31,15 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'c
 
         $('.jpushReport').click(function (event) {
             event.preventDefault();
+            var $self=$(this);
             $.ajax({
                 url: "/app-push-manage/manual-app-push/" + $(this).attr('data-pushId') + "/refreshReport",
                 type: 'GET',
                 dataType: 'json'
             }).done(function (res) {
                 if (res.data.status) {
-                    $('.iosReport').val(res.data.iosReceived);
-                    $('.androidReport').val(res.data.androidReceived);
+                    $self.find('.iosReport').text(res.data.iosReceived);
+                    $self.find('.androidReport').text(res.data.androidReceived);
                 } else {
                     var msg = res.data.message || '服务器校验失败';
                     alert(msg);

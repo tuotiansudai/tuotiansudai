@@ -1,6 +1,8 @@
 package com.tuotiansudai.repository.model;
 
 
+import com.tuotiansudai.task.OperationType;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -8,16 +10,19 @@ public class AuditLogModel implements Serializable {
 
     private long id;
 
-    private String loginName;
+    private String auditorLoginName;
 
     private String operatorLoginName;
+
+    private String targetId;
+
+    private OperationType operationType;
 
     private String ip;
 
     private Date operationTime = new Date();
 
     private String description;
-
 
     public long getId() {
         return id;
@@ -27,12 +32,12 @@ public class AuditLogModel implements Serializable {
         this.id = id;
     }
 
-    public String getLoginName() {
-        return loginName;
+    public String getAuditorLoginName() {
+        return auditorLoginName;
     }
 
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
+    public void setAuditorLoginName(String auditorLoginName) {
+        this.auditorLoginName = auditorLoginName;
     }
 
     public String getOperatorLoginName() {
@@ -41,6 +46,22 @@ public class AuditLogModel implements Serializable {
 
     public void setOperatorLoginName(String operatorLoginName) {
         this.operatorLoginName = operatorLoginName;
+    }
+
+    public String getTargetId() {
+        return targetId;
+    }
+
+    public void setTargetId(String targetId) {
+        this.targetId = targetId;
+    }
+
+    public OperationType getOperationType() {
+        return operationType;
+    }
+
+    public void setOperationType(OperationType operationType) {
+        this.operationType = operationType;
     }
 
     public String getIp() {

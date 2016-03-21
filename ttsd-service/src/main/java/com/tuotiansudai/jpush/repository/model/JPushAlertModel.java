@@ -14,7 +14,7 @@ public class JPushAlertModel implements Serializable{
     private long id;
     private String name;
     private PushType pushType;
-    private List<String> pushObjects;
+    private List<String> pushDistricts;
     private PushSource pushSource;
     private List<PushUserType> pushUserType;
     private PushStatus status;
@@ -124,12 +124,12 @@ public class JPushAlertModel implements Serializable{
         this.updatedBy = updatedBy;
     }
 
-    public List<String> getPushObjects() {
-        return pushObjects;
+    public List<String> getPushDistricts() {
+        return pushDistricts;
     }
 
-    public void setPushObjects(List<String> pushObjects) {
-        this.pushObjects = pushObjects;
+    public void setPushDistricts(List<String> pushDistricts) {
+        this.pushDistricts = pushDistricts;
     }
 
     public String getJumpToLink() {
@@ -230,7 +230,7 @@ public class JPushAlertModel implements Serializable{
         }
         this.name = jPushAlertDto.getName();
         this.pushType = jPushAlertDto.getPushType();
-        this.pushObjects = jPushAlertDto.getPushObjects();
+        this.pushDistricts = jPushAlertDto.getPushDistricts();
         this.pushSource = jPushAlertDto.getPushSource();
         this.pushUserType = jPushAlertDto.getPushUserType();
         this.status = PushStatus.WAIT_AUDIT;

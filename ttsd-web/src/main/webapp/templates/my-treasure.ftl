@@ -59,7 +59,7 @@
                     <li class="${unusedCouponClass}">
                         <div class="top-com">
                             <div class="left-name">
-                                <span>${coupon.name}</span>
+                                <span>${coupon.couponType.getName()}</span>
                                 <em></em>
                                 <i class="circle-top"></i>
                                 <i class="circle-bottom"></i>
@@ -67,10 +67,10 @@
                             <div class="right-coupon">
                                 <p class="mt-10">
                                     <#if coupon.couponType == 'RED_ENVELOPE' || coupon.couponType == 'NEWBIE_COUPON' ||coupon.couponType == 'INVEST_COUPON'>
-                                        <span class="num-text">${(coupon.amount/100)?string("0")}</span>
+                                        <span class="num-text">${(coupon.couponAmount/100)?string("0")}</span>
                                         <span class="unit-text">元</span>
                                     <#elseif coupon.couponType == 'INTEREST_COUPON'>
-                                        <span class="num-text">${coupon.rate*100?float}%</span>
+                                        <span class="num-text">+${coupon.rate*100?float}%</span>
                                         <span class="unit-text">年化收益</span>
                                     </#if>
                                 </p>
@@ -144,7 +144,7 @@
                                         <span class="num-text">${(record.couponAmount/100)?string("0")}</span>
                                         <span class="unit-text">元</span>
                                     <#elseif record.couponType == 'INTEREST_COUPON'>
-                                        <span class="num-text">${record.rate*100?float}%</span>
+                                        <span class="num-text">+${record.rate*100?float}%</span>
                                         <span class="unit-text">年化收益</span>
                                     </#if>
                                 </p>
@@ -207,7 +207,7 @@
                     <li>
                         <div class="top-com">
                             <div class="left-name">
-                                <span>${coupon.name}</span>
+                                <span>${coupon.couponType.getName()}</span>
                                 <em></em>
                                 <i class="circle-top"></i>
                                 <i class="circle-bottom"></i>
@@ -215,10 +215,10 @@
                             <div class="right-coupon">
                                 <p class="mt-10">
                                     <#if coupon.couponType == 'RED_ENVELOPE' || coupon.couponType == 'NEWBIE_COUPON' ||coupon.couponType == 'INVEST_COUPON'>
-                                        <span class="num-text">${(coupon.amount/100)?string("0")}</span>
+                                        <span class="num-text">${(coupon.couponAmount/100)?string("0")}</span>
                                         <span class="unit-text">元</span>
                                     <#elseif coupon.couponType == 'INTEREST_COUPON'>
-                                        <span class="num-text">${coupon.rate*100?float}%</span>
+                                        <span class="num-text">+${coupon.rate*100?float}%</span>
                                         <span class="unit-text">年化收益</span>
                                     </#if>
                                 </p>
