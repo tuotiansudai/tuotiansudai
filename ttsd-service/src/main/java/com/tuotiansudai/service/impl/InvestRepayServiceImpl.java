@@ -1,9 +1,12 @@
 package com.tuotiansudai.service.impl;
 
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.dto.InvestRepayDataItemDto;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.LatestInvestView;
@@ -38,26 +41,32 @@ public class InvestRepayServiceImpl implements InvestRepayService{
     }
 
     @Override
-    public List<InvestRepayModel> findByLoginNameAndTimeSuccessInvestRepayList(String loginName, Date startTime, Date endTime, int startLimit, int endLimit) {
+    public List<InvestRepayDataItemDto> findByLoginNameAndTimeSuccessInvestRepayList(String loginName, Date startTime, Date endTime, int startLimit, int endLimit) {
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndTimeSuccessInvestRepayList(loginName, startTime, endTime, startLimit, endLimit);
         return investRepayAddBirthday(investRepayModels, loginName);
     }
 
     @Override
-    public List<InvestRepayModel> findByLoginNameAndTimeNotSuccessInvestRepayList(String loginName, Date startTime, Date endTime, int startLimit, int endLimit) {
+    public List<InvestRepayDataItemDto> findByLoginNameAndTimeNotSuccessInvestRepayList(String loginName, Date startTime, Date endTime, int startLimit, int endLimit) {
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndTimeNotSuccessInvestRepayList(loginName, startTime, endTime, startLimit, endLimit);
         return investRepayAddBirthday(investRepayModels, loginName);
     }
 
-    private List<InvestRepayModel> investRepayAddBirthday(List<InvestRepayModel> investRepayModels, String loginName) {
-        for (InvestRepayModel investRepayModel : investRepayModels) {
-            List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndLoanId(loginName, investRepayModel.getLoan().getId());
-            investRepayModel.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
+    private List<InvestRepayDataItemDto> investRepayAddBirthday(List<InvestRepayModel> investRepayModels, String loginName) {
+        List<InvestRepayDataItemDto> investRepayDataItemDtoList = Lists.transform(investRepayModels, new Function<InvestRepayModel, InvestRepayDataItemDto>() {
+            @Override
+            public InvestRepayDataItemDto apply(InvestRepayModel input) {
+                return new InvestRepayDataItemDto().generateInvestRepayDataItemDto(input);
+            }
+        });
+        for (InvestRepayDataItemDto investRepayDataItemDto : investRepayDataItemDtoList) {
+            List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndLoanId(loginName, investRepayDataItemDto.getLoan().getId());
+            investRepayDataItemDto.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
             if (CollectionUtils.isNotEmpty(userCouponModels)) {
-                investRepayModel.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
+                investRepayDataItemDto.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
             }
         }
-        return investRepayModels;
+        return investRepayDataItemDtoList;
     }
 
     @Override
