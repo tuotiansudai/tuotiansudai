@@ -84,7 +84,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         baseDto.setData(payDataDto);
 
         String loginName = investDto.getLoginName();
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         long transferInvestId = Long.parseLong(investDto.getTransferInvestId());
 
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByTransferInvestId(transferInvestId, TransferStatus.TRANSFERRING);
