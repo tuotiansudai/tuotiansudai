@@ -15,7 +15,7 @@ public class JPushAlertDto {
     @NotNull
     private PushType pushType;
 
-    private List<String> pushObjects;
+    private List<String> pushDistricts;
     @NotNull
     private PushSource pushSource;
 
@@ -47,12 +47,12 @@ public class JPushAlertDto {
         this.pushType = pushType;
     }
 
-    public List<String> getPushObjects() {
-        return pushObjects;
+    public List<String> getPushDistricts() {
+        return pushDistricts;
     }
 
-    public void setPushObjects(List<String> pushObjects) {
-        this.pushObjects = pushObjects;
+    public void setPushDistricts(List<String> pushDistricts) {
+        this.pushDistricts = pushDistricts;
     }
 
     public PushSource getPushSource() {
@@ -126,7 +126,7 @@ public class JPushAlertDto {
         this.id = "" + jPushAlertModel.getId();
         this.name = jPushAlertModel.getName();
         this.pushType = jPushAlertModel.getPushType();
-        this.pushObjects = jPushAlertModel.getPushObjects();
+        this.pushDistricts = jPushAlertModel.getPushDistricts();
         this.pushUserType = jPushAlertModel.getPushUserType();
         this.pushSource = jPushAlertModel.getPushSource();
         this.content = jPushAlertModel.getContent();

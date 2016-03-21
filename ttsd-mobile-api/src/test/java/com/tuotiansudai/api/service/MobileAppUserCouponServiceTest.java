@@ -1,18 +1,18 @@
 package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.BaseParam;
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.UserCouponListResponseDataDto;
-import com.tuotiansudai.api.dto.UserCouponRequestDto;
+import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.impl.MobileAppUserCouponServiceImpl;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponView;
+import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.InvestStatus;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -44,40 +44,11 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
     @Mock
     private InvestMapper investMapper;
 
+    @Mock
+    private UserCouponService userCouponService;
+
     @Test
     public void shouldGetUsedUserCoupons() {
-        CouponModel unusedCouponModel = new CouponModel();
-        unusedCouponModel.setId(1);
-        unusedCouponModel.setCouponType(CouponType.NEWBIE_COUPON);
-        unusedCouponModel.setProductTypes(Lists.newArrayList(ProductType.SYL, ProductType.WYX));
-        unusedCouponModel.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
-        unusedCouponModel.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
-        unusedCouponModel.setAmount(100);
-
-        CouponModel usedCouponModel = new CouponModel();
-        usedCouponModel.setId(2);
-        usedCouponModel.setCouponType(CouponType.INVEST_COUPON);
-        usedCouponModel.setProductTypes(Lists.newArrayList(ProductType.SYL, ProductType.WYX, ProductType.JYF));
-        usedCouponModel.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
-        usedCouponModel.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
-        usedCouponModel.setAmount(200);
-
-        CouponModel expiredCouponModel = new CouponModel();
-        expiredCouponModel.setId(3);
-        expiredCouponModel.setCouponType(CouponType.INVEST_COUPON);
-        expiredCouponModel.setProductTypes(Lists.newArrayList(ProductType.SYL, ProductType.WYX, ProductType.JYF));
-        expiredCouponModel.setStartTime(new DateTime().withTimeAtStartOfDay().minusDays(2).toDate());
-        expiredCouponModel.setEndTime(new DateTime().withTimeAtStartOfDay().minusDays(1).toDate());
-        expiredCouponModel.setAmount(200);
-
-
-        UserCouponModel unusedUserCouponModel = new UserCouponModel();
-        unusedUserCouponModel.setId(1);
-        unusedUserCouponModel.setCouponId(unusedCouponModel.getId());
-        unusedUserCouponModel.setEndTime(unusedCouponModel.getEndTime());
-        unusedUserCouponModel.setStartTime(unusedCouponModel.getStartTime());
-
-
         LoanModel loanModel = new LoanModel();
         loanModel.setId(1);
         loanModel.setName("name");
@@ -86,32 +57,42 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         investModel.setId(1);
         investModel.setLoanId(1);
         investModel.setAmount(1000);
-        UserCouponModel usedUserCouponModel = new UserCouponModel();
-        usedUserCouponModel.setId(2);
-        usedUserCouponModel.setStatus(InvestStatus.SUCCESS);
-        usedUserCouponModel.setLoanId(loanModel.getId());
-        usedUserCouponModel.setCouponId(usedCouponModel.getId());
-        usedUserCouponModel.setUsedTime(new Date());
-        usedUserCouponModel.setExpectedInterest(100);
-        usedUserCouponModel.setInvestId(1L);
-        usedUserCouponModel.setInvestAmount(1000L);
-        usedUserCouponModel.setEndTime(usedCouponModel.getEndTime());
-        usedUserCouponModel.setStartTime(usedCouponModel.getStartTime());
-
-        UserCouponModel expiredUserCouponModel = new UserCouponModel();
-        expiredUserCouponModel.setId(3);
-        expiredUserCouponModel.setCouponId(expiredCouponModel.getId());
-        expiredUserCouponModel.setStartTime(expiredCouponModel.getStartTime());
-        expiredUserCouponModel.setEndTime(expiredCouponModel.getEndTime());
 
 
-        List<UserCouponModel> fakeUserCoupons = Lists.newArrayList(unusedUserCouponModel, usedUserCouponModel, expiredUserCouponModel);
-        when(userCouponMapper.findByLoginName(anyString(),anyList())).thenReturn(fakeUserCoupons);
-        when(couponMapper.findById(unusedCouponModel.getId())).thenReturn(unusedCouponModel);
-        when(couponMapper.findById(usedCouponModel.getId())).thenReturn(usedCouponModel);
-        when(couponMapper.findById(expiredUserCouponModel.getId())).thenReturn(expiredCouponModel);
-        when(loanMapper.findById(loanModel.getId())).thenReturn(loanModel);
-        when(investMapper.findById(loanModel.getId())).thenReturn(investModel);
+        List<UserCouponView> usedUserCoupon = Lists.newArrayList();
+        UserCouponView usedUserCouponView = new UserCouponView();
+        usedUserCoupon.add(usedUserCouponView);
+        usedUserCouponView.setUsedTime(new Date());
+        usedUserCouponView.setLoanId(loanModel.getId());
+        usedUserCouponView.setLoanName(loanModel.getName());
+        usedUserCouponView.setLoanProductType(loanModel.getProductType());
+        usedUserCouponView.setCouponType(CouponType.NEWBIE_COUPON);
+
+        List<UserCouponView> unusedUserCoupon = Lists.newArrayList();
+        UserCouponView unUsedUserCouponView = new UserCouponView();
+        unusedUserCoupon.add(unUsedUserCouponView);
+        unUsedUserCouponView.setId(1);
+        unUsedUserCouponView.setCouponType(CouponType.NEWBIE_COUPON);
+        unUsedUserCouponView.setProductTypeList(Lists.newArrayList(ProductType.SYL, ProductType.WYX));
+        unUsedUserCouponView.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
+        unUsedUserCouponView.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
+        unUsedUserCouponView.setCouponAmount(100);
+
+        List<UserCouponView> expiredUserCoupon = Lists.newArrayList();
+        UserCouponView expiredUserCouponView = new UserCouponView();
+        expiredUserCoupon.add(expiredUserCouponView);
+        expiredUserCouponView.setId(1);
+        expiredUserCouponView.setCouponType(CouponType.BIRTHDAY_COUPON);
+        expiredUserCouponView.setProductTypeList(Lists.newArrayList(ProductType.SYL, ProductType.WYX));
+        expiredUserCouponView.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
+        expiredUserCouponView.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
+        expiredUserCouponView.setCouponAmount(200);
+
+
+        when(userCouponService.getUnusedUserCoupons(anyString())).thenReturn(unusedUserCoupon);
+        when(userCouponService.getExpiredUserCoupons(anyString())).thenReturn(expiredUserCoupon);
+        when(userCouponService.findUseRecords(anyString())).thenReturn(usedUserCoupon);
+
 
         UserCouponRequestDto requestDto = new UserCouponRequestDto();
         requestDto.setBaseParam(new BaseParam());
@@ -119,64 +100,57 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         BaseResponseDto<UserCouponListResponseDataDto> responseDto = mobileAppUserCouponService.getUserCoupons(requestDto);
 
         assertThat(responseDto.getData().getCoupons().size(), is(1));
-        assertThat(responseDto.getData().getCoupons().get(0).getUserCouponId(), is(String.valueOf(usedUserCouponModel.getId())));
-        assertThat(responseDto.getData().getCoupons().get(0).getLoanId(), is(String.valueOf(loanModel.getId())));
-        assertThat(responseDto.getData().getCoupons().get(0).getLoanName(), is(String.valueOf(loanModel.getName())));
-        assertThat(responseDto.getData().getCoupons().get(0).getLoanProductType(), is(loanModel.getProductType()));
+        assertThat(((UserCouponResponseDataDto)(responseDto.getData().getCoupons().get(0))).getLoanId(), is(String.valueOf(loanModel.getId())));
+        assertThat(((UserCouponResponseDataDto)responseDto.getData().getCoupons().get(0)).getLoanName(), is(String.valueOf(loanModel.getName())));
+        assertThat(((UserCouponResponseDataDto)responseDto.getData().getCoupons().get(0)).getLoanProductType(), is(loanModel.getProductType()));
     }
 
     @Test
     public void shouldGetUnusedUserCoupons() {
-        CouponModel unusedCouponModel = new CouponModel();
-        unusedCouponModel.setId(1);
-        unusedCouponModel.setCouponType(CouponType.NEWBIE_COUPON);
-        unusedCouponModel.setProductTypes(Lists.newArrayList(ProductType.SYL, ProductType.WYX));
-        unusedCouponModel.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
-        unusedCouponModel.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
-        unusedCouponModel.setAmount(100);
-
-        CouponModel usedCouponModel = new CouponModel();
-        usedCouponModel.setId(2);
-        usedCouponModel.setCouponType(CouponType.INVEST_COUPON);
-        usedCouponModel.setProductTypes(Lists.newArrayList(ProductType.SYL, ProductType.WYX, ProductType.JYF));
-        unusedCouponModel.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
-        unusedCouponModel.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
-        usedCouponModel.setAmount(200);
-
-        CouponModel expiredCouponModel = new CouponModel();
-        expiredCouponModel.setId(3);
-        expiredCouponModel.setCouponType(CouponType.INVEST_COUPON);
-        expiredCouponModel.setProductTypes(Lists.newArrayList(ProductType.SYL, ProductType.WYX, ProductType.JYF));
-        expiredCouponModel.setStartTime(new DateTime().withTimeAtStartOfDay().minusDays(2).toDate());
-        expiredCouponModel.setEndTime(new DateTime().withTimeAtStartOfDay().minusDays(1).toDate());
-        expiredCouponModel.setAmount(200);
+        LoanModel loanModel = new LoanModel();
+        loanModel.setId(1);
+        loanModel.setName("name");
+        loanModel.setProductType(ProductType.JYF);
+        InvestModel investModel = new InvestModel();
+        investModel.setId(1);
+        investModel.setLoanId(1);
+        investModel.setAmount(1000);
 
 
-        UserCouponModel unusedUserCouponModel = new UserCouponModel();
-        unusedUserCouponModel.setId(1);
-        unusedUserCouponModel.setCouponId(unusedCouponModel.getId());
-        unusedUserCouponModel.setStartTime(unusedCouponModel.getStartTime());
-        unusedUserCouponModel.setEndTime(unusedCouponModel.getEndTime());
+        List<UserCouponView> usedUserCoupon = Lists.newArrayList();
+        UserCouponView usedUserCouponView = new UserCouponView();
+        usedUserCoupon.add(usedUserCouponView);
+        usedUserCouponView.setUsedTime(new Date());
+        usedUserCouponView.setLoanId(loanModel.getId());
+        usedUserCouponView.setLoanName(loanModel.getName());
+        usedUserCouponView.setLoanProductType(loanModel.getProductType());
+        usedUserCouponView.setCouponType(CouponType.NEWBIE_COUPON);
+
+        List<UserCouponView> unusedUserCoupon = Lists.newArrayList();
+        UserCouponView unUsedUserCouponView = new UserCouponView();
+        unusedUserCoupon.add(unUsedUserCouponView);
+        unUsedUserCouponView.setId(1);
+        unUsedUserCouponView.setCouponType(CouponType.NEWBIE_COUPON);
+        unUsedUserCouponView.setProductTypeList(Lists.newArrayList(ProductType.SYL, ProductType.WYX));
+        unUsedUserCouponView.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
+        unUsedUserCouponView.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
+        unUsedUserCouponView.setCouponAmount(100);
+
+        List<UserCouponView> expiredUserCoupon = Lists.newArrayList();
+        UserCouponView expiredUserCouponView = new UserCouponView();
+        expiredUserCoupon.add(expiredUserCouponView);
+        expiredUserCouponView.setId(1);
+        expiredUserCouponView.setCouponType(CouponType.BIRTHDAY_COUPON);
+        expiredUserCouponView.setProductTypeList(Lists.newArrayList(ProductType.SYL, ProductType.WYX));
+        expiredUserCouponView.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
+        expiredUserCouponView.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
+        expiredUserCouponView.setCouponAmount(200);
 
 
-        UserCouponModel usedUserCouponModel = new UserCouponModel();
-        usedUserCouponModel.setId(2);
-        usedUserCouponModel.setStatus(InvestStatus.SUCCESS);
-        usedUserCouponModel.setCouponId(usedCouponModel.getId());
-        usedUserCouponModel.setStartTime(usedCouponModel.getStartTime());
-        usedUserCouponModel.setEndTime(usedCouponModel.getEndTime());
+        when(userCouponService.getUnusedUserCoupons(anyString())).thenReturn(unusedUserCoupon);
+        when(userCouponService.getExpiredUserCoupons(anyString())).thenReturn(expiredUserCoupon);
+        when(userCouponService.findUseRecords(anyString())).thenReturn(usedUserCoupon);
 
-        UserCouponModel expiredUserCouponModel = new UserCouponModel();
-        expiredUserCouponModel.setId(3);
-        expiredUserCouponModel.setCouponId(expiredCouponModel.getId());
-        expiredUserCouponModel.setStartTime(expiredCouponModel.getStartTime());
-        expiredUserCouponModel.setEndTime(expiredCouponModel.getEndTime());
-
-        List<UserCouponModel> fakeUserCoupons = Lists.newArrayList(unusedUserCouponModel, usedUserCouponModel, expiredUserCouponModel);
-        when(userCouponMapper.findByLoginName(anyString(),anyList())).thenReturn(fakeUserCoupons);
-        when(couponMapper.findById(unusedCouponModel.getId())).thenReturn(unusedCouponModel);
-        when(couponMapper.findById(usedCouponModel.getId())).thenReturn(usedCouponModel);
-        when(couponMapper.findById(expiredUserCouponModel.getId())).thenReturn(expiredCouponModel);
 
         UserCouponRequestDto requestDto = new UserCouponRequestDto();
         requestDto.setBaseParam(new BaseParam());
@@ -184,60 +158,55 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         BaseResponseDto<UserCouponListResponseDataDto> responseDto = mobileAppUserCouponService.getUserCoupons(requestDto);
 
         assertThat(responseDto.getData().getCoupons().size(), is(1));
-        assertThat(responseDto.getData().getCoupons().get(0).getUserCouponId(), is(String.valueOf(unusedUserCouponModel.getId())));
+        assertThat(((UserCouponResponseDataDto)(responseDto.getData().getCoupons().get(0))).getType(), is(CouponType.NEWBIE_COUPON));
     }
 
     @Test
     public void shouldGetExpiredUserCoupons() {
-        CouponModel unusedCouponModel = new CouponModel();
-        unusedCouponModel.setId(1);
-        unusedCouponModel.setCouponType(CouponType.NEWBIE_COUPON);
-        unusedCouponModel.setProductTypes(Lists.newArrayList(ProductType.SYL, ProductType.WYX));
-        unusedCouponModel.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
-        unusedCouponModel.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
-        unusedCouponModel.setAmount(100);
-
-        CouponModel usedCouponModel = new CouponModel();
-        usedCouponModel.setId(2);
-        usedCouponModel.setCouponType(CouponType.INVEST_COUPON);
-        usedCouponModel.setProductTypes(Lists.newArrayList(ProductType.SYL, ProductType.WYX, ProductType.JYF));
-        unusedCouponModel.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
-        unusedCouponModel.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
-        usedCouponModel.setAmount(200);
-
-        CouponModel expiredCouponModel = new CouponModel();
-        expiredCouponModel.setId(3);
-        expiredCouponModel.setCouponType(CouponType.INVEST_COUPON);
-        expiredCouponModel.setProductTypes(Lists.newArrayList(ProductType.SYL, ProductType.WYX, ProductType.JYF));
-        expiredCouponModel.setStartTime(new DateTime().withTimeAtStartOfDay().minusDays(2).toDate());
-        expiredCouponModel.setEndTime(new DateTime().withTimeAtStartOfDay().minusDays(1).toDate());
-        expiredCouponModel.setAmount(200);
+        LoanModel loanModel = new LoanModel();
+        loanModel.setId(1);
+        loanModel.setName("name");
+        loanModel.setProductType(ProductType.JYF);
+        InvestModel investModel = new InvestModel();
+        investModel.setId(1);
+        investModel.setLoanId(1);
+        investModel.setAmount(1000);
 
 
-        UserCouponModel unusedUserCouponModel = new UserCouponModel();
-        unusedUserCouponModel.setId(1);
-        unusedUserCouponModel.setCouponId(unusedCouponModel.getId());
-        unusedUserCouponModel.setEndTime(unusedCouponModel.getEndTime());
-        unusedUserCouponModel.setStartTime(unusedCouponModel.getStartTime());
+        List<UserCouponView> usedUserCoupon = Lists.newArrayList();
+        UserCouponView usedUserCouponView = new UserCouponView();
+        usedUserCoupon.add(usedUserCouponView);
+        usedUserCouponView.setUsedTime(new Date());
+        usedUserCouponView.setLoanId(loanModel.getId());
+        usedUserCouponView.setLoanName(loanModel.getName());
+        usedUserCouponView.setLoanProductType(loanModel.getProductType());
+        usedUserCouponView.setCouponType(CouponType.NEWBIE_COUPON);
 
-        UserCouponModel usedUserCouponModel = new UserCouponModel();
-        usedUserCouponModel.setId(2);
-        usedUserCouponModel.setStatus(InvestStatus.SUCCESS);
-        usedUserCouponModel.setCouponId(usedCouponModel.getId());
-        usedUserCouponModel.setStartTime(unusedCouponModel.getStartTime());
-        usedUserCouponModel.setEndTime(unusedCouponModel.getEndTime());
+        List<UserCouponView> unusedUserCoupon = Lists.newArrayList();
+        UserCouponView unUsedUserCouponView = new UserCouponView();
+        unusedUserCoupon.add(unUsedUserCouponView);
+        unUsedUserCouponView.setId(1);
+        unUsedUserCouponView.setCouponType(CouponType.NEWBIE_COUPON);
+        unUsedUserCouponView.setProductTypeList(Lists.newArrayList(ProductType.SYL, ProductType.WYX));
+        unUsedUserCouponView.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
+        unUsedUserCouponView.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
+        unUsedUserCouponView.setCouponAmount(100);
 
-        UserCouponModel expiredUserCouponModel = new UserCouponModel();
-        expiredUserCouponModel.setId(3);
-        expiredUserCouponModel.setCouponId(expiredCouponModel.getId());
-        expiredUserCouponModel.setEndTime(expiredCouponModel.getEndTime());
-        expiredUserCouponModel.setStartTime(expiredCouponModel.getStartTime());
+        List<UserCouponView> expiredUserCoupon = Lists.newArrayList();
+        UserCouponView expiredUserCouponView = new UserCouponView();
+        expiredUserCoupon.add(expiredUserCouponView);
+        expiredUserCouponView.setId(1);
+        expiredUserCouponView.setCouponType(CouponType.BIRTHDAY_COUPON);
+        expiredUserCouponView.setProductTypeList(Lists.newArrayList(ProductType.SYL, ProductType.WYX));
+        expiredUserCouponView.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
+        expiredUserCouponView.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
+        expiredUserCouponView.setCouponAmount(200);
 
-        List<UserCouponModel> fakeUserCoupons = Lists.newArrayList(unusedUserCouponModel, usedUserCouponModel, expiredUserCouponModel);
-        when(userCouponMapper.findByLoginName(anyString(),anyList())).thenReturn(fakeUserCoupons);
-        when(couponMapper.findById(unusedCouponModel.getId())).thenReturn(unusedCouponModel);
-        when(couponMapper.findById(usedCouponModel.getId())).thenReturn(usedCouponModel);
-        when(couponMapper.findById(expiredUserCouponModel.getId())).thenReturn(expiredCouponModel);
+
+        when(userCouponService.getUnusedUserCoupons(anyString())).thenReturn(unusedUserCoupon);
+        when(userCouponService.getExpiredUserCoupons(anyString())).thenReturn(expiredUserCoupon);
+        when(userCouponService.findUseRecords(anyString())).thenReturn(usedUserCoupon);
+
 
         UserCouponRequestDto requestDto = new UserCouponRequestDto();
         requestDto.setBaseParam(new BaseParam());
@@ -245,6 +214,6 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         BaseResponseDto<UserCouponListResponseDataDto> responseDto = mobileAppUserCouponService.getUserCoupons(requestDto);
 
         assertThat(responseDto.getData().getCoupons().size(), is(1));
-        assertThat(responseDto.getData().getCoupons().get(0).getUserCouponId(), is(String.valueOf(expiredUserCouponModel.getId())));
+        assertThat(((UserCouponResponseDataDto)(responseDto.getData().getCoupons().get(0))).getType(), is(CouponType.BIRTHDAY_COUPON));
     }
 }
