@@ -53,10 +53,13 @@ public interface UserMapper {
                                      @Param(value = "balanceMin") int balanceMin,
                                      @Param(value = "balanceMax") int balanceMax);
 
-    List<UserModel> findAllUsers(Map<String, Object> params);
+    List<String> findAllUsers(Map<String, Object> params);
 
-    List<UserModel> findNaturalUser(Map<String, Object> params);
+    List<String> findNaturalUser(Map<String, Object> params);
 
+    List<String> findAllByRole(Map<String, Object> params);
+
+    List<String> findAllRecommendation(Map<String, Object> params);
 
     List<String> findUsersBirthdayMobile();
 
