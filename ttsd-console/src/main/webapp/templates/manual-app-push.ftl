@@ -1,9 +1,24 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="manual-app-push.js" headLab="app-push-manage" sideLab="createManualAppPush" title="创建手动推送">
 
 <!-- content area begin -->
 <div class="col-md-10">
     <form action="/app-push-manage/manual-app-push" method="post" class="form-horizontal form-list">
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">推送类型: </label>
+            <div class="col-sm-4">
+                <select class="selectpicker pushType" name="pushType">
+                    <#list pushTypes as pushType>
+                        <#if pushType.getType()=='MANUAL'>
+                            <option value="${pushType.name()}" <#if jPushAlert?? && jPushAlert.pushType == pushType>selected</#if> >${pushType.getDescription()}</option>
+                        </#if>
+                    </#list>
+                </select>
+            </div>
+        </div>
+
         <div class="form-group">
             <input type="hidden" name="id" placeholder="" <#if jPushAlert??>value="${jPushAlert.id!}"</#if> />
             <label class="col-sm-2 control-label">通知名称:</label>
@@ -11,21 +26,24 @@
                 <input type="text" class="form-control name"  name="name" placeholder="" <#if jPushAlert??>value="${jPushAlert.name!}"</#if> readonly datatype="*" errormsg="通知名称不能为空">
             </div>
         </div>
+
         <div class="form-group">
-            <label  class="col-sm-2 control-label">推送类型: </label>
-            <div class="col-sm-4">
-                <select class="selectpicker pushType" name="pushType">
-                    <#list pushTypes as pushType>
-                        <option value="${pushType.name()}" <#if jPushAlert?? && jPushAlert.pushType == pushType>selected</#if> >${pushType.getDescription()}</option>
+            <label  class="col-sm-2 control-label">推送渠道: </label>
+            <div class="col-sm-2">
+                <select class="selectpicker" name="pushSource">
+                    <#list pushSources as pushSource>
+                        <option <#if jPushAlert?? && jPushAlert.pushSource == pushSource>selected</#if>>${pushSource.name()}</option>
                     </#list>
                 </select>
             </div>
         </div>
+
         <div class="form-group">
-            <label  class="col-sm-2 control-label">推送对象: </label>
+            <label  class="col-sm-2 control-label">推送地区: </label>
             <div class="col-sm-10">
                 <#if jPushAlert??>
                     <input type="radio"  class="push_object_choose" value="all" name="pushObjectChoose" <#if jPushAlert??&&!(jPushAlert.pushObjects?has_content)>checked</#if> placeholder=""  datatype="*" >全部
+
                     <input type="radio"  class="push_object_choose" value="district" <#if jPushAlert??&&jPushAlert.pushObjects?has_content&&jPushAlert.pushObjects?size gt 0>checked</#if> name="pushObjectChoose" placeholder=""  datatype="*" >地区
                 <#else>
                     <input type="radio"  class="push_object_choose" value="all" checked name="pushObjectChoose" placeholder=""  datatype="*" >全部
@@ -53,21 +71,38 @@
                 </#list>
             </div>
         </div>
+
         <div class="form-group">
-            <label  class="col-sm-2 control-label">推送渠道: </label>
-            <div class="col-sm-2">
-                <select class="selectpicker" name="pushSource">
-                    <#list pushSources as pushSource>
-                        <option <#if jPushAlert?? && jPushAlert.pushSource == pushSource>selected</#if>>${pushSource.name()}</option>
-                    </#list>
-                </select>
+            <label  class="col-sm-2 control-label">用户类型: </label>
+            <div class="col-sm-5 user-type">
+                <#list pushUserTypes as pushUserType>
+                    <label>
+                        <input type="checkbox" name="pushUserType" class="push_user_type <#if pushUserType.name() == 'ALL'>push_user_type_all</#if>"
+                               <#if jPushAlert?? && jPushAlert.pushUserType?seq_contains(pushUserType.name())>checked="checked"</#if>
+                               value="${pushUserType.name()}">${pushUserType.getDescription()}
+                    </label>
+                </#list>
+
             </div>
         </div>
+
+
         <div class="form-group">
             <label  class="col-sm-2 control-label">推送模板: </label>
             <div class="col-sm-4">
-                <textarea rows="4" cols="58" maxlength="40" class="content" name="content" errormsg="通知模板不能为空"><#if jPushAlert??>${jPushAlert.content!}</#if></textarea>
-                （长度请不要超过40个字）
+                <textarea rows="4" cols="58" maxlength="30" class="content" name="content" placeholder="（长度请不要超过30个字）" errormsg="通知模板不能为空"><#if jPushAlert??>${jPushAlert.content!}</#if></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">预设推送时间: </label>
+            <div class="col-sm-3">
+                <div class='input-group date' id='datetimepicker6'>
+                    <input type='text' class="form-control jq-star-date" datatype="date" errormsg="筹款启动时间需要正确填写" name="expectPushTime" <#if jPushAlert??>value="${jPushAlert.expectPushTime!}" </#if>/>
+					                <span class="input-group-addon">
+					                    <span class="glyphicon glyphicon-calendar"></span>
+					                </span>
+                </div>
             </div>
         </div>
 
@@ -95,8 +130,8 @@
         <div class="form-group">
             <label  class="col-sm-2 control-label">操作: </label>
             <div class="col-sm-4">
-                <button type="button" class="btn btn-sm btn-primary btnSearch" id="btnSave">保存</button>
-                <button type="reset" class="btn btn-sm btn-primary btnSearch" id="btnReset">重置</button>
+                <button type="button" class="btn btn-sm btn-primary btnSearch" id="btnSave" <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN')">disabled</@security.authorize>>保存</button>
+                <button type="reset" onclick="javascript:window.location.reload();" class="btn btn-sm btn-primary btnSearch" id="btnReset" <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN')">disabled</@security.authorize>>重置</button>
             </div>
         </div>
     </form>

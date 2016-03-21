@@ -36,7 +36,7 @@ public class UserFundsController {
                                   @RequestParam(value = "loginName", required = false) String loginName,
                                   @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
                                   @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
-                                  @RequestParam(value = "currentPageNo", defaultValue = "1", required = false) int currentPageNo,
+                                  @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
                                   @RequestParam(value = "export", required = false) String export,
                                   HttpServletResponse response) throws IOException {
@@ -71,22 +71,22 @@ public class UserFundsController {
             return null;
         } else {
             ModelAndView modelAndView = new ModelAndView("/user-funds");
-            List<UserBillPaginationView> userBillModels = userBillService.findUserFunds(userBillBusinessType, userBillOperationType, loginName, startTime, endTime, currentPageNo, pageSize);
+            List<UserBillPaginationView> userBillModels = userBillService.findUserFunds(userBillBusinessType, userBillOperationType, loginName, startTime, endTime, index, pageSize);
             int userFundsCount = userBillService.findUserFundsCount(userBillBusinessType, userBillOperationType, loginName, startTime, endTime);
             modelAndView.addObject("loginName", loginName);
             modelAndView.addObject("startTime", startTime);
             modelAndView.addObject("endTime", endTime);
             modelAndView.addObject("userBillBusinessType", userBillBusinessType);
             modelAndView.addObject("userBillOperationType", userBillOperationType);
-            modelAndView.addObject("currentPageNo", currentPageNo);
+            modelAndView.addObject("index", index);
             modelAndView.addObject("pageSize", pageSize);
             modelAndView.addObject("userBillModels", userBillModels);
             modelAndView.addObject("userFundsCount", userFundsCount);
             modelAndView.addObject("businessTypeList", UserBillBusinessType.values());
             modelAndView.addObject("operationTypeList", UserBillOperationType.values());
             long totalPages = userFundsCount / pageSize + (userFundsCount % pageSize > 0 ? 1 : 0);
-            boolean hasPreviousPage = currentPageNo > 1 && currentPageNo <= totalPages;
-            boolean hasNextPage = currentPageNo < totalPages;
+            boolean hasPreviousPage = index > 1 && index <= totalPages;
+            boolean hasNextPage = index < totalPages;
             modelAndView.addObject("hasPreviousPage", hasPreviousPage);
             modelAndView.addObject("hasNextPage", hasNextPage);
             return modelAndView;

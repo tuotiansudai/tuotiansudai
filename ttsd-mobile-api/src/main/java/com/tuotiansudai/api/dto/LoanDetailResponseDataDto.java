@@ -31,6 +31,9 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
     private String maxInvestMoney;
     private String raiseCompletedTime;
     private String interestPointName;
+    private String investFeeRate;
+    private String title;
+    private String content;
 
     private List<EvidenceResponseDataDto> evidence;
 
@@ -275,5 +278,29 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
 
     public void setInterestPointName(String interestPointName) {
         this.interestPointName = interestPointName;
+    }
+
+    public String getInvestFeeRate() {
+        return investFeeRate;
+    }
+
+    public void setInvestFeeRate(String investFeeRate) {
+        this.investFeeRate = investFeeRate;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

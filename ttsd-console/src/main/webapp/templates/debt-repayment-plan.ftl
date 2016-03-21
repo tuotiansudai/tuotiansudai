@@ -13,7 +13,7 @@
                 <div class="form-group">
 
                     <select class="selectpicker status" data-style="btn-default">
-                        <option value="" <#if repayStatus??><#else>selected="selected" </#if>>全部</option>
+                        <option value="ALL" <#if repayStatus??><#else>selected="selected" </#if>>全部</option>
                         <option value="COMPLETE"
                                 <#if repayStatus?? && repayStatus=="COMPLETE">selected="selected" </#if>>已还款
                         </option>

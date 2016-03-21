@@ -15,6 +15,8 @@ import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.*;
+import com.tuotiansudai.task.OperationType;
+import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.commons.collections4.CollectionUtils;
@@ -30,6 +32,9 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+//import com.tuotiansudai.task.OperationType;
+//import com.tuotiansudai.task.aspect.ApplicationAspect;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -126,6 +131,7 @@ public class UserServiceImpl implements UserService {
         String encodePassword = myShaPasswordEncoder.encodePassword(dto.getPassword(), salt);
         userModel.setSalt(salt);
         userModel.setPassword(encodePassword);
+        userModel.setLastModifiedTime(new Date());
         this.userMapper.create(userModel);
 
         UserRoleModel userRoleModel = new UserRoleModel();
@@ -214,7 +220,7 @@ public class UserServiceImpl implements UserService {
         userMapper.updateUser(userModel);
 
         //generate audit
-        auditLogService.generateAuditLog(operatorLoginName, beforeUpdateUserModel, beforeUpdateUserRoleModels, userModel, afterUpdateUserRoleModels, ip);
+//        auditLogService.createUserActiveLog(operatorLoginName, beforeUpdateUserModel, beforeUpdateUserRoleModels, userModel, afterUpdateUserRoleModels, ip);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (!mobile.equals(beforeUpdateUserModel.getMobile()) && accountModel != null) {
@@ -233,14 +239,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void updateUserStatus(String loginName, UserStatus userStatus, String ip, String operatorLoginName) {
         UserModel userModel = userMapper.findByLoginName(loginName);
-        UserModel beforeUpdateUserModel;
-        try {
-            beforeUpdateUserModel = userModel.clone();
-        } catch (CloneNotSupportedException e) {
-            logger.error(e.getLocalizedMessage(), e);
-            return;
-        }
-
         userModel.setStatus(userStatus);
         userModel.setLastModifiedTime(new Date());
         userModel.setLastModifiedUser(operatorLoginName);
@@ -251,9 +249,8 @@ public class UserServiceImpl implements UserService {
         } else {
             redisWrapperClient.set(redisKey, String.valueOf(times));
         }
-        List<UserRoleModel> userRoles = userRoleMapper.findByLoginName(loginName);
 
-        auditLogService.generateAuditLog(operatorLoginName, beforeUpdateUserModel, userRoles, userModel, userRoles, ip);
+        auditLogService.createUserActiveLog(loginName, operatorLoginName, userStatus, ip);
     }
 
     private void checkUpdateUserData(EditUserDto editUserDto) throws EditUserException {
@@ -306,11 +303,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public BaseDto<BasePaginationDataDto> findAllUser(String loginName, String email, String mobile, Date beginTime, Date endTime,
                                                       Source source,
-                                                      Role role, String referrer, String channel, Integer index, Integer pageSize) {
+                                                      RoleStage roleStage, String referrer, String channel, Integer index, Integer pageSize) {
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
         List<UserModel> userModels = userMapper.findAllUser(loginName, email, mobile, beginTime, endTime,
                 source,
-                role, referrer, channel, (index - 1) * pageSize, pageSize);
+                roleStage, referrer, channel, (index - 1) * pageSize, pageSize);
         List<UserItemDataDto> userItemDataDtos = Lists.newArrayList();
         for (UserModel userModel : userModels) {
 
@@ -320,15 +317,17 @@ public class UserServiceImpl implements UserService {
 
             List<UserRoleModel> referrerRoleModels = userRoleMapper.findByLoginName(userModel.getReferrer());
             for (UserRoleModel referrerRoleModel : referrerRoleModels) {
-                if (referrerRoleModel.getRole()==Role.STAFF) {
+                if (referrerRoleModel.getRole() == Role.STAFF) {
                     userItemDataDto.setReferrerStaff(true);
                     break;
                 }
             }
             userItemDataDto.setBankCard(bindBankCardService.getPassedBankCard(userModel.getLoginName()) != null);
+            String taskId = OperationType.USER + "-" + userModel.getLoginName();
+            userItemDataDto.setModify(redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId));
             userItemDataDtos.add(userItemDataDto);
         }
-        int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel);
+        int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, roleStage, referrer, channel);
         BasePaginationDataDto<UserItemDataDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, userItemDataDtos);
         basePaginationDataDto.setStatus(true);
         baseDto.setData(basePaginationDataDto);
@@ -391,6 +390,7 @@ public class UserServiceImpl implements UserService {
                 userModel.setProvince("未知");
                 userModel.setCity("未知");
             }
+            userModel.setLastModifiedTime(new Date());
             userMapper.updateUser(userModel);
         }
     }
@@ -431,6 +431,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.findUsersAccountBalanceCount(loginName, balance[0], balance[1]);
     }
 
+
     @Override
     public long findUsersAccountBalanceSum(String loginName, String balanceMin, String balanceMax) {
         int[] balance = parseBalanceInt(balanceMin, balanceMax);
@@ -464,4 +465,5 @@ public class UserServiceImpl implements UserService {
         }
         return new int[]{min, max};
     }
+
 }

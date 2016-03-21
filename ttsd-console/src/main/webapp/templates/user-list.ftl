@@ -33,12 +33,15 @@
         </div>
         <div class="form-group">
             <label for="project">角色</label>
-            <select class="selectpicker" name="role">
+            <select class="selectpicker" name="roleStage">
                 <option value="">全部</option>
-                <#list roleList as roleItem>
-                    <option value="${roleItem.name()}"
-                            <#if (role.name())?has_content && role.name() == roleItem.name()>selected</#if>
-                            >${roleItem.description}</option>
+                <#list roleStageList as roleItem>
+                    <#if roleItem.name()!='OTHERS' && roleItem.name()!='ALL'>
+                        <option value="${roleItem.name()}"
+                                <#if (roleStage.name())?has_content && roleStage.name() == roleItem.name()>selected</#if>
+                                >${roleItem.description}</option>
+
+                    </#if>
                 </#list>
             </select>
         </div>
@@ -101,7 +104,7 @@
             </thead>
             <tbody>
                 <#list userList as userItem>
-                <tr <#if userItem.status!='ACTIVE'> class="bg-warning" </#if> >
+                <tr class="<#if userItem.status!='ACTIVE'>bg-danger</#if> <#if userItem.modify>bg-warning</#if>" >
                     <td>${userItem.loginName}
                         <#if userItem.bankCard>
                         <span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span>
@@ -121,7 +124,8 @@
                     <td><#if userItem.autoInvestStatus=='1'>是<#else>否</#if></td>
                     <td><#list userItem.userRoles as rs> ${rs.role.description}<#if rs_has_next>,</#if> </#list></td>
                     <td>${(userItem.status=='ACTIVE')?then('正常','禁用')}</td>
-                    <td><a href="/user-manage/user/${userItem.loginName}">编辑</a> |
+                    <td>
+                        <a href="/user-manage/user/${userItem.loginName}">编辑</a> |
                         <#if userItem.status=='ACTIVE'>
                             <a class="user-status-modifier" href="#" data-url="/user-manage/user/${userItem.loginName}/disable">禁止</a>
                         <#else>
@@ -151,7 +155,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if pagination.hasPreviousPage >
-                    <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&role=${(role.name())!}&source=${(source.name())!}&referrer=${referrer!}&channel=${channel!}&pageSize=${pageSize}&index=${pageIndex-1}"
+                    <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&roleStage=${(roleStage.name())!}&source=${(source.name())!}&referrer=${referrer!}&channel=${channel!}&pageSize=${pageSize}&index=${pageIndex-1}"
                        aria-label="Previous">
                     <#else>
                     <a href="#" aria-label="Previous">
@@ -162,7 +166,7 @@
                 <li><a>${pagination.index}</a></li>
                 <li>
                     <#if pagination.hasNextPage >
-                    <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&role=${(role.name())!}&source=${(source.name())!}&referrer=${referrer!}&channel=${channel!}&pageSize=${pageSize}&index=${pageIndex+1}"
+                    <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&roleStage=${(roleStage.name())!}&source=${(source.name())!}&referrer=${referrer!}&channel=${channel!}&pageSize=${pageSize}&index=${pageIndex+1}"
                        aria-label="Next">
                     <#else>
                     <a href="#" aria-label="Next">

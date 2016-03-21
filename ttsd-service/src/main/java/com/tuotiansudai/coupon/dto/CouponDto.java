@@ -6,7 +6,6 @@ import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
@@ -19,7 +18,6 @@ public class CouponDto implements Serializable {
 
     private Long id;
 
-    @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String amount;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -30,12 +28,9 @@ public class CouponDto implements Serializable {
 
     private Long totalCount;
 
-    @NotEmpty
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String investLowerLimit;
 
-
-    @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String investUpperLimit;
 
     private Double rate;
@@ -69,6 +64,10 @@ public class CouponDto implements Serializable {
     private String file;
 
     private Boolean importIsRight;
+
+    private Double birthdayBenefit;
+
+    private boolean multiple;
 
     public String getAmount() {
         return amount;
@@ -246,6 +245,22 @@ public class CouponDto implements Serializable {
         this.importIsRight = importIsRight;
     }
 
+    public Double getBirthdayBenefit() {
+        return birthdayBenefit;
+    }
+
+    public void setBirthdayBenefit(Double birthdayBenefit) {
+        this.birthdayBenefit = birthdayBenefit;
+    }
+
+    public boolean getMultiple() {
+        return multiple;
+    }
+
+    public void setMultiple(boolean multiple) {
+        this.multiple = multiple;
+    }
+
     public CouponDto(){
 
     }
@@ -274,5 +289,7 @@ public class CouponDto implements Serializable {
             this.importIsRight = couponModel.getImportIsRight();
         }
         this.shared = couponModel.isShared();
+        this.birthdayBenefit = couponModel.getBirthdayBenefit();
+        this.multiple = couponModel.isMultiple();
     }
 }

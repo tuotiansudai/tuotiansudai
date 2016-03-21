@@ -1,10 +1,14 @@
 package com.tuotiansudai.service.impl;
 
 
-import com.tuotiansudai.repository.model.LatestInvestView;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.model.InvestRepayModel;
+import com.tuotiansudai.repository.model.LatestInvestView;
 import com.tuotiansudai.service.InvestRepayService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +20,12 @@ public class InvestRepayServiceImpl implements InvestRepayService{
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
+
+    @Autowired
+    private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private CouponMapper couponMapper;
 
     @Override
     public long findByLoginNameAndTimeAndSuccessInvestRepay(String loginName,Date startTime,Date endTime) {
@@ -29,17 +39,38 @@ public class InvestRepayServiceImpl implements InvestRepayService{
 
     @Override
     public List<InvestRepayModel> findByLoginNameAndTimeSuccessInvestRepayList(String loginName, Date startTime, Date endTime, int startLimit, int endLimit) {
-        return investRepayMapper.findByLoginNameAndTimeSuccessInvestRepayList(loginName, startTime, endTime, startLimit, endLimit);
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndTimeSuccessInvestRepayList(loginName, startTime, endTime, startLimit, endLimit);
+        return investRepayAddBirthday(investRepayModels, loginName);
     }
 
     @Override
     public List<InvestRepayModel> findByLoginNameAndTimeNotSuccessInvestRepayList(String loginName, Date startTime, Date endTime, int startLimit, int endLimit) {
-        return investRepayMapper.findByLoginNameAndTimeNotSuccessInvestRepayList(loginName, startTime, endTime, startLimit, endLimit);
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndTimeNotSuccessInvestRepayList(loginName, startTime, endTime, startLimit, endLimit);
+        return investRepayAddBirthday(investRepayModels, loginName);
+    }
+
+    private List<InvestRepayModel> investRepayAddBirthday(List<InvestRepayModel> investRepayModels, String loginName) {
+        for (InvestRepayModel investRepayModel : investRepayModels) {
+            List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndLoanId(loginName, investRepayModel.getLoan().getId());
+            investRepayModel.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
+            if (CollectionUtils.isNotEmpty(userCouponModels)) {
+                investRepayModel.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
+            }
+        }
+        return investRepayModels;
     }
 
     @Override
     public List<LatestInvestView> findLatestInvestByLoginName(String loginName, int startLimit, int endLimit) {
-        return investRepayMapper.findLatestInvestByLoginName(loginName, startLimit, endLimit);
+        List<LatestInvestView> latestInvestViews = investRepayMapper.findLatestInvestByLoginName(loginName, startLimit, endLimit);
+        for (LatestInvestView latestInvestView : latestInvestViews) {
+            List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndLoanId(loginName, latestInvestView.getLoanId());
+            latestInvestView.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
+            if (CollectionUtils.isNotEmpty(userCouponModels)) {
+                latestInvestView.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
+            }
+        }
+        return latestInvestViews;
     }
 
     @Override

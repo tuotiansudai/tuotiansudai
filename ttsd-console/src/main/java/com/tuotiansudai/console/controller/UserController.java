@@ -1,20 +1,21 @@
 package com.tuotiansudai.console.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.util.LoginUserInfo;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.EditUserDto;
-import com.tuotiansudai.dto.UserItemDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.repository.model.UserRoleModel;
-import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.ImpersonateService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.task.OperationTask;
+import com.tuotiansudai.task.OperationType;
+import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.util.CsvHeaderType;
 import com.tuotiansudai.util.ExportCsvUtil;
 import com.tuotiansudai.util.RequestIPParser;
@@ -50,19 +51,52 @@ public class UserController {
     @Autowired
     private ImpersonateService impersonateService;
 
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private BindBankCardService bindBankCardService;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
     @Value("${web.server}")
     private String webServer;
 
-
     @RequestMapping(value = "/user/{loginName}", method = RequestMethod.GET)
-    public ModelAndView editUser(@PathVariable String loginName, Model model) {
+    public ModelAndView editUser(@PathVariable String loginName, Model model) throws Exception{
+        String taskId = OperationType.USER + "-" + loginName;
         ModelAndView modelAndView = new ModelAndView("/user-edit");
-        if (!model.containsAttribute("user")) {
-            EditUserDto editUserDto = userService.getEditUser(loginName);
+        if (!redisWrapperClient.hexistsSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
+            if (!model.containsAttribute("user")) {
+                EditUserDto editUserDto = userService.getEditUser(loginName);
+                modelAndView.addObject("user", editUserDto);
+                modelAndView.addObject("roles", Role.values());
+                modelAndView.addObject("showCommit", true);
+            }
+            return modelAndView;
+        } else {
+            OperationTask<EditUserDto> task = (OperationTask<EditUserDto>)redisWrapperClient.hgetSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
+            String description = task.getDescription();
+            String afterUpdate = description.split(" =></br> ")[1];
+            ObjectMapper objectMapper = new ObjectMapper();
+            EditUserDto editUserDto = objectMapper.readValue(afterUpdate, EditUserDto.class);
+            AccountModel accountModel = accountService.findByLoginName(loginName);
+            UserModel userModel = userMapper.findByLoginName(loginName);
+            BankCardModel bankCard = bindBankCardService.getPassedBankCard(loginName);
+            if (bankCard != null) {
+                editUserDto.setBankCardNumber(bankCard.getCardNumber());
+            }
+            editUserDto.setAutoInvestStatus(userModel.getAutoInvestStatus());
+            editUserDto.setIdentityNumber(accountModel == null ? "" : accountModel.getIdentityNumber());
+            editUserDto.setUserName(accountModel == null ? "" : accountModel.getUserName());
             modelAndView.addObject("user", editUserDto);
             modelAndView.addObject("roles", Role.values());
+            modelAndView.addObject("taskId", taskId);
+            modelAndView.addObject("sender", task.getSender());
+            modelAndView.addObject("showCommit", LoginUserInfo.getLoginName().equals(task.getSender()));
+            return modelAndView;
         }
-        return modelAndView;
     }
 
     @RequestMapping(value = "/account/{loginName}/search", method = RequestMethod.GET)
@@ -128,7 +162,7 @@ public class UserController {
     public ModelAndView findAllUser(String loginName, String email, String mobile,
                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date beginTime,
                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
-                                    Role role, String referrer, String channel, @RequestParam(value = "index", defaultValue = "1", required = false) int index,
+                                    RoleStage roleStage, String referrer, String channel, @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                     @RequestParam(value = "source", required = false) Source source,
                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
                                     @RequestParam(value = "export", required = false) String export,
@@ -141,8 +175,8 @@ public class UserController {
                 e.printStackTrace();
             }
             response.setContentType("application/csv");
-            int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel);
-            BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel, 1, count);
+            int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, roleStage, referrer, channel);
+            BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrer, channel, 1, count);
             List<List<String>> data = Lists.newArrayList();
             List<UserItemDataDto> userItemDataDtos = baseDto.getData().getRecords();
             for (int i = 0; i < userItemDataDtos.size(); i++) {
@@ -177,7 +211,7 @@ public class UserController {
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUsers, data, response.getOutputStream());
             return null;
         } else {
-            BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel, index, pageSize);
+            BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrer, channel, index, pageSize);
             ModelAndView mv = new ModelAndView("/user-list");
             mv.addObject("baseDto", baseDto);
             mv.addObject("loginName", loginName);
@@ -185,15 +219,15 @@ public class UserController {
             mv.addObject("mobile", mobile);
             mv.addObject("beginTime", beginTime);
             mv.addObject("endTime", endTime);
-            mv.addObject("role", role);
+            mv.addObject("roleStage", roleStage);
             mv.addObject("referrer", referrer);
             mv.addObject("channel", channel);
             mv.addObject("source", source);
             mv.addObject("pageIndex", index);
             mv.addObject("pageSize", pageSize);
-            List<Role> roleList = Lists.newArrayList(Role.values());
+            List<RoleStage> roleStageList = Lists.newArrayList(RoleStage.values());
             List<String> channelList = userService.findAllChannels();
-            mv.addObject("roleList", roleList);
+            mv.addObject("roleStageList", roleStageList);
             mv.addObject("channelList", channelList);
             mv.addObject("sourceList", Source.values());
             return mv;
@@ -224,4 +258,5 @@ public class UserController {
         String securityCode = impersonateService.plantSecurityCode(LoginUserInfo.getLoginName(), loginName);
         return new ModelAndView("redirect:" + webServer + "/impersonate?securityCode=" + securityCode);
     }
+
 }

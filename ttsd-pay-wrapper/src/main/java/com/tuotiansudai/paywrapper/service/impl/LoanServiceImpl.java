@@ -216,7 +216,7 @@ public class LoanServiceImpl implements LoanService {
             payDataDto.setStatus(true);
             payDataDto.setCode(BaseSyncResponseModel.SUCCESS_CODE);
             payDataDto.setMessage("some other loan out process is running.");
-            logger.error("some other thread is loan-outing for this loan, loanId:"+loanId);
+            logger.error("some other thread is loan-outing for this loan, loanId:" + loanId);
         }
         return baseDto;
     }
@@ -372,6 +372,7 @@ public class LoanServiceImpl implements LoanService {
 
         logger.debug(MessageFormat.format("标的: {0} 放款邮件通知", loanId));
         notifyInvestorsLoanOutSuccessfulByEmail(notifies);
+
     }
 
     private void notifyInvestorsLoanOutSuccessfulBySMS(List<InvestNotifyInfo> notifyInfos) {
@@ -393,7 +394,6 @@ public class LoanServiceImpl implements LoanService {
             }
         }
     }
-
     private void processLoanStatusForLoanOut(LoanModel loan) {
         BaseDto<PayDataDto> dto = updateLoanStatus(loan.getId(), LoanStatus.REPAYING);
         if(dto.getData().getStatus()){

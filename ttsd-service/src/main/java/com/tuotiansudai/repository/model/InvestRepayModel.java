@@ -31,6 +31,10 @@ public class InvestRepayModel implements Serializable {
 
     private Date createdTime = new Date();
 
+    private boolean birthdayCoupon;
+
+    private double birthdayBenefit;
+
     public InvestRepayModel() {
     }
 
@@ -156,5 +160,21 @@ public class InvestRepayModel implements Serializable {
 
     public void setLoan(LoanModel loan) {
         this.loan = loan;
+    }
+
+    public boolean isBirthdayCoupon() {
+        return birthdayCoupon;
+    }
+
+    public void setBirthdayCoupon(boolean birthdayCoupon) {
+        this.birthdayCoupon = birthdayCoupon;
+    }
+
+    public double getBirthdayBenefit() {
+        return birthdayBenefit;
+    }
+
+    public void setBirthdayBenefit(double birthdayBenefit) {
+        this.birthdayBenefit = birthdayBenefit;
     }
 }

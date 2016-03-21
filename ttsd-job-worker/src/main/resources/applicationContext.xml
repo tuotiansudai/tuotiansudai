@@ -26,59 +26,68 @@
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan
-            base-package="com.tuotiansudai.repository,com.tuotiansudai.service,com.tuotiansudai.client,com.tuotiansudai.security,com.tuotiansudai.scheduler,com.tuotiansudai.util,com.tuotiansudai.aspect,com.tuotiansudai.coupon">
+            base-package="com.tuotiansudai.repository,com.tuotiansudai.service,com.tuotiansudai.client,com.tuotiansudai.security,com.tuotiansudai.scheduler,com.tuotiansudai.util,com.tuotiansudai.aspect,com.tuotiansudai.coupon,com.tuotiansudai.jpush">
     </context:component-scan>
 
-    <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl"
-                  value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
+    <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${common.jdbc.username}"/>
         <property name="password" value="${common.jdbc.password}"/>
-        <property name="minConnectionsPerPartition" value="${worker.aa.minConnectionsPerPartition}"/>
-        <property name="maxConnectionsPerPartition" value="${worker.aa.maxConnectionsPerPartition}"/>
-        <property name="acquireIncrement" value="${worker.aa.acquireIncrement}"/>
-        <property name="idleMaxAgeInSeconds" value="600"/>
-        <property name="statementsCacheSize" value="100"/>
+        <property name="minimumIdle" value="${worker.aa.minimumIdle}"/>
+        <property name="maximumPoolSize" value="${worker.aa.maximumPoolSize}"/>
+        <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+            </props>
+        </property>
     </bean>
 
-    <bean id="jobBoneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl"
-                  value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
+    <bean id="jobHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${common.jdbc.username}"/>
         <property name="password" value="${common.jdbc.password}"/>
-        <property name="minConnectionsPerPartition" value="${worker.job_worker.minConnectionsPerPartition}"/>
-        <property name="maxConnectionsPerPartition" value="${worker.job_worker.maxConnectionsPerPartition}"/>
-        <property name="acquireIncrement" value="${worker.job_worker.acquireIncrement}"/>
-        <property name="idleMaxAgeInSeconds" value="600"/>
-        <property name="statementsCacheSize" value="100"/>
+        <property name="minimumIdle" value="${worker.job_worker.minimumIdle}"/>
+        <property name="maximumPoolSize" value="${worker.job_worker.maximumPoolSize}"/>
+        <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+            </props>
+        </property>
     </bean>
+
 
     <!-- transaction manager, use JtaTransactionManager for global tx -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="boneCPDataSource"/>
+        <property name="dataSource" ref="hikariCPDataSource"/>
     </bean>
 
     <!-- transaction manager, use JtaTransactionManager for global tx -->
     <bean id="jobTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="jobBoneCPDataSource"/>
+        <property name="dataSource" ref="jobHikariCPDataSource"/>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="boneCPDataSource"/>
-        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model"/>
+        <property name="dataSource" ref="hikariCPDataSource"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.jpush.repository.model"/>
     </bean>
 
     <bean id="jobSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="jobBoneCPDataSource"/>
+        <property name="dataSource" ref="jobHikariCPDataSource"/>
         <property name="typeAliasesPackage" value="com.tuotiansudai.scheduler.repository.model"/>
     </bean>
 
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-        <property name="basePackage" value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper"/>
+        <property name="basePackage" value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.jpush.repository.mapper"/>
     </bean>
 
     <!-- scan for mappers and let them be autowired -->
@@ -90,6 +99,6 @@
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient"/>
 
     <bean id="jobStoreBuilder" class="com.tuotiansudai.util.quartz.JobStoreBuilder">
-        <property name="dataSource" ref="jobBoneCPDataSource"/>
+        <property name="dataSource" ref="jobHikariCPDataSource"/>
     </bean>
 </beans>

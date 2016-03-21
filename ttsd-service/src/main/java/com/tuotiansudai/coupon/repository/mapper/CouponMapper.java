@@ -13,24 +13,36 @@ public interface CouponMapper {
 
     CouponModel findById(long id);
 
-    List<CouponModel> findNewbieCoupon();
-
     CouponModel lockById(@Param(value = "id") long id);
 
     void updateCoupon(CouponModel couponModel);
 
-    List<CouponModel> findCoupons(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
+    List<CouponModel> findNewbieAndInvestCoupons(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
 
     List<CouponModel> findInterestCoupons(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
 
     List<CouponModel> findRedEnvelopeCoupons(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
 
-    int findCouponsCount();
+    List<CouponModel> findBirthdayCoupons(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
+
+    int findNewbieAndInvestCouponsCount();
 
     int findInterestCouponsCount();
 
     int findRedEnvelopeCouponsCount();
 
+    int findBirthdayCouponsCount();
+
     List<CouponModel> findAllActiveCoupons();
+
+    List<CouponModel> findCouponExchanges(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
+
+    int findCouponExchangeCount();
+
+    List<CouponModel> findCouponExchangeableList(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
+
+    int findCouponExchangeableCount();
+
+    void updateByLoginName(@Param(value="id") String id);
 
 }

@@ -9,7 +9,7 @@ var require = {
         'mustache': staticServer + '/js/libs/mustache-2.1.3.min',
         'moment': staticServer + '/js/libs/moment-2.10.6.min',
         'underscore': staticServer + '/js/libs/underscore-1.8.3.min',
-        'csrf': staticServer + '/js/dest/csrf.min',
+        'jquery.ajax.extension': staticServer + '/js/dest/jquery_ajax_extension.min',
         'daterangepicker': staticServer + '/js/libs/jquery.daterangepicker-0.0.7',
         'pagination': staticServer + '/js/dest/pagination.min',
         'lodash': staticServer + '/js/libs/lodash.min',
@@ -22,7 +22,9 @@ var require = {
         'fullPage':staticServer+'/js/libs/jquery.fullPage.min',
         'swiper':staticServer+'/js/libs/swiper-3.2.7.jquery.min',
         'load-swiper':staticServer+'/js/dest/load_swiper.min',
-        'coupon-alert': staticServer+'/js/dest/coupon_alert.min'
+        'coupon-alert': staticServer+'/js/dest/coupon_alert.min',
+        'red-envelope-float': staticServer+'/js/dest/red-envelope-float.min',
+        'drag': staticServer+'/js/libs/drag'
     },
     'waitSeconds':0,
     'shim': {
@@ -38,7 +40,8 @@ var require = {
         'jquery.validate.extension': ['jquery', 'jquery.validate'],
         'fullPage': ['jquery'],
         'swiper':['jquery'],
-        'load-swiper':['swiper']
+        'load-swiper':['swiper'],
+        'drag':['jquery']
     }
 };
 

@@ -11,13 +11,16 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
+public class UserCouponDto implements Serializable {
     private long id;
     private long couponId;
+    private String loginName;
     private CouponType couponType;
     private String name;
     private long amount;
     private double rate;
+    private double birthdayBenefit;
+    private boolean multiple;
     private Date startTime;
     private Date endTime;
     private Date usedTime;
@@ -36,18 +39,21 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
 
     public UserCouponDto(CouponModel coupon, UserCouponModel userCoupon) {
         this.id = userCoupon.getId();
+        this.couponId = coupon.getId();
+        this.loginName = userCoupon.getLoginName();
         this.couponType = coupon.getCouponType();
         this.name = coupon.getCouponType().getName();
-        this.rate = coupon.getRate();
-        this.couponId = coupon.getId();
         this.amount = coupon.getAmount();
-        this.startTime = coupon.getStartTime();
-        this.endTime = coupon.getEndTime();
+        this.rate = coupon.getRate();
+        this.birthdayBenefit = coupon.getBirthdayBenefit();
+        this.multiple = coupon.isMultiple();
+        this.startTime = userCoupon.getStartTime();
+        this.endTime = userCoupon.getEndTime();
         this.usedTime = userCoupon.getUsedTime();
         this.loanId = userCoupon.getLoanId();
         this.used = InvestStatus.SUCCESS == userCoupon.getStatus();
-        this.expired = !this.used && new DateTime(this.endTime).plusDays(1).withTimeAtStartOfDay().isBeforeNow();
-        this.unused = !this.used && !this.expired;
+        this.expired = !this.used && this.endTime.before(new Date());
+        this.unused = !this.used && this.endTime.after(new Date());
         this.shared = coupon.isShared();
         this.investLowerLimit = coupon.getInvestLowerLimit();
         this.investUpperLimit = coupon.getInvestUpperLimit();
@@ -61,6 +67,10 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
 
     public long getCouponId() {
         return couponId;
+    }
+
+    public String getLoginName() {
+        return loginName;
     }
 
     public CouponType getCouponType() {
@@ -77,6 +87,14 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
 
     public double getRate() {
         return rate;
+    }
+
+    public double getBirthdayBenefit() {
+        return birthdayBenefit;
+    }
+
+    public boolean isMultiple() {
+        return multiple;
     }
 
     public Date getStartTime() {
@@ -127,26 +145,4 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
         return productTypeList;
     }
 
-    private int getStatusCode() {
-        if (this.expired) return 3;
-        else if (this.used) return 2;
-        else return 1;
-    }
-
-    private Date getCompareTime() {
-        if (this.expired) return this.endTime;
-        else if (this.used) return this.usedTime;
-        else return this.createdTime;
-    }
-
-    @Override
-    public int compareTo(UserCouponDto dto) {
-        if (this.getStatusCode() == dto.getStatusCode()) {
-            long diff = this.getCompareTime().getTime() - dto.getCompareTime().getTime();
-            int opposite = this.getStatusCode() == 1 ? 1 : -1;
-            return diff == 0 ? 0 : diff > 0 ? opposite * 1 : opposite * -1;
-        } else {
-            return this.getStatusCode() - dto.getStatusCode();
-        }
-    }
 }

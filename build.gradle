@@ -62,7 +62,7 @@ subprojects {
                 'redis.clients:jedis:2.7.3',
                 'org.hibernate:hibernate-validator:5.2.1.Final',
                 'com.squareup.okhttp:okhttp:2.4.0',
-                'com.jolbox:bonecp-spring:0.8.0.RELEASE',
+                'com.zaxxer:HikariCP:2.4.3',
                 'mysql:mysql-connector-java:5.1.35',
                 'log4j:log4j:1.2.17',
                 'joda-time:joda-time:2.8.1',
@@ -80,7 +80,8 @@ subprojects {
                 'commons-lang:commons-lang:2.6',
                 'commons-beanutils:commons-beanutils:1.9.2',
                 'net.sf.ezmorph:ezmorph:1.0.6',
-                'org.apache.httpcomponents:httpclient:4.5.1'
+                'org.apache.httpcomponents:httpclient:4.5.1',
+                'cn.jpush.api:jpush-client:3.2.8'
 
 
         testCompile "junit:junit:4.12",

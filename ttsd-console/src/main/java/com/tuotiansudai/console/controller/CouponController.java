@@ -4,22 +4,25 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
+import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
+import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponService;
-import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.exception.CreateCouponException;
+import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.util.RequestIPParser;
 import com.tuotiansudai.util.UUIDGenerator;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -48,6 +51,8 @@ import java.util.Map;
 @RequestMapping(value = "/activity-manage")
 public class CouponController {
 
+    static Logger logger = Logger.getLogger(CouponController.class);
+
     @Autowired
     private CouponService couponService;
 
@@ -61,59 +66,66 @@ public class CouponController {
     private UserMapper userMapper;
 
     @Autowired
-    private UserCouponService userCouponService;
+    private PointService pointService;
 
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
     @RequestMapping(value = "/red-envelope", method = RequestMethod.GET)
     public ModelAndView redEnvelope() {
-        ModelAndView modelAndView = new  ModelAndView("/red-envelope");
-        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
-        return modelAndView;
+        return new ModelAndView("/red-envelope", "productTypes", Lists.newArrayList(ProductType.values()));
     }
 
-    @RequestMapping(value = "/coupon",method = RequestMethod.GET)
-    public ModelAndView coupon(){
-        ModelAndView modelAndView = new  ModelAndView("/coupon");
+    @RequestMapping(value = "/coupon", method = RequestMethod.GET)
+    public ModelAndView coupon() {
+        ModelAndView modelAndView = new ModelAndView("/coupon");
         modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.values()));
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
         return modelAndView;
     }
 
-    @RequestMapping(value = "/coupon",method = RequestMethod.POST)
+    @RequestMapping(value = "/birthday-coupon", method = RequestMethod.GET)
+    public ModelAndView birthdayCoupon() {
+        return new ModelAndView("/birthday-coupon", "productTypes", Lists.newArrayList(ProductType.values()));
+    }
+
+    @RequestMapping(value = "/coupon", method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView createCoupon(@Valid @ModelAttribute CouponDto couponDto,RedirectAttributes redirectAttributes){
+    public ModelAndView createCoupon(@Valid @ModelAttribute ExchangeCouponDto exchangeCouponDto, RedirectAttributes redirectAttributes) {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView();
-        Long id = couponDto.getId();
+        Long id = exchangeCouponDto.getId();
         try {
-            if(id != null){
-                couponService.editCoupon(loginName, couponDto);
-            }else{
-                couponService.createCoupon(loginName, couponDto);
+            if (id != null) {
+                couponService.editCoupon(loginName, exchangeCouponDto);
+            } else {
+                couponService.createCoupon(loginName, exchangeCouponDto);
             }
-            if (couponDto.getCouponType() == CouponType.INTEREST_COUPON) {
+            if (exchangeCouponDto.getCouponType() == CouponType.INTEREST_COUPON) {
                 modelAndView.setViewName("redirect:/activity-manage/interest-coupons");
-            } else if (couponDto.getCouponType() == CouponType.RED_ENVELOPE) {
+            } else if (exchangeCouponDto.getCouponType() == CouponType.RED_ENVELOPE) {
                 modelAndView.setViewName("redirect:/activity-manage/red-envelopes");
+            } else if (exchangeCouponDto.getCouponType() == CouponType.BIRTHDAY_COUPON) {
+                modelAndView.setViewName("redirect:/activity-manage/birthday-coupons");
             } else {
                 modelAndView.setViewName("redirect:/activity-manage/coupons");
             }
             return modelAndView;
         } catch (CreateCouponException e) {
-            if(id != null){
+            if (id != null) {
                 modelAndView.setViewName("redirect:/activity-manage/coupon/" + id + "/edit");
-            }else{
-                if (couponDto.getCouponType() == CouponType.INTEREST_COUPON) {
+            } else {
+                if (exchangeCouponDto.getCouponType() == CouponType.INTEREST_COUPON) {
                     modelAndView.setViewName("redirect:/activity-manage/interest-coupon");
-                } else if (couponDto.getCouponType() == CouponType.RED_ENVELOPE) {
+                } else if (exchangeCouponDto.getCouponType() == CouponType.RED_ENVELOPE) {
                     modelAndView.setViewName("redirect:/activity-manage/red-envelope");
+                } else if (exchangeCouponDto.getCouponType() == CouponType.BIRTHDAY_COUPON) {
+                    modelAndView.setViewName("redirect:/activity-manage/birthday-coupon");
                 } else {
                     modelAndView.setViewName("redirect:/activity-manage/coupon");
                 }
             }
-            redirectAttributes.addFlashAttribute("coupon", couponDto);
+            redirectAttributes.addFlashAttribute("coupon", exchangeCouponDto);
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return modelAndView;
         }
@@ -122,31 +134,33 @@ public class CouponController {
 
     @RequestMapping(value = "/interest-coupon", method = RequestMethod.GET)
     public ModelAndView interestCoupon() {
-        ModelAndView modelAndView = new  ModelAndView("/interest-coupon");
+        ModelAndView modelAndView = new ModelAndView("/interest-coupon");
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
         return modelAndView;
     }
 
-    @RequestMapping(value = "/coupon/{id:^\\d+$}/edit",method = RequestMethod.GET)
+    @RequestMapping(value = "/coupon/{id:^\\d+$}/edit", method = RequestMethod.GET)
     @ResponseBody
-    public ModelAndView edit(@PathVariable long id,Model model){
+    public ModelAndView edit(@PathVariable long id, Model model) {
         CouponModel couponModel = couponService.findCouponById(id);
         ModelAndView modelAndView;
         if (couponModel.getCouponType() == CouponType.INTEREST_COUPON) {
             modelAndView = new ModelAndView("/interest-coupon-edit");
         } else if (couponModel.getCouponType() == CouponType.RED_ENVELOPE) {
             modelAndView = new ModelAndView("/red-envelope-edit");
+        } else if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) {
+            modelAndView = new ModelAndView("/birthday-coupon-edit");
         } else {
             modelAndView = new ModelAndView("/coupon-edit");
         }
         if (!model.containsAttribute("coupon")) {
             CouponDto couponDto = new CouponDto(couponModel);
             modelAndView.addObject("coupon", couponDto);
-        }else{
+        } else {
             Map modelMap = model.asMap();
-            for(Object modelKey : modelMap.keySet()){
-                modelAndView.addObject(modelKey.toString(),modelMap.get(modelKey));
+            for (Object modelKey : modelMap.keySet()) {
+                modelAndView.addObject(modelKey.toString(), modelMap.get(modelKey));
             }
         }
 
@@ -156,11 +170,12 @@ public class CouponController {
 
     }
 
-    @RequestMapping(value = "/coupon/{couponId:^\\d+$}/active",method = RequestMethod.POST)
+    @RequestMapping(value = "/coupon/{couponId:^\\d+$}/active", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> activeCoupon(@PathVariable long couponId){
+    public BaseDto<BaseDataDto> activeCoupon(@PathVariable long couponId, HttpServletRequest request){
+        String ip = RequestIPParser.parse(request);
         String loginName = LoginUserInfo.getLoginName();
-        couponActivationService.active(loginName, couponId);
+        couponActivationService.active(loginName, couponId, ip);
 
         BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(true);
@@ -172,9 +187,10 @@ public class CouponController {
 
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/inactive", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> inactiveCoupon(@PathVariable long couponId) {
+    public BaseDto<BaseDataDto> inactiveCoupon(@PathVariable long couponId, HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
-        couponActivationService.inactive(loginName, couponId);
+        String ip = RequestIPParser.parse(request);
+        couponActivationService.inactive(loginName, couponId, ip);
         BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(true);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
@@ -183,15 +199,15 @@ public class CouponController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/coupon/user-group/{userGroup}/estimate",method = RequestMethod.GET)
+    @RequestMapping(value = "/coupon/user-group/{userGroup}/estimate", method = RequestMethod.GET)
     @ResponseBody
-    public long findEstimatedCount(@PathVariable UserGroup userGroup){
+    public long findEstimatedCount(@PathVariable UserGroup userGroup) {
         return couponService.findEstimatedCount(userGroup);
     }
 
     @RequestMapping(value = "/interest-coupons", method = RequestMethod.GET)
-    public ModelAndView interestCoupons(@RequestParam(value = "index",required = false,defaultValue = "1") int index,
-                                        @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize) {
+    public ModelAndView interestCoupons(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
+                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/interest-coupons");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
@@ -207,8 +223,8 @@ public class CouponController {
     }
 
     @RequestMapping(value = "/red-envelopes", method = RequestMethod.GET)
-    public ModelAndView redEnvelopes(@RequestParam(value = "index",required = false,defaultValue = "1") int index,
-                                     @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize) {
+    public ModelAndView redEnvelopes(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
+                                     @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/red-envelopes");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
@@ -223,14 +239,32 @@ public class CouponController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/coupons",method = RequestMethod.GET)
-    public ModelAndView coupons(@RequestParam(value = "index",required = false,defaultValue = "1") int index,
-                                 @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize) {
+    @RequestMapping(value = "/birthday-coupons", method = RequestMethod.GET)
+    public ModelAndView birthdayCoupons(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
+                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+        ModelAndView modelAndView = new ModelAndView("/birthday-coupons");
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+        modelAndView.addObject("coupons", couponService.findBirthdayCoupons(index, pageSize));
+        int couponsCount = couponService.findBirthdayCouponsCount();
+        modelAndView.addObject("couponsCount", couponsCount);
+        long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 ? 1 : 0);
+        boolean hasPreviousPage = index > 1 && index <= totalPages;
+        boolean hasNextPage = index < totalPages;
+        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
+        modelAndView.addObject("hasNextPage", hasNextPage);
+        return modelAndView;
+    }
+
+
+    @RequestMapping(value = "/coupons", method = RequestMethod.GET)
+    public ModelAndView coupons(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
+                                @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/coupons");
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
-        modelAndView.addObject("coupons", couponService.findCoupons(index, pageSize));
-        int couponsCount = couponService.findCouponsCount();
+        modelAndView.addObject("coupons", couponService.findNewbieAndInvestCoupons(index, pageSize));
+        int couponsCount = couponService.findNewbieAndInvestCouponsCount();
         modelAndView.addObject("couponsCount", couponsCount);
         long totalPages = couponsCount / pageSize + (couponsCount % pageSize > 0 ? 1 : 0);
         boolean hasPreviousPage = index > 1 && index <= totalPages;
@@ -241,13 +275,13 @@ public class CouponController {
     }
 
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/detail", method = RequestMethod.GET)
-    public ModelAndView couponDetail(@PathVariable long couponId, @RequestParam(value = "isUsed",required = false) Boolean isUsed,
+    public ModelAndView couponDetail(@PathVariable long couponId, @RequestParam(value = "isUsed", required = false) Boolean isUsed,
                                      @RequestParam(value = "registerStartTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerStartTime,
                                      @RequestParam(value = "registerEndTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date registerEndTime,
                                      @RequestParam(value = "loginName", required = false) String loginName,
                                      @RequestParam(value = "mobile", required = false) String mobile,
-                                     @RequestParam(value = "index",required = false,defaultValue = "1") int index,
-                                     @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize) {
+                                     @RequestParam(value = "index", required = false, defaultValue = "1") int index,
+                                     @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         ModelAndView modelAndView = new ModelAndView("/coupon-detail");
         List<UserCouponModel> userCoupons = couponService.findCouponDetail(couponId, isUsed, loginName, mobile, registerStartTime, registerEndTime, index, pageSize);
         int userCouponsCount = couponService.findCouponDetailCount(couponId, isUsed, loginName, mobile, registerStartTime, registerEndTime);
@@ -268,36 +302,41 @@ public class CouponController {
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
         String sideLabType;
+        String headLab;
         if (couponModel.getCouponType() == CouponType.INTEREST_COUPON) {
             sideLabType = "statisticsInterestCoupon";
         } else if (couponModel.getCouponType() == CouponType.RED_ENVELOPE) {
             sideLabType = "statisticsRedEnvelope";
+        } else if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) {
+            sideLabType = "statisticsBirthdayCoupon";
         } else {
             sideLabType = "statisticsCoupon";
         }
+        if (couponModel.getUserGroup() == UserGroup.EXCHANGER) {
+            sideLabType = "couponExchangeManage";
+            headLab = "point-manage";
+        } else {
+            headLab = "activity-manage";
+        }
         modelAndView.addObject("sideLabType", sideLabType);
+        modelAndView.addObject("headLab", headLab);
         return modelAndView;
     }
 
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}", method = RequestMethod.DELETE)
     @ResponseBody
     public BaseDto<BaseDataDto> couponDelete(@PathVariable long couponId) {
-        BaseDataDto dataDto = new BaseDataDto();
-        if (CollectionUtils.isNotEmpty(userCouponService.findUserCouponByCouponId(couponId))){
-            dataDto.setStatus(false);
-        } else {
-            String loginName = LoginUserInfo.getLoginName();
-            couponService.deleteCoupon(loginName, couponId);
-            dataDto.setStatus(true);
-        }
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
+        String loginName = LoginUserInfo.getLoginName();
+        dataDto.setStatus(couponService.deleteCoupon(loginName, couponId));
         return baseDto;
     }
 
     @RequestMapping(value = "/import-excel", method = RequestMethod.POST)
     @ResponseBody
-    public List<Object> importExcel(HttpServletRequest request) throws Exception{
+    public List<Object> importExcel(HttpServletRequest request) throws Exception {
         String uuid = UUIDGenerator.generate();
         String redisKey = MessageFormat.format(redisKeyTemplate, uuid);
         MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
@@ -307,7 +346,7 @@ public class CouponController {
         HSSFSheet hssfSheet = hssfWorkbook.getSheetAt(0);
         List<String> listSuccess = new ArrayList<>();
         List<String> listFailed = new ArrayList<>();
-        for (int rowNum = 0; rowNum < hssfSheet.getLastRowNum()+1; rowNum++) {
+        for (int rowNum = 0; rowNum < hssfSheet.getLastRowNum() + 1; rowNum++) {
             HSSFRow hssfRow = hssfSheet.getRow(rowNum);
             int firstCellNum = hssfRow.getFirstCellNum();
             HSSFCell hssfCell = hssfRow.getCell(firstCellNum);
@@ -323,7 +362,7 @@ public class CouponController {
         redisWrapperClient.hset(redisKey, "success", StringUtils.join(listSuccess, ","));
         List<Object> list = new ArrayList<>();
         list.add(uuid);
-        list.add(hssfSheet.getLastRowNum()+1);
+        list.add(hssfSheet.getLastRowNum() + 1);
         return list;
     }
 
@@ -351,6 +390,66 @@ public class CouponController {
             list.add(redisWrapperClient.hget(redisKey, "success"));
         }
         return list;
+    }
+
+    @RequestMapping(value = "/coupon-exchange", method = RequestMethod.GET)
+    public ModelAndView couponExchange() {
+        ModelAndView modelAndView = new ModelAndView("/coupon-exchange");
+        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
+        modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON));
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/coupon-exchange/{id:^\\d+$}/edit", method = RequestMethod.GET)
+    public ModelAndView edit(@PathVariable long id) {
+        CouponModel couponModel = couponService.findCouponById(id);
+        CouponExchangeModel couponExchangeModel = couponService.findCouponExchangeByCouponId(id);
+        ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto(couponModel);
+        exchangeCouponDto.setExchangePoint(couponExchangeModel.getExchangePoint());
+        ModelAndView modelAndView = new ModelAndView("/coupon-exchange-edit");
+        modelAndView.addObject("exchangeCouponDto", exchangeCouponDto);
+        modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
+        modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON));
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/coupon-exchange", method = RequestMethod.POST)
+    @ResponseBody
+    public ModelAndView createCouponExchange(@Valid @ModelAttribute ExchangeCouponDto exchangeCouponDto, RedirectAttributes redirectAttributes) {
+
+        String loginName = LoginUserInfo.getLoginName();
+        ModelAndView modelAndView = new ModelAndView();
+        Long id = exchangeCouponDto.getId();
+        try {
+            if (id != null) {
+                couponService.editCoupon(loginName, exchangeCouponDto);
+            } else {
+                couponService.createCoupon(loginName, exchangeCouponDto);
+            }
+            modelAndView.setViewName("redirect:/activity-manage/coupon-exchange-manage");
+        } catch (CreateCouponException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/coupon-exchange-manage", method = RequestMethod.GET)
+    public ModelAndView couponExchangeManage(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
+                                             @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+
+        ModelAndView modelAndView = new ModelAndView("/coupon-exchanges");
+        List<ExchangeCouponDto> exchangeCouponDtos = couponService.findCouponExchanges(index, pageSize);
+        modelAndView.addObject("exchangeCoupons", exchangeCouponDtos);
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+        int exchangeCouponCount = couponService.findCouponExchangeCount();
+        modelAndView.addObject("exchangeCouponCount", exchangeCouponCount);
+        long totalPages = exchangeCouponCount / pageSize + (exchangeCouponCount % pageSize > 0 ? 1 : 0);
+        boolean hasPreviousPage = index > 1 && index <= totalPages;
+        boolean hasNextPage = index < totalPages;
+        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
+        modelAndView.addObject("hasNextPage", hasNextPage);
+        return modelAndView;
     }
 
 }

@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="coupon-detail.js" headLab="activity-manage" sideLab="${sideLabType!}" title="体验券数据统计">
+<@global.main pageCss="" pageJavascript="coupon-detail.js" headLab="${headLab!}" sideLab="${sideLabType!}" title="体验券数据统计">
 
 <div class="col-md-10">
 

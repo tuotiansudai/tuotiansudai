@@ -1,7 +1,6 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
@@ -17,6 +16,7 @@ import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JobManager;
+import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
@@ -79,6 +79,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private JobManager jobManager;
+
+    @Value("#{'${web.random.investor.list}'.split('\\|')}")
+    private List<String> showRandomLoginNameList;
 
     /**
      * @param loanTitleDto
@@ -237,7 +240,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public BaseDto<PayDataDto> openLoan(LoanDto loanDto) {
+    public BaseDto<PayDataDto> openLoan(LoanDto loanDto, String ip) {
         BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
         PayDataDto payDataDto = new PayDataDto();
         if (!baseDto.getData().getStatus()) {
@@ -437,9 +440,7 @@ public class LoanServiceImpl implements LoanService {
                 @Override
                 public InvestPaginationItemDto apply(InvestModel input) {
                     InvestPaginationItemDto item = new InvestPaginationItemDto();
-                    item.setLoginName(!Strings.isNullOrEmpty(loginName) && loginName.equalsIgnoreCase(input.getLoginName())
-                            ? input.getLoginName()
-                            : input.getLoginName().substring(0, 3) + "******");
+                    item.setLoginName(RandomUtils.encryptLoginName(loginName, showRandomLoginNameList, input.getLoginName(), 6));
                     item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
                     item.setSource(input.getSource());
                     item.setAutoInvest(input.isAutoInvest());
@@ -619,8 +620,8 @@ public class LoanServiceImpl implements LoanService {
                 loanItemDto.setId(loanModel.getId());
                 loanItemDto.setName(loanModel.getName());
                 loanItemDto.setProductType(loanModel.getProductType());
-                loanItemDto.setBaseRate(new BigDecimal(loanModel.getBaseRate() * 100).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
-                loanItemDto.setActivityRate(new BigDecimal(loanModel.getActivityRate() * 100).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
+                loanItemDto.setBaseRate(new BigDecimal(loanModel.getBaseRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+                loanItemDto.setActivityRate(new BigDecimal(loanModel.getActivityRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
                 loanItemDto.setPeriods(loanModel.getPeriods());
                 loanItemDto.setType(loanModel.getType());
                 loanItemDto.setStatus(loanModel.getStatus());
@@ -639,7 +640,7 @@ public class LoanServiceImpl implements LoanService {
                 }
                 if (LoanStatus.RAISING == loanModel.getStatus()) {
                     loanItemDto.setAlert(MessageFormat.format("{0} 元", AmountConverter.convertCentToString(loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanModel.getId()))));
-                    loanItemDto.setProgress(sumInvestAmountBigDecimal.divide(loanAmountBigDecimal, 2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue());
+                    loanItemDto.setProgress(sumInvestAmountBigDecimal.divide(loanAmountBigDecimal, 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue());
                 }
                 if (LoanStatus.RECHECK == loanModel.getStatus()) {
                     loanItemDto.setAlert("放款审核");
@@ -684,5 +685,15 @@ public class LoanServiceImpl implements LoanService {
             payDataDto.setMessage(MessageFormat.format("放款失败: {0}", "标的投资金额与募集金额不符"));
         }
         return dto;
+    }
+
+    @Override
+    public BaseDto<PayDataDto> applyAuditLoan(LoanDto loanDto){
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        baseDto.setData(payDataDto);
+        baseDto.setSuccess(true);
+        payDataDto.setStatus(true);
+        return baseDto;
     }
 }

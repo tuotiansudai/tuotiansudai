@@ -6,12 +6,15 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.dto.CouponAlertDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponAlertService;
+import com.tuotiansudai.dto.SmsCouponNotifyDto;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -41,6 +44,12 @@ public class CouponAlertServiceImpl implements CouponAlertService {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
+
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     public CouponAlertDto getCouponAlert(String loginName) {
         if (Strings.isNullOrEmpty(loginName)) {
@@ -66,9 +75,9 @@ public class CouponAlertServiceImpl implements CouponAlertService {
                             newbieCouponAlertDto.getCouponIds().add(userCouponModel.getCouponId());
                             newbieCouponAlertDto.setAmount(newbieCouponAlertDto.getAmount() + couponModel.getAmount());
                             if (newbieCouponAlertDto.getExpiredDate() == null) {
-                                newbieCouponAlertDto.setExpiredDate(couponModel.getEndTime());
+                                newbieCouponAlertDto.setExpiredDate(userCouponModel.getEndTime());
                             } else {
-                                newbieCouponAlertDto.setExpiredDate(newbieCouponAlertDto.getExpiredDate().after(couponModel.getEndTime()) ? couponModel.getEndTime() : newbieCouponAlertDto.getExpiredDate());
+                                newbieCouponAlertDto.setExpiredDate(newbieCouponAlertDto.getExpiredDate().after(userCouponModel.getEndTime()) ? userCouponModel.getEndTime() : newbieCouponAlertDto.getExpiredDate());
                             }
                         }
 
@@ -76,9 +85,9 @@ public class CouponAlertServiceImpl implements CouponAlertService {
                             redEnvelopeCouponAlertDto.getCouponIds().add(userCouponModel.getCouponId());
                             redEnvelopeCouponAlertDto.setAmount(redEnvelopeCouponAlertDto.getAmount() + couponModel.getAmount());
                             if (redEnvelopeCouponAlertDto.getExpiredDate() == null) {
-                                redEnvelopeCouponAlertDto.setExpiredDate(couponModel.getEndTime());
+                                redEnvelopeCouponAlertDto.setExpiredDate(userCouponModel.getEndTime());
                             } else {
-                                redEnvelopeCouponAlertDto.setExpiredDate(redEnvelopeCouponAlertDto.getExpiredDate().after(couponModel.getEndTime()) ? couponModel.getEndTime() : redEnvelopeCouponAlertDto.getExpiredDate());
+                                redEnvelopeCouponAlertDto.setExpiredDate(redEnvelopeCouponAlertDto.getExpiredDate().after(userCouponModel.getEndTime()) ? userCouponModel.getEndTime() : redEnvelopeCouponAlertDto.getExpiredDate());
                             }
                         }
                     }
@@ -100,5 +109,16 @@ public class CouponAlertServiceImpl implements CouponAlertService {
         }
 
         return null;
+    }
+
+    @Override
+    public void BirthdayNotify() {
+
+        List<String> userMobileList = userMapper.findUsersBirthdayMobile();
+        for (String mobile : userMobileList) {
+            SmsCouponNotifyDto notifyDto = new SmsCouponNotifyDto();
+            notifyDto.setMobile(mobile.trim());
+            smsWrapperClient.sendBirthdayNotify(notifyDto);
+        }
     }
 }
