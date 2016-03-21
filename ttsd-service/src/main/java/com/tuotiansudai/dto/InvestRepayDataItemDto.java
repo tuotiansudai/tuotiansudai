@@ -67,7 +67,8 @@ public class InvestRepayDataItemDto {
         investRepayDataItemDto.setPeriod(model.getPeriod());
         investRepayDataItemDto.setActualRepayDate(model.getActualRepayDate());
         investRepayDataItemDto.setRepayDate(model.getRepayDate());
-        
+        investRepayDataItemDto.setAmount(AmountConverter.convertCentToString(model.getCorpus() + model.getExpectedInterest() - model.getExpectedFee()));
+        investRepayDataItemDto.setActualAmount(AmountConverter.convertCentToString(model.getCorpus() + model.getActualInterest() + model.getDefaultInterest() - model.getActualFee()));
         return investRepayDataItemDto;
     }
 
