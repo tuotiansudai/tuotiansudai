@@ -1,4 +1,4 @@
-require(['jquery', 'csrf', 'autoNumeric', 'lodash', 'commonFun', 'jquery.validate'], function ($) {
+require(['jquery', 'jquery.ajax.extension', 'autoNumeric', 'lodash', 'commonFun', 'jquery.validate'], function ($) {
     $(function () {
         if ($('#btnAuthority').length) {
             var $btnAuthority = $('#btnAuthority');

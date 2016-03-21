@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoginLogPaginationItemDataDto;
 import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.LoginLogService;
+import com.tuotiansudai.task.OperationType;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -64,23 +65,31 @@ public class SecurityLogController {
     }
 
     @RequestMapping(path = "/audit-log", method = RequestMethod.GET)
-    public ModelAndView auditLog(@RequestParam(name = "loginName", required = false) String loginName,
+    public ModelAndView auditLog(@RequestParam(name = "operationType", required = false) OperationType operationType,
+                                 @RequestParam(name = "targetId", required = false) String targetId,
                                  @RequestParam(name = "operatorLoginName", required = false) String operatorLoginName,
+                                 @RequestParam(name = "auditorLoginName", required = false) String auditorLoginName,
                                  @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                  @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                  @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                  @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
 
-        BasePaginationDataDto<AuditLogPaginationItemDataDto> data = auditLogService.getAuditLogPaginationData(loginName, operatorLoginName, startTime, endTime, index, pageSize);
+        BasePaginationDataDto<AuditLogPaginationItemDataDto> data = auditLogService.getAuditLogPaginationData(operationType, targetId, operatorLoginName, auditorLoginName, startTime, endTime, index, pageSize);
 
         ModelAndView modelAndView = new ModelAndView("/audit-log");
 
         modelAndView.addObject("data", data);
-        modelAndView.addObject("loginName", loginName);
+        modelAndView.addObject("operationType", operationType);
+        modelAndView.addObject("targetId", targetId);
         modelAndView.addObject("operatorLoginName", operatorLoginName);
+        modelAndView.addObject("auditorLoginName", auditorLoginName);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+
+        modelAndView.addObject("operationTypes", Lists.newArrayList(OperationType.values()));
 
         return modelAndView;
     }

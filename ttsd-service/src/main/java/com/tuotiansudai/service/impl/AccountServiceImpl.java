@@ -64,18 +64,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public int findUsersAccountTotalPoint(String loginName){
-        return accountMapper.findUsersAccountTotalPoint(loginName);
-    }
-
-    @Override
-    public int findUsersAccountAvailablePoint(String loginName){
-        return accountMapper.findUsersAccountAvailablePoint(loginName);
-    }
-
-    @Override
-    public void updateByLoginName(String loginName, long exchangePoint){
-        accountMapper.updateByLoginName(loginName, exchangePoint);
+    public String getRealName(String loginName) {
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        return accountModel == null ? loginName : accountModel.getUserName();
     }
 
 }

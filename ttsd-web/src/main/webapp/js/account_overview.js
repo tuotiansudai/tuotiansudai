@@ -1,4 +1,4 @@
-require(['jquery','echarts','commonFun', 'csrf','layerWrapper'], function ($) {
+require(['jquery', 'echarts', 'commonFun', 'jquery.ajax.extension', 'layerWrapper'], function ($) {
     $(function () {
     var $tMonthBox=$('#tMonthBox'),
         $signBtn = $('#signBtn'),
