@@ -62,7 +62,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
         });
 
         $btnCloseTurnOffElement.on('click',function(){
-            _czc.push(["_trackEvent","个人资料","关闭","用户关闭无密投资",,"btn-close-turn-off"]);
+            _czc.push(["_trackEvent","个人资料","关闭","用户关闭无密投资"]);
         });
 
         $turnOffNoPasswordInvestLayer.on('click', function () {
@@ -91,7 +91,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             $imageCaptchaForm.submit();
         });
         $noPasswordInvest.on('click', function () {
-            _czc.push(["_trackEvent","个人资料","开启无密投资","用户开启无密投资",,"noPasswordInvest"]);
+            _czc.push(["_trackEvent","个人资料","开启无密投资","用户开启无密投资"]);
             var _this = $(this);
             $.ajax({
                 url: _this.data('url'),
@@ -109,11 +109,11 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             layer.closeAll();
         });
         $btnCloseTurnOnElement.on('click',function(){
-            _czc.push(["_trackEvent","个人资料","开启无密投资","用户取消联动优势授权",,"btn-close-turn-on"]);
+            _czc.push(["_trackEvent","个人资料","开启无密投资","用户取消联动优势授权"]);
             layer.closeAll();
         });
         $btnTurnOnElement.on('click',function(){
-            _czc.push(["_trackEvent","个人资料","开启无密投资","用户联动优势授权",,"btn-turn-on"]);
+            _czc.push(["_trackEvent","个人资料","开启无密投资","用户联动优势授权"]);
             layer.closeAll();
             layer.open({
                 type: 1,

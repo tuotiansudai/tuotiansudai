@@ -13,6 +13,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         $loanInvest=$('#loanInvest'),
         $freeSecret=$('#freeSecret'),
         $hasRemindInvestNoPassword=$('#hasRemindInvestNoPassword'),
+        $goAuthorize=$('#goAuthorize'),
         $failGoOnBtnInvest=$('.fail_go_on_invest'),
         $successGoOnBtnInvest=$('.success_go_on_invest'),
         $againBtn=$('.again-btn');
@@ -335,12 +336,12 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             shadeClose: true,
             content: '<p class="pad-m-tb tc">您可直接开启免密投资，简化投资过程，理财快人一步，是否开启？</p>',
             btn1:function(){
-                _czc.push(["_trackEvent","标的详情投资","开启免密投资","用户取消开启免密投资",,]);
+                _czc.push(["_trackEvent","标的详情投资","开启免密投资","用户取消开启免密投资"]);
                 layer.closeAll();
             },
             btn2: function(index){
                 if ($freeSecret.attr('data-open-agreement')=='true') { // 如果开启过免密支付
-                    _czc.push(["_trackEvent","标的详情投资","开启免密投资","用户开启免密投资",,]);
+                    _czc.push(["_trackEvent","标的详情投资","开启免密投资","用户开启免密投资"]);
                     $.ajax({
                         url: '/no-password-invset/enabled',
                         type: 'POST',
@@ -355,7 +356,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                         layer.msg('开通失败，请重试！');
                     });
                 } else {
-                    _czc.push(["_trackEvent","标的详情投资","开启免密投资","用户联动优势授权",,]);
+                    _czc.push(["_trackEvent","标的详情投资","开启免密投资","用户联动优势授权"]);
                     layer.closeAll();
                     isAuthorizeSuccess();
                     $goAuthorize.submit();
@@ -382,12 +383,12 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     area: ['500px', '180px'],
                     content: '<p class="pad-m-tb tc">推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>',
                     btn1:function(){
-                        _czc.push(["_trackEvent","标的详情投资","继续投资","用户继续投资",,]);
+                        _czc.push(["_trackEvent","标的详情投资","继续投资","用户继续投资"]);
                         formSubmit();
                         layer.closeAll();
                     },
                     btn2: function(index){
-                        _czc.push(["_trackEvent","标的详情投资","开启免密投资","用户开启免密投资",,]);
+                        _czc.push(["_trackEvent","标的详情投资","开启免密投资","用户开启免密投资"]);
                         $.ajax({
                             url: '/no-password-invset/enabled',
                             type: 'POST',
@@ -414,12 +415,12 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     area: ['500px', '180px'],
                     content: '<p class="pad-m-tb tc">推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>',
                     btn1:function(){
-                        _czc.push(["_trackEvent","标的详情投资","继续投资","用户继续投资,没进行联动优势授权",,]);
+                        _czc.push(["_trackEvent","标的详情投资","继续投资","用户继续投资,没进行联动优势授权"]);
                         formSubmit();
                         layer.closeAll();
                     },
                     btn2: function(index){
-                        _czc.push(["_trackEvent","标的详情投资","开启免密投资","用户联动优势授权",,]);
+                        _czc.push(["_trackEvent","标的详情投资","开启免密投资","用户联动优势授权"]);
                         layer.closeAll();
                         isAuthorizeSuccess();
                         $goAuthorize.submit();
@@ -435,13 +436,13 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         
     }
     $againBtn.on('click',function(){
-        _czc.push(["_trackEvent","标的详情投资","开启免密投资","用户重新进行联动优势授权",,]);
+        _czc.push(["_trackEvent","标的详情投资","开启免密投资","用户重新进行联动优势授权"]);
     });
     $failGoOnBtnInvest.on('click',function(){
-        _czc.push(["_trackEvent","标的详情投资","继续投资","授权失败：继续投资",,]);
+        _czc.push(["_trackEvent","标的详情投资","继续投资","授权失败：继续投资"]);
     });
     $successGoOnBtnInvest.on('click',function(){
-        _czc.push(["_trackEvent","标的详情投资","继续投资","授权成功：继续投资",,]);
+        _czc.push(["_trackEvent","标的详情投资","继续投资","授权成功：继续投资"]);
     });
     //is tip C
     function isAuthorizeSuccess(){
