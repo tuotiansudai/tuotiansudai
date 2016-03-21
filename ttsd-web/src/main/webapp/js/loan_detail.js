@@ -338,7 +338,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             btn2: function(index){
                 if ($freeSecret.attr('data-open-agreement')=='true') { // 如果开启过免密支付
                     $.ajax({
-                        url: '/no-password-invset/enabled',
+                        url: '/no-password-invest/enabled',
                         type: 'POST',
                         dataType: 'json'
                     })
@@ -383,7 +383,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     },
                     btn2: function(index){
                         $.ajax({
-                            url: '/no-password-invset/enabled',
+                            url: '/no-password-invest/enabled',
                             type: 'POST',
                             dataType: 'json'
                         })
