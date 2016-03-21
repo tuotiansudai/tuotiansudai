@@ -35,6 +35,7 @@
             <result column="pay_account_id" property="payAccountId"></result>
             <result column="balance" property="balance"></result>
             <result column="freeze" property="freeze"></result>
+            <result column="point" property="point"></result>
             <result column="register_time" property="registerTime"></result>
             <result column="auto_invest" property="autoInvest"></result>
         </association>
@@ -431,6 +432,10 @@
             </foreach>
         </if>
         WHERE r.`level` = '1'
+    </select>
+
+    <select id="findUsersMobileByLoginName" parameterType="java.lang.String" resultType="java.lang.String">
+       SELECT u.mobile from user u where u.login_name = #{loginName}
     </select>
 
 </mapper>

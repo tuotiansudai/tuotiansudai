@@ -32,7 +32,6 @@ public class UserItemDataDto implements Serializable {
     private String balance;
     private Date lastBillTime;
 
-
     public String getLoginName() {
         return loginName;
     }

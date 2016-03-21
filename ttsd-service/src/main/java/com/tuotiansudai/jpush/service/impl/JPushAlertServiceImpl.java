@@ -24,7 +24,11 @@ import com.tuotiansudai.jpush.repository.model.*;
 import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.AuditLogService;
+import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.AuditLogUtil;
 import com.tuotiansudai.util.DistrictUtil;
 import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections.CollectionUtils;
@@ -69,9 +73,13 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     @Autowired
     private JobManager jobManager;
 
+    @Autowired
+    AuditLogUtil auditLogUtil;
+
     private static final ObjectMapper objectMapper = new ObjectMapper();
     @Value("${web.server}")
     private String domainName;
+
 
     @Override
     @Transactional
@@ -99,7 +107,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     @Override
     public int findPushAlertCount(PushType pushType,
-                                  PushSource pushSource, PushUserType pushUserType,PushStatus pushStatus,
+                                  PushSource pushSource, PushUserType pushUserType, PushStatus pushStatus,
                                   Date startTime, Date endTime, boolean isAutomatic) {
         if (endTime != null) {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
@@ -109,8 +117,8 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     @Override
     public List<JPushAlertModel> findPushAlerts(int index, int pageSize, PushType pushType,
-                   PushSource pushSource, PushUserType pushUserType,PushStatus pushStatus,
-                   Date startTime, Date endTime, boolean isAutomatic){
+                                                PushSource pushSource, PushUserType pushUserType, PushStatus pushStatus,
+                                                Date startTime, Date endTime, boolean isAutomatic) {
         if (endTime != null) {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
@@ -467,22 +475,41 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             jPushAlertMapper.update(jPushModel);
             baseDataDto.setStatus(true);
             baseDto.setSuccess(true);
+
+            AccountModel auditor = accountMapper.findByLoginName(loginName);
+            String auditorRealName = auditor == null ? loginName : auditor.getUserName();
+
+            AccountModel operator = accountMapper.findByLoginName(jPushModel.getCreatedBy());
+            String operatorRealName = operator == null ? jPushModel.getCreatedBy() : operator.getUserName();
+
+            String description = auditorRealName + " 审核通过了 " + operatorRealName + " 创建的APP推送［" + jPushModel.getName() + "］。";
+            auditLogUtil.createAuditLog(loginName, jPushModel.getCreatedBy(), OperationType.PUSH, String.valueOf(id), description, ip);
+
             return baseDto;
         } else {
             baseDataDto.setStatus(false);
             baseDto.setSuccess(false);
-            baseDataDto.setMessage("审核失败：发送时间已经过期，请核实。");
+            baseDataDto.setMessage("审核失败：推送时间已经过期，请核实。");
             return baseDto;
         }
     }
 
     @Override
-    public void reject(String loginName, long id) {
+    public void reject(String loginName, long id, String ip) {
         logger.debug("JPush audit reject, auditor:" + loginName + ", JPush id:" + id);
         JPushAlertModel jPushModel = jPushAlertMapper.findJPushAlertModelById(id);
         jPushModel.setStatus(PushStatus.REJECTED);
         jPushModel.setAuditor(loginName);
         jPushAlertMapper.update(jPushModel);
+
+        AccountModel auditor = accountMapper.findByLoginName(loginName);
+        String auditorRealName = auditor == null ? loginName : auditor.getUserName();
+
+        AccountModel operator = accountMapper.findByLoginName(jPushModel.getCreatedBy());
+        String operatorRealName = operator == null ? jPushModel.getCreatedBy() : operator.getUserName();
+
+        String description = auditorRealName + " 驳回了 " + operatorRealName + " 创建的APP推送［" + jPushModel.getName() + "］。";
+        auditLogUtil.createAuditLog(loginName, jPushModel.getCreatedBy(), OperationType.PUSH, String.valueOf(id), description, ip);
     }
 
     @Override

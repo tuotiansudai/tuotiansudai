@@ -121,6 +121,6 @@ public class OperationTask<T> implements Serializable, Comparable<OperationTask>
 
     @Override
     public int compareTo(OperationTask o) {
-        return Longs.compare(this.createdTime.getTime(), o.getCreatedTime().getTime());
+        return Longs.compare(o.getCreatedTime().getTime(), this.createdTime.getTime());
     }
 }

@@ -1,5 +1,11 @@
-<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
+
 <#import "macro/global.ftl" as global>
+
+<#assign editRole = false/>
+<@global.role hasRole="'ADMIN','OPERATOR','OPERATOR_ADMIN'">
+    <#assign editRole = true/>
+</@global.role>
+
 <@global.main pageCss="" pageJavascript="edit-user.js" headLab="user-manage" sideLab="user-manage" title="用户编辑">
 
 <!-- content area begin -->
@@ -10,6 +16,7 @@
         </div>
     </#if>
     <form class="form-horizontal" action="/user-manage/user/edit" method="post">
+
         <div class="form-group">
             <label class="col-sm-2 control-label">登录名：</label>
 
@@ -46,26 +53,22 @@
             <label for="mobile" class="col-sm-2 control-label">手机号码：</label>
 
             <div class="col-sm-3">
-                <@global.role hasRole="'ADMIN','OPERATOR','OPERATOR_ADMIN'">
-                <input name="mobile" id="mobile" type="text" class="form-control" maxlength="11" value="${(user.mobile)!}"/>
-                </@global.role>
-
-                <@global.role hasRole="'CUSTOMER_SERVICE'">
-                <p class="form-control-static">${(user.mobile)!}</p>
-                </@global.role>
+                <#if editRole>
+                    <input name="mobile" id="mobile" type="text" class="form-control" maxlength="11" value="${(user.mobile)!}"/>
+                <#else>
+                    <p class="form-control-static">${(user.mobile)!}</p>
+                </#if>
             </div>
         </div>
         <div class="form-group">
             <label for="email" class="col-sm-2 control-label">电子邮件：</label>
 
             <div class="col-sm-3">
-                <@global.role hasRole="'ADMIN','OPERATOR','OPERATOR_ADMIN'">
-                <input name="email" id="email" type="email" class="form-control" value="${(user.email)!}"/>
-                </@global.role>
-
-                <@global.role hasRole="'CUSTOMER_SERVICE'">
-                <p class="form-control-static">${(user.email)!}</p>
-                </@global.role>
+                <#if editRole>
+                    <input name="email" id="email" type="email" class="form-control" value="${(user.email)!}"/>
+                <#else>
+                    <p class="form-control-static">${(user.email)!}</p>
+                </#if>
             </div>
         </div>
         <div class="form-group">
@@ -77,22 +80,15 @@
             </label>
 
             <div class="col-sm-3">
-                <@global.role hasRole="'ADMIN','OPERATOR','OPERATOR_ADMIN'">
-                <input name="referrer" id="referrer" type="text" class="form-control" value="${(user.referrer)!}"/>
-                </@global.role>
-
-                <@global.role hasRole="'CUSTOMER_SERVICE'">
-                <p class="form-control-static">${(user.referrer)!}</p>
-                </@global.role>
+                <#if editRole>
+                    <input name="referrer" id="referrer" type="text" class="form-control" value="${(user.referrer)!}"/>
+                <#else>
+                    <p class="form-control-static">${(user.referrer)!}</p>
+                </#if>
             </div>
         </div>
         <div class="form-group">
             <label for="status" class="col-sm-2 control-label">状态：</label>
-
-            <#assign editRole = false/>
-            <@global.role hasRole="'ADMIN','OPERATOR','OPERATOR_ADMIN'">
-                <#assign editRole = true/>
-            </@global.role>
 
             <div class="col-sm-3">
                 <label class="radio-inline">
@@ -125,7 +121,7 @@
                         <div class="checkbox">
                             <label><input type="checkbox" name="roles"
                                           <#if user.roles?? && user.roles?seq_contains(roleItem.name())>checked="checked"</#if>
-                                          <@global.role hasRole="'CUSTOMER_SERVICE'">disabled="disabled"</@global.role>
+                                          <#if !editRole>disabled="disabled"</#if>
                                           value="${roleItem.name()}">${roleItem.getDescription()}
                             </label>
                         </div>
