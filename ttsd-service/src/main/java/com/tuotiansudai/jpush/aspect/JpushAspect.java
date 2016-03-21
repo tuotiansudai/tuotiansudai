@@ -70,7 +70,7 @@ public class JPushAspect {
             Date triggerTime = new DateTime().plusMinutes(AutoJPushRepayAlertJob.JPUSH_ALERT_REPAY_DELAY_MINUTES)
                     .toDate();
             jobManager.newJob(JobType.AutoJPushRepayAlert, AutoJPushRepayAlertJob.class)
-                    .addJobData(AutoJPushRepayAlertJob.LOAN_ID_KEY, loanId)
+                    .addJobData(AutoJPushRepayAlertJob.REPAY_ID_KEY, loanId)
                     .withIdentity(JobType.AutoJPushRepayAlert.name(), "Repay-" + loanId)
                     .runOnceAt(triggerTime)
                     .submit();
