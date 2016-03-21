@@ -1340,8 +1340,11 @@
               border: solid 1px #fdd8bd;
               background: #fff2e9;
               width: 100%;
+              max-height: 285px;
               text-align: left;
               font-size: 13px;
+              overflow: hidden;
+              overflow-y: scroll;
 
               li {
                 padding: 5px 10px;
@@ -1372,47 +1375,27 @@
                     font-size: 10px;
                   }
                 }
-              }
-              .ticket-list {
-                position: absolute;
-                z-index: 100;
-                left: 0px;
-                top: 29px;
-                border: solid 1px #fdd8bd;
-                background: #fff2e9;
-                width: 100%;
-                max-height: 285px;
-                text-align: left;
-                font-size: 13px;
-                overflow: hidden;
-                overflow-y: scroll;
-
-                li {
-                  padding: 5px 10px;
-                  line-height: 1.6;
-
-                  &.lower-upper-limit {
-                    .input-use-ticket, label .sign {
-                      position: relative;
-                      top: -8px;
-                    }
-                  }
-                  .input-use-ticket {
-                    margin-bottom: 12px;
-                  }
-                }
                 &:hover {
                   background: #ffead9;
                 }
                 &.disabled {
                   color: #8f8f8f;
                   background: #f2f2f2;
-
                   .sign {
-                    background: #909090;
+                    width: 13px;
+                    display: inline-block;
+                    background: #ff7101;
+                    word-wrap: break-word;
+                    word-break: normal;
+                    padding: 3px;
+                    color: #fff;
                   }
-                  &:hover {
-                    background: #f2f2f2;
+                  .ticket-info {
+                    display: inline-block;
+
+                    .ticket-term {
+                      font-size: 10px;
+                    }
                   }
                 }
               }
