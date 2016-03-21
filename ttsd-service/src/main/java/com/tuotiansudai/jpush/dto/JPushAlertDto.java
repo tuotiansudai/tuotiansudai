@@ -134,4 +134,5 @@ public class JPushAlertDto {
         this.jumpToLink = jPushAlertModel.getJumpToLink();
         this.expectPushTime = new DateTime(jPushAlertModel.getExpectPushTime()).toString("yyyy-MM-dd HH:mm");
     }
+
 }
