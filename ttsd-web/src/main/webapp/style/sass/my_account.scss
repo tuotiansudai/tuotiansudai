@@ -1726,6 +1726,17 @@
       }
     }
   }
+  span {
+    float: right;
+    border-bottom: none;
+    font-size: 14px;
+    font-weight: normal;
+    color: #666;
+    cursor: pointer;
+    &.rule-show{
+      color:#ff752a;
+    }
+  }
 }
 .card-box {
   margin: 20px;
