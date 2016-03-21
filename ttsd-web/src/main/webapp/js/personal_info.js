@@ -15,6 +15,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             $getCaptchaElement = $('.get-captcha'),
             $btnCancelElement = $('.btn-cancel',$turnOffNoPasswordInvestDOM),
             $btnCloseTurnOnElement = $('.btn-close-turn-on',$turnOnNoPasswordInvestDOM),
+            $btnCloseTurnOffElement = $('.btn-close-turn-off', $turnOffNoPasswordInvestDOM),
             $btnTurnOnElement = $('.btn-turn-on',$turnOnNoPasswordInvestDOM),
             $codeNumber = $('.code-number'),
 
@@ -59,6 +60,11 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
 
             });
         });
+
+        $btnCloseTurnOffElement.on('click',function(){
+            _czc.push(["_trackEvent","个人资料","关闭","用户关闭无密投资",,"btn-close-turn-off"]);
+        });
+
         $turnOffNoPasswordInvestLayer.on('click', function () {
             refreshTurnOffNoPasswordInvestLayer();
 
@@ -85,6 +91,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             $imageCaptchaForm.submit();
         });
         $noPasswordInvest.on('click', function () {
+            _czc.push(["_trackEvent","个人资料","开启无密投资","用户开启无密投资",,"noPasswordInvest"]);
             var _this = $(this);
             $.ajax({
                 url: _this.data('url'),
@@ -102,9 +109,11 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             layer.closeAll();
         });
         $btnCloseTurnOnElement.on('click',function(){
+            _czc.push(["_trackEvent","个人资料","开启无密投资","用户取消联动优势授权",,"btn-close-turn-on"]);
             layer.closeAll();
         });
         $btnTurnOnElement.on('click',function(){
+            _czc.push(["_trackEvent","个人资料","开启无密投资","用户联动优势授权",,"btn-turn-on"]);
             layer.closeAll();
             layer.open({
                 type: 1,

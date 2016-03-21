@@ -82,7 +82,7 @@
                     <#else >
                         <em class="info">开启免密投资后，您可及时选择心仪标的，理财快人一步</em>
                         <span class="binding-set">
-                            <i class="fa fa-times-circle no"></i>未开启  <a class="setlink setTurnOnNoPasswordInvest" href="javascript:void(0);">开启</a>
+                            <i class="fa fa-times-circle no"></i>未开启  <a class="setlink setTurnOnNoPasswordInvest" href="javascript:void(0);" >开启</a>
                         </span>
                     </#if>
 
@@ -185,7 +185,7 @@
         <div class="error-content" style="visibility: visible; height:30px;text-align:left"></div>
         <div class="tc person-info-btn">
             <button class="btn btn-success btn-cancel" >取消</button>
-            <button class="btn btn-close" type="submit" >我要关闭</button>
+            <button class="btn btn-close btn-close-turn-off" type="submit">我要关闭</button>
         </div>
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
