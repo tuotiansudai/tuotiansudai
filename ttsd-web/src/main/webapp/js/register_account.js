@@ -1,4 +1,4 @@
-require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension', 'csrf'], function (_, $) {
+require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension'], function (_, $) {
 
     var registerAccountForm = $('.register-step-two .register-account-form');
 

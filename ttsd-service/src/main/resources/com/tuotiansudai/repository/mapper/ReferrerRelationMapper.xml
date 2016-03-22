@@ -34,22 +34,4 @@
         delete from referrer_relation where referrer_login_name = #{referrerLoginName} and login_name = #{loginName}
     </delete>
 
-    <select id="findAllRecommendation" resultMap="referrerRelationResultMap">
-        SELECT
-          r.*
-        FROM
-          referrer_relation r
-          JOIN user_role u
-            ON r.`referrer_login_name` = u.`login_name`
-            AND u.`role` = 'STAFF'
-        <if test="districtName != null and districtName.size != 0">
-            join user ur on ur.login_name = r.login_name
-            and ur.province in
-            <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">
-                #{item}
-            </foreach>
-        </if>
-        WHERE r.`level` = '1'
-    </select>
-
 </mapper>
