@@ -90,7 +90,7 @@
                 </div>
             </div>
 			<ul class="coupon-list">
-				<#if exchangeCouponDtos?? && exchangeCouponDtos?size lt 0>
+				<#if exchangeCouponDtos?has_content>
 					<#list exchangeCouponDtos as exchangeCouponDto>
                         <li class="<#if myPoint lt exchangeCouponDto.exchangePoint>no-click<#else><#if exchangeCouponDto.couponType == 'INVEST_COUPON'>new-type<#else>bite-type</#if></#if>">
                             <div class="top-com">
