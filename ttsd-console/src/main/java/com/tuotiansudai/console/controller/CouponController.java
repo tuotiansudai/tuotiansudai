@@ -187,9 +187,10 @@ public class CouponController {
 
     @RequestMapping(value = "/coupon/{couponId:^\\d+$}/inactive", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> inactiveCoupon(@PathVariable long couponId) {
+    public BaseDto<BaseDataDto> inactiveCoupon(@PathVariable long couponId, HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
-        couponActivationService.inactive(loginName, couponId);
+        String ip = RequestIPParser.parse(request);
+        couponActivationService.inactive(loginName, couponId, ip);
         BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(true);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();

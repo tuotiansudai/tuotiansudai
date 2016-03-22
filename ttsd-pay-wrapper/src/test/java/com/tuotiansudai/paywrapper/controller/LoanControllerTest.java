@@ -13,9 +13,10 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanOutDto;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -84,6 +85,9 @@ public class LoanControllerTest {
 
     @Autowired
     private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private CouponLoanOutService couponLoanOutService;
 
     @Autowired
     private CouponMapper couponMapper;
@@ -258,12 +262,13 @@ public class LoanControllerTest {
                 .andExpect(jsonPath("$.data.status").value(true))
                 .andExpect(jsonPath("$.data.code").value("0000"));
 
+        couponLoanOutService.sendRedEnvelope(mockLoanId);
+
 //        Thread.sleep(1000 * 5);
         AccountModel am = accountMapper.findByLoginName(loanerLoginName);
         AccountModel am1 = accountMapper.findByLoginName(mockInvestLoginName[0]);
         AccountModel am2 = accountMapper.findByLoginName(mockInvestLoginName[1]);
 
-        long amount = am.getBalance();
         long amount1 = am1.getBalance();
         long amount2 = am2.getBalance();
         Thread.sleep(1000 * 5);

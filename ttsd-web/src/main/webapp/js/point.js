@@ -1,4 +1,4 @@
-require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-table.mustache', 'pagination', 'daterangepicker', 'csrf'],
+require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-table.mustache', 'pagination', 'daterangepicker', 'jquery.ajax.extension'],
     function($, moment, Mustache, layer, pointBillListTemplate, pagination) {
         $(function() {
             var $navBtn = $('.column-title .title-navli'),
@@ -216,12 +216,9 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                                 .fail(function() {
                                     layer.alert('兑换失败，请重试！',{title:'温馨提示'});
                                 });
-                            
                         }
                     });
                 }
             });
-
-
         });
     });

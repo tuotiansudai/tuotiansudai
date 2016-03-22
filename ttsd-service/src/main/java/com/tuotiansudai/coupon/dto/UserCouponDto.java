@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
+public class UserCouponDto implements Serializable {
     private long id;
     private long couponId;
     private String loginName;
@@ -145,47 +145,4 @@ public class UserCouponDto implements Serializable, Comparable<UserCouponDto> {
         return productTypeList;
     }
 
-    private int getStatusCode() {
-        if (this.expired) return 3;
-        else if (this.used) return 2;
-        else return 1;
-    }
-
-    private long getCompareBenefitValue() {
-        switch (this.couponType) {
-            case RED_ENVELOPE:
-            case NEWBIE_COUPON:
-            case INVEST_COUPON:
-                return amount;
-            case INTEREST_COUPON:
-                return (long) (rate * 100);
-            case BIRTHDAY_COUPON:
-                return (long) (birthdayBenefit * 100);
-            default:
-                return amount;
-        }
-    }
-
-    @Override
-    public int compareTo(UserCouponDto dto) {
-        if (this.getStatusCode() == dto.getStatusCode()) {
-            if (this.getCouponType().getOrder() == dto.getCouponType().getOrder()) {
-                if (this.getStatusCode() == 2) {
-                    return this.usedTime.after(dto.getUsedTime()) ? -1 : 1;
-                } else if (this.getStatusCode() == 1) {
-                    if (this.getCompareBenefitValue() == dto.getCompareBenefitValue()) {
-                        return this.getEndTime().after(dto.getEndTime()) ? 1 : -1;
-                    } else {
-                        return this.getCompareBenefitValue() - dto.getCompareBenefitValue() > 0 ? 1 : -1;
-                    }
-                } else {
-                    return this.getEndTime().after(dto.getEndTime()) ? -1 : 1;
-                }
-            } else {
-                return this.getCouponType().getOrder() - dto.getCouponType().getOrder();
-            }
-        } else {
-            return this.getStatusCode() - dto.getStatusCode();
-        }
-    }
 }

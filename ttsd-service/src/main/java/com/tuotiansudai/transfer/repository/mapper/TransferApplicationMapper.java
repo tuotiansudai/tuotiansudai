@@ -17,4 +17,6 @@ public interface TransferApplicationMapper {
     String findMaxNameInOneDay(String name);
 
     TransferApplicationModel findById(long id);
+
+    TransferApplicationModel findByInvestId(Long investId);
 }

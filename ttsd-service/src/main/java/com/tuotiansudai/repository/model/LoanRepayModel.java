@@ -30,10 +30,11 @@ public class LoanRepayModel implements Serializable {
     public LoanRepayModel() {
     }
 
-    public LoanRepayModel(long id, long loanId, int period, long expectedInterest, Date repayDate, RepayStatus status) {
+    public LoanRepayModel(long id, long loanId, int period, long corpus, long expectedInterest, Date repayDate, RepayStatus status) {
         this.id = id;
         this.loanId = loanId;
         this.period = period;
+        this.corpus = corpus;
         this.expectedInterest = expectedInterest;
         this.repayDate = repayDate;
         this.status = status;

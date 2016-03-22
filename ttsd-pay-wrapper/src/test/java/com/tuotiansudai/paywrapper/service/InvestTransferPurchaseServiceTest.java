@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.service;
 import com.google.common.collect.Lists;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
+import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -87,6 +88,88 @@ public class InvestTransferPurchaseServiceTest {
     @After
     public void clean() throws Exception {
         this.mockPayServer.shutdown();
+    }
+
+    @Test
+    public void shouldPurchaseNoPassword() throws Exception {
+        DateTime recheckTime = new DateTime().withDate(2016, 3, 1);
+        LoanModel fakeLoan = this.createFakeLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
+        UserModel transferrer = this.createFakeUser("transferrer", 0, 0);
+        UserModel transferee = this.createFakeUser("transferee", 1000000, 0);
+        InvestModel fakeTransferInvest = this.createFakeInvest(fakeLoan.getId(), null, 1000000, transferrer.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERRING);
+        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(fakeTransferInvest, 1, 900000, true, 100);
+        InvestRepayModel fakeTransferInvestRepay1 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 1, 0, 10000, 10, new DateTime().withDate(2016, 3, 31).toDate(), null, RepayStatus.REPAYING);
+        InvestRepayModel fakeTransferInvestRepay2 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 2, 1000000, 10000, 10, new DateTime().withDate(2016, 4, 30).toDate(), null, RepayStatus.REPAYING);
+
+        InvestDto investDto = new InvestDto();
+        investDto.setLoginName(transferee.getLoginName());
+        investDto.setTransferInvestId(String.valueOf(fakeTransferInvest.getId()));
+        investDto.setSource(Source.WEB);
+        investTransferPurchaseService.noPasswordPurchase(investDto);
+
+        InvestModel investModel = investMapper.findByLoginName(transferee.getLoginName(), 0, 1).get(0);
+
+        investTransferPurchaseService.postPurchase(investModel.getId());
+
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(), TransferStatus.SUCCESS);
+
+        InvestModel actualInvest = investMapper.findById(transferApplicationModel.getInvestId());
+        assertThat(actualInvest.getStatus(), is(InvestStatus.SUCCESS));
+        List<UserBillModel> transfereeUserBills = userBillMapper.findByLoginName(transferee.getLoginName());
+        assertThat(transfereeUserBills.size(), is(1));
+        assertThat(transfereeUserBills.get(0).getAmount(), is(fakeTransferApplication.getTransferAmount()));
+        assertThat(transfereeUserBills.get(0).getLoginName(), is(transferee.getLoginName()));
+        assertThat(transfereeUserBills.get(0).getBusinessType(), is(UserBillBusinessType.INVEST_TRANSFER_IN));
+        assertThat(transfereeUserBills.get(0).getOperationType(), is(UserBillOperationType.TO_BALANCE));
+
+        InvestModel actualTransferInvest = investMapper.findById(fakeTransferInvest.getId());
+        assertThat(actualTransferInvest.getTransferStatus(), is(TransferStatus.SUCCESS));
+
+        TransferApplicationModel actualTransferApplication = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(), TransferStatus.SUCCESS);
+        assertNotNull(actualTransferApplication);
+        assertThat(actualTransferApplication.getInvestId(), is(transferApplicationModel.getInvestId()));
+
+        List<InvestRepayModel> actualTransferrerInvestRepays = investRepayMapper.findByInvestIdAndPeriodAsc(fakeTransferInvest.getId());
+        assertThat(actualTransferrerInvestRepays.size(), is(2));
+        assertThat(actualTransferrerInvestRepays.get(0).getPeriod(), is(1));
+        assertTrue(actualTransferrerInvestRepays.get(0).isTransferred());
+        assertThat(actualTransferrerInvestRepays.get(0).getExpectedInterest(), is(0L));
+        assertThat(actualTransferrerInvestRepays.get(0).getExpectedFee(), is(0L));
+        assertThat(actualTransferrerInvestRepays.get(0).getCorpus(), is(0L));
+        assertThat(actualTransferrerInvestRepays.get(0).getStatus(), is(RepayStatus.COMPLETE));
+        assertThat(actualTransferrerInvestRepays.get(1).getPeriod(), is(2));
+        assertTrue(actualTransferrerInvestRepays.get(1).isTransferred());
+        assertThat(actualTransferrerInvestRepays.get(1).getExpectedInterest(), is(0L));
+        assertThat(actualTransferrerInvestRepays.get(1).getExpectedFee(), is(0L));
+        assertThat(actualTransferrerInvestRepays.get(1).getStatus(), is(RepayStatus.COMPLETE));
+        assertThat(actualTransferrerInvestRepays.get(1).getCorpus(), is(0L));
+
+        List<InvestRepayModel> actualTransfereeInvestRepays = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getInvestId());
+        assertThat(actualTransfereeInvestRepays.size(), is(2));
+        assertThat(actualTransfereeInvestRepays.get(0).getPeriod(), is(1));
+        assertFalse(actualTransfereeInvestRepays.get(0).isTransferred());
+        assertThat(actualTransfereeInvestRepays.get(0).getExpectedInterest(), is(fakeTransferInvestRepay1.getExpectedInterest()));
+        assertThat(actualTransfereeInvestRepays.get(0).getExpectedFee(), is(fakeTransferInvestRepay1.getExpectedFee()));
+        assertThat(actualTransfereeInvestRepays.get(0).getStatus(), is(RepayStatus.REPAYING));
+        assertThat(actualTransfereeInvestRepays.get(0).getCorpus(), is(0L));
+        assertThat(actualTransfereeInvestRepays.get(1).getPeriod(), is(2));
+        assertFalse(actualTransfereeInvestRepays.get(1).isTransferred());
+        assertThat(actualTransfereeInvestRepays.get(1).getExpectedInterest(), is(fakeTransferInvestRepay2.getExpectedInterest()));
+        assertThat(actualTransfereeInvestRepays.get(1).getExpectedFee(), is(fakeTransferInvestRepay2.getExpectedFee()));
+        assertThat(actualTransfereeInvestRepays.get(1).getStatus(), is(RepayStatus.REPAYING));
+        assertThat(actualTransfereeInvestRepays.get(1).getCorpus(), is(fakeTransferInvestRepay2.getCorpus()));
+
+        List<UserBillModel> transferrerUserBills = userBillMapper.findByLoginName(transferrer.getLoginName());
+        assertThat(transferrerUserBills.size(), is(2));
+        assertThat(transferrerUserBills.get(0).getAmount(), is(actualTransferApplication.getTransferAmount()));
+        assertThat(transferrerUserBills.get(0).getBusinessType(), is(UserBillBusinessType.INVEST_TRANSFER_OUT));
+        assertThat(transferrerUserBills.get(0).getOperationType(), is(UserBillOperationType.TI_BALANCE));
+        assertThat(transferrerUserBills.get(1).getAmount(), is(actualTransferApplication.getTransferFee()));
+        assertThat(transferrerUserBills.get(1).getBusinessType(), is(UserBillBusinessType.TRANSFER_FEE));
+        assertThat(transferrerUserBills.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
+
+        SystemBillModel systemBillModel = systemBillMapper.findByOrderId(actualTransferApplication.getId(), SystemBillBusinessType.TRANSFER_FEE);
+        assertThat(systemBillModel.getAmount(), is(actualTransferApplication.getTransferFee()));
     }
 
     @Test
@@ -347,16 +430,10 @@ public class InvestTransferPurchaseServiceTest {
     }
 
     private InvestModel createFakeInvest(long loanId, Long transferInvestId, long amount, String loginName, Date investTime, InvestStatus investStatus, TransferStatus transferStatus) {
-        InvestModel fakeInvestModel = new InvestModel();
-        fakeInvestModel.setId(idGenerator.generate());
-        fakeInvestModel.setLoanId(loanId);
-        fakeInvestModel.setTransferInvestId(transferInvestId);
-        fakeInvestModel.setAmount(amount);
-        fakeInvestModel.setLoginName(loginName);
-        fakeInvestModel.setSource(Source.WEB);
+        InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), loanId, transferInvestId, amount, loginName, Source.WEB, null);
         fakeInvestModel.setStatus(investStatus);
-        fakeInvestModel.setCreatedTime(investTime);
         fakeInvestModel.setTransferStatus(transferStatus);
+        fakeInvestModel.setCreatedTime(investTime);
         investMapper.create(fakeInvestModel);
         return fakeInvestModel;
     }

@@ -10,9 +10,8 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.job.AutoJPushAlertLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.SendRedEnvelopeJob;
-import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
-import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
+import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections.CollectionUtils;
@@ -138,6 +137,7 @@ public class CouponAspect {
             jobManager.newJob(JobType.SendRedEnvelope, SendRedEnvelopeJob.class)
                     .addJobData(SendRedEnvelopeJob.LOAN_ID_KEY, loanId)
                     .withIdentity(JobType.SendRedEnvelope.name(), "Loan-" + loanId)
+                    .replaceExistingJob(true)
                     .runOnceAt(triggerTime)
                     .submit();
         } catch (SchedulerException e) {
@@ -152,6 +152,7 @@ public class CouponAspect {
             jobManager.newJob(JobType.AutoJPushAlertLoanOut, AutoJPushAlertLoanOutJob.class)
                     .addJobData(AutoJPushAlertLoanOutJob.LOAN_ID_KEY, loanId)
                     .withIdentity(JobType.AutoJPushAlertLoanOut.name(), "Loan-" + loanId)
+                    .replaceExistingJob(true)
                     .runOnceAt(triggerTime)
                     .submit();
         } catch (SchedulerException e) {

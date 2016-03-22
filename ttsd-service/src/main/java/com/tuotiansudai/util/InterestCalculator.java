@@ -3,6 +3,7 @@ package com.tuotiansudai.util;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.google.common.primitives.Ints;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -11,6 +12,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class InterestCalculator {
@@ -22,8 +24,15 @@ public class InterestCalculator {
     public static long calculateLoanRepayInterest(LoanModel loanModel, List<InvestModel> investModels, DateTime lastRepayDate, DateTime currentRepayDate) {
         DateTime loanOutDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
 
+        List<InvestModel> originalInvestModels = Lists.newArrayList(Iterators.filter(investModels.iterator(), new Predicate<InvestModel>() {
+            @Override
+            public boolean apply(InvestModel input) {
+                return input.getTransferInvestId() == null;
+            }
+        }));
+
         long corpusMultiplyPeriodDays = 0;
-        for (InvestModel successInvest : investModels) {
+        for (InvestModel successInvest : originalInvestModels) {
             DateTime lastInvestRepayDate = lastRepayDate;
             if (lastRepayDate.isBefore(loanOutDate) && InterestInitiateType.INTEREST_START_AT_INVEST == loanModel.getType().getInterestInitiateType()) {
                 lastInvestRepayDate = new DateTime(successInvest.getCreatedTime()).withTimeAtStartOfDay().minusDays(1);

@@ -4,16 +4,16 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.InvestDto;
-import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.SmsFatalNotifyDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNopwdMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferNopwdRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestTransferPurchaseService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
@@ -77,6 +77,57 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
+
+    @Override
+    @Transactional
+    public BaseDto<PayDataDto> noPasswordPurchase(InvestDto investDto) {
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        baseDto.setData(payDataDto);
+
+        String loginName = investDto.getLoginName();
+        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
+        long transferInvestId = Long.parseLong(investDto.getTransferInvestId());
+
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByTransferInvestId(transferInvestId, TransferStatus.TRANSFERRING);
+
+        if (transferApplicationModel == null || transferApplicationModel.getTransferAmount() > accountModel.getBalance()) {
+            return baseDto;
+        }
+        InvestModel transferInvestModel = investMapper.findById(transferInvestId);
+
+        InvestModel investModel = new InvestModel(idGenerator.generate(),
+                transferInvestModel.getLoanId(),
+                transferInvestId,
+                transferInvestModel.getAmount(),
+                loginName,
+                investDto.getSource(),
+                null);
+
+        investMapper.create(investModel);
+
+        ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newPurchaseNopwdRequest(String.valueOf(investModel.getLoanId()),
+                String.valueOf(investModel.getId()),
+                accountModel.getPayUserId(),
+                String.valueOf(transferApplicationModel.getTransferAmount()));
+
+        try {
+
+            ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(
+                    ProjectTransferNopwdMapper.class,
+                    requestModel,
+                    ProjectTransferNopwdResponseModel.class);
+            payDataDto.setStatus(responseModel.isSuccess());
+            payDataDto.setCode(responseModel.getRetCode());
+            payDataDto.setMessage(responseModel.getRetMsg());
+        } catch (PayException e) {
+            investMapper.updateStatus(investModel.getId(), InvestStatus.FAIL);
+            payDataDto.setStatus(false);
+            payDataDto.setMessage(e.getLocalizedMessage());
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return baseDto;
+    }
 
     @Override
     @Transactional

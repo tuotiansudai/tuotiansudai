@@ -40,13 +40,13 @@ public class TransferApplicationModel {
     public TransferApplicationModel() {
     }
 
-    public TransferApplicationModel(InvestModel investModel, String name, int period, long transferAmount, boolean transferInterest, long transferFee, Date deadline) {
-        this.loanId = investModel.getLoanId();
+    public TransferApplicationModel(InvestModel transferInvestModel, String name, int period, long transferAmount, boolean transferInterest, long transferFee, Date deadline) {
+        this.loanId = transferInvestModel.getLoanId();
         this.name = name;
-        this.transferInvestId = investModel.getId();
+        this.transferInvestId = transferInvestModel.getId();
         this.period = period;
-        this.loginName = investModel.getLoginName();
-        this.investAmount = investModel.getAmount();
+        this.loginName = transferInvestModel.getLoginName();
+        this.investAmount = transferInvestModel.getAmount();
         this.transferAmount = transferAmount;
         this.transferInterest = transferInterest;
         this.transferFee = transferFee;

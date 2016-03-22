@@ -1,4 +1,4 @@
-require(['jquery', 'mustache', 'text!/tpl/user-bill-table.mustache', 'moment', 'pagination', 'daterangepicker', 'csrf'], function ($, Mustache, userBillTableTemplate, moment, pagination) {
+require(['jquery', 'mustache', 'text!/tpl/user-bill-table.mustache', 'moment', 'pagination', 'daterangepicker', 'jquery.ajax.extension'], function ($, Mustache, userBillTableTemplate, moment, pagination) {
     //初始化页面
     var today = moment().format('YYYY-MM-DD'); // 今天
     var week = moment().subtract(1, 'week').format('YYYY-MM-DD');
