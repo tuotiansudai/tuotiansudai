@@ -26,7 +26,8 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             $passwordForm = $('form', $changePassDOM),
             $umpayPasswordForm = $('form', $resetUmpayPassDOM),
             $turnOffNoPasswordInvestForm = $('#turnOffNoPasswordInvestForm', $turnOffNoPasswordInvestDOM),
-            $imageCaptchaForm = $('#imageCaptchaForm', $turnOffNoPasswordInvestDOM);
+            $imageCaptchaForm = $('#imageCaptchaForm', $turnOffNoPasswordInvestDOM),
+            countTimer;
 
 
 
@@ -72,9 +73,13 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             });
         });
         var refreshTurnOffNoPasswordInvestLayer = function(){
+            clearInterval(countTimer);
+            $getCaptchaElement.html('获取验证码').prop('disabled',true);
             refreshCaptcha();
             $('.captcha').val('');
             $('.error-content').html('');
+            $codeNumber.addClass('code-number-hidden');
+
         };
         $getCaptchaElement.on('click',function(){
             $imageCaptchaForm.submit();
@@ -141,10 +146,10 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                         if (data.status && !data.isRestricted) {
                             $codeNumber.removeClass('code-number-hidden');
                             var seconds = 60;
-                            var count = setInterval(function () {
+                            countTimer = setInterval(function () {
                                 $getCaptchaElement.html(seconds + '秒后重新发送').addClass('btn disable-button').removeClass('btn-normal').prop('disabled',true);
                                 if (seconds == 0) {
-                                    clearInterval(count);
+                                    clearInterval(countTimer);
                                     $getCaptchaElement.html('重新发送').removeClass('btn disable-button').addClass('btn-normal').prop('disabled',false);
                                     refreshCaptcha();
                                 }

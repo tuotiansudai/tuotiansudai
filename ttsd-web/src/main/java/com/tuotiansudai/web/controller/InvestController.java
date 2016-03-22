@@ -45,7 +45,7 @@ public class InvestController {
             if (accountModel.isAutoInvest() && accountModel.isNoPasswordInvest()) {
                 BaseDto<PayDataDto> baseDto = investService.noPasswordInvest(investDto);
                 if (baseDto.isSuccess() && baseDto.getData().getStatus()) {
-                    return new ModelAndView("/account");
+                    return new ModelAndView("redirect:/account");
                 } else {
                     if (baseDto.getData() != null) {
                         errorMessage = baseDto.getData().getMessage();

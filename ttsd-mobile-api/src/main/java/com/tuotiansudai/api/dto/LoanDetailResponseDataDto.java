@@ -290,6 +290,22 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
         this.investFeeRate = investFeeRate;
     }
 
+    public String getFundRaisingEndTime() {
+        return fundRaisingEndTime;
+    }
+
+    public void setFundRaisingEndTime(String fundRaisingEndTime) {
+        this.fundRaisingEndTime = fundRaisingEndTime;
+    }
+
+    public Integer getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Integer deadline) {
+        this.deadline = deadline;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -302,19 +318,7 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
         return content;
     }
 
-    public void setContent(String content) { this.content = content; }
-
-    public String getFundRaisingEndTime() { return fundRaisingEndTime; }
-
-    public void setFundRaisingEndTime(String fundRaisingEndTime) {
-        this.fundRaisingEndTime = fundRaisingEndTime;
-    }
-
-    public Integer getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(Integer deadline) {
-        this.deadline = deadline;
+    public void setContent(String content) {
+        this.content = content;
     }
 }

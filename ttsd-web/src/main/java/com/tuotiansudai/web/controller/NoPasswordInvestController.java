@@ -32,9 +32,9 @@ public class NoPasswordInvestController {
     @Autowired
     private SmsCaptchaService smsCaptchaService;
 
-    @RequestMapping(path = "/enabled",method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> enabledNoPasswordInvest(){
+    @RequestMapping(path = "/enabled", method = RequestMethod.POST)
+    public BaseDto<BaseDataDto> enabledNoPasswordInvest() {
         String loginName = LoginUserInfo.getLoginName();
         noPasswordInvestService.enabledNoPasswordInvest(loginName);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
@@ -45,9 +45,9 @@ public class NoPasswordInvestController {
         return baseDto;
     }
 
-    @RequestMapping(path = "/disabled",method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> disabledNoPasswordInvest(){
+    @RequestMapping(path = "/disabled", method = RequestMethod.POST)
+    public BaseDto<BaseDataDto> disabledNoPasswordInvest() {
         String loginName = LoginUserInfo.getLoginName();
         noPasswordInvestService.disabledNoPasswordInvest(loginName);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
@@ -59,7 +59,7 @@ public class NoPasswordInvestController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView agreement(@Valid @ModelAttribute AgreementDto agreementDto){
+    public ModelAndView agreement(@Valid @ModelAttribute AgreementDto agreementDto) {
         BaseDto<PayFormDataDto> baseDto = agreementService.agreement(LoginUserInfo.getLoginName(), agreementDto);
         return new ModelAndView("/pay", "pay", baseDto);
     }
@@ -98,4 +98,11 @@ public class NoPasswordInvestController {
     }
 
 
+    @ResponseBody
+    @RequestMapping(value = "/writeRemindFlag", method = RequestMethod.GET)
+    public String writeRemindFlagInRedis() {
+        String loginName = LoginUserInfo.getLoginName();
+        noPasswordInvestService.writeRemindFlag(loginName);
+        return "";
+    }
 }

@@ -104,7 +104,7 @@ public class InvestControllerTest {
         this.mockMvc.perform(post("/invest")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("loginName", "investor").param("loanId", "1000000000").param("amount", "100").param("source", "WEB"))
-                .andExpect(view().name("/account"));
+                .andExpect(view().name("redirect:/account"));
     }
 
     private void mockLoginUser(String loginName, String mobile){

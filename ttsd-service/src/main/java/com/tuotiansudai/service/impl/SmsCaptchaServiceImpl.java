@@ -31,7 +31,7 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
     @Override
     public BaseDto<SmsDataDto> sendNoPasswordInvestCaptcha(String mobile, String requestIP) {
         String captcha = this.createMobileCaptcha(mobile, CaptchaType.TURN_OFF_NO_PASSWORD_INVEST);
-        return smsWrapperClient.sendRegisterCaptchaSms(new SmsCaptchaDto(mobile, captcha, requestIP));
+        return smsWrapperClient.sendNoPasswordInvestCaptchaSms(new SmsCaptchaDto(mobile, captcha, requestIP));
     }
 
     @Override

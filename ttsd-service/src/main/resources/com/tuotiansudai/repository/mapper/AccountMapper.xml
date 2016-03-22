@@ -51,8 +51,8 @@
           balance = #{balance},
           freeze = #{freeze},
           auto_invest = #{autoInvest},
-          point = #{point},
-          no_password_invest = #{noPasswordInvest}
+          no_password_invest = #{noPasswordInvest},
+          point = #{point}
         where login_name = #{loginName}
     </update>
 
