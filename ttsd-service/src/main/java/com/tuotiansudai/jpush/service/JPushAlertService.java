@@ -46,6 +46,12 @@ public interface JPushAlertService {
 
     void autoJPushRechargeAlert(RechargeDto rechargeDto);
 
+    void autoJPushWithDrawApplyAlert(long ordrId);
+
+    void autoJPushWithDrawAlert(long orderId);
+
+    void autoJPushReferrerRewardAlert(long orderId);
+
     BaseDto<BaseDataDto> pass(String loginName, long id, String ip);
 
     void reject(String loginName, long id);
