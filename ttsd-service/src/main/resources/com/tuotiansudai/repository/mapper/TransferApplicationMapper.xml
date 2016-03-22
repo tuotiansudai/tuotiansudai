@@ -33,6 +33,10 @@
         select * from transfer_application where transfer_invest_id = #{transferInvestId} and status = #{status}
     </select>
 
+    <select id="findByInvestId" parameterType="long" resultMap="transferApplicationResultMap">
+        select * from transfer_application where invest_id = #{investId} and status = 'SUCCESS'
+    </select>
+
     <update id="update" parameterType="TransferApplicationModel">
         update transfer_application
         set name = #{name},

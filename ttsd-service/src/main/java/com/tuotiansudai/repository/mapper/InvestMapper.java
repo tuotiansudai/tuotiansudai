@@ -40,7 +40,7 @@ public interface InvestMapper {
      * @param id
      * @return
      */
-    InvestModel findById(@Param(value = "id") long id);
+    InvestModel findById(@Param(value = "id") Long id);
 
     /**
      * 查找用户的投资记录

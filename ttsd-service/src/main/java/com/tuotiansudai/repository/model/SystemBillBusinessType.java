@@ -6,7 +6,7 @@ public enum SystemBillBusinessType {
 
     BIND_BANK_CARD("绑卡"),
 
-    REPLACE_BANK_CARD("绑卡"),
+    REPLACE_BANK_CARD("换卡"),
 
     RECHARGE_SUCCESS("充值"),
 

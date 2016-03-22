@@ -428,16 +428,10 @@ public class InvestTransferPurchaseServiceTest {
     }
 
     private InvestModel createFakeInvest(long loanId, Long transferInvestId, long amount, String loginName, Date investTime, InvestStatus investStatus, TransferStatus transferStatus) {
-        InvestModel fakeInvestModel = new InvestModel();
-        fakeInvestModel.setId(idGenerator.generate());
-        fakeInvestModel.setLoanId(loanId);
-        fakeInvestModel.setTransferInvestId(transferInvestId);
-        fakeInvestModel.setAmount(amount);
-        fakeInvestModel.setLoginName(loginName);
-        fakeInvestModel.setSource(Source.WEB);
+        InvestModel fakeInvestModel = new InvestModel(idGenerator.generate(), loanId, transferInvestId, amount, loginName, Source.WEB, null);
         fakeInvestModel.setStatus(investStatus);
-        fakeInvestModel.setCreatedTime(investTime);
         fakeInvestModel.setTransferStatus(transferStatus);
+        fakeInvestModel.setCreatedTime(investTime);
         investMapper.create(fakeInvestModel);
         return fakeInvestModel;
     }
