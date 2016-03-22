@@ -153,6 +153,7 @@ public class WithdrawServiceImpl implements WithdrawService {
                 amountTransfer.transferOutFreeze(loginName, orderId, amount, UserBillBusinessType.WITHDRAW_SUCCESS, null, null);
                 withdrawModel.setStatus(WithdrawStatus.SUCCESS);
             } else {
+                amountTransfer.unfreeze(loginName, orderId, amount, UserBillBusinessType.WITHDRAW_FAIL, null, null);
                 withdrawModel.setStatus(WithdrawStatus.FAIL);
             }
             withdrawModel.setNotifyTime(new Date());
