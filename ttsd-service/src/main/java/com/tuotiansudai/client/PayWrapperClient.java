@@ -57,6 +57,10 @@ public class PayWrapperClient extends BaseClient {
 
     private String resetUmpayPassword = "/reset-umpay-password";
 
+    private String purchase="/invest-transfer/purchase";
+
+    private String noPasswordPurchase = "/invest-transfer/no-password-purchase";
+
     public boolean resetUmpayPassword(ResetUmpayPasswordDto resetUmpayPasswordDto) {
         BaseDto<PayDataDto> baseDto = syncExecute(resetUmpayPasswordDto, resetUmpayPassword, "POST");
         return baseDto.isSuccess();
@@ -104,6 +108,14 @@ public class PayWrapperClient extends BaseClient {
 
     public BaseDto<PayDataDto> autoInvest(long loanId) {
         return syncExecute(String.valueOf(loanId), autoInvestPath, "POST");
+    }
+
+    public BaseDto<PayFormDataDto> purchase(InvestDto investDto) {
+        return asyncExecute(investDto, purchase, "POST");
+    }
+
+    public BaseDto<PayDataDto> noPasswordPurchase(InvestDto investDto) {
+        return syncExecute(investDto, noPasswordPurchase, "POST");
     }
 
     public BaseDto<PayDataDto> createLoan(LoanDto dto) {

@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.controller;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.service.InvestTransferPurchaseService;
 import org.apache.log4j.Logger;
@@ -25,4 +26,11 @@ public class InvestTransferController {
     public BaseDto<PayFormDataDto> invest(@Valid @RequestBody InvestDto investDto) {
         return investTransferService.purchase(investDto);
     }
+
+    @RequestMapping(value = "/no-password-purchase", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> noPasswordPurchase(@Valid @RequestBody InvestDto investDto) {
+        return investTransferService.noPasswordPurchase(investDto);
+    }
+
 }

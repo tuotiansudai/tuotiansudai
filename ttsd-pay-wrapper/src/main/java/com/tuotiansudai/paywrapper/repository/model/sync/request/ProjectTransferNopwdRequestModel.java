@@ -24,14 +24,19 @@ public class ProjectTransferNopwdRequestModel extends BaseAsyncRequestModel {
     }
 
     public static ProjectTransferNopwdRequestModel newInvestNopwdRequest(String projectId, String orderId, String userId, String amount) {
-        ProjectTransferNopwdRequestModel model = new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount);
+        ProjectTransferNopwdRequestModel model = new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount, UmPayServType.TRANSFER_IN_INVEST);
         return model;
     }
 
-    private ProjectTransferNopwdRequestModel(String projectId, String orderId, String userId, String amount) {
+    public static ProjectTransferNopwdRequestModel newPurchaseNopwdRequest(String projectId, String orderId, String userId, String amount) {
+        ProjectTransferNopwdRequestModel model = new ProjectTransferNopwdRequestModel(projectId, orderId, userId, amount, UmPayServType.TRANSFER_IN_TRANSFER);
+        return model;
+    }
+
+    private ProjectTransferNopwdRequestModel(String projectId, String orderId, String userId, String amount, UmPayServType umPayServType) {
         super();
         this.service = UmPayService.PROJECT_TRANSFER_NOPWD.getServiceName();
-        this.servType = UmPayServType.TRANSFER_IN_INVEST.getCode();
+        this.servType = umPayServType.getCode();
         this.transAction = UmPayTransAction.IN.getCode();
         this.orderId = orderId;
         this.projectId = projectId;
@@ -40,7 +45,13 @@ public class ProjectTransferNopwdRequestModel extends BaseAsyncRequestModel {
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         this.particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
         this.particType = UmPayParticType.INVESTOR.getCode();
-        this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "invest_notify");
+        if (umPayServType == UmPayServType.TRANSFER_IN_TRANSFER) {
+            this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "invest_transfer_notify");
+        } else if (umPayServType == UmPayServType.TRANSFER_IN_INVEST){
+            this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "invest_notify");
+        } else {
+            //todo merge auto repay
+        }
     }
 
     public Map<String, String> generatePayRequestData() {
