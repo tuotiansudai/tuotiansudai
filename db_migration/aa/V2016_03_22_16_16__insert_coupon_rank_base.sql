@@ -1,8 +1,7 @@
 BEGIN ;
 
 INSERT INTO coupon
-VALUES
-  (
+SELECT
     300,
     0,
     0.005,
@@ -15,7 +14,7 @@ VALUES
     0,
     TRUE,
     FALSE,
-    'admin',
+    'sidneygao',
     '2016-04-01 00:00:00',
     NULL,
     NULL,
@@ -25,15 +24,14 @@ VALUES
     0,
     'WYX,JYF',
     'INTEREST_COUPON',
-    122,
+    0,
     'WINNER',
     0,
     0
-  ) ;
+  FROM dual WHERE EXISTS (SELECT * from `user` where login_name = 'sidneygao');
 
 INSERT INTO coupon
-VALUES
-  (
+SELECT
     301,
     0,
     0.002,
@@ -46,7 +44,7 @@ VALUES
     0,
     TRUE,
     FALSE,
-    'admin',
+    'sidneygao',
     '2016-04-01 00:00:00',
     NULL,
     NULL,
@@ -56,15 +54,14 @@ VALUES
     0,
     'WYX,JYF',
     'INTEREST_COUPON',
-    122,
+    0,
     'WINNER',
     0,
     0
-  ) ;
+  FROM dual WHERE EXISTS (SELECT * from `user` where login_name = 'sidneygao') ;
 
 INSERT INTO coupon
-VALUES
-  (
+SELECT
     302,
     300000,
     0,
@@ -77,7 +74,7 @@ VALUES
     0,
     TRUE,
     FALSE,
-    'admin',
+    'sidneygao',
     '2016-04-01 00:00:00',
     NULL,
     NULL,
@@ -87,10 +84,10 @@ VALUES
     0,
     'SYL',
     'INVEST_COUPON',
-    122,
+    0,
     'WINNER',
     0,
     0
-  ) ;
+  FROM dual WHERE EXISTS (SELECT * from `user` where login_name = 'sidneygao') ;
 
 COMMIT ;

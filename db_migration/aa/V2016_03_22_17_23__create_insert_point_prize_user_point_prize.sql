@@ -28,8 +28,8 @@ INSERT INTO `point_prize` (`name`,`coupon_id`,`cash`,`probability`,`active`) VAL
 INSERT INTO `point_prize` (`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE ('港澳游',NULL,NULL,0,TRUE);
 INSERT INTO `point_prize` (`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE ('iphone6s plus',NULL,NULL,0,TRUE);
 INSERT INTO `point_prize` (`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE ('谢谢参与',NULL,NULL,69,TRUE);
-INSERT INTO `point_prize` (`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE ('0.2%加息券' ,301,NULL,94,TRUE);
-INSERT INTO `point_prize` (`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE ('3000元体验金' ,302,NULL,95,TRUE);
-INSERT INTO `point_prize` (`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE ('现金5元',NULL,500,98,TRUE);
-INSERT INTO `point_prize` (`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE ('现金2元',NULL,200,100,TRUE);
+INSERT INTO `point_prize` (`name`,`coupon_id`,`cash`,`probability`,`active`) SELECT '0.2%加息券' ,301,NULL,25,TRUE FROM dual where EXISTS(SELECT * FROM coupon where id = 301);
+INSERT INTO `point_prize` (`name`,`coupon_id`,`cash`,`probability`,`active`) SELECT '3000元体验金' ,302,NULL,1,TRUE FROM dual where EXISTS(SELECT * FROM coupon where id = 302);
+INSERT INTO `point_prize` (`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE ('现金5元',NULL,500,3,TRUE);
+INSERT INTO `point_prize` (`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE ('现金2元',NULL,200,2,TRUE);
 COMMIT ;
