@@ -46,7 +46,7 @@ public interface JPushAlertService {
 
     void autoJPushRechargeAlert(RechargeDto rechargeDto);
 
-    void autoJPushWithDrawApplyAlert(long ordrId);
+    void autoJPushWithDrawApplyAlert(long orderId);
 
     void autoJPushWithDrawAlert(long orderId);
 

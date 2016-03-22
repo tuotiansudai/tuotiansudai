@@ -22,9 +22,9 @@ public class AutoJPushWithDrawApplyAlertJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.debug("trigger send jPush alert withdraw apply job, prepare do job");
-        String loginName = (String) context.getJobDetail().getJobDataMap().get(WITHDRAW_APPLY_ID_KEY);
-        jPushAlertService.autoJPushWithDrawApplyAlert(loginName);
-        logger.debug("trigger send jPush alert withdraw apply job, lognName : " + loginName);
+        long orderId = (long) context.getJobDetail().getJobDataMap().get(WITHDRAW_APPLY_ID_KEY);
+        jPushAlertService.autoJPushWithDrawApplyAlert(orderId);
+        logger.debug("trigger send jPush alert withdraw apply job, orderId : " + orderId);
 
     }
 }
