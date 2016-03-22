@@ -45,16 +45,16 @@ public class JPushAspect {
     @Autowired
     private InvestReferrerRewardMapper investReferrerRewardMapper;
 
-    @Pointcut("execution(* *..RepayService.postRepayCallback(..)")
+    @Pointcut("execution(* *..RepayService.postRepayCallback(..))")
     public void postRepayCallbackPointcut() {}
 
-    @Pointcut("execution(* *..RechargeService.rechargeCallback(..)")
+    @Pointcut("execution(* *..RechargeService.rechargeCallback(..))")
     public void rechargeCallbackPointcut() {}
 
-    @Pointcut("execution(* *..WithdrawService.withdrawCallback(..)")
+    @Pointcut("execution(* *..WithdrawService.withdrawCallback(..))")
     public void withdrawCallbackPointcut() {}
 
-    @Pointcut("execution(* *..ReferrerRewardService.rewardReferrer(..)")
+    @Pointcut("execution(* *..ReferrerRewardService.rewardReferrer(..))")
     public void rewardReferrerPointcut() {}
 
     @AfterReturning(value = "postRepayCallbackPointcut()", returning = "returnValue")
