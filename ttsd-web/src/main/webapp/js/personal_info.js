@@ -108,6 +108,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             layer.closeAll();
             layer.open({
                 type: 1,
+                closeBtn:0,
                 move: false,
                 offset: "200px",
                 title: '免密投资',
