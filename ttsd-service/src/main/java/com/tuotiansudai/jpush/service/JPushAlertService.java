@@ -54,7 +54,7 @@ public interface JPushAlertService {
 
     BaseDto<BaseDataDto> pass(String loginName, long id, String ip);
 
-    void reject(String loginName, long id);
+    void reject(String loginName, long id, String ip);
 
     void delete(String loginName, long id);
 

@@ -43,8 +43,6 @@ public interface AccountMapper {
 
     int findUsersAccountAvailablePoint(@Param(value = "loginName") String loginName);
 
-    void updateByLoginName(@Param(value = "loginName") String loginName, @Param(value = "exchangePoint" ) long exchangePoint);
-
     List<String> findBirthOfAccountInDay();
 
 }
