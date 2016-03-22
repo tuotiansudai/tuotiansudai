@@ -40,6 +40,10 @@ public class InvestModel implements Serializable {
      */
     private String channel;
     /**
+     * 是否为无密投资
+     */
+    private boolean isNoPasswordInvest;
+    /**
      * 创建时间
      */
     private Date createdTime = new Date();
@@ -142,4 +146,7 @@ public class InvestModel implements Serializable {
         this.channel = channel;
     }
 
+    public boolean isNoPasswordInvest() { return isNoPasswordInvest; }
+
+    public void setNoPasswordInvest(boolean noPasswordInvest) { isNoPasswordInvest = noPasswordInvest; }
 }

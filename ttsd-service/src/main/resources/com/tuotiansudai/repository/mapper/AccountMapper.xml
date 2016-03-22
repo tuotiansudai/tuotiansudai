@@ -18,6 +18,7 @@
         <result column="point" property="point"></result>
         <result column="register_time" property="registerTime"></result>
         <result column="auto_invest" property="autoInvest"></result>
+        <result column="no_password_invest" property="noPasswordInvest"></result>
     </resultMap>
 
     <insert id="create" parameterType="AccountModel" useGeneratedKeys="true" keyProperty="id">
@@ -50,7 +51,8 @@
           balance = #{balance},
           freeze = #{freeze},
           auto_invest = #{autoInvest},
-          point = #{point}
+          point = #{point},
+          no_password_invest = #{noPasswordInvest}
         where login_name = #{loginName}
     </update>
 

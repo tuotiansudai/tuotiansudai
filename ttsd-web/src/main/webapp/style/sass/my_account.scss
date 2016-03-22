@@ -15,8 +15,8 @@
       color: #fff;
     }
   }
-  .layui-layer-btn1 {
-    padding: 3px 35px;
+  .layui-layer-btn1{
+    padding:3px 35px;
   }
 }
 .layui-layer-content {
@@ -38,11 +38,39 @@ text-align: center;
 overflow: auto;
 height: auto;
 
-dl {
-  margin-bottom: 12px;
-  height: auto;
-  overflow: auto;
-  clear: both;
+
+  dl {
+    margin-bottom: 12px;
+    height: auto;
+    overflow: auto;
+    clear: both;
+    &.identityCodeError{
+      color: #ff0000;
+      display: none;
+    }
+    dt, dd {
+      float: left;
+    }
+    dd {
+      padding-left: 5px;
+      .get-captcha{
+        margin: 0;
+        letter-spacing: 0px;
+        width: 96px;
+        font-size: 12px;
+        padding:8px 0;
+      }
+      &.code-number{
+
+        font-size:14px;
+        color:#ccc;
+        padding-left: 100px;
+        &.code-number-hidden{
+          visibility:hidden;
+        }
+      }
+
+    }
 
   &.identityCodeError {
     color: #ff0000;
@@ -53,6 +81,22 @@ dl {
   }
   dd {
     padding-left: 5px;
+  }
+  .person-info-btn {
+    button {
+      margin-top: 0px;
+      width: 37%;
+      letter-spacing: 2px;
+      font-size: 13px;
+      &.btn-cancel {
+        margin-right:20px;
+      }
+      &.btn-close {
+        background: #e5e5e5;
+        border-width: 0!important;
+        color:#808080;
+      }
+    }
   }
 }
 button {
