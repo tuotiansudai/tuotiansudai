@@ -36,9 +36,9 @@ def mk_war():
 
 
 def mk_worker_zip():
-    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle distZip -PconfigPath=/workspace/v2config/default/')
-    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle -Pwork=invest distZip -PconfigPath=/workspace/v2config/default/')
-    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle -Pwork=jpush distZip -PconfigPath=/workspace/v2config/default/')
+    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle clean distZip -PconfigPath=/workspace/v2config/default/')
+    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle clean -Pwork=invest distZip -PconfigPath=/workspace/v2config/default/')
+    local('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle clean -Pwork=jpush distZip -PconfigPath=/workspace/v2config/default/')
 
 
 def mk_static_zip():
