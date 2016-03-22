@@ -24,7 +24,6 @@ import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.List;
@@ -91,7 +90,6 @@ public class JPushAspect {
         try {
             Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
             long orderId = Long.parseLong(paramsMap.get("order_id"));
-
             if(this.isApplyNotify(paramsMap)){
                 if("0000".equals(paramsMap.get("ret_code").toString()))
                 {
@@ -183,7 +181,7 @@ public class JPushAspect {
                     .runOnceAt(triggerTime)
                     .submit();
         } catch (SchedulerException e) {
-            logger.error("create send AutoJPushWithDrawAlert job for loginName[" + orderId + "] fail", e);
+            logger.error("create send AutoJPushWithDrawAlert job for orderId[" + orderId + "] fail", e);
         }
     }
 
@@ -197,7 +195,7 @@ public class JPushAspect {
                     .runOnceAt(triggerTime)
                     .submit();
         } catch (SchedulerException e) {
-            logger.error("create send AutoJPushReferrerRewardAlert job for loanId[" + orderId + "] fail", e);
+            logger.error("create send AutoJPushReferrerRewardAlert job for orderId[" + orderId + "] fail", e);
         }
     }
 

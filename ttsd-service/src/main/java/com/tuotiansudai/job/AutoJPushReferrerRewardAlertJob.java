@@ -24,7 +24,7 @@ public class AutoJPushReferrerRewardAlertJob implements Job {
         logger.debug("trigger send jPush alert referrer reward job, prepare do job");
         long orderId = (long) context.getJobDetail().getJobDataMap().get(REFERRER_REWARD_ID_KEY);
         jPushAlertService.autoJPushReferrerRewardAlert(orderId);
-        logger.debug("trigger send jPush alert referrer reward job, lognName : " + orderId);
+        logger.debug("trigger send jPush alert referrer reward job, orderId : " + orderId);
 
     }
 }
