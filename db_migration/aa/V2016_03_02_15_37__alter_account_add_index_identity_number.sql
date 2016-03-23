@@ -1,0 +1,1 @@
+ALTER TABLE `account` ADD INDEX INDEX_ACCOUNT_IDENTITY_NUMBER (`identity_number`);
