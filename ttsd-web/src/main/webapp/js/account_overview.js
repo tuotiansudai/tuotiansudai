@@ -25,6 +25,7 @@ require(['jquery', 'echarts', 'commonFun', 'jquery.ajax.extension', 'layerWrappe
 
         tipshow('#tMonthBox','.month-title',6);
         tipshow('.newProjects','.trade-detail',15);
+        getMyAvailablePoint();
         $('.birth-icon').on('mouseenter',function() {
             layer.closeAll('tips');
             var num = parseFloat($(this).attr('data-benefit'));
@@ -101,7 +102,20 @@ require(['jquery', 'echarts', 'commonFun', 'jquery.ajax.extension', 'layerWrappe
                     'opacity': '1'
                 });
             });
+            getMyAvailablePoint();
+            //location.href = "/account";
         });
-
+        //get My Available Point
+        function getMyAvailablePoint(){
+            $.ajax( {
+                url:'/point/myavailablepoint',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8',
+                success:function(data) {
+                    $('#MyAvailablePoint').text(data);
+                }
+            });
+        }
     });
 });
