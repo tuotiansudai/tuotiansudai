@@ -1,13 +1,11 @@
 package com.tuotiansudai.api.service.impl;
 
 
-import com.tuotiansudai.api.dto.AgreementOperateRequestDto;
-import com.tuotiansudai.api.dto.AgreementOperateResponseDataDto;
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.ReturnMessage;
+import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppAgreementService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.dto.AgreementBusinessType;
 import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -34,15 +32,16 @@ public class MobileAppAgreementServiceImpl implements MobileAppAgreementService{
     public BaseResponseDto generateAgreementRequest(AgreementOperateRequestDto requestDto) {
         AgreementOperateResponseDataDto responseDataDto = new AgreementOperateResponseDataDto();
         BaseResponseDto baseResponseDto = new BaseResponseDto();
-        requestDto.setAutoInvest(true);
-        requestDto.setFastPay(false);
         AgreementDto agreementDto = requestDto.convertToAgreementDto();
         AccountModel accountModel = accountMapper.findByLoginName(agreementDto.getLoginName());
-        if (accountModel.isAutoInvest()) {
-            baseResponseDto.setCode(ReturnMessage.AUTO_INVEST.getCode());
-            baseResponseDto.setMessage(ReturnMessage.AUTO_INVEST.getMsg());
-            baseResponseDto.setData(responseDataDto);
-            return baseResponseDto;
+        if(requestDto.getType() !=null && requestDto.getType() == AgreementBusinessType.AUTO_INVEST ){
+            if (accountModel.isAutoInvest()) {
+                baseResponseDto.setCode(ReturnMessage.AUTO_INVEST.getCode());
+                baseResponseDto.setMessage(ReturnMessage.AUTO_INVEST.getMsg());
+                baseResponseDto.setData(responseDataDto);
+                return baseResponseDto;
+            }
+
         }
         BaseDto<PayFormDataDto> formDto = payWrapperClient.agreement(agreementDto);
         try {

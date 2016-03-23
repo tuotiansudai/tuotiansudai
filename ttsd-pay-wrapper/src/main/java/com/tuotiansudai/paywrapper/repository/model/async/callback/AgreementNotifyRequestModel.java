@@ -43,12 +43,5 @@ public class AgreementNotifyRequestModel extends BaseCallbackRequestModel {
         }
     }
 
-    public boolean isNoPasswordInvest(){
-        if (this.getUserBindAgreementList().contains(AgreementType.ZTBB0G00.name())){
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
+
 }
