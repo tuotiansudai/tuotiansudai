@@ -169,6 +169,7 @@
                 <input type="text" class="input-control image-captcha-text"  name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
                 <img src="/no-password-invest/image-captcha" alt="" class="image-captcha"/>
                 <input type="hidden" name="mobile" value="${mobile}"/>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </dd>
         </dl>
     </form>
@@ -180,6 +181,7 @@
                 <input type="captcha" name="captcha" class="input-control captcha" placeholder="请输入短信验证码" maxlength="6">
                 <input type="hidden" name="mobile" value="${mobile}"/>
                 <button type="button" class="btn btn-normal get-captcha" disabled="disabled" data-url= "/no-password-invest/send-no-password-invest-captcha">获取验证码</button>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </dd>
         </dl>
         <div class="error-content" style="visibility: visible; height:30px;text-align:left"></div>
