@@ -34,15 +34,14 @@ public class MobileAppAgreementServiceImpl implements MobileAppAgreementService{
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         AgreementDto agreementDto = requestDto.convertToAgreementDto();
         AccountModel accountModel = accountMapper.findByLoginName(agreementDto.getLoginName());
-        if(requestDto.getType() !=null && requestDto.getType() == AgreementBusinessType.AUTO_INVEST ){
-            if (accountModel.isAutoInvest()) {
-                baseResponseDto.setCode(ReturnMessage.AUTO_INVEST.getCode());
-                baseResponseDto.setMessage(ReturnMessage.AUTO_INVEST.getMsg());
-                baseResponseDto.setData(responseDataDto);
-                return baseResponseDto;
-            }
 
+        if (agreementDto.isAutoInvest() && accountModel.isAutoInvest()) {
+            baseResponseDto.setCode(ReturnMessage.AUTO_INVEST.getCode());
+            baseResponseDto.setMessage(ReturnMessage.AUTO_INVEST.getMsg());
+            baseResponseDto.setData(responseDataDto);
+            return baseResponseDto;
         }
+
         BaseDto<PayFormDataDto> formDto = payWrapperClient.agreement(agreementDto);
         try {
             if (formDto.isSuccess()) {

@@ -19,11 +19,8 @@ public class AgreementOperateRequestDto extends BaseParamDto {
 
     public AgreementDto convertToAgreementDto() {
         AgreementDto agreementDto = new AgreementDto();
-        if(type != null && type == AgreementBusinessType.NO_PASSWORD_INVEST){
-            agreementDto.setNoPasswordInvest(true);
-        }else{
-            agreementDto.setAutoInvest(true);
-        }
+        agreementDto.setAutoInvest(type == null || type == AgreementBusinessType.AUTO_INVEST);
+        agreementDto.setNoPasswordInvest(type != null && type == AgreementBusinessType.NO_PASSWORD_INVEST);
         agreementDto.setLoginName(this.getBaseParam().getUserId());
         agreementDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
         return agreementDto;
