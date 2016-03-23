@@ -1,4 +1,4 @@
-require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'csrf', 'jquery.form'], function ($,layer) {
+require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.form'], function ($,layer) {
         var $InfoBox = $('#personInfoBox'),
             $changeEmailLayer = $('.setEmail', $InfoBox),
             $turnOnNoPasswordInvestLayer = $('.setTurnOnNoPasswordInvest', $InfoBox),
@@ -117,6 +117,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             layer.closeAll();
             layer.open({
                 type: 1,
+                closeBtn:0,
                 move: false,
                 offset: "200px",
                 title: '免密投资',
