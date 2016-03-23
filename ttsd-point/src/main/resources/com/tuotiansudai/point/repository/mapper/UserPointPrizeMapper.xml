@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="userPointPrizeResultMap" type="UserPointPrizeModel">
+        <result column="point_prize_id" property="pointPrizeId"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="created_time" property="createdTime"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="">
+        insert into user_point_prize values (#{pointPrizeId}, #{loginName}, #{createdTime});
+    </insert>
+
+    <select id="findByLoginNameAndCreateTime" parameterType="map" resultMap="userPointPrizeResultMap">
+        select * from user_point_prize where login_name = #{loginName} and date_format(created_time, '%Y-%m-%d') = #{date};
+    </select>
+
+</mapper>

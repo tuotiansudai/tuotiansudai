@@ -24,12 +24,12 @@ CREATE TABLE `aa`.`user_point_prize` (
   DEFAULT CHARSET = utf8;
 
 BEGIN ;
-INSERT INTO `point_prize` (`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE ('日韩游',NULL,NULL,0,TRUE);
-INSERT INTO `point_prize` (`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE ('港澳游',NULL,NULL,0,TRUE);
-INSERT INTO `point_prize` (`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE ('iphone6s plus',NULL,NULL,0,TRUE);
-INSERT INTO `point_prize` (`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE ('谢谢参与',NULL,NULL,69,TRUE);
-INSERT INTO `point_prize` (`name`,`coupon_id`,`cash`,`probability`,`active`) SELECT '0.2%加息券' ,301,NULL,25,TRUE FROM dual where EXISTS(SELECT * FROM coupon where id = 301);
-INSERT INTO `point_prize` (`name`,`coupon_id`,`cash`,`probability`,`active`) SELECT '3000元体验金' ,302,NULL,1,TRUE FROM dual where EXISTS(SELECT * FROM coupon where id = 302);
-INSERT INTO `point_prize` (`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE ('现金5元',NULL,500,3,TRUE);
-INSERT INTO `point_prize` (`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE ('现金2元',NULL,200,2,TRUE);
+INSERT INTO `point_prize` (`id`,`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE (100001,'日韩游',NULL,NULL,0,TRUE);
+INSERT INTO `point_prize` (`id`,`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE (100002,'港澳游',NULL,NULL,0,TRUE);
+INSERT INTO `point_prize` (`id`,`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE (100003,'iphone6s plus',NULL,NULL,0,TRUE);
+INSERT INTO `point_prize` (`id`,`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE (100004,'谢谢参与',NULL,NULL,69,TRUE);
+INSERT INTO `point_prize` (`id`,`name`,`coupon_id`,`cash`,`probability`,`active`) SELECT 100005,'0.2%加息券' ,301,NULL,25,TRUE FROM dual where EXISTS(SELECT * FROM coupon where id = 301);
+INSERT INTO `point_prize` (`id`,`name`,`coupon_id`,`cash`,`probability`,`active`) SELECT 100006,'3000元体验金' ,302,NULL,1,TRUE FROM dual where EXISTS(SELECT * FROM coupon where id = 302);
+INSERT INTO `point_prize` (`id`,`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE (100007,'现金5元',NULL,500,3,TRUE);
+INSERT INTO `point_prize` (`id`,`name`,`coupon_id`,`cash`,`probability`,`active`) VALUE (100008,'现金2元',NULL,200,2,TRUE);
 COMMIT ;
