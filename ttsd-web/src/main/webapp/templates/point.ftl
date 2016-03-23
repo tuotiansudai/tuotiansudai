@@ -90,7 +90,7 @@
                 </div>
             </div>
 			<ul class="coupon-list">
-				<#if exchangeCouponDtos??>
+				<#if exchangeCouponDtos?has_content>
 					<#list exchangeCouponDtos as exchangeCouponDto>
                         <li class="<#if myPoint lt exchangeCouponDto.exchangePoint>no-click<#else><#if exchangeCouponDto.couponType == 'INVEST_COUPON'>new-type<#else>bite-type</#if></#if>">
                             <div class="top-com">
@@ -130,6 +130,8 @@
                             </div>
                         </li>
 					</#list>
+                <#else>
+                    <span class="pad-m fl tc text-18" style="width:705px;color:#808080">礼品即将上线，敬请期待！</span>
 				</#if>
 			</ul>
     	</div>
