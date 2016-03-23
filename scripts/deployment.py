@@ -29,9 +29,9 @@ class QADeployment(object):
 
     def build_and_unzip_worker(self):
         print "Making worker build..."
-        sh('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle clean distZip')
-        sh('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle clean -Pwork=invest distZip')
-        sh('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle clean -Pwork=jpush distZip')
+        sh('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle distZip')
+        sh('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle -Pwork=invest distZip')
+        sh('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle -Pwork=jpush distZip')
         sh('cd ./ttsd-job-worker/build/distributions && unzip \*.zip')
 
     def mkwar(self):
