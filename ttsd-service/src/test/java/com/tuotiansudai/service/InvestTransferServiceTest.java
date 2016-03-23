@@ -180,10 +180,8 @@ public class InvestTransferServiceTest {
 
         TransferApplicationDto transferApplicationDto = new TransferApplicationDto();
         transferApplicationDto.setTransferInvestId(investModel.getId());
-        transferApplicationDto.setDeadline(new Date());
         transferApplicationDto.setTransferAmount(1L);
         transferApplicationDto.setTransferInterest(true);
-        transferApplicationDto.setTransferFee(1L);
         investTransferService.investTransferApply(transferApplicationDto);
 
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByTransferInvestId(investModel.getId(), TransferStatus.TRANSFERRING);

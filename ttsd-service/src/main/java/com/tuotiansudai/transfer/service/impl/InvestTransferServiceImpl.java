@@ -3,11 +3,9 @@ package com.tuotiansudai.transfer.service.impl;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.TransferApplyAutoCancelJob;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.LoanRepayModel;
-import com.tuotiansudai.repository.model.TransferStatus;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
@@ -39,6 +37,9 @@ public class InvestTransferServiceImpl implements InvestTransferService{
     private LoanRepayMapper loanRepayMapper;
 
     @Autowired
+    private InvestRepayMapper investRepayMapper;
+
+    @Autowired
     private JobManager jobManager;
 
     protected final static String TRANSFER_APPLY_NAME = "ZR{0}-{1}";
@@ -59,11 +60,19 @@ public class InvestTransferServiceImpl implements InvestTransferService{
             return;
         }
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, this.generateTransferApplyName(), loanRepayModel.getPeriod(), transferApplicationDto.getTransferAmount(),
-                transferApplicationDto.getTransferInterest(), transferApplicationDto.getTransferFee(), transferApplicationDto.getDeadline());
+                transferApplicationDto.getTransferInterest(), getTransferFee(investModel), getDeadline());
 
         transferApplicationMapper.create(transferApplicationModel);
 
         investTransferApplyJob(transferApplicationModel);
+    }
+
+    private long getTransferFee(InvestModel investModel) {
+
+    }
+
+    private Date getDeadline() {
+        
     }
 
     @Override
