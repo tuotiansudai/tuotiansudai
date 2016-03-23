@@ -77,9 +77,7 @@ public class AgreementServiceImpl implements AgreementService {
         AgreementNotifyRequestModel agreementNotifyRequestModel = (AgreementNotifyRequestModel) callbackRequestModel;
         AccountModel accountModel = accountMapper.findByPayUserId(agreementNotifyRequestModel.getUserId());
         if (accountModel != null && callbackRequestModel.isSuccess()) {
-            if(AgreementBusinessType.NO_PASSWORD_INVEST == agreementBusinessType){
-                accountModel.setNoPasswordInvest(true);
-            }
+            accountModel.setNoPasswordInvest(AgreementBusinessType.NO_PASSWORD_INVEST == agreementBusinessType);
             accountModel.setAutoInvest(true);
 
 
