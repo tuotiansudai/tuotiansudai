@@ -1,4 +1,4 @@
-require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.form'], function ($,layer) {
+require(['jquery', 'layerWrapper','cnzz-statistics','jquery.validate', 'jquery.validate.extension', 'jquery.form'], function ($,layer,cnzz_push) {
         var $InfoBox = $('#personInfoBox'),
             $changeEmailLayer = $('.setEmail', $InfoBox),
             $turnOnNoPasswordInvestLayer = $('.setTurnOnNoPasswordInvest', $InfoBox),
@@ -62,7 +62,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
         });
 
         $btnCloseTurnOffElement.on('click',function(){
-            _czc.push(["_trackEvent","个人资料","关闭","用户关闭无密投资"]);
+            cnzz_push("个人资料页","关闭免密弹框","我要关闭");
         });
 
         $turnOffNoPasswordInvestLayer.on('click', function () {
@@ -91,7 +91,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             $imageCaptchaForm.submit();
         });
         $noPasswordInvest.on('click', function () {
-            _czc.push(["_trackEvent","个人资料","开启无密投资","用户开启无密投资"]);
+            cnzz_push("个人资料页","开启免密投资","直接开启");
             var _this = $(this);
             $.ajax({
                 url: _this.data('url'),
@@ -109,11 +109,12 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             layer.closeAll();
         });
         $btnCloseTurnOnElement.on('click',function(){
-            _czc.push(["_trackEvent","个人资料","开启无密投资","用户取消联动优势授权"]);
+            //_czc.push(["_trackEvent","个人资料","开启无密投资","用户取消联动优势授权"]);
+            cnzz_push("个人资料页","开启免密弹框","取消");
             layer.closeAll();
         });
         $btnTurnOnElement.on('click',function(){
-            _czc.push(["_trackEvent","个人资料","开启无密投资","用户联动优势授权"]);
+            cnzz_push("个人资料页","开启免密弹框","去联动优势授权");
             layer.closeAll();
             layer.open({
                 type: 1,
