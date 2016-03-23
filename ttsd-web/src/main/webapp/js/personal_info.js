@@ -1,4 +1,4 @@
-require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.form'], function ($,layer) {
+require(['jquery','layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.form','csrf'], function ($,layer) {
 
         var $InfoBox = $('#personInfoBox'),
             $changeEmailLayer = $('.setEmail', $InfoBox),

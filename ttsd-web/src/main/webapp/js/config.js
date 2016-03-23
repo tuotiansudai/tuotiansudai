@@ -2,6 +2,7 @@ var require = {
     'paths': {
         'text': staticServer + '/js/libs/text-2.0.14',
         'jquery': staticServer + '/js/libs/jquery-1.11.3.min',
+        'csrf': staticServer + '/js/libs/csrf',
         'jqueryPage': staticServer + '/js/libs/jquery.page',
         'jquery.validate': staticServer + '/js/libs/jquery.validate-1.14.0.min',
         'jquery.form': staticServer + '/js/libs/jquery.form-3.51.0.min',
