@@ -12,6 +12,9 @@
             <li><i>●</i><a href="http://yueyu.cntv.cn/2015/10/28/ARTI1446021624023304.shtml" target="_blank">【央视网】拓天速贷：新人理财三部曲</a><time>2015-10-28</time></li>
             <li><i>●</i><a href="http://news.ifeng.com/a/20151028/46027672_0.shtml" target="_blank">【凤凰资讯】拓天速贷理财排行榜活动荣耀开启</a><time>2015-10-28</time></li>
             <li><i>●</i><a href="http://news.dichan.sina.com.cn/2015/10/28/1131448.html" target="_blank">【新浪地产】拓天速贷推出累积收益?兑大奖活动</a><time>2015-10-28</time></li>
+            <li><i>●</i><a href="http://money.china.com/fin/lc/201601/20/2443757.html?qq-pf-to=pcqq.c2c" target="_blank">【中华网】拓天速贷：宝马名花有主，猴年豪礼来袭</a><time>2016-01-20</time></li>
+            <li><i>●</i><a href="http://help.3g.163.com/0414/16/0201/14/BEOCI8PP041403U2.html" target="_blank">【网易】拓天速贷：新年贺岁嗨翻天，全民领取888元现金红包</a><time>2016-02-01</time></li>
+            <li><i>●</i><a href="http://fj.qq.com/a/20160314/060811.htm" target="_blank">【腾讯网】拓天速贷：财富盛宴大平台 感恩豪礼滚滚来</a><time>2016-03-14</time></li>
         </ul>
 
     </div>
