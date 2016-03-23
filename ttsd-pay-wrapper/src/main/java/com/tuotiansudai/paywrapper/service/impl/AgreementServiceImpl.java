@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.tuotiansudai.dto.AgreementBusinessType;
 import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -49,7 +50,7 @@ public class AgreementServiceImpl implements AgreementService {
             agreementType = AgreementType.ZKJP0700;
         }
 
-        PtpMerBindAgreementRequestModel ptpMerBindAgreementRequestModel = new PtpMerBindAgreementRequestModel(accountModel.getPayUserId(), agreementType,dto.getSource());
+        PtpMerBindAgreementRequestModel ptpMerBindAgreementRequestModel = new PtpMerBindAgreementRequestModel(accountModel.getPayUserId(), agreementType,dto.getSource(),dto);
         try {
             return payAsyncClient.generateFormData(PtpMerBindAgreementRequestMapper.class, ptpMerBindAgreementRequestModel);
         } catch (PayException e) {
@@ -62,28 +63,24 @@ public class AgreementServiceImpl implements AgreementService {
     }
 
     @Override
-    public String agreementCallback(Map<String, String> paramsMap, String queryString) {
+    public String agreementCallback(Map<String, String> paramsMap, String queryString,AgreementBusinessType agreementBusinessType) {
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, queryString, AgreementNotifyMapper.class, AgreementNotifyRequestModel.class);
         if (callbackRequest == null) {
             return null;
         }
-        this.postAgreementCallback(callbackRequest);
+        this.postAgreementCallback(callbackRequest,agreementBusinessType);
         return callbackRequest.getResponseData();
     }
 
     @Transactional
-    private void postAgreementCallback(BaseCallbackRequestModel callbackRequestModel) {
+    private void postAgreementCallback(BaseCallbackRequestModel callbackRequestModel,AgreementBusinessType agreementBusinessType) {
         AgreementNotifyRequestModel agreementNotifyRequestModel = (AgreementNotifyRequestModel) callbackRequestModel;
         AccountModel accountModel = accountMapper.findByPayUserId(agreementNotifyRequestModel.getUserId());
         if (accountModel != null && callbackRequestModel.isSuccess()) {
-            if (agreementNotifyRequestModel.isAutoInvest()) {
-                accountModel.setAutoInvest(true);
-            }
-            if(agreementNotifyRequestModel.isNoPasswordInvest()){
-                accountModel.setNoPasswordInvest(true);
-                accountModel.setAutoInvest(true);
-            }
-            
+            accountModel.setNoPasswordInvest(AgreementBusinessType.NO_PASSWORD_INVEST == agreementBusinessType);
+            accountModel.setAutoInvest(true);
+
+
             if (agreementNotifyRequestModel.isFastPay()) {
                 String loginName = accountModel.getLoginName();
                 BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(loginName);

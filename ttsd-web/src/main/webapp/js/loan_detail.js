@@ -264,7 +264,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             if (!isInvestor) {
                 location.href = '/login?redirect=' + encodeURIComponent(location.href);
             }else{
-                if ($hasRemindInvestNoPassword.val()=='true') {
+                if ($hasRemindInvestNoPassword.val()=='true' || $investNoPassword.val()=='true') {
                     formSubmit();
                 } else {
                     isAuthorize();
