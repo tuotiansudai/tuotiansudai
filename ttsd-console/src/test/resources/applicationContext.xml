@@ -88,7 +88,7 @@
     <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
 
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="${console.jedis.pool.maxTotal}"/>
+        <property name="maxTotal" value="300"/>
     </bean>
 
 </beans>

@@ -115,7 +115,7 @@
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
 
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="${pay.jedis.pool.maxTotal}"/>
+        <property name="maxTotal" value="300"/>
     </bean>
 
 </beans>
