@@ -1,10 +1,14 @@
 define(['jquery'], function ($) {
-
-    var cnzz_push = function(category,action,label) {
-        _czc.push(["_trackEvent",category,action,label]);
-
+    var cnzzPush = function () {
     }
-    return cnzz_push;
+    cnzzPush.prototype.trackEvent = function (category, action, label) {
+        _czc.push(['_trackEvent', category, action, label]);
+    }
+    return cnzzPush;
+
 });
+
+
+
 
 
