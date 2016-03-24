@@ -1,4 +1,4 @@
-require(['jquery', 'layerWrapper','cnzz-statistics','jquery.validate', 'jquery.validate.extension', 'jquery.form'], function ($,layer,cnzzPush) {
+require(['jquery', 'layerWrapper','cnzz-statistics','jquery.validate', 'jquery.validate.extension', 'jquery.form','csrf'], function ($,layer,cnzzPush) {
         var $InfoBox = $('#personInfoBox'),
             $changeEmailLayer = $('.setEmail', $InfoBox),
             $turnOnNoPasswordInvestLayer = $('.setTurnOnNoPasswordInvest', $InfoBox),

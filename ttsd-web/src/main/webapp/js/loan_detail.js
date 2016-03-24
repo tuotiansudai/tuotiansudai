@@ -20,7 +20,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
 
     layer.ready(function() {
-        $minInvestAmount = $('.text-input-amount').data('min-invest-amount');
         layer.photos({
             photos: '#picListBox'
         });
