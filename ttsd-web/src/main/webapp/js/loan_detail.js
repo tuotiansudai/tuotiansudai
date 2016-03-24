@@ -337,11 +337,11 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             area: ['500px', '160px'],
             content: '<p class="pad-m-tb tc">您可直接开启免密投资，简化投资过程，理财快人一步，是否开启？</p>',
             btn1:function(){
-                cnzzPush.trackEvent("标的详情页","推荐免密弹框","不开启");
+                cnzzPush.trackClick("标的详情页","推荐免密弹框","不开启");
                 layer.closeAll();
             },
             btn2: function(index){
-                cnzzPush.trackEvent("标的详情页","推荐免密弹框","开启");
+                cnzzPush.trackClick("标的详情页","推荐免密弹框","开启");
                 if ($freeSecret.attr('data-open-agreement')=='true') { // 如果开启过免密支付
                     $.ajax({
                         url: '/no-password-invest/enabled',
@@ -386,12 +386,12 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     area: ['500px', '160px'],
                     content: '<p class="pad-m-tb tc">推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>',
                     btn1:function(){
-                        cnzzPush.trackEvent("标的详情页","马上投资弹框","继续投资B");
+                        cnzzPush.trackClick("标的详情页","马上投资弹框","继续投资B");
                         formSubmit();
                         layer.closeAll();
                     },
                     btn2: function(index){
-                        cnzzPush.trackEvent("标的详情页","马上投资弹框","开启免密投资");
+                        cnzzPush.trackClick("标的详情页","马上投资弹框","开启免密投资");
                         $.ajax({
                             url: '/no-password-invest/enabled',
                             type: 'POST',
@@ -420,12 +420,12 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     area: ['500px', '160px'],
                     content: '<p class="pad-m-tb tc">推荐您开通免密投资功能，简化投资过程，理财快人一步。</p>',
                     btn1:function(){
-                        cnzzPush.trackEvent("标的详情页","马上投资弹框","继续投资B");
+                        cnzzPush.trackClick("标的详情页","马上投资弹框","继续投资B");
                         formSubmit();
                         layer.closeAll();
                     },
                     btn2: function(index){
-                        cnzzPush.trackEvent("标的详情页","马上投资弹框","去联动优势授权");
+                        cnzzPush.trackClick("标的详情页","马上投资弹框","去联动优势授权");
                         layer.closeAll();
                         isAuthorizeSuccess();
                         $goAuthorize.submit();
@@ -441,13 +441,13 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         
     }
     $againBtn.on('click',function(){
-        cnzzPush.trackEvent("标的详情页","免密异步弹框","重新授权");
+        cnzzPush.trackClick("标的详情页","免密异步弹框","重新授权");
     });
     $failGoOnBtnInvest.on('click',function(){
-        cnzzPush.trackEvent("标的详情页","免密异步弹框","继续投资C1");
+        cnzzPush.trackClick("标的详情页","免密异步弹框","继续投资C1");
     });
     $successGoOnBtnInvest.on('click',function(){
-        cnzzPush.trackEvent("标的详情页","免密异步弹框","继续投资C2");
+        cnzzPush.trackClick("标的详情页","免密异步弹框","继续投资C2");
     });
     //is tip C
     function isAuthorizeSuccess(){
