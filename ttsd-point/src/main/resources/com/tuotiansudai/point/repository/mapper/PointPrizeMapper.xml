@@ -9,6 +9,7 @@
     <resultMap id="pointPrizeResultMap" type="PointPrizeModel">
         <id column="id" property="id"></id>
         <result column="name" property="name"></result>
+        <result column="description" property="description"></result>
         <result column="coupon_id" property="couponId"></result>
         <result column="cash" property="cash"></result>
         <result column="probability" property="probability"></result>

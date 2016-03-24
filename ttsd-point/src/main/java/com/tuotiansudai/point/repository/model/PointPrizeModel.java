@@ -7,6 +7,8 @@ public class PointPrizeModel implements Serializable{
 
     private long id;
 
+    private String description;
+
     private String name;
 
     private Long couponId;
@@ -65,4 +67,11 @@ public class PointPrizeModel implements Serializable{
         this.active = active;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

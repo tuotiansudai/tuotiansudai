@@ -33,6 +33,8 @@ public class PointLotteryServiceImpl implements PointLotteryService{
 
     private final static long LOTTERY_POINT = -1000;
 
+    private final static String ALREADY_LOTTERY = "抽奖次数已满";
+
     @Autowired
     private PointPrizeMapper pointPrizeMapper;
 
@@ -53,7 +55,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
 
     @Override
     @Transactional
-    public long pointLottery(String loginName) {
+    public String pointLottery(String loginName) {
         DateTime dateTime = new DateTime();
         UserPointPrizeModel userPointPrizeModelToday = userPointPrizeMapper.findByLoginNameAndCreateTime(loginName, dateTime.toString("yyyy-MM-dd"));
         if (userPointPrizeModelToday == null) {
@@ -73,9 +75,9 @@ public class PointLotteryServiceImpl implements PointLotteryService{
                 this.createTransferCashJob(transferCashDto);
             }
 
-            return winPointPrize.getId();
+            return winPointPrize.getName();
         } else {
-            return 0;
+            return ALREADY_LOTTERY;
         }
     }
 
