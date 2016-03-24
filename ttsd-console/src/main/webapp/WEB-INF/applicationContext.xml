@@ -89,4 +89,9 @@
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient"/>
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="300"/>
+    </bean>
+
 </beans>
