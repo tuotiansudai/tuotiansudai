@@ -1,4 +1,7 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.transfer.repository.model;
+
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.TransferStatus;
 
 import java.util.Date;
 
