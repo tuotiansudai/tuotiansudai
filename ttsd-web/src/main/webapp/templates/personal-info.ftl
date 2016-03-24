@@ -164,7 +164,7 @@
     <form id="imageCaptchaForm" name="imageCaptchaForm" action="${requestContext.getContextPath()}/no-password-invest/send-no-password-invest-captcha" method="post">
         <dl>
             <dt >推荐您开通免密投资功能，简化投资过程，理财快人一步，确认关闭吗？</dt>
-            <dd>
+            <dd class="mt-20">
                 <span >图形验证码：</span>
                 <input type="text" class="input-control image-captcha-text"  name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
                 <img src="/no-password-invest/image-captcha" alt="" class="image-captcha"/>
