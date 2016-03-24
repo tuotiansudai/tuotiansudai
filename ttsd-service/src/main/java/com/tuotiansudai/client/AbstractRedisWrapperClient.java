@@ -39,8 +39,6 @@ public abstract class AbstractRedisWrapperClient {
 
     private JedisPool jedisPool;
 
-    private int maxTotal;
-
     public void setJedisPool(JedisPool jedisPool) {
         this.jedisPool = jedisPool;
     }
@@ -48,14 +46,6 @@ public abstract class AbstractRedisWrapperClient {
     public JedisPool getJedisPool() {
 
         return jedisPool;
-    }
-
-    public int getMaxTotal() {
-        return maxTotal;
-    }
-
-    public void setMaxTotal(int maxTotal) {
-        this.maxTotal = maxTotal;
     }
 
     public JedisPoolConfig getJedisPoolConfig() {

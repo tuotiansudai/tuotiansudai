@@ -104,5 +104,5 @@
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxTotal" value="300"/>
     </bean>
-    
+
 </beans>
