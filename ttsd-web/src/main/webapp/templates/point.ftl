@@ -16,7 +16,7 @@
 					<span class="title-href" id="beansDetail">财豆明细></span>
 				</div>
                 <div class="beans-list mt-20">
-                    <span class="beans-num">可用财豆：${myPoint!}</span>
+                    <span class="beans-num">可用财豆：${myPoint?string.computer}</span>
                     <i class="icon-result icon-dou"></i>
                 </div>
                 <div class="beans-list mt-20">
@@ -85,7 +85,7 @@
             <div class="beans-coupon">
                 <div class="beans-list">
                     <i class="icon-result icon-beans"></i>
-                    <span class="beans-num">可用财豆：<strong class="bean-use">${myPoint!}</strong></span>
+                    <span class="beans-num">可用财豆：<strong class="bean-use">${myPoint?string.computer}</strong></span>
                     <i class="icon-result icon-dou"></i>
                 </div>
             </div>
