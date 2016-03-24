@@ -351,6 +351,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     .done(function() {
                         layer.closeAll();
                         $freeSecret.hide();
+                        $investNoPassword.val('true');
                         layer.msg('开通成功！');
                     })
                     .fail(function() {
