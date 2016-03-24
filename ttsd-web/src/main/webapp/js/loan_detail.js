@@ -262,7 +262,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     var tipContent = '投资金额小于标的最小投资金额！';
                     layer.tips('<i class="fa fa-times-circle"></i>' + tipContent, '.text-input-amount', {
                         tips: [1, '#ff7200'],
-                        time: 0
+                        time: 0,
+                        maxWidth : 220
                     });
                     return false;
                 }
