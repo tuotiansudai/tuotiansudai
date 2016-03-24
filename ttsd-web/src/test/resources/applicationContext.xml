@@ -101,8 +101,4 @@
         <property name="basePackage" value="com.tuotiansudai.web.repository.job.mapper"/>
     </bean>
 
-    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="600"/>
-    </bean>
-
 </beans>
