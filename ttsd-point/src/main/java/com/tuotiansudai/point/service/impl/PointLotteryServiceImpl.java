@@ -89,7 +89,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
                     .runOnceAt(triggerTime)
                     .submit();
         } catch (SchedulerException e) {
-            logger.error("create transfer cahs job for login name [" + transferCashDto.getLoginName() + "] fail", e);
+            logger.error("create transfer cash job for login name [" + transferCashDto.getLoginName() + "] fail", e);
         }
     }
 

@@ -44,23 +44,23 @@ public class TransferCashServiceImpl implements TransferCashService{
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
         AccountModel accountModel = accountMapper.findByLoginName(transferCashDto.getLoginName());
-        TransferResponseModel responseModel = null;
         try {
             TransferRequestModel requestModel = TransferRequestModel.newRequest(transferCashDto.getOrderId(), accountModel.getPayUserId(), transferCashDto.getAmount());
-            responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        try {
+            TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
             if (responseModel.isSuccess()) {
                 amountTransfer.transferInBalance(transferCashDto.getLoginName(), Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()),
                         UserBillBusinessType.LOTTERY_CASH, null, null);
                 String detail = MessageFormat.format(SystemBillDetailTemplate.LOTTERY_CASH_DETAIL_TEMPLATE.getTemplate(), transferCashDto.getLoginName(), transferCashDto.getAmount());
                 systemBillService.transferOut(Long.parseLong(transferCashDto.getOrderId()), Long.parseLong(transferCashDto.getAmount()), SystemBillBusinessType.LOTTERY_CASH, detail);
             }
+            payDataDto.setStatus(responseModel.isSuccess());
+            payDataDto.setCode(responseModel.getRetCode());
+            payDataDto.setMessage(responseModel.getRetMsg());
         } catch (Exception e) {
+            payDataDto.setMessage(e.getMessage());
             logger.error(e.getLocalizedMessage(), e);
         }
+        baseDto.setData(payDataDto);
         return baseDto;
     }
 

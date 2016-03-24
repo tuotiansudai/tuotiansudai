@@ -12,7 +12,7 @@
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
-    <insert id="create" parameterType="">
+    <insert id="create" parameterType="UserPointPrizeModel">
         insert into user_point_prize values (#{pointPrizeId}, #{loginName}, #{createdTime});
     </insert>
 
