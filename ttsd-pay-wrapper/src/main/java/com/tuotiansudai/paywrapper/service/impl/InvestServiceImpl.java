@@ -131,15 +131,16 @@ public class InvestServiceImpl implements InvestService {
         }
     }
 
-    private BaseDto<PayDataDto> investNopwd(long loanId, long amount, String loginName) {
+    private BaseDto<PayDataDto> investNopwd(long loanId, long amount, String loginName, Source source) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        InvestModel investModel = new InvestModel(loanId, amount, loginName, Source.AUTO, null);
+        InvestModel investModel = new InvestModel(loanId, amount, loginName, source, null);
         investModel.setIsAutoInvest(true);
         investModel.setId(idGenerator.generate());
+        investModel.setNoPasswordInvest(true);
         investMapper.create(investModel);
         ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newInvestNopwdRequest(
                 String.valueOf(loanId),
@@ -353,6 +354,11 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
+    public BaseDto<PayDataDto> noPasswordInvest(InvestDto dto) {
+        return this.investNopwd(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource());
+    }
+
+    @Override
     public void autoInvest(long loanId) {
         logger.info("auto invest start , loanId : " + loanId);
         LoanModel loanModel = loanMapper.findById(loanId);
@@ -389,7 +395,7 @@ public class InvestServiceImpl implements InvestService {
                     logger.info("auto invest was skip, because loan amount is not match user's auto-invest setting [" + autoInvestPlanModel.getLoginName() + "] , loanId : " + loanId);
                     continue;
                 }
-                BaseDto<PayDataDto> baseDto = this.investNopwd(loanId, autoInvestAmount, autoInvestPlanModel.getLoginName());
+                BaseDto<PayDataDto> baseDto = this.investNopwd(loanId, autoInvestAmount, autoInvestPlanModel.getLoginName(), Source.AUTO);
                 if (!baseDto.isSuccess()) {
                     logger.debug(MessageFormat.format("auto invest failed auto invest plan id is {0} and invest amount is {1} and loanId id {2}", autoInvestPlanModel.getId(), autoInvestAmount, loanId));
                 }

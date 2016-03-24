@@ -45,4 +45,21 @@ public class InvestController {
         }
         return baseDto;
     }
+
+    @RequestMapping(value = "/no-password-invest", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> noPasswordInvest(@Valid @RequestBody InvestDto dto) {
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        baseDto.setData(payDataDto);
+        try {
+            investService.noPasswordInvest(dto);
+            payDataDto.setStatus(true);
+        } catch (Exception e) {
+            payDataDto.setStatus(false);
+            payDataDto.setMessage(e.getLocalizedMessage());
+            logger.error("no password invest failed", e);
+        }
+        return baseDto;
+    }
 }

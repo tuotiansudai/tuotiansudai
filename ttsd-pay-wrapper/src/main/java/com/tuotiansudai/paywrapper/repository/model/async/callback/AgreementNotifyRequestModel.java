@@ -42,5 +42,6 @@ public class AgreementNotifyRequestModel extends BaseCallbackRequestModel {
             return false;
         }
     }
-    
+
+
 }

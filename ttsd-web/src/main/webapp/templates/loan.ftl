@@ -36,7 +36,7 @@
         <div class="account-info fl">
             <h5 class="l-title">拓天速贷提醒您：理财非存款，投资需谨慎！</h5>
             <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
-                <form action="/invest" method="post">
+                <form action="/invest" method="post" id="investForm">
                     <dl class="account-list">
                         <dd>
                             <span class="fl">可投金额：</span>
@@ -172,12 +172,20 @@
                         <dd>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string.computer}"/>
-                            <button class="btn-pay btn-normal" type="submit" <#if loan.loanStatus == "PREHEAT">disabled="disabled"</#if>>
+                            <button class="btn-pay btn-normal" type="button" id="loanInvest" <#if loan.loanStatus == "PREHEAT">disabled="disabled"</#if>>
                                 <#if loan.loanStatus == "PREHEAT">预热中</#if>
                                 <#if loan.loanStatus == "RAISING">马上投资</#if>
                             </button>
                         </dd>
-
+                        <input type="hidden" id="investNoPassword" value="${loan.investNoPassword?c}">
+                        <input type="hidden" id="hasRemindInvestNoPassword" value="${loan.hasRemindInvestNoPassword?c}"/>
+                        <@global.role hasRole="'INVESTOR'">
+                            <#if !loan.investNoPassword>
+                                <dd>
+                                    <a class="fl open-no-password-invest" data-open-agreement="${loan.autoInvest?c}" id="freeSecret">推荐您开通免密投资<i class="fa fa-question-circle text-m" title="开通后您可以简化投资过程，理财快人一步"></i></a>
+                                </dd>
+                            </#if>
+                        </@global.role>
                     </dl>
                 </form>
             </#if>
@@ -237,12 +245,23 @@
                 <div class="loan-list-con">
                     <table class="table-striped">
                     </table>
-                    <div class="pagination" data-url="/loan/${loan.id?string.computer}/invests" data-page-size="10">
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="pagination" data-url="/loan/${loan.id?string.computer}/invests" data-page-size="10">
     </div>
+</div>
+</div>
+</div>
+</div>
+<div class="pad-s-tb tl fl hide" id="isAuthorizeSuccess">
+    <p class="mb-0 text-m color-title">请在新打开的联动优势完成操作后选择：</p>
+    <p class="text-m"><span class="title-text">授权成功：</span><span class="go-on-btn success_go_on_invest">继续投资</span><span class="color-tip">（授权后可能会有几秒的延迟）</span></p>
+    <p class="mb-0"><span class="title-text">授权失败： </span><span class="again-btn">重新授权</span><span class="btn-lr">或</span><span class="go-on-btn fail_go_on_invest">继续投资</span></p>
+    <p class="text-s color-title">遇到问题请拨打我们的客服热线：400-169-1188（工作日9:00-20:00）</p>
+</div>
+<form action="/agreement" id="goAuthorize" method="post" target="_blank">
+    <input type="hidden" name = "noPasswordInvest" value="true" />
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+</form>
+
     <#include "coupon-alert.ftl" />
 </div>
     <#include "red-envelope-float.ftl" />

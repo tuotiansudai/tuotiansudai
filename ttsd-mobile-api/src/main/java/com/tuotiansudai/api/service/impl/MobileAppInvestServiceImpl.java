@@ -10,9 +10,12 @@ import com.tuotiansudai.api.service.MobileAppInvestService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.InvestException;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.InvestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +31,33 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
 
     @Autowired
     private MobileAppChannelService mobileAppChannelService;
+
+    @Autowired
+    private AccountService accountService;
+
+    @Override
+    public BaseResponseDto noPasswordInvest(InvestRequestDto investRequestDto) {
+        BaseResponseDto responseDto = new BaseResponseDto();
+        InvestDto investDto = convertInvestDto(investRequestDto);
+        AccountModel accountModel = accountService.findByLoginName(investRequestDto.getUserId());
+        if (accountModel.isAutoInvest() && accountModel.isNoPasswordInvest()) {
+            try {
+                BaseDto<PayDataDto> baseDto = investService.noPasswordInvest(investDto);
+                if (baseDto.getData().getStatus()) {
+                    responseDto.setCode(ReturnMessage.SUCCESS.getCode());
+                    responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+                } else {
+                    responseDto.setCode(ReturnMessage.INVEST_FAILED.getCode());
+                    responseDto.setMessage(ReturnMessage.INVEST_FAILED.getMsg() + ":" + baseDto.getData().getMessage());
+                }
+            } catch (InvestException e) {
+                responseDto = convertExceptionToDto(e);
+            }
+            return responseDto;
+        } else {
+            return new BaseResponseDto(ReturnMessage.INVEST_FAILED_NOT_OPEN_NO_PASSWORD_INVEST);
+        }
+    }
 
     @Override
     public BaseResponseDto invest(InvestRequestDto investRequestDto) {

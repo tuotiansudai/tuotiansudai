@@ -60,6 +60,12 @@ public class LoanDetailDto extends BaseDataDto {
 
     private List<LoanTitleRelationModel> loanTitles;
 
+    private boolean autoInvest;
+
+    private boolean investNoPassword;
+
+    private boolean hasRemindInvestNoPassword;
+
     public LoanDetailDto() {
     }
 
@@ -261,5 +267,29 @@ public class LoanDetailDto extends BaseDataDto {
 
     public List<LoanTitleRelationModel> getLoanTitles() {
         return loanTitles;
+    }
+
+    public boolean isAutoInvest() {
+        return autoInvest;
+    }
+
+    public void setAutoInvest(boolean autoInvest) {
+        this.autoInvest = autoInvest;
+    }
+
+    public boolean isInvestNoPassword() {
+        return investNoPassword;
+    }
+
+    public void setInvestNoPassword(boolean investNoPassword) {
+        this.investNoPassword = investNoPassword;
+    }
+
+    public boolean isHasRemindInvestNoPassword() {
+        return hasRemindInvestNoPassword;
+    }
+
+    public void setHasRemindInvestNoPassword(boolean hasRemindInvestNoPassword) {
+        this.hasRemindInvestNoPassword = hasRemindInvestNoPassword;
     }
 }
