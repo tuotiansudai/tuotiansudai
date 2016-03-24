@@ -69,7 +69,7 @@
     <bean class="com.tuotiansudai.client.RedisWrapperClient"/>
 
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="300"/>
+        <property name="maxTotal" value="${sms.jedis.pool.maxTotal}"/>
     </bean>
 
 </beans>

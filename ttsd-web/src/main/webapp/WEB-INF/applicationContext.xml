@@ -85,10 +85,8 @@
 
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
 
-    <bean id="redisWrapper" abstract="true" class="com.tuotiansudai.client.AbstractRedisWrapperClient">
-        <property name="maxTotal">
-            <value>600</value>
-        </property>
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="${web.jedis.pool.maxTotal}"/>
     </bean>
 
 </beans>
