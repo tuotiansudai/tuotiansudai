@@ -1,83 +1,85 @@
 .full-screen {
-  width:100%!important;
-  margin:0;
+  width: 100% !important;
+  margin: 0;
 }
 .footer-container {
-  margin-top:0;
+  margin-top: 0;
 }
 .main-width {
-  width:1010px;
+  width: 1010px;
   margin: 0 auto;
 }
-.header-out { background: #fff;}
-.button,.activity-date {
+.header-out {
   background: #fff;
-  padding:54px 30px 65px 30px;
-
+}
+.button, .activity-date {
+  background: #fff;
+  padding: 54px 30px 65px 30px;
 }
 .activity-date {
-  padding:43px 0px 10px 0px;
+  padding: 43px 0px 10px 0px;
 }
-.responsive-rule{
+.responsive-rule {
   margin-top: 30px;
 }
 .padding-top {
-  padding-top:30px;
+  padding-top: 30px;
 }
-.p-title { text-align: left;
-  padding:60px;}
+.p-title {
+  text-align: left;
+  padding: 60px;
+}
 
 /* steps */
 .steps-content {
   color: #4c4c4c;
-  width:770px;
-  padding:20px;
-  margin:0 auto;
+  width: 770px;
+  padding: 20px;
+  margin: 0 auto;
 }
 .s-title {
   font-size: 28px;
-  padding:20px;
+  padding: 20px;
   font-weight: bold;
 }
-.steps-word { font-size: 16px;
+.steps-word {
+  font-size: 16px;
   line-height: 40px;
   font-weight: bold;
-  text-align: left;}
+  text-align: left;
+}
 .steps-word i {
   font-weight: bold;
   color: #ff0000;
 }
 .steps-word s {
   text-decoration: none;
-  margin-right:10px;
+  margin-right: 10px;
 }
 .nav-steps {
-  margin-top:50px;
+  margin-top: 50px;
   height: 210px;
 }
-
 .nav-steps .steps-icon {
-  width:100%;
-  height:190px;
+  width: 100%;
+  height: 190px;
   z-index: 3;
   font-size: 0;
 }
-
 .nav-steps .steps-icon li {
   display: inline-block;
-  height:180px;
+  height: 180px;
   cursor: pointer;
 }
 .nav-steps .steps-icon li.menu-line {
-  width:105px;
+  width: 105px;
 }
 .nav-steps .steps-icon li.menu-line img {
   vertical-align: middle;
 }
-
 .nav-steps .steps-icon li.menu-step {
-  width:180px;
-  height:190px;
+  width: 180px;
+  height: 190px;
   vertical-align: middle;
   position: relative;
 }
@@ -94,7 +96,6 @@
 .nav-steps .steps-icon li.menu-step img.init-hover {
   display: none;
 }
-
 .steps-show {
   position: relative;
 }
@@ -106,34 +107,40 @@
   bottom: 0;
   left: 300px;
 }
-.steps-show img { display: none; }
-.steps-show img:nth-child(1) { display: block; }
+.steps-show img {
+  display: none;
+}
+.steps-show img:nth-child(1) {
+  display: block;
+}
 .notice-tip {
   color: #999999;
   font-size: 14px;
   line-height: 30px;
   text-align: left;
-  margin-top:20px;
+  margin-top: 20px;
 }
-.notice-tip dt { color: #4c4c4c;
-  padding-bottom: 15px;}
+.notice-tip dt {
+  color: #4c4c4c;
+  padding-bottom: 15px;
+}
 
 /*recruit */
 .recruit-content {
-  width:1000px;
+  width: 1000px;
   background: #fff;
   margin: 0 auto;
   box-sizing: border-box;
-  padding:50px 86px;
-  padding-top:0;
-
+  padding: 50px 86px;
+  padding-top: 0;
 }
 .r-time {
   color: #666666;
   font-size: 16px;
   line-height: 40px;
   text-align: left;
-  padding-top:45px;
+  padding-top: 45px;
+
   b {
     font-size: 20px;
     display: block;
@@ -144,19 +151,17 @@
     line-height: 2;
   }
 }
-
-
-.qualifications,.apply,.give-more { padding-top:30px;}
-
-
-
+.qualifications, .apply, .give-more {
+  padding-top: 30px;
+}
 
 /*responsive picture*/
-.res-comtainer{
+.res-comtainer {
   display: none;
-  float:left;
+  float: left;
   color: #000;
   font-weight: bold;
+
   .responsive-tips {
     width: 100%;
     color: #000;
@@ -164,40 +169,44 @@
     background: #f2f2f2;
     line-height: 26px;
   }
-  .responsive-title{
-    width:100%;
-    color:#000;
+  .responsive-title {
+    width: 100%;
+    color: #000;
     text-align: center;
-    background:#f2f2f2;
+    background: #f2f2f2;
   }
-  .responsive-picture{
-    width:100%;
-    .text-list{
-      padding:10px;
-      background:#fff;
-      p{
-        font-size:14px;
-        margin-bottom:0;
-        span{
-          font-size:12px;
+  .responsive-picture {
+    width: 100%;
+
+    .text-list {
+      padding: 10px;
+      background: #fff;
+
+      p {
+        font-size: 14px;
+        margin-bottom: 0;
+
+        span {
+          font-size: 12px;
         }
       }
     }
   }
-  .link-btn{
-    background:#f2f2f2;
-    color:#000;
-    padding:10px 20px;
-    h5{
-      width:100%;
-      font-size:14px;
+  .link-btn {
+    background: #f2f2f2;
+    color: #000;
+    padding: 10px 20px;
+
+    h5 {
+      width: 100%;
+      font-size: 14px;
     }
-    a{
+    a {
       display: inline-block;
       width: 100%;
       text-align: center;
       background: #ff752a;
-      color: #fff!important;
+      color: #fff !important;
       border-radius: 5px;
       line-height: 35px;
       font-size: 16px;
@@ -205,38 +214,40 @@
     }
   }
 }
-
 .activity-award-container {
   overflow: hidden;
   background: #a30716;
   color: #fff1b5;
+
   .wide-screen-out {
     position: relative;
-    .wide-screen-left,.wide-screen-right {
+
+    .wide-screen-left, .wide-screen-right {
       position: absolute;
-      left:-1px;
-      top:0;
+      left: -1px;
+      top: 0;
       background: url("/images/sign/actor/awards/award-left.jpg") right 0 no-repeat;
-      height:520px;
+      height: 520px;
       display: none;
     }
     .wide-screen-right {
-      right:0;
-      left:auto;
+      right: 0;
+      left: auto;
       background: url("/images/sign/actor/awards/award-right.jpg") left 0 no-repeat;
     }
     .wide-screen-inner {
-      width:1000px;
-      margin:0px auto;
-      padding-top:30px;
-      .activity-info {
-        margin:20px;
-        padding:15px;
-        font-size: 22px;
-        border:1px dashed #fff1b5;
-        border-radius:10px;
+      width: 1000px;
+      margin: 0px auto;
+      padding-top: 30px;
 
+      .activity-info {
+        margin: 20px;
+        padding: 15px;
+        font-size: 22px;
+        border: 1px dashed #fff1b5;
+        border-radius: 10px;
         text-align: center;
+
         b {
           font-size: 34px;
         }
@@ -246,12 +257,13 @@
       }
       .award-product-box {
         height: 380px;
-        margin-top:50px;
+        margin-top: 50px;
         background: url("/images/sign/actor/awards/award-product.png") center top no-repeat;
       }
       .trophy-box {
         text-align: center;
-        margin-top:30px;
+        margin-top: 30px;
+
         .trophy-text {
           font-size: 30px;
           line-height: 1.5;
@@ -264,13 +276,13 @@
         }
       }
       .activity-table {
-        margin:20px;
-        border:1px solid #fff1b5;
-        border-radius:10px;
+        margin: 20px;
+        border: 1px solid #fff1b5;
+        border-radius: 10px;
       }
       .table-awards td {
-        border-bottom:1px dashed #fff1b5;
-        padding:10px;
+        border-bottom: 1px dashed #fff1b5;
+        padding: 10px;
         font-size: 22px;
         color: #fff1b5;
       }
@@ -278,14 +290,14 @@
         border-bottom-width: 0;
       }
       .table-awards td[scope="col"] {
-        width:180px;
+        width: 180px;
         border-right: 1px dashed #fff1b5;
       }
-
       .button-bar {
-        margin-top:60px;
+        margin-top: 60px;
+
         .btn-primary {
-          color: #801616!important;
+          color: #801616 !important;
           font-size: 30px;
           background: #ffcc00;
           font-weight: bold;
@@ -296,23 +308,22 @@
         font-size: 13px;
         padding-top: 40px;
         display: inline-block;
-        padding-bottom:60px;
+        padding-bottom: 60px;
       }
-
     }
   }
   .actor-award-img {
-    height:477px;
+    height: 477px;
     background: url("/images/sign/actor/awards/img-award.jpg") center top no-repeat;
-    clear:both;
+    clear: both;
   }
 }
-
 .red-envelope-container {
   text-align: center;
-.red-top {
-  margin-bottom: 15px;
-}
+
+  .red-top {
+    margin-bottom: 15px;
+  }
   .red-top-mobile {
     display: none;
   }
@@ -322,136 +333,152 @@
     position: relative;
     margin-top: 40px;
     margin-bottom: 0px;
+
     .date-info {
       background: #be0000;
       color: #fff831;
       width: 272px;
       margin: -14px auto 10px auto;
+
       .fa {
         color: #fff831;
+
         &.left {
           margin-left: -10px;
         }
         &.right {
-          margin-right:-10px;
+          margin-right: -10px;
         }
       }
     }
   }
 }
+
 /*birth-month*/
-.birth-month-container{
-  float:left;
-  width:100%;
-  .birth-time{
+.birth-month-container {
+  float: left;
+  width: 100%;
+
+  .birth-time {
     position: fixed;
-    width:100%;
-    height:100%;
-    top:0;
-    left:0;
-    display:none;
-    background:url("/images/sign/actor/birth/tip-bg.png") repeat;
-    z-index:88;
-    .time-list{
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+    background: url("/images/sign/actor/birth/tip-bg.png") repeat;
+    z-index: 88;
+
+    .time-list {
       position: absolute;
-      top:50%;
-      left:50%;
-      margin-top:-182px;
-      margin-left:-264px;
-      z-index:99;
+      top: 50%;
+      left: 50%;
+      margin-top: -182px;
+      margin-left: -264px;
+      z-index: 99;
     }
-    .tip-time{
-      float:left;
+    .tip-time {
+      float: left;
     }
-    .time-close{
-      width:50px;
-      height:50px;
+    .time-close {
+      width: 50px;
+      height: 50px;
       position: absolute;
-      top:20px;
-      right:0;
-      cursor:pointer;
+      top: 20px;
+      right: 0;
+      cursor: pointer;
     }
   }
-  .wp-img{
-    float:left;
-    width:100%;
+  .wp-img {
+    float: left;
+    width: 100%;
   }
-  .wp-img-phone{
-    float:left;
-    width:100%;
-    display:none;
+  .wp-img-phone {
+    float: left;
+    width: 100%;
+    display: none;
   }
-  .wp{
-    width:1000px;
-    margin:0 auto;
-    p{
-      font-size:40px;
-      color:#fff;
-      text-align:center;
-      &.text-pro{
-        overflow:hidden;
-        margin:40px 0 70px 0;
-        span{
+  .wp {
+    width: 1000px;
+    margin: 0 auto;
+
+    p {
+      font-size: 40px;
+      color: #fff;
+      text-align: center;
+
+      &.text-pro {
+        overflow: hidden;
+        margin: 40px 0 70px 0;
+
+        span {
           position: relative;
-          .click-btn{
+
+          .click-btn {
             position: absolute;
             left: 25px;
             bottom: 20px;
-            width:300px;
-            height:58px;
+            width: 300px;
+            height: 58px;
           }
-          &.product-left{
-            float:left;
-            margin-left:100px;
+          &.product-left {
+            float: left;
+            margin-left: 100px;
           }
-          &.product-right{
-            float:right;
-            margin-right:100px;
+          &.product-right {
+            float: right;
+            margin-right: 100px;
           }
         }
       }
-      &.text-bg{
-        font-size:40px;
-        color:#fff;
-        background:url('/images/sign/actor/birth/text-bg.png') center no-repeat;
+      &.text-bg {
+        font-size: 40px;
+        color: #fff;
+        background: url('/images/sign/actor/birth/text-bg.png') center no-repeat;
       }
-      &.text-font{
-        font-size:20px;
-        margin-bottom:50px;
+      &.text-font {
+        font-size: 20px;
+        margin-bottom: 50px;
       }
-      &.img-position{
-        margin-top:-110px;
+      &.img-position {
+        margin-top: -110px;
       }
-      &.text-gift{
-        margin-bottom:60px;
-        .party-img-phone{
-          display:none;
+      &.text-gift {
+        margin-bottom: 60px;
+
+        .party-img-phone {
+          display: none;
         }
       }
     }
-    .rule-list{
-      background:#cc3929;
-      padding:20px 50px;
-      border-radius:10px;
-      margin:50px 100px 60px 100px;
-      li{
-        color:#fff;
-        font-size:18px;
-        &.intro-text{
-          font-size:14px;
+    .rule-list {
+      background: #cc3929;
+      padding: 20px 50px;
+      border-radius: 10px;
+      margin: 50px 100px 60px 100px;
+
+      li {
+        color: #fff;
+        font-size: 18px;
+
+        &.intro-text {
+          font-size: 14px;
         }
       }
     }
   }
 }
 
-
 /*rank-list page*/
-.rank-list-container{
-  background:#e02152;
-  min-height:500px;
+.rank-list-container {
+  background: #e02152;
+  min-height: 500px;
+
+  .rank-phone-model {
+    display: none;
+  }
 }
-@media screen and (max-width: 700px){
+@media screen and (max-width:700px) {
   .red-envelope-container {
     .mobile {
       display: none;
@@ -471,7 +498,7 @@
       padding-top: 30px;
     }
     .line-date {
-      margin-top:0;
+      margin-top: 0;
     }
     .line-date .date-info {
       background: #b00100;
@@ -484,15 +511,16 @@
   }
   .actor-recruit-img {
     height: 150px;
-    background: url("/images/ttimg/ph-a03.jpg") center top no-repeat!important;
-    background-size: cover!important;
+    background: url("/images/ttimg/ph-a03.jpg") center top no-repeat !important;
+    background-size: cover !important;
   }
-  .res-comtainer{
-    display: block!important;
+  .res-comtainer {
+    display: block !important;
     float: none;
+
     .responsive-picture {
       img {
-        width:100%;
+        width: 100%;
       }
     }
   }
@@ -506,12 +534,14 @@
     .wide-screen-out {
       .wide-screen-inner {
         width: 98%;
-        margin:0 auto;
-        padding-top:10px;
+        margin: 0 auto;
+        padding-top: 10px;
+
         .activity-info {
           font-size: 14px;
           margin: 10px;
           padding: 9px;
+
           span {
             display: block;
           }
@@ -524,139 +554,152 @@
         }
         .award-product-box {
           height: 425px;
-          margin-top:20px;
+          margin-top: 20px;
           background: url("/images/sign/actor/awards/app-product.jpg") center top no-repeat;
           background-size: contain;
         }
         .trophy-box {
           .trophy-big {
-            width:70px;
+            width: 70px;
           }
           .trophy-text {
             font-size: 15px;
+
             b {
               font-size: 18px;
             }
           }
         }
         .activity-table {
-          margin:30px 5px 5px 5px;
+          margin: 30px 5px 5px 5px;
           border-radius: 5px;
+
           .table-awards td {
-              padding: 5px;
-              font-size: 12px;
-            }
+            padding: 5px;
+            font-size: 12px;
+          }
           .table-awards td[scope="col"] {
-            width:70px;
+            width: 70px;
             border-right: 1px dashed #fff1b5;
           }
         }
         .button-bar {
-          margin-top:30px;
+          margin-top: 30px;
+
           time {
-            padding-top:20px;
+            padding-top: 20px;
             padding-bottom: 20px;
           }
         }
       }
     }
-
   }
-  .birth-month-container{
-    .time-list{
-      width:240px;
-      height:170px;
-      margin-top:-85px!important;
-      margin-left:-120px!important;
+  .birth-month-container {
+    .time-list {
+      width: 240px;
+      height: 170px;
+      margin-top: -85px !important;
+      margin-left: -120px !important;
     }
-    .tip-time{
-      width:100%!important;
+    .tip-time {
+      width: 100% !important;
     }
-    .time-close{
-      width:10%!important;
-      height:auto!important;
+    .time-close {
+      width: 10% !important;
+      height: auto !important;
     }
-    .wp-img{
-      display:none;
+    .wp-img {
+      display: none;
     }
-    .wp-img-phone{
-      display:block;
+    .wp-img-phone {
+      display: block;
     }
-    .wp{
-      float:left;
-      width:100%;
+    .wp {
+      float: left;
+      width: 100%;
       margin-top: 25px;
-      p{
-        float:left;
-        width:100%;
-        font-size:20px;
-        .monkey-phone{
-          width:20%;
+
+      p {
+        float: left;
+        width: 100%;
+        font-size: 20px;
+
+        .monkey-phone {
+          width: 20%;
         }
-        &.img-position{
-          margin-top:-55px;
-          img{
-            width:80%;
+        &.img-position {
+          margin-top: -55px;
+
+          img {
+            width: 80%;
           }
         }
-        &.text-bg{
-          font-size:20px;
-          background-size:65%;
+        &.text-bg {
+          font-size: 20px;
+          background-size: 65%;
         }
-        &.text-font{
-          font-size:14px;
-          margin-bottom:30px;
+        &.text-font {
+          font-size: 14px;
+          margin-bottom: 30px;
         }
-        &.text-pro{
-          margin:20px 0;
-          span{
-            width:46%;
-            margin:0 2%;
-            .click-btn{
-              left:0;
-              bottom:0;
-              width:100%;
+        &.text-pro {
+          margin: 20px 0;
+
+          span {
+            width: 46%;
+            margin: 0 2%;
+
+            .click-btn {
+              left: 0;
+              bottom: 0;
+              width: 100%;
             }
-            &.product-left{
-              margin-left:2%;
-              img{
-                width:100%;
+            &.product-left {
+              margin-left: 2%;
+
+              img {
+                width: 100%;
               }
             }
-            &.product-right{
-              margin-right:2%;
-              img{
-                width:100%;
+            &.product-right {
+              margin-right: 2%;
+
+              img {
+                width: 100%;
               }
             }
           }
         }
-        &.text-gift{
-          margin-bottom:30px;
-          .party-img{
-            display:none;
+        &.text-gift {
+          margin-bottom: 30px;
+
+          .party-img {
+            display: none;
           }
-          .party-img-phone{
-            display:block;
+          .party-img-phone {
+            display: block;
           }
         }
       }
-      .rule-list{
-        float:left;
+      .rule-list {
+        float: left;
         width: 96%;
         margin: 20px 2%;
         padding: 0;
-        li{
-          font-size:12px;
-          &.intro-text{
-            font-size:12px!important;
+
+        li {
+          font-size: 12px;
+
+          &.intro-text {
+            font-size: 12px !important;
           }
         }
       }
     }
   }
-
+  .rank-list-container {
+    .rank-phone-model {
+      display: block;
+    }
+  }
 }
-
-
-
