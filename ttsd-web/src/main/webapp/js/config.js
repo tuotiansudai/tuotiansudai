@@ -24,6 +24,7 @@ var require = {
         'swiper':staticServer+'/js/libs/swiper-3.2.7.jquery.min',
         'load-swiper':staticServer+'/js/dest/load_swiper.min',
         'coupon-alert': staticServer+'/js/dest/coupon_alert.min',
+        'cnzz-statistics': staticServer+'/js/dest/cnzz_statistics.min',
         'red-envelope-float': staticServer+'/js/dest/red-envelope-float.min',
         'drag': staticServer+'/js/libs/drag'
     },

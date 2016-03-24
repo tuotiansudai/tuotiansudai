@@ -187,7 +187,7 @@
         <div class="error-content" style="visibility: visible; height:30px;text-align:left"></div>
         <div class="tc person-info-btn">
             <button class="btn btn-success btn-cancel" >取消</button>
-            <button class="btn btn-close" type="submit" >我要关闭</button>
+            <button class="btn btn-close btn-close-turn-off" type="submit">我要关闭</button>
         </div>
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

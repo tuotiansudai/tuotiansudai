@@ -252,8 +252,8 @@
 </div>
 <div class="pad-s-tb tl fl hide" id="isAuthorizeSuccess">
     <p class="mb-0 text-m color-title">请在新打开的联动优势完成操作后选择：</p>
-    <p class="text-m"><span class="title-text">授权成功：</span><span class="go-on-btn">继续投资</span><span class="color-tip">（授权后可能会有几秒的延迟）</span></p>
-    <p class="mb-0"><span class="title-text">授权失败： </span><span class="again-btn">重新授权</span><span class="btn-lr">或</span><span class="go-on-btn">继续投资</span></p>
+    <p class="text-m"><span class="title-text">授权成功：</span><span class="go-on-btn success_go_on_invest">继续投资</span><span class="color-tip">（授权后可能会有几秒的延迟）</span></p>
+    <p class="mb-0"><span class="title-text">授权失败： </span><span class="again-btn">重新授权</span><span class="btn-lr">或</span><span class="go-on-btn fail_go_on_invest">继续投资</span></p>
     <p class="text-s color-title">遇到问题请拨打我们的客服热线：400-169-1188（工作日9:00-20:00）</p>
 </div>
 <form action="/agreement" id="goAuthorize" method="post" target="_blank">
