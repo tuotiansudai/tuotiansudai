@@ -263,7 +263,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     layer.tips('<i class="fa fa-times-circle"></i>' + tipContent, '.text-input-amount', {
                         tips: [1, '#ff7200'],
                         time: 0,
-                        maxWidth : 220
+                        maxWidth : 280
                     });
                     return false;
                 }
