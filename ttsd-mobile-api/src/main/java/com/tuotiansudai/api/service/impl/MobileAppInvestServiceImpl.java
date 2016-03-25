@@ -17,6 +17,7 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +41,11 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
         BaseResponseDto responseDto = new BaseResponseDto();
         InvestDto investDto = convertInvestDto(investRequestDto);
         AccountModel accountModel = accountService.findByLoginName(investRequestDto.getUserId());
+        if (accountModel.getBalance() < AmountConverter.convertStringToCent(investDto.getAmount())) {
+            responseDto.setCode(ReturnMessage.INVEST_FAILED.getCode());
+            responseDto.setMessage(ReturnMessage.INVEST_FAILED.getMsg() + ":您的余额不足");
+            return responseDto;
+        }
         if (accountModel.isAutoInvest() && accountModel.isNoPasswordInvest()) {
             try {
                 BaseDto<PayDataDto> baseDto = investService.noPasswordInvest(investDto);
