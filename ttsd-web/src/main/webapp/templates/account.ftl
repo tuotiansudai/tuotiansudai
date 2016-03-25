@@ -19,7 +19,7 @@
                 <#else >
                     <li class="fl sign-top"><span class="btn-sign will-sign" data-url="/point/sign-in" id="signBtn">签到</span></li>
                 </#if>
-                <li class="fl beans-number">可用财豆:<span id="MyAvailablePoint"></span></li>
+                <li class="fl beans-number">可用财豆:<span id="MyAvailablePoint">${myPoint}</span></li>
                 <li class="fr"><a class="btn-normal" href="/recharge">充值</a></li>
                 <li class="fr"><a class="btn-primary" href="/withdraw">提现</a></li>
             </ul>

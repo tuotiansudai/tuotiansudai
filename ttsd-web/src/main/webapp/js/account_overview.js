@@ -25,7 +25,6 @@ require(['jquery', 'echarts', 'commonFun', 'jquery.ajax.extension', 'layerWrappe
 
         tipshow('#tMonthBox','.month-title',6);
         tipshow('.newProjects','.trade-detail',15);
-        getMyAvailablePoint();
         $('.birth-icon').on('mouseenter',function() {
             layer.closeAll('tips');
             var num = parseFloat($(this).attr('data-benefit'));
@@ -88,6 +87,7 @@ require(['jquery', 'echarts', 'commonFun', 'jquery.ajax.extension', 'layerWrappe
                             _this.removeClass("will-sign").addClass("finish-sign").html("已签到");
                             _this.addClass('active');
                             _this.parent('.sign-top').addClass('no-click');
+                            $("#MyAvailablePoint").text(formatCurrency(Math.round($("#MyAvailablePoint").text().replace(',','')) + Math.round(response.data.signInPoint)));
                         }
                     })
             }
@@ -102,20 +102,19 @@ require(['jquery', 'echarts', 'commonFun', 'jquery.ajax.extension', 'layerWrappe
                     'opacity': '1'
                 });
             });
-            getMyAvailablePoint();
-            //location.href = "/account";
         });
-        //get My Available Point
-        function getMyAvailablePoint(){
-            $.ajax( {
-                url:'/point/myavailablepoint',
-                type: 'POST',
-                dataType: 'json',
-                contentType: 'application/json; charset=UTF-8',
-                success:function(data) {
-                    $('#MyAvailablePoint').text(data);
-                }
-            });
+
+        function formatCurrency(num) {
+            num = num.toString().replace(/\$|\,/g,'');
+            if(isNaN(num))
+                num = "0";
+            sign = (num == (num = Math.abs(num)));
+            num = Math.floor(num*100+0.50000000001);
+            num = Math.floor(num/100).toString();
+            for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+                num = num.substring(0,num.length-(4*i+3))+','+
+                    num.substring(num.length-(4*i+3));
+            return (((sign)?'':'-') + num );
         }
     });
 });

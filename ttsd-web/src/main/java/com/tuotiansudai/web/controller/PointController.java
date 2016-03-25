@@ -113,12 +113,4 @@ public class PointController {
         }
         return baseDataDto;
     }
-
-    @RequestMapping(value = "/myavailablepoint", method = RequestMethod.POST)
-    @ResponseBody
-    public long getAvailablePoint() {
-        String loginName = LoginUserInfo.getLoginName();
-        long myPoint = pointService.getAvailablePoint(loginName);
-        return myPoint;
-    }
 }
