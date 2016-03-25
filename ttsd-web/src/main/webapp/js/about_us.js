@@ -63,15 +63,6 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','load-swiper','lay
         }
 
 
-        if($('#activityAwardBox').length) {
-
-            var $activityAwardBox=$('#activityAwardBox'),
-                screenWid=$(window).width(),
-                viewport=commonFun.browserRedirect();
-            if(viewport=='pc') {
-                $activityAwardBox.find('.wide-screen-left,.wide-screen-right').width((screenWid-1000)/2).show();
-            }
-        }
 
         if($problemList.length) {
             $problemList.on('click', function(e) {

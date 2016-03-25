@@ -158,9 +158,10 @@ public class JPushAlertController {
     }
 
     @RequestMapping(value = "/manual-app-push/{id}/reject", method = RequestMethod.GET)
-    public String reject(@PathVariable long id) {
+    public String reject(@PathVariable long id, HttpServletRequest request) {
         String loginName = LoginUserInfo.getLoginName();
-        jPushAlertService.reject(loginName, id);
+        String ip = RequestIPParser.parse(request);
+        jPushAlertService.reject(loginName, id, ip);
         return "redirect:/app-push-manage/manual-app-push-list";
     }
 

@@ -355,7 +355,7 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     public BaseDto<PayDataDto> noPasswordInvest(InvestDto dto) {
-        return this.investNopwd(Long.parseLong(dto.getLoanId()), Long.parseLong(dto.getAmount()), dto.getLoginName(), dto.getSource());
+        return this.investNopwd(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource());
     }
 
     @Override
@@ -518,6 +518,13 @@ public class InvestServiceImpl implements InvestService {
             // 返款成功
             // 改 invest 本身状态为超投返款
             investMapper.updateStatus(investModel.getId(), InvestStatus.OVER_INVEST_PAYBACK);
+            try {
+                // 解冻资金
+                amountTransfer.unfreeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.OVER_INVEST_PAYBACK, null, null);
+            } catch (AmountTransferException e) {
+                // 记录日志，发短信通知管理员
+                fatalLog("over invest payback success, but unfreeze account fail", String.valueOf(orderId), investModel.getAmount(), loginName, investModel.getLoanId(), e);
+            }
         } else {
             // 返款失败，当作投资成功处理
             errorLog("pay_back_notify_fail,take_as_invest_success", orderIdStr, investModel.getAmount(), loginName, investModel.getLoanId());
@@ -526,7 +533,6 @@ public class InvestServiceImpl implements InvestService {
 
             long loanId = investModel.getLoanId();
             loanRaisingComplete(loanId);
-
         }
 
         String respData = callbackRequest.getResponseData();

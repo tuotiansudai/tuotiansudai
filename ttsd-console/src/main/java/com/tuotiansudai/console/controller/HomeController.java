@@ -1,18 +1,21 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.client.AbstractRedisWrapperClient;
+import com.tuotiansudai.console.service.ConsoleHomeService;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.ConsoleHomeService;
+import com.tuotiansudai.service.AuditLogService;
+
 import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.task.TaskConstant;
 import com.tuotiansudai.task.TaskType;
+import com.tuotiansudai.util.RequestIPParser;
 import com.tuotiansudai.util.SerializeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -30,7 +34,7 @@ import java.util.List;
 public class HomeController {
 
     @Autowired
-    ConsoleHomeService consoleHomeService;
+    private ConsoleHomeService consoleHomeService;
 
     @Autowired
     AbstractRedisWrapperClient redisWrapperClient;
@@ -40,6 +44,9 @@ public class HomeController {
 
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    private AuditLogService auditLogService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
@@ -92,11 +99,13 @@ public class HomeController {
 
     @ResponseBody
     @RequestMapping(value = "/refuse", method = RequestMethod.GET, params = "taskId")
-    public BaseDto<BaseDataDto> refuseApply(String taskId) {
+    public BaseDto<BaseDataDto> refuseApply(String taskId, HttpServletRequest request) {
 
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto baseDataDto = new BaseDataDto();
         baseDto.setData(baseDataDto);
+
+        String ip = RequestIPParser.parse(request);
 
         if (redisWrapperClient.hexists(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId)) {
 
@@ -118,13 +127,17 @@ public class HomeController {
 
             notify.setObjId(task.getObjId());
 
-            AccountModel sender = accountService.findByLoginName(senderLoginName);
-            String senderRealName = sender != null ? sender.getUserName() : senderLoginName;
+            String senderRealName = accountService.getRealName(senderLoginName);
 
-            notify.setDescription(senderRealName + "拒绝了您" + operationType.getDescription() + "［" + task.getObjName() + "］的申请。");
+            notify.setDescription(senderRealName + " 拒绝了您 " + operationType.getDescription() + "［" + task.getObjName() + "］的申请。");
 
             redisWrapperClient.hdelSeri(TaskConstant.TASK_KEY + Role.OPERATOR_ADMIN, taskId);
             redisWrapperClient.hsetSeri(TaskConstant.NOTIFY_KEY + task.getSender(), notifyId, notify);
+
+            String operator = task.getSender();
+            String operatorRealName = accountService.getRealName(operator);
+            String description = senderRealName + " 拒绝了 " + operatorRealName + " " + operationType.getDescription() + "［" + task.getObjName() + "］的申请。";
+            auditLogService.createAuditLog(senderLoginName, operator, operationType, task.getObjId(), description, ip);
 
             baseDto.setSuccess(true);
             baseDataDto.setStatus(true);

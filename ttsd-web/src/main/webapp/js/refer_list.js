@@ -1,4 +1,4 @@
-require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker'],
+require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker', 'jquery.ajax.extension'],
     function ($, Mustache, referRelationTemplate, referInvestTemplate, moment, pagination, layer) {
 
         var $searchBox=$('#search-box'),

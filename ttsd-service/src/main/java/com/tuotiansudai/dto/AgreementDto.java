@@ -55,4 +55,5 @@ public class AgreementDto implements Serializable {
     public void setNoPasswordInvest(boolean noPasswordInvest) {
         this.noPasswordInvest = noPasswordInvest;
     }
+
 }

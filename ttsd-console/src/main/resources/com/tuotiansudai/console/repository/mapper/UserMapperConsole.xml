@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.console.repository.mapper.UserMapperConsole">
+
+    <cache-ref namespace="com.tuotiansudai.repository.mapper.UserMapper"/>
+
+    <resultMap id="userResultMap" type="UserModel">
+        <id column="id" property="id"></id>
+        <result column="login_name" property="loginName"></result>
+        <result column="password" property="password"></result>
+        <result column="email" property="email"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="register_time" property="registerTime"></result>
+        <result column="last_login_time" property="lastLoginTime"></result>
+        <result column="last_modified_time" property="lastModifiedTime"></result>
+        <result column="last_modified_user" property="lastModifiedUser"></result>
+        <result column="avatar" property="avatar"></result>
+        <result column="referrer" property="referrer"></result>
+        <result column="status" property="status"></result>
+        <result column="salt" property="salt"></result>
+        <result column="channel" property="channel"></result>
+        <result column="source" property="source"></result>
+        <result column="province" property="province"></result>
+        <result column="city" property="city"></result>
+        <result column="auto_invest_status" property="autoInvestStatus"></result>
+        <result column="last_bill_time" property="lastBillTime"></result>
+        <association property="account" javaType="com.tuotiansudai.repository.model.AccountModel">
+            <id column="id" property="id"></id>
+            <result column="login_name" property="loginName"></result>
+            <result column="user_name" property="userName"></result>
+            <result column="identity_number" property="identityNumber"></result>
+            <result column="pay_user_id" property="payUserId"></result>
+            <result column="pay_account_id" property="payAccountId"></result>
+            <result column="balance" property="balance"></result>
+            <result column="freeze" property="freeze"></result>
+            <result column="register_time" property="registerTime"></result>
+            <result column="auto_invest" property="autoInvest"></result>
+        </association>
+    </resultMap>
+
+    <select id="findAllUser" parameterType="map" resultMap="userResultMap">
+        select
+        u.*,
+        a.*,
+        IF(au.login_name is null, "0", "1") as auto_invest_status
+        from
+        <choose>
+            <when test="roleStage == null ">
+                user u
+            </when>
+            <when test="roleStage.name() == 'NORMAL_USER' ">
+                (SELECT
+                j.*
+                FROM
+                user j
+                WHERE
+                NOT EXISTS( SELECT
+                1
+                FROM
+                (SELECT
+                ff.login_name
+                FROM
+                (SELECT
+                k.login_name
+                FROM
+                user_role o
+                RIGHT JOIN referrer_relation k ON o.login_name = k.referrer_login_name
+                AND k.level = 1
+                WHERE
+                o.role = 'STAFF' UNION SELECT
+                h.login_name
+                FROM
+                user_role h
+                WHERE
+                h.role IN ('STAFF' , 'AGENT')) ff) gg
+                WHERE
+                gg.login_name = j.login_name) and EXISTS(select 1 from invest i where j.login_name = i.login_name) ) u
+
+            </when>
+            <when test="roleStage.name() == 'RECOMMENDATION' ">
+                (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
+                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'STAFF') gg on j.login_name = gg.login_name)
+                u
+            </when>
+            <otherwise>
+                user u join user_role r on u.login_name = r.login_name
+            </otherwise>
+        </choose>
+        left join account a on u.login_name = a.login_name
+        left join auto_invest_plan au on u.login_name = au.login_name and enabled=1
+        <where>
+            <if test="roleStage !=null and roleStage.name() != 'RECOMMENDATION' and  roleStage.name()!='NORMAL_USER' ">
+                and r.role = #{roleStage}
+            </if>
+            <if test="email !=null and email !='' ">
+                and u.email like '${email}%'
+            </if>
+            <if test="mobile !=null and mobile !='' ">
+                and u.mobile like '${mobile}%'
+            </if>
+            <if test="loginName !=null and loginName != '' ">
+                and u.login_name = #{loginName}
+            </if>
+            <if test="beginTime !=null">
+                and u.register_time >= #{beginTime}
+            </if>
+            <if test="endTime !=null ">
+                and u.register_time &lt;= #{endTime}
+            </if>
+            <if test="referrer !=null and referrer != '' ">
+                and u.referrer = #{referrer}
+            </if>
+            <if test="channel !=null and channel != '' ">
+                and u.channel = #{channel}
+            </if>
+            <if test="source !=null">
+                and u.source = #{source}
+            </if>
+
+        </where>
+        order by u.register_time desc
+        limit #{index},#{pageSize}
+    </select>
+
+    <select id="findAllUserCount" parameterType="map" resultType="int">
+        select count(1) from
+        <choose>
+            <when test="roleStage == null">
+                user u
+            </when>
+            <when test="roleStage.name() == 'NORMAL_USER' ">
+                (SELECT
+                j.*
+                FROM
+                user j
+                WHERE
+                NOT EXISTS( SELECT
+                1
+                FROM
+                (SELECT
+                ff.login_name
+                FROM
+                (SELECT
+                k.login_name
+                FROM
+                user_role o
+                RIGHT JOIN referrer_relation k ON o.login_name = k.referrer_login_name
+                AND k.level = 1
+                WHERE
+                o.role = 'STAFF' UNION SELECT
+                h.login_name
+                FROM
+                user_role h
+                WHERE
+                h.role IN ('STAFF' , 'AGENT')) ff) gg
+                WHERE
+                gg.login_name = j.login_name) and EXISTS(select 1 from invest i where j.login_name = i.login_name) ) u
+
+            </when>
+            <when test="roleStage.name() == 'RECOMMENDATION' ">
+                (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
+                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'STAFF') gg on j.login_name = gg.login_name)
+                u
+            </when>
+            <otherwise>
+                user u join user_role r on u.login_name = r.login_name
+            </otherwise>
+        </choose>
+
+        <where>
+
+            <if test="roleStage !=null and roleStage.name() != 'RECOMMENDATION' and  roleStage.name()!='NORMAL_USER' ">
+                and r.role = #{roleStage}
+            </if>
+            <if test="email !=null and email !='' ">
+                and u.email like '${email}%'
+            </if>
+            <if test="mobile !=null and mobile !='' ">
+                and u.mobile like '${mobile}%'
+            </if>
+            <if test="loginName !=null and loginName != '' ">
+                and u.login_name = #{loginName}
+            </if>
+            <if test="beginTime !=null">
+                and u.register_time >= #{beginTime}
+            </if>
+            <if test="endTime !=null ">
+                and u.register_time &lt;= #{endTime}
+            </if>
+            <if test="referrer !=null and referrer != '' ">
+                and u.referrer = #{referrer}
+            </if>
+            <if test="channel !=null and channel != '' ">
+                and u.channel = #{channel}
+            </if>
+            <if test="source !=null">
+                and u.source = #{source}
+            </if>
+        </where>
+    </select>
+
+
+
+</mapper>

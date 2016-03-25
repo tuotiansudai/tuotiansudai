@@ -21,17 +21,18 @@ public class MyHandlerExceptionResolver implements HandlerExceptionResolver{
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         log.error(ex.getLocalizedMessage(), ex);
-        response.reset();
-        response.setContentType("application/json; charset=UTF-8");
-        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        PrintWriter out = null;
+
         try {
+            response.reset();
+
+            response.setContentType("application/json; charset=UTF-8");
+            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
             BaseResponseDto dto = new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(),ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
-            out = response.getWriter();
+            PrintWriter out = response.getWriter();
 
             String jsonString = objectMapper.writeValueAsString(dto);
             out.print(jsonString);
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error(e.getLocalizedMessage(), e);
         }
         return new ModelAndView();

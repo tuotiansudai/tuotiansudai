@@ -1,4 +1,4 @@
-require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'csrf', 'jquery.form'], function ($,layer) {
+require(['jquery', 'layerWrapper','cnzz-statistics','jquery.validate', 'jquery.validate.extension', 'jquery.form','csrf'], function ($,layer,cnzzPush) {
         var $InfoBox = $('#personInfoBox'),
             $changeEmailLayer = $('.setEmail', $InfoBox),
             $turnOnNoPasswordInvestLayer = $('.setTurnOnNoPasswordInvest', $InfoBox),
@@ -15,6 +15,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             $getCaptchaElement = $('.get-captcha'),
             $btnCancelElement = $('.btn-cancel',$turnOffNoPasswordInvestDOM),
             $btnCloseTurnOnElement = $('.btn-close-turn-on',$turnOnNoPasswordInvestDOM),
+            $btnCloseTurnOffElement = $('.btn-close-turn-off', $turnOffNoPasswordInvestDOM),
             $btnTurnOnElement = $('.btn-turn-on',$turnOnNoPasswordInvestDOM),
             $codeNumber = $('.code-number'),
 
@@ -27,7 +28,8 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             $umpayPasswordForm = $('form', $resetUmpayPassDOM),
             $turnOffNoPasswordInvestForm = $('#turnOffNoPasswordInvestForm', $turnOffNoPasswordInvestDOM),
             $imageCaptchaForm = $('#imageCaptchaForm', $turnOffNoPasswordInvestDOM),
-            countTimer;
+            countTimer,
+            cnzzPush = new cnzzPush();
 
 
 
@@ -59,6 +61,11 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
 
             });
         });
+
+        $btnCloseTurnOffElement.on('click',function(){
+            cnzzPush.trackClick("个人资料页","关闭免密弹框","我要关闭");
+        });
+
         $turnOffNoPasswordInvestLayer.on('click', function () {
             refreshTurnOffNoPasswordInvestLayer();
 
@@ -85,6 +92,7 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             $imageCaptchaForm.submit();
         });
         $noPasswordInvest.on('click', function () {
+            cnzzPush.trackClick("个人资料页","开启免密投资","直接开启");
             var _this = $(this);
             $.ajax({
                 url: _this.data('url'),
@@ -102,12 +110,15 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
             layer.closeAll();
         });
         $btnCloseTurnOnElement.on('click',function(){
+            cnzzPush.trackClick("个人资料页","开启免密弹框","取消");
             layer.closeAll();
         });
         $btnTurnOnElement.on('click',function(){
+            cnzzPush.trackClick("个人资料页","开启免密弹框","去联动优势授权");
             layer.closeAll();
             layer.open({
                 type: 1,
+                closeBtn:0,
                 move: false,
                 offset: "200px",
                 title: '免密投资',
@@ -248,13 +259,11 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                     isExist: "/personal-info/email/{0}/is-exist"
                 }
             },
-            onkeyup: function (element, event) {
+            onFocusOut: function (element,event) {
                 var excludedKeys = [16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225];
                 if ((event.which !== 9 || this.elementValue(element) !== "") && $.inArray(event.keyCode, excludedKeys) === -1) {
                     this.element(element);
                 }
-            },
-            onFocusOut: function (element) {
                 if (!this.checkable(element) && !this.optional(element)) {
                     this.element(element);
                 }

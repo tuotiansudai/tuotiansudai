@@ -4,7 +4,7 @@
 
 .layui-layer-btn {
   text-align: center !important;
-  .layui-layer-btn1 {
+  .layui-layer-btn0 {
     padding: 3px 35px;
     background: nth($CK1, 2) !important;
     border-radius: 4px;
@@ -13,12 +13,35 @@
     letter-spacing: 3px;
     color: #fff;
   }
-  .layui-layer-btn0{
+  .layui-layer-btn1{
     padding:3px 35px;
     color:#808080!important;
     border: 1px solid #dedede!important;
     background: #f1f1f1!important;
     border-radius: 4px;
+  }
+}
+body{
+  .demo-class{
+    .layui-layer-btn {
+      text-align: center !important;
+      .layui-layer-btn1 {
+        padding: 3px 35px;
+        background: nth($CK1, 2) !important;
+        border-radius: 4px;
+        border: 1px solid nth($CK1, 2) !important;
+        border-color: nth($CK1, 2) !important;
+        letter-spacing: 3px;
+        color: #fff!important;
+      }
+      .layui-layer-btn0{
+        padding:3px 35px;
+        color:#808080!important;
+        border: 1px solid #dedede!important;
+        background: #f1f1f1!important;
+        border-radius: 4px;
+      }
+    }
   }
 }
 .layui-layer-content{
@@ -107,6 +130,9 @@
     }
     dd {
       padding-left: 5px;
+      &.mt-20{
+        margin-top: 20px;
+      }
       .get-captcha{
         margin: 0;
         letter-spacing: 0px;
@@ -1340,8 +1366,11 @@
               border: solid 1px #fdd8bd;
               background: #fff2e9;
               width: 100%;
+              max-height: 285px;
               text-align: left;
               font-size: 13px;
+              overflow: hidden;
+              overflow-y: scroll;
 
               li {
                 padding: 5px 10px;
@@ -1372,47 +1401,27 @@
                     font-size: 10px;
                   }
                 }
-              }
-              .ticket-list {
-                position: absolute;
-                z-index: 100;
-                left: 0px;
-                top: 29px;
-                border: solid 1px #fdd8bd;
-                background: #fff2e9;
-                width: 100%;
-                max-height: 285px;
-                text-align: left;
-                font-size: 13px;
-                overflow: hidden;
-                overflow-y: scroll;
-
-                li {
-                  padding: 5px 10px;
-                  line-height: 1.6;
-
-                  &.lower-upper-limit {
-                    .input-use-ticket, label .sign {
-                      position: relative;
-                      top: -8px;
-                    }
-                  }
-                  .input-use-ticket {
-                    margin-bottom: 12px;
-                  }
-                }
                 &:hover {
                   background: #ffead9;
                 }
                 &.disabled {
                   color: #8f8f8f;
                   background: #f2f2f2;
-
                   .sign {
-                    background: #909090;
+                    width: 13px;
+                    display: inline-block;
+                    background: #ff7101;
+                    word-wrap: break-word;
+                    word-break: normal;
+                    padding: 3px;
+                    color: #fff;
                   }
-                  &:hover {
-                    background: #f2f2f2;
+                  .ticket-info {
+                    display: inline-block;
+
+                    .ticket-term {
+                      font-size: 10px;
+                    }
                   }
                 }
               }
@@ -1741,6 +1750,17 @@
         color: #cc0000;
         cursor: pointer;
       }
+    }
+  }
+  span {
+    float: right;
+    border-bottom: none;
+    font-size: 14px;
+    font-weight: normal;
+    color: #666;
+    cursor: pointer;
+    &.rule-show{
+      color:#ff752a;
     }
   }
 }

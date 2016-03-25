@@ -1,9 +1,8 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.google.common.collect.Maps;
-import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.dto.AgreementBusinessType;
 import com.tuotiansudai.paywrapper.repository.model.UmPayService;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.service.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.text.MessageFormat;
 import java.util.Enumeration;
 import java.util.Map;
 
@@ -69,7 +67,13 @@ public class PayCallbackController {
     @RequestMapping(value = "/mer_bind_agreement_notify", method = RequestMethod.GET)
     public ModelAndView agreementNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = agreementService.agreementCallback(paramsMap, request.getQueryString());
+        String responseData = agreementService.agreementCallback(paramsMap, request.getQueryString(), AgreementBusinessType.AUTO_INVEST);
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+    @RequestMapping(value = "/no_password_invest_notify", method = RequestMethod.GET)
+    public ModelAndView noPasswordInvestNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = agreementService.agreementCallback(paramsMap, request.getQueryString(),AgreementBusinessType.NO_PASSWORD_INVEST);
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

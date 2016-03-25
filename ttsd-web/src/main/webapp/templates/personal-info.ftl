@@ -71,18 +71,18 @@
                     <#if noPasswordInvest>
                         <em class="info">您已开启免密投资，投资理财快人一步</em>
                         <span class="binding-set">
-                            <i class="fa fa-check-circle ok"></i>已开启  <a class="setlink setTurnOffNoPasswordInvest" href="javascript:void(0);">关闭</a>
+                            <i class="fa fa-check-circle ok"></i> 已开启  <a class="setlink setTurnOffNoPasswordInvest" href="javascript:void(0);">关闭</a>
                         </span>
 
                     <#elseif autoInvest>
                         <em class="info">您已授权自动投标，可直接开启免密投资，及时选择心仪标的，理财快人一步</em>
                         <span class="binding-set">
-                            <i class="fa fa-times-circle no"></i>未开启  <a class="setlink setNoPasswordInvest" data-url="/no-password-invest/enabled" href="javascript:void(0);">开启</a>
+                            <i class="fa fa-times-circle no"></i> 未开启  <a class="setlink setNoPasswordInvest" data-url="/no-password-invest/enabled" href="javascript:void(0);">开启</a>
                         </span>
                     <#else >
                         <em class="info">开启免密投资后，您可及时选择心仪标的，理财快人一步</em>
                         <span class="binding-set">
-                            <i class="fa fa-times-circle no"></i>未开启  <a class="setlink setTurnOnNoPasswordInvest" href="javascript:void(0);">开启</a>
+                            <i class="fa fa-times-circle no"></i> 未开启  <a class="setlink setTurnOnNoPasswordInvest" href="javascript:void(0);">开启</a>
                         </span>
                     </#if>
 
@@ -164,11 +164,12 @@
     <form id="imageCaptchaForm" name="imageCaptchaForm" action="${requestContext.getContextPath()}/no-password-invest/send-no-password-invest-captcha" method="post">
         <dl>
             <dt >推荐您开通免密投资功能，简化投资过程，理财快人一步，确认关闭吗？</dt>
-            <dd>
+            <dd class="mt-20">
                 <span >图形验证码：</span>
                 <input type="text" class="input-control image-captcha-text"  name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
                 <img src="/no-password-invest/image-captcha" alt="" class="image-captcha"/>
                 <input type="hidden" name="mobile" value="${mobile}"/>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </dd>
         </dl>
     </form>
@@ -180,12 +181,13 @@
                 <input type="captcha" name="captcha" class="input-control captcha" placeholder="请输入短信验证码" maxlength="6">
                 <input type="hidden" name="mobile" value="${mobile}"/>
                 <button type="button" class="btn btn-normal get-captcha" disabled="disabled" data-url= "/no-password-invest/send-no-password-invest-captcha">获取验证码</button>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </dd>
         </dl>
         <div class="error-content" style="visibility: visible; height:30px;text-align:left"></div>
         <div class="tc person-info-btn">
             <button class="btn btn-success btn-cancel" >取消</button>
-            <button class="btn btn-close" type="submit" >我要关闭</button>
+            <button class="btn btn-close btn-close-turn-off" type="submit">我要关闭</button>
         </div>
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
