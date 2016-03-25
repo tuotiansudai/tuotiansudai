@@ -473,7 +473,9 @@
 .rank-list-container {
   background: #e02152;
   min-height: 500px;
-
+  .rank-phone-model {
+    display: block;
+  }
   .rank-phone-model {
     display: none;
   }
@@ -698,6 +700,9 @@
     }
   }
   .rank-list-container {
+    .rank-model {
+      display: none;
+    }
     .rank-phone-model {
       display: block;
     }
