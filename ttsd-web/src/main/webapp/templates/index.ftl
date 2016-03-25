@@ -3,6 +3,10 @@
 <div class="home-page-container">
     <div class="banner-box">
         <div class="banner-img-list">
+            <a href="/announce/188" target="_blank">
+                <img src="${staticServer}/images/sign/actor/top/banner-top.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="pc-img">
+                <img src="${staticServer}/images/app-banner/app-banner-top.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="iphone-img">
+            </a>
             <a href="/activity/birth-month" target="_blank">
                 <img src="${staticServer}/images/sign/actor/birth/birth-month.jpg" alt="生日月投资收益翻倍" class="pc-img">
                 <img src="${staticServer}/images/sign/actor/birth/birth-month-phone.jpg" alt="生日月投资收益翻倍" class="iphone-img">
