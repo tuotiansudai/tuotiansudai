@@ -1,4 +1,4 @@
-require(['jquery', 'layerWrapper','cnzz-statistics','jquery.validate', 'jquery.validate.extension', 'jquery.form','csrf'], function ($,layer,cnzzPush) {
+require(['jquery', 'layerWrapper','cnzz-statistics','jquery.validate', 'jquery.validate.extension', 'jquery.form','jquery.ajax.extension','csrf'], function ($,layer,cnzzPush) {
         var $InfoBox = $('#personInfoBox'),
             $changeEmailLayer = $('.setEmail', $InfoBox),
             $turnOnNoPasswordInvestLayer = $('.setTurnOnNoPasswordInvest', $InfoBox),
@@ -49,17 +49,26 @@ require(['jquery', 'layerWrapper','cnzz-statistics','jquery.validate', 'jquery.v
             });
         });
         $turnOnNoPasswordInvestLayer.on('click', function () {
-            layer.open({
-                type: 1,
-                move: false,
-                offset: "200px",
-                title: '免密投资',
-                area: ['490px', '220px'],
-                shadeClose: false,
-                closeBtn:0,
-                content: $turnOnNoPasswordInvestDOM
+            $.ajax({
+                url: "/checkLogin",
+                type: 'get',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8'
+            }).done(function(response){
+                layer.open({
+                    type: 1,
+                    move: false,
+                    offset: "200px",
+                    title: '免密投资',
+                    area: ['490px', '220px'],
+                    shadeClose: false,
+                    closeBtn:0,
+                    content: $turnOnNoPasswordInvestDOM
 
+                });
             });
+
+
         });
 
         $btnCloseTurnOffElement.on('click',function(){
@@ -67,17 +76,27 @@ require(['jquery', 'layerWrapper','cnzz-statistics','jquery.validate', 'jquery.v
         });
 
         $turnOffNoPasswordInvestLayer.on('click', function () {
-            refreshTurnOffNoPasswordInvestLayer();
+            $.ajax({
+                url: "/checkLogin",
+                type: 'get',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8'
+            }).done(function (response){
+                if (response) {
+                    refreshTurnOffNoPasswordInvestLayer();
 
-            layer.open({
-                type: 1,
-                move: false,
-                area:'500px',
-                title: '免密投资',
-                closeBtn:0,
-                shadeClose: false,
-                content: $turnOffNoPasswordInvestDOM
+                    layer.open({
+                        type: 1,
+                        move: false,
+                        area:'500px',
+                        title: '免密投资',
+                        closeBtn:0,
+                        shadeClose: false,
+                        content: $turnOffNoPasswordInvestDOM
+                    });
+                }
             });
+
         });
         var refreshTurnOffNoPasswordInvestLayer = function(){
             clearInterval(countTimer);
