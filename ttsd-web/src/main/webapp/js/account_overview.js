@@ -103,7 +103,7 @@ require(['jquery', 'echarts', 'commonFun', 'jquery.ajax.extension', 'layerWrappe
                 });
             });
         });
-
+        //format my availablePoint
         function formatCurrency(num) {
             num = num.toString().replace(/\$|\,/g,'');
             if(isNaN(num))
