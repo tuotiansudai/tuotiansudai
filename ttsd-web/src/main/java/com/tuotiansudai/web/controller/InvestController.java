@@ -3,8 +3,11 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.InvestException;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.AmountConverter;
@@ -29,18 +32,33 @@ public class InvestController {
     @Autowired
     private CouponService couponService;
 
+    @Autowired
+    private AccountMapper accountMapper;
+
     @RequestMapping(value = "/invest", method = RequestMethod.POST)
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto, RedirectAttributes redirectAttributes) {
         investDto.setSource(Source.WEB);
         String errorMessage = null;
         try {
             investDto.setLoginName(LoginUserInfo.getLoginName());
-            BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
-            if (baseDto.isSuccess() && baseDto.getData().getStatus()) {
-                return new ModelAndView("/pay", "pay", baseDto);
+            AccountModel accountModel = accountMapper.findByLoginName(LoginUserInfo.getLoginName());
+            if (accountModel.isAutoInvest() && accountModel.isNoPasswordInvest()) {
+                BaseDto<PayDataDto> baseDto = investService.noPasswordInvest(investDto);
+                if (baseDto.isSuccess() && baseDto.getData().getStatus()) {
+                    return new ModelAndView("redirect:/account");
+                } else {
+                    if (baseDto.getData() != null) {
+                        errorMessage = baseDto.getData().getMessage();
+                    }
+                }
             } else {
-                if(baseDto.getData() != null) {
-                    errorMessage = baseDto.getData().getMessage();
+                BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
+                if (baseDto.isSuccess() && baseDto.getData().getStatus()) {
+                    return new ModelAndView("/pay", "pay", baseDto);
+                } else {
+                    if (baseDto.getData() != null) {
+                        errorMessage = baseDto.getData().getMessage();
+                    }
                 }
             }
         } catch (InvestException e) {

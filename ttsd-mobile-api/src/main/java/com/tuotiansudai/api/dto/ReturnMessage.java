@@ -52,7 +52,7 @@ public enum ReturnMessage {
     ILLEGAL_LOAN_STATUS("0035","当前借款不可投资"),
     NO_MATCHING_OBJECTS_EXCEPTION("0036","投资失败"),
     EXCEED_DEAD_LINE_EXCEPTION("0037","优惠券已过期"),
-    USER_IS_NOT_CERTIFICATED("0038","您尚未进行实名认证无法投资"),
+    USER_IS_NOT_CERTIFICATED("0038","您尚未进行实名认证"),
     INVEST_CAN_NOT_BE_FOUND("0040","查找不到投资详情"),
     NOT_SUFFICIENT_FUNDS("0045","账户余额不足"),
     NO_MATCH_XS_INVEST_CONDITION("0050","不符合新手标投资条件"),
@@ -62,6 +62,7 @@ public enum ReturnMessage {
     LESS_THAN_MIN_INVEST_AMOUNT("0054","投资金额小于标的最小投资金额"),
     OUT_OF_NOVICE_INVEST_LIMIT("0055","新手标投资已超上限"),
     INVEST_FAILED("0056","投资失败"),
+    INVEST_FAILED_NOT_OPEN_NO_PASSWORD_INVEST("0057","投资失败，您尚未开启免密投资功能"),
 
     /******手机端投资******/
 
