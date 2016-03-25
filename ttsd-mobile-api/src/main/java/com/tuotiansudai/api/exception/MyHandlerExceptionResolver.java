@@ -15,9 +15,10 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
 @Service
-public class MyHandlerExceptionResolver implements HandlerExceptionResolver{
+public class MyHandlerExceptionResolver implements HandlerExceptionResolver {
     static Logger log = Logger.getLogger(MyHandlerExceptionResolver.class);
     private ObjectMapper objectMapper = new ObjectMapper();
+
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         log.error(ex.getLocalizedMessage(), ex);
@@ -27,12 +28,18 @@ public class MyHandlerExceptionResolver implements HandlerExceptionResolver{
 
             response.setContentType("application/json; charset=UTF-8");
             response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            BaseResponseDto dto = new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(),ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+            BaseResponseDto dto = new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
             PrintWriter out = response.getWriter();
 
             String jsonString = objectMapper.writeValueAsString(dto);
             out.print(jsonString);
+        } catch (IllegalStateException e) {
+            if(e.getMessage().indexOf("Cannot call reset()") < 0){
+                log.error(e.getLocalizedMessage(), e);
+            }
+
         } catch (Exception e) {
+
             log.error(e.getLocalizedMessage(), e);
         }
         return new ModelAndView();
