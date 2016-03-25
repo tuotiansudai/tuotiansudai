@@ -53,10 +53,8 @@
                                 <#assign defaultInvestAmount = investAmount>
                             </#if>
                             <span class="fl">投资金额：</span>
-                            <input type="text" name="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" value="${defaultInvestAmount}"
+                            <input type="text" name="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" data-min-invest-amount="<@amount>${loan.minInvestAmount?string.computer}</@amount>" placeholder="0.00" value="${defaultInvestAmount}"
                                    class="text-input-amount fr position-width"/>
-                            <input type="hidden" name="minInvestAmount" value="<@amount>${loan.minInvestAmount?string.computer}</@amount>"
-                                   id="minInvestAmount"/>
 
                             <#if errorMessage?has_content>
                                 <span class="errorTip hide"><i class="fa fa-times-circle"></i>${errorMessage!}</span>

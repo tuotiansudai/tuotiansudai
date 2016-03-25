@@ -8,7 +8,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         $loanList = $('.loan-list', $loanDetail),
         paginationElement = $('.pagination', $loanDetail),
         $error = $('.errorTip'),
-        $minInvestAmount = $('#minInvestAmount');
+        $minInvestAmount = $('.text-input-amount').data('min-invest-amount');
 
     layer.ready(function () {
         layer.photos({
@@ -257,8 +257,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     });
                     return false;
                 }
-
-                var minInvestAmount = parseInt(($minInvestAmount.val() * 100).toFixed(0));
+                var minInvestAmount = parseInt(($minInvestAmount * 100).toFixed(0));
                 if(investAmount < minInvestAmount){
                     var tipContent = '投资金额小于标的最小投资金额！';
                     layer.tips('<i class="fa fa-times-circle"></i>' + tipContent, '.text-input-amount', {
