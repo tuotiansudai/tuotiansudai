@@ -5,4 +5,6 @@ public interface PointLotteryService {
 
     String pointLottery(String loginName);
 
+    void getLotteryOnceChance(String loginName);
+
 }

@@ -1,6 +1,7 @@
 package com.tuotiansudai.point.service.impl;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.dto.TransferCashDto;
@@ -13,6 +14,7 @@ import com.tuotiansudai.point.repository.model.PointPrizeModel;
 import com.tuotiansudai.point.repository.model.UserPointPrizeModel;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointLotteryService;
+import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
@@ -22,6 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -35,11 +39,16 @@ public class PointLotteryServiceImpl implements PointLotteryService{
 
     private final static String ALREADY_LOTTERY = "抽奖次数已满";
 
+    private final static String LAST_EXPIRY_TIME = " 23:59:59";
+
     @Autowired
     private PointPrizeMapper pointPrizeMapper;
 
     @Autowired
     private UserPointPrizeMapper userPointPrizeMapper;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private PointBillService pointBillService;
@@ -116,5 +125,12 @@ public class PointLotteryServiceImpl implements PointLotteryService{
         return pointPrizeModels.get(choosePointPrize);
     }
 
-
+    public void getLotteryOnceChance(String loginName){
+        SimpleDateFormat formatShortTime = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String begin = formatter.format(new Date());
+        String end = formatShortTime.format(new Date()) + LAST_EXPIRY_TIME;
+        int expiryTime = DateUtil.differenceSeconds(begin, end);
+        redisWrapperClient.setex(loginName + formatShortTime.format(new Date()).replace("-",""), expiryTime, "1");
+    }
 }
