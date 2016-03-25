@@ -215,20 +215,20 @@
 
             <div class="box-radius clearfix">
                 <ul class="media-list fl">
-                    <li><i>●</i><a href="http://house.qq.com/a/20151221/035341.htm" target="_blank">拓天速贷官网全新升级 迈入2.0智能金融信息服务时代</a>
-                        <time>2015-12-21</time>
-                    </li>
-                    <li><i>●</i><a href="http://toutiao.com/news/6233268186905575938/" target="_blank">拓天速贷以卓越风控打造高效资产平台</a>
-                        <time>2015-12-28</time>
-                    </li>
-                    <li><i>●</i><a href="http://money.china.com/fin/lc/201601/20/2443757.html?qq-pf-to=pcqq.c2c" target="_blank">拓天速贷：宝马名花有主，猴年豪礼来袭</a>
-                        <time>2016-01-20</time>
+                    <li><i>●</i><a href="http://fj.qq.com/a/20160314/060811.htm" target="_blank">拓天速贷：财富盛宴大平台 感恩豪礼滚滚来</a>
+                        <time>2016-03-14</time>
                     </li>
                     <li><i>●</i><a href="http://help.3g.163.com/0414/16/0201/14/BEOCI8PP041403U2.html" target="_blank">拓天速贷：新年贺岁嗨翻天，全民领取888元现金红包</a>
                         <time>2016-02-01</time>
                     </li>
-                    <li><i>●</i><a href="http://fj.qq.com/a/20160314/060811.htm" target="_blank">拓天速贷：财富盛宴大平台 感恩豪礼滚滚来</a>
-                        <time>2016-03-14</time>
+                    <li><i>●</i><a href="http://money.china.com/fin/lc/201601/20/2443757.html?qq-pf-to=pcqq.c2c" target="_blank">拓天速贷：宝马名花有主，猴年豪礼来袭</a>
+                        <time>2016-01-20</time>
+                    </li>
+                    <li><i>●</i><a href="http://toutiao.com/news/6233268186905575938/" target="_blank">拓天速贷以卓越风控打造高效资产平台</a>
+                        <time>2015-12-28</time>
+                    </li>
+                    <li><i>●</i><a href="http://house.qq.com/a/20151221/035341.htm" target="_blank">拓天速贷官网全新升级 迈入2.0智能金融信息服务时代</a>
+                        <time>2015-12-21</time>
                     </li>
                 </ul>
                 <ul class="media-logo-list fr">
