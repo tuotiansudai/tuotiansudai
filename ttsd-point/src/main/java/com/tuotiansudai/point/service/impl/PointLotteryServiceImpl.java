@@ -33,7 +33,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
 
     private final static long LOTTERY_POINT = -1000;
 
-    private final static String ALREADY_LOTTERY = "抽奖次数已满";
+    private final static String ALREADY_LOTTERY = "TheNumberOfLuckyDrawIsFull";
 
     @Autowired
     private PointPrizeMapper pointPrizeMapper;

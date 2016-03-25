@@ -20,4 +20,12 @@
         select * from user_point_prize where login_name = #{loginName} and date_format(created_time, '%Y-%m-%d') = #{date};
     </select>
 
+    <select id="findByLoginName" parameterType="java.lang.String" resultMap="userPointPrizeResultMap">
+        select * from user_point_prize where login_name = #{loginName} order by created_time desc
+    </select>
+
+    <select id="findAllDescCreatedTime" resultMap="userPointPrizeResultMap">
+        select * from user_point_prize order by created_time desc
+    </select>
+
 </mapper>

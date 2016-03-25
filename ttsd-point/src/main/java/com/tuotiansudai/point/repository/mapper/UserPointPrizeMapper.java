@@ -4,6 +4,8 @@ import com.tuotiansudai.point.repository.model.UserPointPrizeModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UserPointPrizeMapper {
 
@@ -11,5 +13,9 @@ public interface UserPointPrizeMapper {
 
 
     UserPointPrizeModel findByLoginNameAndCreateTime(@Param("loginName") String loginName, @Param("date") String date);
+
+    List<UserPointPrizeModel> findByLoginName(String loginName);
+
+    List<UserPointPrizeModel> findAllDescCreatedTime();
 
 }
