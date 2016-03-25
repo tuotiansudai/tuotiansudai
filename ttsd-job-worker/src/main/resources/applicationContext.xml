@@ -103,7 +103,7 @@
     </bean>
 
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="${job.jedis.pool.maxTotal}"/>
+        <property name="maxTotal" value="${worker.jedis.pool.maxTotal}"/>
     </bean>
 
 </beans>
