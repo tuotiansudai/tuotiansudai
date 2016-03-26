@@ -87,7 +87,7 @@ require(['jquery', 'echarts', 'commonFun', 'jquery.ajax.extension', 'layerWrappe
                             _this.removeClass("will-sign").addClass("finish-sign").html("已签到");
                             _this.addClass('active');
                             _this.parent('.sign-top').addClass('no-click');
-                            $("#MyAvailablePoint").text(formatCurrency(Math.round($("#MyAvailablePoint").text().replace(',','')) + Math.round(response.data.signInPoint)));
+                            $("#MyAvailablePoint").text(Math.round($("#MyAvailablePoint").text()) + Math.round(response.data.signInPoint));
                         }
                     })
             }
@@ -103,18 +103,5 @@ require(['jquery', 'echarts', 'commonFun', 'jquery.ajax.extension', 'layerWrappe
                 });
             });
         });
-        //format my availablePoint
-        function formatCurrency(num) {
-            num = num.toString().replace(/\$|\,/g,'');
-            if(isNaN(num))
-                num = "0";
-            sign = (num == (num = Math.abs(num)));
-            num = Math.floor(num*100+0.50000000001);
-            num = Math.floor(num/100).toString();
-            for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
-                num = num.substring(0,num.length-(4*i+3))+','+
-                    num.substring(num.length-(4*i+3));
-            return (((sign)?'':'-') + num );
-        }
     });
 });
