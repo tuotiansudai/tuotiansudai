@@ -5,4 +5,5 @@ public enum TransferStatus {
     TRANSFERRING,
     SUCCESS,
     CANCEL,
+    NONTRANSFERABLE,
 }

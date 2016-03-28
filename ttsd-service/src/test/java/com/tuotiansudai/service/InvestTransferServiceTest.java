@@ -1,6 +1,8 @@
 package com.tuotiansudai.service;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -24,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -185,12 +188,51 @@ public class InvestTransferServiceTest {
         transferApplicationDto.setTransferInterest(true);
         investTransferService.investTransferApply(transferApplicationDto);
 
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByTransferInvestId(investModel.getId(), TransferStatus.TRANSFERRING);
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(Maps.newHashMap(ImmutableMap.<String, Object>builder()
+                .put("transferInvestId", investModel.getId())
+                .put("transferStatusList", Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING)).build()));
 
         String name = transferApplicationMapper.findMaxNameInOneDay(MessageFormat.format(TRANSFER_APPLY_NAME, new DateTime().toString("yyyyMMdd"), ""));
 
-        assertThat(transferApplicationModel.getName(), is(MessageFormat.format(TRANSFER_APPLY_NAME, new DateTime().toString("yyyyMMdd"), name != null ? name : "001")));
-        assertThat(transferApplicationModel.getPeriod(), is(1));
+        assertThat(transferApplicationModels.get(0).getName(), is(MessageFormat.format(TRANSFER_APPLY_NAME, new DateTime().toString("yyyyMMdd"), name != null ? name : "001")));
+        assertThat(transferApplicationModels.get(0).getPeriod(), is(1));
+    }
+
+    @Test
+    public void shouldIsTransferByInvestTransfer() throws Exception {
+        long loanId = idGenerator.generate();
+        UserModel userModel = createUserByUserId("testuser");
+        LoanModel loanModel = createLoanByUserId("testuser", loanId);
+        loanModel.setStatus(LoanStatus.REPAYING);
+        loanMapper.update(loanModel);
+        InvestModel investModel = createInvest("testuser", loanId);
+
+        InvestModel investModelError = createInvest("testuser", loanId);
+
+        LoanRepayModel repayingLoan1Repay1 = this.getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(30).toDate(), null, 0, 1, 0, 0);
+        LoanRepayModel repayingLoan1Repay2 = this.getFakeLoanRepayModel(loanModel, 2, RepayStatus.REPAYING, new DateTime().plusDays(60).toDate(), null, 1, 1, 0, 0);
+
+        loanRepayMapper.create(Lists.newArrayList(repayingLoan1Repay1, repayingLoan1Repay2));
+
+        TransferApplicationDto transferApplicationDto = new TransferApplicationDto();
+        transferApplicationDto.setTransferInvestId(investModel.getId());
+        transferApplicationDto.setTransferAmount(1L);
+        transferApplicationDto.setTransferInterest(true);
+
+        investTransferService.investTransferApply(transferApplicationDto);
+
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(Maps.newHashMap(ImmutableMap.<String, Object>builder()
+                .put("transferInvestId", investModel.getId())
+                .put("transferStatusList", Lists.newArrayList(TransferStatus.TRANSFERRING)).build()));
+
+        TransferApplicationModel transferApplicationModel = transferApplicationModels.get(0);
+        transferApplicationModel.setStatus(TransferStatus.SUCCESS);
+        transferApplicationModel.setInvestId(investModelError.getId());
+        transferApplicationMapper.update(transferApplicationModel);
+
+        boolean result = investTransferService.isTransfer(investModelError.getId());
+
+        assertFalse(result);
     }
 
 }

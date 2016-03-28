@@ -15,7 +15,7 @@ public class MobileAppTransferApplyQueryController extends MobileAppBaseControll
     @Autowired
     private MobileAppTransferApplyQueryService mobileAppTransferApplyQueryService;
 
-    @RequestMapping(value = "/agreement", method = RequestMethod.POST)
+    @RequestMapping(value = "/get/transfer-apply", method = RequestMethod.POST)
     public BaseResponseDto generateAgreementRequest(@RequestBody TransferApplyQueryRequestDto requestDto) {
         requestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppTransferApplyQueryService.transferApplyQuery(requestDto);

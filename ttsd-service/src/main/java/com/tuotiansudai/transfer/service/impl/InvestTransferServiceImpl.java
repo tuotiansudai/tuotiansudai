@@ -1,5 +1,8 @@
 package com.tuotiansudai.transfer.service.impl;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.TransferApplyAutoCancelJob;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -14,9 +17,12 @@ import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.JobManager;
+import javafx.scene.input.TransferMode;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class InvestTransferServiceImpl implements InvestTransferService{
@@ -121,6 +128,51 @@ public class InvestTransferServiceImpl implements InvestTransferService{
             name = String.format("%03d", Integer.parseInt(name) + 1);
         }
         return MessageFormat.format(TRANSFER_APPLY_NAME, date, name);
+    }
+    @Override
+    public boolean isTransfer(long investId){
+
+        InvestModel investModel = investMapper.findById(investId);
+        if(investModel == null){
+            logger.debug(MessageFormat.format("{0} is not exist",investId));
+            return false;
+        }
+        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+        if(loanModel.getStatus() != LoanStatus.REPAYING){
+            logger.debug(MessageFormat.format("{0} is not REPAYING",investModel.getLoanId()));
+            return false;
+        }
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(Maps.newHashMap(ImmutableMap.<String, Object>builder()
+                .put("transferInvestId", investId)
+                .put("transferStatusList", Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING)).build()));
+        if (CollectionUtils.isNotEmpty(transferApplicationModels)) {
+            logger.debug(MessageFormat.format("{0} is not REPAYING",investModel.getLoanId()));
+            return false;
+        }
+
+        LoanRepayModel loanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(investModel.getLoanId());
+        if(loanRepayModel == null){
+            logger.debug(MessageFormat.format("{0} is completed ",loanRepayModel.getLoanId()));
+            return false;
+        }
+
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investId);
+        if(transferApplicationModel != null && transferApplicationModel.getPeriod() == loanRepayModel.getPeriod()){
+            logger.debug(MessageFormat.format("{0} had been transfer ",investId));
+            return false;
+        }
+        TransferRuleModel transferRuleModel =  transferRuleMapper.find();
+        DateTime current = new DateTime().withTimeAtStartOfDay();
+        int periodDuration = Days.daysBetween(new DateTime(loanRepayModel.getRepayDate()).withTimeAtStartOfDay(), current.withTimeAtStartOfDay()).getDays();
+
+        if(periodDuration > transferRuleModel.getDaysLimit()){
+            logger.debug(MessageFormat.format("{0} right away repay ",investId));
+            return false;
+        }
+
+        return true;
+
+
     }
 
 }
