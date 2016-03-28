@@ -10,7 +10,9 @@ import com.tuotiansudai.repository.model.LoanRepayModel;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.JobManager;
 import org.apache.commons.lang3.StringUtils;
@@ -41,6 +43,9 @@ public class InvestTransferServiceImpl implements InvestTransferService{
     @Autowired
     private JobManager jobManager;
 
+    @Autowired
+    private TransferRuleMapper transferRuleMapper;
+
     protected final static String TRANSFER_APPLY_NAME = "ZR{0}-{1}";
 
     @Override
@@ -59,11 +64,24 @@ public class InvestTransferServiceImpl implements InvestTransferService{
             return;
         }
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, this.generateTransferApplyName(), loanRepayModel.getPeriod(), transferApplicationDto.getTransferAmount(),
-                transferApplicationDto.getTransferInterest(), transferApplicationDto.getTransferFee(), transferApplicationDto.getDeadline());
+                transferApplicationDto.getTransferInterest(), getTransferFee(investModel), getDeadlineFromNow());
 
         transferApplicationMapper.create(transferApplicationModel);
 
         investTransferApplyJob(transferApplicationModel);
+    }
+
+    public long getTransferFee(InvestModel investModel) {
+        TransferRuleModel transferRuleModel = transferRuleMapper.find();
+        
+        return 0;
+    }
+
+    @Override
+    public Date getDeadlineFromNow() {
+        TransferRuleModel transferRuleModel = transferRuleMapper.find();
+        DateTime dateTime = new DateTime();
+        return dateTime.plusDays(transferRuleModel.getDaysLimit()).withTimeAtStartOfDay().toDate();
     }
 
     @Override
