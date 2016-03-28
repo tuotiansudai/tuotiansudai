@@ -23,13 +23,13 @@
 				<li>
 					<p>
 						<span class="project-name">我的天豆：1000</span>
-						<a href="#" class="project-operate">去抽奖</a>
+						<a href="javascript:void(0)" class="project-operate">去抽奖</a>
 					</p>
 				</li>
 				<li>
 					<p>
 						<span class="project-name">我的财豆：1000</span>
-						<a href="#" class="project-operate">去抽奖</a>
+						<a href="javascript:void(0)" class="project-operate">去抽奖</a>
 					</p>
 				</li>
 				<li>
@@ -44,6 +44,7 @@
 		<ul class="leader-btn">
 			<li class="active">排行榜</li>
 			<li>奖品单</li>
+			<li class="bean-btn"></li>
 		</ul>
 		<div class="leader-container">
 			<div class="leader-list">
