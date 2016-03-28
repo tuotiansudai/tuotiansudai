@@ -1,13 +1,12 @@
 package com.tuotiansudai.transfer.service.impl;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.TransferApplyAutoCancelJob;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.LoanRepayModel;
-import com.tuotiansudai.repository.model.TransferStatus;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
@@ -18,11 +17,13 @@ import com.tuotiansudai.util.JobManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 
@@ -33,6 +34,9 @@ public class InvestTransferServiceImpl implements InvestTransferService{
 
     @Autowired
     private TransferApplicationMapper transferApplicationMapper;
+
+    @Autowired
+    private LoanMapper loanMapper;
 
     @Autowired
     private InvestMapper investMapper;
@@ -73,8 +77,24 @@ public class InvestTransferServiceImpl implements InvestTransferService{
 
     public long getTransferFee(InvestModel investModel) {
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
-        
-        return 0;
+        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+        DateTime beginDate;
+        DateTime endDate = new DateTime();
+        if (Lists.newArrayList(LoanType.INVEST_INTEREST_LUMP_SUM_REPAY, LoanType.INVEST_INTEREST_MONTHLY_REPAY).contains(loanModel.getType())){
+            beginDate = new DateTime(investModel.getCreatedTime());
+        } else {
+            beginDate = new DateTime(loanModel.getRecheckTime());
+        }
+        int days = Days.daysBetween(beginDate, endDate).getDays();
+        double fee;
+        if (days <= transferRuleModel.getLevelOneUpper()) {
+            fee = transferRuleModel.getLevelOneFee();
+        } else if (days <= transferRuleModel.getLevelTwoUpper()) {
+            fee = transferRuleModel.getLevelTwoFee();
+        } else {
+            fee = transferRuleModel.getLevelThreeFee();
+        }
+        return new BigDecimal(investModel.getAmount()).multiply(new BigDecimal(fee)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
     }
 
     @Override
