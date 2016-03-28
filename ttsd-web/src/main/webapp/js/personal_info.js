@@ -36,13 +36,11 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                     isExist: "/personal-info/email/{0}/is-exist"
                 }
             },
-            onkeyup: function (element, event) {
+            onFocusOut: function (element,event) {
                 var excludedKeys = [16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225];
                 if ((event.which !== 9 || this.elementValue(element) !== "") && $.inArray(event.keyCode, excludedKeys) === -1) {
                     this.element(element);
                 }
-            },
-            onFocusOut: function (element) {
                 if (!this.checkable(element) && !this.optional(element)) {
                     this.element(element);
                 }
