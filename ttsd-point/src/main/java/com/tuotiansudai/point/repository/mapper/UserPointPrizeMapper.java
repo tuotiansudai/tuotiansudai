@@ -18,4 +18,5 @@ public interface UserPointPrizeMapper {
 
     List<UserPointPrizeModel> findAllDescCreatedTime();
 
+    long findAllNotReal();
 }

@@ -13,6 +13,7 @@ import com.tuotiansudai.point.repository.model.PointPrizeModel;
 import com.tuotiansudai.point.repository.model.UserPointPrizeModel;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointLotteryService;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
@@ -53,6 +54,39 @@ public class PointLotteryServiceImpl implements PointLotteryService{
     @Autowired
     private IdGenerator idGenerator;
 
+    @Autowired
+    private UserMapper userMapper;
+
+    @Override
+    public void imitateLottery() {
+        String loginName;
+        do {
+            loginName = this.imitateLoginName();
+        } while (userMapper.findByLoginName(loginName) != null);
+        long notRealNum = userPointPrizeMapper.findAllNotReal();
+        List<PointPrizeModel> pointPrizeModels;
+        if (notRealNum % 10 != 0) {
+            pointPrizeModels = pointPrizeMapper.findAllPossibleWin();
+        } else {
+            pointPrizeModels = pointPrizeMapper.findAllUnPossibleWin();
+        }
+        int num = new Random().nextInt(pointPrizeModels.size());
+        UserPointPrizeModel userPointPrizeModel = new UserPointPrizeModel(pointPrizeModels.get(num).getId(), loginName, false);
+        userPointPrizeMapper.create(userPointPrizeModel);
+    }
+
+    private String imitateLoginName() {
+        int length = new Random().nextInt(20) + 5;
+        String base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random = new Random();
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < length; i++) {
+            int number = random.nextInt(base.length());
+            sb.append(base.charAt(number));
+        }
+        return sb.toString();
+    }
+
     @Override
     @Transactional
     public String pointLottery(String loginName) {
@@ -60,7 +94,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
         UserPointPrizeModel userPointPrizeModelToday = userPointPrizeMapper.findByLoginNameAndCreateTime(loginName, dateTime.toString("yyyy-MM-dd"));
         if (userPointPrizeModelToday == null) {
             PointPrizeModel winPointPrize = this.winLottery();
-            UserPointPrizeModel userPointPrizeModel = new UserPointPrizeModel(winPointPrize.getId(), loginName);
+            UserPointPrizeModel userPointPrizeModel = new UserPointPrizeModel(winPointPrize.getId(), loginName, true);
             userPointPrizeMapper.create(userPointPrizeModel);
 
             pointBillService.createPointBill(loginName, winPointPrize.getId(), PointBusinessType.LOTTERY, LOTTERY_POINT);
