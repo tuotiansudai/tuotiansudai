@@ -1,4 +1,4 @@
-package com.tuotiansudai.job;
+package com.tuotiansudai.point.job;
 
 
 import com.tuotiansudai.point.service.PointLotteryService;

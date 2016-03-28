@@ -88,7 +88,7 @@
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-        <property name="basePackage" value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.jpush.repository.mapper,com.tuotiansudai.point.repository.model"/>
+        <property name="basePackage" value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.jpush.repository.mapper,com.tuotiansudai.point.repository.mapper"/>
     </bean>
 
     <!-- scan for mappers and let them be autowired -->
