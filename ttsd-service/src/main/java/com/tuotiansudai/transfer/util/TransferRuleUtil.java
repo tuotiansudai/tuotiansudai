@@ -21,7 +21,7 @@ public class TransferRuleUtil {
         } else {
             beginDate = new DateTime(loanModel.getRecheckTime());
         }
-        int days = Days.daysBetween(beginDate, endDate).getDays() + 1;
+        int days = Days.daysBetween(beginDate, endDate).getDays();
         double fee;
         if (days <= transferRuleModel.getLevelOneUpper()) {
             fee = transferRuleModel.getLevelOneFee();

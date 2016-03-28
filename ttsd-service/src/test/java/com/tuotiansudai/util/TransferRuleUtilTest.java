@@ -44,15 +44,15 @@ public class TransferRuleUtilTest {
     @Autowired
     private TransferRuleMapper transferRuleMapper;
 
-    private InvestModel createInvest(String userId, long loanId) {
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1000000, userId, Source.WEB, null);
-        model.setCreatedTime(new DateTime().minusDays(29).toDate());
+    private InvestModel createInvest(String userId, long loanId, long amount, Date createTime) {
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, amount, userId, Source.WEB, null);
+        model.setCreatedTime(createTime);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         return model;
     }
 
-    private LoanModel createLoanByUserId(String userId, long loanId) {
+    private LoanModel createLoanByUserId(String userId, long loanId, LoanType loanType, Date recheckTime) {
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName(userId);
         loanDto.setLoanerUserName("借款人");
@@ -73,14 +73,14 @@ public class TransferRuleUtilTest {
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("1000000");
-        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        loanDto.setType(loanType);
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.REPAYING);
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(LoanStatus.REPAYING);
-        loanModel.setRecheckTime(new DateTime().minusDays(20).toDate());
+        loanModel.setRecheckTime(recheckTime);
         loanMapper.create(loanModel);
         return loanModel;
     }
@@ -98,14 +98,69 @@ public class TransferRuleUtilTest {
     }
 
     @Test
-    public void shouldGetTransferFee() {
+    public void shouldGetTransferFeeInvestInterestLevelOne() {
         long loanId = idGenerator.generate();
         createUserByUserId("testuser");
-        LoanModel loanModel = createLoanByUserId("testuser", loanId);
-        InvestModel investModel = createInvest("testuser", loanId);
+        LoanModel loanModel = createLoanByUserId("testuser", loanId, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY, new DateTime().minusDays(29).toDate());
+        InvestModel investModel = createInvest("testuser", loanId, 100000, new DateTime().minusDays(20).toDate());
+        TransferRuleModel transferRuleModel = transferRuleMapper.find();
+        long fee = TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel);
+        assertThat(fee, is(new BigDecimal(investModel.getAmount()).multiply(new BigDecimal(transferRuleModel.getLevelOneFee())).setScale(0, BigDecimal.ROUND_DOWN).longValue()));
+    }
+
+    @Test
+    public void shouldGetTransferFeeInvestInterestLevelTwo() {
+        long loanId = idGenerator.generate();
+        createUserByUserId("testuser");
+        LoanModel loanModel = createLoanByUserId("testuser", loanId, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY, new DateTime().minusDays(90).toDate());
+        InvestModel investModel = createInvest("testuser", loanId, 100000, new DateTime().minusDays(70).toDate());
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         long fee = TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel);
         assertThat(fee, is(new BigDecimal(investModel.getAmount()).multiply(new BigDecimal(transferRuleModel.getLevelTwoFee())).setScale(0, BigDecimal.ROUND_DOWN).longValue()));
+    }
+
+    @Test
+    public void shouldGetTransferFeeInvestInterestLevelThree() {
+        long loanId = idGenerator.generate();
+        createUserByUserId("testuser");
+        LoanModel loanModel = createLoanByUserId("testuser", loanId, LoanType.INVEST_INTEREST_LUMP_SUM_REPAY, new DateTime().minusDays(300).toDate());
+        InvestModel investModel = createInvest("testuser", loanId, 100000, new DateTime().minusDays(290).toDate());
+        TransferRuleModel transferRuleModel = transferRuleMapper.find();
+        long fee = TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel);
+        assertThat(fee, is(new BigDecimal(investModel.getAmount()).multiply(new BigDecimal(transferRuleModel.getLevelThreeFee())).setScale(0, BigDecimal.ROUND_DOWN).longValue()));
+    }
+
+    @Test
+    public void shouldGetTransferFeeLoanInterestLevelOne() {
+        long loanId = idGenerator.generate();
+        createUserByUserId("testuser");
+        LoanModel loanModel = createLoanByUserId("testuser", loanId, LoanType.LOAN_INTEREST_LUMP_SUM_REPAY, new DateTime().minusDays(29).toDate());
+        InvestModel investModel = createInvest("testuser", loanId, 100000, new DateTime().minusDays(25).toDate());
+        TransferRuleModel transferRuleModel = transferRuleMapper.find();
+        long fee = TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel);
+        assertThat(fee, is(new BigDecimal(investModel.getAmount()).multiply(new BigDecimal(transferRuleModel.getLevelOneFee())).setScale(0, BigDecimal.ROUND_DOWN).longValue()));
+    }
+
+    @Test
+    public void shouldGetTransferFeeLoanInterestLevelTwo() {
+        long loanId = idGenerator.generate();
+        createUserByUserId("testuser");
+        LoanModel loanModel = createLoanByUserId("testuser", loanId, LoanType.LOAN_INTEREST_LUMP_SUM_REPAY, new DateTime().minusDays(90).toDate());
+        InvestModel investModel = createInvest("testuser", loanId, 100000, new DateTime().minusDays(22).toDate());
+        TransferRuleModel transferRuleModel = transferRuleMapper.find();
+        long fee = TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel);
+        assertThat(fee, is(new BigDecimal(investModel.getAmount()).multiply(new BigDecimal(transferRuleModel.getLevelTwoFee())).setScale(0, BigDecimal.ROUND_DOWN).longValue()));
+    }
+
+    @Test
+    public void shouldGetTransferFeeLoanInterestLevelThree() {
+        long loanId = idGenerator.generate();
+        createUserByUserId("testuser");
+        LoanModel loanModel = createLoanByUserId("testuser", loanId, LoanType.LOAN_INTEREST_LUMP_SUM_REPAY, new DateTime().minusDays(300).toDate());
+        InvestModel investModel = createInvest("testuser", loanId, 100000, new DateTime().minusDays(30).toDate());
+        TransferRuleModel transferRuleModel = transferRuleMapper.find();
+        long fee = TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel);
+        assertThat(fee, is(new BigDecimal(investModel.getAmount()).multiply(new BigDecimal(transferRuleModel.getLevelThreeFee())).setScale(0, BigDecimal.ROUND_DOWN).longValue()));
     }
 
 }
