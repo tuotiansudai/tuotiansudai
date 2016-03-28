@@ -2,7 +2,7 @@
 <@global.main pageCss="${css.login}" pageJavascript="${js.login}" activeLeftNav="" title="拓天速贷-登录" >
 <div class="login-container page-width">
 
-        <img src="/images/sign/login-app.jpg" class="login-app">
+        <img src="${staticServer}/images/sign/login-app.jpg" class="login-app">
         <div class="login-box">
             <h3>欢迎登录拓天速贷</h3>
 
