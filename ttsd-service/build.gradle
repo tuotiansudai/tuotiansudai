@@ -25,8 +25,7 @@ buildscript {
 
 dependencies {
     def springSecurityVersion = '4.0.2.RELEASE'
-    compile project(':ttsd-point'),
-            fileTree(dir: 'libs', include: '**/*.jar'),
+    compile fileTree(dir: 'libs', include: '**/*.jar'),
             "org.springframework.security:spring-security-config:$springSecurityVersion",
             "org.springframework.security:spring-security-taglibs:$springSecurityVersion"
 
