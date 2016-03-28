@@ -3,15 +3,16 @@ package com.tuotiansudai.transfer.service.impl;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.TransferApplyAutoCancelJob;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.LoanRepayModel;
-import com.tuotiansudai.repository.model.TransferStatus;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
+import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.JobManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -33,6 +34,9 @@ public class InvestTransferServiceImpl implements InvestTransferService{
     private TransferApplicationMapper transferApplicationMapper;
 
     @Autowired
+    private LoanMapper loanMapper;
+
+    @Autowired
     private InvestMapper investMapper;
 
     @Autowired
@@ -40,6 +44,9 @@ public class InvestTransferServiceImpl implements InvestTransferService{
 
     @Autowired
     private JobManager jobManager;
+
+    @Autowired
+    private TransferRuleMapper transferRuleMapper;
 
     protected final static String TRANSFER_APPLY_NAME = "ZR{0}-{1}";
 
@@ -58,12 +65,22 @@ public class InvestTransferServiceImpl implements InvestTransferService{
         if (loanRepayModel == null) {
             return;
         }
+
+        TransferRuleModel transferRuleModel = transferRuleMapper.find();
+        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, this.generateTransferApplyName(), loanRepayModel.getPeriod(), transferApplicationDto.getTransferAmount(),
-                transferApplicationDto.getTransferInterest(), transferApplicationDto.getTransferFee(), transferApplicationDto.getDeadline());
+                transferApplicationDto.getTransferInterest(), TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel), getDeadlineFromNow());
 
         transferApplicationMapper.create(transferApplicationModel);
 
         investTransferApplyJob(transferApplicationModel);
+    }
+
+    @Override
+    public Date getDeadlineFromNow() {
+        TransferRuleModel transferRuleModel = transferRuleMapper.find();
+        DateTime dateTime = new DateTime();
+        return dateTime.plusDays(transferRuleModel.getDaysLimit()).withTimeAtStartOfDay().toDate();
     }
 
     @Override

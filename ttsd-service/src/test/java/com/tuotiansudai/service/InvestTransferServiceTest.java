@@ -10,6 +10,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -180,10 +181,8 @@ public class InvestTransferServiceTest {
 
         TransferApplicationDto transferApplicationDto = new TransferApplicationDto();
         transferApplicationDto.setTransferInvestId(investModel.getId());
-        transferApplicationDto.setDeadline(new Date());
         transferApplicationDto.setTransferAmount(1L);
         transferApplicationDto.setTransferInterest(true);
-        transferApplicationDto.setTransferFee(1L);
         investTransferService.investTransferApply(transferApplicationDto);
 
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByTransferInvestId(investModel.getId(), TransferStatus.TRANSFERRING);
