@@ -97,7 +97,7 @@ public enum ReturnMessage {
     /******未开通快捷支付******/
     NOT_OPNE_FAST_PAYMENT("0046","未开通快捷支付"),
 
-    USER_IS_DISABLED("0049", "登录尝试次数过多，用户已被禁用30分钟"),
+    USER_IS_DISABLED("0049", "用户名或密码错误,账户冻结30分钟,如您着急投资请与拓天速贷客服联系"),
     CANNOT_GET_APK_VERSION("0060", "查找不到版本信息"),
     /******自动投标******/
     AUTO_INVEST_PLAN_NOT_EXIST("0061","自动投标计划不存在"),
