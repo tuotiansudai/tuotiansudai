@@ -87,6 +87,7 @@ require(['jquery', 'echarts', 'commonFun', 'jquery.ajax.extension', 'layerWrappe
                             _this.removeClass("will-sign").addClass("finish-sign").html("已签到");
                             _this.addClass('active');
                             _this.parent('.sign-top').addClass('no-click');
+                            $("#MyAvailablePoint").text(Math.round($("#MyAvailablePoint").text()) + Math.round(response.data.signInPoint));
                         }
                     })
             }
@@ -102,6 +103,5 @@ require(['jquery', 'echarts', 'commonFun', 'jquery.ajax.extension', 'layerWrappe
                 });
             });
         });
-
     });
 });
