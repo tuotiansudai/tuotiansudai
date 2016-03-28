@@ -23,6 +23,6 @@ public class CaptchaHelper {
     public boolean captchaVerify(String attributeKey, String captcha) {
         String actualCaptcha = (String) httpServletRequest.getSession().getAttribute(attributeKey);
         httpServletRequest.getSession().removeAttribute(attributeKey);
-        return !Strings.isNullOrEmpty(captcha) && captcha.equalsIgnoreCase(actualCaptcha);
+        return !Strings.isNullOrEmpty(captcha) && captcha.trim().equalsIgnoreCase(actualCaptcha);
     }
 }

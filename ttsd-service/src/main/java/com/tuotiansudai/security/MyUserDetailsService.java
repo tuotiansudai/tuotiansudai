@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -40,6 +41,7 @@ public class MyUserDetailsService implements UserDetailsService {
     private RedisWrapperClient redisWrapperClient;
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException,DisabledException {
         UserModel userModel = userMapper.findByLoginNameOrMobile(username);
         if (userModel == null) {
