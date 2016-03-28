@@ -7,7 +7,8 @@ public enum UserGroup {
     WINNER("抽奖用户"),
     INVESTED_USER("已投资用户"),
     REGISTERED_NOT_INVESTED_USER("已实名未投资用户"),
-    EXCHANGER("兑换用户");
+    EXCHANGER("兑换用户"),
+    WINNER("中奖用户");
 
     private final String description;
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.point.repository.mapper.PointPrizeMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="pointPrizeResultMap" type="PointPrizeModel">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="description" property="description"></result>
+        <result column="coupon_id" property="couponId"></result>
+        <result column="cash" property="cash"></result>
+        <result column="probability" property="probability"></result>
+        <result column="active" property="active"></result>
+    </resultMap>
+
+    <select id="findAllPossibleWin" resultMap="pointPrizeResultMap">
+        select * from point_prize where probability > 0 and active is true order by id;
+    </select>
+
+</mapper>

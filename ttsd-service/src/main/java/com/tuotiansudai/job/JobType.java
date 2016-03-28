@@ -39,7 +39,8 @@ public enum JobType {
     CouponNotify("优惠券通知"),
     GetPushReport("获取推送统计数据"),
     ManualJPushAlert("手动推送"),
-    BirthdayNotify("生日月用户短信提醒");
+    BirthdayNotify("生日月用户短信提醒"),
+    LotteryTransferCash("抽奖现金发放");
 
     private final String description;
 
