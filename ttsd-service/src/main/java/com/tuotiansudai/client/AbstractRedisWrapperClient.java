@@ -3,7 +3,9 @@ package com.tuotiansudai.client;
 import com.tuotiansudai.util.SerializeUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -15,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@Component
 public abstract class AbstractRedisWrapperClient {
 
     static Logger logger = Logger.getLogger(AbstractRedisWrapperClient.class);
@@ -31,6 +34,9 @@ public abstract class AbstractRedisWrapperClient {
     @Value("${common.redis.db}")
     private int redisDb;
 
+    @Autowired
+    private JedisPoolConfig jedisPoolConfig;
+
     private JedisPool jedisPool;
 
     public void setJedisPool(JedisPool jedisPool) {
@@ -42,12 +48,19 @@ public abstract class AbstractRedisWrapperClient {
         return jedisPool;
     }
 
+    public JedisPoolConfig getJedisPoolConfig() {
+        return jedisPoolConfig;
+    }
+
+    public void setJedisPoolConfig(JedisPoolConfig jedisPoolConfig) {
+        this.jedisPoolConfig = jedisPoolConfig;
+    }
+
     private static JedisPool pool = null;
 
     public JedisPool getPool() {
         if (pool == null) {
-            JedisPoolConfig config = new JedisPoolConfig();
-            pool = new JedisPool(config, redisHost, redisPort);
+            pool = new JedisPool(jedisPoolConfig, redisHost, redisPort);
         }
         return pool;
     }
