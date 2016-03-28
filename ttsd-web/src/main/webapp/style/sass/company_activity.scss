@@ -469,15 +469,213 @@
   }
 }
 
-/*rank-list page*/
+/*rank-list app page*/
+.rank-list-app {
+  background: #e02152;
+  min-height: 500px;
+  .rank-phone-model {
+    float:left;
+    width:100%;
+  }
+}
+
+/*rank-list pc page*/
 .rank-list-container {
   background: #e02152;
   min-height: 500px;
   .rank-phone-model {
-    display: block;
+    float:left;
+    width:100%;
   }
-  .rank-phone-model {
-    display: none;
+  .wp{
+    width:1000px;
+    margin:0 auto;
+    &.actor-intro{
+      padding-top:20px;
+    }
+    .line-single{
+      float:left;
+      width:100%;
+      height:1px;
+      background:url("../images/sign/actor/ranklist/line-border.png") no-repeat center;
+    }
+    .actor-info-text{
+      float:left;
+      width:100%;
+      position: relative;
+      padding:30px 0 20px;
+      .actor-title{
+        position: absolute;
+        top:-26px;
+        left:50%;
+        margin-left:-115px;
+        width:230px;
+        height:50px;
+        font-size:24px;
+        color:#ffd633;
+        line-height:50px;
+        text-align:center;
+        background:url("../images/sign/actor/ranklist/intro-title.png") no-repeat center;
+      }
+      p{
+        float:left;
+        width:100%;
+        text-align:center;
+        margin-bottom:0;
+        font-size:18px;
+        color:#ffdd35;
+        span{
+          color:#fff;
+        }
+      }
+    }
+    .login-list{
+      float:left;
+      width:100%;
+      padding:60px 0;
+      text-align:center;
+      a{
+        padding: 7px 75px;
+        text-align: center;
+        border: 1px solid #fcee78;
+        border-radius: 10px;
+        margin: 0 20px;
+        color: #fcee78;
+        font-size: 22px;
+        display: inline-block;
+        position:relative;
+        overflow:hidden;
+        &:hover::before {
+          -webkit-transition: left 1s;
+          -moz-transition: left 1s;
+          transition: left 1s;
+          left: 280px;
+        }
+        &:before{
+          content: "";
+          position: absolute;
+          width: 40px;
+          height: 58px;
+          top: 0;
+          left: -35px;
+          overflow: hidden;
+          background: -moz-linear-gradient(left,rgba(255,255,255,0)0,rgba(255,255,255,.2)50%,rgba(255,255,255,0)100%);
+          background: -webkit-gradient(linear,left top,right top,color-stop(0%,rgba(255,255,255,0)),color-stop(50%,rgba(255,255,255,.2)),color-stop(100%,rgba(255,255,255,0)));
+          background: -webkit-linear-gradient(left,rgba(255,255,255,0)0,rgba(255,255,255,.2)50%,rgba(255,255,255,0)100%);
+          background: -o-linear-gradient(left,rgba(255,255,255,0)0,rgba(255,255,255,.2)50%,rgba(255,255,255,0)100%);
+          -webkit-transform: skewX(-25deg);
+          -moz-transform: skewX(-25deg);
+        }
+      }
+    }
+    .user-info{
+      float:left;
+      width:100%;
+      padding:45px 0;
+      ul{
+        float:left;
+        width:100%;
+        li{
+          float:left;
+          width:50%;
+          p{
+            float:left;
+            width:100%;
+            span{
+              &.project-name{
+                float:left;
+                width:200px;
+                margin-left:120px;
+                font-size:22px;
+                color:#ffedbc;
+              }
+            }
+            .project-operate{
+              float:left;
+              width:120px;
+              height:40px;
+              color:#a6000e;
+              text-align:center;
+              font-size:20px;
+              margin-left:40px;
+              position: relative;
+              overflow: hidden;
+              background:url("../images/sign/actor/ranklist/btn-bg.png") no-repeat center;
+              &:hover::before {
+                -webkit-transition: left 1s;
+                -moz-transition: left 1s;
+                transition: left 1s;
+                left: 150px;
+              }
+              &:before{
+                content: "";
+                position: absolute;
+                width: 20px;
+                height: 38px;
+                top: 0;
+                left: -25px;
+                overflow: hidden;
+                background: -moz-linear-gradient(left,rgba(255,255,255,0)0,rgba(255,255,255,.2)50%,rgba(255,255,255,0)100%);
+                background: -webkit-gradient(linear,left top,right top,color-stop(0%,rgba(255,255,255,0)),color-stop(50%,rgba(255,255,255,.2)),color-stop(100%,rgba(255,255,255,0)));
+                background: -webkit-linear-gradient(left,rgba(255,255,255,0)0,rgba(255,255,255,.2)50%,rgba(255,255,255,0)100%);
+                background: -o-linear-gradient(left,rgba(255,255,255,0)0,rgba(255,255,255,.2)50%,rgba(255,255,255,0)100%);
+                -webkit-transform: skewX(-25deg);
+                -moz-transform: skewX(-25deg);
+              }
+            }
+          }
+        }
+      }
+    }
+    .leader-btn{
+      float:left;
+      width:100%;
+      margin-top:50px;
+      li{
+        float:left;
+        width:220px;
+        height:50px;
+        line-height:50px;
+        margin-top:10px;
+        text-align:center;
+        font-size:20px;
+        color:#ffedbc;
+        border:1px solid #ffb74c;
+        border-bottom:none;
+        border-left:none;
+        border-top-right-radius:10px;
+        background: #e02152;
+        cursor:pointer;
+        &.active{
+          margin-top:0;
+          width:230px;
+          height:60px;
+          line-height:60px;
+          text-align:center;
+          font-size:22px; 
+          color:#ffdd35;
+          border:1px solid #ffb74c;
+          border-bottom:none;
+          border-top-left-radius:10px;
+          position: relative;
+          bottom: -1px;
+        }
+      }
+    }
+    .leader-container{
+      float:left;
+      width:998px;
+      margin-bottom:90px;
+      min-height:640px;
+      border:1px solid #ffb74c;
+      border-top-right-radius:10px;
+      border-bottom-left-radius:10px;
+      border-bottom-right-radius:10px;
+    }
+  }
+  .clearfix{
+    clear:both;
+    display:block;
   }
 }
 @media screen and (max-width:700px) {
@@ -697,14 +895,6 @@
           }
         }
       }
-    }
-  }
-  .rank-list-container {
-    .rank-model {
-      display: none;
-    }
-    .rank-phone-model {
-      display: block;
     }
   }
 }
