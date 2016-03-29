@@ -110,9 +110,8 @@ public class InvestTransferPurchaseServiceTest {
         InvestModel investModel = investMapper.findByLoginName(transferee.getLoginName(), 0, 1).get(0);
 
         investTransferPurchaseService.postPurchase(investModel.getId());
-
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(), TransferStatus.SUCCESS);
-
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(), Lists.newArrayList(TransferStatus.SUCCESS));
+        TransferApplicationModel transferApplicationModel = transferApplicationModels.get(0);
         InvestModel actualInvest = investMapper.findById(transferApplicationModel.getInvestId());
         assertThat(actualInvest.getStatus(), is(InvestStatus.SUCCESS));
         List<UserBillModel> transfereeUserBills = userBillMapper.findByLoginName(transferee.getLoginName());
@@ -124,8 +123,8 @@ public class InvestTransferPurchaseServiceTest {
 
         InvestModel actualTransferInvest = investMapper.findById(fakeTransferInvest.getId());
         assertThat(actualTransferInvest.getTransferStatus(), is(TransferStatus.SUCCESS));
-
-        TransferApplicationModel actualTransferApplication = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(), TransferStatus.SUCCESS);
+        List<TransferApplicationModel> actualTransferApplications = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(),Lists.newArrayList(TransferStatus.SUCCESS));
+        TransferApplicationModel actualTransferApplication = actualTransferApplications.get(0);
         assertNotNull(actualTransferApplication);
         assertThat(actualTransferApplication.getInvestId(), is(transferApplicationModel.getInvestId()));
 
@@ -198,8 +197,8 @@ public class InvestTransferPurchaseServiceTest {
 
         InvestModel actualTransferInvest = investMapper.findById(fakeTransferInvest.getId());
         assertThat(actualTransferInvest.getTransferStatus(), is(TransferStatus.SUCCESS));
-
-        TransferApplicationModel actualTransferApplication = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(), TransferStatus.SUCCESS);
+        List<TransferApplicationModel> actualTransferApplications = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(),Lists.newArrayList(TransferStatus.SUCCESS));
+        TransferApplicationModel actualTransferApplication = actualTransferApplications.get(0);
         assertNotNull(actualTransferApplication);
         assertThat(actualTransferApplication.getInvestId(), is(fakeInvest.getId()));
 
@@ -272,8 +271,8 @@ public class InvestTransferPurchaseServiceTest {
 
         InvestModel actualTransferInvest = investMapper.findById(fakeTransferInvest.getId());
         assertThat(actualTransferInvest.getTransferStatus(), is(TransferStatus.SUCCESS));
-
-        TransferApplicationModel actualTransferApplication = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(), TransferStatus.SUCCESS);
+        List<TransferApplicationModel> actualTransferApplications = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(),Lists.newArrayList(TransferStatus.SUCCESS));
+        TransferApplicationModel actualTransferApplication = actualTransferApplications.get(0);
         assertNotNull(actualTransferApplication);
         assertThat(actualTransferApplication.getInvestId(), is(fakeInvest.getId()));
 
@@ -346,8 +345,8 @@ public class InvestTransferPurchaseServiceTest {
 
         InvestModel actualTransferInvest = investMapper.findById(fakeTransferInvest.getId());
         assertThat(actualTransferInvest.getTransferStatus(), is(TransferStatus.SUCCESS));
-
-        TransferApplicationModel actualTransferApplication = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(), TransferStatus.SUCCESS);
+        List<TransferApplicationModel> actualTransferApplications = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(),Lists.newArrayList(TransferStatus.SUCCESS));
+        TransferApplicationModel actualTransferApplication = actualTransferApplications.get(0);
         assertNotNull(actualTransferApplication);
         assertThat(actualTransferApplication.getInvestId(), is(fakeInvest.getId()));
 

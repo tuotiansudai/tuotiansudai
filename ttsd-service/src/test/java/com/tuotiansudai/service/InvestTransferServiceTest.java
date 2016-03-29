@@ -24,12 +24,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -190,10 +189,62 @@ public class InvestTransferServiceTest {
         transferApplicationDto.setTransferInterest(true);
         investTransferService.investTransferApply(transferApplicationDto);
 
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByTransferInvestId(investModel.getId(), TransferStatus.TRANSFERRING);
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
 
-        assertThat(transferApplicationModel.getName(), is(MessageFormat.format(TRANSFER_APPLY_NAME, new DateTime().toString("yyyyMMdd"), String.format("%03d", Integer.parseInt(redisWrapperClient.get(MessageFormat.format(redisTransferApplicationNumber, new DateTime().toString("yyyyMMdd"))))))));
-        assertThat(transferApplicationModel.getPeriod(), is(1));
+        assertThat(transferApplicationModels.get(0).getName(), is(MessageFormat.format(TRANSFER_APPLY_NAME, new DateTime().toString("yyyyMMdd"), String.format("%03d", Integer.parseInt(redisWrapperClient.get(MessageFormat.format(redisTransferApplicationNumber, new DateTime().toString("yyyyMMdd"))))))));
+        assertThat(transferApplicationModels.get(0).getPeriod(), is(1));
+    }
+
+    @Test
+    public void shouldIsTransferByInvestTransfer() throws Exception {
+        long loanId = idGenerator.generate();
+        UserModel userModel = createUserByUserId("testuser");
+        LoanModel loanModel = createLoanByUserId("testuser", loanId);
+        loanModel.setStatus(LoanStatus.REPAYING);
+        loanMapper.update(loanModel);
+        InvestModel investModel = createInvest("testuser", loanId);
+
+        InvestModel investModelError = createInvest("testuser", loanId);
+
+        LoanRepayModel repayingLoan1Repay1 = this.getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(30).toDate(), null, 0, 1, 0, 0);
+        LoanRepayModel repayingLoan1Repay2 = this.getFakeLoanRepayModel(loanModel, 2, RepayStatus.REPAYING, new DateTime().plusDays(60).toDate(), null, 1, 1, 0, 0);
+
+        loanRepayMapper.create(Lists.newArrayList(repayingLoan1Repay1, repayingLoan1Repay2));
+
+        TransferApplicationDto transferApplicationDto = new TransferApplicationDto();
+        transferApplicationDto.setTransferInvestId(investModel.getId());
+        transferApplicationDto.setTransferAmount(1L);
+        transferApplicationDto.setTransferInterest(true);
+
+        investTransferService.investTransferApply(transferApplicationDto);
+
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(),Lists.newArrayList(TransferStatus.TRANSFERRING));
+        TransferApplicationModel transferApplicationModel = transferApplicationModels.get(0);
+        transferApplicationModel.setStatus(TransferStatus.SUCCESS);
+        transferApplicationModel.setInvestId(investModelError.getId());
+        transferApplicationMapper.update(transferApplicationModel);
+
+        boolean result = investTransferService.isTransferable(investModelError.getId());
+
+        assertFalse(result);
+    }
+    @Test
+    public void shouldIsTransferableByOverDaysLimit(){
+        long loanId = idGenerator.generate();
+        UserModel userModel = createUserByUserId("testuser");
+        LoanModel loanModel = createLoanByUserId("testuser", loanId);
+        loanModel.setStatus(LoanStatus.REPAYING);
+        loanMapper.update(loanModel);
+        InvestModel investModel = createInvest("testuser", loanId);
+
+        LoanRepayModel repayingLoan1Repay1 = this.getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(7).toDate(), new DateTime().plusDays(7).toDate(), 0, 1, 0, 0);
+        LoanRepayModel repayingLoan1Repay2 = this.getFakeLoanRepayModel(loanModel, 2, RepayStatus.REPAYING, new DateTime().plusDays(60).toDate(), new DateTime().plusDays(60).toDate(), 1, 1, 0, 0);
+
+        loanRepayMapper.create(Lists.newArrayList(repayingLoan1Repay1, repayingLoan1Repay2));
+
+        boolean result = investTransferService.isTransferable(investModel.getId());
+
+        assertFalse(result);
     }
 
 }

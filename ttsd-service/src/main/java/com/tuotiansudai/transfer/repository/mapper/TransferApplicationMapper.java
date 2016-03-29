@@ -5,6 +5,9 @@ import com.tuotiansudai.repository.model.TransferStatus;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Map;
+
 @Repository
 public interface TransferApplicationMapper {
 
@@ -12,7 +15,7 @@ public interface TransferApplicationMapper {
 
     void update(TransferApplicationModel model);
 
-    TransferApplicationModel findByTransferInvestId(@Param("transferInvestId")long transferInvestId, @Param("status")TransferStatus status);
+    List<TransferApplicationModel> findByTransferInvestId(@Param("transferInvestId")long transferInvestId, @Param("transferStatusList")List<TransferStatus> transferStatusList);
 
     TransferApplicationModel findById(long id);
 

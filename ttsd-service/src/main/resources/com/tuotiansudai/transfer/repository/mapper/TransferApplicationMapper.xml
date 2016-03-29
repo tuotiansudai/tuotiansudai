@@ -30,7 +30,19 @@
     </insert>
 
     <select id="findByTransferInvestId" parameterType="map" resultMap="transferApplicationResultMap">
-        select * from transfer_application where transfer_invest_id = #{transferInvestId} and status = #{status}
+        select * from transfer_application
+        <where>
+            <if test="transferInvestId != null">
+                transfer_invest_id = #{transferInvestId}
+            </if>
+            <if test="transferStatusList != null and transferStatusList.size != 0">
+                and status in
+                <foreach item="item" index="index" collection="transferStatusList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+        </where>
     </select>
 
     <select id="findByInvestId" parameterType="long" resultMap="transferApplicationResultMap">

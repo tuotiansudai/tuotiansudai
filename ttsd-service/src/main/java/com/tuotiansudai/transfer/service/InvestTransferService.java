@@ -13,4 +13,6 @@ public interface InvestTransferService {
 
     Date getDeadlineFromNow();
 
+    boolean isTransferable(long investId);
+
 }

@@ -1,8 +1,10 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.AmountTransferException;
@@ -24,6 +26,7 @@ import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -88,10 +91,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         String loginName = investDto.getLoginName();
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         long transferInvestId = Long.parseLong(investDto.getTransferInvestId());
-
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByTransferInvestId(transferInvestId, TransferStatus.TRANSFERRING);
-
-        if (transferApplicationModel == null || transferApplicationModel.getTransferAmount() > accountModel.getBalance()) {
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(transferInvestId,Lists.newArrayList(TransferStatus.TRANSFERRING));
+        if (CollectionUtils.isEmpty(transferApplicationModels) || transferApplicationModels.get(0).getTransferAmount() > accountModel.getBalance()) {
             return baseDto;
         }
         InvestModel transferInvestModel = investMapper.findById(transferInvestId);
@@ -109,7 +110,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newPurchaseNopwdRequest(String.valueOf(investModel.getLoanId()),
                 String.valueOf(investModel.getId()),
                 accountModel.getPayUserId(),
-                String.valueOf(transferApplicationModel.getTransferAmount()));
+                String.valueOf(transferApplicationModels.get(0).getTransferAmount()));
 
         try {
 
@@ -141,9 +142,8 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         BaseDto<PayFormDataDto> dto = new BaseDto<>();
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         dto.setData(payFormDataDto);
-
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByTransferInvestId(transferInvestId, TransferStatus.TRANSFERRING);
-        if (transferApplicationModel == null || transferApplicationModel.getTransferAmount() > transfereeAccount.getBalance()) {
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(transferInvestId,Lists.newArrayList(TransferStatus.TRANSFERRING));
+        if (CollectionUtils.isEmpty(transferApplicationModels)|| transferApplicationModels.get(0).getTransferAmount() > transfereeAccount.getBalance()) {
             return dto;
         }
 
@@ -164,11 +164,11 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                     String.valueOf(investModel.getLoanId()),
                     String.valueOf(investModel.getId()),
                     transfereeAccount.getPayUserId(),
-                    String.valueOf(transferApplicationModel.getTransferAmount()),
+                    String.valueOf(transferApplicationModels.get(0).getTransferAmount()),
                     investDto.getSource());
             return payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
         } catch (PayException e) {
-            logger.error(MessageFormat.format("{0} purchase transfer(transferApplicationId={1}) is failed", transferee, String.valueOf(transferApplicationModel.getId())), e);
+            logger.error(MessageFormat.format("{0} purchase transfer(transferApplicationId={1}) is failed", transferee, String.valueOf(transferApplicationModels.get(0).getId())), e);
         }
 
         return dto;
@@ -189,18 +189,17 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                     String.valueOf(investModel.getTransferInvestId() != null ? investModel.getTransferInvestId() : null)));
             return;
         }
-
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByTransferInvestId(investModel.getTransferInvestId(), TransferStatus.TRANSFERRING);
-        if (transferApplicationModel == null || transferApplicationModel.getStatus() != TransferStatus.TRANSFERRING) {
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getTransferInvestId(),Lists.newArrayList(TransferStatus.TRANSFERRING));
+        if (CollectionUtils.isEmpty(transferApplicationModels) || transferApplicationModels.get(0).getStatus() != TransferStatus.TRANSFERRING) {
             logger.error(MessageFormat.format("transfer is failed, transfer application(investId={0}) is null or transfer status is not TRANSFERRING",
-                    String.valueOf(transferApplicationModel != null ? transferApplicationModel.getId() : null)));
+                    String.valueOf(transferApplicationModels.get(0) != null ? transferApplicationModels.get(0).getId() : null)));
             return;
         }
-
+        TransferApplicationModel transferApplicationModel = transferApplicationModels.get(0);
         // update transferee invest status
         investMapper.updateStatus(investId, InvestStatus.SUCCESS);
         // generate transferee balance
-        amountTransfer.transferOutBalance(investModel.getLoginName(), investId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_IN, null, null);
+        amountTransfer.transferOutBalance(investModel.getLoginName(), investId, transferApplicationModels.get(0).getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_IN, null, null);
 
         // update transferrer invest transfer status
         investMapper.updateTransferStatus(transferInvestModel.getId(), TransferStatus.SUCCESS);
