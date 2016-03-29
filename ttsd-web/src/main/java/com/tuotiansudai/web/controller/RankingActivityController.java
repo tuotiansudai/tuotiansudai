@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.ranking.UserScoreDto;
 import com.tuotiansudai.service.RankingActivityService;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,16 +16,17 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping(value = "/ranking")
+@Controller
+@RequestMapping(value = "/activity")
 public class RankingActivityController {
 
     @Autowired
     private RankingActivityService rankingActivityService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/rank-list", method = RequestMethod.GET)
     public ModelAndView loadPageData() {
 
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = new ModelAndView("/activities/rank-list");
         String loginName = LoginUserInfo.getLoginName();
 
         Long myRank = rankingActivityService.getUserRank(loginName);
@@ -33,12 +35,15 @@ public class RankingActivityController {
 
         Map<String, List<UserTianDouRecordDto>> winnerList = rankingActivityService.getTianDouWinnerList();
 
-        List<UserTianDouRecordDto> myPrize = rankingActivityService.getPrizeByLoginName(loginName);
+        List<UserTianDouRecordDto> myPrizeList = rankingActivityService.getPrizeByLoginName(loginName);
+
+        Double myTianDou = rankingActivityService.getUserScoreByLoginName(loginName);
 
         modelAndView.addObject("myRank", myRank);
         modelAndView.addObject("tianDouTop15", tianDouTop15);
         modelAndView.addObject("winnerList", winnerList);
-        modelAndView.addObject("myPrize", myPrize);
+        modelAndView.addObject("myPrizeList", myPrizeList);
+        modelAndView.addObject("myTianDou", myTianDou);
         return modelAndView;
     }
 

@@ -166,8 +166,10 @@ public class RankingActivityServiceImpl implements RankingActivityService {
     // reutrn null if not exists
     @Override
     public Long getUserRank(String loginName) {
-        Long rank = redisWrapperClient.zrevrank(TIAN_DOU_USER_SCORE_RANK, loginName) + 1;
-        return rank;
+        if (loginName == null)
+            return null;
+        Long rank = redisWrapperClient.zrevrank(TIAN_DOU_USER_SCORE_RANK, loginName);
+        return rank == null ? null : rank + 1;
     }
 
     @Override
@@ -257,6 +259,8 @@ public class RankingActivityServiceImpl implements RankingActivityService {
      */
     @Override
     public Double getUserScoreByLoginName(String loginName) {
+        if (loginName == null)
+            return 0.0;
         Double score = redisWrapperClient.zscore(TIAN_DOU_USER_SCORE_RANK, loginName);
         return score;
     }
