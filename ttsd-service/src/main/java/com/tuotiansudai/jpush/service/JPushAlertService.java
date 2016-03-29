@@ -44,7 +44,7 @@ public interface JPushAlertService {
 
     void autoJPushRepayAlert(long loanId);
 
-    void autoJPushRechargeAlert(RechargeDto rechargeDto);
+    void autoJPushRechargeAlert(long orderId);
 
     void autoJPushWithDrawApplyAlert(long orderId);
 

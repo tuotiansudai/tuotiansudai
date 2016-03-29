@@ -23,9 +23,9 @@ public class AutoJPushRechargeAlertJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.debug("trigger send jPush alert recharge job, prepare do job");
-        RechargeDto rechargeDto = (RechargeDto) context.getJobDetail().getJobDataMap().get(RECHARGE_ID_KEY);
-        jPushAlertService.autoJPushRechargeAlert(rechargeDto);
-        logger.debug("trigger send jPush alert recharge job, lognName : " + rechargeDto.getLoginName());
+        long orderId = (long) context.getJobDetail().getJobDataMap().get(RECHARGE_ID_KEY);
+        jPushAlertService.autoJPushRechargeAlert(orderId);
+        logger.debug("trigger send jPush alert recharge job, orderId : " + orderId);
 
     }
 }

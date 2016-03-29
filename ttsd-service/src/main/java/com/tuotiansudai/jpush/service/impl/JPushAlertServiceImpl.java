@@ -79,6 +79,9 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private WithdrawMapper withdrawMapper;
 
     @Autowired
+    private RechargeMapper rechargeMapper;
+
+    @Autowired
     private JobManager jobManager;
 
     @Autowired
@@ -477,14 +480,15 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
-    public void autoJPushRechargeAlert(RechargeDto rechargeDto){
-        long totalAmount = accountMapper.findByLoginName(rechargeDto.getLoginName()).getBalance();
+    public void autoJPushRechargeAlert(long orderId){
+        RechargeModel rechargeModel = rechargeMapper.findById(orderId);
+        long totalAmount = accountMapper.findByLoginName(rechargeModel.getLoginName()).getBalance();
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.RECHARGE_ALERT);
         if (jPushAlertModel != null) {
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
 
-            List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(Long.parseLong(rechargeDto.getAmount())),AmountConverter.convertCentToString(totalAmount));
-            loginNameMap.put(rechargeDto.getLoginName(), amountLists);
+            List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(rechargeModel.getAmount()),AmountConverter.convertCentToString(totalAmount));
+            loginNameMap.put(rechargeModel.getLoginName(), amountLists);
             autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
             loginNameMap.clear();
 
