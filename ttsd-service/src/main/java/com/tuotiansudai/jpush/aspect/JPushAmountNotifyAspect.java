@@ -1,17 +1,14 @@
 package com.tuotiansudai.jpush.aspect;
 
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.RechargeDto;
-import com.tuotiansudai.dto.RepayDto;
-import com.tuotiansudai.job.AutoJPushRepayAlertJob;
-import com.tuotiansudai.job.AutoJPushRechargeAlertJob;
-import com.tuotiansudai.job.AutoJPushWithDrawApplyAlertJob;
-import com.tuotiansudai.job.AutoJPushWithDrawAlertJob;
-import com.tuotiansudai.job.AutoJPushReferrerRewardAlertJob;
-import com.tuotiansudai.job.JobType;
+/**
+ * Created by gengbeijun on 16/3/29.
+ */
+
+import com.tuotiansudai.job.*;
 import com.tuotiansudai.repository.mapper.InvestReferrerRewardMapper;
+import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
+import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
@@ -24,17 +21,24 @@ import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.MessageFormat;
 import java.util.Date;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by gengbeijun on 16/3/18.
  */
 @Component
 @Aspect
-public class JPushAspect {
-    static Logger logger = Logger.getLogger(JPushAspect.class);
+public class JPushAmountNotifyAspect {
+    static Logger logger = Logger.getLogger(JPushAmountNotifyAspect.class);
+
+    public final static String REPAY = "Repay-{0}";
+    public final static String RECHARGE = "Recharge-{0}";
+    public final static String WITHDRAWAPPLY = "WithDrawApply-{0}";
+    public final static String WITHDRAW = "WithDraw-{0}";
+    public final static String REFERRERREWARD = "ReferrerReward-{0}";
 
     @Autowired
     private JobManager jobManager;
@@ -44,6 +48,12 @@ public class JPushAspect {
 
     @Autowired
     private InvestReferrerRewardMapper investReferrerRewardMapper;
+
+    @Autowired
+    private RechargeMapper rechargeMapper;
+
+    @Autowired
+    private WithdrawMapper withdrawMapper;
 
     @Pointcut("execution(* *..RepayService.postRepayCallback(..))")
     public void postRepayCallbackPointcut() {}
@@ -61,46 +71,44 @@ public class JPushAspect {
     public void afterReturningPostRepayCallback(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after repay pointcut");
         try {
-            RepayDto repayDto = (RepayDto)joinPoint.getArgs()[0];
+            long LoanId = (long)joinPoint.getArgs()[0];
             if((boolean)returnValue){
-                createAutoJPushRepayAlertJob(repayDto.getLoanId());
+                createAutoJPushRepayAlertJob(LoanId);
             }
         } catch (Exception e) {
             logger.error("after repay aspect fail ", e);
         }
     }
 
-    @AfterReturning(value = "rechargeCallbackPointcut()", returning = "returnValue")
-    public void afterReturningRechargeCallback(JoinPoint joinPoint, Object returnValue) {
+    @AfterReturning(value = "rechargeCallbackPointcut()")
+    public void afterReturningRechargeCallback(JoinPoint joinPoint) {
         logger.debug("after recharge pointcut");
         try {
-            RechargeDto rechargeDto = (RechargeDto)joinPoint.getArgs()[0];
-            BaseDto<PayFormDataDto> baseDto = (BaseDto<PayFormDataDto>) returnValue;
-            if(baseDto != null && baseDto.isSuccess()){
-                createAutoJPushRechargeAlertJob(rechargeDto);
+            Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
+            long orderId = Long.parseLong(paramsMap.get("order_id"));
+            RechargeModel  rechargeModel = rechargeMapper.findById(orderId);
+            if(rechargeModel != null && "SUCCESS".equals(rechargeModel.getStatus())){
+                createAutoJPushRechargeAlertJob(orderId);
             }
         } catch (Exception e) {
             logger.error("after recharge aspect fail ", e);
         }
     }
 
-    @AfterReturning(value = "withdrawCallbackPointcut()", returning = "returnValue")
-    public void afterReturningWithdrawCallback(JoinPoint joinPoint, Object returnValue) {
+    @AfterReturning(value = "withdrawCallbackPointcut()")
+    public void afterReturningWithdrawCallback(JoinPoint joinPoint) {
         logger.debug("after Withdraw pointcut");
         try {
             Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
             long orderId = Long.parseLong(paramsMap.get("order_id"));
-            if(this.isApplyNotify(paramsMap)){
-                if("0000".equals(paramsMap.get("ret_code").toString()))
-                {
-                    createAutoJPushWithDrawApplyAlertJob(orderId);
-                }
+            WithdrawModel withdrawModel = withdrawMapper.findById(orderId);
+            if("WAIT_PAY".equals(withdrawModel.getStatus()))
+            {
+                createAutoJPushWithDrawApplyAlertJob(orderId);
             }
-            else{
-                if("0000".equals(paramsMap.get("ret_code").toString()))
-                {
-                    createAutoJPushWithDrawAlertJob(orderId);
-                }
+            else if("SUCCESS".equals(withdrawModel.getStatus()))
+            {
+                createAutoJPushWithDrawAlertJob(orderId);
             }
         } catch (Exception e) {
             logger.error("after Withdraw aspect fail ", e);
@@ -124,18 +132,13 @@ public class JPushAspect {
         }
     }
 
-
-    private boolean isApplyNotify(Map<String, String> paramsMap) {
-        return paramsMap.containsKey("service");
-    }
-
     private void createAutoJPushRepayAlertJob(long loanId) {
         try {
             Date triggerTime = new DateTime().plusMinutes(AutoJPushRepayAlertJob.JPUSH_ALERT_REPAY_DELAY_MINUTES)
                     .toDate();
             jobManager.newJob(JobType.AutoJPushRepayAlert, AutoJPushRepayAlertJob.class)
                     .addJobData(AutoJPushRepayAlertJob.REPAY_ID_KEY, loanId)
-                    .withIdentity(JobType.AutoJPushRepayAlert.name(), "Repay-" + loanId)
+                    .withIdentity(JobType.AutoJPushRepayAlert.name(), formatMessage(REPAY, loanId))
                     .runOnceAt(triggerTime)
                     .submit();
         } catch (SchedulerException e) {
@@ -143,17 +146,17 @@ public class JPushAspect {
         }
     }
 
-    private void createAutoJPushRechargeAlertJob(RechargeDto rechargeDto) {
+    private void createAutoJPushRechargeAlertJob(long orderId) {
         try {
             Date triggerTime = new DateTime().plusMinutes(AutoJPushRechargeAlertJob.JPUSH_ALERT_RECHARGE_DELAY_MINUTES)
                     .toDate();
             jobManager.newJob(JobType.AutoJPushRechargeAlert, AutoJPushRechargeAlertJob.class)
-                    .addJobData(AutoJPushRechargeAlertJob.RECHARGE_ID_KEY, rechargeDto)
-                    .withIdentity(JobType.AutoJPushRechargeAlert.name(), "Recharge-" + rechargeDto)
+                    .addJobData(AutoJPushRechargeAlertJob.RECHARGE_ID_KEY, orderId)
+                    .withIdentity(JobType.AutoJPushRechargeAlert.name(),  formatMessage(RECHARGE, orderId))
                     .runOnceAt(triggerTime)
                     .submit();
         } catch (SchedulerException e) {
-            logger.error("create send AutoJPushRepayAlert job for loginName[" + rechargeDto.getLoginName() + "] fail", e);
+            logger.error("create send AutoJPushRepayAlert job for loginName[" + orderId + "] fail", e);
         }
     }
 
@@ -163,7 +166,7 @@ public class JPushAspect {
                     .toDate();
             jobManager.newJob(JobType.AutoJPushWithDrawApplyAlert, AutoJPushWithDrawApplyAlertJob.class)
                     .addJobData(AutoJPushWithDrawApplyAlertJob.WITHDRAW_APPLY_ID_KEY, orderId)
-                    .withIdentity(JobType.AutoJPushWithDrawApplyAlert.name(), "WithDrawApply-" + orderId)
+                    .withIdentity(JobType.AutoJPushWithDrawApplyAlert.name(), formatMessage(WITHDRAWAPPLY, orderId))
                     .runOnceAt(triggerTime)
                     .submit();
         } catch (SchedulerException e) {
@@ -177,7 +180,7 @@ public class JPushAspect {
                     .toDate();
             jobManager.newJob(JobType.AutoJPushWithDrawAlert, AutoJPushWithDrawAlertJob.class)
                     .addJobData(AutoJPushWithDrawAlertJob.WITHDRAW_ID_KEY, orderId)
-                    .withIdentity(JobType.AutoJPushWithDrawAlert.name(), "WithDraw-" + orderId)
+                    .withIdentity(JobType.AutoJPushWithDrawAlert.name(), formatMessage(WITHDRAW, orderId))
                     .runOnceAt(triggerTime)
                     .submit();
         } catch (SchedulerException e) {
@@ -191,7 +194,7 @@ public class JPushAspect {
                     .toDate();
             jobManager.newJob(JobType.AutoJPushReferrerRewardAlert, AutoJPushReferrerRewardAlertJob.class)
                     .addJobData(AutoJPushReferrerRewardAlertJob.REFERRER_REWARD_ID_KEY, orderId)
-                    .withIdentity(JobType.AutoJPushReferrerRewardAlert.name(), "ReferrerReward-" + orderId)
+                    .withIdentity(JobType.AutoJPushReferrerRewardAlert.name(), formatMessage(REFERRERREWARD, orderId))
                     .runOnceAt(triggerTime)
                     .submit();
         } catch (SchedulerException e) {
@@ -199,4 +202,7 @@ public class JPushAspect {
         }
     }
 
+    private String formatMessage(String message, Object object){
+        return MessageFormat.format(message, object);
+    }
 }
