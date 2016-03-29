@@ -1,5 +1,6 @@
 package com.tuotiansudai.point.service.impl;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
@@ -7,6 +8,7 @@ import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LotteryTransferCashJob;
+import com.tuotiansudai.point.dto.UserPointPrizeDto;
 import com.tuotiansudai.point.repository.mapper.PointPrizeMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
@@ -172,4 +174,29 @@ public class PointLotteryServiceImpl implements PointLotteryService{
         int expiryTime = DateUtil.differenceSeconds(begin, end);
         redisWrapperClient.setex(MessageFormat.format(redisShareTemple, loginName, formatShortTime.format(new Date()).replace("-","")), expiryTime, "1");
     }
+
+    @Override
+    public List<UserPointPrizeDto> findAllDrawLottery() {
+        List<UserPointPrizeModel> userPointPrizeModels = userPointPrizeMapper.findAllDescCreatedTime();
+        return Lists.transform(userPointPrizeModels, new Function<UserPointPrizeModel, UserPointPrizeDto>() {
+            @Override
+            public UserPointPrizeDto apply(UserPointPrizeModel input) {
+                UserPointPrizeDto userPointPrizeDto = new UserPointPrizeDto(input.getLoginName(), pointPrizeMapper.findById(input.getPointPrizeId()).getName(), input.getCreatedTime());
+                return userPointPrizeDto;
+            }
+        });
+    }
+
+    @Override
+    public List<UserPointPrizeDto> findMyDrawLottery(String loginName) {
+        List<UserPointPrizeModel> userPointPrizeModels = userPointPrizeMapper.findByLoginName(loginName);
+        return Lists.transform(userPointPrizeModels, new Function<UserPointPrizeModel, UserPointPrizeDto>() {
+            @Override
+            public UserPointPrizeDto apply(UserPointPrizeModel input) {
+                UserPointPrizeDto userPointPrizeDto = new UserPointPrizeDto(input.getLoginName(), pointPrizeMapper.findById(input.getPointPrizeId()).getName(), input.getCreatedTime());
+                return userPointPrizeDto;
+            }
+        });
+    }
+
 }

@@ -12,4 +12,6 @@ public interface PointPrizeMapper {
 
     List<PointPrizeModel> findAllUnPossibleWin();
 
+    PointPrizeModel findById(long pointPrizeId);
+
 }

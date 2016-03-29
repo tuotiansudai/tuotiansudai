@@ -24,4 +24,8 @@
         select * from point_prize where probability = 0 and active is true order by id;
     </select>
 
+    <select id="findById" parameterType="long" resultMap="pointPrizeResultMap">
+        select * from point_prize where id = #{id}
+    </select>
+
 </mapper>
