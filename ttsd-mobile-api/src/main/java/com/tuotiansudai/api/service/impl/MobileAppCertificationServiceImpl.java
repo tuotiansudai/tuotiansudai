@@ -10,6 +10,7 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,10 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
     @Autowired
     private UserService userService;
     @Autowired
-   private AccountMapper accountMapper;
+    private AccountMapper accountMapper;
+
+    @Autowired
+    private AccountService accountService;
 
     @Override
     public BaseResponseDto validateUserCertificationInfo(CertificationRequestDto certificationRequestDto) {
@@ -34,6 +38,9 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
             baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
             baseResponseDto.setData(certificationResponseDataDto);
             return baseResponseDto;
+        }
+        if (accountService.isIdentityNumberExist(certificationRequestDto.getUserIdCardNumber())) {
+            return new BaseResponseDto(ReturnMessage.ID_CARD_IS_EXIST.getCode(), ReturnMessage.ID_CARD_IS_EXIST.getMsg());
         }
         BaseDto<PayDataDto> dto = userService.registerAccount(registerAccountDto);
         if(dto.getData().getStatus()){

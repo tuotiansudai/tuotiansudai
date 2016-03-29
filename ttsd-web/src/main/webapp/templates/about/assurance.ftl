@@ -33,7 +33,7 @@
             <em>最高46倍活期存款收益，最低投资门槛50元</em>
         </div>
             <div class="page-width">
-                <img src="/images/sign/assure/benift.png" class="fl" />
+                <img src="${staticServer}/images/sign/assure/benift.png" class="fl" />
                 <div class="fr">
                     <p>
                         拓天速贷收益高且稳定持久。<br/>
@@ -47,7 +47,7 @@
                     </P>
                     <p>拓天速贷投资门槛低，50元即可起投。</p>
                 </div>
-                <div class="down clearfix"><b>试试鼠标滚动</b><img src="/images/sign/assure/down.png" class="down-icon" alt=""></div>
+                <div class="down clearfix"><b>试试鼠标滚动</b><img src="${staticServer}/images/sign/assure/down.png" class="down-icon" alt=""></div>
             </div>
 
     </div>
@@ -58,7 +58,7 @@
             <em>第三方资金托管，第三方支付</em>
         </div>
             <div class="page-width wealth-content">
-                <img src="/images/sign/assure/wealth.png" class="page-img" />
+                <img src="${staticServer}/images/sign/assure/wealth.png" class="page-img" />
                 <p class="article-one">
                     拓天速贷由联动优势提供第三方资金托管和交易;<br/>
                     拓天速贷只撮合理财项目，不经手资金;<br/>
@@ -75,7 +75,7 @@
 
                 </p>
 
-                <div class="down clearfix"><b>试试鼠标滚动</b><img src="/images/sign/assure/down.png" class="down-icon" alt=""></div>
+                <div class="down clearfix"><b>试试鼠标滚动</b><img src="${staticServer}/images/sign/assure/down.png" class="down-icon" alt=""></div>
             </div>
     </div>
     <div class="section box-insurance">
@@ -85,7 +85,7 @@
             <em>上市企业投资，资金数据均安全</em>
         </div>
         <div class="page-width clearfix">
-            <img src="/images/sign/assure/insurance.png" class="page-img" />
+            <img src="${staticServer}/images/sign/assure/insurance.png" class="page-img" />
             <div class="fl">
                 <p class="info-one">
                     <b class="text-18">上市企业投资</b><br/>
@@ -135,7 +135,7 @@
 
                 </p>
             </div>
-            <div class="down clearfix"><b>试试鼠标滚动</b><img src="/images/sign/assure/up.png" class="down-icon" alt=""></div>
+            <div class="down clearfix"><b>试试鼠标滚动</b><img src="${staticServer}/images/sign/assure/up.png" class="down-icon" alt=""></div>
          </div>
     </div>
 </div>

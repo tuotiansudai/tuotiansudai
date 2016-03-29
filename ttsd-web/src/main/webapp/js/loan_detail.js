@@ -1,5 +1,4 @@
-require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'csrf', 'autoNumeric', 'coupon-alert','red-envelope-float'], function ($, pagination, Mustache, investListTemplate, layer, _) {
-
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper', 'underscore', 'jquery.ajax.extension', 'autoNumeric', 'coupon-alert','red-envelope-float'], function ($, pagination, Mustache, investListTemplate, layer, _) {
     var $loanDetail = $('.loan-detail-content'),
         loanId = $('.hid-loan').val(),
         amountInputElement = $(".text-input-amount", $loanDetail),
@@ -8,7 +7,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         tabs = $('.loan-nav li'),
         $loanList = $('.loan-list', $loanDetail),
         paginationElement = $('.pagination', $loanDetail),
-        $error = $('.errorTip');
+        $error = $('.errorTip'),
+        $minInvestAmount = $('.text-input-amount').data('min-invest-amount');
 
     layer.ready(function () {
         layer.photos({
@@ -249,12 +249,21 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 }
 
                 var investAmount = getInvestAmount();
-
                 if (!validateInvestAmount()) {
                     var tipContent = investAmount === 0 ? '投资金额不能为0元！' : '投资金额不能大于可投金额！';
                     layer.tips('<i class="fa fa-times-circle"></i>' + tipContent, '.text-input-amount', {
                         tips: [1, '#ff7200'],
                         time: 0
+                    });
+                    return false;
+                }
+                var minInvestAmount = parseInt(($minInvestAmount * 100).toFixed(0));
+                if(investAmount < minInvestAmount){
+                    var tipContent = '投资金额小于标的最小投资金额！';
+                    layer.tips('<i class="fa fa-times-circle"></i>' + tipContent, '.text-input-amount', {
+                        tips: [1, '#ff7200'],
+                        time: 0,
+                        maxWidth : 280
                     });
                     return false;
                 }

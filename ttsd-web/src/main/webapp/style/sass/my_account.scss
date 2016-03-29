@@ -1234,14 +1234,16 @@ color: #8c8c8c;
             top: 29px;
             border: solid 1px #fdd8bd;
             background: #fff2e9;
-            width: 100%;
-            text-align: left;
+            width:100%;
+            max-height: 285px;
+            text-align:left;
             font-size: 13px;
+            overflow: hidden;
+            overflow-y: scroll;
 
             li {
               padding: 5px 10px;
               line-height: 1.6;
-
               &.lower-upper-limit {
                 .input-use-ticket, label .sign {
                   position: relative;
@@ -1267,40 +1269,12 @@ color: #8c8c8c;
                   font-size: 10px;
                 }
               }
-            }
-            .ticket-list {
-              position: absolute;
-              z-index: 100;
-              left: 0px;
-              top: 29px;
-              border: solid 1px #fdd8bd;
-              background: #fff2e9;
-              width:100%;
-              max-height: 285px;
-              text-align: left;
-              font-size: 13px;
-              overflow: hidden;
-              overflow-y: scroll;
-              li {
-                padding:5px 10px;
-                line-height: 1.6;
-                &.lower-upper-limit {
-                  .input-use-ticket,label .sign{
-                    position: relative;
-                    top:-8px;
-                  }
-                }
-                .input-use-ticket {
-                   margin-bottom: 12px;
-                }
-              }
               &:hover {
                 background: #ffead9;
               }
               &.disabled {
                 color: #8f8f8f;
                 background: #f2f2f2;
-
                 .sign {
                   background: #909090;
                 }
@@ -1690,6 +1664,9 @@ position: relative;
     font-weight: normal;
     color: #666;
     cursor: pointer;
+    &.rule-show{
+      color:#ff752a;
+    }
   }
 }
 .rule-list {

@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.console.bi.dto.RoleStage;
+import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
+import com.tuotiansudai.console.service.UserServiceConsole;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.BaseException;
@@ -44,6 +47,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserServiceConsole userServiceConsole;
+
+    @Autowired
+    private UserMapperConsole userMapperConsole;
 
     @Autowired
     private UserMapper userMapper;
@@ -175,8 +184,8 @@ public class UserController {
                 e.printStackTrace();
             }
             response.setContentType("application/csv");
-            int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, roleStage, referrer, channel);
-            BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrer, channel, 1, count);
+            int count = userMapperConsole.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, roleStage, referrer, channel);
+            BaseDto<BasePaginationDataDto> baseDto = userServiceConsole.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrer, channel, 1, count);
             List<List<String>> data = Lists.newArrayList();
             List<UserItemDataDto> userItemDataDtos = baseDto.getData().getRecords();
             for (int i = 0; i < userItemDataDtos.size(); i++) {
@@ -211,7 +220,7 @@ public class UserController {
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUsers, data, response.getOutputStream());
             return null;
         } else {
-            BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrer, channel, index, pageSize);
+            BaseDto<BasePaginationDataDto> baseDto = userServiceConsole.findAllUser(loginName, email, mobile, beginTime, endTime, source, roleStage, referrer, channel, index, pageSize);
             ModelAndView mv = new ModelAndView("/user-list");
             mv.addObject("baseDto", baseDto);
             mv.addObject("loginName", loginName);

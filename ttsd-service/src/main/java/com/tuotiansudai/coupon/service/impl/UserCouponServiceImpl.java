@@ -7,8 +7,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.CouponUseRecordView;
+import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -19,7 +18,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,43 +38,33 @@ public class UserCouponServiceImpl implements UserCouponService {
     @Autowired
     private UserBirthdayUtil userBirthdayUtil;
 
-    public List<UserCouponDto> getUnusedUserCoupons(String loginName) {
-        List<UserCouponModel> userModelList = userCouponMapper.findByLoginName(loginName, null);
-        List<UserCouponDto> unusedUserCouponDtoList = new ArrayList<>();
+    public List<UserCouponView> getUnusedUserCoupons(String loginName) {
+        List<UserCouponView> unusedCoupons = userCouponMapper.findUnusedCoupons(loginName);
 
-        for (UserCouponModel userCouponModel : userModelList) {
-            CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
-            if (couponModel.getCouponType() != CouponType.BIRTHDAY_COUPON) {
-                UserCouponDto userCouponDto = new UserCouponDto(couponModel, userCouponModel);
-                if (userCouponDto.isUnused()) {
-                    unusedUserCouponDtoList.add(userCouponDto);
-                }
+        for (int i = unusedCoupons.size() - 1; i >= 0; i--) {
+            if (unusedCoupons.get(i).getCouponType() == CouponType.BIRTHDAY_COUPON) {
+                unusedCoupons.remove(i);
             }
         }
-        Collections.sort(unusedUserCouponDtoList);
-        return unusedUserCouponDtoList;
+        Collections.sort(unusedCoupons);
+        return unusedCoupons;
     }
 
-    public List<CouponUseRecordView> findUseRecords(String loginName) {
-        List<CouponUseRecordView> useRecordViews = userCouponMapper.findUseRecords(loginName);
+    public List<UserCouponView> findUseRecords(String loginName) {
+        List<UserCouponView> useRecordViews = userCouponMapper.findUseRecords(loginName);
         return useRecordViews;
     }
 
-    public List<UserCouponDto> getExpiredUserCoupons(String loginName) {
-        List<UserCouponModel> userModelList = userCouponMapper.findByLoginName(loginName, null);
-        List<UserCouponDto> expiredUserCouponDtoList = new ArrayList<>();
+    public List<UserCouponView> getExpiredUserCoupons(String loginName) {
+        List<UserCouponView> expiredCoupons = userCouponMapper.findExpiredCoupons(loginName);
 
-        for (UserCouponModel userCouponModel : userModelList) {
-            CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
-            if (couponModel.getCouponType() != CouponType.BIRTHDAY_COUPON) {
-                UserCouponDto userCouponDto = new UserCouponDto(couponModel, userCouponModel);
-                if (userCouponDto.isExpired()) {
-                    expiredUserCouponDtoList.add(userCouponDto);
-                }
+        for (int i = expiredCoupons.size() - 1; i >= 0; i--) {
+            if (expiredCoupons.get(i).getCouponType() == CouponType.BIRTHDAY_COUPON) {
+                expiredCoupons.remove(i);
             }
         }
-        Collections.sort(expiredUserCouponDtoList);
-        return expiredUserCouponDtoList;
+        Collections.sort(expiredCoupons);
+        return expiredCoupons;
     }
 
 

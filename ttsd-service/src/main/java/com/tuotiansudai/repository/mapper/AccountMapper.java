@@ -23,7 +23,7 @@ public interface AccountMapper {
 
     void update(AccountModel model);
 
-    AccountModel findByIdentityNumber(String identityNumber);
+    List<AccountModel> findByIdentityNumber(String identityNumber);
 
     List<String> findLoginNames();
 
@@ -42,8 +42,6 @@ public interface AccountMapper {
     int findUsersAccountTotalPoint(@Param(value = "loginName") String loginName);
 
     int findUsersAccountAvailablePoint(@Param(value = "loginName") String loginName);
-
-    void updateByLoginName(@Param(value = "loginName") String loginName, @Param(value = "exchangePoint" ) long exchangePoint);
 
     List<String> findBirthOfAccountInDay();
 
