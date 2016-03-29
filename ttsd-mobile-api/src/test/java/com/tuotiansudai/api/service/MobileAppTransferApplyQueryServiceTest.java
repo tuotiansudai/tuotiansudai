@@ -75,7 +75,7 @@ public class MobileAppTransferApplyQueryServiceTest extends ServiceTestBase{
 
         transferRuleModel.setDiscount(0.005);
 
-        when(investTransferService.isTransfer(anyLong())).thenReturn(true);
+        when(investTransferService.isTransferable(anyLong())).thenReturn(true);
         when(investMapper.findById(anyLong())).thenReturn(investModel);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(loanRepayMapper.findByLoanIdOrderByPeriodAsc(anyLong())).thenReturn(repayingLoanRepays);

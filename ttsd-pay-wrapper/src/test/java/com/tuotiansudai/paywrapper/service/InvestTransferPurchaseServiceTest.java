@@ -1,8 +1,6 @@
 package com.tuotiansudai.paywrapper.service;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.InvestDto;
@@ -112,10 +110,7 @@ public class InvestTransferPurchaseServiceTest {
         InvestModel investModel = investMapper.findByLoginName(transferee.getLoginName(), 0, 1).get(0);
 
         investTransferPurchaseService.postPurchase(investModel.getId());
-
-        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                .put("transferInvestId", fakeTransferInvest.getId())
-                .put("transferStatusList", Lists.newArrayList(TransferStatus.SUCCESS)).build()));
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(), Lists.newArrayList(TransferStatus.SUCCESS));
         TransferApplicationModel transferApplicationModel = transferApplicationModels.get(0);
         InvestModel actualInvest = investMapper.findById(transferApplicationModel.getInvestId());
         assertThat(actualInvest.getStatus(), is(InvestStatus.SUCCESS));
@@ -128,10 +123,7 @@ public class InvestTransferPurchaseServiceTest {
 
         InvestModel actualTransferInvest = investMapper.findById(fakeTransferInvest.getId());
         assertThat(actualTransferInvest.getTransferStatus(), is(TransferStatus.SUCCESS));
-
-        List<TransferApplicationModel> actualTransferApplications = transferApplicationMapper.findByTransferInvestId(Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                .put("transferInvestId", fakeTransferInvest.getId())
-                .put("transferStatusList", Lists.newArrayList(TransferStatus.SUCCESS)).build()));
+        List<TransferApplicationModel> actualTransferApplications = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(),Lists.newArrayList(TransferStatus.SUCCESS));
         TransferApplicationModel actualTransferApplication = actualTransferApplications.get(0);
         assertNotNull(actualTransferApplication);
         assertThat(actualTransferApplication.getInvestId(), is(transferApplicationModel.getInvestId()));
@@ -205,10 +197,7 @@ public class InvestTransferPurchaseServiceTest {
 
         InvestModel actualTransferInvest = investMapper.findById(fakeTransferInvest.getId());
         assertThat(actualTransferInvest.getTransferStatus(), is(TransferStatus.SUCCESS));
-
-        List<TransferApplicationModel> actualTransferApplications = transferApplicationMapper.findByTransferInvestId(Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                .put("transferInvestId", fakeTransferInvest.getId())
-                .put("transferStatusList", Lists.newArrayList(TransferStatus.SUCCESS)).build()));
+        List<TransferApplicationModel> actualTransferApplications = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(),Lists.newArrayList(TransferStatus.SUCCESS));
         TransferApplicationModel actualTransferApplication = actualTransferApplications.get(0);
         assertNotNull(actualTransferApplication);
         assertThat(actualTransferApplication.getInvestId(), is(fakeInvest.getId()));
@@ -282,10 +271,7 @@ public class InvestTransferPurchaseServiceTest {
 
         InvestModel actualTransferInvest = investMapper.findById(fakeTransferInvest.getId());
         assertThat(actualTransferInvest.getTransferStatus(), is(TransferStatus.SUCCESS));
-
-        List<TransferApplicationModel> actualTransferApplications = transferApplicationMapper.findByTransferInvestId(Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                .put("transferInvestId", fakeTransferInvest.getId())
-                .put("transferStatusList", Lists.newArrayList(TransferStatus.SUCCESS)).build()));
+        List<TransferApplicationModel> actualTransferApplications = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(),Lists.newArrayList(TransferStatus.SUCCESS));
         TransferApplicationModel actualTransferApplication = actualTransferApplications.get(0);
         assertNotNull(actualTransferApplication);
         assertThat(actualTransferApplication.getInvestId(), is(fakeInvest.getId()));
@@ -359,10 +345,7 @@ public class InvestTransferPurchaseServiceTest {
 
         InvestModel actualTransferInvest = investMapper.findById(fakeTransferInvest.getId());
         assertThat(actualTransferInvest.getTransferStatus(), is(TransferStatus.SUCCESS));
-
-        List<TransferApplicationModel> actualTransferApplications = transferApplicationMapper.findByTransferInvestId(Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                .put("transferInvestId", fakeTransferInvest.getId())
-                .put("transferStatusList", Lists.newArrayList(TransferStatus.SUCCESS)).build()));
+        List<TransferApplicationModel> actualTransferApplications = transferApplicationMapper.findByTransferInvestId(fakeTransferInvest.getId(),Lists.newArrayList(TransferStatus.SUCCESS));
         TransferApplicationModel actualTransferApplication = actualTransferApplications.get(0);
         assertNotNull(actualTransferApplication);
         assertThat(actualTransferApplication.getInvestId(), is(fakeInvest.getId()));

@@ -91,11 +91,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         String loginName = investDto.getLoginName();
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         long transferInvestId = Long.parseLong(investDto.getTransferInvestId());
-
-
-        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                .put("transferInvestId", transferInvestId)
-                .put("transferStatusList", Lists.newArrayList(TransferStatus.TRANSFERRING)).build()));
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(transferInvestId,Lists.newArrayList(TransferStatus.TRANSFERRING));
         if (CollectionUtils.isEmpty(transferApplicationModels) || transferApplicationModels.get(0).getTransferAmount() > accountModel.getBalance()) {
             return baseDto;
         }
@@ -146,10 +142,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         BaseDto<PayFormDataDto> dto = new BaseDto<>();
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         dto.setData(payFormDataDto);
-
-        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                        .put("transferInvestId", transferInvestId)
-                        .put("transferStatusList", Lists.newArrayList(TransferStatus.TRANSFERRING)).build()));
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(transferInvestId,Lists.newArrayList(TransferStatus.TRANSFERRING));
         if (CollectionUtils.isEmpty(transferApplicationModels)|| transferApplicationModels.get(0).getTransferAmount() > transfereeAccount.getBalance()) {
             return dto;
         }
@@ -196,10 +189,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                     String.valueOf(investModel.getTransferInvestId() != null ? investModel.getTransferInvestId() : null)));
             return;
         }
-
-        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                .put("transferInvestId", investModel.getTransferInvestId())
-                .put("transferStatusList", Lists.newArrayList(TransferStatus.TRANSFERRING)).build()));
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getTransferInvestId(),Lists.newArrayList(TransferStatus.TRANSFERRING));
         if (CollectionUtils.isEmpty(transferApplicationModels) || transferApplicationModels.get(0).getStatus() != TransferStatus.TRANSFERRING) {
             logger.error(MessageFormat.format("transfer is failed, transfer application(investId={0}) is null or transfer status is not TRANSFERRING",
                     String.valueOf(transferApplicationModels.get(0) != null ? transferApplicationModels.get(0).getId() : null)));

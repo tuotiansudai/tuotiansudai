@@ -15,7 +15,7 @@ public interface TransferApplicationMapper {
 
     void update(TransferApplicationModel model);
 
-    List<TransferApplicationModel> findByTransferInvestId(Map<String, Object> params);
+    List<TransferApplicationModel> findByTransferInvestId(@Param("transferInvestId")long transferInvestId, @Param("transferStatusList")List<TransferStatus> transferStatusList);
 
     String findMaxNameInOneDay(String name);
 

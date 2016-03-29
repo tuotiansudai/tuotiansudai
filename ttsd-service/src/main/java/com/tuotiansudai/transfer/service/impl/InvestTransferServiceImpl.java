@@ -1,8 +1,6 @@
 package com.tuotiansudai.transfer.service.impl;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.TransferApplyAutoCancelJob;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -17,7 +15,6 @@ import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.JobManager;
-import javafx.scene.input.TransferMode;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -142,9 +139,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
             logger.debug(MessageFormat.format("{0} is not REPAYING",investModel.getLoanId()));
             return false;
         }
-        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(Maps.newHashMap(ImmutableMap.<String, Object>builder()
-                .put("transferInvestId", investId)
-                .put("transferStatusList", Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING)).build()));
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investId,Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING));
         if (CollectionUtils.isNotEmpty(transferApplicationModels)) {
             logger.debug(MessageFormat.format("{0} is not REPAYING",investModel.getLoanId()));
             return false;
@@ -163,7 +158,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
         }
         TransferRuleModel transferRuleModel =  transferRuleMapper.find();
         DateTime current = new DateTime().withTimeAtStartOfDay();
-        int periodDuration = Days.daysBetween(new DateTime(loanRepayModel.getRepayDate()).withTimeAtStartOfDay(), current.withTimeAtStartOfDay()).getDays();
+        int periodDuration = Days.daysBetween(current.withTimeAtStartOfDay(),new DateTime(loanRepayModel.getRepayDate()).withTimeAtStartOfDay()).getDays();
 
         if(periodDuration > transferRuleModel.getDaysLimit()){
             logger.debug(MessageFormat.format("{0} right away repay ",investId));
