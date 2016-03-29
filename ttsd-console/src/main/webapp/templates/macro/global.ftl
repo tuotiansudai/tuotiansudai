@@ -87,7 +87,9 @@
                     {"name":"createRedEnvelope","text":"现金红包创建","link":"/activity-manage/red-envelope","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"statisticsRedEnvelope","text":"现金红包管理","link":"/activity-manage/red-envelopes","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"createBirthdayCoupon","text":"生日月活动创建","link":"/activity-manage/birthday-coupon","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"statisticsBirthdayCoupon","text":"生日月活动管理","link":"/activity-manage/birthday-coupons","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                    {"name":"statisticsBirthdayCoupon","text":"生日月活动管理","link":"/activity-manage/birthday-coupons","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"userTiandou","text":"用户天豆查询","link":"/activity-manage/user-tiandou","role":"'ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"tiandouPrize","text":"天豆奖品管理","link":"/activity-manage/tiandou-prize","role":"'ADMIN','CUSTOMER_SERVICE'"}
                 ]
             },
             {
