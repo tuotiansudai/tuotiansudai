@@ -24,20 +24,18 @@ public class MyHandlerExceptionResolver implements HandlerExceptionResolver {
         log.error(ex.getLocalizedMessage(), ex);
 
         try {
-            response.reset();
+            if(!response.isCommitted()){
+                response.reset();
 
-            response.setContentType("application/json; charset=UTF-8");
-            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            BaseResponseDto dto = new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
-            PrintWriter out = response.getWriter();
+                response.setContentType("application/json; charset=UTF-8");
+                response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+                BaseResponseDto dto = new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+                PrintWriter out = response.getWriter();
 
-            String jsonString = objectMapper.writeValueAsString(dto);
-            out.print(jsonString);
-        } catch (IllegalStateException e) {
-            if(e.getMessage().indexOf("Cannot call reset()") < 0){
-                log.error(e.getLocalizedMessage(), e);
+                String jsonString = objectMapper.writeValueAsString(dto);
+                out.print(jsonString);
+
             }
-
         } catch (Exception e) {
 
             log.error(e.getLocalizedMessage(), e);
