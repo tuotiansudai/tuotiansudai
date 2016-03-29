@@ -193,7 +193,7 @@
 						<span class="td-tip">每次抽奖将消耗1000天豆</span>
 					</h3>
 					<div class="circle-shade">
-						<div class="pointer-img">
+						<div class="pointer-img" id="pointerTd">
 							<img src="${staticServer}/images/sign/actor/ranklist/pointer.png" alt="pointer"/>
 						</div>
         				<div class="rotate-btn">
@@ -254,7 +254,7 @@
 						<span class="td-tip">每次抽奖将消耗1000财豆，每天限抽一次。</span>
 					</h3>
 					<div class="circle-shade">
-						<div class="pointer-img">
+						<div class="pointer-img" id="pointerCd">
 							<img src="${staticServer}/images/sign/actor/ranklist/pointer.png" alt="pointer"/>
 						</div>
         				<div class="rotate-btn">
