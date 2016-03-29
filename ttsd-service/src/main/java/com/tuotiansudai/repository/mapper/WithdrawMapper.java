@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.WithdrawModel;
 import com.tuotiansudai.repository.model.WithdrawStatus;
@@ -32,6 +33,7 @@ public interface WithdrawMapper {
                                @Param(value = "loginName") String loginName,
                                @Param(value = "status") WithdrawStatus status,
                                @Param(value = "source") Source source,
+                               @Param(value = "role") Role role,
                                @Param(value = "startTime") Date startTime,
                                @Param(value = "endTime") Date endTime);
 
