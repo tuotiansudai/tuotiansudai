@@ -59,81 +59,13 @@
 							<span class="bean-num">天豆数</span>
 							<span class="bean-user">用户</span>
 						</dt>
-						<dd>
-							<span class="order-num"><i class="font-icon">1</i></span>
-							<span class="bean-num">10,000,000</span>
-							<span class="bean-user">che******</span>
-						</dd>
-						<dd>
-							<span class="order-num"><i class="font-icon">2</i></span>
-							<span class="bean-num">10,000,000</span>
-							<span class="bean-user">che******</span>
-						</dd>
-						<dd>
-							<span class="order-num"><i class="font-icon">3</i></span>
-							<span class="bean-num">10,000,000</span>
-							<span class="bean-user">che******</span>
-						</dd>
-						<dd>
-							<span class="order-num"><i class="font-icon">4</i></span>
-							<span class="bean-num">10,000,000</span>
-							<span class="bean-user">che******</span>
-						</dd>
-						<dd>
-							<span class="order-num"><i class="font-icon">5</i></span>
-							<span class="bean-num">10,000,000</span>
-							<span class="bean-user">che******</span>
-						</dd>
-						<dd>
-							<span class="order-num"><i class="font-icon">6</i></span>
-							<span class="bean-num">10,000,000</span>
-							<span class="bean-user">che******</span>
-						</dd>
-						<dd>
-							<span class="order-num"><i class="font-icon">7</i></span>
-							<span class="bean-num">10,000,000</span>
-							<span class="bean-user">che******</span>
-						</dd>
-						<dd>
-							<span class="order-num"><i class="font-icon">8</i></span>
-							<span class="bean-num">10,000,000</span>
-							<span class="bean-user">che******</span>
-						</dd>
-						<dd>
-							<span class="order-num"><i class="font-icon">9</i></span>
-							<span class="bean-num">10,000,000</span>
-							<span class="bean-user">che******</span>
-						</dd>
-						<dd>
-							<span class="order-num"><i class="font-icon">10</i></span>
-							<span class="bean-num">10,000,000</span>
-							<span class="bean-user">che******</span>
-						</dd>
-						<dd>
-							<span class="order-num"><i class="font-icon">11</i></span>
-							<span class="bean-num">10,000,000</span>
-							<span class="bean-user">che******</span>
-						</dd>
-						<dd>
-							<span class="order-num"><i class="font-icon">12</i></span>
-							<span class="bean-num">10,000,000</span>
-							<span class="bean-user">che******</span>
-						</dd>
-						<dd>
-							<span class="order-num"><i class="font-icon">13</i></span>
-							<span class="bean-num">10,000,000</span>
-							<span class="bean-user">che******</span>
-						</dd>
-						<dd>
-							<span class="order-num"><i class="font-icon">14</i></span>
-							<span class="bean-num">10,000,000</span>
-							<span class="bean-user">che******</span>
-						</dd>
-						<dd>
-							<span class="order-num"><i class="font-icon">15</i></span>
-							<span class="bean-num">10,000,000</span>
-							<span class="bean-user">che******</span>
-						</dd>
+						<#list tianDouTop15 as tianDouRank>
+                            <dd>
+                                <span class="order-num"><i class="font-icon">${tianDouRank?index}</i></span>
+                                <span class="bean-num">${tianDouRank.score}</span>
+                                <span class="bean-user">${tianDouRank.loginName[0..2]}******</span>
+                            </dd>
+						</#list>
 					</dl>
 				</div>
 				<div class="bean-rank-money">
@@ -189,7 +121,7 @@
 			<div class="leader-list active">
 				<div class="lottery-circle">
 					<h3 class="td-list">
-						<span class="td-total">我的天豆：10,000,000</span>
+						<span class="td-total">我的天豆：${myTianDou!0}</span>
 						<span class="td-tip">每次抽奖将消耗1000天豆</span>
 					</h3>
 					<div class="circle-shade">
@@ -208,42 +140,23 @@
 					</ul>
 					<div class="record-list">
 						<ul class="record-model user-record">
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
+							<#list winnerList.MacBook as mackBookWinner>
+                                <li>恭喜${mackBookWinner.loginName[0..2]}*****抽中了${mackBookWinner.prize.name}</li>
+							</#list>
+							<#list winnerList.iPhone as iPhoneWinner>
+                                <li>恭喜${iPhoneWinner.loginName[0..2]}*****抽中了${iPhoneWinner.prize.name}</li>
+							</#list>
+							<#list winnerList.other as otherWinner>
+                                <li>恭喜${otherWinner.loginName[0..2]}*****抽中了${otherWinner.prize.name}</li>
+							</#list>
 						</ul>
 						<ul class="record-model own-record active">
-							<li>
-								<span class="award-name">MacBook</span>
-								<span class="award-time">2016-11-15 11:21</span>
-							</li>
-							<li>
-								<span class="award-name">MacBook</span>
-								<span class="award-time">2016-11-15 11:21</span>
-							</li>
-							<li>
-								<span class="award-name">MacBook</span>
-								<span class="award-time">2016-11-15 11:21</span>
-							</li>
-							<li>
-								<span class="award-name">MacBook</span>
-								<span class="award-time">2016-11-15 11:21</span>
-							</li>
-							<li>
-								<span class="award-name">MacBook</span>
-								<span class="award-time">2016-11-15 11:21</span>
-							</li>
+							<#list myPrizeList as myPrize>
+                                <li>
+                                    <span class="award-name">${myPrize.prize.name}</span>
+                                    <span class="award-time">${myPrize.time}</span>
+                                </li>
+							</#list>
 						</ul>
 					</div>
 				</div>
@@ -270,16 +183,14 @@
 					<div class="record-list">
 						<ul class="record-model user-record">
 							<#list allPointLotteries as allPointLottery>
-							    <li>恭喜${allPointLottery.loginName!}抽中了${allPointLottery.pointPrizeName!}</li>
+							    <li>恭喜${allPointLottery.loginName[0..2]}*****抽中了${allPointLottery.pointPrizeName!}</li>
 							</#list>
-							<li>恭喜fel*****抽中了Macbook</li>
 						</ul>
 						<ul class="record-model own-record active">
 							<#list myPointLotteries as myPointLottery>
                                 <li>
                                     <span class="award-name">${myPointLottery.pointPrizeName!}</span>
                                     <span class="award-time">${myPointLottery.createTime?string('yyyy-MM-dd HH:mm')!}</span>
-                                    <span class="award-time">2016-11-15 11:21</span>
                                 </li>
 							</#list>
 						</ul>
