@@ -26,7 +26,7 @@
     </select>
 
     <select id="findAllDescCreatedTime" resultMap="userPointPrizeResultMap">
-        select * from user_point_prize order by created_time desc
+        select * from user_point_prize order by created_time desc limit 1,100
     </select>
 
     <select id="findAllNotReal" resultType="long">

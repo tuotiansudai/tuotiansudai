@@ -182,42 +182,17 @@
 					</ul>
 					<div class="record-list">
 						<ul class="record-model user-record">
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
+							<#list allPointLotteries as allPointLottery>
+							    <li>恭喜${allPointLottery.loginName[0..2]}*****抽中了${allPointLottery.pointPrizeName!}</li>
+							</#list>
 						</ul>
 						<ul class="record-model own-record active">
-							<li>
-								<span class="award-name">MacBook</span>
-								<span class="award-time">2016-11-15 11:21</span>
-							</li>
-							<li>
-								<span class="award-name">MacBook</span>
-								<span class="award-time">2016-11-15 11:21</span>
-							</li>
-							<li>
-								<span class="award-name">MacBook</span>
-								<span class="award-time">2016-11-15 11:21</span>
-							</li>
-							<li>
-								<span class="award-name">MacBook</span>
-								<span class="award-time">2016-11-15 11:21</span>
-							</li>
-							<li>
-								<span class="award-name">MacBook</span>
-								<span class="award-time">2016-11-15 11:21</span>
-							</li>
+							<#list myPointLotteries as myPointLottery>
+                                <li>
+                                    <span class="award-name">${myPointLottery.pointPrizeName!}</span>
+                                    <span class="award-time">${myPointLottery.createTime?string('yyyy-MM-dd HH:mm')!}</span>
+                                </li>
+							</#list>
 						</ul>
 					</div>
 				</div>

@@ -2,8 +2,9 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ranking.DrawLotteryDto;
-import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
 import com.tuotiansudai.dto.ranking.UserScoreDto;
+import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
+import com.tuotiansudai.point.service.PointLotteryService;
 import com.tuotiansudai.service.RankingActivityService;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class RankingActivityController {
 
     @Autowired
     private RankingActivityService rankingActivityService;
+
+    @Autowired
+    private PointLotteryService pointLotteryService;
 
     @RequestMapping(value = "/rank-list", method = RequestMethod.GET)
     public ModelAndView loadPageData() {
@@ -42,6 +46,10 @@ public class RankingActivityController {
         modelAndView.addObject("myRank", myRank);
         modelAndView.addObject("tianDouTop15", tianDouTop15);
         modelAndView.addObject("winnerList", winnerList);
+
+        modelAndView.addObject("allPointLotteries", pointLotteryService.findAllDrawLottery());
+        modelAndView.addObject("myPointLotteries", pointLotteryService.findMyDrawLottery(loginName));
+
         modelAndView.addObject("myPrizeList", myPrizeList);
         modelAndView.addObject("myTianDou", myTianDou);
         return modelAndView;
@@ -56,6 +64,13 @@ public class RankingActivityController {
         BaseDto<DrawLotteryDto> baseDto = rankingActivityService.drawTianDouPrize(loginName, mobile);
 
         return baseDto;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/point-lottery", method = RequestMethod.POST)
+    public String pointLottery() {
+        String loginName = LoginUserInfo.getLoginName();
+        return pointLotteryService.pointLottery(loginName);
     }
 
 //    @ResponseBody
