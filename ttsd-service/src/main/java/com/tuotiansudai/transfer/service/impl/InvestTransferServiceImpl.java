@@ -130,7 +130,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
         return MessageFormat.format(TRANSFER_APPLY_NAME, date, name);
     }
     @Override
-    public boolean isTransfer(long investId){
+    public boolean isTransferable(long investId){
 
         InvestModel investModel = investMapper.findById(investId);
         if(investModel == null){

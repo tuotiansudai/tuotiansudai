@@ -47,7 +47,7 @@ public class MobileAppTransferApplyQueryServiceImpl implements MobileAppTransfer
         BaseResponseDto<TransferApplyQueryResponseDataDto> baseResponseDto = new BaseResponseDto<>();
         String investId = requestDto.getInvestId();
 
-        if(!investTransferService.isTransfer(Long.parseLong(investId))){
+        if(!investTransferService.isTransferable(Long.parseLong(investId))){
             return new BaseResponseDto(ReturnMessage.TRANSFER_IS_NOT_EXIST.getCode(),ReturnMessage.TRANSFER_IS_NOT_EXIST.getMsg());
         }
         InvestModel investModel = investMapper.findById(Long.parseLong(investId));

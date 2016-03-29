@@ -230,7 +230,7 @@ public class InvestTransferServiceTest {
         transferApplicationModel.setInvestId(investModelError.getId());
         transferApplicationMapper.update(transferApplicationModel);
 
-        boolean result = investTransferService.isTransfer(investModelError.getId());
+        boolean result = investTransferService.isTransferable(investModelError.getId());
 
         assertFalse(result);
     }
