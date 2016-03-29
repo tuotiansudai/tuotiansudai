@@ -18,8 +18,7 @@ CREATE TABLE `aa`.`user_point_prize` (
   `login_name`         VARCHAR(25) NOT NULL,
   `created_time`       DATETIME NOT NULL,
   PRIMARY KEY (`point_prize_id`,`login_name`),
-  CONSTRAINT FK_USER_POINT_PRIZE_POINT_PRIZE_ID_REF_POINT_PRIZE_ID FOREIGN KEY (`point_prize_id`) REFERENCES `aa`.`point_prize` (`id`),
-  CONSTRAINT FK_USER_POINT_PRIZE_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`login_name`) REFERENCES `aa`.`user` (`login_name`)
+  CONSTRAINT FK_USER_POINT_PRIZE_POINT_PRIZE_ID_REF_POINT_PRIZE_ID FOREIGN KEY (`point_prize_id`) REFERENCES `aa`.`point_prize` (`id`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
