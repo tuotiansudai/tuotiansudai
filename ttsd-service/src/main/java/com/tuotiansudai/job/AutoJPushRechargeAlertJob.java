@@ -25,7 +25,7 @@ public class AutoJPushRechargeAlertJob implements Job {
         logger.debug("trigger send jPush alert recharge job, prepare do job");
         long orderId = (long) context.getJobDetail().getJobDataMap().get(RECHARGE_ID_KEY);
         jPushAlertService.autoJPushRechargeAlert(orderId);
-        logger.debug("trigger send jPush alert recharge job, lognName : " + rechargeDto.getLoginName());
+        logger.debug("trigger send jPush alert recharge job, orderId : " + orderId);
 
     }
 }
