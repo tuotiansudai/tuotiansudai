@@ -21,7 +21,6 @@ public class RankingActivityController {
     @Autowired
     private RankingActivityService rankingActivityService;
 
-    @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView loadPageData() {
 

@@ -329,11 +329,11 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         });
     }
 
-    public Long zrank(final String key, final String member) {
+    public Long zrevrank(final String key, final String member) {
         return execute(new JedisAction<Long>() {
             @Override
             public Long action(Jedis jedis) {
-                return jedis.zrank(key, member);
+                return jedis.zrevrank(key, member);
             }
         });
     }

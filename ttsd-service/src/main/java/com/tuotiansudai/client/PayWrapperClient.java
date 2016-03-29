@@ -284,7 +284,4 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(String.valueOf(loanId), "/job/send-red-envelope-after-loan-out", "POST");
     }
 
-    public BaseDto<PayDataDto> sendTianDouLotteryPrize20(String loginName){
-        return syncExecute(loginName, "/activity/send-tiandou-lottery-prize-20", "POST");
-    }
 }

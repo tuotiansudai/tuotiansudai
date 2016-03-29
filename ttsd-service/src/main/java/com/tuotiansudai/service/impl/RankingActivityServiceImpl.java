@@ -7,6 +7,7 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.dto.ranking.DrawLotteryDto;
 import com.tuotiansudai.dto.ranking.PrizeWinnerDto;
 import com.tuotiansudai.dto.ranking.UserScoreDto;
@@ -15,6 +16,7 @@ import com.tuotiansudai.repository.TianDouPrize;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.RankingActivityService;
+import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,9 @@ public class RankingActivityServiceImpl implements RankingActivityService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private IdGenerator idGenerator;
 
     // 抽奖次数计数器。
     public static final String TIAN_DOU_DRAW_COUNTER = "web:ranking:tian_dou_draw_counter";
@@ -147,20 +152,21 @@ public class RankingActivityServiceImpl implements RankingActivityService {
     }
 
     private void sendCash20(String loginName) {
-        payWrapperClient.sendTianDouLotteryPrize20(loginName);
+        long orderId = idGenerator.generate();
+        TransferCashDto transferCashDto = new TransferCashDto(loginName, String.valueOf(orderId), "2000");
+        payWrapperClient.transferCash(transferCashDto);
     }
 
     private void sendInterestCoupon5(String loginName) {
         List<UserGroup> userGroups = new ArrayList<>();
         userGroups.add(UserGroup.WINNER);
-        //TODO:
-//        couponActivationService.assignUserCoupon(loginName, userGroups, 300L);
+        couponActivationService.assignUserCoupon(loginName, userGroups, 300L);
     }
 
     // reutrn null if not exists
     @Override
     public Long getUserRank(String loginName) {
-        Long rank = redisWrapperClient.zrank(TIAN_DOU_USER_SCORE_RANK, loginName) + 1;
+        Long rank = redisWrapperClient.zrevrank(TIAN_DOU_USER_SCORE_RANK, loginName) + 1;
         return rank;
     }
 
