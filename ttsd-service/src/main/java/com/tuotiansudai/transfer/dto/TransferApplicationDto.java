@@ -6,7 +6,6 @@ import java.util.Date;
 
 public class TransferApplicationDto {
 
-
     private Long transferInvestId;
 
     private Long transferAmount;

@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TransferApplyAutoCancelJob implements Job{
+public class TransferApplicationAutoCancelJob implements Job{
 
-    static Logger logger = Logger.getLogger(TransferApplyAutoCancelJob.class);
+    static Logger logger = Logger.getLogger(TransferApplicationAutoCancelJob.class);
 
     @Autowired
     private InvestTransferService investTransferService;
@@ -20,7 +20,7 @@ public class TransferApplyAutoCancelJob implements Job{
     public void execute(JobExecutionContext context) throws JobExecutionException {
         long id = (long) context.getJobDetail().getJobDataMap().get("Transfer-apply-id");
         logger.debug("TransferApplyAutoCancelJob===========in, id = " + id);
-        investTransferService.investTransferApplyCancel(id);
+        investTransferService.cancelTransferApplication(id);
         logger.debug("TransferApplyAutoCancelJob===========out, id = " + id );
     }
 

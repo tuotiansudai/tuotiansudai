@@ -1,7 +1,8 @@
 package com.tuotiansudai.transfer.service.impl;
 
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.job.TransferApplyAutoCancelJob;
+import com.tuotiansudai.job.TransferApplicationAutoCancelJob;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
@@ -14,7 +15,6 @@ import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.JobManager;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
@@ -48,11 +48,16 @@ public class InvestTransferServiceImpl implements InvestTransferService{
     @Autowired
     private TransferRuleMapper transferRuleMapper;
 
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
     protected final static String TRANSFER_APPLY_NAME = "ZR{0}-{1}";
+
+    public static String redisTransferApplicationNumber = "web:{0}:transferApplicationNumber";
 
     @Override
     @Transactional
-    public void investTransferApply(TransferApplicationDto transferApplicationDto) throws Exception{
+    public void investTransferApply(TransferApplicationDto transferApplicationDto) {
 
         InvestModel investModel = investMapper.findById(transferApplicationDto.getTransferInvestId());
 
@@ -84,14 +89,14 @@ public class InvestTransferServiceImpl implements InvestTransferService{
     }
 
     @Override
-    public boolean investTransferApplyCancel(long id) {
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(id);
+    public boolean cancelTransferApplication(long transferApplicationId) {
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
         if (transferApplicationModel != null && transferApplicationModel.getStatus() == TransferStatus.TRANSFERRING) {
             transferApplicationModel.setStatus(TransferStatus.CANCEL);
             transferApplicationMapper.update(transferApplicationModel);
             return true;
         } else {
-            logger.debug("this transfer apply status is not allow cancel, id = " + id);
+            logger.debug("this transfer apply status is not allow cancel, id = " + transferApplicationId);
             return false;
         }
     }
@@ -102,7 +107,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
             return;
         }
         try {
-            jobManager.newJob(JobType.TransferApplyAutoCancel, TransferApplyAutoCancelJob.class)
+            jobManager.newJob(JobType.TransferApplyAutoCancel, TransferApplicationAutoCancelJob.class)
                     .withIdentity(JobType.TransferApplyAutoCancel.name(), "Transfer-apply-" + transferApplicationModel.getId())
                     .replaceExistingJob(true)
                     .addJobData("Transfer-apply-id", transferApplicationModel.getId())
@@ -114,12 +119,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
 
     protected String generateTransferApplyName() {
         String date = new DateTime().toString("yyyyMMdd");
-        String name = transferApplicationMapper.findMaxNameInOneDay(MessageFormat.format(TRANSFER_APPLY_NAME, date, ""));
-        if (StringUtils.isEmpty(name)) {
-            name = "001";
-        } else {
-            name = String.format("%03d", Integer.parseInt(name) + 1);
-        }
+        String name = String.format("%03d", redisWrapperClient.incr(MessageFormat.format(redisTransferApplicationNumber, date)));
         return MessageFormat.format(TRANSFER_APPLY_NAME, date, name);
     }
 
