@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.company_activity}" pageJavascript="" activeNav="" activeLeftNav="" title="排行榜">
+<@global.main pageCss="${css.company_activity}" pageJavascript="${js.rank_list}" activeNav="" activeLeftNav="" title="排行榜">
 <div class="rank-list-container">
 	<div class="rank-phone-model">
 		<img src="${staticServer}/images/sign/actor/ranklist/rank-list-top.png" width="100%">
@@ -175,6 +175,15 @@
 		<ul class="leader-btn">
 			<li class="active">天豆抽奖</li>
 			<li>财豆抽奖</li>
+			<div class="share-list">
+				<p class="bdsharebuttonbox">
+					<span class="share-text">分享至：</span>
+					<a href="#" class="share-icon icon-weibo" data-cmd="tsina"></a>
+					<a href="#" class="share-icon icon-weixin" data-cmd="weixin"></a>
+					<a href="#" class="share-icon icon-zone" data-cmd="qzone"></a>
+					<span class="share-text">分享可增加一次财豆抽奖机会！</span>
+				</p>
+			</div>
 		</ul>
 		<div class="leader-container">
 			<div class="leader-list active">
@@ -188,7 +197,7 @@
 							<img src="${staticServer}/images/sign/actor/ranklist/pointer.png" alt="pointer"/>
 						</div>
         				<div class="rotate-btn">
-        					<img id="rotate" src="${staticServer}/images/sign/actor/ranklist/turntable.png" alt="turntable"/>
+        					<img id="rotateTd" src="${staticServer}/images/sign/actor/ranklist/turntable.png" alt="turntable"/>
         				</div>
 					</div>
 				</div>
@@ -198,7 +207,7 @@
 						<li>我的奖品</li>
 					</ul>
 					<div class="record-list">
-						<ul class="record-model user-record active">
+						<ul class="record-model user-record">
 							<li>恭喜fel*****抽中了Macbook</li>
 							<li>恭喜fel*****抽中了Macbook</li>
 							<li>恭喜fel*****抽中了Macbook</li>
@@ -214,18 +223,91 @@
 							<li>恭喜fel*****抽中了Macbook</li>
 							<li>恭喜fel*****抽中了Macbook</li>
 						</ul>
-						<ul class="record-model own-record">
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
-							<li>恭喜fel*****抽中了Macbook</li>
+						<ul class="record-model own-record active">
+							<li>
+								<span class="award-name">MacBook</span>
+								<span class="award-time">2016-11-15 11:21</span>
+							</li>
+							<li>
+								<span class="award-name">MacBook</span>
+								<span class="award-time">2016-11-15 11:21</span>
+							</li>
+							<li>
+								<span class="award-name">MacBook</span>
+								<span class="award-time">2016-11-15 11:21</span>
+							</li>
+							<li>
+								<span class="award-name">MacBook</span>
+								<span class="award-time">2016-11-15 11:21</span>
+							</li>
+							<li>
+								<span class="award-name">MacBook</span>
+								<span class="award-time">2016-11-15 11:21</span>
+							</li>
 						</ul>
 					</div>
 				</div>
 			</div>
 			<div class="leader-list">
-				sdsd
+				<div class="lottery-circle">
+					<h3 class="td-list">
+						<span class="td-tip">每次抽奖将消耗1000财豆，每天限抽一次。</span>
+					</h3>
+					<div class="circle-shade">
+						<div class="pointer-img">
+							<img src="${staticServer}/images/sign/actor/ranklist/pointer.png" alt="pointer"/>
+						</div>
+        				<div class="rotate-btn">
+        					<img id="rotateCd" src="${staticServer}/images/sign/actor/ranklist/gift-list-cd.png" alt="turntable"/>
+        				</div>
+					</div>
+				</div>
+				<div class="lottery-detail">
+					<ul class="gift-record">
+						<li class="active">中奖纪录</li>
+						<li>我的奖品</li>
+					</ul>
+					<div class="record-list">
+						<ul class="record-model user-record">
+							<li>恭喜fel*****抽中了Macbook</li>
+							<li>恭喜fel*****抽中了Macbook</li>
+							<li>恭喜fel*****抽中了Macbook</li>
+							<li>恭喜fel*****抽中了Macbook</li>
+							<li>恭喜fel*****抽中了Macbook</li>
+							<li>恭喜fel*****抽中了Macbook</li>
+							<li>恭喜fel*****抽中了Macbook</li>
+							<li>恭喜fel*****抽中了Macbook</li>
+							<li>恭喜fel*****抽中了Macbook</li>
+							<li>恭喜fel*****抽中了Macbook</li>
+							<li>恭喜fel*****抽中了Macbook</li>
+							<li>恭喜fel*****抽中了Macbook</li>
+							<li>恭喜fel*****抽中了Macbook</li>
+							<li>恭喜fel*****抽中了Macbook</li>
+						</ul>
+						<ul class="record-model own-record active">
+							<li>
+								<span class="award-name">MacBook</span>
+								<span class="award-time">2016-11-15 11:21</span>
+							</li>
+							<li>
+								<span class="award-name">MacBook</span>
+								<span class="award-time">2016-11-15 11:21</span>
+							</li>
+							<li>
+								<span class="award-name">MacBook</span>
+								<span class="award-time">2016-11-15 11:21</span>
+							</li>
+							<li>
+								<span class="award-name">MacBook</span>
+								<span class="award-time">2016-11-15 11:21</span>
+							</li>
+							<li>
+								<span class="award-name">MacBook</span>
+								<span class="award-time">2016-11-15 11:21</span>
+							</li>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="line-single"></div>
@@ -233,8 +315,14 @@
 			<div class="actor-title">
 				活动规则
 			</div>
-			<p>活动期间，投资即可获得相应天豆，天豆可冲击排行榜拿排名大奖。</p>
-			<p>用户还可消费天豆参与<span>“百分百中奖”</span>的抽奖活动。</p>
+			<ul class="rule-list">
+				<li>1、活动期间，用户投资即可获得相应天豆；</li>
+				<li>2、活动期间，平台达到一定投资额，即对天豆排行榜靠前的用户进行奖励;</li>
+				<li>3、用户的天豆数量相同时，按最终累计天豆的先后时间排名；</li>
+				<li>4、消费天豆可参与“天豆抽奖”活动，7个工作日内客服联系用户发放奖品；</li>
+				<li>5、活动截止后7个工作日内公布排行榜颁奖时间。</li>
+			</ul>
+			<p class="actor-sign">***活动遵循拓天速贷法律声明，最终解释权归拓天速贷平台所有***</p>
 		</div>
 	</div>
 </div>
