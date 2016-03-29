@@ -1,6 +1,7 @@
 package com.tuotiansudai.point.service.impl;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.dto.TransferCashDto;
@@ -14,8 +15,10 @@ import com.tuotiansudai.point.repository.model.UserPointPrizeModel;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointLotteryService;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JobManager;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
@@ -23,6 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -36,11 +41,16 @@ public class PointLotteryServiceImpl implements PointLotteryService{
 
     private final static String ALREADY_LOTTERY = "TheNumberOfLuckyDrawIsFull";
 
+    private final static String LAST_EXPIRY_TIME = " 23:59:59";
+
     @Autowired
     private PointPrizeMapper pointPrizeMapper;
 
     @Autowired
     private UserPointPrizeMapper userPointPrizeMapper;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private PointBillService pointBillService;
@@ -56,6 +66,8 @@ public class PointLotteryServiceImpl implements PointLotteryService{
 
     @Autowired
     private UserMapper userMapper;
+
+    public static String redisShareTemple = "web:{0}{1}:share";
 
     @Override
     public void imitateLottery() {
@@ -91,8 +103,9 @@ public class PointLotteryServiceImpl implements PointLotteryService{
     @Transactional
     public String pointLottery(String loginName) {
         DateTime dateTime = new DateTime();
-        UserPointPrizeModel userPointPrizeModelToday = userPointPrizeMapper.findByLoginNameAndCreateTime(loginName, dateTime.toString("yyyy-MM-dd"));
-        if (userPointPrizeModelToday == null) {
+        List<UserPointPrizeModel> userPointPrizeModelToday = userPointPrizeMapper.findByLoginNameAndCreateTime(loginName, dateTime.toString("yyyy-MM-dd"));
+        if (CollectionUtils.isEmpty(userPointPrizeModelToday) ||
+                (redisWrapperClient.exists(MessageFormat.format(redisShareTemple, loginName, dateTime.toString("yyyy-MM-dd"))) && userPointPrizeModelToday.size() < 2)) {
             PointPrizeModel winPointPrize = this.winLottery();
             UserPointPrizeModel userPointPrizeModel = new UserPointPrizeModel(winPointPrize.getId(), loginName, true);
             userPointPrizeMapper.create(userPointPrizeModel);
@@ -150,5 +163,13 @@ public class PointLotteryServiceImpl implements PointLotteryService{
         return pointPrizeModels.get(choosePointPrize);
     }
 
-
+    @Override
+    public void getLotteryOnceChance(String loginName){
+        SimpleDateFormat formatShortTime = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String begin = formatter.format(new Date());
+        String end = formatShortTime.format(new Date()) + LAST_EXPIRY_TIME;
+        int expiryTime = DateUtil.differenceSeconds(begin, end);
+        redisWrapperClient.setex(MessageFormat.format(redisShareTemple, loginName, formatShortTime.format(new Date()).replace("-","")), expiryTime, "1");
+    }
 }

@@ -7,4 +7,6 @@ public interface PointLotteryService {
 
     void imitateLottery();
 
+    void getLotteryOnceChance(String loginName);
+
 }

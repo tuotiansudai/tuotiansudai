@@ -12,7 +12,7 @@ public interface UserPointPrizeMapper {
     void create(UserPointPrizeModel userPointPrizeModel);
 
 
-    UserPointPrizeModel findByLoginNameAndCreateTime(@Param("loginName") String loginName, @Param("date") String date);
+    List<UserPointPrizeModel> findByLoginNameAndCreateTime(@Param("loginName") String loginName, @Param("date") String date);
 
     List<UserPointPrizeModel> findByLoginName(String loginName);
 

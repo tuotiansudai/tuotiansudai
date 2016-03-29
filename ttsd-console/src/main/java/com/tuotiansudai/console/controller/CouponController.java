@@ -65,9 +65,6 @@ public class CouponController {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    private PointService pointService;
-
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
     @RequestMapping(value = "/red-envelope", method = RequestMethod.GET)
