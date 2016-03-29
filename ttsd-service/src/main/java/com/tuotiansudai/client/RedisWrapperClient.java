@@ -320,11 +320,11 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         });
     }
 
-    public Set<Tuple> zrangeWithScores(final String key, final long start, final long stop) {
+    public Set<Tuple> zrevrangeWithScores(final String key, final long start, final long stop) {
         return execute(new JedisAction<Set<Tuple>>() {
             @Override
             public Set<Tuple> action(Jedis jedis) {
-                return jedis.zrangeWithScores(key, start, stop);
+                return jedis.zrevrangeWithScores(key, start, stop);
             }
         });
     }

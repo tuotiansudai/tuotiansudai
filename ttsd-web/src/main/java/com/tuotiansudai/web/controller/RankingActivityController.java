@@ -49,6 +49,7 @@ public class RankingActivityController {
         Double myTianDou = rankingActivityService.getUserScoreByLoginName(loginName);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        long totalInvest = rankingActivityService.getTotalInvestAmountInActivityPeriod();
 
         modelAndView.addObject("myRank", myRank);
         modelAndView.addObject("tianDouTop15", tianDouTop15);
@@ -59,8 +60,8 @@ public class RankingActivityController {
 
         modelAndView.addObject("myPrizeList", myPrizeList);
         modelAndView.addObject("myTianDou", myTianDou);
-
         modelAndView.addObject("myPoint", accountModel.getPoint());
+        modelAndView.addObject("totalInvest", totalInvest);
         return modelAndView;
     }
 
