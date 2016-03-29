@@ -68,10 +68,6 @@
         where id = #{id}
     </update>
 
-    <select id="findMaxNameInOneDay" parameterType="java.lang.String" resultType="java.lang.String">
-        SELECT max(REPLACE(t.`name`,#{name},'')) AS NAME FROM transfer_application t WHERE t.`name` LIKE CONCAT(#{name},'%')
-    </select>
-
     <select id="findById" parameterType="long" resultMap="transferApplicationResultMap">
         select * from transfer_application where id = #{id}
     </select>

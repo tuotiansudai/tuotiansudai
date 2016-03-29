@@ -17,8 +17,6 @@ public interface TransferApplicationMapper {
 
     List<TransferApplicationModel> findByTransferInvestId(@Param("transferInvestId")long transferInvestId, @Param("transferStatusList")List<TransferStatus> transferStatusList);
 
-    String findMaxNameInOneDay(String name);
-
     TransferApplicationModel findById(long id);
 
     TransferApplicationModel findByInvestId(Long investId);

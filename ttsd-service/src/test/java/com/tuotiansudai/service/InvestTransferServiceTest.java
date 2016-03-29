@@ -1,6 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -53,7 +54,12 @@ public class InvestTransferServiceTest {
     private InvestTransferService investTransferService;
 
     @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
     private LoanRepayMapper loanRepayMapper;
+
+    public static String redisTransferApplicationNumber = "web:{0}:transferApplicationNumber";
 
     private final static String TRANSFER_APPLY_NAME = "ZR{0}-{1}";
 
@@ -142,7 +148,7 @@ public class InvestTransferServiceTest {
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR20151010-001", 2, 1, false, 1, new Date());
         transferApplicationMapper.create(transferApplicationModel);
 
-        assertTrue(investTransferService.investTransferApplyCancel(transferApplicationModel.getId()));
+        assertTrue(investTransferService.cancelTransferApplication(transferApplicationModel.getId()));
         TransferApplicationModel transferApplicationModel1 = transferApplicationMapper.findById(transferApplicationModel.getId());
         assertThat(transferApplicationModel1.getStatus(), is(TransferStatus.CANCEL));
     }
@@ -157,7 +163,7 @@ public class InvestTransferServiceTest {
         transferApplicationModel.setStatus(TransferStatus.SUCCESS);
         transferApplicationMapper.create(transferApplicationModel);
 
-        assertFalse(investTransferService.investTransferApplyCancel(transferApplicationModel.getId()));
+        assertFalse(investTransferService.cancelTransferApplication(transferApplicationModel.getId()));
         TransferApplicationModel transferApplicationModel1 = transferApplicationMapper.findById(transferApplicationModel.getId());
         assertThat(transferApplicationModel1.getStatus(), is(TransferStatus.SUCCESS));
     }
@@ -183,10 +189,9 @@ public class InvestTransferServiceTest {
         transferApplicationDto.setTransferInterest(true);
         investTransferService.investTransferApply(transferApplicationDto);
 
-        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(),Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING));
-        String name = transferApplicationMapper.findMaxNameInOneDay(MessageFormat.format(TRANSFER_APPLY_NAME, new DateTime().toString("yyyyMMdd"), ""));
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
 
-        assertThat(transferApplicationModels.get(0).getName(), is(MessageFormat.format(TRANSFER_APPLY_NAME, new DateTime().toString("yyyyMMdd"), name != null ? name : "001")));
+        assertThat(transferApplicationModels.get(0).getName(), is(MessageFormat.format(TRANSFER_APPLY_NAME, new DateTime().toString("yyyyMMdd"), String.format("%03d", Integer.parseInt(redisWrapperClient.get(MessageFormat.format(redisTransferApplicationNumber, new DateTime().toString("yyyyMMdd"))))))));
         assertThat(transferApplicationModels.get(0).getPeriod(), is(1));
     }
 
