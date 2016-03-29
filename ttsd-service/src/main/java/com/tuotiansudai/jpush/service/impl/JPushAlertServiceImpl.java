@@ -11,10 +11,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.RechargeDto;
-import com.tuotiansudai.dto.WithdrawDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.job.JPushReportFetchingJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.ManualJPushAlertJob;
@@ -65,6 +62,8 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private static final String JPUSH_ID_KEY = "api:jpushId:store";
 
     private static final String NO_INVEST_LOGIN_NAME = "job:noInvest:loginName";
+
+    private static final long LOTTERY_OBTAIN_CASH = 5L;
 
     @Autowired
     private InvestMapper investMapper;
@@ -554,6 +553,21 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             logger.debug("REFERRER_REWARD_ALERT is disabled");
         }
 
+    }
+
+    public void autoJPushLotteryLotteryObtainCashAlert(String loginName){
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.REFERRER_REWARD_ALERT);
+        if (jPushAlertModel != null) {
+            Map<String, List<String>> loginNameMap = Maps.newHashMap();
+            List<String> amountLists = Lists.newArrayList(accountModel.getUserName(), AmountConverter.convertCentToString(5L), AmountConverter.convertCentToString(accountModel.getBalance()));
+            loginNameMap.put(loginName, amountLists);
+            autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+            loginNameMap.clear();
+
+        } else {
+            logger.debug("REFERRER_REWARD_ALERT is disabled");
+        }
     }
 
 
