@@ -13,12 +13,15 @@ import com.tuotiansudai.dto.ranking.PrizeWinnerDto;
 import com.tuotiansudai.dto.ranking.UserScoreDto;
 import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
 import com.tuotiansudai.repository.TianDouPrize;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.RankingActivityService;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Tuple;
@@ -44,6 +47,9 @@ public class RankingActivityServiceImpl implements RankingActivityService {
 
     @Autowired
     private IdGenerator idGenerator;
+
+    @Autowired
+    private InvestMapper investMapper;
 
     // 抽奖次数计数器。
     public static final String TIAN_DOU_DRAW_COUNTER = "web:ranking:tian_dou_draw_counter";
@@ -176,7 +182,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
     public List<UserScoreDto> getTianDouTop15() {
         List<UserScoreDto> userScoreDtoTop10 = new ArrayList<>();
 
-        Set<Tuple> top10 = redisWrapperClient.zrangeWithScores(TIAN_DOU_USER_SCORE_RANK, 0, 14);
+        Set<Tuple> top10 = redisWrapperClient.zrevrangeWithScores(TIAN_DOU_USER_SCORE_RANK, 0, 14);
         for (Tuple tuple : top10) {
             userScoreDtoTop10.add(new UserScoreDto(tuple.getElement(), tuple.getScore()));
         }
@@ -338,4 +344,12 @@ public class RankingActivityServiceImpl implements RankingActivityService {
         }
         return prizeWinnerDtoList;
     }
+
+    @Override
+    public long getTotalInvestAmountInActivityPeriod() {
+        Date startTime = new DateTime(2016, 4, 1, 0, 0, 0).toDate(); // from 2016-04-01 00:00:00
+        Date endTime = new DateTime(2016, 8, 1, 0, 0, 0).toDate(); // to 2016-08-01 00:00:00
+        return investMapper.sumInvestAmount(null, null, null, null, null, startTime, endTime, InvestStatus.SUCCESS, null);
+    }
+
 }
