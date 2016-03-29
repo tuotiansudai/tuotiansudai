@@ -138,8 +138,8 @@
 						<li class="active">中奖纪录</li>
 						<li>我的奖品</li>
 					</ul>
-					<div class="record-list">
-						<ul class="record-model user-record">
+					<div class="record-list" id="recordList">
+						<ul class="record-model user-record active">
 							<#list winnerList.MacBook as mackBookWinner>
                                 <li>恭喜${mackBookWinner.loginName[0..2]}*****抽中了${mackBookWinner.prize.name}</li>
 							</#list>
@@ -150,7 +150,7 @@
                                 <li>恭喜${otherWinner.loginName[0..2]}*****抽中了${otherWinner.prize.name}</li>
 							</#list>
 						</ul>
-						<ul class="record-model own-record active">
+						<ul class="record-model own-record">
 							<#list myPrizeList as myPrize>
                                 <li>
                                     <span class="award-name">${myPrize.prize.name}</span>

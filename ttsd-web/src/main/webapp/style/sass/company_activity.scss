@@ -490,6 +490,7 @@
   .wp{
     width:1000px;
     margin:0 auto;
+    position: relative;
     &.actor-intro{
       padding-top:20px;
     }
@@ -823,6 +824,7 @@
             border:1px solid #ffd633;
             border-radius:20px;
             margin-left:40px;
+            margin-bottom:30px;
             position: relative;
             .total-money{
               width:300px;
@@ -975,6 +977,7 @@
               color:#ffedbc;
               line-height:40px;
               margin-top:7px;
+              cursor:pointer;
               &.active{
                 width:165px;
                 height:45px;

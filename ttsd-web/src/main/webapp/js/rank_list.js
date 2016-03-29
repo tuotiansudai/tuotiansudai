@@ -6,7 +6,8 @@ require(['jquery','rotate'], function($,rotate) {
 		$pointerTd=$('#pointerTd'),
 		$pointerCd=$('#pointerCd'),
 		$rotateTd=$('#rotateTd'),
-		$rotateCd=$('#rotateCd');
+		$rotateCd=$('#rotateCd'),
+		$giftRecord=$('.gift-record li');
 	//change rank list
 	$beanBtn.on('click', function(event) {
 		var $self=$(this),
@@ -16,7 +17,7 @@ require(['jquery','rotate'], function($,rotate) {
 			.siblings('.leader-list').removeClass('active');
 	});
 
-	//change rank list
+	//change award list
 	$awardBtn.on('click', function(event) {
 		var $self=$(this),
 			index=$self.index();
@@ -25,6 +26,14 @@ require(['jquery','rotate'], function($,rotate) {
 			.siblings('.leader-list').removeClass('active');
 	});
 
+	//change award list
+	$giftRecord.on('click', function(event) {
+		var $self=$(this),
+			index=$self.index();
+		$self.addClass('active').siblings('li').removeClass('active');
+		$('#recordList').find('.record-model:eq('+index+')').addClass('active')
+			.siblings('.record-model').removeClass('active');
+	});
 	$pointerTd.on('click', function(event) {
 		event.preventDefault();
 		if(bRotateTd)return;
