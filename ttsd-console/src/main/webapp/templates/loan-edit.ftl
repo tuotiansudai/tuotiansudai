@@ -372,13 +372,16 @@
                 </@security.authorize>
 
                 <#if loanInfo.status == "WAITING_VERIFY">
+                    <@security.authorize access="hasAnyAuthority('OPERATOR')">
+                        <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="apply-audit">提交审核</button>
+                    </@security.authorize>
 
                     <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
                         <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="ok">审核通过</button>
                         <button TYPE="button" class="btn jq-btn-refuse btn-danger" data-loanId="${loanInfo.id?c}">审核拒绝</button>
                     </@security.authorize>
-
                 </#if>
+
                 <#if loanInfo.status == "RECHECK">
                     <#if loanInfo.raisingCompleteTime??>
                         <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="recheck">放款</button>

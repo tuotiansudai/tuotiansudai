@@ -20,7 +20,8 @@
     <context:property-placeholder location="classpath*:ttsd-env.properties,classpath*:ttsd-biz.properties"/>
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.paywrapper,com.tuotiansudai.util,com.tuotiansudai.client,com.tuotiansudai.aspect,com.tuotiansudai.coupon.service,com.tuotiansudai.coupon.util,com.tuotiansudai.jpush,com.tuotiansudai.point"/>
+    <context:component-scan base-package="com.tuotiansudai.paywrapper,com.tuotiansudai.util,com.tuotiansudai.client,com.tuotiansudai.aspect,
+            com.tuotiansudai.coupon.service,com.tuotiansudai.coupon.util,com.tuotiansudai.jpush,com.tuotiansudai.point"/>
 
     <aop:aspectj-autoproxy expose-proxy="true"/>
 
@@ -115,4 +116,9 @@
     </bean>
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient"/>
+
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="${pay.jedis.pool.maxTotal}"/>
+    </bean>
+
 </beans>

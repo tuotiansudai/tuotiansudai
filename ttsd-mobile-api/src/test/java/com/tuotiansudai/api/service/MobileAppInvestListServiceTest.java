@@ -11,10 +11,12 @@ import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RandomUtils;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,6 +50,8 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldGenerateInvestListIsOk() {
+
+        ReflectionTestUtils.setField(mobileAppInvestListService, "showRandomLoginNameList", new ArrayList<String>(){});
         InvestModel investModel1 = new InvestModel();
         investModel1.setAmount(1000000L);
         investModel1.setCreatedTime(new Date());
@@ -89,6 +93,9 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         when(investMapper.findCountByStatus(anyLong(), any(InvestStatus.class))).thenReturn(3L);
 
         InvestListRequestDto investListRequestDto = new InvestListRequestDto();
+        BaseParam baseParam = new BaseParam();
+        baseParam.setUserId("");
+        investListRequestDto.setBaseParam(baseParam);
         investListRequestDto.setLoanId("1111");
         investListRequestDto.setIndex(1);
         investListRequestDto.setPageSize(10);

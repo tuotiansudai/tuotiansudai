@@ -16,7 +16,7 @@
 					<span class="title-href" id="beansDetail">财豆明细></span>
 				</div>
                 <div class="beans-list mt-20">
-                    <span class="beans-num">可用财豆：${myPoint!}</span>
+                    <span class="beans-num">可用财豆：${myPoint?string.computer}</span>
                     <i class="icon-result icon-dou"></i>
                 </div>
                 <div class="beans-list mt-20">
@@ -85,12 +85,12 @@
             <div class="beans-coupon">
                 <div class="beans-list">
                     <i class="icon-result icon-beans"></i>
-                    <span class="beans-num">可用财豆：<strong class="bean-use">${myPoint!}</strong></span>
+                    <span class="beans-num">可用财豆：<strong class="bean-use">${myPoint?string.computer}</strong></span>
                     <i class="icon-result icon-dou"></i>
                 </div>
             </div>
 			<ul class="coupon-list">
-				<#if exchangeCouponDtos??>
+				<#if exchangeCouponDtos?has_content>
 					<#list exchangeCouponDtos as exchangeCouponDto>
                         <li class="<#if myPoint lt exchangeCouponDto.exchangePoint>no-click<#else><#if exchangeCouponDto.couponType == 'INVEST_COUPON'>new-type<#else>bite-type</#if></#if>">
                             <div class="top-com">
@@ -130,6 +130,8 @@
                             </div>
                         </li>
 					</#list>
+                <#else>
+                    <span class="pad-m fl tc text-18" style="width:705px;color:#808080">礼品即将上线，敬请期待！</span>
 				</#if>
 			</ul>
     	</div>

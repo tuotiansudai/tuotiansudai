@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -23,6 +24,9 @@ public class MobileAppCertificationServiceTest extends ServiceTestBase{
     private UserService userService;
     @Mock
     private AccountMapper accountMapper;
+
+    @Mock
+    private AccountService accountService;
 
     @Test
     public void shouldValidateUserCertificationInfoIsOk(){
@@ -60,7 +64,7 @@ public class MobileAppCertificationServiceTest extends ServiceTestBase{
 
         when(accountMapper.findByLoginName(anyString())).thenReturn(null);
         when(userService.registerAccount(any(RegisterAccountDto.class))).thenReturn(baseDto);
-
+        when(accountService.isIdentityNumberExist(anyString())).thenReturn(false);
         BaseResponseDto<CertificationResponseDataDto> baseResponseDto = mobileAppCertificationService.validateUserCertificationInfo(certificationRequestDto);
         assertEquals("0001",baseResponseDto.getCode());
 
