@@ -45,7 +45,7 @@ public interface InvestService {
 
     void turnOffAutoInvest(String loginName);
 
-    AutoInvestPlanModel findUserAutoInvestPlan(String loginName);
+    AutoInvestPlanModel findAutoInvestPlan(String loginName);
 
     List<String> findAllChannel();
 
@@ -53,5 +53,13 @@ public interface InvestService {
 
     InvestModel findById(long investId);
 
+    InvestModel findLatestSuccessInvest(String loginName);
+
     BaseDto<PayDataDto> noPasswordInvest(InvestDto investDto) throws InvestException;
+
+    boolean switchNoPasswordInvest(String loginName, boolean isTurnOn);
+
+    void markNoPasswordRemind(String loginName);
+
+    boolean isRemindNoPassword(String loginName);
 }

@@ -221,7 +221,7 @@ public class LoanServiceImpl implements LoanService {
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
-            loanDto.setHasRemindInvestNoPassword(redisWrapperClient.hexists(NoPasswordInvestServiceImpl.INVEST_NO_PASSWORD_REMIND_MAP, loginName));
+            loanDto.setHasRemindInvestNoPassword(investService.isRemindNoPassword(loginName));
             loanDto.setAutoInvest(accountModel.isAutoInvest());
             loanDto.setInvestNoPassword(accountModel.isNoPasswordInvest());
             long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), loginName);

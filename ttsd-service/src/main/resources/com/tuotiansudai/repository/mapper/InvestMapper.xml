@@ -68,6 +68,14 @@
         where id = #{id}
     </select>
 
+    <select id="findLatestSuccessInvest" parameterType="string" resultMap="investResultMap">
+        select <include refid="columns"></include>
+        from invest
+        where login_name = #{loginName} and status = 'SUCCESS'
+        order by created_time desc
+        limit 1;
+    </select>
+
     <select id="findByLoginName" parameterType="map" resultMap="investResultMap">
         select invest.id, invest.login_name, invest.loan_id, invest.amount, invest.status, invest.source, invest.is_auto_invest, invest.created_time
         from invest

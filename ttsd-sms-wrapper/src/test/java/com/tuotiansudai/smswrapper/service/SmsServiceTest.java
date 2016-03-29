@@ -5,7 +5,7 @@ import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.client.SmsClient;
-import com.tuotiansudai.smswrapper.repository.mapper.NoPasswordInvestMapper;
+import com.tuotiansudai.smswrapper.repository.mapper.TurnOffNoPasswordInvestCaptchaMapper;
 import com.tuotiansudai.smswrapper.repository.mapper.RegisterCaptchaMapper;
 import com.tuotiansudai.smswrapper.repository.model.SmsModel;
 import org.junit.After;
@@ -43,7 +43,7 @@ public class SmsServiceTest {
     private RegisterCaptchaMapper registerCaptchaMapper;
 
     @Autowired
-    private NoPasswordInvestMapper noPasswordInvestMapper;
+    private TurnOffNoPasswordInvestCaptchaMapper noPasswordInvestMapper;
 
     @Before
     public void setUp() throws Exception {

@@ -53,7 +53,6 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private IdGenerator idGenerator;
 
-
     @Autowired
     private AccountMapper accountMapper;
 
@@ -107,19 +106,18 @@ public class InvestServiceImpl implements InvestService {
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
-        // TODO : 这个方法里的事务如何处理
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
 
-        InvestModel investModel = new InvestModel(dto);
+        InvestModel investModel = new InvestModel(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource(), dto.getChannel());
         investModel.setId(idGenerator.generate());
-        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newInvestRequest(
-                dto.getLoanId(),
-                String.valueOf(investModel.getId()),
-                accountModel.getPayUserId(),
-                String.valueOf(investModel.getAmount()), dto.getSource());
+        investMapper.create(investModel);
+
         try {
-            checkLoanInvestAccountAmount(dto.getLoginName(), investModel.getLoanId(), investModel.getAmount());
-            investMapper.create(investModel);
+            ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newInvestRequest(
+                    dto.getLoanId(),
+                    String.valueOf(investModel.getId()),
+                    accountModel.getPayUserId(),
+                    String.valueOf(investModel.getAmount()), dto.getSource());
             return payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
         } catch (PayException e) {
             logger.error(e.getLocalizedMessage(), e);
@@ -131,25 +129,24 @@ public class InvestServiceImpl implements InvestService {
         }
     }
 
-    private BaseDto<PayDataDto> investNopwd(long loanId, long amount, String loginName, Source source) {
+    private BaseDto<PayDataDto> invokeNoPassword(long loanId, long amount, String loginName, Source source) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         InvestModel investModel = new InvestModel(loanId, amount, loginName, source, null);
-        investModel.setIsAutoInvest(true);
         investModel.setId(idGenerator.generate());
         investModel.setNoPasswordInvest(true);
         investMapper.create(investModel);
-        ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newInvestNopwdRequest(
-                String.valueOf(loanId),
-                String.valueOf(investModel.getId()),
-                accountModel.getPayUserId(),
-                String.valueOf(investModel.getAmount())
-        );
+
         try {
-            checkLoanInvestAccountAmount(loginName, investModel.getLoanId(), investModel.getAmount());
+            ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newInvestNopwdRequest(
+                    String.valueOf(loanId),
+                    String.valueOf(investModel.getId()),
+                    accountModel.getPayUserId(),
+                    String.valueOf(investModel.getAmount()));
+
             ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(
                     ProjectTransferNopwdMapper.class,
                     requestModel,
@@ -158,32 +155,12 @@ public class InvestServiceImpl implements InvestService {
             payDataDto.setCode(responseModel.getRetCode());
             payDataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
-            onInvestFail(investModel);
+            investMapper.updateStatus(investModel.getId(), InvestStatus.FAIL);
             payDataDto.setStatus(false);
             payDataDto.setMessage(e.getLocalizedMessage());
             logger.error(e.getLocalizedMessage(), e);
         }
         return baseDto;
-    }
-
-    private void checkLoanInvestAccountAmount(String loginName, long loanId, long investAmount) throws PayException {
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if (accountModel.getBalance() < investAmount) {
-            logger.error("投资失败，投资金额[" + investAmount + "]超过用户[" + loginName + "]账户余额[" + accountModel.getBalance() + "]");
-            throw new PayException("账户余额不足");
-        }
-        LoanModel loan = loanMapper.findById(loanId);
-        if (loan == null) {
-            logger.error("投资失败，查找不到指定的标的[" + loanId + "]");
-            throw new PayException("标的不存在");
-        }
-        long successInvestAmount = investMapper.sumSuccessInvestAmount(loanId);
-        long remainAmount = loan.getLoanAmount() - successInvestAmount;
-
-        if (remainAmount < investAmount) {
-            logger.error("投资失败，投资金额[" + investAmount + "]超过标的[" + loanId + "]可投金额[" + remainAmount + "]");
-            throw new PayException("投资金额超过标的可投金额");
-        }
     }
 
     /**
@@ -339,10 +316,6 @@ public class InvestServiceImpl implements InvestService {
         return paybackSuccess;
     }
 
-    private void onInvestFail(InvestModel investModel) {
-        investMapper.updateStatus(investModel.getId(), InvestStatus.FAIL);
-    }
-
     @Override
     public List<AutoInvestPlanModel> findValidPlanByPeriod(AutoInvestMonthPeriod period) {
         Calendar cal = Calendar.getInstance();
@@ -354,8 +327,9 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
+    @Transactional
     public BaseDto<PayDataDto> noPasswordInvest(InvestDto dto) {
-        return this.investNopwd(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource());
+        return this.invokeNoPassword(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource());
     }
 
     @Override
@@ -395,7 +369,7 @@ public class InvestServiceImpl implements InvestService {
                     logger.info("auto invest was skip, because loan amount is not match user's auto-invest setting [" + autoInvestPlanModel.getLoginName() + "] , loanId : " + loanId);
                     continue;
                 }
-                BaseDto<PayDataDto> baseDto = this.investNopwd(loanId, autoInvestAmount, autoInvestPlanModel.getLoginName(), Source.AUTO);
+                BaseDto<PayDataDto> baseDto = this.invokeNoPassword(loanId, autoInvestAmount, autoInvestPlanModel.getLoginName(), Source.AUTO);
                 if (!baseDto.isSuccess()) {
                     logger.debug(MessageFormat.format("auto invest failed auto invest plan id is {0} and invest amount is {1} and loanId id {2}", autoInvestPlanModel.getId(), autoInvestAmount, loanId));
                 }
@@ -408,6 +382,7 @@ public class InvestServiceImpl implements InvestService {
                 try {
                     Thread.sleep(autoInvestIntervalMilliseconds);
                 } catch (InterruptedException e) {
+                    logger.error(e.getLocalizedMessage(), e);
                 }
             }
         }

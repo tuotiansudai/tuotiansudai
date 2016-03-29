@@ -54,8 +54,10 @@
                             </#if>
                             <span class="fl">投资金额：</span>
                             <input type="text" name="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" data-min-invest-amount="<@amount>${loan.minInvestAmount?string.computer}</@amount>" placeholder="0.00" value="${defaultInvestAmount}"
+                                   data-no-password-remind="${loan.hasRemindInvestNoPassword?c}"
+                                   data-no-password-invest="${loan.investNoPassword?c}"
+                                   data-auto-invest-on="${loan.autoInvest?c}"
                                    class="text-input-amount fr position-width"/>
-
                             <#if errorMessage?has_content>
                                 <span class="errorTip hide"><i class="fa fa-times-circle"></i>${errorMessage!}</span>
                             </#if>
@@ -172,17 +174,18 @@
                         <dd>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string.computer}"/>
-                            <button class="btn-pay btn-normal" type="button" id="loanInvest" <#if loan.loanStatus == "PREHEAT">disabled="disabled"</#if>>
+                            <button id="investSubmit" class="btn-pay btn-normal" type="button" <#if loan.loanStatus == "PREHEAT">disabled="disabled"</#if>>
                                 <#if loan.loanStatus == "PREHEAT">预热中</#if>
                                 <#if loan.loanStatus == "RAISING">马上投资</#if>
                             </button>
                         </dd>
-                        <input type="hidden" id="investNoPassword" value="${loan.investNoPassword?c}">
-                        <input type="hidden" id="hasRemindInvestNoPassword" value="${loan.hasRemindInvestNoPassword?c}"/>
                         <@global.role hasRole="'INVESTOR'">
                             <#if !loan.investNoPassword>
                                 <dd>
-                                    <a class="fl open-no-password-invest" data-open-agreement="${loan.autoInvest?c}" id="freeSecret">推荐您开通免密投资<i class="fa fa-question-circle text-m" title="开通后您可以简化投资过程，理财快人一步"></i></a>
+                                    <a class="fl open-no-password-invest" id="noPasswordTips" data-open-agreement="${loan.autoInvest?c}" >
+                                        推荐您开通免密投资
+                                        <i class="fa fa-question-circle text-m" title="开通后您可以简化投资过程，理财快人一步"></i>
+                                    </a>
                                 </dd>
                             </#if>
                         </@global.role>
@@ -251,7 +254,7 @@
 </div>
 </div>
 </div>
-<div class="pad-s-tb tl fl hide" id="isAuthorizeSuccess">
+<div id="authorizeAgreementOptions" class="pad-s-tb tl fl hide">
     <p class="mb-0 text-m color-title">请在新打开的联动优势完成操作后选择：</p>
     <p class="text-m"><span class="title-text">授权成功：</span><span class="go-on-btn success_go_on_invest">继续投资</span><span class="color-tip">（授权后可能会有几秒的延迟）</span></p>
     <p class="mb-0"><span class="title-text">授权失败： </span><span class="again-btn">重新授权</span><span class="btn-lr">或</span><span class="go-on-btn fail_go_on_invest">继续投资</span></p>
@@ -261,7 +264,6 @@
     <input type="hidden" name = "noPasswordInvest" value="true" />
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 </form>
-
     <#include "coupon-alert.ftl" />
 </div>
     <#include "red-envelope-float.ftl" />

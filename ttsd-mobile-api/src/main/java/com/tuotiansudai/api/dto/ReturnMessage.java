@@ -38,7 +38,7 @@ public enum ReturnMessage {
     /******手机端投资列表******/
 
     /******手机端标的详情******/
-    LOAN_ID_IS_NOT_EXIST("0024","标的详细信息不存在"),
+    LOAN_NOT_FOUND("0024","标的不存在"),
     /******手机端标的详情******/
 
     /******手机端投资******/
@@ -54,7 +54,7 @@ public enum ReturnMessage {
     EXCEED_DEAD_LINE_EXCEPTION("0037","优惠券已过期"),
     USER_IS_NOT_CERTIFICATED("0038","您尚未进行实名认证"),
     INVEST_CAN_NOT_BE_FOUND("0040","查找不到投资详情"),
-    NOT_SUFFICIENT_FUNDS("0045","账户余额不足"),
+    NOT_ENOUGH_BALANCE("0045","账户余额不足"),
     NO_MATCH_XS_INVEST_CONDITION("0050","不符合新手标投资条件"),
     ILLEGAL_INVEST_AMOUNT("0051","投资金额不符合递增金额要求"),
     MORE_THAN_MAX_INVEST_AMOUNT("0052","投资金额超过了用户投资限额"),
@@ -62,8 +62,6 @@ public enum ReturnMessage {
     LESS_THAN_MIN_INVEST_AMOUNT("0054","投资金额小于标的最小投资金额"),
     OUT_OF_NOVICE_INVEST_LIMIT("0055","新手标投资已超上限"),
     INVEST_FAILED("0056","投资失败"),
-    INVEST_FAILED_NOT_OPEN_NO_PASSWORD_INVEST("0057","投资失败，您尚未开启免密投资功能"),
-
     /******手机端投资******/
 
 
@@ -76,10 +74,6 @@ public enum ReturnMessage {
     NOT_BIND_CARD("0039","该用户尚未绑卡，签约失败"),
     AUTO_INVEST("0088","已经成功授权"),
     /******签约失败******/
-
-    /******手机端请求第三方接口时，出现网络异常******/
-    NETWORK_EXCEPTION("0028","网络异常"),
-    /******手机端请求第三方接口时，出现网络异常******/
 
     /******文章管理******/
     NODE_ID_IS_NOT_EXIST("0041","内容不存在"),
@@ -95,7 +89,8 @@ public enum ReturnMessage {
     UMPAY_OPERATION_EXCEPTION("0044","联动优势处理失败"),
 
     /******未开通快捷支付******/
-    NOT_OPNE_FAST_PAYMENT("0046","未开通快捷支付"),
+    FAST_PAY_OFF("0046","未开通快捷支付"),
+    PASSWORD_INVEST_OFF("0058", "尚未开启免密投资"),
 
     USER_IS_DISABLED("0049", "用户名或密码错误,账户冻结30分钟,如您着急投资请与拓天速贷客服联系"),
     CANNOT_GET_APK_VERSION("0060", "查找不到版本信息"),

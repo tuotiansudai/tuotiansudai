@@ -27,7 +27,7 @@ public class ChannelInterceptor extends HandlerInterceptorAdapter {
         if (!Strings.isNullOrEmpty(channel)) {
             modelAndView.addObject("channel", channel);
         }
-        modelAndView.addObject("isProduction",Environment.isProduction(environment));
+        modelAndView.addObject("isProduction", Environment.isProduction(environment));
         modelAndView.addObject("isAppSource", APP_SOURCE_FLAG.equalsIgnoreCase(request.getParameter("source")));
     }
 }

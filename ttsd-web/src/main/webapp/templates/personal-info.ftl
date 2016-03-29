@@ -150,7 +150,7 @@
 </div>
 
 <div id="turnOnNoPasswordInvestDOM" class="pad-m popLayer" style="display: none;">
-    <form name="turnOnNoPasswordInvestForm" action="${requestContext.getContextPath()}/no-password-invest" method="post" target="_blank">
+    <form name="turnOnNoPasswordInvestForm" action="${requestContext.getContextPath()}/agreement" method="post" target="_blank">
         <div  class="tc text-m">推荐您开通免密投资功能，简化投资过程，理财快人一步。</div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="noPasswordInvest" value="true"/>
@@ -161,7 +161,7 @@
     </form>
 </div>
 <div id="turnOffNoPasswordInvestDOM" class="pad-m popLayer" style="display: none; ">
-    <form id="imageCaptchaForm" name="imageCaptchaForm" action="${requestContext.getContextPath()}/no-password-invest/send-no-password-invest-captcha" method="post">
+    <form id="imageCaptchaForm" name="imageCaptchaForm" action="${requestContext.getContextPath()}/no-password-invest/send-captcha" method="post">
         <dl>
             <dt >推荐您开通免密投资功能，简化投资过程，理财快人一步，确认关闭吗？</dt>
             <dd class="mt-20">
@@ -180,7 +180,7 @@
                 <span >短信验证码：</span>
                 <input type="captcha" name="captcha" class="input-control captcha" placeholder="请输入短信验证码" maxlength="6">
                 <input type="hidden" name="mobile" value="${mobile}"/>
-                <button type="button" class="btn btn-normal get-captcha" disabled="disabled" data-url= "/no-password-invest/send-no-password-invest-captcha">获取验证码</button>
+                <button type="button" class="btn btn-normal get-captcha" disabled="disabled" data-url= "/no-password-invest/send-captcha">获取验证码</button>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </dd>
         </dl>

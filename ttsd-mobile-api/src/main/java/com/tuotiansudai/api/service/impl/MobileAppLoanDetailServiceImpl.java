@@ -51,8 +51,8 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         LoanModel loan = loanMapper.findById(Long.parseLong(loanId));
 
         if (loan == null) {
-            log.info("标的详情" + ReturnMessage.LOAN_ID_IS_NOT_EXIST.getCode() + ":" + ReturnMessage.LOAN_ID_IS_NOT_EXIST.getMsg());
-            return new BaseResponseDto(ReturnMessage.LOAN_ID_IS_NOT_EXIST.getCode(), ReturnMessage.LOAN_ID_IS_NOT_EXIST.getMsg());
+            log.info("标的详情" + ReturnMessage.LOAN_NOT_FOUND.getCode() + ":" + ReturnMessage.LOAN_NOT_FOUND.getMsg());
+            return new BaseResponseDto(ReturnMessage.LOAN_NOT_FOUND.getCode(), ReturnMessage.LOAN_NOT_FOUND.getMsg());
         }
 
         LoanDetailResponseDataDto loanDetailResponseDataDto = this.convertLoanDetailFromLoan(loan);

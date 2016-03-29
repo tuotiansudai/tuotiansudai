@@ -52,17 +52,6 @@ public class InvestModel implements Serializable {
 
     }
 
-    public InvestModel(InvestDto dto){
-        this.loginName = dto.getLoginName();
-        this.amount = AmountConverter.convertStringToCent(dto.getAmount());
-        this.loanId = Long.parseLong(dto.getLoanId());
-        this.source = dto.getSource();
-        this.channel = dto.getChannel();
-        this.status = InvestStatus.WAIT_PAY;
-        this.isAutoInvest = false;
-        this.createdTime = new Date();
-    }
-
     public InvestModel(long loanId, long amount, String loginName, Source source, String channel) {
         this.loanId = loanId;
         this.amount = amount;
@@ -70,7 +59,7 @@ public class InvestModel implements Serializable {
         this.source = source;
         this.channel = channel;
         this.status = InvestStatus.WAIT_PAY;
-        this.isAutoInvest = false;
+        this.isAutoInvest = Source.AUTO == source;
         this.createdTime = new Date();
     }
 

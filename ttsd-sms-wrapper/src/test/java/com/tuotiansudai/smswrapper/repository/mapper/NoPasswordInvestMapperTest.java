@@ -19,7 +19,7 @@ import static org.junit.Assert.assertThat;
 public class NoPasswordInvestMapperTest {
 
     @Autowired
-    private NoPasswordInvestMapper noPasswordInvestMapper;
+    private TurnOffNoPasswordInvestCaptchaMapper noPasswordInvestMapper;
 
     @Test
     @Transactional
