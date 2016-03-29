@@ -1,4 +1,4 @@
-package com.tuotiansudai.service;
+package com.tuotiansudai.console.service;
 
 public interface ConsoleHomeService {
 

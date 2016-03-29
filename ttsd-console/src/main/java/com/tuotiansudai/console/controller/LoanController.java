@@ -115,4 +115,10 @@ public class LoanController {
         return loanService.cancelLoan(loanDto);
     }
 
+    @RequestMapping(value = "/apply-audit", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> applyAuditLoan(@RequestBody LoanDto loanDto) {
+        return loanService.applyAuditLoan(loanDto);
+    }
+
 }

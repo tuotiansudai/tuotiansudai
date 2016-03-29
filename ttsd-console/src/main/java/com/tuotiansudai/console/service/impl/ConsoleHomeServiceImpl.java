@@ -1,14 +1,14 @@
-package com.tuotiansudai.service.impl;
+package com.tuotiansudai.console.service.impl;
 
+import com.tuotiansudai.console.repository.mapper.UserMapperConsole;
+import com.tuotiansudai.console.service.ConsoleHomeService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.RechargeStatus;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.WithdrawStatus;
-import com.tuotiansudai.service.ConsoleHomeService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +17,8 @@ import java.util.Date;
 
 @Service
 public class ConsoleHomeServiceImpl implements ConsoleHomeService {
-
     @Autowired
-    UserMapper userMapper;
+    UserMapperConsole userMapperConsole;
 
     @Autowired
     RechargeMapper rechargeMapper;
@@ -33,19 +32,19 @@ public class ConsoleHomeServiceImpl implements ConsoleHomeService {
     @Override
     public int userToday() {
         Date startTime = DateTime.now().withTimeAtStartOfDay().toDate();
-        return userMapper.findAllUserCount(null, null, null, startTime, null, null, null, null, null);
+        return userMapperConsole.findAllUserCount(null, null, null, startTime, null, null, null, null, null);
     }
 
     @Override
     public int user7Days() {
         Date startTime = DateTime.now().minusDays(6).withTimeAtStartOfDay().toDate();
-        return userMapper.findAllUserCount(null, null, null, startTime, null, null, null, null, null);
+        return userMapperConsole.findAllUserCount(null, null, null, startTime, null, null, null, null, null);
     }
 
     @Override
     public int user30Days() {
         Date startTime = DateTime.now().minusDays(29).withTimeAtStartOfDay().toDate();
-        return userMapper.findAllUserCount(null, null, null, startTime, null, null, null, null, null);
+        return userMapperConsole.findAllUserCount(null, null, null, startTime, null, null, null, null, null);
     }
 
     @Override
