@@ -549,8 +549,8 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.REFERRER_REWARD_ALERT);
         if (jPushAlertModel != null) {
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
-            List<String> amountLists = Lists.newArrayList(accountModel.getUserName(), AmountConverter.convertCentToString(investReferrerRewardModel.getAmount()), AmountConverter.convertCentToString(accountModel.getBalance()));
-            loginNameMap.put(investModel.getLoginName(), amountLists);
+            List<String> amountLists = Lists.newArrayList(investModel.getLoginName(), AmountConverter.convertCentToString(investReferrerRewardModel.getAmount()), AmountConverter.convertCentToString(accountModel.getBalance()));
+            loginNameMap.put(accountModel.getUserName(), amountLists);
             autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
             loginNameMap.clear();
 
