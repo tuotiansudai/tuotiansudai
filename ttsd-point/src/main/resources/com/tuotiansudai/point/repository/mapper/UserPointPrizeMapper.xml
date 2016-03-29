@@ -10,14 +10,27 @@
         <result column="point_prize_id" property="pointPrizeId"></result>
         <result column="login_name" property="loginName"></result>
         <result column="created_time" property="createdTime"></result>
+        <result column="reality" property="reality"></result>
     </resultMap>
 
     <insert id="create" parameterType="UserPointPrizeModel">
-        insert into user_point_prize values (#{pointPrizeId}, #{loginName}, #{createdTime});
+        insert into user_point_prize values (#{pointPrizeId}, #{loginName}, #{createdTime}, #{reality});
     </insert>
 
     <select id="findByLoginNameAndCreateTime" parameterType="map" resultMap="userPointPrizeResultMap">
-        select * from user_point_prize where login_name = #{loginName} and date_format(created_time, '%Y-%m-%d') = #{date};
+        select * from user_point_prize where login_name = #{loginName} and date_format(created_time, '%Y-%m-%d') = #{date} and reality is true;
+    </select>
+
+    <select id="findByLoginName" parameterType="java.lang.String" resultMap="userPointPrizeResultMap">
+        select * from user_point_prize where login_name = #{loginName} and reality is true order by created_time desc
+    </select>
+
+    <select id="findAllDescCreatedTime" resultMap="userPointPrizeResultMap">
+        select * from user_point_prize order by created_time desc
+    </select>
+
+    <select id="findAllNotReal" resultType="long">
+        select count(*) from user_point_prize where reality is false;
     </select>
 
 </mapper>

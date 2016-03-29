@@ -20,4 +20,8 @@
         select * from point_prize where probability > 0 and active is true order by id;
     </select>
 
+    <select id="findAllUnPossibleWin" resultMap="pointPrizeResultMap">
+        select * from point_prize where probability = 0 and active is true order by id;
+    </select>
+
 </mapper>

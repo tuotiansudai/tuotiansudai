@@ -12,6 +12,8 @@ public class UserPointPrizeModel implements Serializable{
 
     private Date createdTime;
 
+    private boolean reality;
+
     public long getPointPrizeId() {
         return pointPrizeId;
     }
@@ -36,14 +38,23 @@ public class UserPointPrizeModel implements Serializable{
         this.createdTime = createdTime;
     }
 
+    public boolean isReality() {
+        return reality;
+    }
+
+    public void setReality(boolean reality) {
+        this.reality = reality;
+    }
+
     public UserPointPrizeModel() {
 
     }
 
-    public UserPointPrizeModel(long pointPrizeId, String loginName) {
+    public UserPointPrizeModel(long pointPrizeId, String loginName, boolean reality) {
         this.pointPrizeId = pointPrizeId;
         this.loginName = loginName;
         this.createdTime = new Date();
+        this.reality = reality;
     }
 
 }
