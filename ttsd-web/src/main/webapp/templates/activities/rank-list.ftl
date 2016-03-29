@@ -33,7 +33,7 @@
                     </li>
                     <li>
                         <p>
-                            <span class="project-name">我的财豆：1000</span>
+                            <span class="project-name">我的财豆：${myPoint?string('0')!}</span>
                             <a href="javascript:void(0)" class="project-operate">去抽奖</a>
                         </p>
                     </li>
