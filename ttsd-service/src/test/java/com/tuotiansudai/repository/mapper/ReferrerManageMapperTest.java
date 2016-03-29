@@ -5,6 +5,7 @@ import com.tuotiansudai.repository.model.ReferrerRelationView;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,7 @@ public class ReferrerManageMapperTest {
     private ReferrerManageMapper referrerManageMapper;
 
     @Test
-    public void shouldGetSomeReferRealtion() throws Exception {
-
+    public void shouldGetSomeReferRelationship() throws Exception {
         UserModel user1 = new UserModel();
         user1.setId(idGenerator.generate());
         user1.setLoginName("test1");
@@ -141,41 +141,18 @@ public class ReferrerManageMapperTest {
     }
 
     private InvestModel createMockInvest(String loginName, long loanId) {
-        InvestModel model = new InvestModel();
-        model.setAmount(1000000);
-        // 舍弃毫秒数
-        Date currentDate = new Date((new Date().getTime()/1000)*1000);
-        model.setCreatedTime(currentDate);
-        model.setId(idGenerator.generate());
-        model.setIsAutoInvest(false);
-        model.setLoginName(loginName);
-        model.setLoanId(loanId);
-        model.setSource(Source.ANDROID);
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, Source.WEB, null);
+        model.setCreatedTime(new DateTime().withTimeAtStartOfDay().toDate());
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         return model;
     }
-
-    private UserModel createMockUser(String loginName) {
-        UserModel userModelTest = new UserModel();
-        userModelTest.setLoginName(loginName);
-        userModelTest.setPassword("123abc");
-        userModelTest.setEmail("12345@abc.com");
-        userModelTest.setMobile("139" + RandomStringUtils.randomNumeric(8));
-        userModelTest.setRegisterTime(new Date());
-        userModelTest.setStatus(UserStatus.ACTIVE);
-        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
-        userMapper.create(userModelTest);
-        return userModelTest;
-    }
-
 
     private LoanModel createMockLoan(String loginName) {
         LoanModel fakeLoan = this.getFakeLoan(loginName, loginName, LoanStatus.PREHEAT);
         loanMapper.create(fakeLoan);
         return fakeLoan;
     }
-
 
     private LoanModel getFakeLoan(String loanerLoginName, String agentLoginName, LoanStatus loanStatus) {
         LoanModel fakeLoanModel = new LoanModel();

@@ -1158,44 +1158,35 @@ public class NormalRepayServiceTest {
     }
 
     private InvestModel getFakeInvestModel(long loanId, long amount, String loginName, Date investTime) {
-        InvestModel model = new InvestModel();
-        model.setId(idGenerator.generate());
-        model.setAmount(amount);
-        model.setLoanId(loanId);
-        model.setLoginName(loginName);
-        model.setSource(Source.ANDROID);
-        model.setStatus(InvestStatus.SUCCESS);
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, Source.WEB, null);
         model.setCreatedTime(investTime);
+        model.setStatus(InvestStatus.SUCCESS);
         return model;
     }
 
     private LoanRepayModel getFakeLoanRepayModel(long loanId, int period, long corpus, Date expectedRepayDate, Date actualRepayDate, RepayStatus repayStatus) {
-        LoanRepayModel fakeLoanRepay = new LoanRepayModel(idGenerator.generate(), loanId, period, 0, expectedRepayDate, repayStatus);
+        LoanRepayModel fakeLoanRepay = new LoanRepayModel(idGenerator.generate(), loanId, period, corpus, 0, expectedRepayDate, repayStatus);
         fakeLoanRepay.setActualRepayDate(actualRepayDate);
-        fakeLoanRepay.setCorpus(corpus);
         return fakeLoanRepay;
     }
 
     private LoanRepayModel getFakeOverdueLoanRepayModel(long loanId, int period, long corpus, Date expectedRepayDate, Date actualRepayDate, RepayStatus repayStatus) {
-        LoanRepayModel fakeLoanRepay = new LoanRepayModel(idGenerator.generate(), loanId, period, 0, expectedRepayDate, repayStatus);
+        LoanRepayModel fakeLoanRepay = new LoanRepayModel(idGenerator.generate(), loanId, period, corpus, 0, expectedRepayDate, repayStatus);
         fakeLoanRepay.setActualRepayDate(actualRepayDate);
         fakeLoanRepay.setDefaultInterest(10);
-        fakeLoanRepay.setCorpus(corpus);
         return fakeLoanRepay;
     }
 
     private InvestRepayModel getFakeInvestRepayModel(long investId, int period, long corpus, Date expectedRepayDate, Date actualRepayDate, RepayStatus repayStatus) {
-        InvestRepayModel fakeInvestRepay = new InvestRepayModel(idGenerator.generate(), investId, period, 0, 0, expectedRepayDate, repayStatus);
+        InvestRepayModel fakeInvestRepay = new InvestRepayModel(idGenerator.generate(), investId, period, corpus, 0, 0, expectedRepayDate, repayStatus);
         fakeInvestRepay.setActualRepayDate(actualRepayDate);
-        fakeInvestRepay.setCorpus(corpus);
         return fakeInvestRepay;
     }
 
     private InvestRepayModel getFakeOverdueInvestRepayModel(long investId, int period, long corpus, Date expectedRepayDate, Date actualRepayDate, RepayStatus repayStatus) {
-        InvestRepayModel fakeInvestRepay = new InvestRepayModel(idGenerator.generate(), investId, period, 0, 0, expectedRepayDate, repayStatus);
+        InvestRepayModel fakeInvestRepay = new InvestRepayModel(idGenerator.generate(), investId, period, corpus, 0, 0, expectedRepayDate, repayStatus);
         fakeInvestRepay.setActualRepayDate(actualRepayDate);
         fakeInvestRepay.setDefaultInterest(1);
-        fakeInvestRepay.setCorpus(corpus);
         return fakeInvestRepay;
     }
 

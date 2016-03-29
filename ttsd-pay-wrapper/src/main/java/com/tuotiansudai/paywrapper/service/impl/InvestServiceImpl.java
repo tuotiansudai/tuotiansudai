@@ -110,8 +110,7 @@ public class InvestServiceImpl implements InvestService {
         // TODO : 这个方法里的事务如何处理
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
 
-        InvestModel investModel = new InvestModel(dto);
-        investModel.setId(idGenerator.generate());
+        InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource(), dto.getChannel());
         ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newInvestRequest(
                 dto.getLoanId(),
                 String.valueOf(investModel.getId()),
@@ -137,9 +136,7 @@ public class InvestServiceImpl implements InvestService {
         baseDto.setData(payDataDto);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        InvestModel investModel = new InvestModel(loanId, amount, loginName, Source.AUTO, null);
-        investModel.setIsAutoInvest(true);
-        investModel.setId(idGenerator.generate());
+        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, Source.AUTO, null);
         investMapper.create(investModel);
         ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newInvestNopwdRequest(
                 String.valueOf(loanId),

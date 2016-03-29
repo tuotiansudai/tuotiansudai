@@ -283,6 +283,7 @@ public class LoanServiceImpl implements LoanService {
             jobManager.newJob(JobType.LoanOut, LoanOutSuccessHandleJob.class)
                     .addJobData(LoanOutSuccessHandleJob.LOAN_ID_KEY, loanId)
                     .withIdentity(JobType.LoanOut.name(), "Loan-" + loanId)
+                    .replaceExistingJob(true)
                     .runOnceAt(triggerTime)
                     .submit();
         } catch (SchedulerException e) {

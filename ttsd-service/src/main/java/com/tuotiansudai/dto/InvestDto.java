@@ -10,11 +10,13 @@ import java.util.List;
 
 public class InvestDto implements Serializable {
 
-    private String loginName;
-
     @NotEmpty
     @Pattern(regexp = "^\\d+$")
     private String loanId;
+
+    private String transferInvestId;
+
+    private String loginName;
 
     @NotEmpty
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
@@ -26,20 +28,28 @@ public class InvestDto implements Serializable {
 
     private Source source = Source.WEB;
 
-    public String getLoginName() {
-        return loginName;
-    }
-
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
-    }
-
     public String getLoanId() {
         return loanId;
     }
 
     public void setLoanId(String loanId) {
         this.loanId = loanId;
+    }
+
+    public String getTransferInvestId() {
+        return transferInvestId;
+    }
+
+    public void setTransferInvestId(String transferInvestId) {
+        this.transferInvestId = transferInvestId;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 
     public String getAmount() {
