@@ -550,7 +550,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         if (jPushAlertModel != null) {
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
             List<String> amountLists = Lists.newArrayList(investModel.getLoginName(), AmountConverter.convertCentToString(investReferrerRewardModel.getAmount()), AmountConverter.convertCentToString(accountModel.getBalance()));
-            loginNameMap.put(accountModel.getUserName(), amountLists);
+            loginNameMap.put(accountModel.getLoginName(), amountLists);
             autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
             loginNameMap.clear();
 
