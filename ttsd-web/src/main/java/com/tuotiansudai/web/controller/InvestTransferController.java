@@ -19,18 +19,14 @@ public class InvestTransferController {
 
     @RequestMapping(value = "/apply", method = RequestMethod.POST)
     public ModelAndView investTransferApply(@RequestBody TransferApplicationDto transferApplicationDto) {
-        try {
-            investTransferService.investTransferApply(transferApplicationDto);
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
+        investTransferService.investTransferApply(transferApplicationDto);
         return new ModelAndView("");
     }
 
-    @RequestMapping(value = "/{transferApplyId}/cancel", method = RequestMethod.POST)
+    @RequestMapping(value = "/application/{transferApplyId}/cancel", method = RequestMethod.POST)
     @ResponseBody
     public boolean investTransferApplyCancel(@PathVariable long id) {
-         return investTransferService.investTransferApplyCancel(id);
+         return investTransferService.cancelTransferApplication(id);
     }
 
 }

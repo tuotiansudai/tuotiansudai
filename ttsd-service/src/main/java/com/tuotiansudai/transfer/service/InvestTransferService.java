@@ -3,10 +3,14 @@ package com.tuotiansudai.transfer.service;
 
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 
+import java.util.Date;
+
 public interface InvestTransferService {
 
-    void investTransferApply(TransferApplicationDto transferApplicationDto) throws Exception;
+    void investTransferApply(TransferApplicationDto transferApplicationDto);
 
-    boolean investTransferApplyCancel(long id);
+    boolean cancelTransferApplication(long transferApplicationId);
+
+    Date getDeadlineFromNow();
 
 }

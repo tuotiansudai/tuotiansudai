@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="transferRuleResultMap" type="TransferRuleModel">
+        <id column="id" property="id"></id>
+        <result column="level_one_fee" property="levelOneFee"></result>
+        <result column="level_one_lower" property="levelOneLower"></result>
+        <result column="level_one_upper" property="levelOneUpper"></result>
+        <result column="level_two_fee" property="levelTwoFee"></result>
+        <result column="level_two_lower" property="levelTwoLower"></result>
+        <result column="level_two_upper" property="levelTwoUpper"></result>
+        <result column="level_three_fee" property="levelThreeFee"></result>
+        <result column="level_three_lower" property="levelThreeLower"></result>
+        <result column="level_three_upper" property="levelThreeUpper"></result>
+        <result column="discount" property="discount"></result>
+        <result column="days_limit" property="daysLimit"></result>
+        <result column="updated_by" property="updatedBy"></result>
+        <result column="updated_time" property="updatedTime"></result>
+    </resultMap>
+
+    <update id="update" parameterType="TransferRuleModel">
+        UPDATE transfer_rule
+        SET
+            level_one_fee = #{levelOneFee},
+            level_two_fee = #{levelTwoFee},
+            level_three_fee = #{levelThreeFee},
+            days_limit = #{daysLimit},
+            updated_by = #{updatedBy},
+            updated_time = #{updatedTime}
+        WHERE id = #{id}
+    </update>
+
+    <select id="find" resultMap="transferRuleResultMap">
+        SELECT *
+        FROM transfer_rule
+    </select>
+</mapper>
