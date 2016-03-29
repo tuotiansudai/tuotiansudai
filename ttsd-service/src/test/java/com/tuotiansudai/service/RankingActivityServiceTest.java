@@ -37,12 +37,12 @@ public class RankingActivityServiceTest {
 
     @Before
     public void init() {
-        clearRankingDataInRedis();
+//        clearRankingDataInRedis();
     }
 
     @After
     public void cleanRedis() {
-        clearRankingDataInRedis();
+//        clearRankingDataInRedis();
     }
 
     @Test
@@ -144,7 +144,7 @@ public class RankingActivityServiceTest {
         String loginName2 = "sidneygao";
         String mobile2 = "13900002222";
 
-        String loginName3 = "zhangruhui";
+        String loginName3 = "baoxin";
         String mobile3 = "13900003333";
 
         long investAmount = 30000;
@@ -288,6 +288,88 @@ public class RankingActivityServiceTest {
         UserTianDouRecordDto userTianDouRecordDto1_3 = otherList.get(3);
         assert (userTianDouRecordDto1_3.getPrize() == TianDouPrize.InterestCoupon5);
         assert (userTianDouRecordDto1_3.getLoginName().equals(loginName1));
+
+    }
+
+    @Test
+    public void makeTestData() {
+
+        String loginName2 = "sidneygao";
+        String mobile2 = "13900002222";
+
+        String loginName3 = "baoxin";
+        String mobile3 = "13900003333";
+
+
+        long investAmount = 30000;
+        long tianDouScore = investAmount * 3 / 12; // 3月标，7500
+        String loanId = "11111111";
+
+        try {
+
+            BaseDto<DrawLotteryDto> baseDto1 = rankingActivityService.drawTianDouPrize(loginName2, mobile2);//加息券
+            Thread.sleep(1000L);
+            BaseDto<DrawLotteryDto> baseDto2 = rankingActivityService.drawTianDouPrize(loginName2, mobile2);//20元现金
+            Thread.sleep(1000L);
+            BaseDto<DrawLotteryDto> baseDto3 = rankingActivityService.drawTianDouPrize(loginName2, mobile2);//加息券
+            Thread.sleep(1000L);
+            BaseDto<DrawLotteryDto> baseDto4 = rankingActivityService.drawTianDouPrize(loginName2, mobile2);//加息券
+            Thread.sleep(1000L);
+            rankingActivityService.drawTianDouPrize(loginName2, mobile2);//加息券
+            Thread.sleep(1000L);
+            rankingActivityService.drawTianDouPrize(loginName2, mobile2);//加息券
+            Thread.sleep(1000L);
+            rankingActivityService.drawTianDouPrize(loginName2, mobile2);//加息券
+
+
+            Thread.sleep(1000L);
+            rankingActivityService.drawTianDouPrize(loginName3, mobile3);//加息券
+            Thread.sleep(1000L);
+            rankingActivityService.drawTianDouPrize(loginName3, mobile3);//加息券
+            Thread.sleep(1000L);
+            rankingActivityService.drawTianDouPrize(loginName3, mobile3);//加息券
+            Thread.sleep(1000L);
+            rankingActivityService.drawTianDouPrize(loginName3, mobile3);//加息券
+            Thread.sleep(1000L);
+            BaseDto<DrawLotteryDto> baseDto5 = rankingActivityService.drawTianDouPrize(loginName3, mobile3);//加息券
+            Thread.sleep(1000L);
+            BaseDto<DrawLotteryDto> baseDto6 = rankingActivityService.drawTianDouPrize(loginName3, mobile3);//加息券
+            Thread.sleep(1000L);
+            BaseDto<DrawLotteryDto> baseDto7 = rankingActivityService.drawTianDouPrize(loginName3, mobile3);//加息券
+            Thread.sleep(1000L);
+
+            assert (baseDto1.isSuccess() == true);
+            assert (baseDto1.getData().getStatus() == true);
+            assert (baseDto1.getData().getReturnCode() == 0);
+
+            assert (baseDto2.isSuccess() == true);
+            assert (baseDto2.getData().getStatus() == true);
+            assert (baseDto2.getData().getReturnCode() == 0);
+
+            assert (baseDto3.isSuccess() == true);
+            assert (baseDto3.getData().getStatus() == true);
+            assert (baseDto3.getData().getReturnCode() == 0);
+
+            assert (baseDto4.isSuccess() == true);
+            assert (baseDto4.getData().getStatus() == true);
+            assert (baseDto4.getData().getReturnCode() == 0);
+
+            assert (baseDto5.isSuccess() == true);
+            assert (baseDto5.getData().getStatus() == true);
+            assert (baseDto5.getData().getReturnCode() == 0);
+
+            assert (baseDto6.isSuccess() == true);
+            assert (baseDto6.getData().getStatus() == true);
+            assert (baseDto6.getData().getReturnCode() == 0);
+
+            assert (baseDto7.isSuccess() == true);
+            assert (baseDto7.getData().getStatus() == true);
+            assert (baseDto7.getData().getReturnCode() == 0);
+
+        } catch (InterruptedException e) {
+            logger.error("Thread sleep exception. ", e);
+            assert (false);
+        }
 
     }
 
