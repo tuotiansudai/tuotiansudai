@@ -3,6 +3,10 @@
 <div class="home-page-container">
     <div class="banner-box">
         <div class="banner-img-list">
+            <a href="/activity/rank-list" target="_blank">
+                <img src="${staticServer}/images/sign/actor/ranklist/rank-list.jpg" alt="排行榜" class="pc-img">
+                <img src="${staticServer}/images/sign/actor/ranklist/rank-list-phone.jpg" alt="排行榜" class="iphone-img">
+            </a>
             <a href="/activity/birth-month" target="_blank">
                 <img src="${staticServer}/images/sign/actor/birth/birth-month.jpg" alt="生日月投资收益翻倍" class="pc-img">
                 <img src="${staticServer}/images/sign/actor/birth/birth-month-phone.jpg" alt="生日月投资收益翻倍" class="iphone-img">
@@ -27,6 +31,7 @@
         </div>
         <ul class="scroll-num">
             <li class="selected"></li>
+            <li></li>
             <li></li>
             <li></li>
             <li></li>

@@ -24,7 +24,8 @@ var require = {
         'load-swiper':staticServer+'/js/dest/load_swiper.min',
         'coupon-alert': staticServer+'/js/dest/coupon_alert.min',
         'red-envelope-float': staticServer+'/js/dest/red-envelope-float.min',
-        'drag': staticServer+'/js/libs/drag'
+        'drag': staticServer+'/js/libs/drag',
+        'rotate': staticServer+'/js/libs/jqueryrotate.min'
     },
     'waitSeconds':0,
     'shim': {
@@ -41,7 +42,8 @@ var require = {
         'fullPage': ['jquery'],
         'swiper':['jquery'],
         'load-swiper':['swiper'],
-        'drag':['jquery']
+        'drag':['jquery'],
+        'rotate':['jquery']
     }
 };
 
