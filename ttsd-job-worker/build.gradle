@@ -2,7 +2,8 @@ apply plugin: 'java'
 
 
 dependencies {
-    compile project(':ttsd-service')
+    compile project(':ttsd-service'),
+            project(':ttsd-point')
 }
 
 startScripts {

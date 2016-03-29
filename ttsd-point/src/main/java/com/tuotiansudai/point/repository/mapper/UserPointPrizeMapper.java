@@ -14,4 +14,9 @@ public interface UserPointPrizeMapper {
 
     List<UserPointPrizeModel> findByLoginNameAndCreateTime(@Param("loginName") String loginName, @Param("date") String date);
 
+    List<UserPointPrizeModel> findByLoginName(String loginName);
+
+    List<UserPointPrizeModel> findAllDescCreatedTime();
+
+    long findAllNotReal();
 }

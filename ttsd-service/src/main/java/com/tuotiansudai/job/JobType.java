@@ -40,7 +40,8 @@ public enum JobType {
     GetPushReport("获取推送统计数据"),
     ManualJPushAlert("手动推送"),
     BirthdayNotify("生日月用户短信提醒"),
-    LotteryTransferCash("抽奖现金发放");
+    LotteryTransferCash("抽奖现金发放"),
+    ImitateLottery("模拟抽奖");
 
     private final String description;
 

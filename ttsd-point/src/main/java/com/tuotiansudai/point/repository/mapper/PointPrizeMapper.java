@@ -10,4 +10,6 @@ public interface PointPrizeMapper {
 
     List<PointPrizeModel> findAllPossibleWin();
 
+    List<PointPrizeModel> findAllUnPossibleWin();
+
 }

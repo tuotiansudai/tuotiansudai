@@ -14,6 +14,7 @@ import com.tuotiansudai.point.repository.model.PointPrizeModel;
 import com.tuotiansudai.point.repository.model.UserPointPrizeModel;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointLotteryService;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JobManager;
@@ -38,7 +39,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
 
     private final static long LOTTERY_POINT = -1000;
 
-    private final static String ALREADY_LOTTERY = "抽奖次数已满";
+    private final static String ALREADY_LOTTERY = "TheNumberOfLuckyDrawIsFull";
 
     private final static String LAST_EXPIRY_TIME = " 23:59:59";
 
@@ -63,7 +64,40 @@ public class PointLotteryServiceImpl implements PointLotteryService{
     @Autowired
     private IdGenerator idGenerator;
 
+    @Autowired
+    private UserMapper userMapper;
+
     public static String redisShareTemple = "web:{0}{1}:share";
+
+    @Override
+    public void imitateLottery() {
+        String loginName;
+        do {
+            loginName = this.imitateLoginName();
+        } while (userMapper.findByLoginName(loginName) != null);
+        long notRealNum = userPointPrizeMapper.findAllNotReal();
+        List<PointPrizeModel> pointPrizeModels;
+        if (notRealNum % 10 != 0) {
+            pointPrizeModels = pointPrizeMapper.findAllPossibleWin();
+        } else {
+            pointPrizeModels = pointPrizeMapper.findAllUnPossibleWin();
+        }
+        int num = new Random().nextInt(pointPrizeModels.size());
+        UserPointPrizeModel userPointPrizeModel = new UserPointPrizeModel(pointPrizeModels.get(num).getId(), loginName, false);
+        userPointPrizeMapper.create(userPointPrizeModel);
+    }
+
+    private String imitateLoginName() {
+        int length = new Random().nextInt(20) + 5;
+        String base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random = new Random();
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < length; i++) {
+            int number = random.nextInt(base.length());
+            sb.append(base.charAt(number));
+        }
+        return sb.toString();
+    }
 
     @Override
     @Transactional
@@ -73,7 +107,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
         if (CollectionUtils.isEmpty(userPointPrizeModelToday) ||
                 (redisWrapperClient.exists(MessageFormat.format(redisShareTemple, loginName, dateTime.toString("yyyy-MM-dd"))) && userPointPrizeModelToday.size() < 2)) {
             PointPrizeModel winPointPrize = this.winLottery();
-            UserPointPrizeModel userPointPrizeModel = new UserPointPrizeModel(winPointPrize.getId(), loginName);
+            UserPointPrizeModel userPointPrizeModel = new UserPointPrizeModel(winPointPrize.getId(), loginName, true);
             userPointPrizeMapper.create(userPointPrizeModel);
 
             pointBillService.createPointBill(loginName, winPointPrize.getId(), PointBusinessType.LOTTERY, LOTTERY_POINT);
