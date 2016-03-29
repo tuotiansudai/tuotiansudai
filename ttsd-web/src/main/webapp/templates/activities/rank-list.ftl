@@ -41,12 +41,12 @@
 			</ul>
 		</div> -->
 		<div class="line-single"></div>
-		<ul class="leader-btn">
+		<ul class="leader-btn" id="beanBtn">
 			<li class="active">排行榜</li>
 			<li>奖品单</li>
 			<div class="bean-btn">天豆计算器</div>
 		</ul>
-		<div class="leader-container">
+		<div class="leader-container" id="beanCom">
 			<div class="leader-list active">
 				<div class="bean-rank-list">
 					<h3 class="td-list">
@@ -172,7 +172,7 @@
 			</div>
 		</div>
 		<div class="line-single"></div>
-		<ul class="leader-btn">
+		<ul class="leader-btn" id="awardBtn">
 			<li class="active">天豆抽奖</li>
 			<li>财豆抽奖</li>
 			<div class="share-list">
@@ -185,7 +185,7 @@
 				</p>
 			</div>
 		</ul>
-		<div class="leader-container">
+		<div class="leader-container" id="awardCom">
 			<div class="leader-list active">
 				<div class="lottery-circle">
 					<h3 class="td-list">

@@ -1,6 +1,25 @@
 require(['jquery'], function($) {
 	var bRotateTd = false,
-		bRotateCd = false;
+		bRotateCd = false,
+		$beanBtn=$('#beanBtn li'),
+		$awardBtn=$('#awardBtn li');
+	//change rank list
+	$beanBtn.on('click', function(event) {
+		var $self=$(this),
+			index=$self.index();
+		$self.addClass('active').siblings('li').removeClass('active');
+		$('#beanCom').find('.leader-list:eq('+index+')').addClass('active')
+			.siblings('.leader-list').removeClass('active');
+	});
+
+	//change rank list
+	$awardBtn.on('click', function(event) {
+		var $self=$(this),
+			index=$self.index();
+		$self.addClass('active').siblings('li').removeClass('active');
+		$('#awardCom').find('.leader-list:eq('+index+')').addClass('active')
+			.siblings('.leader-list').removeClass('active');
+	});
 	function rotateTimeOut(){
         $('#rotate').rotate({
             angle:0,
