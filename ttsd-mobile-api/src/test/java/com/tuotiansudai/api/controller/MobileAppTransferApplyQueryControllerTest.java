@@ -28,8 +28,10 @@ public class MobileAppTransferApplyQueryControllerTest extends ControllerTestBas
 
     @Test
     public void shouldTransferApplyQueryIsOk() throws Exception{
+        TransferApplyQueryRequestDto transferApplyQueryRequestDto = new TransferApplyQueryRequestDto();
+        transferApplyQueryRequestDto.setInvestId("123");
         when(service.transferApplyQuery(any(TransferApplyQueryRequestDto.class))).thenReturn(successResponseDto);
-        doRequestWithServiceMockedTest("/get/transfer-apply", new TransferApplyQueryRequestDto());
+        doRequestWithServiceMockedTest("/get/transfer-apply", transferApplyQueryRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(), successResponseDto.getCode());
     }
 
