@@ -1,4 +1,4 @@
-require(['jquery','rotate'], function($,rotate) {
+require(['jquery','rotate','template'], function($,rotate,tpl) {
 	var bRotateTd = false,
 		bRotateCd = false,
 		$beanBtn=$('#beanBtn li'),
@@ -26,7 +26,7 @@ require(['jquery','rotate'], function($,rotate) {
 			.siblings('.leader-list').removeClass('active');
 	});
 
-	//change award list
+	//change award record btn
 	$giftRecord.on('click', function(event) {
 		var $self=$(this),
 			index=$self.index();
@@ -34,46 +34,31 @@ require(['jquery','rotate'], function($,rotate) {
 		$('#recordList').find('.record-model:eq('+index+')').addClass('active')
 			.siblings('.record-model').removeClass('active');
 	});
+	//td click
 	$pointerTd.on('click', function(event) {
 		event.preventDefault();
 		if(bRotateTd)return;
-        var item = rnd(0,7);
+        var item = rnd(0,4);
 
         switch (item) {
             case 0:
-                //var angle = [26, 88, 137, 185, 235, 287, 337];
-                rotateFnTd(0, 337, '未中奖');
+                rotateFnTd(0, 56, '20元现金');
                 break;
             case 1:
-                //var angle = [88, 137, 185, 235, 287];
-                rotateFnTd(1, 26, '免单4999元');
+                rotateFnTd(1, 120, 'iPhone 6s Plus');
                 break;
             case 2:
-                //var angle = [137, 185, 235, 287];
-                rotateFnTd(2, 88, '免单50元');
+                rotateFnTd(2, 200, '300元京东购物卡');
                 break;
             case 3:
-                //var angle = [137, 185, 235, 287];
-                rotateFnTd(3, 137, '免单10元');
+                rotateFnTd(3, 260, '0.5%加息券');
                 break;
             case 4:
-                //var angle = [185, 235, 287];
-                rotateFnTd(4, 185, '免单5元');
-                break;
-            case 5:
-                //var angle = [185, 235, 287];
-                rotateFnTd(5, 185, '免单5元');
-                break;
-            case 6:
-                //var angle = [235, 287];
-                rotateFnTd(6, 235, '免分期服务费');
-                break;
-            case 7:
-                //var angle = [287];
-                rotateFnTd(7, 287, '提高白条额度');
+                rotateFnTd(4, 337, 'MacBook Air');
                 break;
         }
 	});
+	//cd click
 	$pointerCd.on('click', function(event) {
 		event.preventDefault();
 		if(bRotateCd)return;
@@ -81,40 +66,28 @@ require(['jquery','rotate'], function($,rotate) {
 
         switch (item) {
             case 0:
-                //var angle = [26, 88, 137, 185, 235, 287, 337];
-                rotateFnCd(0, 337, '未中奖');
+                rotateFnCd(0, 26, '港澳游');
                 break;
             case 1:
-                //var angle = [88, 137, 185, 235, 287];
-                rotateFnCd(1, 26, '免单4999元');
+                rotateFnCd(1, 80, '现金5元');
                 break;
             case 2:
-                //var angle = [137, 185, 235, 287];
-                rotateFnCd(2, 88, '免单50元');
+                rotateFnCd(2, 120, 'iPhone 6sp');
                 break;
             case 3:
-                //var angle = [137, 185, 235, 287];
-                rotateFnCd(3, 137, '免单10元');
+                rotateFnCd(3, 173, '谢谢参与');
                 break;
             case 4:
-                //var angle = [185, 235, 287];
-                rotateFnCd(4, 185, '免单5元');
+                rotateFnCd(4, 210, '现金2元');
                 break;
             case 5:
-                //var angle = [185, 235, 287];
-                rotateFnCd(5, 185, '免单5元');
+                rotateFnCd(5, 255, '0.2%加息券');
                 break;
             case 6:
-                //var angle = [235, 287];
-                rotateFnCd(6, 235, '免分期服务费');
+                rotateFnCd(6, 325, '日韩游');
                 break;
             case 7:
-                //var angle = [287];
-                rotateFnCd(7, 287, '提高白条额度');
-                break;
-            case 8:
-                //var angle = [287];
-                rotateFnCd(8, 287, '提高白条额度');
+                rotateFnCd(7, 355, '3000元体验金');
                 break;
         }
 	});
@@ -130,7 +103,7 @@ require(['jquery','rotate'], function($,rotate) {
             animateTo:angles+1800,
             duration:8000,
             callback:function (){
-                alert(txt);
+                console.log(txt);
                 bRotateTd = !bRotateTd;
             }
         })
@@ -143,7 +116,7 @@ require(['jquery','rotate'], function($,rotate) {
             animateTo:angles+1800,
             duration:8000,
             callback:function (){
-                alert(txt);
+                console.log(txt);
                 bRotateCd = !bRotateCd;
             }
         })
