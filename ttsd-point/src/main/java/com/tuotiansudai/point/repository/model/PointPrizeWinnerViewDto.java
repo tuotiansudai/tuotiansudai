@@ -1,4 +1,4 @@
-package com.tuotiansudai.point.repository.dto;
+package com.tuotiansudai.point.repository.model;
 
 
 import java.util.Date;

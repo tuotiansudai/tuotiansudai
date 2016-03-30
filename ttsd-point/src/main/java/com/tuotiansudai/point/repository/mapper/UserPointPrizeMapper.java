@@ -1,6 +1,6 @@
 package com.tuotiansudai.point.repository.mapper;
 
-import com.tuotiansudai.point.repository.dto.PointPrizeWinnerViewDto;
+import com.tuotiansudai.point.repository.model.PointPrizeWinnerViewDto;
 import com.tuotiansudai.point.repository.model.UserPointPrizeModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
