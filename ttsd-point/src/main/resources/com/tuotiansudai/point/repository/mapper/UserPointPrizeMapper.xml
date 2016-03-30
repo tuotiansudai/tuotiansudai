@@ -13,6 +13,18 @@
         <result column="reality" property="reality"></result>
     </resultMap>
 
+    <resultMap id="PointPrizeWinnerViewResultMap" type="PointPrizeWinnerViewDto">
+        <result column="id" property="id"></result>
+        <result column="description" property="description"></result>
+        <result column="num" property="num"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="identity_number" property="identityNumber"></result>
+    </resultMap>
+
+
+
     <insert id="create" parameterType="UserPointPrizeModel">
         insert into user_point_prize values (#{pointPrizeId}, #{loginName}, #{createdTime}, #{reality});
     </insert>
@@ -31,6 +43,40 @@
 
     <select id="findAllNotReal" resultType="long">
         select count(*) from user_point_prize where reality is false;
+    </select>
+
+    <select id="findAllPointPrizeGroupPrize" resultMap="PointPrizeWinnerViewResultMap">
+        SELECT
+          p.`id`,
+          p.description,
+          temp.num
+        FROM
+          point_prize p
+          JOIN
+            (SELECT
+              u.`point_prize_id`,
+              COUNT(*) AS num
+            FROM
+              user_point_prize u
+            WHERE u.reality IS TRUE
+            GROUP BY u.`point_prize_id`) temp
+            ON p.`id` = temp.`point_prize_id`
+    </select>
+
+    <select id="findByPointPrizeId" parameterType="long" resultMap="PointPrizeWinnerViewResultMap">
+        SELECT
+          u.`created_time`,
+          u.`login_name`,
+          r.`mobile`,
+          a.`identity_number`
+        FROM
+          user_point_prize u
+          JOIN account a
+            ON u.`login_name` = a.`login_name`
+          JOIN `user` r
+            ON u.`login_name` = r.`login_name`
+        WHERE u.reality IS TRUE and u.point_prize_id = #{pointPrizeId}
+        order by u.created_time desc
     </select>
 
 </mapper>
