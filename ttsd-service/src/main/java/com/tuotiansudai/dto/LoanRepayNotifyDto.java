@@ -12,9 +12,6 @@ public class LoanRepayNotifyDto implements Serializable {
     private String mobile;
 
     @NotEmpty
-    private String loanName;
-
-    @NotEmpty
     private String repayAmount;
 
     public String getMobile() {
@@ -23,14 +20,6 @@ public class LoanRepayNotifyDto implements Serializable {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
-    }
-
-    public String getLoanName() {
-        return loanName;
-    }
-
-    public void setLoanName(String loanName) {
-        this.loanName = loanName;
     }
 
     public String getRepayAmount() {

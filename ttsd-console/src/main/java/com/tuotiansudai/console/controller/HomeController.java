@@ -55,21 +55,29 @@ public class HomeController {
 
         mav.addObject("taskList", getTaskList(LoginUserInfo.getLoginName()));
 
-        mav.addObject("userToday", consoleHomeService.getRegisterUserToday());
-        mav.addObject("user7Days", consoleHomeService.getRegisterUser7Days());
-        mav.addObject("user30Days", consoleHomeService.getRegisterUser30Days());
+        mav.addObject("userToday", consoleHomeService.userToday());
+        mav.addObject("user7Days", consoleHomeService.user7Days());
+        mav.addObject("user30Days", consoleHomeService.user30Days());
 
-        mav.addObject("rechargeToday", consoleHomeService.getSumRechargeAmountToday());
-        mav.addObject("recharge7Days", consoleHomeService.getSumRechargeAmount7Days());
-        mav.addObject("recharge30Days", consoleHomeService.getSumRechargeAmount30Days());
+        mav.addObject("rechargeTodayLoaner", consoleHomeService.rechargeToday_Loaner());
+        mav.addObject("recharge7DaysLoaner", consoleHomeService.recharge7Days_Loaner());
+        mav.addObject("recharge30DaysLoaner", consoleHomeService.recharge30Days_Loaner());
 
-        mav.addObject("withdrawToday", consoleHomeService.getSumWithdrawAmountToday());
-        mav.addObject("withdraw7Days", consoleHomeService.getSumWithdrawAmount7Days());
-        mav.addObject("withdraw30Days", consoleHomeService.getSumWithdrawAmount30Days());
+        mav.addObject("rechargeTodayNotLoaner", consoleHomeService.rechargeToday_NotLoaner());
+        mav.addObject("recharge7DaysNotLoaner", consoleHomeService.recharge7Days_NotLoaner());
+        mav.addObject("recharge30DaysNotLoaner", consoleHomeService.recharge30Days_NotLoaner());
 
-        mav.addObject("investToday", consoleHomeService.getSumInvestAmountToday());
-        mav.addObject("invest7Days", consoleHomeService.getSumInvestAmount7Days());
-        mav.addObject("invest30Days", consoleHomeService.getSumInvestAmount30Days());
+        mav.addObject("withdrawTodayLoaner", consoleHomeService.withdrawToday_Loaner());
+        mav.addObject("withdraw7DaysLoaner", consoleHomeService.withdraw7Days_Loaner());
+        mav.addObject("withdraw30DaysLoaner", consoleHomeService.withdraw30Days_Loaner());
+
+        mav.addObject("withdrawTodayNotLoaner", consoleHomeService.withdrawToday_NotLoaner());
+        mav.addObject("withdraw7DaysNotLoaner", consoleHomeService.withdraw7Days_NotLoaner());
+        mav.addObject("withdraw30DaysNotLoaner", consoleHomeService.withdraw30Days_NotLoaner());
+
+        mav.addObject("investToday", consoleHomeService.investToday());
+        mav.addObject("invest7Days", consoleHomeService.invest7Days());
+        mav.addObject("invest30Days", consoleHomeService.invest30Days());
 
         mav.addObject("totalInvest", consoleHomeService.getSumInvestAmount());
 
