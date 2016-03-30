@@ -8,6 +8,8 @@ require(['jquery','rotate','layerWrapper', 'jquery.validate', 'jquery.validate.e
 		$rotateTd=$('#rotateTd'),
 		$rotateCd=$('#rotateCd'),
 		$giftRecord=$('.gift-record li');
+
+    $('#linePro').height(Math.round($('#linePro').attr('data-totalInvest'))/1000000/21000*600);
 	//change rank list
 	$beanBtn.on('click', function(event) {
 		var $self=$(this),

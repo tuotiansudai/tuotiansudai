@@ -370,7 +370,6 @@ public class RankingActivityServiceTest {
             logger.error("Thread sleep exception. ", e);
             assert (false);
         }
-
     }
 
     private void mockInvestTianDou(String loginName, long amount, long tianDouScore, String loanId) {
