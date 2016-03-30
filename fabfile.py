@@ -234,6 +234,15 @@ def remove_old_logs():
     execute(remove_static_logs)
 
 
+@roles('portal', 'pay', 'worker', 'api')
+@parallel
+def restart_logstash_service():
+    """
+    Restart logstash service in case it stops pushing logs due to unknow reason
+    """
+    run("service logstash restart")
+
+
 ROOT = os.path.abspath(os.path.dirname(__file__))
 fab_local_file = os.path.join(ROOT, "fab_local.py")
 if os.path.exists(fab_local_file):
