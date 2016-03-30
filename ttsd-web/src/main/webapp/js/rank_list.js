@@ -215,13 +215,10 @@ require(['jquery','rotate','layerWrapper', 'jquery.validate', 'jquery.validate.e
 	//share event
 	window._bd_share_config = {
 		"common": {
-			"bdSnsKey": {},
 			"bdText": "",
             "bdUrl":"",
-			"bdMini": "2",
+            "bdDesc":"",
 			"bdPic": "",
-			"bdStyle": "0",
-			"bdSize": "16",
 			onAfterClick:function(cmd){
                 $.ajax({
                     url: '/activity/get-lottery-chance',
