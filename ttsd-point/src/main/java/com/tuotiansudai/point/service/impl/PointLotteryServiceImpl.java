@@ -16,7 +16,9 @@ import com.tuotiansudai.point.repository.model.PointPrizeModel;
 import com.tuotiansudai.point.repository.model.UserPointPrizeModel;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointLotteryService;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JobManager;
@@ -41,7 +43,11 @@ public class PointLotteryServiceImpl implements PointLotteryService{
 
     private final static long LOTTERY_POINT = -1000;
 
-    private final static String ALREADY_LOTTERY = "TheNumberOfLuckyDrawIsFull";
+    private final static String ALREADY_LOTTERY_NOT_SHARE = "AlreadyLotteryNotShare";
+
+    private final static String ALREADY_LOTTERY_SHARE = "AlreadyLotteryShare";
+
+    private final static String POINT_NOT_ENOUGH = "PointNotEnough";
 
     private final static String LAST_EXPIRY_TIME = " 23:59:59";
 
@@ -68,6 +74,9 @@ public class PointLotteryServiceImpl implements PointLotteryService{
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private AccountMapper accountMapper;
 
     public static String redisShareTemple = "web:{0}{1}:share";
 
@@ -104,6 +113,10 @@ public class PointLotteryServiceImpl implements PointLotteryService{
     @Override
     @Transactional
     public String pointLottery(String loginName) {
+        AccountModel accountModel = accountMapper.lockByLoginName(loginName);
+        if (accountModel.getPoint() < -LOTTERY_POINT) {
+            return POINT_NOT_ENOUGH;
+        }
         DateTime dateTime = new DateTime();
         List<UserPointPrizeModel> userPointPrizeModelToday = userPointPrizeMapper.findByLoginNameAndCreateTime(loginName, dateTime.toString("yyyy-MM-dd"));
         if (CollectionUtils.isEmpty(userPointPrizeModelToday) ||
@@ -125,8 +138,10 @@ public class PointLotteryServiceImpl implements PointLotteryService{
             }
 
             return winPointPrize.getName();
+        } else if (userPointPrizeModelToday.size() == 1 && !redisWrapperClient.exists(MessageFormat.format(redisShareTemple, loginName, dateTime.toString("yyyy-MM-dd")))){
+            return ALREADY_LOTTERY_NOT_SHARE;
         } else {
-            return ALREADY_LOTTERY;
+            return ALREADY_LOTTERY_SHARE;
         }
     }
 
