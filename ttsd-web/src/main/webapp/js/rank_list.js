@@ -1,4 +1,4 @@
-require(['jquery','rotate','layerWrapper','jquery.ajax.extension'], function($,rotate,layer) {
+require(['jquery','rotate','layerWrapper', 'jquery.validate', 'jquery.validate.extension','jquery.ajax.extension'], function($,rotate,layer) {
 	var bRotateTd = false,
 		bRotateCd = false,
 		$beanBtn=$('#beanBtn li'),
@@ -207,6 +207,7 @@ require(['jquery','rotate','layerWrapper','jquery.ajax.extension'], function($,r
     
 
 
+
 	//share event
 	window._bd_share_config = {
 		"common": {
@@ -224,5 +225,58 @@ require(['jquery','rotate','layerWrapper','jquery.ajax.extension'], function($,r
 	};
 	with(document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
 
+    $("#countForm").validate({
+        debug:true,
+        rules: {
+            money: {
+                required: true,
+                number: true
+            },
+            month: {
+                required: true,
+                number: true
+            }
+        },
+        messages: {
+            money: {
+                required: '请输入投资金额！',
+                number: '请输入有效的数字！'
+            },
+            month: {
+                required: '请输入投资时长！',
+                number: '请输入有效的数字！'
+            }
+        },
+        submitHandler: function(form) {
+            var moneyNum=Math.round($('#moneyNum').val()),
+                monthNum=Math.round($('#monthNum').val()),
+                $resultNum=$('#resultNum'),
+                resultNum=moneyNum*monthNum/12;
+            $resultNum.text(resultNum.toFixed(0));
+        },
+        errorPlacement: function(error, element) {
+            error.insertAfter(element.parent());
+        }
+    });
+    //close calculator
+    $('.close-cal').on('click', function(event) {
+        event.preventDefault();
+        var $self=$(this),
+            $calDom=$self.parents('.td-calculator');
+        $calDom.slideUp('fast');
+    });
+    //calculator show
+    $('#calBtn').on('click', function(event) {
+        event.preventDefault();
+        var $self=$(this),
+            $calDom=$self.siblings('.td-calculator');
+        $calDom.slideDown('fast');
+    });
+    //reset form
+    $("#resetBtn").on('click', function(event) {
+        event.preventDefault();
+        $('#countForm').find('.int-text').val('');
+        $('#resultNum').text('0');
+    });
 
 });
