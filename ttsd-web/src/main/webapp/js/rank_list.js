@@ -39,8 +39,9 @@ require(['jquery','rotate','layerWrapper'], function($,rotate,layer) {
 		event.preventDefault();
         var $self=$(this),
             isLogin=$self.attr('data-is-login');
-        if(!isLogin=='true'){
-            alert('未登录');
+        if(isLogin!='true'){
+            $('#tipList').show();
+            $('#noLogin').show();
         }else{
     		if(bRotateTd)return;
     		$.ajax({
