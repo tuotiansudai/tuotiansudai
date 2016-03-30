@@ -14,7 +14,7 @@ import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.exception.CreateCouponException;
-import com.tuotiansudai.point.service.PointService;
+import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
@@ -64,6 +64,9 @@ public class CouponController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserPointPrizeMapper userPointPrizeMapper;
 
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
@@ -446,6 +449,20 @@ public class CouponController {
         boolean hasNextPage = index < totalPages;
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/point-prize", method = RequestMethod.GET)
+    public ModelAndView pointPrize() {
+        ModelAndView modelAndView = new ModelAndView("/ranking-point-prize");
+        modelAndView.addObject("pointPrizeWinnerGroups", userPointPrizeMapper.findAllPointPrizeGroupPrize());
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/point-prize-detail", method = RequestMethod.GET)
+    public ModelAndView pointPrizeDetail(@RequestParam(value = "pointPrizeId") long pointPrizeId) {
+        ModelAndView modelAndView = new ModelAndView("/ranking-point-prize-detail");
+        modelAndView.addObject("pointPrizeWinnerGroupDetails", userPointPrizeMapper.findByPointPrizeId(pointPrizeId));
         return modelAndView;
     }
 
