@@ -217,7 +217,17 @@ require(['jquery','rotate','layerWrapper','jquery.ajax.extension'], function($,r
 			"bdStyle": "0",
 			"bdSize": "16",
 			onAfterClick:function(cmd){
-				console.log("我被分享了！");
+                $.ajax({
+                        url: '/activity/get-lottery-chance',
+                        type: 'POST',
+                        dataType: 'json'
+                    })
+                    .done(function(data) {
+                        console.log("分享成功,增加一次抽奖机会成功");
+                    })
+                    .fail(function(data) {
+                        console.log("请求失败");
+                    });
 			}
 		},
 		"share": {}

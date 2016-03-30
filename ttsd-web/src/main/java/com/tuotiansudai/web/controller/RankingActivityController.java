@@ -83,4 +83,12 @@ public class RankingActivityController {
         return pointLotteryService.pointLottery(loginName);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/get-lottery-chance", method = RequestMethod.POST)
+    public boolean getLotteryChance() {
+        String loginName = LoginUserInfo.getLoginName();
+        pointLotteryService.getLotteryOnceChance(loginName);
+        return true;
+    }
+
 }
