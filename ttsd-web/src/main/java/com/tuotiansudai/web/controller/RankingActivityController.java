@@ -83,35 +83,4 @@ public class RankingActivityController {
         return pointLotteryService.pointLottery(loginName);
     }
 
-//    @ResponseBody
-//    @RequestMapping(value = "/getRank", method = RequestMethod.GET)
-//    public String getUserRank() {
-//        String loginName = LoginUserInfo.getLoginName();
-//        String rank = rankingActivityService.getUserRank(loginName);
-//        return rank;
-//    }
-//
-//    @ResponseBody
-//    @RequestMapping(value = "/getTianDouTop15", method = RequestMethod.GET)
-//    public List<UserScoreDto> getTianDouTop15() {
-//        List<UserScoreDto> userScoreDtos = rankingActivityService.getTianDouTop15();
-//        return userScoreDtos;
-//    }
-//
-//    @ResponseBody
-//    @RequestMapping(value = "/getTianDouWinnerList", method = RequestMethod.GET)
-//    public Map<String, List<UserTianDouRecordDto>> getTiandouWinnerList() {
-//        Map<String, List<UserTianDouRecordDto>> winnerList = rankingActivityService.getTianDouWinnerList();
-//        return winnerList;
-//    }
-//
-//    @ResponseBody
-//    @RequestMapping(value = "/getMyPrize", method = RequestMethod.GET)
-//    public List<UserTianDouRecordDto> getMyPrize() {
-//        String loginName = LoginUserInfo.getLoginName();
-//        List<UserTianDouRecordDto> myPrize = rankingActivityService.getPrizeByLoginName(loginName);
-//        return myPrize;
-//    }
-
-
 }
