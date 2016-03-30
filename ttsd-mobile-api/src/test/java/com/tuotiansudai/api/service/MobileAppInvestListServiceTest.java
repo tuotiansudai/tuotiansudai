@@ -10,6 +10,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.RandomUtils;
 import org.junit.Test;
@@ -38,6 +39,9 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
     @Mock
     private InvestService investService;
+
+    @Mock
+    private LoanService loanService;
 
     @Mock
     private LoanMapper loanMapper;
@@ -92,6 +96,8 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
         when(investMapper.findCountByStatus(anyLong(), any(InvestStatus.class))).thenReturn(3L);
 
+        when(loanService.encryptLoginName(anyString(),anyList(),anyString(),anyInt(),anyLong())).thenReturn("log***");
+
         InvestListRequestDto investListRequestDto = new InvestListRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("");
@@ -100,6 +106,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investListRequestDto.setIndex(1);
         investListRequestDto.setPageSize(10);
         BaseResponseDto<InvestListResponseDataDto> baseResponseDto = mobileAppInvestListService.generateInvestList(investListRequestDto);
+
 
         assertEquals("10000.00", baseResponseDto.getData().getInvestRecord().get(0).getInvestMoney());
         assertEquals("log***", baseResponseDto.getData().getInvestRecord().get(0).getUserName());
