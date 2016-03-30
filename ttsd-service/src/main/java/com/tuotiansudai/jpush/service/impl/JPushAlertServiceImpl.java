@@ -540,6 +540,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     @Override
     public void autoJPushReferrerRewardAlert(long orderId){
         InvestReferrerRewardModel investReferrerRewardModel = investReferrerRewardMapper.findById(orderId);
+        InvestModel investModel = investMapper.findById(investReferrerRewardModel.getInvestId());
         if (investReferrerRewardModel == null ) {
             logger.error(MessageFormat.format("ReferrerReward callback order is not exist (orderId = {0})", orderId));
             return;
@@ -549,7 +550,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         if (jPushAlertModel != null) {
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
             List<String> amountLists = Lists.newArrayList(accountModel.getUserName(), AmountConverter.convertCentToString(investReferrerRewardModel.getAmount()), AmountConverter.convertCentToString(accountModel.getBalance()));
-            loginNameMap.put(investReferrerRewardModel.getReferrerLoginName(), amountLists);
+            loginNameMap.put(investModel.getLoginName(), amountLists);
             autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
             loginNameMap.clear();
 
