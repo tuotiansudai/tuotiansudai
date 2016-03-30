@@ -62,4 +62,6 @@ public interface LoanService {
     List<LoanListDto> findLoanList(LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime, int currentPageNo, int pageSize);
 
     BaseDto<PayDataDto> applyAuditLoan(LoanDto loanDto);
+
+    String encryptLoginName(String loginName, List<String> showLoginNameList, String recordsLoginName, int showLength, long invest_id);
 }

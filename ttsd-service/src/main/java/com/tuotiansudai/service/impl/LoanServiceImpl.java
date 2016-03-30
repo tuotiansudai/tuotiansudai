@@ -1,8 +1,10 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.job.AutoInvestJob;
@@ -37,6 +39,8 @@ import java.util.List;
 public class LoanServiceImpl implements LoanService {
 
     static Logger logger = Logger.getLogger(LoanServiceImpl.class);
+
+    private static String redisKeyTemplate = "webmobile:{0}:showinvestorname";
 
     @Autowired
     private LoanTitleMapper loanTitleMapper;
@@ -76,6 +80,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private InvestService investService;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private JobManager jobManager;
@@ -440,7 +447,7 @@ public class LoanServiceImpl implements LoanService {
                 @Override
                 public InvestPaginationItemDto apply(InvestModel input) {
                     InvestPaginationItemDto item = new InvestPaginationItemDto();
-                    item.setLoginName(RandomUtils.encryptLoginName(loginName, showRandomLoginNameList, input.getLoginName(), 6));
+                    item.setLoginName(encryptLoginName(loginName, showRandomLoginNameList, input.getLoginName(), 6, input.getId()));
                     item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
                     item.setSource(input.getSource());
                     item.setAutoInvest(input.isAutoInvest());
@@ -466,6 +473,43 @@ public class LoanServiceImpl implements LoanService {
         baseDto.setData(dataDto);
         dataDto.setStatus(true);
         return baseDto;
+    }
+
+    @Override
+    public String encryptLoginName(String loginName, List<String> showLoginNameList, String recordsLoginName, int showLength, long invest_id){
+
+        String redisKey = MessageFormat.format(redisKeyTemplate, invest_id + "_" + recordsLoginName);
+        String encryptLoginName;
+        if (Strings.isNullOrEmpty(loginName)) {
+            if (showLoginNameList.contains(recordsLoginName)) {
+                if(redisWrapperClient.exists(redisKey)){
+                    encryptLoginName = redisWrapperClient.get(redisKey);
+                }
+                else{
+                    encryptLoginName = RandomUtils.generateLowerString(3) + RandomUtils.showChar(showLength);
+                    redisWrapperClient.set(redisKey, encryptLoginName);
+                }
+            } else {
+                encryptLoginName = recordsLoginName.substring(0, 3) + RandomUtils.showChar(showLength);
+            }
+        } else {
+            if (loginName.equalsIgnoreCase(recordsLoginName)) {
+                encryptLoginName = recordsLoginName;
+            } else {
+                if (showRandomLoginNameList.contains(recordsLoginName) && !loginName.equalsIgnoreCase(recordsLoginName)) {
+                    if(redisWrapperClient.exists(redisKey)){
+                        encryptLoginName = redisWrapperClient.get(redisKey);
+                    }
+                    else{
+                        encryptLoginName = RandomUtils.generateLowerString(3) + RandomUtils.showChar(showLength);
+                        redisWrapperClient.set(redisKey, encryptLoginName);
+                    }
+                } else {
+                    encryptLoginName = recordsLoginName.substring(0, 3) + RandomUtils.showChar(showLength);
+                }
+            }
+        }
+        return encryptLoginName;
     }
 
     @Override

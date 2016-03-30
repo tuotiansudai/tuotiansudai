@@ -1,10 +1,12 @@
 package com.tuotiansudai.api.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppInvestListService;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -13,6 +15,7 @@ import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
@@ -20,13 +23,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class MobileAppInvestListServiceImpl implements MobileAppInvestListService {
+
+    private static String redisKeyTemplate = "mobile:{0}:showinvestorname";
+
     @Autowired
     private InvestService investService;
+
+    @Autowired
+    private LoanService loanService;
 
     @Autowired
     private InvestMapper investMapper;
@@ -36,6 +46,9 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
 
     @Autowired
     private LoanMapper loanMapper;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @Value("#{'${web.random.investor.list}'.split('\\|')}")
     private List<String> showRandomLoginNameList;
@@ -63,7 +76,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
             investRecordResponseDataDto = Lists.transform(investModels, new Function<InvestModel, InvestRecordResponseDataDto>() {
                 @Override
                 public InvestRecordResponseDataDto apply(InvestModel input) {
-                    input.setLoginName(RandomUtils.encryptLoginName(loginName, showRandomLoginNameList, input.getLoginName(), 3));
+                    input.setLoginName(loanService.encryptLoginName(loginName, showRandomLoginNameList, input.getLoginName(), 3, input.getId()));
                     return new InvestRecordResponseDataDto(input);
                 }
             });
