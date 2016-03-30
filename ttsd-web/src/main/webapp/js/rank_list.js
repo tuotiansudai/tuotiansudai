@@ -45,7 +45,7 @@ require(['jquery','rotate','layerWrapper','jquery.ajax.extension'], function($,r
         }else{
     		if(bRotateTd)return;
     		$.ajax({
-    			url: '/activity/drawTianDou',
+    			url: '/activity/draw-tiandou',
     			type: 'POST',
     			dataType: 'json'
     		})
@@ -185,19 +185,19 @@ require(['jquery','rotate','layerWrapper','jquery.ajax.extension'], function($,r
                 $('#tipList').show();
                 switch (awards) {
                     case 1:
-                        $('#twentyRMB').show();
+                        $('#cdFive').show();
                         break;
                     case 3:
-                        $('#iphone6s').show();
+                        $('#thankYou').show();
                         break;
                     case 4:
-                        $('#jdCard').show();
+                        $('#cdTwo').show();
                         break;
                     case 5:
-                        $('#jiaxi').show();
+                        $('#percentCoupon').show();
                         break;
                     case 7:
-                        $('#macbookAir').show();
+                        $('#freeMoney').show();
                         break;
                 }
                 bRotateCd = !bRotateCd;
