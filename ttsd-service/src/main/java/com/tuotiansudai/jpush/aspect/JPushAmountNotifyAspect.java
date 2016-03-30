@@ -137,7 +137,7 @@ public class JPushAmountNotifyAspect {
             Date triggerTime = new DateTime().plusMinutes(AutoJPushRepayAlertJob.JPUSH_ALERT_REPAY_DELAY_MINUTES)
                     .toDate();
             jobManager.newJob(JobType.AutoJPushRepayAlert, AutoJPushRepayAlertJob.class)
-                    .addJobData(AutoJPushRepayAlertJob.REPAY_ID_KEY, loanId)
+                    .addJobData(AutoJPushRepayAlertJob.REPAY_ID_KEY, String.valueOf(loanId))
                     .withIdentity(JobType.AutoJPushRepayAlert.name(), formatMessage(REPAY, loanId))
                     .runOnceAt(triggerTime)
                     .replaceExistingJob(true)
@@ -149,20 +149,14 @@ public class JPushAmountNotifyAspect {
 
     private void createAutoJPushRechargeAlertJob(long orderId) {
         try {
-            logger.debug("prepare job AutoJPushRechargeAlertJob");
             Date triggerTime = new DateTime().plusMinutes(AutoJPushRechargeAlertJob.JPUSH_ALERT_RECHARGE_DELAY_MINUTES)
                     .toDate();
-
-            logger.debug("AutoJPushRechargeAlertJob triggerTime == " + triggerTime);
-
             jobManager.newJob(JobType.AutoJPushRechargeAlert, AutoJPushRechargeAlertJob.class)
                     .addJobData(AutoJPushRechargeAlertJob.RECHARGE_ID_KEY, orderId)
                     .withIdentity(JobType.AutoJPushRechargeAlert.name(),  formatMessage(RECHARGE, orderId))
                     .runOnceAt(triggerTime)
                     .replaceExistingJob(true)
                     .submit();
-
-            logger.debug("after job AutoJPushRechargeAlertJo b");
         } catch (SchedulerException e) {
             logger.error("create send AutoJPushRepayAlert job for loginName[" + orderId + "] fail", e);
         }
@@ -170,17 +164,14 @@ public class JPushAmountNotifyAspect {
 
     private void createAutoJPushWithDrawApplyAlertJob(long orderId) {
         try {
-            logger.debug("prepare job AutoJPushWithDrawApplyAlertJob");
             Date triggerTime = new DateTime().plusMinutes(AutoJPushWithDrawApplyAlertJob.JPUSH_ALERT_WITHDRAW_APPLY_DELAY_MINUTES)
                     .toDate();
-            logger.debug("AutoJPushWithDrawApplyAlertJob triggerTime = " + triggerTime);
             jobManager.newJob(JobType.AutoJPushWithDrawApplyAlert, AutoJPushWithDrawApplyAlertJob.class)
                     .addJobData(AutoJPushWithDrawApplyAlertJob.WITHDRAW_APPLY_ID_KEY, orderId)
                     .withIdentity(JobType.AutoJPushWithDrawApplyAlert.name(), formatMessage(WITHDRAWAPPLY, orderId))
                     .runOnceAt(triggerTime)
                     .replaceExistingJob(true)
                     .submit();
-            logger.debug("after job AutoJPushWithDrawApplyAlertJob  ");
         } catch (SchedulerException e) {
             logger.error("create send AutoJPushWithDrawApplyAlert job for orderId[" + orderId + "] fail", e);
         }
@@ -188,10 +179,8 @@ public class JPushAmountNotifyAspect {
 
     private void createAutoJPushWithDrawAlertJob(long orderId) {
         try {
-            logger.debug("prepare job AutoJPushWithDrawAlertJob");
             Date triggerTime = new DateTime().plusMinutes(AutoJPushWithDrawAlertJob.JPUSH_ALERT_WITHDRAW_DELAY_MINUTES)
                     .toDate();
-            logger.debug("AutoJPushWithDrawAlertJob triggerTime = " + triggerTime);
             jobManager.newJob(JobType.AutoJPushWithDrawAlert, AutoJPushWithDrawAlertJob.class)
                     .addJobData(AutoJPushWithDrawAlertJob.WITHDRAW_ID_KEY, orderId)
                     .withIdentity(JobType.AutoJPushWithDrawAlert.name(), formatMessage(WITHDRAW, orderId))
@@ -219,6 +208,6 @@ public class JPushAmountNotifyAspect {
     }
 
     private String formatMessage(String message, Object object){
-        return MessageFormat.format(message, object);
+        return MessageFormat.format(message, String.valueOf(object));
     }
 }
