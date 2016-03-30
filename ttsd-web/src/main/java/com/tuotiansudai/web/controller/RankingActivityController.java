@@ -66,7 +66,7 @@ public class RankingActivityController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/drawTianDou", method = RequestMethod.POST)
+    @RequestMapping(value = "/draw-tiandou", method = RequestMethod.POST)
     public BaseDto<DrawLotteryDto> drawTianDouPrize() {
         String loginName = LoginUserInfo.getLoginName();
         String mobile = LoginUserInfo.getLoginName();
