@@ -154,16 +154,20 @@ public class RankingActivityServiceImpl implements RankingActivityService {
 
         long drawIndex = redisWrapperClient.incr(TIAN_DOU_DRAW_COUNTER);
 
-        if ((drawIndex + 3) % 5 == 0) {
-            return TianDouPrize.Cash20;
-        } else if ((drawIndex + 2) % 10 == 0) {
-            return TianDouPrize.JingDong300;
-        } else if ((drawIndex + 1) % 1000 == 0) {
+        if ((drawIndex + 16) % 1000 == 0) { // 千分之一：984, 1984, 2984, 3984, 4984....
             return TianDouPrize.Iphone6s;
-        } else if (drawIndex % 2000 == 0) {
+        } else if (drawIndex > 2000 && (drawIndex - 13) % 2000 == 0) { // 两千分之一：2023,4023,6023....
             return TianDouPrize.MacBook;
         } else {
-            return TianDouPrize.InterestCoupon5;
+            int random = (int) (Math.random() * 100000000);
+            int mod = random % 10;
+            if (mod == 0) { // 1/10 的概率
+                return TianDouPrize.JingDong300;
+            } else if (mod == 1 || mod == 2) { // 1/5 的概率
+                return TianDouPrize.Cash20;
+            } else {
+                return TianDouPrize.InterestCoupon5;
+            }
         }
     }
 
