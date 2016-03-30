@@ -87,7 +87,7 @@ public class JPushAmountNotifyAspect {
             Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
             long orderId = Long.parseLong(paramsMap.get("order_id"));
             RechargeModel  rechargeModel = rechargeMapper.findById(orderId);
-            if(rechargeModel != null && "SUCCESS".equals(rechargeModel.getStatus())){
+            if(rechargeModel != null && RechargeStatus.SUCCESS == rechargeModel.getStatus()){
                 createAutoJPushRechargeAlertJob(orderId);
             }
         } catch (Exception e) {
@@ -102,11 +102,11 @@ public class JPushAmountNotifyAspect {
             Map<String, String> paramsMap = (Map<String, String>) joinPoint.getArgs()[0];
             long orderId = Long.parseLong(paramsMap.get("order_id"));
             WithdrawModel withdrawModel = withdrawMapper.findById(orderId);
-            if("WAIT_PAY".equals(withdrawModel.getStatus()))
+            if(WithdrawStatus.APPLY_SUCCESS == withdrawModel.getStatus())
             {
                 createAutoJPushWithDrawApplyAlertJob(orderId);
             }
-            else if("SUCCESS".equals(withdrawModel.getStatus()))
+            else if(WithdrawStatus.SUCCESS == withdrawModel.getStatus())
             {
                 createAutoJPushWithDrawAlertJob(orderId);
             }
