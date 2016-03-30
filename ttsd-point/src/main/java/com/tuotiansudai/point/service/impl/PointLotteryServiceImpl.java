@@ -78,7 +78,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
     @Autowired
     private AccountMapper accountMapper;
 
-    public static String redisShareTemple = "web:{0}{1}:share";
+    public static String redisShareTemple = "web:ranking:shared:{0}:{1}";
 
     @Override
     public void imitateLottery() {
@@ -120,7 +120,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
         DateTime dateTime = new DateTime();
         List<UserPointPrizeModel> userPointPrizeModelToday = userPointPrizeMapper.findByLoginNameAndCreateTime(loginName, dateTime.toString("yyyy-MM-dd"));
         if (CollectionUtils.isEmpty(userPointPrizeModelToday) ||
-                (redisWrapperClient.exists(MessageFormat.format(redisShareTemple, loginName, dateTime.toString("yyyy-MM-dd"))) && userPointPrizeModelToday.size() < 2)) {
+                (redisWrapperClient.exists(MessageFormat.format(redisShareTemple, loginName, dateTime.toString("yyyyMMdd"))) && userPointPrizeModelToday.size() < 2)) {
             PointPrizeModel winPointPrize = this.winLottery();
             UserPointPrizeModel userPointPrizeModel = new UserPointPrizeModel(winPointPrize.getId(), loginName, true);
             userPointPrizeMapper.create(userPointPrizeModel);
@@ -138,7 +138,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
             }
 
             return winPointPrize.getName();
-        } else if (userPointPrizeModelToday.size() == 1 && !redisWrapperClient.exists(MessageFormat.format(redisShareTemple, loginName, dateTime.toString("yyyy-MM-dd")))){
+        } else if (userPointPrizeModelToday.size() == 1 && !redisWrapperClient.exists(MessageFormat.format(redisShareTemple, loginName, dateTime.toString("yyyyMMdd")))){
             return ALREADY_LOTTERY_NOT_SHARE;
         } else {
             return ALREADY_LOTTERY_SHARE;
