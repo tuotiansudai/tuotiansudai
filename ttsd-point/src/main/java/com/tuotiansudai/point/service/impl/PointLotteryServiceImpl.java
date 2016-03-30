@@ -87,14 +87,15 @@ public class PointLotteryServiceImpl implements PointLotteryService{
             loginName = this.imitateLoginName();
         } while (userMapper.findByLoginName(loginName) != null);
         long notRealNum = userPointPrizeMapper.findAllNotReal();
-        List<PointPrizeModel> pointPrizeModels;
+        UserPointPrizeModel userPointPrizeModel;
         if (notRealNum % 10 != 0) {
-            pointPrizeModels = pointPrizeMapper.findAllPossibleWin();
+            PointPrizeModel pointPrizeModel = this.winLottery();
+            userPointPrizeModel = new UserPointPrizeModel(pointPrizeModel.getId(), loginName, false);
         } else {
-            pointPrizeModels = pointPrizeMapper.findAllUnPossibleWin();
+            List<PointPrizeModel> pointPrizeModels = pointPrizeMapper.findAllUnPossibleWin();
+            int num = new Random().nextInt(pointPrizeModels.size());
+            userPointPrizeModel = new UserPointPrizeModel(pointPrizeModels.get(num).getId(), loginName, false);
         }
-        int num = new Random().nextInt(pointPrizeModels.size());
-        UserPointPrizeModel userPointPrizeModel = new UserPointPrizeModel(pointPrizeModels.get(num).getId(), loginName, false);
         userPointPrizeMapper.create(userPointPrizeModel);
     }
 
