@@ -5,6 +5,7 @@ from fabric.contrib.project import upload_project
 
 
 env.use_ssh_config = True
+env.always_use_pty = False
 env.ssh_config_path = '/workspace/v2config/config'
 env.roledefs = {
     'portal': ['beijing', 'shanghai'],
