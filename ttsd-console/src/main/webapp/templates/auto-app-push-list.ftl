@@ -72,6 +72,22 @@
                             <#case 'NO_INVEST_ALERT'>
                                 持续30天未投资，提醒一次
                                 <#break>
+
+                            <#case 'REPAY_ALERT'>
+                                还款提醒
+                                <#break>
+                            <#case 'RECHARGE_ALERT'>
+                                充值提醒
+                                <#break>
+                            <#case 'WITHDRAW_APPLY_SUCCESS_ALERT'>
+                                申请提现成功提醒
+                                <#break>
+                            <#case 'WITHDRAW_SUCCESS_ALERT'>
+                                提现成功提醒
+                                <#break>
+                            <#case 'REFERRER_REWARD_ALERT'>
+                                推荐人奖励提醒
+                                <#break>
                         </#switch>
                     </td>
                     <td>Android / IOS</td>
