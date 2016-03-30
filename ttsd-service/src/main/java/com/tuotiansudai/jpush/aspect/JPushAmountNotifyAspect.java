@@ -148,13 +148,19 @@ public class JPushAmountNotifyAspect {
 
     private void createAutoJPushRechargeAlertJob(long orderId) {
         try {
+            logger.debug("prepare job AutoJPushRechargeAlertJo b");
             Date triggerTime = new DateTime().plusMinutes(AutoJPushRechargeAlertJob.JPUSH_ALERT_RECHARGE_DELAY_MINUTES)
                     .toDate();
+
+            logger.debug("prepare job triggerTime == " + triggerTime);
+
             jobManager.newJob(JobType.AutoJPushRechargeAlert, AutoJPushRechargeAlertJob.class)
                     .addJobData(AutoJPushRechargeAlertJob.RECHARGE_ID_KEY, orderId)
                     .withIdentity(JobType.AutoJPushRechargeAlert.name(),  formatMessage(RECHARGE, orderId))
                     .runOnceAt(triggerTime)
                     .submit();
+            
+            logger.debug("after job AutoJPushRechargeAlertJo b");
         } catch (SchedulerException e) {
             logger.error("create send AutoJPushRepayAlert job for loginName[" + orderId + "] fail", e);
         }
