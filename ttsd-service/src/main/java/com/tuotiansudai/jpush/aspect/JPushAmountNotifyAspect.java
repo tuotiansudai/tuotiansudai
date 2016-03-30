@@ -140,6 +140,7 @@ public class JPushAmountNotifyAspect {
                     .addJobData(AutoJPushRepayAlertJob.REPAY_ID_KEY, loanId)
                     .withIdentity(JobType.AutoJPushRepayAlert.name(), formatMessage(REPAY, loanId))
                     .runOnceAt(triggerTime)
+                    .replaceExistingJob(true)
                     .submit();
         } catch (SchedulerException e) {
             logger.error("create send AutoJPushRepayAlert job for loan[" + loanId + "] fail", e);
@@ -158,6 +159,7 @@ public class JPushAmountNotifyAspect {
                     .addJobData(AutoJPushRechargeAlertJob.RECHARGE_ID_KEY, orderId)
                     .withIdentity(JobType.AutoJPushRechargeAlert.name(),  formatMessage(RECHARGE, orderId))
                     .runOnceAt(triggerTime)
+                    .replaceExistingJob(true)
                     .submit();
 
             logger.debug("after job AutoJPushRechargeAlertJo b");
@@ -176,6 +178,7 @@ public class JPushAmountNotifyAspect {
                     .addJobData(AutoJPushWithDrawApplyAlertJob.WITHDRAW_APPLY_ID_KEY, orderId)
                     .withIdentity(JobType.AutoJPushWithDrawApplyAlert.name(), formatMessage(WITHDRAWAPPLY, orderId))
                     .runOnceAt(triggerTime)
+                    .replaceExistingJob(true)
                     .submit();
             logger.debug("after job AutoJPushWithDrawApplyAlertJob  ");
         } catch (SchedulerException e) {
@@ -193,6 +196,7 @@ public class JPushAmountNotifyAspect {
                     .addJobData(AutoJPushWithDrawAlertJob.WITHDRAW_ID_KEY, orderId)
                     .withIdentity(JobType.AutoJPushWithDrawAlert.name(), formatMessage(WITHDRAW, orderId))
                     .runOnceAt(triggerTime)
+                    .replaceExistingJob(true)
                     .submit();
         } catch (SchedulerException e) {
             logger.error("create send AutoJPushWithDrawAlert job for orderId[" + orderId + "] fail", e);
@@ -207,6 +211,7 @@ public class JPushAmountNotifyAspect {
                     .addJobData(AutoJPushReferrerRewardAlertJob.REFERRER_REWARD_ID_KEY, orderId)
                     .withIdentity(JobType.AutoJPushReferrerRewardAlert.name(), formatMessage(REFERRERREWARD, orderId))
                     .runOnceAt(triggerTime)
+                    .replaceExistingJob(true)
                     .submit();
         } catch (SchedulerException e) {
             logger.error("create send AutoJPushReferrerRewardAlert job for orderId[" + orderId + "] fail", e);
