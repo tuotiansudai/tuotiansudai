@@ -500,12 +500,11 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     @Override
     public void autoJPushWithDrawApplyAlert(long orderId){
         WithdrawModel withdrawModel = withdrawMapper.findById(orderId);
-        if (withdrawModel == null || withdrawModel.getStatus() == WithdrawStatus.APPLY_SUCCESS) {
+        if (withdrawModel == null) {
             logger.error(MessageFormat.format("Withdraw apply callback order is not exist (orderId = {0})", orderId));
             return;
         }
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.WITHDRAW_APPLY_SUCCESS_ALERT);
-
         if (jPushAlertModel != null) {
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
             List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(withdrawModel.getAmount()));
@@ -521,7 +520,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     @Override
     public void autoJPushWithDrawAlert(long orderId){
         WithdrawModel withdrawModel = withdrawMapper.findById(orderId);
-        if (withdrawModel == null || withdrawModel.getStatus() == WithdrawStatus.SUCCESS) {
+        if (withdrawModel == null) {
             logger.error(MessageFormat.format("Withdraw callback order is not exist (orderId = {0})", orderId));
             return;
         }
@@ -541,7 +540,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     @Override
     public void autoJPushReferrerRewardAlert(long orderId){
         InvestReferrerRewardModel investReferrerRewardModel = investReferrerRewardMapper.findById(orderId);
-        if (investReferrerRewardModel == null || investReferrerRewardModel.getStatus() == ReferrerRewardStatus.SUCCESS) {
+        if (investReferrerRewardModel == null ) {
             logger.error(MessageFormat.format("ReferrerReward callback order is not exist (orderId = {0})", orderId));
             return;
         }
