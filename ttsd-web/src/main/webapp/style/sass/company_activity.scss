@@ -699,7 +699,7 @@
           top:60px;
           right:0;
           width:330px;
-          height:350px;
+          min-height:350px;
           background:#fff;
           border:1px solid #ccc;
           border-radius:10px;
@@ -730,7 +730,7 @@
           .td-content{
             float:left;
             width:280px;
-            height:250px;
+            min-height:250px;
             padding:20px 25px;
             .error{
               float:left;
@@ -1143,7 +1143,7 @@
                     color:#4e4e4e;
                     line-height:30px;
                     &.award-name{
-                      width:140px;
+                      width:130px;
                     }
                     &.award-time{
                       width:135px;
