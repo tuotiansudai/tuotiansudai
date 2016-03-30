@@ -941,14 +941,14 @@
             .total-money{
               width:300px;
               position: absolute;
-              top:70px;
+              top:10px;
               left:40px;
               font-size:22px;
               color:#ffedbc;
             }
             .gift-one{
               position: absolute;
-              top:200px;
+              top:80px;
               left:80px;
               width:160px;
               padding:10px 20px;
@@ -967,7 +967,7 @@
             }
             .gift-two{
               position: absolute;
-              top:450px;
+              top:320px;
               left:80px;
               width:160px;
               padding:10px 20px;
@@ -988,10 +988,10 @@
                 text-align:right;
               }
               &.first-stage{
-                bottom:140px;
+                bottom:243px;
               }
               &.two-stage{
-                bottom:270px;
+                bottom:430px;
               }
               .line-single{
                 float:right;
