@@ -330,7 +330,7 @@
                 <a href="/login" class="go-on">去登录</a>
             </div>
         </div>
-        <div class="td-tip-thank" id="NoCdbean">
+        <div class="tip-dom td-tip-thank" id="NoCdbean">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>您的财豆不足，</p>
@@ -340,7 +340,7 @@
                 <a href="/point" class="go-on">去赚财豆</a>
             </div>
         </div>
-        <div class="td-tip-thank" id="oneDay">
+        <div class="tip-dom td-tip-thank" id="oneDay">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>您今天已经抽过奖啦！</p>
@@ -350,7 +350,7 @@
                 <a href="javascript:void(0)" class="go-on go-close">去分享</a>
             </div>
         </div>
-        <div class="td-tip-thank" id="onlyTwice">
+        <div class="tip-dom td-tip-thank" id="onlyTwice">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>您今天的抽奖次数已经用完啦，</p>
@@ -360,7 +360,7 @@
                 <a href="/" class="go-on-big">去看看其他活动</a>
             </div>
         </div>
-        <div class="td-tip-small" id="cdFive">
+        <div class="tip-dom td-tip-small" id="cdFive">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
@@ -371,7 +371,7 @@
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
             </div>
         </div>
-        <div class="td-tip-small" id="cdTwo">
+        <div class="tip-dom td-tip-small" id="cdTwo">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
@@ -382,7 +382,7 @@
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
             </div>
         </div>
-        <div class="td-tip-thank" id="thankYou">
+        <div class="tip-dom td-tip-thank" id="thankYou">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>谢谢参与</p>
@@ -392,7 +392,7 @@
                 <a href="/" class="go-on-big">去看看其他活动</a>
             </div>
         </div>
-        <div class="td-tip-small" id="percentCoupon">
+        <div class="tip-dom td-tip-small" id="percentCoupon">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
@@ -404,7 +404,7 @@
                 <a href="javascript:void(0)" class="double-btn go-close">继续抽奖</a>
             </div>
         </div>
-        <div class="td-tip-small" id="freeMoney">
+        <div class="tip-dom td-tip-small" id="freeMoney">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
