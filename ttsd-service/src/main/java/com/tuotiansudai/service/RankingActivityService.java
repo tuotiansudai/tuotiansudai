@@ -35,4 +35,6 @@ public interface RankingActivityService {
     long getPrizeWinnerCount(TianDouPrize prize);
 
     List<PrizeWinnerDto> getPrizeWinnerList(String prize);
+
+    long getTotalInvestAmountInActivityPeriod();
 }

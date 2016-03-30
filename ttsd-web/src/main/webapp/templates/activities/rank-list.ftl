@@ -33,7 +33,7 @@
                     </li>
                     <li>
                         <p>
-                            <span class="project-name">我的财豆：1000</span>
+                            <span class="project-name">我的财豆：${myPoint?string('0')!}</span>
                             <a href="javascript:void(0)" class="project-operate">去抽奖</a>
                         </p>
                     </li>
@@ -67,7 +67,7 @@
                         </dt>
                         <#list tianDouTop15 as tianDouRank>
                             <dd>
-                                <span class="order-num"><i class="font-icon">${tianDouRank?index}</i></span>
+                                <span class="order-num"><i class="font-icon">${tianDouRank?index+1}</i></span>
                                 <span class="bean-num">${tianDouRank.score}</span>
                                 <span class="bean-user">${tianDouRank.loginName[0..2]}******</span>
                             </dd>
@@ -76,7 +76,7 @@
                 </div>
                 <div class="bean-rank-money">
                     <div class="progress-line">
-                        <h3 class="total-money">累积投资：48,000,000.00元</h3>
+                        <h3 class="total-money">累积投资：${totalInvest/100?float} 元</h3>
                         <dl class="gift-one">
                             <dt>奖池累积中...</br>投资满<span>1.5亿</span>则奖池升级:</dt>
                             <dd>第一名：现金5万</dd>
@@ -128,7 +128,7 @@
                 <div class="lottery-circle">
                     <h3 class="td-list">
                         <span class="td-total">我的天豆：${myTianDou!0}</span>
-                        <span class="td-tip">每次抽奖将消耗1000天豆</span>
+                        <span class="td-tip">每次抽奖将消耗 1000 天豆</span>
                     </h3>
 
                     <div class="circle-shade">
@@ -149,19 +149,19 @@
                     <div class="record-list" id="recordList">
                         <ul class="record-model user-record active">
                             <#list winnerList.MacBook as mackBookWinner>
-                                <li>恭喜${mackBookWinner.loginName[0..2]}*****抽中了${mackBookWinner.prize.name()}</li>
+                                <li>恭喜 ${mackBookWinner.loginName[0..2]}***** 抽中了 ${mackBookWinner.prize.getName()}</li>
                             </#list>
                             <#list winnerList.iPhone as iPhoneWinner>
-                                <li>恭喜${iPhoneWinner.loginName[0..2]}*****抽中了${iPhoneWinner.prize.name()}</li>
+                                <li>恭喜 ${iPhoneWinner.loginName[0..2]}***** 抽中了 ${iPhoneWinner.prize.getName()}</li>
                             </#list>
                             <#list winnerList.other as otherWinner>
-                                <li>恭喜${otherWinner.loginName[0..2]}*****抽中了${otherWinner.prize.name()}</li>
+                                <li>恭喜 ${otherWinner.loginName[0..2]}***** 抽中了 ${otherWinner.prize.getName()}</li>
                             </#list>
                         </ul>
                         <ul class="record-model own-record">
                             <#list myPrizeList as myPrize>
                                 <li>
-                                    <span class="award-name">${myPrize.prize.name()}</span>
+                                    <span class="award-name">${myPrize.prize.getName()}</span>
                                     <span class="award-time">${myPrize.time}</span>
                                 </li>
                             </#list>

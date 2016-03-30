@@ -5,6 +5,8 @@ import com.tuotiansudai.dto.ranking.DrawLotteryDto;
 import com.tuotiansudai.dto.ranking.UserScoreDto;
 import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
 import com.tuotiansudai.point.service.PointLotteryService;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.RankingActivityService;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class RankingActivityController {
     @Autowired
     private PointLotteryService pointLotteryService;
 
+    @Autowired
+    private AccountMapper accountMapper;
+
     @RequestMapping(value = "/rank-list", method = RequestMethod.GET)
     public ModelAndView loadPageData() {
 
@@ -43,6 +48,9 @@ public class RankingActivityController {
 
         Double myTianDou = rankingActivityService.getUserScoreByLoginName(loginName);
 
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        long totalInvest = rankingActivityService.getTotalInvestAmountInActivityPeriod();
+
         modelAndView.addObject("myRank", myRank);
         modelAndView.addObject("tianDouTop15", tianDouTop15);
         modelAndView.addObject("winnerList", winnerList);
@@ -52,6 +60,8 @@ public class RankingActivityController {
 
         modelAndView.addObject("myPrizeList", myPrizeList);
         modelAndView.addObject("myTianDou", myTianDou);
+        modelAndView.addObject("myPoint", accountModel.getPoint());
+        modelAndView.addObject("totalInvest", totalInvest);
         return modelAndView;
     }
 
