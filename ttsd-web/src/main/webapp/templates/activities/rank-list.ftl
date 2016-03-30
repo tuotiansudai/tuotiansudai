@@ -128,7 +128,7 @@
                             <span>1.5亿</span><i class="line-single"></i>
                         </div>
                         <div class="color-line">
-                            <div class="color-pro" data-totalInvest="${totalInvest}" id="linePro"></div>
+                            <div class="color-pro" data-totalInvest="${totalInvest?c}" id="linePro"></div>
                         </div>
                     </div>
                 </div>
