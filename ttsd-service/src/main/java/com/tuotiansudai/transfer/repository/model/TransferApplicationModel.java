@@ -37,6 +37,8 @@ public class TransferApplicationModel {
 
     private Date applicationTime;
 
+    private int transferInterestDays;
+
     public TransferApplicationModel() {
     }
 
@@ -173,5 +175,13 @@ public class TransferApplicationModel {
 
     public void setApplicationTime(Date applicationTime) {
         this.applicationTime = applicationTime;
+    }
+
+    public int getTransferInterestDays() {
+        return transferInterestDays;
+    }
+
+    public void setTransferInterestDays(int transferInterestDays) {
+        this.transferInterestDays = transferInterestDays;
     }
 }

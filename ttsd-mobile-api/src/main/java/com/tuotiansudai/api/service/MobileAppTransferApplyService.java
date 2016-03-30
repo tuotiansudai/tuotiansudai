@@ -2,10 +2,10 @@ package com.tuotiansudai.api.service;
 
 
 import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.TransferApplicationRequestDto;
+import com.tuotiansudai.api.dto.TransferApplyRequestDto;
 
 public interface MobileAppTransferApplyService {
 
-    BaseResponseDto transferApply(TransferApplicationRequestDto requestDto);
+    BaseResponseDto transferApply(TransferApplyRequestDto requestDto);
 
 }

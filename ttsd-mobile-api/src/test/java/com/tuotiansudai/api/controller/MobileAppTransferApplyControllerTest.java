@@ -1,7 +1,6 @@
 package com.tuotiansudai.api.controller;
 
-import com.tuotiansudai.api.dto.ReturnMessage;
-import com.tuotiansudai.api.dto.TransferApplicationRequestDto;
+import com.tuotiansudai.api.dto.TransferApplyRequestDto;
 import com.tuotiansudai.api.service.MobileAppTransferApplyService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -27,22 +26,22 @@ public class MobileAppTransferApplyControllerTest extends ControllerTestBase{
 
     @Test
     public void shouldTransferApplyIsBadRequest() throws Exception{
-        TransferApplicationRequestDto transferApplicationRequestDto =new TransferApplicationRequestDto();
-        transferApplicationRequestDto.setTransferInterest(true);
-        transferApplicationRequestDto.setTransferInvestId("123");
-        when(service.transferApply(any(TransferApplicationRequestDto.class))).thenReturn(successResponseDto);
-        doRequestWithServiceIsOkMockedTest("/transfer-apply", transferApplicationRequestDto)
+        TransferApplyRequestDto transferApplyRequestDto =new TransferApplyRequestDto();
+        transferApplyRequestDto.setTransferInterest(true);
+        transferApplyRequestDto.setTransferInvestId("123");
+        when(service.transferApply(any(TransferApplyRequestDto.class))).thenReturn(successResponseDto);
+        doRequestWithServiceIsOkMockedTest("/transfer-apply", transferApplyRequestDto)
                 .andExpect(jsonPath("$.code").value("0023"));
     }
 
     @Test
     public void shouldTransferApplyIsOk() throws Exception{
-        TransferApplicationRequestDto transferApplicationRequestDto =new TransferApplicationRequestDto();
-        transferApplicationRequestDto.setTransferInterest(true);
-        transferApplicationRequestDto.setTransferAmount("1.00");
-        transferApplicationRequestDto.setTransferInvestId("123");
-        when(service.transferApply(any(TransferApplicationRequestDto.class))).thenReturn(successResponseDto);
-        doRequestWithServiceMockedTest("/transfer-apply", transferApplicationRequestDto);
+        TransferApplyRequestDto transferApplyRequestDto =new TransferApplyRequestDto();
+        transferApplyRequestDto.setTransferInterest(true);
+        transferApplyRequestDto.setTransferAmount("1.00");
+        transferApplyRequestDto.setTransferInvestId("123");
+        when(service.transferApply(any(TransferApplyRequestDto.class))).thenReturn(successResponseDto);
+        doRequestWithServiceMockedTest("/transfer-apply", transferApplyRequestDto);
     }
 
 }

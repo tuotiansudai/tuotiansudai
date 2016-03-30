@@ -1,10 +1,8 @@
 package com.tuotiansudai.api.controller;
 
-import com.tuotiansudai.api.dto.AgreementOperateRequestDto;
 import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.ReturnMessage;
-import com.tuotiansudai.api.dto.TransferApplicationRequestDto;
-import com.tuotiansudai.api.service.MobileAppAgreementService;
+import com.tuotiansudai.api.dto.TransferApplyRequestDto;
 import com.tuotiansudai.api.service.MobileAppTransferApplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -22,7 +20,7 @@ public class MobileAppTransferApplyController extends MobileAppBaseController{
     private MobileAppTransferApplyService mobileAppTransferApplyService;
 
     @RequestMapping(value = "/transfer-apply", method = RequestMethod.POST)
-    public BaseResponseDto generateAgreementRequest(@Valid @RequestBody TransferApplicationRequestDto requestDto, BindingResult bindingResult) {
+    public BaseResponseDto generateAgreementRequest(@Valid @RequestBody TransferApplyRequestDto requestDto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
             String errorCode = bindingResult.getFieldError().getDefaultMessage();
             String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);

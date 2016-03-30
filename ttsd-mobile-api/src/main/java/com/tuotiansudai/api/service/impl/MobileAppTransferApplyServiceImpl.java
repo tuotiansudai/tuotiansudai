@@ -3,7 +3,7 @@ package com.tuotiansudai.api.service.impl;
 
 import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.ReturnMessage;
-import com.tuotiansudai.api.dto.TransferApplicationRequestDto;
+import com.tuotiansudai.api.dto.TransferApplyRequestDto;
 import com.tuotiansudai.api.service.MobileAppTransferApplyService;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.service.InvestTransferService;
@@ -19,7 +19,7 @@ public class MobileAppTransferApplyServiceImpl implements MobileAppTransferApply
     private InvestTransferService investTransferService;
 
     @Override
-    public BaseResponseDto transferApply(TransferApplicationRequestDto requestDto) {
+    public BaseResponseDto transferApply(TransferApplyRequestDto requestDto) {
         TransferApplicationDto transferApplicationDto = requestDto.convertToTransferApplicationDto();
         try {
             investTransferService.investTransferApply(transferApplicationDto);

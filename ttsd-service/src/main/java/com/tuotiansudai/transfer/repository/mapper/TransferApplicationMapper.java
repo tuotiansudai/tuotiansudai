@@ -1,12 +1,12 @@
 package com.tuotiansudai.transfer.repository.mapper;
 
+import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.repository.model.TransferStatus;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public interface TransferApplicationMapper {
@@ -20,4 +20,13 @@ public interface TransferApplicationMapper {
     TransferApplicationModel findById(long id);
 
     TransferApplicationModel findByInvestId(Long investId);
+
+    List<TransferApplicationRecordDto> findTransferApplicationPaginationByLoginName(@Param("loginName")String loginName,
+                                                                                    @Param("transferStatusList")List<TransferStatus> transferStatusList,
+                                                                                    @Param(value = "index") Integer index,
+                                                                                    @Param(value = "pageSize") Integer pageSize);
+
+    int findCountTransferApplicationPaginationByLoginName(@Param("loginName")String loginName, @Param("transferStatusList")List<TransferStatus> transferStatusList);
+
+
 }
