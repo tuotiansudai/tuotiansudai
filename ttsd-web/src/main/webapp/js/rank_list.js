@@ -7,7 +7,8 @@ require(['jquery','rotate','layerWrapper', 'jquery.validate', 'jquery.validate.e
 		$pointerCd=$('#pointerCd'),
 		$rotateTd=$('#rotateTd'),
 		$rotateCd=$('#rotateCd'),
-		$giftRecord=$('.gift-record li');
+		$tdgiftRecord=$('#tdChangeBtn li'),
+        $cdgiftRecord=$('#cdChangeBtn li');
 
     $('#linePro').height(Math.round($('#linePro').attr('data-totalInvest'))/1000000/21000*600);
 	//change rank list
@@ -29,13 +30,21 @@ require(['jquery','rotate','layerWrapper', 'jquery.validate', 'jquery.validate.e
 	});
 
 	//change award record btn
-	$giftRecord.on('click', function(event) {
+	$tdgiftRecord.on('click', function(event) {
 		var $self=$(this),
 			index=$self.index();
 		$self.addClass('active').siblings('li').removeClass('active');
 		$('#recordList').find('.record-model:eq('+index+')').addClass('active')
 			.siblings('.record-model').removeClass('active');
 	});
+    //change award record btn
+    $cdgiftRecord.on('click', function(event) {
+        var $self=$(this),
+            index=$self.index();
+        $self.addClass('active').siblings('li').removeClass('active');
+        $('#beanList').find('.record-model:eq('+index+')').addClass('active')
+            .siblings('.record-model').removeClass('active');
+    });
 	//td click
 	$pointerTd.on('click', function(event) {
 		event.preventDefault();

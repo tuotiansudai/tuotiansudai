@@ -172,7 +172,7 @@
                     </div>
                 </div>
                 <div class="lottery-detail">
-                    <ul class="gift-record">
+                    <ul class="gift-record" id="tdChangeBtn">
                         <li class="active">中奖纪录</li>
                         <li>我的奖品</li>
                     </ul>
@@ -217,11 +217,11 @@
                     </div>
                 </div>
                 <div class="lottery-detail">
-                    <ul class="gift-record">
+                    <ul class="gift-record" id="cdChangeBtn">
                         <li class="active">中奖纪录</li>
                         <li>我的奖品</li>
                     </ul>
-                    <div class="record-list">
+                    <div class="record-list" id="beanList">
                         <ul class="record-model user-record">
                             <#list allPointLotteries as allPointLottery>
                                 <li>恭喜${allPointLottery.loginName[0..2]}*****抽中了${allPointLottery.pointPrizeName!}</li>

@@ -471,11 +471,18 @@
 
 /*rank-list app page*/
 .rank-list-app {
+  float:left;
+  width:100%;
   background: #e02152;
   min-height: 500px;
   .rank-phone-model {
     float:left;
     width:100%;
+  }
+  .rank-phone-intro{
+    float:left;
+    width:80%;
+    padding:0 10%;
   }
 }
 
@@ -1112,6 +1119,7 @@
             .record-model{
               float:left;
               display:none;
+              width:276px;
               height:460px;
               &.active{
                 display:block;
