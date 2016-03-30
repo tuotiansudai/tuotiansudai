@@ -57,10 +57,10 @@ public class RankingActivityController {
 
         modelAndView.addObject("allPointLotteries", pointLotteryService.findAllDrawLottery());
         modelAndView.addObject("myPointLotteries", pointLotteryService.findMyDrawLottery(loginName));
+        modelAndView.addObject("myPoint", accountModel == null ? 0 : accountModel.getPoint());
 
         modelAndView.addObject("myPrizeList", myPrizeList);
         modelAndView.addObject("myTianDou", myTianDou);
-        modelAndView.addObject("myPoint", accountModel.getPoint());
         modelAndView.addObject("totalInvest", totalInvest);
         return modelAndView;
     }
