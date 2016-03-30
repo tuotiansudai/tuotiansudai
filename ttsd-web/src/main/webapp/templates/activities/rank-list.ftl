@@ -98,7 +98,7 @@
                             <span>1.5亿</span><i class="line-single"></i>
                         </div>
                         <div class="color-line">
-                            <div class="color-pro"></div>
+                            <div class="color-pro" data-totalInvest="${totalInvest}"></div>
                         </div>
                     </div>
                 </div>
@@ -176,7 +176,7 @@
                     </h3>
 
                     <div class="circle-shade">
-                        <div class="pointer-img" id="pointerCd">
+                        <div class="pointer-img" id="pointerCd" data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
                             <img src="${staticServer}/images/sign/actor/ranklist/pointer.png" alt="pointer"/>
                         </div>
                         <div class="rotate-btn">
@@ -224,63 +224,63 @@
         </div>
     </div>
 	<div class="tip-list" id="tipList">
-			<div class="td-tip-big" id="macbookAir">
-				<div class="close-btn"></div>
+			<div class="tip-dom td-tip-big" id="macbookAir">
+				<div class="close-btn go-close"></div>
 				<div class="text-tip">
 					<p>恭喜你抽中了</p>
 					<p><img src="${staticServer}/images/sign/actor/ranklist/macbook-air.png" width="50%"></p>
 					<p>拓天客服将会在7个工作日内联系您发放奖品</p>
 				</div>
 				<div class="btn-list">
-					<a href="#" class="go-on">继续抽奖</a>
+					<a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
 				</div>
 			</div>
-            <div class="td-tip-small" id="iphone6s">
-                <div class="close-btn"></div>
+            <div class="tip-dom td-tip-small" id="iphone6s">
+                <div class="close-btn go-close"></div>
                 <div class="text-tip">
                     <p>恭喜你抽中了</p>
                     <p><img src="${staticServer}/images/sign/actor/ranklist/iPhone6sp.png" width="50%"></p>
                     <p>拓天客服将会在7个工作日内联系您发放奖品</p>
                 </div>
                 <div class="btn-list">
-                    <a href="#" class="go-on">继续抽奖</a>
+                    <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
                 </div>
             </div>
-            <div class="td-tip-small" id="jiaxi">
-                <div class="close-btn"></div>
+            <div class="tip-dom td-tip-small" id="jiaxi">
+                <div class="close-btn go-close"></div>
                 <div class="text-tip">
                     <p>恭喜你抽中了</p>
                     <p><img src="${staticServer}/images/sign/actor/ranklist/jiaxi-two.png" width="50%"></p>
                     <p>拓天客服将会在7个工作日内联系您发放奖品</p>
                 </div>
                 <div class="btn-list">
-                    <a href="#" class="go-on">继续抽奖</a>
+                    <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
                 </div>
             </div>
-            <div class="td-tip-small" id="jdCard">
-                <div class="close-btn"></div>
+            <div class="tip-dom td-tip-small" id="jdCard">
+                <div class="close-btn go-close"></div>
                 <div class="text-tip">
                     <p>恭喜你抽中了</p>
                     <p><img src="${staticServer}/images/sign/actor/ranklist/jiaxi-two.png" width="50%"></p>
                     <p>拓天客服将会在7个工作日内联系您发放奖品</p>
                 </div>
                 <div class="btn-list">
-                    <a href="#" class="go-on">继续抽奖</a>
+                    <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
                 </div>
             </div>
-            <div class="td-tip-small" id="twentyRMB">
-                <div class="close-btn"></div>
+            <div class="tip-dom td-tip-small" id="twentyRMB">
+                <div class="close-btn go-close"></div>
                 <div class="text-tip">
                     <p>恭喜你抽中了</p>
                     <p><img src="${staticServer}/images/sign/actor/ranklist/jiaxi-two.png" width="50%"></p>
                     <p>拓天客服将会在7个工作日内联系您发放奖品</p>
                 </div>
                 <div class="btn-list">
-                    <a href="#" class="go-on">继续抽奖</a>
+                    <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
                 </div>
             </div>
-            <div class="td-tip-thank" id="TDnoUse">
-                <div class="close-btn"></div>
+            <div class="tip-dom td-tip-thank" id="TDnoUse">
+                <div class="close-btn go-close"></div>
                 <div class="text-tip">
                     <p>您的天豆不足，</p>
                     <p>投资赚取更多天豆再来抽奖吧！</p>
@@ -289,8 +289,8 @@
                     <a href="/loan-list" class="go-on">去投资</a>
                 </div>
             </div>
-            <div class="td-tip-thank" id="noLogin">
-                <div class="close-btn"></div>
+            <div class="tip-dom td-tip-thank" id="noLogin">
+                <div class="close-btn go-close"></div>
                 <div class="text-tip">
                     <p>您还未登陆，</p>
                     <p>请登录过再来抽奖吧！</p>
@@ -299,9 +299,36 @@
                     <a href="/login" class="go-on">去登录</a>
                 </div>
             </div>
-
-
-
+            <div class="td-tip-thank" id="NoCdbean">
+                <div class="close-btn"></div>
+                <div class="text-tip">
+                    <p>您的财豆不足，</p>
+                    <p>投资赚取更多财豆再来抽奖吧！</p>
+                </div>
+                <div class="btn-list">
+                    <a href="/point" class="go-on">去赚财豆</a>
+                </div>
+            </div>
+            <div class="td-tip-thank" id="oneDay">
+                <div class="close-btn"></div>
+                <div class="text-tip">
+                    <p>您今天已经抽过奖啦！</p>
+                    <p>点击按钮分享页面还可再抽一次哦！</p>
+                </div>
+                <div class="btn-list">
+                    <a href="javascript:void(0)" class="go-on go-close">去分享</a>
+                </div>
+            </div>
+            <div class="td-tip-thank" id="onlyTwice">
+                <div class="close-btn"></div>
+                <div class="text-tip">
+                    <p>您今天的抽奖次数已经用完啦，</p>
+                    <p>明天再来抽奖吧！</p>
+                </div>
+                <div class="btn-list">
+                    <a href="/" class="go-on-big">去看看其他活动</a>
+                </div>
+            </div>
 
 
 			<div class="td-tip-small">

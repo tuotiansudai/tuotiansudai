@@ -1006,6 +1006,9 @@
               }
               &.user-record{
                 padding:20px 30px;
+                overflow: hidden;
+                overflow-y: scroll;
+                height: 460px;
                 li{
                   float:left;
                   width:100%;
@@ -1016,12 +1019,15 @@
               }
               &.own-record{
                 padding:20px 30px;
+                overflow: hidden;
+                overflow-y: scroll;
+                height: 460px;
                 li{
                   float:left;
                   width:100%;
                   span{
                     float:left;
-                    font-size:14px;
+                    font-size:13px;
                     color:#4e4e4e;
                     line-height:30px;
                     &.award-name{

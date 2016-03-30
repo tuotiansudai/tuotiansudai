@@ -1,4 +1,4 @@
-require(['jquery','rotate','layerWrapper'], function($,rotate,layer) {
+require(['jquery','rotate','layerWrapper','jquery.ajax.extension'], function($,rotate,layer) {
 	var bRotateTd = false,
 		bRotateCd = false,
 		$beanBtn=$('#beanBtn li'),
@@ -80,10 +80,17 @@ require(['jquery','rotate','layerWrapper'], function($,rotate,layer) {
     		.fail(function() {
     			layer.msg('请求失败'); 
     		});
-    		
-            
         }
 	});
+    //close btn
+    $('body').on('click', '.go-close', function(event) {
+        event.preventDefault();
+        var $self=$(this),
+            $parent=$self.parents('.tip-list'),
+            $tipDom=$parent.find('.tip-dom');
+        $parent.hide();
+        $tipDom.hide();
+    });
     function rotateFnTd(awards, angles, txt){
         bRotateTd = !bRotateTd;
         $('#rotateTd').stopRotate();
@@ -117,41 +124,56 @@ require(['jquery','rotate','layerWrapper'], function($,rotate,layer) {
 	//cd click
 	$pointerCd.on('click', function(event) {
 		event.preventDefault();
-		if(bRotateCd)return;
-        var item = rnd(0,7);
-
-        switch (item) {
-            case 0:
-                rotateFnCd(0, 26, '港澳游');
-                break;
-            case 1:
-                rotateFnCd(1, 80, '现金5元');
-                break;
-            case 2:
-                rotateFnCd(2, 120, 'iPhone 6sp');
-                break;
-            case 3:
-                rotateFnCd(3, 173, '谢谢参与');
-                break;
-            case 4:
-                rotateFnCd(4, 210, '现金2元');
-                break;
-            case 5:
-                rotateFnCd(5, 255, '0.2%加息券');
-                break;
-            case 6:
-                rotateFnCd(6, 325, '日韩游');
-                break;
-            case 7:
-                rotateFnCd(7, 355, '3000元体验金');
-                break;
+        var $self=$(this),
+            isLogin=$self.attr('data-is-login');
+        if(isLogin!='true'){
+            $('#tipList').show();
+            $('#noLogin').show();
+        }else{
+            if(bRotateCd)return;
+            $.ajax({
+                url: '/activity/point-lottery',
+                type: 'POST',
+                dataType: 'json'
+            })
+            .done(function(data) {
+                if(bRotateCd)return;
+                switch (data) {
+                    case 'PointNotEnough':
+                        $('#tipList').show();
+                        $('#NoCdbean').show();
+                        break;
+                    case 'Cash5':
+                        rotateFnCd(1, 80, '现金5元');
+                        break;
+                    case 'AlreadyLotteryNotShare':
+                        $('#tipList').show();
+                        $('#oneDay').show();
+                        break;
+                    case 'ThankYou':
+                        rotateFnCd(3, 173, '谢谢参与');
+                        break;
+                    case 'Cash2':
+                        rotateFnCd(4, 210, '现金2元');
+                        break;
+                    case 'InterestCoupon2':
+                        rotateFnCd(5, 255, '0.2%加息券');
+                        break;
+                    case 'AlreadyLotteryShare':
+                        $('#tipList').show();
+                        $('#onlyTwice').show();
+                        break;
+                    case 'InvestCoupon3000':
+                        rotateFnCd(7, 355, '3000元体验金');
+                        break;
+                }
+            })
+            .fail(function() {
+                layer.msg('请求失败'); 
+            });
         }
 	});
 
-	function rnd(n, m){
-        return Math.floor(Math.random()*(m-n+1)+n)
-    }
-    
     function rotateFnCd(awards, angles, txt){
         bRotateCd = !bRotateCd;
         $('#rotateCd').stopRotate();
@@ -160,17 +182,29 @@ require(['jquery','rotate','layerWrapper'], function($,rotate,layer) {
             animateTo:angles+1800,
             duration:8000,
             callback:function (){
-                console.log(txt);
+                $('#tipList').show();
+                switch (awards) {
+                    case 1:
+                        $('#twentyRMB').show();
+                        break;
+                    case 3:
+                        $('#iphone6s').show();
+                        break;
+                    case 4:
+                        $('#jdCard').show();
+                        break;
+                    case 5:
+                        $('#jiaxi').show();
+                        break;
+                    case 7:
+                        $('#macbookAir').show();
+                        break;
+                }
                 bRotateCd = !bRotateCd;
             }
         })
     };
-    $('body').on('click', '.close-btn', function(event) {
-    	event.preventDefault();
-    	var $self=$(this),
-    		$parent=$self.parents('.tip-list');
-    	$parent.hide();
-    });
+    
 
 
 	//share event
