@@ -1047,14 +1047,15 @@
     height:100%;
     background:url("../images/sign/actor/ranklist/tip-bg.png") repeat;
     z-index:88;
+    display:none;
     .td-tip-big{
       width:405px;
       height:382px;
       position: fixed;
       top:50%;
       left:50%;
-      margin-top:-202px;
-      margin-left:-191px;
+      margin-top:-191px;
+      margin-left:-202px;
       background:url("../images/sign/actor/ranklist/big-gift-bg.png") no-repeat center;
       background-size:100%;
       z-index:999;
@@ -1109,8 +1110,8 @@
       position: fixed;
       top:50%;
       left:50%;
-      margin-top:-150px;
-      margin-left:-108px;
+      margin-top:-108px;
+      margin-left:-150px;
       background:url("../images/sign/actor/ranklist/get-gift.png") no-repeat center;
       background-size:100%;
       z-index:999;
@@ -1180,11 +1181,12 @@
       position: fixed;
       top:50%;
       left:50%;
-      margin-top:-150px;
-      margin-left:-82px;
+      margin-top:-82px;
+      margin-left:-150px;
       background:url("../images/sign/actor/ranklist/no-gift-bg.png") no-repeat center;
       background-size:100%;
       z-index:999;
+      display:none;
       .close-btn{
         position: absolute;
         top:0;

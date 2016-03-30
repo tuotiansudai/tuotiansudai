@@ -1,4 +1,4 @@
-require(['jquery','rotate','template'], function($,rotate,tpl) {
+require(['jquery','rotate','layerWrapper'], function($,rotate,layer) {
 	var bRotateTd = false,
 		bRotateCd = false,
 		$beanBtn=$('#beanBtn li'),
@@ -37,27 +37,82 @@ require(['jquery','rotate','template'], function($,rotate,tpl) {
 	//td click
 	$pointerTd.on('click', function(event) {
 		event.preventDefault();
-		if(bRotateTd)return;
-        var item = rnd(0,4);
-
-        switch (item) {
-            case 0:
-                rotateFnTd(0, 56, '20元现金');
-                break;
-            case 1:
-                rotateFnTd(1, 120, 'iPhone 6s Plus');
-                break;
-            case 2:
-                rotateFnTd(2, 200, '300元京东购物卡');
-                break;
-            case 3:
-                rotateFnTd(3, 260, '0.5%加息券');
-                break;
-            case 4:
-                rotateFnTd(4, 337, 'MacBook Air');
-                break;
+        var $self=$(this),
+            isLogin=$self.attr('data-is-login');
+        if(!isLogin=='true'){
+            alert('未登录');
+        }else{
+    		if(bRotateTd)return;
+    		$.ajax({
+    			url: '/activity/drawTianDou',
+    			type: 'POST',
+    			dataType: 'json'
+    		})
+    		.done(function(res) {
+                if(res.data.returnCode==0){
+                    var item = res.data.tianDouPrize;
+                    switch (item) {
+                        case 'Cash20':
+                            rotateFnTd(0, 56, '20元现金');
+                            break;
+                        case 'Iphone6s':
+                            rotateFnTd(1, 120, 'iPhone 6s Plus');
+                            break;
+                        case 'JingDong300':
+                            rotateFnTd(2, 200, '300元京东购物卡');
+                            break;
+                        case 'InterestCoupon5':
+                            rotateFnTd(3, 260, '0.5%加息券');
+                            break;
+                        case 'MacBook':
+                            rotateFnTd(4, 337, 'MacBook Air');
+                            break;
+                    }
+                }else if(res.data.returnCode==1){
+                    $('#tipList').show();
+                    $('#TDnoUse').show();
+                }else{
+    			    $('#tipList').show();
+                    $('#noLogin').show();
+                }
+    		})
+    		.fail(function() {
+    			layer.msg('请求失败'); 
+    		});
+    		
+            
         }
 	});
+    function rotateFnTd(awards, angles, txt){
+        bRotateTd = !bRotateTd;
+        $('#rotateTd').stopRotate();
+        $('#rotateTd').rotate({
+            angle:0,
+            animateTo:angles+1800,
+            duration:8000,
+            callback:function (){
+                $('#tipList').show();
+                switch (awards) {
+                    case 0:
+                        $('#twentyRMB').show();
+                        break;
+                    case 1:
+                        $('#iphone6s').show();
+                        break;
+                    case 2:
+                        $('#jdCard').show();
+                        break;
+                    case 3:
+                        $('#jiaxi').show();
+                        break;
+                    case 4:
+                        $('#macbookAir').show();
+                        break;
+                }
+                bRotateTd = !bRotateTd;
+            }
+        })
+    }
 	//cd click
 	$pointerCd.on('click', function(event) {
 		event.preventDefault();
@@ -95,19 +150,7 @@ require(['jquery','rotate','template'], function($,rotate,tpl) {
 	function rnd(n, m){
         return Math.floor(Math.random()*(m-n+1)+n)
     }
-    function rotateFnTd(awards, angles, txt){
-        bRotateTd = !bRotateTd;
-        $('#rotateTd').stopRotate();
-        $('#rotateTd').rotate({
-            angle:0,
-            animateTo:angles+1800,
-            duration:8000,
-            callback:function (){
-                console.log(txt);
-                bRotateTd = !bRotateTd;
-            }
-        })
-    };
+    
     function rotateFnCd(awards, angles, txt){
         bRotateCd = !bRotateCd;
         $('#rotateCd').stopRotate();
@@ -121,7 +164,12 @@ require(['jquery','rotate','template'], function($,rotate,tpl) {
             }
         })
     };
-
+    $('body').on('click', '.close-btn', function(event) {
+    	event.preventDefault();
+    	var $self=$(this),
+    		$parent=$self.parents('.tip-list');
+    	$parent.hide();
+    });
 
 
 	//share event
