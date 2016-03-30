@@ -19,6 +19,7 @@ import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.RankingActivityService;
 import com.tuotiansudai.util.IdGenerator;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -81,6 +82,15 @@ public class RankingActivityServiceImpl implements RankingActivityService {
         DrawLotteryDto drawLotteryDto = new DrawLotteryDto();
         BaseDto baseDto = new BaseDto();
         baseDto.setData(drawLotteryDto);
+
+        if (StringUtils.isEmpty(loginName) || StringUtils.isEmpty(mobile)) {
+            logger.error("User not login. can't draw prize.");
+            drawLotteryDto.setMessage("用户未登录，不能抽奖。");
+            drawLotteryDto.setReturnCode(2);
+            drawLotteryDto.setStatus(false);
+            baseDto.setSuccess(false);
+            return baseDto;
+        }
 
         Double tianDouScore = redisWrapperClient.zscore(TIAN_DOU_USER_SCORE_RANK, loginName);
         if (tianDouScore == null || tianDouScore < DRAW_SCORE) {
