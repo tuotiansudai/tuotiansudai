@@ -29,20 +29,20 @@
                 <ul>
                     <li>
                         <p>
-                            <span class="project-name">我的天豆：${myTianDou!0}</span>
-                            <a href="javascript:void(0)" class="project-operate">去抽奖</a>
+                            <span class="project-name">我的天豆：<strong class="my-td-bean">${myTianDou!0}</strong></span>
+                            <a href="javascript:void(0)" class="project-operate" id="myTD">去抽奖</a>
                         </p>
                     </li>
                     <li>
                         <p>
-                            <span class="project-name">我的财豆：${myPoint?string('0')!}</span>
-                            <a href="javascript:void(0)" class="project-operate">去抽奖</a>
+                            <span class="project-name">我的财豆：<strong class="my-cd-bean">${myPoint?string('0')!}</strong></span>
+                            <a href="javascript:void(0)" class="project-operate" id="myCD">去抽奖</a>
                         </p>
                     </li>
                     <li>
                         <p>
                             <span class="project-name">我的排名：<#if myRank??>${myRank}<#else>-</#if></span>
-                            <a href="#" class="project-operate">去投资</a>
+                            <a href="/loan-list" class="project-operate">去投资</a>
                         </p>
                     </li>
                 </ul>
@@ -157,7 +157,7 @@
             <div class="leader-list active">
                 <div class="lottery-circle">
                     <h3 class="td-list">
-                        <span class="td-total">我的天豆：${myTianDou!0}</span>
+                        <span class="td-total">我的天豆：<strong class="my-td-bean">${myTianDou!0}</strong></span>
                         <span class="td-tip">每次抽奖将消耗 1000 天豆</span>
                     </h3>
 

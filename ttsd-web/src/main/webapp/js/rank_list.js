@@ -118,6 +118,7 @@ require(['jquery','rotate','layerWrapper', 'jquery.validate', 'jquery.validate.e
                         break;
                 }
                 bRotateTd = !bRotateTd;
+                $('.my-td-bean').text(Math.round($('.my-td-bean').text())-1000);
             }
         })
     }
@@ -201,6 +202,7 @@ require(['jquery','rotate','layerWrapper', 'jquery.validate', 'jquery.validate.e
                         break;
                 }
                 bRotateCd = !bRotateCd;
+                $('.my-cd-bean').text(Math.round($('.my-cd-bean').text())-1000);
             }
         })
     };
@@ -278,5 +280,24 @@ require(['jquery','rotate','layerWrapper', 'jquery.validate', 'jquery.validate.e
         $('#countForm').find('.int-text').val('');
         $('#resultNum').text('0');
     });
+    //go to my TD
+    $("#myTD").on('click', function(event) {
+        event.preventDefault();
+        var $self=$(this),
+            myTdH=$('#awardBtn').offset().top;
+        $('body,html').animate({scrollTop:myTdH},'fast',function(){
+            $('#awardBtn li:eq(0)').trigger('click');
+        });
+    });
+    //go to CD
+    $("#myCD").on('click', function(event) {
+        event.preventDefault();
+        var $self=$(this),
+            myTdH=$('#awardBtn').offset().top;
+        $('body,html').animate({scrollTop:myTdH},'fast',function(){
+            $('#awardBtn li:eq(1)').trigger('click');
+        });
+    });
+
 
 });
