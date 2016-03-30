@@ -82,6 +82,8 @@ public class InvestTransferServiceImpl implements InvestTransferService{
 
         transferApplicationMapper.create(transferApplicationModel);
 
+        investMapper.updateTransferStatus(investModel.getId(), TransferStatus.TRANSFERRING);
+
         investTransferApplyJob(transferApplicationModel);
     }
 
@@ -98,6 +100,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
         if (transferApplicationModel != null && transferApplicationModel.getStatus() == TransferStatus.TRANSFERRING) {
             transferApplicationModel.setStatus(TransferStatus.CANCEL);
             transferApplicationMapper.update(transferApplicationModel);
+            investMapper.updateTransferStatus(transferApplicationModel.getTransferInvestId(), TransferStatus.TRANSFERABLE);
             return true;
         } else {
             logger.debug("this transfer apply status is not allow cancel, id = " + transferApplicationId);

@@ -69,6 +69,8 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     private double birthdayBenefit;
 
+    private String transferStatus;
+
     public InvestPaginationItemDataDto(InvestPaginationItemView view) {
         this.investId = view.getId();
         this.loanId = view.getLoanId();
@@ -277,5 +279,13 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     public void setBirthdayBenefit(double birthdayBenefit) {
         this.birthdayBenefit = birthdayBenefit;
+    }
+
+    public String getTransferStatus() {
+        return transferStatus;
+    }
+
+    public void setTransferStatus(String transferStatus) {
+        this.transferStatus = transferStatus;
     }
 }
