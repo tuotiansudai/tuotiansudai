@@ -25,7 +25,8 @@ var require = {
         'coupon-alert': staticServer+'/js/dest/coupon_alert.min',
         'red-envelope-float': staticServer+'/js/dest/red-envelope-float.min',
         'drag': staticServer+'/js/libs/drag',
-        'rotate': staticServer+'/js/libs/jqueryrotate.min'
+        'rotate': staticServer+'/js/libs/jqueryrotate.min',
+        'template':staticServer+'/js/libs/template.min'
     },
     'waitSeconds':0,
     'shim': {

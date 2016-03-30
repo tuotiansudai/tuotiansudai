@@ -47,12 +47,12 @@
             </div>
         </@global.isNotAnonymous>
         <div class="line-single"></div>
-        <ul class="leader-btn">
+        <ul class="leader-btn" id="beanBtn">
             <li class="active">排行榜</li>
             <li>奖品单</li>
             <div class="bean-btn">天豆计算器</div>
         </ul>
-        <div class="leader-container">
+        <div class="leader-container" id="beanCom">
             <div class="leader-list active">
                 <div class="bean-rank-list">
                     <h3 class="td-list">
@@ -110,7 +110,7 @@
             </div>
         </div>
         <div class="line-single"></div>
-        <ul class="leader-btn">
+        <ul class="leader-btn" id="awardBtn">
             <li class="active">天豆抽奖</li>
             <li>财豆抽奖</li>
             <div class="share-list">
@@ -123,7 +123,7 @@
                 </p>
             </div>
         </ul>
-        <div class="leader-container">
+        <div class="leader-container" id="awardCom">
             <div class="leader-list active">
                 <div class="lottery-circle">
                     <h3 class="td-list">
@@ -132,7 +132,7 @@
                     </h3>
 
                     <div class="circle-shade">
-                        <div class="pointer-img">
+                        <div class="pointer-img" id="pointerTd">
                             <img src="${staticServer}/images/sign/actor/ranklist/pointer.png" alt="pointer"/>
                         </div>
                         <div class="rotate-btn">
@@ -176,7 +176,7 @@
                     </h3>
 
                     <div class="circle-shade">
-                        <div class="pointer-img">
+                        <div class="pointer-img" id="pointerCd">
                             <img src="${staticServer}/images/sign/actor/ranklist/pointer.png" alt="pointer"/>
                         </div>
                         <div class="rotate-btn">
@@ -223,5 +223,53 @@
             <p class="actor-sign">***活动遵循拓天速贷法律声明，最终解释权归拓天速贷平台所有***</p>
         </div>
     </div>
+	<div class="tip-list">
+		<div class="td-tip-big">
+			<div class="close-btn"></div>
+			<div class="text-tip">
+				<p>恭喜你抽中了</p>
+				<p><img src="${staticServer}/images/sign/actor/ranklist/macbook-air.png" width="50%"></p>
+				<p>拓天客服将会在7个工作日内联系您发放奖品</p>
+			</div>
+			<div class="btn-list">
+				<a href="#" class="go-on">继续抽奖</a>
+			</div>
+		</div>
+		<div class="td-tip-small">
+			<div class="close-btn"></div>
+			<div class="text-tip">
+				<p>恭喜你抽中了</p>
+				<p><img src="${staticServer}/images/sign/actor/ranklist/macbook-air.png" width="50%"></p>
+				<!-- <p>拓天客服将会在7个工作日内联系您发放奖品</p> -->
+				<!-- <p>奖金已发放到您的账户！</p> -->
+				<p>奖金已发放至“我的宝藏”当中</p>
+			</div>
+			<div class="btn-list">
+				<!-- <a href="#" class="go-on">继续抽奖</a> -->
+				<a href="#" class="double-btn first-btn">去看看</a>
+				<a href="#" class="double-btn">继续抽奖</a>
+			</div>
+		</div>
+		<div class="td-tip-thank">
+			<div class="close-btn"></div>
+			<div class="text-tip">
+				<!-- <p>谢谢参与</p>
+				<p>很遗憾没有中奖</p> -->
+				<!-- <p>您今天的抽奖次数已经用完啦，</p>
+				<p>明天再来抽奖吧！</p> -->
+				<!-- <p>您今天已经抽过奖啦！</p>
+				<p>点击按钮分享页面还可再抽一次哦！</p> -->
+				<!-- <p>谢谢参与！很遗憾没有中奖，</p>
+				<p>点击按钮分享页面还可再抽一次哦！</p> -->
+				<p>您还未登陆，</p>
+				<p>请登录过再来抽奖吧！</p>
+			</div>
+			<div class="btn-list">
+				<!-- <a href="#" class="go-on-big">去看看其他活动</a> -->
+				<!-- <a href="#" class="go-on">去分享</a> -->
+				<a href="/login" class="go-on">去登录</a>
+			</div>
+		</div>
+	</div>
 </div>
 </@global.main>
