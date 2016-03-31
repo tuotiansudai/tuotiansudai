@@ -157,7 +157,7 @@
             <div class="leader-list active">
                 <div class="lottery-circle">
                     <h3 class="td-list">
-                        <span class="td-total">我的天豆：<strong class="my-td-bean">${myTianDou!0}</strong></span>
+                        <span class="td-total">我的天豆：<strong class="my-td-bean">${myTianDou?c}</strong></span>
                         <span class="td-tip">每次抽奖将消耗 1000 天豆</span>
                     </h3>
 
@@ -202,7 +202,7 @@
             <div class="leader-list">
                 <div class="lottery-circle">
                     <h3 class="td-list">
-                        <span class="td-total">我的财豆：<strong class="my-cd-bean">${myPoint?string('0')!}</strong></span>
+                        <span class="td-total">我的财豆：<strong class="my-cd-bean">${myPoint?c}</strong></span>
                         <span class="td-tip">每次抽奖将消耗1000财豆，每天限抽一次。</span>
                     </h3>
 
