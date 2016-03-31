@@ -4,6 +4,9 @@ package com.tuotiansudai.jpush.aspect;
  * Created by gengbeijun on 16/3/29.
  */
 
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.job.*;
 import com.tuotiansudai.repository.mapper.InvestReferrerRewardMapper;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
@@ -39,6 +42,7 @@ public class JPushAmountNotifyAspect {
     public final static String WITHDRAWAPPLY = "WithDrawApply-{0}";
     public final static String WITHDRAW = "WithDraw-{0}";
     public final static String REFERRERREWARD = "ReferrerReward-{0}";
+    public final static String LOTTERYOBTAINCASH = "LotteryObtainCash-{0}";
 
     @Autowired
     private JobManager jobManager;
@@ -66,6 +70,9 @@ public class JPushAmountNotifyAspect {
 
     @Pointcut("execution(* *..ReferrerRewardService.rewardReferrer(..))")
     public void rewardReferrerPointcut() {}
+
+    @Pointcut("execution(* *..TransferCashService.transferCash(..))")
+    public void transferCashPointcut() {}
 
     @AfterReturning(value = "postRepayCallbackPointcut()", returning = "returnValue")
     public void afterReturningPostRepayCallback(JoinPoint joinPoint, Object returnValue) {
@@ -130,6 +137,23 @@ public class JPushAmountNotifyAspect {
         } catch (Exception e) {
             logger.error("after RewardReferrer aspect fail ", e);
         }
+    }
+
+    @AfterReturning(value = "transferCashPointcut()", returning = "returnValue")
+    public void afterReturningTransferCash(JoinPoint joinPoint, Object returnValue) {
+        logger.debug("after returning transferCash assign starting...");
+
+        TransferCashDto transferCashDto = (TransferCashDto) joinPoint.getArgs()[0];
+
+        BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
+        try {
+            if(baseDto.isSuccess()){
+                createAutoJPushLotteryObtainCashAlertJob(transferCashDto);
+            }
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        logger.debug("after returning transferCash assign completed");
     }
 
     private void createAutoJPushRepayAlertJob(long loanId) {
@@ -204,6 +228,21 @@ public class JPushAmountNotifyAspect {
                     .submit();
         } catch (SchedulerException e) {
             logger.error("create send AutoJPushReferrerRewardAlert job for orderId[" + orderId + "] fail", e);
+        }
+    }
+
+    private void createAutoJPushLotteryObtainCashAlertJob(TransferCashDto transferCashDto) {
+        try {
+            Date triggerTime = new DateTime().plusMinutes(AutoJPushLotteryObtainCashAlertJob.JPUSH_ALERT_LOTTERY_OBTAIN_CASH_DELAY_MINUTES)
+                    .toDate();
+            jobManager.newJob(JobType.AutoJPushLotteryObtainCashAlert, AutoJPushLotteryObtainCashAlertJob.class)
+                    .addJobData(AutoJPushLotteryObtainCashAlertJob.LOTTERY_OBTAIN_CASH_ID_KEY, transferCashDto)
+                    .withIdentity(JobType.AutoJPushLotteryObtainCashAlert.name(), formatMessage(LOTTERYOBTAINCASH, String.valueOf(transferCashDto.getOrderId())))
+                    .runOnceAt(triggerTime)
+                    .replaceExistingJob(true)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create send AutoJPushLotteryObtainCashAlert job for orderId[" + transferCashDto.getOrderId() + "] fail", e);
         }
     }
 
