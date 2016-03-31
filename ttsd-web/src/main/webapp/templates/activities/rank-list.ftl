@@ -173,8 +173,13 @@
                 </div>
                 <div class="lottery-detail">
                     <ul class="gift-record" id="tdChangeBtn">
-                        <li class="active">中奖纪录</li>
-                        <li>我的奖品</li>
+                        <@global.isAnonymous>
+                            <li class="active" style="width:336px;">中奖纪录</li>
+                        </@global.isAnonymous>
+                        <@global.isNotAnonymous>
+                            <li class="active">中奖纪录</li>
+                            <li>我的奖品</li>
+                        </@global.isNotAnonymous>
                     </ul>
                     <div class="record-list" id="recordList">
                         <ul class="record-model user-record active">
@@ -218,8 +223,13 @@
                 </div>
                 <div class="lottery-detail">
                     <ul class="gift-record" id="cdChangeBtn">
-                        <li class="active">中奖纪录</li>
-                        <li>我的奖品</li>
+                        <@global.isAnonymous>
+                            <li class="active" style="width:336px;">中奖纪录</li>
+                        </@global.isAnonymous>
+                        <@global.isNotAnonymous>
+                            <li class="active">中奖纪录</li>
+                            <li>我的奖品</li>
+                        </@global.isNotAnonymous>
                     </ul>
                     <div class="record-list scroll-record" id="beanList">
                         <ul class="record-model user-record  active">
