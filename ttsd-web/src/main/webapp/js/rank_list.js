@@ -342,4 +342,63 @@ require(['jquery','rotate','layerWrapper', 'jquery.validate', 'jquery.validate.e
             })
         }
     }
+    var lineLink    = staticServer+'/activity/rank-list';    // 要分享的页面的URL
+    var imgUrl      = staticServer+'/images/sign/actor/ranklist/share-images.png';    // 显示在微信里的缩略图
+    var shareTitle  = '霸道总裁送你钱！车！房！';          // 页面标题
+    var descContent = "投资拿排名大奖！还能抽奖！百分百中奖哦！";      // 内容简介
+    var appid       = '';                  // APP ID, 可以为空
+
+
+    function wx_shareFriend() {  
+      WeixinJSBridge.invoke('sendAppMessage',{  
+         "appid": appid,  
+         "img_url": imgUrl,  
+         "img_width": "640",  
+         "img_height": "640",  
+         "link": lineLink,  
+         "desc": descContent,  
+         "title": shareTitle  
+         }, function(res) {  
+           //alert(res.err_msg);  
+         })  
+    }  
+
+    function wx_shareTimeline() {  
+      WeixinJSBridge.invoke('shareTimeline',{  
+        "img_url": imgUrl,  
+        "img_width": "640",  
+        "img_height": "640",  
+        "link": lineLink,  
+        "desc": descContent,  
+        "title": shareTitle  
+        }, function(res) {  
+           //alert(res.err_msg);  
+        });  
+    }  
+
+    function wx_shareWeibo() {  
+      WeixinJSBridge.invoke('shareWeibo',{  
+        "content": descContent,  
+        "url": lineLink,  
+        }, function(res) {  
+          //alert(res.err_msg);  
+        });  
+    }  
+
+    function onBridgeReady(){
+      WeixinJSBridge.on('menu:share:appmessage', wx_shareFriend);   // 发送给朋友
+      WeixinJSBridge.on('menu:share:timeline',   wx_shareTimeline); // 分享到朋友圈
+      WeixinJSBridge.on('menu:share:weibo',      wx_shareWeibo);    // 分享到微博
+    }
+
+    if (typeof WeixinJSBridge == "undefined"){
+      if( document.addEventListener ){
+          document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+      }else if (document.attachEvent){
+          document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+          document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+      }
+    }else{
+      onBridgeReady();
+    }
 });
