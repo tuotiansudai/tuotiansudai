@@ -23,6 +23,12 @@ public class MobileAppTransferApplicationController extends MobileAppBaseControl
         return mobileAppTransferApplicationService.generateTransferApplication(requestDto);
     }
 
+    @RequestMapping(value = "get/transferee-transfer-application-list", method = RequestMethod.POST)
+    public BaseResponseDto generateTransferApplication(@RequestBody PaginationRequestDto requestDto) {
+        requestDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppTransferApplicationService.generateTransfereeApplication(requestDto);
+    }
+
     @RequestMapping(value = "/get/transfer-apply", method = RequestMethod.POST)
     public BaseResponseDto transferApplyQuery(@Valid @RequestBody TransferApplyQueryRequestDto requestDto,BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

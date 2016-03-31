@@ -31,6 +31,13 @@ public class MobileAppTransferApplicationControllerTest extends ControllerTestBa
         doRequestWithServiceMockedTest("/get/transferrer-transfer-application-list",
                 new TransferApplicationRequestDto());
     }
+    @Test
+    public void shouldGenerateTransfereeApplicationIsSuccess() throws Exception{
+        when(service.generateTransfereeApplication(any(PaginationRequestDto.class))).thenReturn(successResponseDto);
+
+        doRequestWithServiceMockedTest("/get/transferee-transfer-application-list",
+                new PaginationRequestDto());
+    }
 
     @Test
     public void shouldTransferApplyIsBadRequest() throws Exception{

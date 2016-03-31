@@ -78,6 +78,31 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         assertEquals("25", baseResponseDto.getData().getTransferApplication().get(0).getTransferInterestDays());
 
     }
+    @Test
+    public void shouldGenerateTransfereeApplicationIsSuccess() {
+        TransferApplicationRecordDto transferApplicationRecordDto = createTransferApplicationRecordDto();
+        PaginationRequestDto paginationRequestDto = new PaginationRequestDto();
+        BaseParam baseParam = new BaseParam();
+        baseParam.setUserId("test");
+        paginationRequestDto.setBaseParam(baseParam);
+        paginationRequestDto.setPageSize(10);
+        paginationRequestDto.setIndex(1);
+        List<TransferApplicationRecordDto> transferApplicationRecordDtos = Lists.newArrayList(transferApplicationRecordDto);
+
+        when(transferApplicationMapper.findTransfereeApplicationPaginationByLoginName(anyString(), anyInt(), anyInt())).thenReturn(transferApplicationRecordDtos);
+        when(transferApplicationMapper.findCountTransfereeApplicationPaginationByLoginName(anyString())).thenReturn(1);
+
+        BaseResponseDto<TransferApplicationResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.generateTransfereeApplication(paginationRequestDto);
+        assertEquals(TransferStatus.TRANSFERRING, baseResponseDto.getData().getTransferApplication().get(0).getTransferStatus());
+        assertEquals("17", baseResponseDto.getData().getTransferApplication().get(0).getActivityRate());
+        assertEquals("16", baseResponseDto.getData().getTransferApplication().get(0).getBaseRate());
+        assertEquals("name", baseResponseDto.getData().getTransferApplication().get(0).getName());
+        assertEquals("10.00", baseResponseDto.getData().getTransferApplication().get(0).getTransferAmount());
+        assertEquals("12.00", baseResponseDto.getData().getTransferApplication().get(0).getInvestAmount());
+        assertEquals("2016-02-09 00:00:00", baseResponseDto.getData().getTransferApplication().get(0).getTransferTime());
+        assertEquals("25", baseResponseDto.getData().getTransferApplication().get(0).getTransferInterestDays());
+
+    }
 
     private TransferApplicationRecordDto createTransferApplicationRecordDto() {
         TransferApplicationRecordDto transferApplicationRecordDto = new TransferApplicationRecordDto();
