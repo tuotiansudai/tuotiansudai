@@ -111,13 +111,13 @@ public class RankingActivityServiceTest {
         assert (tianDouRecordDtoList != null && tianDouRecordDtoList.size() == 2);
 
         UserTianDouRecordDto userInvestRecord = tianDouRecordDtoList.get(0);
-        assert (userInvestRecord.getType().equals("INVEST"));
+        assert (userInvestRecord.getType().equals("投资"));
         assert (userInvestRecord.getAmount() == investAmount);
         assert (userInvestRecord.getScore() == tianDouScore);
         assert (userInvestRecord.getDesc().equals(loanId));
 
         UserTianDouRecordDto userDrawRecord = tianDouRecordDtoList.get(1);
-        assert (userDrawRecord.getType().equals("DRAW"));
+        assert (userDrawRecord.getType().equals("抽奖"));
 //        assert (userDrawRecord.getPrize() == TianDouPrize.InterestCoupon5);
 
         Map<String, List<UserTianDouRecordDto>> winnerListMap = rankingActivityService.getTianDouWinnerList();
@@ -219,34 +219,34 @@ public class RankingActivityServiceTest {
         assert (tianDouRecordDtoList != null && tianDouRecordDtoList.size() == 7);
 
         UserTianDouRecordDto userInvestRecord1_0 = tianDouRecordDtoList.get(0);
-        assert (userInvestRecord1_0.getType().equals("INVEST"));
+        assert (userInvestRecord1_0.getType().equals("投资"));
         assert (userInvestRecord1_0.getAmount() == investAmount);
         assert (userInvestRecord1_0.getScore() == tianDouScore);
         assert (userInvestRecord1_0.getDesc().equals(loanId));
 
         UserTianDouRecordDto userInvestRecord1_1 = tianDouRecordDtoList.get(1);
-        assert (userInvestRecord1_1.getType().equals("INVEST"));
+        assert (userInvestRecord1_1.getType().equals("投资"));
         assert (userInvestRecord1_1.getAmount() == investAmount);
         assert (userInvestRecord1_1.getScore() == tianDouScore);
         assert (userInvestRecord1_1.getDesc().equals(loanId));
 
         UserTianDouRecordDto userInvestRecord1_2 = tianDouRecordDtoList.get(2);
-        assert (userInvestRecord1_2.getType().equals("INVEST"));
+        assert (userInvestRecord1_2.getType().equals("投资"));
         assert (userInvestRecord1_2.getAmount() == investAmount);
         assert (userInvestRecord1_2.getScore() == tianDouScore);
         assert (userInvestRecord1_2.getDesc().equals(loanId));
 
         UserTianDouRecordDto userDrawRecord1_0 = tianDouRecordDtoList.get(3);
-        assert (userDrawRecord1_0.getType().equals("DRAW"));
+        assert (userDrawRecord1_0.getType().equals("抽奖"));
 
         UserTianDouRecordDto userDrawRecord1_1 = tianDouRecordDtoList.get(4);
-        assert (userDrawRecord1_1.getType().equals("DRAW"));
+        assert (userDrawRecord1_1.getType().equals("抽奖"));
 
         UserTianDouRecordDto userDrawRecord1_2 = tianDouRecordDtoList.get(5);
-        assert (userDrawRecord1_2.getType().equals("DRAW"));
+        assert (userDrawRecord1_2.getType().equals("抽奖"));
 
         UserTianDouRecordDto userDrawRecord1_3 = tianDouRecordDtoList.get(6);
-        assert (userDrawRecord1_3.getType().equals("DRAW"));
+        assert (userDrawRecord1_3.getType().equals("抽奖"));
 
         Map<String, List<UserTianDouRecordDto>> winnerListMap = rankingActivityService.getTianDouWinnerList();
         List<UserTianDouRecordDto> macBookList = winnerListMap.get("MacBook");
