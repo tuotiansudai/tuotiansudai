@@ -14,7 +14,7 @@ public class TransferApplyRequestDto extends BaseParamDto {
     @NotEmpty(message = "0023")
     private String transferAmount;
 
-    private Boolean transferInterest;
+    private boolean transferInterest;
 
     public TransferApplyRequestDto() {
     }
@@ -35,18 +35,18 @@ public class TransferApplyRequestDto extends BaseParamDto {
         this.transferAmount = transferAmount;
     }
 
-    public Boolean isTransferInterest() {
+    public boolean isTransferInterest() {
         return transferInterest;
     }
 
-    public void setTransferInterest(Boolean transferInterest) {
+    public void setTransferInterest(boolean transferInterest) {
         this.transferInterest = transferInterest;
     }
 
     public TransferApplicationDto convertToTransferApplicationDto() {
         TransferApplicationDto transferApplicationDto = new TransferApplicationDto();
         transferApplicationDto.setTransferInvestId(Long.parseLong(this.transferInvestId));
-        transferApplicationDto.setTransferInterest(this.transferInterest == null ? false : this.transferInterest);
+        transferApplicationDto.setTransferInterest(this.transferInterest);
         transferApplicationDto.setTransferAmount(AmountConverter.convertStringToCent(this.transferAmount));
         return transferApplicationDto;
     }
