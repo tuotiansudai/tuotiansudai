@@ -73,9 +73,7 @@ public class RankingActivityController {
         String loginName = LoginUserInfo.getLoginName();
         String mobile = LoginUserInfo.getLoginName();
 
-        BaseDto<DrawLotteryDto> baseDto = rankingActivityService.drawTianDouPrize(loginName, mobile);
-
-        return baseDto;
+        return rankingActivityService.drawTianDouPrize(loginName, mobile);
     }
 
     @ResponseBody
