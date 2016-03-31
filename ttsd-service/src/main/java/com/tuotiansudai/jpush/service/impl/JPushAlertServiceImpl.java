@@ -307,11 +307,10 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     @Override
     public void autoJPushLotteryLotteryObtainCashAlert(TransferCashDto transferCashDto){
         logger.debug("autoJPushLotteryLotteryObtainCashAlert start...");
-        AccountModel accountModel = accountMapper.findByLoginName(transferCashDto.getLoginName());
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.LOTTERY_OBTAIN_CASH_ALERT);
         if (jPushAlertModel != null) {
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
-            List<String> amountLists = Lists.newArrayList(accountModel.getUserName(), AmountConverter.convertCentToString(Long.parseLong(transferCashDto.getAmount())));
+            List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(Long.parseLong(transferCashDto.getAmount())));
             loginNameMap.put(transferCashDto.getLoginName(), amountLists);
             autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
             loginNameMap.clear();
