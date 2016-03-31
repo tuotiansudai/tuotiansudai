@@ -126,4 +126,40 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         baseResponseDto.setData(transferApplyQueryResponseDataDto);
         return baseResponseDto;
     }
+
+    @Override
+    public BaseResponseDto generateTransfereeApplication(PaginationRequestDto requestDto) {
+        Integer index = requestDto.getIndex();
+        Integer pageSize = requestDto.getPageSize();
+        String loginName = requestDto.getBaseParam().getUserId();
+        BaseResponseDto<TransferApplicationResponseDataDto> dto = new BaseResponseDto();
+        if(index == null || index <= 0){
+            index = 1;
+        }
+        if(pageSize == null || pageSize <= 0){
+            pageSize = 10;
+        }
+
+        List<TransferApplicationRecordDto> transferApplicationRecordDtos = transferApplicationMapper.findTransfereeApplicationPaginationByLoginName(loginName,
+                (index - 1) * pageSize,
+                pageSize);
+        TransferApplicationResponseDataDto transferApplicationResponseDataDto = new TransferApplicationResponseDataDto();
+        transferApplicationResponseDataDto.setIndex(index);
+        transferApplicationResponseDataDto.setPageSize(pageSize);
+        transferApplicationResponseDataDto.setTotalCount(transferApplicationMapper.findCountTransfereeApplicationPaginationByLoginName(loginName));
+        if(CollectionUtils.isNotEmpty(transferApplicationRecordDtos)){
+            List<TransferApplicationRecordResponseDataDto> transferApplication = Lists.transform(transferApplicationRecordDtos, new Function<TransferApplicationRecordDto, TransferApplicationRecordResponseDataDto>() {
+                @Override
+                public TransferApplicationRecordResponseDataDto apply(TransferApplicationRecordDto transferApplicationRecordDto) {
+                    return new TransferApplicationRecordResponseDataDto(transferApplicationRecordDto);
+                }
+            });
+            transferApplicationResponseDataDto.setTransferApplication(transferApplication);
+
+        }
+        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        dto.setData(transferApplicationResponseDataDto);
+        return dto;
+    }
 }

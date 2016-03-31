@@ -66,7 +66,7 @@
             </if>
             <if test="transferStatusList != null and transferStatusList.size != 0">
                 and ta.status in
-                <foreach item="item" index="index" collection="transferStatusList" open="(" separator="," close=")">
+                <foreach item="item" index="i" collection="transferStatusList" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
@@ -84,11 +84,35 @@
             </if>
             <if test="transferStatusList != null and transferStatusList.size != 0">
                 and ta.status in
-                <foreach item="item" index="index" collection="transferStatusList" open="(" separator="," close=")">
+                <foreach item="item" index="i" collection="transferStatusList" open="(" separator="," close=")">
                     #{item}
                 </foreach>
             </if>
 
+        </where>
+    </select>
+
+    <select id="findTransfereeApplicationPaginationByLoginName" parameterType="map" resultMap="transferApplicationRecordDtoMap">
+        select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.transfer_interest_days,ta.status,l.base_rate,l.activity_rate
+        from transfer_application ta JOIN invest i on ta.invest_id = i.id JOIN loan l on l.id = ta.loan_id
+        <where>
+            <if test="loginName != null">
+                i.login_name = #{loginName}
+            </if>
+            AND ta.status = 'SUCCESS'
+        </where>
+        order by ta.transfer_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountTransfereeApplicationPaginationByLoginName" parameterType="map" resultMap="transferApplicationRecordDtoMap">
+        select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.transfer_interest_days,ta.status,l.base_rate,l.activity_rate
+        from transfer_application ta JOIN invest i on ta.invest_id = i.id JOIN loan l on l.id = ta.loan_id
+        <where>
+            <if test="loginName != null">
+                i.login_name = #{loginName}
+            </if>
+            AND ta.status = 'SUCCESS'
         </where>
     </select>
 
