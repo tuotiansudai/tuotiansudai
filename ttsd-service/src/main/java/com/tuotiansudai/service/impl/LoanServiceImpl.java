@@ -480,33 +480,21 @@ public class LoanServiceImpl implements LoanService {
 
         String redisKey = MessageFormat.format(redisKeyTemplate, invest_id + "_" + recordsLoginName);
         String encryptLoginName;
+        String showRecordsLoginName = recordsLoginName.substring(0, 3) + RandomUtils.showChar(showLength);
+        String showRandomLoginName = RandomUtils.generateLowerString(3) + RandomUtils.showChar(showLength);
         if (Strings.isNullOrEmpty(loginName)) {
             if (showLoginNameList.contains(recordsLoginName)) {
-                if(redisWrapperClient.exists(redisKey)){
-                    encryptLoginName = redisWrapperClient.get(redisKey);
-                }
-                else{
-                    encryptLoginName = RandomUtils.generateLowerString(3) + RandomUtils.showChar(showLength);
-                    redisWrapperClient.set(redisKey, encryptLoginName);
-                }
+                encryptLoginName = redisWrapperClient.exists(redisKey)?redisWrapperClient.get(redisKey):showRandomLoginName;
+                redisWrapperClient.set(redisKey, redisWrapperClient.exists(redisKey)?redisWrapperClient.get(redisKey):showRandomLoginName);
             } else {
-                encryptLoginName = recordsLoginName.substring(0, 3) + RandomUtils.showChar(showLength);
+                encryptLoginName = showRecordsLoginName;
             }
         } else {
-            if (loginName.equalsIgnoreCase(recordsLoginName)) {
-                encryptLoginName = recordsLoginName;
+            if (showRandomLoginNameList.contains(recordsLoginName) && !loginName.equalsIgnoreCase(recordsLoginName)) {
+                encryptLoginName = redisWrapperClient.exists(redisKey)?redisWrapperClient.get(redisKey):showRandomLoginName;
+                redisWrapperClient.set(redisKey, redisWrapperClient.exists(redisKey)?redisWrapperClient.get(redisKey):showRandomLoginName);
             } else {
-                if (showRandomLoginNameList.contains(recordsLoginName) && !loginName.equalsIgnoreCase(recordsLoginName)) {
-                    if(redisWrapperClient.exists(redisKey)){
-                        encryptLoginName = redisWrapperClient.get(redisKey);
-                    }
-                    else{
-                        encryptLoginName = RandomUtils.generateLowerString(3) + RandomUtils.showChar(showLength);
-                        redisWrapperClient.set(redisKey, encryptLoginName);
-                    }
-                } else {
-                    encryptLoginName = recordsLoginName.substring(0, 3) + RandomUtils.showChar(showLength);
-                }
+                encryptLoginName = loginName.equalsIgnoreCase(recordsLoginName)?recordsLoginName:showRecordsLoginName;
             }
         }
         return encryptLoginName;
