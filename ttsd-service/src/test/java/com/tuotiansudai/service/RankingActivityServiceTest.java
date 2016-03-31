@@ -4,7 +4,6 @@ package com.tuotiansudai.service;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ranking.DrawLotteryDto;
-import com.tuotiansudai.dto.ranking.PrizeWinnerDto;
 import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
 import com.tuotiansudai.repository.TianDouPrize;
 import com.tuotiansudai.service.impl.RankingActivityServiceImpl;
@@ -353,7 +352,7 @@ public class RankingActivityServiceTest {
 
     private void mockInvestTianDou(String loginName, long amount, long tianDouScore, String loanId) {
 
-        String time = DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
+        String time = DateFormatUtils.format(new Date(), "yyyy-MM-dd_HH:mm:ss");
 
         String value = amount + "+" + tianDouScore + "+" + loanId + "+" + time;
         redisWrapperClient.lpush(RankingActivityServiceImpl.TIAN_DOU_INVEST_SCORE_RECORD + loginName, value);

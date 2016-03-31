@@ -48,7 +48,7 @@ public class TianDouAspect {
                 long period = loanModel.getPeriods();
                 long tianDouScore = new BigDecimal((double) amount * period / 1200).setScale(0, BigDecimal.ROUND_HALF_UP).longValue();
 
-                String time = DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
+                String time = DateFormatUtils.format(new Date(), "yyyy-MM-dd_HH:mm:ss");
 
                 // 用户天豆获取记录。<List>loginName:amount+score+desc+time
                 String value = amount + "+" + tianDouScore + "+" + loanId + "+" + time;

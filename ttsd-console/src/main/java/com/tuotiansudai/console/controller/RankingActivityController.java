@@ -24,13 +24,13 @@ public class RankingActivityController {
 
     @RequestMapping(value = "/user-tiandou", method = RequestMethod.GET)
     public ModelAndView intoTiandouQuery() {
-        ModelAndView modelAndView = new ModelAndView("ranking-user-tiandou");
+        ModelAndView modelAndView = new ModelAndView("/ranking-user-tiandou");
         return modelAndView;
     }
 
     @RequestMapping(value = "/user-tiandou", method = RequestMethod.POST, params = "loginName")
     public ModelAndView userTiandouQuery(String loginName) {
-        ModelAndView modelAndView = new ModelAndView("ranking-user-tiandou");
+        ModelAndView modelAndView = new ModelAndView("/ranking-user-tiandou");
 
         Double usableTianDou = rankingActivityService.getUserScoreByLoginName(loginName); // null if user not exists
 
@@ -50,7 +50,7 @@ public class RankingActivityController {
 
     @RequestMapping(value = "/tiandou-prize", method = RequestMethod.GET)
     public ModelAndView tiandouPrize() {
-        ModelAndView modelAndView = new ModelAndView("ranking-tiandou-prize");
+        ModelAndView modelAndView = new ModelAndView("/ranking-tiandou-prize");
 
         long drawCount = rankingActivityService.getDrawCount();
 
@@ -70,7 +70,7 @@ public class RankingActivityController {
 
     @RequestMapping(value = "/prize-winner", method = RequestMethod.GET, params = "prize")
     public ModelAndView prizeWinner(String prize) {
-        ModelAndView modelAndView = new ModelAndView("ranking-prize-winner");
+        ModelAndView modelAndView = new ModelAndView("/ranking-prize-winner");
 
         List<PrizeWinnerDto> prizeWinnerDtoList = rankingActivityService.getPrizeWinnerList(prize);
 

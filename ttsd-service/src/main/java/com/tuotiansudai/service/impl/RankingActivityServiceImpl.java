@@ -119,7 +119,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
         String userName = accountModel == null ? "" : accountModel.getUserName();
         String identityNumber = accountModel == null ? "" : accountModel.getIdentityNumber();
 
-        String dateTime = DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
+        String dateTime = DateFormatUtils.format(new Date(), "yyyy-MM-dd_HH:mm:ss");
         String winnerPrize = prize + "+" + dateTime;
         redisWrapperClient.lpush(TIAN_DOU_WINNER_PRIZE + loginName, winnerPrize);
         redisWrapperClient.lpush(TIAN_DOU_ALL_WINNER, loginName + "+" + winnerPrize);
@@ -307,7 +307,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
             public UserTianDouRecordDto apply(String input) {
                 // amount+score+desc+time
                 String[] ss = input.split("\\+");
-                return new UserTianDouRecordDto(loginName, "INVEST", Long.parseLong(ss[0]), Long.parseLong(ss[1]), ss[2], ss[3]);
+                return new UserTianDouRecordDto(loginName, "投资", Long.parseLong(ss[0]), Long.parseLong(ss[1]), ss[2], ss[3]);
             }
         });
 
@@ -317,7 +317,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
             public UserTianDouRecordDto apply(String input) {
                 // prize+time(yyyy-MM-dd HH:mm:ss)
                 String[] ss = input.split("\\+");
-                return new UserTianDouRecordDto(loginName, "DRAW", TianDouPrize.valueOf(ss[0]), ss[1]);
+                return new UserTianDouRecordDto(loginName, "抽奖", TianDouPrize.valueOf(ss[0]), ss[1]);
             }
         });
 

@@ -29,7 +29,7 @@
     </br>
 </div>
     <#if useRecordList ?? && (useRecordList?size>0)>
-    <div class="table-responsive">
+    <div class="table-responsive" style="width:600px;">
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
@@ -48,8 +48,8 @@
                     <td>${record.amount/100?float}</td>
                     <td>${record.score!}</td>
                     <td>
-                        <#if record.type=="DRAW">${record.prize.name!}</#if>
-                        <#if record.type=="INVEST">${record.desc!}</#if>
+                        <#if record.type=="抽奖">${record.prize.name!}</#if>
+                        <#if record.type=="投资">${record.desc!}</#if>
                     </td>
                 </tr>
                 </#list>
