@@ -841,7 +841,7 @@
       }
       .share-list{
         float:right;
-        width:410px;
+        width:210px;
         margin-top:10px;
         p{
           float:left;
@@ -1091,6 +1091,9 @@
             float:left;
             width:600px;
             margin:40px 0 30px 30px;
+            &.share-num{
+              width:900px!important;
+            }
             span{
               color:#ffedbc;
               &.td-total{

@@ -129,7 +129,9 @@ require(['jquery','rotate','layerWrapper', 'jquery.validate', 'jquery.validate.e
                         break;
                 }
                 bRotateTd = !bRotateTd;
-                $('.my-td-bean').text(Math.round($('.my-td-bean').text())-1000);
+                $('.my-td-bean').each(function(index, el) {
+                    $(this).text(Math.round($(this).text().replace(/,/gi,''))-1000);
+                });
             }
         })
     }
@@ -213,7 +215,9 @@ require(['jquery','rotate','layerWrapper', 'jquery.validate', 'jquery.validate.e
                         break;
                 }
                 bRotateCd = !bRotateCd;
-                $('.my-cd-bean').text(Math.round($('.my-cd-bean').text())-1000);
+                $('.my-cd-bean').each(function(index, el) {
+                    $(this).text(Math.round($(this).text().replace(/,/gi,''))-1000);
+                });
             }
         })
     };

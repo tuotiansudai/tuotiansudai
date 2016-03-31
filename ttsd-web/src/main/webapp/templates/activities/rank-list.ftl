@@ -29,7 +29,7 @@
                 <ul>
                     <li>
                         <p>
-                            <span class="project-name">我的天豆：<strong class="my-td-bean">${myTianDou!0}</strong></span>
+                            <span class="project-name">我的天豆：<strong class="my-td-bean">${myTianDou?string('0')!}</strong></span>
                             <a href="javascript:void(0)" class="project-operate" id="myTD">去抽奖</a>
                         </p>
                     </li>
@@ -149,7 +149,7 @@
                     <a href="#" class="share-icon icon-weibo" data-cmd="tsina"></a>
                     <a href="#" class="share-icon icon-weixin" data-cmd="weixin"></a>
                     <a href="#" class="share-icon icon-zone" data-cmd="qzone"></a>
-                    <span class="share-text">分享可增加一次财豆抽奖机会！</span>
+                    <!-- <span class="share-text">分享可增加一次财豆抽奖机会！</span> -->
                 </p>
             </div>
         </ul>
@@ -201,9 +201,9 @@
             </div>
             <div class="leader-list">
                 <div class="lottery-circle">
-                    <h3 class="td-list">
+                    <h3 class="td-list share-num">
                         <span class="td-total">我的财豆：<strong class="my-cd-bean">${myPoint?c}</strong></span>
-                        <span class="td-tip">每次抽奖将消耗1000财豆，每天限抽一次。</span>
+                        <span class="td-tip">每次抽奖将消耗1000财豆，每天限抽一次。(分享可增加一次财豆抽奖机会！)</span>
                     </h3>
 
                     <div class="circle-shade">
