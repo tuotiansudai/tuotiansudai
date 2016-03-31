@@ -4,12 +4,8 @@
     <div class="banner-box">
         <div class="banner-img-list">
             <a href="/activity/rank-list" target="_blank">
-                <img src="${staticServer}/images/sign/actor/ranklist/rank-list.jpg" alt="排行榜" class="pc-img">
-                <img src="${staticServer}/images/sign/actor/ranklist/rank-list-phone.jpg" alt="排行榜" class="iphone-img">
-            </a>
-            <a href="/announce/188" target="_blank">
-                <img src="${staticServer}/images/sign/actor/top/banner-top.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="pc-img">
-                <img src="${staticServer}/images/app-banner/app-banner-top.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="iphone-img">
+                <img src="${staticServer}/images/sign/actor/ranklist/rank-list.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="pc-img">
+                <img src="${staticServer}/images/sign/actor/ranklist/rank-list-phone.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="iphone-img">
             </a>
             <a href="/activity/birth-month" target="_blank">
                 <img src="${staticServer}/images/sign/actor/birth/birth-month.jpg" alt="生日月投资收益翻倍" class="pc-img">
