@@ -224,10 +224,8 @@ require(['jquery','rotate','layerWrapper', 'jquery.validate', 'jquery.validate.e
 	//share event
 	window._bd_share_config = {
 		"common": {
-			"bdText": "",
-            "bdUrl":"",
-            "bdDesc":"",
-			"bdPic": "",
+			"bdText": "霸道总裁送你钱！车！房！投资拿排名大奖！还能抽奖！百分百中奖哦！",
+			"bdPic": "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2243989410,1640746722&fm=80",
 			onAfterClick:function(cmd){
                 $.ajax({
                     url: '/activity/get-lottery-chance',
