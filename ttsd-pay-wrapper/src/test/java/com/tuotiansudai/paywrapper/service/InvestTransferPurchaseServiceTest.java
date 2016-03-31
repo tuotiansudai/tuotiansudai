@@ -445,7 +445,7 @@ public class InvestTransferPurchaseServiceTest {
     }
 
     private TransferApplicationModel createFakeTransferApplication(InvestModel investModel, int period, long transferAmount, boolean transferInterest, long transferFee) {
-        TransferApplicationModel fakeTransferApplication = new TransferApplicationModel(investModel, "name", period, transferAmount, transferInterest, transferFee, new DateTime().plusDays(1).toDate());
+        TransferApplicationModel fakeTransferApplication = new TransferApplicationModel(investModel, "name", period, transferAmount, transferInterest, transferFee, new DateTime().plusDays(1).toDate(),0);
         transferApplicationMapper.create(fakeTransferApplication);
         return fakeTransferApplication;
     }
