@@ -6,7 +6,13 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ranking.DrawLotteryDto;
 import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
 import com.tuotiansudai.repository.TianDouPrize;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.impl.RankingActivityServiceImpl;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -21,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -33,6 +40,27 @@ public class RankingActivityServiceTest {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private AccountMapper accountMapper;
+
+    private void createUserByUserId(String userId) {
+        UserModel userModelTest = new UserModel();
+        userModelTest.setLoginName(userId);
+        userModelTest.setPassword("123abc");
+        userModelTest.setEmail("12345@abc.com");
+        userModelTest.setMobile("1" + RandomStringUtils.randomNumeric(10));
+        userModelTest.setRegisterTime(new Date());
+        userModelTest.setStatus(UserStatus.ACTIVE);
+        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
+        userMapper.create(userModelTest);
+
+        AccountModel accountModel = new AccountModel(userId, "张三", "1" + RandomStringUtils.randomNumeric(10), "payUserId", "payAccountId", new Date());
+        accountMapper.create(accountModel);
+    }
 
     @Before
     public void init() {
@@ -137,15 +165,16 @@ public class RankingActivityServiceTest {
     public void shouldDrawPrizeSuccessMultiTimes() {
         clearRankingDataInRedis();
 
-        String loginName1 = "shenjiaojiao";
+        String loginName1 = "test111";
         String mobile1 = "13900001111";
 
-        String loginName2 = "sidneygao";
-        String mobile2 = "13900002222";
 
-        String loginName3 = "baoxin";
-        String mobile3 = "13900003333";
+        String loginName2 = "test222";
 
+        String loginName3 = "test333";
+        createUserByUserId("test111");
+        createUserByUserId("test222");
+        createUserByUserId("test333");
         long investAmount = 30000;
         long tianDouScore = investAmount * 3 / 12; // 3月标，7500
         String loanId = "11111111";
