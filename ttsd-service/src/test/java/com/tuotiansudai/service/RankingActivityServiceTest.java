@@ -78,7 +78,7 @@ public class RankingActivityServiceTest {
 
         String loginName = "ranking_test_1";
         String mobile = "13900001111";
-
+        createUserByUserId(loginName);
         BaseDto<DrawLotteryDto> baseDto = rankingActivityService.drawTianDouPrize(loginName, mobile);
 
         assert (baseDto.isSuccess() == false);
@@ -89,9 +89,9 @@ public class RankingActivityServiceTest {
     public void shouldDrawPrizeSuccess() {
         clearRankingDataInRedis();
 
-        String loginName = "shenjiaojiao";
+        String loginName = "rankTest";
         String mobile = "13900001111";
-
+        createUserByUserId(loginName);
         long investAmount = 30000;
         long tianDouScore = investAmount * 3 / 12; // 3月标，7500
         String loanId = "11111111";
