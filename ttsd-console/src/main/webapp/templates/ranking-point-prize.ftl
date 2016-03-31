@@ -16,7 +16,7 @@
             <tr>
                 <td>${pointPrizeWinnerGroup.description!}</td>
                 <td>${pointPrizeWinnerGroup.num?string('0')!}</td>
-                <td><a href="/activity-manage/point-prize-detail?pointPrizeId="+${pointPrizeWinnerGroup.id?string('0')!}>查看详情</a></td>
+                <td><a href="/activity-manage/point-prize-detail?pointPrizeId=${pointPrizeWinnerGroup.id?string('0')!}">查看详情</a></td>
             </tr>
         </#list>
         </tbody>

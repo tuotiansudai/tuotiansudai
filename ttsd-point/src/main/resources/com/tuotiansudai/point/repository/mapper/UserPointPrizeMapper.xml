@@ -51,10 +51,10 @@
         SELECT
           p.`id`,
           p.description,
-          temp.num
+          ifnull(temp.num,0) as num
         FROM
           point_prize p
-          JOIN
+          LEFT JOIN
             (SELECT
               u.`point_prize_id`,
               COUNT(*) AS num

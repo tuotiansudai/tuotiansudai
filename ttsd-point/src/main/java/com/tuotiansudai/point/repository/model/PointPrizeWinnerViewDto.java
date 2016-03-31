@@ -1,9 +1,10 @@
 package com.tuotiansudai.point.repository.model;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class PointPrizeWinnerViewDto {
+public class PointPrizeWinnerViewDto implements Serializable{
 
     private long id;
 
