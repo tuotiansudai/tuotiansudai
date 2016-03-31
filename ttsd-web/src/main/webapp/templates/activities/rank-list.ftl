@@ -314,7 +314,7 @@
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
                 <p><img src="${staticServer}/images/sign/actor/ranklist/20rmb.png" width="50%"></p>
-                <p>拓天客服将会在7个工作日内联系您发放奖品</p>
+                <p>奖金已发放到您的账户！</p>
             </div>
             <div class="btn-list">
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
