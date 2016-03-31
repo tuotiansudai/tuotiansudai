@@ -1,2 +1,2 @@
 insert aa.jpush_alert(name,push_type,push_source,status,content,jump_to,jump_to_link,created_time,created_by,is_automatic)
-value('用户资金变动推送-抽奖现金发放','LOTTERY_OBTAIN_CASH_ALERT','ALL','DISABLED','【拓天速贷】恭喜您参与活动抽奖，抽中了{0}元现金，奖金已发放至您的账户','MY_WEALTH','',now(),'',1);
+value('用户资金变动推送-抽奖现金发放','LOTTERY_OBTAIN_CASH_ALERT','ALL','DISABLED','【拓天速贷】恭喜您参与活动抽奖，抽中了{0}元现金，奖金已发放至您的账户','MY_WEALTH','',now(),null,1);
