@@ -42,7 +42,7 @@ public class TransferApplicationModel {
     public TransferApplicationModel() {
     }
 
-    public TransferApplicationModel(InvestModel transferInvestModel, String name, int period, long transferAmount, boolean transferInterest, long transferFee, Date deadline) {
+    public TransferApplicationModel(InvestModel transferInvestModel, String name, int period, long transferAmount, boolean transferInterest, long transferFee, Date deadline,int transferInterestDays) {
         this.loanId = transferInvestModel.getLoanId();
         this.name = name;
         this.transferInvestId = transferInvestModel.getId();
@@ -55,6 +55,7 @@ public class TransferApplicationModel {
         this.status = TransferStatus.TRANSFERRING;
         this.deadline = deadline;
         this.applicationTime = new Date();
+        this.transferInterestDays = transferInterestDays;
     }
 
     public long getId() {
