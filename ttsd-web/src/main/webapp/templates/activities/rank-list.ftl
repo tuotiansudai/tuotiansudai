@@ -281,7 +281,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/images/sign/actor/ranklist/jdcard.png" width="50%"></p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/jiaxi-two.png" width="50%"></p>
                 <p>拓天客服将会在7个工作日内联系您发放奖品</p>
             </div>
             <div class="btn-list">
@@ -292,7 +292,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/images/sign/actor/ranklist/20rmb.png" width="50%"></p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/jdcard.png" width="50%"></p>
                 <p>拓天客服将会在7个工作日内联系您发放奖品</p>
             </div>
             <div class="btn-list">
@@ -303,7 +303,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/images/sign/actor/ranklist/jiaxi-two.png" width="50%"></p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/20rmb.png" width="50%"></p>
                 <p>拓天客服将会在7个工作日内联系您发放奖品</p>
             </div>
             <div class="btn-list">
