@@ -40,11 +40,11 @@
                     而现在互联网金融正成为理财方式的新宠；</br>
                     国家政策的扶持，行业新规的出台，规模惊人的市场；</br>
                 </p>
-                <img src="/images/sign/actor/daili/one-picture.png" width="50%" class="phone-picture">
+                <img src="${staticServer}/images/sign/actor/daili/one-picture.png" width="50%" class="phone-picture">
                 <p class="text-name">这一切，你准备好了吗？</p>
             </div>
-            <img src="/images/sign/actor/daili/one-picture.png" alt="第一屏图片" width="35%" class="one-picture">
-            <div class="down clearfix"><b class="text-gray">试试鼠标滚动</b><img src="/images/sign/assure/down-gray.png" class="down-icon" alt=""></div>
+            <img src="${staticServer}/images/sign/actor/daili/one-picture.png" alt="第一屏图片" width="35%" class="one-picture">
+            <div class="down clearfix"><b class="text-gray">试试鼠标滚动</b><img src="${staticServer}/images/sign/assure/down-gray.png" class="down-icon" alt=""></div>
         </div>
     </div>
     <div class="section">
@@ -60,7 +60,7 @@
                 <ul class="intro-list">
                     <li>
                         <p class="picture-text">
-                            <img src="/images/sign/actor/daili/name-one.jpg" width="220" height="190" alt="业务支持">
+                            <img src="${staticServer}/images/sign/actor/daili/name-one.jpg" width="220" height="190" alt="业务支持">
                             <span class="hover-text">
                                 拓天 合理调配各方资源，建立加盟商服务团队，实现一对一的业务支持
                             </span>
@@ -69,7 +69,7 @@
                     </li>
                     <li>
                         <p class="picture-text">
-                            <img src="/images/sign/actor/daili/name-two.jpg" width="220" height="190" alt="培训支持">
+                            <img src="${staticServer}/images/sign/actor/daili/name-two.jpg" width="220" height="190" alt="培训支持">
                             <span class="hover-text">
                                 拓天针对自有金融产品的特点，拥有完善的培训体系，不定期对加盟商进行免费培训
                             </span>
@@ -78,7 +78,7 @@
                     </li>
                     <li>
                         <p class="picture-text">
-                            <img src="/images/sign/actor/daili/name-three.jpg" width="220" height="190" alt="品牌推广支持">
+                            <img src="${staticServer}/images/sign/actor/daili/name-three.jpg" width="220" height="190" alt="品牌推广支持">
                             <span class="hover-text">
                                 拓天依托安全、透明、高效的管理平台，进行长期的宣传计划和有效的广告投放，锁定终端客户，提高加盟商业绩
                             </span>
@@ -87,7 +87,7 @@
                     </li>
                     <li>
                         <p class="picture-text">
-                            <img src="/images/sign/actor/daili/name-four.jpg" width="220" height="190" alt="活动支持">
+                            <img src="${staticServer}/images/sign/actor/daili/name-four.jpg" width="220" height="190" alt="活动支持">
                             <span class="hover-text">
                                 拓天会针对加盟商经营状况，不定期开展活动，用福利回馈加盟商
                             </span>
@@ -97,11 +97,11 @@
                 </ul>
                 <p class="last-text">
                     <span class="last-one">除了这些，</br>现在加盟我们还有...</span>
-                    <span class="last-money"><strong>高额分红</br>200万</strong><i class="red-icon"><img src="/images/sign/actor/daili/red-hover.png" width="126" height="72"></i></span>
+                    <span class="last-money"><strong>高额分红</br>200万</strong><i class="red-icon"><img src="${staticServer}/images/sign/actor/daili/red-hover.png" width="126" height="72"></i></span>
                     <span class="phone-text">除了这些，现在加盟我们还有:<strong>高额分红200万.</strong></span>
                 </p>
             </div>
-            <div class="down clearfix"><b>试试鼠标滚动</b><img src="/images/sign/assure/down.png" class="down-icon" alt=""></div>
+            <div class="down clearfix"><b>试试鼠标滚动</b><img src="${staticServer}/images/sign/assure/down.png" class="down-icon" alt=""></div>
         </div>
     </div>
     <div class="section">
@@ -110,17 +110,17 @@
                 <p class="title-text">轻松六步，加盟拓天，共赢未来</p>
                 <p class="phone-title"><span>轻松六步</span><span>加盟拓天，共赢未来</span></p>
                 <p class="title-text">
-                    <img src="/images/sign/actor/daili/three-picture.png" width="65%" alt="">
+                    <img src="${staticServer}/images/sign/actor/daili/three-picture.png" width="65%" alt="">
                 </p>
                 <p class="phone-title phone-pic">
-                    <img src="/images/sign/actor/daili/phone-step.png" width="35%" alt="">
+                    <img src="${staticServer}/images/sign/actor/daili/phone-step.png" width="35%" alt="">
                 </p>
                 <p class="iphone-img">
-                    <img src="/images/sign/actor/daili/iphone4-img.png" width="60%" alt="">
+                    <img src="${staticServer}/images/sign/actor/daili/iphone4-img.png" width="60%" alt="">
                 </p>
                 <p class="tel-text"><span>加盟热线：010-57064596</span></p>
             </div>
-            <div class="down clearfix"><b class="text-gray">试试鼠标滚动</b><img src="/images/sign/assure/up-gray.png" class="down-icon" alt=""></div>
+            <div class="down clearfix"><b class="text-gray">试试鼠标滚动</b><img src="${staticServer}/images/sign/assure/up-gray.png" class="down-icon" alt=""></div>
         </div>
     </div>
 </div>

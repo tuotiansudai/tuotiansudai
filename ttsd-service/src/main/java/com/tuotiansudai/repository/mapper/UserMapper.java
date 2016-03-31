@@ -1,12 +1,9 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.dto.RoleStage;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +16,8 @@ public interface UserMapper {
 
     UserModel findByLoginName(String loginName);
 
+    UserModel lockByLoginName(String loginName);
+
     UserModel findByLoginNameOrMobile(String loginNameOrMobile);
 
     void create(UserModel userModel);
@@ -27,29 +26,6 @@ public interface UserMapper {
 
     List<UserModel> searchAllUsers(@Param(value = "loginName") String loginName, @Param(value = "referrer") String referrer, @Param(value = "mobile") String mobile,
                                    @Param(value = "identityNumber") String identityNumber);
-
-    List<UserModel> findAllUser(@Param(value = "loginName") String loginName,
-                                @Param(value = "email") String email,
-                                @Param(value = "mobile") String mobile,
-                                @Param(value = "beginTime") Date beginTime,
-                                @Param(value = "endTime") Date endTime,
-                                @Param(value = "source") Source source,
-                                @Param(value = "roleStage") RoleStage roleStage,
-                                @Param(value = "referrer") String referrer,
-                                @Param(value = "channel") String channel,
-                                @Param(value = "index") Integer index,
-                                @Param(value = "pageSize") Integer pageSize);
-
-    int findAllUserCount(@Param(value = "loginName") String loginName,
-                         @Param(value = "email") String email,
-                         @Param(value = "mobile") String mobile,
-                         @Param(value = "beginTime") Date beginTime,
-                         @Param(value = "endTime") Date endTime,
-                         @Param(value = "source") Source source,
-                         @Param(value = "roleStage") RoleStage roleStage,
-                         @Param(value = "referrer") String referrer,
-                         @Param(value = "channel") String channel);
-
 
     void updatePasswordByLoginName(@Param(value = "loginName") String loginName, @Param(value = "password") String password);
 

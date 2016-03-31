@@ -19,7 +19,7 @@
                 <#else >
                     <li class="fl sign-top"><span class="btn-sign will-sign" data-url="/point/sign-in" id="signBtn">签到</span></li>
                 </#if>
-                <li class="fl beans-number">可用财豆:${myPoint!}</li>
+                <li class="fl beans-number">可用财豆:<span id="MyAvailablePoint">${myPoint?string.computer}</span></li>
                 <li class="fr"><a class="btn-normal" href="/recharge">充值</a></li>
                 <li class="fr"><a class="btn-primary" href="/withdraw">提现</a></li>
             </ul>
@@ -110,7 +110,7 @@
                         <td>${(((successSumInvestRepay.loan.activityRate+successSumInvestRepay.loan.baseRate)*100)?string('0.00'))!}%</td>
                         <td>${(successSumInvestRepay.loan.periods?string('0'))!}<#if successSumInvestRepay.loan.type == 'INVEST_INTEREST_MONTHLY_REPAY' || successSumInvestRepay.loan.type == 'LOAN_INTEREST_MONTHLY_REPAY'>个月<#else>天</#if></td>
                         <td>第${(successSumInvestRepay.period?string('0'))!}期/${(successSumInvestRepay.loan.periods?string('0'))!}期</td>
-                        <td>${(((successSumInvestRepay.corpus+successSumInvestRepay.defaultInterest+successSumInvestRepay.actualInterest-successSumInvestRepay.actualFee)/100)?string('0.00'))!}</td>
+                        <td>${successSumInvestRepay.actualAmount!}</td>
                         <td>${(successSumInvestRepay.actualRepayDate?string('MM月dd日'))!}</td>
                     </tr>
                     </#list>
@@ -146,8 +146,7 @@
                         <td>${(((notSuccessSumInvestRepay.loan.activityRate+notSuccessSumInvestRepay.loan.baseRate)*100)?string('0.00'))!}%</td>
                         <td>${(notSuccessSumInvestRepay.loan.periods?string('0'))!}<#if notSuccessSumInvestRepay.loan.type == 'INVEST_INTEREST_MONTHLY_REPAY' || notSuccessSumInvestRepay.loan.type == 'LOAN_INTEREST_MONTHLY_REPAY'>个月<#else>天</#if></td>
                         <td>第${(notSuccessSumInvestRepay.period?string('0'))!}期/${(notSuccessSumInvestRepay.loan.periods?string('0'))!}期</td>
-                        <td>${(((notSuccessSumInvestRepay.corpus+notSuccessSumInvestRepay.defaultInterest+notSuccessSumInvestRepay.expectedInterest-notSuccessSumInvestRepay.expectedFee)/100)?string('0.00'))!}
-
+                        <td>${notSuccessSumInvestRepay.amount!}
                         </td>
                         <td>${(notSuccessSumInvestRepay.repayDate?string('MM月dd日'))!}</td>
                     </tr>

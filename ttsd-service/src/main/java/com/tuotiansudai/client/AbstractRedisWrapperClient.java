@@ -1,7 +1,9 @@
 package com.tuotiansudai.client;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -9,9 +11,10 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.jedis.exceptions.JedisException;
 
+@Component
 public abstract class AbstractRedisWrapperClient {
 
-    static Logger logger = Logger.getLogger(AbstractRedisWrapperClient.class);
+    private static Logger logger = Logger.getLogger(AbstractRedisWrapperClient.class);
 
     @Value("${common.redis.host}")
     private String redisHost;
@@ -22,12 +25,14 @@ public abstract class AbstractRedisWrapperClient {
     @Value("${common.redis.password}")
     private String redisPassword;
 
+    @Autowired
+    private JedisPoolConfig jedisPoolConfig;
+
     private static JedisPool jedisPool;
 
     protected JedisPool getJedisPool() {
         if (jedisPool == null) {
-            JedisPoolConfig config = new JedisPoolConfig();
-            jedisPool = new JedisPool(config, redisHost, redisPort);
+            jedisPool = new JedisPool(jedisPoolConfig, redisHost, redisPort);
         }
         return jedisPool;
     }

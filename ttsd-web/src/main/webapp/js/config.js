@@ -1,4 +1,5 @@
 var require = {
+    'baseUrl': staticServer,
     'paths': {
         'text': staticServer + '/js/libs/text-2.0.14',
         'jquery': staticServer + '/js/libs/jquery-1.11.3.min',
@@ -45,6 +46,14 @@ var require = {
         'load-swiper':['swiper'],
         'drag':['jquery'],
         'rotate':['jquery']
+    },
+
+    config: {
+        text: {
+            useXhr: function (url, protocol, hostname, port) {
+                return true;
+            }
+        }
     }
 };
 
