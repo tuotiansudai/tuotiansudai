@@ -29,7 +29,7 @@
                 <ul>
                     <li>
                         <p>
-                            <span class="project-name">我的天豆：<strong class="my-td-bean">${myTianDou?string('0')!}</strong></span>
+                            <span class="project-name">我的天豆：<strong class="my-td-bean">${myTianDou?c}</strong></span>
                             <a href="javascript:void(0)" class="project-operate" id="myTD">去抽奖</a>
                         </p>
                     </li>

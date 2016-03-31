@@ -60,7 +60,7 @@ public class RankingActivityController {
         modelAndView.addObject("myPoint", accountModel == null ? 0 : accountModel.getPoint());
 
         modelAndView.addObject("myPrizeList", myPrizeList);
-        modelAndView.addObject("myTianDou", myTianDou);
+        modelAndView.addObject("myTianDou", myTianDou == null ? 0 : myTianDou.longValue());
         modelAndView.addObject("totalInvest", totalInvest);
 
         modelAndView.addObject("responsive", true);
