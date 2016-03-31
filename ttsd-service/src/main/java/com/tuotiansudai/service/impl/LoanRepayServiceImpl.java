@@ -136,12 +136,17 @@ public class LoanRepayServiceImpl implements LoanRepayService {
             }
         }
 
-        for (Map.Entry entry : notifyMap.entrySet()) {
-            logger.info("sent loan repay notify sms message to " + entry.getKey() + ", money:" + entry.getValue());
-            LoanRepayNotifyDto dto = new LoanRepayNotifyDto();
-            dto.setMobile(((String) entry.getKey()).trim());
-            dto.setRepayAmount(AmountConverter.convertCentToString((Long) entry.getValue()));
-            smsWrapperClient.sendLoanRepayNotify(dto);
+        if (loanRepayNotifyModelList.size() > 0) {
+            for (Map.Entry entry : notifyMap.entrySet()) {
+                long amount = (Long) entry.getValue();
+                if (amount > 0) {
+                    logger.info("sent loan repay notify sms message to " + entry.getKey() + ", money:" + entry.getValue());
+                    LoanRepayNotifyDto dto = new LoanRepayNotifyDto();
+                    dto.setMobile(((String) entry.getKey()).trim());
+                    dto.setRepayAmount(AmountConverter.convertCentToString(amount));
+                    smsWrapperClient.sendLoanRepayNotify(dto);
+                }
+            }
         }
     }
 
