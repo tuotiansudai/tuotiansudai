@@ -1,53 +1,37 @@
 package com.tuotiansudai.api.dto;
 
-import com.tuotiansudai.transfer.dto.TransferApplicationDto;
-import com.tuotiansudai.util.AmountConverter;
-import org.hibernate.validator.constraints.NotEmpty;
+import com.tuotiansudai.repository.model.TransferStatus;
 
-import javax.validation.constraints.Pattern;
+import java.util.List;
 
-public class TransferApplicationRequestDto extends BaseParamDto{
+public class TransferApplicationRequestDto extends BaseParamDto {
 
-    @NotEmpty(message = "0023")
-    @Pattern(regexp = "^\\d+$",message = "0023")
-    private String transferInvestId;
-    @NotEmpty(message = "0023")
-    private String transferAmount;
+    private Integer index;
+    private Integer pageSize;
+    private List<TransferStatus> transferStatus;
 
-    private Boolean transferInterest;
-
-    public TransferApplicationRequestDto() {
+    public Integer  getIndex() {
+        return index;
     }
 
-    public String getTransferInvestId() {
-        return transferInvestId;
+    public void setIndex(Integer index) {
+        this.index = index;
     }
 
-    public void setTransferInvestId(String transferInvestId) {
-        this.transferInvestId = transferInvestId;
+    public Integer getPageSize() {
+        return pageSize;
     }
 
-    public String getTransferAmount() {
-        return transferAmount;
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 
-    public void setTransferAmount(String transferAmount) {
-        this.transferAmount = transferAmount;
+    public List<TransferStatus> getTransferStatus() {
+        return transferStatus;
     }
 
-    public Boolean isTransferInterest() {
-        return transferInterest;
-    }
-
-    public void setTransferInterest(Boolean transferInterest) {
-        this.transferInterest = transferInterest;
-    }
-
-    public TransferApplicationDto convertToTransferApplicationDto(){
-        TransferApplicationDto transferApplicationDto = new TransferApplicationDto();
-        transferApplicationDto.setTransferInvestId(Long.parseLong(this.transferInvestId));
-        transferApplicationDto.setTransferInterest(this.transferInterest == null?false:this.transferInterest);
-        transferApplicationDto.setTransferAmount(AmountConverter.convertStringToCent(this.transferAmount));
-        return transferApplicationDto;
+    public void setTransferStatus(List<TransferStatus> transferStatus) {
+        this.transferStatus = transferStatus;
     }
 }
+

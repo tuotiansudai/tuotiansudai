@@ -2,15 +2,16 @@ package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.impl.MobileAppTransferApplyQueryServiceImpl;
+import com.tuotiansudai.api.service.impl.MobileAppTransferApplicationServiceImpl;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.transfer.dto.TransferApplicationDto;
+import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.IdGenerator;
@@ -26,16 +27,18 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.*;
 import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
-public class MobileAppTransferApplyQueryServiceTest extends ServiceTestBase{
+
+public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
     @InjectMocks
-    private MobileAppTransferApplyQueryServiceImpl mobileAppTransferApplyQueryService;
+    private MobileAppTransferApplicationServiceImpl mobileAppTransferApplicationService;
+    @Mock
+    private TransferApplicationMapper transferApplicationMapper;
     @Mock
     private InvestTransferService investTransferService;
     @Mock
@@ -49,6 +52,57 @@ public class MobileAppTransferApplyQueryServiceTest extends ServiceTestBase{
     @Mock
     private TransferRuleMapper transferRuleMapper;
 
+    @Test
+    public void shouldGenerateTransferApplicationIsSuccess() {
+        TransferApplicationRecordDto transferApplicationRecordDto = createTransferApplicationRecordDto();
+        TransferApplicationRequestDto transferApplicationRequestDto = new TransferApplicationRequestDto();
+        BaseParam baseParam = new BaseParam();
+        baseParam.setUserId("test");
+        transferApplicationRequestDto.setBaseParam(baseParam);
+        transferApplicationRequestDto.setPageSize(10);
+        transferApplicationRequestDto.setIndex(1);
+        transferApplicationRequestDto.setTransferStatus(Lists.newArrayList(TransferStatus.TRANSFERRING));
+        List<TransferApplicationRecordDto> transferApplicationRecordDtos = Lists.newArrayList(transferApplicationRecordDto);
+
+        when(transferApplicationMapper.findTransferApplicationPaginationByLoginName(anyString(), any(List.class), anyInt(), anyInt())).thenReturn(transferApplicationRecordDtos);
+        when(transferApplicationMapper.findCountTransferApplicationPaginationByLoginName(anyString(), any(List.class))).thenReturn(1);
+
+        BaseResponseDto<TransferApplicationResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.generateTransferApplication(transferApplicationRequestDto);
+        assertEquals(TransferStatus.TRANSFERRING, baseResponseDto.getData().getTransferApplication().get(0).getTransferStatus());
+        assertEquals("17", baseResponseDto.getData().getTransferApplication().get(0).getActivityRate());
+        assertEquals("16", baseResponseDto.getData().getTransferApplication().get(0).getBaseRate());
+        assertEquals("name", baseResponseDto.getData().getTransferApplication().get(0).getName());
+        assertEquals("10.00", baseResponseDto.getData().getTransferApplication().get(0).getTransferAmount());
+        assertEquals("12.00", baseResponseDto.getData().getTransferApplication().get(0).getInvestAmount());
+        assertEquals("2016-02-09 00:00:00", baseResponseDto.getData().getTransferApplication().get(0).getTransferTime());
+        assertEquals("25", baseResponseDto.getData().getTransferApplication().get(0).getTransferInterestDays());
+
+    }
+
+    private TransferApplicationRecordDto createTransferApplicationRecordDto() {
+        TransferApplicationRecordDto transferApplicationRecordDto = new TransferApplicationRecordDto();
+        transferApplicationRecordDto.setName("name");
+        transferApplicationRecordDto.setTransferAmount(1000);
+        transferApplicationRecordDto.setInvestAmount(1200);
+        transferApplicationRecordDto.setTransferTime(new DateTime("2016-02-09").toDate());
+        transferApplicationRecordDto.setBaseRate(0.16);
+        transferApplicationRecordDto.setActivityRate(0.17);
+        transferApplicationRecordDto.setTransferInterestDays(25);
+        transferApplicationRecordDto.setTransferStatus(TransferStatus.TRANSFERRING);
+        return transferApplicationRecordDto;
+
+    }
+
+    @Test
+    public void shouldTransferApplyIsSuccess() throws Exception {
+        doNothing().when(investTransferService).investTransferApply(any(TransferApplicationDto.class));
+        TransferApplyRequestDto transferApplyRequestDto = new TransferApplyRequestDto();
+        transferApplyRequestDto.setTransferInvestId("123");
+        transferApplyRequestDto.setTransferAmount("1.00");
+        transferApplyRequestDto.setTransferInterest(true);
+        BaseResponseDto baseResponseDto = mobileAppTransferApplicationService.transferApply(transferApplyRequestDto);
+        assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
+    }
 
     @Test
     public void shouldTransferApplyQueryIsSuccess() {
@@ -86,19 +140,21 @@ public class MobileAppTransferApplyQueryServiceTest extends ServiceTestBase{
         baseParam.setUserId(userModel.getLoginName());
         transferApplyQueryRequestDto.setBaseParam(baseParam);
         transferApplyQueryRequestDto.setInvestId(String.valueOf(investModel.getId()));
-        BaseResponseDto<TransferApplyQueryResponseDataDto> baseResponseDto = mobileAppTransferApplyQueryService.transferApplyQuery(transferApplyQueryRequestDto);
-        assertEquals("100.00",baseResponseDto.getData().getInvestAmount());
-        assertEquals("10",baseResponseDto.getData().getTransferInterestDays());
-        assertEquals("0.76",baseResponseDto.getData().getTransferInterest());
-        assertEquals("1.00",baseResponseDto.getData().getTransferFee());
+        BaseResponseDto<TransferApplyQueryResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.transferApplyQuery(transferApplyQueryRequestDto);
+        assertEquals("100.00", baseResponseDto.getData().getInvestAmount());
+        assertEquals("10", baseResponseDto.getData().getTransferInterestDays());
+        assertEquals("0.76", baseResponseDto.getData().getTransferInterest());
+        assertEquals("1.00", baseResponseDto.getData().getTransferFee());
 
     }
+
     private InvestModel createInvest(String loginName, long loanId) {
         InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 10000, loginName, Source.WEB, null);
         model.setCreatedTime(new Date());
-        model.setStatus(InvestStatus.SUCCESS);
+        model.setStatus(com.tuotiansudai.repository.model.InvestStatus.SUCCESS);
         return model;
     }
+
     private UserModel createUserByUserId(String userId) {
         UserModel userModelTest = new UserModel();
         userModelTest.setLoginName(userId);
@@ -110,6 +166,7 @@ public class MobileAppTransferApplyQueryServiceTest extends ServiceTestBase{
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         return userModelTest;
     }
+
     private LoanRepayModel getFakeLoanRepayModel(LoanModel fakeLoanModel,
                                                  int period,
                                                  RepayStatus repayStatus,
@@ -133,6 +190,7 @@ public class MobileAppTransferApplyQueryServiceTest extends ServiceTestBase{
         fakeLoanRepayModel.setDefaultInterest(defaultInterest);
         return fakeLoanRepayModel;
     }
+
     private LoanModel createLoanByUserId(String userId, long loanId) {
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName(userId);
@@ -158,13 +216,11 @@ public class MobileAppTransferApplyQueryServiceTest extends ServiceTestBase{
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
-        loanDto.setLoanStatus(LoanStatus.REPAYING);
+        loanDto.setLoanStatus(com.tuotiansudai.repository.model.LoanStatus.REPAYING);
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setRecheckTime(new Date());
         loanMapper.create(loanModel);
         return loanModel;
     }
-
-
 
 }

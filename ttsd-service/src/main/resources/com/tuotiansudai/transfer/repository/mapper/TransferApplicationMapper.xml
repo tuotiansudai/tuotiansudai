@@ -16,6 +16,7 @@
         <result column="login_name" property="loginName"></result>
         <result column="invest_amount" property="investAmount"></result>
         <result column="transfer_amount" property="transferAmount"></result>
+        <result column="transfer_interest_days" property="transferInterestDays"></result>
         <result column="transfer_interest" property="transferInterest"></result>
         <result column="transfer_fee" property="transferFee"></result>
         <result column="status" property="status"></result>
@@ -24,9 +25,21 @@
         <result column="application_time" property="applicationTime"></result>
     </resultMap>
 
+    <resultMap id="transferApplicationRecordDtoMap" type="TransferApplicationRecordDto">
+        <result column="id" property="transferApplicationId"></result>
+        <result column="name" property="name"></result>
+        <result column="transfer_amount" property="transferAmount"></result>
+        <result column="transfer_interest_days" property="transferInterestDays"></result>
+        <result column="invest_amount" property="investAmount"></result>
+        <result column="transfer_time" property="transferTime"></result>
+        <result column="base_rate" property="baseRate"></result>
+        <result column="activity_rate" property="activityRate"></result>
+        <result column="status" property="transferStatus"></result>
+    </resultMap>
+
     <insert id="create" parameterType="TransferApplicationModel" useGeneratedKeys="true" keyProperty="id">
-        insert into transfer_application (name, loan_id, transfer_invest_id, invest_id, period, login_name, invest_amount, transfer_amount, transfer_interest, transfer_fee, status, deadline, transfer_time, application_time)
-        value (#{name}, #{loanId}, #{transferInvestId}, #{investId}, #{period}, #{loginName}, #{investAmount}, #{transferAmount}, #{transferInterest}, #{transferFee}, #{status}, #{deadline}, #{transferTime}, #{applicationTime})
+        insert into transfer_application (name, loan_id, transfer_invest_id, invest_id, period, login_name, invest_amount, transfer_amount,transfer_interest_days, transfer_interest, transfer_fee, status, deadline, transfer_time, application_time)
+        value (#{name}, #{loanId}, #{transferInvestId}, #{investId}, #{period}, #{loginName}, #{investAmount}, #{transferAmount},#{transferInterestDays},#{transferInterest}, #{transferFee}, #{status}, #{deadline}, #{transferTime}, #{applicationTime})
     </insert>
 
     <select id="findByTransferInvestId" parameterType="map" resultMap="transferApplicationResultMap">
@@ -45,6 +58,42 @@
         </where>
     </select>
 
+    <select id="findTransferApplicationPaginationByLoginName" parameterType="map" resultMap="transferApplicationRecordDtoMap">
+        select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.transfer_interest_days,ta.status,l.base_rate,l.activity_rate from transfer_application ta JOIN loan l on ta.loan_id = l.id
+        <where>
+            <if test="loginName != null">
+                ta.login_name = #{loginName}
+            </if>
+            <if test="transferStatusList != null and transferStatusList.size != 0">
+                and ta.status in
+                <foreach item="item" index="index" collection="transferStatusList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+        </where>
+        order by case ta.status when 'TRANSFERRING' then '1' when 'SUCCESS' then '2' when 'CANCEL' then '3' else '4' end,ta.application_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountTransferApplicationPaginationByLoginName" parameterType="map" resultType="int">
+        select count(1) from transfer_application ta JOIN loan l on ta.loan_id = l.id
+        <where>
+            <if test="loginName != null">
+                ta.login_name = #{loginName}
+            </if>
+            <if test="transferStatusList != null and transferStatusList.size != 0">
+                and ta.status in
+                <foreach item="item" index="index" collection="transferStatusList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+        </where>
+    </select>
+
+
+
     <select id="findByInvestId" parameterType="long" resultMap="transferApplicationResultMap">
         select * from transfer_application where invest_id = #{investId} and status = 'SUCCESS'
     </select>
@@ -58,6 +107,7 @@
         period = #{period},
         login_name = #{loginName},
         invest_amount = #{investAmount},
+        transfer_interest_days = #{transferInterestDays},
         transfer_amount = #{transferAmount},
         transfer_interest = #{transferInterest},
         transfer_fee = #{transferFee},
