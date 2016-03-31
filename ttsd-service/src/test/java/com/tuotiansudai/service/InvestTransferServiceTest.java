@@ -145,7 +145,7 @@ public class InvestTransferServiceTest {
         UserModel userModel = createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId("testuser", loanId);
         InvestModel investModel = createInvest("testuser", loanId);
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR20151010-001", 2, 1, false, 1, new Date());
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR20151010-001", 2, 1, false, 1, new Date(),0);
         transferApplicationMapper.create(transferApplicationModel);
 
         assertTrue(investTransferService.cancelTransferApplication(transferApplicationModel.getId()));
@@ -159,7 +159,7 @@ public class InvestTransferServiceTest {
         UserModel userModel = createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId("testuser", loanId);
         InvestModel investModel = createInvest("testuser", loanId);
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR20151010-001", 2, 1, false, 1, new Date());
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR20151010-001", 2, 1, false, 1, new Date(),0);
         transferApplicationModel.setStatus(TransferStatus.SUCCESS);
         transferApplicationMapper.create(transferApplicationModel);
 
