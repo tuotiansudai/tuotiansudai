@@ -6,8 +6,12 @@ public enum PushType {
     LOAN_ALERT("AUTO","放款提醒"),
     NO_INVEST_ALERT("AUTO","投资提醒"),
 
-
-    LOTTERY_OBTAIN_CASH_ALERT("AUTO","抽签获取现金"),
+    REPAY_ALERT("AUTO","还款提醒"),
+    RECHARGE_ALERT("AUTO","充值提醒"),
+    WITHDRAW_APPLY_SUCCESS_ALERT("AUTO","申请提现成功提醒"),
+    WITHDRAW_SUCCESS_ALERT("AUTO","提现成功提醒"),
+    REFERRER_REWARD_ALERT("AUTO","推荐人奖励提醒"),
+    LOTTERY_OBTAIN_CASH_ALERT("AUTO","抽奖获取现金提醒"),
 
     PREHEAT("MANUAL","预热标的"),
     PRESENT_SEND("MANUAL","礼品派送"),

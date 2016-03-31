@@ -78,7 +78,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
     @Autowired
     private AccountMapper accountMapper;
 
-    public static String redisShareTemple = "web:{0}{1}:share";
+    public static String redisShareTemple = "web:ranking:shared:{0}:{1}";
 
     @Override
     public void imitateLottery() {
@@ -87,14 +87,15 @@ public class PointLotteryServiceImpl implements PointLotteryService{
             loginName = this.imitateLoginName();
         } while (userMapper.findByLoginName(loginName) != null);
         long notRealNum = userPointPrizeMapper.findAllNotReal();
-        List<PointPrizeModel> pointPrizeModels;
+        UserPointPrizeModel userPointPrizeModel;
         if (notRealNum % 10 != 0) {
-            pointPrizeModels = pointPrizeMapper.findAllPossibleWin();
+            PointPrizeModel pointPrizeModel = this.winLottery();
+            userPointPrizeModel = new UserPointPrizeModel(pointPrizeModel.getId(), loginName, false);
         } else {
-            pointPrizeModels = pointPrizeMapper.findAllUnPossibleWin();
+            List<PointPrizeModel> pointPrizeModels = pointPrizeMapper.findAllUnPossibleWin();
+            int num = new Random().nextInt(pointPrizeModels.size());
+            userPointPrizeModel = new UserPointPrizeModel(pointPrizeModels.get(num).getId(), loginName, false);
         }
-        int num = new Random().nextInt(pointPrizeModels.size());
-        UserPointPrizeModel userPointPrizeModel = new UserPointPrizeModel(pointPrizeModels.get(num).getId(), loginName, false);
         userPointPrizeMapper.create(userPointPrizeModel);
     }
 
@@ -120,7 +121,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
         DateTime dateTime = new DateTime();
         List<UserPointPrizeModel> userPointPrizeModelToday = userPointPrizeMapper.findByLoginNameAndCreateTime(loginName, dateTime.toString("yyyy-MM-dd"));
         if (CollectionUtils.isEmpty(userPointPrizeModelToday) ||
-                (redisWrapperClient.exists(MessageFormat.format(redisShareTemple, loginName, dateTime.toString("yyyy-MM-dd"))) && userPointPrizeModelToday.size() < 2)) {
+                (redisWrapperClient.exists(MessageFormat.format(redisShareTemple, loginName, dateTime.toString("yyyyMMdd"))) && userPointPrizeModelToday.size() < 2)) {
             PointPrizeModel winPointPrize = this.winLottery();
             UserPointPrizeModel userPointPrizeModel = new UserPointPrizeModel(winPointPrize.getId(), loginName, true);
             userPointPrizeMapper.create(userPointPrizeModel);
@@ -138,7 +139,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
             }
 
             return winPointPrize.getName();
-        } else if (userPointPrizeModelToday.size() == 1 && !redisWrapperClient.exists(MessageFormat.format(redisShareTemple, loginName, dateTime.toString("yyyy-MM-dd")))){
+        } else if (userPointPrizeModelToday.size() == 1 && !redisWrapperClient.exists(MessageFormat.format(redisShareTemple, loginName, dateTime.toString("yyyyMMdd")))){
             return ALREADY_LOTTERY_NOT_SHARE;
         } else {
             return ALREADY_LOTTERY_SHARE;
@@ -196,7 +197,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
         return Lists.transform(userPointPrizeModels, new Function<UserPointPrizeModel, UserPointPrizeDto>() {
             @Override
             public UserPointPrizeDto apply(UserPointPrizeModel input) {
-                UserPointPrizeDto userPointPrizeDto = new UserPointPrizeDto(input.getLoginName(), pointPrizeMapper.findById(input.getPointPrizeId()).getName(), input.getCreatedTime());
+                UserPointPrizeDto userPointPrizeDto = new UserPointPrizeDto(input.getLoginName(), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime());
                 return userPointPrizeDto;
             }
         });
@@ -208,7 +209,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
         return Lists.transform(userPointPrizeModels, new Function<UserPointPrizeModel, UserPointPrizeDto>() {
             @Override
             public UserPointPrizeDto apply(UserPointPrizeModel input) {
-                UserPointPrizeDto userPointPrizeDto = new UserPointPrizeDto(input.getLoginName(), pointPrizeMapper.findById(input.getPointPrizeId()).getName(), input.getCreatedTime());
+                UserPointPrizeDto userPointPrizeDto = new UserPointPrizeDto(input.getLoginName(), pointPrizeMapper.findById(input.getPointPrizeId()).getDescription(), input.getCreatedTime());
                 return userPointPrizeDto;
             }
         });

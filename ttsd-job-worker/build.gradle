@@ -1,3 +1,5 @@
+import java.text.MessageFormat
+
 apply plugin: 'java'
 
 
@@ -8,15 +10,14 @@ dependencies {
 
 startScripts {
     def default_jmx_port = 2911;
-    if (project.hasProperty('rop')) {
-        if("invest".equals(rop)){
+    if (project.hasProperty('work')) {
+        if ("invest".equals(work)) {
             default_jmx_port = 2912;
         }
-        if("jpush".equals(rop)){
+        if ("jpush".equals(work)) {
             default_jmx_port = 2913;
         }
     }
-    classpath = files('conf') + classpath
     defaultJvmOpts = [
             "-Dcom.sun.management.jmxremote=true",
             "-Dcom.sun.management.jmxremote.port=" + default_jmx_port,
@@ -26,23 +27,47 @@ startScripts {
     ];
 
 }
+processResources.outputs.upToDateWhen{ false }
+processResources {
+
+    def defaultProperties = 'all'
+    if (project.hasProperty('work')) {
+        defaultProperties = work;
+    }
+    String params = 'all,jpush,invest';
+
+    if(params.indexOf(defaultProperties) < 0){
+        throw new GradleException("param is error,only all,jpush,invest")
+    }
+
+    def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
+    from("${innerConfigPath}/log4j.properties") {
+        filter { String line ->
+            if (line.startsWith("log4j.appender.D.File=")) {
+                return "log4j.appender.D.File=/var/log/job-worker/${defaultProperties}-debug.log"
+            }
+            if (line.startsWith("log4j.appender.I.File=")) {
+                return "log4j.appender.I.File=/var/log/job-worker/${defaultProperties}-info.log"
+            }
+            if (line.startsWith("log4j.appender.E.File=")) {
+                return "log4j.appender.E.File=/var/log/job-worker/${defaultProperties}-error.log"
+            }
+            line
+        }
+        into '/'
+    }
+    from("${innerConfigPath}/job-worker.properties.deploy/job-worker-${defaultProperties}.properties") {
+        into '/'
+        rename "job-worker-${defaultProperties}.properties", 'job-worker.properties'
+    }
+}
 
 distZip {
     def defaultProperties = 'all'
-    if (project.hasProperty('rop')) {
-        defaultProperties = rop;
+    if (project.hasProperty('work')) {
+        defaultProperties = work;
     }
-
     archiveName baseName + '-' + defaultProperties + '.zip'
-
-    applicationDistribution.from("src/main/resources/") {
-        into 'lib/conf'
-        exclude 'mybatis-configuration.xml', 'job-worker.properties', 'job-worker.properties.deploy'
-    }
-    applicationDistribution.from("src/main/resources/job-worker.properties.deploy/job-worker-${defaultProperties}.properties") {
-        into 'lib/conf'
-        rename "job-worker-${defaultProperties}.properties", 'job-worker.properties'
-    }
 }
 
 

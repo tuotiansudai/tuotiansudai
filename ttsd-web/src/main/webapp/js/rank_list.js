@@ -7,7 +7,8 @@ require(['jquery','rotate','layerWrapper', 'jquery.validate', 'jquery.validate.e
 		$pointerCd=$('#pointerCd'),
 		$rotateTd=$('#rotateTd'),
 		$rotateCd=$('#rotateCd'),
-		$giftRecord=$('.gift-record li');
+		$tdgiftRecord=$('#tdChangeBtn li'),
+        $cdgiftRecord=$('#cdChangeBtn li');
 
     $('#linePro').height(Math.round($('#linePro').attr('data-totalInvest'))/1000000/21000*600);
 	//change rank list
@@ -29,13 +30,21 @@ require(['jquery','rotate','layerWrapper', 'jquery.validate', 'jquery.validate.e
 	});
 
 	//change award record btn
-	$giftRecord.on('click', function(event) {
+	$tdgiftRecord.on('click', function(event) {
 		var $self=$(this),
 			index=$self.index();
 		$self.addClass('active').siblings('li').removeClass('active');
 		$('#recordList').find('.record-model:eq('+index+')').addClass('active')
 			.siblings('.record-model').removeClass('active');
 	});
+    //change award record btn
+    $cdgiftRecord.on('click', function(event) {
+        var $self=$(this),
+            index=$self.index();
+        $self.addClass('active').siblings('li').removeClass('active');
+        $('#beanList').find('.record-model:eq('+index+')').addClass('active')
+            .siblings('.record-model').removeClass('active');
+    });
 	//td click
 	$pointerTd.on('click', function(event) {
 		event.preventDefault();
@@ -215,24 +224,20 @@ require(['jquery','rotate','layerWrapper', 'jquery.validate', 'jquery.validate.e
 	//share event
 	window._bd_share_config = {
 		"common": {
-			"bdSnsKey": {},
-			"bdText": "",
-			"bdMini": "2",
-			"bdPic": "",
-			"bdStyle": "0",
-			"bdSize": "16",
+			"bdText": "霸道总裁送你钱！车！房！投资拿排名大奖！还能抽奖！百分百中奖哦！",
+			"bdPic": "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2243989410,1640746722&fm=80",
 			onAfterClick:function(cmd){
                 $.ajax({
-                        url: '/activity/get-lottery-chance',
-                        type: 'POST',
-                        dataType: 'json'
-                    })
-                    .done(function(data) {
-                        console.log("分享成功,增加一次抽奖机会成功");
-                    })
-                    .fail(function(data) {
-                        console.log("请求失败");
-                    });
+                    url: '/activity/get-lottery-chance',
+                    type: 'POST',
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    layer.msg("分享成功,增加一次抽奖机会成功");
+                })
+                .fail(function(data) {
+                    layer.msg("请求失败");
+                });
 			}
 		},
 		"share": {}

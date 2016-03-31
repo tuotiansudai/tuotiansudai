@@ -25,8 +25,6 @@ import com.tuotiansudai.jpush.repository.model.*;
 import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AuditLogUtil;
@@ -69,13 +67,23 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private InvestMapper investMapper;
 
     @Autowired
+    private RechargeMapper rechargeMapper;
+
+    @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private InvestReferrerRewardMapper investReferrerRewardMapper;
+
+    @Autowired
+    private WithdrawMapper withdrawMapper;
 
     @Autowired
     private JobManager jobManager;
 
     @Autowired
     AuditLogUtil auditLogUtil;
+
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     @Value("${web.server}")
@@ -460,6 +468,111 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             }
         }
     }
+
+    @Override
+    public void autoJPushRepayAlert(long loanId){
+        List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.REPAY_ALERT);
+        if (jPushAlertModel != null) {
+            if (CollectionUtils.isEmpty(notifyInfos)) {
+                logger.debug("repay notifyInfos without data");
+                return;
+            }
+            Map<String, List<String>> loginNameMap = Maps.newHashMap();
+
+            for (InvestNotifyInfo notifyInfo : notifyInfos) {
+                List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(notifyInfo.getAmount()));
+                loginNameMap.put(notifyInfo.getLoginName(), amountLists);
+                autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+                loginNameMap.clear();
+            }
+        } else {
+            logger.debug("REPAY_ALERT is disabled");
+        }
+
+    }
+
+    @Override
+    public void autoJPushRechargeAlert(long orderId){
+        RechargeModel rechargeModel = rechargeMapper.findById(orderId);
+        long totalAmount = accountMapper.findByLoginName(rechargeModel.getLoginName()).getBalance();
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.RECHARGE_ALERT);
+        if (jPushAlertModel != null) {
+            Map<String, List<String>> loginNameMap = Maps.newHashMap();
+
+            List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(rechargeModel.getAmount()),AmountConverter.convertCentToString(totalAmount));
+            loginNameMap.put(rechargeModel.getLoginName(), amountLists);
+            autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+            loginNameMap.clear();
+
+        } else {
+            logger.debug("RECHARGE_ALERT is disabled");
+        }
+    }
+
+    @Override
+    public void autoJPushWithDrawApplyAlert(long orderId){
+        WithdrawModel withdrawModel = withdrawMapper.findById(orderId);
+        if (withdrawModel == null) {
+            logger.error(MessageFormat.format("Withdraw apply callback order is not exist (orderId = {0})", orderId));
+            return;
+        }
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.WITHDRAW_APPLY_SUCCESS_ALERT);
+        if (jPushAlertModel != null) {
+            Map<String, List<String>> loginNameMap = Maps.newHashMap();
+            List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(withdrawModel.getAmount()));
+            loginNameMap.put(withdrawModel.getLoginName(), amountLists);
+            autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+            loginNameMap.clear();
+
+        } else {
+            logger.debug("WITHDRAW_APPLY_SUCCESS_ALERT is disabled");
+        }
+    }
+
+    @Override
+    public void autoJPushWithDrawAlert(long orderId){
+        WithdrawModel withdrawModel = withdrawMapper.findById(orderId);
+        if (withdrawModel == null) {
+            logger.error(MessageFormat.format("Withdraw callback order is not exist (orderId = {0})", orderId));
+            return;
+        }
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.WITHDRAW_SUCCESS_ALERT);
+        if (jPushAlertModel != null) {
+            Map<String, List<String>> loginNameMap = Maps.newHashMap();
+            List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(withdrawModel.getAmount()));
+            loginNameMap.put(withdrawModel.getLoginName(), amountLists);
+            autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+            loginNameMap.clear();
+
+        } else {
+            logger.debug("WITHDRAW_SUCCESS_ALERT is disabled");
+        }
+    }
+
+    @Override
+    public void autoJPushReferrerRewardAlert(long orderId){
+        InvestReferrerRewardModel investReferrerRewardModel = investReferrerRewardMapper.findById(orderId);
+        InvestModel investModel = investMapper.findById(investReferrerRewardModel.getInvestId());
+        if (investReferrerRewardModel == null ) {
+            logger.error(MessageFormat.format("ReferrerReward callback order is not exist (orderId = {0})", orderId));
+            return;
+        }
+        AccountModel accountModel = accountMapper.findByLoginName(investReferrerRewardModel.getReferrerLoginName());
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.REFERRER_REWARD_ALERT);
+        if (jPushAlertModel != null) {
+            Map<String, List<String>> loginNameMap = Maps.newHashMap();
+            List<String> amountLists = Lists.newArrayList(investModel.getLoginName(), AmountConverter.convertCentToString(investReferrerRewardModel.getAmount()), AmountConverter.convertCentToString(accountModel.getBalance()));
+            loginNameMap.put(accountModel.getLoginName(), amountLists);
+            autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+            loginNameMap.clear();
+
+        } else {
+            logger.debug("REFERRER_REWARD_ALERT is disabled");
+        }
+
+    }
+
 
     private boolean ManualJPushAlertJob(JPushAlertModel jPushAlertModel) {
         if (!jPushAlertModel.getExpectPushTime().after(new Date())) {

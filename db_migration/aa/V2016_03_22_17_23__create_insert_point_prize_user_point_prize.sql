@@ -18,7 +18,6 @@ CREATE TABLE `aa`.`user_point_prize` (
   `login_name`         VARCHAR(25) NOT NULL,
   `created_time`       DATETIME NOT NULL,
   `reality`            TINYINT(1) not null,
-  PRIMARY KEY (`point_prize_id`,`login_name`),
   CONSTRAINT FK_USER_POINT_PRIZE_POINT_PRIZE_ID_REF_POINT_PRIZE_ID FOREIGN KEY (`point_prize_id`) REFERENCES `aa`.`point_prize` (`id`)
 )
   ENGINE = InnoDB

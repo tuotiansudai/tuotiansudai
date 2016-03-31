@@ -27,7 +27,7 @@ public class RegisterAccountDto implements Serializable {
     }
 
     public String getUserName() {
-        return userName;
+        return userName.trim();
     }
 
     public void setUserName(String userName) {

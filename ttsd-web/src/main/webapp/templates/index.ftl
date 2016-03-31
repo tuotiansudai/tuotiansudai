@@ -4,30 +4,25 @@
     <div class="banner-box">
         <div class="banner-img-list">
             <a href="/activity/rank-list" target="_blank">
-                <img src="${staticServer}/images/sign/actor/ranklist/rank-list.jpg" alt="排行榜" class="pc-img">
-                <img src="${staticServer}/images/sign/actor/ranklist/rank-list-phone.jpg" alt="排行榜" class="iphone-img">
+                <img src="${staticServer}/images/sign/actor/ranklist/rank-list.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="pc-img">
+                <img src="${staticServer}/images/sign/actor/ranklist/rank-list-phone.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="iphone-img">
             </a>
             <a href="/activity/birth-month" target="_blank">
                 <img src="${staticServer}/images/sign/actor/birth/birth-month.jpg" alt="生日月投资收益翻倍" class="pc-img">
                 <img src="${staticServer}/images/sign/actor/birth/birth-month-phone.jpg" alt="生日月投资收益翻倍" class="iphone-img">
             </a>
             <a href="/activity/red-envelope" target="_blank">
-                <img src="${staticServer}/images/sign/actor/redbag/red-bag-pc.png" alt="宝马大奖颁奖典礼" class="pc-img">
-                <img src="${staticServer}/images/sign/actor/redbag/red-bag-phone.png" alt="宝马大奖颁奖典礼" class="iphone-img">
+                <img src="${staticServer}/images/sign/actor/redbag/red-bag-pc.png" alt="注册就送现金红包" class="pc-img">
+                <img src="${staticServer}/images/sign/actor/redbag/red-bag-phone.png" alt="注册就送现金红包" class="iphone-img">
             </a>
             <a href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" target="_blank">
                 <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">
                 <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="拓天上市" class="iphone-img">
             </a>
-            <a href="/activity/awards" target="_blank">
-                <img src="${staticServer}/images/sign/actor/awards/ttimg-awards.jpg" alt="宝马大奖颁奖典礼" class="pc-img">
-                <img src="${staticServer}/images/sign/actor/awards/ph-awards.jpg" alt="宝马大奖颁奖典礼" class="iphone-img">
-            </a>
             <a href="/activity/recruit" target="_blank">
                 <img src="${staticServer}/images/ttimg/ttimg-home03.png" alt="招募代理" class="pc-img">
                 <img src="${staticServer}/images/ttimg/ph-a03.jpg" alt="招募代理" class="iphone-img">
             </a>
-
         </div>
         <ul class="scroll-num">
             <li class="selected"></li>
@@ -225,31 +220,31 @@
 
             <div class="box-radius clearfix">
                 <ul class="media-list fl">
-                    <li><i>●</i><a href="http://house.qq.com/a/20151221/035341.htm" target="_blank">拓天速贷官网全新升级 迈入2.0智能金融信息服务时代</a>
-                        <time>2015-12-21</time>
+                    <li><i>●</i><a href="http://fj.qq.com/a/20160314/060811.htm" target="_blank">拓天速贷：财富盛宴大平台 感恩豪礼滚滚来</a>
+                        <time>2016-03-14</time>
+                    </li>
+                    <li><i>●</i><a href="http://help.3g.163.com/0414/16/0201/14/BEOCI8PP041403U2.html" target="_blank">拓天速贷：新年贺岁嗨翻天，全民领取888元现金红包</a>
+                        <time>2016-02-01</time>
+                    </li>
+                    <li><i>●</i><a href="http://money.china.com/fin/lc/201601/20/2443757.html?qq-pf-to=pcqq.c2c" target="_blank">拓天速贷：宝马名花有主，猴年豪礼来袭</a>
+                        <time>2016-01-20</time>
                     </li>
                     <li><i>●</i><a href="http://toutiao.com/news/6233268186905575938/" target="_blank">拓天速贷以卓越风控打造高效资产平台</a>
                         <time>2015-12-28</time>
                     </li>
-                    <li><i>●</i><a href="http://money.cri.cn/303/2015/12/16/124s17791.htm" target="_blank">拓天速贷走进石家庄 双十二财富送到家</a>
-                        <time>2015-12-16</time>
-                    </li>
-                    <li><i>●</i><a href="http://money.china.com/fin/lc/201509/29/3549074.html" target="_blank">拓天速贷：高效资产平台的缔造者</a>
-                        <time>2015-09-29</time>
-                    </li>
-                    <li><i>●</i><a href="http://news.dichan.sina.com.cn/2015/10/28/1131448.html" target="_blank">拓天速贷推出累积收益?兑大奖活动</a>
-                        <time>2015-10-28</time>
+                    <li><i>●</i><a href="http://house.qq.com/a/20151221/035341.htm" target="_blank">拓天速贷官网全新升级 迈入2.0智能金融信息服务时代</a>
+                        <time>2015-12-21</time>
                     </li>
                 </ul>
                 <ul class="media-logo-list fr">
-                    <li><a href="http://house.qq.com/a/20151221/035341.htm" target="_blank" class="qq"></a></li>
-                    <li><a href="http://yueyu.cntv.cn/2015/10/28/ARTI1446021624023304.shtml" target="_blank" class="yangshi"></a></li>
-                    <li><a href="http://msn.ynet.com/3.1/1512/16/10626316.html" target="_blank" class="msn"></a></li>
-                    <li><a href="http://news.dichan.sina.com.cn/2015/10/28/1131448.html" target="_blank" class="sina"></a></li>
-                    <li><a href="http://news.ifeng.com/a/20151028/46027672_0.shtml" target="_blank" class="ifeng"></a></li>
-                    <li><a href="http://help.3g.163.com/0406/15/0930/16/B4P96I6K0406002E.html" target="_blank" class="wangyi"></a></li>
-                    <li><a href="http://money.china.com/fin/lc/201509/29/3549074.html" target="_blank" class="china"></a></li>
-                    <li><a href="http://toutiao.com/news/6233268186905575938/" target="_blank" class="toutiao"></a></li>
+                    <li><a href="javascript:void(0)" class="qq"></a></li>
+                    <li><a href="javascript:void(0)" class="yangshi"></a></li>
+                    <li><a href="javascript:void(0)" class="msn"></a></li>
+                    <li><a href="javascript:void(0)" class="sina"></a></li>
+                    <li><a href="javascript:void(0)" class="ifeng"></a></li>
+                    <li><a href="javascript:void(0)" class="wangyi"></a></li>
+                    <li><a href="javascript:void(0)" class="china"></a></li>
+                    <li><a href="javascript:void(0)" class="toutiao"></a></li>
                 </ul>
             </div>
         </div>

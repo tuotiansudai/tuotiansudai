@@ -128,7 +128,7 @@
                             <span>1.5亿</span><i class="line-single"></i>
                         </div>
                         <div class="color-line">
-                            <div class="color-pro" data-totalInvest="${totalInvest}" id="linePro"></div>
+                            <div class="color-pro" data-totalInvest="${totalInvest?c}" id="linePro"></div>
                         </div>
                     </div>
                 </div>
@@ -172,7 +172,7 @@
                     </div>
                 </div>
                 <div class="lottery-detail">
-                    <ul class="gift-record">
+                    <ul class="gift-record" id="tdChangeBtn">
                         <li class="active">中奖纪录</li>
                         <li>我的奖品</li>
                     </ul>
@@ -202,6 +202,7 @@
             <div class="leader-list">
                 <div class="lottery-circle">
                     <h3 class="td-list">
+                    <span class="td-total"></span>
                         <span class="td-tip">每次抽奖将消耗1000财豆，每天限抽一次。</span>
                     </h3>
 
@@ -216,17 +217,17 @@
                     </div>
                 </div>
                 <div class="lottery-detail">
-                    <ul class="gift-record">
+                    <ul class="gift-record" id="cdChangeBtn">
                         <li class="active">中奖纪录</li>
                         <li>我的奖品</li>
                     </ul>
-                    <div class="record-list">
-                        <ul class="record-model user-record">
+                    <div class="record-list" id="beanList">
+                        <ul class="record-model user-record active">
                             <#list allPointLotteries as allPointLottery>
-                                <li>恭喜${allPointLottery.loginName[0..2]}*****抽中了${allPointLottery.pointPrizeName!}</li>
+                                <li>恭喜 ${allPointLottery.loginName[0..2]}***** 抽中了 ${allPointLottery.pointPrizeName!}</li>
                             </#list>
                         </ul>
-                        <ul class="record-model own-record active">
+                        <ul class="record-model own-record">
                             <#list myPointLotteries as myPointLottery>
                                 <li>
                                     <span class="award-name">${myPointLottery.pointPrizeName!}</span>
@@ -329,7 +330,7 @@
                 <a href="/login" class="go-on">去登录</a>
             </div>
         </div>
-        <div class="td-tip-thank" id="NoCdbean">
+        <div class="tip-dom td-tip-thank" id="NoCdbean">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>您的财豆不足，</p>
@@ -339,7 +340,7 @@
                 <a href="/point" class="go-on">去赚财豆</a>
             </div>
         </div>
-        <div class="td-tip-thank" id="oneDay">
+        <div class="tip-dom td-tip-thank" id="oneDay">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>您今天已经抽过奖啦！</p>
@@ -349,7 +350,7 @@
                 <a href="javascript:void(0)" class="go-on go-close">去分享</a>
             </div>
         </div>
-        <div class="td-tip-thank" id="onlyTwice">
+        <div class="tip-dom td-tip-thank" id="onlyTwice">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>您今天的抽奖次数已经用完啦，</p>
@@ -359,7 +360,7 @@
                 <a href="/" class="go-on-big">去看看其他活动</a>
             </div>
         </div>
-        <div class="td-tip-small" id="cdFive">
+        <div class="tip-dom td-tip-small" id="cdFive">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
@@ -370,7 +371,7 @@
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
             </div>
         </div>
-        <div class="td-tip-small" id="cdTwo">
+        <div class="tip-dom td-tip-small" id="cdTwo">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
@@ -381,7 +382,7 @@
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
             </div>
         </div>
-        <div class="td-tip-thank" id="thankYou">
+        <div class="tip-dom td-tip-thank" id="thankYou">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>谢谢参与</p>
@@ -391,7 +392,7 @@
                 <a href="/" class="go-on-big">去看看其他活动</a>
             </div>
         </div>
-        <div class="td-tip-small" id="percentCoupon">
+        <div class="tip-dom td-tip-small" id="percentCoupon">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
@@ -403,7 +404,7 @@
                 <a href="javascript:void(0)" class="double-btn go-close">继续抽奖</a>
             </div>
         </div>
-        <div class="td-tip-small" id="freeMoney">
+        <div class="tip-dom td-tip-small" id="freeMoney">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
@@ -415,5 +416,24 @@
             </div>
         </div>
 	</div>
+</div>
+<div class="rank-list-phone">
+    <div class="rank-phone-model">
+        <img src="${staticServer}/images/sign/actor/ranklist/top-title.png" width="100%">
+    </div>
+    <div class="rank-phone-intro">
+        <img src="${staticServer}/images/sign/actor/ranklist/actor-intro.png" width="100%" class="actor-intro">
+        <img src="${staticServer}/images/sign/actor/ranklist/bean-circle.png" width="100%" class="bean-circle">
+        <img src="${staticServer}/images/sign/actor/ranklist/share-btn.png" width="100%" class="share-btn">
+        <img src="${staticServer}/images/sign/actor/ranklist/share-intro.png" width="100%" class="share-intro">
+    </div>
+    <dl class="actor-rule">
+        <dt>活动规则：</dt>
+        <dd>1. 活动期间，用户投资即可获得相应天豆；</dd>
+        <dd>2. 活动期间，平台达到一定投资额，即对天豆排行榜靠前的用户进行奖励;</dd>
+        <dd>3. 用户的天豆数量相同时，按最终累计天豆的先后时间排名；</dd>
+        <dd>4. 消费天豆可参与“天豆抽奖”活动，7个工作日内客服联系用户发放奖品；</dd>
+        <dd>5. 活动截止后7个工作日内公布排行榜颁奖时间。</dd>
+    </dl>
 </div>
 </@global.main>

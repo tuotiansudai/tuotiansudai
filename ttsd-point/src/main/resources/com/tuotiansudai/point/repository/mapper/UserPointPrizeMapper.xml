@@ -13,6 +13,18 @@
         <result column="reality" property="reality"></result>
     </resultMap>
 
+    <resultMap id="pointPrizeWinnerViewResultMap" type="PointPrizeWinnerViewDto">
+        <result column="id" property="id"></result>
+        <result column="description" property="description"></result>
+        <result column="num" property="num"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="identity_number" property="identityNumber"></result>
+    </resultMap>
+
+
+
     <insert id="create" parameterType="UserPointPrizeModel">
         insert into user_point_prize values (#{pointPrizeId}, #{loginName}, #{createdTime}, #{reality});
     </insert>
@@ -22,15 +34,51 @@
     </select>
 
     <select id="findByLoginName" parameterType="java.lang.String" resultMap="userPointPrizeResultMap">
-        select * from user_point_prize where login_name = #{loginName} and reality is true order by created_time desc
+        select u.* from user_point_prize u join point_prize t on u.`point_prize_id` = t.`id` and t.`name` != 'ThankYou'
+        where u.login_name = #{loginName} and u.reality is true order by u.created_time desc
     </select>
 
     <select id="findAllDescCreatedTime" resultMap="userPointPrizeResultMap">
-        select * from user_point_prize order by created_time desc limit 1,100
+        select u.* from user_point_prize u join point_prize t on u.`point_prize_id` = t.`id` and t.`name` != 'ThankYou'
+        order by u.created_time desc limit 0,100
     </select>
 
     <select id="findAllNotReal" resultType="long">
         select count(*) from user_point_prize where reality is false;
+    </select>
+
+    <select id="findAllPointPrizeGroupPrize" resultMap="pointPrizeWinnerViewResultMap">
+        SELECT
+          p.`id`,
+          p.description,
+          temp.num
+        FROM
+          point_prize p
+          JOIN
+            (SELECT
+              u.`point_prize_id`,
+              COUNT(*) AS num
+            FROM
+              user_point_prize u
+            WHERE u.reality IS TRUE
+            GROUP BY u.`point_prize_id`) temp
+            ON p.`id` = temp.`point_prize_id`
+    </select>
+
+    <select id="findByPointPrizeId" parameterType="long" resultMap="pointPrizeWinnerViewResultMap">
+        SELECT
+          u.`created_time`,
+          u.`login_name`,
+          r.`mobile`,
+          a.`identity_number`
+        FROM
+          user_point_prize u
+          JOIN account a
+            ON u.`login_name` = a.`login_name`
+          JOIN `user` r
+            ON u.`login_name` = r.`login_name`
+        WHERE u.reality IS TRUE and u.point_prize_id = #{pointPrizeId}
+        order by u.created_time desc
     </select>
 
 </mapper>
