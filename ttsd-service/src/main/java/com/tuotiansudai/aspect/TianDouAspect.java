@@ -13,6 +13,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Aspect
@@ -37,7 +38,7 @@ public class TianDouAspect {
             long loanId = investModel.getLoanId();
             LoanModel loanModel = loanMapper.findById(loanId);
             long period = loanModel.getPeriods();
-            long tianDouScore = amount / 12 * period;
+            long tianDouScore = new BigDecimal((double) amount * period / 1200).setScale(0, BigDecimal.ROUND_HALF_UP).longValue();
 
             String time = DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
 
@@ -51,4 +52,5 @@ public class TianDouAspect {
         }
         logger.debug("after returning invest, tianDou assign completed");
     }
+
 }
