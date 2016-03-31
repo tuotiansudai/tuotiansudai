@@ -327,7 +327,7 @@
                 <p>请登录过再来抽奖吧！</p>
             </div>
             <div class="btn-list">
-                <a href="/login" class="go-on">去登录</a>
+                <a href="/login?redirect=/activity/rank-list" class="go-on">去登录</a>
             </div>
         </div>
         <div class="tip-dom td-tip-thank" id="NoCdbean">
