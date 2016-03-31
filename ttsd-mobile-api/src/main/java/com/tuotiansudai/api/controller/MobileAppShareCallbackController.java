@@ -10,15 +10,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
-public class MobileAppShareCallbackController extends MobileAppBaseController {
+public class MobileAppShareCallbackController {
 
     @Autowired
     private MobileAppShareCallbackService mobileAppShareCallbackService;
 
+    @Autowired
+    private HttpServletRequest httpServletRequest;
+
     @RequestMapping(value = "/share-callback", method = RequestMethod.POST)
     public BaseResponseDto shareCallback(@RequestBody ShareCallbackRequestDataDto requestDto) {
-        mobileAppShareCallbackService.shareBannerSuccess(getLoginName(), requestDto);
+        Object loginName = httpServletRequest.getAttribute("currentLoginName");
+
+        mobileAppShareCallbackService.shareBannerSuccess(loginName != null ? String.valueOf(loginName) : null, requestDto);
 
         return new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
     }

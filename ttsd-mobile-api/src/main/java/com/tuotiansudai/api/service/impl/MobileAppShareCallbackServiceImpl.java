@@ -1,5 +1,6 @@
 package com.tuotiansudai.api.service.impl;
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.ShareCallbackRequestDataDto;
 import com.tuotiansudai.api.dto.ShareType;
 import com.tuotiansudai.api.service.MobileAppShareCallbackService;
@@ -15,7 +16,7 @@ public class MobileAppShareCallbackServiceImpl implements MobileAppShareCallback
 
     @Override
     public boolean shareBannerSuccess(String loginName, ShareCallbackRequestDataDto requestDataDto) {
-        if (requestDataDto.getShareType() == ShareType.BANNER && Integer.parseInt(requestDataDto.getObjectId()) == 1) {
+        if (!Strings.isNullOrEmpty(loginName) &&  requestDataDto.getShareType() == ShareType.BANNER && Integer.parseInt(requestDataDto.getObjectId()) == 1) {
             pointLotteryService.getLotteryOnceChance(loginName);
             return true;
         }

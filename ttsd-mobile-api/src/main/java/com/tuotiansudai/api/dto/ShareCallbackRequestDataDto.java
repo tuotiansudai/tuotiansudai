@@ -1,6 +1,6 @@
 package com.tuotiansudai.api.dto;
 
-public class ShareCallbackRequestDataDto {
+public class ShareCallbackRequestDataDto extends BaseParamDto{
 
     private ShareType shareType;
 
