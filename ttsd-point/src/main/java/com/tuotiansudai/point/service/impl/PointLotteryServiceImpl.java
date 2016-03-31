@@ -101,7 +101,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
 
     private String imitateLoginName() {
         int length = new Random().nextInt(20) + 5;
-        String base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        String base = "abcdefghijklmnopqrstuvwxyz";
         Random random = new Random();
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < length; i++) {
