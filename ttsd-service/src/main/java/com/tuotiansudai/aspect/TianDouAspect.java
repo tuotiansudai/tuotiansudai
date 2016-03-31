@@ -32,14 +32,14 @@ public class TianDouAspect {
     @After(value = "execution(* *..InvestService.investSuccess(..))")
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
         logger.debug("after returning invest, tianDou assign starting...");
-//        DateTime activityStartTime = new DateTime(2016, 4, 1, 0, 0, 0);
-//        DateTime now = new DateTime();
+        DateTime activityStartTime = new DateTime(2016, 4, 1, 0, 0, 0);
+        DateTime now = new DateTime();
         InvestModel investModel = (InvestModel) joinPoint.getArgs()[1];
 
-//        if (now.isBefore(activityStartTime)) {
-//            logger.info("ranking activity not started. Start time is: 2016-04-01 00:00:00. loginName:" + investModel.getLoginName()
-//                    + ", loanId:" + investModel.getLoanId() + ", amount:" + investModel.getAmount());
-//        } else {
+        if (now.isBefore(activityStartTime)) {
+            logger.info("ranking activity not started. Start time is: 2016-04-01 00:00:00. loginName:" + investModel.getLoginName()
+                    + ", loanId:" + investModel.getLoanId() + ", amount:" + investModel.getAmount());
+        } else {
             try {
                 String loginName = investModel.getLoginName();
                 long amount = investModel.getAmount();
@@ -59,7 +59,7 @@ public class TianDouAspect {
                 logger.error(e.getLocalizedMessage(), e);
             }
             logger.debug("after returning invest, tianDou assign completed");
-//        }
+        }
     }
 
 }
