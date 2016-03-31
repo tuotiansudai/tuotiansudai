@@ -1001,6 +1001,19 @@
               dd{
                 color:#999;
               }
+              &.active{
+                background:#ffedbc;
+                color:#a6000e;
+                dt{
+                  color:#a6000e;
+                  span{
+                    color:#a6000e;
+                  }
+                }
+                dd{
+                  color:#a6000e;
+                }
+              }
             }
             .gift-two{
               position: absolute;
@@ -1008,10 +1021,19 @@
               left:80px;
               width:160px;
               padding:10px 20px;
-              background:#ffedbc;
+              background:#e6e6e6;
               border-radius:10px;
               font-size:14px;
-              color:#a6000e;
+              display:none;
+              dt{
+                color:#4c4c4c;
+                span{
+                  color:#cf3c56;
+                }
+              }
+              dd{
+                color:#999;
+              }
             }
             .stage-num{
               width:100px;
@@ -1026,6 +1048,7 @@
               }
               &.first-stage{
                 bottom:223px;
+                display:none;
               }
               &.two-stage{
                 bottom:410px;
@@ -1146,18 +1169,18 @@
             background:#ffedbc;
             border: 2px solid #ffdb7b;
             border-top: none;
+            height: 490px;
+            overflow: hidden;
             .record-model{
               float:left;
               display:none;
               width:276px;
-              height:460px;
+              height:480px;
               &.active{
                 display:block;
               }
               &.user-record{
-                padding:20px 30px;
-                overflow: hidden;
-                overflow-y: scroll;
+                padding:10px 30px;
                 height: 460px;
                 li{
                   float:left;
@@ -1168,10 +1191,8 @@
                 }
               }
               &.own-record{
-                padding:20px 30px;
-                overflow: hidden;
-                overflow-y: scroll;
-                height: 460px;
+                padding:10px 30px;
+                height: 480px;
                 li{
                   float:left;
                   width:100%;

@@ -10,7 +10,7 @@ require(['jquery','rotate','layerWrapper', 'jquery.validate', 'jquery.validate.e
 		$tdgiftRecord=$('#tdChangeBtn li'),
         $cdgiftRecord=$('#cdChangeBtn li');
 
-    $('#linePro').height(Math.round($('#linePro').attr('data-totalInvest'))/1000000/21000*600);
+    $('#linePro').height(Math.round($('#linePro').attr('data-totalInvest'))/1000000/12000*600);
 	//change rank list
 	$beanBtn.on('click', function(event) {
 		var $self=$(this),
@@ -315,6 +315,27 @@ require(['jquery','rotate','layerWrapper', 'jquery.validate', 'jquery.validate.e
             $('#awardBtn li:eq(1)').trigger('click');
         });
     });
+    //scroll award record list
+    var scrollTimer;
+    $(".scroll-record").hover(function() {
+        clearInterval(scrollTimer);
+    }, function() {
+        scrollTimer = setInterval(function() {
+            scrollNews($(".scroll-record"));
+        }, 2000);
+    }).trigger("mouseout");
 
-
+    function scrollNews(obj) {
+        var $self = obj.find("ul.user-record");
+        var lineHeight = $self.find("li:first").height();
+        if($self.find('li').length>15){
+            $self.animate({
+                "margin-top": -lineHeight + "px"
+            }, 600, function() {
+                $self.css({
+                    "margin-top": "0px"
+                }).find("li:first").appendTo($self);
+            })
+        }
+    }
 });

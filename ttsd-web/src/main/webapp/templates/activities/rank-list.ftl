@@ -107,7 +107,7 @@
                 <div class="bean-rank-money">
                     <div class="progress-line">
                         <h3 class="total-money">累积投资：${totalInvest/100?float} 元</h3>
-                        <dl class="gift-one">
+                        <dl class="gift-two">
                             <dt>奖池累积中...</br>投资满<span>1.5亿</span>则奖池升级:</dt>
                             <dd>第一名：现金5万</dd>
                             <dd>第二名：现金3万</dd>
@@ -115,8 +115,8 @@
                             <dd>第四名：欧洲游</dd>
                             <dd>第五名：海岛游</dd>
                         </dl>
-                        <dl class="gift-two">
-                            <dt>当前奖池：</dt>
+                        <dl class="gift-one">
+                            <dt>奖池累积中...</br>投资满<span>8,500万</span>则奖励:</dt>
                             <dd>第一名：现金5万</dd>
                             <dd>第二名：现金3万</dd>
                             <dd>第三名：日韩双人游</dd>
@@ -125,7 +125,7 @@
                             <span>8,500万</span><i class="line-single"></i>
                         </div>
                         <div class="stage-num two-stage">
-                            <span>1.5亿</span><i class="line-single"></i>
+                            <span>8,500万</span><i class="line-single"></i>
                         </div>
                         <div class="color-line">
                             <div class="color-pro" data-totalInvest="${totalInvest?c}" id="linePro"></div>
@@ -221,8 +221,8 @@
                         <li class="active">中奖纪录</li>
                         <li>我的奖品</li>
                     </ul>
-                    <div class="record-list" id="beanList">
-                        <ul class="record-model user-record active">
+                    <div class="record-list scroll-record" id="beanList">
+                        <ul class="record-model user-record  active">
                             <#list allPointLotteries as allPointLottery>
                                 <li>恭喜 ${allPointLottery.loginName[0..2]}***** 抽中了 ${allPointLottery.pointPrizeName!}</li>
                             </#list>
