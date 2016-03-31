@@ -186,7 +186,13 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
                 boolean isExchangeableCoupon = this.isExchangeableCoupon(couponModel);
                 boolean isAssignableCoupon = this.isAssignableCoupon(couponModel, existingUserCouponModels);
-                return isInUserGroup && (isAssignableCoupon || isExchangeableCoupon);
+                boolean isLotteryWinner = this.isLotteryWinner(couponModel);
+                return isInUserGroup && (isAssignableCoupon || isExchangeableCoupon || isLotteryWinner);
+            }
+
+            private boolean isLotteryWinner(CouponModel couponModel) {
+                return couponModel.getUserGroup() == UserGroup.WINNER;
+
             }
 
             private boolean isExchangeableCoupon(CouponModel couponModel) {

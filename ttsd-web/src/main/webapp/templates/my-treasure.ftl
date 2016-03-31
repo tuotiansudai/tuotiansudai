@@ -87,7 +87,11 @@
                                     <#elseif coupon.couponType == 'INVEST_COUPON'>
                                         ［单笔投资满 <@amount>${coupon.investLowerLimit?string(0)}</@amount> 元可用］
                                     <#elseif coupon.couponType == 'INTEREST_COUPON'>
-                                        ［限投资 <@amount>${coupon.investUpperLimit?string(0)}</@amount> 元以内可用］
+                                        <#if coupon.investUpperLimit == 0>
+                                            ［投资即可使用］
+                                        <#else>
+                                            ［限投资 <@amount>${coupon.investUpperLimit?string(0)}</@amount> 元以内可用］
+                                        </#if>
                                     </#if>
                                 </p>
 
