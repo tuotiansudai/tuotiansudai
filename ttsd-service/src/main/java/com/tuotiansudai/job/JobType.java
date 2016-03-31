@@ -31,6 +31,7 @@ public enum JobType {
     AutoJPushAlertBirthDay("用户生日当天"),
     AutoJPushNoInvestAlert("持续30天未投资，提醒一次"),
     AutoJPushAlertLoanOut("用户所投标的放款"),
+    AutoJPushLotteryObtainCashAlert("抽奖获取现金推送"),
     NormalRepay("正常还款"),
     LoanRepayNotify("还款提醒"),
     AdvanceRepay("提前还款"),
