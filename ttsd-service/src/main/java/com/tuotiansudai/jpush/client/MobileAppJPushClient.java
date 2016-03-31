@@ -7,8 +7,11 @@ import cn.jpush.api.common.resp.APIRequestException;
 import cn.jpush.api.push.PushResult;
 import cn.jpush.api.push.model.Options;
 import cn.jpush.api.push.model.Platform;
+import cn.jpush.api.push.model.PushModel;
 import cn.jpush.api.push.model.PushPayload;
 import cn.jpush.api.push.model.audience.Audience;
+import cn.jpush.api.push.model.audience.AudienceTarget;
+import cn.jpush.api.push.model.audience.AudienceType;
 import cn.jpush.api.push.model.notification.AndroidNotification;
 import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
@@ -22,6 +25,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -54,13 +58,29 @@ public class MobileAppJPushClient {
 
         return PushPayload.newBuilder()
                 .setPlatform(getPlatform(pushSource))
-                .setAudience(Audience.registrationId(registrationIds))
+                .setAudience(getAudience(registrationIds))
                 .setNotification(Notification.newBuilder()
                         .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).setBadge(0).build())
                         .addPlatformNotification(AndroidNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).setBuilderId(2).build())
                         .build())
                 .setOptions(Options.newBuilder().setApnsProduction(Environment.isProduction(environment)).build())
                 .build();
+    }
+
+    private Audience getAudience(List<String> registrationIds){
+
+        if(Environment.isProduction(environment))
+        {
+            return Audience.newBuilder()
+                    .addAudienceTarget(AudienceTarget.registrationId(registrationIds))
+                    .build();
+        }
+        else{
+           return Audience.newBuilder()
+                    .addAudienceTarget(AudienceTarget.tag("test"))
+                    .addAudienceTarget(AudienceTarget.registrationId(registrationIds))
+                    .build();
+        }
     }
 
     private Platform getPlatform(PushSource pushSource) {
@@ -82,7 +102,7 @@ public class MobileAppJPushClient {
     public PushPayload buildPushObject_all_all_alertWithExtras(String alert, String extraKey, String extraValue, PushSource pushSource) {
         return PushPayload.newBuilder()
                 .setPlatform(getPlatform(pushSource))
-                .setAudience(Audience.all())
+                .setAudience(getAudienceAll())
                 .setNotification(Notification.newBuilder()
                         .addPlatformNotification(IosNotification.newBuilder().setAlert(alert).setBadge(0).addExtra(extraKey, extraValue).build())
                         .addPlatformNotification(AndroidNotification.newBuilder().setAlert(alert).addExtra(extraKey, extraValue).setBuilderId(2).build())
@@ -93,6 +113,15 @@ public class MobileAppJPushClient {
 
     }
 
+    private Audience getAudienceAll(){
+        if(Environment.isProduction(environment))
+        {
+            return Audience.newBuilder().setAll(true).build();
+        }
+        else{
+            return Audience.newBuilder().addAudienceTarget(AudienceTarget.tag("test")).build();
+        }
+    }
 
     public boolean sendPushAlertByAll(String jPushAlertId, String alert, String extraKey, String extraValue, PushSource pushSource) {
         PushPayload payload = buildPushObject_all_all_alertWithExtras(alert, extraKey, extraValue, pushSource);

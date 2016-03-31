@@ -2,7 +2,7 @@
 <@global.main pageCss="${css.company_activity}" pageJavascript="" activeNav="" activeLeftNav="" title="生日月特权">
 <style type="text/css">
     body {
-        background: url('/images/sign/actor/birth/bg-web.png') center top repeat-y;
+        background: url('${staticServer}/images/sign/actor/birth/bg-web.png') center top repeat-y;
     }
 </style>
 

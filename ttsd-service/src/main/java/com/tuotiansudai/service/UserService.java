@@ -41,12 +41,6 @@ public interface UserService {
 
     EditUserDto getEditUser(String loginName);
 
-    BaseDto<BasePaginationDataDto> findAllUser(String loginName, String email,
-                                               String mobile, Date beginTime, Date endTime,
-                                               Source source,
-                                               RoleStage roleStage, String referrer, String channel, Integer pageIndex, Integer pageSize);
-
-
     List<String> findStaffNameFromUserLike(String loginName);
 
     List<String> findAllLoanerLikeLoginName(String loginName);

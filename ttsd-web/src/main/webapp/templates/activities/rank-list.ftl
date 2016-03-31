@@ -224,7 +224,7 @@
                     <div class="record-list" id="beanList">
                         <ul class="record-model user-record active">
                             <#list allPointLotteries as allPointLottery>
-                                <li>恭喜${allPointLottery.loginName[0..2]}*****抽中了${allPointLottery.pointPrizeName!}</li>
+                                <li>恭喜 ${allPointLottery.loginName[0..2]}***** 抽中了 ${allPointLottery.pointPrizeName!}</li>
                             </#list>
                         </ul>
                         <ul class="record-model own-record">

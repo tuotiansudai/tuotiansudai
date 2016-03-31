@@ -318,6 +318,7 @@
     clear: both;
   }
 }
+
 .red-envelope-container {
   text-align: center;
 
@@ -517,7 +518,7 @@
 
 /*rank-list pc page*/
 .rank-list-container {
-  background: url("../images/sign/actor/ranklist/container-bg.png") repeat center;
+  background: url("/images/sign/actor/ranklist/container-bg.png") repeat center;
   min-height: 500px;
   .rank-phone-model {
     float:left;
@@ -534,7 +535,7 @@
       float:left;
       width:100%;
       height:1px;
-      background:url("../images/sign/actor/ranklist/line-border.png") no-repeat center;
+      background:url("/images/sign/actor/ranklist/line-border.png") no-repeat center;
     }
     .actor-info-text{
       float:left;
@@ -552,7 +553,7 @@
         color:#ffd633;
         line-height:50px;
         text-align:center;
-        background:url("../images/sign/actor/ranklist/intro-title.png") no-repeat center;
+        background:url("/images/sign/actor/ranklist/intro-title.png") no-repeat center;
       }
       p{
         float:left;
@@ -653,7 +654,7 @@
               margin-left:40px;
               position: relative;
               overflow: hidden;
-              background:url("../images/sign/actor/ranklist/btn-bg.png") no-repeat center;
+              background:url("/images/sign/actor/ranklist/btn-bg.png") no-repeat center;
               &:hover::before {
                 -webkit-transition: left 1s;
                 -moz-transition: left 1s;
@@ -720,7 +721,7 @@
         width: 142px;
         height: 46px;
         position: relative;
-        background: url("../images/sign/actor/ranklist/cal-bg.png") no-repeat center;
+        background: url("/images/sign/actor/ranklist/cal-bg.png") no-repeat center;
         .cal-title{
           float:left;
           width:90px;
@@ -760,7 +761,7 @@
               top:15px;
               right:10px;
               cursor:pointer;
-              background:url("../images/sign/actor/ranklist/close-cal.png") no-repeat center;
+              background:url("/images/sign/actor/ranklist/close-cal.png") no-repeat center;
             }
           }
           .td-content{
@@ -860,7 +861,7 @@
             margin:0 5px;
             cursor:pointer;
             padding-left:0;
-            background:url("../images/sign/actor/ranklist/share-icon.png") no-repeat center;
+            background:url("/images/sign/actor/ranklist/share-icon.png") no-repeat center;
             &.icon-weibo{
               background-position:0 0;
             }
@@ -1084,7 +1085,7 @@
             height: 550px;
             margin:0 0 40px 40px;
             position: relative;
-            background: url("../images/sign/actor/ranklist/turntable-bg.png") no-repeat center;
+            background: url("/images/sign/actor/ranklist/turntable-bg.png") no-repeat center;
             .pointer-img{
               width: 130px;
               height: 190px;
@@ -1199,7 +1200,7 @@
       position:absolute;
       top:0;
       left:-200px;
-      background:url("../images/sign/actor/ranklist/bg-left.png") repeat center;
+      background:url("/images/sign/actor/ranklist/bg-left.png") repeat center;
       background-size:100%;
     }
     .right-bg{
@@ -1208,7 +1209,7 @@
       position:absolute;
       top:0;
       right:-200px;
-      background:url("../images/sign/actor/ranklist/bg-right.png") repeat center;
+      background:url("/images/sign/actor/ranklist/bg-right.png") repeat center;
       background-size:100%;
     }
   }
@@ -1218,7 +1219,7 @@
     left:0;
     width:100%;
     height:100%;
-    background:url("../images/sign/actor/ranklist/tip-bg.png") repeat;
+    background:url("/images/sign/actor/ranklist/tip-bg.png") repeat;
     z-index:88;
     display:none;
     .td-tip-big{
@@ -1229,7 +1230,7 @@
       left:50%;
       margin-top:-191px;
       margin-left:-202px;
-      background:url("../images/sign/actor/ranklist/big-gift-bg.png") no-repeat center;
+      background:url("/images/sign/actor/ranklist/big-gift-bg.png") no-repeat center;
       background-size:100%;
       z-index:999;
       display:none;
@@ -1239,7 +1240,7 @@
         right:60px;
         width:18px;
         height:18px;
-        background:url("../images/sign/actor/ranklist/close-btn.png") no-repeat center;
+        background:url("/images/sign/actor/ranklist/close-btn.png") no-repeat center;
         background-size:100%;
         cursor:pointer;
       }
@@ -1269,7 +1270,7 @@
           color:#fff;
           font-size:12px;
           text-align:center;
-          background:url("../images/sign/actor/ranklist/small-btn.png") no-repeat center;
+          background:url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
           background-size: 100%;
           position: relative;
           left:50%;
@@ -1285,7 +1286,7 @@
       left:50%;
       margin-top:-108px;
       margin-left:-150px;
-      background:url("../images/sign/actor/ranklist/get-gift.png") no-repeat center;
+      background:url("/images/sign/actor/ranklist/get-gift.png") no-repeat center;
       background-size:100%;
       z-index:999;
       display:none;
@@ -1295,7 +1296,7 @@
         right:10px;
         width:18px;
         height:18px;
-        background:url("../images/sign/actor/ranklist/close-btn.png") no-repeat center;
+        background:url("/images/sign/actor/ranklist/close-btn.png") no-repeat center;
         background-size:100%;
         cursor:pointer;
       }
@@ -1326,7 +1327,7 @@
             color:#fff;
             font-size:12px;
             text-align:center;
-            background:url("../images/sign/actor/ranklist/small-btn.png") no-repeat center;
+            background:url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
             background-size: 100%;
             position: relative;
             left:50%;
@@ -1339,7 +1340,7 @@
             color:#fff;
             font-size:12px;
             text-align:center;
-            background:url("../images/sign/actor/ranklist/small-btn.png") no-repeat center;
+            background:url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
             background-size: 100%;
             &.first-btn{
               margin:0 10px 0 60px;
@@ -1356,7 +1357,7 @@
       left:50%;
       margin-top:-82px;
       margin-left:-150px;
-      background:url("../images/sign/actor/ranklist/no-gift-bg.png") no-repeat center;
+      background:url("/images/sign/actor/ranklist/no-gift-bg.png") no-repeat center;
       background-size:100%;
       z-index:999;
       display:none;
@@ -1366,7 +1367,7 @@
         right:10px;
         width:18px;
         height:18px;
-        background:url("../images/sign/actor/ranklist/close-btn.png") no-repeat center;
+        background:url("/images/sign/actor/ranklist/close-btn.png") no-repeat center;
         background-size:100%;
         cursor:pointer;
       }
@@ -1397,7 +1398,7 @@
             color:#fff;
             font-size:12px;
             text-align:center;
-            background:url("../images/sign/actor/ranklist/big-btn.png") no-repeat center;
+            background:url("/images/sign/actor/ranklist/big-btn.png") no-repeat center;
             background-size: 100%;
             position: relative;
             left:50%;
@@ -1411,7 +1412,7 @@
             color:#fff;
             font-size:12px;
             text-align:center;
-            background:url("../images/sign/actor/ranklist/small-btn.png") no-repeat center;
+            background:url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
             background-size: 100%;
             position: relative;
             left:50%;
@@ -1684,3 +1685,4 @@
     display:block;
   }
 }
+
