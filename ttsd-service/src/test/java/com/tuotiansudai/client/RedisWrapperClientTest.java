@@ -45,9 +45,9 @@ public class RedisWrapperClientTest {
     public void testRedisList() {
         redisWrapperClient.del("listFuck");
         redisWrapperClient.lpush("listFuck","0","1","2");
-        assertThat(redisWrapperClient.llen("listFuck"), is(3));
+        assertThat(redisWrapperClient.llen("listFuck"), is(3L));
         redisWrapperClient.lpush("listFuck","3");
-        assertThat(redisWrapperClient.llen("listFuck"), is(4));
+        assertThat(redisWrapperClient.llen("listFuck"), is(4L));
         List<String> list = redisWrapperClient.lrange("listFuck", 0, -1);
         for (int i=0;i<list.size();i++) {
             assertThat(Integer.valueOf(list.get(i)), is(list.size() - 1 - i));

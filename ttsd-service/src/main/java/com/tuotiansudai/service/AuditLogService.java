@@ -2,13 +2,10 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.AuditLogPaginationItemDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.task.OperationType;
 
 import java.util.Date;
-import java.util.List;
 
 public interface AuditLogService {
 

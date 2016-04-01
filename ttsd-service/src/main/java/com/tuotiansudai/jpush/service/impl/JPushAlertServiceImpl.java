@@ -13,8 +13,7 @@ import com.google.common.collect.Sets;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.RechargeDto;
-import com.tuotiansudai.dto.WithdrawDto;
+import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.job.JPushReportFetchingJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.ManualJPushAlertJob;
@@ -26,8 +25,6 @@ import com.tuotiansudai.jpush.repository.model.*;
 import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AuditLogUtil;
@@ -312,6 +309,22 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             }
         } else {
             logger.debug("LOAN_ALERT is disabled");
+        }
+    }
+
+    @Override
+    public void autoJPushLotteryLotteryObtainCashAlert(TransferCashDto transferCashDto){
+        logger.debug("autoJPushLotteryLotteryObtainCashAlert start...");
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.LOTTERY_OBTAIN_CASH_ALERT);
+        if (jPushAlertModel != null) {
+            Map<String, List<String>> loginNameMap = Maps.newHashMap();
+            List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(Long.parseLong(transferCashDto.getAmount())));
+            loginNameMap.put(transferCashDto.getLoginName(), amountLists);
+            autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+            loginNameMap.clear();
+
+        } else {
+            logger.debug("LOTTERY_OBTAIN_CASH_ALERT is disabled");
         }
     }
 

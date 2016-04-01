@@ -1,11 +1,10 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.client.AbstractRedisWrapperClient;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.service.ConsoleHomeService;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.AuditLogService;
@@ -37,7 +36,7 @@ public class HomeController {
     private ConsoleHomeService consoleHomeService;
 
     @Autowired
-    AbstractRedisWrapperClient redisWrapperClient;
+    RedisWrapperClient redisWrapperClient;
 
     @Autowired
     UserRoleService userRoleService;
