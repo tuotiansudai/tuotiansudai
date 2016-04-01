@@ -67,6 +67,12 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private InvestMapper investMapper;
 
     @Autowired
+    private LoanRepayMapper loanRepayMapper;
+
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
+
+    @Autowired
     private RechargeMapper rechargeMapper;
 
     @Autowired
@@ -470,8 +476,9 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
-    public void autoJPushRepayAlert(long loanId){
-        List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
+    public void autoJPushRepayAlert(long loanRepayId){
+        LoanRepayModel loanRepayModel = loanRepayMapper.findById(loanRepayId);
+        List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(loanRepayModel.getLoanId());
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.REPAY_ALERT);
         if (jPushAlertModel != null) {
             if (CollectionUtils.isEmpty(notifyInfos)) {
@@ -481,7 +488,8 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
 
             for (InvestNotifyInfo notifyInfo : notifyInfos) {
-                List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(notifyInfo.getAmount()));
+                InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(notifyInfo.getInvestId(),loanRepayModel.getPeriod());
+                List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(investRepayModel.getCorpus() + investRepayModel.getActualInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getActualFee()));
                 loginNameMap.put(notifyInfo.getLoginName(), amountLists);
                 autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
                 loginNameMap.clear();

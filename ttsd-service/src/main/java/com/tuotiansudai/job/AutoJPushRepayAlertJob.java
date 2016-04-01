@@ -22,9 +22,9 @@ public class AutoJPushRepayAlertJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.debug("trigger send jPush alert repay job, prepare do job");
-        long loanId = (long) context.getJobDetail().getJobDataMap().get(REPAY_ID_KEY);
-        jPushAlertService.autoJPushRepayAlert(loanId);
-        logger.debug("trigger send jPush alert repay job, loanId : " + String.valueOf(loanId));
+        long loanRepayId = (long) context.getJobDetail().getJobDataMap().get(REPAY_ID_KEY);
+        jPushAlertService.autoJPushRepayAlert(loanRepayId);
+        logger.debug("trigger send jPush alert repay job, loanId : " + loanRepayId);
 
     }
 }

@@ -194,12 +194,16 @@
                             </#list>
                         </ul>
                         <ul class="record-model own-record">
-                            <#list myPrizeList as myPrize>
-                                <li>
-                                    <span class="award-name">${myPrize.prize.getName()}</span>
-                                    <span class="award-time">${myPrize.time}</span>
-                                </li>
-                            </#list>
+                            <#if myPrizeList?has_content>
+                                <#list myPrizeList as myPrize>
+                                    <li>
+                                        <span class="award-name">${myPrize.prize.getName()}</span>
+                                        <span class="award-time">${myPrize.time}</span>
+                                    </li>
+                                </#list>
+                            <#else>
+                                <li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>
+                            </#if>
                         </ul>
                     </div>
                 </div>
@@ -238,12 +242,17 @@
                             </#list>
                         </ul>
                         <ul class="record-model own-record">
-                            <#list myPointLotteries as myPointLottery>
-                                <li>
-                                    <span class="award-name">${myPointLottery.pointPrizeName!}</span>
-                                    <span class="award-time">${myPointLottery.createTime?string('yyyy-MM-dd HH:mm')!}</span>
-                                </li>
-                            </#list>
+
+                            <#if myPointLotteries?has_content>
+                                <#list myPointLotteries as myPointLottery>
+                                    <li>
+                                        <span class="award-name">${myPointLottery.pointPrizeName!}</span>
+                                        <span class="award-time">${myPointLottery.createTime?string('yyyy-MM-dd HH:mm')!}</span>
+                                    </li>
+                                </#list>
+                            <#else>
+                                <li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>
+                            </#if>
                         </ul>
                     </div>
                 </div>
@@ -292,10 +301,11 @@
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
                 <p><img src="${staticServer}/images/sign/actor/ranklist/jiaxi-two.png" width="50%"></p>
-                <p>拓天客服将会在7个工作日内联系您发放奖品</p>
+                <p>奖金已发放至“我的宝藏”当中</p>
             </div>
             <div class="btn-list">
-                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
+                <a href="/my-treasure" class="double-btn first-btn">去查看</a>
+                <a href="javascript:void(0)" class="double-btn go-close">继续抽奖</a>
             </div>
         </div>
         <div class="tip-dom td-tip-small" id="jdCard">

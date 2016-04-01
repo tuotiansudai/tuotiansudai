@@ -43,7 +43,7 @@ public interface JPushAlertService {
 
     void autoJPushLoanAlert(long loanId);
 
-    void autoJPushRepayAlert(long loanId);
+    void autoJPushRepayAlert(long loanRepayId);
 
     void autoJPushRechargeAlert(long orderId);
 
