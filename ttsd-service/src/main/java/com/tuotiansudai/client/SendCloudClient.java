@@ -33,8 +33,6 @@ public class SendCloudClient {
     @Value("${common.sendcloud.from}")
     private String sendCloudFrom;
 
-    private static int SEND_MAIL_COUNT = 3;
-
     private Session getMailSession() {
         // 根据属性新建一个邮件会话
         return Session.getInstance(getProperties(), new Authenticator() {
@@ -58,12 +56,13 @@ public class SendCloudClient {
         return props;
     }
 
-    public void sendMailBySendCloud(String toAddress, String title, String content, SendCloudType type) throws UnsupportedEncodingException {
+    public void sendMailBySendCloud(String toAddress, String title, String content, SendCloudType type,int remainCount) throws UnsupportedEncodingException {
+
+
         try {
-            if(SEND_MAIL_COUNT <= 0){
+            if(remainCount <= 0){
                 return;
             }
-            SEND_MAIL_COUNT --;
             Session mailSession = getMailSession();
             SMTPTransport transport = null;
 
@@ -91,8 +90,7 @@ public class SendCloudClient {
             transport.sendMessage(message, message.getRecipients(Message.RecipientType.TO));
             transport.close();
         }catch (MessagingException e){
-            logger.error(e.getLocalizedMessage(),e);
-            this.sendMailBySendCloud(toAddress,title,content,type);
+            this.sendMailBySendCloud(toAddress,title,content,type,--remainCount);
         }
 
     }
