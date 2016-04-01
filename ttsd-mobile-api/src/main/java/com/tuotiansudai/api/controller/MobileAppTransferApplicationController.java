@@ -53,4 +53,10 @@ public class MobileAppTransferApplicationController extends MobileAppBaseControl
         }
     }
 
+    @RequestMapping(value = "/get/transfer-cancel", method = RequestMethod.POST)
+    public BaseResponseDto transferApplicationCancel(@RequestBody TransferCancelRequestDto requestDto) {
+        requestDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppTransferApplicationService.transferApplicationCancel(requestDto);
+    }
+
 }

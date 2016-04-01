@@ -116,6 +116,7 @@ public enum ReturnMessage {
     WITHDRAW_AMOUNT_NOT_REACH_FEE("0070","提现金额需大于手续费"),
 
     TRANSFER_APPLY_IS_FAIL("0073","债权转让失败"),
+    TRANSFER_CANCEL_IS_FAIL("0074","债权转让取消失败"),
 
     /******意见反馈******/
     FEEDBACK_CAN_NOT_BE_EMPTY("0080", "内容不能为空"),
