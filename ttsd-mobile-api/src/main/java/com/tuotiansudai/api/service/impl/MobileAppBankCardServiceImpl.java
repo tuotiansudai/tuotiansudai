@@ -49,6 +49,11 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
         BaseResponseDto baseDto = new BaseResponseDto();
         try {
             BindBankCardDto bindBankCardDto = requestDto.convertToBindBankCardDto();
+            String loginName = requestDto.getBaseParam().getUserId();
+            AccountModel accountModel = accountMapper.findByLoginName(loginName);
+            if(accountModel == null){
+                return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(),ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
+            }
             BaseDto<PayFormDataDto> requestFormData = bindBankCardService.bindBankCard(bindBankCardDto);
             if(requestFormData.isSuccess()) {
                 PayFormDataDto formData = requestFormData.getData();
