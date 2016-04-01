@@ -18,6 +18,7 @@ import com.tuotiansudai.util.AmountTransfer;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 
@@ -39,6 +40,7 @@ public class TransferCashServiceImpl implements TransferCashService{
     private SystemBillService systemBillService;
 
     @Override
+    @Transactional
     public BaseDto<PayDataDto> transferCash(TransferCashDto transferCashDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();

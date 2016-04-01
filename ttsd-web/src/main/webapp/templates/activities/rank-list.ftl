@@ -29,7 +29,7 @@
                 <ul>
                     <li>
                         <p>
-                            <span class="project-name">我的天豆：<strong class="my-td-bean">${myTianDou!0}</strong></span>
+                            <span class="project-name">我的天豆：<strong class="my-td-bean">${myTianDou?c}</strong></span>
                             <a href="javascript:void(0)" class="project-operate" id="myTD">去抽奖</a>
                         </p>
                     </li>
@@ -149,7 +149,7 @@
                     <a href="#" class="share-icon icon-weibo" data-cmd="tsina"></a>
                     <a href="#" class="share-icon icon-weixin" data-cmd="weixin"></a>
                     <a href="#" class="share-icon icon-zone" data-cmd="qzone"></a>
-                    <span class="share-text">分享可增加一次财豆抽奖机会！</span>
+                    <!-- <span class="share-text">分享可增加一次财豆抽奖机会！</span> -->
                 </p>
             </div>
         </ul>
@@ -157,7 +157,7 @@
             <div class="leader-list active">
                 <div class="lottery-circle">
                     <h3 class="td-list">
-                        <span class="td-total">我的天豆：<strong class="my-td-bean">${myTianDou!0}</strong></span>
+                        <span class="td-total">我的天豆：<strong class="my-td-bean">${myTianDou?c}</strong></span>
                         <span class="td-tip">每次抽奖将消耗 1000 天豆</span>
                     </h3>
 
@@ -173,8 +173,13 @@
                 </div>
                 <div class="lottery-detail">
                     <ul class="gift-record" id="tdChangeBtn">
-                        <li class="active">中奖纪录</li>
-                        <li>我的奖品</li>
+                        <@global.isAnonymous>
+                            <li class="active" style="width:336px;">中奖纪录</li>
+                        </@global.isAnonymous>
+                        <@global.isNotAnonymous>
+                            <li class="active">中奖纪录</li>
+                            <li>我的奖品</li>
+                        </@global.isNotAnonymous>
                     </ul>
                     <div class="record-list" id="recordList">
                         <ul class="record-model user-record active">
@@ -201,9 +206,9 @@
             </div>
             <div class="leader-list">
                 <div class="lottery-circle">
-                    <h3 class="td-list">
-                        <span class="td-total">我的财豆：<strong class="my-cd-bean">${myPoint?string('0')!}</strong></span>
-                        <span class="td-tip">每次抽奖将消耗1000财豆，每天限抽一次。</span>
+                    <h3 class="td-list share-num">
+                        <span class="td-total">我的财豆：<strong class="my-cd-bean">${myPoint?c}</strong></span>
+                        <span class="td-tip">每次抽奖将消耗1000财豆，每天限抽一次。(分享可增加一次财豆抽奖机会！)</span>
                     </h3>
 
                     <div class="circle-shade">
@@ -218,8 +223,13 @@
                 </div>
                 <div class="lottery-detail">
                     <ul class="gift-record" id="cdChangeBtn">
-                        <li class="active">中奖纪录</li>
-                        <li>我的奖品</li>
+                        <@global.isAnonymous>
+                            <li class="active" style="width:336px;">中奖纪录</li>
+                        </@global.isAnonymous>
+                        <@global.isNotAnonymous>
+                            <li class="active">中奖纪录</li>
+                            <li>我的奖品</li>
+                        </@global.isNotAnonymous>
                     </ul>
                     <div class="record-list scroll-record" id="beanList">
                         <ul class="record-model user-record  active">
@@ -281,7 +291,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/images/sign/actor/ranklist/jdcard.png" width="50%"></p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/jiaxi-two.png" width="50%"></p>
                 <p>拓天客服将会在7个工作日内联系您发放奖品</p>
             </div>
             <div class="btn-list">
@@ -292,7 +302,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/images/sign/actor/ranklist/20rmb.png" width="50%"></p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/jdcard.png" width="50%"></p>
                 <p>拓天客服将会在7个工作日内联系您发放奖品</p>
             </div>
             <div class="btn-list">
@@ -303,7 +313,7 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/images/sign/actor/ranklist/jiaxi-two.png" width="50%"></p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/20rmb.png" width="50%"></p>
                 <p>拓天客服将会在7个工作日内联系您发放奖品</p>
             </div>
             <div class="btn-list">
@@ -323,11 +333,11 @@
         <div class="tip-dom td-tip-thank" id="noLogin">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
-                <p>您还未登陆，</p>
-                <p>请登录过再来抽奖吧！</p>
+                <p>您还未登录，</p>
+                <p>请登录后再来抽奖吧！</p>
             </div>
             <div class="btn-list">
-                <a href="/login" class="go-on">去登录</a>
+                <a href="/login?redirect=/activity/rank-list" class="go-on">去登录</a>
             </div>
         </div>
         <div class="tip-dom td-tip-thank" id="NoCdbean">

@@ -2,6 +2,9 @@
   width: 100% !important;
   margin: 0;
 }
+.bd_weixin_popup{
+  height:275px!important;
+}
 .footer-container {
   margin-top: 0;
 }
@@ -638,7 +641,7 @@
             span{
               &.project-name{
                 float:left;
-                width:200px;
+                width:210px;
                 margin-left:120px;
                 font-size:22px;
                 color:#ffedbc;
@@ -841,7 +844,7 @@
       }
       .share-list{
         float:right;
-        width:410px;
+        width:210px;
         margin-top:10px;
         p{
           float:left;
@@ -1091,6 +1094,9 @@
             float:left;
             width:600px;
             margin:40px 0 30px 30px;
+            &.share-num{
+              width:900px!important;
+            }
             span{
               color:#ffedbc;
               &.td-total{
