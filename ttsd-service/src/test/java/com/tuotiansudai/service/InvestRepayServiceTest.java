@@ -24,6 +24,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
@@ -151,27 +154,27 @@ public class InvestRepayServiceTest {
 
     @Test
     public void investRepayAmount() {
-        Date startTime = new DateTime().dayOfMonth().withMinimumValue().toDate();
+        Date startTime = new DateTime().withTimeAtStartOfDay().dayOfMonth().withMinimumValue().toDate();
         Date endTime = DateUtils.addMonths(startTime, 1);
         long notSuccessInvestRepay = investRepayService.findByLoginNameAndTimeAndNotSuccessInvestRepay("testuser123",startTime,endTime);
-        assert notSuccessInvestRepay == 400;
+        assertThat(notSuccessInvestRepay, is(400L));
 
         long successInvestRepay = investRepayService.findByLoginNameAndTimeAndSuccessInvestRepay("testuser123",startTime,endTime);
-        assert successInvestRepay == 200;
+        assertThat(successInvestRepay, is(200L));
     }
 
     @Test
     public void investRepayList() {
-        Date startTime = new DateTime().dayOfMonth().withMinimumValue().toDate();
+        Date startTime = new DateTime().withTimeAtStartOfDay().dayOfMonth().withMinimumValue().toDate();
         Date endTime = DateUtils.addMonths(startTime, 1);
         List<InvestRepayDataItemDto> investRepayModels = investRepayService.findByLoginNameAndTimeNotSuccessInvestRepayList("testuser123", startTime, endTime, 0, 6);
-        assert investRepayModels.size() == 2;
+        assertThat(investRepayModels.size(), is(2));
 
         List<InvestRepayDataItemDto> investRepayModelList = investRepayService.findByLoginNameAndTimeSuccessInvestRepayList("testuser123", startTime, endTime, 0, 6);
-        assert investRepayModelList.size() == 1;
+        assertThat(investRepayModelList.size(), is(1));
 
         List<LatestInvestView> latestInvestViews = investRepayService.findLatestInvestByLoginName("testuser123", 0, 4);
-        assert latestInvestViews.size() == 2;
-        assert latestInvestViews.get(0).getCorpus() == 100;
+        assertThat(latestInvestViews.size(), is(2));
+        assertThat(latestInvestViews.get(0).getCorpus(), is(100L));
     }
 }
