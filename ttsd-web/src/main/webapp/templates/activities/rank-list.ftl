@@ -442,9 +442,9 @@
         <img src="${staticServer}/images/sign/actor/ranklist/top-title.png" width="100%">
     </div>
     <div class="rank-phone-intro">
-        <img src="${staticServer}/images/sign/actor/ranklist/actor-intro.png" width="100%" class="actor-intro">
+        <img src="${staticServer}/images/sign/actor/ranklist/actor-intro-app.png" width="100%" class="actor-intro">
         <img src="${staticServer}/images/sign/actor/ranklist/bean-circle.png" width="100%" class="bean-circle">
-        <img src="${staticServer}/images/sign/actor/ranklist/share-btn.png" width="100%" class="share-btn">
+        <img src="${staticServer}/images/sign/actor/ranklist/share-button.png" width="100%" class="share-btn">
         <img src="${staticServer}/images/sign/actor/ranklist/share-intro.png" width="100%" class="share-intro">
     </div>
     <dl class="actor-rule">
