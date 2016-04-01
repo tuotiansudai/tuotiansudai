@@ -8,6 +8,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.job.*;
+import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.repository.mapper.InvestReferrerRewardMapper;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
@@ -55,6 +56,9 @@ public class JPushAmountNotifyAspect {
 
     @Autowired
     private RechargeMapper rechargeMapper;
+
+    @Autowired
+    private JPushAlertService jPushAlertService;
 
     @Autowired
     private WithdrawMapper withdrawMapper;
@@ -148,7 +152,7 @@ public class JPushAmountNotifyAspect {
         BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
         try {
             if(baseDto.isSuccess()){
-                createAutoJPushLotteryObtainCashAlertJob(transferCashDto);
+                jPushAlertService.autoJPushLotteryLotteryObtainCashAlert(transferCashDto);
             }
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
@@ -228,21 +232,6 @@ public class JPushAmountNotifyAspect {
                     .submit();
         } catch (SchedulerException e) {
             logger.error("create send AutoJPushReferrerRewardAlert job for orderId[" + orderId + "] fail", e);
-        }
-    }
-
-    private void createAutoJPushLotteryObtainCashAlertJob(TransferCashDto transferCashDto) {
-        try {
-            Date triggerTime = new DateTime().plusMinutes(AutoJPushLotteryObtainCashAlertJob.JPUSH_ALERT_LOTTERY_OBTAIN_CASH_DELAY_MINUTES)
-                    .toDate();
-            jobManager.newJob(JobType.AutoJPushLotteryObtainCashAlert, AutoJPushLotteryObtainCashAlertJob.class)
-                    .addJobData(AutoJPushLotteryObtainCashAlertJob.LOTTERY_OBTAIN_CASH_ID_KEY, transferCashDto)
-                    .withIdentity(JobType.AutoJPushLotteryObtainCashAlert.name(), formatMessage(LOTTERYOBTAINCASH, String.valueOf(transferCashDto.getOrderId())))
-                    .runOnceAt(triggerTime)
-                    .replaceExistingJob(true)
-                    .submit();
-        } catch (SchedulerException e) {
-            logger.error("create send AutoJPushLotteryObtainCashAlert job for orderId[" + transferCashDto.getOrderId() + "] fail", e);
         }
     }
 
