@@ -54,8 +54,6 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldGenerateInvestListIsOk() {
-
-        ReflectionTestUtils.setField(mobileAppInvestListService, "showRandomLoginNameList", new ArrayList<String>(){});
         InvestModel investModel1 = new InvestModel();
         investModel1.setAmount(1000000L);
         investModel1.setCreatedTime(new Date());
@@ -96,7 +94,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
         when(investMapper.findCountByStatus(anyLong(), any(InvestStatus.class))).thenReturn(3L);
 
-        when(loanService.encryptLoginName(anyString(),anyList(),anyString(),anyInt(),anyLong())).thenReturn("log***");
+        when(loanService.encryptLoginName(anyString(), anyString(), anyInt(), anyLong())).thenReturn("log***");
 
         InvestListRequestDto investListRequestDto = new InvestListRequestDto();
         BaseParam baseParam = new BaseParam();

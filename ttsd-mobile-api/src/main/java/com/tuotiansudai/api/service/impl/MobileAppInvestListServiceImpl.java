@@ -30,8 +30,6 @@ import java.util.Map;
 @Service
 public class MobileAppInvestListServiceImpl implements MobileAppInvestListService {
 
-    private static String redisKeyTemplate = "mobile:{0}:showinvestorname";
-
     @Autowired
     private InvestService investService;
 
@@ -46,12 +44,6 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
 
     @Autowired
     private LoanMapper loanMapper;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    @Value("#{'${web.random.investor.list}'.split('\\|')}")
-    private List<String> showRandomLoginNameList;
 
     @Override
     public BaseResponseDto generateInvestList(InvestListRequestDto investListRequestDto) {
@@ -76,7 +68,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
             investRecordResponseDataDto = Lists.transform(investModels, new Function<InvestModel, InvestRecordResponseDataDto>() {
                 @Override
                 public InvestRecordResponseDataDto apply(InvestModel input) {
-                    input.setLoginName(loanService.encryptLoginName(loginName, showRandomLoginNameList, input.getLoginName(), 3, input.getId()));
+                    input.setLoginName(loanService.encryptLoginName(loginName, input.getLoginName(), 3, input.getId()));
                     return new InvestRecordResponseDataDto(input);
                 }
             });

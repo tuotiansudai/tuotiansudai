@@ -40,7 +40,7 @@ public class LoanServiceImpl implements LoanService {
 
     static Logger logger = Logger.getLogger(LoanServiceImpl.class);
 
-    private static String redisKeyTemplate = "webmobile:{0}:showinvestorname";
+    private final static String REDIS_KEY_TEMPLATE = "webmobile:{0}:{1}:showinvestorname";
 
     @Autowired
     private LoanTitleMapper loanTitleMapper;
@@ -447,7 +447,7 @@ public class LoanServiceImpl implements LoanService {
                 @Override
                 public InvestPaginationItemDto apply(InvestModel input) {
                     InvestPaginationItemDto item = new InvestPaginationItemDto();
-                    item.setLoginName(encryptLoginName(loginName, showRandomLoginNameList, input.getLoginName(), 6, input.getId()));
+                    item.setLoginName(encryptLoginName(loginName, input.getLoginName(), 6, input.getId()));
                     item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
                     item.setSource(input.getSource());
                     item.setAutoInvest(input.isAutoInvest());
@@ -476,28 +476,20 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public String encryptLoginName(String loginName, List<String> showLoginNameList, String recordsLoginName, int showLength, long invest_id){
-
-        String redisKey = MessageFormat.format(redisKeyTemplate, invest_id + "_" + recordsLoginName);
-        String encryptLoginName;
-        String showRecordsLoginName = recordsLoginName.substring(0, 3) + RandomUtils.showChar(showLength);
-        String showRandomLoginName = RandomUtils.generateLowerString(3) + RandomUtils.showChar(showLength);
-        if (Strings.isNullOrEmpty(loginName)) {
-            if (showLoginNameList.contains(recordsLoginName)) {
-                encryptLoginName = redisWrapperClient.exists(redisKey)?redisWrapperClient.get(redisKey):showRandomLoginName;
-                redisWrapperClient.set(redisKey, redisWrapperClient.exists(redisKey)?redisWrapperClient.get(redisKey):showRandomLoginName);
-            } else {
-                encryptLoginName = showRecordsLoginName;
-            }
-        } else {
-            if (showRandomLoginNameList.contains(recordsLoginName) && !loginName.equalsIgnoreCase(recordsLoginName)) {
-                encryptLoginName = redisWrapperClient.exists(redisKey)?redisWrapperClient.get(redisKey):showRandomLoginName;
-                redisWrapperClient.set(redisKey, redisWrapperClient.exists(redisKey)?redisWrapperClient.get(redisKey):showRandomLoginName);
-            } else {
-                encryptLoginName = loginName.equalsIgnoreCase(recordsLoginName)?recordsLoginName:showRecordsLoginName;
-            }
+    public String encryptLoginName(String loginName, String investorLoginName, int showLength, long investId) {
+        if (investorLoginName.equalsIgnoreCase(loginName)) {
+            return investorLoginName;
         }
-        return encryptLoginName;
+
+        String redisKey = MessageFormat.format(REDIS_KEY_TEMPLATE, String.valueOf(investId), investorLoginName);
+
+        if (showRandomLoginNameList.contains(investorLoginName) && !redisWrapperClient.exists(redisKey)) {
+            redisWrapperClient.set(redisKey, RandomUtils.generateLowerString(3) + RandomUtils.showChar(showLength));
+        }
+
+        String encryptLoginName = investorLoginName.substring(0, 3) + RandomUtils.showChar(showLength);
+
+        return redisWrapperClient.exists(redisKey) ? redisWrapperClient.get(redisKey) :encryptLoginName;
     }
 
     @Override
@@ -720,7 +712,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public BaseDto<PayDataDto> applyAuditLoan(LoanDto loanDto){
+    public BaseDto<PayDataDto> applyAuditLoan(LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
