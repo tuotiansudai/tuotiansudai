@@ -194,12 +194,16 @@
                             </#list>
                         </ul>
                         <ul class="record-model own-record">
-                            <#list myPrizeList as myPrize>
-                                <li>
-                                    <span class="award-name">${myPrize.prize.getName()}</span>
-                                    <span class="award-time">${myPrize.time}</span>
-                                </li>
-                            </#list>
+                            <#if myPrizeList?has_content>
+                                <#list myPrizeList as myPrize>
+                                    <li>
+                                        <span class="award-name">${myPrize.prize.getName()}</span>
+                                        <span class="award-time">${myPrize.time}</span>
+                                    </li>
+                                </#list>
+                            <#else>
+                                <li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>
+                            </#if>
                         </ul>
                     </div>
                 </div>
@@ -238,12 +242,17 @@
                             </#list>
                         </ul>
                         <ul class="record-model own-record">
-                            <#list myPointLotteries as myPointLottery>
-                                <li>
-                                    <span class="award-name">${myPointLottery.pointPrizeName!}</span>
-                                    <span class="award-time">${myPointLottery.createTime?string('yyyy-MM-dd HH:mm')!}</span>
-                                </li>
-                            </#list>
+
+                            <#if myPointLotteries?has_content>
+                                <#list myPointLotteries as myPointLottery>
+                                    <li>
+                                        <span class="award-name">${myPointLottery.pointPrizeName!}</span>
+                                        <span class="award-time">${myPointLottery.createTime?string('yyyy-MM-dd HH:mm')!}</span>
+                                    </li>
+                                </#list>
+                            <#else>
+                                <li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>
+                            </#if>
                         </ul>
                     </div>
                 </div>

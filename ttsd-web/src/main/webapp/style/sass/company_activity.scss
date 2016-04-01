@@ -2,9 +2,6 @@
   width: 100% !important;
   margin: 0;
 }
-.bd_weixin_popup{
-  height:275px!important;
-}
 .footer-container {
   margin-top: 0;
 }
@@ -1202,6 +1199,10 @@
                 li{
                   float:left;
                   width:100%;
+                  &.empty-text{
+                    text-align:center;
+                    line-height:480px;
+                  }
                   span{
                     float:left;
                     font-size:13px;
