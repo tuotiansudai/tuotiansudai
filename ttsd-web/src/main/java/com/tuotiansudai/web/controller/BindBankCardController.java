@@ -54,7 +54,6 @@ public class BindBankCardController {
     public ModelAndView bindBankCard(@Valid @ModelAttribute BindBankCardDto bindBankCardDto) {
         String loginName = LoginUserInfo.getLoginName();
         AccountModel accountModel = accountService.findByLoginName(loginName);
-        bindBankCardDto.setLoginName(loginName);
         BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
         if(accountModel == null){
             PayFormDataDto payFormDataDto = new PayFormDataDto();
@@ -62,6 +61,7 @@ public class BindBankCardController {
             payFormDataDto.setStatus(false);
             baseDto.setData(payFormDataDto);
         }else{
+            bindBankCardDto.setLoginName(loginName);
             baseDto = bindBankCardService.bindBankCard(bindBankCardDto);
         }
         ModelAndView view = new ModelAndView("/pay");
