@@ -21,7 +21,8 @@ public enum UserBillBusinessType {
     INTEREST_COUPON("加息优惠券"),
     BIRTHDAY_COUPON("生日福利"),
     RED_ENVELOPE("现金红包"),
-    SYSTEM_RECHARGE("平台充值");
+    SYSTEM_RECHARGE("平台充值"),
+    LOTTERY_CASH("抽奖现金");
 
     private final String description;
 

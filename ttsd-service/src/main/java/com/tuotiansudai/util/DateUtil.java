@@ -1,6 +1,8 @@
 package com.tuotiansudai.util;
 
 import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class DateUtil {
 
@@ -12,6 +14,19 @@ public class DateUtil {
             minutes = (time2 - time1) / (1000 * 60 * 60 * 24);
         }
         return minutes;
+    }
+
+    public static int differenceSeconds(String date1, String date2) {
+        SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date begin = null;
+        Date end = null;
+        try {
+            begin = dfs.parse(date1);
+            end = dfs.parse(date2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return (int)(end.getTime() - begin.getTime()) / 1000;
     }
 
 }

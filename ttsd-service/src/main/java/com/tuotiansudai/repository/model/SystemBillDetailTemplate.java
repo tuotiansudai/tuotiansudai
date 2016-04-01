@@ -16,7 +16,9 @@ public enum SystemBillDetailTemplate {
 
     COUPON_RED_ENVELOPE_DETAIL_TEMPLATE("{0}(userCouponId={1}), 放款(loanId={2}), 发放红包({3}分)"),
 
-    PUBLIC_RECHARGE_DETAIL_TEMPLATE("标的代理人({0}), 企业充值({1}分 rechargeId={2})");
+    PUBLIC_RECHARGE_DETAIL_TEMPLATE("标的代理人({0}), 企业充值({1}分 rechargeId={2})"),
+
+    LOTTERY_CASH_DETAIL_TEMPLATE("用户{0}抽奖,抽到现金{1}分");
 
     private final String template;
 

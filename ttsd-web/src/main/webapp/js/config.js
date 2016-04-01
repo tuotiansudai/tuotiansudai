@@ -1,4 +1,5 @@
 var require = {
+    'baseUrl': staticServer,
     'paths': {
         'text': staticServer + '/js/libs/text-2.0.14',
         'jquery': staticServer + '/js/libs/jquery-1.11.3.min',
@@ -26,7 +27,9 @@ var require = {
         'coupon-alert': staticServer+'/js/dest/coupon_alert.min',
         'cnzz-statistics': staticServer+'/js/dest/cnzz_statistics.min',
         'red-envelope-float': staticServer+'/js/dest/red-envelope-float.min',
-        'drag': staticServer+'/js/libs/drag'
+        'drag': staticServer+'/js/libs/drag',
+        'rotate': staticServer+'/js/libs/jqueryrotate.min',
+        'template':staticServer+'/js/libs/template.min'
     },
     'waitSeconds':0,
     'shim': {
@@ -43,7 +46,16 @@ var require = {
         'fullPage': ['jquery'],
         'swiper':['jquery'],
         'load-swiper':['swiper'],
-        'drag':['jquery']
+        'drag':['jquery'],
+        'rotate':['jquery']
+    },
+
+    config: {
+        text: {
+            useXhr: function (url, protocol, hostname, port) {
+                return true;
+            }
+        }
     }
 };
 

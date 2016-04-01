@@ -93,6 +93,8 @@
         <intercept-url pattern="/checkLogin" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/no-password-invest/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/invest-success/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/activity/draw-tiandou" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/activity/point-lottery" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/contract/investor/**" access="hasAuthority('INVESTOR')"/>
         <intercept-url pattern="/contract/loaner/**" access="hasAuthority('LOANER')"/>
 

@@ -1,13 +1,13 @@
 package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.dto.InvestRepayDataItemDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -23,10 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -168,10 +164,10 @@ public class InvestRepayServiceTest {
     public void investRepayList() {
         Date startTime = new DateTime().dayOfMonth().withMinimumValue().toDate();
         Date endTime = DateUtils.addMonths(startTime, 1);
-        List<InvestRepayModel> investRepayModels = investRepayService.findByLoginNameAndTimeNotSuccessInvestRepayList("testuser123", startTime, endTime, 0, 6);
+        List<InvestRepayDataItemDto> investRepayModels = investRepayService.findByLoginNameAndTimeNotSuccessInvestRepayList("testuser123", startTime, endTime, 0, 6);
         assert investRepayModels.size() == 2;
 
-        List<InvestRepayModel> investRepayModelList = investRepayService.findByLoginNameAndTimeSuccessInvestRepayList("testuser123", startTime, endTime, 0, 6);
+        List<InvestRepayDataItemDto> investRepayModelList = investRepayService.findByLoginNameAndTimeSuccessInvestRepayList("testuser123", startTime, endTime, 0, 6);
         assert investRepayModelList.size() == 1;
 
         List<LatestInvestView> latestInvestViews = investRepayService.findLatestInvestByLoginName("testuser123", 0, 4);

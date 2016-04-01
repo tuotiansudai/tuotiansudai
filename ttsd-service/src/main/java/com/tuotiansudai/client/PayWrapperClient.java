@@ -59,6 +59,12 @@ public class PayWrapperClient extends BaseClient {
 
     private String noPasswordInvestPath = "/no-password-invest";
 
+    private String transferCashPath = "/transfer-cash";
+
+    public BaseDto<PayDataDto> transferCash(TransferCashDto transferCashDto) {
+        return syncExecute(transferCashDto, transferCashPath, "POST");
+    }
+
     public boolean resetUmpayPassword(ResetUmpayPasswordDto resetUmpayPasswordDto) {
         BaseDto<PayDataDto> baseDto = syncExecute(resetUmpayPasswordDto, resetUmpayPassword, "POST");
         return baseDto.isSuccess();
@@ -281,6 +287,7 @@ public class PayWrapperClient extends BaseClient {
     }
 
     public BaseDto<PayDataDto> sendRedEnvelopeAfterLoanOut(long loanId){
-        return syncExecute(String.valueOf(loanId), "/job/sed-red-envelope-after-loan-out", "POST");
+        return syncExecute(String.valueOf(loanId), "/job/send-red-envelope-after-loan-out", "POST");
     }
+
 }
