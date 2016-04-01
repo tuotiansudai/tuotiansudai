@@ -90,6 +90,9 @@
         <intercept-url pattern="/my-treasure/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/point/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
+        <intercept-url pattern="/activity/draw-tiandou" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/activity/point-lottery" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+
 
         <intercept-url pattern="/contract/investor/**" access="hasAuthority('INVESTOR')"/>
         <intercept-url pattern="/contract/loaner/**" access="hasAuthority('LOANER')"/>
