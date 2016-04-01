@@ -165,5 +165,5 @@ public interface InvestMapper {
 
     Set<String> findNoInvestInThirtyDay();
 
-    InvestModel findLatestSuccessInvest();
+    InvestModel findLatestSuccessInvest(@Param(value = "loginName")String loginName);
 }

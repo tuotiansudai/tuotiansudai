@@ -79,7 +79,7 @@ public class InvestController {
         }
     }
 
-    @RequestMapping(path = "/invest-success", method = RequestMethod.POST)
+    @RequestMapping(path = "/invest-success", method = RequestMethod.GET)
     public ModelAndView investSuccess() {
         String loginName = LoginUserInfo.getLoginName();
         InvestModel latestSuccessInvest = investService.findLatestSuccessInvest(loginName);
@@ -87,7 +87,7 @@ public class InvestController {
             return new ModelAndView("/error/404");
         }
 
-        ModelAndView modelAndView = new ModelAndView("/invest-success");
+        ModelAndView modelAndView = new ModelAndView("/invest-success", "responsive", true);
 
         return modelAndView;
     }
