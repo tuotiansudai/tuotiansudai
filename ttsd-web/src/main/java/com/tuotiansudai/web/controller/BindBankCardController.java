@@ -3,6 +3,7 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BindBankCardService;
@@ -51,8 +52,18 @@ public class BindBankCardController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView bindBankCard(@Valid @ModelAttribute BindBankCardDto bindBankCardDto) {
-        bindBankCardDto.setLoginName(LoginUserInfo.getLoginName());
-        BaseDto<PayFormDataDto> baseDto = bindBankCardService.bindBankCard(bindBankCardDto);
+        String loginName = LoginUserInfo.getLoginName();
+        AccountModel accountModel = accountService.findByLoginName(loginName);
+        bindBankCardDto.setLoginName(loginName);
+        BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
+        if(accountModel == null){
+            PayFormDataDto payFormDataDto = new PayFormDataDto();
+            payFormDataDto.setMessage("您尚未进行实名认证");
+            payFormDataDto.setStatus(false);
+            baseDto.setData(payFormDataDto);
+        }else{
+            baseDto = bindBankCardService.bindBankCard(bindBankCardDto);
+        }
         ModelAndView view = new ModelAndView("/pay");
         view.addObject("pay", baseDto);
         return view;
