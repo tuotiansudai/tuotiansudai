@@ -235,12 +235,6 @@ require(['jquery','rotate','layerWrapper', 'jquery.validate', 'jquery.validate.e
                     url: '/activity/get-lottery-chance',
                     type: 'POST',
                     dataType: 'json'
-                })
-                .done(function(data) {
-                    // layer.msg("分享成功,增加一次抽奖机会成功");
-                })
-                .fail(function(data) {
-                    // layer.msg("请求失败");
                 });
 			}
 		},
