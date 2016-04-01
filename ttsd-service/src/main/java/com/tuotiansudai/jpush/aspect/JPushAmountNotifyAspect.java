@@ -82,9 +82,9 @@ public class JPushAmountNotifyAspect {
     public void afterReturningPostRepayCallback(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after repay pointcut");
         try {
-            long LoanId = (long)joinPoint.getArgs()[0];
+            long LoanRepayId = (long)joinPoint.getArgs()[0];
             if((boolean)returnValue){
-                createAutoJPushRepayAlertJob(LoanId);
+                createAutoJPushRepayAlertJob(LoanRepayId);
             }
         } catch (Exception e) {
             logger.error("after repay aspect fail ", e);
@@ -160,18 +160,18 @@ public class JPushAmountNotifyAspect {
         logger.debug("after returning transferCash assign completed");
     }
 
-    private void createAutoJPushRepayAlertJob(long loanId) {
+    private void createAutoJPushRepayAlertJob(long LoanRepayId) {
         try {
             Date triggerTime = new DateTime().plusMinutes(AutoJPushRepayAlertJob.JPUSH_ALERT_REPAY_DELAY_MINUTES)
                     .toDate();
             jobManager.newJob(JobType.AutoJPushRepayAlert, AutoJPushRepayAlertJob.class)
-                    .addJobData(AutoJPushRepayAlertJob.REPAY_ID_KEY, String.valueOf(loanId))
-                    .withIdentity(JobType.AutoJPushRepayAlert.name(), formatMessage(REPAY, loanId))
+                    .addJobData(AutoJPushRepayAlertJob.REPAY_ID_KEY, LoanRepayId)
+                    .withIdentity(JobType.AutoJPushRepayAlert.name(), formatMessage(REPAY, LoanRepayId))
                     .runOnceAt(triggerTime)
                     .replaceExistingJob(true)
                     .submit();
         } catch (SchedulerException e) {
-            logger.error("create send AutoJPushRepayAlert job for loan[" + loanId + "] fail", e);
+            logger.error("create send AutoJPushRepayAlert job for loanRepayId[" + LoanRepayId + "] fail", e);
         }
     }
 
