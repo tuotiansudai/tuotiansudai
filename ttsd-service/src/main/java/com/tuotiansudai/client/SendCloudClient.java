@@ -61,6 +61,7 @@ public class SendCloudClient {
 
         try {
             if(remainCount <= 0){
+                logger.debug("send cloud is fail 3s");
                 return;
             }
             Session mailSession = getMailSession();
