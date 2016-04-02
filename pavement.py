@@ -207,6 +207,7 @@ def replace_versioned_config_file(name2path, path):
             content = config_file.read()
             for key, value in name2path.items():
                 content = re.sub(key, value, content)
+            config_file.seek(0)
             config_file.write(content)
     except IOError as e:
         print e
