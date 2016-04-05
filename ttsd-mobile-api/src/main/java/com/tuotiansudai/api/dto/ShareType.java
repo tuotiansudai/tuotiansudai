@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.dto;
 
-public enum  ShareType {
+
+public enum ShareType {
     BANNER,
     LOAN,
     QR_CODE;

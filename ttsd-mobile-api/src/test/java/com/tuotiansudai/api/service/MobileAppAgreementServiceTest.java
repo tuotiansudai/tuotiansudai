@@ -1,11 +1,9 @@
 package com.tuotiansudai.api.service;
 
-import com.tuotiansudai.api.dto.AgreementOperateRequestDto;
-import com.tuotiansudai.api.dto.AgreementOperateResponseDataDto;
-import com.tuotiansudai.api.dto.BaseParamTest;
-import com.tuotiansudai.api.dto.BaseResponseDto;
+import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.impl.MobileAppAgreementServiceImpl;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.dto.AgreementBusinessType;
 import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -37,8 +35,7 @@ public class MobileAppAgreementServiceTest extends ServiceTestBase{
     @Test
     public void shouldGenerateAgreementRequestIsOk() {
         AgreementOperateRequestDto agreementOperateRequestDto = new AgreementOperateRequestDto();
-        agreementOperateRequestDto.setFastPay(false);
-        agreementOperateRequestDto.setAutoInvest(true);
+        agreementOperateRequestDto.setType(AgreementBusinessType.AUTO_INVEST);
         agreementOperateRequestDto.setBaseParam(BaseParamTest.getInstance());
 
         BaseDto<PayFormDataDto> formDto = new BaseDto<>();

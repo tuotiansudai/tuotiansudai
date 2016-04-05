@@ -111,7 +111,7 @@ public class InvestServiceTest {
     public void shouldCreateAutoInvestPlanAndTurnOff(){
         String loginName = "testuser";
 
-        AutoInvestPlanModel model = investService.findUserAutoInvestPlan(loginName);
+        AutoInvestPlanModel model = investService.findAutoInvestPlan(loginName);
         assert model == null;
 
         AutoInvestPlanModel newModel = new AutoInvestPlanModel();
@@ -126,21 +126,21 @@ public class InvestServiceTest {
 
         investService.turnOnAutoInvest(newModel);
 
-        AutoInvestPlanModel dbModel = investService.findUserAutoInvestPlan(loginName);
+        AutoInvestPlanModel dbModel = investService.findAutoInvestPlan(loginName);
         assert dbModel != null;
         assert dbModel.getLoginName().equals(loginName);
         assert dbModel.isEnabled();
 
         investService.turnOffAutoInvest(loginName);
 
-        dbModel = investService.findUserAutoInvestPlan(loginName);
+        dbModel = investService.findAutoInvestPlan(loginName);
         assert dbModel != null;
         assert dbModel.getLoginName().equals(loginName);
         assert !dbModel.isEnabled();
 
         investService.turnOnAutoInvest(dbModel);
 
-        dbModel = investService.findUserAutoInvestPlan(loginName);
+        dbModel = investService.findAutoInvestPlan(loginName);
         assert dbModel != null;
         assert dbModel.isEnabled();
     }

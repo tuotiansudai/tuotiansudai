@@ -64,7 +64,7 @@ public class InvestorController {
         String loginName = LoginUserInfo.getLoginName();
         AccountModel accountModel = accountService.findByLoginName(loginName);
         if (accountModel.isAutoInvest()) {
-            AutoInvestPlanModel autoInvestPlan = investService.findUserAutoInvestPlan(loginName);
+            AutoInvestPlanModel autoInvestPlan = investService.findAutoInvestPlan(loginName);
             if (autoInvestPlan == null || (!autoInvestPlan.isEnabled())) {
                 return "redirect:/investor/auto-invest/plan";
             } else {
@@ -88,7 +88,7 @@ public class InvestorController {
 
     @RequestMapping(value = "/auto-invest/plan", method = RequestMethod.GET)
     public ModelAndView autoInvestPlan() {
-        AutoInvestPlanModel model = investService.findUserAutoInvestPlan(LoginUserInfo.getLoginName());
+        AutoInvestPlanModel model = investService.findAutoInvestPlan(LoginUserInfo.getLoginName());
         ModelAndView mv = new ModelAndView("/auto-invest-plan");
         if (model != null) {
             AutoInvestPlanDto dto = new AutoInvestPlanDto(model);
@@ -100,7 +100,7 @@ public class InvestorController {
 
     @RequestMapping(value = "/auto-invest/plan-detail", method = RequestMethod.GET)
     public ModelAndView autoInvestPlanDetail() {
-        AutoInvestPlanModel model = investService.findUserAutoInvestPlan(LoginUserInfo.getLoginName());
+        AutoInvestPlanModel model = investService.findAutoInvestPlan(LoginUserInfo.getLoginName());
         if (model != null && model.isEnabled()) {
             ModelAndView mv = new ModelAndView("/auto-invest-plan-detail");
             AutoInvestPlanDto dto = new AutoInvestPlanDto(model);
