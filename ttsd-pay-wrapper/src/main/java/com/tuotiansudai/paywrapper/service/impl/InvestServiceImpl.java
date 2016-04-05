@@ -11,6 +11,7 @@ import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.InvestNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
@@ -28,6 +29,7 @@ import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.*;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -90,6 +92,9 @@ public class InvestServiceImpl implements InvestService {
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
+    private CouponInvestService couponInvestService;
+
+    @Autowired
     private JobManager jobManager;
 
     @Value("${common.environment}")
@@ -129,7 +134,7 @@ public class InvestServiceImpl implements InvestService {
         }
     }
 
-    private BaseDto<PayDataDto> invokeNoPassword(long loanId, long amount, String loginName, Source source) {
+    private BaseDto<PayDataDto> invokeNoPassword(long loanId, long amount, String loginName, Source source, List<Long> userCouponIds) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
@@ -154,6 +159,10 @@ public class InvestServiceImpl implements InvestService {
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setCode(responseModel.getRetCode());
             payDataDto.setMessage(responseModel.getRetMsg());
+
+            if (CollectionUtils.isNotEmpty(userCouponIds)) {
+                couponInvestService.invest(investModel.getId(), userCouponIds);
+            }
         } catch (PayException e) {
             investMapper.updateStatus(investModel.getId(), InvestStatus.FAIL);
             payDataDto.setStatus(false);
@@ -329,7 +338,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     @Transactional
     public BaseDto<PayDataDto> noPasswordInvest(InvestDto dto) {
-        return this.invokeNoPassword(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource());
+        return this.invokeNoPassword(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource(), dto.getUserCouponIds());
     }
 
     @Override
@@ -369,7 +378,7 @@ public class InvestServiceImpl implements InvestService {
                     logger.info("auto invest was skip, because loan amount is not match user's auto-invest setting [" + autoInvestPlanModel.getLoginName() + "] , loanId : " + loanId);
                     continue;
                 }
-                BaseDto<PayDataDto> baseDto = this.invokeNoPassword(loanId, autoInvestAmount, autoInvestPlanModel.getLoginName(), Source.AUTO);
+                BaseDto<PayDataDto> baseDto = this.invokeNoPassword(loanId, autoInvestAmount, autoInvestPlanModel.getLoginName(), Source.AUTO, null);
                 if (!baseDto.isSuccess()) {
                     logger.debug(MessageFormat.format("auto invest failed auto invest plan id is {0} and invest amount is {1} and loanId id {2}", autoInvestPlanModel.getId(), autoInvestAmount, loanId));
                 }

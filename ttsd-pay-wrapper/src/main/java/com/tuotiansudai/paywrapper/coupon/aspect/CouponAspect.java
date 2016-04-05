@@ -68,7 +68,7 @@ public class CouponAspect {
     }
 
     @SuppressWarnings(value = "unchecked")
-    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.InvestService.invest(*)) || execution(* com.tuotiansudai.paywrapper.service.InvestService.noPasswordInvest(*))", returning = "returnValue")
+    @AfterReturning(value = "execution(* com.tuotiansudai.paywrapper.service.InvestService.invest(*))", returning = "returnValue")
     public void afterReturningInvest(JoinPoint joinPoint, Object returnValue) {
         InvestDto investDto = (InvestDto) joinPoint.getArgs()[0];
         BaseDto<PayFormDataDto> baseDto = (BaseDto<PayFormDataDto>) returnValue;
