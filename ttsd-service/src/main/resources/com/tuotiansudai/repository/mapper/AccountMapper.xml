@@ -15,6 +15,7 @@
         <result column="pay_account_id" property="payAccountId"></result>
         <result column="balance" property="balance"></result>
         <result column="freeze" property="freeze"></result>
+        <result column="point" property="point"></result>
         <result column="register_time" property="registerTime"></result>
         <result column="auto_invest" property="autoInvest"></result>
         <result column="auto_repay" property="autoRepay"></result>
@@ -50,7 +51,8 @@
           balance = #{balance},
           freeze = #{freeze},
           auto_invest = #{autoInvest},
-          auto_repay = #{autoRepay}
+          auto_repay = #{autoRepay},
+          point = #{point}
         where login_name = #{loginName}
     </update>
 
@@ -65,6 +67,57 @@
     <select id="findBirthOfAccountInMonth" resultType="java.lang.String">
         select login_name from account where (if(length(identity_number) = 18,substring(identity_number,11,2),substring(identity_number,9,2))) = DATE_FORMAT(now(),'%m')
     </select>
+
+    <select id="findUsersAccountPoint" parameterType="map" resultMap="accountResultMap">
+        SELECT
+        a.*
+        FROM user u
+        JOIN account a ON u.login_name = a.login_name
+        WHERE a.point > 0
+        <if test="loginName != null and loginName != '' ">
+            AND a.login_name = #{loginName}
+        </if>
+        <if test="userName != null and userName != '' ">
+            AND a.user_name = #{userName}
+        </if>
+
+        <if test="mobile != null and mobile != '' ">
+            AND u.mobile = #{mobile}
+        </if>
+        ORDER BY a.point DESC
+        limit #{startLimit}, #{endLimit}
+    </select>
+
+    <select id="findUsersAccountPointCount" parameterType="map" resultType="int">
+        SELECT
+        COUNT(1)
+        FROM user u
+        JOIN account a ON u.login_name = a.login_name
+        WHERE a.point > 0
+        <if test="loginName != null and loginName != '' ">
+            AND a.login_name = #{loginName}
+        </if>
+        <if test="userName != null and userName != '' ">
+            AND a.user_name = #{userName}
+        </if>
+        <if test="mobile != null and mobile != '' ">
+            AND u.mobile = #{mobile}
+        </if>
+    </select>
+
+    <select id="findUsersAccountTotalPoint" parameterType="java.lang.String" resultType="int">
+        SELECT  IFNULL(SUM(point),0) FROM point_bill WHERE point > 0 AND login_name = #{loginName}
+    </select>
+
+    <select id="findUsersAccountAvailablePoint" parameterType="java.lang.String" resultType="int">
+        SELECT  IFNULL(point, 0) FROM account WHERE login_name = #{loginName}
+    </select>
+
+    <update id="updateByLoginName" parameterType="map">
+        UPDATE account SET
+        point = point - #{exchangePoint}
+        WHERE login_name = #{loginName}
+    </update>
 
     <select id="findBirthOfAccountInDay" resultType="java.lang.String">
         select login_name from account where (if(length(identity_number) = 18,substring(identity_number,11,4),substring(identity_number,9,4))) = DATE_FORMAT(now(),'%m%d')

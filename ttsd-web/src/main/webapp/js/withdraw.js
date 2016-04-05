@@ -1,4 +1,4 @@
-require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric'], function ($, layer) {
+require(['jquery', 'layerWrapper', 'jquery.ajax.extension', 'autoNumeric'], function ($, layer) {
     var $withdraw = $('.withdraw'),
         amountInputElement = $(".amount-display", $withdraw),
         submitElement = $('.withdraw-submit', $withdraw),

@@ -22,48 +22,58 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.service, com.tuotiansudai.repository, com.tuotiansudai.client, com.tuotiansudai.security,
-                    com.tuotiansudai.util, com.tuotiansudai.coupon, com.tuotiansudai.jpush,com.tuotiansudai.console, com.tuotiansudai.task.aspect"/>
+    <context:component-scan base-package="com.tuotiansudai.service,com.tuotiansudai.repository,com.tuotiansudai.client,com.tuotiansudai.security,com.tuotiansudai.console.util,
+                    com.tuotiansudai.util,com.tuotiansudai.coupon,com.tuotiansudai.jpush,com.tuotiansudai.console.bi,com.tuotiansudai.point,com.tuotiansudai.task.aspect"/>
 
     <aop:aspectj-autoproxy expose-proxy="true"/>
 
 
-    <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+    <bean id="hikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${common.jdbc.username}"/>
         <property name="password" value="${common.jdbc.password}"/>
-        <property name="minConnectionsPerPartition" value="${console.aa.minConnectionsPerPartition}"/>
-        <property name="maxConnectionsPerPartition" value="${console.aa.maxConnectionsPerPartition}"/>
-        <property name="acquireIncrement" value="${console.aa.acquireIncrement}"/>
-        <property name="idleMaxAgeInSeconds" value="600"/>
-        <property name="statementsCacheSize" value="100"/>
+        <property name="minimumIdle" value="${console.aa.minimumIdle}"/>
+        <property name="maximumPoolSize" value="${console.aa.maximumPoolSize}"/>
+        <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+            </props>
+        </property>
     </bean>
 
-    <bean id="jobBoneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+    <bean id="jobHikariCPDataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="jdbcUrl" value="jdbc:mysql://${common.jdbc.host}:${common.jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${common.jdbc.username}"/>
         <property name="password" value="${common.jdbc.password}"/>
-        <property name="minConnectionsPerPartition" value="${console.job_worker.minConnectionsPerPartition}"/>
-        <property name="maxConnectionsPerPartition" value="${console.job_worker.maxConnectionsPerPartition}"/>
-        <property name="acquireIncrement" value="${console.job_worker.acquireIncrement}"/>
-        <property name="idleMaxAgeInSeconds" value="600"/>
-        <property name="statementsCacheSize" value="100"/>
+        <property name="minimumIdle" value="${console.job_worker.minimumIdle}"/>
+        <property name="maximumPoolSize" value="${console.job_worker.maximumPoolSize}"/>
+        <property name="idleTimeout" value="${common.jdbc.idleTimeout}"/>
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="cachePrepStmts">${common.jdbc.cachePrepStmts}</prop>
+                <prop key="prepStmtCacheSize">${common.jdbc.prepStmtCacheSize}</prop>
+                <prop key="prepStmtCacheSqlLimit">${common.jdbc.prepStmtCacheSqlLimit}</prop>
+            </props>
+        </property>
     </bean>
 
     <!-- transaction manager, use JtaTransactionManager for global tx -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="boneCPDataSource"/>
+        <property name="dataSource" ref="hikariCPDataSource"/>
     </bean>
 
     <bean id="jobStoreBuilder" class="com.tuotiansudai.util.quartz.JobStoreBuilder">
-        <property name="dataSource" ref="jobBoneCPDataSource"/>
+        <property name="dataSource" ref="jobHikariCPDataSource"/>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="boneCPDataSource"/>
-        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.console.bi.repository.model,com.tuotiansudai.jpush.repository.model"/>
+        <property name="dataSource" ref="hikariCPDataSource"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model,com.tuotiansudai.coupon.repository.model,com.tuotiansudai.jpush.repository.model,com.tuotiansudai.point.repository.model,com.tuotiansudai.console.bi.repository.model"/>
     </bean>
 
     <!-- define the SqlSessionFactory -->
@@ -73,10 +83,15 @@
 
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.console.bi.repository.mapper,com.tuotiansudai.jpush.repository.mapper"/>
+        <property name="basePackage" value="com.tuotiansudai.repository.mapper,com.tuotiansudai.coupon.repository.mapper,com.tuotiansudai.console.bi.repository.mapper,com.tuotiansudai.jpush.repository.mapper,com.tuotiansudai.point.repository.mapper,com.tuotiansudai.console.repository.mapper"/>
     </bean>
 
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient"/>
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="${console.jedis.pool.maxTotal}"/>
+    </bean>
+
 </beans>

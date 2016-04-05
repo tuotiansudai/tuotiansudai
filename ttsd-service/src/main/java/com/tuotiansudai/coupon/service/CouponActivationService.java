@@ -8,9 +8,9 @@ public interface CouponActivationService {
 
     void active(String loginNameLoginName, long couponId, String ip);
 
-    void inactive(String loginNameLoginName, long couponId);
+    void inactive(String loginNameLoginName, long couponId, String ip);
 
     void sendSms(long couponId);
 
-    void assignUserCoupon(String loginName, List<UserGroup> userGroups);
+    void assignUserCoupon(String loginName, List<UserGroup> userGroups, Long couponId);
 }

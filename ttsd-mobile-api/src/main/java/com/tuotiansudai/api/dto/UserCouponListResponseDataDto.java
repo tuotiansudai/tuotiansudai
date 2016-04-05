@@ -6,16 +6,18 @@ import java.util.List;
 
 public class UserCouponListResponseDataDto extends BaseResponseDataDto {
 
-    private List<UserCouponResponseDataDto> coupons = Lists.newArrayList();
+    private List<BaseCouponResponseDataDto> coupons = Lists.newArrayList();
 
     public UserCouponListResponseDataDto() {
     }
 
-    public UserCouponListResponseDataDto(List<UserCouponResponseDataDto> coupons) {
+    public UserCouponListResponseDataDto(List<BaseCouponResponseDataDto> coupons) {
         this.coupons = coupons;
     }
 
-    public List<UserCouponResponseDataDto> getCoupons() {
+
+
+    public List<BaseCouponResponseDataDto> getCoupons() {
         return coupons;
     }
 }

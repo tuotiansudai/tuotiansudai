@@ -1,11 +1,10 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.AuditLogPaginationItemDataDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.LoginLogPaginationItemDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.LoginLogService;
+import com.tuotiansudai.task.OperationType;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.Min;
@@ -64,24 +64,52 @@ public class SecurityLogController {
     }
 
     @RequestMapping(path = "/audit-log", method = RequestMethod.GET)
-    public ModelAndView auditLog(@RequestParam(name = "loginName", required = false) String loginName,
+    public ModelAndView auditLog(@RequestParam(name = "operationType", required = false) OperationType operationType,
+                                 @RequestParam(name = "targetId", required = false) String targetId,
                                  @RequestParam(name = "operatorLoginName", required = false) String operatorLoginName,
+                                 @RequestParam(name = "auditorLoginName", required = false) String auditorLoginName,
                                  @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                  @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                  @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                  @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
 
-        BasePaginationDataDto<AuditLogPaginationItemDataDto> data = auditLogService.getAuditLogPaginationData(loginName, operatorLoginName, startTime, endTime, index, pageSize);
+        BasePaginationDataDto<AuditLogPaginationItemDataDto> data = auditLogService.getAuditLogPaginationData(operationType, targetId, operatorLoginName, auditorLoginName, startTime, endTime, index, pageSize);
 
         ModelAndView modelAndView = new ModelAndView("/audit-log");
 
         modelAndView.addObject("data", data);
-        modelAndView.addObject("loginName", loginName);
+        modelAndView.addObject("operationType", operationType);
+        modelAndView.addObject("targetId", targetId);
         modelAndView.addObject("operatorLoginName", operatorLoginName);
+        modelAndView.addObject("auditorLoginName", auditorLoginName);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+
+        modelAndView.addObject("operationTypes", Lists.newArrayList(OperationType.values()));
 
         return modelAndView;
+    }
+
+    @RequestMapping(path = "/clear-db-cache", method = RequestMethod.GET)
+    public ModelAndView clearDbCache() {
+        ModelAndView modelAndView = new ModelAndView("/clear-db-cache");
+        return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/clear-db-cache", method = RequestMethod.POST)
+    public BaseDto<BaseDataDto> clearCache() {
+        String statusCode = auditLogService.clearMybatisCache();
+
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto baseDataDto = new BaseDataDto();
+        baseDto.setData(baseDataDto);
+        baseDataDto.setMessage(statusCode);
+        baseDataDto.setStatus(true);
+        baseDto.setSuccess(true);
+        return baseDto;
     }
 }

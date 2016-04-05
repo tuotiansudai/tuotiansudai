@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BannerResponseDataDto extends BaseResponseDataDto{
+
     private String bannerId;
+
     private String bannerDescription;
+
     private List<BannerPictureResponseDataDto> pictures = new ArrayList<BannerPictureResponseDataDto>(0);
 
     public String getBannerId() {

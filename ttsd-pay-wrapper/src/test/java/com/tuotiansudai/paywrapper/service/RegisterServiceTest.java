@@ -66,7 +66,7 @@ public class RegisterServiceTest {
         responseModel.setAccountId("payAccountId");
         UserModel userModel = new UserModel();
         userModel.setLoginName("loginName");
-        when(userMapper.findByLoginName("loginName")).thenReturn(userModel);
+        when(userMapper.lockByLoginName("loginName")).thenReturn(userModel);
         when(paySyncClient.send(Matchers.<Class<? extends BaseSyncMapper>>any(), any(MerRegisterPersonRequestModel.class), Matchers.<Class<BaseSyncResponseModel>>any()))
                 .thenReturn(responseModel);
         RegisterAccountDto dto = new RegisterAccountDto();

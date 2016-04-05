@@ -3,6 +3,8 @@ package com.tuotiansudai.jpush.service;
 
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+
+import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.dto.JpushReportDto;
 import com.tuotiansudai.jpush.repository.model.*;
@@ -41,9 +43,21 @@ public interface JPushAlertService {
 
     void autoJPushLoanAlert(long loanId);
 
+    void autoJPushRepayAlert(long loanRepayId);
+
+    void autoJPushRechargeAlert(long orderId);
+
+    void autoJPushWithDrawApplyAlert(long orderId);
+
+    void autoJPushWithDrawAlert(long orderId);
+
+    void autoJPushReferrerRewardAlert(long orderId);
+
+    void autoJPushLotteryLotteryObtainCashAlert(TransferCashDto transferCashDto);
+
     BaseDto<BaseDataDto> pass(String loginName, long id, String ip);
 
-    void reject(String loginName, long id);
+    void reject(String loginName, long id, String ip);
 
     void delete(String loginName, long id);
 

@@ -43,6 +43,7 @@ public class RegisterServiceImpl implements RegisterService {
     @Autowired
     private PaySyncClient paySyncClient;
 
+    @Override
     @Transactional
     public BaseDto<PayDataDto> register(RegisterAccountDto dto) {
         MerRegisterPersonRequestModel requestModel = new MerRegisterPersonRequestModel(dto.getLoginName(),
@@ -58,7 +59,7 @@ public class RegisterServiceImpl implements RegisterService {
                     requestModel,
                     MerRegisterPersonResponseModel.class);
 
-            UserModel userModel = userMapper.findByLoginName(dto.getLoginName());
+            UserModel userModel = userMapper.lockByLoginName(dto.getLoginName());
 
             if (responseModel.isSuccess()) {
                 if (accountMapper.findByLoginName(userModel.getLoginName()) == null) {

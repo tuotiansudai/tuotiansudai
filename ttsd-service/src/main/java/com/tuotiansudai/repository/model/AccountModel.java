@@ -20,6 +20,8 @@ public class AccountModel implements Serializable{
 
     private long freeze;
 
+    private long point;
+
     private Date registerTime;
 
     private boolean autoInvest;
@@ -78,6 +80,14 @@ public class AccountModel implements Serializable{
         this.freeze = freeze;
     }
 
+    public long getPoint() {
+        return point;
+    }
+
+    public void setPoint(long point) {
+        this.point = point;
+    }
+
     public Date getRegisterTime() {
         return registerTime;
     }
@@ -113,5 +123,4 @@ public class AccountModel implements Serializable{
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
     }
-
 }

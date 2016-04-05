@@ -9,7 +9,9 @@ public enum JumpTo {
     ACCOUNT("6","账户信息"),
     PASSWORD_MANAGE("7","密码管理"),
     ANNOUNCEMENT("8","公告列表"),
-    ABOUT("9","关于我们"),
+    INVEST_RECEIVABLES("9","我的投资-已收款页"),
+    WITHDRAW_RECORDS("10","提现记录"),
+    REFERRER_INVEST_LIST("11","推荐人投资列表"),
     OTHER("0","其他");
 
     private final String index;

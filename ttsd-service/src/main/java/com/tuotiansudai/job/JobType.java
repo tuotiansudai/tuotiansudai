@@ -31,6 +31,7 @@ public enum JobType {
     AutoJPushAlertBirthDay("用户生日当天"),
     AutoJPushNoInvestAlert("持续30天未投资，提醒一次"),
     AutoJPushAlertLoanOut("用户所投标的放款"),
+    AutoJPushLotteryObtainCashAlert("抽奖获取现金推送"),
     NormalRepay("正常还款"),
     LoanRepayNotify("还款提醒"),
     AdvanceRepay("提前还款"),
@@ -39,7 +40,15 @@ public enum JobType {
     CouponNotify("优惠券通知"),
     GetPushReport("获取推送统计数据"),
     ManualJPushAlert("手动推送"),
-    BirthdayNotify("生日月用户短信提醒");
+    BirthdayNotify("生日月用户短信提醒"),
+    LotteryTransferCash("抽奖现金发放"),
+    ImitateLottery("模拟抽奖"),
+    AutoJPushRepayAlert("用户资金变动推送-还款"),
+    AutoJPushRechargeAlert("用户资金变动推送-充值"),
+    AutoJPushWithDrawApplyAlert("用户资金变动推送-申请提现成功"),
+    AutoJPushWithDrawAlert("用户资金变动推送-提现成功"),
+    AutoJPushReferrerRewardAlert("用户资金变动推送-推荐人奖励");
+
 
     private final String description;
 

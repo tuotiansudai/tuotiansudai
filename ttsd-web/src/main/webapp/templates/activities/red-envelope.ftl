@@ -2,7 +2,7 @@
 <@global.main pageCss="${css.company_activity}" pageJavascript="${js.about_us}" activeNav="" activeLeftNav="" title="现金红包">
 <style type="text/css">
     body {
-        background: #8e0500 url('/images/sign/actor/redbag/red-bg.png') center top repeat-y;
+        background: #8e0500 url('${staticServer}/images/sign/actor/redbag/red-bg.png') center top repeat-y;
     }
 </style>
 
@@ -19,7 +19,7 @@
             </div>
         </div>
     </div>
-    <div <#if source?? && source=='app'>class="mobile"</#if>>
+    <div <#if isAppSource>class="mobile"</#if>>
         <a <@global.isNotAnonymous>href="/my-treasure"</@global.isNotAnonymous>
             <@global.isAnonymous>
                 <#if channel??>
