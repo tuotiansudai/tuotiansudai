@@ -11,6 +11,7 @@ import com.tuotiansudai.util.CaptchaHelper;
 import com.tuotiansudai.util.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -48,9 +49,12 @@ public class RegisterUserController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView registerUser(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes) {
+    public ModelAndView registerUser(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         boolean isRegisterSuccess;
         try {
+            if (StringUtils.isEmpty(registerUserDto.getChannel()) && request.getSession().getAttribute("channel") != null) {
+                registerUserDto.setChannel(String.valueOf(request.getSession().getAttribute("channel")));
+            }
             isRegisterSuccess = this.userService.registerUser(registerUserDto);
         } catch (ReferrerRelationException e) {
             isRegisterSuccess = false;

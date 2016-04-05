@@ -22,6 +22,7 @@ public class ChannelInterceptor extends HandlerInterceptorAdapter {
         String channel = request.getParameter("channel");
         if (!Strings.isNullOrEmpty(channel)) {
             modelAndView.addObject("channel", channel);
+            request.getSession().setAttribute("channel", channel);
         }
 
         modelAndView.addObject("isAppSource", APP_SOURCE_FLAG.equalsIgnoreCase(request.getParameter("source")));
