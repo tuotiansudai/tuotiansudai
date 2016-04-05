@@ -164,4 +164,6 @@ public interface InvestMapper {
     long findRegisteredNotInvestCount();
 
     Set<String> findNoInvestInThirtyDay();
+
+    InvestModel findLatestSuccessInvest(@Param(value = "loginName")String loginName);
 }

@@ -29,5 +29,4 @@ public class MobileAppShareCallbackController {
 
         return new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
     }
-
 }
