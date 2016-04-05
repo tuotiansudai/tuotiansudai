@@ -30,6 +30,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -99,12 +100,14 @@ public class InvestControllerTest {
         baseDto.setData(payDataDto);
 
         when(investService.noPasswordInvest(any(InvestDto.class))).thenReturn(baseDto);
+
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
 
-        this.mockMvc.perform(post("/invest")
+        this.mockMvc.perform(post("/no-password-invest")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("loginName", "investor").param("loanId", "1000000000").param("amount", "100").param("source", "WEB"))
-                .andExpect(view().name("redirect:/account"));
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.status").value(true));
     }
 
     private void mockLoginUser(String loginName, String mobile){

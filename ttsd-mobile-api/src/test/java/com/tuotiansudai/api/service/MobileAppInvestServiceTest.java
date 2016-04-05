@@ -69,14 +69,11 @@ public class MobileAppInvestServiceTest extends ServiceTestBase {
         baseDto.setData(payDataDto);
 
         when(investService.noPasswordInvest(any(InvestDto.class))).thenReturn(baseDto);
-        when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
         AccountModel accountModel = new AccountModel();
         accountModel.setAutoInvest(true);
         accountModel.setNoPasswordInvest(false);
-        when(accountService.findByLoginName(anyString())).thenReturn(accountModel);
         BaseResponseDto baseResponseDto = mobileAppInvestService.noPasswordInvest(investRequestDto);
-        assertThat(baseResponseDto.isSuccess(), is(false));
-        assertThat(baseResponseDto.getCode(), is("0057"));
+        assertThat(baseResponseDto.isSuccess(), is(true));
     }
 
     @Test
