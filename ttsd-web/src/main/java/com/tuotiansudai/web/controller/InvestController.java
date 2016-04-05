@@ -1,10 +1,12 @@
 package com.tuotiansudai.web.controller;
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.SmsCaptchaService;
@@ -66,10 +68,14 @@ public class InvestController {
 
     @RequestMapping(path = "/no-password-invest", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> invest(@Valid @ModelAttribute InvestDto investDto) {
+    public BaseDto<PayDataDto> invest(HttpServletRequest httpServletRequest, @Valid @ModelAttribute InvestDto investDto) {
         try {
             investDto.setSource(Source.WEB);
-            return investService.noPasswordInvest(investDto);
+            BaseDto<PayDataDto> dto = investService.noPasswordInvest(investDto);
+            if (dto.getData().getStatus()) {
+                httpServletRequest.getSession().setAttribute("noPasswordInvestSuccess", true);
+            }
+            return dto;
         } catch (InvestException e) {
             BaseDto<PayDataDto> dto = new BaseDto<>();
             PayDataDto payDataDto = new PayDataDto();
@@ -80,14 +86,33 @@ public class InvestController {
     }
 
     @RequestMapping(path = "/invest-success", method = RequestMethod.GET)
-    public ModelAndView investSuccess() {
-        String loginName = LoginUserInfo.getLoginName();
-        InvestModel latestSuccessInvest = investService.findLatestSuccessInvest(loginName);
+    public ModelAndView investSuccess(HttpServletRequest httpServletRequest) {
+        ModelAndView modelAndView = new ModelAndView("/error/404", "responsive", true);
+
+        InvestModel latestSuccessInvest = investService.findLatestSuccessInvest(LoginUserInfo.getLoginName());
         if (latestSuccessInvest == null) {
-            return new ModelAndView("/error/404");
+            return modelAndView;
         }
 
-        ModelAndView modelAndView = new ModelAndView("/invest-success", "responsive", true);
+        String referer = httpServletRequest.getHeader("Referer");
+
+        if (!Strings.isNullOrEmpty(referer) && referer.equalsIgnoreCase("http://pay.soopay.net/spay/pay/p2pProjectTransfer.do")) {
+            modelAndView.setViewName("/invest-success");
+            modelAndView.addObject("amount", AmountConverter.convertCentToString(latestSuccessInvest.getAmount()));
+            return modelAndView;
+        }
+
+        if (httpServletRequest.getSession().getAttribute("noPasswordInvestSuccess") != null) {
+            httpServletRequest.getSession().removeAttribute("noPasswordInvestSuccess");
+            modelAndView.setViewName("/invest-success");
+            modelAndView.addObject("amount", AmountConverter.convertCentToString(latestSuccessInvest.getAmount()));
+            return modelAndView;
+        }
+
+        if (latestSuccessInvest.getStatus() == InvestStatus.SUCCESS) {
+            modelAndView.setViewName("/invest-success");
+            modelAndView.addObject("amount", AmountConverter.convertCentToString(latestSuccessInvest.getAmount()));
+        }
 
         return modelAndView;
     }

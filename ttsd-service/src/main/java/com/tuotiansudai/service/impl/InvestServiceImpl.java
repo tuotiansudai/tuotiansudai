@@ -277,7 +277,12 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     public InvestModel findLatestSuccessInvest(String loginName) {
-        return investMapper.findLatestSuccessInvest(loginName);
+        InvestModel investModel = investMapper.findLatestSuccessInvest(loginName);
+        if (investModel == null) {
+            return null;
+        }
+
+        return investModel;
     }
 
     @Override

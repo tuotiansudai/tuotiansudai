@@ -71,7 +71,7 @@
     <select id="findLatestSuccessInvest" parameterType="string" resultMap="investResultMap">
         select <include refid="columns"></include>
         from invest
-        where login_name = #{loginName} and status = 'SUCCESS'
+        where login_name = #{loginName}
         order by created_time desc
         limit 1;
     </select>
