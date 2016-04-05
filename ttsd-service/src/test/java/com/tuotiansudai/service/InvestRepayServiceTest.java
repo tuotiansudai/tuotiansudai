@@ -143,13 +143,13 @@ public class InvestRepayServiceTest {
     @Test
     public void shouldAccountAmount() {
         long repaidInterest = investRepayService.findSumRepaidInterestByLoginName("testuser123");
-        assert repaidInterest == 100;
+        assertThat(repaidInterest, is(100L));
 
         long repayingCorpus = investRepayService.findSumRepayingCorpusByLoginName("testuser123");
-        assert repayingCorpus == 200;
+        assertThat(repayingCorpus, is(200L));
 
         long repayingInterest = investRepayService.findSumRepayingInterestByLoginName("testuser123");
-        assert repayingInterest == 200;
+        assertThat(repayingInterest, is(200L));
     }
 
     @Test
@@ -168,10 +168,11 @@ public class InvestRepayServiceTest {
         Date startTime = new DateTime().withTimeAtStartOfDay().dayOfMonth().withMinimumValue().toDate();
         Date endTime = DateUtils.addMonths(startTime, 1);
         List<InvestRepayDataItemDto> investRepayModels = investRepayService.findByLoginNameAndTimeNotSuccessInvestRepayList("testuser123", startTime, endTime, 0, 6);
-        assertThat(investRepayModels.size() ,is(2));
+
+        assertThat(investRepayModels.size(), is(2));
 
         List<InvestRepayDataItemDto> investRepayModelList = investRepayService.findByLoginNameAndTimeSuccessInvestRepayList("testuser123", startTime, endTime, 0, 6);
-        assertThat(investRepayModelList.size() ,is(1));
+        assertThat(investRepayModelList.size(), is(1));
 
         List<LatestInvestView> latestInvestViews = investRepayService.findLatestInvestByLoginName("testuser123", 0, 4);
         assertThat(latestInvestViews.size(), is(2));
