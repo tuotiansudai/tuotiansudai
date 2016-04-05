@@ -71,6 +71,7 @@ public class InvestController {
     public BaseDto<PayDataDto> invest(HttpServletRequest httpServletRequest, @Valid @ModelAttribute InvestDto investDto) {
         try {
             investDto.setSource(Source.WEB);
+            investDto.setLoginName(LoginUserInfo.getLoginName());
             BaseDto<PayDataDto> dto = investService.noPasswordInvest(investDto);
             if (dto.getData().getStatus()) {
                 httpServletRequest.getSession().setAttribute("noPasswordInvestSuccess", true);
