@@ -94,7 +94,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
         when(investMapper.findCountByStatus(anyLong(), any(InvestStatus.class))).thenReturn(3L);
 
-        when(loanService.encryptLoginName(anyString(), anyString(), anyInt(), anyLong())).thenReturn("log***");
+        when(loanService.encryptLoginName(anyString(),anyString(),anyInt(),anyLong())).thenReturn("log***");
 
         InvestListRequestDto investListRequestDto = new InvestListRequestDto();
         BaseParam baseParam = new BaseParam();
