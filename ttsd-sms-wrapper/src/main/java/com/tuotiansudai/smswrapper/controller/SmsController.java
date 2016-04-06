@@ -20,6 +20,12 @@ public class SmsController {
         return smsService.sendRegisterCaptcha(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.getIp());
     }
 
+    @RequestMapping(value = "/no-password-invest-captcha", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> sendNoPasswordInvestCaptcha(@Valid @RequestBody SmsCaptchaDto smsCaptchaDto) {
+        return smsService.sendNoPasswordInvestCaptcha(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.getIp());
+    }
+
     @RequestMapping(value = "/retrieve-password-captcha", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<SmsDataDto> sendRetrievePasswordCaptcha(@Valid @RequestBody SmsCaptchaDto smsCaptchaDto) {

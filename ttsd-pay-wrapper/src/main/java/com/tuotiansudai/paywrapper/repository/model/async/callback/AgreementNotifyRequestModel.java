@@ -38,5 +38,6 @@ public class AgreementNotifyRequestModel extends BaseCallbackRequestModel {
     public boolean isAutoRepay() {
         return this.getUserBindAgreementList().contains(AgreementType.ZHKB0H01.name());
     }
-    
+
+
 }

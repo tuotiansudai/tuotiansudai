@@ -59,6 +59,8 @@ public class PayWrapperClient extends BaseClient {
 
     private String resetUmpayPassword = "/reset-umpay-password";
 
+    private String noPasswordInvestPath = "/no-password-invest";
+
     private String transferCashPath = "/transfer-cash";
 
     public BaseDto<PayDataDto> transferCash(TransferCashDto transferCashDto) {
@@ -132,6 +134,10 @@ public class PayWrapperClient extends BaseClient {
 
     public BaseDto<PayDataDto> loanOut(LoanOutDto dto) {
         return syncExecute(dto, loanOutPath, "POST");
+    }
+
+    public BaseDto<PayDataDto> noPasswordInvest(InvestDto dto) {
+        return syncExecute(dto, noPasswordInvestPath, "POST");
     }
 
     public BaseDto<PayDataDto> checkLoanAmount(long loanId) {

@@ -40,23 +40,16 @@ public class InvestModel implements Serializable {
      */
     private String channel;
     /**
+     * 是否为无密投资
+     */
+    private boolean isNoPasswordInvest;
+    /**
      * 创建时间
      */
     private Date createdTime = new Date();
 
     public InvestModel(){
 
-    }
-
-    public InvestModel(InvestDto dto){
-        this.loginName = dto.getLoginName();
-        this.amount = AmountConverter.convertStringToCent(dto.getAmount());
-        this.loanId = Long.parseLong(dto.getLoanId());
-        this.source = dto.getSource();
-        this.channel = dto.getChannel();
-        this.status = InvestStatus.WAIT_PAY;
-        this.isAutoInvest = false;
-        this.createdTime = new Date();
     }
 
     public InvestModel(long loanId, long amount, String loginName, Source source, String channel) {
@@ -66,7 +59,7 @@ public class InvestModel implements Serializable {
         this.source = source;
         this.channel = channel;
         this.status = InvestStatus.WAIT_PAY;
-        this.isAutoInvest = false;
+        this.isAutoInvest = Source.AUTO == source;
         this.createdTime = new Date();
     }
 
@@ -142,4 +135,7 @@ public class InvestModel implements Serializable {
         this.channel = channel;
     }
 
+    public boolean isNoPasswordInvest() { return isNoPasswordInvest; }
+
+    public void setNoPasswordInvest(boolean noPasswordInvest) { isNoPasswordInvest = noPasswordInvest; }
 }
