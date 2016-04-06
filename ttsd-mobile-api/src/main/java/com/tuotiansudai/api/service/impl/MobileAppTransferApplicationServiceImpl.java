@@ -5,6 +5,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppTransferApplicationService;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
@@ -15,6 +16,7 @@ import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
@@ -46,6 +48,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     private InvestTransferService investTransferService;
     @Autowired
     private TransferRuleMapper transferRuleMapper;
+    @Autowired
+    private AccountMapper accountMapper;
 
 
     @Override
@@ -160,6 +164,31 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         dto.setData(transferApplicationResponseDataDto);
+        return dto;
+    }
+
+    @Override
+    public BaseResponseDto transferPurchase(TransferPurchaseRequestDto requestDto){
+
+        BaseResponseDto<TransferPurchaseResponseDataDto> dto = new BaseResponseDto();
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(requestDto.getTransferApplicationId()));
+
+        LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(transferApplicationModel.getLoanId());
+
+        int transferInterestDays = InterestCalculator.calculateTransferInterestDays(loanModel,loanRepayModels);
+
+        TransferPurchaseResponseDataDto transferPurchaseResponseDataDto = new TransferPurchaseResponseDataDto();
+        transferPurchaseResponseDataDto.setBalance(AmountConverter.convertCentToString((accountMapper.findByLoginName(transferApplicationModel.getLoginName()).getBalance())));
+        transferPurchaseResponseDataDto.setTransferAmount(AmountConverter.convertCentToString((transferApplicationModel.getTransferAmount())));
+
+        transferPurchaseResponseDataDto.setExpectedInterestAmount(AmountConverter.convertCentToString(InterestCalculator.estimateExpectedInterest(loanModel, transferApplicationModel.getInvestAmount())*transferInterestDays));
+        transferPurchaseResponseDataDto.setTransferInterestAmount(AmountConverter.convertCentToString(InterestCalculator.estimateExpectedInterest(loanModel, transferApplicationModel.getInvestAmount())*transferApplicationModel.getTransferInterestDays()));
+
+
+        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        dto.setData(transferPurchaseResponseDataDto);
         return dto;
     }
 }

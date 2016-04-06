@@ -53,4 +53,10 @@ public class MobileAppTransferApplicationController extends MobileAppBaseControl
         }
     }
 
+    @RequestMapping(value = "/get/transfer-purchase", method = RequestMethod.POST)
+    public BaseResponseDto transferPurchase(@RequestBody TransferPurchaseRequestDto requestDto, BindingResult bindingResult) {
+        requestDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppTransferApplicationService.transferPurchase(requestDto);
+    }
+
 }
