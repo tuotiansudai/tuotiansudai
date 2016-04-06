@@ -12,6 +12,15 @@ public class ChannelInterceptor extends HandlerInterceptorAdapter {
     private final static String APP_SOURCE_FLAG = "app";
 
     @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
+        String channel = request.getParameter("channel");
+        if (!Strings.isNullOrEmpty(channel)) {
+            request.getSession().setAttribute("channel", channel);
+        }
+        return true;
+    }
+
+    @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         super.postHandle(request, response, handler, modelAndView);
 
@@ -22,7 +31,6 @@ public class ChannelInterceptor extends HandlerInterceptorAdapter {
         String channel = request.getParameter("channel");
         if (!Strings.isNullOrEmpty(channel)) {
             modelAndView.addObject("channel", channel);
-            request.getSession().setAttribute("channel", channel);
         }
 
         modelAndView.addObject("isAppSource", APP_SOURCE_FLAG.equalsIgnoreCase(request.getParameter("source")));
