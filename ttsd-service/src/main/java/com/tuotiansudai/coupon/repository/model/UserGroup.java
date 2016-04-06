@@ -6,7 +6,8 @@ public enum UserGroup {
     IMPORT_USER("用户/业务员"),
     INVESTED_USER("已投资用户"),
     REGISTERED_NOT_INVESTED_USER("已实名未投资用户"),
-    EXCHANGER("兑换用户");
+    EXCHANGER("兑换用户"),
+    WINNER("中奖用户");
 
     private final String description;
 

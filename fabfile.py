@@ -5,6 +5,7 @@ from fabric.contrib.project import upload_project
 
 
 env.use_ssh_config = True
+env.always_use_pty = False
 env.ssh_config_path = '/workspace/v2config/config'
 env.roledefs = {
     'portal': ['beijing', 'shanghai'],
@@ -232,6 +233,15 @@ def remove_old_logs():
     execute(remove_api_logs)
     execute(remove_worker_logs)
     execute(remove_static_logs)
+
+
+@roles('portal', 'pay', 'worker', 'api')
+@parallel
+def restart_logstash_service():
+    """
+    Restart logstash service in case it stops pushing logs due to unknow reason
+    """
+    run("service logstash restart")
 
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
