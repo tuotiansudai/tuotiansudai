@@ -1,17 +1,21 @@
 package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyUser;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,11 +23,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.*;
@@ -62,6 +68,13 @@ public class LoanServiceTest {
     @Autowired
     private UserRoleMapper userRoleMapper;
 
+    @Autowired
+    RedisWrapperClient redisWrapperClient;
+
+    @Value("#{'${web.random.investor.list}'.split('\\|')}")
+    private List<String> showRandomLoginNameList;
+
+    private final static String REDIS_KEY_TEMPLATE = "webmobile:{0}:{1}:showinvestorname";
 
     @Before
     public void createLoanTitle(){
@@ -460,5 +473,34 @@ public class LoanServiceTest {
         MyUser user = new MyUser(loginName,"", true, true, true, true, AuthorityUtils.createAuthorityList("ROLE_PATRON"), mobile, "fdafdsa");
         TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user,null);
         SecurityContextHolder.getContext().setAuthentication(testingAuthenticationToken);
+    }
+
+
+    @Test
+    //String encryptLoginName(String loginName, String recordsLoginName, int showLength, long investId);
+    public void encryptLoginNameIsOk(){
+        String loginName = "";
+        InvestModel investModel1 = new InvestModel();
+        investModel1.setLoginName("loginName1");
+        investModel1.setId(100000L);
+
+        InvestModel investModel2 = new InvestModel();
+        investModel2.setLoginName("loginNam2");
+        investModel2.setId(100001L);
+
+        InvestModel investModel3 = new InvestModel();
+        investModel3.setLoginName("ttdblvjing");
+        investModel3.setId(100002L);
+
+        String redisKey = MessageFormat.format(REDIS_KEY_TEMPLATE, String.valueOf(investModel1.getId()), investModel1.getLoginName());
+        assertEquals(investModel1.getLoginName(),loanService.encryptLoginName("loginName1", investModel1.getLoginName(), 3, investModel1.getId()));
+
+        if(showRandomLoginNameList.contains(investModel3.getLoginName()) && !redisWrapperClient.exists(redisKey)){
+            redisWrapperClient.set(redisKey, RandomUtils.generateLowerString(3) + RandomUtils.showChar(3));
+            assertEquals(redisWrapperClient.get(redisKey), loanService.encryptLoginName(loginName, investModel1.getLoginName(), 3, investModel1.getId()));
+        }
+        else{
+            assertEquals("log***", loanService.encryptLoginName("", investModel2.getLoginName(), 3, investModel3.getId()));
+        }
     }
 }
