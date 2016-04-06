@@ -87,9 +87,6 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private JobManager jobManager;
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
     @Value("#{'${web.random.investor.list}'.split('\\|')}")
     private List<String> showRandomLoginNameList;
 

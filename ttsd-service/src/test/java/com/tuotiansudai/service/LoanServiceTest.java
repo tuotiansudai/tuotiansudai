@@ -69,7 +69,7 @@ public class LoanServiceTest {
     private UserRoleMapper userRoleMapper;
 
    @Autowired
-    private RedisWrapperClient redisWrapperClientTest;
+    private RedisWrapperClient redisWrapperClient;
 
     @Before
     public void createLoanTitle(){
@@ -516,7 +516,7 @@ public class LoanServiceTest {
     }
 
     private String getDefaultkey(){
-        redisWrapperClientTest.set("webmobile:1000002:ttdblvjing:showinvestorname","bxh***");
-        return redisWrapperClientTest.get("webmobile:1000002:ttdblvjing:showinvestorname");
+        redisWrapperClient.set("webmobile:1000002:ttdblvjing:showinvestorname","bxh***");
+        return redisWrapperClient.get("webmobile:1000002:ttdblvjing:showinvestorname");
     }
 }
