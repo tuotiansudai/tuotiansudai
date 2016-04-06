@@ -10,6 +10,7 @@ import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -30,7 +31,7 @@ public class LoanController {
     private UserCouponService userCouponService;
 
     @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
-    public ModelAndView getLoanDetail(@PathVariable long loanId) {
+    public ModelAndView getLoanDetail(@PathVariable long loanId, Model model) {
         LoanDetailDto dto = loanService.getLoanDetail(LoginUserInfo.getLoginName(), loanId);
         if (dto == null) {
             return new ModelAndView("/error/404");

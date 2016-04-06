@@ -3,12 +3,14 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -24,6 +26,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -34,8 +37,16 @@ public class InvestServiceImpl implements InvestService {
 
     static Logger logger = Logger.getLogger(InvestServiceImpl.class);
 
+    private final static String INVEST_NO_PASSWORD_REMIND_MAP = "invest_no_password_remind_map";
+
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private AccountMapper accountMapper;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -65,12 +76,35 @@ public class InvestServiceImpl implements InvestService {
         return payWrapperClient.invest(investDto);
     }
 
+    @Override
+    public BaseDto<PayDataDto> noPasswordInvest(InvestDto investDto) throws InvestException {
+        investDto.setNoPassword(true);
+        this.checkInvestAmount(investDto);
+        return payWrapperClient.noPasswordInvest(investDto);
+    }
+
     private void checkInvestAmount(InvestDto investDto) throws InvestException {
         long loanId = Long.parseLong(investDto.getLoanId());
         LoanModel loan = loanMapper.findById(loanId);
+
+
+        if (loan == null) {
+            throw new InvestException(InvestExceptionType.NOT_ENOUGH_BALANCE);
+        }
+
         long userInvestMinAmount = loan.getMinInvestAmount();
         long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());
         long userInvestIncreasingAmount = loan.getInvestIncreasingAmount();
+
+        AccountModel accountModel = accountMapper.findByLoginName(investDto.getLoginName());
+        if (accountModel.getBalance() < investAmount) {
+            throw new InvestException(InvestExceptionType.NOT_ENOUGH_BALANCE);
+        }
+
+        // 尚未开启免密投资
+        if (investDto.isNoPassword() && !accountModel.isNoPasswordInvest()) {
+            throw new InvestException(InvestExceptionType.PASSWORD_INVEST_OFF);
+        }
 
         // 标的状态不对
         if (LoanStatus.RAISING != loan.getStatus()) {
@@ -145,10 +179,10 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     public InvestPaginationDataDto getInvestPagination(Long loanId, String investorLoginName,
-                                                                                  String channel, Source source, String role,
-                                                                                  int index, int pageSize,
-                                                                                  Date startTime, Date endTime,
-                                                                                  InvestStatus investStatus, LoanStatus loanStatus) {
+                                                       String channel, Source source, String role,
+                                                       int index, int pageSize,
+                                                       Date startTime, Date endTime,
+                                                       InvestStatus investStatus, LoanStatus loanStatus) {
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
@@ -222,7 +256,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public AutoInvestPlanModel findUserAutoInvestPlan(String loginName) {
+    public AutoInvestPlanModel findAutoInvestPlan(String loginName) {
         return autoInvestPlanMapper.findByLoginName(loginName);
     }
 
@@ -239,5 +273,34 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public InvestModel findById(long investId) {
         return investMapper.findById(investId);
+    }
+
+    @Override
+    public InvestModel findLatestSuccessInvest(String loginName) {
+        InvestModel investModel = investMapper.findLatestSuccessInvest(loginName);
+        if (investModel == null) {
+            return null;
+        }
+
+        return investModel;
+    }
+
+    @Override
+    @Transactional
+    public boolean switchNoPasswordInvest(String loginName, boolean isTurnOn) {
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        accountModel.setNoPasswordInvest(isTurnOn);
+        accountMapper.update(accountModel);
+        return true;
+    }
+
+    @Override
+    public void markNoPasswordRemind(String loginName) {
+        redisWrapperClient.hsetSeri(INVEST_NO_PASSWORD_REMIND_MAP, loginName, "1");
+    }
+
+    @Override
+    public boolean isRemindNoPassword(String loginName) {
+        return redisWrapperClient.hexists(INVEST_NO_PASSWORD_REMIND_MAP, loginName);
     }
 }

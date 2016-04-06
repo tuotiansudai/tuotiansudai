@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.login}" pageJavascript="${js.login}" activeLeftNav="" title="拓天速贷-登录" >
+<@global.main pageCss="${css.login}" pageJavascript="${js.login}" activeLeftNav="" title="登陆拓天速贷_拓天速贷" keywords="拓天速贷,拓天会员,新手理财,拓天速贷用户" description="拓天速贷为投资理财人士提供规范、安全、专业的互联网金融信息服务,让您获得稳定收益和高收益的投资理财产品.">
 <div class="login-container page-width">
 
         <img src="/images/sign/login-app.jpg" class="login-app">
@@ -29,7 +29,7 @@
                         <a href="/mobile-retrieve-password">忘记密码？</a>
                     </div>
                     <div class="clear-blank"></div>
-                    <button class="login-submit btn-normal" type="button">立即登录</button>
+                    <button class="login-submit btn-normal" type="button" >立即登录</button>
                 </div>
                 <div class="clear-blank"></div>
                 <b>数据采用256位加密技术，保障您的信息安全！</b>

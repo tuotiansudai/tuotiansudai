@@ -1,6 +1,8 @@
 package com.tuotiansudai.paywrapper.exception;
 
-public class PayException extends Exception {
+import com.tuotiansudai.exception.BaseException;
+
+public class PayException extends BaseException {
 
     public PayException(String message) {
         super(message);
