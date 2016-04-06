@@ -19,18 +19,26 @@
         </div>
 
         <div class="form-group">
-            <label  class="col-sm-2 control-label">投资上限(元): </label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control coupon-number" name="investUpperLimit" placeholder="" <#if coupon??>value="${coupon.investUpperLimit!}"</#if> datatype="*" errormsg="加息券投资上限不能为空">
+            <label  class="col-sm-2 control-label ">有效期限: </label>
+            <div class="col-sm-2">
+                <div class='input-group date' id='startTime'>
+                    <input type='text' class="form-control coupon-start" name="startTime" <#if coupon??>value="${(coupon.startTime?string("yyyy-MM-dd HH:mm"))!}"</#if>  datatype="date" errormsg="请选择活动开始时间"/>
+					<span class="input-group-addon">
+					<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+                </div>
+            </div>
+            <div class="line-size">-</div>
+            <div class="col-sm-2">
+                <div class='input-group date' id='endTime'>
+                    <input type='text' class="form-control coupon-end" name="endTime" <#if coupon??>value="${(coupon.endTime?string("yyyy-MM-dd HH:mm"))!}"</#if>  datatype="date" errormsg="请选择活动结束时间"/>
+					<span class="input-group-addon">
+					<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+                </div>
             </div>
         </div>
 
-        <div class="form-group invest-coupon" >
-            <label  class="col-sm-2 control-label">有效期限(天): </label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control coupon-deadline" name="deadline" placeholder="" <#if coupon??>value="${coupon.deadline!}"</#if> datatype="*" errormsg="有效期限不能为空">
-            </div>
-        </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">发放对象:</label>
             <div class="col-sm-4 invest-coupon">

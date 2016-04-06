@@ -26,9 +26,6 @@
                 总投资金额(元)
             </th>
             <th>
-                活动期限
-            </th>
-            <th>
                 有效期限
             </th>
             <th>
@@ -80,14 +77,6 @@
                 ${coupon.startTime?string('yyyy-MM-dd')}至${coupon.endTime?string('yyyy-MM-dd')}
                 <#else>
                 -
-                </#if>
-
-            </td>
-            <td>
-                <#if coupon.couponType == 'NEWBIE_COUPON'>
-                -
-                <#else>
-                ${coupon.deadline}
                 </#if>
             </td>
             <td>

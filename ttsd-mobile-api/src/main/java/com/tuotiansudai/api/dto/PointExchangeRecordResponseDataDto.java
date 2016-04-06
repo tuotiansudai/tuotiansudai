@@ -108,10 +108,8 @@ public class PointExchangeRecordResponseDataDto {
         this.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
         this.setRate(String.valueOf(decimalFormat.format(couponModel.getRate()*100)));
         this.setInvestLowerLimit(AmountConverter.convertCentToString(couponModel.getInvestLowerLimit()));
-        this.setInvestUpperLimit(AmountConverter.convertCentToString(couponModel.getInvestUpperLimit()));
         this.setProductTypes(couponModel.getProductTypes());
         this.setPoint(point);
-        this.setDeadline(couponModel.getDeadline()==null?0:couponModel.getDeadline());
     }
 
 }

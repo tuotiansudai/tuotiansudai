@@ -122,12 +122,6 @@ public class CouponActivationServiceImpl implements CouponActivationService {
             couponModel.setTotalCount(collector.count(couponId));
         }
 
-        if (couponModel.getDeadline() != null && couponModel.getUserGroup() != UserGroup.EXCHANGER) {
-            Date now = new Date();
-            couponModel.setStartTime(new DateTime(now).withTimeAtStartOfDay().toDate());
-            couponModel.setEndTime(new DateTime(now).plusDays(couponModel.getDeadline()).withTimeAtStartOfDay().minusSeconds(1).toDate());
-        }
-
         couponModel.setActive(true);
         couponModel.setActivatedBy(loginName);
         couponModel.setActivatedTime(new Date());
@@ -156,8 +150,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         notifyDto.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
         notifyDto.setRate(new BigDecimal(couponModel.getRate() * 100).setScale(0, BigDecimal.ROUND_UP).toString());
         notifyDto.setCouponType(couponModel.getCouponType());
-        notifyDto.setExpiredDate(couponModel.getEndTime() != null ?
-                new DateTime(couponModel.getEndTime()).withTimeAtStartOfDay().toString("yyyy-MM-dd") : MessageFormat.format("{0}天", String.valueOf(couponModel.getDeadline())));
+        notifyDto.setExpiredDate(new DateTime(couponModel.getEndTime()).withTimeAtStartOfDay().toString("yyyy-MM-dd"));
 
         for (String loginName : loginNames) {
             String mobile = userMapper.findByLoginName(loginName).getMobile();
@@ -217,9 +210,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
             CouponModel lockedCoupon = couponMapper.lockById(couponModel.getId());
             lockedCoupon.setIssuedCount(couponModel.getIssuedCount() + 1);
             couponMapper.updateCoupon(lockedCoupon);
-            Date startTime = couponModel.getStartTime() != null ? couponModel.getStartTime() : new DateTime().withTimeAtStartOfDay().toDate();
-            Date endTime = couponModel.getEndTime() != null ? couponModel.getEndTime() : new DateTime().plusDays(couponModel.getDeadline() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate();
-            UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId(), startTime, endTime);
+            UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId(), couponModel.getStartTime(), couponModel.getEndTime());
             userCouponMapper.create(userCouponModel);
         }
     }
