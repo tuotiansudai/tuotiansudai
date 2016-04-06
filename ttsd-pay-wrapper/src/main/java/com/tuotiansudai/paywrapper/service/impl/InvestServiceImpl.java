@@ -201,9 +201,9 @@ public class InvestServiceImpl implements InvestService {
                 InvestNotifyRequestMapper.class,
                 InvestNotifyRequestModel.class);
 
-        redisWrapperClient.incr(JOB_TRIGGER_KEY);
-
-        if (callbackRequest == null) {
+        if (callbackRequest != null) {
+            redisWrapperClient.incr(JOB_TRIGGER_KEY);
+        } else {
             return null;
         }
         return callbackRequest.getResponseData();
