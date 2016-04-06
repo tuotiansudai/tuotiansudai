@@ -567,6 +567,7 @@ body{
   p.notice {
     b {
       font-size: nth($fontSize, 4);
+    }
   }
   .panel {
     color: nth($baseColor, 6);
