@@ -88,7 +88,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
         } while (userMapper.findByLoginName(loginName) != null);
         long notRealNum = userPointPrizeMapper.findAllNotReal();
         List<PointPrizeModel> pointPrizeModels;
-        if (notRealNum % 2880 != 0) {
+        if (notRealNum % 2880 != 0 && notRealNum != 0) {
             pointPrizeModels = pointPrizeMapper.findAllPossibleWin();
         } else {
             pointPrizeModels = pointPrizeMapper.findAllUnPossibleWin();
