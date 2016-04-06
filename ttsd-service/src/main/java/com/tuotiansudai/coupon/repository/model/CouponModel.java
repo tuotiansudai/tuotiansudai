@@ -55,15 +55,11 @@ public class CouponModel implements Serializable {
 
     private long investLowerLimit;
 
-    private long investUpperLimit;
-
     private List<ProductType> productTypes;
 
     private CouponType couponType;
 
     private boolean smsAlert;
-
-    private Integer deadline;
 
     private UserGroup userGroup;
 
@@ -221,14 +217,6 @@ public class CouponModel implements Serializable {
         this.investLowerLimit = investLowerLimit;
     }
 
-    public long getInvestUpperLimit() {
-        return investUpperLimit;
-    }
-
-    public void setInvestUpperLimit(long investUpperLimit) {
-        this.investUpperLimit = investUpperLimit;
-    }
-
     public UserGroup getUserGroup() {
         return userGroup;
     }
@@ -296,9 +284,6 @@ public class CouponModel implements Serializable {
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
-    public Integer getDeadline() {
-        return deadline;
-    }
 
     public Boolean getImportIsRight() {
         return importIsRight;
@@ -312,10 +297,6 @@ public class CouponModel implements Serializable {
         this.totalCount = totalCount;
     }
 
-    public void setDeadline(Integer deadline) {
-        this.deadline = deadline;
-    }
-
     public CouponModel(CouponDto couponDto){
         this.shared = couponDto.isShared();
         this.amount = AmountConverter.convertStringToCent(couponDto.getAmount());
@@ -325,9 +306,7 @@ public class CouponModel implements Serializable {
         this.productTypes = couponDto.getProductTypes() ;
         this.couponType = couponDto.getCouponType();
         this.investLowerLimit = AmountConverter.convertStringToCent(couponDto.getInvestLowerLimit());
-        this.investUpperLimit = AmountConverter.convertStringToCent(couponDto.getInvestUpperLimit());
         this.smsAlert = couponDto.isSmsAlert();
-        this.deadline = couponDto.getDeadline();
         this.userGroup = couponDto.getUserGroup();
         this.rate = couponDto.getRate() == null ? 0 : new BigDecimal(couponDto.getRate()).divide(new BigDecimal(100), 3, BigDecimal.ROUND_HALF_UP).doubleValue();
         this.birthdayBenefit = couponDto.getBirthdayBenefit() == null ? 0 : new BigDecimal(couponDto.getBirthdayBenefit()).subtract(new BigDecimal(1)).doubleValue();
