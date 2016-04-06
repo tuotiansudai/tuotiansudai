@@ -336,63 +336,51 @@ require(['jquery','rotate','layerWrapper', 'jquery.validate', 'jquery.validate.e
             })
         }
     }
-    var lineLink    = staticServer+'/activity/rank-list';    // 要分享的页面的URL
-    var imgUrl      = staticServer+'/images/sign/actor/ranklist/share-images.png';    // 显示在微信里的缩略图
-    var shareTitle  = '霸道总裁送你钱！车！房！';          // 页面标题
-    var descContent = "投资拿排名大奖！还能抽奖！百分百中奖哦！";      // 内容简介
-    var appid       = '';                  // APP ID, 可以为空
 
 
-    function wx_shareFriend() {  
-      WeixinJSBridge.invoke('sendAppMessage',{  
-         "appid": appid,  
-         "img_url": imgUrl,  
-         "img_width": "640",  
-         "img_height": "640",  
-         "link": lineLink,  
-         "desc": descContent,  
-         "title": shareTitle  
-         }, function(res) {  
-           //alert(res.err_msg);  
-         })  
-    }  
+    var imgUrl = staticServer+'/images/sign/actor/ranklist/share-images.png'; // 分享后展示的一张图片
+    var lineLink = staticServer+'/activity/rank-list'; // 点击分享后跳转的页面地址
+    var descContent = "投资拿排名大奖！还能抽奖！百分百中奖哦！"; // 分享后的描述信息
+    var shareTitle = '霸道总裁送你钱！车！房！'; // 分享后的标题
+    var appid = ''; // 应用id,如果有可以填，没有就留空
 
-    function wx_shareTimeline() {  
-      WeixinJSBridge.invoke('shareTimeline',{  
-        "img_url": imgUrl,  
-        "img_width": "640",  
-        "img_height": "640",  
-        "link": lineLink,  
-        "desc": descContent,  
-        "title": shareTitle  
-        }, function(res) {  
-           //alert(res.err_msg);  
-        });  
-    }  
-
-    function wx_shareWeibo() {  
-      WeixinJSBridge.invoke('shareWeibo',{  
-        "content": descContent,  
-        "url": lineLink,  
-        }, function(res) {  
-          //alert(res.err_msg);  
-        });  
-    }  
-
-    function onBridgeReady(){
-      WeixinJSBridge.on('menu:share:appmessage', wx_shareFriend);   // 发送给朋友
-      WeixinJSBridge.on('menu:share:timeline',   wx_shareTimeline); // 分享到朋友圈
-      WeixinJSBridge.on('menu:share:weibo',      wx_shareWeibo);    // 分享到微博
+    function shareFriend() {
+        WeixinJSBridge.invoke('sendAppMessage', {
+            "appid": appid,
+            "img_url": imgUrl,
+            "img_width": "200",
+            "img_height": "200",
+            "link": lineLink,
+            "desc": descContent,
+            "title": shareTitle
+        }, function(res) {
+            //_report('send_msg', res.err_msg);  // 这是回调函数，必须注释掉
+        })
     }
 
-    if (typeof WeixinJSBridge == "undefined"){
-      if( document.addEventListener ){
-          document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
-      }else if (document.attachEvent){
-          document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
-          document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
-      }
-    }else{
-      onBridgeReady();
+    function shareTimeline() {
+        WeixinJSBridge.invoke('shareTimeline', {
+            "img_url": imgUrl,
+            "img_width": "200",
+            "img_height": "200",
+            "link": lineLink,
+            "desc": descContent,
+            "title": shareTitle
+        }, function(res) {
+            //_report('timeline', res.err_msg); // 这是回调函数，必须注释掉
+        });
     }
+
+
+    // 当微信内置浏览器完成内部初始化后会触发WeixinJSBridgeReady事件。
+    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        // 发送给好友
+        WeixinJSBridge.on('menu:share:appmessage', function(argv) {
+            shareFriend();
+        });
+        // 分享到朋友圈
+        WeixinJSBridge.on('menu:share:timeline', function(argv) {
+            shareTimeline();
+        });
+    }, false);
 });

@@ -443,6 +443,83 @@
     </div>
     <div class="rank-phone-intro">
         <img src="${staticServer}/images/sign/actor/ranklist/actor-intro-app.png" width="100%" class="actor-intro">
+    </div>
+    <div class="login-btn-phone">
+    <@global.isAnonymous>
+        <p>
+            <a href="/register/user">立即注册</a>
+        </p>
+        <p>
+            <a href="/login">直接登录</a>
+        </p>
+    </@global.isAnonymous>
+    <@global.isNotAnonymous>
+        <ul class="user-info-phone">
+            <li>
+                <span class="project-name">我的天豆：10000</span>
+                <span class="btn-gift-phone">去抽奖</span>
+            </li>
+            <li>
+                <span class="project-name">我的财豆：</span>
+                <span class="btn-gift-phone">去抽奖</span>
+            </li>
+            <li>
+                <span class="project-name">我的排名：35</span>
+                <span class="btn-gift-phone">去投资</span>
+            </li>
+        </ul>
+    </@global.isNotAnonymous>
+    </div>
+    <div class="bean-rank-list">
+        <h3><i class="left-circle"></i><span>天豆排行榜</span><i class="right-circle"></i></h3>
+        <dl class="max-bean-rank">
+            <dt>
+                <span><strong class="rank-num">名次</strong></span>
+                <span><strong class="rank-beans">天豆数</strong></span>
+                <span><strong class="rank-user">用户</strong></span>
+            </dt>
+            <dd>
+                <span> 1</span>
+                <span>10000</span>
+                <span>che****</span>
+            </dd>
+            <dd>
+                <span> 2</span>
+                <span>10000</span>
+                <span>che****</span>
+            </dd>
+            <dd>
+                <span> 3</span>
+                <span>10000</span>
+                <span>che****</span>
+            </dd>
+            <dd>
+                <span>4</span>
+                <span>10000</span>
+                <span>che****</span>
+            </dd>
+            <dd>
+                <span>5</span>
+                <span>10000</span>
+                <span>che****</span>
+            </dd>
+        </dl>
+    </div>
+    <div class="change-rank-list">
+        <div class="change-btn-list">
+            <i class="left-circle"></i><span><strong class="active">天豆抽奖</strong><strong>财豆抽奖</strong></span><i class="right-circle"></i>
+        </div>
+        <div class="change-gift-com">
+            <div class="circle-list">
+                <div class="user-info">
+                    <p>我的天豆：<span>10000000</span></p>
+                    <p>每次抽奖将消耗1000天豆</p>
+                </div>
+            </div>
+            <div class="circle-list"></div>
+        </div>
+    </div>
+    <div class="rank-phone-intro">
         <img src="${staticServer}/images/sign/actor/ranklist/bean-circle.png" width="100%" class="bean-circle">
         <img src="${staticServer}/images/sign/actor/ranklist/share-button.png" width="100%" class="share-btn">
         <img src="${staticServer}/images/sign/actor/ranklist/share-intro.png" width="100%" class="share-intro">
