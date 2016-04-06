@@ -549,11 +549,24 @@ body{
   white-space: nowrap;
 }
 //auto invest
-.auto-invest {
+.auto-invest, .auto-repay {
   .CertifiedImg {
     background: url('/images/sign/re-s01.png') center top no-repeat;
     margin: 40px;
     height: 170px;
+  }
+  .CertifiedImg-repay {
+    background: url('/images/sign/re-s02.png') center top no-repeat;
+    margin: 40px;
+    height: 170px;
+  }
+  .panel {
+    color: nth($baseColor, 6);
+    padding-left: 40px;
+  }
+  p.notice {
+    b {
+      font-size: nth($fontSize, 4);
   }
   .panel {
     color: nth($baseColor, 6);

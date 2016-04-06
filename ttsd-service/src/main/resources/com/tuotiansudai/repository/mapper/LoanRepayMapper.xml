@@ -295,13 +295,18 @@
         <result column="repay_amount" property="repayAmount"/>
         <result column="loan_name" property="loanName"/>
         <result column="mobile" property="mobile"/>
+        <result column="loan_id" property="loanId"/>
+        <result column="id" property="id"/>
+
     </resultMap>
 
     <select id="findLoanRepayNotifyToday" resultType="long" resultMap="loanRepayNotifyResultMap">
         select
             lr.expected_interest + lr.corpus + lr.default_interest as repay_amount,
             l.name as loan_name,
-            u.mobile
+            u.mobile,
+            l.id as loan_id,
+            lr.id
         from
             loan_repay lr
             join loan l on l.id = lr.loan_id
