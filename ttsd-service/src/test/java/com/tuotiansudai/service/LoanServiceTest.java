@@ -69,12 +69,9 @@ public class LoanServiceTest {
     private UserRoleMapper userRoleMapper;
 
     @Autowired
-    RedisWrapperClient redisWrapperClient;
+    private RedisWrapperClient redisWrapperClient;
 
-    @Value("#{'${web.random.investor.list}'.split('\\|')}")
-    private List<String> showRandomLoginNameList;
 
-    private final static String REDIS_KEY_TEMPLATE = "webmobile:{0}:{1}:showinvestorname";
 
     @Before
     public void createLoanTitle(){
@@ -477,30 +474,51 @@ public class LoanServiceTest {
 
 
     @Test
-    //String encryptLoginName(String loginName, String recordsLoginName, int showLength, long investId);
-    public void encryptLoginNameIsOk(){
-        String loginName = "";
+    public void shouldShowEncryptLoginNameWhenAnonymousAndExcludeShowRandomLoginNameList() {
         InvestModel investModel1 = new InvestModel();
         investModel1.setLoginName("loginName1");
         investModel1.setId(100000L);
+        assertEquals("log***", loanService.encryptLoginName("", investModel1.getLoginName(), 3, investModel1.getId()));
+    }
 
-        InvestModel investModel2 = new InvestModel();
-        investModel2.setLoginName("loginNam2");
-        investModel2.setId(100001L);
+    @Test
+    public void shouldShowEncryptLoginNameWhenAnonymousAndIncludeShowRandomLoginNameList() {
+        InvestModel investModel1 = new InvestModel();
+        investModel1.setLoginName("ttdblvjing");
+        investModel1.setId(1000002L);
 
-        InvestModel investModel3 = new InvestModel();
-        investModel3.setLoginName("ttdblvjing");
-        investModel3.setId(100002L);
+        assertEquals(this.getDefaultkey(), loanService.encryptLoginName("", investModel1.getLoginName(), 3, investModel1.getId()));
+    }
 
-        String redisKey = MessageFormat.format(REDIS_KEY_TEMPLATE, String.valueOf(investModel1.getId()), investModel1.getLoginName());
-        assertEquals(investModel1.getLoginName(),loanService.encryptLoginName("loginName1", investModel1.getLoginName(), 3, investModel1.getId()));
+    @Test
+    public void shouldShowEncryptLoginNameWhenLoginNameSameAsInvestorLoginName() {
+        InvestModel investModel1 = new InvestModel();
+        investModel1.setLoginName("ttdblvjing");
+        investModel1.setId(1000002L);
 
-        if(showRandomLoginNameList.contains(investModel3.getLoginName()) && !redisWrapperClient.exists(redisKey)){
-            redisWrapperClient.set(redisKey, RandomUtils.generateLowerString(3) + RandomUtils.showChar(3));
-            assertEquals(redisWrapperClient.get(redisKey), loanService.encryptLoginName(loginName, investModel1.getLoginName(), 3, investModel1.getId()));
-        }
-        else{
-            assertEquals("log***", loanService.encryptLoginName("", investModel2.getLoginName(), 3, investModel3.getId()));
-        }
+        assertEquals("ttdblvjing", loanService.encryptLoginName("ttdblvjing", investModel1.getLoginName(), 3, investModel1.getId()));
+    }
+
+    @Test
+    public void shouldShowEncryptLoginNameWhenLoginNameNotSameAsInvestorLoginNameAndIncludeShowRandomLoginNameList() {
+        InvestModel investModel1 = new InvestModel();
+        investModel1.setLoginName("ttdblvjing");
+        investModel1.setId(1000002L);
+
+        assertEquals(this.getDefaultkey(), loanService.encryptLoginName("loginName2", investModel1.getLoginName(), 3, investModel1.getId()));
+    }
+
+    @Test
+    public void shouldShowEncryptLoginNameWhenLoginNameNotSameAsInvestorLoginNameAndExcludeShowRandomLoginNameList() {
+        InvestModel investModel1 = new InvestModel();
+        investModel1.setLoginName("loginName3");
+        investModel1.setId(1000003L);
+
+        assertEquals("log***", loanService.encryptLoginName("loginName2", investModel1.getLoginName(), 3, investModel1.getId()));
+    }
+
+    private String getDefaultkey(){
+        redisWrapperClient.set("webmobile:1000002:ttdblvjing:showinvestorname","bxh***");
+        return redisWrapperClient.get("webmobile:1000002:ttdblvjing:showinvestorname");
     }
 }
