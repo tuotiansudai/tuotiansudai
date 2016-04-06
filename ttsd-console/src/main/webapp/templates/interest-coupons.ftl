@@ -80,11 +80,7 @@
         ${coupon.totalInvestAmount/100}
         </td>
         <td>
-            <#if coupon.active>
-                ${coupon.startTime?string('yyyy-MM-dd')}至${coupon.endTime?string('yyyy-MM-dd')}
-            <#else>
-                -
-            </#if>
+            ${coupon.startTime?string('yyyy-MM-dd')}至${coupon.endTime?string('yyyy-MM-dd')}
         </td>
         <td>
             <#if coupon.userGroup == 'IMPORT_USER'>

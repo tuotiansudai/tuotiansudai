@@ -73,11 +73,7 @@
                 ${coupon.totalInvestAmount/100}
             </td>
             <td>
-                <#if coupon.couponType == 'NEWBIE_COUPON' || coupon.active>
                 ${coupon.startTime?string('yyyy-MM-dd')}至${coupon.endTime?string('yyyy-MM-dd')}
-                <#else>
-                -
-                </#if>
             </td>
             <td>
                 ${coupon.totalCount?string('0')}
