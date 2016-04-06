@@ -8,6 +8,7 @@ import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
+import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -65,6 +66,9 @@ public class InvestServiceTest {
 
     @Autowired
     private PaySyncClient paySyncClient;
+
+    @Autowired
+    private PayAsyncClient payAsyncClient;
 
     private AccountModel createAccountByUserId(String userId) {
         AccountModel accountModel = new AccountModel(userId,userId,"120101198810012010","","",new Date());
@@ -126,6 +130,7 @@ public class InvestServiceTest {
         this.mockServer = mockUmPayService();
 
         MockPayGateWrapper.injectInto(paySyncClient);
+        MockPayGateWrapper.injectInto(payAsyncClient);
         MockPayGateWrapper.setUrl(this.mockServer.getUrl("/").toString());
     }
 
@@ -226,9 +231,9 @@ public class InvestServiceTest {
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
 
-        createUserAutoInvestPlan("testInvest1",AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
-        createUserAutoInvestPlan("testInvest2",AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
-        createUserAutoInvestPlan("testInvest3",AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
+        createUserAutoInvestPlan("testInvest1", AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
+        createUserAutoInvestPlan("testInvest2", AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
+        createUserAutoInvestPlan("testInvest3", AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
 
         this.investService.autoInvest(loanId);
 
@@ -343,4 +348,8 @@ public class InvestServiceTest {
         investService.investSuccess(investModel.getId(), investModel, investModel.getLoginName());
     }
 
+    @Test
+    public void shouldIncrRedisTriggerWhenCallbackSuccess(){
+
+    }
 }
