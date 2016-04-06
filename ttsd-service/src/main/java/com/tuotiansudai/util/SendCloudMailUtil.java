@@ -24,7 +24,7 @@ public class SendCloudMailUtil {
             String content = SendCloudTemplate.LOAN_OUT_SUCCESSFUL_EMAIL.generateContent(map);
             sendCloudClient.sendMailBySendCloud(toAddress, SendCloudTemplate.LOAN_OUT_SUCCESSFUL_EMAIL.getTitle(), content, SendCloudType.CONTENT);
             return true;
-        } catch (MessagingException | UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
         return false;
@@ -35,7 +35,7 @@ public class SendCloudMailUtil {
             String content = SendCloudTemplate.REPAY_COMPLETE_EMAIL.generateContent(map);
             sendCloudClient.sendMailBySendCloud(toAddress, SendCloudTemplate.REPAY_COMPLETE_EMAIL.getTitle(), content, SendCloudType.CONTENT);
             return true;
-        } catch (MessagingException | UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
         return false;
@@ -46,7 +46,7 @@ public class SendCloudMailUtil {
             String content = SendCloudTemplate.ACTIVE_EMAIL.generateContent(map);
             sendCloudClient.sendMailBySendCloud(toAddress, SendCloudTemplate.ACTIVE_EMAIL.getTitle(), content, SendCloudType.CONTENT);
             return true;
-        } catch (MessagingException | UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
         return false;

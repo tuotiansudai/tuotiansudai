@@ -29,7 +29,7 @@
                         <a href="/mobile-retrieve-password">忘记密码？</a>
                     </div>
                     <div class="clear-blank"></div>
-                    <button class="login-submit btn-normal" type="button">立即登录</button>
+                    <button class="login-submit btn-normal" type="button" >立即登录</button>
                 </div>
                 <div class="clear-blank"></div>
                 <b>数据采用256位加密技术，保障您的信息安全！</b>
