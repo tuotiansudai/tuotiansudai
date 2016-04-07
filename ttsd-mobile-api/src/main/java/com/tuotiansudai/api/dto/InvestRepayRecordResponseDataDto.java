@@ -75,9 +75,9 @@ public class InvestRepayRecordResponseDataDto {
         }
         this.corpus = AmountConverter.convertCentToString(investRepay.getCorpus());
         if (RepayStatus.COMPLETE == investRepay.getStatus()) {
-            this.interest = AmountConverter.convertCentToString(investRepay.getActualInterest() + investRepay.getDefaultInterest());
+            this.interest = AmountConverter.convertCentToString(investRepay.getActualInterest() + investRepay.getDefaultInterest() - investRepay.getActualFee());
         } else {
-            this.interest = AmountConverter.convertCentToString(investRepay.getExpectedInterest());
+            this.interest = AmountConverter.convertCentToString(investRepay.getExpectedInterest() + investRepay.getDefaultInterest() - investRepay.getExpectedFee());
         }
         this.loanType = loan.getProductType() != null ? loan.getProductType().name() : "";
     }
