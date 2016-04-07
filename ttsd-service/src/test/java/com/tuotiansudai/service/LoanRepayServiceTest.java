@@ -62,7 +62,7 @@ public class LoanRepayServiceTest {
 
         when(smsWrapperClient.sendLoanRepayNotify(any(LoanRepayNotifyDto.class))).thenReturn(new BaseDto<SmsDataDto>());
 
-//        when(payWrapperClient.autoRepay(anyLong())).thenReturn(getAutoRepayReturnDto(false));
+        when(payWrapperClient.autoRepay(anyLong())).thenReturn(getAutoRepayReturnDto(false));
 
         ReflectionTestUtils.setField(loanRepayService, "repayRemindMobileList", Lists.newArrayList("18611445119", "18611112222"));
 
@@ -83,7 +83,7 @@ public class LoanRepayServiceTest {
 
         when(smsWrapperClient.sendLoanRepayNotify(any(LoanRepayNotifyDto.class))).thenReturn(new BaseDto<SmsDataDto>());
 
-//        when(payWrapperClient.autoRepay(anyLong())).thenReturn(getAutoRepayReturnDto(false));
+        when(payWrapperClient.autoRepay(anyLong())).thenReturn(getAutoRepayReturnDto(false));
 
         ReflectionTestUtils.setField(loanRepayService, "repayRemindMobileList", Lists.newArrayList("18611445119", "18611112222"));
         loanRepayService.loanRepayNotify();
@@ -101,7 +101,7 @@ public class LoanRepayServiceTest {
 
         when(smsWrapperClient.sendLoanRepayNotify(any(LoanRepayNotifyDto.class))).thenReturn(new BaseDto<SmsDataDto>());
 
-//        when(payWrapperClient.autoRepay(anyLong())).thenReturn(getAutoRepayReturnDto(false));
+        when(payWrapperClient.autoRepay(anyLong())).thenReturn(getAutoRepayReturnDto(false));
 
         ReflectionTestUtils.setField(loanRepayService, "repayRemindMobileList", Lists.newArrayList("18611445119", "18611112222"));
         loanRepayService.loanRepayNotify();
@@ -130,14 +130,14 @@ public class LoanRepayServiceTest {
 //
 //    }
 
-//    private BaseDto<PayDataDto> getAutoRepayReturnDto(boolean status) {
-//        BaseDto<PayDataDto> autoRepayReturn = new BaseDto<>();
-//        PayDataDto payDataDto = new PayDataDto();
-//        autoRepayReturn.setData(payDataDto);
-//        payDataDto.setStatus(status);
-//        autoRepayReturn.setSuccess(status);
-//        return autoRepayReturn;
-//    }
+    private BaseDto<PayDataDto> getAutoRepayReturnDto(boolean status) {
+        BaseDto<PayDataDto> autoRepayReturn = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        autoRepayReturn.setData(payDataDto);
+        payDataDto.setStatus(status);
+        autoRepayReturn.setSuccess(status);
+        return autoRepayReturn;
+    }
 
 
     private LoanRepayNotifyModel getFakeLoanRepayNotify(long repayAmount, String loanName, String mobile) {
