@@ -8,6 +8,8 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanRepayService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.DateUtil;
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,7 +120,8 @@ public class LoanRepayServiceImpl implements LoanRepayService {
 
     @Override
     public void loanRepayNotify() {
-        List<LoanRepayNotifyModel> loanRepayNotifyModelList = loanRepayMapper.findLoanRepayNotifyToday();
+        String today = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
+        List<LoanRepayNotifyModel> loanRepayNotifyModelList = loanRepayMapper.findLoanRepayNotifyToday(today);
 
         Map<String, Long> notifyMap = new HashMap<>();
         for (String mobile : repayRemindMobileList) {
