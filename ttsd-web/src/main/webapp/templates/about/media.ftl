@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-    <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="关于我们" activeLeftNav="媒体报道" title="媒体报道列表">
+    <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="关于我们" activeLeftNav="媒体报道" title="拓天最新媒体报道_拓天速贷" keywords="拓天速贷,媒体报道,拓天动态" description="拓天速贷的快速发展可让您通过媒体报道更加深入的了解拓天速贷." >
     <div class="about-us-container">
         <h2 class="column-title"><em>媒体报道</em></h2>
 
