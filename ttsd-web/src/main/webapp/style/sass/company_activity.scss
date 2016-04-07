@@ -1476,7 +1476,454 @@
       margin:25px 0;
     }
     .share-intro{
-      margin-bottom:20px;
+      margin-bottom:50px;
+    }
+  }
+  .login-btn-phone{
+    float:left;
+    width:100%;
+    margin-bottom:35px;
+    p{
+      float:left;
+      width:100%;
+      margin-bottom:15px;
+      a{
+        float:left;
+        width:120px;
+        height:28px;
+        text-align:center;
+        line-height:30px;
+        border:1px solid #ffe353;
+        color:#ffe353;
+        font-size:14px;
+        position: relative;
+        left:50%;
+        margin-left:-60px;
+        border-radius:5px;
+      }
+    }
+    .user-info-phone{
+      float:left;
+      width:70%;
+      margin:0 15%;
+      li{
+        float:left;
+        width:100%;
+        margin-bottom:15px;
+        span{
+          &.project-name{
+            float:left;
+            margin-right:10px;
+            font-size:14px;
+            color:#ffedb6;
+          }
+          &.btn-gift-phone{
+            float:right;
+            width:80px;
+            height:30px;
+            font-size:14px;
+            color:#b60000;
+            text-align:center;
+            background:url("/images/sign/actor/ranklist/btn-phone-bg.png") no-repeat center;
+            background-size:100%;
+          }
+        }
+      }
+    }
+  }
+  .bean-rank-list{
+    float:left;
+    width:90%;
+    margin:0 5%;
+    border:1px solid #ffee61;
+    border-radius:5px;
+    margin-bottom: 50px;
+    h3{
+      float:left;
+      width:100%;
+      position: relative;
+      span{
+        width:100px;
+        height:30px;
+        position: absolute;
+        top:50%;
+        left:50%;
+        margin-top:-15px;
+        margin-left:-50px;
+        text-align:center;
+        font-size:14px;
+        color:#ffee61;
+        background:#e02152;
+        border:1px solid #ffee61;
+        border-radius:20px;
+      }
+      i{
+        position: absolute;
+        width:5px;
+        height:5px;
+        background:#ffc308;
+        border-radius:5px;
+        &.left-circle{
+          top:0;
+          left:50%;
+          margin-left: -54px;
+          margin-top: -3px;
+        }
+        &.right-circle{
+          top:0;
+          right:50%;
+          margin-right: -56px;
+          margin-top: -3px;
+        }
+      }
+    }
+    .max-bean-rank{
+      float:left;
+      width:100%;
+      dt{
+        float:left;
+        width:100%;
+        text-align:center;
+        margin-top: 30px;
+        span{
+          strong{
+            color:#e02152;
+            background:#ffe353;
+            padding: 5px 15px;
+            border-radius: 20px;
+          }
+        }
+      }
+      dd{
+        float:left;
+        width:100%;
+        text-align:center;
+        margin:10px 0;
+        span{
+          color:#ffe353;
+        }
+      }
+      span{
+        float:left;
+        width:33.333333%;
+        text-align:center;
+        font-size:14px;
+      }
+    }
+    .money-online{
+      float:left;
+      width:100%;
+      position: relative;
+      .progress-line{
+        float:left;
+        width:10px;
+        height:300px;
+        border:1px solid #ffd633;
+        border-radius:20px;
+        margin-left:80px;
+        margin-bottom:30px;
+        margin-top:30px;
+        position: relative;
+        .total-money{
+          width:200px;
+          position: absolute;
+          top:10px;
+          left:40px;
+          font-size:12px;
+          color:#ffedbc;
+        }
+        .gift-one{
+          position: absolute;
+          top:40px;
+          left:40px;
+          width:120px;
+          padding:10px 20px;
+          background:#e6e6e6;
+          border-radius:10px;
+          font-size:12px;
+          dt{
+            color:#4c4c4c;
+            span{
+              color:#cf3c56;
+            }
+          }
+          dd{
+            color:#999;
+          }
+          &.active{
+            background:#ffedbc;
+            color:#a6000e;
+            dt{
+              color:#a6000e;
+              span{
+                color:#a6000e;
+              }
+            }
+            dd{
+              color:#a6000e;
+            }
+          }
+        }
+        .gift-two{
+          position: absolute;
+          top:320px;
+          left:80px;
+          width:160px;
+          padding:10px 20px;
+          background:#e6e6e6;
+          border-radius:10px;
+          font-size:14px;
+          display:none;
+          dt{
+            color:#4c4c4c;
+            span{
+              color:#cf3c56;
+            }
+          }
+          dd{
+            color:#999;
+          }
+        }
+        .stage-num{
+          width:70px;
+          position: absolute;
+          right:10px;
+          span{
+            float:left;
+            font-size:12px;
+            color:#ffedbc;
+            text-align:right;
+          }
+          &.first-stage{
+            bottom:223px;
+            display:none;
+          }
+          &.two-stage{
+            bottom:205px;
+          }
+          .line-single{
+            float:right;
+            width:20px;
+            height:1px;
+            margin-top:15px;
+            background:#ffd633;
+          }
+        }
+        .color-line{
+          float:left;
+          width:100%;
+          height:100%;
+          border-radius:20px;
+          position: relative;
+          overflow:hidden;
+          .color-pro{
+            width:10px;
+            height:0;
+            position: absolute;
+            left:0;
+            bottom:0;
+            border-radius:20px;
+            background:#ffd633;
+          }
+        }
+      }
+    }
+  }
+  .change-rank-list{
+    float:left;
+    width:100%;
+    .change-btn-list{
+      float:left;
+      width:100%;
+      height:1px;
+      position: relative;
+      background:url("/images/sign/actor/ranklist/change-line.png") no-repeat center;
+      background-size:100%;
+      span{
+        width:160px;
+        height:30px;
+        position: absolute;
+        top:50%;
+        left:50%;
+        margin-top:-15px;
+        margin-left:-80px;
+        text-align:center;
+        font-size:14px;
+        color:#ffee61;
+        background:#e02152;
+        border:1px solid #ffee61;
+        border-radius:20px;
+        overflow:hidden;
+        strong{
+          float:left;
+          width:50%;
+          text-align:center;
+          line-height:30px;
+          &.active{
+            color:#e02152;
+            background:#ffe353;
+          }
+        }
+      }
+      i{
+        position: absolute;
+        width:5px;
+        height:5px;
+        background:#ffc308;
+        border-radius:5px;
+        &.left-circle{
+          top:0;
+          left:50%;
+          margin-left: -84px;
+          margin-top: -2px;
+        }
+        &.right-circle{
+          top:0;
+          right:50%;
+          margin-right: -86px;
+          margin-top: -2px;
+        }
+      }
+    }
+    .change-gift-com{
+      float:left;
+      width:100%;
+      .circle-list{
+        float:left;
+        width:100%;
+        display:none;
+        &.active{
+          display:block;
+        }
+        .user-info{
+          float:left;
+          width:220px;
+          position: relative;
+          left:50%;
+          margin-left:-110px;
+          margin-top:35px;
+          margin-bottom:30px;
+          border:1px solid #ffee61;
+          border-radius:5px;
+          padding:5px 0;
+          p{
+            text-align:center;
+            margin-bottom:0;
+            font-size:14px;
+            color:#ffee61;
+          }
+        }
+        .gift-circle{
+          float:left;
+          width:100%;
+          position: relative;
+          .max-gift{
+            float:left;
+            width:270px;
+            height:270px;
+            position: relative;
+            background: url("/images/sign/actor/ranklist/turntable-bg.png") no-repeat center;
+            background-size: 100%;
+            left:50%;
+            margin-left:-135px;
+            .pointer-img{
+              width: 66px;
+              height: 100px;
+              cursor:pointer;
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              margin-left: -33px;
+              margin-top: -63px;
+              z-index: 8;
+            }
+            .rotate-btn{
+              width: 220px;
+              height: 220px;
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              margin-top:-110px;
+              margin-left:-110px;
+            }
+          }
+        }
+        .gift-record{
+          float:left;
+          width:100%;
+          height:120px;
+          margin: 40px 0 30px 0;
+          overflow:hidden;
+          .td-record{
+            float:left;
+            width:230px;
+            position: relative;
+            left:50%;
+            margin-left:-115px;
+            li{
+              color:#ffee61;
+              font-size:12px;
+            }
+          }
+        }
+        .my-record{
+          float:left;
+          width:100%;
+          margin-bottom: 25px;
+          dl{
+            float:left;
+            width:250px;
+            padding:5px 20px;
+            position: relative;
+            left:50%;
+            margin-left:-145px;
+            background:rgba(0,0,0,.2);
+            border-radius:5px;
+            dt{
+              float:left;
+              width:100%;
+              font-size:13px;
+              color:#ffecb6;
+              &.active{
+                .fa-angle-up{
+                  display:none;
+                }
+                .fa-angle-down{
+                  display:block;
+                }
+              }
+              span{
+                float:left;
+              }
+              i{
+                float:right;
+                margin-top:5px;
+                &.fa-angle-up{
+                  display:block;
+                }
+                &.fa-angle-down{
+                  display:none;
+                }
+              }
+            }
+            dd{
+              float:left;
+              width:100%;
+              font-size:13px;
+              color:#ffecb6;
+              display:none;
+              span{
+                &.gift-name{
+                  float:left;
+                }
+                &.gift-time{
+                  float:right;
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
   .actor-rule{
@@ -1486,6 +1933,227 @@
     font-size:12px;
     color:#ffee61;
     margin-bottom:45px;
+  }
+  .actor-write{
+    float:left;
+    width:100%;
+    padding:10px 0;
+    text-align:center;
+    background:#333;
+    p{
+      font-size:12px;
+      color:#fff;
+      margin-bottom:0;
+    }
+  }
+  .tip-list{
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:url("/images/sign/actor/ranklist/tip-bg.png") repeat;
+    z-index:88;
+    display:none;
+    .td-tip-big{
+      width:405px;
+      height:382px;
+      position: fixed;
+      top:50%;
+      left:50%;
+      margin-top:-191px;
+      margin-left:-202px;
+      background:url("/images/sign/actor/ranklist/big-gift-bg.png") no-repeat center;
+      background-size:100%;
+      z-index:999;
+      display:none;
+      .close-btn{
+        position: absolute;
+        top:225px;
+        right:60px;
+        width:18px;
+        height:18px;
+        background:url("/images/sign/actor/ranklist/close-btn.png") no-repeat center;
+        background-size:100%;
+        cursor:pointer;
+      }
+      .text-tip{
+        float:left;
+        width:270px;
+        height:100px;
+        margin-top: 240px;
+        margin-left: 70px;
+        p{
+          float:left;
+          width:100%;
+          margin-bottom:0;
+          text-align:center;
+          color:#a71425;
+          font-size:13px;
+        }
+      }
+      .btn-list{
+        float:left;
+        width:100%;
+        a{
+          float:left;
+          width:90px;
+          height:27px;
+          line-height:27px;
+          color:#fff;
+          font-size:12px;
+          text-align:center;
+          background:url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
+          background-size: 100%;
+          position: relative;
+          left:50%;
+          margin-left:-45px;
+        }
+      }
+    }
+    .td-tip-small{
+      width:300px;
+      height:216px;
+      position: fixed;
+      top:50%;
+      left:50%;
+      margin-top:-108px;
+      margin-left:-150px;
+      background:url("/images/sign/actor/ranklist/get-gift.png") no-repeat center;
+      background-size:100%;
+      z-index:999;
+      display:none;
+      .close-btn{
+        position: absolute;
+        top:60px;
+        right:10px;
+        width:18px;
+        height:18px;
+        background:url("/images/sign/actor/ranklist/close-btn.png") no-repeat center;
+        background-size:100%;
+        cursor:pointer;
+      }
+      .text-tip{
+        float:left;
+        width:270px;
+        height:100px;
+        margin-top: 70px;
+        margin-left: 15px;
+        p{
+          float:left;
+          width:100%;
+          margin-bottom:0;
+          text-align:center;
+          color:#a71425;
+          font-size:13px;
+        }
+      }
+      .btn-list{
+        float:left;
+        width:100%;
+        a{
+          &.go-on{
+            float:left;
+            width:90px;
+            height:27px;
+            line-height:27px;
+            color:#fff;
+            font-size:12px;
+            text-align:center;
+            background:url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
+            background-size: 100%;
+            position: relative;
+            left:50%;
+            margin-left:-45px;
+          }
+          &.double-btn{
+            float:left;
+            width:80px;
+            height:25px;
+            color:#fff;
+            font-size:12px;
+            text-align:center;
+            background:url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
+            background-size: 100%;
+            &.first-btn{
+              margin:0 10px 0 60px;
+            }
+          }
+        }
+      }
+    }
+    .td-tip-thank{
+      width:300px;
+      height:165px;
+      position: fixed;
+      top:50%;
+      left:50%;
+      margin-top:-82px;
+      margin-left:-150px;
+      background:url("/images/sign/actor/ranklist/no-gift-bg.png") no-repeat center;
+      background-size:100%;
+      z-index:999;
+      display:none;
+      .close-btn{
+        position: absolute;
+        top:0;
+        right:10px;
+        width:18px;
+        height:18px;
+        background:url("/images/sign/actor/ranklist/close-btn.png") no-repeat center;
+        background-size:100%;
+        cursor:pointer;
+      }
+      .text-tip{
+        float:left;
+        width:270px;
+        margin-top: 60px;
+        margin-left: 15px;
+        margin-bottom:10px;
+        p{
+          float:left;
+          width:100%;
+          margin-bottom:0;
+          text-align:center;
+          color:#a71425;
+          font-size:13px;
+        }
+      }
+      .btn-list{
+        float:left;
+        width:100%;
+        a{
+          &.go-on-big{
+            float:left;
+            width:110px;
+            height:30px;
+            line-height:30px;
+            color:#fff;
+            font-size:12px;
+            text-align:center;
+            background:url("/images/sign/actor/ranklist/big-btn.png") no-repeat center;
+            background-size: 100%;
+            position: relative;
+            left:50%;
+            margin-left:-55px;
+          }
+          &.go-on{
+            float:left;
+            width:90px;
+            height:27px;
+            line-height:27px;
+            color:#fff;
+            font-size:12px;
+            text-align:center;
+            background:url("/images/sign/actor/ranklist/small-btn.png") no-repeat center;
+            background-size: 100%;
+            position: relative;
+            left:50%;
+            margin-left:-45px;
+          }
+        }
+      }
+    }
   }
 }
 @media screen and (max-width:700px) {
