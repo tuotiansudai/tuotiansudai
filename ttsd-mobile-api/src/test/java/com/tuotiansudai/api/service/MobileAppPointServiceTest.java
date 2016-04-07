@@ -8,6 +8,8 @@ import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;
 import com.tuotiansudai.point.repository.model.*;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -36,6 +38,9 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
     private IdGenerator idGenerator;
 
     @Mock
+    private AccountMapper accountMapper;
+
+    @Mock
     private UserPointTaskMapper userPointTaskMapper;
 
     @Test
@@ -51,7 +56,8 @@ public class MobileAppPointServiceTest extends ServiceTestBase {
 
         List<PointBillModel> pointBillModelList = Lists.newArrayList();
         pointBillModelList.add(pointBillModel);
-        when(pointBillMapper.findPointBillPagination(anyString(),anyInt(),anyInt(),any(Date.class), any(Date.class), any(PointBusinessType.class))).thenReturn(pointBillModelList);
+        when(accountMapper.findByLoginName(anyString())).thenReturn(new AccountModel());
+        when(pointBillMapper.findPointBillPagination(anyString(), anyInt(), anyInt(), any(Date.class), any(Date.class), any(PointBusinessType.class))).thenReturn(pointBillModelList);
         when(pointBillMapper.findCountPointBillPagination(anyString(), any(Date.class), any(Date.class), any(PointBusinessType.class))).thenReturn(1L);
 
         PointBillRequestDto pointBillRequestDto = new PointBillRequestDto();
