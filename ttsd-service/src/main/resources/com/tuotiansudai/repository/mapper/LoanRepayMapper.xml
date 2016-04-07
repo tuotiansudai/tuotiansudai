@@ -297,7 +297,7 @@
         <result column="mobile" property="mobile"/>
     </resultMap>
 
-    <select id="findLoanRepayNotifyToday" parameterType="map" resultMap="loanRepayNotifyResultMap">
+    <select id="findLoanRepayNotifyToday" parameterType="map" resultMap="loanRepayNotifyResultMap" useCache="false">
         select
             lr.expected_interest + lr.corpus + lr.default_interest as repay_amount,
             l.name as loan_name,
