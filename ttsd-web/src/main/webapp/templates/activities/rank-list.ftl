@@ -574,16 +574,14 @@
     </div>
     <div class="rank-phone-intro">
         <span class="fl" style="padding:0 30px;"><img src="${staticServer}/images/sign/actor/ranklist/share-button.png" width="100%" class="fl share-btn"></span>
-        <img src="${staticServer}/images/sign/actor/ranklist/share-intro-phone.png" width="100%" class="share-intro">
+        <img src="${staticServer}/images/sign/actor/ranklist/share-intro-phone.png" width="100%">
     </div>
     <#if !isAppSource>
-    <div class="rank-phone-intro">
+    <div class="share-list">
         <p class="bdsharebuttonbox">
-            <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
-            <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
-            <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
-            <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
-            <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+            <span class="share-text">分享至：</span>
+            <a href="#" class="share-icon icon-weibo" data-cmd="tsina"></a>
+            <a href="#" class="share-icon icon-zone" data-cmd="qzone"></a>
         </p>
     </div>
     </#if>

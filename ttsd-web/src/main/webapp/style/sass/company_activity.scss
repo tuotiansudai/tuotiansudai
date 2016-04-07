@@ -1946,6 +1946,43 @@
       margin-bottom:0;
     }
   }
+  .share-list{
+    float:left;
+    width:80%;
+    padding:0 10%;
+    margin-top:30px;
+    margin-bottom:50px;
+    p{
+      float:left;
+      width:100%;
+      margin-bottom:0;
+      span{
+        float:left;
+        &.share-text{
+          color:#fff;
+          font-size:14px;
+          line-height:40px;
+        }
+      }
+      .share-icon{
+        width:40px;
+        height:40px;
+        margin:0 5px;
+        cursor:pointer;
+        padding-left:0;
+        background:url("/images/sign/actor/ranklist/share-icon.png") no-repeat center;
+        &.icon-weibo{
+          background-position:0 0;
+        }
+        &.icon-weixin{
+          background-position:-40px 0;
+        }
+        &.icon-zone{
+          background-position:-80px 0;
+        }
+      }
+    }
+  }
   .tip-list{
     position: fixed;
     top:0;
