@@ -77,11 +77,11 @@ public class BannerPictureResponseDataDto extends BaseResponseDataDto {
         this.content = content;
     }
 
-    public boolean isAuthorized() {
+    public boolean getIsAuthorized() {
         return isAuthorized;
     }
 
-    public void setAuthorized(boolean authorized) {
-        isAuthorized = authorized;
+    public void setIsAuthorized(boolean isAuthorized) {
+        this.isAuthorized = isAuthorized;
     }
 }
