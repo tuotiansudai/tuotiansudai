@@ -72,6 +72,10 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
 
     public BaseResponseDto getLastSignInTime(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        if(accountModel == null){
+            return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(),ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
+        }
         SignInPointDto lastSignInPointDto = signInService.getLastSignIn(loginName);
 
         LastSignInTimeResponseDataDto dataDto = new LastSignInTimeResponseDataDto();
