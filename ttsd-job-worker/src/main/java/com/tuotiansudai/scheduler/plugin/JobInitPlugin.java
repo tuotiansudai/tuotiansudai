@@ -149,8 +149,7 @@ public class JobInitPlugin implements SchedulerPlugin {
     private void createLoanRepayNotifyJob() {
         try {
             jobManager.newJob(JobType.LoanRepayNotify, LoanRepayNotifyJob.class).replaceExistingJob(true)
-//                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 14 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0/1 * * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 14 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
                     .withIdentity(JobType.LoanRepayNotify.name(), JobType.LoanRepayNotify.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
