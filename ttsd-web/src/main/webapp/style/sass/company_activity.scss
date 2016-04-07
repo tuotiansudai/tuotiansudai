@@ -1691,6 +1691,112 @@
             color:#ffee61;
           }
         }
+        .gift-circle{
+          float:left;
+          width:100%;
+          position: relative;
+          .max-gift{
+            float:left;
+            width:270px;
+            height:270px;
+            position: relative;
+            background: url("/images/sign/actor/ranklist/turntable-bg.png") no-repeat center;
+            background-size: 100%;
+            left:50%;
+            margin-left:-135px;
+            .pointer-img{
+              width: 66px;
+              height: 100px;
+              cursor:pointer;
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              margin-left: -33px;
+              margin-top: -63px;
+              z-index: 8;
+            }
+            .rotate-btn{
+              width: 220px;
+              height: 220px;
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              margin-top:-110px;
+              margin-left:-110px;
+            }
+          }
+        }
+        .gift-record{
+          float:left;
+          width:100%;
+          margin: 40px 0 30px 0;
+          .td-record{
+            float:left;
+            width:230px;
+            position: relative;
+            left:50%;
+            margin-left:-115px;
+            li{
+              color:#ffee61;
+              font-size:12px;
+            }
+          }
+        }
+        .my-record{
+          float:left;
+          width:100%;
+          dl{
+            float:left;
+            width:250px;
+            padding:5px 20px;
+            position: relative;
+            left:50%;
+            margin-left:-145px;
+            background:rgba(0,0,0,.2);
+            border-radius:5px;
+            dt{
+              float:left;
+              width:100%;
+              font-size:13px;
+              color:#ffecb6;
+              &.active{
+                .fa-angle-up{
+                  display:none;
+                }
+                .fa-angle-down{
+                  display:block;
+                }
+              }
+              span{
+                float:left;
+              }
+              i{
+                float:right;
+                margin-top:5px;
+                &.fa-angle-up{
+                  display:block;
+                }
+                &.fa-angle-down{
+                  display:none;
+                }
+              }
+            }
+            dd{
+              float:left;
+              width:100%;
+              font-size:13px;
+              color:#ffecb6;
+              span{
+                &.gift-name{
+                  float:left;
+                }
+                &.gift-time{
+                  float:right;
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

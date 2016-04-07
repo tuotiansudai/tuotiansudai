@@ -509,18 +509,47 @@
         <div class="change-btn-list">
             <i class="left-circle"></i><span><strong class="active">天豆抽奖</strong><strong>财豆抽奖</strong></span><i class="right-circle"></i>
         </div>
-        <div class="change-gift-com">
+        <div class="change-gift-com" id="changeGift">
             <div class="circle-list">
                 <div class="user-info">
                     <p>我的天豆：<span>10000000</span></p>
                     <p>每次抽奖将消耗1000天豆</p>
+                </div>
+                <div class="gift-circle">
+                    <div class="max-gift">
+                        <div class="pointer-img" id="pointerCd" data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
+                            <img src="${staticServer}/images/sign/actor/ranklist/pointer.png" width="100%" alt="pointer"/>
+                        </div>
+                        <div class="rotate-btn">
+                            <img id="rotateCd" src="${staticServer}/images/sign/actor/ranklist/gift-list-cd.png"
+                                 width="100%" alt="turntable"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="gift-record">
+                    <ul class="td-record">
+                        <li>恭喜fel*****抽中了Macbook</li>
+                        <li>恭喜fel*****抽中了Macbook</li>
+                        <li>恭喜fel*****抽中了Macbook</li>
+                        <li>恭喜fel*****抽中了Macbook</li>
+                        <li>恭喜fel*****抽中了Macbook</li>
+                    </ul>
+                </div>
+                <div class="my-record">
+                    <dl>
+                        <dt class="active"><span>我的奖品</span><i class="fa fa-angle-up"></i><i class="fa fa-angle-down"></i></dt>
+                        <dd><span class="gift-name">MacBook</span><span class="gift-time">2016-11-15 11:21</span></dd>
+                        <dd><span class="gift-name">MacBook</span><span class="gift-time">2016-11-15 11:21</span></dd>
+                        <dd><span class="gift-name">MacBook</span><span class="gift-time">2016-11-15 11:21</span></dd>
+                        <dd><span class="gift-name">MacBook</span><span class="gift-time">2016-11-15 11:21</span></dd>
+                        <dd><span class="gift-name">MacBook</span><span class="gift-time">2016-11-15 11:21</span></dd>
+                    </dl>
                 </div>
             </div>
             <div class="circle-list"></div>
         </div>
     </div>
     <div class="rank-phone-intro">
-        <img src="${staticServer}/images/sign/actor/ranklist/bean-circle.png" width="100%" class="bean-circle">
         <img src="${staticServer}/images/sign/actor/ranklist/share-button.png" width="100%" class="share-btn">
         <img src="${staticServer}/images/sign/actor/ranklist/share-intro.png" width="100%" class="share-intro">
     </div>

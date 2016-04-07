@@ -337,4 +337,12 @@ require(['jquery','rotate','layerWrapper', 'jquery.validate', 'jquery.validate.e
         }
     }
 
+    $('.change-btn-list').on('click', 'strong', function(event) {
+        event.preventDefault();
+        var $self=$(this),
+            index=$self.index();
+        $self.addClass('active').siblings().removeClass('active');
+        $('#changeGift').find('.circle-list:eq('+index+')').show().siblings().hide();
+    });
+
 });
