@@ -478,35 +478,17 @@
                 <span><strong class="rank-beans">天豆数</strong></span>
                 <span><strong class="rank-user">用户</strong></span>
             </dt>
+            <#list tianDouTop15 as tianDouRank>
             <dd>
-                <span> 1</span>
-                <span>10000</span>
-                <span>che****</span>
+                <span>${tianDouRank?index+1}</span>
+                <span>${tianDouRank.score}</span>
+                <span>${tianDouRank.loginName[0..2]}******</span>
             </dd>
-            <dd>
-                <span> 2</span>
-                <span>10000</span>
-                <span>che****</span>
-            </dd>
-            <dd>
-                <span> 3</span>
-                <span>10000</span>
-                <span>che****</span>
-            </dd>
-            <dd>
-                <span>4</span>
-                <span>10000</span>
-                <span>che****</span>
-            </dd>
-            <dd>
-                <span>5</span>
-                <span>10000</span>
-                <span>che****</span>
-            </dd>
+            </#list>
         </dl>
     </div>
     <div class="change-rank-list">
-        <div class="change-btn-list">
+        <div class="change-btn-list" id="awardBtnPhone">
             <i class="left-circle"></i><span><strong class="active">天豆抽奖</strong><strong>财豆抽奖</strong></span><i class="right-circle"></i>
         </div>
         <div class="change-gift-com" id="changeGift">
@@ -528,15 +510,18 @@
                 </div>
                 <div class="gift-record">
                     <ul class="td-record">
-                        <li>恭喜fel*****抽中了Macbook</li>
-                        <li>恭喜fel*****抽中了Macbook</li>
-                        <li>恭喜fel*****抽中了Macbook</li>
-                        <li>恭喜fel*****抽中了Macbook</li>
-                        <li>恭喜fel*****抽中了Macbook</li>
-                        <li>恭喜fel*****抽中了Macbook</li>
-                        <li>恭喜fel*****抽中了Macbook</li>
+                        <#list winnerList.MacBook as mackBookWinner>
+                            <li>恭喜 ${mackBookWinner.loginName[0..2]}***** 抽中了 ${mackBookWinner.prize.getName()}</li>
+                        </#list>
+                        <#list winnerList.iPhone as iPhoneWinner>
+                            <li>恭喜 ${iPhoneWinner.loginName[0..2]}***** 抽中了 ${iPhoneWinner.prize.getName()}</li>
+                        </#list>
+                        <#list winnerList.other as otherWinner>
+                            <li>恭喜 ${otherWinner.loginName[0..2]}***** 抽中了 ${otherWinner.prize.getName()}</li>
+                        </#list>
                     </ul>
                 </div>
+                <@global.isNotAnonymous>
                 <div class="my-record">
                     <dl>
                         <dt><span>我的奖品</span><i class="fa fa-angle-up"></i><i class="fa fa-angle-down"></i></dt>
@@ -547,6 +532,7 @@
                         <dd><span class="gift-name">MacBook</span><span class="gift-time">2016-11-15 11:21</span></dd>
                     </dl>
                 </div>
+                </@global.isNotAnonymous>
             </div>
             <div class="circle-list">
                 <div class="user-info">
@@ -566,15 +552,12 @@
                 </div>
                 <div class="gift-record">
                     <ul class="td-record">
-                        <li>恭喜fel*****抽中了Macbook</li>
-                        <li>恭喜fel*****抽中了Macbook</li>
-                        <li>恭喜fel*****抽中了Macbook</li>
-                        <li>恭喜fel*****抽中了Macbook</li>
-                        <li>恭喜fel*****抽中了Macbook</li>
-                        <li>恭喜fel*****抽中了Macbook</li>
-                        <li>恭喜fel*****抽中了Macbook</li>
+                        <#list allPointLotteries as allPointLottery>
+                            <li>恭喜 ${allPointLottery.loginName[0..2]}***** 抽中了 ${allPointLottery.pointPrizeName!}</li>
+                        </#list>
                     </ul>
                 </div>
+                <#if myPointLotteries?has_content>
                 <div class="my-record">
                     <dl>
                         <dt><span>我的奖品</span><i class="fa fa-angle-up"></i><i class="fa fa-angle-down"></i></dt>
@@ -585,12 +568,25 @@
                         <dd><span class="gift-name">MacBook</span><span class="gift-time">2016-11-15 11:21</span></dd>
                     </dl>
                 </div>
+                </#if>
             </div>
         </div>
     </div>
     <div class="rank-phone-intro">
-        <img src="${staticServer}/images/sign/actor/ranklist/share-intro.png" width="100%" class="share-intro">
+        <span class="fl" style="padding:0 30px;"><img src="${staticServer}/images/sign/actor/ranklist/share-button.png" width="100%" class="fl share-btn"></span>
+        <img src="${staticServer}/images/sign/actor/ranklist/share-intro-phone.png" width="100%" class="share-intro">
     </div>
+    <#if !isAppSource>
+    <div class="rank-phone-intro">
+        <p class="bdsharebuttonbox">
+            <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+            <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+            <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+            <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        </p>
+    </div>
+    </#if>
     <div class="bean-rank-list">
         <h3><i class="left-circle"></i><span>奖池直播</span><i class="right-circle"></i></h3>
         <div class="money-online">

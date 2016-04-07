@@ -235,6 +235,7 @@ require(['jquery', 'rotate', 'layerWrapper', 'jquery.validate', 'jquery.validate
     //share event
     window._bd_share_config = {
         "common": {
+            "bdSize": "32",
             "bdText": "霸道总裁送你钱！车！房！投资拿排名大奖！还能抽奖！百分百中奖哦！",
             "bdPic": staticServer + "/images/sign/actor/ranklist/share-images.png",
             onAfterClick: function(cmd) {
@@ -561,22 +562,22 @@ require(['jquery', 'rotate', 'layerWrapper', 'jquery.validate', 'jquery.validate
     $("#myTDPhone").on('click', function(event) {
         event.preventDefault();
         var $self = $(this),
-            myTdH = $('#awardBtn').offset().top;
+            myTdH = $('#awardBtnPhone').offset().top;
         $('body,html').animate({
             scrollTop: myTdH
         }, 'fast', function() {
-            $('#awardBtn li:eq(0)').trigger('click');
+            $('#awardBtnPhone strong:eq(0)').trigger('click');
         });
     });
     //go to CD Phone
     $("#myCDPhone").on('click', function(event) {
         event.preventDefault();
         var $self = $(this),
-            myTdH = $('#awardBtn').offset().top;
+            myTdH = $('#awardBtnPhone').offset().top;
         $('body,html').animate({
             scrollTop: myTdH
         }, 'fast', function() {
-            $('#awardBtn li:eq(1)').trigger('click');
+            $('#awardBtnPhone strong:eq(1)').trigger('click');
         });
     });
 
