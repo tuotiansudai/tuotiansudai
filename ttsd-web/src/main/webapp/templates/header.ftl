@@ -8,7 +8,7 @@
     <div class="header page-width">
         <span class="fl service-time">客服电话：400-169-1188<time>（服务时间：9:00－20:00）</time></span>
         <ul class="fr">
-            <li class="login-pop-app" id="iphone-app-pop"><a href="javascript:" onclick="trackClick('13顶部导航','手机APP')">手机APP</a>
+            <li class="login-pop-app" id="iphone-app-pop"><a href="javascript:" onclick="cnzzPush.trackClick('13顶部导航','手机APP')">手机APP</a>
                 <img src="${staticServer}/images/sign/app-pc-top.png" alt="随身理财更轻松" id="iphone-app-img"></li>
         <@global.isNotAnonymous>
             <li><a class="personal-info-link" href="${requestContext.getContextPath()}/personal-info"><@global.security.authentication property="principal.username" /></a></li>
@@ -21,10 +21,10 @@
 
         <@global.isAnonymous>
             <li>
-                <a href="/login" onclick="trackClick('15顶部导航','登录')">登录</a>
+                <a href="/login" onclick="cnzzPush.trackClick('14顶部导航','登录')">登录</a>
             </li>
             <li>
-                <a href="<#if channel??>/register/user?channel=${channel}<#else>/register/user</#if>" onclick="trackClick('14顶部导航','注册')">注册</a>
+                <a href="<#if channel??>/register/user?channel=${channel}<#else>/register/user</#if>" onclick="cnzzPush.trackClick('15顶部导航','注册')">注册</a>
             </li>
         </@global.isAnonymous>
         </ul>

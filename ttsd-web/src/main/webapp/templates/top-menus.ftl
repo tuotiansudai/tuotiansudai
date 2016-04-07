@@ -4,7 +4,7 @@
         <#if activeNav??>
             <ul id="TopMainMenuList">
                 <#list menus as menu>
-                    <li><a <#if menu.title==activeNav>class="active"</#if> href="${menu.url}" onclick="trackClick('${menu.category}','${menu.title}')">${menu.title}</a></li>
+                    <li><a <#if menu.title==activeNav>class="active"</#if> href="${menu.url}" onclick="cnzzPush.trackClick('${menu.category}','${menu.title}')">${menu.title}</a></li>
                 </#list>
             </ul>
         </#if>
