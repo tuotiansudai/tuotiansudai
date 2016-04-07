@@ -1817,6 +1817,9 @@ body{
       font-weight: normal;
       color: #666;
       cursor: pointer;
+      &.rule-show{
+        color:#ff7200;
+      }
     }
   }
   .rule-list {
