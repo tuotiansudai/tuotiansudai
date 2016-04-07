@@ -30,7 +30,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -71,6 +73,22 @@ public class CouponServiceTest {
         exchangeCouponDto.setStartTime(dateTime.toDate());
         exchangeCouponDto.setEndTime(dateTime.toDate());
         couponService.createCoupon("couponTest", exchangeCouponDto);
+
+    }
+
+    @Test
+    public void shouldCreateInterestCouponSuccess() throws CreateCouponException{
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+        ExchangeCouponDto exchangeCouponDto = fakeCouponDto();
+        exchangeCouponDto.setCouponType(CouponType.INTEREST_COUPON);
+        couponService.createCoupon("couponTest", exchangeCouponDto);
+        List<CouponDto> couponDtos = couponService.findInterestCoupons(1, 1);
+        assertThat(couponDtos.get(0).getCouponType(), is(CouponType.INTEREST_COUPON));
+    }
+
+    @Test
+    public void assignCoupon() {
 
     }
 
