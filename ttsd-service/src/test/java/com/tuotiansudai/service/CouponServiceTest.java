@@ -76,7 +76,7 @@ public class CouponServiceTest {
         exchangeCouponDto.setEndTime(dateTime.toDate());
         couponService.createCoupon("couponTest", exchangeCouponDto);
 
-        couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.EXCHANGER), exchangeCouponDto.getId());
+        couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.ALL_USER), exchangeCouponDto.getId());
 
         CouponModel couponModel = couponMapper.findById(exchangeCouponDto.getId());
         assertThat(couponModel.getIssuedCount(), is(1L));
@@ -225,7 +225,7 @@ public class CouponServiceTest {
         productTypes.add(ProductType.JYF);
         exchangeCouponDto.setProductTypes(productTypes);
         exchangeCouponDto.setInvestLowerLimit("1000.00");
-        exchangeCouponDto.setUserGroup(UserGroup.EXCHANGER);
+        exchangeCouponDto.setUserGroup(UserGroup.ALL_USER);
         return exchangeCouponDto;
     }
 

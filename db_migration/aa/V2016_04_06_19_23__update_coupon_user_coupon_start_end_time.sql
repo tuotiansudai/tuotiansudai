@@ -20,19 +20,4 @@ UPDATE
     ON c.`id` = temp.id SET c.`start_time` = temp.start_time,
   c.`end_time` = temp.end_time ;
 
-UPDATE
-    user_coupon t
-    JOIN
-    (SELECT
-       uc.`coupon_id`,
-       MAX(uc.`end_time`) AS end_time
-     FROM
-       user_coupon uc
-     WHERE uc.`status` != 'SUCCESS'
-           OR uc.`status` IS NULL
-     GROUP BY uc.`coupon_id`) temp
-      ON t.`coupon_id` = temp.coupon_id SET t.`end_time` = temp.end_time
-WHERE t.`status` != 'SUCCESS'
-      OR t.`status` IS NULL ;
-
 COMMIT ;
