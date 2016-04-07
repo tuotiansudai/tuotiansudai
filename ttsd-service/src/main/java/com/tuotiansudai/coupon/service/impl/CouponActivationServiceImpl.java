@@ -23,6 +23,7 @@ import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AuditLogUtil;
 import com.tuotiansudai.util.JobManager;
+import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -81,10 +82,13 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     private SmsWrapperClient smsWrapperClient;
 
     @Autowired
-    AccountMapper accountMapper;
+    private AccountMapper accountMapper;
 
     @Autowired
-    AuditLogUtil auditLogUtil;
+    private AuditLogUtil auditLogUtil;
+
+    @Autowired
+    private UserBirthdayUtil userBirthdayUtil;
 
     @Transactional
     @Override
@@ -175,24 +179,23 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     public void assignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups, final Long couponId) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
-        List<CouponModel> coupons = couponId == null ? couponMapper.findAllActiveCoupons() : Lists.newArrayList(couponMapper.findById(couponId));
+        List<CouponModel> coupons  = couponMapper.findById(couponId) == null ? couponMapper.findAllActiveCoupons() : Lists.newArrayList(couponMapper.findById(couponId));
 
         List<CouponModel> couponModels = Lists.newArrayList(Iterators.filter(coupons.iterator(), new Predicate<CouponModel>() {
             @Override
             public boolean apply(CouponModel couponModel) {
                 boolean isInUserGroup = userGroups.contains(couponModel.getUserGroup())
                         && CouponActivationServiceImpl.this.getCollector(couponModel.getUserGroup()).contains(couponModel.getId(), loginName);
-                List<UserCouponModel> existingUserCouponModels = userCouponMapper.findByLoginNameAndCouponId(loginName, couponModel.getId());
+                List<UserCouponModel> existingUserCoupons = userCouponMapper.findByLoginNameAndCouponId(loginName, couponModel.getId());
 
                 boolean isExchangeableCoupon = this.isExchangeableCoupon(couponModel);
-                boolean isAssignableCoupon = this.isAssignableCoupon(couponModel, existingUserCouponModels);
+                boolean isAssignableCoupon = this.isAssignableCoupon(couponModel, existingUserCoupons);
                 boolean isLotteryWinner = this.isLotteryWinner(couponModel);
                 return isInUserGroup && (isAssignableCoupon || isExchangeableCoupon || isLotteryWinner);
             }
 
             private boolean isLotteryWinner(CouponModel couponModel) {
                 return couponModel.getUserGroup() == UserGroup.WINNER;
-
             }
 
             private boolean isExchangeableCoupon(CouponModel couponModel) {
@@ -217,8 +220,15 @@ public class CouponActivationServiceImpl implements CouponActivationService {
             CouponModel lockedCoupon = couponMapper.lockById(couponModel.getId());
             lockedCoupon.setIssuedCount(couponModel.getIssuedCount() + 1);
             couponMapper.updateCoupon(lockedCoupon);
+
             Date startTime = couponModel.getStartTime() != null ? couponModel.getStartTime() : new DateTime().withTimeAtStartOfDay().toDate();
             Date endTime = couponModel.getEndTime() != null ? couponModel.getEndTime() : new DateTime().plusDays(couponModel.getDeadline() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate();
+            if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) {
+                DateTime userBirthday = userBirthdayUtil.getUserBirthday(loginName);
+                startTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMinimumValue().withTimeAtStartOfDay().toDate();
+                endTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMaximumValue().withTime(23, 59, 59, 0).toDate();
+            }
+
             UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId(), startTime, endTime);
             userCouponMapper.create(userCouponModel);
         }
