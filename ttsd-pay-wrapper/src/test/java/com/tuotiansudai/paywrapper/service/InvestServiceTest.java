@@ -34,7 +34,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml","classpath:dispatcher-servlet.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:dispatcher-servlet.xml"})
 @Transactional
 public class InvestServiceTest {
 
@@ -67,7 +67,7 @@ public class InvestServiceTest {
     private PaySyncClient paySyncClient;
 
     private AccountModel createAccountByUserId(String userId) {
-        AccountModel accountModel = new AccountModel(userId,userId,"120101198810012010","","",new Date());
+        AccountModel accountModel = new AccountModel(userId, userId, "120101198810012010", "", "", new Date());
         accountModel.setAutoInvest(true);
         accountModel.setBalance(10000);
         accountModel.setFreeze(10000);
@@ -86,7 +86,7 @@ public class InvestServiceTest {
         userMapper.create(userModelTest);
     }
 
-    private AutoInvestPlanModel createUserAutoInvestPlan(String userId, int periods, int diffDays){
+    private AutoInvestPlanModel createUserAutoInvestPlan(String userId, int periods, int diffDays) {
         AutoInvestPlanModel model = new AutoInvestPlanModel();
         model.setEnabled(true);
         model.setLoginName(userId);
@@ -135,8 +135,7 @@ public class InvestServiceTest {
     }
 
     @Test
-    public void shouldFindValidPlanByPeriod()
-    {
+    public void shouldFindValidPlanByPeriod() {
         createUserByUserId("test00001");
         createUserAutoInvestPlan("test00001",
                 AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
@@ -145,19 +144,19 @@ public class InvestServiceTest {
                 AutoInvestMonthPeriod.Month_1,
                 AutoInvestMonthPeriod.Month_2).getPeriodValue(), -1);
         createUserByUserId("test00003");
-        createUserAutoInvestPlan("test00003",AutoInvestMonthPeriod.merge(
+        createUserAutoInvestPlan("test00003", AutoInvestMonthPeriod.merge(
                 AutoInvestMonthPeriod.Month_1,
                 AutoInvestMonthPeriod.Month_2,
                 AutoInvestMonthPeriod.Month_3,
                 AutoInvestMonthPeriod.Month_4).getPeriodValue(), -2);
         createUserByUserId("test00004");
-        createUserAutoInvestPlan("test00004",AutoInvestMonthPeriod.merge(
+        createUserAutoInvestPlan("test00004", AutoInvestMonthPeriod.merge(
                 AutoInvestMonthPeriod.Month_1,
                 AutoInvestMonthPeriod.Month_2,
                 AutoInvestMonthPeriod.Month_3,
                 AutoInvestMonthPeriod.Month_4).getPeriodValue(), -9);
         createUserByUserId("test00005");
-        createUserAutoInvestPlan("test00005",AutoInvestMonthPeriod.merge(
+        createUserAutoInvestPlan("test00005", AutoInvestMonthPeriod.merge(
                 AutoInvestMonthPeriod.Month_6,
                 AutoInvestMonthPeriod.Month_12).getPeriodValue(), -8);
         createUserByUserId("test00006");
@@ -175,7 +174,7 @@ public class InvestServiceTest {
     }
 
     @Test
-    public void shouldAutoInvest(){
+    public void shouldAutoInvest() {
         long loanId = this.idGenerator.generate();
         this.createUserByUserId("testLoan");
         this.createUserByUserId("testInvest");
@@ -226,9 +225,9 @@ public class InvestServiceTest {
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
 
-        createUserAutoInvestPlan("testInvest1",AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
-        createUserAutoInvestPlan("testInvest2",AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
-        createUserAutoInvestPlan("testInvest3",AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
+        createUserAutoInvestPlan("testInvest1", AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
+        createUserAutoInvestPlan("testInvest2", AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
+        createUserAutoInvestPlan("testInvest3", AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
 
         this.investService.autoInvest(loanId);
 
@@ -271,7 +270,7 @@ public class InvestServiceTest {
 
         this.createUserByUserId("testInvest");
 
-        AccountModel accountModel = new AccountModel("testInvest","testInvest","120101198810012010","","",new Date());
+        AccountModel accountModel = new AccountModel("testInvest", "testInvest", "120101198810012010", "", "", new Date());
         accountModel.setAutoInvest(true);
         accountModel.setBalance(10000);
         accountModel.setFreeze(0);
