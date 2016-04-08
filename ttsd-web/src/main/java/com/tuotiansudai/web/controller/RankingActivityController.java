@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ranking.DrawLotteryDto;
 import com.tuotiansudai.dto.ranking.UserScoreDto;
 import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
+import com.tuotiansudai.point.dto.UserPointPrizeDto;
 import com.tuotiansudai.point.service.PointLotteryService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -44,7 +45,7 @@ public class RankingActivityController {
 
         Map<String, List<UserTianDouRecordDto>> winnerList = rankingActivityService.getTianDouWinnerList();
 
-        List<UserTianDouRecordDto> myPrizeList = rankingActivityService.getPrizeByLoginName(loginName);
+//        List<UserTianDouRecordDto> myPrizeList = rankingActivityService.getPrizeByLoginName(loginName);
 
         Double myTianDou = rankingActivityService.getUserScoreByLoginName(loginName);
 
@@ -53,13 +54,13 @@ public class RankingActivityController {
 
         modelAndView.addObject("myRank", myRank);
         modelAndView.addObject("tianDouTop15", tianDouTop15);
-        modelAndView.addObject("winnerList", winnerList);
+//        modelAndView.addObject("winnerList", winnerList);
 
-        modelAndView.addObject("allPointLotteries", pointLotteryService.findAllDrawLottery());
-        modelAndView.addObject("myPointLotteries", pointLotteryService.findMyDrawLottery(loginName));
+//        modelAndView.addObject("allPointLotteries", pointLotteryService.findAllDrawLottery());
+//        modelAndView.addObject("myPointLotteries", pointLotteryService.findMyDrawLottery(loginName));
         modelAndView.addObject("myPoint", accountModel == null ? 0 : accountModel.getPoint());
 
-        modelAndView.addObject("myPrizeList", myPrizeList);
+//        modelAndView.addObject("myPrizeList", myPrizeList);
         modelAndView.addObject("myTianDou", myTianDou == null ? 0 : myTianDou.longValue());
         modelAndView.addObject("totalInvest", totalInvest);
 
@@ -91,4 +92,31 @@ public class RankingActivityController {
         return true;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/getTianDouPrizeList", method = RequestMethod.POST)
+    public Map<String, List<UserTianDouRecordDto>> getTianDouPrizeList() {
+        Map<String, List<UserTianDouRecordDto>> winnerList = rankingActivityService.getTianDouWinnerList();
+        return winnerList;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getMyTianDouPrize", params = "loginName", method = RequestMethod.POST)
+    public List<UserTianDouRecordDto> getMyTianDouPrize(String loginName) {
+        List<UserTianDouRecordDto> myPrizeList = rankingActivityService.getPrizeByLoginName(loginName);
+        return myPrizeList;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getPointPrizeList", method = RequestMethod.POST)
+    public List<UserPointPrizeDto> getPointPrizeList() {
+        List<UserPointPrizeDto> allPointLotteries = pointLotteryService.findAllDrawLottery();
+        return allPointLotteries;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getMyPointPrize", params = "loginName", method = RequestMethod.POST)
+    public List<UserPointPrizeDto> getMyPointPrize(String loginName) {
+        List<UserPointPrizeDto> myPrizeList = pointLotteryService.findMyDrawLottery(loginName);
+        return myPrizeList;
+    }
 }
