@@ -182,19 +182,26 @@
                         </@global.isNotAnonymous>
                     </ul>
                     <div class="record-list" id="recordList">
-                        <ul class="record-model user-record active">
-                            <li>Lorem ipsum Ut pariatur nostrud consequat.</li>
-                            <li>Lorem ipsum Dolore aliquip dolore aute.</li>
-                            <li>Lorem ipsum Consectetur mollit qui enim.</li>
-                            <li>Lorem ipsum Ut sed ea dolor mollit pariatur.</li>
-                            <li>Lorem ipsum Laboris sunt aute.</li>
+                        <ul class="record-model user-record active" id="TdGiftRecord">
+                            <script id="TdGiftRecordTpl" type="text/html">
+                            {{each other}}
+                                <li>恭喜 {{$value.loginName}} 抽中了 {{$value.prize}} .</li>
+                            {{/each}}
+                            </script>
                         </ul>
-                        <ul class="record-model own-record">
+                        <ul class="record-model own-record" id="TdMyGift">
+                            <script id="TdMyGiftTpl" type="text/html">
+                            {{if data}}
+                            {{each data}}
                             <li>
-                                <span class="award-name">erterfdgdfg</span>
-                                <span class="award-time">2017-2323</span>
+                                <span class="award-name">{{$value.loginName}}</span>
+                                <span class="award-time">{{$value.time}}</span>
                             </li>
+                            {{/each}}
+                            {{else}}
                             <li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>
+                            {{/if}}
+                            </script>
                         </ul>
                     </div>
                 </div>
@@ -227,15 +234,26 @@
                         </@global.isNotAnonymous>
                     </ul>
                     <div class="record-list scroll-record" id="beanList">
-                        <ul class="record-model user-record  active">
-                            <li>恭喜 的爽肤水***** 抽中了 拾掇拾掇</li>
+                        <ul class="record-model user-record  active" id="CdGiftRecord">
+                            <script type="text/html" id="CdGiftRecordTpl">
+                            {{each data}}
+                            <li>恭喜 {{$value.loginName}} 抽中了 {{$value.pointPrizeName}}</li>
+                            {{/each}}
+                            </script>
                         </ul>
-                        <ul class="record-model own-record">
+                        <ul class="record-model own-record" id="CdMyGift">
+                            <script type="text/html" id="CdMyGiftTpl">
+                            {{if data}}
+                            {{each data}}
                             <li>
-                                <span class="award-name">Lorem ipsum Minim velit aute adipisicing fugiat elit.</span>
-                                <span class="award-time">2017-02-28</span>
+                                <span class="award-name">{{$value.pointPrizeName}}</span>
+                                <span class="award-time">{{$value.createTime}}</span>
                             </li>
+                            {{/each}}
+                            {{else}}
                             <li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>
+                            {{/if}}
+                            </script>
                         </ul>
                     </div>
                 </div>

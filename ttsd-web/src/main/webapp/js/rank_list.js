@@ -1,4 +1,4 @@
-require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension'], function($, rotate, layer) {
+require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension'], function($, rotate, layer,tpl) {
     var bRotateTd = false,
         bRotateCd = false,
         bRotateTdPhone = false,
@@ -119,6 +119,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             duration: 8000,
             callback: function() {
                 $('#tipList').show();
+                PcDataGet();
                 switch (awards) {
                     case 0:
                         $('#twentyRMB').show();
@@ -205,6 +206,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             duration: 8000,
             callback: function() {
                 $('#tipList').show();
+                PcDataGet();
                 switch (awards) {
                     case 1:
                         $('#cdFive').show();
@@ -588,61 +590,57 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
         })
         .done(function(data) {
             console.log("success");
-        })
-        .fail(function() {
-            console.log("error");
         });
     }
     function TdGiftRecord(){
         $.ajax({
-            url: '/path/to/file',
+            url: '/activity/getTianDouPrizeList',
             type: 'POST',
             dataType: 'json'
         })
         .done(function(data) {
-            console.log("success");
-        })
-        .fail(function() {
-            console.log("error");
+            $('#TdGiftRecord').html(tpl('TdGiftRecordTpl', data));
         });
     }
+    
     function TdMyGift(){
         $.ajax({
-            url: '/path/to/file',
+            url: '/activity/getMyTianDouPrize',
             type: 'POST',
             dataType: 'json'
         })
         .done(function(data) {
-            console.log("success");
-        })
-        .fail(function() {
-            console.log("error");
+            $('#TdMyGift').html(tpl('TdMyGiftTpl', data));
         });
     }
+    
     function CdGiftRecord(){
         $.ajax({
-            url: '/path/to/file',
+            url: '/activity/getPointPrizeList',
             type: 'POST',
             dataType: 'json'
         })
         .done(function(data) {
-            console.log("success");
-        })
-        .fail(function() {
-            console.log("error");
+            $('#CdGiftRecord').html(tpl('CdGiftRecordTpl', data));
         });
     }
+    
     function CdMyGift(){
         $.ajax({
-            url: '/path/to/file',
+            url: '/activity/getMyPointPrize',
             type: 'POST',
             dataType: 'json'
         })
         .done(function(data) {
-            console.log("success");
-        })
-        .fail(function() {
-            console.log("error");
+            $('#CdMyGift').html(tpl('CdMyGiftTpl', data));
         });
     }
+    
+    function PcDataGet(){
+        TdGiftRecord();
+        TdMyGift();
+        CdGiftRecord();
+        CdMyGift();
+    }
+    PcDataGet();
 });
