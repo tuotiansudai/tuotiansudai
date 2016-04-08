@@ -109,6 +109,103 @@ public class NormalRepayServiceTest {
     }
 
     @Test
+    public void shouldAutoRepayAgentLoginNameNotOpenAutoRepay() {
+        DateTime today = new DateTime();
+        UserModel fakeUser = this.getFakeUser("loginName");
+        userMapper.create(fakeUser);
+        AccountModel fakeAccount = getFakeAccount(fakeUser);
+        accountMapper.create(fakeAccount);
+        long loanAmount = 10000;
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, loanAmount, 3, 0.09, 0.03, 0.1, fakeUser.getLoginName(), today.toDate());
+        loanMapper.create(fakeNormalLoan);
+        InvestModel fakeInvestModel = getFakeInvestModel(fakeNormalLoan.getId(), loanAmount, fakeUser.getLoginName(), today.minusDays(10).toDate());
+        investMapper.create(fakeInvestModel);
+        repayGeneratorService.generateRepay(fakeNormalLoan.getId());
+
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
+
+        assertFalse(normalRepayService.autoRepay(loanRepayModels.get(0).getId()));
+    }
+
+    @Test
+    public void shouldAutoRepayAgentLoginNameBalanceNotEnough() {
+        DateTime today = new DateTime();
+        UserModel fakeUser = this.getFakeUser("loginName");
+        userMapper.create(fakeUser);
+        AccountModel fakeAccount = getFakeAccount(fakeUser);
+        accountMapper.create(fakeAccount);
+        fakeAccount.setBalance(1);
+        fakeAccount.setAutoRepay(true);
+        accountMapper.update(fakeAccount);
+        long loanAmount = 10000;
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, loanAmount, 3, 0.09, 0.03, 0.1, fakeUser.getLoginName(), today.toDate());
+        loanMapper.create(fakeNormalLoan);
+        InvestModel fakeInvestModel = getFakeInvestModel(fakeNormalLoan.getId(), loanAmount, fakeUser.getLoginName(), today.minusDays(10).toDate());
+        investMapper.create(fakeInvestModel);
+        repayGeneratorService.generateRepay(fakeNormalLoan.getId());
+
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
+
+        assertFalse(normalRepayService.autoRepay(loanRepayModels.get(0).getId()));
+    }
+
+    @Test
+    public void shouldAutoRepayLoanIsRepayed() {
+        DateTime today = new DateTime();
+        UserModel fakeUser = this.getFakeUser("loginName");
+        userMapper.create(fakeUser);
+        AccountModel fakeAccount = getFakeAccount(fakeUser);
+        accountMapper.create(fakeAccount);
+        fakeAccount.setAutoRepay(true);
+        accountMapper.update(fakeAccount);
+        long loanAmount = 10000;
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, loanAmount, 3, 0.09, 0.03, 0.1, fakeUser.getLoginName(), today.toDate());
+        loanMapper.create(fakeNormalLoan);
+        InvestModel fakeInvestModel = getFakeInvestModel(fakeNormalLoan.getId(), loanAmount, fakeUser.getLoginName(), today.minusDays(10).toDate());
+        investMapper.create(fakeInvestModel);
+        repayGeneratorService.generateRepay(fakeNormalLoan.getId());
+
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
+        LoanRepayModel loanRepayModel = loanRepayModels.get(0);
+        loanRepayModel.setStatus(RepayStatus.COMPLETE);
+        loanRepayMapper.update(loanRepayModel);
+
+        assertFalse(normalRepayService.autoRepay(loanRepayModel.getId()));
+    }
+
+    @Test
+    public void shouldAutoRepay() throws Exception {
+        DateTime today = new DateTime();
+        UserModel fakeUser = this.getFakeUser("loginName");
+        userMapper.create(fakeUser);
+        AccountModel fakeAccount = getFakeAccount(fakeUser);
+        accountMapper.create(fakeAccount);
+        fakeAccount.setAutoRepay(true);
+        accountMapper.update(fakeAccount);
+        long loanAmount = 10000;
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, loanAmount, 3, 0.09, 0.03, 0.1, fakeUser.getLoginName(), today.toDate());
+        loanMapper.create(fakeNormalLoan);
+        InvestModel fakeInvestModel = getFakeInvestModel(fakeNormalLoan.getId(), loanAmount, fakeUser.getLoginName(), today.minusDays(10).toDate());
+        investMapper.create(fakeInvestModel);
+        repayGeneratorService.generateRepay(fakeNormalLoan.getId());
+
+
+        List<LoanRepayModel> beforeLoanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
+        this.generateMockResponse(10);
+        boolean flag = normalRepayService.autoRepay(beforeLoanRepayModels.get(0).getId());
+
+        assertTrue(flag);
+
+        List<LoanRepayModel> afterloanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
+
+        assertThat(afterloanRepayModels.get(0).getStatus(), is(RepayStatus.WAIT_PAY));
+        assertThat(afterloanRepayModels.get(0).getActualInterest(), is(3L));
+        assertThat(new DateTime(afterloanRepayModels.get(0).getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(today.withTimeAtStartOfDay().getMillis()));
+        assertThat(afterloanRepayModels.get(1).getStatus(), is(RepayStatus.REPAYING));
+        assertThat(afterloanRepayModels.get(2).getStatus(), is(RepayStatus.REPAYING));
+    }
+
+    @Test
     public void shouldRepayFirstPeriodWhenLoanTypeIsType1() throws Exception {
         DateTime today = new DateTime();
         UserModel fakeUser = this.getFakeUser("loginName");
