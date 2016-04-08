@@ -580,5 +580,69 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             $('#awardBtnPhone strong:eq(1)').trigger('click');
         });
     });
-
+    function rankList(){
+        $.ajax({
+            url: '/path/to/file',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            console.log("success");
+        })
+        .fail(function() {
+            console.log("error");
+        });
+    }
+    function TdGiftRecord(){
+        $.ajax({
+            url: '/path/to/file',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            console.log("success");
+        })
+        .fail(function() {
+            console.log("error");
+        });
+    }
+    function TdMyGift(){
+        $.ajax({
+            url: '/path/to/file',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            console.log("success");
+        })
+        .fail(function() {
+            console.log("error");
+        });
+    }
+    function CdGiftRecord(){
+        $.ajax({
+            url: '/path/to/file',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            console.log("success");
+        })
+        .fail(function() {
+            console.log("error");
+        });
+    }
+    function CdMyGift(){
+        $.ajax({
+            url: '/path/to/file',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            console.log("success");
+        })
+        .fail(function() {
+            console.log("error");
+        });
+    }
 });

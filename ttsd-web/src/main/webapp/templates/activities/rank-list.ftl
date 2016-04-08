@@ -183,27 +183,18 @@
                     </ul>
                     <div class="record-list" id="recordList">
                         <ul class="record-model user-record active">
-                            <#list winnerList.MacBook as mackBookWinner>
-                                <li>恭喜 ${mackBookWinner.loginName[0..2]}***** 抽中了 ${mackBookWinner.prize.getName()}</li>
-                            </#list>
-                            <#list winnerList.iPhone as iPhoneWinner>
-                                <li>恭喜 ${iPhoneWinner.loginName[0..2]}***** 抽中了 ${iPhoneWinner.prize.getName()}</li>
-                            </#list>
-                            <#list winnerList.other as otherWinner>
-                                <li>恭喜 ${otherWinner.loginName[0..2]}***** 抽中了 ${otherWinner.prize.getName()}</li>
-                            </#list>
+                            <li>Lorem ipsum Ut pariatur nostrud consequat.</li>
+                            <li>Lorem ipsum Dolore aliquip dolore aute.</li>
+                            <li>Lorem ipsum Consectetur mollit qui enim.</li>
+                            <li>Lorem ipsum Ut sed ea dolor mollit pariatur.</li>
+                            <li>Lorem ipsum Laboris sunt aute.</li>
                         </ul>
                         <ul class="record-model own-record">
-                            <#if myPrizeList?has_content>
-                                <#list myPrizeList as myPrize>
-                                    <li>
-                                        <span class="award-name">${myPrize.prize.getName()}</span>
-                                        <span class="award-time">${myPrize.time}</span>
-                                    </li>
-                                </#list>
-                            <#else>
-                                <li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>
-                            </#if>
+                            <li>
+                                <span class="award-name">erterfdgdfg</span>
+                                <span class="award-time">2017-2323</span>
+                            </li>
+                            <li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>
                         </ul>
                     </div>
                 </div>
@@ -237,22 +228,14 @@
                     </ul>
                     <div class="record-list scroll-record" id="beanList">
                         <ul class="record-model user-record  active">
-                            <#list allPointLotteries as allPointLottery>
-                                <li>恭喜 ${allPointLottery.loginName[0..2]}***** 抽中了 ${allPointLottery.pointPrizeName!}</li>
-                            </#list>
+                            <li>恭喜 的爽肤水***** 抽中了 拾掇拾掇</li>
                         </ul>
                         <ul class="record-model own-record">
-
-                            <#if myPointLotteries?has_content>
-                                <#list myPointLotteries as myPointLottery>
-                                    <li>
-                                        <span class="award-name">${myPointLottery.pointPrizeName!}</span>
-                                        <span class="award-time">${myPointLottery.createTime?string('yyyy-MM-dd HH:mm')!}</span>
-                                    </li>
-                                </#list>
-                            <#else>
-                                <li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>
-                            </#if>
+                            <li>
+                                <span class="award-name">Lorem ipsum Minim velit aute adipisicing fugiat elit.</span>
+                                <span class="award-time">2017-02-28</span>
+                            </li>
+                            <li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>
                         </ul>
                     </div>
                 </div>
@@ -510,15 +493,10 @@
                 </div>
                 <div class="gift-record">
                     <ul class="td-record">
-                        <#list winnerList.MacBook as mackBookWinner>
-                            <li>恭喜 ${mackBookWinner.loginName[0..2]}***** 抽中了 ${mackBookWinner.prize.getName()}</li>
-                        </#list>
-                        <#list winnerList.iPhone as iPhoneWinner>
-                            <li>恭喜 ${iPhoneWinner.loginName[0..2]}***** 抽中了 ${iPhoneWinner.prize.getName()}</li>
-                        </#list>
-                        <#list winnerList.other as otherWinner>
-                            <li>恭喜 ${otherWinner.loginName[0..2]}***** 抽中了 ${otherWinner.prize.getName()}</li>
-                        </#list>
+                        <li>Lorem ipsum Sit amet aliqua dolor officia incididunt.</li>
+                        <li>Lorem ipsum Aute mollit commodo sint exercitation pariatur.</li>
+                        <li>Lorem ipsum Laboris do proident velit.</li>
+                        <li>Lorem ipsum Labore ad mollit id.</li>
                     </ul>
                 </div>
                 <@global.isNotAnonymous>
@@ -552,12 +530,10 @@
                 </div>
                 <div class="gift-record">
                     <ul class="td-record">
-                        <#list allPointLotteries as allPointLottery>
-                            <li>恭喜 ${allPointLottery.loginName[0..2]}***** 抽中了 ${allPointLottery.pointPrizeName!}</li>
-                        </#list>
+                        <li>sdfsdfdsfsdfdsf</li>
                     </ul>
                 </div>
-                <#if myPointLotteries?has_content>
+                <@global.isNotAnonymous>
                 <div class="my-record">
                     <dl>
                         <dt><span>我的奖品</span><i class="fa fa-angle-up"></i><i class="fa fa-angle-down"></i></dt>
@@ -568,7 +544,7 @@
                         <dd><span class="gift-name">MacBook</span><span class="gift-time">2016-11-15 11:21</span></dd>
                     </dl>
                 </div>
-                </#if>
+                </@global.isNotAnonymous>
             </div>
         </div>
     </div>
