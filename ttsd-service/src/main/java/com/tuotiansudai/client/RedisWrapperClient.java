@@ -232,6 +232,16 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         });
     }
 
+    public void hset(final String key, final String hkey, final String value, final int lifeSecond) {
+        execute(new JedisActionNoResult() {
+            @Override
+            public void action(Jedis jedis) {
+                jedis.hset(key, hkey, value);
+                jedis.expire(key, lifeSecond);
+            }
+        });
+    }
+
     public Long hdel(final String key, final String... hkeys) {
         return execute(new JedisAction<Long>() {
             @Override
