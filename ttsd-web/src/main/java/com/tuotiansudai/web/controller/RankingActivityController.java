@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -110,11 +109,12 @@ public class RankingActivityController {
         String token = httpServletRequest.getParameter("token");
         String loginName = redisWrapperClient.get(token);
 
-        if (!Strings.isNullOrEmpty(loginName)) {
-            myAuthenticationManager.createAuthentication("sidneygao");
+        if (Strings.isNullOrEmpty(loginName)) {
+            myAuthenticationManager.removeAuthentication();
+        } else {
+            myAuthenticationManager.createAuthentication(loginName);
         }
 
         return loginName;
     }
-
 }
