@@ -4,9 +4,9 @@ public class UserScoreDto {
 
     private String loginName;
 
-    private double score;
+    private long score;
 
-    public UserScoreDto(String loginName, double score){
+    public UserScoreDto(String loginName, long score){
         this.loginName = loginName;
         this.score = score;
     }
@@ -19,11 +19,11 @@ public class UserScoreDto {
         this.loginName = loginName;
     }
 
-    public double getScore() {
+    public long getScore() {
         return score;
     }
 
-    public void setScore(double score) {
+    public void setScore(long score) {
         this.score = score;
     }
 }
