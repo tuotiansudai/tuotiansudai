@@ -1,4 +1,4 @@
-require(['jquery', 'rotate', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension'], function($, rotate, layer) {
+require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension'], function($, rotate, layer,tpl) {
     var bRotateTd = false,
         bRotateCd = false,
         bRotateTdPhone = false,
@@ -119,6 +119,7 @@ require(['jquery', 'rotate', 'layerWrapper', 'jquery.validate', 'jquery.validate
             duration: 8000,
             callback: function() {
                 $('#tipList').show();
+                PcDataGet();
                 switch (awards) {
                     case 0:
                         $('#twentyRMB').show();
@@ -205,6 +206,7 @@ require(['jquery', 'rotate', 'layerWrapper', 'jquery.validate', 'jquery.validate
             duration: 8000,
             callback: function() {
                 $('#tipList').show();
+                PcDataGet();
                 switch (awards) {
                     case 1:
                         $('#cdFive').show();
@@ -235,6 +237,7 @@ require(['jquery', 'rotate', 'layerWrapper', 'jquery.validate', 'jquery.validate
     //share event
     window._bd_share_config = {
         "common": {
+            "bdSize": "32",
             "bdText": "霸道总裁送你钱！车！房！投资拿排名大奖！还能抽奖！百分百中奖哦！",
             "bdPic": staticServer + "/images/sign/actor/ranklist/share-images.png",
             onAfterClick: function(cmd) {
@@ -375,7 +378,7 @@ require(['jquery', 'rotate', 'layerWrapper', 'jquery.validate', 'jquery.validate
         });
     }, 2000);
 
-    $('.my-record dt').on('click', function(event) {
+    $('body').on('click', '.my-record dt',function(event) {
         event.preventDefault();
         var $self = $(this),
             $dd = $self.parent().find('dd');
@@ -386,6 +389,7 @@ require(['jquery', 'rotate', 'layerWrapper', 'jquery.validate', 'jquery.validate
             $self.removeClass('active');
             $dd.slideUp('fast');
         }
+        event.stopPropagation();
     });
 
 
@@ -447,6 +451,7 @@ require(['jquery', 'rotate', 'layerWrapper', 'jquery.validate', 'jquery.validate
             duration: 8000,
             callback: function() {
                 $('#tipListPhone').show();
+                PcDataGetPhone();
                 switch (awards) {
                     case 0:
                         $('#twentyRMBPhone').show();
@@ -533,6 +538,7 @@ require(['jquery', 'rotate', 'layerWrapper', 'jquery.validate', 'jquery.validate
             duration: 8000,
             callback: function() {
                 $('#tipListPhone').show();
+                PcDataGetPhone();
                 switch (awards) {
                     case 1:
                         $('#cdFivePhone').show();
@@ -561,23 +567,154 @@ require(['jquery', 'rotate', 'layerWrapper', 'jquery.validate', 'jquery.validate
     $("#myTDPhone").on('click', function(event) {
         event.preventDefault();
         var $self = $(this),
-            myTdH = $('#awardBtn').offset().top;
+            myTdH = $('#awardBtnPhone').offset().top;
         $('body,html').animate({
             scrollTop: myTdH
         }, 'fast', function() {
-            $('#awardBtn li:eq(0)').trigger('click');
+            $('#awardBtnPhone strong:eq(0)').trigger('click');
         });
     });
     //go to CD Phone
     $("#myCDPhone").on('click', function(event) {
         event.preventDefault();
         var $self = $(this),
-            myTdH = $('#awardBtn').offset().top;
+            myTdH = $('#awardBtnPhone').offset().top;
         $('body,html').animate({
             scrollTop: myTdH
         }, 'fast', function() {
-            $('#awardBtn li:eq(1)').trigger('click');
+            $('#awardBtnPhone strong:eq(1)').trigger('click');
         });
     });
-
+    function rankList(){
+        $.ajax({
+            url: '/activity/getTianDouTop15',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            var list={rank:data};
+            $('#rankList').html(tpl('rankListTpl', list));
+        });
+    }
+    function TdGiftRecord(){
+        $.ajax({
+            url: '/activity/getTianDouPrizeList',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            $('#TdGiftRecord').html(tpl('TdGiftRecordTpl', data));
+        });
+    }
+    
+    function TdMyGift(){
+        $.ajax({
+            url: '/activity/getMyTianDouPrize',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            var list={tdmygift:data};
+            $('#TdMyGift').html(tpl('TdMyGiftTpl', list));
+        });
+    }
+    
+    function CdGiftRecord(){
+        $.ajax({
+            url: '/activity/getPointPrizeList',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            var list={cdgiftrecord:data};
+            $('#CdGiftRecord').html(tpl('CdGiftRecordTpl', list));
+        });
+    }
+    
+    function CdMyGift(){
+        $.ajax({
+            url: '/activity/getMyPointPrize',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            var list={cdmygift:data};
+            $('#CdMyGift').html(tpl('CdMyGiftTpl', list));
+        });
+    }
+    
+    function PcDataGet(){
+        rankList();
+        TdGiftRecord();
+        TdMyGift();
+        CdGiftRecord();
+        CdMyGift();
+    }
+    PcDataGet();
+    function rankListPhone(){
+        $.ajax({
+            url: '/activity/getTianDouTop15',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            var list={rank:data};
+            $('#rankListPhone').html(tpl('rankListPhoneTpl', list));
+        });
+    }
+    function TdGiftRecordPhone(){
+        $.ajax({
+            url: '/activity/getTianDouPrizeList',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            $('#TdGiftRecordPhone').html(tpl('TdGiftRecordPhoneTpl', data));
+        });
+    }
+    
+    function TdMyGiftPhone(){
+        $.ajax({
+            url: '/activity/getMyTianDouPrize',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            var list={tdmygift:data};
+            $('#TdMyGiftPhone').html(tpl('TdMyGiftPhoneTpl', list));
+        });
+    }
+    
+    function CdGiftRecordPhone(){
+        $.ajax({
+            url: '/activity/getPointPrizeList',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            var list={cdgiftrecord:data};
+            $('#CdGiftRecordPhone').html(tpl('CdGiftRecordPhoneTpl', list));
+        });
+    }
+    
+    function CdMyGiftPhone(){
+        $.ajax({
+            url: '/activity/getMyPointPrize',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            var list={cdmygift:data};
+            $('#CdMyGiftPhone').html(tpl('CdMyGiftPhoneTpl', list));
+        });
+    }
+    
+    function PcDataGetPhone(){
+        rankListPhone();
+        TdGiftRecordPhone();
+        TdMyGiftPhone();
+        CdGiftRecordPhone();
+        CdMyGiftPhone();
+    }
+    PcDataGetPhone();
 });
