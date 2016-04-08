@@ -32,7 +32,7 @@
         </div>
     </div>
     <div class="refer-reward-box mobile">
-        <img src="${staticServer}/images/sign/aboutus/give-intro-phone.png" alt="推荐奖励介绍" class="responsive-width">
+        <img src="${staticServer}/images/sign/aboutus/give-intro-app.png" alt="推荐奖励介绍" class="responsive-width">
     </div>
     <p class="tc info">
         <span>小李再推荐投资人，小张无奖励。 </span>
