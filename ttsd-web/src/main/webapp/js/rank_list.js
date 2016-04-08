@@ -1,4 +1,4 @@
-require(['jquery', 'rotate', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension'], function($, rotate, layer) {
+require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension'], function($, rotate, layer) {
     var bRotateTd = false,
         bRotateCd = false,
         bRotateTdPhone = false,
