@@ -1,4 +1,4 @@
-@import 'variables';
+@import 'variables', "global_png";
 .header-container {
   background: #333;
   font-size: 12px;
@@ -7,12 +7,12 @@
     display: none;
     padding: 10px 4px;
     border-bottom: 1px solid rgba(0,0,0,0.2);
-    img.icon-close {
+    .icon-close {
       margin-right: 10px;
       width:16px;
     }
     span {
-      line-height: 1.6;
+      line-height: 1.8;
       display: inline-block;
       font-size: 14px;
       vertical-align: bottom;
@@ -46,12 +46,13 @@
           &.login-pop-app {
             position: relative;
             z-index: 90;
-            img {
+            .img-app-pc-top {
               position: absolute;
               right: -40px;
               top: 20px;
               display: none;
               z-index: 999;
+              @extend .sprite-global-app-pc-top;
             }
           }
           a {
