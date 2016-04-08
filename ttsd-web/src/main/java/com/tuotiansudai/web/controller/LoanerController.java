@@ -4,7 +4,9 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanRepayDataDto;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.web.util.LoginUserInfo;
@@ -27,9 +29,15 @@ public class LoanerController {
     @Autowired
     private RepayService repayService;
 
+    @Autowired
+    private AccountService accountService;
+
     @RequestMapping(path = "loan-list", method = RequestMethod.GET)
     public ModelAndView loanList() {
-        return new ModelAndView("/loaner-loan-list");
+        ModelAndView modelAndView = new ModelAndView("/loaner-loan-list");
+        AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
+        modelAndView.addObject("autoRepay",accountModel.isAutoRepay());
+        return modelAndView;
     }
 
     @RequestMapping(path = "/loan-list-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
