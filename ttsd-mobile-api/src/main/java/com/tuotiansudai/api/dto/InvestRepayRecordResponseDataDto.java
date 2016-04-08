@@ -42,10 +42,6 @@ public class InvestRepayRecordResponseDataDto {
      */
     private String statusDesc;
     /**
-     * 还款时间
-     */
-    private String time;
-    /**
      * 本金
      */
     private String corpus;
@@ -70,8 +66,10 @@ public class InvestRepayRecordResponseDataDto {
         this.repayDay = sdfDay.format(investRepay.getRepayDate());
         this.status = investRepay.getStatus().name();
         this.statusDesc = investRepay.getStatus().getDescription();
-        if (investRepay.getActualRepayDate() != null) {
-            this.time = sdf.format(investRepay.getActualRepayDate());
+        if (investRepay.getStatus() == RepayStatus.COMPLETE) {
+            this.repayDay = sdf.format(investRepay.getActualRepayDate());
+        }else{
+            this.repayDay = sdf.format(investRepay.getRepayDate());
         }
         this.corpus = AmountConverter.convertCentToString(investRepay.getCorpus());
         if (RepayStatus.COMPLETE == investRepay.getStatus()) {
@@ -144,14 +142,6 @@ public class InvestRepayRecordResponseDataDto {
 
     public void setStatusDesc(String statusDesc) {
         this.statusDesc = statusDesc;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 
     public String getCorpus() {
