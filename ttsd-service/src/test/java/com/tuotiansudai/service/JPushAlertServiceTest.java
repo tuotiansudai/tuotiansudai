@@ -36,9 +36,6 @@ public class JPushAlertServiceTest {
     private JPushAlertService jPushAlertService;
 
     @Autowired
-    private JPushAlertMapper jPushAlertMapper;
-
-    @Autowired
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
@@ -55,6 +52,15 @@ public class JPushAlertServiceTest {
 
     private static final long loanId = 10000000001L;
     private static final long loanRepayId = 100000003L;
+    private static final long investId = 3939399323434L;
+
+    private static final long loanId2 = 20000000001L;
+    private static final long loanRepayId2 = 200000003L;
+    private static final long investId2 = 39393993235555L;
+
+    private static final long loanId3 = 30000000001L;
+    private static final long loanRepayId3 = 300000003L;
+    private static final long investId3 = 49393993235555L;
 
     private void createLoanByUserId(String userId, long loanId) {
         LoanDto loanDto = new LoanDto();
@@ -133,7 +139,7 @@ public class JPushAlertServiceTest {
     }
 
 
-    private void createInvestRepay(long investId, RepayStatus repayStatus, int period) {
+    private void createInvestRepayHasDefaultInterest(long investId, RepayStatus repayStatus, int period) {
         List<InvestRepayModel> investRepayModelList = Lists.newArrayList();
         InvestRepayModel investRepayModel = new InvestRepayModel();
         investRepayModel.setId(idGenerator.generate());
@@ -154,42 +160,110 @@ public class JPushAlertServiceTest {
         investRepayMapper.create(investRepayModelList);
     }
 
-    public void createJPushAlert(){
-        JPushAlertModel jPushAlertModel1 = new JPushAlertModel();
-        jPushAlertModel1.setId(idGenerator.generate());
-        jPushAlertModel1.setName("测试还款");
-        jPushAlertModel1.setPushType(PushType.REPAY_ALERT);
-        jPushAlertModel1.setPushSource(PushSource.ALL);
-        jPushAlertModel1.setIsAutomatic(true);
-        jPushAlertModel1.setContent("dfsdfdfdsf");
-        jPushAlertModel1.setCreatedTime(new Date());
-        jPushAlertMapper.create(jPushAlertModel1);
+    private void createInvestRepayNoDefaultInterest(long investId, RepayStatus repayStatus, int period) {
+        List<InvestRepayModel> investRepayModelList = Lists.newArrayList();
+        InvestRepayModel investRepayModel = new InvestRepayModel();
+        investRepayModel.setId(idGenerator.generate());
+        investRepayModel.setInvestId(investId);
+        investRepayModel.setStatus(repayStatus);
+        investRepayModel.setCorpus(100);
+        investRepayModel.setExpectedInterest(100);
+        investRepayModel.setActualInterest(100);
+        investRepayModel.setDefaultInterest(0);
+        investRepayModel.setExpectedInterest(100);
+        investRepayModel.setExpectedFee(100);
+        investRepayModel.setActualFee(100);
+        investRepayModel.setPeriod(period);
+        investRepayModel.setRepayDate(new Date());
+        investRepayModel.setActualRepayDate(new Date());
+        investRepayModel.setCreatedTime(new Date());
+        investRepayModelList.add(investRepayModel);
+        investRepayMapper.create(investRepayModelList);
+    }
+
+    private void createInvestRepayDefaultInterest(long investId, RepayStatus repayStatus, int period, int defaultInterest) {
+        List<InvestRepayModel> investRepayModelList = Lists.newArrayList();
+        InvestRepayModel investRepayModel = new InvestRepayModel();
+        investRepayModel.setId(idGenerator.generate());
+        investRepayModel.setInvestId(investId);
+        investRepayModel.setStatus(repayStatus);
+        investRepayModel.setCorpus(100);
+        investRepayModel.setExpectedInterest(100);
+        investRepayModel.setActualInterest(100);
+        investRepayModel.setDefaultInterest(defaultInterest);
+        investRepayModel.setExpectedInterest(100);
+        investRepayModel.setExpectedFee(100);
+        investRepayModel.setActualFee(100);
+        investRepayModel.setPeriod(period);
+        investRepayModel.setRepayDate(new Date());
+        investRepayModel.setActualRepayDate(new Date());
+        investRepayModel.setCreatedTime(new Date());
+        investRepayModelList.add(investRepayModel);
+        investRepayMapper.create(investRepayModelList);
     }
 
     @Before
     public void init() throws Exception {
-        createJPushAlert();
         createUserByUserId("testuser123");
         createLoanByUserId("testuser123", loanId);
 
         createLoanRepay(loanRepayId, 3);
         createLoanRepay(idGenerator.generate(), 2);
         createLoanRepay(idGenerator.generate(), 1);
-        long investId = idGenerator.generate();
 
         createInvest("testuser123", loanId, investId);
 
-        createInvestRepay(investId, RepayStatus.COMPLETE, 1);
-        createInvestRepay(investId,RepayStatus.OVERDUE,2);
-        createInvestRepay(investId,RepayStatus.REPAYING,3);
+        createInvestRepayHasDefaultInterest(investId, RepayStatus.COMPLETE, 1);
+        createInvestRepayHasDefaultInterest(investId,RepayStatus.OVERDUE,2);
+        createInvestRepayHasDefaultInterest(investId,RepayStatus.REPAYING,3);
+
+        createUserByUserId("testuser1234");
+        createLoanByUserId("testuser1234", loanId2);
+
+        createLoanRepay(loanRepayId2, 3);
+        createLoanRepay(idGenerator.generate(), 2);
+        createLoanRepay(idGenerator.generate(), 1);
+
+        createInvest("testuser1234", loanId2, investId2);
+
+        createInvestRepayNoDefaultInterest(investId2, RepayStatus.COMPLETE, 1);
+        createInvestRepayNoDefaultInterest(investId2,RepayStatus.OVERDUE,2);
+        createInvestRepayNoDefaultInterest(investId2,RepayStatus.REPAYING,3);
+
+        createUserByUserId("testuser12345");
+        createLoanByUserId("testuser12345", loanId3);
+
+        createLoanRepay(loanRepayId3, 5);
+        createLoanRepay(idGenerator.generate(), 4);
+        createLoanRepay(idGenerator.generate(), 3);
+        createLoanRepay(idGenerator.generate(), 2);
+        createLoanRepay(idGenerator.generate(), 1);
+
+        createInvest("testuser12345", loanId3, investId3);
+
+        createInvestRepayDefaultInterest(investId3, RepayStatus.COMPLETE, 1, 0);
+        createInvestRepayDefaultInterest(investId3,RepayStatus.OVERDUE,2, 100);
+        createInvestRepayDefaultInterest(investId3,RepayStatus.COMPLETE,3, 0);
+        createInvestRepayDefaultInterest(investId3,RepayStatus.OVERDUE,4, 100);
+        createInvestRepayDefaultInterest(investId3,RepayStatus.REPAYING,5, 0);
     }
 
+    @Test
+    public void shouldGetDefaultInterestWhenHasDefaultInterest(){
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
+        assert (jPushAlertService.getDefaultInterest(3,investRepayModels) ==200);
+    }
 
     @Test
-    public void shouldAutoJPushRepayAlertWhenNoDefaultInterest(){
+    public void shouldGetDefaultInterestWhenNoDefaultInterest(){
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId2);
+        assert (jPushAlertService.getDefaultInterest(3,investRepayModels) == 0);
+    }
 
-        jPushAlertService.autoJPushRepayAlert(loanRepayId);
-
+    @Test
+    public void shouldGetDefaultInterestWhenGapDefaultInterest(){
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId3);
+        assert (jPushAlertService.getDefaultInterest(5,investRepayModels) == 100);
     }
 
 }
