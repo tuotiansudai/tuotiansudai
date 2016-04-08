@@ -95,13 +95,15 @@
                             <span class="bean-num">天豆数</span>
                             <span class="bean-user">用户</span>
                         </dt>
-                        <#list tianDouTop15 as tianDouRank>
-                            <dd>
-                                <span class="order-num"><i class="font-icon">${tianDouRank?index+1}</i></span>
-                                <span class="bean-num">${tianDouRank.score}</span>
-                                <span class="bean-user">${tianDouRank.loginName[0..2]}******</span>
-                            </dd>
-                        </#list>
+                        <dd id="rankList">
+                        <script type="text/html" id="rankListTpl">
+                        {{each rank}}
+                            <span class="order-num"><i class="font-icon">{{$index+1}}</i></span>
+                            <span class="bean-num">{{$value.loginName}}</span>
+                            <span class="bean-user">{{$value.score}}</span>
+                        {{/each}}
+                        </script>
+                        </dd>
                     </dl>
                 </div>
                 <div class="bean-rank-money">
@@ -149,7 +151,6 @@
                     <a href="#" class="share-icon icon-weibo" data-cmd="tsina"></a>
                     <a href="#" class="share-icon icon-weixin" data-cmd="weixin"></a>
                     <a href="#" class="share-icon icon-zone" data-cmd="qzone"></a>
-                    <!-- <span class="share-text">分享可增加一次财豆抽奖机会！</span> -->
                 </p>
             </div>
         </ul>
@@ -185,16 +186,40 @@
                         <ul class="record-model user-record active" id="TdGiftRecord">
                             <script id="TdGiftRecordTpl" type="text/html">
                             {{each other}}
-                                <li>恭喜 {{$value.loginName}} 抽中了 {{$value.prize}} .</li>
+                                <li>恭喜 {{$value.loginName}} 抽中了 
+                                {{if $value.prize=='InterestCoupon5'}}
+                                0.5%加息券
+                                {{else if $value.prize=='Cash20'}}
+                                20元现金
+                                {{else if $value.prize=='JingDong300'}}
+                                300元京东购物卡
+                                {{else if $value.prize=='Iphone6s'}}
+                                iPhone 6s Plus
+                                {{else if $value.prize=='MacBook'}}
+                                MacBook Air
+                                {{/if}}
+                                .</li>
                             {{/each}}
                             </script>
                         </ul>
                         <ul class="record-model own-record" id="TdMyGift">
                             <script id="TdMyGiftTpl" type="text/html">
-                            {{if data}}
-                            {{each data}}
+                            {{if tdmygift}}
+                            {{each tdmygift}}
                             <li>
-                                <span class="award-name">{{$value.loginName}}</span>
+                                <span class="award-name">
+                                    {{if $value.prize=='InterestCoupon5'}}
+                                    0.5%加息券
+                                    {{else if $value.prize=='Cash20'}}
+                                    20元现金
+                                    {{else if $value.prize=='JingDong300'}}
+                                    300元京东购物卡
+                                    {{else if $value.prize=='Iphone6s'}}
+                                    iPhone 6s Plus
+                                    {{else if $value.prize=='MacBook'}}
+                                    MacBook Air
+                                    {{/if}}
+                                </span>
                                 <span class="award-time">{{$value.time}}</span>
                             </li>
                             {{/each}}
@@ -236,15 +261,15 @@
                     <div class="record-list scroll-record" id="beanList">
                         <ul class="record-model user-record  active" id="CdGiftRecord">
                             <script type="text/html" id="CdGiftRecordTpl">
-                            {{each data}}
+                            {{each cdgiftrecord}}
                             <li>恭喜 {{$value.loginName}} 抽中了 {{$value.pointPrizeName}}</li>
                             {{/each}}
                             </script>
                         </ul>
                         <ul class="record-model own-record" id="CdMyGift">
                             <script type="text/html" id="CdMyGiftTpl">
-                            {{if data}}
-                            {{each data}}
+                            {{if cdmygift}}
+                            {{each cdmygift}}
                             <li>
                                 <span class="award-name">{{$value.pointPrizeName}}</span>
                                 <span class="award-time">{{$value.createTime}}</span>
@@ -466,7 +491,6 @@
             </li>
             <li>
                 <span class="project-name">我的排名：<#if myRank??>${myRank}<#else>-</#if></span>
-                <a href="/loan-list"><span class="btn-gift-phone">去投资</span></a>
             </li>
         </ul>
     </@global.isNotAnonymous>
@@ -479,13 +503,15 @@
                 <span><strong class="rank-beans">天豆数</strong></span>
                 <span><strong class="rank-user">用户</strong></span>
             </dt>
-            <#list tianDouTop15 as tianDouRank>
-            <dd>
-                <span>${tianDouRank?index+1}</span>
-                <span>${tianDouRank.score}</span>
-                <span>${tianDouRank.loginName[0..2]}******</span>
+            <dd id="rankListPhone">
+            <script type="text/html" id="rankListPhoneTpl">
+                {{each rank}}
+                <span>{{$index+1}}</span>
+                <span>{{$value.loginName}}</span>
+                <span>{{$value.score}}</span>
+                {{/each}}
+            </script>
             </dd>
-            </#list>
         </dl>
     </div>
     <div class="change-rank-list">
@@ -510,22 +536,54 @@
                     </div>
                 </div>
                 <div class="gift-record">
-                    <ul class="td-record">
-                        <li>Lorem ipsum Sit amet aliqua dolor officia incididunt.</li>
-                        <li>Lorem ipsum Aute mollit commodo sint exercitation pariatur.</li>
-                        <li>Lorem ipsum Laboris do proident velit.</li>
-                        <li>Lorem ipsum Labore ad mollit id.</li>
+                    <ul class="td-record" id="TdGiftRecordPhone">
+                        <script id="TdGiftRecordPhoneTpl" type="text/html">
+                        {{each other}}
+                            <li>恭喜 {{$value.loginName}} 抽中了 
+                            {{if $value.prize=='InterestCoupon5'}}
+                            0.5%加息券
+                            {{else if $value.prize=='Cash20'}}
+                            20元现金
+                            {{else if $value.prize=='JingDong300'}}
+                            300元京东购物卡
+                            {{else if $value.prize=='Iphone6s'}}
+                            iPhone 6s Plus
+                            {{else if $value.prize=='MacBook'}}
+                            MacBook Air
+                            {{/if}}
+                            .</li>
+                        {{/each}}
+                        </script>
                     </ul>
                 </div>
                 <@global.isNotAnonymous>
                 <div class="my-record">
-                    <dl>
+                    <dl id="TdMyGiftPhone">
+                        <script id="TdMyGiftPhoneTpl" type="text/html">
                         <dt><span>我的奖品</span><i class="fa fa-angle-up"></i><i class="fa fa-angle-down"></i></dt>
-                        <dd><span class="gift-name">MacBook</span><span class="gift-time">2016-11-15 11:21</span></dd>
-                        <dd><span class="gift-name">MacBook</span><span class="gift-time">2016-11-15 11:21</span></dd>
-                        <dd><span class="gift-name">MacBook</span><span class="gift-time">2016-11-15 11:21</span></dd>
-                        <dd><span class="gift-name">MacBook</span><span class="gift-time">2016-11-15 11:21</span></dd>
-                        <dd><span class="gift-name">MacBook</span><span class="gift-time">2016-11-15 11:21</span></dd>
+                        {{if tdmygift.length>0}}
+                        {{each tdmygift}}
+                        <dd>
+                            <span class="gift-name">
+                                {{if $value.prize=='InterestCoupon5'}}
+                                    0.5%加息券
+                                    {{else if $value.prize=='Cash20'}}
+                                    20元现金
+                                    {{else if $value.prize=='JingDong300'}}
+                                    300元京东购物卡
+                                    {{else if $value.prize=='Iphone6s'}}
+                                    iPhone 6s Plus
+                                    {{else if $value.prize=='MacBook'}}
+                                    MacBook Air
+                                {{/if}}
+                            </span>
+                            <span class="gift-time">{{$value.time}}</span>
+                        </dd>
+                        {{/each}}
+                        {{else}}
+                        <dd><span class="gift-name">您暂时还没有奖品，快去抽奖吧！</span></dd>
+                        {{/if}}
+                        </script>
                     </dl>
                 </div>
                 </@global.isNotAnonymous>
@@ -547,19 +605,27 @@
                     </div>
                 </div>
                 <div class="gift-record">
-                    <ul class="td-record">
-                        <li>sdfsdfdsfsdfdsf</li>
+                    <ul class="td-record" id="CdGiftRecordPhone">
+                        <script type="text/html" id="CdGiftRecordPhoneTpl">
+                            {{each cdgiftrecord}}
+                            <li>恭喜 {{$value.loginName}} 抽中了 {{$value.pointPrizeName}}</li>
+                            {{/each}}
+                        </script>
                     </ul>
                 </div>
                 <@global.isNotAnonymous>
                 <div class="my-record">
-                    <dl>
+                    <dl id="CdMyGiftPhone">
+                        <script type="text/html" id="CdMyGiftPhoneTpl">
                         <dt><span>我的奖品</span><i class="fa fa-angle-up"></i><i class="fa fa-angle-down"></i></dt>
-                        <dd><span class="gift-name">MacBook</span><span class="gift-time">2016-11-15 11:21</span></dd>
-                        <dd><span class="gift-name">MacBook</span><span class="gift-time">2016-11-15 11:21</span></dd>
-                        <dd><span class="gift-name">MacBook</span><span class="gift-time">2016-11-15 11:21</span></dd>
-                        <dd><span class="gift-name">MacBook</span><span class="gift-time">2016-11-15 11:21</span></dd>
-                        <dd><span class="gift-name">MacBook</span><span class="gift-time">2016-11-15 11:21</span></dd>
+                        {{if cdmygift.length>0}}
+                        {{each cdmygift}}
+                        <dd><span class="gift-name">{{$value.pointPrizeName}}</span><span class="gift-time">{{$value.createTime}}</span></dd>
+                        {{/each}}
+                        {{else}}
+                        <dd><span class="gift-name">您暂时还没有奖品，快去抽奖吧！</span></dd>
+                        {{/if}}
+                        </script>
                     </dl>
                 </div>
                 </@global.isNotAnonymous>
@@ -610,9 +676,11 @@
             </div>
         </div>
     </div>
+    <#if !isAppSource>
     <div class="rank-phone-intro">
         <a href="/loan-list"><img src="${staticServer}/images/sign/actor/ranklist/to-loan.png" width="100%" class="share-intro"></a>
     </div>
+    </#if>
     <dl class="actor-rule">
         <dt>活动规则：</dt>
         <dd>1. 活动期间，用户投资即可获得相应天豆；</dd>
@@ -656,8 +724,7 @@
                 <p>奖金已发放至“我的宝藏”当中</p>
             </div>
             <div class="btn-list">
-                <a href="/my-treasure" class="double-btn first-btn">去查看</a>
-                <a href="javascript:void(0)" class="double-btn go-close">继续抽奖</a>
+                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
             </div>
         </div>
         <div class="tip-dom td-tip-small" id="jdCardPhone">
@@ -688,9 +755,6 @@
                 <p>您的天豆不足，</p>
                 <p>投资赚取更多天豆再来抽奖吧！</p>
             </div>
-            <div class="btn-list">
-                <a href="/loan-list" class="go-on">去投资</a>
-            </div>
         </div>
         <div class="tip-dom td-tip-thank" id="noLoginPhone">
             <div class="close-btn go-close"></div>
@@ -708,9 +772,6 @@
                 <p>您的财豆不足，</p>
                 <p>投资赚取更多财豆再来抽奖吧！</p>
             </div>
-            <div class="btn-list">
-                <a href="/point" class="go-on">去赚财豆</a>
-            </div>
         </div>
         <div class="tip-dom td-tip-thank" id="oneDayPhone">
             <div class="close-btn go-close"></div>
@@ -718,18 +779,17 @@
                 <p>您今天已经抽过奖啦！</p>
                 <p>点击按钮分享页面还可再抽一次哦！</p>
             </div>
+            <#if !isAppSource>
             <div class="btn-list">
                 <a href="javascript:void(0)" class="go-on go-close">去分享</a>
             </div>
+            </#if>
         </div>
         <div class="tip-dom td-tip-thank" id="onlyTwicePhone">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>您今天的抽奖次数已经用完啦，</p>
                 <p>明天再来抽奖吧！</p>
-            </div>
-            <div class="btn-list">
-                <a href="/" class="go-on-big">去看看其他活动</a>
             </div>
         </div>
         <div class="tip-dom td-tip-small" id="cdFivePhone">
@@ -760,9 +820,6 @@
                 <p>谢谢参与</p>
                 <p>很遗憾没有中奖,再接再励！</p>
             </div>
-            <div class="btn-list">
-                <a href="/" class="go-on-big">去看看其他活动</a>
-            </div>
         </div>
         <div class="tip-dom td-tip-small" id="percentCouponPhone">
             <div class="close-btn go-close"></div>
@@ -772,8 +829,7 @@
                 <p>奖金已发放至“我的宝藏”当中</p>
             </div>
             <div class="btn-list">
-                <a href="/my-treasure" class="double-btn first-btn">去查看</a>
-                <a href="javascript:void(0)" class="double-btn go-close">继续抽奖</a>
+                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
             </div>
         </div>
         <div class="tip-dom td-tip-small" id="freeMoneyPhone">

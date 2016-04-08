@@ -378,7 +378,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
         });
     }, 2000);
 
-    $('.my-record dt').on('click', function(event) {
+    $('body').on('click', '.my-record dt',function(event) {
         event.preventDefault();
         var $self = $(this),
             $dd = $self.parent().find('dd');
@@ -389,6 +389,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             $self.removeClass('active');
             $dd.slideUp('fast');
         }
+        event.stopPropagation();
     });
 
 
@@ -450,6 +451,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             duration: 8000,
             callback: function() {
                 $('#tipListPhone').show();
+                PcDataGetPhone();
                 switch (awards) {
                     case 0:
                         $('#twentyRMBPhone').show();
@@ -536,6 +538,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             duration: 8000,
             callback: function() {
                 $('#tipListPhone').show();
+                PcDataGetPhone();
                 switch (awards) {
                     case 1:
                         $('#cdFivePhone').show();
@@ -584,12 +587,13 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
     });
     function rankList(){
         $.ajax({
-            url: '/path/to/file',
+            url: '/activity/getTianDouTop15',
             type: 'POST',
             dataType: 'json'
         })
         .done(function(data) {
-            console.log("success");
+            var list={rank:data};
+            $('#rankList').html(tpl('rankListTpl', list));
         });
     }
     function TdGiftRecord(){
@@ -610,7 +614,8 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             dataType: 'json'
         })
         .done(function(data) {
-            $('#TdMyGift').html(tpl('TdMyGiftTpl', data));
+            var list={tdmygift:data};
+            $('#TdMyGift').html(tpl('TdMyGiftTpl', list));
         });
     }
     
@@ -621,7 +626,8 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             dataType: 'json'
         })
         .done(function(data) {
-            $('#CdGiftRecord').html(tpl('CdGiftRecordTpl', data));
+            var list={cdgiftrecord:data};
+            $('#CdGiftRecord').html(tpl('CdGiftRecordTpl', list));
         });
     }
     
@@ -632,15 +638,83 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             dataType: 'json'
         })
         .done(function(data) {
-            $('#CdMyGift').html(tpl('CdMyGiftTpl', data));
+            var list={cdmygift:data};
+            $('#CdMyGift').html(tpl('CdMyGiftTpl', list));
         });
     }
     
     function PcDataGet(){
+        rankList();
         TdGiftRecord();
         TdMyGift();
         CdGiftRecord();
         CdMyGift();
     }
     PcDataGet();
+    function rankListPhone(){
+        $.ajax({
+            url: '/activity/getTianDouTop15',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            var list={rank:data};
+            $('#rankListPhone').html(tpl('rankListPhoneTpl', list));
+        });
+    }
+    function TdGiftRecordPhone(){
+        $.ajax({
+            url: '/activity/getTianDouPrizeList',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            $('#TdGiftRecordPhone').html(tpl('TdGiftRecordPhoneTpl', data));
+        });
+    }
+    
+    function TdMyGiftPhone(){
+        $.ajax({
+            url: '/activity/getMyTianDouPrize',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            var list={tdmygift:data};
+            $('#TdMyGiftPhone').html(tpl('TdMyGiftPhoneTpl', list));
+        });
+    }
+    
+    function CdGiftRecordPhone(){
+        $.ajax({
+            url: '/activity/getPointPrizeList',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            var list={cdgiftrecord:data};
+            $('#CdGiftRecordPhone').html(tpl('CdGiftRecordPhoneTpl', list));
+        });
+    }
+    
+    function CdMyGiftPhone(){
+        $.ajax({
+            url: '/activity/getMyPointPrize',
+            type: 'POST',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            var list={cdmygift:data};
+            $('#CdMyGiftPhone').html(tpl('CdMyGiftPhoneTpl', list));
+        });
+    }
+    
+    function PcDataGetPhone(){
+        rankListPhone();
+        TdGiftRecordPhone();
+        TdMyGiftPhone();
+        CdGiftRecordPhone();
+        CdMyGiftPhone();
+    }
+    PcDataGetPhone();
 });
