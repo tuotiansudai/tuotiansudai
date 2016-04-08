@@ -59,12 +59,16 @@ public class RankingActivityController {
         long macBookWinnerCount = rankingActivityService.getPrizeWinnerCount(TianDouPrize.MacBook);
         long iphoneWinnerCount = rankingActivityService.getPrizeWinnerCount(TianDouPrize.Iphone6s);
         long jingDongWinnerCount = rankingActivityService.getPrizeWinnerCount(TianDouPrize.JingDong300);
+        long cashWinnerCount = rankingActivityService.getPrizeWinnerCount(TianDouPrize.Cash20);
+        long couponWinnerCount = rankingActivityService.getPrizeWinnerCount(TianDouPrize.InterestCoupon5);
 
         modelAndView.addObject("drawCount", drawCount);
         modelAndView.addObject("drawUserCount", drawUserCount);
         modelAndView.addObject("macBookWinnerCount", macBookWinnerCount);
         modelAndView.addObject("iphoneWinnerCount", iphoneWinnerCount);
         modelAndView.addObject("jingDongWinnerCount", jingDongWinnerCount);
+        modelAndView.addObject("cashWinnerCount", cashWinnerCount);
+        modelAndView.addObject("couponWinnerCount", couponWinnerCount);
         return modelAndView;
     }
 
