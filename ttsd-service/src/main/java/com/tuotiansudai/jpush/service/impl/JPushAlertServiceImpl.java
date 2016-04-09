@@ -490,7 +490,13 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             for (InvestNotifyInfo notifyInfo : notifyInfos) {
                 InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(notifyInfo.getInvestId(),loanRepayModel.getPeriod());
                 List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(notifyInfo.getInvestId());
-                long defaultInterest = getDefaultInterest(loanRepayModel.getPeriod(), investRepayModels);
+                long defaultInterest = 0;
+                for(int i = loanRepayModel.getPeriod() - 2; i >= 0; i-- ){
+                    defaultInterest += investRepayModels.get(i).getDefaultInterest();
+                    if(investRepayModels.get(i).getDefaultInterest() == 0){
+                        break;
+                    }
+                }
                 List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(investRepayModel.getCorpus() + investRepayModel.getActualInterest() + defaultInterest - investRepayModel.getActualFee()));
                 loginNameMap.put(notifyInfo.getLoginName(), amountLists);
                 autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
@@ -500,17 +506,6 @@ public class JPushAlertServiceImpl implements JPushAlertService {
             logger.debug("REPAY_ALERT is disabled");
         }
 
-    }
-
-    public long getDefaultInterest(int currentPeriod, List<InvestRepayModel> investRepayModels){
-        long defaultInterest = 0;
-        for(int i = currentPeriod - 2; i >= 0; i-- ){
-            defaultInterest += investRepayModels.get(i).getDefaultInterest();
-            if(investRepayModels.get(i).getDefaultInterest() == 0){
-                break;
-            }
-        }
-        return defaultInterest;
     }
 
     @Override

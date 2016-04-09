@@ -62,6 +62,4 @@ public interface JPushAlertService {
 
     void delete(String loginName, long id);
 
-    long getDefaultInterest(int currentPeriod, List<InvestRepayModel> investRepayModels);
-
 }
