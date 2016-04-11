@@ -16,8 +16,8 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
         $tdgiftRecord = $('#tdChangeBtn li'),
         $cdgiftRecord = $('#cdChangeBtn li');
 
-    $('#linePro').height(Math.round($('#linePro').attr('data-totalInvest')) / 1000000 / 12000 * 600);
-    $('#lineProPhone').height(Math.round($('#lineProPhone').attr('data-totalInvest')) / 1000000 / 12000 * 300);
+    $('#linePro').height(Math.round($('#linePro').attr('data-totalInvest')) / 1000000 / 12000 * 60000);
+    $('#lineProPhone').height(Math.round($('#lineProPhone').attr('data-totalInvest')) / 1000000 / 12000 * 30000);
     //change rank list
     $beanBtn.on('click', function(event) {
         var $self = $(this),
@@ -450,7 +450,6 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                 })
                 .fail(function() {
                     layer.msg('请求失败');
-                    bRotateTdPhone = !bRotateTdPhone;
                 });
         }
     });
@@ -538,7 +537,6 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                 })
                 .fail(function() {
                     layer.msg('请求失败');
-                    bRotateCdPhone = !bRotateCdPhone;
                 });
         }
     });
