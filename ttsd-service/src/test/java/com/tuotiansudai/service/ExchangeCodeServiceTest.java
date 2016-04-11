@@ -3,7 +3,10 @@ package com.tuotiansudai.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.service.impl.ExchangeCodeServiceImpl;
@@ -46,6 +49,9 @@ public class ExchangeCodeServiceTest {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private UserCouponMapper userCouponMapper;
 
     @Test
     public void shouldExchangeCodeFailed1() {
@@ -138,6 +144,7 @@ public class ExchangeCodeServiceTest {
         exchangeCouponDto.setStartTime(dateTime.toDate());
         exchangeCouponDto.setEndTime(dateTime.toDate());
         exchangeCouponDto.setActive(true);
+        exchangeCouponDto.setUserGroup(UserGroup.EXCHANGER_CODE);
         couponService.createCoupon("couponTest", exchangeCouponDto);
         long couponId = exchangeCouponDto.getId();
         String exchangeCode = couponId + "2sdrfujtheg";
@@ -147,6 +154,8 @@ public class ExchangeCodeServiceTest {
         assertThat(baseDataDto.getMessage(), is("恭喜您兑换成功"));
         CouponModel couponModel = couponService.findCouponById(couponId);
         assertThat(couponModel.getIssuedCount(), is(1L));
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(couponId);
+        assertThat(userCouponModels.get(0).getLoginName(), is("couponTest"));
         redisWrapperClient.del(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId);
     }
 
