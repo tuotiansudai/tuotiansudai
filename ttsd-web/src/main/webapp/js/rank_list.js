@@ -592,6 +592,9 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             dataType: 'json'
         })
         .done(function(data) {
+            $.each(data, function(index, val) {
+                val.loginName=val.loginName.slice(0,3)+'******';
+            });
             var list={rank:data};
             $('#rankList').html(tpl('rankListTpl', list));
         });
@@ -603,6 +606,9 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             dataType: 'json'
         })
         .done(function(data) {
+            $.each(data.other, function(index, val) {
+                val.loginName=val.loginName.slice(0,3)+'******';
+            });
             $('#TdGiftRecord').html(tpl('TdGiftRecordTpl', data));
         });
     }
@@ -626,6 +632,9 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             dataType: 'json'
         })
         .done(function(data) {
+            $.each(data, function(index, val) {
+                val.loginName=val.loginName.slice(0,3)+'******';
+            });
             var list={cdgiftrecord:data};
             $('#CdGiftRecord').html(tpl('CdGiftRecordTpl', list));
         });
@@ -658,6 +667,9 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             dataType: 'json'
         })
         .done(function(data) {
+            $.each(data, function(index, val) {
+                val.loginName=val.loginName.slice(0,3)+'******';
+            });
             var list={rank:data};
             $('#rankListPhone').html(tpl('rankListPhoneTpl', list));
         });
@@ -669,6 +681,9 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             dataType: 'json'
         })
         .done(function(data) {
+            $.each(data.other, function(index, val) {
+                val.loginName=val.loginName.slice(0,3)+'******';
+            });
             $('#TdGiftRecordPhone').html(tpl('TdGiftRecordPhoneTpl', data));
         });
     }
@@ -681,7 +696,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
         })
         .done(function(data) {
             var list={tdmygift:data};
-            $('#TdMyGiftPhone').html(tpl('TdMyGiftPhoneTpl', list));
+            $('#TdMyGiftPhone').length>0?$('#TdMyGiftPhone').html(tpl('TdMyGiftPhoneTpl', list)):false;
         });
     }
     
@@ -692,6 +707,9 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             dataType: 'json'
         })
         .done(function(data) {
+            $.each(data, function(index, val) {
+                val.loginName=val.loginName.slice(0,3)+'******';
+            });
             var list={cdgiftrecord:data};
             $('#CdGiftRecordPhone').html(tpl('CdGiftRecordPhoneTpl', list));
         });
@@ -705,7 +723,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
         })
         .done(function(data) {
             var list={cdmygift:data};
-            $('#CdMyGiftPhone').html(tpl('CdMyGiftPhoneTpl', list));
+            $('#CdMyGiftPhone').length>0?$('#CdMyGiftPhone').html(tpl('CdMyGiftPhoneTpl', list)):false;
         });
     }
     
@@ -717,4 +735,5 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
         CdMyGiftPhone();
     }
     PcDataGetPhone();
+
 });
