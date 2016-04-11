@@ -558,7 +558,7 @@
                 </div>
                 <@global.isNotAnonymous>
                 <div class="my-record">
-                    <dl id="TdMyGiftPhone">
+                    <dl id="TdMyGiftPhone"></dl>
                         <script id="TdMyGiftPhoneTpl" type="text/html">
                         <dt><span>我的奖品</span><i class="fa fa-angle-up"></i><i class="fa fa-angle-down"></i></dt>
                         {{if tdmygift.length>0}}
@@ -584,7 +584,7 @@
                         <dd><span class="gift-name">您暂时还没有奖品，快去抽奖吧！</span></dd>
                         {{/if}}
                         </script>
-                    </dl>
+                    
                 </div>
                 </@global.isNotAnonymous>
             </div>
