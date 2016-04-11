@@ -417,7 +417,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             $('#noLoginPhone').show();
         } else {
             $.ajax({
-                    url: '/activity/draw-tiandou1',
+                    url: '/activity/draw-tiandou',
                     type: 'POST',
                     dataType: 'json'
                 })
@@ -451,6 +451,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                 })
                 .fail(function() {
                     layer.msg('请求失败');
+                    bRotateTdPhone = !bRotateTdPhone;
                 });
         }
     });
