@@ -3,10 +3,7 @@ package com.tuotiansudai.paywrapper.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.InvestDto;
-import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.repository.mapper.*;
@@ -20,16 +17,19 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -65,6 +65,12 @@ public class InvestServiceTest {
 
     @Autowired
     private PaySyncClient paySyncClient;
+
+    @Value(value = "${pay.callback.web.host}")
+    private String webRetUrl;
+
+    @Value(value = "${pay.callback.app.web.host}")
+    private String appRetUrl;
 
     private AccountModel createAccountByUserId(String userId) {
         AccountModel accountModel = new AccountModel(userId, userId, "120101198810012010", "", "", new Date());
@@ -288,6 +294,107 @@ public class InvestServiceTest {
         assertThat(investModels.get(0).getAmount(), is(100L));
         assertThat(investModels.get(0).getLoginName(), is("testInvest"));
         assertThat(investModels.get(0).getSource(), is(Source.WEB));
+    }
+
+    @Test
+    public void  shouldInvestWebRetUrlIsSuccess() {
+        long loanId = this.idGenerator.generate();
+        this.createUserByUserId("testLoan");
+        LoanDto loanDto = new LoanDto();
+        loanDto.setLoanerLoginName("testLoan");
+        loanDto.setLoanerUserName("借款人");
+        loanDto.setLoanerIdentityNumber("111111111111111111");
+        loanDto.setAgentLoginName("testLoan");
+        loanDto.setBasicRate("16.00");
+        loanDto.setId(loanId);
+        loanDto.setProjectName("店铺资金周转");
+        loanDto.setActivityRate("12");
+        loanDto.setShowOnHome(true);
+        loanDto.setPeriods(1);
+        loanDto.setActivityType(ActivityType.NORMAL);
+        loanDto.setContractId(123);
+        loanDto.setDescriptionHtml("asdfasdf");
+        loanDto.setDescriptionText("asdfasd");
+        loanDto.setFundraisingEndTime(new Date());
+        loanDto.setFundraisingStartTime(new Date());
+        loanDto.setInvestFeeRate("15");
+        loanDto.setInvestIncreasingAmount("1");
+        loanDto.setLoanAmount("1000");
+        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        loanDto.setMaxInvestAmount("100000000000");
+        loanDto.setMinInvestAmount("0");
+        loanDto.setCreatedTime(new Date());
+        loanDto.setLoanStatus(LoanStatus.RAISING);
+        LoanModel loanModel = new LoanModel(loanDto);
+        loanMapper.create(loanModel);
+
+        this.createUserByUserId("testInvest");
+
+        AccountModel accountModel = new AccountModel("testInvest", "testInvest", "120101198810012010", "", "", new Date());
+        accountModel.setAutoInvest(true);
+        accountModel.setBalance(10000);
+        accountModel.setFreeze(0);
+        accountMapper.create(accountModel);
+
+        InvestDto investDto = new InvestDto();
+        investDto.setLoginName("testInvest");
+        investDto.setLoanId(String.valueOf(loanId));
+        investDto.setAmount("1.0");
+        investDto.setSource(Source.WEB);
+        BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
+        assertTrue(baseDto.getData().getStatus());
+        assertEquals( MessageFormat.format("{0}/invest-success", webRetUrl), baseDto.getData().getFields().get("ret_url"));
+
+    }
+
+    @Test
+    public void  shouldInvestRetAppUrlIsSuccess() {
+        long loanId = this.idGenerator.generate();
+        this.createUserByUserId("testLoan");
+        LoanDto loanDto = new LoanDto();
+        loanDto.setLoanerLoginName("testLoan");
+        loanDto.setLoanerUserName("借款人");
+        loanDto.setLoanerIdentityNumber("111111111111111111");
+        loanDto.setAgentLoginName("testLoan");
+        loanDto.setBasicRate("16.00");
+        loanDto.setId(loanId);
+        loanDto.setProjectName("店铺资金周转");
+        loanDto.setActivityRate("12");
+        loanDto.setShowOnHome(true);
+        loanDto.setPeriods(1);
+        loanDto.setActivityType(ActivityType.NORMAL);
+        loanDto.setContractId(123);
+        loanDto.setDescriptionHtml("asdfasdf");
+        loanDto.setDescriptionText("asdfasd");
+        loanDto.setFundraisingEndTime(new Date());
+        loanDto.setFundraisingStartTime(new Date());
+        loanDto.setInvestFeeRate("15");
+        loanDto.setInvestIncreasingAmount("1");
+        loanDto.setLoanAmount("1000");
+        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        loanDto.setMaxInvestAmount("100000000000");
+        loanDto.setMinInvestAmount("0");
+        loanDto.setCreatedTime(new Date());
+        loanDto.setLoanStatus(LoanStatus.RAISING);
+        LoanModel loanModel = new LoanModel(loanDto);
+        loanMapper.create(loanModel);
+
+        this.createUserByUserId("testInvest");
+
+        AccountModel accountModel = new AccountModel("testInvest", "testInvest", "120101198810012010", "", "", new Date());
+        accountModel.setAutoInvest(true);
+        accountModel.setBalance(10000);
+        accountModel.setFreeze(0);
+        accountMapper.create(accountModel);
+
+        InvestDto investDto = new InvestDto();
+        investDto.setLoginName("testInvest");
+        investDto.setLoanId(String.valueOf(loanId));
+        investDto.setAmount("1.0");
+        investDto.setSource(Source.IOS);
+        BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
+        assertTrue(baseDto.getData().getStatus());
+        assertEquals(MessageFormat.format("{0}/callback/{1}",appRetUrl ,"project_transfer_invest"), baseDto.getData().getFields().get("ret_url"));
     }
 
     @Test

@@ -211,13 +211,13 @@ public class RankingActivityServiceImpl implements RankingActivityService {
 
         List<String> macBookWinner = redisWrapperClient.lrange(TIAN_DOU_PRIZE_WINNER + TianDouPrize.MacBook, 0, 1);
         List<String> iphoneWinner = redisWrapperClient.lrange(TIAN_DOU_PRIZE_WINNER + TianDouPrize.Iphone6s, 0, 3);
-        List<String> allWinner = redisWrapperClient.lrange(TIAN_DOU_ALL_WINNER, 0, 17);
+        List<String> otherWinner = redisWrapperClient.lrange(TIAN_DOU_ALL_WINNER, 0, 17);
 
         List<UserTianDouRecordDto> macBookWinnerBeans = Lists.transform(macBookWinner, new Function<String, UserTianDouRecordDto>() {
             @Override
             public UserTianDouRecordDto apply(String input) {
                 String loginName = input.split("\\+")[0];
-                return new UserTianDouRecordDto(loginName, "DRAW", TianDouPrize.MacBook);
+                return new UserTianDouRecordDto(loginName, "抽奖", TianDouPrize.MacBook);
             }
         });
 
@@ -225,28 +225,29 @@ public class RankingActivityServiceImpl implements RankingActivityService {
             @Override
             public UserTianDouRecordDto apply(String input) {
                 String loginName = input.split("\\+")[0];
-                return new UserTianDouRecordDto(loginName, "DRAW", TianDouPrize.Iphone6s);
+                return new UserTianDouRecordDto(loginName, "抽奖", TianDouPrize.Iphone6s);
             }
         });
 
-        for (int i = allWinner.size() - 1; i >= 0; i--) {
-            String winnerPrize = allWinner.get(i);
+        for (int i = otherWinner.size() - 1; i >= 0; i--) {
+            String winnerPrize = otherWinner.get(i);
             String prize = winnerPrize.split("\\+")[1];
             if (TianDouPrize.MacBook.toString().equals(prize) || TianDouPrize.Iphone6s.toString().equals(prize)) {
-                allWinner.remove(i);
+                otherWinner.remove(i);
             }
         }
 
-        if (allWinner.size() > 15) {
-            allWinner = allWinner.subList(0, 15);
+        int otherWinnerSize = 15 - macBookWinner.size() - iphoneWinner.size();
+        if (otherWinner.size() > otherWinnerSize) {
+            otherWinner = otherWinner.subList(0, otherWinnerSize);
         }
 
-        List<UserTianDouRecordDto> otherWinnerBeans = Lists.transform(allWinner, new Function<String, UserTianDouRecordDto>() {
+        List<UserTianDouRecordDto> otherWinnerBeans = Lists.transform(otherWinner, new Function<String, UserTianDouRecordDto>() {
             @Override
             public UserTianDouRecordDto apply(String input) {
                 String loginName = input.split("\\+")[0];
                 String prize = input.split("\\+")[1];
-                return new UserTianDouRecordDto(loginName, "DRAW", TianDouPrize.valueOf(prize));
+                return new UserTianDouRecordDto(loginName, "抽奖", TianDouPrize.valueOf(prize));
             }
         });
 
@@ -265,7 +266,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
             @Override
             public UserTianDouRecordDto apply(String input) {
                 String prize = input.split("\\+")[0];
-                String time = input.split("\\+")[1];
+                String time = input.split("\\+")[1].replace("_", " ");
                 return new UserTianDouRecordDto(loginName, "", TianDouPrize.valueOf(prize), time);
             }
         });
