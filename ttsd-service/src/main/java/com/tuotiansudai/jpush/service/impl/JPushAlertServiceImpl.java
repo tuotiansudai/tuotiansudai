@@ -491,10 +491,15 @@ public class JPushAlertServiceImpl implements JPushAlertService {
                 InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(notifyInfo.getInvestId(),loanRepayModel.getPeriod());
                 List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(notifyInfo.getInvestId());
                 long defaultInterest = 0;
-                for(int i = loanRepayModel.getPeriod() - 2; i >= 0; i-- ){
-                    defaultInterest += investRepayModels.get(i).getDefaultInterest();
-                    if(investRepayModels.get(i).getDefaultInterest() == 0){
-                        break;
+                if(investRepayModels.size() == 1){
+                    defaultInterest = investRepayModel.getDefaultInterest();
+                }
+                else{
+                    for(int i = loanRepayModel.getPeriod() - 2; i >= 0; i-- ){
+                        defaultInterest += investRepayModels.get(i).getDefaultInterest();
+                        if(investRepayModels.get(i).getDefaultInterest() == 0){
+                            break;
+                        }
                     }
                 }
                 List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(investRepayModel.getCorpus() + investRepayModel.getActualInterest() + defaultInterest - investRepayModel.getActualFee()));
