@@ -99,7 +99,16 @@
         <intercept-url pattern="/contract/loaner/**" access="hasAuthority('LOANER')"/>
 
         <intercept-url pattern="/**" access="permitAll()"/>
-        <csrf/>
+
+        <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>
     </http>
+
+    <beans:bean id="csrfSecurityRequestMatcher" class="com.tuotiansudai.security.CsrfSecurityRequestMatcher">
+        <beans:property name="excludedUrls">
+            <beans:list>
+                <beans:value>/activity/rank-list</beans:value>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
 
 </beans:beans>
