@@ -679,7 +679,7 @@ body {
       .media-logo-list {
         width: 367px;
         height: 220px;
-        background: url("/images/sign/media/bg-media.png") right 0 no-repeat;
+        background: url("/images/sign/media/bg-media-list.png") right 0 no-repeat;
         li {
           display: inline-block;
           margin-left: 18px;
@@ -692,7 +692,7 @@ body {
             width:100%;
             height:100%;
             &.qq:hover {
-              background: url("/images/sign/media/tengxun.png") 0px 0px no-repeat;
+              background: url("/images/sign/media/tengxunqq.png") 0px 0px no-repeat;
               background-size:100%;
               position: absolute;
               left:-15px;
@@ -719,7 +719,7 @@ body {
               top:-2px;
             }
             &.sina:hover {
-              background: url("/images/sign/media/sina.png") 0px 0px no-repeat;
+              background: url("/images/sign/media/tsina.png") 0px 0px no-repeat;
               background-size:100%;
               position: absolute;
               left:-15px;
