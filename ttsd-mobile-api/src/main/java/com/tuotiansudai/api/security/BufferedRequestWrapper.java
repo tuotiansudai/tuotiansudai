@@ -3,10 +3,7 @@ package com.tuotiansudai.api.security;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 public class BufferedRequestWrapper extends HttpServletRequestWrapper {
 
@@ -43,6 +40,18 @@ public class BufferedRequestWrapper extends HttpServletRequestWrapper {
         } finally {
             return bufferedServletInputStream;
         }
+    }
+
+    public String inputStream2String(ServletInputStream inputStream) throws IOException {
+        InputStreamReader input = new InputStreamReader(inputStream,"UTF-8");
+        BufferedReader bf = new BufferedReader(input);
+        String line = null;
+        StringBuffer sb = new StringBuffer();
+        while((line=bf.readLine()) != null){
+            sb.append(line);
+
+        }
+        return sb.toString();
     }
 
 }
