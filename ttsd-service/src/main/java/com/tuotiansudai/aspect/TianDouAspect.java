@@ -2,10 +2,11 @@ package com.tuotiansudai.aspect;
 
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.service.UserRoleService;
+import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.impl.RankingActivityServiceImpl;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Aspect
 @Component
@@ -32,7 +34,8 @@ public class TianDouAspect {
     private LoanMapper loanMapper;
 
     @Autowired
-    private UserRoleService userRoleService;
+    private UserRoleMapper userRoleMapper;
+
 
     @After(value = "execution(* *..InvestService.investSuccess(..))")
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
@@ -46,7 +49,7 @@ public class TianDouAspect {
                     + ", loanId:" + investModel.getLoanId() + ", amount:" + investModel.getAmount());
         } else {
             String loginName = investModel.getLoginName();
-            if (userRoleService.judgeUserRoleExist(loginName, Role.LOANER)) {
+            if (judgeUserRoleExist(loginName, Role.LOANER)) {
                 logger.info(loginName + " is a loaner, won't add tiandou for him.");
                 return;
             } else {
@@ -65,6 +68,16 @@ public class TianDouAspect {
             }
             logger.debug("after returning invest, tianDou assign completed");
         }
+    }
+
+    private boolean judgeUserRoleExist(String loginName, Role role) {
+        List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(loginName);
+        for (UserRoleModel userRoleModel : userRoleModels) {
+            if (userRoleModel.getRole() == role) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
