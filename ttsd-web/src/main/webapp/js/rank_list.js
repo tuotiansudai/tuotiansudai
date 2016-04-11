@@ -380,23 +380,29 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
 
     $('#TdMyGiftPhone').on('click', function(event) {
         event.preventDefault();
-        slideGift($(this));
+        var $self = $(this),
+            $dd = $self.find('dd');
+        if (!$self.hasClass('active')) {
+            $self.addClass('active');
+            $dd.slideDown('fast');
+        } else {
+            $self.removeClass('active');
+            $dd.slideUp('fast');
+        }
     });
     $('#CdMyGiftPhone').on('click', function(event) {
         event.preventDefault();
-        slideGift($(this));
-    });
-    function slideGift(dom){
-        var $dom = $(this),
-            $dd = $dom.find('dd');
-        if (!$dom.hasClass('active')) {
-            $dom.addClass('active');
+        var $self = $(this),
+            $dd = $self.find('dd');
+        if (!$self.hasClass('active')) {
+            $self.addClass('active');
             $dd.slideDown('fast');
         } else {
-            $dom.removeClass('active');
+            $self.removeClass('active');
             $dd.slideUp('fast');
         }
-    }
+    });
+
 
 
     //td click phone
