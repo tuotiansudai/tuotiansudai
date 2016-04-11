@@ -53,6 +53,11 @@ public class RankingActivityController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/rank-list-app", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView loadAppPageData() {
+        return new ModelAndView("/activities/rank-list-app", "responsive", true);
+    }
+
     @ResponseBody
     @RequestMapping(value = "/draw-tiandou", method = RequestMethod.POST)
     public BaseDto<DrawLotteryDto> drawTianDouPrize() {
