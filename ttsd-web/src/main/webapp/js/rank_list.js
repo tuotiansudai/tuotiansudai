@@ -378,10 +378,10 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
         });
     }, 2000);
 
-    $('body').on('click', '.my-record dt',function(event) {
+    $('#TdMyGiftPhone').on('click', function(event) {
         event.preventDefault();
         var $self = $(this),
-            $dd = $self.parent().find('dd');
+            $dd = $self.find('dd');
         if (!$self.hasClass('active')) {
             $self.addClass('active');
             $dd.slideDown('fast');
@@ -389,8 +389,20 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             $self.removeClass('active');
             $dd.slideUp('fast');
         }
-        event.stopPropagation();
     });
+    $('#CdMyGiftPhone').on('click', function(event) {
+        event.preventDefault();
+        var $self = $(this),
+            $dd = $self.find('dd');
+        if (!$self.hasClass('active')) {
+            $self.addClass('active');
+            $dd.slideDown('fast');
+        } else {
+            $self.removeClass('active');
+            $dd.slideUp('fast');
+        }
+    });
+
 
 
     //td click phone
