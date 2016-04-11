@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.company_activity}" pageJavascript="${js.rank_list}" activeNav="" activeLeftNav="" title="排行榜">
+<@global.main pageCss="${css.company_activity}" pageJavascript="${js.rank_list}" activeNav="" activeLeftNav="" title="拓天排行榜_拓天活动_拓天速贷" keywords="拓天速贷,拓天排行榜,拓天天豆,投资拓天,霸道总裁" description="拓天速贷二期活动,投资送天豆,参与抽大奖,拓天速贷霸道总裁送您钱,车,房.">
 <div class="rank-list-container">
     <div class="rank-phone-model">
         <img src="${staticServer}/images/sign/actor/ranklist/rank-list-top.png" width="100%">

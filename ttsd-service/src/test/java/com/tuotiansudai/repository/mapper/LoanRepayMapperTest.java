@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -320,6 +321,33 @@ public class LoanRepayMapperTest {
         LoanRepayModel currentLoanRepay = loanRepayMapper.findCurrentLoanRepayByLoanId(fakeLoanModel.getId());
 
         assertNull(currentLoanRepay);
+    }
+
+
+    @Test
+    public void shouldFindTodayRepayModel() throws Exception {
+        UserModel userModel = this.getFakeUserModel();
+        LoanModel fakeLoanModel = this.getFakeLoanModel(LoanStatus.REPAYING);
+        userMapper.create(userModel);
+        loanMapper.create(fakeLoanModel);
+        List<LoanRepayModel> loanRepayModels = Lists.newArrayList();
+        LoanRepayModel loanRepayModel = new LoanRepayModel();
+        loanRepayModel.setId(idGenerator.generate());
+        loanRepayModel.setDefaultInterest(0);
+        loanRepayModel.setActualInterest(0);
+        loanRepayModel.setPeriod(1);
+        loanRepayModel.setStatus(RepayStatus.REPAYING);
+        loanRepayModel.setLoanId(fakeLoanModel.getId());
+        loanRepayModel.setRepayDate(new Date());
+        loanRepayModel.setCorpus(0);
+        loanRepayModel.setExpectedInterest(0);
+        loanRepayModels.add(loanRepayModel);
+        loanRepayMapper.create(loanRepayModels);
+
+        String today = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
+        List<LoanRepayNotifyModel> loanRepayNotifyToday = loanRepayMapper.findLoanRepayNotifyToday(today);
+
+        assertTrue(CollectionUtils.isNotEmpty(loanRepayNotifyToday));
     }
 
     private UserModel getFakeUserModel() {
