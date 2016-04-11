@@ -97,6 +97,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                 })
                 .fail(function() {
                     layer.msg('请求失败');
+                    bRotateTd = !bRotateTd;
                 });
         }
     });
@@ -193,6 +194,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                 })
                 .fail(function() {
                     layer.msg('请求失败');
+                    bRotateCd = !bRotateCd;
                 });
         }
     });
@@ -450,6 +452,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                 })
                 .fail(function() {
                     layer.msg('请求失败');
+                    bRotateTdPhone = !bRotateTdPhone;
                 });
         }
     });
@@ -537,6 +540,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                 })
                 .fail(function() {
                     layer.msg('请求失败');
+                    bRotateCdPhone = !bRotateCdPhone;
                 });
         }
     });
