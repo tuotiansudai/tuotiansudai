@@ -108,7 +108,7 @@
                 </div>
                 <div class="bean-rank-money">
                     <div class="progress-line">
-                        <h3 class="total-money">累积投资：${totalInvest/100?float} 元</h3>
+                        <h3 class="total-money">累积投资：${totalInvest?float} 元</h3>
                         <dl class="gift-two">
                             <dt>奖池累积中...</br>投资满<span>1.5亿</span>则奖池升级:</dt>
                             <dd>第一名：现金5万</dd>
