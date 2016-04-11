@@ -65,7 +65,7 @@ public class RankingActivityController {
 
     @RequestMapping(value = "/rank-list-app", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView loadAppPageData() {
-        return new ModelAndView("/activities/rank-list-app");
+        return new ModelAndView("/activities/rank-list-app", "responsive", true);
     }
 
     @ResponseBody
