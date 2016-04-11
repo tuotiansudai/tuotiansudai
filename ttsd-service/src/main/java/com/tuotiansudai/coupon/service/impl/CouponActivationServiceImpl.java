@@ -62,6 +62,9 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     @Resource(name = "winnerCollector")
     private UserCollector winnerCollector;
 
+    @Resource(name = "exchangeCodeCollector")
+    private UserCollector exchangeCodeCollector;
+
     @Autowired
     private UserMapper userMapper;
 
@@ -172,7 +175,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Override
     @Transactional
-    public void assignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups, final Long couponId) {
+    public void assignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups, final Long couponId, String exchangeCode) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
         List<CouponModel> coupons = couponId == null ? couponMapper.findAllActiveCoupons() : Lists.newArrayList(couponMapper.findById(couponId));
@@ -187,7 +190,12 @@ public class CouponActivationServiceImpl implements CouponActivationService {
                 boolean isExchangeableCoupon = this.isExchangeableCoupon(couponModel);
                 boolean isAssignableCoupon = this.isAssignableCoupon(couponModel, existingUserCouponModels);
                 boolean isLotteryWinner = this.isLotteryWinner(couponModel);
-                return isInUserGroup && (isAssignableCoupon || isExchangeableCoupon || isLotteryWinner);
+                boolean isExchangeCode = this.isExchangeCode(couponModel);
+                return isInUserGroup && (isAssignableCoupon || isExchangeableCoupon || isLotteryWinner || isExchangeCode);
+            }
+
+            private boolean isExchangeCode(CouponModel couponModel) {
+                return couponModel.getUserGroup() == UserGroup.EXCHANGER_CODE;
             }
 
             private boolean isLotteryWinner(CouponModel couponModel) {
@@ -220,6 +228,9 @@ public class CouponActivationServiceImpl implements CouponActivationService {
             Date startTime = couponModel.getStartTime() != null ? couponModel.getStartTime() : new DateTime().withTimeAtStartOfDay().toDate();
             Date endTime = couponModel.getEndTime() != null ? couponModel.getEndTime() : new DateTime().plusDays(couponModel.getDeadline() + 1).withTimeAtStartOfDay().minusSeconds(1).toDate();
             UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId(), startTime, endTime);
+            if (lockedCoupon.getUserGroup() == UserGroup.EXCHANGER_CODE && exchangeCode != null) {
+                userCouponModel.setExchangeCode(exchangeCode);
+            }
             userCouponMapper.create(userCouponModel);
         }
     }
@@ -233,6 +244,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
                 .put(UserGroup.IMPORT_USER, this.importUserCollector)
                 .put(UserGroup.EXCHANGER, this.exchangerCollector)
                 .put(UserGroup.WINNER, this.winnerCollector)
+                .put(UserGroup.EXCHANGER_CODE, this.exchangeCodeCollector)
                 .build()).get(userGroup);
     }
 

@@ -22,6 +22,7 @@
         <result column="created_time" property="createdTime"/>
         <result column="invest_id" property="investId"/>
         <result column="status" property="status"/>
+        <result column="exchange_code" property="exchangeCode"/>
     </resultMap>
 
     <resultMap id="useRecordMap" type="UserCouponView">
@@ -46,8 +47,8 @@
     </resultMap>
 
     <insert id="create" parameterType="UserCouponModel" useGeneratedKeys="true" keyProperty="id">
-        insert into user_coupon (login_name, coupon_id, start_time, end_time, created_time)
-        value(#{loginName}, #{couponId}, #{startTime}, #{endTime}, #{createdTime})
+        insert into user_coupon (login_name, coupon_id, start_time, end_time, created_time, exchange_code)
+        value(#{loginName}, #{couponId}, #{startTime}, #{endTime}, #{createdTime}, #{exchangeCode})
     </insert>
 
     <update id="update" parameterType="UserCouponModel">

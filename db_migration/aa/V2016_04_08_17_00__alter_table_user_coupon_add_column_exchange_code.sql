@@ -1,0 +1,1 @@
+ALTER TABLE user_coupon ADD COLUMN exchange_code VARCHAR(28);

@@ -10,9 +10,8 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.job.AutoJPushAlertLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.SendRedEnvelopeJob;
-import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
-import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
+import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections.CollectionUtils;
@@ -110,7 +109,7 @@ public class CouponAspect {
             couponActivationService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER,
                     UserGroup.INVESTED_USER,
                     UserGroup.REGISTERED_NOT_INVESTED_USER,
-                    UserGroup.IMPORT_USER),null);
+                    UserGroup.IMPORT_USER),null, null);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
