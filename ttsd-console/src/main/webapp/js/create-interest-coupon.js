@@ -132,15 +132,19 @@ require(['jquery', 'template', 'csrf','bootstrap', 'jquery-ui', 'bootstrapSelect
         $('.userGroup').change(function(){
             var userGroup = this.value;
             var $fileBtn = $('.file-btn');
-            if(userGroup != "IMPORT_USER"){
+            if(userGroup != "IMPORT_USER" && userGroup != "EXCHANGER_CODE"){
                 $fileBtn.hide();
                 $('.file-btn').find('input').val('');
                 $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
-                    $('.give-number').val(data);
+                    $('.give-number').val(data).prop('readonly', true);
                 })
+            } else if (userGroup == "EXCHANGER_CODE") {
+                $fileBtn.hide();
+                $('.file-btn').find('input').val('');
+                $('.give-number').val('').prop('readonly', false);
             } else {
                 $fileBtn.show();
-                $('.give-number').val('');
+                $('.give-number').val('').prop('readonly', true);
             }
         });
 

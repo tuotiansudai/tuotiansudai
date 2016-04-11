@@ -10,6 +10,7 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
+import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.util.UserCollector;
 import com.tuotiansudai.dto.SmsCouponNotifyDto;
 import com.tuotiansudai.job.CouponNotifyJob;
@@ -89,6 +90,9 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     @Autowired
     AuditLogUtil auditLogUtil;
 
+    @Autowired
+    private ExchangeCodeService exchangeCodeService;
+
     @Transactional
     @Override
     public void inactive(String loginName, long couponId, String ip) {
@@ -121,7 +125,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
         UserCollector collector = this.getCollector(couponModel.getUserGroup());
 
-        if (collector != null && couponModel.getUserGroup() != UserGroup.EXCHANGER) {
+        if (collector != null && !Lists.newArrayList(UserGroup.EXCHANGER, UserGroup.EXCHANGER_CODE).contains(couponModel.getUserGroup())) {
             couponModel.setTotalCount(collector.count(couponId));
         }
 
@@ -148,6 +152,9 @@ public class CouponActivationServiceImpl implements CouponActivationService {
         if (couponModel.isSmsAlert()) {
             this.createSmsNotifyJob(couponId);
         }
+
+        exchangeCodeService.generateExchangeCode(couponModel.getId(), couponModel.getTotalCount().intValue());
+
     }
 
     @Override
