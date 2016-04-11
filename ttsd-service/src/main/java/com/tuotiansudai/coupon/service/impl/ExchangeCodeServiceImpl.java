@@ -1,9 +1,12 @@
 package com.tuotiansudai.coupon.service.impl;
 
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.dto.BaseDataDto;
 import org.apache.log4j.Logger;
@@ -22,6 +25,9 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
 
     @Autowired
     private CouponMapper couponMapper;
+
+    @Autowired
+    private CouponActivationService couponActivationService;
 
     public static String EXCHANGE_CODE_KEY = "console:exchangeCode:";
 
@@ -99,7 +105,7 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
     }
 
     @Override
-    public BaseDataDto exchange(String exchangeCode) {
+    public BaseDataDto exchange(String loginName, String exchangeCode) {
         BaseDataDto baseDataDto = new BaseDataDto();
         long couponId = 0;
         try {
@@ -110,7 +116,7 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
             return baseDataDto;
         }
         CouponModel couponModel = couponMapper.findById(couponId);
-        if (couponModel.getEndTime().before(new Date())) {
+        if (couponModel != null && couponModel.getEndTime().before(new Date())) {
             baseDataDto.setStatus(false);
             baseDataDto.setMessage("该兑换码已过期");
             return baseDataDto;
@@ -122,9 +128,10 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
         }
         if (redisWrapperClient.hget(EXCHANGE_CODE_KEY + couponId, exchangeCode).equals("1")) {
             baseDataDto.setStatus(false);
-            baseDataDto.setMessage("请输入正确的兑换码");
+            baseDataDto.setMessage("该兑换码已被使用");
             return baseDataDto;
         } else {
+            couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.EXCHANGER_CODE), couponId, exchangeCode);
             redisWrapperClient.hset(EXCHANGE_CODE_KEY + couponId, exchangeCode, "1");
             baseDataDto.setStatus(true);
             baseDataDto.setMessage("恭喜您兑换成功");

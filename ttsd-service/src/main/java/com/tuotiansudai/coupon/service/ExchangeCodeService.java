@@ -6,6 +6,6 @@ public interface ExchangeCodeService {
 
     boolean generateExchangeCode(long couponId, int count);
 
-    BaseDataDto exchange(String exchangeCode);
+    BaseDataDto exchange(String loginName, String exchangeCode);
 
 }

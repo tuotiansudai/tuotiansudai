@@ -3,9 +3,11 @@ package com.tuotiansudai.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.coupon.service.impl.ExchangeCodeServiceImpl;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponType;
@@ -24,6 +26,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
@@ -41,6 +46,109 @@ public class ExchangeCodeServiceTest {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Test
+    public void shouldExchangeCodeFailed1() {
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+        String exchangeCode = "ab12sdrfujthyf";
+        BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
+        assertThat(baseDataDto.getStatus(), is(false));
+        assertThat(baseDataDto.getMessage(), is("请输入正确的兑换码"));
+    }
+
+    @Test
+    public void shouldExchangeCodeFailed2() {
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+        String exchangeCode = "3012sdrfujth";
+        BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
+        assertThat(baseDataDto.getStatus(), is(false));
+        assertThat(baseDataDto.getMessage(), is("请输入正确的兑换码"));
+    }
+
+    @Test
+    public void shouldExchangeCodeFailed3() {
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+        String exchangeCode = "3012sdrfujtheg";
+        BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
+        assertThat(baseDataDto.getStatus(), is(false));
+        assertThat(baseDataDto.getMessage(), is("请输入正确的兑换码"));
+    }
+
+    @Test
+    public void shouldExchangeCodeFailed4() throws Exception{
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+        ExchangeCouponDto exchangeCouponDto = fakeCouponDto();
+        DateTime dateTime = new DateTime().plusDays(1);
+        exchangeCouponDto.setStartTime(dateTime.toDate());
+        exchangeCouponDto.setEndTime(dateTime.toDate());
+        couponService.createCoupon("couponTest", exchangeCouponDto);
+
+        long couponId = exchangeCouponDto.getId();
+        String exchangeCode = couponId + "2sdrfujtheg";
+        BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
+        assertThat(baseDataDto.getStatus(), is(false));
+        assertThat(baseDataDto.getMessage(), is("请输入正确的兑换码"));
+    }
+
+    @Test
+    public void shouldExchangeCodeFailed5() throws Exception{
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+        ExchangeCouponDto exchangeCouponDto = fakeCouponDto();
+        exchangeCouponDto.setStartTime(new DateTime().minusDays(7).toDate());
+        exchangeCouponDto.setEndTime(new DateTime().minusDays(5).toDate());
+        couponService.createCoupon("couponTest", exchangeCouponDto);
+
+        long couponId = exchangeCouponDto.getId();
+        String exchangeCode = couponId + "2sdrfujtheg";
+        BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
+        assertThat(baseDataDto.getStatus(), is(false));
+        assertThat(baseDataDto.getMessage(), is("该兑换码已过期"));
+    }
+
+    @Test
+    public void shouldExchangeCodeFailed6() throws Exception{
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+        ExchangeCouponDto exchangeCouponDto = fakeCouponDto();
+        DateTime dateTime = new DateTime().plusDays(1);
+        exchangeCouponDto.setStartTime(dateTime.toDate());
+        exchangeCouponDto.setEndTime(dateTime.toDate());
+        couponService.createCoupon("couponTest", exchangeCouponDto);
+
+        long couponId = exchangeCouponDto.getId();
+        String exchangeCode = couponId + "2sdrfujtheg";
+        redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId, exchangeCode, "1", 200);
+        BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
+        assertThat(baseDataDto.getStatus(), is(false));
+        assertThat(baseDataDto.getMessage(), is("该兑换码已被使用"));
+        redisWrapperClient.del(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId);
+    }
+
+    @Test
+    public void shouldExchangeCodeSuccess() throws Exception{
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+        ExchangeCouponDto exchangeCouponDto = fakeCouponDto();
+        DateTime dateTime = new DateTime().plusDays(1);
+        exchangeCouponDto.setStartTime(dateTime.toDate());
+        exchangeCouponDto.setEndTime(dateTime.toDate());
+        exchangeCouponDto.setActive(true);
+        couponService.createCoupon("couponTest", exchangeCouponDto);
+        long couponId = exchangeCouponDto.getId();
+        String exchangeCode = couponId + "2sdrfujtheg";
+        redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId, exchangeCode, "0", 200);
+        BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
+        assertThat(baseDataDto.getStatus(), is(true));
+        assertThat(baseDataDto.getMessage(), is("恭喜您兑换成功"));
+        CouponModel couponModel = couponService.findCouponById(couponId);
+        assertThat(couponModel.getIssuedCount(), is(1L));
+        redisWrapperClient.del(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId);
+    }
 
     @Test
     public void shouldGenerateExchangeCode() throws CreateCouponException {

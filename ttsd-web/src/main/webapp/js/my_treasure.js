@@ -21,5 +21,8 @@ require(['jquery', 'coupon-alert'], function($) {
 			event.preventDefault();
 			$ruleList.fadeIn('fast');
 		});
+
+
+
 	});
 });
