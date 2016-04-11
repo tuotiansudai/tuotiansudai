@@ -128,7 +128,7 @@ public class ExchangeCodeServiceTest {
 
         long couponId = exchangeCouponDto.getId();
         String exchangeCode = couponId + "2sdrfujtheg";
-        redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId, exchangeCode, "1", 200);
+        redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId, exchangeCode, "1", 1000000);
         BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
         assertThat(baseDataDto.getStatus(), is(false));
         assertThat(baseDataDto.getMessage(), is("该兑换码已被使用"));
@@ -148,7 +148,7 @@ public class ExchangeCodeServiceTest {
         couponService.createCoupon("couponTest", exchangeCouponDto);
         long couponId = exchangeCouponDto.getId();
         String exchangeCode = couponId + "2sdrfujtheg";
-        redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId, exchangeCode, "0", 200);
+        redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId, exchangeCode, "0", 1000000);
         BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
         assertThat(baseDataDto.getStatus(), is(true));
         assertThat(baseDataDto.getMessage(), is("恭喜您兑换成功"));
