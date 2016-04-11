@@ -97,7 +97,6 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                 })
                 .fail(function() {
                     layer.msg('请求失败');
-                    bRotateTd = !bRotateTd;
                 });
         }
     });
@@ -194,7 +193,6 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                 })
                 .fail(function() {
                     layer.msg('请求失败');
-                    bRotateCd = !bRotateCd;
                 });
         }
     });
@@ -416,6 +414,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
             $('#tipListPhone').show();
             $('#noLoginPhone').show();
         } else {
+            if (bRotateTdPhone) return;
             $.ajax({
                     url: '/activity/draw-tiandou',
                     type: 'POST',
@@ -506,6 +505,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                     dataType: 'json'
                 })
                 .done(function(data) {
+                    if (bRotateCdPhone) return;
                     switch (data) {
                         case 'PointNotEnough':
                             $('#tipListPhone').show();
