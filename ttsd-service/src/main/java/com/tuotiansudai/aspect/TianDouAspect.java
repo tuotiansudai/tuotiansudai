@@ -47,6 +47,7 @@ public class TianDouAspect {
         } else {
             String loginName = investModel.getLoginName();
             if (userRoleService.judgeUserRoleExist(loginName, Role.LOANER)) {
+                logger.info(loginName + " is a loaner, won't add tiandou for him.");
                 return;
             } else {
                 long amount = investModel.getAmount();
