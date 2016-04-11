@@ -11,6 +11,7 @@ public class BannerPictureResponseDataDto extends BaseResponseDataDto {
     private String picture;
     private String noticeId;
     private String content;
+    private boolean isAuthorized;
 
     public String getPictureId() {
         return pictureId;
@@ -74,5 +75,13 @@ public class BannerPictureResponseDataDto extends BaseResponseDataDto {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public boolean getIsAuthorized() {
+        return isAuthorized;
+    }
+
+    public void setIsAuthorized(boolean isAuthorized) {
+        this.isAuthorized = isAuthorized;
     }
 }

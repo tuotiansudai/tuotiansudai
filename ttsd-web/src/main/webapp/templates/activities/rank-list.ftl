@@ -95,18 +95,20 @@
                             <span class="bean-num">天豆数</span>
                             <span class="bean-user">用户</span>
                         </dt>
-                        <#list tianDouTop15 as tianDouRank>
-                            <dd>
-                                <span class="order-num"><i class="font-icon">${tianDouRank?index+1}</i></span>
-                                <span class="bean-num">${tianDouRank.score}</span>
-                                <span class="bean-user">${tianDouRank.loginName[0..2]}******</span>
-                            </dd>
-                        </#list>
+                        <dd id="rankList">
+                        <script type="text/html" id="rankListTpl">
+                        {{each rank}}
+                            <span class="order-num"><i class="font-icon">{{$index+1}}</i></span>
+                            <span class="bean-num">{{$value.loginName}}</span>
+                            <span class="bean-user">{{$value.score}}</span>
+                        {{/each}}
+                        </script>
+                        </dd>
                     </dl>
                 </div>
                 <div class="bean-rank-money">
                     <div class="progress-line">
-                        <h3 class="total-money">累积投资：${totalInvest/100?float} 元</h3>
+                        <h3 class="total-money">累积投资：${totalInvest?float} 元</h3>
                         <dl class="gift-two">
                             <dt>奖池累积中...</br>投资满<span>1.5亿</span>则奖池升级:</dt>
                             <dd>第一名：现金5万</dd>
@@ -149,7 +151,6 @@
                     <a href="#" class="share-icon icon-weibo" data-cmd="tsina"></a>
                     <a href="#" class="share-icon icon-weixin" data-cmd="weixin"></a>
                     <a href="#" class="share-icon icon-zone" data-cmd="qzone"></a>
-                    <!-- <span class="share-text">分享可增加一次财豆抽奖机会！</span> -->
                 </p>
             </div>
         </ul>
@@ -182,28 +183,50 @@
                         </@global.isNotAnonymous>
                     </ul>
                     <div class="record-list" id="recordList">
-                        <ul class="record-model user-record active">
-                            <#list winnerList.MacBook as mackBookWinner>
-                                <li>恭喜 ${mackBookWinner.loginName[0..2]}***** 抽中了 ${mackBookWinner.prize.getName()}</li>
-                            </#list>
-                            <#list winnerList.iPhone as iPhoneWinner>
-                                <li>恭喜 ${iPhoneWinner.loginName[0..2]}***** 抽中了 ${iPhoneWinner.prize.getName()}</li>
-                            </#list>
-                            <#list winnerList.other as otherWinner>
-                                <li>恭喜 ${otherWinner.loginName[0..2]}***** 抽中了 ${otherWinner.prize.getName()}</li>
-                            </#list>
+                        <ul class="record-model user-record active" id="TdGiftRecord">
+                            <script id="TdGiftRecordTpl" type="text/html">
+                            {{each other}}
+                                <li>恭喜 {{$value.loginName}} 抽中了 
+                                {{if $value.prize=='InterestCoupon5'}}
+                                0.5%加息券
+                                {{else if $value.prize=='Cash20'}}
+                                20元现金
+                                {{else if $value.prize=='JingDong300'}}
+                                300元京东购物卡
+                                {{else if $value.prize=='Iphone6s'}}
+                                iPhone 6s Plus
+                                {{else if $value.prize=='MacBook'}}
+                                MacBook Air
+                                {{/if}}
+                                .</li>
+                            {{/each}}
+                            </script>
                         </ul>
-                        <ul class="record-model own-record">
-                            <#if myPrizeList?has_content>
-                                <#list myPrizeList as myPrize>
-                                    <li>
-                                        <span class="award-name">${myPrize.prize.getName()}</span>
-                                        <span class="award-time">${myPrize.time}</span>
-                                    </li>
-                                </#list>
-                            <#else>
-                                <li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>
-                            </#if>
+                        <ul class="record-model own-record" id="TdMyGift">
+                            <script id="TdMyGiftTpl" type="text/html">
+                            {{if tdmygift}}
+                            {{each tdmygift}}
+                            <li>
+                                <span class="award-name">
+                                    {{if $value.prize=='InterestCoupon5'}}
+                                    0.5%加息券
+                                    {{else if $value.prize=='Cash20'}}
+                                    20元现金
+                                    {{else if $value.prize=='JingDong300'}}
+                                    300元京东购物卡
+                                    {{else if $value.prize=='Iphone6s'}}
+                                    iPhone 6s Plus
+                                    {{else if $value.prize=='MacBook'}}
+                                    MacBook Air
+                                    {{/if}}
+                                </span>
+                                <span class="award-time">{{$value.time}}</span>
+                            </li>
+                            {{/each}}
+                            {{else}}
+                            <li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>
+                            {{/if}}
+                            </script>
                         </ul>
                     </div>
                 </div>
@@ -236,23 +259,26 @@
                         </@global.isNotAnonymous>
                     </ul>
                     <div class="record-list scroll-record" id="beanList">
-                        <ul class="record-model user-record  active">
-                            <#list allPointLotteries as allPointLottery>
-                                <li>恭喜 ${allPointLottery.loginName[0..2]}***** 抽中了 ${allPointLottery.pointPrizeName!}</li>
-                            </#list>
+                        <ul class="record-model user-record  active" id="CdGiftRecord">
+                            <script type="text/html" id="CdGiftRecordTpl">
+                            {{each cdgiftrecord}}
+                            <li>恭喜 {{$value.loginName}} 抽中了 {{$value.pointPrizeName}}</li>
+                            {{/each}}
+                            </script>
                         </ul>
-                        <ul class="record-model own-record">
-
-                            <#if myPointLotteries?has_content>
-                                <#list myPointLotteries as myPointLottery>
-                                    <li>
-                                        <span class="award-name">${myPointLottery.pointPrizeName!}</span>
-                                        <span class="award-time">${myPointLottery.createTime?string('yyyy-MM-dd HH:mm')!}</span>
-                                    </li>
-                                </#list>
-                            <#else>
-                                <li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>
-                            </#if>
+                        <ul class="record-model own-record" id="CdMyGift">
+                            <script type="text/html" id="CdMyGiftTpl">
+                            {{if cdmygift}}
+                            {{each cdmygift}}
+                            <li>
+                                <span class="award-name">{{$value.pointPrizeName}}</span>
+                                <span class="award-time">{{$value.createTime}}</span>
+                            </li>
+                            {{/each}}
+                            {{else}}
+                            <li class="empty-text">您暂时还没有奖品，快去抽奖吧！</li>
+                            {{/if}}
+                            </script>
                         </ul>
                     </div>
                 </div>
@@ -443,10 +469,218 @@
     </div>
     <div class="rank-phone-intro">
         <img src="${staticServer}/images/sign/actor/ranklist/actor-intro-app.png" width="100%" class="actor-intro">
-        <img src="${staticServer}/images/sign/actor/ranklist/bean-circle.png" width="100%" class="bean-circle">
-        <img src="${staticServer}/images/sign/actor/ranklist/share-button.png" width="100%" class="share-btn">
-        <img src="${staticServer}/images/sign/actor/ranklist/share-intro.png" width="100%" class="share-intro">
     </div>
+    <div class="login-btn-phone">
+    <@global.isAnonymous>
+        <p>
+            <a href="/register/user">立即注册</a>
+        </p>
+        <p>
+            <a href="/login">直接登录</a>
+        </p>
+    </@global.isAnonymous>
+    <@global.isNotAnonymous>
+        <ul class="user-info-phone">
+            <li>
+                <span class="project-name">我的天豆：<strong class="myphone-td-bean">${myTianDou?c}</strong></span>
+                <span class="btn-gift-phone" id="myTDPhone">去抽奖</span>
+            </li>
+            <li>
+                <span class="project-name">我的财豆：<strong class="myphone-cd-bean">${myPoint?string('0')!}</strong></span>
+                <span class="btn-gift-phone" id="myCDPhone">去抽奖</span>
+            </li>
+            <li>
+                <span class="project-name">我的排名：<#if myRank??>${myRank}<#else>-</#if></span>
+            </li>
+        </ul>
+    </@global.isNotAnonymous>
+    </div>
+    <div class="bean-rank-list">
+        <h3><i class="left-circle"></i><span>天豆排行榜</span><i class="right-circle"></i></h3>
+        <dl class="max-bean-rank">
+            <dt>
+                <span><strong class="rank-num">名次</strong></span>
+                <span><strong class="rank-beans">天豆数</strong></span>
+                <span><strong class="rank-user">用户</strong></span>
+            </dt>
+            <dd id="rankListPhone">
+            <script type="text/html" id="rankListPhoneTpl">
+                {{each rank}}
+                <span>{{$index+1}}</span>
+                <span>{{$value.loginName}}</span>
+                <span>{{$value.score}}</span>
+                {{/each}}
+            </script>
+            </dd>
+        </dl>
+    </div>
+    <div class="change-rank-list">
+        <div class="change-btn-list" id="awardBtnPhone">
+            <i class="left-circle"></i><span><strong class="active">天豆抽奖</strong><strong>财豆抽奖</strong></span><i class="right-circle"></i>
+        </div>
+        <div class="change-gift-com" id="changeGift">
+            <div class="circle-list active">
+                <div class="user-info">
+                    <p>我的天豆：<span class="myphone-td-bean">${myTianDou?c}</span></p>
+                    <p>每次抽奖将消耗1000天豆</p>
+                </div>
+                <div class="gift-circle">
+                    <div class="max-gift">
+                        <div class="pointer-img" id="pointerTdPhone" data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
+                            <img src="${staticServer}/images/sign/actor/ranklist/pointer.png" width="100%" alt="pointer"/>
+                        </div>
+                        <div class="rotate-btn">
+                            <img id="rotateTdPhone" src="${staticServer}/images/sign/actor/ranklist/turntable.png"
+                                 width="100%" alt="turntable"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="gift-record">
+                    <ul class="td-record" id="TdGiftRecordPhone">
+                        <script id="TdGiftRecordPhoneTpl" type="text/html">
+                        {{each other}}
+                            <li>恭喜 {{$value.loginName}} 抽中了 
+                            {{if $value.prize=='InterestCoupon5'}}
+                            0.5%加息券
+                            {{else if $value.prize=='Cash20'}}
+                            20元现金
+                            {{else if $value.prize=='JingDong300'}}
+                            300元京东购物卡
+                            {{else if $value.prize=='Iphone6s'}}
+                            iPhone 6s Plus
+                            {{else if $value.prize=='MacBook'}}
+                            MacBook Air
+                            {{/if}}
+                            .</li>
+                        {{/each}}
+                        </script>
+                    </ul>
+                </div>
+                <@global.isNotAnonymous>
+                <div class="my-record">
+                    <dl id="TdMyGiftPhone"></dl>
+                        <script id="TdMyGiftPhoneTpl" type="text/html">
+                        <dt><span>我的奖品</span><i class="fa fa-angle-up"></i><i class="fa fa-angle-down"></i></dt>
+                        {{if tdmygift.length>0}}
+                        {{each tdmygift}}
+                        <dd>
+                            <span class="gift-name">
+                                {{if $value.prize=='InterestCoupon5'}}
+                                    0.5%加息券
+                                    {{else if $value.prize=='Cash20'}}
+                                    20元现金
+                                    {{else if $value.prize=='JingDong300'}}
+                                    300元京东购物卡
+                                    {{else if $value.prize=='Iphone6s'}}
+                                    iPhone 6s Plus
+                                    {{else if $value.prize=='MacBook'}}
+                                    MacBook Air
+                                {{/if}}
+                            </span>
+                            <span class="gift-time">{{$value.time}}</span>
+                        </dd>
+                        {{/each}}
+                        {{else}}
+                        <dd><span class="gift-name">您暂时还没有奖品，快去抽奖吧！</span></dd>
+                        {{/if}}
+                        </script>
+                    
+                </div>
+                </@global.isNotAnonymous>
+            </div>
+            <div class="circle-list">
+                <div class="user-info">
+                    <p>我的财豆：<span class="myphone-td-bean">${myPoint?string('0')!}</span></p>
+                    <p>每次抽奖将消耗1000财豆</p>
+                </div>
+                <div class="gift-circle">
+                    <div class="max-gift">
+                        <div class="pointer-img" id="pointerCdPhone" data-is-login="<@global.isNotAnonymous>true</@global.isNotAnonymous>">
+                            <img src="${staticServer}/images/sign/actor/ranklist/pointer.png" width="100%" alt="pointer"/>
+                        </div>
+                        <div class="rotate-btn">
+                            <img id="rotateCdPhone" src="${staticServer}/images/sign/actor/ranklist/gift-list-cd.png"
+                                 width="100%" alt="turntable"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="gift-record">
+                    <ul class="td-record" id="CdGiftRecordPhone">
+                        <script type="text/html" id="CdGiftRecordPhoneTpl">
+                            {{each cdgiftrecord}}
+                            <li>恭喜 {{$value.loginName}} 抽中了 {{$value.pointPrizeName}}</li>
+                            {{/each}}
+                        </script>
+                    </ul>
+                </div>
+                <@global.isNotAnonymous>
+                <div class="my-record">
+                    <dl id="CdMyGiftPhone">
+                        <script type="text/html" id="CdMyGiftPhoneTpl">
+                        <dt><span>我的奖品</span><i class="fa fa-angle-up"></i><i class="fa fa-angle-down"></i></dt>
+                        {{if cdmygift.length>0}}
+                        {{each cdmygift}}
+                        <dd><span class="gift-name">{{$value.pointPrizeName}}</span><span class="gift-time">{{$value.createTime}}</span></dd>
+                        {{/each}}
+                        {{else}}
+                        <dd><span class="gift-name">您暂时还没有奖品，快去抽奖吧！</span></dd>
+                        {{/if}}
+                        </script>
+                    </dl>
+                </div>
+                </@global.isNotAnonymous>
+            </div>
+        </div>
+    </div>
+    <div class="rank-phone-intro">
+        <span class="fl" style="padding:0 30px;"><img src="${staticServer}/images/sign/actor/ranklist/share-button.png" width="100%" class="fl share-btn"></span>
+        <img src="${staticServer}/images/sign/actor/ranklist/share-intro-phone.png" width="100%">
+    </div>
+    <#if !isAppSource>
+    <div class="share-list">
+        <p class="bdsharebuttonbox">
+            <span class="share-text">分享至：</span>
+            <a href="#" class="share-icon icon-weibo" data-cmd="tsina"></a>
+            <a href="#" class="share-icon icon-zone" data-cmd="qzone"></a>
+        </p>
+    </div>
+    </#if>
+    <div class="bean-rank-list">
+        <h3><i class="left-circle"></i><span>奖池直播</span><i class="right-circle"></i></h3>
+        <div class="money-online">
+            <div class="progress-line">
+                <h3 class="total-money">累积投资：${totalInvest/100?float} 元</h3>
+                <dl class="gift-two">
+                    <dt>奖池累积中...</br>投资满<span>1.5亿</span>则奖池升级:</dt>
+                    <dd>第一名：现金5万</dd>
+                    <dd>第二名：现金3万</dd>
+                    <dd>第三名：日韩双人游</dd>
+                    <dd>第四名：欧洲游</dd>
+                    <dd>第五名：海岛游</dd>
+                </dl>
+                <dl class="gift-one">
+                    <dt>奖池累积中...</br>投资满<span>8,500万</span>则奖励:</dt>
+                    <dd>第一名：现金5万</dd>
+                    <dd>第二名：现金3万</dd>
+                    <dd>第三名：日韩双人游</dd>
+                </dl>
+                <div class="stage-num first-stage">
+                    <span>8,500万</span><i class="line-single"></i>
+                </div>
+                <div class="stage-num two-stage">
+                    <span>8,500万</span><i class="line-single"></i>
+                </div>
+                <div class="color-line">
+                    <div class="color-pro" data-totalInvest="${totalInvest?c}" id="lineProPhone"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <#if !isAppSource>
+    <div class="rank-phone-intro">
+        <a href="/loan-list"><img src="${staticServer}/images/sign/actor/ranklist/to-loan.png" width="100%" class="share-intro"></a>
+    </div>
+    </#if>
     <dl class="actor-rule">
         <dt>活动规则：</dt>
         <dd>1. 活动期间，用户投资即可获得相应天豆；</dd>
@@ -455,5 +689,160 @@
         <dd>4. 消费天豆可参与“天豆抽奖”活动，7个工作日内客服联系用户发放奖品；</dd>
         <dd>5. 活动截止后7个工作日内公布排行榜颁奖时间。</dd>
     </dl>
+    <div class="actor-write">
+        <p>活动遵循拓天速贷法律声明，</p>
+        <p>最终解释权归拓天速贷平台所有。</p>
+    </div>
+    <div class="tip-list" id="tipListPhone">
+        <div class="tip-dom td-tip-big" id="macbookAirPhone">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p>恭喜你抽中了</p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/macbook-air.png" width="50%"></p>
+                <p>拓天客服将会在7个工作日内联系您发放奖品</p>
+            </div>
+            <div class="btn-list">
+                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
+            </div>
+        </div>
+        <div class="tip-dom td-tip-small" id="iphone6sPhone">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p>恭喜你抽中了</p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/iPhone6sp.png" width="50%"></p>
+                <p>拓天客服将会在7个工作日内联系您发放奖品</p>
+            </div>
+            <div class="btn-list">
+                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
+            </div>
+        </div>
+        <div class="tip-dom td-tip-small" id="jiaxiPhone">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p>恭喜你抽中了</p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/jiaxi-two.png" width="50%"></p>
+                <p>奖金已发放至“我的宝藏”当中</p>
+            </div>
+            <div class="btn-list">
+                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
+            </div>
+        </div>
+        <div class="tip-dom td-tip-small" id="jdCardPhone">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p>恭喜你抽中了</p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/jdcard.png" width="50%"></p>
+                <p>拓天客服将会在7个工作日内联系您发放奖品</p>
+            </div>
+            <div class="btn-list">
+                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
+            </div>
+        </div>
+        <div class="tip-dom td-tip-small" id="twentyRMBPhone">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p>恭喜你抽中了</p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/20rmb.png" width="50%"></p>
+                <p>奖金已发放到您的账户！</p>
+            </div>
+            <div class="btn-list">
+                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
+            </div>
+        </div>
+        <div class="tip-dom td-tip-thank" id="TDnoUsePhone">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p>您的天豆不足，</p>
+                <p>投资赚取更多天豆再来抽奖吧！</p>
+            </div>
+        </div>
+        <div class="tip-dom td-tip-thank" id="noLoginPhone">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p>您还未登录，</p>
+                <p>请登录后再来抽奖吧！</p>
+            </div>
+            <div class="btn-list">
+                <a href="/login?redirect=/activity/rank-list" class="go-on">去登录</a>
+            </div>
+        </div>
+        <div class="tip-dom td-tip-thank" id="NoCdbeanPhone">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p>您的财豆不足，</p>
+                <p>投资赚取更多财豆再来抽奖吧！</p>
+            </div>
+        </div>
+        <div class="tip-dom td-tip-thank" id="oneDayPhone">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p>您今天已经抽过奖啦！</p>
+                <p>点击按钮分享页面还可再抽一次哦！</p>
+            </div>
+            <#if !isAppSource>
+            <div class="btn-list">
+                <a href="javascript:void(0)" class="go-on go-close">去分享</a>
+            </div>
+            </#if>
+        </div>
+        <div class="tip-dom td-tip-thank" id="onlyTwicePhone">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p>您今天的抽奖次数已经用完啦，</p>
+                <p>明天再来抽奖吧！</p>
+            </div>
+        </div>
+        <div class="tip-dom td-tip-small" id="cdFivePhone">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p>恭喜你抽中了</p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/5rmb.png" width="50%"></p>
+                <p>奖金已发放到您的账户！</p>
+            </div>
+            <div class="btn-list">
+                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
+            </div>
+        </div>
+        <div class="tip-dom td-tip-small" id="cdTwoPhone">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p>恭喜你抽中了</p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/2rmb.png" width="50%"></p>
+                <p>奖金已发放到您的账户！</p>
+            </div>
+            <div class="btn-list">
+                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
+            </div>
+        </div>
+        <div class="tip-dom td-tip-thank" id="thankYouPhone">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p>谢谢参与</p>
+                <p>很遗憾没有中奖,再接再励！</p>
+            </div>
+        </div>
+        <div class="tip-dom td-tip-small" id="percentCouponPhone">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p>恭喜你抽中了</p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/jiaxi-one.png" width="50%"></p>
+                <p>奖金已发放至“我的宝藏”当中</p>
+            </div>
+            <div class="btn-list">
+                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
+            </div>
+        </div>
+        <div class="tip-dom td-tip-small" id="freeMoneyPhone">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p>恭喜你抽中了</p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/coupon.png" width="50%"></p>
+                <p>奖金已发放至“我的宝藏”当中</p>
+            </div>
+            <div class="btn-list">
+                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
+            </div>
+        </div>
+    </div>
 </div>
 </@global.main>
