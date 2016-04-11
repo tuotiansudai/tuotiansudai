@@ -42,8 +42,8 @@ public class BufferedRequestWrapper extends HttpServletRequestWrapper {
         }
     }
 
-    public String inputStream2String(ServletInputStream inputStream) throws IOException {
-        InputStreamReader input = new InputStreamReader(inputStream,"UTF-8");
+    public String getInputStreamString() throws IOException {
+        InputStreamReader input = new InputStreamReader(this.getInputStream(),"UTF-8");
         BufferedReader bf = new BufferedReader(input);
         String line = null;
         StringBuffer sb = new StringBuffer();

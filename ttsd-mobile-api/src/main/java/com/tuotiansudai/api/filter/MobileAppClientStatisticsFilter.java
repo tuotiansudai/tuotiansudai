@@ -59,7 +59,7 @@ public class MobileAppClientStatisticsFilter implements Filter {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String requestJson = "";
         try {
-            requestJson = ((BufferedRequestWrapper)request).inputStream2String(request.getInputStream());
+            requestJson = ((BufferedRequestWrapper)request).getInputStreamString();
             BaseParamDto dto = objectMapper.readValue(requestJson, BaseParamDto.class);
             return dto.getBaseParam();
         } catch (IOException e) {
