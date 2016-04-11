@@ -364,7 +364,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
     public long getTotalInvestAmountInActivityPeriod() {
         Date startTime = new DateTime(2016, 4, 1, 0, 0, 0).toDate(); // from 2016-04-01 00:00:00
         Date endTime = new DateTime(2016, 8, 1, 0, 0, 0).toDate(); // to 2016-08-01 00:00:00
-        return investMapper.sumInvestAmount(null, null, null, null, null, startTime, endTime, InvestStatus.SUCCESS, null);
+        return investMapper.sumInvestAmountRanking(startTime, endTime);
     }
 
 }
