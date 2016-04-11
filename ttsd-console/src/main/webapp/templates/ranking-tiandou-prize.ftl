@@ -31,6 +31,16 @@
             <td>${jingDongWinnerCount!0}</td>
             <td><a href="/activity-manage/prize-winner?prize=JingDong300">查看详情</a></td>
         </tr>
+        <tr>
+            <td>20元现金</td>
+            <td>${cashWinnerCount!0}</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>0.5%加息券</td>
+            <td>${couponWinnerCount!0}</td>
+            <td>-</td>
+        </tr>
         </tbody>
     </table>
 </div>
