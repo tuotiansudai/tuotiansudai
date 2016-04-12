@@ -122,17 +122,19 @@ public class NormalRepayServiceImpl implements RepayService {
             return false;
         }
         long balance = accountModel.getBalance();
-        LoanRepayModel enabledLoanRepay = getEnabledLoanRepay(loanModel);
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
+        LoanRepayModel enabledLoanRepay = getEnabledLoanRepay(loanModel, loanRepayModels);
         if (balance < enabledLoanRepay.getCorpus() + enabledLoanRepay.getActualInterest() + enabledLoanRepay.getDefaultInterest()) {
             logger.info("can not auto repay, because agent balance is not enough , loanId : " + loanId);
             return false;
         }
+        long defaultInterest = this.calculateLoanRepayDefaultInterest(loanRepayModels);
         loanRepayMapper.update(enabledLoanRepay);
         ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newRepayNopwdRequest(
                 String.valueOf(loanId),
                 MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(enabledLoanRepay.getId()), String.valueOf(new DateTime(enabledLoanRepay.getActualRepayDate()).getMillis())),
                 accountModel.getPayUserId(),
-                String.valueOf(enabledLoanRepay.getCorpus() + enabledLoanRepay.getActualInterest() + enabledLoanRepay.getDefaultInterest())
+                String.valueOf(enabledLoanRepay.getCorpus() + enabledLoanRepay.getActualInterest() + defaultInterest)
         );
         ProjectTransferNopwdResponseModel responseModel;
         try {
@@ -156,19 +158,20 @@ public class NormalRepayServiceImpl implements RepayService {
         baseDto.setData(payFormDataDto);
 
         LoanModel loanModel = loanMapper.findById(loanId);
-        LoanRepayModel enabledLoanRepay = getEnabledLoanRepay(loanModel);
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
+        LoanRepayModel enabledLoanRepay = getEnabledLoanRepay(loanModel, loanRepayModels);
 
         if (enabledLoanRepay == null) {
             logger.error(MessageFormat.format("[Normal Repay] There is no enabled loan repay (loanId = {0})", String.valueOf(loanId)));
             return baseDto;
         }
 
+        long defaultInterest = this.calculateLoanRepayDefaultInterest(loanRepayModels);
         loanRepayMapper.update(enabledLoanRepay);
-
         ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newRepayRequest(String.valueOf(loanId),
                 MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(enabledLoanRepay.getId()), String.valueOf(new DateTime(enabledLoanRepay.getActualRepayDate()).getMillis())),
                 accountMapper.findByLoginName(loanModel.getAgentLoginName()).getPayUserId(),
-                String.valueOf(enabledLoanRepay.getCorpus() + enabledLoanRepay.getActualInterest() + enabledLoanRepay.getDefaultInterest()));
+                String.valueOf(enabledLoanRepay.getCorpus() + enabledLoanRepay.getActualInterest() + defaultInterest));
         try {
             baseDto = payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
         } catch (PayException e) {
@@ -178,15 +181,12 @@ public class NormalRepayServiceImpl implements RepayService {
         return baseDto;
     }
 
-    private LoanRepayModel getEnabledLoanRepay(LoanModel loanModel) {
+    private LoanRepayModel getEnabledLoanRepay(LoanModel loanModel, List<LoanRepayModel> loanRepayModels) {
         LoanRepayModel enabledLoanRepay = loanRepayMapper.findEnabledLoanRepayByLoanId(loanModel.getId());
         List<InvestModel> successInvestModels = investMapper.findSuccessInvestsByLoanId(loanModel.getId());
-        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
-
         DateTime actualRepayDate = new DateTime();
         DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, actualRepayDate);
         long actualInterest = InterestCalculator.calculateLoanRepayInterest(loanModel, successInvestModels, lastRepayDate, actualRepayDate);
-
         enabledLoanRepay.setStatus(RepayStatus.WAIT_PAY);
         enabledLoanRepay.setActualInterest(actualInterest);
         enabledLoanRepay.setActualRepayDate(actualRepayDate.toDate());
