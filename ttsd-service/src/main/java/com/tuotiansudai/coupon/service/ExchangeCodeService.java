@@ -8,4 +8,6 @@ public interface ExchangeCodeService {
 
     BaseDataDto exchange(String loginName, String exchangeCode);
 
+    String toBase31Prefix(long couponId);
+
 }
