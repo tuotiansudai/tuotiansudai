@@ -201,7 +201,6 @@ public class ExchangeCodeServiceTest {
         List<ProductType> productTypes = Lists.newArrayList();
         productTypes.add(ProductType.JYF);
         exchangeCouponDto.setProductTypes(productTypes);
-        exchangeCouponDto.setInvestLowerLimit("1000.00");
         return exchangeCouponDto;
     }
 
