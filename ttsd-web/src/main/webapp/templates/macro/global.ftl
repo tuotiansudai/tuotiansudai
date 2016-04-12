@@ -21,9 +21,9 @@
 
 <#macro main pageCss pageJavascript activeNav="" activeLeftNav="" title="拓天速贷" keywords="" description="">
     <#local menus=[
-    {"title":"首页", "url":"/"},
-    {"title":"我要投资", "url":"/loan-list"},
-    {"title":"我的账户", "url":"/account", "leftNavs":[
+    {"title":"首页", "url":"/","category":"16顶部导航"},
+    {"title":"我要投资", "url":"/loan-list","category":"17顶部导航"},
+    {"title":"我的账户", "url":"/account", "category":"18顶部导航","leftNavs":[
     {"title":"账户总览", "url":"/account", "role":"'INVESTOR', 'LOANER'"},
     {"title":"我的投资", "url":"/investor/invest-list", "role":"'INVESTOR'"},
     {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
@@ -34,8 +34,8 @@
     {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'INVESTOR', 'LOANER'"},
     {"title":"我的宝藏", "url":"/my-treasure", "role":"'INVESTOR', 'LOANER'"}
     ]},
-    {"title":"新手指引", "url":"/about/guide"},
-    {"title":"关于我们", "url":"/about/company", "leftNavs":[
+    {"title":"新手指引", "url":"/about/guide","category":"19顶部导航"},
+    {"title":"关于我们", "url":"/about/company","category":"20顶部导航", "leftNavs":[
     {"title":"公司介绍", "url":"/about/company"},
     {"title":"团队介绍", "url":"/about/team"},
     {"title":"拓天公告", "url":"/about/notice"},
@@ -189,13 +189,18 @@
 
     phoneLoadFun();
 
+
+
 </script>
+
 <script src="${staticServer}${jsPath}${js.config}" type="text/javascript" charset="utf-8"></script>
 <#if pageJavascript??>
 <script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
         data-main="${staticServer}${jsPath}${pageJavascript}">
 
 </script>
+<script src="${staticServer}${jsPath}${js.cnzz_statistics}" type="text/javascript" charset="utf-8"></script>
+
 </#if>
 
 <#include "../statistic.ftl" />
