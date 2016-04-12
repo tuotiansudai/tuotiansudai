@@ -88,5 +88,20 @@ public class ExchangeCodeServiceTest {
         return exchangeCouponDto;
     }
 
+    @Test
+    public void shouldGet31BasePrefix() {
+
+        assert (exchangeCodeService.toBase31Prefix(124123).equals("EFE9")); // EFE9
+        assert (exchangeCodeService.toBase31Prefix(0).equals("AAAA")); // AAAA
+        assert (exchangeCodeService.toBase31Prefix(31).equals("AABA")); // AABA
+        assert (exchangeCodeService.toBase31Prefix(29791).equals("BAAA")); // BAAA
+        assert (exchangeCodeService.toBase31Prefix(923520).equals("9999")); // 9999
+        assert (exchangeCodeService.toBase31Prefix(100013).equals("DMCH")); // DMCH
+        assert (exchangeCodeService.toBase31Prefix(100014).equals("DMCJ")); // DMCJ
+        assert (exchangeCodeService.toBase31Prefix(100015).equals("DMCK")); // DMCK
+        assert (exchangeCodeService.toBase31Prefix(100016).equals("DMCL")); // DMCL
+        assert (exchangeCodeService.toBase31Prefix(100017).equals("DMCM")); // DMCM
+        assert (exchangeCodeService.toBase31Prefix(100018).equals("DMCN")); // DMCN
+    }
 
 }

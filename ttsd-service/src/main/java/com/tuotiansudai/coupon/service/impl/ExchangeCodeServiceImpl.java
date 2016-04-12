@@ -22,12 +22,21 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
     @Autowired
     private CouponMapper couponMapper;
 
-    public static String EXCHANGE_CODE_KEY = "console:exchangeCode:";
+    public final static String EXCHANGE_CODE_KEY = "console:exchangeCode:";
 
-    private static int ONE_MONTH_SECOND = 60 * 60 * 24 * 30;
+    private final static int ONE_MONTH_SECOND = 60 * 60 * 24 * 30;
 
-    // exclude I,O,R,0,2  26+10-5=31 31^11= 2,5000,0000,0000,0000 两点五亿亿
-    private static char[] chars = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '3', '4', '5', '6', '7', '8', '9'};
+    private final static int RANDOM_SIZE = 10;
+
+    // exclude I,O,R,0,2  26+10-5=31 31^10= 819,6282,8698,0801 819万亿
+    private final static char[] chars = {
+            'A', 'B', 'C', 'D', 'E', 'F',
+            'G', 'H', 'J', 'K', 'L', 'M',
+            'N', 'P', 'Q', 'S', 'T', 'U',
+            'V', 'W', 'X', 'Y', 'Z', '1',
+            '3', '4', '5', '6', '7', '8',
+            '9'
+    };
 
     public boolean generateExchangeCode(long couponId, int count) {
 
@@ -49,13 +58,13 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
     private void genExchangeCode(long couponId, int count, int lifeSeconds) {
         logger.debug("generate exchange code, couponId:" + couponId + ", count:" + count + ", lifeSeconds:" + lifeSeconds);
 
-        String prefix = genCouponIdPrefix(couponId);
+        String prefix = toBase31Prefix(couponId);
         String randomCode;
 
         for (int i = 0; i < count; i++) {
-            randomCode = genRandomCode(11);
+            randomCode = genRandomCode(RANDOM_SIZE);
             while (redisWrapperClient.hexists(EXCHANGE_CODE_KEY + couponId, prefix + randomCode)) {
-                randomCode = genRandomCode(11);
+                randomCode = genRandomCode(RANDOM_SIZE);
             }
             redisWrapperClient.hset(EXCHANGE_CODE_KEY + couponId, prefix + randomCode, "0", lifeSeconds);
             logger.debug("generate exchange code, couponId:" + couponId + ", code:" + prefix + randomCode + ", lifeSeconds:" + lifeSeconds);
@@ -79,20 +88,21 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
     }
 
     /**
-     * use the digits on the lowest 3 positions of couponId as the couponId prefix.
-     * fill with "0" if the length is less than 3.
+     * parse a long positive value to a string representation in base 31
+     * 4 bits length, max value: 31*31*31*31-1=923520
      *
      * @param couponId
      * @return
      */
-    private String genCouponIdPrefix(long couponId) {
-        long couponId3 = couponId % 1000;
-        String prefixCouponId = String.valueOf(couponId3);
-        if (couponId3 < 10) {
-            prefixCouponId = "00" + prefixCouponId;
-        } else if (couponId3 < 100) {
-            prefixCouponId = "0" + prefixCouponId;
+    public String toBase31Prefix(long couponId) {
+        char[] cs = {chars[0], chars[0], chars[0], chars[0]};
+        int pos = 4;
+        while (pos > 0 && couponId > 0) {
+            int mod = (int) couponId % 31;
+            cs[--pos] = chars[mod];
+            couponId /= 31;
         }
-        return prefixCouponId;
+        return new String(cs);
     }
+
 }
