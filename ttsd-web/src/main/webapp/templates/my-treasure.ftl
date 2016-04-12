@@ -52,120 +52,26 @@
     <#-- 未使用的优惠券 -->
         <div class="coupon-com active">
             <ul class="coupon-list">
-            <li class="yellow-type-get">
-                <div class="top-com">
-                    <div class="left-name">
-                        <span>加息券</span>
-                        <em></em>
-                        <i class="circle-top"></i>
-                        <i class="circle-bottom"></i>
-                    </div>
-                    <div class="right-coupon">
-                        <p class="mt-10">
-                            <span class="num-text">+0.2%</span>
-                            <span class="unit-text">年化收益</span>
-                        </p>
-                        <p>投资即可使用］</p>
-                        <p>产品限制：
-                        <i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i>
-                        <i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>
-                            产品线可用
-                        </p>
-                    </div>
-                </div>
-                <div class="bottom-time">
-                    <span>请在 2016-7-31 前使用</span>
-                    <a href="/loan-list">立即使用</a>
-                </div>
-            </li>
-            <li class="new-type-get">
-                <div class="top-com">
-                    <div class="left-name">
-                        <span>加息券</span>
-                        <em></em>
-                        <i class="circle-top"></i>
-                        <i class="circle-bottom"></i>
-                    </div>
-                    <div class="right-coupon">
-                        <p class="mt-10">
-                            <span class="num-text">+0.2%</span>
-                            <span class="unit-text">年化收益</span>
-                        </p>
-                        <p>投资即可使用］</p>
-                        <p>产品限制：
-                        <i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i>
-                        <i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>
-                            产品线可用
-                        </p>
-                    </div>
-                </div>
-                <div class="bottom-time">
-                    <span>请在 2016-7-31 前使用</span>
-                    <a href="/loan-list">立即使用</a>
-                </div>
-            </li>
-            <li class="bite-type-get">
-                <div class="top-com">
-                    <div class="left-name">
-                        <span>加息券</span>
-                        <em></em>
-                        <i class="circle-top"></i>
-                        <i class="circle-bottom"></i>
-                    </div>
-                    <div class="right-coupon">
-                        <p class="mt-10">
-                            <span class="num-text">+0.2%</span>
-                            <span class="unit-text">年化收益</span>
-                        </p>
-                        <p>投资即可使用］</p>
-                        <p>产品限制：
-                        <i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i>
-                        <i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>
-                            产品线可用
-                        </p>
-                    </div>
-                </div>
-                <div class="bottom-time">
-                    <span>请在 2016-7-31 前使用</span>
-                    <a href="/loan-list">立即使用</a>
-                </div>
-            </li>
-            <li class="default-type-get">
-                <div class="top-com">
-                    <div class="left-name">
-                        <span>加息券</span>
-                        <em></em>
-                        <i class="circle-top"></i>
-                        <i class="circle-bottom"></i>
-                    </div>
-                    <div class="right-coupon">
-                        <p class="mt-10">
-                            <span class="num-text">+0.2%</span>
-                            <span class="unit-text">年化收益</span>
-                        </p>
-                        <p>投资即可使用］</p>
-                        <p>产品限制：
-                        <i class="pro-icon">稳<em class="bg-com"></em><em class="circle-com"></em></i>
-                        <i class="pro-icon">久<em class="bg-com"></em><em class="circle-com"></em></i>
-                            产品线可用
-                        </p>
-                    </div>
-                </div>
-                <div class="bottom-time">
-                    <span>请在 2016-7-31 前使用</span>
-                    <a href="/loan-list">立即使用</a>
-                </div>
-            </li>
                 <#list unusedCoupons as coupon>
                     <#assign unusedCouponClass = ''>
                     <#if coupon.couponType == 'RED_ENVELOPE'>
-                        <#assign unusedCouponClass = 'yellow-type'>
-                    <#elseif coupon.couponType == 'NEWBIE_COUPON'>
-                        <#assign unusedCouponClass = 'new-type'>
-                    <#elseif coupon.couponType == 'INVEST_COUPON'>
-                        <#assign unusedCouponClass = 'new-type'>
+                        <#if coupon.userGroup == 'EXCHANGER_CODE'>
+                            <#assign unusedCouponClass = 'yellow-type-get'>
+                        <#else>
+                            <#assign unusedCouponClass = 'yellow-type'>
+                        </#if>
+                    <#elseif coupon.couponType == 'NEWBIE_COUPON' || coupon.couponType == 'INVEST_COUPON'>
+                        <#if coupon.userGroup == 'EXCHANGER_CODE'>
+                            <#assign unusedCouponClass = 'new-type-get'>
+                        <#else>
+                            <#assign unusedCouponClass = 'new-type'>
+                        </#if>
                     <#elseif coupon.couponType == 'INTEREST_COUPON'>
-                        <#assign unusedCouponClass = 'bite-type'>
+                        <#if coupon.userGroup == 'EXCHANGER_CODE'>
+                            <#assign unusedCouponClass = 'bite-type-get'>
+                        <#else>
+                            <#assign unusedCouponClass = 'bite-type'>
+                        </#if>
                     </#if>
                     <li class="${unusedCouponClass}">
                         <div class="top-com">
@@ -237,13 +143,23 @@
                 <#list useRecords as record>
                     <#assign usedCouponClass = ''>
                     <#if record.couponType == 'RED_ENVELOPE'>
-                        <#assign usedCouponClass = 'yellow-type'>
-                    <#elseif record.couponType == 'NEWBIE_COUPON'>
-                        <#assign usedCouponClass = 'new-type'>
-                    <#elseif record.couponType == 'INVEST_COUPON'>
-                        <#assign usedCouponClass = 'new-type'>
+                        <#if record.userGroup == 'EXCHANGER_CODE'>
+                            <#assign usedCouponClass = 'yellow-type-get'>
+                        <#else>
+                            <#assign usedCouponClass = 'yellow-type'>
+                        </#if>
+                    <#elseif record.couponType == 'NEWBIE_COUPON' || record.couponType == 'INVEST_COUPON'>
+                        <#if record.userGroup == 'EXCHANGER_CODE'>
+                            <#assign usedCouponClass = 'new-type-get'>
+                        <#else>
+                            <#assign usedCouponClass = 'new-type'>
+                        </#if>
                     <#elseif record.couponType == 'INTEREST_COUPON'>
-                        <#assign usedCouponClass = 'bite-type'>
+                        <#if record.userGroup == 'EXCHANGER_CODE'>
+                            <#assign usedCouponClass = 'bite-type-get'>
+                        <#else>
+                            <#assign usedCouponClass = 'bite-type'>
+                        </#if>
                     </#if>
                     <li class="${usedCouponClass}">
                         <div class="top-com">
@@ -319,7 +235,7 @@
         <div class="coupon-com">
             <ul class="coupon-list">
                 <#list expiredCoupons as coupon>
-                    <li>
+                    <li <#if coupon.userGroup == 'EXCHANGER_CODE'>class="default-type-get"</#if> >
                         <div class="top-com">
                             <div class="left-name">
                                 <span>${coupon.couponType.getName()}</span>
