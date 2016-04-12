@@ -13,7 +13,7 @@
         <b class="text-m">实时关注</b>
 
         <ul class="real-attention clearfix">
-            <!--<li><img src="${staticServer}/images/sign/micro-code.png" class="responsive-width" alt="" title=""/><span>微信二维码</span></li>-->
+            <li><img src="${staticServer}/images/sign/micro-code.png" class="responsive-width" alt="" title=""/><span>微信二维码</span></li>
             <li><img src="${staticServer}/images/sign/blog-code.png" class="responsive-width" alt="" title=""/><span>微博二维码</span></li>
         </ul>
 
