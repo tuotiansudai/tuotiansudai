@@ -40,10 +40,17 @@
             <li><a href="https://www.zuiyidai.com/" target="_blank">最易贷</a></li>
             <li><a href="http://www.51wangdai.com/" target="_blank">51网贷</a></li>
             <li><a href="http://www.liyedai.cn/" target="_blank">立业贷</a></li>
-            <li><a href="http://www.8ncb.com" target="_blank">农村宝理财</a></li>
             <li><a href="http://www.wdzj.com/" target="_blank">网贷之家</a></li>
             <li><a href="http://www.p2peye.com" target="_blank">网贷天眼</a></li>
             <li><a href="http://www.1yqlg.cc/" target="_blank">1元夺宝</a></li>
+            <li><a href="http://www.wangdaiguancha.com" target="_blank">网贷观察网</a></li>
+            <li><a href="http://www.erongtu.com" target="_blank">融途网</a></li>
+            <li><a href="http://www.p2pjd.com" target="_blank">网贷经典网</a></li>
+            <li><a href="http://www.wangdaijiamen.com" target="_blank">网贷家门</a></li>
+            <li><a href="http://www.p2p265.com" target="_blank">网贷世界</a></li>
+            <li><a href="http://www.wangdaitan.com" target="_blank">网贷谈</a></li>
+            <li><a href="http://www.wddoor88.com" target="_blank">网贷铺子</a></li>
+            <li><a href="http://www.wangdaile.com" target="_blank">网贷乐</a></li>
         </ul>
     </div>
     <div class="copyright page-width">
