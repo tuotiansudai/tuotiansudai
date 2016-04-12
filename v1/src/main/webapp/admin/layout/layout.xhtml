@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+
+	<h:head>
+        <ui:insert name="meta">
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+			<title> Archer - Content Management </title>
+        </ui:insert>
+        <ui:insert name="head">
+        	<script type="text/javascript" charset="utf-8">
+        		window.CONTEXT_PATH = "#{request.contextPath}";
+        	</script>
+        	<script type="text/javascript" charset="utf-8"
+				src="#{appInfo.contextPath}/include/js/ueditor-1.2.3/editor_config.js"></script>
+			<script type="text/javascript" charset="utf-8"
+				src="#{appInfo.contextPath}/include/js/ueditor-1.2.3/editor_all.js"></script>
+			<link rel="stylesheet" type="text/css"
+				href="#{appInfo.contextPath}/include/js/ueditor-1.2.3/themes/default/ueditor.css" />
+            <link href="#{appInfo.contextPath}/include/css/admin.css" type="text/css" rel="stylesheet"/>
+            <link href="#{appInfo.contextPath}/include/css/style.css" type="text/css" rel="stylesheet"/>
+            <script src="#{appInfo.contextPath}/include/js/locales_zh_CN.js"></script>
+            <script src="#{appInfo.contextPath}/include/js/men.js"></script>
+        </ui:insert>
+       <ui:insert name="afterHead"></ui:insert>
+       
+	</h:head>
+
+	<h:body>
+	   <p:growl autoUpdate="true" showSummary="false" showDetail="true" ></p:growl>
+		<p:ajaxStatus
+			style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">
+			<f:facet name="start">
+				<p:graphicImage value="/include/images/loading.gif" />
+			</f:facet>
+			<f:facet name="complete">
+				<h:outputText value="" />
+			</f:facet>
+		</p:ajaxStatus>
+
+		<div id="Box">
+        <ui:insert name="top">
+            <ui:include src="/admin/layout/top.xhtml"></ui:include>
+        </ui:insert>
+        
+        <ui:insert name="header">
+            <ui:include src="/admin/layout/header.xhtml"></ui:include>
+        </ui:insert>
+        
+         <div id="Middle">
+        <div class="Content">
+        <em class="a5"><img src="#{appInfo.contextPath}/include/images/admin/a15.jpg"/></em> <em class="a6"><img src="#{appInfo.contextPath}/include/images/admin/a16.jpg"/></em><em class="a7"><img src="#{appInfo.contextPath}/include/images/admin/a17.jpg"/></em> <em class="a8"><img src="#{appInfo.contextPath}/include/images/admin/a18.jpg"/></em>
+        <div class="Detail">
+          <ui:insert name="main"></ui:insert>
+          <div class="clear"></div>
+        </div>
+     </div>
+        </div>
+        
+        <ui:insert name="footer">
+            <ui:include src="/admin/layout/footer.xhtml"></ui:include>
+        </ui:insert>
+        </div>
+      
+	</h:body>
+</html>

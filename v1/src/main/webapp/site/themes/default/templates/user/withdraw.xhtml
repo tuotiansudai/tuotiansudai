@@ -1,0 +1,214 @@
+<ui:composition template="center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="activeCenterMenuUrl" value="/user/withdraw"></ui:param>
+	<ui:param name="pnrpayEnable" value="#{configHome.getConfigValue('pnrpay_enable') eq '1'}"></ui:param>
+	<ui:define name="center_right">
+	<f:event type="preRenderComponent" listener="#{userHome.setId(loginUserInfo.loginUserId)}"></f:event>
+		<SCRIPT>
+		//<![CDATA[
+		           function pnr_no_selected_card (){
+					if($(".zhtx_ul li").length>0){
+						$.dialog.tips("未选择银行卡。");
+					}else{
+						var a = $("<a>",{
+							"href":"javascript:void(0)",
+							"html":"没有银行卡，去添加",
+							"onclick":"$('#pnr\\\\:pnr-addbc').click()"
+						});
+						$.dialog.tips(a[0].outerHTML,1000);
+					}
+				}
+		//]]>           
+		</SCRIPT>
+
+		<!-- 	银行卡绑定校验 -->
+		<sec:bankCardValidator userId="#{loginUserInfo.loginUserId}">
+			<script>
+				$.dialog
+						.alert(
+						'为了您能正常提现，请先绑定提现银行卡!',
+						function() {
+							window.location.href = "#{path}/user/bankCardList";
+						});
+			</script>
+		</sec:bankCardValidator>
+
+		<!-- 	未实名认证 -->
+		<sec:ifNotGranted roles="INVESTOR,LOANER">
+			<script>
+				$.dialog
+						.alert(
+								'为了您的账户资金安全，请先进行实名认证!',
+								function() {
+									window.location.href = "#{path}/user/get_investor_permission";
+								});
+			</script>
+		</sec:ifNotGranted>
+		<!-- 	已实名认证 -->
+		<sec:ifAnyGranted roles="INVESTOR,LOANER">
+			<div class="center_right">
+				<h:form id="form">
+					<div class="zhcz_h3">提现</div>
+					<ui:fragment rendered="#{bankCardHome.isBoundBankCard(loginUserInfo.loginUserId) eq true}">
+					<ui:param name="bc" value="#{bankCardList.getBoundBankCardsByUserId(loginUserInfo.loginUserId).get(0)}"></ui:param>
+					<f:event type="preRenderComponent" listener="#{withdrawHome.instance.setBankCard(bc)}"></f:event>
+					<div class="zhtx">
+						<ul class="zhtx_ul">
+							<h:panelGroup id="bankCards">
+								<li class="zhtx_li">
+									<img src="#{tplVars.themeImagePath}/umpaybanklogo/#{bc.bankNo}.png" />
+									<ui:param name="bcnL" value="#{bc.cardNo.length()}"></ui:param>
+									<p>#{bc.cardNo.substring(0,4)} **** **** #{bc.cardNo.substring(bcnL-4,bcnL)}</p>
+									<em></em>
+								</li>
+							</h:panelGroup>
+						</ul>
+						<div class="clear"></div>
+					</div>
+					</ui:fragment>
+					<div class="txczje">
+						<div class="txczje02">
+							<div class="txczje_l">可用资金：</div>
+							<div class="txczje_r">
+								<span><h:outputLabel
+										value="#{userBillHome.getBalanceByUserId(loginUserInfo.loginUserId)}">
+										<f:convertNumber />
+									</h:outputLabel></span>元
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="txczje02">
+							<div class="txczje_l">
+								<span>*</span>提现金额：
+							</div>
+							<div class="txczje_r">
+								<h:inputText label="提现金额" styleClass="txt02" required="true"
+									id="money" value="#{withdrawHome.instance.money}">
+									<archer:validateNumber precision="2"></archer:validateNumber>
+									<f:validateDoubleRange minimum="1" ></f:validateDoubleRange>
+									<f:ajax event="blur" render="fee actualMoney" execute="money"
+										listener="#{withdrawHome.calculateFee}"></f:ajax>
+								</h:inputText>
+								元
+							</div>
+							<div class="clear"></div>
+						</div>
+						<!-- 若是汇付天下，则根据配置选择取现方式   先用 审核信息 字段放着，后面清空-->
+						<ui:fragment rendered="#{pnrpayEnable}">
+							<f:event type="preRenderComponent" listener="#{withdrawHome.instance.setVerifyMessage('GENERAL')}"></f:event>
+						</ui:fragment>
+						<!-- 现在汇付对于快速取现和及时取现有节假日的问题，暂时隐藏，勿删 
+						<ui:fragment rendered="#{pnrpayEnable}">
+							<div class="txczje_l">
+								<span>*</span>提现方式：
+							</div>
+							<div class="txczje_r">
+							<ui:param name="withdrawType" value="#{configHome.getConfigValue('pnrpay_withdraw_way')}"></ui:param>
+								<h:selectOneRadio value="#{withdrawHome.instance.verifyMessage}" required="true" label="取现方式" rendered="#{withdrawType eq '1'}" requiredMessage="请选择取现方式">
+									<f:selectItem itemLabel="一般取现" itemValue="GENERAL" />
+									<f:ajax event="change" execute="@this" listener="#{withdrawHome.calculateFee}" render="fee"></f:ajax>
+								</h:selectOneRadio>
+								<h:selectOneRadio value="#{withdrawHome.instance.verifyMessage}" required="true" label="取现方式" rendered="#{withdrawType eq '2'}" requiredMessage="请选择取现方式">
+									<f:selectItem itemLabel="一般取现" itemValue="GENERAL" />
+									<f:selectItem itemLabel="快速取现" itemValue="FAST"/>
+									<f:ajax event="change" execute="@this" listener="#{withdrawHome.calculateFee}" render="fee"></f:ajax>
+								</h:selectOneRadio>
+								<h:selectOneRadio value="#{withdrawHome.instance.verifyMessage}" required="true" label="取现方式" rendered="#{withdrawType eq '3'}" requiredMessage="请选择取现方式">
+									<f:selectItem itemLabel="一般取现" itemValue="GENERAL" />
+									<f:selectItem itemLabel="快速取现" itemValue="FAST"/>
+									<f:selectItem itemLabel="即时取现" itemValue="IMMEDIATE"/>
+									<f:ajax event="change" execute="@this" listener="#{withdrawHome.calculateFee}" render="fee"></f:ajax>
+								</h:selectOneRadio>
+							</div>
+						</ui:fragment>
+						-->
+						<div class="txczje02">
+							<div class="txczje_l">提现费用：</div>
+							<div class="txczje_r">
+								<span><h:outputLabel id="fee"
+										value="2.00">
+										<f:convertNumber minFractionDigits="2" />
+									</h:outputLabel></span>元<a href="javascript:void(0)" title="该费用由资金托管方联动优势收取"><img src="#{tplVars.themeImagePath}/img42.png" /></a>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="txczje02">
+							<div class="txczje_l">实际到账金额：</div>
+							<div class="txczje_r">
+								<span><h:outputLabel id="actualMoney"
+										value="#{withdrawHome.instance.money}">
+										<f:convertNumber minFractionDigits="2" />
+									</h:outputLabel></span>元
+							</div>
+							<div class="clear"></div>
+						</div>
+						<ui:fragment rendered="#{configHome.getConfigValue('enable_cash_password') eq '1' and not empty userHome.instance.cashPassword}">
+							<div class="txczje02">
+								<div class="txczje_l">
+									<span>*</span>交易密码：
+								</div>
+								<div class="txczje_r">
+								<h:inputSecret id="pass" label="交易密码" required="true"
+										styleClass="txt02" maxlength="16"
+										value="#{withdrawHome.cashPassword}">
+										<f:ajax event="blur"></f:ajax>
+									</h:inputSecret>
+									<a class="blue" href="#{path}/user/findCashPwd">忘记密码</a>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</ui:fragment>
+						<ui:fragment rendered="#{configHome.getConfigValue('enable_cash_password') eq '1' and empty userHome.instance.cashPassword}">
+							<div class="set-cash-pw">
+								您还未设置交易密码，为了您的账户安全，建议您<a href="#{path}/user/changeCashPassword">去设置</a>。
+							</div>
+						</ui:fragment>
+						<div class="txczje02">
+							<div class="txczje_l"></div>
+							<div class="txczje_r">
+								<h:panelGroup id="withdrawBtn">
+									<h:commandLink action="#{withdrawHome.withdraw}" rendered="#{withdrawHome.instance.bankCard.id!=null and withdrawHome.instance.bankCard.status eq 'passed'}"
+										value="提现" styleClass="txczje02_btn txczje02_btn_02"></h:commandLink>
+									<ui:fragment rendered="#{withdrawHome.instance.bankCard.id==null}">
+										<a href="javascript:void(0)" onclick="$.dialog.tips('请先选择银行卡！')"
+											class="txczje02_btn txczje02_btn_02">提现</a>
+									</ui:fragment>
+									<ui:fragment rendered="#{withdrawHome.instance.bankCard.status eq 'uncheck'}">
+										<a href="javascript:void(0)" onclick="pnr_no_selected_card()" class="txczje02_btn txczje02_btn_02">提现</a>
+									</ui:fragment>
+								</h:panelGroup>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</h:form>
+				<!-- 汇付时，可直接添加银行卡 -->
+				<h:form id="pnr" style="display:none;">
+						<h:commandLink id="pnr-addbc" action="#{bankCardHome.save}" rendered="#{pnrpayEnable}" target="_blank"   value="新增银行卡"></h:commandLink>
+				</h:form>
+				<p class="zhcz_p02 zhcz_p03">
+					温馨提示<br />
+					1、为了您的账户安全，请在充值前进行身份认证、手机绑定等安全设置。<br />
+					2、请确保您输入的提现金额，以及银行帐号信息准确无误。<br />
+					3、如果您填写的提现信息不正确可能会导致提现失败，由此产生的提现费用将不予返还。<br />
+					4、平台禁止洗钱、信用卡套现、虚假交易等行为，一经发现并确认，将终止该账户的使用。<br />
+					5、平台每天10点、14点、16点分三次统一付款，在此三个时间点之前提现，当天即可到账。<br />
+					6、每天16点之后提现，第二个工作日10点前到账。周六周日提现，周一上午10点到账。<br />
+					7、提现手续费每笔2元，由资金托管方联动优势收取。
+				</p>
+			</div>
+			<div class="clear"></div>
+		</sec:ifAnyGranted>
+	</ui:define>
+</ui:composition>

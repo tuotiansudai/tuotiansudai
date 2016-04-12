@@ -1,0 +1,44 @@
+<!-- 
+    debug : 
+        pageSize:#{pageSize}
+        page:#{page}
+        termId:#{termId}
+        count:#{pageModel.count}
+        current count : #{pageModel.data.size()}
+ -->
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div class="product-section section">
+		<ui:param name="pageSize" value="#{empty pageSize ? 15 : pageSize}"></ui:param>
+		<ui:param name="page" value="#{param.page}"></ui:param>
+
+		<ui:param name="pageModel"
+			value="#{productList.getNodes(termId,(page-1)*pageSize ,pageSize)}"></ui:param>
+
+		<ul class="productList"
+			style="list-style-type: none; margin: 0; width: 720px; float: left;">
+			<ui:repeat var="product" value="#{pageModel.data}">
+				<li class="productItem"
+					style="width: 160px; float: left; padding: 10px 10px 10px 10px;">
+					<a href="#{request.contextPath}/product/#{product.id}"> <img
+							class="productPicture" alt=""
+							src="#{request.contextPath}/#{product.productPictures[0].picture}"
+							width="160" height="160"></img> </a>
+					<a href="#{request.contextPath}/product/#{product.id}"
+						class="productTitle"> #{product.title} </a>
+				</li>
+			</ui:repeat>
+		</ul>
+
+		<ui:include src="#{tplVars.componentsPath}/paging.xhtml">
+			<ui:param name="count" value="#{pageModel.count}"></ui:param>
+		</ui:include>
+
+	</div>
+
+</f:view>

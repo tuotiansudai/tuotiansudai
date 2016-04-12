@@ -1,0 +1,225 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+				xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<h:outputLabel style="padding-left: 15px;"
+								   value="#{commonMsg.currentPositionLabel}投资信息"></h:outputLabel>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<h:form id="form">
+
+				<p:spacer></p:spacer>
+
+				<p:panel id="filters">
+					<h:panelGrid columns="2" cstyleClass="filter-grid"
+								 rowClasses="filter-row" columnClasses="filter-col1,filter-col2">
+						<h:outputLabel value="推荐人: "/>
+						<p:autoComplete value="#{refereeInvestList.condition.referrerId}"
+										minQueryLength="2"
+										completeMethod="#{userList.queryUsersByUserName}"
+										forceSelection="true" var="u" itemLabel="#{u.username}"
+										itemValue="#{u.id}"></p:autoComplete>
+
+						<h:outputLabel value="投资人: "/>
+						<p:autoComplete value="#{refereeInvestList.condition.investorId}"
+										minQueryLength="2"
+										completeMethod="#{userList.queryUsersByUserName}"
+										forceSelection="true" var="u" itemLabel="#{u.username}"
+										itemValue="#{u.id}"></p:autoComplete>
+
+						<h:outputLabel value="推荐层级: "></h:outputLabel>
+						<h:inputText value="#{refereeInvestList.condition.refereeLevel}"></h:inputText>
+
+						<h:outputLabel value="投资时间"></h:outputLabel>
+						<ui:fragment>
+							<p:calendar value="#{refereeInvestList.investStartTime}"
+										pattern="yyyy-MM-dd HH:mm:ss" navigator="true"
+										showButtonPanel="true" timeZone="GMT+8"/>
+							~
+							<p:calendar
+									value="#{refereeInvestList.investEndTime}"
+									pattern="yyyy-MM-dd HH:mm:ss" navigator="true"
+									showButtonPanel="true" timeZone="GMT+8"/>
+						</ui:fragment>
+
+						<h:outputLabel value="奖励时间"></h:outputLabel>
+						<ui:fragment>
+							<p:calendar value="#{refereeInvestList.rewardStartTime}"
+										pattern="yyyy-MM-dd HH:mm:ss" navigator="true"
+										showButtonPanel="true" timeZone="GMT+8"/>
+							~
+							<p:calendar
+									value="#{refereeInvestList.rewardEndTime}"
+									pattern="yyyy-MM-dd HH:mm:ss" navigator="true"
+									showButtonPanel="true" timeZone="GMT+8"/>
+						</ui:fragment>
+
+						<h:outputLabel value="推荐人角色"></h:outputLabel>
+						<ui:fragment>
+							<h:selectOneMenu value="#{refereeInvestList.condition.isMerchandiser}">
+								<f:selectItem itemLabel="全部" noSelectionOption="true"/>
+								<f:selectItem itemLabel="业务员" itemValue="#{true}"/>
+								<f:selectItem itemLabel="用户" itemValue="#{false}"/>
+							</h:selectOneMenu>
+						</ui:fragment>
+						<h:outputLabel value="来源"></h:outputLabel>
+						<ui:fragment>
+							<h:selectOneMenu value="#{refereeInvestList.condition.source}" style="width:135px;">
+								<f:selectItem itemLabel="请选择来源" itemValue=""/>
+								<f:selectItem itemLabel="WEB" itemValue="WEB"/>
+								<f:selectItem itemLabel="IOS" itemValue="IOS"/>
+								<f:selectItem itemLabel="ANDROID" itemValue="ANDROID"/>
+							</h:selectOneMenu>
+						</ui:fragment>
+						<h:outputText></h:outputText>
+						<p:commandButton update="dataTable" process="filters"
+										 value="#{commonMsg.searchLabel}"></p:commandButton>
+					</h:panelGrid>
+				</p:panel>
+
+				<p:spacer></p:spacer>
+
+				<p:dataTable lazy="true" id="dataTable"
+							 value="#{refereeInvestList.lazyModel}" var="invest" paginator="true"
+							 paginatorPosition="bottom" rows="15"
+							 currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+							 paginatorTemplate="#{commonMsg.paginatorTemplate}"
+							 sortBy="invest.time" sortOrder="descending"
+							 emptyMessage="#{commonMsg.noResultMsg}">
+					<f:facet name="header">
+                        <span class="sum-investment-money">
+                            合计投资金额：
+                            <h:outputText value="#{refereeInvestList.getSumMoney()}">
+                                <f:convertNumber/>
+                            </h:outputText>
+                        </span>
+                        <span class="sum-referrer-reward-money">
+                            合计推荐奖励金额：
+                            <h:outputText value="#{refereeInvestList.getSumReward()}">
+                                <f:convertNumber/>
+                            </h:outputText>
+                        </span>
+
+					</f:facet>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="项目名称"></h:outputText>
+						</f:facet>
+						<h:outputLink value="/p2p_loan/#{invest.loanId}" target="_blank">#{invest.loanName}</h:outputLink>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="期数"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{invest.loanDeadline}"></h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="投资人"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{invest.investorId}"></h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="投资人姓名"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{invest.investorName}"></h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="投资金额"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{invest.money}">
+							<f:convertNumber minIntegerDigits="1" minFractionDigits="2"></f:convertNumber>
+						</h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="投资时间"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{invest.investTime}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8"/>
+						</h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="推荐人"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{invest.referrerId}"></h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="推荐人姓名"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{invest.referrerName}"></h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="推荐人是否业务员"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{invest.isMerchandiser ? '是' : '否'}"></h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="推荐层级"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{invest.refereeLevel}"></h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="推荐奖励"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{invest.reward}"></h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="奖励状态"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{invest.rewardStatus}"></h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="奖励时间"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{invest.rewardTime}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8"/>
+						</h:outputText>
+					</p:column>
+					<p:column >
+						<f:facet name="header">
+							<h:outputText value="来源" />
+						</f:facet>
+						<h:outputText value="#{invest.source}"></h:outputText>
+					</p:column>
+
+					<f:facet name="footer">
+						<p:commandButton value="导出Excel" ajax="false">
+							<p:dataExporter target="dataTable" type="xls"
+											fileName="refereeInvestList" pageOnly="false"></p:dataExporter>
+						</p:commandButton>
+					</f:facet>
+				</p:dataTable>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

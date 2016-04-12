@@ -1,0 +1,55 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+		<title>出错啦</title>
+		
+		<script language="javascript" type="text/javascript">
+		  var i = 3;
+		  function out(){
+		    if (i>0){
+		      i--;
+		    }else{
+		      window.history.back();
+		    }
+		    document.getElementById('errorDiv').innerHTML="不要着急，"+i+"秒钟后为您跳转到首页...";
+		  }
+		  setInterval('out()',1000);
+		</script>
+		
+		<style>
+			HTML {
+				PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 14px; BACKGROUND: #ffffff; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; FONT-FAMILY: Tahoma, Verdana, "??"; TEXT-ALIGN: center
+			}
+			BODY {
+				PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 14px; BACKGROUND: #ffffff; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; FONT-FAMILY: Tahoma, Verdana, "??"; TEXT-ALIGN: center
+			}
+			A:link {
+				COLOR: #000000; TEXT-DECORATION: none
+			}
+			A:visited {
+				COLOR: #000000; TEXT-DECORATION: none
+			}
+			A:hover {
+				COLOR: #ff6600; TEXT-DECORATION: underline
+			}
+			#container {
+				MARGIN-LEFT: auto; WIDTH: 100%; MARGIN-RIGHT: auto; BACKGROUND-COLOR: #ffffff; TEXT-ALIGN: center
+			}
+			#maincolumn {
+				MARGIN-LEFT: auto; WIDTH: 100%; MARGIN-RIGHT: auto; HEIGHT: 80px; BACKGROUND-COLOR: #ffffff; TEXT-ALIGN: center
+			}
+			#footer {
+				FONT-SIZE: 12px; MARGIN-LEFT: auto; WIDTH: 100%; MARGIN-RIGHT: auto; BACKGROUND-COLOR: #ffffff; TEXT-ALIGN: center
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div id="container"><IMG height="312" src="#{tplVars.themeImagePath}/404.gif" width="512"/></div>
+		<div id="maincolumn">
+		  <div><h3>您访问的页面好像不存在！</h3></div>
+		  <div id="errorDiv" align="center" style="color:red;font-size:28;"></div>
+		</div>
+			<div>京ICP备13041437号-1 Copyright Reserved 2013-2014©润金票号 版权所有</div>
+	</body>
+</html>

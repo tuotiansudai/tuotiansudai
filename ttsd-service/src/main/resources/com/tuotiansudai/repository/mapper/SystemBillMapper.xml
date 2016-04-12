@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.SystemBillMapper">
+
+    <resultMap id="systemBillResultMap" type="SystemBillModel">
+        <id column="id" property="id"></id>
+        <result column="order_id" property="orderId"></result>
+        <result column="amount" property="amount"></result>
+        <result column="operation_type" property="operationType"></result>
+        <result column="business_type" property="businessType"></result>
+        <result column="detail" property="detail"></result>
+        <result column="created_time" property="createdTime"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="SystemBillModel" useGeneratedKeys="true" keyProperty="id">
+        insert into system_bill ( amount, detail, operation_type, created_time, order_id, business_type)
+        value(#{amount}, #{detail}, #{operationType}, #{createdTime}, #{orderId}, #{businessType})
+    </insert>
+
+    <select id="findByOrderId" parameterType="map" resultMap="systemBillResultMap">
+        select * from system_bill where order_id = #{orderId} and business_type = #{systemBillBusinessType}
+    </select>
+
+    <select id="findSystemBillPagination" parameterType="map" resultMap="systemBillResultMap">
+        select * from system_bill
+        <where>
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+            <if test="operationType !=null">
+                and operation_type = #{operationType}
+            </if>
+            <if test="businessType !=null">
+                and business_type = #{businessType}
+            </if>
+        </where>
+        order by created_time desc, id desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findSystemBillCount" parameterType="map" resultType="int">
+        select count(1) from system_bill
+        <where>
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+            <if test="operationType !=null">
+                and operation_type = #{operationType}
+            </if>
+            <if test="businessType !=null">
+                and business_type  = #{businessType}
+            </if>
+        </where>
+    </select>
+
+    <select id="findSumSystemIncome" parameterType="map" resultType="long">
+        select IFNULL(SUM(amount), 0) as amount from system_bill
+        <where>
+            operation_type = 'IN'
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+
+            <if test="businessType !=null">
+                and business_type = #{businessType}
+            </if>
+        </where>
+    </select>
+
+    <select id="findSumSystemExpend" parameterType="map" resultType="long">
+        select IFNULL(SUM(amount), 0) as amount from system_bill
+        <where>
+            operation_type = 'OUT'
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+            <if test="businessType !=null">
+                and business_type = #{businessType}
+            </if>
+        </where>
+    </select>
+
+</mapper>

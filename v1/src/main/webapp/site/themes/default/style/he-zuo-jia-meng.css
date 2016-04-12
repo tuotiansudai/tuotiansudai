@@ -1,0 +1,15 @@
+.box01{width:100%; padding:40px 0; background:#f5f5f5;}
+.box01_01{width:1000px; margin:0 auto; background:url(../images/img01_1.png) right center no-repeat;}
+.words{width:750px; padding-left:20px;}
+.title{ font-size:24px; color:#000;}
+.title img{margin:0 10px -10px 0;}
+.words h3{line-height:40px; padding-left:65px; color:#898a8a; font-size:18px;}
+.words p{line-height:30px; color:#909092; font-size:16px; padding-left:65px; text-indent: 2em;}
+.box01_03{background:url(../images/img03_1.png) right center no-repeat;}
+.box01_02{background:url(../images/img02_1.png) left center no-repeat;}
+.words_right{float:right;}
+.bg{background:#fff;}
+.red{padding-left:65px; line-height:30px; color:red; font-size:16px;}
+.box01_04{background:url(../images/img04_1.png) left center no-repeat;}
+.banner02-div{ width:100%; height:340px;}
+.banner02-pic-div{ width:1600px; height:340px; margin:0 auto; position:relative;}

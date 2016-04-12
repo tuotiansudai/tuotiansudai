@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.paywrapper.repository.mapper.RechargeNotifyMapper">
+
+    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="RechargeNotifyRequestModel">
+        insert into recharge_notify_request (service, sign_type, sign, mer_id, version, order_id, mer_date, trade_no, mer_check_date, balance, com_amt, com_amt_type, ret_code, ret_msg, request_time, response_time, request_data, response_data)
+        values (#{service}, #{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo}, #{merCheckDate}, #{balance}, #{comAmt}, #{comAmtType}, #{retCode}, #{retMsg}, #{requestTime}, #{responseTime}, #{requestData}, #{responseData})
+    </insert>
+</mapper>

@@ -1,0 +1,27 @@
+@charset "utf-8";
+/* CSS Document */
+
+.wrapper-ft-1{ background:#24282f; border-bottom:1px solid #282d32;}
+.wrapper-ft,.wrapper-ft-con{ width:1180px; margin:0 auto;}
+.ft-con-1,.gywm{ text-align:center;color:#444e5e;}
+.ft-con-1{ padding-top:32px; padding-bottom:36px;}
+.gywm{ padding-bottom:40px;}
+.ft-con-1 a{ color:#444e5e; font-size:14px; margin:0px 25px;}
+.gywm img{ vertical-align:middle;}
+.wrapper-ft-2{ height:116px; background:#1f242a}
+
+.wrapper-ft-con p{ text-align:center; padding-top:22px; line-height:22px;}
+.wrapper-ft-con p a{ font-size:12px;color:#485263;}
+.wrapper-ft-con p+p{ padding-top:12px;color:#485263;}
+
+.wrapper-ft-con p a:hover,.ft-con-1 a:hover{ text-decoration:underline; color:#8395a6}
+.share{ width:108px;}
+.share a{ display:inline-block; width:25px; height:20px; background:url(../../images/raise/con-ic.png) no-repeat;}
+.share a.qq1{ background-position:0px 0px;}
+.share a.qq2{ background-position:-24px 0px;}
+.share a.qq3{ background-position:-45px 0px;}
+.share a.qq4{ background-position:-67px 0px;}
+.share a.qq1:hover{ background-position:0px -35px;}
+.share a.qq2:hover{ background-position:-23.5px -34px;}
+.share a.qq3:hover{ background-position:-45px -35px;}
+.share a.qq4:hover{ background-position:-67px -35px;}

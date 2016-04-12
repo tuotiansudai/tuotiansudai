@@ -1,0 +1,174 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <div class="entry">
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <h:outputLabel style="padding-left: 15px;"
+                                   value="#{commonMsg.currentPositionLabel}用户投资管理"></h:outputLabel>
+                </p:toolbarGroup>
+            </p:toolbar>
+            <h:form id="form">
+
+                <p:spacer></p:spacer>
+
+                <p:panel id="filters">
+                    <h:panelGrid columns="2" cstyleClass="filter-grid"
+                                 rowClasses="filter-row" columnClasses="filter-col1,filter-col2">
+                        <h:outputLabel value="投资人: "/>
+                        <p:autoComplete value="#{userInvest.condition.investorId}"
+                                        minQueryLength="2"
+                                        completeMethod="#{userList.queryUsersByUserName}"
+                                        forceSelection="true" var="u" itemLabel="#{u.username}"
+                                        itemValue="#{u.id}"></p:autoComplete>
+
+                        <h:outputLabel value="投资时间"></h:outputLabel>
+                        <ui:fragment>
+                            <p:calendar value="#{userInvest.investStartTime}"
+                                        pattern="yyyy-MM-dd HH:mm:ss" navigator="true"
+                                        showButtonPanel="true" timeZone="GMT+8"/>
+                            ~
+                            <p:calendar
+                                    value="#{userInvest.investEndTime}"
+                                    pattern="yyyy-MM-dd HH:mm:ss" navigator="true"
+                                    showButtonPanel="true" timeZone="GMT+8"/>
+                        </ui:fragment>
+
+                        <h:outputLabel value="投资人角色"></h:outputLabel>
+                        <ui:fragment>
+                            <h:selectOneMenu value="#{userInvest.condition.isMerchandiser}">
+                                <f:selectItem itemLabel="全部" noSelectionOption="true"/>
+                                <f:selectItem itemLabel="业务员" itemValue="#{true}"/>
+                                <f:selectItem itemLabel="用户" itemValue="#{false}"/>
+                            </h:selectOneMenu>
+                        </ui:fragment>
+                        <h:outputLabel value="来源"></h:outputLabel>
+                        <ui:fragment>
+                            <h:selectOneMenu value="#{userInvest.condition.source}" style="width:135px;">
+                                <f:selectItem itemLabel="请选择来源" itemValue=""/>
+                                <f:selectItem itemLabel="WEB" itemValue="WEB"/>
+                                <f:selectItem itemLabel="IOS" itemValue="IOS"/>
+                                <f:selectItem itemLabel="ANDROID" itemValue="ANDROID"/>
+                            </h:selectOneMenu>
+                        </ui:fragment>
+                        <h:outputLabel value="渠道"></h:outputLabel>
+                        <ui:fragment>
+                            <h:selectOneMenu value="#{userInvest.condition.channel}">
+                                <f:selectItem itemLabel="请选择渠道" noSelectionOption="true" />
+                                <f:selectItems value="#{userInvest.allChannelList}" />
+                            </h:selectOneMenu>
+                        </ui:fragment>
+
+                        <h:outputText></h:outputText>
+                        <p:commandButton update="dataTable" process="filters"
+                                         value="#{commonMsg.searchLabel}"></p:commandButton>
+                    </h:panelGrid>
+                </p:panel>
+
+                <p:spacer></p:spacer>
+
+                <p:dataTable lazy="true" id="dataTable"
+                             value="#{userInvest.lazyModel}" var="invest" paginator="true"
+                             paginatorPosition="bottom" rows="15"
+                             currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+                             paginatorTemplate="#{commonMsg.paginatorTemplate}"
+                             sortBy="invest.time" sortOrder="descending"
+                             emptyMessage="#{commonMsg.noResultMsg}">
+                    <f:facet name="header">
+                        <span class="sum-investment-money">
+                            合计投资金额：
+                            <h:outputText value="#{userInvest.getSumMoney()}">
+                                <f:convertNumber/>
+                            </h:outputText>
+                        </span>
+
+                    </f:facet>
+
+                    <p:column style="display: none">
+                        <f:facet name="header">
+                            <h:outputText value="项目名称"></h:outputText>
+                        </f:facet>
+                        <h:inputHidden value="#{invest.loanName}"></h:inputHidden>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="项目"></h:outputText>
+                        </f:facet>
+                        <h:outputLink value="/p2p_loan/#{invest.loanId}" target="_blank"><h:outputText value="#{invest.loanName}"></h:outputText> </h:outputLink>
+                    </p:column>
+
+                    <p:column>
+
+                        <f:facet name="header">
+                            <h:outputText value="期数"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{invest.loanDeadline}"></h:outputText>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="投资人"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{invest.investorId}"></h:outputText>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="投资人姓名"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{invest.investorName}"></h:outputText>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="是否业务员"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{invest.isMerchandiser ? '是' : '否'}"></h:outputText>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="投资金额"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{invest.money}">
+                            <f:convertNumber minIntegerDigits="1" minFractionDigits="2"></f:convertNumber>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="投资时间"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{invest.investTime}">
+                            <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="来源" />
+                        </f:facet>
+                        <h:outputText value="#{invest.source}"></h:outputText>
+                    </p:column>
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="渠道" />
+                        </f:facet>
+                        <h:outputText value="#{invest.channel}"></h:outputText>
+                    </p:column>
+                    <f:facet name="footer">
+                        <p:commandButton value="导出Excel" ajax="false">
+                            <p:dataExporter target="dataTable" type="xls"
+                                            fileName="refereeInvestList" pageOnly="false"></p:dataExporter>
+                        </p:commandButton>
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

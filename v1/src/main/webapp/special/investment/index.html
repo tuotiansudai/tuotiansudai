@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>英雄榜排名活动 - 房子！车子！</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <style>
+        html, div, span, em, img, strong, sub, sup, tt, label, table, caption, tbody, tfoot, thead, tr,
+        body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, blockquote, form, fieldset, legend, button, input, textarea, dl, dt, dd, ul, ol, li, th, td {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        strong {
+            font-weight: bold !important;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-size: 100%;
+        }
+
+        address, caption, cite, code, dfn, em, strong, th, var {
+            font-style: normal;
+            font-weight: normal;
+        }
+
+        ul, ol, li {
+            list-style: none;
+        }
+
+        img {
+            width: auto \9;
+            height: auto;
+            max-width: 100%;
+            vertical-align: middle;
+            border: 0;
+            -ms-interpolation-mode: bicubic;
+        }
+
+        div, p, form, html, dt, header, footer, nav, article, hgroup, section, figcaption, aside, map, dt, details, figure {
+            display: block;
+        }
+
+        audio, canvas, video {
+            display: inline-block;
+            *display: inline;
+            *zoom: 1;
+        }
+
+        body {
+            background: #ed304e;
+        }
+
+        .header {
+            width: 100%;
+            height: 502px;
+            background: url(images/header.jpg) no-repeat center center;
+        }
+
+        .banner {
+            width: 100%;
+            height: 284px;
+            background: url(images/banner.jpg) no-repeat center center;
+        }
+
+        .wrapper-all {
+            display: block;
+            background: #ffc345;
+            margin-top: 20px;
+            padding-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .wrapper {
+            width: 945px;
+            margin: 0 auto;
+        }
+
+        .item {
+
+        }
+
+        .item .hd {
+            color: #ffc345;
+            font-size: 18px;
+        }
+
+        .item .date {
+            color: #fff;
+            padding-left: 10px;
+        }
+
+        .item .newsdata {
+            color: #fff;
+            padding-left: 10px;
+        }
+
+        .item i {
+            font-style: normal;
+        }
+
+        .china-table {
+            width: 943px;
+            border: 1px solid #ffc345;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        .china-table th h2 {
+            font-size: 20px;
+        }
+
+        .china-table th {
+            border: 1px solid #ffc345;
+            line-height: 40px;
+            font-size: 16px;
+            color: #ffc345;
+        }
+
+        .china-table td .index {
+            color: #ffc345;
+            float: left;
+            position: absolute;
+            left: 20px;
+            top: 0px;
+            width: 30px;
+            text-align: right;
+        }
+
+        .china-table td {
+            line-height: 40px;
+            color: #fff;
+            text-align: right;
+            width: 33%;
+            padding: 0 100px 0 0;
+            position: relative;
+        }
+
+        .china-table .btn-more {
+            padding: 10px 25px;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            margin-bottom: 30px;
+        }
+
+        .yellow {
+            background: #ffd624;
+            color: #808080;
+        }
+
+        .orange {
+            background: #f34512;
+            color: #fff;
+        }
+
+        .nav {
+            width: 941px;
+            border: 1px solid #fff;
+            background: url(images/nav-bg.jpg) repeat-x;
+            height: 30px;
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+
+        .nav li {
+            width: 187px;
+            float: left;
+            font-size: 16px;
+            border-right: 1px solid #ffc345;
+            line-height: 30px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .nav li.active {
+            color: #f6ff00;
+        }
+
+        .nav li.laster {
+            border-right: none;
+        }
+
+        .area-table {
+            width: 943px;
+            border: 1px solid #ed304e;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .area-table th h2 {
+            font-size: 20px;
+        }
+
+        .area-table th {
+            border: 1px solid #ed304e;
+            line-height: 40px;
+            font-size: 16px;
+            color: #ed304e;
+        }
+
+        .area-table td .index {
+            color: #ed304e;
+            position: absolute;
+            left: 20px;
+            top: 0px;
+            width: 30px;
+            text-align: right;
+            float: left;
+        }
+
+        .area-table td {
+            line-height: 40px;
+            color: #000;
+            text-align: right;
+            width: 33%;
+            padding: 0 100px 0 0;
+            position: relative;
+        }
+
+        .area-table .btn-more {
+            padding: 10px 25px;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            margin-bottom: 30px;
+        }
+
+        .tips {
+            margin-top: 30px;
+            line-height: 30px;
+        }
+
+        .tips h2 {
+            color: #ffe400;
+            font-size: 16px;
+        }
+
+        .tips p {
+            font-size: 12px;
+            color: #fff;
+        }
+
+        .sub-hd {
+            color: #ffe400;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .pic-list {
+            display: block;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .pic-list li {
+            width: 150px;
+            height: 100px;
+            float: left;
+            margin-right: 15px;
+        }
+
+        .pic-list li img {
+            width: 150px;
+            height: 100px;
+        }
+
+        .layer-box {
+            display: none;
+        }
+
+        .layer-box .layer-wrapper {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            background: rgba(0, 0, 0, .5);
+            z-index: 888;
+        }
+
+        .layer-box .content {
+            width: 760px;
+            height: 450px;
+            position: fixed;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            z-index: 900;
+            left: 50%;
+            top: 50%;
+            margin: -275px 0 0 -380px;
+        }
+
+        .btn-next,
+        .btn-prev {
+            width: 53px;
+            height: 53px;
+            position: absolute;
+            background: url("images/pic-btn.png") no-repeat;
+            cursor: pointer;
+            z-index: 999;
+        }
+
+        .btn-next {
+            right: 40px;
+            top: 220px;
+            background-position: -79px 0;
+        }
+
+        .btn-prev {
+            left: 40px;
+            top: 220px;
+
+        }
+    </style>
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/index.js"></script>
+    <script>
+        var API_URL = '/special/investmenttop';
+    </script>
+</head>
+<body>
+<div class="header"></div>
+<div class="banner"></div>
+<div class="wrapper">
+    <div class="item" id="jq-date">
+        <span class="hd">活动排行：</span>
+        <select name="" id="jq-selected">
+            <option value="week">本周排行</option>
+            <option value="month">本月排行</option>
+            <option value="quarter">总排行</option>
+            <!--<option value="year">本年排行</option>-->
+        </select>
+        <span class="date"><span class="dataStar"></span> ~ <span class="dataEnd"></span></span>
+        <span class="newsdata">最新数据: <i></i></span>
+    </div>
+    <table class="china-table">
+        <thead>
+        <tr>
+            <th colspan="3"><h2>全国投资收益排名</h2></th>
+        </tr>
+        <tr>
+            <th>投资收益</th>
+            <th>投资金额</th>
+            <th>手机号码</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+
+    </table>
+</div>
+<div class="wrapper-all">
+    <div class="wrapper">
+        <div class="nav">
+            <ul>
+                <li class="active">华北区域</li>
+                <li>东北区域</li>
+                <li>华东区域</li>
+                <li>西北区域</li>
+                <li class="laster">华南区域</li>
+            </ul>
+        </div>
+        <table class="area-table">
+            <thead>
+            <tr>
+                <th colspan="3"><h2>区域投资收益排名</h2></th>
+            </tr>
+            <tr>
+                <th>投资收益</th>
+                <th>投资金额</th>
+                <th>手机号码</th>
+            </tr>
+            </thead>
+
+
+        </table>
+    </div>
+</div>
+<div class="wrapper">
+    <div class="tips">
+        <h2><strong>活动说明</strong></h2>
+
+        <p><strong>活动时间：</strong>9月1日至11月30日（24:00结束统计）</p>
+
+        <p>
+            <strong>活动内容：</strong>9月份拓天速贷将开启重磅排行榜，统计所有在拓天速贷投资用户，投资收益金额，并公示排名前100位收益金额，并根据中国五大区域进行详细排行，全国排名第一位将获得超级大奖，北京某地价值200万元左右的房产一套，各大区收益金额排行榜第一名则获得价值30万元左右高档汽车一辆，奖励真实，投资有收益，还能拿奖励，好事连连有，该出手时就出手。
+
+        </p>
+
+        <p>
+            <strong>活动规则：</strong>自9月1日00:00起，用户只要在拓天速贷投资任意标的物，均会计算年化投资收益金额，并记录在排行榜，用户可以根据自己投资收益金额，查看排行榜前100名投资金额收益，寻找自己排名情况，最终奖励发放将根据排行榜真实显示为准，用户投资金额不限，标的物类型不限，并且本次活动跟其他活动可重叠计算，互不冲突，一份投资多份奖励。
+        </p>
+
+        <p><strong>区域划分：</strong>本次用户区域划分，以用户注册手机号归属地，作为用户区域划分规则。</p>
+
+    </div>
+    <div class="tips">
+        <h2><strong>活动奖励</strong></h2>
+
+        <p>全国排行榜第一名：北京某地房产一套；</p>
+        <ul class="house-list pic-list">
+            <li><img src="images/house-1.jpg" alt=""/></li>
+            <li><img src="images/house-2.jpg" alt=""/></li>
+            <li><img src="images/house-3.jpg" alt=""/></li>
+            <li><img src="images/house-4.jpg" alt=""/></li>
+            <li><img src="images/house-5.jpg" alt=""/></li>
+        </ul>
+        <p>各大区排行榜第一名：价值30万元高端汽车一辆；</p>
+        <ul class="cars-list pic-list">
+            <li><img src="images/cars-1.jpg" alt=""/></li>
+            <li><img src="images/cars-2.jpg" alt=""/></li>
+            <li><img src="images/cars-3.jpg" alt=""/></li>
+            <!--<li><img src="images/cars-4.jpg" alt=""/></li>-->
+            <!--<li><img src="images/cars-5.jpg" alt=""/></li>-->
+        </ul>
+        <p>得奖用户只能领取一份奖励，全国排名第一名，其大区第二名将获取车辆奖励。</p>
+
+        <p><strong>奖励发放：</strong>预计在12月5日大会当天现场发放，届时将有800位用户共同见证，并有国家级公正人员现场进行交割，保证所有奖励的真实有效。<strong>奖励较大用户需自己缴纳个人所得税及其他税款，拓天速贷不承担任何奖励税点。</strong>
+        </p>
+
+        <p><strong>参会人员标准：</strong>个大区投资收益排名前100位可收到邀约，并参与大会。</p>
+
+        <p><strong>颁奖大会流程：</strong></p>
+
+        <p>12月1日-12月3日：针对获奖用户，进行电话通知、确认、安排行程、住宿等各项事宜；</p>
+
+        <p>12月4日：用户抵京；</p>
+
+        <p>12月5日：颁奖大会；</p>
+
+        <p>12月6日：用户离京。</p>
+
+        <p><strong>注：</strong><br/>
+            活动邀请为单人邀请，如用户想携带家人或朋友，费用需自行承担，并不能携带他人参与外出游玩活动，如需携带则只能自行活动；
+            如遇到用户临时不能前往，则视为自动放弃本次活动奖励；
+            活动外出期间如遇到天气因素不能外出，则会另行安排室内活动；
+            本次活动用户往返交通工具以飞机为主，北京2小时以内车程以高铁为主，用户需自行前往酒店入住。
+        </p>
+    </div>
+
+</div>
+<div class="layer-box">
+    <div class="layer-wrapper"></div>
+    <div class="content">
+        <a class="btn-next" href="###"></a>
+        <a class="btn-prev" href="###"></a>
+        <img src="images/house-1.jpg" alt="" width="760" height="450"/>
+    </div>
+</div>
+</body>
+</html>

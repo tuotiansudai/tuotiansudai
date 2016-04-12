@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	template="page.xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<f:metadata>
+		<f:viewParam name="termId" value="#{menuHome.id}"></f:viewParam>
+		<f:viewParam name="termId" value="#{categoryTermHome.id}"></f:viewParam>
+		<f:viewParam name="nodeId" value="#{nodeHome.id}"></f:viewParam>
+	</f:metadata>
+
+	<ui:param name="term" value="#{categoryTermHome.instance}"></ui:param>
+	<ui:param name="t" value="#{menuHome.instance}"></ui:param>
+	<ui:param name="node" value="#{nodeHome.instance}"></ui:param>
+	<ui:param name="title" value="#{term.name}"></ui:param>
+	<ui:param name="keywords" value="#{term.name}"></ui:param>
+	<ui:param name="description" value="#{term.description}"></ui:param>
+	<ui:define name="content">
+		<link href="#{tplVars.themeStylePath}/account.css" type="text/css" rel="stylesheet" />
+		<div class="layout">
+			<div class="wzlb">
+				<div class="wzlb_l">
+				      <h4>#{term.name}</h4>
+				      <ui:param name="no" value="#{nodeList.getNodeById(term.id)}"></ui:param>
+				      <ui:fragment rendered="#{not empty no}">
+					      <h4>#{no.title}</h4>
+					      <div>#{no.description}</div>
+					      <div class="more"><a href="#{request.contextPath}/newsinfo/xinwen/#{no.id}">查看详细>></a></div>
+				      </ui:fragment>
+				 </div>   
+				   
+				      <ul>
+					    <ui:repeat var="nodes" value="#{pageModel.data}">
+					      	<li class="#{servletPath == nodes.url ? 'cur':''}"> <a href="#{request.contextPath}/newsinfo/xinwen/#{nodes.id}">#{nodes.title}</a> <span>
+					      	<h:outputText value="#{nodes.updateTime}">
+					      		<f:convertDateTime pattern="yyyy-MM-dd" locale="zh_CN" timeZone="GMT+8"></f:convertDateTime>
+					      	</h:outputText> </span> </li>
+					     </ui:repeat> 
+					 </ul>
+				
+				<ui:fragment rendered="#{node.nodeType.id=='article'}">
+		            <ui:include src="news-detail.xhtml"></ui:include>
+		        </ui:fragment>
+			</div>
+		</div>
+		<div class="h10"></div>
+	</ui:define>
+
+</ui:composition>

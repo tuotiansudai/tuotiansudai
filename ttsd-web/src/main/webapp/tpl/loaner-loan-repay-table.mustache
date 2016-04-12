@@ -1,0 +1,66 @@
+<div class="layer-content">
+    <div class="pad-s">
+        {{^isLoanCompleted}}
+            <a class="advanced-repay btn {{^hasWaitPayLoanRepay}}btn-normal{{/hasWaitPayLoanRepay}}" href="javascript:">提前还款</a>
+            <span class="repay-total">(还款总额：{{expectedAdvanceRepayDisplayAmount}} 元) </span>
+            <span class="repay-alert" style="display: none"></span>
+            {{^hasWaitPayLoanRepay}}
+                <form id="advanced-repay-form" action="/repay" method="post" target="_blank">
+                    <input type="hidden" name="loanId" value="{{loanId}}"/>
+                    <input type="hidden" name="isAdvanced" value="true"/>
+                    <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+                </form>
+            {{/hasWaitPayLoanRepay}}
+
+        {{/isLoanCompleted}}
+    </div>
+
+    <div class="table-list-box">
+        <table class="table-list table">
+            <thead>
+            <tr>
+                <th>期数</th>
+                <th class="tr">本金(元)</th>
+                <th class="tr">利息(元)</th>
+                <th class="tr">罚息(元)</th>
+                <th class="tr">应还总额(元)</th>
+                <th>还款日</th>
+                <th>实还总额(元)</th>
+                <th>还款时间</th>
+                <th>状态</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {{#records}}
+                <tr>
+                    <td>{{period}}</td>
+                    <td class="tr">{{corpus}}</td>
+                    <td class="tr">{{expectedInterest}}</td>
+                    <td class="tr">{{defaultInterest}}</td>
+                    <td class="tr">{{expectedRepayAmount}}</td>
+                    <td>{{repayDate}}</td>
+                    <td class="tr">
+                        {{^actualRepayAmount}}--{{/actualRepayAmount}}
+                        {{#actualRepayAmount}}{{.}}{{/actualRepayAmount}}
+                    </td>
+                    <td>
+                        {{^actualRepayDate}}--{{/actualRepayDate}}
+                        {{#actualRepayDate}}{{.}}{{/actualRepayDate}}
+                    </td>
+                    <td>
+                        {{#isEnabled}}
+                            <a class="normal-repay btn btn-normal btn-sm" href="javascript:">{{status}}</a>
+                            <form id="normal-repay-form" action="/repay" method="post" target="_blank">
+                                <input type="hidden" name="loanId" value="{{loanId}}"/>
+                                <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+                            </form>
+                        {{/isEnabled}}
+                        {{^isEnabled}}{{status}}{{/isEnabled}}
+                    </td>
+                </tr>
+            {{/records}}
+            </tbody>
+        </table>
+    </div>
+</div>

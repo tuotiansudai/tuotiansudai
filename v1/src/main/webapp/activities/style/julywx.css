@@ -1,0 +1,231 @@
+p, a, h3, body, html {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    font-family: 'microsoft yahei';
+}
+
+.wrap_wx {
+    width: 100%;
+    max-width: 640px;
+    height: auto;
+    overflow: hidden;
+    margin: 0px auto;
+}
+
+.header_wx {
+    width: 100%;
+    height: 397px;
+    background: url("../images/imgwx/header_wx.jpg") no-repeat;
+    background-position: 0px 0px;
+    background-size: 100%;
+    margin-bottom: 12px;
+}
+
+.content_wx {
+    width: 100%;
+    max-width: 580px;
+    margin: 0px auto;
+}
+
+.content_wx h5 {
+    color: #df4136;
+    margin: 0px;
+    background: url("../images/imgwx/yun_wx.png") no-repeat;
+    height: 31px;
+    line-height: 31px;
+    width: 80%;
+    padding-left: 90px;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.content_wx h4 {
+    font-size: 14px;
+    font-weight: normal;
+    margin: 10px 0px 0px 0px;
+}
+
+.content_wx h4:first-child {
+    margin: 0px;
+}
+
+.content_wx span {
+    font-size: 12px;
+}
+
+.content_wx p {
+    border: #f1eee4 1px solid;
+    background: #fff4cc;
+    color: #af5e59;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    line-height: 22px;
+    text-indent: 35px;
+    padding: 10px 8px;
+    margin: 0px 0px 6px 0px;
+}
+
+.content_wx a {
+    display: block;
+    width: 60%;
+    height: 54px;
+    line-height: 54px;
+    text-align: center;
+    background: #cc3333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 16px auto 0px;
+    font-size: 28px;
+}
+
+.content_wx table {
+    width: 100%;
+    background: #ffe1aa;
+    border-collapse: collapse;
+}
+
+.content_wx table tr td {
+    border: 1px solid #000;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    color: #ff6000;
+    font-size: 14px;
+    font-family: "microsoft yahei"
+}
+
+@media (max-width: 320px) {
+    .content_wx {
+        padding: 0px 2%;
+        width: 96%;
+    }
+
+    .header_wx {
+        height: 186px;
+    }
+
+    .content_wx p {
+        font-size: 12px;
+        padding: 8px 3px;
+        width: 98%;
+    }
+
+    .content_wx a {
+        width: 100%;
+        border-radius: 0px;
+        font-size: 24px;
+        height: 40px;
+        line-height: 40px;
+    }
+
+    .content_wx table tr td {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 324px) and (max-width: 380px ) {
+    .header_wx {
+        height: 226px;
+    }
+
+    .content_wx {
+        padding: 0px 2%;
+        width: 96%;
+    }
+
+    .content_wx p {
+        font-size: 12px;
+        padding: 8px 3px;
+        width: 98%;
+    }
+}
+
+@media (min-width: 381px) and (max-width: 460px ) {
+    .header_wx {
+        height: 260px;
+    }
+
+    .content_wx {
+        padding: 0px 2%;
+        width: 96%;
+    }
+
+    .content_wx p {
+        font-size: 12px;
+        padding: 8px 3px;
+        width: 98%;
+    }
+}
+
+@media (min-width: 459px) and (max-width: 540px ) {
+    .header_wx {
+        height: 320px;
+    }
+
+    .content_wx {
+        padding: 0px 2%;
+        width: 96%;
+    }
+
+    .content_wx p {
+        font-size: 12px;
+        padding: 8px 3px;
+        width: 98%;
+    }
+}
+
+@media (min-width: 541px) and (max-width: 600px ) {
+    .header_wx {
+        height: 360px;
+    }
+
+    .content_wx {
+        padding: 0px 2%;
+        width: 96%;
+    }
+
+    .content_wx p {
+        font-size: 14px;
+        padding: 8px 3px;
+        width: 98%;
+    }
+}
+
+/* iPhone 4 ———– */
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

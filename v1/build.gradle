@@ -1,0 +1,102 @@
+apply plugin: 'war'
+apply plugin: 'com.bmuschko.cargo'
+apply plugin: 'org.akhikhl.gretty'
+apply plugin: 'org.flywaydb.flyway'
+apply from: 'db_migration.gradle'
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets.main.resources.srcDir 'src/main/java'
+
+dependencies {
+    def freemarkerVersion = '2.3.22'
+    def jacksonVersion = '2.5.4'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile fileTree(dir: 'libs', include: '**/*.jar'),
+            "org.springframework:spring-webmvc:3.2.5.RELEASE",
+            "org.freemarker:freemarker:$freemarkerVersion",
+            "com.fasterxml.jackson.core:jackson-core:$jacksonVersion",
+            "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
+            "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion",
+            'redis.clients:jedis:2.7.2',
+            'joda-time:joda-time:2.8.1'
+
+    providedCompile 'mysql:mysql-connector-java:5.1.35'
+}
+
+compileJava {
+    options.encoding = "UTF-8"
+    options.fork = true
+    options.forkOptions.executable = "javac" // assumes that javac is on PATH
+    options.compilerArgs << "-XDignore.symbol.file"
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.akhikhl.gretty:gretty:1.2.2',
+                'com.bmuschko:gradle-cargo-plugin:2.1',
+                'org.flywaydb:flyway-gradle-plugin:3.2.1'
+    }
+}
+
+cargoRunLocal.dependsOn assemble
+
+gretty {
+    // supported values:
+    // 'jetty7', 'jetty8', 'jetty9', 'tomcat7', 'tomcat8'
+    servletContainer = 'jetty8'
+    contextPath = ''
+    port = 9090
+    jvmArgs = [ "-XX:MaxPermSize=512m" ]
+}
+
+cargo {
+    containerId = 'tomcat6x'
+    port = 8082
+
+    deployable {
+        context = 'ttsd'
+    }
+
+    local {
+        homeDir = file('/workspace/apache-tomcat-6.0.43')
+        outputFile = file('build/output.log')
+        timeout = 180000   
+    }
+}
+
+war {
+    archiveName "ROOT.war"
+    destinationDir = file("war")
+    from('/workspace/production_config/') {
+        exclude 'web.xml'
+        into 'WEB-INF/classes'
+    }
+    from('/workspace/production_config/') {
+        include 'web.xml'
+        into 'WEB-INF/'
+    }
+}
+
+flyway {
+    def productionFlywayConfig = '/workspace/production_config/jdbc.properties'
+    locations = ['filesystem:db_migration']
+    user = 'root'
+    password = ''
+    outOfOrder = true
+    validateOnMigrate = false
+    url = 'jdbc:mysql://192.168.33.10:3306/tuotiansudai?useUnicode=true&characterEncoding=utf8'
+    if (new File(productionFlywayConfig).exists()) {
+        Properties properties = new Properties()
+        properties.load(new FileInputStream(productionFlywayConfig))
+        user = properties.getProperty('jdbc.username', user)
+        password = properties.getProperty('jdbc.password', password)
+        url = properties.getProperty('flyway.url', url)
+    }
+}

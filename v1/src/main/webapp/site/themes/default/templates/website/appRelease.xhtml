@@ -1,0 +1,56 @@
+<ui:composition template="../page.xhtml"
+				xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+				xmlns:o="http://omnifaces.org/ui"
+				xmlns:c="http://java.sun.com/jsp/jstl/core"
+				xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<ui:define name="content">
+		<link type="text/css" rel="stylesheet" href="#{tplVars.themeStylePath}/appRelease.css"/>
+
+		<div class="bannerbox">
+			<div class="banner">
+				<img src="#{tplVars.themeImagePath}/appDownload/banner_img.png"/>
+				<a class="buttona" href="http://itunes.apple.com/us/app/id1039233966"><img src="#{tplVars.themeImagePath}/appDownload/banner_iphone.png"/></a>
+				<a class="buttonb" href="/app/tuotiansudai.apk"><img src="#{tplVars.themeImagePath}/appDownload/banner_android.png"/></a>
+			</div>
+		</div>
+		<!--内容上-->
+		<div class="mattertop"><img src="#{tplVars.themeImagePath}/appDownload/point.png"/></div>
+		<!--内容-->
+		<div class="matterbox">
+			<div class="matterabox">
+				<div class="mattera">
+					<img src="#{tplVars.themeImagePath}/appDownload/pro01.png"/>
+				</div>
+			</div>
+			<div class="matterbbox">
+				<div class="matterb">
+					<img src="#{tplVars.themeImagePath}/appDownload/pro02.png"/>
+				</div>
+			</div>
+			<div class="mattercbox">
+				<div class="matterc">
+					<img src="#{tplVars.themeImagePath}/appDownload/pro03.png"/>
+				</div>
+			</div>
+			<div class="matterdbox">
+				<div class="matterd">
+					<img src="#{tplVars.themeImagePath}/appDownload/pro04.png"/>
+				</div>
+			</div>
+		</div>
+		<!--底部-->
+		<div class="bottombox">
+			<div class="bottom">
+				<img src="#{tplVars.themeImagePath}/appDownload/bottom.png"/>
+				<a href="http://itunes.apple.com/us/app/id1039233966"><img class="bota" src="#{tplVars.themeImagePath}/appDownload/bottom_iphone.png"/></a>
+				<a href="/app/tuotiansudai.apk"><img class="botb" src="#{tplVars.themeImagePath}/appDownload/bottom_android.png"/></a>
+			</div>
+		</div>
+
+	</ui:define>
+</ui:composition>

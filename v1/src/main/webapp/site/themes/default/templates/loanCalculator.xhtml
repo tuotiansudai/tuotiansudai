@@ -1,0 +1,192 @@
+<ui:composition template="page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<!-- 	借款计算器 -->
+	<ui:define name="content">
+		<link type="text/css" rel="stylesheet"
+			href="#{tplVars.themeStylePath}/index.css" />
+		<script>
+			//<![CDATA[
+			function calculate() {
+				var reg = new RegExp("^[0-9]*$");
+				var money = $('#money').val();
+				var rate = $('#rate').val();
+				if (money == "") {
+					alert("请输入借款金额");
+					return;
+				}
+				if (!reg.test(money) || money <=0) {
+					alert("借款金额必须大于0");
+					return;
+				}
+				if (rate == "") {
+					alert("请输入借款利率");
+					return;
+				}
+				if (!reg.test(rate) || rate <=0) {
+					alert("借款利率必须大于0");
+					return;
+				}
+				var period = $('#period').val();
+				var payWay = $('#payWay').find("option:selected").text();
+				
+					var allNeedPay = period
+							* (getCorpus(payWay, 1, money, rate / 100, period) + getInterest(
+									payWay, 1, money, rate / 100, period));
+					if (payWay != '等额本息') {
+						allNeedPay = Number(allNeedPay) + Number(money);
+					}
+					$('#meiyuebenxi').html(
+							"您每月将还本息："
+									+ (getCorpus(payWay, 1, money, rate / 100,
+											period) + getInterest(payWay, 1,
+											money, rate / 100, period))
+											.toFixed(2) + "元");
+					$('#yuelilv').html("月利率：" + (rate / 12).toFixed(2) + "%");
+					$('#benxizonge').html(
+							"借款到期共需还款本息总额：" + allNeedPay.toFixed(2) + "元");
+
+					$("#payDetail tr").remove();
+					for ( var i = 0; i < period; i++) {
+						$str = '';
+						$str += "<tr>";
+						$str += "<td class='tdMenu' width='110'>" + (i + 1)
+								+ "</td>";
+						$str += "<td class='tdMenu' width='288'>￥"
+								+ Number(
+										getCorpus(payWay, i + 1, money,
+												rate / 100, period)
+												+ getInterest(payWay, i + 1,
+														money, rate / 100,
+														period)).toFixed(2)
+								+ "</td>";
+						$str += "<td class='tdMenu' width='288'>￥"
+								+ Number(
+										getCorpus(payWay, i + 1, money,
+												rate / 100, period)).toFixed(2)
+								+ "</td>";
+						$str += "<td class='tdMenu' width='110'>￥"
+								+ getInterest(payWay, i + 1, money, rate / 100,
+										period).toFixed(2) + "</td>";
+						allNeedPay = allNeedPay
+								- Number(getCorpus(payWay, i + 1, money,
+										rate / 100, period)
+										+ getInterest(payWay, i + 1, money,
+												rate / 100, period));
+						if (i == period - 1) {
+							allNeedPay = 0;
+						}
+						$str += "<td class='tdMenu' width='111'>&#160;&#160;&#160;￥"
+								+ (allNeedPay).toFixed(2) + "</td>";
+						$str += "</tr>";
+						$("#payDetail").append($str);
+					}
+			}
+			function getCorpus(payWay, period, money, rate, deadline) {
+				if (payWay == '等额本息') {
+					return Number((money * (rate / 12) * Math.pow(
+							(1 + rate / 12), period - 1))
+							/ (Math.pow((1 + rate / 12), deadline) - 1));
+				}
+				if (period == deadline) {
+					return Number(money);
+				} else {
+					return Number(0);
+				}
+			}
+			function getInterest(payWay, period, money, rate, deadline) {
+				if (payWay == '等额本息') {
+					return (money * (rate / 12) * (Math.pow((1 + rate / 12),
+							deadline) - Math.pow((1 + rate / 12), period - 1)))
+							/ (Math.pow((1 + rate / 12), deadline) - 1);
+				}
+				return Number(money * rate / 12);
+			}
+			//]]>
+		</script>
+
+		<!--Layout Start-->
+		<div id="xiangmu">
+			<div class="tool">
+				<div class="ErrorMsg ValidationSummary"></div>
+				<div class="toolborder">
+					<h2>借款利率计算器</h2>
+					<div>
+						1、“按月分期还款”采用银行房贷等通用的“等额本息还款法”,即借款者每月以相等的金额偿还借款本息。<br />
+						2、“到期全额还款”采用每月付息，到期全额还本的计算方式。<br />
+						（注意：本工具计算结果与实际可能会有以分为单位的误差。）
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div class="toolborder">
+					<div class="toolmiddle">
+						<h2>借款设置</h2>
+						<div class="toolbox">
+							<div class="trade">
+								<span>借款金额：<input id="money" type="text"
+									class="inputMain" />&#160;元
+								</span> <span>利率：<input id="rate" type="text" class="inputMain" />&#160;%
+								</span> <span>借款期限： <select id="period">
+										<option selected="selected" value="3">3</option>
+										<option value="6">6</option>
+										<option value="9">9</option>
+										<option value="12">12</option>
+										<option value="18">18</option>
+										<option value="24">24</option>
+								</select>&#160;个月
+								</span> <span>还款方式：<select id="payWay">
+										<option selected="selected" value="等额本息">等额本息</option>
+										<option value="按月付息到期还本">按月付息到期还本</option>
+								</select>
+								</span> <span> <input type="button" value="开始计算"
+									onclick="calculate()" class="but_70x30" /></span> <br clear="all" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="toolborder">
+					<div class="toolmiddle">
+						<h2>借款概述</h2>
+						<div class="toolbox">
+							<div class="trade">
+								<label> <span id="meiyuebenxi">您每月将还本息：0元</span></label> <label>
+									<span id="yuelilv">月利率：0%</span>
+								</label> <label> <span id="benxizonge">借款到期共需还款本息总额：0元</span></label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="height"></div>
+				<div class="toolborder">
+					<h2>
+						<span>还款计划时间表</span>
+					</h2>
+					<div>
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td class="tdMenu">期数</td>
+								<td class="tdMenu">每期还款本息</td>
+								<td class="tdMenu">每期还款本金</td>
+								<td class="tdMenu">利息</td>
+								<td class="tdMenu">余额</td>
+							</tr>
+						</table>
+						<table width="100%" cellspacing="0" border="0" class="tdDetail">
+							<tbody id="payDetail">
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div style="clear: both;"></div>
+		</div>
+	</ui:define>
+</ui:composition>

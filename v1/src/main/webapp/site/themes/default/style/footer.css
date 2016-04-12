@@ -1,0 +1,25 @@
+@charset "utf-8";
+/* CSS Document */
+
+.footer{background: #3f3f3f}
+.ft-con{width: 1000px;margin: 0 auto;padding-top: 60px;}
+.ft-top{float: left;padding-right: 80px;}
+.ft-top,.ft-top a{color: #ffffff}
+.ewm{vertical-align: middle;width: 116px;height: 116px;}
+.ft-top span{font-size: 14px;font-weight: bold;}
+.ft-top a,.ft-top ul li{font-size: 12px;}
+.ft-top a:hover{text-decoration: underline;}
+.ft-top ul li{line-height: 28px;}
+.contact{padding-right: 40px; width: 600px}
+.service-contact{width: 300px; float: left}
+.lastwem{padding-right: 0px;float: right;}
+.ft-top ul li.tel{font-size: 12px;}
+.ft-top ul li.tel span{font-size: 12px; margin-left:10px; color:#ccc;}
+.clear{clear: both;}
+.footer_zs{  width: 1000px;height: auto;border-top: 1px solid #606060;margin-top: 22px;padding: 5px 0px; overflow: hidden;}
+
+.footer_zs .pull-right{  float: right;}
+.footer_zs .pull-right a { display: block;float: left; margin-left: 5px; height: 47px;}
+.footer_zs span a{   display: block;float: left;margin-top: 13px;margin-left: -20px;}
+.copyright{ font-size: 15px;color: #ffffff;width: 500px; float: left; height: 47px; line-height: 47px; }
+.hide{display: none}

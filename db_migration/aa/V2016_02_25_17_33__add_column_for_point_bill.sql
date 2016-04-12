@@ -1,0 +1,1 @@
+ALTER TABLE `aa`.`point_bill` ADD COLUMN `order_id` BIGINT UNSIGNED AFTER `id`;

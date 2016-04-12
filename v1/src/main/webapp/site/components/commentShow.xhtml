@@ -1,0 +1,43 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<!-- 该组件主要是用来展示comment，用在回复和删除comment中。参数：username 评论人；createTime 评论时间；title 评论标题；body 评论内容	-->
+	<div class="comment comment-by-node-author comment-by-viewer clearfix">
+		<div class="attribution">
+			<div class="submitted">
+				<p class="commenter-name">
+					<span> #{username} </span>
+				</p>
+				<p class="comment-time">
+					<span>#{createTime}</span>
+				</p>
+			</div>
+		</div>
+
+		<div class="comment-text">
+			<div class="comment-arrow"></div>
+			<h3>
+				#{title}
+			</h3>
+			<div class="content">
+				<span class="rdf-meta"></span>
+				<div
+					class="field field-name-comment-body field-type-text-long field-label-hidden">
+					<div class="field-items">
+						<div class="field-item even">
+							<h:outputText value="#{body}" escape="false"></h:outputText>
+						</div>
+					</div>
+				</div>
+			</div>
+			<ul class="links inline">
+				<li class="comment-delete first">
+				</li>
+			</ul>
+		</div>
+		<!-- /.comment-text -->
+	</div>
+</f:view>

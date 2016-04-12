@@ -1,0 +1,71 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+    <ui:define name="content">
+    	<div class="entry">
+    	<p:toolbar>
+            <p:toolbarGroup>
+	            <h:outputLabel style="padding-left: 15px;" value="#{commonMsg.currentPositionLabel}投资风险保障金管理"></h:outputLabel>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+	            <p:separator />  
+	            <p:button value="添加投资风险保障金" outcome="/admin/risk/riskIndemniticationEdit"></p:button>
+            </p:toolbarGroup>
+        </p:toolbar>
+        <h:form id="form"> 
+
+			<p:spacer></p:spacer> 
+                
+                <p:panel id="filters">
+                    <h:inputText id="searchId" value="#{riskIndemniticationList.example.id}"></h:inputText>
+                  <!--   <h:inputText id="searchTitle" value="#{{riskIndemniticationList.example.rank}"></h:inputText> -->
+                    <p:commandButton update="dataTable" process="filters"
+                        value="#{commonMsg.searchLabel}"></p:commandButton>
+                </p:panel>
+                <p:watermark for="searchId" value="#{commonMsg.IDLabel}" />  
+                <!-- <p:watermark for="searchTitle" value="等级"></p:watermark> -->
+            
+            <p:spacer></p:spacer> 
+          
+            <p:dataTable lazy="true" id="dataTable" value="#{riskIndemniticationList.lazyModel}" var="riskIndemnitication" 
+                paginator="true" paginatorPosition="bottom" rows="15" currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+                paginatorTemplate="#{commonMsg.paginatorTemplate}"
+                emptyMessage="#{commonMsg.noResultMsg}">
+                <p:column headerText="#{commonMsg.IDLabel }" sortBy="{riskIndemnitication.id" style="width:250px;">
+                    <h:outputText  value="#{riskIndemnitication.id}"></h:outputText>
+                </p:column>
+                <p:column headerText="风险等级">
+                    <h:outputText  value="#{riskIndemnitication.riskRank.rank}"></h:outputText>
+                </p:column>
+                <p:column headerText="利率" >
+                    <h:outputText  value="#{riskIndemnitication.rate}%"></h:outputText>
+                </p:column>
+                 
+                 <p:column headerText="#{commonMsg.descriptionLabel}" >
+                 <h:outputText  value="#{riskIndemnitication.description}"></h:outputText>
+                 </p:column>
+                    
+                <p:column headerText="#{commonMsg.actionLabel}">
+                    <!-- <sec:ifAllGranted {riskIndemnitications="ROLE_EDIT"> -->
+                    <h:link value="#{commonMsg.editLabel}" outcome="/admin/risk/riskIndemniticationEdit?id=#{riskIndemnitication.id}"></h:link> |
+                    <a href="javascript:void(0)" onclick="$('#form\\:deleteId').val('#{riskIndemnitication.id}');confirmDialog.show()">#{commonMsg.deleteLabel}</a> 
+                    <!-- </sec:ifAllGranted> -->
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog width="500" id="confirmDialog" widgetVar="confirmDialog" severity="alert" header="#{commonMsg.confirmDetele}" message="确定要删除此风险保障金？">
+                <h:inputHidden value="#{riskIndemniticationHome.id}" id="deleteId"></h:inputHidden>
+                    <p:commandButton id="confirm" value="#{commonMsg.confirmLabel}" action="#{riskIndemniticationHome.delete}" ajax="false" style="margin-left:180px;" />  
+                    <p:commandButton id="decline" value="#{commonMsg.cancelLabel}" onclick="confirmDialog.hide()" type="button" />
+            </p:confirmDialog>
+        </h:form>
+       </div>
+    </ui:define>
+</ui:composition>

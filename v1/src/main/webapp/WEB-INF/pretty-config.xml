@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pretty-config xmlns="http://ocpsoft.com/prettyfaces/3.3.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://ocpsoft.com/prettyfaces/3.3.0
+               http://ocpsoft.com/xml/ns/prettyfaces/ocpsoft-pretty-faces-3.3.0.xsd">
+	<url-mapping id="spage">
+		<pattern value="/spage/#{/.+/pageName}" />
+		<view-id value="themepath:#{pageName}.htm" />
+	</url-mapping>
+	<!-- 资金托管 -->
+	<url-mapping id="trusteeshipWebRetrun">
+		<pattern value="/trusteeship_return_web/#{trusteeshipHome.operationType}"></pattern>
+		<view-id value="themepath:user/center.htm"></view-id>
+		<action>#{trusteeshipHome.handleWebReturn}</action>
+	</url-mapping>
+	<url-mapping id="trusteeshipMobRetrun">
+		<pattern value="/trusteeship_return_mob/#{trusteeshipHome.operationType}"></pattern>
+		<view-id value="themepath:user/center.htm"></view-id>
+		<action>#{trusteeshipHome.handleMobReturn}</action>
+	</url-mapping>
+	<url-mapping id="trusteeshipS2SRetrun">
+		<pattern value="/trusteeship_return_s2s/#{trusteeshipHome.operationType}"></pattern>
+		<view-id value="themepath:user/center.htm" />
+		<action>#{trusteeshipHome.handleS2SWebReturn}</action>
+	</url-mapping>
+
+	<!-- 支付 -->
+	<url-mapping id="recharge">
+		<pattern value="/to_recharge/#{rechargeHome.id}"></pattern>
+		<view-id value="themepath:user/recharge.htm" />
+		<action>#{rechargeHome.toRecharge}</action>
+	</url-mapping>
+	<url-mapping id="rechargeReturnWeb">
+		<pattern value="/recharge_return_web/#{rechargeHome.instance.rechargeWay}"></pattern>
+		<view-id value="themepath:user/center.htm" />
+		<action>#{rechargeHome.receiveRechargeReturnWeb}</action>
+	</url-mapping>
+	<url-mapping id="rechargeReturnS2S">
+		<pattern value="/recharge_return_s2s/#{rechargeHome.instance.rechargeWay}"></pattern>
+		<view-id value="themepath:user/center.htm" />
+		<action>#{rechargeHome.receiveRechargeReturnS2S}</action>
+	</url-mapping>
+
+
+</pretty-config>

@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.UserMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
+
+    <resultMap id="userResultMap" type="UserModel">
+        <id column="id" property="id"></id>
+        <result column="login_name" property="loginName"></result>
+        <result column="password" property="password"></result>
+        <result column="email" property="email"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="register_time" property="registerTime"></result>
+        <result column="last_login_time" property="lastLoginTime"></result>
+        <result column="last_modified_time" property="lastModifiedTime"></result>
+        <result column="last_modified_user" property="lastModifiedUser"></result>
+        <result column="avatar" property="avatar"></result>
+        <result column="referrer" property="referrer"></result>
+        <result column="status" property="status"></result>
+        <result column="salt" property="salt"></result>
+        <result column="channel" property="channel"></result>
+        <result column="source" property="source"></result>
+        <result column="province" property="province"></result>
+        <result column="city" property="city"></result>
+        <result column="auto_invest_status" property="autoInvestStatus"></result>
+        <result column="last_bill_time" property="lastBillTime"></result>
+        <association property="account" javaType="com.tuotiansudai.repository.model.AccountModel">
+            <id column="id" property="id"></id>
+            <result column="login_name" property="loginName"></result>
+            <result column="user_name" property="userName"></result>
+            <result column="identity_number" property="identityNumber"></result>
+            <result column="pay_user_id" property="payUserId"></result>
+            <result column="pay_account_id" property="payAccountId"></result>
+            <result column="balance" property="balance"></result>
+            <result column="freeze" property="freeze"></result>
+            <result column="point" property="point"></result>
+            <result column="register_time" property="registerTime"></result>
+            <result column="auto_invest" property="autoInvest"></result>
+        </association>
+    </resultMap>
+
+    <select id="findByEmail" parameterType="java.lang.String" resultMap="userResultMap">
+      select * from user where email = #{email} and status = 'ACTIVE'
+    </select>
+
+    <select id="findByMobile" parameterType="java.lang.String" resultMap="userResultMap">
+      select * from user where mobile = #{mobile}
+    </select>
+
+    <select id="findByLoginName" parameterType="java.lang.String" resultMap="userResultMap">
+      select
+          u.*,
+          IF(au.login_name is null, "0", "1") as auto_invest_status
+      from user u
+      left join auto_invest_plan au on au.login_name = u.login_name and au.enabled=1
+      where u.login_name = #{loginName}
+    </select>
+
+    <select id="lockByLoginName" parameterType="java.lang.String" resultMap="userResultMap">
+        select * from user where login_name = #{loginName} for update
+    </select>
+
+    <select id="findByLoginNameOrMobile" parameterType="java.lang.String" resultMap="userResultMap">
+      select * from user where login_name = #{loginNameOrMobile} or mobile = #{loginNameOrMobile}
+    </select>
+
+    <insert id="create" parameterType="UserModel" useGeneratedKeys="true" keyProperty="id">
+      insert into user (login_name, password, mobile, email, register_time, last_modified_time, referrer, status, salt, channel, source)
+      value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{lastModifiedTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source})
+    </insert>
+
+    <update id="updatePasswordByLoginName" parameterType="map">
+        update user set password = #{password} where login_name = #{loginName}
+    </update>
+
+    <update id="updateUser" parameterType="com.tuotiansudai.repository.model.UserModel">
+        update user set email = #{email},
+                        mobile = #{mobile},
+                        last_modified_time = #{lastModifiedTime},
+                        last_modified_user = #{lastModifiedUser},
+                        status = #{status},
+                        referrer = #{referrer},
+                        province = #{province},
+                        city = #{city}
+                        where id = #{id}
+    </update>
+
+    <select id="findAllUser" parameterType="map" resultMap="userResultMap">
+        select
+        u.*,
+        a.*,
+        IF(au.login_name is null, "0", "1") as auto_invest_status
+        from
+        <choose>
+            <when test="roleStage == null ">
+                user u
+            </when>
+            <when test="roleStage.name() == 'NORMAL_USER' ">
+                (SELECT
+                j.*
+                FROM
+                user j
+                WHERE
+                NOT EXISTS( SELECT
+                1
+                FROM
+                (SELECT
+                ff.login_name
+                FROM
+                (SELECT
+                k.login_name
+                FROM
+                user_role o
+                RIGHT JOIN referrer_relation k ON o.login_name = k.referrer_login_name
+                AND k.level = 1
+                WHERE
+                o.role = 'STAFF' UNION SELECT
+                h.login_name
+                FROM
+                user_role h
+                WHERE
+                h.role IN ('STAFF' , 'AGENT')) ff) gg
+                WHERE
+                gg.login_name = j.login_name) and EXISTS(select 1 from invest i where j.login_name = i.login_name) ) u
+
+            </when>
+            <when test="roleStage.name() == 'RECOMMENDATION' ">
+                (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
+                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'STAFF') gg on j.login_name = gg.login_name)
+                u
+            </when>
+            <otherwise>
+                user u join user_role r on u.login_name = r.login_name
+            </otherwise>
+        </choose>
+        left join account a on u.login_name = a.login_name
+        left join auto_invest_plan au on u.login_name = au.login_name and enabled=1
+        <where>
+            <if test="roleStage !=null and roleStage.name() != 'RECOMMENDATION' and  roleStage.name()!='NORMAL_USER' ">
+                and r.role = #{roleStage}
+            </if>
+            <if test="email !=null and email !='' ">
+                and u.email like '${email}%'
+            </if>
+            <if test="mobile !=null and mobile !='' ">
+                and u.mobile like '${mobile}%'
+            </if>
+            <if test="loginName !=null and loginName != '' ">
+                and u.login_name = #{loginName}
+            </if>
+            <if test="beginTime !=null">
+                and u.register_time >= #{beginTime}
+            </if>
+            <if test="endTime !=null ">
+                and u.register_time &lt;= #{endTime}
+            </if>
+            <if test="referrer !=null and referrer != '' ">
+                and u.referrer = #{referrer}
+            </if>
+            <if test="channel !=null and channel != '' ">
+                and u.channel = #{channel}
+            </if>
+            <if test="source !=null">
+                and u.source = #{source}
+            </if>
+
+        </where>
+        order by u.register_time desc
+        limit #{index},#{pageSize}
+    </select>
+
+    <select id="findAllUserCount" parameterType="map" resultType="int">
+        select count(1) from
+        <choose>
+            <when test="roleStage == null">
+                user u
+            </when>
+            <when test="roleStage.name() == 'NORMAL_USER' ">
+                (SELECT
+                j.*
+                FROM
+                user j
+                WHERE
+                NOT EXISTS( SELECT
+                1
+                FROM
+                (SELECT
+                ff.login_name
+                FROM
+                (SELECT
+                k.login_name
+                FROM
+                user_role o
+                RIGHT JOIN referrer_relation k ON o.login_name = k.referrer_login_name
+                AND k.level = 1
+                WHERE
+                o.role = 'STAFF' UNION SELECT
+                h.login_name
+                FROM
+                user_role h
+                WHERE
+                h.role IN ('STAFF' , 'AGENT')) ff) gg
+                WHERE
+                gg.login_name = j.login_name) and EXISTS(select 1 from invest i where j.login_name = i.login_name) ) u
+
+            </when>
+            <when test="roleStage.name() == 'RECOMMENDATION' ">
+                (select j.* from user j JOIN (select k.login_name from user_role o RIGHT join referrer_relation k on
+                o.login_name = k.referrer_login_name and k.level = 1 where o.role = 'STAFF') gg on j.login_name = gg.login_name)
+                u
+            </when>
+            <otherwise>
+                user u join user_role r on u.login_name = r.login_name
+            </otherwise>
+        </choose>
+
+        <where>
+
+            <if test="roleStage !=null and roleStage.name() != 'RECOMMENDATION' and  roleStage.name()!='NORMAL_USER' ">
+                and r.role = #{roleStage}
+            </if>
+            <if test="email !=null and email !='' ">
+                and u.email like '${email}%'
+            </if>
+            <if test="mobile !=null and mobile !='' ">
+                and u.mobile like '${mobile}%'
+            </if>
+            <if test="loginName !=null and loginName != '' ">
+                and u.login_name = #{loginName}
+            </if>
+            <if test="beginTime !=null">
+                and u.register_time >= #{beginTime}
+            </if>
+            <if test="endTime !=null ">
+                and u.register_time &lt;= #{endTime}
+            </if>
+            <if test="referrer !=null and referrer != '' ">
+                and u.referrer = #{referrer}
+            </if>
+            <if test="channel !=null and channel != '' ">
+                and u.channel = #{channel}
+            </if>
+            <if test="source !=null">
+                and u.source = #{source}
+            </if>
+        </where>
+    </select>
+
+    <select id="findLoginNameLike" parameterType="java.lang.String" resultType="java.lang.String">
+        select login_name from user where login_name like CONCAT(CONCAT('%', #{loginName}), '%')
+    </select>
+
+    <select id="findStaffByLikeLoginName" parameterType="java.lang.String" resultType="java.lang.String">
+        select login_name from user u where u.login_name like CONCAT(CONCAT('%', #{loginName}), '%')
+        and exists(select * from user_role r where r.login_name = u.login_name and r.role = 'STAFF')
+    </select>
+
+    <select id="findAllChannels" resultType="java.lang.String">
+        select distinct channel from user where channel is not NULL
+    </select>
+
+    <select id="findAllUserChannels" resultType="java.lang.String">
+        select IFNULL(channel,'其他') from user group by channel order by channel desc
+    </select>
+
+    <select id="findUserByProvince" resultMap="userResultMap">
+        select * from user where province is NULL or province = '' order by register_time DESC limit 0,100
+    </select>
+
+    <select id="searchAllUsers" parameterType="map" resultMap="userResultMap">
+        SELECT
+        *
+        FROM
+        user u
+        LEFT JOIN account a
+        ON u.`login_name` = a.`login_name`
+        <where>
+            <if test="identityNumber != null and identityNumber != '' ">
+                AND a.`identity_number` = #{identityNumber}
+            </if>
+            <if test="loginName != null and loginName != '' ">
+                AND u.`login_name` = #{loginName}
+            </if>
+            <if test="referrer != null and referrer != '' ">
+                AND u.`referrer` = #{referrer}
+            </if>
+            <if test="mobile != null and mobile != '' ">
+                AND u.`mobile` = #{mobile}
+            </if>
+        </where>
+        ORDER BY u.`register_time` DESC
+    </select>
+
+    <select id="findUsersAccountBalance" parameterType="map" resultMap="userResultMap">
+        SELECT
+        *,
+        (SELECT max(created_time) FROM user_bill ub where ub.login_name = u.login_name) as last_bill_time
+        FROM
+        user u
+        JOIN account a
+        ON u.`login_name` = a.`login_name`
+        AND a.`balance` >= #{balanceMin}
+        AND a.`balance` &lt;= #{balanceMax}
+        <if test="loginName != null and loginName != '' ">
+            AND a.`login_name` = #{loginName}
+        </if>
+        WHERE NOT EXISTS
+        (SELECT
+        1
+        FROM
+        user_role r
+        WHERE u.`login_name` = r.`login_name`
+        AND r.`role` = 'LOANER')
+        ORDER BY a.`balance` DESC
+        limit #{startLimit}, #{endLimit}
+    </select>
+
+    <select id="findUsersAccountBalanceSum" parameterType="map" resultType="long">
+        SELECT
+        IFNULL(SUM(a.`balance`), 0)
+        FROM
+        user u
+        JOIN account a
+        ON u.`login_name` = a.`login_name`
+        AND a.`balance` >= #{balanceMin}
+        AND a.`balance` &lt;= #{balanceMax}
+        <if test="loginName != null and loginName != '' ">
+            AND a.`login_name` = #{loginName}
+        </if>
+        WHERE NOT EXISTS
+        (SELECT
+        1
+        FROM
+        user_role r
+        WHERE u.`login_name` = r.`login_name`
+        AND r.`role` = 'LOANER')
+    </select>
+
+    <select id="findUsersAccountBalanceCount" parameterType="map" resultType="int">
+        SELECT
+        IFNULL(count(*), 0)
+        FROM
+        user u
+        JOIN account a
+        ON u.`login_name` = a.`login_name`
+        AND a.`balance` >= #{balanceMin}
+        AND a.`balance` &lt;= #{balanceMax}
+        <if test="loginName != null and loginName != '' ">
+            AND a.`login_name` = #{loginName}
+        </if>
+        WHERE NOT EXISTS
+        (SELECT
+        1
+        FROM
+        user_role r
+        WHERE u.`login_name` = r.`login_name`
+        AND r.`role` = 'LOANER')
+    </select>
+
+    <select id="findAllUsers" resultType="java.lang.String">
+        select login_name from user
+        <if test="districtName != null and districtName.size != 0">
+            where province in
+            <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="findNaturalUser" resultType="java.lang.String">
+        SELECT
+          us.login_name
+        FROM
+          user us
+          JOIN invest t
+            ON us.`login_name` = t.`login_name`
+        and t.`status` = 'SUCCESS'
+          where NOT EXISTS
+          (SELECT
+            1
+          FROM
+            referrer_relation r
+            JOIN user_role u
+              ON r.`referrer_login_name` = u.`login_name`
+              AND u.`role` = 'STAFF'
+          WHERE r.`level` = '1'
+            AND t.`login_name` = r.`login_name`)
+          AND NOT EXISTS
+          (SELECT
+            1
+          FROM
+            user_role ur
+          WHERE ur.role IN ('STAFF', 'AGENT')
+            AND t.`login_name` = ur.`login_name`)
+        <if test="districtName != null and districtName.size != 0">
+            and us.province in
+            <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+    <select id="findUsersBirthdayMobile" resultType="java.lang.String">
+        SELECT DISTINCT(u.mobile) FROM user u
+        INNER JOIN account a ON a.`login_name` = u.`login_name`
+        INNER JOIN invest iv on a.`login_name` = iv.`login_name`
+        WHERE IF(LENGTH(identity_number)=18,SUBSTRING(identity_number,11,2),SUBSTRING(identity_number,9,2)) - DATE_FORMAT(now(),'%m') = 0
+        AND iv.`status`='SUCCESS';
+    </select>
+
+    <select id="findAllByRole" parameterType="map" resultType="java.lang.String">
+        SELECT t.login_name FROM user_role t join user u on t.login_name = u.login_name
+        <if test="districtName != null and districtName.size != 0">
+            and u.province in
+            <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        WHERE t.role = #{role};
+    </select>
+
+    <select id="findAllRecommendation" resultType="java.lang.String">
+        SELECT
+        r.login_name
+        FROM
+        referrer_relation r
+        JOIN user_role u
+        ON r.`referrer_login_name` = u.`login_name`
+        AND u.`role` = 'STAFF'
+        <if test="districtName != null and districtName.size != 0">
+            join user ur on ur.login_name = r.login_name
+            and ur.province in
+            <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        WHERE r.`level` = '1'
+    </select>
+
+    <select id="findUsersMobileByLoginName" parameterType="java.lang.String" resultType="java.lang.String">
+       SELECT u.mobile from user u where u.login_name = #{loginName}
+    </select>
+
+</mapper>

@@ -1,0 +1,2 @@
+update `url_mapping` set view_id = 'themepath:user/loan_contract_new.htm' where id = 'user_loan-contract';
+update `url_mapping` set view_id = 'themepath:user/invest_contract_new.htm'  where id = 'user_invest-contract';

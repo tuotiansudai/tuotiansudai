@@ -1,0 +1,213 @@
+<ui:composition template="../center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="activeCenterMenuUrl" value="/user/loan/repaying"></ui:param>
+	<ui:define name="center_right">
+		<script>
+			/** 显示还款计划dialog*/
+			function showRepays() {
+				$.artDialog({
+					content : document.getElementById('repaysDialog'),
+					id : 'repays',
+					fixed : true,
+					lock : true,
+				});
+			}
+		</script>
+		<div class="center_right">
+			<div class="center_box01">
+				<ui:include src="../userCenterTop.xhtml"></ui:include>
+				<ui:include src="top_include.xhtml"></ui:include>
+			</div>
+			<div class="h20"></div>
+			<h:form>
+				<h:panelGroup id="dataTable">
+					<div class="hd">
+						<ul class="slidings">
+							<li id="four1" class="hover"><h:link
+									outcome="pretty:user_loan_repaying" value="还款中"></h:link></li>
+							<li id="four3"><h:link outcome="pretty:user_loan_raising"
+									value="募集中"></h:link></li>
+							<li id="four2"><h:link outcome="pretty:user_loan_finished"
+									value="已结清"></h:link></li>
+							<li id="four4" class="last"><h:link
+									outcome="pretty:user_loan_fail" value="流标"></h:link></li>
+						</ul>
+						<div id="con_four_1" class="slidnr">
+							<ui:param name="restriction"
+								value="#{'(loan.status=\''}#{LoanStatus.REPAYING}#{'\' or loan.status=\''}#{LoanStatus.OVERDUE}#{'\' or loan.status=\''}#{LoanStatus.BAD_DEBT}#{''}')"></ui:param>
+							<f:event type="preRenderComponent"
+								listener="#{loanList.addRestriction(restriction)}"></f:event>
+							<f:event type="preRenderComponent"
+								listener="#{loanList.example.user.setId(loginUserInfo.loginUserId)}"></f:event>
+							<f:event type="preRenderComponent"
+								listener="#{loanList.setPageSize(7)}"></f:event>
+							<f:event type="preRenderComponent"
+								listener="#{loanList.addOrder('loan.commitTime','desc')}"></f:event>
+							<table width="786" border="0" cellspacing="0" cellpadding="0"
+								class="tab">
+								<tr>
+									<td class="tab01 tab04">借款标题</td>
+									<td class="tab01">放款时间</td>
+									<td class="tab01">借款金额/待还总额</td>
+									<td class="tab01">下次还款</td>
+									<td class="tab01">状态</td>
+									<td class="tab01">&#160;</td>
+								</tr>
+								<ui:repeat var="loan" value="#{loanList.lazyModelData}"
+									varStatus="status">
+									<tr class="#{status.index%2==0?'tab02':''} bg"
+										style="#{status.index%2==0?'height:55px':''}">
+										<td class="tab02 tab04 tab06" style="width: 200px;"><a
+											href="#{path}/loan/#{loan.id}" target="_blank"
+											title="#{loan.name}(#{loan.id})">#{stringHome.ellipsis(loan.name,10)}</a>
+											<!-- <br /> <LABEL title="#{loan.type.name}">#{stringHome.ellipsis(loan.type.name,10)}</LABEL> -->
+											<br />利率：<h:outputText value="#{loan.rate}">
+												<f:convertNumber type="percent" minFractionDigits="2" />
+											</h:outputText>
+											期数：#{loan.repayRoadmap.paidPeriod}/#{loan.repayRoadmap.repayPeriod}
+										</td>
+
+										<td class="tab02 tab06"><h:outputText
+												value="#{loan.giveMoneyTime}">
+												<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"
+													locale="cn" />
+											</h:outputText><br /> <h:outputText value="#{loan.giveMoneyTime}">
+												<f:convertDateTime pattern="HH:mm:ss" timeZone="GMT+8"
+													locale="cn" />
+											</h:outputText></td>
+
+										<td class="tab02 tab06"><h:outputText
+												value="#{loan.money}">
+												<f:convertNumber maxFractionDigits="2" />
+											</h:outputText>/<h:outputText value="#{loan.repayRoadmap.unPaidMoney}">
+												<f:convertNumber maxFractionDigits="2" />
+											</h:outputText></td>
+
+										<td class="tab02 tab06"><h:outputText
+												value="#{loan.repayRoadmap.nextRepayDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"
+													locale="cn" />
+											</h:outputText> <br /> <h:outputText
+												value="#{loan.repayRoadmap.nextRepayMoney}">
+												<f:convertNumber maxFractionDigits="2" />
+											</h:outputText>元</td>
+
+										<td class="tab02 tab06">#{dictUtil.getValue('loan',loan.status)}</td>
+
+										<td class="tab02 tab06"><h:commandLink value="还款计划">
+												<p:ajax
+													listener="#{loanHome.instance.setLoanRepays(loan.loanRepays)}"
+													update=":repays" oncomplete="showRepays()"></p:ajax>
+											</h:commandLink>|<a href="#{path}/user/loan-contract/#{loan.id}" target="_blank">合同</a></td>
+									</tr>
+								</ui:repeat>
+							</table>
+						</div>
+					</div>
+					<div class="page_box">
+						<div class="page_r">
+							<ui:include src="paging_include.xhtml"></ui:include>
+						</div>
+					</div>
+				</h:panelGroup>
+			</h:form>
+		</div>
+		<div class="clear"></div>
+		<!-- 还款计划 -->
+		<h:form id="repays">
+			<div id="repaysDialog" style="display: none">
+				<div id="con_four_1" class="slidnr">
+				<ui:param name="ar" value="#{repayCalculator.calculateAdvanceRepay(loanHome.instance.loanRepays[0].loan.id)}"></ui:param>
+					<!-- 提前还款-->
+					<h:commandLink onclick="return confirm('你确定要提前还款吗？');"
+						style="float: right;" value="提前还款(本金:#{ar.corpus};手续费:#{ar.repayFee};罚息:#{ar.feeToSystem+ar.feeToInvestor})"
+						action="#{repayHome.advanceRepay(loanHome.instance.loanRepays[0].loan.id)}">
+					</h:commandLink>
+					<table width="786" border="0" cellspacing="0" cellpadding="0"
+						class="tab">
+						<tr>
+							<td class="tab01 tab04">期数</td>
+							<td class="tab01">本金</td>
+							<td class="tab01">利息</td>
+							<td class="tab01">罚息</td>
+							<td class="tab01">手续费</td>
+							<td class="tab01">总额</td>
+							<td class="tab01">还款日</td>
+							<td class="tab01">还款时间</td>
+							<td class="tab01">状态</td>
+							<td class="tab01">操作</td>
+						</tr>
+						<ui:repeat var="ir" value="#{loanHome.instance.loanRepays}"
+							varStatus="status">
+							<tr class="#{status.index%2==0?'tab02':''} bg">
+								<td class="tab02 tab04 tab06">#{ir.period}</td>
+								<td class="tab02 tab06"><h:outputText value="#{ir.corpus}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2"
+											minFractionDigits="2" />
+									</h:outputText></td>
+								<td class="tab02 tab06"><h:outputText
+										value="#{ir.interest}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2"
+											minFractionDigits="2" />
+									</h:outputText></td>
+								<td class="tab02 tab06"><h:outputText
+										value="#{ir.defaultInterest}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2"
+											minFractionDigits="2" />
+									</h:outputText></td>
+								<td class="tab02 tab06"><h:outputText value="#{ir.fee}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2"
+											minFractionDigits="2" />
+									</h:outputText></td>
+								<td class="tab02 tab06"><h:outputText
+										value="#{ir.corpus+ir.interest+ir.defaultInterest+ir.fee}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2"
+											minFractionDigits="2" />
+									</h:outputText></td>
+								<td class="tab02 tab06"><h:outputText
+										value="#{ir.repayDay}">
+										<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+									</h:outputText></td>
+								<td class="tab02 tab06"><h:outputText value="#{ir.time}"
+										rendered="#{not empty ir.time}">
+										<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+											timeZone="GMT+8" />
+									</h:outputText> <h:outputText value="待还" rendered="#{empty ir.time}">
+									</h:outputText></td>
+								<td class="tab02 tab06">#{dictUtil.getValue('repay_status',ir.status)}</td>
+								<td class="tab02 tab06">
+									<!-- 正常还款 -->
+									<ui:fragment
+										rendered="#{ir.status ==RepayStatus.REPAYING or ir.status == RepayStatus.WAIT_REPAY_VERIFY}">
+										<ui:fragment
+											rendered="#{repayService.isInRepayPeriod(ir.repayDay)}">
+											<h:commandLink onclick="return confirm('你确定要还款吗？');"
+												value="还款" action="#{repayHome.normalRepay(ir.id)}" target="_blank">
+											</h:commandLink>
+										</ui:fragment>
+									</ui:fragment>
+									<!-- 逾期还款 -->
+									<ui:fragment
+										rendered="#{ir.status == RepayStatus.WAIT_REPAY_VERIFY or ir.status ==RepayStatus.OVERDUE or ir.status==RepayStatus.BAD_DEBT}">
+										<h:commandLink onclick="return confirm('你确定要还款吗？');"
+											value="还款" action="#{repayHome.overdueRepay(ir.id)}" target="_blank">
+										</h:commandLink>
+									</ui:fragment>
+								</td>
+							</tr>
+						</ui:repeat>
+					</table>
+				</div>
+			</div>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

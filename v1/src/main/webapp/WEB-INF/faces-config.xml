@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+	version="2.0">
+        	
+    <factory>
+		<application-factory>com.esoft.core.application.ArcherApplicationFactory</application-factory>
+<!-- 	    <exception-handler-factory>org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory</exception-handler-factory> -->
+	</factory>
+
+    <application>
+    
+    	<navigation-handler>com.esoft.core.application.ArcherNavigationHandler</navigation-handler>
+    	
+        <el-resolver>
+            org.springframework.web.jsf.el.SpringBeanFacesELResolver
+        </el-resolver>
+        
+        
+        <locale-config >
+            <default-locale>zh_CN</default-locale>
+            <supported-locale>en</supported-locale>
+        </locale-config>
+        
+        <message-bundle>com.esoft.core.jsf.validator.Messages</message-bundle>
+        
+        <resource-bundle>
+            <base-name>com.esoft.archer.common.LocalStrings</base-name>
+            <var>commonMsg</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>com.esoft.archer.user.LocalStrings</base-name>
+            <var>userMsg</var>
+        </resource-bundle>
+         <resource-bundle>
+            <base-name>com.esoft.archer.urlmapping.LocalStrings</base-name>
+            <var>mappingMsg</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>com.esoft.archer.menu.LocalStrings</base-name>
+            <var>menuMsg</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>com.esoft.archer.term.LocalStrings</base-name>
+            <var>termMsg</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>com.esoft.archer.node.LocalStrings</base-name>
+            <var>nodeMsg</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>com.esoft.archer.product.LocalStrings</base-name>
+            <var>productMsg</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>com.esoft.archer.theme.LocalStrings</base-name>
+            <var>themeMsg</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>com.esoft.archer.config.LocalStrings</base-name>
+            <var>configMsg</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>com.esoft.archer.comment.LocalStrings</base-name>
+            <var>commentMsg</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>com.esoft.archer.language.LocalStrings</base-name>
+            <var>languageMsg</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>com.esoft.archer.component.LocalStrings</base-name>
+            <var>componentMsg</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>com.esoft.archer.link.LocalStrings</base-name>
+            <var>linkMsg</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>com.esoft.archer.banner.LocalStrings</base-name>
+            <var>bannerMsg</var>
+        </resource-bundle>
+        
+    </application>
+    
+    <!-- session超时以后，处理异常。 -->
+    <!--<factory>-->
+  		<!--<exception-handler-factory>com.esoft.core.application.ArcherExceptionHandlerFactory</exception-handler-factory>-->
+ 	<!--</factory>-->
+
+    <lifecycle>
+        <phase-listener>
+            com.esoft.core.jsf.MultiPageMessagesSupport
+        </phase-listener>
+        <phase-listener>
+            com.esoft.core.jsf.lifecycle.EmptyStringValidation
+        </phase-listener>
+        <phase-listener>
+            com.esoft.core.jsf.lifecycle.FileUploadFilenameExtensionValidation
+        </phase-listener>
+    </lifecycle>
+    
+    <managed-bean>
+    <managed-bean-name>currentDate</managed-bean-name>
+    <managed-bean-class>java.util.Date</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+</managed-bean>
+	
+    
+</faces-config>

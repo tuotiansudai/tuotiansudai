@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+
+	<h:head>
+        <ui:insert name="meta">
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+			<title> Archer - Manage - 益佳腾飞有限公司</title>
+        </ui:insert>
+        <ui:insert name="head">
+            <link href="#{appInfo.contextPath}/include/css/admin.css" type="text/css" rel="stylesheet"/>
+            <link href="#{appInfo.contextPath}/include/css/style.css" type="text/css" rel="stylesheet"/>
+            <script src="#{appInfo.contextPath}/js/locales_zh_CN.js"></script>
+            <script src="#{appInfo.contextPath}/include/js/men.js"></script>
+        </ui:insert>
+       <ui:insert name="afterHead"></ui:insert>
+       
+	</h:head>
+
+	<h:body>
+	   <p:growl autoUpdate="true"></p:growl>
+        <div id="Box">
+        <ui:insert name="top">
+            <ui:include src="/admin/layout/top.xhtml"></ui:include>
+        </ui:insert>
+        
+        <ui:insert name="header">
+            <ui:include src="/admin/layout/header.xhtml"></ui:include>
+        </ui:insert>
+        <div id="Middle">
+            <div class="Menu"> 
+       <em class="a3"><img src="#{appInfo.contextPath}/include/images/admin/a8.jpg"/></em> 
+        <em class="a4"><img src="#{appInfo.contextPath}/include/images/admin/a9.jpg"/></em>
+       <div class="me">
+         <strong>菜单:</strong><a href="#">[编辑]</a>
+       </div>
+       <div class="menu_left">
+         <i><a href="#">网站内容</a></i>
+         <i class="bj"><a href="#">编辑菜单</a></i>
+         <i><a href="#">我要编辑</a></i>
+         <i><a href="#">保存修改</a></i>
+         <i><a href="#">Gazduire</a></i>
+       </div>
+       <div class="clear"></div>
+     </div>
+        <div class="Content">
+        <em class="a5"><img src="#{appInfo.contextPath}/include/images/admin/a15.jpg"/></em> <em class="a6"><img src="#{appInfo.contextPath}/include/images/admin/a16.jpg"/></em><em class="a7"><img src="#{appInfo.contextPath}/include/images/admin/a17.jpg"/></em> <em class="a8"><img src="#{appInfo.contextPath}/include/images/admin/a18.jpg"/></em>
+        <div class="Detail">
+          <i>+ 添加内容</i>
+          <div class="tian"><a href="#">添加内容</a></div>
+          <div class="Project">
+             <strong>只显示符合以下条件的项目:</strong>
+             <div class="zt">
+               状态：<select name="" class="zhuang">
+                 <option>-Select State-</option>
+               </select>
+            </div>
+            <div class="zt">
+               类型：<select name="" class="zhuang deng">
+                 <option>等于</option>
+               </select> <input name="" type="text" class="zhu" value="-Select State-"/>
+            </div>
+            <div class="zt">
+               语言：<select name="" class="zhuang deng">
+                 <option>等于</option>
+               </select> <input type="text" class="zhu" value="-Select State-"/>
+            </div>
+            <input name="" type="image" src="#{appInfo.contextPath}/include/images/admin/a35.jpg" class="cha"/>
+          </div>
+          
+          <p:panel header="dd"> 
+                <p:dataTable id="dataTable" value="#{permissionList.lazyModel}"
+                    var="permission" paginator="true" paginatorPosition="bottom"
+                    rows="10" emptyMessage="#{commonMsg.noData}">
+                    <p:column headerText="#{commonMsg.IDLabel}"
+                        sortBy="#{permission.id}">
+                        <h:outputText value="#{permission.id}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="#{commonMsg.objectName}"
+                        sortBy="#{permission.name}">
+                        <h:outputText value="#{permission.name}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="#{commonMsg.description}">
+                        <h:outputText value="#{permission.description}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="#{commonMsg.actionLabel}">
+                        <h:link outcome="/user/editPermission.htm?id=#{permission.id}"> #{commonMsg.editLabel} </h:link>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+          <div class="clear"></div>
+        </div>
+     </div>
+        </div>
+        <ui:insert name="footer">
+            <ui:include src="/admin/layout/footer.xhtml"></ui:include>
+        </ui:insert>
+        </div>
+      
+        
+	</h:body>
+</html>

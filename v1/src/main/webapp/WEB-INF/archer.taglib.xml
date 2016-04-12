@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<facelet-taglib xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd"
+	version="2.0">
+	
+	<namespace>http://java.sun.com/jsf/archer</namespace>
+
+	<tag>
+		<tag-name>validateNumber</tag-name>
+		<description><![CDATA[数字验证器]]></description>
+		<validator>
+			<validator-id>com.esoft.core.validator.NumberValidator</validator-id>
+			<handler-class>javax.faces.view.facelets.ValidatorHandler</handler-class>
+		</validator>
+
+		<attribute>
+			<name>precision</name>
+			<description><![CDATA[小数位数]]></description>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		
+		<attribute>
+			<name>cardinalNumber</name>
+			<description><![CDATA[必须为多少的倍数]]></description>
+			<required>false</required>
+			<type>java.lang.Double</type>
+		</attribute>
+	</tag>
+
+	<tag>
+		<tag-name>validateAlreadyExist</tag-name>
+		<validator>
+			<validator-id>com.esoft.core.validator.AlreadyExistValidator</validator-id>
+			<handler-class>javax.faces.view.facelets.ValidatorHandler</handler-class>
+		</validator>
+
+		<attribute>
+			<name>entityClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>fieldName</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>isValidateNotExist</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+	</tag>
+
+	<tag>
+		<tag-name>validateImageCaptcha</tag-name>
+		<validator>
+			<validator-id>com.esoft.core.validator.ValidateImageCaptchaValidator</validator-id>
+			<handler-class>javax.faces.view.facelets.ValidatorHandler</handler-class>
+		</validator>
+
+	</tag>
+
+	
+	<tag>
+		<tag-name>validateIdCardAlreadyExist</tag-name>
+		<validator>
+			<validator-id>com.esoft.core.validator.IdCardAlreadyExistValidator</validator-id>
+			<handler-class>javax.faces.view.facelets.ValidatorHandler</handler-class>
+		</validator>
+
+	</tag>
+
+	<tag>
+		<tag-name>validatePersistenceValue</tag-name>
+		<validator>
+			<validator-id>com.esoft.core.validator.PersistenceValueValidator</validator-id>
+			<handler-class>javax.faces.view.facelets.ValidatorHandler</handler-class>
+		</validator>
+
+		<attribute>
+			<name>entityClass</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>fieldName</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>message</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+
+	<tag>
+		<tag-name>validateInputRule</tag-name>
+		<validator>
+			<validator-id>com.esoft.core.validator.InputRuleValidator</validator-id>
+			<handler-class>javax.faces.view.facelets.ValidatorHandler</handler-class>
+		</validator>
+
+		<attribute>
+			<name>ruleId</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>message</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+
+	<tag>
+		<tag-name>validateCaptcha</tag-name>
+		<validator>
+			<validator-id>com.esoft.core.validator.CaptchaValidator</validator-id>
+			<handler-class>javax.faces.view.facelets.ValidatorHandler</handler-class>
+		</validator>
+	</tag>
+	
+	<tag>
+		<description>
+			<![CDATA[
+				显示表单验证消息
+			]]>
+		</description>
+		<tag-name>archerMessages</tag-name>
+		<component>
+			<component-type>com.esoft.core.component.ArcherMessages</component-type>
+		</component>
+		<attribute>
+			<description>
+				<![CDATA[
+					The component identifier for this component. This value must be unique within the closest parent
+					component that is a naming container.
+				]]>
+			</description>
+			<name>id</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				<![CDATA[
+					Flag indicating whether or not this component should be rendered (during Render Response Phase), or
+					processed on any subsequent form submit. The default value for this property is true.
+				]]>
+			</description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+				<![CDATA[
+					The <code>ValueExpression</code> linking this component to a property in a backing bean.
+				]]>
+			</description>
+			<name>binding</name>
+			<required>false</required>
+			<type>javax.faces.component.UIComponent</type>
+		</attribute>
+		<attribute>
+			<description>
+				<![CDATA[
+					The error style class which is to be applied on invalid inputs. Defaults to <code>error</code>.
+				]]>
+			</description>
+			<name>styleClass</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				<![CDATA[
+					Whether the first error element should gain focus. Defaults to <code>true</code>.
+				]]>
+			</description>
+			<name>focus</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+				<![CDATA[
+					是否显示全局消息， 默认 <code>false</code>.
+				]]>
+			</description>
+			<name>showGlobalMessages</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+				<![CDATA[
+					显示的消息级别，默认所有级别的都显示
+					级别：INFO：0，WARN：1，ERROR：2，FATAL：3
+				]]>
+			</description>
+			<name>severity</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<description>
+			<![CDATA[
+				<strong><code>archer:validateEqual</code></strong> validates if ALL of the given <code>UIInput</code> components have the
+				same value. The default message is
+				<blockquote>{0}: Please fill out the same value for all of those fields</blockquote>
+				<p>
+				For general usage instructions, refer <code>validateAll</code> tag documentation.
+				The <code>invalidateAll</code> attribute has no effect on this component and is therefore not listed.
+			]]>
+		</description>
+		<tag-name>validateEqual</tag-name>
+		<component>
+			<component-type>com.esoft.core.validator.ValidateEqual</component-type>
+		</component>
+		<attribute>
+			<description>
+				<![CDATA[
+					The component identifier for this component. This value must be unique within the closest parent
+					component that is a naming container.
+				]]>
+			</description>
+			<name>id</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				<![CDATA[
+					Flag indicating whether or not this component should be rendered (during Render Response Phase), or
+					processed on any subsequent form submit. The default value for this property is true.
+				]]>
+			</description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description>
+				<![CDATA[
+					The <code>ValueExpression</code> linking this component to a property in a backing bean.
+				]]>
+			</description>
+			<name>binding</name>
+			<required>false</required>
+			<type>javax.faces.component.UIComponent</type>
+		</attribute>
+		<attribute>
+			<description>
+				<![CDATA[
+					The space separated collection of client IDs of UI input components to be validated.
+				]]>
+			</description>
+			<name>components</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				<![CDATA[
+					The validator message to be shown on failure. Any "{0}" placeholder in the message will be
+					substituted with a comma separated string of labels of the referenced input components.
+				]]>
+			</description>
+			<name>message</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				<![CDATA[
+					The identifier for which this validator should show the message. Defaults to "@this" which is the
+					validator component itself. Other available values are "@all" which will show the message for all of
+					the referenced components and "@invalid" which will show the message for only the invalidated
+					components. Any other space separated value will be treated as client ID of UI input component.
+				]]>
+			</description>
+			<name>showMessageFor</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				<![CDATA[
+					Whether the validation should be disabled or not. Defaults to <code>false</code>.
+				]]>
+			</description>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<tag-name>selectCascadeArea</tag-name>
+		<description><![CDATA[级联地区选择]]></description>
+		<component>
+			<component-type>com.esoft.archer.component.SelectCascadeArea</component-type> 
+			<renderer-type>com.esoft.archer.component.selectcascadearea.SelectCascadeAreaRender</renderer-type> 
+<!-- 			<handler-class>org.primefaces.component.datatable.DataTableHandler</handler-class> -->
+		</component>
+	</tag>
+	
+</facelet-taglib>

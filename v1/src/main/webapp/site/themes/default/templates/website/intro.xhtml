@@ -1,0 +1,44 @@
+<ui:composition template="../page.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:define name="content">
+        <link type="text/css" rel="stylesheet" href="#{tplVars.themeStylePath}/website.css"/>
+        <div class="wrapAbout"><!--wrapAbout begin-->
+            <div class="wrap-left"><!--wrap-left begin-->
+                <h3>关于我们</h3>
+                <ul class="btn">
+                    <li><a href="javascript:;" class="wrap-active">公司介绍</a></li>
+                    <li><a href="/website/company">管理团队</a></li>
+                    <li><a href="/website/team">团队介绍</a></li>
+                    <li><a href="/website/contactus">联系我们</a></li>
+                    <li><a href="/website/joinus">加入我们</a></li>
+                    <h4>用户保障</h4>
+                    <li><a href="/website/safe">安全保障</a></li>
+                    <h4>相关协议</h4>
+                    <li><a href="/website/service">服务协议</a></li>
+                    <h4>帮助中心</h4>
+                    <li><a href="/website/problem">常见问题</a></li>
+                </ul>
+            </div>
+            <!--wrap-left end-->
+            <div class="wrap-right"><!--wrap-right begin-->
+                <div class="wrap-right-company wrap-tab">
+                    <div class="title-right">
+                        <h3>拓天速贷介绍</h3>
+                        <span></span>
+                    </div>
+                    <p>
+                        拓天速贷是基于互联网的金融信息服务平台，由拓天伟业（北京）资产管理有限公司旗下的拓天伟业（北京）金融信息服务有限公司运营。拓天速贷以透明、公平、高效为原则，为有资金需求的小微企业及有出借需求的个人提供规范、安全、专业的信息服务。拓天速贷秉承用心服务，诚信经营的经营理念，坚持以人为本，日事日毕，正道经营，共存共赢的管理理念，以安全、诚信、专业、创新、长远为核心价值观，坚持兴企安国的公司使命，拓天速贷将成为国内一流的互联网金融信息服务平台。
+                    </p>
+                    <img src="#{tplVars.themeImagePath}/aboutus/compay1.jpg" alt=""/>
+                    <img src="#{tplVars.themeImagePath}/aboutus/compay2.jpg" alt=""/>
+                    <img src="#{tplVars.themeImagePath}/aboutus/compay3.jpg" alt=""/>
+                    <img src="#{tplVars.themeImagePath}/aboutus/compay4.jpg" alt=""/>
+                    <img src="#{tplVars.themeImagePath}/aboutus/compay5.jpg" alt=""/>
+                    <img src="#{tplVars.themeImagePath}/aboutus/compay6.jpg" alt=""/>
+                </div>
+            </div>
+            <!--wrap-right end-->
+        </div>
+    </ui:define>
+</ui:composition>

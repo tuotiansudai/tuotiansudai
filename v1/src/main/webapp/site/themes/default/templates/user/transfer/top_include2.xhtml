@@ -1,0 +1,66 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<div class="center_zj center_zj02">
+		<div class="center_zj_01">
+			<p>
+				成功转入金额：<span>￥<h:outputText
+						value="#{transferStatistics.getAllMoneyByUserIn(loginUserInfo.loginUserId)}">
+						<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+					</h:outputText></span>
+			</p>
+			<p>
+				成功转出金额：<span>￥<h:outputText
+						value="#{transferStatistics.getAllMoneyByUserOut(loginUserInfo.loginUserId)}">
+						<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+					</h:outputText></span>
+			</p>
+		</div>
+		<div class="center_zj_01 center_zj_02">
+			<p>
+				转出中的金额：<span>￥<h:outputText value="#{transferStatistics.getAllMoneyByTypeUser(TransferStatus.TRANSFERING, loginUserInfo.loginUserId)}">
+			<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+		</h:outputText></span>
+			</p>
+			<p>
+				转出中的数量：<span><h:outputText value="#{transferStatistics.getCountByTypeUser(TransferStatus.TRANSFERING, loginUserInfo.loginUserId)}">
+			<f:convertNumber minIntegerDigits="1" maxFractionDigits="0" />
+		</h:outputText></span>
+			</p>
+		</div>
+		<div class="center_zj_01 center_zj_03 center_zj_04">
+			<p>
+				已转入债权数量：<span><h:outputText
+						value="#{transferStatistics.getCountByUserIn(loginUserInfo.loginUserId)}">
+						<f:convertNumber minIntegerDigits="1" maxFractionDigits="0" />
+					</h:outputText></span>
+			</p>
+			<p>
+				已转出债权数量：<span><h:outputText
+						value="#{transferStatistics.getCountByUserOut(loginUserInfo.loginUserId)}">
+						<f:convertNumber minIntegerDigits="1" maxFractionDigits="0" />
+					</h:outputText></span>
+			</p>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="zqzr_c">
+		<h3>债权转让中常遇到的问题</h3>
+		<ul class="zqzr_c_ul">
+			<ui:param name="ggNodes"
+				value="#{nodeList.getNodes('zhaiQuanZhuanRangWenTi',9)}"></ui:param>
+			<ui:repeat var="ggNode" value="#{ggNodes.data}">
+				<li><a href="#{path}/node/zhaiQuanZhuanRangWenTi/#{ggNode.id}">#{ggNode.title}</a></li>
+			</ui:repeat>
+			<div class="clear"></div>
+		</ul>
+	</div>
+
+</ui:component>

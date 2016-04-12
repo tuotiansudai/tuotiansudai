@@ -1,0 +1,13 @@
+<ui:composition template="umpaycallbacktemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html">
+    <ui:define name="content">
+        <div class="main">
+            <div class="img">
+                <img src="#{request.contextPath}/mobile/images/sign-success.png" alt=""/>
+            </div>
+            <div class="info"> <h:messages></h:messages> </div>
+            <a href="tuotian://sign/${requestScope['callback_status']}" class="btn-success">确认</a>
+        </div>
+    </ui:define>
+</ui:composition>

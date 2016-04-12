@@ -1,0 +1,171 @@
+<ui:composition template="center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="activeCenterMenuUrl"
+		value="/user/get_investor_permission"></ui:param>
+	<ui:define name="center_right">
+		<f:event type="preRenderView"
+			listener="#{borrowerInfoHome.setId(loginUserInfo.loginUserId)}"></f:event>
+		<f:event type="preRenderView"
+			listener="#{userHome.setId(loginUserInfo.loginUserId)}"></f:event>
+		<f:event type="preRenderView"
+			listener="#{userInfoHome.setId(loginUserInfo.loginUserId)}"></f:event>
+		<div class="center_right">
+
+			<div class="zhcz_h3">个人信息</div>
+			<h:form id="form">
+				<!-- 不是汇付资金托管时显示。 -->
+				<table width="456" border="0" cellspacing="0" cellpadding="0" class="jcxx_tab">
+					<sec:ifAnyGranted roles="INVESTOR,CORP,GUARANTEE,LOANER">
+						<tr>
+							<td width="135" align="right"><span>*</span>用户名：</td>
+							<td colspan="2">#{userHome.instance.username}</td>
+						</tr>
+						<tr>
+							<td align="right"><span>*</span>真实姓名：</td>
+							<td width="280">#{fn:substring(userHome.instance.realname,0,1)}**</td>
+							<td width="85" class="gray"><img
+								src="#{tplVars.themeImagePath}/img71.png" width="16" height="16" />已认证</td>
+						</tr>
+						<tr>
+							<td align="right"><span>*</span>身份证号：</td>
+							<td>#{fn:substring(userHome.instance.idCard,0,6)} **** **** ****
+								****</td>
+							<td class="gray"><img
+								src="#{tplVars.themeImagePath}/img71.png" alt="" width="16"
+								height="16" />已认证</td>
+						</tr>
+						<tr>
+							<td align="right"><span>*</span>性别：</td>
+							<td>
+								<h:outputText value="#{dictUtil.getValue('user_sex',userHome.instance.sex)}"/>
+							</td>
+							<td class="gray"><img
+								src="#{tplVars.themeImagePath}/img71.png" alt="" width="16"
+								height="16" />已认证</td>
+						</tr>
+						<tr>
+							<td align="right"><span>*</span>出生日期：</td>
+							<td><h:outputText value="#{fn:substring(userHome.instance.birthday,0,10)}">
+								</h:outputText></td>
+							<td class="gray"><img
+								src="#{tplVars.themeImagePath}/img71.png" alt="" width="16"
+								height="16" />已认证</td>
+						</tr>
+
+						<ui:fragment
+							rendered="#{not empty borrowerInfoHome.instance.borrowerPersonalInfo}">
+							<tr>
+								<td align="right"><span>*</span>个人基础信息</td>
+								<td></td>
+								<td class="gray"><img
+									src="#{tplVars.themeImagePath}/img71.png" alt="" width="16"
+									height="16" />已认证	</td>
+							</tr>
+						</ui:fragment>
+						<ui:fragment
+							rendered="#{not empty borrowerInfoHome.instance.borrowerAdditionalInfo}">
+							<tr>
+								<td align="right"><span>*</span>工作财务信息</td>
+								<td></td>
+								<td class="gray"><img
+									src="#{tplVars.themeImagePath}/img71.png" alt="" width="16"
+									height="16" />已认证</td>
+							</tr>
+						</ui:fragment>
+						<ui:fragment
+							rendered="#{not empty borrowerInfoHome.instance.borrowerAuthentication}">
+							<tr>
+								<td align="right"><span>*</span>认证资料</td>
+								<td></td>
+								<td class="gray"><img
+									src="#{tplVars.themeImagePath}/img71.png" alt="" width="16"
+									height="16" />已认证</td>
+							</tr>
+						</ui:fragment>
+					</sec:ifAnyGranted>
+					<sec:ifNotGranted roles="INVESTOR,CORP,GUARANTEE,LOANER,WAIT_CONFIRM">
+						<ui:fragment rendered="#{configHome.getConfigValue('pnrpay_enable') ne '1'}">
+							<tr>
+								<td width="135" align="right"><span>*</span>用户名：</td>
+								<td colspan="2">#{userHome.instance.username}</td>
+							</tr>
+							<tr>
+								<td align="right"><span>*</span>真实姓名：</td>
+								<td width="280" colspan="2">
+									<h:inputText label="真实姓名" maxlength="20" styleClass="bdsj_txt" id="realname" required="true" value="#{userHome.instance.realname}" autocomplete="off">
+										<f:ajax event="blur" render="@this"></f:ajax>
+									</h:inputText>
+									<span style="color:red">用于提现，慎重！</span>
+								</td>
+							</tr>
+							<tr>
+								<td align="right"><span>*</span>身份证号：</td>
+								<td>
+									<h:inputText label="身份证号" id="idCard" styleClass="bdsj_txt" required="true" value="#{userHome.instance.idCard}" maxlength="50" autocomplete="off">
+										<archer:validateInputRule ruleId="input.idCard"></archer:validateInputRule>
+										<archer:validateAlreadyExist />
+										<f:ajax event="blur" render="@this"></f:ajax>
+									</h:inputText>
+								</td>
+							</tr>
+							<tr>
+								<td align="right"><span>*</span>性别：</td>
+								<td>
+									<h:selectOneMenu value="#{userHome.instance.sex}" required="true">
+										<f:selectItem itemLabel="#{userMsg.male}" itemValue="M"></f:selectItem>
+	                            		<f:selectItem itemLabel="#{userMsg.female}" itemValue="F"></f:selectItem>
+									</h:selectOneMenu>
+								</td>
+							</tr>
+							
+							<ui:fragment rendered="#{configHome.getConfigValue('enable_cash_password') eq '1' and empty userHome.instance.cashPassword}">
+								<o:validateEqual id="rePasswordValidator" components="pass repass" showMessageFor="repass" message="两次输入的交易密码不一致"></o:validateEqual>
+								<tr>
+									<td align="right"><span>*</span>交易密码：</td>
+									<td>
+										<h:inputSecret id="pass" label="交易密码" required="true" styleClass="bdsj_txt" maxlength="16" value="#{userHome.instance.cashPassword}">
+											<f:ajax event="blur" execute="rePasswordValidator @this repass"></f:ajax>
+											<archer:validateInputRule ruleId="input.password"></archer:validateInputRule>
+										</h:inputSecret></td>
+									<p:watermark value="6至16位字母和数字组合" for="pass"></p:watermark>
+								</tr>
+								<tr>
+									<td align="right"><span>*</span>确认交易密码：</td>
+									<td>
+										<h:inputSecret id="repass" label="确认交易密码" required="true" styleClass="bdsj_txt" maxlength="16">
+											<f:ajax event="blur" execute="rePasswordValidator @this pass"></f:ajax>
+										</h:inputSecret>
+									</td>
+									<p:watermark value="再次输入密码" for="repass"></p:watermark>
+								</tr>
+							</ui:fragment>
+							<tr>
+								<td></td>
+								<td class="last">
+									<h:commandLink onclick="return confirm('请再次核查信息，确认后不可修改')" value="保存" action="#{userHome.getInvestorPermission}"></h:commandLink>
+								</td>
+							</tr>
+						</ui:fragment>
+						
+					</sec:ifNotGranted>
+				</table>
+			</h:form>
+			<!-- <ui:fragment rendered="#{configHome.getConfigValue('yeepay_corp_account') eq '2'}"> -->
+				<!--<div class="pnr-permission">正在审核您的资料，请耐心等待审核......</div>-->
+			<!--</ui:fragment>-->
+		</div>
+		<div class="clear"></div>
+
+	</ui:define>
+</ui:composition>

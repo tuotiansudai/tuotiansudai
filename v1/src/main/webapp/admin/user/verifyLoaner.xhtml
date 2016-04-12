@@ -1,0 +1,537 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<f:metadata>
+		<f:viewParam name="id" value="#{borrowerInfoHome.id}"></f:viewParam>
+	</f:metadata>
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar styleClass="admin-nav-toolbar">
+				<p:toolbarGroup>
+					<h:outputLabel value="#{commonMsg.currentPositionLabel} 借款人信息审核"></h:outputLabel>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:spacer></p:spacer>
+			<!--001借款人一般信息-->
+			<h:form id="personInfoform">
+				<p:fieldset legend="借款人一般信息" toggleable="true" toggleSpeed="500">
+					<p:panelGrid style="width:100%;">
+						<p:row>
+							<p:column>
+								<h:outputLabel value="用户名"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.user.username}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="真实姓名"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.user.realname}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="身份证"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="#{borrowerInfoHome.instance.user.idCard}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="手机号码"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.user.mobileNumber}"></h:outputLabel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="邮箱"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="#{borrowerInfoHome.instance.user.email}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="性别"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{dictUtil.getValue('user_sex',borrowerInfoHome.instance.user.sex)}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="出生日期："></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.user.birthday}">
+									<f:convertDateTime timeZone="GMT+8" locale="cn"
+										pattern="yyyy-MM-dd" />
+								</h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="居住地址"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.user.area.parent.name}#{borrowerInfoHome.instance.user.area.name}"></h:outputLabel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="户口所在地"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.user.currentAddress}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="籍贯"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.user.homeAddress}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="最高学历"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerPersonalInfo.degree}"></h:outputLabel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="入学年份"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerPersonalInfo.schoolYear}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="婚姻状况"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerPersonalInfo.marriageInfo}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="子女情况"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerPersonalInfo.childrenInfo}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="是否有房"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerPersonalInfo.hasHouse}"></h:outputLabel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="是否有房贷"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerPersonalInfo.hasHousingLoan}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="是否有车"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerPersonalInfo.hasCar}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="是否有车贷"></h:outputLabel>
+							</p:column>
+							<p:column colspan="3">
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerPersonalInfo.hasCarLoan}"></h:outputLabel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="直系亲属联系人"></h:outputLabel>
+							</p:column>
+							<p:column colspan="7">
+								姓名：<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerPersonalInfo.direct}"></h:outputLabel>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+								关系：<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerPersonalInfo.directRelative}"></h:outputLabel>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+								手机：<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerPersonalInfo.directRelativePhone}"></h:outputLabel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="其他联系人"></h:outputLabel>
+							</p:column>
+							<p:column colspan="7">
+								姓名：<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerPersonalInfo.other}"></h:outputLabel>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+								关系：<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerPersonalInfo.otherContact}"></h:outputLabel>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+								手机：<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerPersonalInfo.otherContactPhone}"></h:outputLabel>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:fieldset>
+			</h:form>
+			<p:spacer />
+
+			<!--002借款人工作及财务信息-->
+			<h:form id="additionInfoform">
+				<p:fieldset legend="借款人工作及财务信息" toggleable="true" toggleSpeed="500">
+					<p:panelGrid style="width:100%;">
+						<p:row>
+							<p:column>
+								<h:outputLabel value="职业情况"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerAdditionalInfo.occupation}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="单位名称"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerAdditionalInfo.unit}"></h:outputLabel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="工作地点"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerAdditionalInfo.jobArea.parent.name}#{borrowerInfoHome.instance.borrowerAdditionalInfo.jobArea.name}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="单位类型"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerAdditionalInfo.unitType}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="公司行业"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerAdditionalInfo.profession}">
+								</h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="公司规模"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerAdditionalInfo.companySize}"></h:outputLabel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="工作年限"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerAdditionalInfo.workingLife}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="职位"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerAdditionalInfo.job}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="月收入"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerAdditionalInfo.monthlyIncome}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="现单位工作年限"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerAdditionalInfo.unitNow}"></h:outputLabel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="单位电话"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerAdditionalInfo.unitPhone}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="工作邮箱"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerAdditionalInfo.jobEmail}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="单位地址"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerAdditionalInfo.unitArea}"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="网店地址"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerAdditionalInfo.shopUrl}"></h:outputLabel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="网店联系方式"></h:outputLabel>
+							</p:column>
+							<p:column colspan="7">
+								<h:outputLabel
+									value="#{borrowerInfoHome.instance.borrowerAdditionalInfo.shopContact}"></h:outputLabel>
+							</p:column>
+						</p:row>
+
+						<ui:fragment
+							rendered="#{borrowerInfoHome.instance.borrowerAdditionalInfo.occupation=='学生'}">
+							<p:row>
+								<p:column>
+									<h:outputLabel value="就读院校"></h:outputLabel>
+								</p:column>
+								<p:column>
+									<h:outputLabel
+										value="#{borrowerInfoHome.instance.borrowerAdditionalInfo.schoolingName}"></h:outputLabel>
+								</p:column>
+								<p:column>
+									<h:outputLabel value="就读年级"></h:outputLabel>
+								</p:column>
+								<p:column>
+									<h:outputLabel
+										value="#{borrowerInfoHome.instance.borrowerAdditionalInfo.schoolingGrade}"></h:outputLabel>
+								</p:column>
+								<p:column>
+									<h:outputLabel value="就读专业"></h:outputLabel>
+								</p:column>
+								<p:column>
+									<h:outputLabel
+										value="#{borrowerInfoHome.instance.borrowerAdditionalInfo.schoolingMajor}"></h:outputLabel>
+								</p:column>
+								<p:column>
+									<h:outputLabel value="就业状态"></h:outputLabel>
+								</p:column>
+								<p:column>
+									<h:outputLabel
+										value="#{borrowerInfoHome.instance.borrowerAdditionalInfo.workExperience}"></h:outputLabel>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<h:outputLabel value="实习经历"></h:outputLabel>
+								</p:column>
+								<p:column colspan="7">
+									<h:outputLabel
+										value="#{borrowerInfoHome.instance.borrowerAdditionalInfo.internshipExperience}"></h:outputLabel>
+								</p:column>
+							</p:row>
+						</ui:fragment>
+					</p:panelGrid>
+				</p:fieldset>
+			</h:form>
+			<p:spacer />
+			<!--003借款人认证资料 -->
+			<h:form id="authenticationform">
+				<p:fieldset legend="借款人认证资料" toggleable="true" toggleSpeed="500">
+					<p:panelGrid style="width:100%;">
+						<p:row>
+							<p:column>
+								<h:outputLabel value="手持身份证照片"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<ui:param name="emptyIdCardPhoto"
+									value="#{empty borrowerInfoHome.instance.borrowerAuthentication.idCardPhoto or empty borrowerInfoHome.instance.borrowerAuthentication.idCardPhoto.pictures}"></ui:param>
+								<h:outputLabel value="未上传" rendered="#{emptyIdCardPhoto}" />
+								<p:commandLink rendered="#{not emptyIdCardPhoto}" value="查看"
+									update=":galleriaDialog"
+									actionListener="#{autcMtrTypeHome.setPics(borrowerInfoHome.instance.borrowerAuthentication.idCardPhoto.pictures)}"
+									oncomplete="galleria.show()">
+								</p:commandLink>
+							</p:column>
+							<p:column>
+								<h:outputLabel value="学历证书扫描件"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<ui:param name="emptyDiplomaScan"
+									value="#{empty borrowerInfoHome.instance.borrowerAuthentication.diplomaScan or empty borrowerInfoHome.instance.borrowerAuthentication.diplomaScan.pictures}"></ui:param>
+								<h:outputLabel value="未上传" rendered="#{empty emptyDiplomaScan}" />
+								<p:commandLink rendered="#{not emptyDiplomaScan}" value="查看"
+									update=":galleriaDialog"
+									actionListener="#{autcMtrTypeHome.setPics(borrowerInfoHome.instance.borrowerAuthentication.diplomaScan.pictures)}"
+									oncomplete="galleria.show()" />
+							</p:column>
+							<p:column>
+								<h:outputLabel value="收入证明"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<ui:param name="emptyProofEarnings"
+									value="#{empty borrowerInfoHome.instance.borrowerAuthentication.proofEarnings or empty borrowerInfoHome.instance.borrowerAuthentication.proofEarnings.pictures}"></ui:param>
+								<h:outputLabel value="未上传"
+									rendered="#{empty emptyProofEarnings}" />
+								<p:commandLink rendered="#{not emptyProofEarnings}" value="查看"
+									update=":galleriaDialog"
+									actionListener="#{autcMtrTypeHome.setPics(borrowerInfoHome.instance.borrowerAuthentication.proofEarnings.pictures)}"
+									oncomplete="galleria.show()" />
+							</p:column>
+							<p:column>
+								<h:outputLabel value="银行征信报告"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<ui:param name="emptyBankCreditReport"
+									value="#{empty borrowerInfoHome.instance.borrowerAuthentication.bankCreditReport or empty borrowerInfoHome.instance.borrowerAuthentication.bankCreditReport.pictures}"></ui:param>
+								<h:outputLabel value="未上传"
+									rendered="#{empty emptyBankCreditReport}" />
+								<p:commandLink rendered="#{not emptyBankCreditReport}"
+									value="查看" update=":galleriaDialog"
+									actionListener="#{autcMtrTypeHome.setPics(borrowerInfoHome.instance.borrowerAuthentication.bankCreditReport.pictures)}"
+									oncomplete="galleria.show()" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="账户流水扫描件"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<ui:param name="emptyAccountFlow"
+									value="#{empty borrowerInfoHome.instance.borrowerAuthentication.accountFlow or empty borrowerInfoHome.instance.borrowerAuthentication.accountFlow.pictures}"></ui:param>
+								<h:outputLabel value="未上传" rendered="#{empty emptyAccountFlow}" />
+								<p:commandLink rendered="#{not emptyAccountFlow}" value="查看"
+									update=":galleriaDialog"
+									actionListener="#{autcMtrTypeHome.setPics(borrowerInfoHome.instance.borrowerAuthentication.accountFlow.pictures)}"
+									oncomplete="galleria.show()" />
+							</p:column>
+							<p:column>
+								<h:outputLabel value="工作证件扫描件"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<ui:param name="emptyWorkCertificate"
+									value="#{empty borrowerInfoHome.instance.borrowerAuthentication.workCertificate or empty borrowerInfoHome.instance.borrowerAuthentication.workCertificate.pictures}"></ui:param>
+								<h:outputLabel value="未上传"
+									rendered="#{empty emptyWorkCertificate}" />
+								<p:commandLink rendered="#{not emptyWorkCertificate}" value="查看"
+									update=":galleriaDialog"
+									actionListener="#{autcMtrTypeHome.setPics(borrowerInfoHome.instance.borrowerAuthentication.workCertificate.pictures)}"
+									oncomplete="galleria.show()" />
+							</p:column>
+							<p:column>
+								<h:outputLabel value="房产证明"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<ui:param name="emptyHouseInfo"
+									value="#{empty borrowerInfoHome.instance.borrowerAuthentication.houseInfo or empty borrowerInfoHome.instance.borrowerAuthentication.houseInfo.pictures}"></ui:param>
+								<h:outputLabel value="未上传" rendered="#{empty emptyHouseInfo}" />
+								<p:commandLink rendered="#{not emptyHouseInfo}" value="查看"
+									update=":galleriaDialog"
+									actionListener="#{autcMtrTypeHome.setPics(borrowerInfoHome.instance.borrowerAuthentication.houseInfo.pictures)}"
+									oncomplete="galleria.show()" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="车辆证明"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<ui:param name="emptyCarInfo"
+									value="#{empty borrowerInfoHome.instance.borrowerAuthentication.carInfo or empty borrowerInfoHome.instance.borrowerAuthentication.carInfo.pictures}"></ui:param>
+								<h:outputLabel value="未上传" rendered="#{empty emptyCarInfo}" />
+								<p:commandLink rendered="#{not emptyCarInfo}" value="查看"
+									update=":galleriaDialog"
+									actionListener="#{autcMtrTypeHome.setPics(borrowerInfoHome.instance.borrowerAuthentication.carInfo.pictures)}"
+									oncomplete="galleria.show()" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="其他可确认身份的证件"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<ui:param name="emptyOtherIdCertificate"
+									value="#{empty borrowerInfoHome.instance.borrowerAuthentication.otherIdCertificate or empty borrowerInfoHome.instance.borrowerAuthentication.otherIdCertificate.pictures}"></ui:param>
+								<h:outputLabel value="未上传"
+									rendered="#{empty emptyOtherIdCertificate}" />
+								<p:commandLink rendered="#{not emptyOtherIdCertificate}"
+									value="查看" update=":galleriaDialog"
+									actionListener="#{autcMtrTypeHome.setPics(borrowerInfoHome.instance.borrowerAuthentication.otherIdCertificate.pictures)}"
+									oncomplete="galleria.show()" />
+							</p:column>
+							<p:column>
+								<h:outputLabel value="其他能证明稳定收入的材料"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<ui:param name="emptyOtherIncomeInfo"
+									value="#{empty borrowerInfoHome.instance.borrowerAuthentication.otherIncomeInfo or empty borrowerInfoHome.instance.borrowerAuthentication.otherIncomeInfo.pictures}"></ui:param>
+								<h:outputLabel value="未上传"
+									rendered="#{empty emptyOtherIncomeInfo}" />
+								<p:commandLink rendered="#{not emptyOtherIncomeInfo}" value="查看"
+									update=":galleriaDialog"
+									actionListener="#{autcMtrTypeHome.setPics(borrowerInfoHome.instance.borrowerAuthentication.otherIncomeInfo.pictures)}"
+									oncomplete="galleria.show()" />
+							</p:column>
+							<p:column>
+								<h:outputLabel value="企业营业执照"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<ui:param name="emptyBusinessLicense"
+									value="#{empty borrowerInfoHome.instance.borrowerAuthentication.businessLicense or empty borrowerInfoHome.instance.borrowerAuthentication.businessLicense.pictures}"></ui:param>
+								<h:outputLabel value="未上传"
+									rendered="#{empty emptyBusinessLicense}" />
+								<p:commandLink rendered="#{not emptyBusinessLicense}" value="查看"
+									update=":galleriaDialog"
+									actionListener="#{autcMtrTypeHome.setPics(borrowerInfoHome.instance.borrowerAuthentication.businessLicense.pictures)}"
+									oncomplete="galleria.show()" />
+							</p:column>
+							<p:column>
+								<h:outputLabel value="企业流水账户信息"></h:outputLabel>
+							</p:column>
+							<p:column>
+								<ui:param name="emptyBusinessAccountFlow"
+									value="#{empty borrowerInfoHome.instance.borrowerAuthentication.businessAccountFlow or empty borrowerInfoHome.instance.borrowerAuthentication.businessAccountFlow.pictures}"></ui:param>
+								<h:outputLabel value="未上传"
+									rendered="#{empty emptyBusinessAccountFlow}" />
+								<p:commandLink rendered="#{not emptyBusinessLicense}" value="查看"
+									update=":galleriaDialog"
+									actionListener="#{autcMtrTypeHome.setPics(borrowerInfoHome.instance.borrowerAuthentication.businessAccountFlow.pictures)}"
+									oncomplete="galleria.show()" />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:fieldset>
+			</h:form>
+		</div>
+		<p:dialog id="galleriaDialog" widgetVar="galleria">
+			<p:galleria value="#{autcMtrTypeHome.pics}" var="pic" frameHeight="0" frameWidth="0" panelHeight="600" panelWidth="800"
+				autoPlay="false">
+				<img src="#{path}#{pic.picture}" style="max-width: 800px; max-height: 600px;"/>
+			</p:galleria>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+

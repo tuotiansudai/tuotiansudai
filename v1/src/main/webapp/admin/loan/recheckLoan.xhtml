@@ -1,0 +1,136 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<f:metadata>
+		<f:viewParam name="id" value="#{loanHome.id}"></f:viewParam>
+	</f:metadata>
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar styleClass="admin-nav-toolbar">
+				<p:toolbarGroup>
+					<h:outputLabel value="#{commonMsg.currentPositionLabel} 借款项目审核"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button outcome="/admin/loan/loanList" value="借款项目管理"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:spacer></p:spacer>
+			<!--001借款项目审核-->
+			<h:form id="form">
+				<h:panelGrid columns="2" columnClasses="col1,col2" id="panel">
+					<h:outputLabel value="借款项目名称"></h:outputLabel>
+					#{loanHome.instance.name}
+
+					<h:outputLabel value="借款人"></h:outputLabel>
+					#{loanHome.instance.user.username}
+
+					<h:outputLabel value="代理人"></h:outputLabel>
+					#{loanHome.instance.agent}
+
+					<h:outputLabel value="借款项目类型"></h:outputLabel>
+					#{loanHome.instance.type.name}
+
+					<h:outputLabel value="借款用途"></h:outputLabel>
+					#{loanHome.instance.loanPurpose}
+
+					<!-- <h:outputLabel value="借款人类型"></h:outputLabel> -->
+						<!-- <h:inputText readonly="true" value="#{loanHome.instance.user.borrowerInfo.borrowerAdditionalInfo.occupation}" /> -->
+
+					<h:outputLabel value="借款总金额"></h:outputLabel>
+					<h:outputText value="#{loanHome.instance.loanMoney}" >
+						<f:convertNumber type="currency"/>
+					</h:outputText>
+
+					<h:outputLabel value="尚未募集的金额"></h:outputLabel>
+					<h:outputText value="#{loanCalculator.calculateMoneyNeedRaised(loanHome.instance.id)}">
+						<f:convertNumber type="currency"/>
+					</h:outputText>
+
+					<!-- 修改开始 -->
+					<!-- <h:outputLabel value="活动利率(%)" styleClass="coloerRed"></h:outputLabel>
+					<ui:fragment>
+						<h:inputText required="true" label="活动利率"
+							value="#{loanHome.instance.hdRatePercent}" styleClass="rate">
+							<f:validateDoubleRange minimum="0.0"></f:validateDoubleRange>
+						</h:inputText>
+						<b style="color: red;">默认 0.0</b>
+					</ui:fragment>
+
+					<h:outputLabel value="基本利率(%)" styleClass="coloerRed"></h:outputLabel>
+					<ui:fragment>
+						<h:inputText required="true" label="基本利率"
+							value="#{loanHome.instance.jkRatePercent}" styleClass="rate">
+							<f:validateDoubleRange minimum="0.01"></f:validateDoubleRange>
+						</h:inputText>
+						<b style="color: red;">基本利率</b>
+					</ui:fragment> -->
+
+					<!-- 标准版 -->
+					<h:outputLabel value="借款利率(%)"></h:outputLabel>
+					<h:inputText value="#{loanHome.instance.ratePercent}" />
+						
+					<h:outputLabel value="手续费(还款时收取)"></h:outputLabel>
+					<h:inputText required="true" value="#{loanHome.instance.feeOnRepay}" label="手续费(还款时收取)">
+						<archer:validateNumber precision="2"></archer:validateNumber>
+						<f:validateDoubleRange minimum="0"></f:validateDoubleRange>
+					</h:inputText>
+
+					<h:outputLabel value="借款期限"></h:outputLabel>
+					<h:inputText value="#{loanHome.instance.deadline}" />
+
+					<h:outputLabel value="审核信息"></h:outputLabel>
+					<h:inputTextarea value="#{loanHome.instance.verifyMessage}"
+						style="width:400px;height: 65px;"></h:inputTextarea>
+
+					<h:outputLabel value="预计执行时间"></h:outputLabel>
+					<p:calendar value="#{loanHome.instance.expectTime}" required="true" navigator="true" showButtonPanel="true" label="预计执行时间" pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8">
+					</p:calendar>
+					
+					<h:outputLabel value="最小投资金额"></h:outputLabel>
+					<h:inputText value="#{loanHome.instance.minInvestMoney}" required="true" label="最小投资金额">
+						<archer:validateNumber precision="0"></archer:validateNumber>
+					</h:inputText>
+
+					<h:outputLabel value="风险等级"></h:outputLabel>
+					<h:selectOneMenu value="#{loanHome.instance.riskLevel}">
+<!-- 						<f:selectItem itemLabel="请选择" itemValue="" /> -->
+						<f:selectItems value="#{riskRankList.allResultList}" var="risk"
+							itemLabel="#{risk.rank}" itemValue="#{risk.rank}" />
+					</h:selectOneMenu>
+
+					<h:outputLabel value="初审是否通过"></h:outputLabel>
+					<f:event listener="#{loanHome.initVerify(loanHome.instance)}"
+						type="preRenderComponent" />
+					<p:selectBooleanButton onLabel="是" offLabel="否" style="margin-left:5px;"
+						value="#{loanHome.ispass}" onIcon="ui-icon-check" disabled="#{loanHome.ispass}"
+						offIcon="ui-icon-close">
+					</p:selectBooleanButton>
+
+					<h:outputLabel value="项目复核" rendered="#{loanHome.ispass}"></h:outputLabel>
+					<ui:fragment>
+						<p:commandButton action="#{loanHome.recheck}" value="放款" style="margin-left:5px;"
+							onstart="return confirm('您确认要放款吗？此操作不可撤销！');"
+							rendered="#{loanHome.ispass}"></p:commandButton>
+						<p:commandButton action="#{loanHome.delay}" value="延期" style="margin-left:5px;"
+							onstart="return confirm('您确认要将项目延期吗？');"
+							rendered="#{loanHome.ispass}"></p:commandButton>
+						<p:commandButton action="#{loanHome.failByManager}" value="流标" style="margin-left:5px;"
+							onclick="return confirm('您确认要将项目流标吗？此操作不可撤销！');" ajax="false"
+							rendered="#{loanHome.ispass}"></p:commandButton>
+					</ui:fragment>
+				</h:panelGrid>
+			</h:form>
+			<p:spacer />
+		</div>
+	</ui:define>
+</ui:composition>
+

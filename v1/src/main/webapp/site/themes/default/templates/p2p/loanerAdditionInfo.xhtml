@@ -1,0 +1,216 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	template="../page.xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<f:metadata>
+		<f:viewParam name="id" value="#{borrowerAdditionalInfoHome.id}"></f:viewParam>
+	</f:metadata>
+
+	<ui:define name="content">
+		<link href="#{tplVars.themeStylePath}/form.css" type="text/css"
+			rel="stylesheet" />
+		<f:event type="preRenderView"
+			listener="#{borrowerInfoHome.setId(loginUserInfo.loginUserId)}"></f:event>
+		<sec:ifNotGranted roles="INVESTOR">
+			<script>
+				$.dialog
+						.alert(
+								'请先进行实名认证!',
+								function() {
+									window.location.href = "#{path}/user/get_investor_permission";
+								});
+			</script>
+		</sec:ifNotGranted>
+		<!-- 	已实名认证 -->
+		<sec:ifAllGranted roles="INVESTOR">
+		<ui:fragment
+			rendered="#{empty borrowerInfoHome.instance.borrowerPersonalInfo}">
+			<script>
+				$.dialog.alert('请先保存上一步操作!', function() {
+					window.location.href = "#{path}/user/loanerPersonInfo";
+				});
+			</script>
+		</ui:fragment>
+		<div class="form-top">
+			<p>
+				<a class="color9a9393 fontsize18" href="#">我要借款</a>&gt;<a
+					class="color57 fontsize14">提交表单申请</a>
+			</p>
+			<div class="jd-bar">
+				<span class="buzhou1"><label class="blueround blueround01">1</label>填写借款申请</span><span
+					class="buzhou2"><label class="blueround blueround02">2</label>填写借款信息</span><span
+					class="buzhou3">审核</span><span class="buzhou4">筹集借款</span><span
+					class="buzhou5">获得借款</span>
+			</div>
+		</div>
+		<div class="info-content">
+			<div class="form-left fl">
+<!-- 				<p class="pfont"> -->
+<!-- 					信息完整度<span class="bg2">87%</span> -->
+<!-- 				</p> -->
+<!-- 				<p class="pfont"> -->
+<!-- 					<em><b></b></em> -->
+<!-- 				</p> -->
+				<ul class="info-list">
+					<li class="bg-li"><a class="first-li"
+						href="#{path}/user/loanerPersonInfo">个人信息<i></i></a></li>
+					<li><a href="#{path}/user/loanerAdditionInfo">工作财务信息<i></i></a></li>
+					<li><a class="last-li"
+						href="#{path}/user/loanerAuthentication">认证资料</a></li>
+				</ul>
+			</div>
+			<div class="form-right fr">
+			<h:form>
+				<h3>工作财务信息</h3>
+				<p class="warmp">
+					<i></i>温馨提示：我们将在您的必要认证资料上传齐全后为您提交审核。
+				</p>
+				<p>
+					<span class="stxt">职业情况</span><span class="sinput"><h:inputText
+							label="职业情况"
+							value="#{borrowerAdditionalInfoHome.instance.occupation}">
+							<f:ajax event="blur"></f:ajax>
+						</h:inputText></span>
+				</p>
+				<p>
+					<span class="stxt">单位名称</span><span class="sinput"><h:inputText
+							styleClass="text1" label="单位名称"
+							value="#{borrowerAdditionalInfoHome.instance.unit}"></h:inputText></span>
+				</p>
+				<p class="heightp">
+					<span class="hktxt1">工作地点</span><span><f:event
+							listener="#{areaHome.initByCity(borrowerAdditionalInfoHome.instance.jobArea)}"
+							type="preRenderComponent" /> <h:selectOneMenu
+							style="width:125px;" styleClass="area select2"
+							value="#{areaHome.selectedProvince}"
+							converter="archer.EntityConverter">
+							<f:selectItems value="#{areaHome.allProvinces}" var="area"
+								itemLabel="#{area.name}" itemValue="#{area}"></f:selectItems>
+							<f:ajax listener="#{areaHome.findAllCities}"
+								render="jobareaSelect"></f:ajax>
+						</h:selectOneMenu> <h:panelGroup id="jobareaSelect"
+							style="float:none;display:inline;">
+							<h:selectOneMenu style="width:125px;margin-left:10px;"
+								value="#{borrowerAdditionalInfoHome.instance.jobArea}"
+								converter="archer.EntityConverter" styleClass="area select3"
+								rendered="#{not empty areaHome.allCities}">
+								<f:selectItems value="#{areaHome.allCities}" var="area"
+									itemLabel="#{area.name}" itemValue="#{area}"></f:selectItems>
+							</h:selectOneMenu>
+						</h:panelGroup> </span>
+				</p>
+				<p class="heightp">
+					<span class="stxt">单位类型</span><span class="sinput"><h:selectOneMenu
+							styleClass="select1" label="单位类型"
+							value="#{borrowerAdditionalInfoHome.instance.unitType}">
+							<f:selectItem itemLabel="请选择" itemValue="" />
+							<f:selectItems
+								value="#{selectItemHome.slectItemList('companyType')}"
+								var="companyType" itemLabel="#{companyType}"
+								itemValue="#{companyType}" />
+						</h:selectOneMenu> </span>
+				</p>
+				<p class="heightp">
+					<span class="stxt">公司行业</span><span class="sinput"><h:selectOneMenu
+							styleClass="select1" label="公司行业"
+							value="#{borrowerAdditionalInfoHome.instance.profession}">
+							<f:selectItem itemLabel="请选择" itemValue="" />
+							<f:selectItems
+								value="#{selectItemHome.slectItemList('companyBusiness')}"
+								var="companyBusiness" itemLabel="#{companyBusiness}"
+								itemValue="#{companyBusiness}" />
+						</h:selectOneMenu> </span>
+				</p>
+				<p class="heightp">
+					<span class="stxt">公司规模</span><span class="sinput"><h:selectOneMenu
+							styleClass="select1" label="公司规模"
+							value="#{borrowerAdditionalInfoHome.instance.companySize}">
+							<f:selectItem itemLabel="请选择" itemValue="" />
+							<f:selectItems
+								value="#{selectItemHome.slectItemList('companySize')}"
+								var="companyBusiness" itemLabel="#{companyBusiness}"
+								itemValue="#{companyBusiness}" />
+						</h:selectOneMenu> </span>
+				</p>
+				<p class="heightp">
+					<span class="stxt">工作年限</span><span class="sinput"><h:selectOneMenu
+							label="工作年限" styleClass="select1"
+							value="#{borrowerAdditionalInfoHome.instance.workingLife}">
+							<f:selectItem itemLabel="请选择" itemValue="" />
+							<f:selectItems
+								value="#{selectItemHome.slectItemList('workyears')}"
+								var="companyBusiness" itemLabel="#{companyBusiness}"
+								itemValue="#{companyBusiness}" />
+						</h:selectOneMenu> </span>
+				</p>
+				<p>
+					<span class="stxt">职位</span><span class="sinput"><h:inputText
+							styleClass="text1"
+							value="#{borrowerAdditionalInfoHome.instance.job}"></h:inputText></span>
+				</p>
+				<p>
+					<span class="stxt">月收入</span><span class="sinput"><h:selectOneMenu
+							styleClass="select1" label="月收入" required="true"
+							value="#{borrowerAdditionalInfoHome.instance.monthlyIncome}">
+							<f:selectItems
+								value="#{selectItemHome.slectItemList('monthincome')}"
+								var="companyBusiness" itemLabel="#{companyBusiness}"
+								itemValue="#{companyBusiness}" />
+						</h:selectOneMenu></span>
+				</p>
+				<p class="heightp">
+					<span class="stxt bgleft">现单位工作年限</span><span class="sinput">
+						<h:selectOneMenu styleClass="select1" label="现单位工作年限"
+							value="#{borrowerAdditionalInfoHome.instance.unitNow}">
+							<f:selectItem itemLabel="请选择" itemValue="" />
+							<f:selectItems
+								value="#{selectItemHome.slectItemList('workyears')}"
+								var="companyBusiness" itemLabel="#{companyBusiness}"
+								itemValue="#{companyBusiness}" />
+						</h:selectOneMenu>
+					</span>
+				</p>
+				<p>
+					<span class="stxt">单位电话</span><span class="sinput"><h:inputText
+							styleClass="text1" label="单位电话"
+							value="#{borrowerAdditionalInfoHome.instance.unitPhone}"></h:inputText></span>
+				</p>
+				<p>
+					<span class="stxt">工作邮箱</span><span class="sinput"><h:inputText
+							styleClass="text1" label="工作邮箱"
+							value="#{borrowerAdditionalInfoHome.instance.jobEmail}"></h:inputText></span>
+				</p>
+				<p>
+					<span class="stxt">单位地址</span><span class="sinput"><h:inputText
+							styleClass="text1" label="单位地址"
+							value="#{borrowerAdditionalInfoHome.instance.unitArea}"></h:inputText></span>
+				</p>
+				<p>
+					<span class="stxt">网店地址</span><span class="sinput"><h:inputText
+							styleClass="text1" label="网店地址"
+							value="#{borrowerAdditionalInfoHome.instance.shopUrl}"></h:inputText></span>
+				</p>
+				<p>
+					<span class="stxt bgleft">网店联系方式</span><span class="sinput"><h:inputText
+							styleClass="text1" label="网店联系方式"
+							value="#{borrowerAdditionalInfoHome.instance.shopContact}"></h:inputText></span>
+				</p>
+				<p>
+					<span class="stxt"></span><span> <h:commandLink
+							value="保存并继续" styleClass="save-btn"
+							action="#{borrowerAdditionalInfoHome.save}"></h:commandLink>
+					</span>
+				</p>
+			</h:form>
+			</div>
+			<div class="clear"></div>
+		</div>
+		</sec:ifAllGranted>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,70 @@
+<ui:composition template="center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="activeCenterMenuUrl" value="/user/my-point-history"></ui:param>
+	<ui:define name="center_right">
+		<div class="center_right">
+			<div class="center_box01">
+				<ui:include src="userCenterTop.xhtml"></ui:include>
+				<ul class="grzx_ul grzx_ul02 grzx_ul04">
+					<li>我的可用积分<span>#{userPointHistoryList.getUserSumPoint(loginUserInfo.loginUserId)}个</span></li>
+					<li>已用积分<span>#{userPointList.getUsedPoints(loginUserInfo.loginUserId, 'cost')}个</span></li>
+					<a href="#{path}/node/spage/pointInfo"><li class="orange">积分说明</li></a>
+				</ul>
+			</div>
+			<p class="jf">可用积分历史</p>
+			<h:form id="dataTable">
+				<f:event type="preRenderComponent"
+					listener="#{userPointHistoryList.example.user.setId(loginUserInfo.loginUserId)}"></f:event>
+				<f:event type="preRenderComponent"
+					listener="#{userPointHistoryList.setPageSize(7)}"></f:event>
+				<f:event type="preRenderComponent"
+					listener="#{userPointHistoryList.example.setType(UserConstants.UserPointType.COST)}"></f:event>
+				<f:event type="preRenderComponent"
+					listener="#{userPointHistoryList.addOrder('userPointHistory.time','desc')}"></f:event>
+				<table width="786" border="0" cellspacing="0" cellpadding="0"
+					class="tab">
+					<tr>
+						<td class="tab01" align="center">时间</td>
+						<td class="tab01" align="center">积分</td>
+						<td class="tab01" align="center">类型</td>
+						<td class="tab01" align="center">来源</td>
+						<td class="tab01" align="center">描述</td>
+					</tr>
+					<ui:repeat var="history"
+						value="#{userPointHistoryList.lazyModelData}">
+						<tr class="jk-2">
+							<td width="20%" align="center"><h:outputText
+									value="#{history.getTimeDate()}">
+									<f:convertDateTime pattern="yyyy-MM-dd" />
+								</h:outputText></td>
+							<td width="15%" align="center">
+							<h:outputText value="+#{history.point}" rendered ="#{history.operateType=='add'}"></h:outputText>
+						<h:outputText value="-#{history.point}" rendered="#{history.operateType=='minus'}"></h:outputText>
+							</td>
+							<td width="15%" align="center">#{userPointHistoryList.getTypeName(history.type)}</td>
+							<td width="15%" align="center" title="#{history.typeInfo}">
+								#{stringHome.ellipsis(history.typeInfo,8)}</td>
+							<td width="15%" align="center" title="#{history.remark}">
+								#{stringHome.ellipsis(history.remark,8)}</td>
+						</tr>
+					</ui:repeat>
+				</table>
+				<div class="page_box">
+					<div class="page_r">
+						<ui:include src="#{tplVars.componentsPath}/my_point_history_paging.xhtml"></ui:include>
+					</div>
+				</div>
+			</h:form>
+		</div>
+		<div class="clear"></div>
+	</ui:define>
+
+</ui:composition>

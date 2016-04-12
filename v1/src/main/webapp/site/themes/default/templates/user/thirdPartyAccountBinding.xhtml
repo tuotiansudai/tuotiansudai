@@ -1,0 +1,43 @@
+<ui:composition template="center.xhtml" 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pm="http://primefaces.org/mobile"    
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<ui:define name="right">
+	<div class="right">
+	    <ui:include src="userCenterTop.xhtml"></ui:include>
+	    <ui:param name="loginUser" value="#{loginUserInfo.user}"></ui:param>
+	    <div class="accou">
+           <h2>第三方账户绑定（暂未开通此功能）</h2>
+           <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tbody><tr>
+                <td width="165"><img src="#{tplVars.themeImagePath}/a73.jpg"/></td>
+                <td width="301">（未绑定）</td>
+                <td width="229"><a href="javascript:void(0);" onclick="alert('功能暂未开通');"><span>绑定</span></a></td>
+              </tr>
+              <tr>
+                <td><img src="#{tplVars.themeImagePath}/a74.jpg"/></td>
+                <td>（未绑定）</td>
+                <td><a href="javascript:void(0);" onclick="alert('功能暂未开通');"><span>绑定</span></a></td>
+              </tr>
+              <tr>
+                <td><img src="#{tplVars.themeImagePath}/a75.jpg"/></td>
+                <td>（未绑定）</td>
+                <td><a href="javascript:void(0);" onclick="alert('功能暂未开通');"><span>绑定</span></a></td>
+              </tr>
+              <tr>
+                <td><img src="#{tplVars.themeImagePath}/a76.jpg"/></td>
+                <td>（未绑定）</td>
+                <td><a href="javascript:void(0);" onclick="alert('功能暂未开通');"><span>绑定</span></a></td>
+              </tr>
+            </tbody></table>
+        </div>
+      </div>  
+</ui:define>
+
+</ui:composition>

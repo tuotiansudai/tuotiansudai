@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.web.repository.job.mapper.TriggerMapper">
+    <resultMap id="triggerModelResultMap" type="TriggerModel">
+        <result column="SCHED_NAME" property="schedName"></result>
+        <result column="TRIGGER_NAME" property="triggerName"></result>
+        <result column="TRIGGER_GROUP" property="triggerGroup"></result>
+        <result column="JOB_NAME" property="jobName"></result>
+        <result column="JOB_GROUP" property="jobGroup"></result>
+        <result column="DESCRIPTION" property="description"></result>
+        <result column="NEXT_FIRE_TIME" property="nextFireTime"></result>
+        <result column="PREV_FIRE_TIME" property="prevFireTime"></result>
+        <result column="PRIORITY" property="priority"></result>
+        <result column="TRIGGER_STATE" property="triggerState"></result>
+        <result column="TRIGGER_TYPE" property="triggerType"></result>
+        <result column="START_TIME" property="startTime"></result>
+        <result column="END_TIME" property="endTime"></result>
+        <result column="CALENDAR_NAME" property="calendarName"></result>
+        <result column="MISFIRE_INSTR" property="misfireInstr"></result>
+        <result column="JOB_DATA" property="jobData"></result>
+    </resultMap>
+
+    <select id="findByKey" parameterType="map" resultMap="triggerModelResultMap">
+        select * from QRTZ_TRIGGERS
+        where TRIGGER_NAME = #{name} and TRIGGER_GROUP = #{group}
+    </select>
+
+</mapper>

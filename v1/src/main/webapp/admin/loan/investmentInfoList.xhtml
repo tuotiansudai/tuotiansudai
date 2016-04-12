@@ -1,0 +1,175 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+    <f:metadata>
+        <f:viewParam name="loanId" value="#{investList.example.loan.id}"></f:viewParam>
+        <f:viewParam name="referee"
+                     value="#{investList.example.user.referrer}"></f:viewParam>
+        <f:viewParam name="investStatus" value="#{investList.example.status}"></f:viewParam>
+        <f:viewParam name="transferApplyId"
+                     value="#{investList.example.transferApply.id}"></f:viewParam>
+    </f:metadata>
+
+    <ui:define name="content">
+        <div class="entry">
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <h:outputLabel style="padding-left: 15px;"
+                                   value="#{commonMsg.currentPositionLabel}投资信息"></h:outputLabel>
+                </p:toolbarGroup>
+            </p:toolbar>
+            <h:form id="form">
+
+                <p:spacer></p:spacer>
+
+                <p:panel id="filters">
+                    <h:panelGrid columns="2" cstyleClass="filter-grid"
+                                 rowClasses="filter-row" columnClasses="filter-col1,filter-col2">
+                        <h:outputLabel value="项目编号: "></h:outputLabel>
+                        <h:inputText value="#{investList.example.loan.id}"></h:inputText>
+
+                        <h:outputLabel value="投资人: " />
+                        <p:autoComplete value="#{investList.example.user.id}"
+                                        minQueryLength="2"
+                                        completeMethod="#{userList.queryUsersByUserName}"
+                                        forceSelection="true" var="u" itemLabel="#{u.username}"
+                                        itemValue="#{u.id}"></p:autoComplete>
+
+                        <h:outputLabel value="时间范围"></h:outputLabel>
+                        <ui:fragment>
+                            <p:calendar value="#{investList.searchcommitMinTime}"
+                                        pattern="yyyy-MM-dd HH:mm:ss" navigator="true"
+                                        showButtonPanel="true" timeZone="GMT+8" />
+                            ~
+                            <p:calendar
+                                    value="#{investList.searchcommitMaxTime}"
+                                    pattern="yyyy-MM-dd HH:mm:ss" navigator="true"
+                                    showButtonPanel="true" timeZone="GMT+8" />
+                        </ui:fragment>
+
+                        <h:outputLabel value="投资状态"></h:outputLabel>
+                        <ui:fragment>
+                            <h:selectOneMenu value="#{investList.example.status}">
+                                <f:selectItem itemLabel="请选择 &#160;&#160;"
+                                              noSelectionOption="true" />
+                                <f:selectItems
+                                        value="#{dictUtil.getDictByParentKey('invest_status')}"
+                                        var="dict" itemValue="#{dict.key}" itemLabel="#{dict.value}" />
+                            </h:selectOneMenu>
+                        </ui:fragment>
+                        <h:outputLabel value="渠道"></h:outputLabel>
+                        <ui:fragment>
+                            <h:selectOneMenu value="#{investList.example.channel}">
+                                <f:selectItem itemLabel="请选择 &#160;&#160;"
+                                              noSelectionOption="true" />
+                                <f:selectItems value="#{investList.allChannelList}" />
+                            </h:selectOneMenu>
+                        </ui:fragment>
+                        <h:outputText></h:outputText>
+                        <p:commandButton update="dataTable" process="filters"
+                                         value="#{commonMsg.searchLabel}"></p:commandButton>
+                    </h:panelGrid>
+                </p:panel>
+
+                <p:spacer></p:spacer>
+
+                <p:dataTable lazy="true" id="dataTable"
+                             value="#{investList.lazyModel}" var="invest" paginator="true"
+                             paginatorPosition="bottom" rows="15"
+                             currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+                             paginatorTemplate="#{commonMsg.paginatorTemplate}"
+                             sortBy="invest.time" sortOrder="descending"
+                             emptyMessage="#{commonMsg.noResultMsg}">
+                    <f:facet name="header">
+                        合计投资金额：
+                        <h:outputText value="#{investList.getSumMoney()}">
+                            <f:convertNumber />
+                        </h:outputText>
+                    </f:facet>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="项目编号"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{invest.loan.id}"></h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="项目名称"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{invest.loan.name}"></h:outputText>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="项目类型"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{invest.loan.type.name}"></h:outputText>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="投资人"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{invest.user.username}"></h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="推荐人"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{invest.user.referrer}"></h:outputText>
+                    </p:column>
+                    <p:column sortBy="invest.time">
+                        <f:facet name="header">
+                            <h:outputText value="投资时间"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{invest.time}">
+                            <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column style="text-align:right;">
+                        <f:facet name="header">
+                            <h:outputText value="自动投标"></h:outputText>
+                        </f:facet>
+                        <h:outputText rendered="#{invest.isAutoInvest}" value="是" />
+                        <h:outputText rendered="#{not invest.isAutoInvest}" value="否" />
+                    </p:column>
+                    <p:column style="text-align:right;">
+                        <f:facet name="header">
+                            <h:outputText value="投资金额"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{invest.money}">
+                            <f:convertNumber minIntegerDigits="1" minFractionDigits="2"></f:convertNumber>
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="投标状态"></h:outputText>
+                        </f:facet>
+                        <h:outputText
+                                value="#{dictUtil.getValue('invest_status', invest.status)}"></h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="渠道"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{invest.channel}"></h:outputText>
+                    </p:column>
+                    <f:facet name="footer">
+                        <p:commandButton value="导出Excel" ajax="false">
+                            <p:dataExporter target="dataTable" type="xls"
+                                            fileName="investList" pageOnly="false"></p:dataExporter>
+                        </p:commandButton>
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

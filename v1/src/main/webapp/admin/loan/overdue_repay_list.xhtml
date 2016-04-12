@@ -1,0 +1,101 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<h:outputLabel style="padding-left: 15px;"
+						value="#{commonMsg.currentPositionLabel}逾期还款列表"></h:outputLabel>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<h:form id="form">
+				<ui:param name="restriction"
+					value="#{'(repay.status=\''}#{RepayStatus.OVERDUE}#{'\' or repay.status=\''}#{RepayStatus.BAD_DEBT}#{'\'})'}"></ui:param>
+				<f:event type="preRenderComponent"
+					listener="#{repayList.addRestriction(restriction)}"></f:event>
+				<p:spacer></p:spacer>
+
+				<p:panel id="filters">
+					<h:panelGrid columns="2" styleClass="filter-grid"
+						rowClasses="filter-row" columnClasses="filter-col1,filter-col2">
+
+						<h:outputLabel value="项目编号: " />
+						<h:inputText value="#{repayList.example.loan.id}"></h:inputText>
+
+						<h:outputLabel value="用户名: " />
+						<p:autoComplete value="#{repayList.example.user.id}"
+							minQueryLength="2"
+							completeMethod="#{userList.queryUsersByUserName}"
+							forceSelection="true" var="u" itemLabel="#{u.username}"
+							itemValue="#{u.id}"></p:autoComplete>
+						<h:outputLabel value="时间范围"></h:outputLabel>
+						<ui:fragment>
+							<p:calendar value="#{repayList.searchcommitMinTime}"
+								navigator="true" pattern="yyyy-MM-dd" timeZone="GMT+8" />
+                      ~
+                      <p:calendar
+								value="#{repayList.searchcommitMaxTime}" navigator="true"
+								pattern="yyyy-MM-dd" timeZone="GMT+8" />
+                       &#160;&#160;
+                 </ui:fragment>
+						<p:commandButton update="dataTable" process="filters"
+							value="#{commonMsg.searchLabel}"></p:commandButton>
+					</h:panelGrid>
+				</p:panel>
+
+				<p:spacer></p:spacer>
+
+				<p:dataTable lazy="true" id="dataTable"
+					value="#{repayList.lazyModel}" var="repay" paginator="true"
+					paginatorPosition="bottom" rows="15"
+					currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+					paginatorTemplate="#{commonMsg.paginatorTemplate}"
+					emptyMessage="#{commonMsg.noResultMsg}">
+					<p:column headerText="项目编号">
+						<h:outputText value="#{repay.loan.id}"></h:outputText>
+					</p:column>
+					<p:column headerText="项目名称">
+						<h:outputText value="#{repay.loan.name}"></h:outputText>
+					</p:column>
+					<p:column headerText="还款人">
+						<h:outputText value="#{repay.loan.user.username}"></h:outputText>
+					</p:column>
+
+					<p:column headerText="还款日">
+						<h:outputText value="#{repay.repayDay}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="还款本金">
+						<h:outputText value="#{repay.corpus}">
+							<f:convertNumber minIntegerDigits="1" minFractionDigits="2"></f:convertNumber>
+						</h:outputText>元
+                </p:column>
+					<p:column headerText="还款利息">
+						<h:outputText value="#{repay.interest}">
+							<f:convertNumber minIntegerDigits="1" minFractionDigits="2"></f:convertNumber>
+						</h:outputText>元
+                </p:column>
+					<p:column headerText="还款罚息">
+						<h:outputText value="#{repay.defaultInterest}">
+							<f:convertNumber minIntegerDigits="1" minFractionDigits="2"></f:convertNumber>
+						</h:outputText>元
+                </p:column>
+					<p:column headerText="还款状态">
+						<h:outputText value="#{repay.status}"></h:outputText>
+					</p:column>
+					
+				</p:dataTable>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

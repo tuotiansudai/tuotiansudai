@@ -1,0 +1,172 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+    <ui:define name="content">
+    
+    <div class="entry">
+    	<p:toolbar>
+            <p:toolbarGroup>
+	            <h:outputLabel style="padding-left: 15px;" value="#{commonMsg.currentPositionLabel}#{userMsg.userManagerLabel}"></h:outputLabel>
+            </p:toolbarGroup>
+        </p:toolbar>
+        
+        <h:form id="form"> 
+        	<p:spacer></p:spacer> 
+                <p:panel id="filters">
+                    <h:inputText id="searchId" value="#{userList.example.id}"></h:inputText>
+                    <h:inputText id="searchTitle" value="#{userList.example.username}"></h:inputText>
+<!--                     <h:inputText id="searchLevel" value="#{userList.example.borrowerInfo.riskLevel}"></h:inputText>
+                    <h:selectOneMenu value="#{userList.example.borrowerInfo.riskLevel}">
+                         <f:selectItem itemLabel="请选择会员等级" itemValue=""/> 
+                        <f:selectItems value="#{riskRankList.allResultList}" var="riskRank" itemValue="#{riskRank.rank}" itemLabel="#{riskRank.rank}"/>
+                    </h:selectOneMenu>
+                    <p:calendar id="startTime" value="#{userList.startTime}" pattern="yyyy-MM-dd"></p:calendar>
+                    <p:calendar id="endTime" value="#{userList.endTime}" pattern="yyyy-MM-dd"></p:calendar> -->
+                    <p:commandButton update="dataTable" process="filters"
+                        value="#{commonMsg.searchLabel}"></p:commandButton>
+                        <p:commandButton value="导出" ajax="false">  
+							    <p:dataExporter type="xls" target="dataTable" fileName="userCaseList" />  
+							</p:commandButton>  
+                </p:panel>
+                <p:watermark for="searchId" value="#{commonMsg.IDLabel}" />  
+                <p:watermark for="searchTitle" value="#{userMsg.username}"></p:watermark>
+<!--                 <p:watermark for="startTime" value="注册起始时间"></p:watermark> -->
+<!--                 <p:watermark for="endTime" value="注册结束时间"></p:watermark> -->
+            
+            <p:spacer></p:spacer> 
+
+            <p:dataTable lazy="true" id="dataTable" value="#{userList.lazyModel}" var="user" 
+                paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="15,50,100"
+                rowStyleClass="#{user.status != '1'?'disable':''}" sortBy="registerTime" sortOrder="descending"
+                currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+                paginatorTemplate="#{commonMsg.paginatorTemplate}"
+                emptyMessage="#{commonMsg.noResultMsg}" selection="#{userList.selectedUsers}">
+                
+                <p:column selectionMode="multiple" style="width:18px" exportable="false"/> 
+                 
+                <p:column sortBy="user.id">
+					<f:facet name="header">
+						<h:outputText value="#{commonMsg.IDLabel}" />
+					</f:facet>
+                    <h:outputText  value="#{user.id}"></h:outputText>
+                </p:column>
+                <p:column >
+					<f:facet name="header">
+						<h:outputText value="#{userMsg.username}" />
+					</f:facet>
+                    <h:outputText  value="#{user.username}"></h:outputText>
+                </p:column>
+                <p:column>
+					<f:facet name="header">
+						<h:outputText value="#{userMsg.realname}" />
+					</f:facet>
+                    <h:outputText  value="#{user.realname}"></h:outputText>
+                </p:column>
+                <p:column>
+					<f:facet name="header">
+						<h:outputText value="资产总额" />
+					</f:facet>
+                    <h:outputText  value="#{userBillHome.getFrozenMoneyByUserId(user.id)+userBillHome.getBalanceByUserId(user.id)}">
+                    	<f:convertNumber type="number" pattern="#,###.##" />
+                    </h:outputText>
+                </p:column>
+                <p:column>
+					<f:facet name="header">
+						<h:outputText value="可用余额" />
+					</f:facet>
+                    <h:outputText  value="#{userBillHome.getBalanceByUserId(user.id)}">
+                    	<f:convertNumber type="number" pattern="#,###.##" />
+                    </h:outputText>
+                </p:column>
+                <p:column >
+					<f:facet name="header">
+						<h:outputText value="冻结金额" />
+					</f:facet>
+                    <h:outputText  value="#{userBillHome.getFrozenMoneyByUserId(user.id)}">
+                    	<f:convertNumber type="number" pattern="#,###.##" />
+                    </h:outputText>
+                </p:column>
+                <p:column >
+					<f:facet name="header">
+						<h:outputText value="未提现金额" />
+					</f:facet>
+                    <h:outputText  value="#{userBillHome.getBalanceByUserId(user.id)+userBillHome.getFrozenMoneyByUserId(user.id)}">
+                    	<f:convertNumber type="number" pattern="#,###.##" />
+                    </h:outputText>
+                </p:column>
+                <p:column >
+					<f:facet name="header">
+						<h:outputText value="累计投资" />
+					</f:facet>
+                    <h:outputText  value="#{investHome.getSumInvest(user.id)}">
+                    	<f:convertNumber type="number" pattern="#,###.##" />
+                    </h:outputText>
+                </p:column>
+                <p:column >
+					<f:facet name="header">
+						<h:outputText value="累计收益" />
+					</f:facet>
+                    <h:outputText  value="#{investList.getAllInvestsPaidInterest(user.id)}">
+                    	<f:convertNumber type="number" pattern="#,###.##" />
+                    </h:outputText>
+                </p:column>
+                <p:column >
+					<f:facet name="header">
+						<h:outputText value="累计借款" />
+					</f:facet>
+                    <h:outputText  value="#{loanHome.getSumLoan(user.id)}">
+                    	<f:convertNumber type="number" pattern="#,###.##" />
+                    </h:outputText>
+                </p:column>
+                 <!--<f:facet name="footer"> 
+ 		            <p:commandButton type="button" id="multiViewButton" value="发送站内信" icon="ui-icon-mail-open"> 
+ 		            	<p:ajax listener="#{userList.getSelectedUsers}" oncomplete="sendMessageDialog.show()"></p:ajax>
+ 		            </p:commandButton> 
+					 这里弹出dialog吧，然后让他填写发信内容，然后按钮点击发送。 
+ 		        </f:facet> -->
+            </p:dataTable>
+            <p:confirmDialog width="500" id="confirmDialog" widgetVar="confirmDialog" severity="alert" header="#{commonMsg.confirmForbid}" message="#{userMsg.forbidUserInfo}">
+<!--                 <h:inputHidden value="#{userHome.forbidId}" id="forbidId"></h:inputHidden> -->
+                    <p:commandButton id="confirm" value="#{commonMsg.confirmLabel}" process="@this" actionListener="#{userHome.forbid}" oncomplete="confirmDialog.hide()" update="dataTable" style="margin-left:180px;" />  
+                    <p:commandButton id="decline" value="#{commonMsg.cancelLabel}" onclick="confirmDialog.hide()" type="button" />
+            </p:confirmDialog>
+            <p:confirmDialog width="500" id="confirmDialog1" widgetVar="confirmDialog1" severity="alert" header="#{commonMsg.confirmRelease}" message="#{userMsg.releaseUserInfo}">
+<!--                 <h:inputHidden value="#{userHome.releaseId}" id="releaseId"></h:inputHidden> -->
+                    <p:commandButton id="confirm1" value="#{commonMsg.confirmLabel}" process="confirmDialog1" actionListener="#{userHome.release}" oncomplete="confirmDialog1.hide()" update="dataTable" style="margin-left:180px;" />  
+                    <p:commandButton id="decline1" value="#{commonMsg.cancelLabel}" onclick="confirmDialog1.hide()" type="button" />
+            </p:confirmDialog>
+            <script type="text/javascript">  
+       		   //<![CDATA[.......
+			    function handleLoginRequest(xhr, status, args) {  
+			        if(!args.validationFailed && args.sendSuccess) {  
+			        	sendMessageDialog.hide();
+			        } else {  
+			          	jQuery('#form\\:sendMessageDlg').effect("shake", { times:3 }, 100);  
+			        }
+			    }
+			    //]]> 
+			</script>  
+        
+         <!-- <p:dialog id="sendMessageDlg" header="发送站内信" widgetVar="sendMessageDialog" modal="true">
+            	<h:panelGrid columns="2">
+            		<h:outputLabel value="标题："></h:outputLabel>
+            		<h:inputText value="#{userList.title}" style="width: 280px;" required="true" label="站内信标题"></h:inputText>
+
+            		<h:outputLabel value="内容："></h:outputLabel>
+            		<h:inputTextarea value="#{userList.message}" style="width: 280px;margin: 0" required="true" cols="30" rows="5" label="站内信内容"></h:inputTextarea>
+            		
+            		<p:commandButton value="发送" actionListener="#{userList.sendMessageToSelectedUsers}" oncomplete="handleLoginRequest(xhr, status, args)"></p:commandButton>
+            	</h:panelGrid>
+            </p:dialog> -->
+            </h:form>
+      </div>
+    </ui:define>
+</ui:composition>

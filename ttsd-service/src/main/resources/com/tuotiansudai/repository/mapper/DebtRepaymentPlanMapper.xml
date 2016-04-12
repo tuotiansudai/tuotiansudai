@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.DebtRepaymentPlanMapper">
+
+    <resultMap id="DebtRepaymentPlanResultMap" type="DebtRepaymentPlanView">
+        <result column="repay_date" property="repayDate"></result>
+        <result column="total_amount" property="totalAmount"></result>
+        <result column="expert_repay_date" property="expertRepayDate"></result>
+        <result column="repay_amount" property="repayAmount"></result>
+        <result column="loan_name" property="loanName"></result>
+        <result column="loan_id" property="loanId"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="status" property="status"></result>
+        <result column="actual_repay_date" property="actualRepayDate"></result>
+
+    </resultMap>
+
+    <select id="findDebtRepaymentPlan" parameterType="map" resultMap="DebtRepaymentPlanResultMap">
+        SELECT
+          temp.repay_date,
+          (
+            SUM(temp.interest) + SUM(temp.corpus) + SUM(temp.default_interest)
+          ) AS total_amount
+        FROM
+          (
+          <if test="repayStatus.name() == 'ALL' or repayStatus.name() == 'COMPLETE'">
+          SELECT
+            DATE_FORMAT(m.`actual_repay_date`, '%Y-%m') AS repay_date,
+            SUM(m.`actual_interest`) AS interest,
+            SUM(m.`corpus`) AS corpus,
+            SUM(m.`default_interest`) AS default_interest
+          FROM
+            loan_repay m
+          WHERE m.`status` = 'COMPLETE'
+          GROUP BY DATE_FORMAT(m.`actual_repay_date`, '%Y-%m')
+          </if>
+        <if test="repayStatus.name() == 'ALL'">
+          UNION
+          ALL
+        </if>
+        <if test="repayStatus.name() == 'ALL' or repayStatus.name() != 'COMPLETE'">
+          SELECT
+            DATE_FORMAT(m.`repay_date`, '%Y-%m') AS repay_date,
+            SUM(m.`expected_interest`) AS interest,
+            SUM(m.`corpus`) AS corpus,
+            SUM(m.`default_interest`) AS default_interest
+          FROM
+            loan_repay m
+          WHERE m.`status` != 'COMPLETE'
+          GROUP BY DATE_FORMAT(m.`repay_date`, '%Y-%m')
+        </if>
+        ) temp
+        GROUP BY temp.repay_date
+        ORDER BY temp.repay_date
+    </select>
+
+    <select id="findDebtRepaymentPlanDetail" parameterType="map" resultMap="DebtRepaymentPlanResultMap">
+        SELECT
+          l.`repay_date` AS expert_repay_date,
+          IF(
+            l.`status` = 'COMPLETE',
+            l.`corpus` + l.`actual_interest` + l.`default_interest`,
+            l.`corpus` + l.`expected_interest` + l.`default_interest`
+          ) AS repay_amount,
+          t.`name` AS loan_name,
+          t.`id` AS loan_id,
+          t.`agent_login_name` AS login_name,
+          l.`status`,
+          l.`actual_repay_date`
+        FROM
+          loan_repay l
+          JOIN loan t
+            ON l.`loan_id` = t.`id`
+            AND t.`status` IN ('REPAYING', 'COMPLETE', 'OVERDUE')
+        WHERE DATE_FORMAT(l.`repay_date`, '%Y-%m') = #{date}
+        <if test="repayStatus.name() != 'ALL' and repayStatus.name() == 'COMPLETE'">
+          AND l.`status` = 'COMPLETE'
+        </if>
+        <if test="repayStatus.name() != 'ALL' and repayStatus.name() != 'COMPLETE'">
+          AND l.`status` != 'COMPLETE'
+        </if>
+        ORDER BY l.`repay_date`
+    </select>
+
+</mapper>

@@ -1,0 +1,21 @@
+@charset "utf-8";
+/* CSS Document */
+
+.wrap{ width:100%; height:340px; overflow:hidden;}
+.banner{ width:1920px; position:relative; left:50%; margin-left:-960px;}
+.banner .hd{ position:absolute; z-index:2;left:47%;top:310px;}
+.banner .hd li{ float:left; cursor:pointer; width:14px; height:14px; background:#fff;margin-left:8px;}
+.banner .hd li.on{ background:#f5a915;}
+.banner .bd{ width:1920px; position:absolute; left:50%; margin-left:-960px;}
+.banner .bd li img{ width:1920px; height:340px;}
+.layer-div{ width:1000px; position:relative; margin:0 auto;}
+.layer{ width:275px;height: 268px;background: url(../images/index/layer-bg.png) repeat;position:absolute; right:0px; top:28px;border-radius: 5px;padding-top: 20px;padding-left: 16px;}
+.p1{font-size: 20px;}
+.p4,.p2{padding-top: 20px;}
+.p2,.p3{font-size: 15px;text-align:center}
+.p2 strong{font-size: 45px;color: #f33735}
+.p3 strong{font-size: 25px;color: #f33735}
+.p4 a{width: 250px;height: 48px;text-align: center;line-height: 48px;color: #ffffff;background: #f33735;border-radius: 4px;display: inline-block;font-size: 20px;}
+.p4 a:hover{background: #CE1210}
+.p5{text-align: right;padding-right: 20px;padding-top: 14px;}
+.p5 a{color: #f33735}

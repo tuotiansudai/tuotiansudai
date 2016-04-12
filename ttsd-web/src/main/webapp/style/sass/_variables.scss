@@ -1,0 +1,60 @@
+$fontStack:Microsoft YaHei,Helvetica, sans-serif;
+$baseColor:#fff #ffac2a #353535 #979797
+           #f9f9f9 #ff6b2a;
+$linkColor:#ff752a #e54c14;
+$btnColor:#333 #666 #ccc #e6e6e6
+          #ff7a2a #f46916;
+$borderColor:#c7c7c7;
+
+$CK1:#ffac2a #ff7a2a #f46916 #ed6533 #e54c14;
+$CK2:#333 #666 #ccc #e6e6e6 #000
+#797979 #4c4c4c;
+$required:red;
+$checkValid:#f71010 #6bc21e;
+$fontSize:12px 13px 14px 16px 18px;
+$baseLineHeight:2 1.5;
+$baseFloat:left right;
+$textAlign:left center right;
+$headings: (h1: 2em, h2: 1.5em, h3: 1.2em,h4:18px, h5:16px);
+
+$baseIconUrl:'/images/icons/';
+$Direction:top right bottom left;
+$imgPrefix:'';
+
+@each $header, $size in $headings {
+  #{$header} {
+    font-size: $size;
+
+    font-weight: normal;
+
+  }
+}
+@mixin center-block {
+  margin-left:auto;
+  margin-right:auto;
+}
+
+@mixin text-overflow{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@mixin border-radius ($sizing) {
+  -webkit-border-radius:$sizing;
+  -moz-border-radius:$sizing;
+  border-radius:$sizing;
+}
+/* background gradient */
+@mixin gradient-linear($angle,$fromColor,$toColor) {
+  //Bottom -Top: 0deg
+  //Top-Bottom:180deg
+  //right-left: 270deg or -90deg
+  //left-right :90deg or -270deg
+  //right bottom- left top :315deg
+  background-image:-webkit-linear-gradient($angle, $fromColor, $toColor);
+  background-image:linear-gradient($angle,$fromColor,$toColor);
+}
+
+
+
+

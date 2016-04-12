@@ -1,0 +1,44 @@
+<!-- 
+    displayMore,true|false ,default false 
+    termId:
+    firstResult:
+    maxResults: 15
+ -->
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+	<div id="block-views-clone-2-of-block"
+		class="block block-views frontpage-block contextual-links-region #{styleClass}">
+
+	    <h:outputLabel value="not fount param 'termId'" rendered="#{empty termId}"/>
+		<h4>
+			<h:outputLink value="#{appInfo.contextPath}/term/#{termId}" >#{categoryTermHome.getTermById(termId).name}</h:outputLink>
+			<ui:fragment rendered="#{displayMore == 'true'}">
+			<span class="block-more-link">
+			    <a href="#{appInfo.contextPath}/term/#{termId}" title="">#{commonMsg.moreLabel}</a>
+			</span>
+			</ui:fragment>
+		</h4>
+		
+		<div class="view view-display-id-block">
+            <ui:param name="nodeList" value="#{nodeList.getNodes(termId,empty firstResult?0:firstResult,empty maxResults?15:maxResults)}"></ui:param>
+			<div class="view-content">
+				<ui:repeat var="node" value="#{nodeList}" varStatus="status">
+				    <div class="views-row views-row-#{status.index+1} views-row-#{(status.index)%2 == 0 ? 'odd' : 'even'} #{status.first ? 'views-row-first':''} #{status.last ?  'views-row-last' : ''}">
+	                    <div class="views-field views-field-title">
+	                        <span class="field-content"><a href="#{appInfo.contextPath}/node/#{node.id}">#{node.title}</a>
+	                        </span>
+	                    </div>
+	                </div>
+				</ui:repeat>
+				
+			</div>
+
+		</div>
+	</div>
+
+</f:view>

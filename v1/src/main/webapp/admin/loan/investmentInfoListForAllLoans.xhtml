@@ -1,0 +1,152 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<f:metadata>
+		<f:viewParam name="loanId" value="#{investList.example.loan.id}"></f:viewParam>
+	</f:metadata>
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<h:outputLabel style="padding-left: 15px;"
+						value="#{commonMsg.currentPositionLabel}投资信息"></h:outputLabel>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<h:form id="form">
+
+				<p:spacer></p:spacer>
+
+				<p:panel id="filters">
+					<h:panelGrid columns="2" cstyleClass="filter-grid"
+						rowClasses="filter-row" columnClasses="filter-col1,filter-col2">
+						<h:outputLabel value="项目编号: "></h:outputLabel>
+						<h:inputText value="#{investList.example.loan.id}"></h:inputText>
+						
+						<h:outputLabel value="筛选用户: " />
+						<p:autoComplete value="#{investList.example.user.id}" minQueryLength="2"
+						  completeMethod="#{userList.queryUsersByUserName}" forceSelection="true"   
+						  var="u" itemLabel="#{u.username}" itemValue="#{u.id}"></p:autoComplete>
+
+						<h:outputLabel value="时间范围"></h:outputLabel>
+						<ui:fragment>
+							<p:calendar value="#{investList.searchcommitMinTime}"
+								pattern="yyyy-MM-dd" timeZone="GMT+8" />
+                      ~ 
+                      <p:calendar
+								value="#{investList.searchcommitMaxTime}" pattern="yyyy-MM-dd"
+								timeZone="GMT+8" />
+                       &#160;&#160;
+                 </ui:fragment>
+
+						<h:outputLabel value="还款状态"></h:outputLabel>
+						<ui:fragment>
+							<h:selectOneMenu value="#{investList.example.status}">
+								<f:selectItem itemLabel="请选择 &#160;&#160;" itemValue="" />
+								<f:selectItem itemLabel="竞标中" itemValue="还款中" />
+								<f:selectItem itemLabel="竞标失败" itemValue="完成" />
+								<f:selectItem itemLabel="投标成功" itemValue="逾期" />
+							</h:selectOneMenu>
+                       &#160;&#160;
+                   </ui:fragment>
+						<h:outputText></h:outputText>
+						<p:commandButton update="dataTable" process="filters"
+							value="#{commonMsg.searchLabel}"></p:commandButton>
+					</h:panelGrid>
+				</p:panel>
+
+				<p:spacer></p:spacer>
+
+				<p:dataTable lazy="true" id="dataTable"
+					value="#{investList.lazyModel}" var="invest" paginator="true"
+					paginatorPosition="bottom" rows="15"
+					currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+					paginatorTemplate="#{commonMsg.paginatorTemplate}"
+					emptyMessage="#{commonMsg.noResultMsg}">
+					
+					<p:column headerText="项目编号">
+						<f:facet name="header">
+							<h:outputText value="项目编号" />
+						</f:facet>
+                        <h:outputText value="#{invest.loan.id}"></h:outputText>
+                    </p:column>
+					<p:column headerText="项目名称">
+						<f:facet name="header">
+							<h:outputText value="项目名称" />
+						</f:facet>
+						<h:outputText value="#{invest.loan.name}"></h:outputText>
+					</p:column>
+
+					<p:column headerText="项目类型">
+						<f:facet name="header">
+							<h:outputText value="项目类型" />
+						</f:facet>
+						<h:outputText value="#{invest.loan.type}"></h:outputText>
+					</p:column>
+
+					<p:column headerText="投资人">
+						<f:facet name="header">
+							<h:outputText value="投资人" />
+						</f:facet>
+						<h:outputText value="#{invest.user.username}"></h:outputText>
+					</p:column>
+
+					<p:column headerText="投资时间">
+						<f:facet name="header">
+							<h:outputText value="投资时间" />
+						</f:facet>
+						<h:outputText value="#{invest.time}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="投资金额">
+						<f:facet name="header">
+							<h:outputText value="投资金额" />
+						</f:facet>
+						<h:outputText value="#{invest.money}">
+							<f:convertNumber minIntegerDigits="1" minFractionDigits="2"></f:convertNumber>
+						</h:outputText>元
+                </p:column>
+					<p:column headerText="投标状态">
+						<f:facet name="header">
+							<h:outputText value="投标状态" />
+						</f:facet>
+						<h:outputText value="#{dictUtil.getValue('invest_status', invest.status)}"></h:outputText>
+					</p:column>
+					
+					<p:column headerText="qq群号">
+						<f:facet name="header">
+							<h:outputText value="qq群号" />
+						</f:facet>
+						<h:outputText value="#{invest.user.qqGroup}"></h:outputText>
+					</p:column>
+
+					<!--  <p:column headerText="#{commonMsg.actionLabel}">
+                    <sec:ifAllGranted comments="ROLE_EDIT">
+                    <h:link value="#{commonMsg.editLabel}" outcome="/admin/comment/commentEdit?id=#{comment.id}"></h:link> |
+                    <a href="javascript:void(0)" onclick="$('#form\\:deleteId').val('#{invest.id}');confirmDialog.show()">#{commonMsg.deleteLabel}</a> 
+                    </sec:ifAllGranted>
+                </p:column> -->
+				</p:dataTable>
+				<p:commandButton value="导出" ajax="false">  
+				    <p:dataExporter type="xls" target="dataTable" fileName="investmentInfo" />  
+				</p:commandButton> 
+				
+				
+				<!--             <p:confirmDialog width="500" id="confirmDialog" widgetVar="confirmDialog" severity="alert" header="#{commonMsg.confirmDetele}" message="确定要删除此条投资信息？"> -->
+				<!--                 <h:inputHidden value="#{investHome.id}" id="deleteId"></h:inputHidden> -->
+				<!--                     <p:commandButton id="confirm" value="#{commonMsg.confirmLabel}" action="#{investHome.delete}" ajax="false" style="margin-left:180px;" />   -->
+				<!--                     <p:commandButton id="decline" value="#{commonMsg.cancelLabel}" onclick="confirmDialog.hide()" type="button" /> -->
+				<!--             </p:confirmDialog> -->
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

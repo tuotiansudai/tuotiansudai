@@ -1,0 +1,72 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<h:outputLabel style="padding-left: 15px;"
+						value="#{commonMsg.currentPositionLabel} #{commonMsg.manageLabel}#{linkMsg.linkLabel}"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button value="#{linkMsg.addLabel}#{linkMsg.linkLabel}"
+						outcome="/admin/link/linkEdit"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<h:form id="form">
+				<p:spacer></p:spacer>
+				<p:panel id="filters">
+					<h:inputText id="searchId" value="#{linkList.example.id}"></h:inputText>
+
+					<h:inputText id="searchName" value="#{linkList.example.name}"></h:inputText>
+
+					<h:inputText id="searchUrl" value="#{linkList.example.url}"></h:inputText>
+
+					<p:commandButton process="filters" update="dataTable"
+						value="#{commonMsg.searchLabel}"></p:commandButton>
+				</p:panel>
+				<p:watermark for="searchId" value="#{commonMsg.IDLabel}" />
+				<p:watermark for="searchName" value="#{commonMsg.nameLabel}"></p:watermark>
+				<p:watermark for="searchUrl" value="URL"></p:watermark>
+
+				<p:spacer></p:spacer>
+
+				<p:dataTable id="dataTable" value="#{linkList.lazyModel}" var="link"
+					paginator="true" paginatorPosition="bottom" rows="15" lazy="true"
+					emptyMessage="#{commonMsg.noResultMsg}"
+					currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+					paginatorTemplate="#{commonMsg.paginatorTemplate}">
+					<p:column headerText="#{commonMsg.nameLabel}" sortBy="link.name">
+						<h:outputText value="#{link.name}"></h:outputText>
+					</p:column>
+					<p:column headerText="Logo">
+						<p:graphicImage value="#{link.logo}"
+							rendered="#{not empty link.logo}" height="20" />
+					</p:column>
+					<p:column headerText="URL" sortBy="link.url">
+						<h:outputText value="#{link.url}"></h:outputText>
+					</p:column>
+					<p:column headerText="#{commonMsg.seqNumLabel}"
+						sortBy="link.seqNum">
+						<h:outputText value="#{link.seqNum}"></h:outputText>
+					</p:column>
+					<p:column headerText="#{commonMsg.actionLabel}">
+						<h:link value="#{commonMsg.editLabel}"
+							outcome="/admin/link/linkEdit?id=#{link.id}"></h:link> | 
+						<p:commandLink action="#{linkHome.delete(link.id)}" value="#{commonMsg.deleteLabel}" onstart="return confirm('您确定要删除？此操作不可恢复！')" ></p:commandLink>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</div>
+	</ui:define>
+
+</ui:composition>

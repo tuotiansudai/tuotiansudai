@@ -1,0 +1,69 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+    <ui:define name="content">
+     <div class="entry">
+     <p:toolbar>
+            <p:toolbarGroup>
+	            <h:outputLabel style="padding-left: 15px;" value="#{commonMsg.currentPositionLabel}#{termMsg.categoryTermManageLabel}"></h:outputLabel>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+	            <p:separator />  
+	            <p:button value="#{termMsg.addCategoryTermLabel}" outcome="/admin/term/categoryTermEdit"></p:button>
+            </p:toolbarGroup>
+        </p:toolbar>
+        <h:form id="form">
+
+			<p:spacer></p:spacer> 
+                
+                <p:panel id="filters">
+                    <h:inputText id="searchId" value="#{categoryTermList.example.id}"></h:inputText>
+                    <h:inputText id="searchTitle" value="#{categoryTermList.example.name}"></h:inputText>
+                    <p:commandButton update="dataTable" process="filters"
+                        value="#{commonMsg.searchLabel}"></p:commandButton>
+                </p:panel>
+                <p:watermark for="searchId" value="#{commonMsg.IDLabel}" />  
+                <p:watermark for="searchTitle" value="#{termMsg.categoryTermLabel}"></p:watermark>
+            
+            <p:spacer></p:spacer> 
+          
+            <p:dataTable lazy="true" id="dataTable" value="#{categoryTermList.lazyModel}" var="term" 
+                paginator="true" paginatorPosition="bottom" rows="15" 
+                emptyMessage="#{commonMsg.noResultMsg}" currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+                paginatorTemplate="#{commonMsg.paginatorTemplate}">
+                <p:column headerText="#{commonMsg.IDLabel }" sortBy="id">
+                    <h:outputText  value="#{term.id}"></h:outputText>
+                </p:column>
+                <p:column headerText="#{commonMsg.nameLabel }" sortBy="name" >
+                    <h:outputText  value="#{term.name}"></h:outputText>
+                </p:column>
+                 <p:column headerText="#{termMsg.categoryTermTypeLabel }" sortBy="categoryTermType.name" >
+                    <h:outputText  value="#{term.categoryTermType.name}"></h:outputText>
+                </p:column>
+                <p:column headerText="#{commonMsg.descriptionLabel}">
+                    <h:outputText  value="#{term.description}"></h:outputText>
+                </p:column>
+                <p:column headerText="#{commonMsg.actionLabel}">
+                    <sec:ifAllGranted roles="CATEGORY_TERM_EDIT">
+                    <h:link value="#{commonMsg.editLabel}" outcome="/admin/term/categoryTermEdit?id=#{term.id}"></h:link> |
+                    <a href="javascript:void(0)" onclick="$('#form\\:deleteId').val('#{term.id}');confirmDialog.show()">#{commonMsg.deleteLabel}</a> 
+                    </sec:ifAllGranted>
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog styleClass="confirm-dialog" id="confirmDialog" widgetVar="confirmDialog" severity="alert" header="#{commonMsg.confirmDetele}" message="#{termMsg.deleteTermInfo}">
+                <h:inputHidden value="#{categoryTermHome.id}" id="deleteId"></h:inputHidden>
+                    <p:commandButton id="confirm" value="#{commonMsg.confirmLabel}" action="#{categoryTermHome.delete}" ajax="false" style="margin-left:180px;" />  
+                    <p:commandButton id="decline" value="#{commonMsg.cancelLabel}" onclick="confirmDialog.hide()" type="button" />
+            </p:confirmDialog>
+        </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,405 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<!-- fff
+	<f:event type="preRenderView" listener="#{loanHome.initInstanceByELoanApplyId(param.applyId)}"></f:event>
+ 	-->
+	<f:metadata>
+		<f:viewParam name="id" value="#{loanHome.id}"></f:viewParam>
+	</f:metadata>
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar styleClass="admin-nav-toolbar">
+				<p:toolbarGroup>
+					<h:outputLabel value="#{commonMsg.currentPositionLabel} 发起企业借款"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:spacer></p:spacer>
+
+			<h:form id="form">
+				<h:panelGrid id="panel" columns="2" columnClasses="col1,col2">
+					<h:outputLabel value="项目名称"></h:outputLabel>
+					<h:inputText value="#{loanHome.instance.name}" label="项目名称"
+						required="true" maxlength="50" styleClass="text">
+						<f:validateLength maximum="100"></f:validateLength>
+					</h:inputText>
+
+					<h:outputLabel value="项目图片"></h:outputLabel>
+					<ui:fragment>
+						<ui:include src="#{tplVars.componentsPath}/onePictureUpload.xhtml">
+							<ui:param name="thumb" value="#{loanHome.instance.customPicture}"></ui:param>
+						</ui:include>
+						<br />
+						<h:outputLabel value="小于500K，格式:gif、jpe(g)、png"></h:outputLabel>
+					</ui:fragment>
+
+					<h:outputLabel value="借款者(必填)"></h:outputLabel>
+					<p:autoComplete value="#{loanHome.instance.user}" required="true"
+						label="借款者" minQueryLength="2" forceSelection="true"
+						completeMethod="#{userList.queryUsersByUserName}"
+						converter="archer.EntityConverter" var="user"
+						itemLabel="#{user.username}#{user.realname}" itemValue="#{user}">
+						<p:ajax event="blur" update="balance"></p:ajax>
+					</p:autoComplete>
+
+					<h:outputLabel value="注册号"></h:outputLabel>
+					<h:inputText style="width:190px;height:18px;"
+						value="#{loanHome.instance.companyNo}">
+					</h:inputText>
+
+					<h:outputLabel value="担保方名称"></h:outputLabel>
+					<h:inputText value="#{loanHome.instance.guaranteeCompanyName}"
+						label="担保方名称" styleClass="text">
+						<f:validateLength maximum="100" />
+					</h:inputText>
+
+					<h:outputLabel value="项目描述"></h:outputLabel>
+					<ui:fragment>
+						<h:inputTextarea value="#{loanHome.instance.description}"
+							id="description" label="项目描述" style="height:96px" cols="100"
+							styleClass="text">
+							<f:validateLength maximum="60000" />
+						</h:inputTextarea>
+						<script type="text/javascript">
+							var ue = new UE.ui.Editor({});
+							ue.render('form:description');
+						</script>
+					</ui:fragment>
+
+					<h:outputLabel value="资金运转"></h:outputLabel>
+					<ui:fragment>
+						<h:inputTextarea value="#{loanHome.instance.fundDescription}"
+							id="fundDescription" label="资金运转" style="height:96px" rows="20"
+							cols="100" styleClass="text">
+							<f:validateLength maximum="60000" />
+						</h:inputTextarea>
+						<script type="text/javascript">
+							var ue = new UE.ui.Editor({});
+							ue.render('form:fundDescription');
+						</script>
+					</ui:fragment>
+
+					<h:outputLabel value="风险控制措施"></h:outputLabel>
+					<ui:fragment>
+						<h:inputTextarea value="#{loanHome.instance.riskDescription}"
+							id="riskDescription" label="风险控制措施" style="height:96px" rows="20"
+							cols="100" styleClass="text">
+							<f:validateLength maximum="60000" />
+						</h:inputTextarea>
+						<script type="text/javascript">
+							var ue = new UE.ui.Editor({});
+							ue.render('form:riskDescription');
+						</script>
+					</ui:fragment>
+
+					<h:outputLabel value="政策及市场分析"></h:outputLabel>
+					<ui:fragment>
+						<h:inputTextarea value="#{loanHome.instance.policyDescription}"
+							id="policyDescription" label="政策及市场分析" style="height:96px"
+							rows="20" cols="100" styleClass="text">
+							<f:validateLength maximum="60000" />
+						</h:inputTextarea>
+						<script type="text/javascript">
+							var ue = new UE.ui.Editor({});
+							ue.render('form:policyDescription');
+						</script>
+					</ui:fragment>
+					<h:outputLabel value="融资企业信息"></h:outputLabel>
+					<ui:fragment>
+						<h:inputTextarea value="#{loanHome.instance.companyDescription}"
+							id="companyDescription" label="融资企业信息" style="height:96px"
+							rows="20" cols="100" styleClass="text">
+							<f:validateLength maximum="60000" />
+						</h:inputTextarea>
+						<script type="text/javascript">
+							var ue = new UE.ui.Editor({});
+							ue.render('form:companyDescription');
+						</script>
+					</ui:fragment>
+
+					<ui:fragment>
+						<p:commandButton id="uploadPicBtn2" type="button"
+							onclick="uploadDialog2.show()" process="@none"
+							value="#{commonMsg.addLabel}"></p:commandButton>
+						<h:outputLabel value="抵押相关物资"></h:outputLabel>
+					</ui:fragment>
+					<ui:fragment>
+						<f:event type="preRenderComponent"
+							listener="#{bannerPictureHome2.initBannerPictures(loanHome.instance.guaranteeInfoPics)}" />
+						<h:panelGroup id="picture_info2">
+							<ui:repeat var="img" value="#{bannerPictureHome2.bannerPictures}">
+								<p:panel style="float:left">
+									<f:facet name="header">
+									#{img.seqNum}
+									<p:commandLink
+											actionListener="#{bannerPictureHome2.moveUp(img)}"
+											process="@this" value="#{bannerMsg.moveUp}"
+											style="float:right;" update=":form:picture_info2"></p:commandLink>
+										<p:commandLink
+											actionListener="#{bannerPictureHome2.moveDown(img)}"
+											process="@this" update=":form:picture_info2"
+											style="float:right; margin-right:5px;"
+											value="#{bannerMsg.moveDown}"></p:commandLink>
+										<p:commandLink value="#{commonMsg.deleteLabel}"
+											update=":form:picture_info2"
+											actionListener="#{bannerPictureHome2.deletePicture(img)}"
+											style="float:right; margin-right:5px;" process="@this" />
+										<p:commandLink value="换图" process="@this"
+											style="float:right; margin-right:5px;">
+											<p:ajax
+												listener="#{bannerPictureHome2.setNeedChangedPic(img)}"
+												oncomplete="changePicDialog2.show()"></p:ajax>
+										</p:commandLink>
+									</f:facet>
+									<img src="#{appInfo.contextPath}#{img.picture}"
+										style="max-width: 210px; max-height: 180px; "></img>
+								</p:panel>
+							</ui:repeat>
+						</h:panelGroup>
+					</ui:fragment>
+
+
+					<ui:fragment>
+						<p:commandButton id="uploadPicBtn" type="button"
+							onclick="uploadDialog.show()" process="@none"
+							value="#{commonMsg.addLabel}"></p:commandButton>
+						<h:outputLabel value="项目材料"></h:outputLabel>
+					</ui:fragment>
+					<ui:fragment>
+						<f:event type="preRenderComponent"
+							listener="#{bannerPictureHome.initBannerPictures(loanHome.instance.loanInfoPics)}" />
+						<h:panelGroup id="picture_info">
+							<ui:repeat var="img" value="#{bannerPictureHome.bannerPictures}">
+								<p:panel style="float:left">
+									<f:facet name="header">
+									#{img.seqNum}
+									<p:commandLink
+											actionListener="#{bannerPictureHome.moveUp(img)}"
+											process="@this" value="#{bannerMsg.moveUp}"
+											style="float:right;" update=":form:picture_info"></p:commandLink>
+										<p:commandLink
+											actionListener="#{bannerPictureHome.moveDown(img)}"
+											process="@this" update=":form:picture_info"
+											style="float:right; margin-right:10px;"
+											value="#{bannerMsg.moveDown}"></p:commandLink>
+										<p:commandLink value="#{commonMsg.deleteLabel}"
+											update=":form:picture_info"
+											actionListener="#{bannerPictureHome.deletePicture(img)}"
+											style="float:right; margin-right:10px;" process="@this" />
+										<p:commandLink value="换图" process="@this"
+											style="float:right; margin-right:10px;">
+											<p:ajax
+												listener="#{bannerPictureHome.setNeedChangedPic(img)}"
+												oncomplete="changePicDialog.show()"></p:ajax>
+										</p:commandLink>
+									</f:facet>
+									<img src="#{appInfo.contextPath}#{img.picture}"
+										style="max-width: 210px; max-height: 180px; "></img>
+								</p:panel>
+							</ui:repeat>
+						</h:panelGroup>
+					</ui:fragment>
+
+					<h:outputLabel value="借款总金额(必填)"></h:outputLabel>
+					<h:inputText id="money" styleClass="text" label="借款总金额"
+						required="true" style="float:left;"
+						value="#{loanHome.instance.money}"
+						readonly="#{not empty loanHome.id}" onchange="checkMoney()">
+						<archer:validateNumber precision="2"></archer:validateNumber>
+						<f:validateDoubleRange minimum="0"></f:validateDoubleRange>
+					</h:inputText>
+					
+					<h:outputLabel value="最小投资金额(必填)"></h:outputLabel>
+					<h:inputText styleClass="text" label="最小投资金额"
+						required="true"
+						value="#{loanHome.instance.minInvestMoney}">
+						<archer:validateNumber precision="0"></archer:validateNumber>
+						<f:validateDoubleRange minimum="1"></f:validateDoubleRange>
+					</h:inputText>
+
+					<h:outputLabel value="账户余额"></h:outputLabel>
+					<h:panelGroup style="text-align: left;" id="balance">￥<h:outputLabel
+							value="#{userBillHome.getBalanceByUserId(loanHome.instance.user.id)}">
+							<f:convertNumber minIntegerDigits="1" minFractionDigits="2" />
+						</h:outputLabel>
+						<h:commandLink style="margin-left: 0;float:none;" value="(刷新)">
+							<f:ajax event="click" render="balance"></f:ajax>
+						</h:commandLink>
+					</h:panelGroup>
+
+					<h:outputLabel value="借款利率(%)"></h:outputLabel>
+					<h:inputText required="true" label="借款利率"
+						readonly="#{not empty loanHome.id}"
+						value="#{loanHome.instance.ratePercent}" styleClass="rate text">
+						<archer:validateNumber precision="2" required="true"></archer:validateNumber>
+						<f:validateDoubleRange minimum="0.01"></f:validateDoubleRange>
+					</h:inputText>
+					
+					<h:outputLabel value="手续费(还款时收取)"></h:outputLabel>
+					<h:inputText label="手续费(还款时收取)"
+						readonly="#{not empty loanHome.id}"
+						value="#{loanHome.instance.feeOnRepay}" styleClass="rate text">
+						<archer:validateNumber precision="2" required="true"></archer:validateNumber>
+						<f:validateDoubleRange minimum="0"></f:validateDoubleRange>
+					</h:inputText>
+
+					<h:outputLabel value="还款方式"></h:outputLabel>
+					<h:selectOneMenu value="#{loanHome.instance.repayType}"
+						onchange="getPerRepayment()" id="repayType" styleClass="lx">
+						<f:selectItem itemValue="#{RepayType.CPM}"
+							itemLabel="#{RepayType.CPM}" />
+						<f:selectItem itemValue="#{RepayType.RFCL}"
+							itemLabel="#{RepayType.RFCL}" />
+						<f:selectItem itemValue="#{RepayType.DQHBFX}"
+							itemLabel="#{RepayType.DQHBFX}" />
+					</h:selectOneMenu>
+
+					<h:outputLabel value="借款期限(月)" ></h:outputLabel>
+					<h:inputText value="#{loanHome.instance.deadline}"
+						id="deadline" label="借款期限"  required="true">
+						<f:validateLongRange minimum="1"></f:validateLongRange>
+					</h:inputText>
+
+					<!-- 					<h:outputLabel value="还款周期"></h:outputLabel> -->
+					<!-- 					<h:selectOneMenu value="#{loanHome.instance.repaymentPeriod}" -->
+					<!-- 						styleClass="lx"> -->
+					<!-- 						<f:selectItem itemValue="月" itemLabel="月" /> -->
+					<!-- 					</h:selectOneMenu> -->
+
+					<h:outputLabel value="风险等级"></h:outputLabel>
+					<h:selectOneMenu value="#{loanHome.instance.riskLevel}"
+						readonly="#{not empty loanHome.id}">
+						<f:selectItems value="#{riskRankList.allResultList}" var="risk"
+							itemLabel="#{risk.rank}" itemValue="#{risk.rank}" />
+					</h:selectOneMenu>
+
+					<h:outputLabel value="#{commonMsg.seqNumLabel}"
+						styleClass="form-input-label"></h:outputLabel>
+					<ui:fragment>
+						<h:inputText value="#{loanHome.instance.seqNum}" id="seqNum"></h:inputText>
+						<p:slider minValue="-50" maxValue="50" for="seqNum"
+							style="width:500px"></p:slider>
+					</ui:fragment>
+					
+						<h:outputLabel value="预计执行时间" rendered="#{loanHome.instance.status eq LoanStatus.RAISING or empty loanHome.instance.status}"></h:outputLabel>
+						<p:calendar value="#{loanHome.instance.expectTime}" rendered="#{loanHome.instance.status eq LoanStatus.RAISING or empty loanHome.instance.status}"
+							required="true" label="预计执行时间" pattern="yyyy-MM-dd HH:mm:ss" navigator="true" showButtonPanel="true"
+							timeZone="GMT+8">
+						</p:calendar>
+
+
+						<h:outputLabel value="预计执行时间" rendered="#{loanHome.instance.status ne LoanStatus.RAISING and not empty loanHome.instance.status}"></h:outputLabel>
+						<h:outputText value="#{loanHome.instance.expectTime}" rendered="#{loanHome.instance.status ne LoanStatus.RAISING and not empty loanHome.instance.status }">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+						</h:outputText>
+
+					<!-- 					<h:outputLabel value="首期还款日"></h:outputLabel> -->
+					<!-- 					<p:calendar value="#{loanHome.instance.repaymentDay}" required="true" label="首期还款日" -->
+					<!-- 						pattern="yyyy-MM-dd" timeZone="GMT+8"> -->
+					<!-- 					</p:calendar> -->
+
+					<h:outputLabel value="#{nodeMsg.nodeAttrsLabel}"></h:outputLabel>
+					<h:selectManyCheckbox value="#{loanHome.instance.loanAttrs}"
+						collectionType="java.util.ArrayList"
+						label="#{nodeMsg.nodeAttrsLabel}"
+						converter="archer.EntityConverter">
+						<f:selectItems value="#{nodeAttrList.allResultList}"
+							var="nodeAttr" itemValue="#{nodeAttr}"
+							itemLabel="#{nodeAttr.name}" />
+					</h:selectManyCheckbox>
+				</h:panelGrid>
+
+				<p:panel style="position: fixed; right:15px;top:200px; z-index:1000">
+					<ui:fragment>
+						<p:commandButton id="saveBtn" rendered="#{empty loanHome.id}"
+							action="#{loanHome.createEnterpriseLoan}"
+							value="#{commonMsg.saveLabel}">
+							<f:setPropertyActionListener
+								target="#{loanHome.instance.loanInfoPics}"
+								value="#{bannerPictureHome.bannerPictures}"></f:setPropertyActionListener>
+							<f:setPropertyActionListener
+								target="#{loanHome.instance.guaranteeInfoPics}"
+								value="#{bannerPictureHome2.bannerPictures}"></f:setPropertyActionListener>
+						</p:commandButton>
+						<p:commandButton id="updateBtn"
+							rendered="#{not empty loanHome.id}"
+							action="#{loanHome.modifyEnterpriseLoan}"
+							value="#{commonMsg.saveLabel}">
+							<f:setPropertyActionListener
+								target="#{loanHome.instance.loanInfoPics}"
+								value="#{bannerPictureHome.bannerPictures}"></f:setPropertyActionListener>
+							<f:setPropertyActionListener
+								target="#{loanHome.instance.guaranteeInfoPics}"
+								value="#{bannerPictureHome2.bannerPictures}"></f:setPropertyActionListener>
+						</p:commandButton>
+						<p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+						<p:blockUI block="panel" trigger="saveBtn" />
+					</ui:fragment>
+				</p:panel>
+
+				<p:dialog id="uploadDialog" header="#{commonMsg.uploadLabel}"
+					widgetVar="uploadDialog" modal="true" width="720" height="460">
+					<p:fileUpload cancelLabel="#{commonMsg.cancelLabel}"
+						dragDropSupport="true"
+						invalidFileMessage="#{commonMsg.invalidFileMessage}"
+						invalidSizeMessage="#{commonMsg.invalidSizeMessage}"
+						uploadLabel="#{commonMsg.uploadLabel}"
+						label="#{commonMsg.choiceLabel}"
+						fileUploadListener="#{bannerPictureHome.handleBannerPicturesUpload}"
+						multiple="true" mode="advanced" update=":form:picture_info"
+						sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+				</p:dialog>
+				<p:dialog id="changePicDialog" header="#{commonMsg.uploadLabel}"
+					widgetVar="changePicDialog" modal="true" width="720" height="150">
+					<p:fileUpload cancelLabel="#{commonMsg.cancelLabel}"
+						dragDropSupport="true"
+						invalidFileMessage="#{commonMsg.invalidFileMessage}"
+						invalidSizeMessage="#{commonMsg.invalidSizeMessage}"
+						uploadLabel="#{commonMsg.uploadLabel}" auto="true"
+						oncomplete="changePicDialog.hide()"
+						label="#{commonMsg.choiceLabel}"
+						fileUploadListener="#{bannerPictureHome.changeBannerPic}"
+						multiple="false" mode="advanced" update=":form:picture_info"
+						sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+				</p:dialog>
+				<p:dialog id="uploadDialog2" header="#{commonMsg.uploadLabel}"
+					widgetVar="uploadDialog2" modal="true" width="720" height="460">
+					<p:fileUpload cancelLabel="#{commonMsg.cancelLabel}"
+						dragDropSupport="true"
+						invalidFileMessage="#{commonMsg.invalidFileMessage}"
+						invalidSizeMessage="#{commonMsg.invalidSizeMessage}"
+						uploadLabel="#{commonMsg.uploadLabel}"
+						label="#{commonMsg.choiceLabel}"
+						fileUploadListener="#{bannerPictureHome2.handleBannerPicturesUpload}"
+						multiple="true" mode="advanced" update=":form:picture_info2"
+						sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+				</p:dialog>
+				<p:dialog id="changePicDialog2" header="#{commonMsg.uploadLabel}"
+					widgetVar="changePicDialog2" modal="true" width="720" height="150">
+					<p:fileUpload cancelLabel="#{commonMsg.cancelLabel}"
+						dragDropSupport="true"
+						invalidFileMessage="#{commonMsg.invalidFileMessage}"
+						invalidSizeMessage="#{commonMsg.invalidSizeMessage}"
+						uploadLabel="#{commonMsg.uploadLabel}" auto="true"
+						oncomplete="changePicDialog2.hide()"
+						label="#{commonMsg.choiceLabel}"
+						fileUploadListener="#{bannerPictureHome2.changeBannerPic}"
+						multiple="false" mode="advanced" update=":form:picture_info2"
+						sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+				</p:dialog>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+

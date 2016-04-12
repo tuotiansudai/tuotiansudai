@@ -1,0 +1,93 @@
+<ui:composition template="center.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile"
+                xmlns:archer="http://java.sun.com/jsf/archer"
+                xmlns:sec="http://www.springframework.org/security/facelets/tags"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <ui:param name="activeCenterMenuUrl" value="/user/bankCardList"></ui:param>
+    <ui:param name="pnr_enable" value="#{configHome.getConfigValue('pnrpay_enable') eq '1'}"></ui:param>
+    <ui:define name="center_right">
+        <sec:ifNotGranted roles="INVESTOR,LOANER,GUARANTEE">
+            <script>
+                $.dialog
+                        .alert(
+                        '为了您的账户资金安全，请先进行实名认证!',
+                        function () {
+                            window.location.href = "#{path}/user/get_investor_permission";
+                        });
+            </script>
+        </sec:ifNotGranted>
+        <sec:ifAnyGranted roles="INVESTOR,LOANER,GUARANTEE">
+            <f:event type="preRenderComponent" listener="#{userHome.setId(loginUserInfo.loginUserId)}"></f:event>
+            <div class="center_right">
+            <h:form id="form">
+                   <div class="zhcz_h3">更换提现银行卡</div>
+                   <div class="txczje">
+                       <div class="txczje02">
+                           <div class="txczje_l">
+                               <span>*</span>持卡人
+                           </div>
+                           <div class="txczje_r">
+                               #{fn:substring(userHome.instance.realname,0,1)}**
+                           </div>
+                           <div class="clear"></div>
+                       </div>
+                       <div class="txczje02">
+                           <div class="txczje_l">
+                               <span>*</span>卡类型
+                           </div>
+                           <div class="txczje_r">
+                               <h:selectOneMenu required="true" value="#{bankCardHome.instance.bankCardType}"
+                                                label="卡类型" styleClass="txt02 txt03" maxlength="200">
+                                   <f:selectItem itemLabel="借记卡" itemValue="DEBIT"/>
+                               </h:selectOneMenu>
+                           </div>
+                           <div class="clear"></div>
+                       </div>
+                       <div class="txczje02">
+                           <div class="txczje_l">
+                               <span>*</span>银行卡号
+                           </div>
+                           <div class="txczje_r">
+                               <h:inputText id="bankCardNumber" label="银行卡号"
+                                            value="#{bankCardHome.instance.cardNo}" required="true"
+                                            styleClass="txt02 txt03">
+                                   <f:validateLength minimum="16" maximum="19"/>
+                               </h:inputText>
+                               <p:watermark value="16至19位卡号" for="bankCardNumber"></p:watermark>
+                           </div>
+                           <div class="clear"></div>
+                       </div>
+                       <div class="txczje02">
+                           <div class="txczje_l"></div>
+                           <div class="txczje_r">
+                               <h:commandLink action="#{bankCardHome.replaceCardTrusteeship}" value="更换银行卡"
+                                              styleClass="txczje02_btn hqyzm xz"></h:commandLink>
+                               <p:commandLink actionListener="#{bankCardHome.resetBankCard}"
+                                              styleClass="txczje02_btn hqyzm qx"
+                                              onclick="$('form\\:recardNo').val('')" value="取消" update="@form"
+                                              process="@this"></p:commandLink>
+                           </div>
+                           <div class="clear"></div>
+                       </div>
+                   </div>
+            </h:form>
+            <p class="zhcz_p02">
+                温馨提示<br/>
+                1、不支持提现至信用卡账户。<br/>
+                2、由于银行卡保护机制均由联动优势提供，故您的银行卡将通过拓天平台绑定到联动优势平台上进行第三方托管。<br/>
+                3、如果您的借记卡是中国工商银行，中国农业银行，中国建设银行，中国银行，光大银行，兴业银行，中国民生银行七家之一，才可开通快捷支付。<br/>
+                4、当您的账户余额为零的时候，系统才会支持您更换银行卡操作。<br/>
+                5、如果您已经开通快捷支付，系统不再支持您更换银行卡。
+            </p>
+            </div>
+            <div class="clear"></div>
+        </sec:ifAnyGranted>
+    </ui:define>
+</ui:composition>

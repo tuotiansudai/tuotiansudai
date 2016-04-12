@@ -1,0 +1,23 @@
+apply plugin: 'war'
+apply from: 'db_migration.gradle'
+
+dependencies {
+    compile fileTree(dir: 'libs', include: '**/*.jar'),
+            project(':ttsd-service'),
+            project(':ttsd-point')
+
+    providedCompile "javax.servlet:javax.servlet-api:3.1.0"
+}
+
+war {
+    archiveName "ROOT.war"
+    destinationDir = file("war")
+    def outerConfigPath = '/workspace/new_version_config/ttsd-pay-wrapper/'
+
+    if (project.hasProperty("configPath") && new File(configPath).isDirectory()) {
+        outerConfigPath = configPath
+    }
+    from("${outerConfigPath}/SignVerProp.properties") {
+        into 'WEB-INF/classes/'
+    }
+}

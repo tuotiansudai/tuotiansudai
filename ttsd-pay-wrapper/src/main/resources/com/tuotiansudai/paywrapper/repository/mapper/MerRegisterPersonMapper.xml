@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.paywrapper.repository.mapper.MerRegisterPersonMapper">
+
+    <resultMap id="requestMap" type="MerRegisterPersonRequestModel">
+        <id property="id" column="id" />
+        <result property="service" column="service"/>
+        <result property="signType" column="sign_type"/>
+        <result property="sign" column="sign"/>
+        <result property="charset" column="charset"/>
+        <result property="merId" column="mer_id"/>
+        <result property="version" column="version"/>
+        <result property="orderId" column="order_id"/>
+        <result property="loginName" column="mer_cust_id"/>
+        <result property="userName" column="mer_cust_name"/>
+        <result property="identityType" column="identity_type"/>
+        <result property="identityNumber" column="identity_code"/>
+        <result property="mobile" column="mobile_id"/>
+        <result property="requestTime" column="request_time"/>
+        <result property="requestUrl" column="request_url"/>
+        <result property="requestData" column="request_data"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <select id="findRequestById" resultMap="requestMap" parameterType="java.lang.Long">
+        select * from mer_register_person_request where id = #{id}
+    </select>
+
+    <insert id="createRequest" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="MerRegisterPersonRequestModel">
+        insert into mer_register_person_request (service, sign_type, sign, charset, mer_Id, version, order_id, mer_cust_id, mer_cust_name, identity_type, identity_code, mobile_id, request_url, request_data, request_time, status)
+        values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{orderId}, #{loginName}, #{userName}, #{identityType}, #{identityNumber}, #{mobile}, #{requestUrl}, #{requestData}, #{requestTime}, #{status})
+    </insert>
+
+    <update id="updateRequestStatus" keyColumn="id" keyProperty="id" parameterType="map">
+        update mer_register_person_request set status = #{status} where id = #{id}
+    </update>
+
+    <insert id="createResponse" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="MerRegisterPersonResponseModel">
+        insert into mer_register_person_response (request_id, sign_type, sign, mer_Id, version, user_id, account_id, reg_date, ret_code, ret_msg, response_data, response_time)
+        values (#{requestId}, #{signType}, #{sign}, #{merId}, #{version}, #{userId}, #{accountId}, #{regDate}, #{retCode}, #{retMsg}, #{responseData}, #{responseTime})
+    </insert>
+
+</mapper>

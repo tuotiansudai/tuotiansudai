@@ -1,0 +1,97 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:o="http://omnifaces.org/ui"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+    <ui:define name="content">
+<!--     <o:importConstants type="com.huifu.util.HuiFuConstants.CmdId.Search" /> -->
+    <o:importConstants type="com.huifu.util.HuiFuConstants.OrderType" />
+    <div class="entry">
+    	<p:toolbar>
+            <p:toolbarGroup>
+	            <h:outputLabel style="padding-left: 15px;" value="#{commonMsg.currentPositionLabel}汇付查询"></h:outputLabel>
+            </p:toolbarGroup>
+        </p:toolbar>
+        <h:form id="form">
+        	<p:spacer></p:spacer> 
+        	
+			<p:panel id="filters1">
+				<span style="color:red;margin-right:10px;">用户账户余额</span>
+                  <h:inputText value="#{pnrPayQueryHome.userId}" id="userId1"></h:inputText>
+                  <p:commandButton update="result1" process="filters1"  value="#{commonMsg.searchLabel}" ajax="true" action="#{pnrPayQueryHome.funds()}"></p:commandButton>
+               <p:watermark for="userId1" value="用户名" />  
+			</p:panel>
+            <p:spacer></p:spacer> 
+        	<h:panelGroup id="result1">
+        		#{pnrPayQueryHome.result}
+        	</h:panelGroup>
+        	
+			<p:panel id="filters2">
+				<span style="color:red;margin-right:10px;">商户资金状况</span>
+                  <p:commandButton update="result2" process="filters2"  value="#{commonMsg.searchLabel}" ajax="true" action="#{pnrPayQueryHome.platFunds()}"></p:commandButton>
+			</p:panel>
+            <p:spacer></p:spacer> 
+        	<h:panelGroup id="result2">
+        		#{pnrPayQueryHome.result}
+        	</h:panelGroup>
+        	
+			<p:panel id="filters3">
+				<span style="color:red;margin-right:10px;">转账(商户用)</span>
+                  <h:inputText value="#{pnrPayQueryHome.money}" id="money3"></h:inputText>
+                  <h:inputText value="#{pnrPayQueryHome.userId}" id="userId3"></h:inputText>
+                <p:commandButton update="result3" process="filters3"  value="#{commonMsg.searchLabel}" ajax="true" action="#{pnrPayQueryHome.platTransfer()}"></p:commandButton>
+                <p:watermark for="userId3" value="转入金额" />  
+                <p:watermark for="userId3" value="转入用户名" />  
+			</p:panel>
+            <p:spacer></p:spacer> 
+        	<h:panelGroup id="result3">
+        		#{pnrPayQueryHome.result}
+        	</h:panelGroup>
+        	
+			<p:panel id="filters4">
+				<span style="color:red;margin-right:10px;">交易状态查询</span>
+				<p:calendar id="startTime4" value="#{pnrPayQueryHome.begin}" pattern="yyyy-MM-dd"></p:calendar>
+				<p:calendar id="endTime4" value="#{pnrPayQueryHome.end}" pattern="yyyy-MM-dd"></p:calendar>
+				<h:inputText value="#{pnrPayQueryHome.pageSize}" id="pageSize4"></h:inputText>
+				<h:selectOneMenu value="#{pnrPayQueryHome.type}">
+					<f:selectItem  itemLabel="放款查询" itemValue="#{OrderType.LOANS}" ></f:selectItem>
+					<f:selectItem  itemLabel="还款查询" itemValue="#{OrderType.REPAYMENT}" ></f:selectItem>
+<!-- 					<f:selectItem  itemLabel="取现查询" itemValue="#{Search.CashReconciliation}" ></f:selectItem> -->
+<!-- 					<f:selectItem  itemLabel="充值查询" itemValue="#{Search.SaveReconciliation}" ></f:selectItem> -->
+<!-- 					<f:selectItem  itemLabel="商户扣款查询" itemValue="#{Search.TrfReconciliation}" ></f:selectItem> -->
+					<f:selectItem  itemLabel="取现查询" itemValue="CashReconciliation" ></f:selectItem>
+					<f:selectItem  itemLabel="充值查询" itemValue="SaveReconciliation" ></f:selectItem>
+					<f:selectItem  itemLabel="商户扣款查询" itemValue="TrfReconciliation" ></f:selectItem>
+				</h:selectOneMenu>
+                <p:commandButton update="result4" process="filters4"  value="#{commonMsg.searchLabel}" ajax="true" action="#{pnrPayQueryHome.reconciliation()}"></p:commandButton>
+                <p:watermark for="startTime4" value="起始时间" />  
+				<p:watermark for="endTime4" value="结束时间" /> 
+				<p:watermark for="pageSize4" value="查询记录数" />
+			</p:panel>
+            <p:spacer></p:spacer> 
+        	<h:panelGroup id="result4">
+        		#{pnrPayQueryHome.result}
+        	</h:panelGroup>
+        	
+        	<p:panel id="filters5">
+				<span style="color:red;margin-right:10px;">用户银行卡查询</span>
+					<h:inputText value="#{pnrPayQueryHome.userId}" id="userId5"></h:inputText>
+					<p:watermark value="用户名" for="userId5"></p:watermark>
+                  <p:commandButton update="result5" process="filters5"  value="#{commonMsg.searchLabel}" ajax="true" action="#{pnrPayQueryHome.bankcard}"></p:commandButton>
+                  <p:commandButton update="result5" process="filters5"  value="同步银行卡" ajax="true" action="#{pnrPayQueryHome.updateBankcard}"></p:commandButton>
+			</p:panel>
+            <p:spacer></p:spacer> 
+        	<h:panelGroup id="result5">
+        		#{pnrPayQueryHome.result}
+        	</h:panelGroup>
+		</h:form>
+	</div>
+    </ui:define>
+</ui:composition>

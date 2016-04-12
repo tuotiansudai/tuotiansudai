@@ -1,0 +1,3 @@
+ALTER TABLE `aa`.user ADD COLUMN province VARCHAR(32);
+
+ALTER TABLE `aa`.user ADD COLUMN city VARCHAR(32);

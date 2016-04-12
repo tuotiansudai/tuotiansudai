@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	template="page.xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:archer="http://java.sun.com/jsf/archer">
+	
+	<ui:define name="content">
+		<!--Layout Start-->
+		<div id="Layout">
+		  <div class="bz">
+		    <h3>安全保障</h3>
+		    <ul class="zs">
+		      <li><img src="#{tplVars.themeImagePath}/b21.jpg" /><strong>本息保障</strong>
+		        <p>抵押+担保公司担保</p>
+		      </li>
+		      <li><img src="#{tplVars.themeImagePath}/b22.jpg" /><strong>资金安全保障</strong>
+		        <p>实时对账多重备份</p>
+		      </li>
+		      <li><img src="#{tplVars.themeImagePath}/b23.jpg" /><strong>技术系统安全</strong>
+		        <p>加密传输异地融灾</p>
+		      </li>
+		    </ul>
+		    <div class="a-left" >
+		    
+		      <ul id="J_setTabANav">
+		      	<ui:param name="pageModel" value="#{nodeList.getNodes('pinganbaozhang',0,4)}"></ui:param>
+				<ui:repeat var="node" value="#{pageModel.data}">
+			        <li><a href="#" title="#{node.title}">#{node.title}</a></li>
+				</ui:repeat>
+		      </ul>
+		      
+		    </div>
+		    
+		    <div class="a-right" id="J_setTabABox">
+		    
+		      <ui:repeat var="node" value="#{pageModel.data}"  varStatus="status">
+			      <div class="jieshao" id="g0#{status.index+1}" style=" #{status.index ==0?'display:block':'none'}"> 
+			      	<h:outputText value="#{node.nodeBody.body}" escape="false"></h:outputText>
+			      </div>
+		      </ui:repeat>
+		      
+		    </div>
+		    
+		    <div class="clear"></div>
+		    <script type="text/javascript">
+			(function($) {
+				$.fn.WIT_SetTab = function(iSet) {
+					/*
+					 * 多功能选项卡@Mr.Think
+					 * Nav: 导航钩子；
+					 * Field：切换区域
+					 * K:初始化索引；
+					 * CurCls：高亮样式；
+					 * Auto：是否自动切换；
+					 * AutoTime：自动切换时间；
+					 * OutTime：淡入时间；
+					 * InTime：淡出时间；
+					 * CrossTime：鼠标无意识划过时间
+					 * Ajax：是否开启ajax
+					 * AjaxFun：开启ajax后执行的函数
+					 */
+					iSet = $.extend({
+						Nav : null,
+						Field : null,
+						K : 0,
+						CurCls : 'cur',
+						Auto : false,
+						AutoTime : 4000,
+						OutTime : 100,
+						InTime : 150,
+						CrossTime : 60
+					}, iSet || {});
+					var acrossFun = null, hasCls = false, autoSlide = null;
+					//切换函数
+					function changeFun(n) {
+						iSet.Field.filter(':visible').fadeOut(
+								iSet.OutTime,
+								function() {
+									iSet.Field.eq(n).fadeIn(iSet.InTime)
+											.siblings().hide();
+								});
+						iSet.Nav.eq(n).addClass(iSet.CurCls).siblings()
+								.removeClass(iSet.CurCls);
+					}
+					//初始高亮第一个
+					changeFun(iSet.K);
+					//鼠标事件
+					iSet.Nav.hover(function() {
+						iSet.K = iSet.Nav.index(this);
+						if (iSet.Auto) {
+							clearInterval(autoSlide);
+						}
+						hasCls = $(this).hasClass(iSet.CurCls);
+						//避免无意识划过时触发
+						acrossFun = setTimeout(function() {
+							//避免当前高亮时划入再次触发
+							if (!hasCls) {
+								changeFun(iSet.K);
+							}
+						}, iSet.CrossTime);
+					}, function() {
+						clearTimeout(acrossFun);
+						//ajax调用
+						if (iSet.Ajax) {
+							iSet.AjaxFun();
+						}
+						if (iSet.Auto) {
+							//自动切换
+							autoSlide = setInterval(function() {
+								iSet.K++;
+								changeFun(iSet.K);
+								if (iSet.K == iSet.Field.size()) {
+									changeFun(0);
+									iSet.K = 0;
+								}
+							}, iSet.AutoTime)
+						}
+					}).eq(0).trigger('mouseleave');
+				}
+			})(jQuery);
+
+			//使用方法
+			$(function() {
+				//普通选项卡
+				$(document).WIT_SetTab({
+					Nav : $('#J_setTabANav>li'),
+					Field : $('#J_setTabABox>#g01,#J_setTabABox>#g02,#J_setTabABox>#g03,#J_setTabABox>#g04'),
+					//Auto:true,
+					//AutoTime:2000,
+					CurCls : 'b'
+				});
+			});
+		</script>
+		  </div>
+		 	<ui:include src="news-common.xhtml"></ui:include>
+		</div>
+		<!--Layout End--> 
+	</ui:define>	
+</ui:composition>

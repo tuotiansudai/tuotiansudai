@@ -1,0 +1,38 @@
+<table class="invest-list table-striped">
+    <thead>
+        <tr>
+            <th>被推荐人</th>
+            <th>层级</th>
+            <th>投资标的</th>
+            <th class="tr">投资金额(元)</th>
+            <th>期数</th>
+            <th>投资时间</th>
+            <th class="tr">奖励金额(元)</th>
+            <th>奖励时间</th>
+        </tr>
+    </thead>
+    <tbody>
+       {{#records}}
+        <tr>
+            <td>{{investName}}</td>
+            <td>{{level}}</td>
+            <td><span class="loan-name-col">{{loanName}}</span></td>
+            <td class="tr">{{investAmountStr}}</td>
+            <td>{{periods}}</td>
+            <td>{{investTime}}</td>
+            <td class="tr">{{rewardAmountStr}}</td>
+            <td>{{rewardTime}}</td>
+        </tr>
+        {{/records}}
+
+        {{^records}}
+         <td colspan="8" class="no-data">暂时没有推荐人投资记录</td>
+        {{/records}}
+        <tr>
+            <td colspan="8" align="center">
+                推荐奖励总收益：{{totalReward}}元
+            </td>
+        </tr>
+    </tbody>
+</table>
+

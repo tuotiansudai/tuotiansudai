@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.UserBillMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="userBillResultMap" type="UserBillModel">
+        <id column="id" property="id"></id>
+        <result column="login_name" property="loginName"></result>
+        <result column="order_id" property="orderId"></result>
+        <result column="amount" property="amount"></result>
+        <result column="balance" property="balance"></result>
+        <result column="freeze" property="freeze"></result>
+        <result column="operation_type" property="operationType"></result>
+        <result column="business_type" property="businessType"></result>
+        <result column="operator_login_name" property="operatorLoginName"></result>
+        <result column="intervention_reason" property="interventionReason"></result>
+        <result column="created_time" property="createdTime"></result>
+    </resultMap>
+
+    <resultMap id="userBillResultView" type="UserBillPaginationView" extends="userBillResultMap">
+        <result column="user_name" property="userName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="is_staff" property="isStaff"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="UserBillModel" useGeneratedKeys="true" keyProperty="id">
+        insert into user_bill (login_name, order_id, amount, balance, freeze, operation_type, business_type, operator_login_name, intervention_reason, created_time)
+        value(#{loginName}, #{orderId}, #{amount}, #{balance}, #{freeze}, #{operationType}, #{businessType}, #{operatorLoginName}, #{interventionReason}, #{createdTime})
+    </insert>
+
+    <select id="findByLoginName" parameterType="java.lang.String" resultMap="userBillResultMap">
+        select * from user_bill where login_name = #{loginName}
+    </select>
+
+    <select id="findUserBillsCount" parameterType="map" resultType="int">
+        select count(*) from user_bill
+        <where>
+            <if test="userBillBusinessType != null and userBillBusinessType.size != 0">
+                business_type in
+                <foreach item="item" index="index" collection="userBillBusinessType" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="startTime != null">
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                <![CDATA[ and created_time <= #{endTime} ]]>
+            </if>
+            <if test="loginName != null">
+                AND login_name = #{loginName}
+            </if>
+        </where>
+    </select>
+
+    <select id="findUserBills" parameterType="map" resultMap="userBillResultMap">
+        select * from user_bill
+        <where>
+            <if test="userBillBusinessType != null and userBillBusinessType.size != 0">
+                business_type in
+                <foreach item="item" index="index" collection="userBillBusinessType" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="startTime != null">
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                <![CDATA[ and created_time <= #{endTime} ]]>
+            </if>
+            <if test="loginName != null">
+                AND login_name = #{loginName}
+            </if>
+        </where>
+        order by created_time desc, id desc
+        limit #{indexPage}, #{pageSize}
+    </select>
+
+    <select id="findSumRewardByLoginName" parameterType="java.lang.String" resultType="long">
+        SELECT IFNULL(SUM(`amount`), 0)
+        FROM user_bill
+        WHERE user_bill.`business_type` IN ('ACTIVITY_REWARD', 'REFERRER_REWARD')
+        AND user_bill.`login_name` = #{loginName}
+    </select>
+
+    <select id="findUserFunds" parameterType="map" resultMap="userBillResultView">
+        select ub.*,
+        a.user_name,
+        u.mobile,
+        IFNULL((select 1 from user_role ur where ur.login_name = ub.login_name and ur.role = 'STAFF'),0) as is_staff
+        from user_bill ub
+        LEFT JOIN `user` u on ub.login_name = u.login_name
+        LEFT JOIN account a on ub.login_name = a.login_name
+        <where>
+            <if test="userBillBusinessType != null">
+                and ub.business_type = #{userBillBusinessType}
+            </if>
+            <if test="userBillOperationType != null">
+                and ub.operation_type = #{userBillOperationType}
+            </if>
+            <if test="loginName != null and loginName != ''">
+                and ub.login_name = #{loginName}
+            </if>
+            <if test="startTime != null">
+                and ub.created_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                <![CDATA[ and ub.created_time <= #{endTime} ]]>
+            </if>
+        </where>
+        order by ub.created_time desc, id desc
+        limit #{startLimit} , #{endLimit}
+    </select>
+
+    <select id="findUserFundsCount" parameterType="map" resultType="int">
+        select count(*) from user_bill
+        <where>
+            <if test="userBillBusinessType != null">
+                and business_type = #{userBillBusinessType}
+            </if>
+            <if test="userBillOperationType != null">
+                and operation_type = #{userBillOperationType}
+            </if>
+            <if test="loginName != null and loginName != ''">
+                and login_name = #{loginName}
+            </if>
+            <if test="startTime != null">
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                <![CDATA[ and created_time <= #{endTime} ]]>
+            </if>
+        </where>
+    </select>
+
+</mapper>

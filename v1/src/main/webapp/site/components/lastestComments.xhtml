@@ -1,0 +1,39 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div id="block-comment-new" class="block-comment">
+
+		<h2>
+			<h:outputText
+				value="#{empty title ? commentMsg.lastestCommentsLabel : title}"></h:outputText>
+		</h2>
+		<div class="content">
+			<ui:param name="maxResults"
+				value="#{empty maxResults ? 10 : maxResults}"></ui:param>
+
+			<ui:param name="commentList"
+				value="#{empty nodeId ? commentList.getLastestComments(maxResults) : nodeList.getLastestComments(nodeId,maxResults)}" />
+			<div class="item-list">
+				<ul>
+					<ui:repeat var="comment" value="#{commentList}" varStatus="status">
+						<li class="#{status.first?'first':''} #{status.last?'last':''}">
+							<a
+								href="#{request.contextPath}/node/#{comment.node.id}#comment-#{comment.id}"
+								class="permalink" rel="bookmark"><h:outputText
+									value="#{comment.body}" escape="false"></h:outputText> </a>
+									<br class="lastest-comment-separater"></br>
+							#{commentMsg.fromLabel}：
+							<a href="#{request.contextPath}/node/#{comment.node.id}"
+								class="permalink" rel="bookmark"><h:outputText
+									value="#{comment.node.title}" escape="false"></h:outputText> </a>
+						</li>
+					</ui:repeat>
+				</ul>
+			</div>
+		</div>
+	</div>
+</f:view>

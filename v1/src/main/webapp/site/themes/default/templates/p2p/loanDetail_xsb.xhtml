@@ -1,0 +1,329 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:of="http://omnifaces.org/functions"
+				template="../page.xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:pm="http://primefaces.org/mobile"
+				xmlns:archer="http://java.sun.com/jsf/archer"
+				xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+				xmlns:o="http://omnifaces.org/ui"
+				xmlns:sec="http://www.springframework.org/security/facelets/tags"
+				xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<f:metadata>
+		<f:viewParam name="loanId" value="#{loanHome.id}"></f:viewParam>
+	</f:metadata>
+
+	<ui:define name="content">
+
+		<link type="text/css" rel="stylesheet"
+			href="#{tplVars.themeStylePath}/content.css" />
+
+		<ui:param name="loan" value="#{loanHome.instance}"></ui:param>
+		<f:event type="preRenderView" listener="#{loanHome.redirectToHomeWhenLoanIsNotExist(loan)}" />
+		<ui:fragment rendered="#{(not empty loan.investBeginTime) and loan.investBeginTime gt now}">
+			<script type="text/javascript" src="#{tplVars.themeJSPath}/invest-time-countdown.js"></script>
+		</ui:fragment>
+
+		<script>
+			//<![CDATA[
+				if (#{loanHome.instance.loanActivityType eq 'pt'}) {
+					window.location.href = "#{request.contextPath}/p2p_loan/#{loanHome.instance.id}"
+				}
+				if (#{loanHome.instance.loanActivityType eq 'jx'}) {
+					window.location.href = "#{request.contextPath}/p2p_loan_jxb/#{loanHome.instance.id}"
+				}
+				if (#{loanHome.instance.loanActivityType eq 'dx'}) {
+					window.location.href = "#{request.contextPath}/p2p_loan_dxb/#{loanHome.instance.id}"
+				}
+
+				if (#{loanHome.instance.businessType eq '企业借款'}) {
+					window.location.href = "#{request.contextPath}/loan/#{loanHome.instance.id}";
+				}
+				//如果登录用户没有投资权限，则提示，并跳转页面。
+				function getInvestorPer() {
+					$.dialog.confirm('您尚未进行实名认证无法投资，是否要实名认证？',
+						function() {
+							window.location.href = "#{request.contextPath}/user/get_investor_permission";
+							$.dialog.tips('正在为您跳转到页面');
+					});
+					return false;
+				}
+			//]]>
+		</script>
+
+		<div class="guide-div01">
+			<div class="guide clearfix">
+				<span class="fl">投资理财</span>
+				<span class="fr"><a href="#{path}">首页</a><a href="#{path}/p2p_loan-list_xsb"><i class="trigon" />新手投资</a><a><i class="trigon" />项目详情</a></span>
+			</div>
+		</div>
+		<!--guide end-->
+		<div class="de-con-all clearfix">
+			<div class="fl gabby-div">
+				<h3><a href="">
+					#{fn:substring(loan.name,0,30)}
+					<ui:fragment rendered="#{fn:length(loan.name) > 30}">...</ui:fragment></a>
+				</h3>
+				<div class="gabby">
+					<p>年化利率<br/>
+						<strong class="colorea544a">
+							<h:outputText value="#{loan.ratePercent}">
+								<f:convertNumber minFractionDigits="2" />
+							</h:outputText>
+						</strong>%
+					</p>
+					<p>还款期限<br/>
+						<strong class="co44">#{loan.deadline*loan.type.repayTimePeriod}</strong>
+						#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)}
+					</p>
+					<p>项目金额<br/>
+						<strong class="co44">
+							<h:outputText value="#{loan.loanMoney}">
+								<f:convertNumber type="number" />
+							</h:outputText></strong>元
+					</p>
+					<p>投资进度<br/>
+						<ui:param name="cr" value="#{loanCalculator.calculateRaiseCompletedRate(loan.id)}"></ui:param>
+						<em class="jd-bar"><b style="width:#{cr}%"></b></em>#{cr}%
+					</p>
+					<div class="">
+						<span>代理人：#{loan.user.id}</span>
+						<span>借款人：#{loan.agent}</span>
+					</div>
+					<div class="span3-div">
+						<span>还款方式：#{dictUtil.getValue('repay_type',loan.type.repayType)}</span>
+						<span>发布日期：
+							<h:outputText value="#{loan.verifyTime}">
+								<f:convertDateTime pattern="yyyy-MM-dd" locale="cn" timeZone="GMT+8"></f:convertDateTime>
+							</h:outputText>
+						</span>
+						<span>剩余时间：#{loanCalculator.calculateRemainTime(loan.id)}</span>
+					</div>
+					<div>
+						<span class="marright"><img src="#{tplVars.themeImagePath}/index/icon4.png" />
+							#{dictUtil.getValue('interest_point',loan.type.interestPoint)}
+						</span>
+						<span class="marright"><img src="#{tplVars.themeImagePath}/index/icon5.png" />本金保障</span>
+						<span><img src="#{tplVars.themeImagePath}/index/icon6.png" />灵活转让</span></div>
+				</div>
+			</div>
+			<div class="fr gabby-right">
+				<h:form>
+					<ui:param name="moneyNeedRaised" value="#{loanCalculator.calculateMoneyNeedRaised(loan.id)}"></ui:param>
+					<ui:fragment rendered="#{loan.status == LoanStatus.RAISING}">
+						<p>
+							<span class="fb">剩余投资金额</span>
+							<span class="colorea544a">
+								<h:outputText value="#{loanCalculator.calculateMoneyNeedRaised(loan.id)}">
+									<f:convertNumber type="number" />
+								</h:outputText>
+							元可投</span>
+						</p>
+						<p class="p-line"></p>
+						<p>
+							<span>起投金额
+								<strong class="colorea544a">
+									<h:outputText value="#{loan.minInvestMoney}">
+										<f:convertNumber type="number" />
+									</h:outputText>元
+								</strong>
+							</span>
+							<span>递增金额
+								<strong class="colorea544a">
+									<h:outputText value="#{loan.cardinalNumber}">
+										<f:convertNumber type="number" />
+									</h:outputText>元
+								</strong>
+							</span>
+						</p>
+						<p>
+							<span><h:inputText label="投资金额" value="#{investHome.instance.money}" styleClass="p2c_input" required="true" requiredMessage="投资金额不能为空！">
+								<f:ajax event="blur" render="@this anticipatedInterest"></f:ajax>
+								<o:validator validatorId="javax.faces.DoubleRange" minimum="#{loan.minInvestMoney}" maximum="#{loanCalculator.calculateMoneyMaxInvested(loan.id)}"></o:validator>
+								<o:validator validatorId="com.esoft.core.validator.NumberValidator" cardinalNumber="#{loan.cardinalNumber}"></o:validator>
+							</h:inputText>元</span><a href="/loanAgreementSample" target="_Blank" class="loanContract">借款协议样本</a>
+						</p>
+						<p>
+							<span>预期收益
+								<h:outputText value="#{investCalculator.calculateAnticipatedInterest(investHome.instance.money, loan.id)}" id="anticipatedInterest">
+									<f:convertNumber maxFractionDigits="2" />
+								</h:outputText>元
+							</span>
+							<ui:fragment rendered="#{(not empty loan.investBeginTime) and loan.investBeginTime gt now}">
+								<label rel="invest-time-countdown" count-down-id="#{loan.id}" count-down-over-message=""
+									   on-begin="onCountDownBegin" on-over="onCountDownOver"
+									   invest-begin-time="#{of:formatDate(loan.investBeginTime,'yyyy/MM/dd HH:mm:ss')}"
+									   server-now-time="#{of:formatDate(now, 'yyyy/MM/dd HH:mm:ss')}">
+									<h:outputText value="#{loan.investBeginTime}">
+										<f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="GMT+8"></f:convertDateTime>
+									</h:outputText> 放标
+								</label>
+							</ui:fragment>
+						</p>
+						<p>
+							<ui:fragment rendered="#{empty loginUserInfo.loginUserId}">
+								<h:link outcome="pretty:memberLogin" styleClass="sure-btn">
+									<f:param name="spring-security-redirect" value="/p2p_loan_xsb/#{loan.id}" />
+									<h:outputText value="确认投资"></h:outputText>
+								</h:link>
+							</ui:fragment>
+							<ui:fragment rendered="#{not empty loginUserInfo.loginUserId}">
+								<ui:fragment rendered="#{investHome.getUserInvestXSCount(loginUserInfo.loginUserId) &lt;= (configHome.getConfigIntValue('sprog_invest_count')-1)}">
+									<sec:ifNotGranted roles="INVESTOR">
+										<a class="sure-btn" href="javascript:void(0)" onclick="getInvestorPer();">确认投资</a>
+									</sec:ifNotGranted>
+									<sec:ifAllGranted roles="INVESTOR">
+										<h:commandLink styleClass="sure-btn" action="#{investHome.save}" value="确认投资" onclick="return confirm('您确定要投资吗？');">
+											<f:setPropertyActionListener target="#{investHome.instance.loan}" value="#{loan}"></f:setPropertyActionListener>
+										</h:commandLink>
+									</sec:ifAllGranted>
+								</ui:fragment>
+								<ui:fragment rendered="#{investHome.getUserInvestXSCount(loginUserInfo.loginUserId) &gt; (configHome.getConfigIntValue('sprog_invest_count')-1)}">
+									<a class="nsure-btn" style="font-size: 13px;">不符合新手标投资条件</a>
+								</ui:fragment>
+							</ui:fragment>
+						</p>
+					</ui:fragment>
+					<ui:fragment rendered="#{loan.status != LoanStatus.RAISING}">
+						<p>
+							<span class="fb">剩余投资金额</span>
+							<span class="colorea544a">
+								<h:outputText value="#{loanCalculator.calculateMoneyNeedRaised(loan.id)}">
+									<f:convertNumber type="number" />
+								</h:outputText>元可投
+							</span>
+						</p>
+						<p class="p-line"></p>
+						<p>投资人数：#{loanCalculator.countSuccessInvest(loan.id)}人投资此项目<br />项目状态：#{dictUtil.getValue('loan',loan.status)}</p>
+						<p><a href="/loanAgreementSample" target="_Blank">借款协议样本</a></p>
+						<br />
+						<p>
+							<ui:fragment rendered="#{loan.status == LoanStatus.RAISING}">
+								<a class="nsure-btn">火热投标中</a>
+							</ui:fragment>
+							<ui:fragment rendered="#{loan.status == LoanStatus.RECHECK}">
+								<a class="nsure-btn">等待复核</a>
+							</ui:fragment>
+							<ui:fragment rendered="#{loan.status == LoanStatus.REPAYING}">
+								<a class="nsure-btn">还款中</a>
+							</ui:fragment>
+							<ui:fragment rendered="#{loan.status == LoanStatus.COMPLETE}">
+								<a class="nsure-btn">已完成</a>
+							</ui:fragment>
+						</p>
+					</ui:fragment>
+				</h:form>
+
+			</div>
+		</div>
+		<!--detail top end-->
+		<div class="detail-tab-con">
+			<div class="tabs">
+				<ul class="clearfix">
+					<li><a id="descriptionBtn" href="javascript:void(0)"
+							onclick="scrollTo('description')" style="color: #f33735;">项目简介</a></li>
+					<li><a id="guaranteeCompanyDescriptionBtn" href="javascript:void(0)"
+							onclick="scrollTo('guaranteeCompanyDescription')" style="color: #f33735;">抵押相关物资</a></li>
+					<li class="current-tab"><a id="investsBtn" href="javascript:void(0)"
+							onclick="scrollTo('invests')" style="color: #f33735;">成交记录</a></li>
+				</ul>
+			</div>
+			<div class="tabs-cons">
+				<div style="display:none; margin-left: 10px;">
+					<div class="rengou"><span><h:outputText value="#{loan.description}" escape="false"></h:outputText></span></div>
+				</div>
+				<div style="display:none">
+					<div class="rengou"><span><h:outputText value="#{loan.guaranteeCompanyDescription}" escape="false"></h:outputText></span></div>
+				</div>
+				<div style="display:block">
+					<h:form id="dataTable">
+						<div class="rengou">
+							<span style="width: 210px; margin-left: 10px;">已有<strong class="colorea544a">#{loanCalculator.countSuccessInvest(loan.id)}</strong>人认购</span>
+							<span style="width: 210px;">平均每单投资<strong class="colorea544a">
+								<h:outputText value="#{(loan.loanMoney-moneyNeedRaised)/loanCalculator.countSuccessInvest(loan.id)=='NaN'?0.0:(loan.loanMoney-moneyNeedRaised)/loanCalculator.countSuccessInvest(loan.id)}">
+									<f:convertNumber maxFractionDigits="2" />
+								</h:outputText>
+							</strong> 元</span>
+							<span style="width: 210px;">已募集<strong class="colorea544a">#{loanCalculator.calculateMoneyRaised(loan.id)}</strong>元</span>
+						</div>
+						<table class="rengou-tb">
+
+							<f:event type="preRenderComponent"
+								listener="#{investList.example.loan.setId(loan.id)}"></f:event>
+							<f:event type="preRenderComponent"
+								listener="#{investList.addOrder('invest.time','desc')}"></f:event>
+							<ui:param name="restriction"
+									  value="#{'(invest.status not in (\''}#{InvestStatus.WAIT_AFFIRM}#{'\', \''}#{InvestStatus.CANCEL}#{'\', \''}#{InvestStatus.UNFINISHED}#{'\')'})"></ui:param>
+							<f:event type="preRenderComponent"
+									 listener="#{investList.addRestriction(restriction)}"></f:event>
+							<f:event type="preRenderComponent"
+								listener="#{loanList.setPageSize(10)}"></f:event>
+
+							<tr class="rg-tit">
+								<td>账号</td><td>认购时间</td><td>认购金额</td>
+							</tr>
+
+							<ui:repeat var="invest" value="#{investList.lazyModelData}">
+								<ui:fragment>
+									<tr>
+										<td width="175">#{invest.user.username.substring(0,3)}***</td>
+										<td>
+											<h:outputText value="#{invest.time}">
+												<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" locale="cn" timeZone="GMT+8"></f:convertDateTime>
+											</h:outputText>
+										</td>
+										<td>
+											<h:outputText value="#{invest.investMoney}">
+												<f:convertNumber maxFractionDigits="2" />
+											</h:outputText>元
+										</td>
+									</tr>
+								</ui:fragment>
+							</ui:repeat>
+
+						</table>
+
+						<!-- 分页组件 -->
+						<div class="page-bar">
+							<ui:include src="#{tplVars.componentsPath}/investPaging.xhtml"></ui:include>
+						</div>
+					</h:form>
+				</div>
+			</div>
+			<script type="text/javascript">
+			$(function(){
+				var $li=$(".tabs ul li");
+				$li.click(function(){
+					$(this).addClass("current-tab").siblings().removeClass("current-tab");
+					var $index=$li.index(this);
+					$(".tabs-cons>div").eq($index).show().siblings().hide();
+				})
+			})
+			</script>
+			<script type="text/javascript">
+				function onCountDownBegin(countDownId){
+					var btn4detail = $('.sure-btn');
+					btn4detail.attr('ori-text',btn4detail.html())
+							.attr('ori-onclick',btn4detail.attr('onclick'))
+							.attr('ori-href',btn4detail.attr('href'))
+							.html('预热中')
+							.addClass('btn-waiting')
+							.attr('onclick','return false;');
+				}
+
+				function onCountDownOver(countDownId, elem){
+					var btn4detail = $('.sure-btn');
+					btn4detail.html(btn4detail.attr('ori-text'))
+							.attr('onclick',btn4detail.attr('ori-onclick'))
+							.attr('href',btn4detail.attr('ori-href'))
+							.removeClass('btn-waiting');
+					var countDownOverMessage = elem.attr('count-down-over-message');
+					if(!countDownOverMessage){countDownOverMessage='';}
+					elem.html(countDownOverMessage);
+				}
+			</script>
+		</div>
+
+	</ui:define>
+
+</ui:composition>

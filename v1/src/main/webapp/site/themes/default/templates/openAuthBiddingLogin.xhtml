@@ -1,0 +1,137 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	template="page.xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:define name="content">
+		<script src="${tplVars.themeJSPath}/register.js"></script>
+		<div id="Layout">
+			<h:form id="user-register-form">
+				<div class="trans" style="width: 450px;">
+					<h3>
+						<b style="font-size: 16px;font-family: 微软雅黑;">你好，${qq_nickname}</b>
+						<br /> <span
+							style="font-weight: bold;font-family: 微软雅黑;font-size: 18px;">没有账户？请补全信息：</span>
+						<br />
+						<br /> 温馨提示：以下“<span>*</span>” 选项属于必填项！
+					</h3>
+					<div class="yx">
+						<em><b>*</b>常用邮箱：</em>
+						<h:inputText id="email" label="邮箱" required="true"
+							styleClass="text email" value="#{userHome.instance.email}">
+							<o:validator validatorId="javax.faces.RegularExpression"
+								message="邮箱格式不正确！"
+								pattern="\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*"></o:validator>
+							<archer:validateAlreadyExist></archer:validateAlreadyExist>
+						</h:inputText>
+					</div>
+					<div class="yx">
+						<em><b>*</b>用户名：</em>
+						<h:inputText id="username" label="用户名" required="true"
+							maxlength="16" styleClass="text uname"
+							value="#{userHome.instance.username}">
+							<archer:validateInputRule ruleId="username"></archer:validateInputRule>
+							<archer:validateAlreadyExist />
+						</h:inputText>
+					</div>
+					<o:validateEqual components="pass repass" message="两次输入密码不一致"></o:validateEqual>
+					<div class="yx">
+						<em><b>*</b>密码：</em>
+						<h:inputSecret id="pass" styleClass="text pass" label="密码"
+							required="true" maxlength="16"
+							value="#{userHome.instance.password}">
+							<archer:validateInputRule ruleId="password"></archer:validateInputRule>
+							<f:validateLength minimum="6" maximum="16" />
+						</h:inputSecret>
+					</div>
+					<div class="yx">
+						<em><b>*</b>确认密码：</em>
+						<h:inputSecret id="repass" styleClass="text repass"
+							required="true" maxlength="16" label="确认密码"
+							value="#{userHome.instance.password}" />
+					</div>
+					<div class="yx">
+						<em><b>*</b>验证码：</em>
+						<h:inputText id="code" label="验证码" styleClass="text text-1">
+							<archer:validateCaptcha />
+						</h:inputText>
+						<script>
+							function getRandcode() {
+								$(".verifyCode").attr(
+										"src",
+										"#{request.contextPath}/verifyCodeServlet?"
+												+ new Date().getTime());
+							}
+						</script>
+						<img alt="点击刷新" class="verifyCode" style="cursor: pointer;"
+							id="verifyCode" src="#{request.contextPath}/verifyCodeServlet"
+							onclick="this.src='#{request.contextPath}/verifyCodeServlet?'+new Date().getTime()" />
+						<a href="javascript:void(0);" onclick="nextVerifyCode()">换一张</a>
+						<p>字母不区分大小写</p>
+					</div>
+					<div class="yx yx-1">
+						<input type="checkbox" class="dx agree" checked="checked" />
+						<p>
+							我已经阅读并同意 <a href="#" data-reveal-id="registerService"
+								target="_blank">服务协议</a>及 <a href="#"
+								data-reveal-id="privateRule" target="_blank">隐私规则</a>
+						</p>
+					</div>
+					<h:commandButton type="button" value="立即注册(并绑定)" styleClass="deng"
+						action="#{userHome.registerByOpenAuth}">
+					</h:commandButton>
+				</div>
+			</h:form>
+			<div class="zhanghao" style="background: none">
+				<p
+					style="font-weight: bold;font-family: 微软雅黑;font-size: 18px;color: #FF0000;padding:0">绑定已有账号:
+				</p>
+				<div class="login"
+					style="padding: 20px 0 79px 90px;background: none">
+					<form action="#{request.contextPath}/memberLogin" method="post"
+						id="user-login-form" accept-charset="UTF-8">
+					<input type="hidden" name="open_auth_bidding_login" value="true" />
+					<input type="hidden" name="spring-security-fail-target"
+						value="/oauth_bidding"></input> <ui:fragment
+						rendered="#{not empty request.getParameter('spring-security-redirect')}">
+						<input type="hidden" name="spring-security-redirect"
+							value="#{request.getParameter('spring-security-redirect')}"></input>
+					</ui:fragment>
+					<div class="dl" style="float: none;height: 380px;width: 280px;">
+						<div
+							style="margin-left: 12px; font-size: 12px; text-align: center;">
+							<ui:fragment
+								rendered="#{ not empty requestScope['SPRING_SECURITY_LAST_EXCEPTION'] and requestScope['SPRING_SECURITY_LAST_EXCEPTION'].message ne 'Authentication method not supported: GET'}">
+								<script>
+										 $(function(){
+					            			growl.renderMessage({summary:'错误', detail:'#{requestScope['SPRING_SECURITY_LAST_EXCEPTION'].message}', severity: 'error'});
+										 });
+				            			</script>
+							</ui:fragment>
+						</div>
+
+						<p>
+							<a href="#{request.contextPath}/register">免费注册</a>用户名/邮箱：
+						</p>
+						<h:inputText label="用户名" id="j_username" styleClass="text"
+							required="true"></h:inputText>
+
+						<p>
+							<a href="#{request.contextPath}/findPwd">忘记密码</a>密码：
+						</p>
+						<h:inputSecret id="j_password" styleClass="text password"></h:inputSecret>
+						<input name="" type="submit" class="liji" value="立即登录" />
+						<p>绑定以后,您可以直接通过第三方账号登录浙昌贷！</p>
+					</div>
+					</form>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</ui:define>
+</ui:composition>

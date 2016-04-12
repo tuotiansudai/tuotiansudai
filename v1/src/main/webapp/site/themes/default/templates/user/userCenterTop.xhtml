@@ -1,0 +1,103 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<link rel="stylesheet" type="text/css"
+		href="#{appInfo.contextPath}/include/css/fileupload.less.css" />
+	<script type="text/javascript" charset="utf-8"
+		src="#{appInfo.contextPath}/include/js/fileupload.less.js"></script>
+	<style>
+		.grzx_img{
+			position: relative;
+		}
+		.grzx_img .ui-fileupload-buttonbar .ui-button{
+			height: 71px;
+		}
+		.grzx_img .ui-fileupload-buttonbar .ui-fileupload-choose input{
+			height: 71px;
+			filter: alpha(opacity = 0); opacity: 0;
+		}
+		.grzx_img .ui-widget{
+			position:absolute;
+			height:73px;
+			width:71px;
+			top:0;
+			filter: alpha(opacity = 0); opacity: 0;
+		}
+	</style>
+	<f:event type="preRenderComponent"
+		listener="#{userHome.setId(loginUserInfo.loginUserId)}"></f:event>
+	<div class="grzx">
+		<div class="grzx_img">
+			<h:form id="userPhotoUploadForm">
+				<h:panelGroup id="photo">
+					<p:graphicImage id="photoImage" value="#{userHome.instance.photo}"
+						rendered="#{not empty userHome.instance.photo}"  />
+					<p:graphicImage value="/site/themes/default/images/img15.png"
+						rendered="#{empty userHome.instance.photo}"/>
+					<p:fileUpload dragDropSupport="true" update="photo" id="pu"
+						invalidFileMessage="#{commonMsg.invalidFileMessage}"
+						invalidSizeMessage="#{commonMsg['validator.SizeValidator.MAXIMUM500k']}"
+						label="上传" fileLimit="1"
+						fileUploadListener="#{userHome.uploadPhoto}" mode="advanced"
+						auto="true" sizeLimit="500000"
+						allowTypes="/(\.|\/)(gif|jpe?g|png|JPG|JPEG|GIF)$/" />
+				</h:panelGroup>
+			</h:form>
+		</div>
+		<div class="grzx_c">
+			<h3>#{loginUserInfo.loginUserId}
+				<ui:fragment rendered="#{configHome.getConfigValue('pnrpay_enable') eq '1'}">
+					<sec:ifAnyGranted roles="INVESTOR,LOANER,GUARANTEE">
+						<h:form style="display:inline;">
+							&#160;<h:commandLink action="#{userHome.toPnrAccount()}" target="_blank">汇付账户</h:commandLink>
+						</h:form>
+					</sec:ifAnyGranted>
+				</ui:fragment>
+			</h3>
+			<p>
+				<sec:ifAllGranted roles="INVESTOR">
+					<a class="grzx_c_01" title="实名认证-已认证"> <img
+						src="#{tplVars.themeImagePath}/realname-icon_hover.png" />
+					</a>
+				</sec:ifAllGranted>
+				<sec:ifNotGranted roles="INVESTOR">
+					<a href="#{path}/user/get_investor_permission" title="实名认证" class="grzx_c_01">
+						<img src="#{tplVars.themeImagePath}/realname-icon.png" />
+					</a>
+				</sec:ifNotGranted>
+				<a href="#{path}/user/accountSafe" class="grzx_c_02" title="修改绑定手机"> <img
+					src="#{tplVars.themeImagePath}/mobile-icon_hover.png" />
+				</a> <a href="#{path}/user/accountSafe" class="grzx_c_03" title="修改登录密码"> <img
+					src="#{tplVars.themeImagePath}/password-icon_hover.png" />
+				</a>
+				<ui:fragment rendered="#{userHome.isActivatedByEmail(loginUserInfo.loginUserId,userHome.instance.email)}">
+					<a href="#{path}/user/accountSafe" class="grzx_c_04" title="修改认证邮箱"> <img
+						src="#{tplVars.themeImagePath}/email-icon_hover.png" />
+					</a>
+				</ui:fragment>
+				<ui:fragment rendered="#{!userHome.isActivatedByEmail(loginUserInfo.loginUserId,userHome.instance.email)}">
+					<a href="#{path}/user/accountSafe" class="grzx_c_04" title="认证邮箱"> <img
+						src="#{tplVars.themeImagePath}/email-icon.png" />
+					</a>
+				</ui:fragment>
+				账户余额：<span><h:outputLabel
+						value="#{billStatistics.getBalanceByUserId(loginUserInfo.loginUserId)}">
+						<f:convertNumber type="currency" currencySymbol="￥" />
+					</h:outputLabel>元</span>
+			</p>
+		</div>
+		<div class="grzx_r">
+			<a href="#{path}/user/withdraw" class="tx">提现</a><a
+				href="#{path}/user/recharge" class="cz">充值</a>
+		</div>
+		<div class="clear"></div>
+	</div>
+
+</ui:component>

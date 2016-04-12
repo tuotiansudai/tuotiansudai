@@ -1,0 +1,309 @@
+<ui:composition template="page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<ui:define name="content">
+		<link type="text/css" rel="stylesheet"
+			href="#{tplVars.themeStylePath}/p2c.css" />
+		<link type="text/css" rel="stylesheet"
+			href="#{tplVars.themeStylePath}/transfer.css" />
+		<script type="text/javascript">
+		//<![CDATA[
+			//如果登录用户没有投资权限，则提示，并跳转页面。
+			function getInvestorPer() {
+				$.dialog
+						.confirm(
+								'您尚未进行实名认证无法投资，是否要实名认证？',
+								function() {
+									window.location.href = "#{request.contextPath}/user/get_investor_permission";
+									$.dialog.tips('正在为您跳转到页面');
+								});
+				return false;
+			}
+		
+			$(function() {
+				$(".xmzt_l .zt a").click(function() {
+					$(this).parent().children().removeClass("hover");
+					$(this).addClass("hover");
+					//清除筛选对分页的影响
+					clearPage();
+				});
+			})
+			var buyDialog;
+			/** 显示购买债权dialog*/
+			function openBuyDialog() {
+				buyDialog = $.artDialog({
+					content : document.getElementById('buyDialog'),
+					id : 'buyDialog',
+					fixed : true,
+					lock : true,
+					padding : '0px 0px',
+					zIndex : 2
+				});
+			}
+			//]]>
+		</script>
+		<!--Layout Start-->
+		<div class="main">
+			<div class="tag">
+				<a href="#">我要理财</a> > <span><a href="#">债权转让列表</a></span>
+			</div>
+			<h:form>
+				<!-- 				清除筛选对分页的影响 -->
+				<p:remoteCommand process="@this" immediate="true" name="clearPage"
+					actionListener="#{transferApplyList.setCurrentPage(1)}"></p:remoteCommand>
+				<div class="xmzt xmzt_01">
+					<h3>
+						<p class="zqzr_p">筛选债权转让项目</p>
+						<!-- <span><a href="#">优选理财计划</a><a href="#">散标投资列表</a></span> -->
+					</h3>
+					<div class="xmzt_l">
+						<div class="zt zt_01">
+							<p>转让本金：</p>
+							<div class="zt01">
+								<h:commandLink styleClass="hover" title="全部" value="全部">
+									<f:ajax render="dataTable"
+										listener="#{transferApplyList.setMinAndMaxCorpus(1,500000*1000000)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="5000以下" value="5000以下">
+									<f:ajax render="dataTable"
+										listener="#{transferApplyList.setMinAndMaxCorpus(0,5000)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="5000~1万" value="5000~1万">
+									<f:ajax render="dataTable"
+										listener="#{transferApplyList.setMinAndMaxCorpus(5001,10000)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="1万~2万" value="1万~2万">
+									<f:ajax render="dataTable"
+										listener="#{transferApplyList.setMinAndMaxCorpus(10001,20000)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="2万以上" value="2万以上">
+									<f:ajax render="dataTable"
+										listener="#{transferApplyList.setMinAndMaxCorpus(20001,5000000)}"></f:ajax>
+								</h:commandLink>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="zt zt_01">
+							<p style="width: 70px;">利率：</p>
+							<div class="zt01">
+								<h:commandLink styleClass="hover" title="全部" value="全部">
+								<f:ajax render="dataTable"
+									listener="#{transferApplyList.setMinAndMaxRate(0.01,0.25)}"></f:ajax>
+							</h:commandLink>
+							<h:commandLink title="10%以下" value="10%以下">
+								<f:ajax render="dataTable"
+									listener="#{transferApplyList.setMinAndMaxRate(0,0.1)}"></f:ajax>
+							</h:commandLink>
+							<h:commandLink title="10%-15%" value="10%-15%">
+								<f:ajax render="dataTable"
+									listener="#{transferApplyList.setMinAndMaxRate(0.1,0.15)}"></f:ajax>
+							</h:commandLink>
+							<h:commandLink title="15%-20%" value="15%-20%">
+								<f:ajax render="dataTable"
+									listener="#{transferApplyList.setMinAndMaxRate(0.15,0.2)}"></f:ajax>
+							</h:commandLink>
+							<h:commandLink title="20%以上" value="20%以上">
+								<f:ajax render="dataTable"
+									listener="#{transferApplyList.setMinAndMaxRate(0.2,10)}"></f:ajax>
+							</h:commandLink>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="zt zt_01">
+							<p style="width: 70px;">折让金：</p>
+							<div class="zt01">
+								<h:commandLink styleClass="hover" title="全部" value="全部">
+									<f:ajax render="dataTable"
+										listener="#{transferApplyList.setMinAndMaxPremium(-1000000,1000000)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="-1000以下" value="-1000以下">
+									<f:ajax render="dataTable"
+										listener="#{transferApplyList.setMinAndMaxPremium(-1000000,-1000)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="-1000~0" value="-1000~0">
+									<f:ajax render="dataTable"
+										listener="#{transferApplyList.setMinAndMaxPremium(-999,0)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="0~1000" value="0~1000">
+									<f:ajax render="dataTable"
+										listener="#{transferApplyList.setMinAndMaxPremium(1,1000)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="1000以上" value="1000以上">
+									<f:ajax render="dataTable"
+										listener="#{transferApplyList.setMinAndMaxPremium(1000,5000000)}"></f:ajax>
+								</h:commandLink>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="xmzt_r">
+						<p>
+							<span>数据统计</span>
+							<br />
+							累计成交总金额：<h:outputText
+											value="#{transferStatistics.getAllMoneyByOut()}">
+											<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+										</h:outputText>元<br />
+							累计转让总笔数：
+							<h:outputText
+											value="#{transferStatistics.getCountOut()}">
+											<f:convertNumber minIntegerDigits="1" maxFractionDigits="0" />
+										</h:outputText>笔<br />
+						</p>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<h:panelGroup id="dataTable">
+					<div class="zqzr">
+						<div class="zqzr_box">
+							<div class="zqzr_box_l">债权转让列表</div>
+						</div>
+
+						<table width="1000" border="0" cellspacing="0" cellpadding="0"
+							class="zqzr_tab">
+							<tr class="zqzr_tab_tr">
+								<td width="104" class="pad20px">借款标题</td>
+								<td width="61">年利率</td>
+								<td width="60">折让金</td>
+								<td width="73">剩余时间</td>
+								<td width="78">债权价值</td>
+								<td width="90">转出价格</td>
+								<td width="78">剩余价值</td>
+								<td width="107">可购买本金</td>
+								<td width="182">转让进度 </td>
+								<td width="112">&#160;</td>
+							</tr>
+
+							<f:event type="preRenderComponent"
+								listener="#{transferApplyList.setPageSize(10)}"></f:event>
+							<f:event type="preRenderComponent"
+								listener="#{transferApplyList.addOrder('transferApply.applyTime','desc')}"></f:event>
+							<f:event type="preRenderComponent"
+								listener="#{transferApplyList.example.setStatus(TransferStatus.TRANSFERING)}"></f:event>
+							<ui:repeat var="it" value="#{transferApplyList.lazyModelData}">
+								<tr>
+									<td class="pad20px"><a
+										href="#{path}/loan/#{it.invest.loan.id}">#{it.invest.loan.name}</a></td>
+									<td>#{it.invest.loan.ratePercent}%</td>
+									<td><h:outputText value="#{it.premium}">
+											<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+										</h:outputText></td>
+									<td>#{it.invest.repayRoadmap.unPaidPeriod*it.invest.loan.type.repayTimePeriod}(#{dictUtil.getValue('repay_unit',it.invest.loan.type.repayTimeUnit)})</td>
+									<td><h:outputText value="#{it.worth}">
+											<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+										</h:outputText>元</td>
+									<td><h:outputText value="#{it.price}">
+											<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+										</h:outputText>元</td>
+									<td>#{it.remainWorth}元</td>
+									<td><h:outputText
+											value="#{transferService.calculateRemainCorpus(it.id)}">
+											<f:convertNumber maxFractionDigits="0" minIntegerDigits="1" />
+										</h:outputText>元</td>
+									<ui:param name="cr"
+										value="#{transferService.calculateInvestTransferCompletedRate(it.id)}"></ui:param>
+									<td><div class="boxp10">
+											<span class="jd"><em><b
+													style="width: #{0.68*cr}px"></b></em><i>#{cr}%</i></span>
+										</div></td>
+									<td><ui:fragment
+											rendered="#{empty loginUserInfo.loginUserId}">
+											<h:link outcome="pretty:memberLogin"
+												styleClass="txczje02_btn list_btn list_btn_02">
+												<f:param name="spring-security-redirect" value="/it_list" />
+												<h:outputText value="购买"></h:outputText>
+											</h:link>
+										</ui:fragment> <ui:fragment
+											rendered="#{not empty loginUserInfo.loginUserId}">
+											<sec:ifNotGranted roles="INVESTOR">
+												<a class="txczje02_btn list_btn list_btn_02"
+													href="javascript:void(0)" onclick="getInvestorPer();">购买</a>
+											</sec:ifNotGranted>
+
+											<sec:ifAllGranted roles="INVESTOR">
+												<h:commandLink value="购买"
+													class="txczje02_btn list_btn list_btn_02">
+													<p:ajax listener="#{transferApplyHome.setInstance(it)}"
+														update=":buyTransferDialog" oncomplete="openBuyDialog()"></p:ajax>
+												</h:commandLink>
+
+											</sec:ifAllGranted>
+										</ui:fragment></td>
+								</tr>
+							</ui:repeat>
+						</table>
+						<!--分页 -->
+						<div class="page02">
+							<ui:include src="#{tplVars.componentsPath}/transferPaging.xhtml"></ui:include>
+						</div>
+					</div>
+				</h:panelGroup>
+			</h:form>
+		</div>
+		<div id="buyDialog" class="zqzr-dialog" style="display: none;">
+			<h:form id="buyTransferDialog">
+			<f:event type="preRenderComponent" listener="#{investHome.setInstance(null)}"></f:event>
+				<h:panelGroup rendered="#{not empty transferApplyHome.instance.id}">
+					<ui:param name="ta" value="#{transferApplyHome.instance}"></ui:param>
+					<!-- 					购买债权dialog页面 -->
+					<div class="zqzr_title">
+						<p>
+							债权购买<span></span>
+						</p>
+					</div>
+					<table width="750" border="0" cellspacing="0" cellpadding="0"
+						class="zqzrsq_tab">
+						<tr>
+							<td class="right20px" align="right">可购买本金：</td>
+							<td><h:outputText value="#{ta.remainCorpus}">
+									<f:convertNumber maxFractionDigits="0" minIntegerDigits="1" />
+								</h:outputText>元</td>
+						</tr>
+						<tr>
+							<td class="right20px" align="right">购买本金：</td>
+							<h:inputHidden value="#{ta.invest.loan.minInvestMoney}"></h:inputHidden>
+							<td><h:inputText styleClass="zqzrsq_tab_txt" label="购买本金"
+									value="#{investHome.instance.investMoney}">
+									<f:ajax event="blur" render="price"></f:ajax>
+									<o:validator validatorId="javax.faces.DoubleRange"
+										minimum="#{ta.invest.loan.minInvestMoney}"
+										maximum="#{transferService.calculateRemainCorpus(ta.id)}"></o:validator>
+									<o:validator
+										validatorId="com.esoft.core.validator.NumberValidator"
+										cardinalNumber="#{ta.invest.loan.cardinalNumber}"></o:validator>
+								</h:inputText></td>
+						</tr>
+						<tr>
+							<td class="right20px" align="right">所需金额：</td>
+							<td class="noline line-height30px"><h:outputText id="price"
+									value="#{investHome.instance.investMoney/ta.corpus*ta.price}">
+									<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+								</h:outputText>元</td>
+						</tr>
+						<tr>
+							<td colspan="2" class="noline">
+							<!-- 为汇付或环迅资金托管时，不用ajax -->
+							<p:commandLink value="购买" ajax="#{configHome.getConfigValue('pnrpay_enable') ne '1' and configHome.getConfigValue('ipspay_enable') ne '1'}"
+									action="#{investHome.transfer}" style="margin-left: 255px;"
+									styleClass="txczje02_btn list_btn_03">
+									<f:setPropertyActionListener
+										target="#{investHome.instance.transferApply}"
+										value="#{transferApplyHome.instance}"></f:setPropertyActionListener>
+								</p:commandLink><a href="javascript:void(0)" onclick="buyDialog.close();"
+								class="txczje02_btn list_btn_03 list_btn_04">取消</a></td>
+						</tr>
+					</table>
+				</h:panelGroup>
+			</h:form>
+		</div>
+		<!--Layout End-->
+	</ui:define>
+</ui:composition>

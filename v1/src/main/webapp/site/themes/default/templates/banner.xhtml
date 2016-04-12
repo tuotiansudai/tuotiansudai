@@ -1,0 +1,42 @@
+<ui:component xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<link type="text/css" rel="stylesheet"
+		href="#{tplVars.themeStylePath}/banner.css" />
+
+	<div class="wrap">
+		<div class="banner">
+	        <div class="hd clearfix">
+	        	<ul>
+					<ui:repeat var="pic" value="#{bannerList.getBannerById('index').pictures}">
+						<li></li>
+					</ui:repeat></ul>
+	        </div>
+	        <div class="bd">
+	        	<ul>
+					<ui:repeat var="pic" value="#{bannerList.getBannerById('index').pictures}">
+						<li><a href="#{path}#{pic.url}" target="_blank"><img src="#{path}#{pic.picture}" /></a></li>
+					</ui:repeat></ul>
+	        </div>
+	        <ui:fragment rendered="#{empty loginUserInfo.loginUserId}">
+		        <div class="layer-div">
+		            <div class="layer">
+		            	<p class="p1">拓天速贷年化收益率</p>
+		            	<p class="p2">最高<strong>16%</strong></p>
+		            	<p class="p3"><strong>46</strong>倍活期存款收益，投资安全有保障！</p>
+		            	<p class="p4"><a href="#{request.contextPath}/register">注册</a></p>
+		            	<p class="p5">已有账户？<a href="#{request.contextPath}/memberLoginPage">立即登录</a></p>
+		            </div>
+		        </div>
+	        </ui:fragment>
+	        <script type="text/javascript">jQuery(".banner").slide({mainCell:".bd ul",titCell:".hd ul li",autoPlay:true,effect:"leftLoop"});</script>
+	    </div>
+	</div>
+	<!--banner end-->
+
+</ui:component>

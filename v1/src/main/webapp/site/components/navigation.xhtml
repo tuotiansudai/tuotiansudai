@@ -1,0 +1,27 @@
+<!-- collapsed 
+    title :
+-->
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div id="block-system-navigation"
+		class="block block-system block-menu">
+
+		<h2>#{empty title ? componentMsg.navigationLabel : title}</h2>
+		<div class="content">
+			<ul class="menu clearfix">
+				<ui:repeat var="nav" value="#{menuList.navigationMenus}" varStatus="status">
+				<ui:param name="url" value="#{appInfo.contextPath}#{nav.url}"></ui:param>
+				<li class="#{status.first? 'first':''} #{status.last? 'last':''} ">
+					<a href="#{url}">#{nav.label}</a>
+				</li>
+				</ui:repeat>
+				
+			</ul>
+		</div>
+	</div>
+</f:view>

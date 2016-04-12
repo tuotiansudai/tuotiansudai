@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.LoanTitleRelationMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="loanTitleResultMap" type="LoanTitleRelationModel">
+        <id column="id" property="id"></id>
+        <result column="loan_id" property="loanId"></result>
+        <result column="title_id" property="titleId"></result>
+        <result column="application_material_urls" property="applicationMaterialUrls"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="LoanTitleModel">
+        insert into loan_title_relation (id, loan_id, title_id, application_material_urls) values
+        <foreach collection="loanTitleModels" item="item" index="index" separator=",">
+            (#{item.id}, #{item.loanId}, #{item.titleId}, #{item.applicationMaterialUrls})
+        </foreach>
+    </insert>
+
+    <select id="findByLoanId" parameterType="long" resultMap="loanTitleResultMap">
+        select * from loan_title_relation  where loan_id = #{loanId} order by title_id
+    </select>
+
+    <delete id="delete" parameterType="long">
+        delete from loan_title_relation where loan_id = #{loanId};
+    </delete>
+</mapper>

@@ -1,0 +1,1 @@
+ALTER TABLE `aa`.`invest` MODIFY COLUMN `status` VARCHAR(32) NOT NULL;

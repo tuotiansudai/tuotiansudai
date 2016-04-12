@@ -1,0 +1,64 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:sec="http://www.springframework.org/security/facelets/tags">
+    <f:metadata>
+        <f:viewParam name="id" value="#{riskPreparednessHome.id}"></f:viewParam>
+    </f:metadata>
+
+    <ui:define name="content">
+		<div class="entry">
+			 <p:toolbar styleClass="admin-nav-toolbar">
+            <p:toolbarGroup>
+                <h:outputLabel value="#{commonMsg.currentPositionLabel}借款风险准备金管理编辑"></h:outputLabel>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:separator />
+                <p:button outcome="/admin/risk/riskPreparednessList" value="借款风险准备金管理"></p:button>
+            </p:toolbarGroup>
+        </p:toolbar>
+        <p:spacer></p:spacer> 
+            <h:form id="form">
+                <h:panelGrid columns="2"  columnClasses="col1,col2" id="panel">
+                    <h:outputLabel value="#{commonMsg.IDLabel}"></h:outputLabel>
+                    <h:inputText value="#{riskPreparednessHome.instance.id}" readonly="#{not empty riskPreparednessHome.id}"
+                        required="true" label="#{commonMsg.IDLabel}"></h:inputText>
+                    
+                    <h:outputLabel value="风险等级"></h:outputLabel>
+                    <h:selectOneMenu value="#{riskPreparednessHome.instance.riskRank}" converter="archer.EntityConverter" collectionType="java.util.ArrayList">
+                        <f:selectItem itemLabel="请选择" itemValue=""/>
+                        <f:selectItems value="#{riskRankList.allResultList}" var="riskrank"
+                        itemLabel="#{riskrank.rank}" itemValue="#{riskrank}"/>
+                    </h:selectOneMenu>
+                    
+                    <h:outputLabel value="#{commonMsg.descriptionLabel}"></h:outputLabel>
+                    <h:inputTextarea value="#{riskPreparednessHome.instance.description}" style="width:600px;height:60px;"></h:inputTextarea>
+                    
+                    <h:outputLabel value="利率"></h:outputLabel>
+                    <ui:fragment>
+                    <h:inputText value="#{riskPreparednessHome.instance.rate}" 
+                        required="true" label="利率">
+						<f:validateDoubleRange minimum="0.01"></f:validateDoubleRange>    
+                    </h:inputText>%
+                    </ui:fragment>
+                    
+                    <h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+                    <ui:fragment>
+                        <p:commandButton action="#{riskPreparednessHome.save}" 
+                            value="#{commonMsg.saveLabel}" id="saveBtn"></p:commandButton>
+                        <p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+	                    <p:blockUI block="panel" trigger="saveBtn"></p:blockUI>
+                    </ui:fragment>
+                </h:panelGrid>
+            
+            </h:form>
+           </div>
+        </ui:define>
+</ui:composition>
+

@@ -1,0 +1,54 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+				xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+				xmlns:c="http://java.sun.com/jsp/jstl/core"
+				xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<f:metadata>
+		<f:viewParam name="id" value="#{referGradeSysInvestHome.id}"></f:viewParam>
+	</f:metadata>
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar styleClass="admin-nav-toolbar">
+				<p:toolbarGroup>
+					<h:outputLabel value="#{commonMsg.currentPositionLabel} 用户推荐层级/收益比例编辑"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button outcome="/admin/user/referGradeProfitListSysInvest" value="#{userMsg.referrerGradePtSysInvestLabel}"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:spacer></p:spacer>
+			<h:form id="form">
+				<h:panelGrid columns="2"  columnClasses="col1,col2" id="panel">
+
+
+					<h:outputLabel value="推荐层级"></h:outputLabel>
+					<h:inputText style="width:190px;height:18px;" maxlength="10"
+								 value="#{referGradeSysInvestHome.instance.grade}" readonly="#{not empty referGradeSysInvestHome.instance.grade}">></h:inputText>
+
+					<h:outputLabel value="收益比例"></h:outputLabel>
+					<h:inputText style="width:190px;height:18px;" maxlength="10"
+								 value="#{referGradeSysInvestHome.instance.profitRate}"></h:inputText>
+
+					<h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+					<ui:fragment>
+						<h:inputHidden value="#{referGradeSysInvestHome.instance.id}"></h:inputHidden>
+						<h:inputHidden value="#{referGradeSysInvestHome.instance.gradeRole}"></h:inputHidden>
+						<p:commandButton action="#{referGradeSysInvestHome.modifyReferrerGrade}"
+										 value="#{commonMsg.saveLabel}" id="saveBtn"></p:commandButton>
+						<p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+						<p:blockUI block="panel" trigger="saveBtn"></p:blockUI>
+					</ui:fragment>
+				</h:panelGrid>
+
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+

@@ -1,0 +1,132 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:define name="content">
+		<style>
+			.ui-panelgrid td.title{
+				width:100px;
+				background-color:#eee;
+			}
+			table .ui-widget-content a{
+				color:#08c;
+			}
+		</style>
+		<div class="entry">
+		    <p:toolbar styleClass="admin-nav-toolbar">
+                <p:toolbarGroup>
+                    <h:outputLabel
+                        value="#{commonMsg.currentPositionLabel} #{commonMsg.managementHomeLabel}"></h:outputLabel>
+                </p:toolbarGroup>
+                
+            </p:toolbar>
+            <p:spacer></p:spacer>
+			<h:panelGrid columns="2" style="width:100%">
+				<!-- <p:panel header="软件信息">
+					<h:panelGrid columns="2" style="width:100%">
+						<h:outputLabel value="系统名称"></h:outputLabel>
+						<h:outputText value="jdp2p（金鼎P2P）"></h:outputText>
+
+						<h:outputLabel value="版本"></h:outputLabel>
+						<h:outputText value="4.0"></h:outputText>
+
+						<h:outputLabel value="最后更新时间"></h:outputLabel>
+						<h:outputText value="2012-11-27"></h:outputText>
+
+						<h:outputLabel value="官网"></h:outputLabel>
+						<h:outputText value="http://www.jindingp2p.com"></h:outputText>
+					</h:panelGrid>
+				</p:panel>
+				<p:panel header="快速链接">
+					<h:panelGrid columns="1" style="width:100%">
+						<h:link value="文章管理" outcome="/admin/node/nodeList"></h:link>
+						<h:link value="添加文章" outcome="/admin/node/nodeEdit"></h:link>
+						<h:outputLabel value="#{'-'}"></h:outputLabel>
+						<h:outputLabel value="#{'-'}"></h:outputLabel>
+					</h:panelGrid>
+				</p:panel> -->
+				<p:panel header="系统信息">
+					<h:panelGrid columns="2" style="width:100%">
+						<h:outputLabel value="Java版本"></h:outputLabel>
+						<h:outputText value="#{systemInfo.javaVersion}"></h:outputText>
+
+						<h:outputLabel value="操作系统"></h:outputLabel>
+						<h:outputText value="#{systemInfo.os}"></h:outputText>
+
+						<h:outputLabel value="使用内存/总内存"></h:outputLabel>
+						<h:outputText
+							value="#{systemInfo.usedRam}M/#{systemInfo.totalRam}M"></h:outputText>
+					</h:panelGrid>
+				</p:panel>
+				<p:panel header="服务器信息">
+					<h:panelGrid columns="2" style="width:100%">
+						<h:outputLabel value="服务器名称"></h:outputLabel>
+						<h:outputText value="#{systemInfo.serverName}"></h:outputText>
+
+						<h:outputLabel value="监听端口"></h:outputLabel>
+						<h:outputText value="#{systemInfo.serverPort}"></h:outputText>
+
+						<h:outputLabel value="当前目录"></h:outputLabel>
+						<h:outputText value="#{systemInfo.currentDir}"></h:outputText>
+					</h:panelGrid>
+				</p:panel>
+				<p:panel header="统计信息">
+					<p:panelGrid style="width:100%;">
+						<p:row>
+							<p:column styleClass="title">共发布借款标</p:column>
+							<p:column>#{loanStatistics.loanCount}</p:column>
+							<p:column styleClass="title">合计交易</p:column>
+							<p:column colspan="3">
+								<h:outputText value="#{loanStatistics.loanMoney}">
+									<f:convertNumber type="number" pattern="#,###" />
+								</h:outputText>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="title">共计产生理财交易</p:column>
+							<p:column>#{investStatistics.allSuccessInvestsNum}</p:column>
+							<p:column styleClass="title">合计交易</p:column>
+							<p:column colspan="3">
+								<h:outputText value="#{investStatistics.allInvestsMoney}">
+									<f:convertNumber type="number" pattern="#,###" />
+								</h:outputText>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="title">今日新注册的会员</p:column>
+							<p:column>#{userStatistics.todayRegisterUserCount}</p:column>
+							<p:column styleClass="title">今日新增借款</p:column>
+							<p:column>#{loanStatistics.todayLoanCount}</p:column>
+							<p:column styleClass="title">共有注册会员</p:column>
+							<p:column>#{userStatistics.userCount}</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:panel>
+				<p:panel header="待办事项">
+					<p:panelGrid style="width:100%;">
+						<p:row>
+							<p:column styleClass="title">待初审项目</p:column>
+							<p:column><a href="#{request.contextPath}/admin/loan/loanList.htm?loanStatus=waiting_verify">#{loanStatistics.getLoanCount(LoanStatus.WAITING_VERIFY)}</a></p:column>
+							<p:column styleClass="title">待复核项目</p:column>
+							<p:column><a href="#{request.contextPath}/admin/loan/loanList.htm?loanStatus=recheck">#{loanStatistics.getLoanCount(LoanStatus.RECHECK)}</a></p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="title">待初审提现</p:column>
+							<p:column><a href="#{request.contextPath}/admin/withdraw/withdrawList.htm?withdrawStatus=wait_verify">#{withdrawStatistics.getWithdrawCount(WithdrawStatus.WAIT_VERIFY)}</a></p:column>
+							<p:column styleClass="title">待复审提现</p:column>
+							<p:column><a href="#{request.contextPath}/admin/withdraw/withdrawList.htm?withdrawStatus=recheck">#{withdrawStatistics.getWithdrawCount(WithdrawStatus.RECHECK)}</a></p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:panel>
+			</h:panelGrid>
+		</div>
+		
+	</ui:define>
+
+
+</ui:composition>

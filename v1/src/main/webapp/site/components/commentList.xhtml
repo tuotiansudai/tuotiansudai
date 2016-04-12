@@ -1,0 +1,84 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<ui:param name="comments" value="#{commentList.getComments(nodeId,size)}"></ui:param>
+	<ui:repeat var="comment" value="#{comments}">
+		<a id="comment-#{comment.id}"></a>
+		<div class="comment comment-by-node-author comment-by-viewer clearfix"
+			style="margin-left: #{ comment.level * 20}px">
+			<div class="attribution">
+				<div class="submitted">
+					<p class="commenter-name">
+						<span><a href="javascript:void(0);" title="查看用户资料"
+							class="username">#{comment.userByCreator.username}</a> </span>
+					</p>
+					<p class="comment-time">
+						<span>#{comment.createTime}</span>
+					</p>
+					<p class="comment-permalink">
+						<a
+							href="#{request.contextPath}/node/#{param.id}#comment-#{comment.id}"
+							class="permalink" rel="bookmark">永久连接</a>
+					</p>
+				</div>
+			</div>
+
+			<div class="comment-text">
+				<div class="comment-arrow"></div>
+				<h3>
+				<ui:fragment  rendered="#{comment.status == '1'}">
+					<a
+						href="#{request.contextPath}/node/#{param.id}#comment-#{comment.id}"
+						class="permalink" rel="bookmark">#{comment.title}</a>
+				</ui:fragment>
+				</h3>
+				<div class="content">
+					<span class="rdf-meta"></span>
+					<div
+						class="field field-name-comment-body field-type-text-long field-label-hidden">
+						<div class="field-items">
+							<div class="field-item even">
+								<h:outputText value="#{comment.filteredBody}" escape="false" rendered="#{comment.status == '1'}"></h:outputText>
+								<h:outputText value="该评论已删除" escape="false" rendered="#{comment.status == '0'}"></h:outputText>
+								<h:outputText value="该评论正在审核" escape="false" rendered="#{comment.status == '2'}"></h:outputText>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.content -->
+				<!-- FIXME:评论的 删除、编辑、回复的功能需要完善-->
+				<ul class="links inline">
+					<li class="comment-delete first">
+					<ui:fragment
+							rendered="#{loginUserInfo.loginUserId == comment.userByCreator.id and comment.status == '1'}">
+							<a href="#{request.contextPath}/comment/delete/#{comment.id}">删除</a>
+						</ui:fragment>
+					</li>
+					<li class="comment-edit">
+						<ui:fragment
+							rendered="#{loginUserInfo.loginUserId == comment.userByCreator.id and comment.status == '1'}">
+							<a href="#{request.contextPath}/comment/edit/#{comment.id}">编辑</a>
+						</ui:fragment>
+					</li>
+					<li class="comment-reply last">
+						<ui:fragment rendered="#{not empty loginUserInfo.loginUserId and comment.status == '1'}">
+							<a
+								href="#{request.contextPath}/comment/reply/#{param.id}/#{comment.id}">回复</a>
+						</ui:fragment>
+					</li>
+				</ul>
+			</div>
+			<!-- /.comment-text -->
+		</div>
+		<!-- <div class="indented">
+	   
+	   <ui:include src="/site/components/comment.xhtml">
+	       <ui:param name="comments" value="#{comment.comments}"></ui:param>
+	   </ui:include>
+	    
+	</div>-->
+	</ui:repeat>
+</f:view>

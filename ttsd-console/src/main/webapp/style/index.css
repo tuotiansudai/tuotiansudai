@@ -1,0 +1,567 @@
+@charset "UTF-8";
+/**
+ *
+ * @authors Belen (985322190@qq.com)
+ * @date    2015-08-03 14:32:14
+ * @version $Id$
+ */
+body {
+    overflow-x: hidden;
+}
+
+a {
+    color: #000;
+    text-decoration: none;
+}
+
+a.linked {
+    color: #377ac6;
+}
+
+a:hover {
+    color: #ff9c1b;
+    text-decoration: none;
+}
+
+.badgeCol {
+    color: #ff0000;
+}
+
+.navbar-brand {
+    padding: 10px 15px;
+    height: auto;
+}
+
+.top-menu {
+    background: url(/images/nav_bg.jpg) repeat-x;
+}
+
+@media (min-width: 768px) {
+    .navbar-nav > li > a {
+        padding: 10px 15px;
+        margin: 0 2px;
+    }
+}
+
+.top-menu li a:hover {
+    background: #ff9c1b;
+    text-shadow: none;
+    color: #ffffff;
+}
+
+.top-menu li.active a {
+    background: #ff9c1b;
+    text-shadow: none;
+    color: #ffffff;
+}
+
+.sidenav {
+    background: #f1f1f1;
+}
+
+.sidenav li.active > a {
+    color: #ff9c1b;
+}
+
+table td, table th {
+    font-size: 12px;
+}
+
+.table-center th, .table-center td {
+    text-align: center;
+}
+
+.file-input {
+    margin-bottom: 10px;
+}
+
+/*登录*/
+.login-bg {
+    background: #eee;
+}
+
+.login {
+    width: 360px;
+    height: 400px;
+    position: absolute;
+    left: 0;
+    *left: 300px;
+    top: 0;
+    *top: 100px;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    padding: 10px 30px;
+    background: #ccc;
+    border-radius: 5px;
+    z-index: 9999;
+
+}
+
+.captcha-column input {
+    width: 70%;
+    float: left;
+}
+
+.captcha-img {
+    height: 34px;
+    width: 30%;
+    float: left;
+    text-align: center;
+}
+
+.files-input {
+    width: 30%;
+    display: inline-block;
+}
+
+.col-file-box {
+    margin-bottom: 10px;
+}
+
+.select-box {
+    display: inline;
+}
+
+.query-build {
+    padding-bottom: 20px;
+}
+
+.query-build .form-group {
+    margin: 10px 20px 10px 0;
+}
+
+/*table style*/
+
+.table th, .table td {
+    text-align: center;
+}
+
+.table-bordered th {
+    text-align: center
+}
+
+.table .btn-link {
+    padding: 0px 2px;
+}
+
+.form-horizontal span.form-control {
+    border: none;
+    box-shadow: none;
+}
+
+.query-build input.form-control {
+    width: 170px;
+    font-size: 13px;
+}
+
+.form-control {
+    *padding-bottom: 0px;
+}
+
+td.projectName {
+    width: 25%;
+}
+
+td.projectName span {
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 10px;
+    overflow: hidden;
+    width: 250px;
+}
+
+td.td {
+    text-align: center;
+}
+
+.loan_repay {
+    color: #0064cd;
+}
+
+.invest_repay {
+    color: #cc0000;
+}
+
+.pagination-control button {
+    margin: 20px 0 0 10px;
+}
+
+.currentTab {
+    padding-top: 15px;
+}
+
+.bootstrap-select {
+    width: auto !important;
+}
+
+.bootstrap-select button.dropdown-toggle {
+    width: 170px;
+}
+
+.bootstrap-select.b-width button.dropdown-toggle {
+    width: 345px;
+}
+
+/*.bootstrap-select .btn { padding:3px 10px; font-size: 13px;}*/
+.btnSearch {
+    padding: 5px 20px;
+    font-size: 14px;
+}
+
+.web-error-message, .coupon-hide, .app-push-link {
+    display: none;
+}
+
+.error {
+    color: red;
+}
+
+.publishAD {
+    margin-right: 40px;
+    margin-top: 10px;
+}
+
+.line-size {
+    float: left;
+    line-height: 34px;
+}
+
+.already-btn {
+    color: #cc0000;
+}
+
+.confirm-btn {
+    display: inline-block;
+    float: left;
+}
+
+.tip-container {
+    width: 370px;
+    height: 52px;
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -26px;
+    margin-left: -185px;
+}
+
+.tip-container .alert {
+    margin-bottom: 0;
+}
+
+.check-btn {
+    float: left;
+    width: 16px;
+    height: 16px;
+    margin: 1px 1px 0 0;
+    background: url(../images/icon-bg.jpg) no-repeat center;
+    background-position: 0 0;
+}
+
+.add-check {
+    background-position: -16px 0;
+}
+
+/*search box*/
+.searchbox {
+    margin-bottom: 20px;
+}
+
+.title-list {
+    text-align: center;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    line-height: 35px;
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+}
+
+.title-list span {
+    margin: 0 20px;
+}
+
+.detail-tool {
+    display: inline-block;
+    width: 430px;
+    text-align: left;
+}
+
+.loading-report {
+    display: block;
+    text-align: center;
+    padding-top: 30px;
+}
+
+.home-report .start-date,
+.home-report .end-date {
+    width: 100px;
+}
+
+.agent-rate {
+    padding-right: 5px;
+}
+
+.form-group .form-control {
+    padding: 6px;
+}
+
+.item-invest {
+    float: left;
+    line-height: 35px;
+    font-size: 16px;
+}
+
+.invest-quota {
+    width: 121px;
+    float: left;
+}
+
+.system-recharge-label {
+    width: 11%;
+}
+
+.system-recharge-amount {
+    width: 25%;
+}
+
+.system-recharge-btn {
+    margin-left: 0.3%;
+}
+
+.system-recharge-balance, .invest-coupon-total_count[readonly] {
+    border: none;
+    box-shadow: none;
+    margin-top: 5px;
+    readOnly: true;
+    background-color: transparent;
+}
+
+.province label,.user-type label{
+    font-weight: normal;
+}
+
+.file-btn {
+    float: left;
+    width: 100px;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    position: relative;
+}
+
+.file-btn input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 35px;
+    opacity: 0;
+}
+
+.text-red {
+    color: #ff0000;
+}
+
+.text-blue {
+    color: #0000ff;
+}
+
+.see-detail {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    height: 400px;
+    padding-top: 20px;
+    margin-top: -200px;
+    margin-left: -200px;
+    overflow: hidden;
+    overflow-y: scroll;
+    background: #fff;
+    display: none;
+    border: 1px solid #ccc;
+}
+
+.see-detail span {
+    float: left;
+    width: 100%;
+}
+
+.see-detail .close-span {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 30px;
+}
+
+.import-hidden {
+    display: none;
+}
+
+/*index css*/
+.title-type {
+    float: left;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.table-data {
+    float: left;
+    width: 100%;
+}
+
+.two-flex {
+    float: left;
+    width: 500px;
+}
+
+.data-list {
+    float: left;
+    list-style: none;
+    padding-left: 0;
+    color: #fff;
+}
+
+.yellow-bg {
+    background: #fd9b31;
+}
+
+.blue-bg {
+    background: #5c98e2;
+}
+
+.green-bg {
+    background: #4ab684;
+}
+
+.red-bg, .loan-bg {
+    background: #e67b5e;
+}
+
+.yellow-bg li {
+    float: left;
+    width: 155px;
+    height: 85px;
+    border-right: 1px solid #fff;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.data-list li {
+    float: left;
+    width: 155px;
+    height: 85px;
+    border-right: 1px solid #fff;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.list-width li {
+    float: left;
+    width: 265px;
+    height: 85px;
+    border-right: 1px solid #fff;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.red-bg li {
+    width: 300px;
+}
+
+.data-list li:last-child {
+    border-right: none;
+}
+
+.data-list li p {
+    margin-bottom: 0;
+}
+
+.data-list li .num-text {
+    font-size: 40px;
+    line-height: 45px;
+}
+
+.data-list li .name-text {
+    font-size: 20px;
+    line-height: 40px;
+}
+
+.title-task {
+    color: #377bba;
+    padding-left: 10px;
+    border-left: 2px solid #377bba;
+}
+
+.give-charge {
+    color: #5c98e2;
+    padding-left: 10px;
+    border-left: 2px solid #5c98e2;
+}
+
+.get-money {
+    color: #4ab684;
+    padding-left: 10px;
+    border-left: 2px solid #4ab684;
+}
+
+.send-money {
+    color: #e67b5e;
+    padding-left: 10px;
+    border-left: 2px solid #e67b5e;
+}
+
+.person-num {
+    color: #fd9b31;
+    padding-left: 10px;
+    border-left: 2px solid #fd9b31;
+}
+
+.user-operate {
+    float: left;
+    width: 100%;
+    padding-left: 100px;
+    color: #cc0000;
+}
+
+.push-status-WAIT_AUDIT {
+    color: #ec971f;
+}
+
+.push-status-REJECTED {
+    color: #ff1f15;
+}
+
+.push-status-WILL_SEND {
+    color: #12cc14
+}
+
+.push-status-SEND_SUCCESS {
+    color: #979897;
+}
+
+.invest-ANDROID {
+    display: inline-block;
+    vertical-align: middle;
+    width: 18px;
+    height: 22px;
+    background: url("/images/ico_loan.png") 0px -32px no-repeat;
+}
+
+.invest-IOS {
+    display: inline-block;
+    vertical-align: middle;
+    width: 18px;
+    height: 20px;
+    background: url("/images/ico_loan.png") 0px -65px no-repeat;
+}
+.jpushReport {
+    text-decoration: underline;
+    cursor:pointer;
+}

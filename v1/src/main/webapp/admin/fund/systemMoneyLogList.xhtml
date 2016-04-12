@@ -1,0 +1,81 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<h:outputLabel style="padding-left: 15px;"
+						value="#{commonMsg.currentPositionLabel} 银行金额账户情况"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+<!-- 					<p:button value="手动充值" -->
+<!-- 						outcome="/admin/link/linkTypeEdit"></p:button> -->
+				</p:toolbarGroup>
+			</p:toolbar>
+			<h:form id="form">
+				<p:spacer></p:spacer>
+				<p:panel id="filters">
+					<h:inputText id="searchId" value="#{systemMoneyLogList.example.id}"></h:inputText>
+
+<!-- 					<h:inputText id="searchName" value="#{systemMoneyLogList.example.type}"></h:inputText> -->
+
+					<p:commandButton process="filters" update="dataTable"
+						value="#{commonMsg.searchLabel}"></p:commandButton>
+				</p:panel>
+				<p:watermark for="searchId" value="#{commonMsg.IDLabel}" />
+<!-- 				<p:watermark for="searchName" value="类型"></p:watermark> -->
+
+				<p:spacer></p:spacer>
+<!-- 				<o:importConstants type="com.esoft.archer.user.UserConstants.WithdrawStatus" var="systemMoneyLogStatus" /> -->
+				<p:dataTable id="dataTable" value="#{systemMoneyLogList.lazyModel}"
+					var="systemMoneyLog" paginator="true" paginatorPosition="bottom" rows="15"
+					lazy="true" emptyMessage="#{commonMsg.noResultMsg}" sortBy="systemMoneyLog.time" sortOrder="descending"
+					currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+					paginatorTemplate="#{commonMsg.paginatorTemplate}">
+					<p:column headerText="时间" sortBy="systemMoneyLog.time">
+						<h:outputText value="#{systemMoneyLog.time}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8"/>
+						</h:outputText>
+					</p:column>
+<!-- 					<p:column headerText="用户名" sortBy="systemMoneyLog.user.username"> -->
+<!-- 						<h:outputText value="#{systemMoneyLog.user.username}"></h:outputText> -->
+<!-- 					</p:column> -->
+					<p:column headerText="金额" sortBy="systemMoneyLog.money">
+						<h:outputText value="#{systemMoneyLog.money}">
+							<f:convertNumber currencySymbol="￥" type="currency" minIntegerDigits="1" minFractionDigits="2" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="类型" sortBy="systemMoneyLog.type">
+						<h:outputText value="转入到余额"
+							rendered="#{systemMoneyLog.type=='in'}"></h:outputText>
+						<h:outputText value="从余额转出"
+							rendered="#{systemMoneyLog.type=='out'}"></h:outputText>
+					</p:column>
+					<p:column headerText="说明" sortBy="systemMoneyLog.reason">
+						<h:outputText value="#{systemMoneyLog.reason}"></h:outputText>
+					</p:column>
+					<p:column headerText="详情" sortBy="systemMoneyLog.detail">
+						<h:outputText value="#{systemMoneyLog.detail}"></h:outputText>
+					</p:column>
+<!-- 					<p:column headerText="余额" sortBy="systemMoneyLog.balance"> -->
+<!-- 						<h:outputText value="#{systemMoneyLog.balance}"> -->
+<!-- 							<f:convertNumber currencySymbol="￥" type="currency" minIntegerDigits="1" minFractionDigits="2" /> -->
+<!-- 						</h:outputText> -->
+<!-- 					</p:column> -->
+				</p:dataTable>
+			</h:form>
+		</div>
+	</ui:define>
+
+</ui:composition>

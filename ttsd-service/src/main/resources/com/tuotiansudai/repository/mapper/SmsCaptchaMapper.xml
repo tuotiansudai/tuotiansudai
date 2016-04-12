@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.SmsCaptchaMapper">
+
+    <resultMap id="smsCaptchaModelResultMap" type="smsCaptchaModel">
+        <id column="id" property="id"></id>
+        <result column="captcha" property="captcha"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="expired_time" property="expiredTime"></result>
+        <result column="status" property="status"></result>
+        <result column="captcha_type" property="captchaType"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="SmsCaptchaModel" useGeneratedKeys="true" keyProperty="id">
+          insert into sms_captcha(captcha, mobile, expired_time, created_time, captcha_type)
+          value(#{captcha}, #{mobile}, #{expiredTime}, #{createdTime}, #{captchaType})
+    </insert>
+
+    <update id="update" parameterType="SmsCaptchaModel">
+          update sms_captcha set captcha = #{captcha}, expired_time = #{expiredTime}, created_time = #{createdTime} where id = #{id}
+    </update>
+
+    <select id="findByMobile" parameterType="java.lang.String" resultMap="smsCaptchaModelResultMap">
+          select * from sms_captcha where mobile = #{mobile} and captcha_type = 'REGISTER_CAPTCHA'
+    </select>
+
+    <select id="findByMobileAndCaptchaType" resultMap="smsCaptchaModelResultMap">
+        select * from sms_captcha where mobile = #{mobile} and captcha_type = #{captchaType}
+    </select>
+</mapper>

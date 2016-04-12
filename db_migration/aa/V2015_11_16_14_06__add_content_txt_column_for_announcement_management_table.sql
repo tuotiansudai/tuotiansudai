@@ -1,0 +1,1 @@
+alter table `aa`.`announce` add column content_text TEXT after content;

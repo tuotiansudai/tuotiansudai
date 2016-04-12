@@ -1,0 +1,56 @@
+ul, li, p, span, a, em, i, body, html {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+h1,h2,h3,h4,h5,h6{
+    font-weight: normal;
+}
+*:focus {
+    outline: none
+}
+
+body {
+    font-family: 'MICROSOFT YAHEI';
+    background:  #ea7936;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    border: 0px;
+}
+
+input::-webkit-input-placeholder {
+    color: #fff;
+    font-family: 'MICROSOFT YAHEI';
+}
+
+input:-moz-placeholder {
+    color: #fff;
+    font-family: 'MICROSOFT YAHEI';
+}
+@media (max-width: 320px) {
+    body {
+        font-size: 13px;
+    }
+}
+@media (max-width: 380px ) and (min-width: 324px) {
+    body {
+        font-size: 13px;
+    }
+
+}
+@media (max-width: 460px ) and (min-width: 381px) {
+    body {
+        font-size: 13px;
+    }
+}
+@media (max-width: 540px ) and (min-width: 459px) {
+    body {
+        font-size: 13px;
+    }
+
+}

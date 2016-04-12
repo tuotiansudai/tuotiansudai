@@ -1,0 +1,79 @@
+<ui:composition template="../center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	
+	<ui:param name="activeCenterMenuUrl" value="/user/loan/applying-p2p"></ui:param>
+	<ui:define name="center_right">
+			
+		<div class="center_right">
+			<div class="zhcz_h3">借款申请查询</div>
+			<h:form>
+				<h:panelGroup id="dataTable">
+					<div class="hd" style="margin-top: 26px;">
+						<ul class="slidings">
+							<li id="four1"><h:link outcome="pretty:user_loan_applying-p2p"
+									value="个人借款申请列表"></h:link></li>
+							<li id="four3" class="hover"><h:link
+									outcome="pretty:user_loan_applying-p2c" value="企业借款申请列表"></h:link></li>
+						</ul>
+						<div id="con_four_1" class="slidnr">
+							<f:event type="preRenderComponent"
+								listener="#{applyEnterpriseLoanList.example.user.setId(loginUserInfo.loginUserId)}"></f:event>
+<!-- 							<f:event type="preRenderComponent" -->
+<!-- 								listener="#{applyEnterpriseLoanList.example.setType('enterprise')}"></f:event> -->
+							<f:event type="preRenderComponent"
+								listener="#{applyEnterpriseLoanList.setPageSize(7)}"></f:event>
+							<f:event type="preRenderComponent"
+								listener="#{applyEnterpriseLoanList.addOrder('applyTime','desc')}"></f:event>
+							<table width="786" border="0" cellspacing="0" cellpadding="0"
+								class="tab">
+								<tr>
+									<td class="tab01 tab04">企业名称</td>
+									<td class="tab01">注册号</td>
+									<td class="tab01">法人/负责人</td>
+									<td class="tab01">联系电话</td>
+									<td class="tab01">所在省市</td>
+									<td class="tab01">借款金额</td>
+									<td class="tab01">借款期限</td>
+									<td class="tab01">申请日期</td>
+									<td class="tab01">状态</td>
+								</tr>
+								<ui:repeat var="loan" value="#{applyEnterpriseLoanList.lazyModelData}" varStatus="status">
+									<tr class="#{status.index%2==0?'tab02':''} bg">
+										<td class="tab02 tab04">#{loan.company}</td>
+										<td class="tab02 tab06">#{loan.companyNo}</td>
+										<td class="tab02 tab06">#{loan.contact}</td>
+										<td class="tab02 tab06">#{loan.contactMobile}</td>
+										<td class="tab02 tab06">#{loan.area.parent.name}#{loan.area.name}</td>
+										<td class="tab02 tab06"><h:outputText value="#{loan.money}">
+											<f:convertNumber maxFractionDigits="0" />
+										</h:outputText></td>
+										<td class="tab02 tab06">#{loan.deadline}</td>
+										<td class="tab02 tab06"><h:outputText value="#{loan.applyTime}">
+											<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+										</h:outputText></td>
+										<td class="tab02 tab06">#{dictUtil.getValue('apply_enterprise_loan_status',loan.status)}</td>
+									</tr>
+								</ui:repeat>
+							</table>
+						</div>
+					</div>
+					<div class="page_box">
+						<div class="page_r">
+							<ui:include src="applying-p2c_paging_include.xhtml"></ui:include>
+						</div>
+					</div>
+				</h:panelGroup>
+			</h:form>
+		</div>
+		<div class="clear"></div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,141 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:o="http://omnifaces.org/ui"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	
+	<f:metadata>
+		<f:viewParam name="id" value="#{raiseLoanHome.id}"></f:viewParam>
+	</f:metadata>
+	
+    <ui:define name="content">
+    <o:importConstants type="com.esoft.jdraise.constants.RaiseLoanStatus" />
+	<ui:param name="raiseLoan" value="#{raiseLoanHome.instance}"></ui:param>    
+	<f:event type="preRenderComponent" listener="#{raisePaybackHome.setRaiseLoan(raiseLoan)}"></f:event>
+	<style>
+			.ui-panelgrid td.title{
+				width:100px;
+				background-color:#eee;
+			}
+			table .ui-widget-content a{
+				color:#08c;
+			}
+		</style>
+	<style>
+		.common-href {
+		  border: 1px solid #bbb;
+		  border-radius: 5px;
+		  color: black;
+		  margin-right: 10px;
+		  padding: 3px 5px;
+		  text-decoration: none !important;
+		}
+	</style>
+    <div class="entry">
+    	<p:toolbar styleClass="admin-nav-toolbar">
+			<p:toolbarGroup>
+				<h:outputLabel value="#{commonMsg.currentPositionLabel} 众筹复核"></h:outputLabel>
+			</p:toolbarGroup>
+			<p:toolbarGroup align="right">
+				<p:separator />
+				<p:button outcome="/admin/raise/raiseLoanList" value="众筹管理"></p:button>
+			</p:toolbarGroup>
+		</p:toolbar>
+        
+        <h:form id="form">
+        	<p:fieldset legend="项目信息" toggleable="true" toggleSpeed="500">
+					<p:panelGrid style="width:100%;">
+						<p:row>
+							<p:column styleClass="title">项目名称</p:column>
+							<p:column colspan="3">#{raiseLoan.title}</p:column>
+							<p:column styleClass="title">项目类型</p:column>
+							<p:column>#{dictUtil.getValue('raise_type', raiseLoan.type)}</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="title">发起城市</p:column>
+							<p:column>#{raiseLoan.area.name}</p:column>
+							<p:column styleClass="title">目标天数</p:column>
+							<p:column>#{raiseLoan.deadline}</p:column>
+							<p:column styleClass="title">目标金额</p:column>
+							<p:column>#{raiseLoan.money}</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="title">项目概述</p:column>
+							<p:column colspan="5">#{raiseLoan.info}</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="title">回报信息</p:column>
+							<p:column colspan="5">
+								<f:event type="preRenderComponent" listener="#{raisePaybackList.example.loan.setId(raiseLoan.id)}"></f:event>
+								<p:dataTable lazy="true" id="dataTable" value="#{raisePaybackList.lazyModel}" var="payback" 
+					                paginator="false" paginatorPosition="bottom" rows="1000" currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+					                sortBy="rp.seqNum"  emptyMessage="#{commonMsg.noResultMsg}">
+					                <p:column sortBy="rp.seqNum" width="50" >
+					                	<f:facet name="header" >
+					                		<h:outputText value="#{commonMsg.IDLabel}"></h:outputText>
+					                	</f:facet>
+					                    <h:outputText value="#{payback.seqNum}"></h:outputText>
+					                </p:column>
+					                <p:column headerText="支持金额">
+					                    <h:outputText value="#{payback.money}"></h:outputText>
+					                </p:column>
+					                <p:column headerText="名额">
+					                    <ui:fragment rendered="#{not empty payback.limit}">#{payback.limit}位</ui:fragment>
+							            <ui:fragment rendered="#{empty payback.limit}">不限</ui:fragment>
+					                </p:column>
+					                <p:column headerText="回报内容">
+					                    <h:outputText value="#{payback.title}" title="#{payback.description}"></h:outputText>
+					                </p:column>
+					                <p:column headerText="回报时间">
+					                    <h:outputText value="#{payback.payTime}"></h:outputText>
+					                </p:column>
+					                <p:column headerText="回报类型">
+					                    <h:outputText value="#{payback.logistics eq LogisticsType.type0? '其他':'实物'}"></h:outputText>
+					                </p:column>
+					                <p:column headerText="限额">
+					                	<h:outputText value="#{empty payback.limit?'不限':payback.limit}"></h:outputText>
+					                </p:column>
+					                <p:column headerText="已投份数">
+					                	<h:outputText value="#{raisePaybackHome.getSupportCount(payback.id)}"></h:outputText>
+					                </p:column>
+					                <p:column headerText="总投资金额">
+					                	<h:outputText value="#{raisePaybackHome.getSupportMoney(payback.id)}"></h:outputText>
+					                </p:column>
+					            </p:dataTable>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="title">共筹集</p:column>
+							<p:column>#{raiseLoanHome.getRaisedMoney(raiseLoan.id)}</p:column>
+							<p:column styleClass="title">已达</p:column>
+							<p:column>#{raiseLoanHome.getRaisedMoney(raiseLoan.id)*100/raiseLoan.money}%</p:column>
+							<p:column styleClass="title">超过目标金额</p:column>
+							<p:column>#{raiseLoanHome.getRaisedMoney(raiseLoan.id)-raiseLoan.money}</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="title">手续费</p:column>
+							<p:column colspan="5">
+								<h:inputText value="#{raiseLoanHome.instance.fee}"></h:inputText>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="title">操作</p:column>
+							<p:column colspan="5">
+								<h:commandLink value="放款" action="#{raiseLoanHome.recheck}" styleClass="common-href" onclick="return confirm('确定放款？')">
+								</h:commandLink>
+								<h:commandLink value="流标" action="#{raiseLoanHome.failByManager}" styleClass="common-href" onclick="return confirm('确定流标？')">
+								</h:commandLink>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+			</p:fieldset>
+        </h:form>
+      </div>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,121 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<h:outputLabel style="padding-left: 15px;"
+						value="#{commonMsg.currentPositionLabel} 系统收益账户情况"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+<!-- 					<p:button value="手动充值" -->
+<!-- 						outcome="/admin/link/linkTypeEdit"></p:button> -->
+				</p:toolbarGroup>
+			</p:toolbar>
+			<h:form id="form">
+				<p:spacer></p:spacer>
+				<p:panel id="filters">
+					<p:calendar id="searchStartTime" value="#{systemBillList.startTime}"
+						pattern="yyyy-MM-dd HH:mm:ss" navigator="true" showButtonPanel="true"></p:calendar>
+					<p:calendar id="searchEndTime" value="#{systemBillList.endTime}"
+						pattern="yyyy-MM-dd HH:mm:ss" navigator="true" showButtonPanel="true"></p:calendar>
+					
+					<h:selectOneMenu value="#{systemBillList.example.type}">
+						<f:selectItem itemValue="" itemLabel="请选择收益类型" ></f:selectItem>
+						<f:selectItem itemValue="in" itemLabel="收入" ></f:selectItem>
+						<f:selectItem itemValue="out" itemLabel="支出" ></f:selectItem>
+					</h:selectOneMenu>
+					<h:selectOneMenu value="#{systemBillList.example.reason}">
+                    	<f:selectItem itemValue="" itemLabel="请选择操作类型"/>
+						<f:selectItems var="bo" value="#{dictUtil.getDictByParentKey('bill_operator')}"
+							itemValue="#{bo.key}" itemLabel="#{bo.value}"/>
+					</h:selectOneMenu>
+					<p:commandButton process="filters" update="dataTable"
+						value="#{commonMsg.searchLabel}"></p:commandButton>
+					<ui:param name="inSum" value="#{systemBillList.getSumInByType('in')}"></ui:param>
+					<ui:param name="outSum" value="#{systemBillList.getSumInByType('out')}"></ui:param>
+					&#160;&#160;收入总额:<h:outputText value="#{inSum}">
+						<f:convertNumber maxFractionDigits="2" />
+					</h:outputText>
+					&#160;&#160;支出总额:<h:outputText value="#{outSum}">
+						<f:convertNumber maxFractionDigits="2" />
+					</h:outputText>
+					&#160;&#160;收益(收入-支出):<h:outputText value="#{inSum-outSum}">
+						<f:convertNumber maxFractionDigits="2" />
+					</h:outputText>
+				</p:panel>
+				<p:watermark for="searchStartTime"  value="时间&gt;="></p:watermark>
+				<p:watermark for="searchEndTime" value="=&lt;时间"></p:watermark>
+
+				<p:spacer></p:spacer>
+<!-- 				<o:importConstants type="com.esoft.archer.user.UserConstants.WithdrawStatus" var="systemBillStatus" /> -->
+				<p:dataTable id="dataTable" value="#{systemBillList.lazyModel}"
+					var="systemBill" paginator="true" paginatorPosition="bottom" rows="15"
+					lazy="true" emptyMessage="#{commonMsg.noResultMsg}" sortBy="systemBill.time" sortOrder="descending"
+					currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+					paginatorTemplate="#{commonMsg.paginatorTemplate}">
+					<p:column sortBy="systemBill.time">
+						<f:facet name="header">
+							<h:outputText value="时间"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{systemBill.time}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8"/>
+						</h:outputText>
+					</p:column>
+					<p:column sortBy="systemBill.type">
+						<f:facet name="header">
+							<h:outputText value="费用类型"></h:outputText>
+						</f:facet>
+						<h:outputText value="收入"
+							rendered="#{systemBill.type=='in'}"></h:outputText>
+						<h:outputText value="支出"
+							rendered="#{systemBill.type=='out'}"></h:outputText>
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="操作类型"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{dictUtil.getValue('bill_operator',systemBill.reason)}"></h:outputText>
+					</p:column>
+					<p:column sortBy="systemBill.money" style="text-align:right;">
+						<f:facet name="header">
+							<h:outputText value="金额"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{systemBill.money}">
+							<f:convertNumber minIntegerDigits="1" minFractionDigits="2" />
+						</h:outputText>
+					</p:column>
+					<p:column width="50%">
+						<f:facet name="header">
+							<h:outputText value="费用详情"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{systemBill.detail}"></h:outputText>
+					</p:column>
+<!-- 					<p:column headerText="余额" sortBy="systemBill.balance"> -->
+<!-- 						<h:outputText value="#{systemBill.balance}"> -->
+<!-- 							<f:convertNumber currencySymbol="￥" type="currency" minIntegerDigits="1" minFractionDigits="2" /> -->
+<!-- 						</h:outputText> -->
+<!-- 					</p:column> -->
+
+					<f:facet name="footer">
+						<p:commandButton value="导出Excel" ajax="false">  
+							<p:dataExporter type="xls" target="dataTable" pageOnly="false" fileName="systemBillList" />  
+						</p:commandButton>
+					</f:facet>
+				</p:dataTable>
+			</h:form>
+		</div>
+	</ui:define>
+
+</ui:composition>

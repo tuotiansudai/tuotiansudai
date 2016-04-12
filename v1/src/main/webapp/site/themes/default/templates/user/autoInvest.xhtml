@@ -1,0 +1,197 @@
+<ui:composition template="center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="activeCenterMenuUrl" value="/user/auto_invest"></ui:param>
+	<ui:define name="center_right">
+		<sec:ifNotGranted roles="INVESTOR">
+			<script>
+				$.dialog
+						.alert(
+								'为了您的账户资金安全，请先进行实名认证!',
+								function() {
+									window.location.href = "#{path}/user/get_investor_permission";
+								});
+			</script>
+		</sec:ifNotGranted>
+		<ui:param name="balance"
+								value="#{userBillHome.getBalanceByUserId(loginUserInfo.loginUserId)}"/>
+		<script>
+			//<![CDATA[
+			//校验
+			function check() {
+				if (#{balance}<1000) {
+					alert("账户余额大于等于1000元才可开启自动投标！");
+					return false;
+				}
+				if (parseInt($("#form\\:minRate").val()) > parseInt($(
+						"#form\\:maxRate").val())) {
+					alert("最小利息不能大于最大利息");
+					return false;
+				} else {
+					return confirm("你确定要开启自动投标吗?");
+				}
+			}
+
+			//]]>
+		</script>
+		<div class="center_right">
+				<ui:param name="isOpen"
+					value="#{autoInvestHome.instance.status eq 'on'}"></ui:param>
+				<div class="center_box01">
+					<ui:include src="userCenterTop.xhtml"></ui:include>
+					<p class="zdtb_gb">
+						自动投标：
+						<ui:fragment rendered="#{not isOpen}">
+							<span><h:outputText value="关闭状态"></h:outputText> </span>
+						</ui:fragment>
+						<ui:fragment rendered="#{isOpen}">
+							<span><h:outputText value="开启状态"></h:outputText></span>
+							<span style="font-size:14px;">(当前排名：#{autoInvestHome.getOrderByUserId(loginUserInfo.loginUserId)})</span>
+						</ui:fragment>
+					</p>
+				</div>
+				<h:form id="form">
+				<div class="zdtb">
+					<div class="zdtb_box">
+						<div class="zdtb_l">账户可用余额：</div>
+						<div class="zdtb_r">
+							<h:outputLabel id="balance"
+								value="#{balance}">
+								<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+							</h:outputLabel>
+							元 <span>（大于等于1000元才可开启自动投标工具）</span>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="zdtb_box">
+						<div class="zdtb_l">每次投标金额：</div>
+						<div class="zdtb_r">
+							<h:inputText label="投标金额" id="money" required="true"
+								styleClass="date_txt date_txt02" disabled="#{isOpen}"
+								value="#{autoInvestHome.instance.investMoney}"
+								autocomplete="off"
+								onkeyup="this.value=this.value.replace(/\D/g,'')">
+								<f:ajax event="blur" render="@this"></f:ajax>
+								<f:convertNumber pattern="###,###" minFractionDigits="0" />
+								<f:validateDoubleRange minimum="200"
+									maximum="#{userBillHome.getBalanceByUserId(loginUserInfo.loginUserId)}"></f:validateDoubleRange>
+								<archer:validateNumber cardinalNumber="50" precision="0"></archer:validateNumber>
+							</h:inputText>
+							元 <span>（该数值须不小于200元，且为50的倍数）</span>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="zdtb_box">
+						<div class="zdtb_l">利息范围：</div>
+						<div class="zdtb_r">
+							<h:inputText label="最小利息" id="minRate" required="true"
+								disabled="#{isOpen}"
+								value="#{autoInvestHome.instance.minRatePercent}"
+								autocomplete="off" styleClass="date_txt date_txt02"
+								onkeyup="this.value=this.value.replace(/\D/g,'')"
+								validatorMessage="最小利息不能小于5%">
+								<f:ajax event="blur" render="@this"></f:ajax>
+								<f:convertNumber minIntegerDigits="1" maxFractionDigits="0" />
+								<f:validateDoubleRange minimum="5" maximum="24" />
+							</h:inputText>
+							% -
+							<h:inputText label="最大利息" id="maxRate" required="true"
+								disabled="#{isOpen}"
+								value="#{autoInvestHome.instance.maxRatePercent}"
+								autocomplete="off" styleClass="date_txt date_txt02"
+								onkeyup="this.value=this.value.replace(/\D/g,'')"
+								validatorMessage="最大利息不能超过24%">
+								<f:convertNumber minIntegerDigits="1" maxFractionDigits="0" />
+								<f:ajax event="blur" render="@this"></f:ajax>
+								<f:validateDoubleRange maximum="24" minimum="5"></f:validateDoubleRange>
+							</h:inputText>
+							%<span>（5%-24%为有效利率范围）</span>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="zdtb_box">
+						<div class="zdtb_l">借款期限：</div>
+						<div class="zdtb_r">
+							<h:selectOneMenu id="minTime" disabled="#{isOpen}"
+								value="#{autoInvestHome.instance.minDeadline}"
+								styleClass="date_select date_select02">
+								<f:selectItem itemLabel="0" itemValue="0" />
+								<f:selectItem itemLabel="1" itemValue="1" />
+								<f:selectItem itemLabel="2" itemValue="2" />
+								<f:selectItem itemLabel="3" itemValue="3" />
+								<f:selectItem itemLabel="6" itemValue="6" />
+								<f:selectItem itemLabel="9" itemValue="9" />
+								<f:selectItem itemLabel="12" itemValue="12" />
+								<f:selectItem itemLabel="18" itemValue="18" />
+								<f:selectItem itemLabel="24" itemValue="24" />
+								<f:selectItem itemLabel="36" itemValue="36" />
+							</h:selectOneMenu>
+							<h:outputLabel value=" 月- " />
+							<h:selectOneMenu id="maxTime" disabled="#{isOpen}"
+								value="#{autoInvestHome.instance.maxDeadline}"
+								styleClass="date_select date_select02">
+								<f:selectItem itemLabel="36" itemValue="36" />
+								<f:selectItem itemLabel="24" itemValue="24" />
+								<f:selectItem itemLabel="18" itemValue="18" />
+								<f:selectItem itemLabel="12" itemValue="12" />
+								<f:selectItem itemLabel="9" itemValue="9" />
+								<f:selectItem itemLabel="6" itemValue="6" />
+								<f:selectItem itemLabel="3" itemValue="3" />
+								<f:selectItem itemLabel="2" itemValue="2" />
+								<f:selectItem itemLabel="1" itemValue="1" />
+							</h:selectOneMenu>
+							月
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="zdtb_box">
+						<div class="zdtb_l">账户保留余额：</div>
+						<div class="zdtb_r">
+							<h:inputText id="cardNo" label="账户保留金额" disabled="#{isOpen}"
+								value="#{autoInvestHome.instance.remainMoney}"
+								styleClass="date_txt date_txt02"
+								onkeyup="this.value=this.value.replace(/\D/g,'')"
+								required="true">
+								<f:ajax event="blur" render="@this"></f:ajax>
+								<f:convertNumber pattern="###,###" minFractionDigits="0" />
+							</h:inputText>
+							<SPAN>（您可填写一个金额，这部分钱不会加入自动投标）</SPAN>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div>
+						<h:commandLink styleClass="txczje02_btn btn" value="开启投标" action="#{autoInvestHome.saveAutoInvest}"
+							onclick="return check();" rendered="#{not isOpen}">
+						</h:commandLink>
+						<h:commandLink styleClass="txczje02_btn btn" value="关闭投标"
+							rendered="#{isOpen}" onclick="return confirm('你确定要关闭自动投标吗?');">
+							<f:ajax listener="#{autoInvestHome.cancleAutoInvest}"
+								execute="@this" render="@form"></f:ajax>
+						</h:commandLink>
+					</div>
+				</div>
+				<p class="zhcz_p02 zhcz_p03">
+					自动投标工具说明<br /> 
+					1、借款进入招标中#{configHome.getConfigValue('auto_invest_delay_time')}分钟后，系统开启自动投标。<br/>
+					2、投标进度达到#{configHome.getConfigValue('auto_invest_end_percent')}%时停止自动投标，
+						若剩余自动投标金额小于用户设定的每次投标金额，也会进行投标，投资金额向下取该标剩余自动投标金额。<br/>
+					3、单笔投标金额若超过该标单笔最大投资额，则向下取该标最大投资额。<br/>
+					4、投标排序规则如下：<br/>
+					&#160;&#160;&#160;&#160;a）投标序列按照开启自动投标的时间先后进行排序。<br/>
+					&#160;&#160;&#160;&#160;b）每个用户每个标仅自动投标一次，投标后，排到队尾。<br/>
+					&#160;&#160;&#160;&#160;c）轮到用户投标时没有符合用户条件的标，该用户会继续保持在最前，只到投入。<br/>
+				</p>
+			</h:form>
+		</div>
+		<div class="clear"></div>
+	</ui:define>
+</ui:composition>

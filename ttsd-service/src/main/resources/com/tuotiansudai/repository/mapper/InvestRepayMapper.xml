@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.InvestRepayMapper">
+
+    <cache-ref namespace="com.tuotiansudai.repository.mapper.InvestMapper"/>
+
+    <resultMap id="investRepayInAccountResultMap" type="LatestInvestView">
+        <result column="created_time" property="investTime"></result>
+        <result column="loanName" property="loanName"></result>
+        <result column="loanId" property="loanId"></result>
+        <result column="repay_date" property="repayDate"></result>
+        <result column="corpus" property="corpus"></result>
+        <result column="expected_interest" property="expectedInterest"></result>
+        <result column="default_interest" property="defaultInterest"></result>
+        <result column="expected_fee" property="expectedFee"></result>
+        <result column="amount" property="investAmount"></result>
+        <result column="status" property="status"></result>
+    </resultMap>
+
+    <resultMap id="investRepayResultMap" type="InvestRepayModel">
+        <id column="id" property="id"></id>
+        <result column="invest_id" property="investId"></result>
+        <result column="corpus" property="corpus"></result>
+        <result column="expected_interest" property="expectedInterest"></result>
+        <result column="actual_interest" property="actualInterest"></result>
+        <result column="default_interest" property="defaultInterest"></result>
+        <result column="expected_fee" property="expectedFee"></result>
+        <result column="actual_fee" property="actualFee"></result>
+        <result column="period" property="period"></result>
+        <result column="repay_date" property="repayDate"></result>
+        <result column="actual_repay_date" property="actualRepayDate"></result>
+        <result column="status" property="status"></result>
+    </resultMap>
+
+    <resultMap id="investRepayResultMapWithLoanResultMap" type="InvestRepayModel">
+        <id column="id" property="id"></id>
+        <result column="invest_id" property="investId"></result>
+        <result column="corpus" property="corpus"></result>
+        <result column="expected_interest" property="expectedInterest"></result>
+        <result column="actual_interest" property="actualInterest"></result>
+        <result column="default_interest" property="defaultInterest"></result>
+        <result column="expected_fee" property="expectedFee"></result>
+        <result column="actual_fee" property="actualFee"></result>
+        <result column="period" property="period"></result>
+        <result column="repay_date" property="repayDate"></result>
+        <result column="actual_repay_date" property="actualRepayDate"></result>
+        <result column="status" property="status"></result>
+        <association property="loan" javaType="com.tuotiansudai.repository.model.LoanModel">
+            <id column="loan_id" property="id"/>
+            <result column="name" property="name"></result>
+            <result column="agent" property="agentLoginName"></result>
+            <result column="loaner" property="loanerLoginName"></result>
+            <result column="type" property="type"></result>
+            <result column="periods" property="periods"></result>
+            <result column="loan_amount" property="loanAmount"></result>
+            <result column="description_text" property="descriptionText"></result>
+            <result column="description_html" property="descriptionHtml"></result>
+            <result column="base_rate" property="baseRate"></result>
+            <result column="loan_amount" property="loanAmount"></result>
+            <result column="invest_fee_rate" property="investFeeRate"></result>
+            <result column="min_invest_amount" property="minInvestAmount"></result>
+            <result column="invest_increasing_amount" property="investIncreasingAmount"></result>
+            <result column="max_invest_amount" property="maxInvestAmount"></result>
+            <result column="activity_type" property="activityType"></result>
+            <result column="activity_rate" property="activityRate"></result>
+            <result column="contract_id" property="contractId"></result>
+            <result column="fundraising_start_time" property="fundraisingStartTime"></result>
+            <result column="fundraising_end_time" property="fundraisingEndTime"></result>
+            <result column="show_on_home" property="showOnHome"></result>
+            <result column="loan_created_time" property="createdTime"></result>
+            <result column="verify_time" property="verifyTime"></result>
+            <result column="recheck_time" property="recheckTime"></result>
+            <result column="loan_status" property="status"></result>
+            <result column="loan_amount" property="loanAmount"></result>
+        </association>
+    </resultMap>
+
+    <sql id="columns">
+        id, invest_id, corpus, default_interest, expected_interest, actual_interest, expected_fee, actual_fee, period, repay_date, actual_repay_date, status, created_time
+    </sql>
+
+    <insert id="create" parameterType = "java.util.List">
+        insert into invest_repay ( <include refid="columns"></include> )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.investId}, #{item.corpus}, #{item.defaultInterest}, #{item.expectedInterest}, #{item.actualInterest}, #{item.expectedFee}, #{item.actualFee}, #{item.period}, #{item.repayDate}, #{item.actualRepayDate}, #{item.status}, #{item.createdTime})
+        </foreach>
+    </insert>
+
+    <select id="findById" parameterType="long" resultMap="investRepayResultMap">
+        select <include refid="columns"></include> from invest_repay where id = #{id}
+    </select>
+
+    <select id="findByInvestIdAndPeriodAsc" parameterType="long" resultMap="investRepayResultMap">
+        select <include refid="columns"></include> from invest_repay where invest_id = #{investId} order by period asc
+    </select>
+
+    <select id="findByLoginNameAndInvestId" parameterType="map" resultMap="investRepayResultMap">
+        select invest_repay.*
+        from invest_repay join invest on invest_repay.invest_id = invest.id
+        where invest_id = #{investId}
+        and invest.login_name = #{loginName}
+        order by period asc
+    </select>
+
+    <select id="findByInvestIdAndPeriod" parameterType="map" resultMap="investRepayResultMap">
+        select * from invest_repay where invest_id = #{investId} and period = #{period}
+    </select>
+
+    <select id="findCompletedInvestRepayByIdAndPeriod" parameterType="map" resultMap="investRepayResultMap">
+        select * from invest_repay where invest_id = #{investId} and period = #{period} and status = 'COMPLETE'
+    </select>
+
+    <update id="update" parameterType="InvestRepayModel">
+        update invest_repay
+        set expected_interest = #{expectedInterest},
+            expected_fee = #{expectedFee},
+            repay_date = #{repayDate},
+            actual_interest = #{actualInterest},
+            actual_fee = #{actualFee},
+            actual_repay_date = #{actualRepayDate},
+            status = #{status},
+            default_interest = #{defaultInterest}
+        where id = #{id}
+    </update>
+
+    <select id="findByLoginNameAndTimeAndSuccessInvestRepay" parameterType="map" resultType="long">
+        SELECT
+          IFNULL(SUM(
+            ir.`corpus` + ir.`actual_interest` + ir.`default_interest` - ir.`actual_fee`
+          ),0)
+        FROM
+          invest_repay ir
+          JOIN
+            (SELECT
+              i.`id` AS investId,
+              l.`name` AS loanName,
+              l.`activity_rate`,
+              l.`base_rate`,
+              l.`periods`
+            FROM
+              invest i
+              JOIN loan l
+                ON i.`loan_id` = l.`id`
+                AND l.`status` IN ('COMPLETE', 'REPAYING')
+            WHERE i.`login_name` = #{loginName}) t
+            ON ir.`invest_id` = t.investId
+        WHERE ir.`status` = 'COMPLETE'
+          AND ir.`actual_repay_date` BETWEEN #{startTime}
+          AND #{endTime}
+    </select>
+
+    <select id="findByLoginNameAndTimeAndNotSuccessInvestRepay" parameterType="map" resultType="long">
+        SELECT
+          IFNULL(SUM(
+            ir.`corpus` + ir.`expected_interest` + ir.`default_interest` - ir.`expected_fee`
+          ),0)
+        FROM
+          invest_repay ir
+          JOIN
+            (SELECT
+              i.`id` AS investId,
+              l.`name` AS loanName,
+              l.`activity_rate`,
+              l.`base_rate`,
+              l.`periods`
+            FROM
+              invest i
+              JOIN loan l
+                ON i.`loan_id` = l.`id`
+                AND l.`status` IN ('COMPLETE', 'REPAYING')
+            WHERE i.`login_name` = #{loginName}) t
+            ON ir.`invest_id` = t.investId
+        WHERE ir.`status` != 'COMPLETE'
+          AND ir.`repay_date` BETWEEN #{startTime}
+          AND #{endTime}
+    </select>
+
+    <select id="findByLoginNameAndTimeSuccessInvestRepayList" parameterType="map" resultMap="investRepayResultMapWithLoanResultMap">
+        SELECT
+          ir.*,
+          t.loanName AS `name`,
+          t.activity_rate,
+          t.base_rate,
+          t.periods,
+          t.`loan_id`,
+          t.type
+        FROM
+          invest_repay ir
+          JOIN
+            (SELECT
+              i.`id` AS investId,
+              l.`name` AS loanName,
+              l.`activity_rate`,
+              l.`base_rate`,
+              l.`periods`,
+              l.`id` as loan_id,
+              l.`type`
+            FROM
+              invest i
+              JOIN loan l
+                ON i.`loan_id` = l.`id`
+                AND l.`status` IN ('COMPLETE', 'REPAYING')
+            WHERE i.`login_name` = #{loginName} and i.`status` = 'SUCCESS') t
+            ON ir.`invest_id` = t.investId
+        WHERE ir.`status` = 'COMPLETE'
+          AND ir.`actual_repay_date` BETWEEN #{startTime}
+          AND #{endTime}
+        ORDER BY ir.`actual_repay_date` DESC
+        LIMIT #{startLimit}, #{endLimit}
+    </select>
+
+    <select id="findByLoginNameAndTimeNotSuccessInvestRepayList" parameterType="map" resultMap="investRepayResultMapWithLoanResultMap">
+        SELECT
+          ir.*,
+          t.loanName AS `name`,
+          t.activity_rate,
+          t.base_rate,
+          t.periods,
+          t.`loan_id`,
+          t.type
+        FROM
+          invest_repay ir
+          JOIN
+            (SELECT
+              i.`id` AS investId,
+              l.`name` AS loanName,
+              l.`activity_rate`,
+              l.`base_rate`,
+              l.`periods`,
+              l.`id` as `loan_id`,
+              l.type
+            FROM
+              invest i
+              JOIN loan l
+                ON i.`loan_id` = l.`id`
+                AND l.`status` IN ('COMPLETE', 'REPAYING')
+            WHERE i.`login_name` = #{loginName} and i.`status` = 'SUCCESS') t
+            ON ir.`invest_id` = t.investId
+        WHERE ir.`status` != 'COMPLETE'
+          AND ir.`repay_date` BETWEEN #{startTime}
+          AND #{endTime}
+        ORDER BY ir.`repay_date`
+        LIMIT #{startLimit}, #{endLimit}
+    </select>
+
+    <select id="findLatestInvestByLoginName" parameterType="map" resultMap="investRepayInAccountResultMap">
+        SELECT
+          temp.`created_time`,
+          temp.`name` AS loanName,
+          temp.loanId AS loanId,
+          temp2.`repay_date`,
+          temp2.`corpus`,
+          temp2.`expected_interest`,
+          temp2.`default_interest`,
+          temp2.`expected_fee`,
+          temp.`amount`,
+          temp2.`status`
+        FROM
+          (SELECT
+            i.`id`,
+            i.`created_time`,
+            i.`amount`,
+            l.`name`,
+            l.`id` AS loanId
+          FROM
+            invest i
+            JOIN loan l
+              ON i.`loan_id` = l.`id`
+              AND l.`status` != 'WAITING_VERIFY'
+          WHERE i.`status` = 'SUCCESS'
+            AND i.`login_name` = #{loginName}) temp
+          LEFT JOIN
+            (SELECT
+              t.`invest_id`,
+              t.`corpus`,
+              t.`expected_interest`,
+              t.`default_interest`,
+              t.`expected_fee`,
+              t.`repay_date`,
+              t.`status`
+            FROM
+              invest_repay t
+              JOIN
+                (SELECT
+                  ir.`invest_id`,
+                  MIN(ir.`repay_date`) AS `repay_date`
+                FROM
+                  invest_repay ir
+                WHERE ir.`status` != 'COMPLETE'
+                GROUP BY ir.`invest_id`) m
+                ON t.`invest_id` = m.`invest_id`
+                AND t.`repay_date` = m.`repay_date`
+                AND t.`status` != 'COMPLETE') temp2
+            ON temp.`id` = temp2.`invest_id`
+        ORDER BY temp.`created_time` DESC
+        LIMIT #{startLimit}, #{endLimit}
+    </select>
+
+    <select id="findSumRepaidInterestByLoginName" parameterType="map" resultType="long">
+        SELECT
+          IFNULL(SUM(
+            ir.`actual_interest` + ir.`default_interest` - ir.`actual_fee`
+          ),0)
+        FROM
+          invest_repay ir
+          JOIN invest i
+            ON ir.`invest_id` = i.`id`
+            AND i.`status` = 'SUCCESS'
+            AND i.`login_name` = #{loginName}
+        WHERE ir.`status` = 'COMPLETE'
+    </select>
+
+    <select id="findSumRepayingInterestByLoginName" parameterType="map" resultType="long">
+        SELECT
+          IFNULL(SUM(
+            ir.`expected_interest` + ir.`default_interest` - ir.`expected_fee`
+          ),0)
+        FROM
+          invest_repay ir
+          JOIN invest i
+            ON ir.`invest_id` = i.`id`
+            AND i.`status` = 'SUCCESS'
+            AND i.`login_name` = #{loginName}
+        WHERE ir.`status` IN ('REPAYING', 'OVERDUE')
+    </select>
+
+    <select id="findSumRepayingCorpusByLoginName" parameterType="map" resultType="long">
+        SELECT
+        IFNULL(SUM(ir.`corpus`),0)
+        FROM
+          invest_repay ir
+          JOIN invest i
+            ON ir.`invest_id` = i.`id`
+            AND i.`status` = 'SUCCESS'
+            AND i.`login_name` = #{loginName}
+        WHERE ir.`status` IN ('REPAYING', 'OVERDUE')
+    </select>
+
+    <select id="findSumRepaidCorpusByLoginName" parameterType="map" resultType="long">
+        SELECT
+        IFNULL(SUM(ir.`corpus`),0)
+        FROM
+        invest_repay ir
+        JOIN invest i
+        ON ir.`invest_id` = i.`id`
+        AND i.`status` = 'SUCCESS'
+        AND i.`login_name` = #{loginName}
+        WHERE ir.`status` = 'COMPLETE'
+    </select>
+
+    <select id="findByLoginNameAndStatus" parameterType="map" resultMap="investRepayResultMap">
+        select ir.id, ir.invest_id, ir.corpus, ir.default_interest, ir.expected_interest, ir.actual_interest, ir.expected_fee, ir.actual_fee, ir.period, ir.repay_date, ir.actual_repay_date, ir.status, ir.created_time
+        from invest_repay ir
+        inner join invest on invest.id = ir.invest_id
+        where invest.login_name = #{loginName}
+        <if test="paidStatus == 'paid'">
+            and ir.status = 'COMPLETE'
+            order by actual_repay_date desc
+        </if>
+        <if test="paidStatus == 'unpaid'">
+            and ir.status &lt;&gt; 'COMPLETE'
+            order by repay_date asc
+        </if>
+        limit #{rowLimit} offset #{rowIndex}
+    </select>
+
+    <select id="findCountByLoginNameAndStatus" parameterType="map" resultType="long">
+        select count(*)
+        from invest_repay ir
+        inner join invest on invest.id = ir.invest_id
+        where invest.login_name = #{loginName}
+        <if test="paidStatus == 'paid'">
+            and ir.status = 'COMPLETE'
+        </if>
+        <if test="paidStatus == 'unpaid'">
+            and ir.status &lt;&gt; 'COMPLETE'
+        </if>
+    </select>
+    <select id="findInvestRepayByLoanIdAndPeriod" parameterType="map" resultMap="investRepayResultMap">
+        SELECT
+          ir.*
+        FROM
+          invest_repay ir
+          JOIN invest i
+            ON ir.`invest_id` = i.`id`
+            AND i.`loan_id` = #{loanId}
+        WHERE ir.`period` = #{period}
+    </select>
+
+    <select id="findByLoanId" parameterType="long" resultMap="investRepayResultMap">
+        select *
+        from invest_repay
+            inner join invest on invest_repay.invest_id = invest.id
+            inner join loan on loan.id = invest.loan_id
+        where loan.id = #{loanId}
+    </select>
+</mapper>

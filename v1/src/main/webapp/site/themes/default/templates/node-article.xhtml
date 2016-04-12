@@ -1,0 +1,36 @@
+<ui:component xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<div class="guide-div">
+		<a class="color9a9393 fontsize18" href="#{path}/">首页</a>&gt;
+		<a class="color57 fontsize14" href="#{path}/news/#{termId}">#{nodeHome.getCategoryTerm(termId)}</a>&gt;
+		<a class="color57 fontsize14">#{node.title}</a>
+	</div>
+	<ui:param name="menus" value="#{menuList.getMenusByParentId(menuParentId)}"></ui:param>
+	<div class="content">
+	<ui:fragment rendered="#{menus.size()>0}">
+		<div class="content-left fl">
+			<ul class="left-ul">
+				<ui:repeat var="t"
+					value="#{menuList.getMenusByParentId(menuParentId)}">
+					<ui:fragment rendered="#{t.enable eq '1'}">
+					<li><a href="#{path}#{t.url}" title="#{t.label}"
+						class="#{servletPath eq t.url ? 'currentpage':''}"
+						target="#{t.target}">#{t.label}</a></li>
+					</ui:fragment>
+				</ui:repeat>
+			</ul>
+		</div>
+	</ui:fragment>
+		<div class="content-right02 fr" style="#{menus.size()==0?'width:900px;float:none;':''}">
+			<h5 class="fontsize24 color0a8fc7">#{node.title}</h5>
+			<h:outputText value="#{node.nodeBody.body}" escape="false"></h:outputText>
+		</div>
+	</div>
+	<div class="clear"></div>
+	<!--Layout End-->
+</ui:component>

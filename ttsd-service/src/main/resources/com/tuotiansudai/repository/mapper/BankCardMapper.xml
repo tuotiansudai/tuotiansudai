@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.BankCardMapper">
+
+    <resultMap id="BankCardResultMap" type="BankCardModel">
+        <id column="id" property="id"></id>
+        <result column="bank_code" property="bankCode"></result>
+        <result column="card_number" property="cardNumber"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="status" property="status"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="is_fast_pay_on" property="isFastPayOn"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="com.tuotiansudai.repository.model.BankCardModel">
+        insert into bank_card (id, bank_code, card_number, created_time, status, login_name, is_fast_pay_on)
+        value(#{id}, #{bankCode}, #{cardNumber}, #{createdTime}, #{status}, #{loginName}, #{isFastPayOn})
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="BankCardResultMap">
+        select * from bank_card where id = #{id}
+    </select>
+
+    <select id="findPassedBankCardByLoginName" parameterType="java.lang.String" resultMap="BankCardResultMap">
+        select * from bank_card where login_name = #{loginName} and status = 'PASSED'
+    </select>
+
+    <select id="findPassedBankCardByBankCode" parameterType="java.lang.String" resultMap="BankCardResultMap">
+        select * from bank_card where bank_code = #{bankCode} and status = 'PASSED'
+    </select>
+
+    <select id="findByLoginNameAndIsFastPayOn" parameterType="java.lang.String" resultMap="BankCardResultMap">
+        select * from bank_card where login_name = #{loginName} and status = 'PASSED' and is_fast_pay_on = true
+    </select>
+
+    <update id="update" parameterType="com.tuotiansudai.repository.model.BankCardModel">
+        update bank_card
+        set bank_code = #{bankCode},
+            card_number = #{cardNumber},
+            status = #{status},
+            login_name = #{loginName},
+            is_fast_pay_on = #{isFastPayOn}
+        where id = #{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,31 @@
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<h:panelGroup id="thumb" binding="#{uploadFileHome.panelGroup}">
+		<h:inputText id="thumbText" value="#{thumb}"
+			style="#{uploadInputTextStyle}" styleClass="form-input-long"
+			onclick="thumbUploadDialog.show();"></h:inputText>
+		<p:tooltip id="thumbTooltip" for="thumbText">
+			<p:graphicImage id="thumbImage"
+				style="max-width:400px;width:auto;-width: expression(width>400?'400px':true);height:auto;"
+				value="#{thumb}" rendered="#{not empty thumb}" />
+		</p:tooltip>
+	</h:panelGroup>
+	<p:dialog header="#{nodeMsg.uploadThumbLabel}" modal="false" id="thumbUploadDialog"
+		widgetVar="thumbUploadDialog" width="700" height="150">
+		<p:fileUpload dragDropSupport="true" update="thumb,thumbUploadDialog"
+			invalidFileMessage="#{commonMsg.invalidFileMessage}"
+			invalidSizeMessage="#{commonMsg['validator.SizeValidator.MAXIMUM500k']}"
+			label="#{commonMsg.choiceLabel}"
+			fileUploadListener="#{uploadFileHome.handleOneFileUpload}"
+			mode="advanced" oncomplete="thumbUploadDialog.hide()" auto="true"
+			sizeLimit="500000" allowTypes="/(\.|\/)(gif|jpe?g|png|JPG|JPEG|GIF)$/" />
+		<f:facet name="footer">
+			<p:button value="关闭" onclick="thumbUploadDialog.hide();return false;" 
+				style="float:right;margin-bottom:20px;" ></p:button>
+		</f:facet>	
+	</p:dialog>
+</f:subview>

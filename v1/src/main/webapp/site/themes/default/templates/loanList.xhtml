@@ -1,0 +1,250 @@
+<ui:composition template="page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<ui:define name="content">
+		<link type="text/css" rel="stylesheet"
+			href="#{tplVars.themeStylePath}/p2c.css" />
+
+		<div class="main">
+			<div class="tag">
+				<a href="#">我要理财</a> > <span><a href="#">投资列表</a></span>
+			</div>
+			<h:form>
+				<div class="xmzt">
+					<h3>
+						<p>项目直投</p>
+					</h3>
+					<!-- 清除筛选对分页的影响 -->
+					<p:remoteCommand process="@this" immediate="true" name="clearPage"
+						actionListener="#{loanList.setCurrentPage(1)}"></p:remoteCommand>
+					<div class="xmzt_l">
+						<div class="zt zt_01">
+							<p>项目状态：</p>
+							<div class="zt01">
+								<h:commandLink styleClass="hover" title="全部" value="全部">
+									<f:ajax render="dataTable"
+										listener="#{loanList.example.setStatus('')}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="可投资" value="可投资">
+									<f:ajax render="dataTable"
+										listener="#{loanList.example.setStatus(LoanStatus.RAISING)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="还款中" value="还款中">
+									<f:ajax render="dataTable"
+										listener="#{loanList.example.setStatus(LoanStatus.REPAYING)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="已完成" value="已完成">
+									<f:ajax render="dataTable"
+										listener="#{loanList.example.setStatus(LoanStatus.COMPLETE)}"></f:ajax>
+								</h:commandLink>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="zt zt_01">
+							<p>项目期限：</p>
+							<div class="zt01">
+								<h:commandLink styleClass="hover" title="全部" value="全部">
+									<f:ajax render="dataTable"
+										listener="#{loanList.setMinAndMaxDeadline(0,100)}">
+									</f:ajax>
+								</h:commandLink>
+								<h:commandLink title="3个月以内" value="3个月以内">
+									<f:ajax render="dataTable"
+										listener="#{loanList.setMinAndMaxDeadline(0,3)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="3~6个月" value="3~6个月">
+									<f:ajax render="dataTable"
+										listener="#{loanList.setMinAndMaxDeadline(3,6)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="6~12个月" value="6~12个月">
+									<f:ajax render="dataTable"
+										listener="#{loanList.setMinAndMaxDeadline(6,12)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="12个月以上" value="12个月以上">
+									<f:ajax render="dataTable"
+										listener="#{loanList.setMinAndMaxDeadline(12,1000)}"></f:ajax>
+								</h:commandLink>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="zt zt_01">
+							<p>项目收益：</p>
+							<div class="zt01">
+								<h:commandLink styleClass="hover" title="全部" value="全部">
+									<f:ajax render="dataTable"
+										listener="#{loanList.setMinAndMaxRate(0.01,0.25)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="10%以下" value="10%以下">
+									<f:ajax render="dataTable"
+										listener="#{loanList.setMinAndMaxRate(0,0.1)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="10%-15%" value="10%-15%">
+									<f:ajax render="dataTable"
+										listener="#{loanList.setMinAndMaxRate(0.1,0.15)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="15%-20%" value="15%-20%">
+									<f:ajax render="dataTable"
+										listener="#{loanList.setMinAndMaxRate(0.15,0.2)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="20%以上" value="20%以上">
+									<f:ajax render="dataTable"
+										listener="#{loanList.setMinAndMaxRate(0.2,10)}"></f:ajax>
+								</h:commandLink>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="zt zt_01">
+							<p>项目规模：</p>
+							<div class="zt01">
+								<h:commandLink styleClass="hover" title="全部" value="全部">
+									<f:ajax render="dataTable"
+										listener="#{loanList.setMinAndMaxLoanMoney(1,500000*1000000)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="10万以下" value="10万以下">
+									<f:ajax render="dataTable"
+										listener="#{loanList.setMinAndMaxLoanMoney(0,100000)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="10~50万" value="10~50万">
+									<f:ajax render="dataTable"
+										listener="#{loanList.setMinAndMaxLoanMoney(100000+1,500000)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="50~100万" value="50~100万">
+									<f:ajax render="dataTable"
+										listener="#{loanList.setMinAndMaxLoanMoney(500000+1,1000000)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="100~500万" value="100~500万">
+									<f:ajax render="dataTable"
+										listener="#{loanList.setMinAndMaxLoanMoney(1000000+1,5000000)}"></f:ajax>
+								</h:commandLink>
+								<h:commandLink title="500万以上" value="500万以上">
+									<f:ajax render="dataTable"
+										listener="#{loanList.setMinAndMaxLoanMoney(500*10000+1,5000*10000)}"></f:ajax>
+								</h:commandLink>
+							</div>
+							<div class="clear"></div>
+						</div>
+
+					</div>
+					<div class="xmzt_r">
+						<p>
+							<span>数据统计</span>
+							<br />
+							融资项目：#{loanStatistics.getLoanRSCount('企业借款')}个<br />
+							累计成交：
+							<h:outputText value="#{investStatistics.getAllInvestsMoney('企业借款')}">
+								<f:convertNumber />
+							</h:outputText>元<br />
+							投资笔数：#{investStatistics.getAllSuccessInvestsNum('企业借款')}笔
+							<br />投 标 中：#{loanStatistics.getLoanCount(LoanStatus.RAISING, '企业借款')}个
+						</p>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="content">
+					<h:panelGroup id="dataTable">
+						<ui:param name="restriction"
+							value="#{'(loan.status=\''}#{LoanStatus.RAISING}#{'\' or loan.status=\''}#{LoanStatus.COMPLETE}#{''}#{'\' or loan.status=\''}#{LoanStatus.RECHECK}#{'\' or loan.status=\''}#{LoanStatus.REPAYING}#{'\')'}"></ui:param>
+						<f:event type="preRenderComponent"
+							listener="#{loanList.addRestriction(restriction)}"></f:event>
+						<f:event type="preRenderComponent"
+							listener="#{loanList.setPageSize(7)}"></f:event>
+						<f:event type="preRenderComponent"
+							listener="#{loanList.addOrder('loan.seqNum','desc')}"></f:event>
+						<f:event type="preRenderComponent"
+							listener="#{loanList.example.setBusinessType('企业借款')}"></f:event>
+						<ui:param name="orderColumn" value="#{'(case loan.status when \''}#{LoanStatus.RAISING}#{'\' then 1 when \''}#{LoanStatus.RECHECK}#{'\' then 2 when \''}#{LoanStatus.REPAYING}#{'\' then 3 else 4 end)'}"></ui:param>
+				    	<f:event type="preRenderComponent"
+				        	listener="#{loanList.addOrder(orderColumn, 'asc')}"></f:event>
+						<f:event type="preRenderComponent"
+							listener="#{loanList.addOrder('loan.commitTime','desc')}"></f:event>
+						<ui:repeat var="loan" value="#{loanList.lazyModelData}">
+							<div class="con_box">
+								<div class="con_l">
+									<a href="#{path}/loan/#{loan.id}"><img
+										style="width: 135px;height: 135px;"
+										src="#{path}#{loan.customPicture}" /></a>
+								</div>
+								<div class="con_c">
+									<h3>
+										<a href="#{path}/loan/#{loan.id}">#{loan.name}</a>
+									</h3>
+									<ui:param name="guaranteeCompanyNode"
+										value="#{nodeList.getEntityById(loan.guaranteeCompanyName)}"></ui:param>
+									<p style="width:240px;">
+										担保机构：<a
+											href="#{path}/node/guaranteeCompany/#{guaranteeCompanyNode.id}">#{guaranteeCompanyNode.title}</a>
+									</p>
+									<p>还款方式：#{dictUtil.getValue('repay_type',loan.type.repayType)}</p>
+									<br />
+									<p style="width:240px;">
+										项目规模：<span><h:outputText value="#{loan.loanMoney}">
+												<f:convertNumber type="number" />
+											</h:outputText></span>元
+									</p>
+									<p style="width:140px;">
+										项目期限：<span>#{loan.deadline*loan.type.repayTimePeriod}</span>(#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)})
+									</p>
+									<p>
+										年化收益：<span><h:outputText value="#{loan.ratePercent}">
+												<f:convertNumber minFractionDigits="2" />
+											</h:outputText></span>%
+									</p>
+									<div>
+										<p class="gray">
+											<img src="#{tplVars.themeImagePath}/p2c_img11.png" />#{dictUtil.getValue('interest_point',loan.type.interestPoint)}
+										</p>
+										<p class="gray">
+											<img src="#{tplVars.themeImagePath}/p2c_img12.png" />本息保障
+										</p>
+										<p class="gray">
+											<img src="#{tplVars.themeImagePath}/p2c_img13.png" />灵活转让
+										</p>
+									</div>
+								</div>
+								<div class="con_r">
+									<div class="boxp10">
+										<ui:param name="cr"
+											value="#{loanCalculator.calculateRaiseCompletedRate(loan.id)}"></ui:param>
+										进度：<span class="jdt jd"><em><b
+												style="width: #{cr}%"></b></em><i>#{cr}%</i></span>
+									</div>
+									<p>
+										<span>#{loanCalculator.countSuccessInvest(loan.id)}</span>人投资此项目
+									</p>
+									<p>项目状态：#{dictUtil.getValue('loan',loan.status)}</p>
+									<ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
+										<a href="#{path}/loan/#{loan.id}"
+											class="txczje02_btn list_btn">立即投标</a>
+									</ui:fragment>
+									<ui:fragment rendered="#{loan.status !=LoanStatus.RAISING}">
+										<a href="#{path}/loan/#{loan.id}"
+											class="txczje02_btn list_btn list_btn02">查看详情</a>
+									</ui:fragment>
+								</div>
+							</div>
+						</ui:repeat>
+						<div class="page02">
+							<ui:include src="#{tplVars.componentsPath}/loanPaging.xhtml"></ui:include>
+						</div>
+					</h:panelGroup>
+				</div>
+			</h:form>
+		</div>
+		<script type="text/javascript">
+			$(".xmzt_l a").click(function() {
+				$(this).parent().children().removeClass("hover");
+				$(this).addClass("hover");
+				//清除筛选对分页的影响
+				clearPage();
+			});
+		</script>
+	</ui:define>
+</ui:composition>

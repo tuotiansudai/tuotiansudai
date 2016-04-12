@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+      xmlns:archer="http://java.sun.com/jsf/archer"
+      xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+<f:metadata>
+    <f:viewParam name="referrer" value="#{userHome.instance.referrer}"></f:viewParam>
+</f:metadata>
+
+<ui:param name="path" value="#{request.contextPath}"></ui:param>
+
+<f:view contentType="text/html">
+    <h:head>
+        <f:facet name="first">
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+            <meta name="renderer" content="webkit"/>
+            <title>#{siteVars.siteName}</title>
+        </f:facet>
+        <h:outputScript library="primefaces" name="jquery/jquery.js"
+                        target="head"/>
+        <script type="text/javascript"
+                src="#{tplVars.themeJSPath}/jquery.artDialog.js?skin=idialog"></script>
+        <script type="text/javascript"
+                src="#{tplVars.themeJSPath}/jquery.SuperSlide.2.1.1.js"></script>
+        <script type="text/javascript" src="#{tplVars.themeJSPath}/common.js"></script>
+        <script type="text/javascript" src="#{tplVars.themeJSPath}/timer.js"></script>
+        <script type="text/javascript" src="#{tplVars.themeJSPath}/register.js"></script>
+        <link type="text/css" rel="stylesheet"
+              href="#{tplVars.themeStylePath}/common.css"/>
+        <link type="text/css" rel="stylesheet"
+              href="#{tplVars.themeStylePath}/login.css"/>
+        <link type="text/css" rel="stylesheet"
+              href="#{tplVars.themeStylePath}/register.css"/>
+        <script type="text/javascript">
+            var refreshImageCaptcha = function(data) {
+                if(data.status == 'success'){
+                    if(data.responseText.indexOf("验证码不正确,请重新获取验证码") > -1
+                            || data.responseText.indexOf("验证码已经过期") > -1){
+                        $('#form\\:imageCaptcha').val('');
+                        $('.imageCaptchaClass').click();
+                    }
+                }
+            }
+
+
+        </script>
+    </h:head>
+    <h:body style="background:#f3f3f3;">
+        <archer:archerMessages focus="false" showGlobalMessages="true"
+                               severity="0,2"></archer:archerMessages>
+
+        <div class="login_header">
+            <div class="login_logo">
+                <a href="#{path}/"><img src="#{tplVars.themeImagePath}/logo.png"/></a>
+            </div>
+            <div class="login_line">
+                <img src="#{tplVars.themeImagePath}/line04.png"/>
+            </div>
+            <p>欢迎注册</p>
+        </div>
+
+        <div class="login">
+            <div class="login_l login_l01">
+                <h:form id="form">
+                    <archer:validateEqual id="rePasswordValidator" components="pass repass"
+                                          showMessageFor="@all" message="两次输入密码不一致"></archer:validateEqual>
+
+                    <div class="login_box login_box01">
+                        <div class="login_box_l login_box_l01">用户名：</div>
+                        <div class="login_box_r">
+                            <h:inputText id="username" label="用户名" required="true"
+                                         styleClass="login_txt" maxlength="25"
+                                         value="#{userHome.instance.username}">
+                                <archer:validateInputRule ruleId="input.username"></archer:validateInputRule>
+                                <archer:validateAlreadyExist/>
+                                <f:ajax event="blur"></f:ajax>
+                            </h:inputText>
+                            <p:watermark value="5至25位字母和数字组合，请勿使用手机号" for="username"></p:watermark>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="login_box login_box01">
+                        <div class="login_box_l login_box_l01">登录密码：</div>
+                        <div class="login_box_r">
+                            <h:inputSecret id="pass" label="密码" required="true"
+                                           styleClass="login_txt login_txt02" maxlength="20"
+                                           value="#{userHome.instance.password}">
+                                <f:ajax event="blur" execute="@this rePasswordValidator"></f:ajax>
+                                <archer:validateInputRule ruleId="input.password"></archer:validateInputRule>
+                            </h:inputSecret>
+                            <p:watermark value="6至20位，不能全为数字" for="pass"></p:watermark>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="login_box login_box01">
+                        <div class="login_box_l login_box_l01">确认密码：</div>
+                        <div class="login_box_r">
+                            <h:inputSecret id="repass" required="true" maxlength="16"
+                                           styleClass="login_txt login_txt02" label="确认密码">
+                                <f:ajax event="blur" execute="@this pass rePasswordValidator"></f:ajax>
+                            </h:inputSecret>
+                            <p:watermark value="再次输入密码" for="repass"></p:watermark>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="login_box login_box01">
+                        <div class="login_box_l login_box_l01">手机号码：</div>
+                        <div class="login_box_r">
+                            <h:inputText id="confirmMobileNumber" maxlength="11" label="手机号"
+                                         value="#{userHome.instance.mobileNumber}"
+                                         styleClass="login_txt login_txt06" required="true">
+                                <archer:validateInputRule ruleId="input.mobile"></archer:validateInputRule>
+                                <archer:validateAlreadyExist
+                                        entityClass="com.esoft.archer.user.model.User"
+                                        fieldName="mobileNumber"></archer:validateAlreadyExist>
+                                <f:ajax event="blur"></f:ajax>
+                            </h:inputText>
+                            <p:watermark value="请输入手机号码" for="confirmMobileNumber"></p:watermark>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="login_box login_box01">
+                        <div class="login_box_l login_box_l01">验证码：</div>
+                        <div class="login_box_r">
+                            <h:inputText id="imageCaptcha" label="验证码" maxlength="6"
+                                         required="true" styleClass="login_txt login_txt03">
+                                <archer:validateImageCaptcha/>
+                                <f:ajax event="blur"  onevent="refreshImageCaptcha"></f:ajax>
+
+                            </h:inputText>
+                            <p:watermark value="请输入验证码" for="imageCaptcha"></p:watermark>
+                            <img class="imageCaptchaClass" alt="点击刷新" id="verifyCode"
+                                 src="#{request.contextPath}/verifyCodeInRedisServlet"
+                                 onclick="this.src='#{request.contextPath}/verifyCodeInRedisServlet?'+new Date().getTime()"/>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="login_box login_box01">
+                        <div class="login_box_l login_box_l01">推荐人：</div>
+                        <div class="login_box_r">
+                            <h:inputText id="referrer" maxlength="50" label="推荐人"
+                                         value="#{userHome.instance.referrer}" styleClass="login_txt">
+                                <f:ajax event="blur" ></f:ajax>
+                                <archer:validateAlreadyExist isValidateNotExist="true"/>
+                            </h:inputText>
+                            <p:watermark value="请输入推荐人用户名" for="referrer"></p:watermark>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="login_box login_box01">
+                        <div class="login_box_l login_box_l01"></div>
+                        <div class="login_box_r">
+                            <p class="yhm">
+                                <h:selectBooleanCheckbox id="agree" selected="true"
+                                                         requiredMessage="请阅读并同意《网站服务协议》!">
+                                    <f:validator validatorId="omnifaces.RequiredCheckboxValidator"/>
+                                    <f:ajax event="click"></f:ajax>
+                                </h:selectBooleanCheckbox>
+                                我已经阅读并同意 <a href="#{path}/node/spage/registerService"
+                                            target="_blank">《网站服务协议》</a>
+                            </p>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="login_box login_box01">
+                        <div class="login_box_l login_box_l01"></div>
+                        <div class="login_box_r">
+                            <p:commandLink value="下一步" styleClass="login_btn_next_step">
+                                <f:ajax event="click" execute="confirmMobileNumber"
+                                        listener="#{userHome.verifyRegisterAndSendAuthCodeToMobile(userHome.instance.mobileNumber, 'inputMobileNumber()')}"></f:ajax>
+                            </p:commandLink>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </h:form>
+                <h:form id="captchaForm">
+                    <div class="mask_phone_modify">
+                        <div class="main_phone_modify">
+                            <small>验证码已经发送到您的手机，如果长时间收不到，请重新获取短信验证码!</small>
+                            <div class="phone">您的手机号码:
+                                <h:inputText id="mobileNumber" maxlength="11" label="手机号"
+                                             value="#{userHome.instance.mobileNumber}"
+                                             styleClass="login_txt login_txt06 mobileNumberClass" required="true">
+                                    <archer:validateInputRule ruleId="input.mobile"></archer:validateInputRule>
+                                    <archer:validateAlreadyExist/>
+                                    <f:ajax event="blur"></f:ajax>
+                                </h:inputText>
+                                <p:watermark value="请输入手机号码" for="mobileNumber"></p:watermark>
+                                <span class="changeNumber">更换号码</span>
+                            </div>
+                            <div class="phone">
+                                <p><label>短 信 验 证 码:</label>
+                                    <h:inputText id="captcha" label="短信验证码" maxlength="6"
+                                                 required="true"
+                                                 styleClass="login_txt_captcha  login_txt03 login_txt03_captcha"
+                                                 value="#{userHome.authCode}">
+                                        <f:ajax event="blur"></f:ajax>
+                                    </h:inputText>
+                                    <p:watermark value="请输入短信验证码" for="captcha"></p:watermark>
+                                    <h:commandButton value="获取短信验证码" id="sendAuthCodeBtn"
+                                                     onclick="$(this).attr('disabled','disabled')"
+                                                     styleClass="hqyzm_captcha pointer">
+                                        <f:ajax execute="mobileNumber" onevent="enableBtn('captchaForm\\\\:sendAuthCodeBtn')"
+                                                listener="#{userHome.sendAuthCodeToMobileAgain(userHome.instance.mobileNumber, 'timerCountB(\'captchaForm\\\\:sendAuthCodeBtn\')')}"></f:ajax>
+
+                                    </h:commandButton>
+
+                                </p>
+                            </div>
+
+                            <div class="login_box login_box01">
+                                <div class="login_box_l login_box_l01"></div>
+                                <div class="login_box_r">
+                                    <p:commandLink value="立即注册" styleClass="login_btn"
+                                                   action="#{userHome.registerByMobileNumber}"></p:commandLink>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </h:form>
+            </div>
+            <div class="login_r login_r02">
+                <p class="log">
+                    已有账号？| <a href="#{path}/memberLoginPage">立即登录</a>
+                </p>
+                <img src="#{tplVars.themeImagePath}/img56.png"/>
+            </div>
+            <div class="clear"></div>
+
+        </div>
+
+
+    </h:body>
+</f:view>
+</html>

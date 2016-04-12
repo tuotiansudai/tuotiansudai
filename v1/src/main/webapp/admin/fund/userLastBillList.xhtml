@@ -1,0 +1,100 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<h:outputLabel style="padding-left: 15px;"
+						value="#{commonMsg.currentPositionLabel} 用户账户（最新）资金情况"></h:outputLabel>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<h:form id="form">
+
+				<p:spacer></p:spacer>
+				<!-- 				<o:importConstants type="com.esoft.archer.user.UserConstants.WithdrawStatus" var="userBillStatus" /> -->
+				<p:dataTable id="dataTable" value="#{userLastBillList.lazyModel}"
+					var="userBill" paginator="true" paginatorPosition="bottom"
+					rows="15" lazy="true" emptyMessage="#{commonMsg.noResultMsg}" 
+					currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+					paginatorTemplate="#{commonMsg.paginatorTemplate}">
+					<p:column width="120">
+						<f:facet name="header">
+							<h:outputText value="时间"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{userBill.time}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+						</h:outputText>
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="用户名"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{userBill.user.username}"></h:outputText>
+					</p:column>
+					<p:column width="80">
+						<f:facet name="header">
+							<h:outputText value="费用类型"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{dictUtil.getValue('bill_type',userBill.type)}"></h:outputText>
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="操作类型"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{dictUtil.getValue('bill_operator',userBill.typeInfo)}"></h:outputText>
+					</p:column>
+					<p:column style="text-align:right;">
+						<f:facet name="header">
+							<h:outputText value="金额"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{userBill.money}">
+							<f:convertNumber
+								minIntegerDigits="1" minFractionDigits="2" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column style="text-align:right;"> 
+						<f:facet name="header">
+							<h:outputText value="余额"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{userBill.balance}">
+							<f:convertNumber minIntegerDigits="1" minFractionDigits="2" />
+						</h:outputText>
+					</p:column>
+					<p:column style="text-align:right;">
+						<f:facet name="header">
+							<h:outputText value="冻结金额"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{userBill.frozenMoney}">
+							<f:convertNumber minIntegerDigits="1" minFractionDigits="2" />
+						</h:outputText>
+					</p:column> 
+					<p:column width="180">
+						<f:facet name="header">
+							<h:outputText value="费用详情"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{userBill.detail}" title="#{userBill.detail}"></h:outputText>
+					</p:column>
+					
+					<f:facet name="footer"> 
+						<p:commandButton value="导出Excel" ajax="false">
+							<p:dataExporter target="dataTable" type="xls" 
+								fileName="userLastBillList" pageOnly="false"></p:dataExporter>
+						</p:commandButton>
+	 		        </f:facet>
+				</p:dataTable>
+			</h:form>
+		</div>
+	</ui:define>
+
+</ui:composition>

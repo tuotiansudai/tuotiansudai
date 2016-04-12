@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<!DOCTYPE facelet-taglib PUBLIC
+  "-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN"
+  "http://java.sun.com/dtd/facelet-taglib_1_0.dtd">
+
+
+<!--
+   Taglib to combine the Spring-Security Project with Facelets
+   @Author: Dominik Dorn - http://www.dominikdorn.com/
+   @Date: 2009-04-30
+-->
+<facelet-taglib>
+    <namespace>http://www.springframework.org/security/facelets/tags</namespace>
+
+    <function>
+        <function-name>ifAnyGranted</function-name>
+        <function-class>com.esoft.core.jsf.el.SpringSecurityELLibrary</function-class>
+        <function-signature>boolean ifAnyGranted(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>ifAllGranted</function-name>
+        <function-class>com.esoft.core.jsf.el.SpringSecurityELLibrary</function-class>
+        <function-signature>boolean ifAllGranted(java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <function-name>ifNotGranted</function-name>
+        <function-class>com.esoft.core.jsf.el.SpringSecurityELLibrary</function-class>
+        <function-signature>boolean ifNotGranted(java.lang.String)</function-signature>
+    </function>
+    
+    <function>
+        <function-name>isAuthenticated</function-name>
+        <function-class>com.esoft.core.jsf.el.SpringSecurityELLibrary</function-class>
+        <function-signature>boolean isAuthenticated()</function-signature>
+    </function>
+    
+    <function>
+        <function-name>isAnonymous</function-name>
+        <function-class>com.esoft.core.jsf.el.SpringSecurityELLibrary</function-class>
+        <function-signature>boolean isAnonymous()</function-signature>
+    </function>
+
+
+    <tag>
+        <tag-name>ifAnyGranted</tag-name>
+        <component>
+            <component-type>com.esoft.core.jsf.tag.IfAnyGrantedTag</component-type>
+            <handler-class>com.esoft.core.jsf.tag.IfAnyGrantedTag</handler-class>
+        </component>
+    </tag>
+
+    <tag>
+        <tag-name>ifAllGranted</tag-name>
+        <component>
+            <component-type>com.esoft.core.jsf.tag.IfAllGrantedTag</component-type>
+            <handler-class>com.esoft.core.jsf.tag.IfAllGrantedTag</handler-class>
+        </component>
+    </tag>
+
+    <tag>
+        <tag-name>ifNotGranted</tag-name>
+        <component>
+            <component-type>com.esoft.core.jsf.tag.IfNotGrantedTag</component-type>
+            <handler-class>com.esoft.core.jsf.tag.IfNotGrantedTag</handler-class>
+        </component>
+    </tag>
+
+    <tag>
+        <tag-name>isAuthenticated</tag-name>
+        <component>
+            <component-type>com.esoft.core.jsf.tag.IsAuthenticatedTag</component-type>
+            <handler-class>com.esoft.core.jsf.tag.IsAuthenticatedTag</handler-class>
+        </component>
+    </tag>
+    
+    <tag>
+        <tag-name>isAnonymous</tag-name>
+        <component>
+            <component-type>com.esoft.core.jsf.tag.IsAnonymousTag</component-type>
+            <handler-class>com.esoft.core.jsf.tag.IsAnonymousTag</handler-class>
+        </component>
+    </tag>
+
+    <tag>
+        <tag-name>bankCardValidator</tag-name>
+        <component>
+            <component-type>com.esoft.core.jsf.tag.BankCardBoundValidator</component-type>
+            <handler-class>com.esoft.core.jsf.tag.BankCardBoundValidator</handler-class>
+        </component>
+    </tag>
+
+</facelet-taglib>

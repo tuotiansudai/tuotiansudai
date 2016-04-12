@@ -1,0 +1,55 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <f:metadata>
+        <f:viewParam name="id" value="#{categoryTermTypeHome.id}"></f:viewParam>
+    </f:metadata>
+
+    <ui:define name="content">
+		  <div class="entry">
+		  <p:toolbar styleClass="admin-nav-toolbar">
+            <p:toolbarGroup>
+                <h:outputLabel value="#{commonMsg.currentPositionLabel} #{termMsg.categoryTermTypeManageLabel}"></h:outputLabel>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:separator />
+                <p:button value="#{termMsg.categoryTermTypeManageLabel}" outcome="/admin/term/categoryTermTypeList"></p:button>
+            </p:toolbarGroup>
+        </p:toolbar>
+        <p:spacer></p:spacer> 
+            <h:form>
+                <h:panelGrid columns="2"  columnClasses="col1,col2" id="panel">
+                    <h:outputLabel value="#{commonMsg.IDLabel}"></h:outputLabel>
+                    <h:inputText value="#{categoryTermTypeHome.instance.id}"
+                        required="true" label="#{commonMsg.IDLabel}" readonly="#{not empty categoryTermTypeHome.instance.id}" requiredMessage="#{commonMsg.IdRequired}"></h:inputText>
+                    
+                    <h:outputLabel value="#{termMsg.categoryTermTypeLabel}"></h:outputLabel>
+                    <h:inputText id="name" required="true" label="#{termMsg.categoryTermTypeLabel}"
+                        value="#{categoryTermTypeHome.instance.name}" requiredMessage="#{commonMsg.NameRequired}">
+                        <f:validateLength minimum="2"></f:validateLength>
+                    </h:inputText>
+                    
+                    <h:outputLabel value="#{commonMsg.descriptionLabel}"></h:outputLabel>
+                    <h:inputTextarea value="#{categoryTermTypeHome.instance.description}" style="width:600px;height:60px;"></h:inputTextarea>
+                   
+                    <h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+                    <ui:fragment>
+                        <p:commandButton action="#{categoryTermTypeHome.save}" update="@form" 
+                            value="#{commonMsg.saveLabel}" id="saveBtn"></p:commandButton>
+                        <p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+                        <p:blockUI block="panel" trigger="saveBtn"></p:blockUI>
+                    </ui:fragment>
+                    
+                </h:panelGrid>
+
+            </h:form>
+           </div>
+        </ui:define>
+</ui:composition>
+

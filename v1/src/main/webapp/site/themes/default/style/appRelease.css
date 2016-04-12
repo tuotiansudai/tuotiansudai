@@ -1,0 +1,25 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{ margin:0;}
+a{ display:block; text-decoration:none;}
+img{ display:block;}
+
+.bannerbox{ background-image:url(/site/themes/default/images/appDownload/banner_bg.jpg); overflow:hidden;}
+.banner{ width:1000px; margin-left:auto; margin-right:auto; margin-top:69px; position:relative;}
+.buttona,.buttonb{ position:absolute;}
+.buttona{ top:290px; left:279px;}
+.buttonb{ top:290px; left:540px;}
+/*内容上*/
+.mattertop{ width:1000px; margin-left:auto; margin-right:auto;}
+/*内容*/
+.matterbox{ overflow:hidden;}
+.matterabox,.mattercbox{ background-color:#5558ca; overflow:hidden;}
+.matterbbox,.matterdbox{ background-color:#FFF; overflow:hidden;}
+.mattera,.matterb,.matterc,.matterd{ margin-left:auto; margin-right:auto; width:1000px;}
+/*底部*/
+.bottombox{ background-color:#5558ca; overflow:hidden;}
+.bottom{ width:1000px; margin-left:auto; margin-right:auto; position:relative;}
+.bota,.botb{ position:absolute;}
+.bota{ top:148px; left:270px;}
+.botb{ top:148px; left:630px;}

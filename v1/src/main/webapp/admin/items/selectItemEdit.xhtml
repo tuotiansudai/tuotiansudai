@@ -1,0 +1,70 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:sec="http://www.springframework.org/security/facelets/tags">
+    <f:metadata>
+        <f:viewParam name="id" value="#{selectItemHome.id}"></f:viewParam>
+    </f:metadata>
+
+    <ui:define name="content">
+		<div class="entry">
+			 <p:toolbar styleClass="admin-nav-toolbar">
+            <p:toolbarGroup>
+                <h:outputLabel value="#{commonMsg.currentPositionLabel}候选项编辑"></h:outputLabel>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:separator />
+                <p:button outcome="/admin/items/selectItemList" value="候选项管理"></p:button>
+            </p:toolbarGroup>
+        </p:toolbar>
+        <p:spacer></p:spacer> 
+            <h:form id="form">
+               
+                <h:panelGrid columns="2"  columnClasses="col1,col2" id="panel">
+                    <h:outputLabel value="#{commonMsg.IDLabel}"></h:outputLabel>
+                    <h:inputText value="#{selectItemHome.instance.id}" readonly="#{not empty selectItemHome.id}"
+                        required="true" label="#{commonMsg.IDLabel}"></h:inputText>
+                    
+                    <h:outputLabel value="#{commonMsg.nameLabel}"></h:outputLabel>
+                    <h:inputText id="name" required="true" label="#{commonMsg.nameLabel}"
+                        value="#{selectItemHome.instance.name}" >
+                        <f:validateLength minimum="2"></f:validateLength>
+                    </h:inputText>
+                    
+                    <h:outputLabel value="选项"></h:outputLabel>
+                    <ui:fragment>
+                    <h:inputTextarea id="items" required="true" label="选项" style="width:600px;height:60px;"
+                        value="#{selectItemHome.instance.items}" >
+                        <f:validateLength minimum="2"></f:validateLength>
+                    </h:inputTextarea>&#160;<span>备注:选项用“,”分开</span>
+                    </ui:fragment>
+                    
+                    <h:outputLabel value="所属候选项组"></h:outputLabel>
+                    <h:selectOneMenu value="#{selectItemHome.instance.selectItemGroup}" converter="archer.EntityConverter">
+                        <f:selectItems value="#{selectItemGroupList.allResultList}" var="itemgroup"
+                         itemLabel="#{itemgroup.name}" itemValue="#{itemgroup}" />
+                    </h:selectOneMenu>
+                    
+                    <h:outputLabel value="#{commonMsg.descriptionLabel}"></h:outputLabel>
+                    <h:inputTextarea value="#{selectItemHome.instance.description}" style="width:600px;height:60px;"></h:inputTextarea>
+                    
+                    <h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+                    <ui:fragment>
+                        <p:commandButton action="#{selectItemHome.save}" 
+                            value="#{commonMsg.saveLabel}" id="saveBtn"></p:commandButton>
+                        <p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+	                    <p:blockUI block="panel" trigger="saveBtn"></p:blockUI>
+                    </ui:fragment>
+                </h:panelGrid>
+            
+            </h:form>
+           </div>
+        </ui:define>
+</ui:composition>
+

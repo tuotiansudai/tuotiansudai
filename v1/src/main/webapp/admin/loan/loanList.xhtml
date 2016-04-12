@@ -1,0 +1,195 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:o="http://omnifaces.org/ui"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	
+	<f:metadata>
+		<f:viewParam name="loanStatus" value="#{loanList.example.status}"></f:viewParam>
+	</f:metadata>
+	
+    <ui:define name="content">
+    <o:importConstants type="com.esoft.jdp2p.loan.LoanConstants.LoanStatus" />
+    <div class="entry">
+    	<p:toolbar>
+            <p:toolbarGroup>
+	            <h:outputLabel style="padding-left: 15px;" 
+	            	value="#{commonMsg.currentPositionLabel} 项目管理 "></h:outputLabel>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+	            <p:separator />  
+	            <p:button value="新增借款项目" outcome="/admin/loan/loanAdd"></p:button>
+            </p:toolbarGroup>
+        </p:toolbar>
+        
+        <h:form id="form"> 
+        	<p:spacer></p:spacer> 
+                <p:panel id="filters">
+                    <p:inputText id="searchId" value="#{loanList.example.id}"></p:inputText>
+                    <p:inputText id="searchTitle" value="#{loanList.example.name}"></p:inputText>
+                    <p:calendar id="searchStartTime" value="#{loanList.searchCommitMinTime}"
+						pattern="yyyy-MM-dd HH:mm:ss" navigator="true" showButtonPanel="true"></p:calendar>
+					<p:calendar id="searchEndTime" value="#{loanList.searchCommitMaxTime}"
+						pattern="yyyy-MM-dd HH:mm:ss" navigator="true" showButtonPanel="true"></p:calendar>
+                    
+                    <p:commandButton update="dataTable" process="filters"
+                        value="#{commonMsg.searchLabel}"></p:commandButton>
+                </p:panel>
+                <p:watermark for="searchId" value="#{commonMsg.IDLabel}" />  
+                <p:watermark for="searchTitle" value="项目名称"></p:watermark>
+                <p:watermark for="searchStartTime"  value="发起时间&gt;="></p:watermark>
+				<p:watermark for="searchEndTime" value="=&lt;发起时间"></p:watermark>
+            
+            <p:spacer></p:spacer> 
+
+              <p:dataTable lazy="true" id="dataTable" value="#{loanList.lazyModel}" var="loan" 
+                paginator="true" paginatorPosition="bottom" rows="15" currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+                sortBy="loan.commitTime" sortOrder="descending"
+                paginatorTemplate="#{commonMsg.paginatorTemplate}" 
+                emptyMessage="#{commonMsg.noResultMsg}">
+                <p:column sortBy="loan.id" width="50" styleClass="">
+                	<f:facet name="header" >
+                		<h:outputText value="#{commonMsg.IDLabel}"></h:outputText>
+                	</f:facet>
+                    <h:outputText value="#{loan.id}"></h:outputText>
+                    <!-- 提示信息 -->
+                    <a style="color: blue;">
+	                	<ui:fragment rendered="#{loan.loanActivityType == null}">
+	                		活动类型错误<br />
+	                		<i style="font-size: 11px; color: red;">提示:标的设置错误</i>
+	                	</ui:fragment>
+	                   	<ui:fragment rendered="#{loan.loanActivityType == 'pt'}">
+	                   		普通
+	                   		#{loan.loanAttrs[0].name}<br />
+	                   		#{loan.loanAttrs[1].name}
+	                   	</ui:fragment>
+	                   	<ui:fragment rendered="#{loan.loanActivityType == 'xs' or loan.loanActivityType == 'jx' or loan.loanActivityType == 'dx'}">
+		                	#{loan.loanActivityType == 'xs' ? '新手 ' : ''}
+		                   	#{loan.loanActivityType == 'jx' ? '加息 ' : ''}
+		                   	#{loan.loanActivityType == 'dx' ? '定向 ' : ''}
+		                	<ui:fragment rendered="#{loan.loanAttrs[0] != null}">
+		                		#{loan.loanAttrs[0].name}<br />
+		                		#{loan.loanAttrs[1].name}<br />
+								<i style="font-size: 11px; color: red;">提示:属性设置错误</i>
+		                	</ui:fragment>
+	                	</ui:fragment>
+                	</a>
+                	<!-- 提示信息 -->
+                </p:column>
+                <p:column width="120">
+                	<f:facet name="header" >
+                		<h:outputText value="项目名称"></h:outputText>
+                	</f:facet>
+                    <h:outputText value="#{fn:substring(loan.name,0,29)}" title="#{loan.name}"></h:outputText>
+                    <ui:fragment rendered="#{fn:length(loan.name) > 29}">...</ui:fragment>
+                </p:column>
+                <p:column width="80">
+                	<f:facet name="header">
+                		<h:outputText value="项目类型"></h:outputText>
+                	</f:facet>
+                    <h:outputText value="#{loan.type.name}" ></h:outputText>
+                </p:column>
+                <p:column width="80">
+                	<f:facet name="header" >
+                		<h:outputText value="标的类型"></h:outputText>
+                	</f:facet>
+                    <h:outputText value="#{loan.businessType}" ></h:outputText>
+                </p:column>
+                <p:column width="100">
+                	<f:facet name="header" >
+                		<h:outputText value="借款人/审核"></h:outputText>
+                	</f:facet>
+                    <h:outputText  value="#{loan.user.username}"></h:outputText>
+                    <h:link value="[审核]" outcome="/admin/user/verifyLoaner?id=#{loan.user.username}"></h:link>
+                </p:column>
+                <p:column style="text-align:right;">
+                	<f:facet name="header" >
+                		<h:outputText value="借款金额"></h:outputText>
+                	</f:facet>
+                    <h:outputText value="#{loan.loanMoney}">
+                         <f:convertNumber/>
+                    </h:outputText>
+                </p:column>
+                 <p:column style="text-align:right;"
+                 	rendered="#{loanList.example.status == LoanStatus.RAISING}">
+                 	<f:facet name="header" >
+                		<h:outputText value="筹款金额"></h:outputText>
+                	</f:facet>
+					<h:outputText value="#{loanCalculator.calculateMoneyNeedRaised(loan.id)}">
+						<f:convertNumber type="currency"/>
+					</h:outputText>
+                </p:column>
+                <p:column width="50">
+                	<f:facet name="header" >
+                		<h:outputText value="借款期限"></h:outputText>
+                	</f:facet>
+                    <h:outputText value="#{loan.deadline*loan.type.repayTimePeriod}(#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)})"></h:outputText>
+                </p:column>
+                <p:column sortBy="loan.rate">
+                	<f:facet name="header" >
+                		<h:outputText value="年化/活动(利率)"></h:outputText>
+                	</f:facet>
+                    <h:outputText value="#{loan.ratePercent}%"></h:outputText>
+                    <ui:fragment rendered="#{loan.hdRatePercent != null}">
+						/<h:outputText value="#{loan.hdRatePercent}%"></h:outputText>
+					</ui:fragment>
+                </p:column>
+                <p:column>
+                	<f:facet name="header" >
+                		<h:outputText value="项目状态"></h:outputText>
+                	</f:facet>
+                    <h:outputText value="#{dictUtil.getValue('LOAN',loan.status)}"></h:outputText>
+                </p:column>
+                <p:column sortBy="loan.commitTime">
+                	<f:facet name="header" >
+                		<h:outputText value="发起时间"></h:outputText>
+                	</f:facet>
+                    <h:outputText  value="#{loan.commitTime}">
+                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="GMT+8"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column headerText="投资/还款记录" exportable="false"
+                	rendered="#{loanList.example.status != LoanStatus.WAITING_VERIFY}">
+	                <h:link value="投资记录" outcome="/admin/loan/investmentInfoList?loanId=#{loan.id}"></h:link><br/>
+	                <h:link value="还款记录" outcome="/admin/loan/repaymentInfoList?loanId=#{loan.id}"></h:link> 
+                </p:column>
+                <p:column rendered="#{loanList.example.status != LoanStatus.WAITING_VERIFY}">
+                	<f:facet name="header" >
+                		<h:outputText value="融资进度"></h:outputText>
+                	</f:facet>
+					<h:outputText value="#{(loan.loanMoney-loanCalculator.calculateMoneyNeedRaised(loan.id))/loan.loanMoney*100}">
+						<f:convertNumber maxFractionDigits="2"/>
+					</h:outputText>%
+                </p:column>
+                
+                <p:column headerText="#{commonMsg.actionLabel}" exportable="false">
+                	<h:link value="编辑" outcome="/admin/loan/loanEdit?id=#{loan.id}"></h:link>
+                <ui:fragment rendered="#{loanList.example.status==LoanStatus.WAITING_VERIFY or loanList.example.status==LoanStatus.RECHECK}">
+	             	 | <ui:fragment rendered="#{loan.status==LoanStatus.WAITING_VERIFY}">
+	                     <h:link value="审核" outcome="/admin/loan/verifyLoan?id=#{loan.id}"></h:link>
+	                </ui:fragment>
+	             	<ui:fragment rendered="#{loan.status==LoanStatus.RECHECK}">
+	                     <h:link value="复核" outcome="/admin/loan/recheckLoan?id=#{loan.id}"></h:link>
+	                </ui:fragment>
+                </ui:fragment>
+                 
+                </p:column>
+                <f:facet name="footer"> 
+					<p:commandButton value="导出Excel" ajax="false">
+						<p:dataExporter target="dataTable" type="xls" 
+							fileName="loans" pageOnly="false"></p:dataExporter>
+					</p:commandButton>
+ 		        </f:facet>
+				</p:dataTable>
+
+        </h:form>
+      </div>
+    </ui:define>
+</ui:composition>

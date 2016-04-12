@@ -1,0 +1,155 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<f:metadata>
+		<f:viewParam name="id" value="#{bannerHome.id}"></f:viewParam>
+	</f:metadata>
+
+	<ui:define name="content">
+		<style>
+.ui-orderlist .ui-orderlist-list {
+	height: auto;
+	width: auto;
+}
+
+.col-img-prop {
+	width: 318px;
+}
+
+.col-img {
+	padding-left: 5px;
+}
+</style>
+		<div class="entry">
+			<p:toolbar styleClass="admin-nav-toolbar">
+				<p:toolbarGroup>
+					<h:outputLabel
+						value="#{commonMsg.currentPositionLabel} Banner#{commonMsg.editLabel}"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button value="#{bannerMsg.bannerManageLabel}"
+						outcome="/admin/banner/bannerList"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:spacer></p:spacer>
+			<h:form id="form">
+				<h:panelGrid columns="2" columnClasses="col1,col2">
+					<h:outputLabel value="#{commonMsg.IDLabel}"></h:outputLabel>
+					<h:inputText value="#{bannerHome.instance.id}"
+						label="#{commonMsg.IDLabel}" required="true" maxlength="32"
+						readonly="#{not empty bannerHome.instance.id}"></h:inputText>
+
+					<h:outputLabel value="#{commonMsg.descriptionLabel}"></h:outputLabel>
+					<h:inputTextarea id="description"
+						value="#{bannerHome.instance.description}"
+						style="width:600px;height:60px;">
+						<f:validateBean disabled="true"></f:validateBean>
+					</h:inputTextarea>
+
+					<ui:fragment>
+						<p:commandButton id="uploadPicBtn" type="button"
+							onclick="uploadDialog.show()" process="@none"
+							value="#{commonMsg.addLabel}"></p:commandButton>
+						<h:outputLabel value="#{bannerMsg.pictureInfoLabel}"></h:outputLabel>
+					</ui:fragment>
+					<ui:fragment>
+						<f:event type="preRenderComponent"
+							listener="#{bannerPictureHome.initBannerPictures(bannerHome.instance.pictures)}" />
+						<h:panelGroup id="picture_info">
+							<ui:repeat var="img" value="#{bannerPictureHome.bannerPictures}">
+								<p:panel>
+									<f:facet name="header">
+									#{img.seqNum}
+									<p:commandLink value="#{commonMsg.deleteLabel}"
+											update=":form:picture_info"
+											actionListener="#{bannerPictureHome.deletePicture(img)}"
+											style="float:right;" process="@this" />
+									<p:commandLink value="换图" process="@this"
+										style="float:right; margin-right:30px;" >
+										<p:ajax listener="#{bannerPictureHome.setNeedChangedPic(img)}" oncomplete="changePicDialog.show()"></p:ajax>	
+									</p:commandLink>
+									</f:facet>
+									<h:panelGrid columns="2" columnClasses="col-img-prop,col-img">
+										<h:panelGrid columns="2" columnClasses="col1,col2">
+											<h:outputLabel value="#{bannerMsg.titleLabel}"></h:outputLabel>
+											<h:inputText value="#{img.title}"></h:inputText>
+											<h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+											<h:panelGroup>
+												<p:commandButton
+													actionListener="#{bannerPictureHome.moveUp(img)}"
+													process="@this" value="#{bannerMsg.moveUp}"
+													update=":form:picture_info"></p:commandButton>
+												<p:commandButton
+													actionListener="#{bannerPictureHome.moveDown(img)}"
+													process="@this" update=":form:picture_info"
+													value="#{bannerMsg.moveDown}"></p:commandButton>
+											</h:panelGroup>
+											<h:outputLabel value="#{bannerMsg.linkLabel}"></h:outputLabel>
+											<h:inputText value="#{img.url}"></h:inputText>
+											<h:outputLabel value="#{bannerMsg.isOutSiteLabel}"></h:outputLabel>
+											<h:selectOneRadio value="#{img.isOutSite}">
+												<f:selectItem itemLabel="#{commonMsg.yesLabel}"
+													itemValue="true" />
+												<f:selectItem itemLabel="#{commonMsg.noLabel}"
+													itemValue="false" />
+											</h:selectOneRadio>
+										</h:panelGrid>
+										<img src="#{appInfo.contextPath}#{img.picture}"
+											style="max-width: 210px; max-height: 180px; "></img>
+									</h:panelGrid>
+								</p:panel>
+							</ui:repeat>
+						</h:panelGroup>
+					</ui:fragment>
+				</h:panelGrid>
+				<p:panel style="position: fixed; right:15px;top:200px; z-index:1000">
+					<ui:fragment>
+						<p:commandButton id="saveBtn" action="#{bannerHome.save}"
+							ajax="false" value="#{commonMsg.saveLabel}">
+							<f:setPropertyActionListener
+								target="#{bannerHome.instance.pictures}"
+								value="#{bannerPictureHome.bannerPictures}"></f:setPropertyActionListener>
+						</p:commandButton>
+
+						<p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+					</ui:fragment>
+				</p:panel>
+				<p:dialog id="uploadDialog" header="#{commonMsg.uploadLabel}"
+					widgetVar="uploadDialog" modal="true" width="720" height="460">
+					<p:fileUpload cancelLabel="#{commonMsg.cancelLabel}"
+						dragDropSupport="true"
+						invalidFileMessage="#{commonMsg.invalidFileMessage}"
+						invalidSizeMessage="#{commonMsg.invalidSizeMessage}"
+						uploadLabel="#{commonMsg.uploadLabel}"
+						label="#{commonMsg.choiceLabel}"
+						oncomplete="uploadDialog.hide();"
+						fileUploadListener="#{bannerPictureHome.handleBannerPicturesUpload}"
+						multiple="true" mode="advanced" update=":form:picture_info"
+						sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+				</p:dialog>
+				<p:dialog id="changePicDialog" header="#{commonMsg.uploadLabel}"
+					widgetVar="changePicDialog" modal="true" width="720" height="150">
+					<p:fileUpload cancelLabel="#{commonMsg.cancelLabel}"
+						dragDropSupport="true"
+						invalidFileMessage="#{commonMsg.invalidFileMessage}"
+						invalidSizeMessage="#{commonMsg.invalidSizeMessage}"
+						uploadLabel="#{commonMsg.uploadLabel}"
+						auto="true" 
+						oncomplete="changePicDialog.hide()"
+						label="#{commonMsg.choiceLabel}"
+						fileUploadListener="#{bannerPictureHome.changeBannerPic}"
+						multiple="false" mode="advanced" update=":form:picture_info"
+						sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+				</p:dialog>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+

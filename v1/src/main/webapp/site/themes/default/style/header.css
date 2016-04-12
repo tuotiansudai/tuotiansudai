@@ -1,0 +1,39 @@
+@charset "utf-8";
+/* CSS Document */
+
+*{ margin:0px; padding:0px;}
+body{ font-family:'Microsoft Yahei';font-size: 14px;overflow-x:hidden; }
+.fl{ float:left;}
+.fr{ float:right}
+a{text-decoration: none;color:#5b5b5b;}/* a标签默认颜色 */
+img{border: none;}
+ul{list-style: none;}
+strong,em,b,i,h1,h2,h3{font-style: normal;font-weight: normal;}
+.clearfix:after{ clear:both;display: block;visibility: hidden;content: "";}
+
+.top{background-color: #f9f9f9;height: 42px;border-bottom: 1px solid #ededed;}
+.top-con{width: 1000px;margin:0 auto;color: #a5a5a5}
+.top-con-left span{margin-top: 10px;display: inline-block;color:#666;}
+.top-con-left i{margin-left:8px; font-size:12px;}
+.top-con-left span i{display: inline-block;width: 30px;vertical-align: middle; height: 26px; background: url(../images/index/top.png) no-repeat;}
+.top-con-left a{display: inline-block;width: 30px;height: 27px;background: url(../images/index/top.png) no-repeat;vertical-align: middle;margin-left: 10px;}
+.top-con-left a.qq{background-position: 0px -26px}
+.top-con-left a.wx{background-position: 0px -57px;margin-left: 0px;}
+.top-con-right a{width: auto;color: #a5a5a5;display: inline-block;height: 30px;text-align: center;line-height: 28px;margin-top: 5px;margin-left: 10px;box-sizing:border-box;-moz-box-sizing:border-box;
+-webkit-box-sizing:border-box;padding:0 5px 0 5px;}/* 宽度不够 */
+.ahover{border: 1px solid #c2ae8b;border-radius: 4px;}
+.top-con-right a:hover{border: 1px solid #c2ae8b;border-radius: 4px;}
+.header{width: 1000px;margin:0 auto;}
+.logo{display: inline-block;margin-top: 22px;margin-bottom: 22px;}
+.nav li{float: left;position: relative;z-index:22;margin-top: 32px;width: 110px;height: 42px;line-height: 42px;text-align: center;}
+.nav li >a{display: inline-block; font-size: 18px;color: #3e3e3e;width: 110px;height: 42px;line-height: 42px;text-align: center;}
+.nav li:hover >a{color: #fff;background: #f33735}
+.submenu{position: absolute;width: 114px;border: 1px solid #f0f0f0;background: #fff; left: 0px;top:41px;display: none;padding-bottom: 12px;padding-top: 8px;}
+.submenu dd{text-align: center;line-height: 32px;}
+.submenu a{color: #bbbbbb;font-size: 16px;}
+.submenu a:hover{color: #f33735}
+.nav li:hover .submenu{display: block;}
+.home{ float:left; margin-right:40px; margin-top: 12px;}
+.app{ float:left; margin-right:40px; margin-top: 11px;}
+.haoma{ float:left; margin-right:10px; margin-top: 9px;}
+.serviceTime{ line-height: 44px;}

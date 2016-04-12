@@ -1,0 +1,87 @@
+<ui:composition template="../center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<!-- 已转出的债权 -->
+	<ui:param name="activeCenterMenuUrl" value="/user/transfer/purchased"></ui:param>
+	<ui:define name="center_right">
+		<div class="center_right">
+			<div class="center_box01">
+				<ui:include src="../userCenterTop.xhtml"></ui:include>
+<!-- 				<ui:include src="top_include1.xhtml"></ui:include> -->
+			</div>
+			<ui:include src="top_include2.xhtml"></ui:include>
+
+			<h:form>
+				<h:panelGroup id="dataTable">
+					<div class="hd">
+						<ul class="slidings">
+							<li id="four1"><a href="#{path}/user/transfer/purchased">已转入的债权</a></li>
+							<li id="four2"><a href="#{path}/user/transfer/can-transfer">可转出的债权</a></li>
+							<li id="four3"><a href="#{path}/user/transfer/transfering">转让中的债权</a></li>
+							<li id="four4" class="last hover"><a
+								href="#{path}/user/transfer/turned-out">已转出的债权</a></li>
+						</ul>
+						<div id="con_four_1" class="slidnr">
+							<table width="786" border="0" cellspacing="0" cellpadding="0"
+								class="tab">
+								<tr>
+									<td class="tab01 tab04">投资编号</td>
+									<td class="tab01">发起时间</td>
+									<td class="tab01">到期时间</td>
+									<td class="tab01">转让本金</td>
+									<td class="tab01">折让金</td>
+								</tr>
+
+								<f:event type="preRenderComponent"
+									listener="#{transferApplyList.example.invest.user.setUsername(loginUserInfo.loginUserId)}"></f:event>
+								<f:event type="preRenderComponent"
+									listener="#{transferApplyList.example.setStatus(TransferStatus.TRANSFED)}"></f:event>
+								<f:event type="preRenderComponent"
+									listener="#{transferApplyList.setPageSize(7)}"></f:event>
+								<f:event type="preRenderComponent"
+									listener="#{transferApplyList.addOrder('applyTime','desc')}"></f:event>
+								<ui:repeat var="ta" value="#{transferApplyList.lazyModelData}"
+									varStatus="status">
+									<tr class="#{status.index%2==0?'tab02':''} bg">
+										<td class="tab02 tab04">#{ta.invest.id}</td>
+										<td class="tab02 tab06"><h:outputText
+												value="#{ta.applyTime}">
+												<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+													timeZone="GMT+8" locale="cn" />
+											</h:outputText></td>
+										<td class="tab02 tab06"><h:outputText
+												value="#{ta.deadline}">
+												<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+													timeZone="GMT+8" locale="cn" />
+											</h:outputText></td>
+										<td class="tab02"><h:outputText value="#{ta.corpus}">
+												<f:convertNumber maxFractionDigits="2" minIntegerDigits="1" />
+											</h:outputText></td>
+										<td class="tab02"><h:outputText value="#{ta.premium}">
+												<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+											</h:outputText></td>
+										<td class="tab02">
+											<a href="#{path}/user/transfer-contract/#{ta.id}">合同</a>
+										</td>
+									</tr>
+								</ui:repeat>
+							</table>
+						</div>
+					</div>
+					<div class="page_box">
+						<div class="page_r">
+							<ui:include src="paging_include.xhtml"></ui:include>
+						</div>
+					</div>
+				</h:panelGroup>
+			</h:form>
+		</div>
+		<div class="clear"></div>
+	</ui:define>
+</ui:composition>

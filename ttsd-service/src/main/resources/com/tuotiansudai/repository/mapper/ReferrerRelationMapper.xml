@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.ReferrerRelationMapper">
+
+    <resultMap id="referrerRelationResultMap" type="ReferrerRelationModel">
+        <result column="referrer_login_name" property="referrerLoginName"/>
+        <result column="login_name" property="loginName"/>
+        <result column="level" property="level"/>
+    </resultMap>
+
+    <insert id="create" parameterType="ReferrerRelationModel" >
+        insert into referrer_relation(referrer_login_name,login_name,level) values(#{referrerLoginName},#{loginName},#{level});
+    </insert>
+
+    <select id="findByLoginName" parameterType="java.lang.String" resultMap="referrerRelationResultMap">
+        select * from referrer_relation where login_name = #{loginName}
+    </select>
+
+    <select id="findByLoginNameAndLevel" parameterType="map" resultMap="referrerRelationResultMap">
+        select * from referrer_relation where login_name = #{loginName} and level = #{level}
+    </select>
+
+    <select id="findByReferrerLoginNameAndLevel" parameterType="map" resultMap="referrerRelationResultMap">
+        select * from referrer_relation where referrer_login_name = #{referrerLoginName} and level = #{level}
+    </select>
+
+    <select id="findByReferrerAndLoginName" parameterType="map" resultMap="referrerRelationResultMap">
+        select * from referrer_relation where referrer_login_name = #{referrerLoginName} and login_name = #{loginName}
+    </select>
+
+    <delete id="delete" parameterType="map">
+        delete from referrer_relation where referrer_login_name = #{referrerLoginName} and login_name = #{loginName}
+    </delete>
+
+</mapper>

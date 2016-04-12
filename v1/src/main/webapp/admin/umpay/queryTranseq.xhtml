@@ -1,0 +1,149 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<f:metadata>
+	<f:viewParam name="id" value="#{configTypeHome.id}"></f:viewParam>
+</f:metadata>
+<ui:composition template="/admin/templates/ui.xhtml">
+	<ui:define name="content">
+		<div class="entry"> 
+		  <p:toolbar>
+                <p:toolbarGroup>
+                    <h:outputLabel  value="#{commonMsg.currentPositionLabel} 账户流水查询"></h:outputLabel>
+                </p:toolbarGroup>
+            </p:toolbar>
+        <h:form id="form">
+        	<p:spacer></p:spacer> 
+        	 <p:panel id="filters">
+       	 		<h:selectOneRadio value="#{umPayQueryHome.orderType}" label="#{nodeMsg.nodeAttrsLabel}">
+					<f:selectItem selected="selected" itemValue="01" itemLabel="个人" />
+					<f:selectItem  itemValue="02" itemLabel="商户" />
+					<f:selectItem  itemValue="03" itemLabel="标的" />
+				</h:selectOneRadio>
+                   <p:inputText id="userId" value="#{umPayQueryHome.platformUserNo}"></p:inputText>
+                   <p:inputText id="pageNum" value="#{umPayQueryHome.pageNum}"></p:inputText>
+                   <p:calendar id="startDate" value="#{umPayQueryHome.startDate}" required="true"
+                   		pattern="yyyy-MM-dd" navigator="true" showButtonPanel="true">
+                   </p:calendar>
+                   <p:calendar id="endDate" value="#{umPayQueryHome.endDate}" required="true"
+                   		pattern="yyyy-MM-dd" navigator="true" showButtonPanel="true">
+                   </p:calendar>
+                   <p:commandButton update="dataTable" process="filters" value="#{commonMsg.searchLabel}"></p:commandButton>
+             </p:panel>
+                <p:watermark for="userId" value="账户号" />  
+                <p:watermark for="startDate" value="开始时间&gt;="></p:watermark>
+                <p:watermark for="endDate" value="=&lt;结束时间"></p:watermark>
+                <p:watermark for="pageNum" value="页数"></p:watermark>
+	        <p:dataTable lazy="true" id="dataTable" value="#{umPayQueryHome.transferDetaList}" var="tran" >
+			    <p:column>
+                	<f:facet name="header">
+                		<h:outputText value="日期"></h:outputText>
+                	</f:facet>
+                    <h:outputText  value="#{tran.date}"></h:outputText>
+                </p:column>
+			    <p:column>
+                	<f:facet name="header">
+                		<h:outputText value="操作金额(单位:元)"></h:outputText>
+                	</f:facet>
+                    <h:outputText value="#{tran.amount}"></h:outputText>
+                </p:column>
+			    <p:column>
+                	<f:facet name="header">
+                		<h:outputText value="借贷方向"></h:outputText>
+                	</f:facet>
+                	<ui:fragment rendered="#{tran.dcMark eq 1}">
+	                    <h:outputText  value="入账"></h:outputText>
+                	</ui:fragment>
+                	<ui:fragment rendered="#{tran.dcMark eq 2}">
+	                    <h:outputText  value="出账"></h:outputText>
+                	</ui:fragment>
+                	<ui:fragment rendered="#{tran.dcMark eq 99}">
+	                    <h:outputText  value="其他"></h:outputText>
+                	</ui:fragment>
+                </p:column>
+			    <p:column>
+                	<f:facet name="header">
+                		<h:outputText value="交易代码"></h:outputText>
+                	</f:facet>
+                	<ui:fragment rendered="#{tran.transType eq 1}">
+	                    <h:outputText  value="充值"></h:outputText>
+                	</ui:fragment>
+                	<ui:fragment rendered="#{tran.transType eq 2}">
+	                    <h:outputText  value="提现"></h:outputText>
+                	</ui:fragment>
+                	<ui:fragment rendered="#{tran.transType eq 3}">
+	                    <h:outputText  value="标的转账"></h:outputText>
+                	</ui:fragment>
+                	<ui:fragment rendered="#{tran.transType eq 4}">
+	                    <h:outputText  value="转账"></h:outputText>
+                	</ui:fragment>
+                	<ui:fragment rendered="#{tran.transType eq 99}">
+	                    <h:outputText  value="其他"></h:outputText>
+                	</ui:fragment>
+                </p:column>
+			    <p:column>
+                	<f:facet name="header">
+                		<f:facet name="header">
+                			<h:outputText value="交易状态"></h:outputText>
+                		</f:facet>
+                		<ui:fragment rendered="#{tran.transState eq 1}">
+	                   		<h:outputText  value="成功"></h:outputText>
+                		</ui:fragment>
+                		<ui:fragment rendered="#{tran.transState eq 2}">
+	                   		<h:outputText  value="失败"></h:outputText>
+                		</ui:fragment>
+                		<ui:fragment rendered="#{tran.transState eq 99}">
+	                   		<h:outputText  value="其他"></h:outputText>
+                		</ui:fragment>
+                	</f:facet>
+                </p:column>
+			    <p:column>
+                	<f:facet name="header">
+                		<h:outputText value="余额(单位:元)"></h:outputText>
+                	</f:facet>
+                    <h:outputText  value="#{tran.balance}"></h:outputText>
+                </p:column>
+			    <p:column>
+                	<f:facet name="header">
+                		<h:outputText value="订单编号"></h:outputText>
+                	</f:facet>
+                    <h:outputText  value="#{tran.orderId}"></h:outputText>
+                </p:column>
+			    <p:column>
+                	<f:facet name="header">
+                		<h:outputText value="操作时间"></h:outputText>
+                	</f:facet>
+                    <h:outputText  value="#{tran.tranTime}"></h:outputText>
+                </p:column>
+			    <p:column>
+                	<f:facet name="header">
+                		<h:outputText value="资金类型"></h:outputText>
+                	</f:facet>
+                	<ui:fragment rendered="#{tran.amtType eq 1}">
+                   		<h:outputText  value="订单交易金额"></h:outputText>
+               		</ui:fragment>
+                	<ui:fragment rendered="#{tran.amtType eq 2}">
+                   		<h:outputText  value="交易手续费"></h:outputText>
+               		</ui:fragment>
+                	<ui:fragment rendered="#{tran.amtType eq 99}">
+                   		<h:outputText  value="其他"></h:outputText>
+               		</ui:fragment>
+                </p:column>
+			    <p:column>
+                	<f:facet name="header">
+                		<h:outputText value="订单日期"></h:outputText>
+                	</f:facet>
+                    <h:outputText  value="#{tran.orderDate}"></h:outputText>
+                </p:column>
+	        </p:dataTable>
+        </h:form>  
+		</div>
+	</ui:define>
+</ui:composition>
+
+</html>

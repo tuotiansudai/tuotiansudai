@@ -1,0 +1,288 @@
+<ui:composition template="../page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:define name="content">
+		<h:outputScript library="primefaces" name="jquery/jquery-plugins.js"
+			target="head" />
+		<h:outputStylesheet library="primefaces" name="primefaces.css"
+			target="head" />
+		<link href="#{tplVars.themeStylePath}/center.css" type="text/css"
+			rel="stylesheet" />
+
+		<link type="text/css" rel="stylesheet"
+			  href="#{tplVars.themeStylePath}/rechargeConfirm.css" />
+		<script type="text/javascript" src="#{path}/include/js/datepicker.js"></script>
+		<div class="main">
+			<div class="tag">
+				<a href="#{path}/">首页</a> > <span><a
+					href="#{path}/user/center">我的账户</a></span>
+			</div>
+			<div class="center_left">
+				<ul class="mlnav">
+					<li class="hover"><a class="li01" href="#{path}/user/center"
+						id="CC1_1">我的账户</a></li>
+					<li><a class="li02" href="javascript:void(0)" id="CC1_2"
+						onclick="OpenClose1('C1_2')">资金管理</a>
+						<ul id="C1_2" style="display:none">
+							<li><a href="#{request.contextPath}/user/myCashFlow">交易记录</a></li>
+							<li><a href="#{request.contextPath}/user/recharge">账户充值</a></li>
+							<li><a href="#{request.contextPath}/user/withdraw">账户提现</a></li>
+						</ul></li>
+					<li><a class="li03" href="javascript:void(0)" id="CC1_3"
+						onclick="OpenClose1('C1_3')">理财管理</a>
+						<ul id="C1_3" style="display:none">
+							<li><h:link outcome="pretty:user_invest_repaying"
+									value="我的投资"></h:link></li>
+							<!-- <li><a href="#{request.contextPath}/user/transfer/purchased">债权转让</a></li> -->
+							<!-- <li><a href="个人中心-理财管理-理财统计.html">理财统计</a></li> -->
+							<!-- <sec:ifAllGranted roles="AUTO_INVEST">
+								<li><a href="#{request.contextPath}/user/auto_invest">自动投标</a></li>
+							</sec:ifAllGranted> -->
+							<!-- <li><a href="#{request.contextPath}/user/auto_invest">自动投标</a></li> -->
+						</ul></li>
+					<li><a class="li04" href="javascript:void(0)" id="CC1_4"
+						onclick="OpenClose1('C1_4')">借款管理</a>
+						<ul id="C1_4" style="display:none">
+							<li><h:link outcome="pretty:user_loan_repaying" value="我的借款"></h:link></li>
+						</ul></li>
+					<li><a class="li05" href="javascript:void(0)" id="CC1_5"
+						onclick="OpenClose1('C1_5')">账户管理</a>
+						<ul id="C1_5" style="display:none">
+							<li><a
+								href="#{request.contextPath}/user/get_investor_permission">个人信息</a></li>
+							<!-- <li><a href="#{request.contextPath}/user/managemyInfo">认证信息</a></li> -->
+							<li><a href="#{request.contextPath}/user/accountSafe">安全信息</a></li>
+							<ui:fragment
+								rendered="#{configHome.getConfigValue('ipspay_enable') != '1'}">
+								<li><a href="#{request.contextPath}/user/bankCardList">银行卡信息</a></li>
+							</ui:fragment>
+						</ul></li>
+					<li><a class="li06" href="javascript:void(0)" id="CC1_6"
+						onclick="OpenClose1('C1_6')">互动管理</a>
+						<ul id="C1_6" style="display:none">
+							<li><a href="#{request.contextPath}/user/message">站内信</a></li>
+							<li><a href="#{request.contextPath}/user/messageTypeSet">通知设置</a></li>
+						</ul></li>
+					<li><a class="li07" href="#{request.contextPath}/user/my-presentee" id="CC1_7">推荐管理</a></li>
+				</ul>
+			</div>
+			<ui:insert name="center_right">
+				<div class="center_right">
+					<div class="center_box01">
+						<ui:include src="userCenterTop.xhtml"></ui:include>
+						<ul class="grzx_ul">
+							<li><img src="#{tplVars.themeImagePath}/img20.png"
+								title="资产总额=账户可用金额+冻结金额+待收本息" />资产总额<br /> <span><h:outputText
+										value="#{billStatistics.getBalanceByUserId(loginUserInfo.loginUserId)+billStatistics.getFrozenMoneyByUserId(loginUserInfo.loginUserId)+investStatistics.getReceivableCorpus(loginUserInfo.loginUserId)+investStatistics.getReceivableInterest(loginUserInfo.loginUserId)}">
+										<f:convertNumber type="currency" />
+									</h:outputText></span></li>
+							<li><img title="账户可用金额"
+								src="#{tplVars.themeImagePath}/img20.png" />可用金额<br /> <span>
+									<h:outputText
+										value="#{billStatistics.getBalanceByUserId(loginUserInfo.loginUserId)}">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+							</span></li>
+							<li><img title="待收金额=待收本金+待收利息"
+								src="#{tplVars.themeImagePath}/img20.png" />待收本息<br /> <span><h:outputText
+										value="#{investStatistics.getReceivableCorpus(loginUserInfo.loginUserId)+investStatistics.getReceivableInterest(loginUserInfo.loginUserId)}">
+										<f:convertNumber type="currency" />
+									</h:outputText></span></li>
+							<li><img title="账户冻结金额"
+								src="#{tplVars.themeImagePath}/img20.png" />冻结金额<br /> <span>
+									<h:outputText
+										value="#{billStatistics.getFrozenMoneyByUserId(loginUserInfo.loginUserId)}">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+							</span></li>
+						</ul>
+
+					</div>
+
+					<div class="center_zj">
+						<div class="center_zj_01">
+							<p>
+								<img title="累计投资额=回收本金+待收本金"
+									src="#{tplVars.themeImagePath}/img20.png" /> 累计投资额： <span>
+									<h:outputText
+										value="#{investStatistics.getReceivedCorpus(loginUserInfo.loginUserId)+investStatistics.getReceivableCorpus(loginUserInfo.loginUserId)}">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+								</span>
+							</p>
+							<p>
+								<img title="预期总收益=回收利息+待收利息"
+									src="#{tplVars.themeImagePath}/img20.png" /> 预期总收益： <span>
+									<h:outputText
+										value="#{investStatistics.getReceivedInterest(loginUserInfo.loginUserId)+investStatistics.getReceivableInterest(loginUserInfo.loginUserId)}">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+								</span>
+							</p>
+						</div>
+						<div class="center_zj_01 center_zj_02">
+							<p>
+								<img title="已收本金" src="#{tplVars.themeImagePath}/img20.png" />
+								已收本金： <span> <h:outputText
+										value="#{investStatistics.getReceivedCorpus(loginUserInfo.loginUserId)}">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+								</span>
+							</p>
+							<p>
+								<img src="#{tplVars.themeImagePath}/img20.png" title="已收利息" />
+								已收利息： <span> <h:outputText
+										value="#{investStatistics.getReceivedInterest(loginUserInfo.loginUserId)}">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+								</span>
+
+							</p>
+						</div>
+						<div class="center_zj_01 center_zj_03">
+							<p>
+								<img title="待收本金" src="#{tplVars.themeImagePath}/img20.png" />
+								待收本金： <span> <h:outputText
+										value="#{investStatistics.getReceivableCorpus(loginUserInfo.loginUserId)}">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+
+								</span>
+							</p>
+							<p>
+								<img src="#{tplVars.themeImagePath}/img20.png" title="待收收益" />
+								待收利息： <span> <h:outputText
+										value="#{investStatistics.getReceivableInterest(loginUserInfo.loginUserId)}">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+								</span>
+							</p>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="slideBox">
+						<div class="hd">
+							<ul class="slidings">
+								<li class="hover" id="two1"><a href="javascript:void(0)">最新投资</a></li>
+								<li id="two2"><a href="javascript:void(0)">最近借款</a></li>
+							</ul>
+							<div class="bd">
+								<div id="con_two_1" class="slidnr">
+									<h:link styleClass="more" outcome="pretty:user_invest_repaying"
+										value="查看更多>>"></h:link>
+									<table width="786" border="0" cellspacing="0" cellpadding="0"
+										class="tab">
+										<tr>
+											<td width="196" align="left" class="tab01 tab04">项目名称</td>
+											<td width="137" align="center" class="tab01">投资金额</td>
+											<td width="72" align="center" class="tab01">利率</td>
+											<td width="150" align="center" class="tab01">状态</td>
+											<td width="215" align="center" class="tab01">投资时间</td>
+										</tr>
+										<f:event type="preRenderComponent"
+											listener="#{investList.example.user.setUsername(loginUserInfo.loginUserId)}"></f:event>
+										<f:event type="preRenderComponent"
+											listener="#{investList.setPageSize(6)}"></f:event>
+										<f:event type="preRenderComponent"
+											listener="#{investList.addOrder('time','desc')}"></f:event>
+										<ui:repeat var="invest" value="#{investList.lazyModelData}"
+											varStatus="status">
+											<tr class="#{status.index%2==0?'tab02':''} bg">
+												<td align="left" class="tab02 tab04"><a target="_blank"
+													href="#{path}/loan/#{invest.loan.id}"
+													title="#{invest.loan.name}(#{invest.id})">#{stringHome.ellipsis(invest.loan.name,10)}</a></td>
+												<td align="center" class="tab02"><h:outputText
+														value="#{invest.money}">
+														<f:convertNumber />
+													</h:outputText></td>
+												<td align="center" class="tab02"><h:outputText
+														value="#{invest.rate}">
+														<f:convertNumber type="percent" minFractionDigits="2" />
+													</h:outputText></td>
+												<td align="center" class="tab02">#{dictUtil.getValue('invest_status',
+													invest.status)}</td>
+												<td align="center" class="tab02"><h:outputText
+														value="#{invest.time}">
+														<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+															timeZone="GMT+8" locale="cn" />
+													</h:outputText></td>
+											</tr>
+										</ui:repeat>
+									</table>
+
+								</div>
+								<div id="con_two_2" class="slidnr sliding_yc">
+									<h:link styleClass="more" outcome="pretty:user_loan_repaying"
+										value="查看更多>>"></h:link>
+									<table width="786" border="0" cellspacing="0" cellpadding="0"
+										class="tab">
+										<tr>
+											<td width="156" align="left" class="tab01 tab04">项目名称</td>
+											<td width="137" align="center" class="tab01">借款金额</td>
+											<td width="72" align="center" class="tab01">利率</td>
+											<td width="66" align="center" class="tab01">状态</td>
+										</tr>
+										<f:event type="preRenderComponent"
+											listener="#{loanList.example.user.setId(loginUserInfo.loginUserId)}"></f:event>
+										<f:event type="preRenderComponent"
+											listener="#{loanList.setPageSize(6)}"></f:event>
+										<f:event type="preRenderComponent"
+											listener="#{loanList.addOrder('loan.commitTime','desc')}"></f:event>
+										<ui:repeat var="loan" value="#{loanList.lazyModelData}"
+											varStatus="status">
+											<tr class="#{status.index%2==0?'tab02':''} bg">
+												<td align="left" class="tab02 tab04"><a target="_blank"
+													href="#{path}/loan/#{loan.id}"
+													title="#{loan.name}(#{loan.id})">#{stringHome.ellipsis(loan.name,10)}</a></td>
+												<td align="center" class="tab02"><h:outputText
+														value="#{loan.loanMoney}">
+														<f:convertNumber />
+													</h:outputText></td>
+												<td align="center" class="tab02"><h:outputText
+														value="#{loan.rate}">
+														<f:convertNumber type="percent" minFractionDigits="2" />
+													</h:outputText></td>
+												<td align="center" class="tab02">#{dictUtil.getValue('loan',loan.status)}</td>
+											</tr>
+										</ui:repeat>
+									</table>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</ui:insert>
+			<div class="clear"></div>
+		</div>
+		<script>
+			if ('#{activeCenterMenuUrl}') {
+				var selected = $("a[href='#{path}#{activeCenterMenuUrl}']");
+				selected.addClass("hover");
+				selected.parent().parent().prev().addClass("hover");
+				selected.parent().parent().show();
+			} else {
+				$('#CC1_1').addClass("hover");
+			}
+
+			function OpenClose1(CID) {
+				$(".mlnav ul").hide();
+				$('#' + CID).show();
+			}
+
+			jQuery(".slideBox").slide({
+				trigger : "click",
+				titOnClassName : "hover"
+			});
+		</script>
+		<p:tooltip globalSelector="img"></p:tooltip>
+	</ui:define>
+</ui:composition>

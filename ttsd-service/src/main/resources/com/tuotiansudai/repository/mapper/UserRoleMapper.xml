@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.UserRoleMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="userRoleResultMap" type="UserRoleModel">
+        <result column="login_name" property="loginName"></result>
+        <result column="role" property="role"></result>
+        <result column="created_time" property="createdTime"></result>
+    </resultMap>
+
+    <select id="findByLoginName" parameterType="java.lang.String" resultMap="userRoleResultMap">
+        select * from user_role where login_name = #{loginName}
+    </select>
+
+    <select id="findByLoginNameAndRole" parameterType="map" resultMap="userRoleResultMap">
+        select * from user_role where login_name = #{loginName} and role = #{role}
+    </select>
+
+    <insert id="create" parameterType="UserRoleModel">
+        insert into user_role (login_name, role, created_time) values
+        <foreach collection="userRoles" item="item" index="index" separator=",">
+            (#{item.loginName},#{item.role},#{item.createdTime})
+        </foreach>
+    </insert>
+
+    <delete id="deleteByLoginName" parameterType="String">
+        delete from user_role where login_name = #{loginName};
+    </delete>
+
+
+</mapper>

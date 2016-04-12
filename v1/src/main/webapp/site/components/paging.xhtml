@@ -1,0 +1,97 @@
+<!-- 
+    参数：
+    page:当前页码，默认为1
+    pageSize：每页显示的文章条数，默认为15
+    shortUrl:简短的URL，用来指向分页的跳转路径，如：#{request.contextPath}/#{shortUrl}page/#{page-5}，
+                                如果是文章分类请填写"/term/{termId}"，默认为空
+                                
+    debug : #{page},#{pageSize},#{shortUrl},#{count}
+ -->
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<ui:param name="page" value="#{empty page ? 1 : page }"></ui:param>
+	<ui:param name="shortUrl" value="#{empty shortUrl ? '' : shortUrl }"></ui:param>
+	<ui:param name="totalPage"
+		value="#{of:formatNumber(math:ceil(count/pageSize),'#')}"></ui:param>
+
+	<h:outputLabel value="Not fount param 'count'"
+		rendered="#{empty count}"></h:outputLabel>
+	<h:outputLabel value="Not fount param 'pageSize'"
+		rendered="#{empty pageSize}"></h:outputLabel>
+
+	<div class="pagebar">
+		<ui:fragment rendered="#{page != 1}">
+			<a title="首页" href="#{request.contextPath}/#{shortUrl}page/1#Layout"
+				class="fy_01 fy_home">首页</a>
+		</ui:fragment>
+		<ui:fragment rendered="#{page > 1}">
+			<a title="返回上一个页面"
+				href="#{request.contextPath}/#{shortUrl}page/#{page-1}#Layout"
+				class="fy_01 fy_up">上一页</a>
+		</ui:fragment>
+		<ui:fragment rendered="#{page-5 > 0}">
+			<a title="到第 #{page-5} 页"
+				href="#{request.contextPath}/#{shortUrl}page/#{page-5}#Layout"
+				class="fy_02">#{page-5}</a>
+		</ui:fragment>
+		<ui:fragment rendered="#{page-4 > 0}">
+			<a title="到第 #{page-4} 页"
+				href="#{request.contextPath}/#{shortUrl}page/#{page-4}#Layout"
+				class="fy_02">#{page-4}</a>
+		</ui:fragment>
+		<ui:fragment rendered="#{page-3 > 0}">
+			<a title="到第 #{page-3} 页"
+				href="#{request.contextPath}/#{shortUrl}page/#{page-3}#Layout"
+				class="fy_02">#{page-3}</a>
+		</ui:fragment>
+		<ui:fragment rendered="#{page-2 > 0}">
+			<a title="到第 #{page-2} 页"
+				href="#{request.contextPath}/#{shortUrl}page/#{page-2}#Layout"
+				class="fy_02">#{page-2}</a>
+		</ui:fragment>
+		<ui:fragment rendered="#{page-1 > 0}">
+			<a title="到第 #{page-1} 页"
+				href="#{request.contextPath}/#{shortUrl}page/#{page-1}#Layout"
+				class="fy_02">#{page-1}</a>
+		</ui:fragment>
+
+		<a title="第 #{page} 页" onclick="return false;"
+			class="currentnumber">#{page}
+		</a>
+		
+		<ui:fragment rendered="#{count/pageSize > (page)}">
+			<a title="到第 #{page+1} 页"
+				href="#{request.contextPath}/#{shortUrl}page/#{page+1}#Layout" class="fy_02">#{page+1}</a>
+		</ui:fragment>
+		<ui:fragment rendered="#{count/pageSize > (page+1)}">
+			<a title="到第 #{page+2} 页"
+				href="#{request.contextPath}/#{shortUrl}page/#{page+2}#Layout" class="fy_02">#{page+2}</a>
+		</ui:fragment>
+		<ui:fragment rendered="#{count/pageSize > (page+2)}">
+			<a title="到第 #{page+3} 页"
+				href="#{request.contextPath}/#{shortUrl}page/#{page+3}#Layout" class="fy_02">#{page+3}</a>
+		</ui:fragment>
+		<ui:fragment rendered="#{count/pageSize > (page+3)}">
+			<a title="到第 #{page+4} 页"
+				href="#{request.contextPath}/#{shortUrl}page/#{page+4}#Layout" class="fy_02">#{page+4}</a>
+		</ui:fragment>
+		<ui:fragment rendered="#{count/pageSize > (page+4)}">
+			<a title="到第 #{page+5} 页"
+				href="#{request.contextPath}/#{shortUrl}page/#{page+5}#Layout" class="fy_02">#{page+5}</a>
+		</ui:fragment>
+		<ui:fragment rendered="#{count > (page * pageSize)}">
+			<a title="去下一个页面"
+				href="#{request.contextPath}/#{shortUrl}page/#{page + 1}#Layout" class="fy_01 fy_03">下一页</a>
+		</ui:fragment>
+		<ui:fragment rendered="#{count > (page * pageSize)}">
+			<a title="到最后一页"
+				href="#{request.contextPath}/#{shortUrl}page/#{totalPage}#Layout" class="fy_01 fy_03 fy_end">末页</a>
+		</ui:fragment>
+	</div>
+
+</f:view>

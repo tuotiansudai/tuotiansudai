@@ -1,0 +1,31 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ul class="grzx_ul grzx_ul02">
+		<li><img src="#{tplVars.themeImagePath}/img20.png" />投资已赚金额<br />
+			<span><h:outputText
+					value="#{investStatistics.getReceivedInterest(loginUserInfo.loginUserId)}">
+					<f:convertNumber type="currency" />
+				</h:outputText></span></li>
+		<li><img src="#{tplVars.themeImagePath}/img20.png" />还款中的投资金额<br />
+			<span><h:outputText
+					value="#{investStatistics.getReceivableCorpus(loginUserInfo.loginUserId)}">
+					<f:convertNumber type="currency" />
+				</h:outputText></span></li>
+		<li><img src="#{tplVars.themeImagePath}/img20.png" />本月待收金额<br />
+			<span> <!-- 			下月第一天 --> <ui:param name="ldm"
+					value="#{of:addDays(dateUtil.getLastDayOfMonth(now),1)}"></ui:param>
+				<h:outputText
+					value="#{investStatistics.getReceivableCorpus(loginUserInfo.loginUserId, ldm)+investStatistics.getReceivableInterest(loginUserInfo.loginUserId, ldm)}">
+					<f:convertNumber type="currency" />
+				</h:outputText></span></li>
+	</ul>
+
+</ui:component>

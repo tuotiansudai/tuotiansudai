@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+<f:view contentType="text/html">
+    <f:metadata>
+        <f:viewParam name="id" value="#{nodeHome.id}"></f:viewParam>
+    </f:metadata>
+    <h:head>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <title>Archer-#{nodeMsg.nodeManageLabel}-#{nodeMsg.previewLabel}</title>
+        </f:facet>
+        
+    </h:head>
+
+    <h:body>
+        <!-- 
+        <p:dataList value="#{nodeHome.instance.categoryTerms}" var="term">
+            #{nodeMsg.categoryTermsLabel}:#{term.name}<br/>
+            #{menuMsg.urlLabel}:<a href="#{request.contextPath}/term/#{term.id}/#{nodeHome.instance.id}" target="_blank">#{request.contextPath}/term/#{term.id}/#{nodeHome.instance.id}</a>
+        </p:dataList>
+         -->
+        
+        <div class="content">
+            <h2>#{nodeHome.instance.title}</h2>
+            <h:outputText value="#{nodeHome.instance.nodeBody.body}" escape="false"></h:outputText>
+        </div>
+    </h:body>
+
+</f:view>
+</html>

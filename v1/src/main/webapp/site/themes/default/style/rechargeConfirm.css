@@ -1,0 +1,45 @@
+@charset "utf-8";
+/* CSS Document */
+
+.mask_modal {
+    width: 100%;
+    background: #000000;
+    opacity: 0.5;
+    filter: alpha(opacity:50);
+    display: none;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    background: rgba(0, 0, 0, .5);
+    z-index: 800;
+}
+
+.mask_main {
+    width: 540px;
+    height: 240px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin: -120px 0px 0px -270px;
+    z-index: 801;
+    font-family: 'microsoft yahei';
+    font-size: 14px;
+    font-weight: normal;
+    color:#666;
+    background: #fff;
+    border: rgba(0,0,0,.6) 5px solid;
+    display: none;
+}
+
+.mask_main h3,.mask_main h4{ height: 40px; line-height: 40px; padding-left: 20px; width:520px; font-family:'microsoft yahei'; font-weight: normal; font-size: 16px;background: #f2f3f5; margin: 0px;}
+.mask_main span{ font-size: 14px; color:#000; display: block; height: 30px; line-height: 30px; padding-left: 20px; width:520px;}
+.mask_main em{ position: absolute; right: 0px; display: block; width:40px; height: 40px; text-align: center; line-height: 40px; top:0px;font-style: normal; cursor: pointer;}
+.mask_main p{ padding-left: 20px; width:520px; height:65px; line-height: 65px; margin: 0px;}
+.mask_main p i{ font-style: normal; display: block;
+    float:left; margin-right: 6px;}
+.mask_main p a{   text-decoration:none;}
+.mask_main p a.success{ background: #ffcc66;display: block;width:200px; height: 50px; line-height: 50px; text-align: center;float:left;color:#fff;font-size: 18px; margin: 8px 6px 0px 0px; }
+.mask_main p a.failure{ display: block; background: #ff7575;display: block;width:200px; height: 50px; line-height: 50px; text-align: center;float:left;color:#fff;font-size: 18px; margin: 8px 6px 0px 0px;}
+.mask_main p b{ font-weight: normal; margin-left: 10px;}
+.mask_main p b a{color:#ff6734;}
+.mask_main h4{ font-size: 14px;}

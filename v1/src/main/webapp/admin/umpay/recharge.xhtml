@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<f:metadata>
+	<f:viewParam name="id" value="#{configTypeHome.id}"></f:viewParam>
+</f:metadata>
+<ui:composition template="/admin/templates/ui.xhtml">
+	<ui:define name="content">
+		<div class="entry"> 
+		  <p:toolbar>
+                <p:toolbarGroup>
+                    <h:outputLabel  value="#{commonMsg.currentPositionLabel} 平台充值"></h:outputLabel>
+                </p:toolbarGroup>
+            </p:toolbar>
+		<h:form>
+			充值金额：<h:inputText class="ui-panel-content ui-widget-content" value="#{umpayRecharge.platformRecharge}" required="true" label="充值金额"/>&#160;&#160;
+			<p:commandButton action="#{rechargeHome.adminRecharge}" value=" 充&#160;值 " update=":table"/>  
+		</h:form>
+		<br />
+		<h:panelGroup id="table">
+		可用余额：#{ipsCheckHome.cbr.pBalance} <br />
+		冻结余额：#{ipsCheckHome.cbr.pLock} <br />
+		未结算余额：#{ipsCheckHome.cbr.pNeedstl} <br /><br />
+		查询结果：&#160;&#160;&#160;&#160;&#160;&#160;#{ipsCheckHome.cbr.pErrMsg} <br />
+		</h:panelGroup>
+	</div>
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,125 @@
+apply plugin: 'java'
+apply plugin: 'org.flywaydb.flyway'
+
+version = '1.0'
+
+configurations {
+    providedCompile
+}
+
+sourceSets {
+    main.compileClasspath += configurations.providedCompile
+    test.compileClasspath += configurations.providedCompile
+    test.runtimeClasspath += configurations.providedCompile
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.flywaydb:flyway-gradle-plugin:3.2.1'
+    }
+}
+
+dependencies {
+    def springSecurityVersion = '4.0.2.RELEASE'
+    compile fileTree(dir: 'libs', include: '**/*.jar'),
+            "org.springframework.security:spring-security-config:$springSecurityVersion",
+            "org.springframework.security:spring-security-taglibs:$springSecurityVersion"
+
+
+    providedCompile "javax.servlet:javax.servlet-api:3.1.0"
+
+    compile fileTree(dir: 'libs', include: '**/*.jar')
+}
+
+processResources.outputs.upToDateWhen { false }
+
+/**
+ * parameter: configPath
+ * example: gradle ttsd-web:war -PconfigPath=/workspace/new_version_config/ttsd-service
+ */
+processResources {
+    def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
+    def outerConfigPath = '/workspace/new_version_config/ttsd-service'
+    if (project.hasProperty("configPath") && new File(configPath).isDirectory()) {
+        innerConfigPath = configPath
+    } else if (new File(outerConfigPath).isDirectory()) {
+        innerConfigPath = outerConfigPath
+    }
+    from("${innerConfigPath}/ttsd-env.properties") {
+        filter { String line ->
+            if (project.hasProperty("dbhost") && line.startsWith("common.jdbc.host=")) {
+                return "common.jdbc.host=${dbhost}"
+            }
+
+            if (project.hasProperty("dbport") && line.startsWith("common.jdbc.port=")) {
+                return "common.jdbc.port=${dbport}"
+            }
+
+            if (project.hasProperty("redishost") && line.startsWith("common.redis.host=")) {
+                return "common.redis.host=${redishost}"
+            }
+
+            if (project.hasProperty("redisport") && line.startsWith("common.redis.port=")) {
+                return "common.redis.port=${redisport}"
+            }
+            line
+        }
+        into '/'
+    }
+    from("${innerConfigPath}/ttsd-biz.properties") {
+        into '/'
+    }
+}
+
+/**
+ * parameter: dbhost dbport database
+ * dbhost default value: ttsd-env.properties common.jdbc.host
+ * dbport default value: ttsd-env.properties common.jdbc.port
+ * database default value: aa
+ * example: gradle -Pdbhost=192.168.33.10 -Pdbport=3306 -Pdatabase=aa ttsd-service:flywayMigrate
+ *
+ */
+flyway {
+    def sourcePropertiesFilePath = "${project.projectDir.getPath()}/src/main/resources/ttsd-env.properties"
+    def buildPropertiesFilePath = "${project.buildDir.getPath()}/resources/main/ttsd-env.properties"
+    def properties = new Properties()
+
+    def sourceFile = new File(sourcePropertiesFilePath)
+    if (sourceFile.isFile()) {
+        properties.load(new FileInputStream(sourceFile))
+    }
+
+    def buildFile = new File(buildPropertiesFilePath)
+    if (buildFile.isFile()) {
+        properties.load(new FileInputStream(buildFile))
+    }
+
+    if (project.hasProperty("configPath") && new File("${configPath}/ttsd-env.properties").isFile()) {
+        properties.load(new FileInputStream(new File("${configPath}/ttsd-env.properties")))
+    }
+
+    def defaultDatabase = 'aa'
+    def defaultHost = properties.getProperty("common.jdbc.host")
+    def defaultPort = properties.getProperty("common.jdbc.port")
+    if (project.hasProperty('database')) {
+        defaultDatabase = database;
+    }
+    if (project.hasProperty('dbhost')) {
+        defaultHost = dbhost;
+    }
+    if (project.hasProperty('dbport')) {
+        defaultPort = dbport;
+    }
+    outOfOrder = true
+    validateOnMigrate = false
+    locations = ["filesystem:db_migration/${defaultDatabase}"]
+    schemas = ["${defaultDatabase}"]
+
+    url = properties.getProperty("common.environment").equals("PRODUCTION") ? "jdbc:mysql://${defaultHost}:${defaultPort}/${defaultDatabase}?useUnicode=true&characterEncoding=UTF-8" : "jdbc:mysql://${defaultHost}:${defaultPort}?useUnicode=true&characterEncoding=UTF-8"
+    user = properties.getProperty("common.jdbc.username")
+    password = properties.getProperty("common.jdbc.password")
+}

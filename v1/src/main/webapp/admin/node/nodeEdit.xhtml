@@ -1,0 +1,55 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<f:metadata>
+		<f:viewParam name="id" value="#{nodeHome.id}"></f:viewParam>
+	</f:metadata>
+
+	<ui:define name="content">
+		<f:event type="preRenderComponent" listener="#{nodeHome.addTerm(param.termId)}"></f:event>
+		<div class="entry">
+			<p:toolbar styleClass="admin-nav-toolbar">
+				<p:toolbarGroup>
+					<h:outputLabel
+						value="#{commonMsg.currentPositionLabel} #{nodeMsg.nodeEditLabel}"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button value="#{nodeMsg.nodeManageLabel}"
+						outcome="/admin/node/nodeList"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:spacer></p:spacer>
+			<ui:fragment rendered="#{not empty param.id and empty nodeHome.instance}">
+		      <h1>没有找到编号为#{param.id}的文章。</h1>
+		    </ui:fragment>
+	        <h:form id="form" rendered="#{empty param.id or not empty nodeHome.instance}">
+				<h:inputHidden value="#{nodeHome.id}"></h:inputHidden>
+
+				<h:panelGrid columns="2" columnClasses="col1,col2">
+					<ui:include src="/admin/components/nodeEdit.xhtml">
+						<ui:param name="instance" value="#{nodeHome.instance}"></ui:param>
+					</ui:include>
+					<h:outputLabel value="操作"></h:outputLabel>
+					<ui:fragment>
+						<p:commandButton id="saveBtn1" action="#{nodeHome.save}"
+							ajax="false" value="#{commonMsg.saveLabel}"></p:commandButton>
+						<p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+					</ui:fragment>
+				</h:panelGrid>
+				<p:panel style="position: fixed; right:15px;top:200px; z-index:1000">
+					<p:commandButton id="saveBtn" action="#{nodeHome.save}"
+						ajax="false" value="#{commonMsg.saveLabel}"></p:commandButton>
+					<p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+				</p:panel>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+

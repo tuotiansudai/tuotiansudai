@@ -1,0 +1,428 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	template="page.xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<f:metadata>
+		<f:viewParam name="id" value="#{loanHome.id}"></f:viewParam>
+	</f:metadata>
+	<ui:define name="content">
+		<ui:param name="loan" value="#{loanHome.instance}"></ui:param>
+		<script>
+		//<![CDATA[
+		if (#{loanHome.instance.businessType eq '个人借款'}) {
+			window.location.href = "#{request.contextPath}/p2p_loan/#{loanHome.instance.id}";
+		}
+			//如果登录用户没有投资权限，则提示，并跳转页面。
+			function getInvestorPer() {
+				$.dialog
+						.confirm(
+								'您尚未进行实名认证无法投资，是否要实名认证？',
+								function() {
+									window.location.href = "#{request.contextPath}/user/get_investor_permission";
+									$.dialog.tips('正在为您跳转到页面');
+								});
+				return false;
+			}
+			//]]>
+		</script>
+		<link type="text/css" rel="stylesheet"
+			href="#{tplVars.themeStylePath}/p2c.css" />
+
+		<div class="main">
+			<div class="tag">
+				我要理财 > <span><a href="#{path}/loan-list">投资列表</a></span> > <span>项目详情</span>
+			</div>
+			<h3 class="loan-detail">#{loan.name}</h3>
+			<div class="loan-detail_box">
+				<div class="loan-detail_l">
+					<div class="img">
+						<img src="#{path}#{loan.customPicture}"
+							style="width: 240px; height: 250px;" />
+					</div>
+					<div class="loan-detail_01">
+						<p>
+							年化收益<br /> <span class="blue"><h:outputText
+									value="#{loan.ratePercent}">
+									<f:convertNumber minFractionDigits="2" />
+								</h:outputText>%</span>
+						</p>
+						<p>
+						<ui:param name="guaranteeCompanyNode"
+										value="#{nodeList.getEntityById(loan.guaranteeCompanyName)}"></ui:param>
+							投资期限<br /> <span class="strong">#{loan.deadline*loan.type.repayTimePeriod}</span>(#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)})
+						</p>
+						<p>
+							项目规模<br /> <span class="strong"><h:outputText
+									value="#{loan.loanMoney}">
+									<f:convertNumber type="number" />
+								</h:outputText></span>元
+						</p>
+						<p class="line">
+							发布日期：
+							<h:outputText value="#{loan.commitTime}">
+								<f:convertDateTime pattern="yyyy-MM-dd" locale="cn"
+									timeZone="GMT+8"></f:convertDateTime>
+							</h:outputText>
+							剩余时间：#{loanCalculator.calculateRemainTime(loan.id)}
+						</p>
+						<p class="line">
+							担保机构：<a
+								href="#{path}/node/guaranteeCompany/#{guaranteeCompanyNode.id}">#{guaranteeCompanyNode.title}</a><br />还款方式：#{dictUtil.getValue('repay_type',loan.type.repayType)}
+						</p>
+						<p class="gray">
+							<img src="#{tplVars.themeImagePath}/p2c_img11.png" />#{dictUtil.getValue('interest_point',loan.type.interestPoint)}
+						</p>
+						<p class="gray">
+							<img src="#{tplVars.themeImagePath}/p2c_img12.png" />本息保障
+						</p>
+						<p class="gray">
+							<img src="#{tplVars.themeImagePath}/p2c_img13.png" />灵活转让
+						</p>
+					</div>
+				</div>
+				<div class="loan-detail_r">
+				<h:form>
+						<ui:param name="moneyNeedRaised" value="#{loanCalculator.calculateMoneyNeedRaised(loan.id)}"></ui:param>
+						<h3>
+							投资金额<span><h:outputText
+									value="#{moneyNeedRaised}">
+									<f:convertNumber type="number" />
+								</h:outputText>元可投</span>
+						</h3>
+					<ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
+						<ul class="loan-detail_r_ul">
+							<li class="ul_li01">起投金额：<span class="blue"><h:outputText
+										value="#{loan.minInvestMoney}">
+										<f:convertNumber type="number" />
+									</h:outputText>元</span> &#160;&#160;递增金额：<span class="blue"><h:outputText
+										value="#{loan.cardinalNumber}">
+										<f:convertNumber type="number" />
+									</h:outputText>元</span></li>
+							<li class="ul_li02">账户余额：<span class="gray"><h:outputLabel
+										value="#{userBillHome.getBalanceByUserId(loginUserInfo.loginUserId)}">
+										<f:convertNumber />
+									</h:outputLabel>元</span>&#160;<a href="#{path}/user/recharge">充值</a></li>
+							<li class="ul_li02">预计收益：<span class="blue blue02"> <h:outputText
+										value="#{investCalculator.calculateAnticipatedInterest(investHome.instance.money, loan.id)}"
+										id="anticipatedInterest">
+										<f:convertNumber maxFractionDigits="2" />
+									</h:outputText>元
+							</span></li>
+							<li class="ul_li01" style="font-size: 27px;"><h:inputText
+									label="投资金额" value="#{investHome.instance.money}"
+									styleClass="p2c_input" required="true"
+									requiredMessage="投资金额不能为空！">
+									<f:ajax event="blur" render="@this anticipatedInterest"></f:ajax>
+									<o:validator validatorId="javax.faces.DoubleRange"
+										minimum="#{loan.minInvestMoney}"
+										maximum="#{loanCalculator.calculateMoneyMaxInvested(loan.id)}"></o:validator>
+									<o:validator
+										validatorId="com.esoft.core.validator.NumberValidator"
+										cardinalNumber="#{loan.cardinalNumber}"></o:validator>
+								</h:inputText>&#160;元</li>
+						</ul>
+						<div class="xq">
+							<ui:fragment rendered="#{empty loginUserInfo.loginUserId}">
+								<h:link outcome="pretty:memberLogin"
+									styleClass="txczje02_btn list_btn list_btn02 p2c_btn">
+									<f:param name="spring-security-redirect"
+										value="/loan/#{loan.id}" />
+									<h:outputText value="立即投资"></h:outputText>
+								</h:link>
+							</ui:fragment>
+							<ui:fragment rendered="#{not empty loginUserInfo.loginUserId}">
+									<sec:ifNotGranted roles="INVESTOR">
+										<a class="txczje02_btn list_btn list_btn02 p2c_btn"
+											href="javascript:void(0)" onclick="getInvestorPer();">立即投资</a>
+									</sec:ifNotGranted>
+
+									<sec:ifAllGranted roles="INVESTOR">
+										<h:commandLink
+											styleClass="txczje02_btn list_btn list_btn02 p2c_btn"
+											action="#{investHome.save}" value="立即投资"
+											onclick="return confirm('您确定要投资吗？');">
+											<f:setPropertyActionListener
+												target="#{investHome.instance.loan}" value="#{loan}"></f:setPropertyActionListener>
+										</h:commandLink>
+									</sec:ifAllGranted>
+								</ui:fragment>
+								<a href="#{path}/invest-calculator?money=#{loan.loanMoney}&amp;type=#{loan.type.id}&amp;rate=#{loan.ratePercent}&amp;deadline=#{loan.deadline}" target="_blank">
+									<img style="cursor: pointer;" src="#{tplVars.themeImagePath}/p2c_img14.png" />
+								</a>
+						</div>
+					</ui:fragment>
+					<ui:fragment rendered="#{loan.status !=LoanStatus.RAISING}">
+						<p>投资人数：<span>#{loanCalculator.countSuccessInvest(loan.id)}</span>人投资此项目<br />项目状态：#{dictUtil.getValue('loan',loan.status)}</p>
+						<div class="xq">
+							<ui:fragment rendered="#{moneyNeedRaised gt 0}">
+								<a class="txczje02_btn list_btn list_btn02 p2c_btn_grey">投资已结束</a>
+							</ui:fragment>
+							<ui:fragment rendered="#{moneyNeedRaised eq 0}">
+								<a class="txczje02_btn list_btn list_btn02 p2c_btn_grey">投资已满额</a>
+							</ui:fragment>
+							<a href="#{path}/invest-calculator?money=#{loan.loanMoney}&amp;type=#{loan.type.id}&amp;rate=#{loan.ratePercent}&amp;deadline=#{loan.deadline}" target="_blank">
+								<img style="cursor: pointer;" src="#{tplVars.themeImagePath}/p2c_img14.png" />
+							</a>
+						</div>
+					</ui:fragment>
+					</h:form>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div style="height:60px;">
+				<ul class="map">
+					<li class="hover"><a id="descriptionBtn"
+						href="javascript:void(0)" onclick="scrollTo('description')">项目描述</a></li>
+					<li><a id="companyDescriptionBtn" href="javascript:void(0)"
+						onclick="scrollTo('companyDescription')">企业信息</a></li>
+					<li><a id="guaranteeCompanyDescriptionBtn"
+						href="javascript:void(0)"
+						onclick="scrollTo('guaranteeCompanyDescription')">担保详情</a></li>
+					<li><a id="investsBtn" href="javascript:void(0)"
+						onclick="scrollTo('invests')">投资记录</a></li>
+					<li><a id="commnetsBtn" href="javascript:void(0)"
+						onclick="scrollTo('comments')">项目咨询</a></li>
+					<li><a id="loanInfoPicsBtn" href="javascript:void(0)"
+						onclick="scrollTo('loanInfoPics')">相关资料</a></li>
+				</ul>
+			</div>
+			<p id="description" class="h3_02">项目描述</p>
+			<div class="list_loan-detail">
+				<h:outputText value="#{loan.description}" escape="false"></h:outputText>
+			</div>
+			<p id="companyDescription" class="h3_02">企业信息</p>
+			<div class="list_loan-detail">
+				<h:outputText value="#{loan.companyDescription}" escape="false"></h:outputText>
+			</div>
+			<p id="guaranteeCompanyDescription" class="h3_02">担保详情</p>
+			<div class="list_loan-detail">
+				<h:outputText value="#{loan.guaranteeCompanyDescription}"
+					escape="false"></h:outputText>
+			</div>
+			<p id="invests" class="h3_02 h3_03">投资记录</p>
+			<h:form id="investsForm">
+				<table width="1000" border="0" cellspacing="0" cellpadding="0"
+					class="p2c_tab">
+					<tr class="p2c_tab_tr">
+						<td width="140" align="center">投资人</td>
+						<td width="380" align="center">投资金额</td>
+						<td width="378" align="center">投资时间</td>
+						<td width="102" align="center">状态</td>
+					</tr>
+					<f:event type="preRenderComponent"
+						listener="#{investList.example.loan.setId(loan.id)}"></f:event>
+					<f:event type="preRenderComponent"
+						listener="#{investList.addOrder('invest.time','desc')}"></f:event>
+					<ui:repeat var="invest" value="#{investList.lazyModelData}">
+						<tr>
+							<td align="center">#{invest.user.username.substring(0,3)}***</td>
+							<td align="center"><h:outputText
+									value="#{invest.investMoney}">
+									<f:convertNumber maxFractionDigits="2" />
+								</h:outputText>元</td>
+							<td align="center"><h:outputText value="#{invest.time}">
+									<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" locale="cn"
+										timeZone="GMT+8"></f:convertDateTime>
+								</h:outputText></td>
+							<td align="center">#{dictUtil.getValue('invest_status', invest.status)}</td>
+						</tr>
+					</ui:repeat>
+				</table>
+				<div class="pagebar">
+					<ui:include
+						src="#{tplVars.componentsPath}/loan-list_invests-paging_include.xhtml"></ui:include>
+				</div>
+			</h:form>
+			<h:form id="commentForm">
+				<div id="comments" class="xmzx">
+					<p class="h3_02">项目咨询</p>
+					<ui:fragment rendered="#{not empty loginUserInfo.loginUserId}">
+						<p class="textp borderleft">发表评论</p>
+						<h:panelGroup id="messageEdit">
+							<div class="pl-div">
+								<div class="pl-left">
+									<h:inputTextarea id="commentBody"
+										value="#{commentHome.instance.body}" required="true"
+										label="留言" />
+								</div>
+								<div class="pl-right">
+									<p class="textp">
+										验证码：
+										<h:inputText id="captcha" label="验证码" maxlength="4"
+											styleClass="board-input" required="true">
+											<archer:validateCaptcha />
+											<f:ajax event="blur"></f:ajax>
+										</h:inputText>
+										<img title="点击刷新" alt="点击刷新" class="yzmimg verifyCode"
+											id="verifyCode" width="80" height="30"
+											style="margin-bottom: -11px;"
+											src="#{request.contextPath}/verifyCodeServlet"
+											onclick="nextVerifyCode();" />
+									</p>
+									<p>
+										<h:commandLink value="发表评论">
+											<p:ajax process="messageEdit" update="messageList"
+												oncomplete="afterMessageSubmit(xhr, status, args)"
+												listener="#{commentHome.saveComment(loanHome.instance.id, loginUserInfo.loginUserId)}"></p:ajax>
+										</h:commandLink>
+									</p>
+								</div>
+							</div>
+						</h:panelGroup>
+					</ui:fragment>
+					<p class="textp borderleft">本项目用户讨论</p>
+					<h:panelGroup id="messageList">
+						<ul class="pl-ul">
+							<f:event type="preRenderComponent"
+								listener="#{commentList.example.loan.setId(loan.id)}"></f:event>
+							<f:event type="preRenderComponent"
+								listener="#{commentList.addOrder('createTime','desc')}"></f:event>
+							<f:event type="preRenderComponent"
+								listener="#{commentList.setPageSize(5)}"></f:event>
+							<ui:repeat var="comment" value="#{commentList.lazyModelData}">
+								<li>
+									<p class="pl-name">#{comment.userByCreator.id.substring(0,3)}***</p>
+									<p class="pl-con">#{comment.body}</p>
+									<p class="pl-date">
+										发布日期:
+										<h:outputText value="#{comment.createTime}">
+											<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+												timeZone="GMT+8" />
+										</h:outputText>
+									</p>
+								</li>
+							</ui:repeat>
+						</ul>
+					</h:panelGroup>
+				</div>
+				<div class="pagebar">
+					<ui:include src="#{tplVars.componentsPath}/loanCommentPaging.xhtml"></ui:include>
+				</div>
+			</h:form>
+			<!--项目咨询结束 -->
+			<div id="loanInfoPics" class="qh">
+				<p>
+					<span>项目相关资料</span>
+				</p>
+				<div class="lj img-scroll">
+					<div class="hd">
+						<a class="prev"></a> <a class="next"></a>
+					</div>
+					<div class="bd img-list">
+						<p:lightBox>
+							<ui:repeat var="infoPic" value="#{loan.loanInfoPics}">
+								<h:outputLink value="#{request.contextPath}#{infoPic.picture}">
+								<span>
+									<img src="#{request.contextPath}#{infoPic.picture}" width="207"
+										height="122"></img>
+								</span>
+								</h:outputLink>
+							</ui:repeat>
+						</p:lightBox>
+					</div>
+				</div>
+			</div>
+			<div id="guaranteeInfoPics" class="qh qh02">
+				<p>
+					<span>抵押相关资料</span>
+				</p>
+				<div class="lj img-scroll">
+					<div class="hd">
+						<a class="prev"></a> <a class="next"></a>
+					</div>
+					<div class="bd img-list">
+						<p:lightBox>
+							<ui:repeat var="infoPic" value="#{loan.guaranteeInfoPics}">
+								<h:outputLink value="#{request.contextPath}#{infoPic.picture}">
+								<span>
+									<img src="#{request.contextPath}#{infoPic.picture}" width="207"
+										height="122"></img>
+								</span>
+								</h:outputLink>
+							</ui:repeat>
+						</p:lightBox>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			//<![CDATA[
+			jQuery(".img-scroll").slide({
+				mainCell : ".bd div",
+				autoPage : true,
+				effect : "left",
+				autoPlay : true,
+				vis : 4
+			});
+
+			var $map = $(".map");
+			var $guaranteeInfoPics = $("#guaranteeInfoPics");
+			var floatHeight = $map.offset().top;
+			var guaranteeInfoPicsHeight = $guaranteeInfoPics.offset().top
+					+ $guaranteeInfoPics.height() - $map.height();
+			function tools() {
+				var top = $(document).scrollTop();
+				if (top > floatHeight && top < guaranteeInfoPicsHeight)
+					$map.css({
+						position : "fixed",
+						top:0
+// 						top : $(document).scrollTop() - floatHeight
+					});
+				if (top <= floatHeight)
+					$map.css({
+						position : "static",
+						top : 0
+					});
+				if (top >= guaranteeInfoPicsHeight)
+					$map.css({
+						position : "static",
+						top : guaranteeInfoPicsHeight
+					});
+
+				$(".map li").removeClass("hover");
+				if (top >= $("#loanInfoPics").offset().top - $map.height()) {
+					$("#loanInfoPicsBtn").parent().addClass("hover");
+				} else if (top >= $("#comments").offset().top - $map.height()) {
+					$("#commnetsBtn").parent().addClass("hover");
+				} else if (top >= $("#invests").offset().top - $map.height()) {
+					$("#investsBtn").parent().addClass("hover");
+				} else if (top >= $("#guaranteeCompanyDescription").offset().top
+						- $map.height()) {
+					$("#guaranteeCompanyDescriptionBtn").parent().addClass(
+							"hover");
+				} else if (top >= $("#companyDescription").offset().top
+						- $map.height()) {
+					$("#companyDescriptionBtn").parent().addClass("hover");
+				} else {
+					$("#descriptionBtn").parent().addClass("hover");
+				}
+			}
+			window.onload = tools;
+			window.onscroll = tools;
+			window.onresize = tools;
+
+			function scrollTo(id) {
+				var h = $("#" + id).offset().top - $map.height();
+				$('html, body').animate({
+					scrollTop : h
+				}, 300);
+			}
+
+			function afterMessageSubmit(xhr, status, args) {
+				if (!args.validationFailed) {
+					nextVerifyCode();
+					$('#commentForm\\:commentBody').val('');
+				}
+				$('#commentForm\\:captcha').val('');
+			}
+			//]]>
+		</script>
+	</ui:define>
+</ui:composition>

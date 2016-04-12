@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.ReferrerManageMapper">
+
+    <resultMap id="referrerManageMap" type="ReferrerManageView">
+        <result column="loan_id" property="loanId"></result>
+        <result column="loan_name" property="loanName"></result>
+        <result column="periods" property="periods"></result>
+        <result column="invest_login_name" property="investLoginName"></result>
+        <result column="invest_name" property="investName"></result>
+        <result column="invest_amount" property="investAmount"></result>
+        <result column="invest_time" property="investTime"></result>
+        <result column="referrer_login_name" property="referrerLoginName"></result>
+        <result column="referrer_name" property="referrerName"></result>
+        <result column="role" property="role"></result>
+        <result column="source" property="source"></result>
+        <result column="level" property="level"></result>
+        <result column="reward_amount" property="rewardAmount"></result>
+        <result column="status" property="status"></result>
+        <result column="reward_time" property="rewardTime"></result>
+        <result column="product_type" property="productType"></result>
+    </resultMap>
+
+    <select id="findReferrerManage" parameterType="map" resultMap="referrerManageMap">
+        SELECT
+        l.`name` AS loan_name,
+        l.`periods` AS periods,
+        n.investLoginName AS invest_login_name,
+        n.investAmount AS invest_amount,
+        n.investTime AS invest_time,
+        n.referrerLoginName AS referrer_login_name,
+        n.role_name AS role,
+        n.level,
+        n.rewardAmount AS reward_amount,
+        n.status,
+        n.rewardTime AS reward_time,
+        n.investName AS invest_name,
+        n.referrerName AS referrer_name,
+        n.source
+        FROM
+        (SELECT
+        temp.investLoginName,
+        temp.investAmount,
+        temp.investTime,
+        temp.loanId,
+        temp.rewardAmount,
+        temp.rewardTime,
+        temp.referrerLoginName,
+        temp.role_name,
+        temp.status,
+        temp.investName,
+        temp.referrerName,
+        temp.source,
+        rr.`level`
+        FROM
+        referrer_relation rr right
+        JOIN
+        (SELECT
+        i.`login_name` AS investLoginName,
+        i.`amount` AS investAmount,
+        i.`created_time` AS investTime,
+        i.`loan_id` AS loanId,
+        i.investName,
+        i.source,
+        irr.`amount` AS rewardAmount,
+        irr.`created_time` AS rewardTime,
+        irr.`referrer_login_name` AS referrerLoginName,
+        irr.`referrer_role` as role_name,
+        irr.`status`,
+        irr.referrerName
+        FROM
+        (SELECT
+        a.*,
+        b.`user_name` AS referrerName
+        FROM
+        invest_referrer_reward a
+        LEFT JOIN account b
+        ON a.`referrer_login_name` = b.`login_name`
+        <where>
+            <if test="referrerLoginName != null and referrerLoginName != ''">
+                a.`referrer_login_name` = #{referrerLoginName}
+            </if>
+            <if test="rewardStartTime != null">
+                AND a.`created_time` >= #{rewardStartTime}
+            </if>
+            <if test="rewardEndTime != null">
+                <![CDATA[ AND a.`created_time` <= #{rewardEndTime} ]]>
+            </if>
+            <if test="role != null and role.name() == 'STAFF'">
+                AND a.`referrer_role` = #{role}
+            </if>
+            <if test="role != null and role.name() != 'STAFF'">
+                AND a.`referrer_role` != 'STAFF'
+            </if>
+        </where>
+        ) irr
+        JOIN
+        (SELECT
+        m.*,
+        n.`user_name` AS investName
+        FROM
+        invest m
+        LEFT JOIN account n
+        ON m.`login_name` = n.`login_name`
+        <where>
+            <if test="investLoginName != null and investLoginName != ''">
+                m.`login_name` = #{investLoginName}
+            </if>
+            <if test="investStartTime != null">
+                AND m.`created_time` >= #{investStartTime}
+            </if>
+            <if test="investEndTime != null">
+                <![CDATA[ AND m.`created_time` <= #{investEndTime} ]]>
+            </if>
+            <if test="source != null">
+                AND m.`source` = #{source}
+            </if>
+        </where>
+        AND m.`status` = 'SUCCESS') i
+        ON irr.`invest_id` = i.`id`) temp
+        ON rr.`login_name` = temp.investLoginName
+        AND rr.`referrer_login_name` = temp.referrerLoginName
+        <where>
+            <if test="level != null">
+                rr.`level` = #{level}
+            </if>
+        </where>
+        ) n
+        JOIN loan l
+        ON n.loanId = l.`id`
+        AND l.`status` IN ('REPAYING','OVERDUE','COMPLETE')
+        ORDER BY n.rewardTime DESC
+        LIMIT #{startLimit},#{endLimit}
+    </select>
+
+    <select id="findReferrerManageCount" parameterType="map" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM
+        (SELECT
+        temp.investLoginName,
+        temp.investAmount,
+        temp.investTime,
+        temp.loanId,
+        temp.rewardAmount,
+        temp.rewardTime,
+        temp.referrerLoginName,
+        temp.role_name,
+        temp.status,
+        temp.investName,
+        temp.referrerName,
+        rr.`level`
+        FROM
+        referrer_relation rr right
+        JOIN
+        (SELECT
+        i.`login_name` AS investLoginName,
+        i.`amount` AS investAmount,
+        i.`created_time` AS investTime,
+        i.`loan_id` AS loanId,
+        i.investName,
+        irr.`amount` AS rewardAmount,
+        irr.`created_time` AS rewardTime,
+        irr.`referrer_login_name` AS referrerLoginName,
+        irr.`referrer_role` as role_name,
+        irr.`status`,
+        irr.referrerName
+        FROM
+        (SELECT
+        a.*,
+        b.`user_name` AS referrerName
+        FROM
+        invest_referrer_reward a
+        LEFT JOIN account b
+        ON a.`referrer_login_name` = b.`login_name`
+        <where>
+            <if test="referrerLoginName != null and referrerLoginName != ''">
+                a.`referrer_login_name` = #{referrerLoginName}
+            </if>
+            <if test="rewardStartTime != null">
+                AND a.`created_time` >= #{rewardStartTime}
+            </if>
+            <if test="rewardEndTime != null">
+                <![CDATA[ AND a.`created_time` <= #{rewardEndTime} ]]>
+            </if>
+            <if test="role != null and role.name() == 'STAFF'">
+                AND a.`referrer_role` = #{role}
+            </if>
+            <if test="role != null and role.name() != 'STAFF'">
+                AND a.`referrer_role` != 'STAFF'
+            </if>
+        </where>
+        ) irr
+        JOIN
+        (SELECT
+        m.*,
+        n.`user_name` AS investName
+        FROM
+        invest m
+        LEFT JOIN account n
+        ON m.`login_name` = n.`login_name`
+        <where>
+            <if test="investLoginName != null and investLoginName != ''">
+                m.`login_name` = #{investLoginName}
+            </if>
+            <if test="investStartTime != null">
+                AND m.`created_time` >= #{investStartTime}
+            </if>
+            <if test="investEndTime != null">
+                <![CDATA[ AND m.`created_time` <= #{investEndTime} ]]>
+            </if>
+            <if test="source != null">
+                AND m.`source` = #{source}
+            </if>
+        </where>
+        AND m.`status` = 'SUCCESS') i
+        ON irr.`invest_id` = i.`id`) temp
+        ON rr.`login_name` = temp.investLoginName
+        AND rr.`referrer_login_name` = temp.referrerLoginName
+        <where>
+            <if test="level != null">
+                rr.`level` = #{level}
+            </if>
+        </where>
+        ) n
+        JOIN loan l
+        ON n.loanId = l.`id`
+        AND l.`status` IN ('REPAYING','OVERDUE','COMPLETE')
+    </select>
+
+    <select id="findReferrerManageInvestAmountSum" parameterType="map" resultType="long">
+        SELECT
+          IFNULL(sum(investAmount),0) as invest_amount
+        FROM
+        (SELECT
+        temp.investLoginName,
+        temp.investAmount,
+        temp.investTime,
+        temp.loanId,
+        temp.rewardAmount,
+        temp.rewardTime,
+        temp.referrerLoginName,
+        temp.role_name,
+        temp.status,
+        temp.investName,
+        temp.referrerName,
+        rr.`level`
+        FROM
+        referrer_relation rr right
+        JOIN
+        (SELECT
+        i.`login_name` AS investLoginName,
+        i.`amount` AS investAmount,
+        i.`created_time` AS investTime,
+        i.`loan_id` AS loanId,
+        i.investName,
+        irr.`amount` AS rewardAmount,
+        irr.`created_time` AS rewardTime,
+        irr.`referrer_login_name` AS referrerLoginName,
+        irr.`referrer_role` as role_name,
+        irr.`status`,
+        irr.referrerName
+        FROM
+        (SELECT
+        a.*,
+        b.`user_name` AS referrerName
+        FROM
+        invest_referrer_reward a
+        LEFT JOIN account b
+        ON a.`referrer_login_name` = b.`login_name`
+        <where>
+            <if test="referrerLoginName != null and referrerLoginName != ''">
+                a.`referrer_login_name` = #{referrerLoginName}
+            </if>
+            <if test="rewardStartTime != null">
+                AND a.`created_time` >= #{rewardStartTime}
+            </if>
+            <if test="rewardEndTime != null">
+                <![CDATA[ AND a.`created_time` <= #{rewardEndTime} ]]>
+            </if>
+            <if test="role != null and role.name() == 'STAFF'">
+                AND a.`referrer_role` = #{role}
+            </if>
+            <if test="role != null and role.name() != 'STAFF'">
+                AND a.`referrer_role` != 'STAFF'
+            </if>
+        </where>
+        ) irr
+        JOIN
+        (SELECT
+        m.*,
+        n.`user_name` AS investName
+        FROM
+        invest m
+        LEFT JOIN account n
+        ON m.`login_name` = n.`login_name`
+        <where>
+            <if test="investLoginName != null and investLoginName != ''">
+                m.`login_name` = #{investLoginName}
+            </if>
+            <if test="investStartTime != null">
+                AND m.`created_time` >= #{investStartTime}
+            </if>
+            <if test="investEndTime != null">
+                <![CDATA[ AND m.`created_time` <= #{investEndTime} ]]>
+            </if>
+            <if test="source != null">
+                AND m.`source` = #{source}
+            </if>
+        </where>
+        AND m.`status` = 'SUCCESS') i
+        ON irr.`invest_id` = i.`id`) temp
+        ON rr.`login_name` = temp.investLoginName
+        AND rr.`referrer_login_name` = temp.referrerLoginName
+        <where>
+            <if test="level != null">
+                rr.`level` = #{level}
+            </if>
+        </where>
+        ) n
+        JOIN loan l
+        ON n.loanId = l.`id`
+        AND l.`status` IN ('REPAYING','OVERDUE','COMPLETE')
+    </select>
+
+    <select id="findReferrerManageRewardAmountSum" parameterType="map" resultType="long">
+        SELECT
+          IFNULL(sum(rewardAmount),0) as reward_amount
+        FROM
+        (SELECT
+        temp.investLoginName,
+        temp.investAmount,
+        temp.investTime,
+        temp.loanId,
+        temp.rewardAmount,
+        temp.rewardTime,
+        temp.referrerLoginName,
+        temp.role_name,
+        temp.status,
+        temp.investName,
+        temp.referrerName,
+        rr.`level`
+        FROM
+        referrer_relation rr right
+        JOIN
+        (SELECT
+        i.`login_name` AS investLoginName,
+        i.`amount` AS investAmount,
+        i.`created_time` AS investTime,
+        i.`loan_id` AS loanId,
+        i.investName,
+        irr.`amount` AS rewardAmount,
+        irr.`created_time` AS rewardTime,
+        irr.`referrer_login_name` AS referrerLoginName,
+        irr.`referrer_role` as role_name,
+        irr.`status`,
+        irr.referrerName
+        FROM
+        (SELECT
+        a.*,
+        b.`user_name` AS referrerName
+        FROM
+        invest_referrer_reward a
+        LEFT JOIN account b
+        ON a.`referrer_login_name` = b.`login_name`
+        <where>
+            <if test="referrerLoginName != null and referrerLoginName != ''">
+                a.`referrer_login_name` = #{referrerLoginName}
+            </if>
+            <if test="rewardStartTime != null">
+                AND a.`created_time` >= #{rewardStartTime}
+            </if>
+            <if test="rewardEndTime != null">
+                <![CDATA[ AND a.`created_time` <= #{rewardEndTime} ]]>
+            </if>
+            <if test="role != null and role.name() == 'STAFF'">
+                AND a.`referrer_role` = #{role}
+            </if>
+            <if test="role != null and role.name() != 'STAFF'">
+                AND a.`referrer_role` != 'STAFF'
+            </if>
+        </where>
+        ) irr
+        JOIN
+        (SELECT
+        m.*,
+        n.`user_name` AS investName
+        FROM
+        invest m
+        LEFT JOIN account n
+        ON m.`login_name` = n.`login_name`
+        <where>
+            <if test="investLoginName != null and investLoginName != ''">
+                m.`login_name` = #{investLoginName}
+            </if>
+            <if test="investStartTime != null">
+                AND m.`created_time` >= #{investStartTime}
+            </if>
+            <if test="investEndTime != null">
+                <![CDATA[ AND m.`created_time` <= #{investEndTime} ]]>
+            </if>
+            <if test="source != null">
+                AND m.`source` = #{source}
+            </if>
+        </where>
+        AND m.`status` = 'SUCCESS') i
+        ON irr.`invest_id` = i.`id`) temp
+        ON rr.`login_name` = temp.investLoginName
+        AND rr.`referrer_login_name` = temp.referrerLoginName
+        <where>
+            <if test="level != null">
+                rr.`level` = #{level}
+            </if>
+        </where>
+        ) n
+        JOIN loan l
+        ON n.loanId = l.`id`
+        AND l.`status` IN ('REPAYING','OVERDUE','COMPLETE')
+    </select>
+
+    <resultMap id="referUserMap" type="ReferrerRelationView">
+        <result column="login_name" property="loginName"></result>
+        <result column="level" property="level"></result>
+        <result column="register_time" property="registerTime"></result>
+    </resultMap>
+
+    <select id="findReferRelationList" parameterType="map" resultMap="referUserMap" >
+        SELECT
+            rr.login_name,
+            rr.level,
+            u.register_time
+        FROM
+            referrer_relation rr
+        LEFT JOIN user u
+            on rr.login_name = u.login_name
+        <where>
+            <if test="level != null and level != ''">
+                <![CDATA[ rr.level <= #{level} ]]>
+            </if>
+            <if test="referrerLoginName != null and referrerLoginName != ''">
+                and rr.referrer_login_name = #{referrerLoginName}
+            </if>
+            <if test="loginName != null and loginName != ''">
+                and rr.login_name = #{loginName}
+            </if>
+            <if test="referStartTime != null">
+                <![CDATA[ and u.`register_time` >= #{referStartTime} ]]>
+            </if>
+            <if test="referEndTime != null">
+                <![CDATA[ and u.`register_time` <= #{referEndTime} ]]>
+            </if>
+        </where>
+        ORDER BY u.register_time DESC limit #{startLimit}, #{endLimit}
+    </select>
+
+
+    <select id="findReferRelationCount" parameterType="map" resultType="int" >
+        SELECT
+            count(rr.referrer_login_name)
+        FROM
+            referrer_relation rr
+        LEFT JOIN user u
+            on rr.login_name = u.login_name
+        <where>
+            <if test="level != null and level != ''">
+                <![CDATA[ rr.level <= #{level} ]]>
+            </if>
+            <if test="referrerLoginName != null and referrerLoginName != ''">
+                and rr.referrer_login_name = #{referrerLoginName}
+            </if>
+            <if test="loginName != null and loginName != ''">
+                and rr.login_name = #{loginName}
+            </if>
+            <if test="referStartTime != null">
+                <![CDATA[ and u.`register_time` >= #{referStartTime} ]]>
+            </if>
+            <if test="referEndTime != null">
+                <![CDATA[ and u.`register_time` <= #{referEndTime} ]]>
+            </if>
+        </where>
+    </select>
+
+
+    <select id="findReferInvestList" parameterType="map" resultMap="referrerManageMap" >
+        select
+            i.loan_id AS loan_id,
+            i.login_name AS invest_name,
+            rr.level,
+            l.name AS loan_name,
+            i.amount AS invest_amount,
+            l.periods,
+            i.created_time AS invest_time,
+            irr.amount AS reward_amount,
+            irr.created_time AS reward_time,
+            l.product_type AS product_type
+        from
+            invest_referrer_reward irr
+        left join invest i
+            on i.id = irr.invest_id
+        left join loan l
+            on l.id = i.loan_id
+        left join referrer_relation rr
+            on rr.login_name = i.login_name
+            and rr.referrer_login_name = irr.referrer_login_name
+        <where>
+            <if test="referrerLoginName != null and referrerLoginName != ''" >
+                irr.referrer_login_name = #{referrerLoginName}
+            </if>
+            <if test="loginName != null and loginName != ''" >
+                and i.login_name=#{loginName}
+            </if>
+            <if test="level != null and level != ''">
+                <![CDATA[ and (rr.level <= #{level} or rr.level is null) ]]>
+            </if>
+            <if test="investStartTime != null">
+                <![CDATA[ and i.`created_time` >= #{investStartTime} ]]>
+            </if>
+            <if test="investEndTime != null">
+                <![CDATA[ and i.`created_time` <= #{investEndTime} ]]>
+            </if>
+        </where>
+        ORDER BY invest_time DESC limit #{startLimit}, #{endLimit}
+    </select>
+
+    <select id="findReferInvestCount" parameterType="map" resultType="int" >
+        select
+            COUNT(1)
+        from
+            invest_referrer_reward irr
+        left join invest i
+            on i.id = irr.invest_id
+        left join loan l
+            on l.id = i.loan_id
+        left join referrer_relation rr
+            on rr.login_name = i.login_name
+            and rr.referrer_login_name = irr.referrer_login_name
+        <where>
+            <if test="referrerLoginName != null and referrerLoginName != ''" >
+                irr.referrer_login_name = #{referrerLoginName}
+            </if>
+            <if test="loginName != null and loginName != ''" >
+                and i.login_name=#{loginName}
+            </if>
+            <if test="level != null and level != ''">
+                <![CDATA[ and (rr.level <= #{level} or rr.level is null) ]]>
+            </if>
+            <if test="investStartTime != null">
+                <![CDATA[ and i.`created_time` >= #{investStartTime} ]]>
+            </if>
+            <if test="investEndTime != null">
+                <![CDATA[ and i.`created_time` <= #{investEndTime} ]]>
+            </if>
+        </where>
+    </select>
+
+    <select id="findReferInvestTotalAmount" parameterType="map" resultType="java.lang.Long" >
+        select
+            IFNULL(sum(irr.amount),0)
+        from
+            invest_referrer_reward irr
+        left join invest i
+            on i.id = irr.invest_id
+        left join loan l
+            on l.id = i.loan_id
+        left join referrer_relation rr
+            on rr.login_name = i.login_name
+            and rr.referrer_login_name = irr.referrer_login_name
+        <where>
+            <if test="referrerLoginName != null and referrerLoginName != ''" >
+                irr.referrer_login_name = #{referrerLoginName}
+            </if>
+            <if test="loginName != null and loginName != ''" >
+                and i.login_name=#{loginName}
+            </if>
+            <if test="level != null and level != ''">
+                <![CDATA[ and (rr.level <= #{level} or rr.level is null) ]]>
+            </if>
+            <if test="investStartTime != null">
+                <![CDATA[ and i.`created_time` >= #{investStartTime} ]]>
+            </if>
+            <if test="investEndTime != null">
+                <![CDATA[ and i.`created_time` <= #{investEndTime} ]]>
+            </if>
+        </where>
+    </select>
+</mapper>

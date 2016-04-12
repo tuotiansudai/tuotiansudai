@@ -1,0 +1,249 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+<f:metadata>
+		<f:viewParam name="referee"
+			value="#{userList.example.referrer}"></f:viewParam>
+	</f:metadata>
+
+    <ui:define name="content">
+    
+    <div class="entry">
+    	<p:toolbar>
+            <p:toolbarGroup>
+	            <h:outputLabel style="padding-left: 15px;" value="#{commonMsg.currentPositionLabel}#{userMsg.userManagerLabel}"></h:outputLabel>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+	            <p:separator />  
+	            <p:button value="#{userMsg.addUserLabel}" outcome="/admin/user/addUser"></p:button>
+            </p:toolbarGroup>
+        </p:toolbar>
+        
+        <h:form id="form"> 
+        	<p:spacer></p:spacer> 
+                <p:panel id="filters">
+                    <p:inputText id="searchId" value="#{userList.example.id}"></p:inputText>
+                    <p:inputText id="searchTitle" value="#{userList.example.username}"></p:inputText>
+                    <p:calendar id="registerTimeStart" value="#{userList.registerTimeStart}" 
+                    	pattern="yyyy-MM-dd HH:mm:ss" navigator="true" showButtonPanel="true"></p:calendar>
+                    <p:calendar id="registerTimeEnd" value="#{userList.registerTimeEnd}"
+                    	pattern="yyyy-MM-dd HH:mm:ss" navigator="true" showButtonPanel="true"></p:calendar>
+                    <h:selectOneMenu value="#{userList.example.roles[0].id}">
+                        <f:selectItem itemValue="" itemLabel=" -- 请选择角色 -- " />
+                        <f:selectItems value="#{roleList.allResultList}"
+                                       var="role" itemLabel="#{role.name}" itemValue="#{role.id}" />
+                    </h:selectOneMenu>
+                    <br/>
+                    <p:inputText id="mobileNumber" value="#{userList.example.mobileNumber}"></p:inputText>
+                    <p:inputText id="email" value="#{userList.example.email}"></p:inputText>
+					<p:inputText id="fromWhere" value="#{userList.example.referrer}"></p:inputText>
+                    <h:selectOneMenu value="#{userList.example.source}" style="width:135px;">
+                        <f:selectItem itemLabel="请选择来源" itemValue=""/>
+                        <f:selectItem itemLabel="WEB" itemValue="WEB"/>
+                        <f:selectItem itemLabel="IOS" itemValue="IOS"/>
+                        <f:selectItem itemLabel="ANDROID" itemValue="ANDROID"/>
+                    </h:selectOneMenu>
+                    <h:selectOneMenu value="#{userList.example.channel}">
+                        <f:selectItem itemValue="" itemLabel=" -- 请选择渠道 -- " />
+                        <f:selectItems value="#{userList.allChannelList}" />
+                    </h:selectOneMenu>
+                    <p:commandButton update="dataTable" process="filters"
+                        value="#{commonMsg.searchLabel}"></p:commandButton>
+                    <p:button value="#{commonMsg.resetLabel}" onclick="location.reload();return;"></p:button>
+                </p:panel>
+                <p:watermark for="searchId" value="#{commonMsg.IDLabel}" />  
+                <p:watermark for="searchTitle" value="#{userMsg.username}"></p:watermark>
+                <p:watermark for="registerTimeStart" value="注册时间&gt;="></p:watermark>
+                <p:watermark for="registerTimeEnd" value="=&lt;注册时间"></p:watermark>
+                <p:watermark for="mobileNumber" value="手机号码"></p:watermark>
+                <p:watermark for="email" value="邮箱"></p:watermark>
+             	<p:watermark for="fromWhere" value="推荐人"></p:watermark>
+            <p:spacer></p:spacer> 
+
+            <p:dataTable lazy="true" id="dataTable" value="#{userList.lazyModel}" var="user" 
+                paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="15,50,100"
+                rowStyleClass="#{user.status != '1'?'disable':''}" sortBy="user.registerTime" sortOrder="descending"
+                currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+                paginatorTemplate="#{commonMsg.paginatorTemplate}"
+                emptyMessage="#{commonMsg.noResultMsg}" selection="#{userList.selectedUsers}">
+                
+                <p:column selectionMode="multiple" style="width:18px" exportable="false"/> 
+                 
+                <p:column sortBy="user.id">
+                	<f:facet name="header">
+                		<h:outputText value="#{commonMsg.IDLabel}"></h:outputText>
+                	</f:facet>
+                    <h:outputText  value="#{user.id}"></h:outputText>
+                </p:column>
+                <p:column>
+                	<f:facet name="header">
+                		<h:outputText value="#{userMsg.username}"></h:outputText>
+                	</f:facet>
+                    <h:outputText  value="#{user.username}"></h:outputText>
+                </p:column>
+                <p:column>
+                	<f:facet name="header">
+                		<h:outputText value="#{userMsg.realname}"></h:outputText>
+                	</f:facet>
+                    <h:outputText  value="#{user.realname}"></h:outputText>
+                </p:column>
+                <p:column>
+                	<f:facet name="header">
+                		<h:outputText value="#{userMsg.sex}"></h:outputText>
+                	</f:facet>
+                    <h:outputText value="#{dictUtil.getValue('user_sex',user.sex)}"/>
+                </p:column>
+                <p:column>
+                	<f:facet name="header">
+                		<h:outputText value="手机号码"></h:outputText>
+                	</f:facet>
+                    <h:outputText value="#{user.mobileNumber}"></h:outputText>
+                </p:column>
+                <p:column>
+                	<f:facet name="header">
+                		<h:outputText value="#{userMsg.email}"></h:outputText>
+                	</f:facet>
+                    <h:outputText  value="#{user.email}"></h:outputText>
+                </p:column>
+<!--                 <ui:param name="refers" value="#{motionTrackingList.getMotionTrackingsByWhoFromType(user.id, 'referee')}"></ui:param> -->
+                <p:column>
+                	<f:facet name="header">
+                		<h:outputText value="推荐人"></h:outputText>
+                	</f:facet>
+                    <h:outputText value="#{user.referrer}"></h:outputText>
+                </p:column>
+                <p:column sortBy="user.registerTime">
+                	<f:facet name="header">
+                		<h:outputText value="#{userMsg.registerTime}"></h:outputText>
+                	</f:facet>
+                    <h:outputText value="#{user.registerTime}">
+                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8"/>
+                    </h:outputText>
+                </p:column>
+                 <p:column>
+                	<f:facet name="header">
+                		<h:outputText value="角色"></h:outputText>
+                	</f:facet>
+					<ui:repeat var="role" value="#{user.roles}">
+               			<h:outputText value="#{role.name}"></h:outputText>&#160;
+               		</ui:repeat>
+                </p:column>
+                <p:column >
+                    <f:facet name="header">
+                        <h:outputText value="来源" />
+                    </f:facet>
+                    <h:outputText value="#{user.source}"></h:outputText>
+                </p:column>
+                <p:column >
+                    <f:facet name="header">
+                        <h:outputText value="渠道" />
+                    </f:facet>
+                    <h:outputText value="#{user.channel}"></h:outputText>
+                </p:column>
+                <p:column>
+                	<f:facet name="header">
+                		<h:outputText value="#{userMsg.status}"></h:outputText>
+                	</f:facet>
+                    <h:outputText value="#{userMsg.stautsEnable}" rendered="#{user.status == '1'}"></h:outputText>
+                    <h:outputText style="color:red;" value="#{userMsg.stautsDisable}" rendered="#{user.status == '0'}"></h:outputText>
+                </p:column>
+                <p:column headerText="#{commonMsg.actionLabel}" exportable="false">
+                    <sec:ifAllGranted roles="USER_EDIT">
+                    <h:link value="#{commonMsg.editLabel}" outcome="/admin/user/userEdit?id=#{user.id}"></h:link> |
+                    <p:commandLink actionListener="#{userHome.forbid(user.id)}" onstart="return confirm('确认禁用该用户吗？');"  update="dataTable"
+						value="#{userMsg.forbidLabel}" rendered="#{user.status == '1'}" process="@this">
+                    </p:commandLink>
+                     <p:commandLink actionListener="#{userHome.release(user.id)}" onstart="return confirm('确认解禁该用户吗？');" update="dataTable"
+						value="#{userMsg.releaseLabel}" rendered="#{user.status == '0'}" process="@this">
+                    </p:commandLink>
+<!--                     <ui:fragment rendered="#{not empty user.borrowerInfo}"> -->
+<!--                         |<h:link value=" 审核" outcome="/admin/verify/verifyLoaner?id=#{user.id}"></h:link> -->
+<!--                     </ui:fragment> -->
+                    </sec:ifAllGranted>
+                </p:column>
+                 <f:facet name="footer"> 
+ 		            <p:commandButton type="button" id="multiViewButton"
+ 		            	value="发送站内信" icon="ui-icon-mail-open"> 
+ 		            	<p:ajax listener="#{userList.getSelectedUsers}" update=":form:sendMessageDlg" oncomplete="sendMessageDialog.show()"></p:ajax>
+ 		            </p:commandButton> 
+ 		            
+					<!-- 这里弹出dialog吧，然后让他填写发信内容，然后按钮点击发送。 -->
+					<p:commandButton type="button" id="emailViewButton"
+ 		            	value="发送邮件" icon="ui-icon-mail-open"> 
+ 		            	<p:ajax listener="#{userList.getSelectedUsers}" update=":form:sendEmailDlg" oncomplete="sendEmailDialog.show()"></p:ajax>
+ 		            </p:commandButton> 
+ 		            
+					<p:commandButton value="导出Excel" ajax="false">
+						<p:dataExporter target="dataTable" type="xls" fileName="users" pageOnly="false"></p:dataExporter>
+					</p:commandButton>
+ 		        </f:facet> 
+            </p:dataTable>
+            <p:confirmDialog width="500" id="confirmDialog" widgetVar="confirmDialog" severity="alert" header="#{commonMsg.confirmForbid}" message="#{userMsg.forbidUserInfo}">
+<!--                 <h:inputHidden value="#{userHome.forbidId}" id="forbidId"></h:inputHidden> -->
+                    <p:commandButton id="confirm" value="#{commonMsg.confirmLabel}" process="@this" actionListener="#{userHome.forbid}" oncomplete="confirmDialog.hide()" update="dataTable" style="margin-left:180px;" />  
+                    <p:commandButton id="decline" value="#{commonMsg.cancelLabel}" onclick="confirmDialog.hide()" type="button" />
+            </p:confirmDialog>
+            <p:confirmDialog width="500" id="confirmDialog1" widgetVar="confirmDialog1" severity="alert" header="#{commonMsg.confirmRelease}" message="#{userMsg.releaseUserInfo}">
+<!--                 <h:inputHidden value="#{userHome.releaseId}" id="releaseId"></h:inputHidden> -->
+                    <p:commandButton id="confirm1" value="#{commonMsg.confirmLabel}" process="confirmDialog1" actionListener="#{userHome.release}" oncomplete="confirmDialog1.hide()" update="dataTable" style="margin-left:180px;" />  
+                    <p:commandButton id="decline1" value="#{commonMsg.cancelLabel}" onclick="confirmDialog1.hide()" type="button" />
+            </p:confirmDialog>
+            <script type="text/javascript">  
+       		   //<![CDATA[.......
+			    function handleLoginRequest(xhr, status, args) {  
+			        if(!args.validationFailed && args.sendSuccess) {  
+			        	sendMessageDialog.hide();
+			        } else {  
+			          	jQuery('#form\\:sendMessageDlg').effect("shake", { times:3 }, 100);  
+			        }
+			    }
+       		   
+			    function handleLoginRequest_Email(xhr, status, args) {  
+			        if(!args.validationFailed && args.sendSuccess) {  
+			        	sendEmailDialog.hide();
+			        } else {  
+			          	jQuery('#form\\:sendEmailDlg').effect("shake", { times:3 }, 100);  
+			        }
+			    }
+			    //]]> 
+			</script>  
+        
+         <p:dialog id="sendMessageDlg" header="发送站内信" widgetVar="sendMessageDialog" modal="true">
+            	<h:panelGrid columns="2">
+            		<h:outputLabel value="标题："></h:outputLabel>
+            		<h:inputText value="#{userList.title}" style="width: 280px;" label="站内信标题"></h:inputText>
+
+            		<h:outputLabel value="内容："></h:outputLabel>
+            		<h:inputTextarea value="#{userList.message}" style="width: 280px;margin: 0" cols="30" rows="5" label="站内信内容"></h:inputTextarea>
+            		
+            		<p:commandButton value="发送" actionListener="#{userList.sendMessageToSelectedUsers}" oncomplete="handleLoginRequest(xhr, status, args)"></p:commandButton>
+            	</h:panelGrid>
+            </p:dialog>
+            
+             <!-- 发送邮件 -->
+            <p:dialog id="sendEmailDlg" header="发送邮件" widgetVar="sendEmailDialog" modal="true">
+            	<h:panelGrid columns="2">
+            		<h:outputLabel value="标题："></h:outputLabel>
+            		<h:inputText value="#{userList.emailTitle}" style="width: 795px;" label="邮件标题"></h:inputText>
+
+            		<h:outputLabel value="内容："></h:outputLabel>
+            		<h:inputTextarea value="#{userList.emailContent}" id="sendemailContent" label="邮件内容" style="width: 800px;"></h:inputTextarea>
+            		<script type="text/javascript">
+						var ue = new UE.ui.Editor({autoHeightEnabled: false,initialFrameHeight:320,zIndex:2000});
+						ue.render('form:sendemailContent');
+					</script>
+            		<p:commandButton value="发送" actionListener="#{userList.sendEmailToSelectedUsers}" oncomplete="handleLoginRequest_Email(xhr, status, args)"></p:commandButton>
+            	</h:panelGrid>
+            </p:dialog>
+            </h:form>
+      </div>
+    </ui:define> 
+</ui:composition>

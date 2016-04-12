@@ -1,0 +1,56 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<h:head>
+		<style>
+			body { background-color: #F7F7F7; font-size: 12px;}
+			.loginPanel { width: 500px; margin: 0 auto; margin-top: 180px;}
+			#verifyCode { vertical-align: middle;}
+		</style>
+
+		<link href="#{request.contextPath}/include/css/admin.css" type="text/css" rel="stylesheet" />
+	</h:head>
+
+	<form action="#{request.contextPath}/admin-login" method="post" id="user-login-form" accept-charset="UTF-8">
+	<p:panel header="用户登录" id="loginPanel" styleClass="loginPanel">
+		<ui:fragment
+			rendered="#{ not empty requestScope['SPRING_SECURITY_LAST_EXCEPTION'] and requestScope['SPRING_SECURITY_LAST_EXCEPTION'].message ne 'Authentication method not supported: GET'}">
+			<script>
+				$(function(){
+					growl.renderMessage({summary:'错误', detail:'#{requestScope['SPRING_SECURITY_LAST_EXCEPTION'].message}', severity: 'error'});            	
+				});
+			</script>
+		</ui:fragment>
+		<ui:fragment rendered="#{not empty request.getParameter('spring-security-redirect')}">
+			<input type="hidden" name="spring-security-redirect" value="#{request.getParameter('spring-security-redirect')}"></input>
+		</ui:fragment>
+		<h:panelGrid columns="2">
+			<h:outputLabel value="用户名"></h:outputLabel>
+			<p:inputText label="用户名" id="j_username" required="true"></p:inputText>
+
+			<h:outputLabel value="密码"></h:outputLabel>
+			<p:password id="j_password"></p:password>
+			<h:outputLabel value="验证码" rendered="#{sessionScope.need_validate_code or configHome.getConfigValue('login_fail_max_times') eq '0'}"></h:outputLabel>
+			<h:outputLabel rendered="#{sessionScope.need_validate_code or configHome.getConfigValue('login_fail_max_times') eq '0'}">
+				<p:inputText id="captcha_input" style="width:60px;"></p:inputText>
+				<img alt="点击刷新" id="verifyCode" src="#{request.contextPath}/verifyCodeServlet" onclick="this.src='#{request.contextPath}/verifyCodeServlet?'+new Date().getTime()" />
+			</h:outputLabel>
+
+			<p:spacer></p:spacer>
+			<p:outputPanel>
+				<p:commandButton value="登录" onclick="submit();"></p:commandButton>
+			</p:outputPanel>
+		</h:panelGrid>
+		<div class="login-logo">
+			<img src="#{request.contextPath}/include/images/admin/login-logo.jpg" style="width:240px;height:70px;" />
+		</div>
+		<div class="clear"></div>
+		<f:facet name="footer">
+				(c) Copyright Archer Development team. 2010-2015.  All rights reserved.
+		</f:facet>
+	</p:panel>
+	</form>
+
+</f:view>

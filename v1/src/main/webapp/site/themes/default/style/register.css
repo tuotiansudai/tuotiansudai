@@ -1,0 +1,80 @@
+*{margin:0px; padding:0px;}
+a{ color:#000; text-decoration:none;}
+.mask_phone_modify{width:100%;background:rgba(0,0,0,.6); position:fixed; left:0px; top:0px; font-family:"Microsoft yahei";display:none; font-size:14px; }
+.main_phone_modify{width:650px; height:300px; background:#fff; margin:100px auto; position:relative; display: none;z-index: 999;}
+.mask_phone_modify small{ font-style:normal; line-height:70px; padding-left:40px;  font-size:14px;}
+.mask_phone_modify div.phone{ height:40px; line-height:40px;  padding-left:40px;}
+.mask_phone_modify div.phone em { margin-left:16px;  width:160px; line-height:38px; border:0px; font-style: normal;}
+.mask_phone_modify p{ margin-top:12px;}
+.mask_phone_modify p input{ margin-left: 16px; width:130px; line-height: 38px; }
+.mask_phone_modify a{ display:block;  width:120px; height:50px; line-height:50px; text-align:center; color:#fff; background:#c00;  margin-top:70px; border-radius:5px; margin-left:120px;}
+.login_txt_captcha{
+	width: 259px;
+	height: 40px;
+	line-height: 42px;
+	border: 1px solid #d9d9d9;
+	margin-bottom: 15px;
+	background: url(../images/img50.png) left center no-repeat;
+	padding-left: 57px;
+	font-size: 14px;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	float: none;
+}
+
+.login_txt03_captcha {
+	padding-left:60px;
+}
+
+
+.hqyzm_captcha {
+	color: #fff;
+	background: #C50907;
+	font-size: 14px;
+	font-weight: bold;
+	margin-left: 10px;
+	border:0px;
+	border-radius:6px;
+}
+.imageCaptchaClass{
+	margin-left:5px; height:40px;
+}
+.changeNumber{
+	color:blue; padding-left:46px; text-decoration: underline; cursor: pointer;
+}
+
+.login_btn_next_step {
+	display: block;
+	width: 185px;
+	height: 47px;
+	background: #C50907;
+	line-height: 47px;
+	text-align: center;
+	font-size: 16px;
+	font-weight: bold;
+	color: #fff;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	margin-top: 10px;
+	margin-bottom: 15px;
+	border:none;
+}
+.mobileNumberClass{
+	float:none;
+	margin-left: 14px;
+	width:132px;
+	pointer-events: none;
+	border:0px;
+}
+
+.mobileNumberReadOnly{
+	width:133px;
+	height:40px;
+	border:#d9d9d9 1px solid;
+	border-radius:5px;
+	pointer-ecents:none;
+	float:none;
+	margin-left:14px;
+}

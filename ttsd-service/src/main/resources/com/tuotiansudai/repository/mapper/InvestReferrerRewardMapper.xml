@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.InvestReferrerRewardMapper">
+
+    <resultMap id="investReferrerRewardModelResultMap" type="InvestReferrerRewardModel">
+        <result column="id" property="id"/>
+        <result column="invest_id" property="investId"/>
+        <result column="amount" property="amount"/>
+        <result column="referrer_login_name" property="referrerLoginName"/>
+        <result column="referrer_role" property="referrerRole"/>
+        <result column="status" property="status"/>
+        <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+    <insert id="create" parameterType="InvestReferrerRewardModel">
+        insert into invest_referrer_reward(id, invest_id, amount, referrer_login_name, referrer_role, status, created_time)
+        values(#{id}, #{investId}, #{amount}, #{referrerLoginName}, #{referrerRole}, #{status}, #{createdTime})
+    </insert>
+
+    <select id="findById" parameterType="long" resultMap="investReferrerRewardModelResultMap">
+        select * from invest_referrer_reward where id = #{id}
+    </select>
+
+    <select id="findByInvestIdAndReferrer" parameterType="map" resultMap="investReferrerRewardModelResultMap">
+        select * from invest_referrer_reward where invest_id = #{investId} and referrer_login_name = #{referrerLoginName}
+    </select>
+
+</mapper>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.AuditLogMapper">
+
+    <resultMap id="auditLogModelResultMap" type="AuditLogModel">
+        <id column="id" property="id"></id>
+        <result column="auditor_login_name" property="auditorLoginName"></result>
+        <result column="operator_login_name" property="operatorLoginName"></result>
+        <result column="target_id" property="targetId"></result>
+        <result column="operation_type" property="operationType"></result>
+        <result column="ip" property="ip"></result>
+        <result column="operation_time" property="operationTime"></result>
+        <result column="description" property="description"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="AuditLogModel">
+        insert into audit_log (auditor_login_name, operator_login_name, target_id, operation_type, ip, operation_time, description)
+        value(#{auditorLoginName}, #{operatorLoginName}, #{targetId}, #{operationType}, #{ip}, #{operationTime}, #{description})
+    </insert>
+
+    <select id="getPaginationData" parameterType="map" resultMap="auditLogModelResultMap">
+        select * from audit_log
+        <where>
+            <if test="operationType != null">
+                and operation_type = #{operationType}
+            </if>
+            <if test="targetId != null and targetId != ''">
+                and target_id = #{targetId}
+            </if>
+            <if test="operatorLoginName != null and operatorLoginName != ''">
+                and operator_login_name = #{operatorLoginName}
+            </if>
+            <if test="auditorLoginName != null and auditorLoginName != ''">
+                and auditor_login_name = #{auditorLoginName}
+            </if>
+            <if test="startTime != null &amp;&amp; endTime != null">
+                and operation_time between #{startTime} and #{endTime}
+            </if>
+        </where>
+        order by operation_time desc, id asc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="count" parameterType="map" resultType="long">
+        select count(1) from audit_log
+        <where>
+            <if test="operationType != null">
+                and operation_type = #{operationType}
+            </if>
+            <if test="targetId != null and targetId != ''">
+                and target_id = #{targetId}
+            </if>
+            <if test="operatorLoginName != null and operatorLoginName != ''">
+                and operator_login_name = #{operatorLoginName}
+            </if>
+            <if test="auditorLoginName != null and auditorLoginName != ''">
+                and auditor_login_name = #{auditorLoginName}
+            </if>
+            <if test="startTime != null &amp;&amp; endTime != null">
+                and operation_time between #{startTime} and #{endTime}
+            </if>
+        </where>
+    </select>
+
+</mapper>

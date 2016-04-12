@@ -1,0 +1,123 @@
+<ui:composition template="page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="content">
+
+		<link type="text/css" rel="stylesheet"
+			href="#{tplVars.themeStylePath}/he-zuo-jia-meng.css" />
+
+		<div class="banner02-div">
+			<div class="banner02-pic-div">
+				<img src="#{tplVars.themeImagePath}/hzjmbanner.jpg" />
+			</div>
+		</div>
+		<div class="main2">
+			<div class="box01">
+				<div class="box01_01">
+					<div class="words">
+						<div class="title">
+							<img src="#{tplVars.themeImagePath}/hzjm-img01.png" />加盟业务
+						</div>
+						<h3>融资业务</h3>
+						<p>小额抵押借款；车辆质押借款；房产抵押借款；商铺周转借款；企业短期借款；其他</p>
+						<h3>投资业务</h3>
+						<p>P2P投资；基金投资；信托投资；其他投资；</p>
+						<h3>同业居间业务</h3>
+						<p>银行居间业务；担保居间业务；投资居间业务；理财居间业务。其他居间业务；</p>
+					</div>
+				</div>
+			</div>
+			<div class="box01 bg">
+				<div class="box01_01 box01_02">
+					<div class="words words_right">
+						<div class="title">
+							<img src="#{tplVars.themeImagePath}/hzjm-img02.png" />加盟优势
+						</div>
+						<h3>雄厚的资金实力</h3>
+						<p>北京中汇凯天投资有限公司总部位于北京，管理了多支人民币基金。其集团公司天凯集团是一家集金融、贸易、生产、投资四大产业为主体的大型企业集团。集团公司实力雄厚，致力于构建扶持加盟商快速发展的优秀融资平台，为加盟商及客户提供一站式的中短期金融解决方案，集团旗下的小额贷款公司可为加盟商及客户提供贷款服务。</p>
+						<h3>广阔的行业前景</h3>
+						<p>蓬勃发展的民间金融行业孕育着巨大的市场空间，利润空间非传统行业可以比拟。从新36条到温州金融改革，国家对民间金融行业政策一路放宽，为行业为发展的提供了充足的法律保障。</p>
+						<h3>绝佳的运营模式</h3>
+						<p>民间金融行业属于轻资产、低投入、高盈利行业，无需厂房、过多人员、机器设备、库存等传统行业压力，以最小的成本撬动巨大市场，用别人的钱赚钱，减少了经营风险。</p>
+						<h3>加盟连锁的优势</h3>
+						<p>总部授予加盟商统一的品牌使用权，统一品牌；统一经营理念；统一业务部训；统一经营策略；统一视觉识别；统一业务产品；统一服务标准；统一聘用标准综合打造整店输出模式。</p>
+						<h3>强势的品牌战略</h3>
+						<p>总部拥有长期的战略规划，全力打造中汇凯天品牌，从软硬件上进行不断综合提升。</p>
+						<h3>完善的支持体系</h3>
+						<p>从品牌输出、培训到营销推广等十大支持体系，到位的“保姆式服务”，将为加盟店的运营打造最有效的保障。</p>
+						<h3>高效的运营管理经验</h3>
+						<p>总部多年丰富的运营管理经验，为加盟商进行完美的复制为加盟商长期提供上门指导服务，解决发展过程中遇到的问题，为加盟商的成长保驾护航。</p>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+			<div class="box01">
+				<div class="box01_01 box01_03">
+					<div class="words">
+						<div class="title">
+							<img src="#{tplVars.themeImagePath}/hzjm-img03.png" />服务支持
+						</div>
+						<h3>品牌支持</h3>
+						<p>总部导入统一的品牌形象，保证所有店面形象、格局设计到营销组织搭建的统一。</p>
+						<h3>培训支持</h3>
+						<p>为加盟商提供一系列专业、规范、系统、全面的培训支持和后续指导，帮助加盟商打造一支专业、战斗力强的服务和管理团队。</p>
+						<h3>开业支持</h3>
+						<p>总部安排副总经理以上人员并邀请行业知名人士亲临开业现场，协助制定详细的开业庆典方案，使加盟商能够利用开业契机快速提升知名度和影响力。</p>
+						<h3>开业支持</h3>
+						<p>总部安排副总经理以上人员并邀请行业知名人士亲临开业现场，协助制定详细的开业庆典方案，使加盟商能够利用开业契机快速提升知名度和影响力。</p>
+						<h3>运营管理支持</h3>
+						<p>完善的“人力支持”计划，多位顾问成员，为加盟商不定期的上门督导服务，随时帮助加盟商解决公司运营和管理中出现的问题。</p>
+						<h3>业务研发支持</h3>
+						<p>经营中不断推进新品的研发上市，并可根据市场状况量身定做特有的产品组合，以确保加盟商在市场差异化竞争中的优势。</p>
+						<h3>资金调配支持</h3>
+						<p>运用总部强大的信息交流平台，实现加盟商和总部之间及加盟商之间的借贷、理财信息的资源共享，以快速提升大额业务的成交量。</p>
+						<h3>营销推广支持</h3>
+						<p>加盟商可共享总部整体运营计划，同时总部也可根据加盟产自身状况，为加盟商量身定做可行的营销方案。</p>
+					</div>
+				</div>
+			</div>
+			<div class="box01 bg">
+				<div class="box01_01 box01_04">
+					<div class="words words_right">
+						<div class="title">
+							<img src="#{tplVars.themeImagePath}/hzjm-img04.png" />加盟条件
+						</div>
+						<br />
+						<p>认同中汇凯天理念，认可中汇凯天愿景规划需要；</p>
+						<br />
+						<p>从事投资咨询、企业投资服务、财务咨询、网络商务服务等的企业法人；</p>
+						<br />
+						<p>从事投资行业、有一定行业经验和实力的个人；</p>
+						<br />
+						<p>社会关系广、具有很强的行业业务开发能力的其他企业和个人；</p>
+						<br />
+						<p>个人加盟须于正式签定合同前一个月内注册企业法人，注册资本真实，不抽逃资本金；</p>
+						<br />
+						<p>接受中汇凯天平台经营理念，并认可平台愿景发展规划；</p>
+						<br />
+						<p>服从中汇凯天总部业务培训和业务指导，并同意于培训合格后上岗经营；</p>
+						<br />
+						<p>与总部签订加盟合同，独立承担风险；</p>
+						<br />
+						<p>按时足额缴纳加盟费。</p>
+						<br />
+						<p>加盟电话：400-087-5858</p>
+						<br />
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+
+</ui:composition>

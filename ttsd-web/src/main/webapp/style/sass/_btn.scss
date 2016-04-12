@@ -1,0 +1,213 @@
+@import 'variables';
+@mixin user-select($bool) {
+  -webkit-user-select: $bool;
+  -moz-user-select: $bool;
+  -ms-user-select: $bool;
+  user-select: $bool;
+}
+
+@mixin touch-action($action) {
+  -ms-touch-action: $action;
+  touch-action: $action;
+  //touch-action(manipulation)
+}
+
+.btn {
+  font: {
+    size: nth($fontSize, 3);
+    weight: normal;
+    family: $fontStack;
+  }
+  display: inline-block;
+  padding: 8px 35px;
+  margin-bottom: 0;
+  text-align: center;
+  letter-spacing: 3px;
+  line-height: 1.3;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  @include user-select(none);
+  @include touch-action(manipulation);
+  border: 1px solid nth($CK2,3);
+  border-radius: 4px;
+  background: #999 none;
+  color: #fff;
+  &:focus,
+  &:active:focus,
+  &.active:focus,
+  &.focus,
+  &:active.focus,
+  &.active.focus {
+    //outline: thin dotted;
+    //outline: 5px auto -webkit-focus-ring-color;
+    //outline-offset: -2px;
+  }
+  &:hover,
+  &:focus,
+  &.focus {
+    color: nth($btnColor, 1);
+    text-decoration: none;
+  }
+  &:active,
+  &.active {
+    background-image: none;
+    outline: 0;
+    //-webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+    //box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+  }
+  &:disabled, &:disabled:hover {
+    background: #ccc !important;
+    border:1px solid #ccc!important;
+    cursor: default;
+    color: #fff;
+  }
+}
+
+.btn-normal {
+  @extend .btn;
+  background: rgba(255,117,42,1);
+  border: 1px solid nth($CK1,3);
+  color: #fff!important;
+  &:hover {
+    background: rgba(255,117,42,0.8);
+  }
+  &:disabled, &:disabled:hover {
+    background: #ccc !important;
+    border:1px solid #ccc!important;
+    cursor: default;
+    color: #fff;
+  }
+}
+.btn-success {
+  @extend .btn;
+  background: rgba(244,105,22,1);
+  border: 1px solid nth($CK1,3);
+  color: #fff!important;
+  &:hover {
+    background: rgba(244,105,22,0.8);
+  }
+  &:disabled, &:disabled:hover {
+    background: #ccc;
+    border:1px solid #ccc;
+    cursor: default;
+  }
+}
+
+.btn-primary {
+  @extend .btn;
+  background: rgba(255,172,42,1);
+  border:1px solid rgba(255,172,42,1);
+  color: #fff!important;
+  &:hover {
+    background: rgba(255,172,42,0.8);
+    border:1px solid rgba(255,172,42,0.8);
+    color: #fff!important;
+  }
+}
+
+.btn-action {
+  @extend .btn;
+  background: rgba(85,190,229,1);
+  border:1px solid rgba(85,190,229,1);
+  color: #fff;
+  &:hover {
+    background: rgba(85,190,229,0.8);
+    border:1px solid rgba(85,190,229,0.8);
+  }
+}
+
+.btn-link {
+  @extend .btn;
+  font-weight: normal;
+  color: #337ab7;
+  border-radius: 0;
+}
+.btn-sm {
+  padding: 5px 10px;
+  font-size: nth($fontSize, 1);
+  line-height: nth($baseLineHeight, 2);
+  border-radius: 3px;
+}
+
+.btn-xs {
+  padding: 1px 5px;
+  font-size: nth($fontSize, 1);
+  line-height: nth($baseLineHeight, 2);
+  border-radius: 3px;
+}
+
+.btn-lg {
+  padding: 10px 16px;
+  font-size: nth($fontSize, 5);
+  line-height: nth($baseLineHeight, 2);
+  border-radius: 6px;
+}
+
+select {
+  vertical-align: middle;
+  background: none;
+  border: {
+    color: #ccc;
+    style: solid;
+    width: 1px;
+  }
+  color: nth($btnColor, 1);
+}
+
+input {
+  font-size: nth($fontSize, 3);
+  vertical-align: middle;
+  color: nth($btnColor, 2);
+  font-family: $fontStack;
+  padding: 6px;
+  border: 1px solid nth($btnColor, 3);
+  background: nth($baseColor, 1);
+}
+
+input[type="radio"] {
+  margin-right: 5px;
+}
+
+input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.input-control {
+  width: 200px;
+  border-radius: 4px;
+}
+
+.planSwitch {
+  input[type="radio"],
+  input[type="checkbox"] {
+    display: none;
+  }
+}
+
+label.radio {
+  display: inline-block;
+  cursor: pointer;
+  margin: 5px;
+  padding-left: 20px;
+  line-height: 17px;
+  background: url("/images/icons/spr.png") no-repeat 0 -209px;
+  &.checked {
+    background: url("/images/icons/spr.png") no-repeat 0 -233px;
+  }
+}
+
+label.checkbox {
+  display: inline-block;
+  cursor: pointer;
+  margin: 5px 0;
+  padding-left: 20px;
+  line-height: 17px;
+  background: url("/images/icons/spr.png") no-repeat 0 -258px;
+  &.checked {
+    background: url("/images/icons/spr.png") no-repeat 0 -284px;
+  }
+}
+
+
+

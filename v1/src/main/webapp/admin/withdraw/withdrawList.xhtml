@@ -1,0 +1,200 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	
+	<f:metadata>
+		<f:viewParam name="withdrawStatus" value="#{withdrawList.example.status}"></f:viewParam>
+	</f:metadata>
+
+	
+	<ui:define name="content">
+	
+		<div class="entry">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<h:outputLabel style="padding-left: 15px;"
+						value="#{commonMsg.currentPositionLabel} 提现列表"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<!-- 					<p:button value="#{linkMsg.addLabel}#{linkMsg.linkTypeLabel}" -->
+					<!-- 						outcome="/admin/link/linkTypeEdit"></p:button> -->
+				</p:toolbarGroup>
+			</p:toolbar>
+			<h:form id="form">
+				<p:spacer></p:spacer>
+				<p:panel id="filters">
+					<p:inputText id="searchId" value="#{withdrawList.example.id}"></p:inputText>
+
+					<p:inputText id="searchName"
+						value="#{withdrawList.example.user.username}"></p:inputText>
+					<p:calendar id="searchStartTime" value="#{withdrawList.startTime}"
+						pattern="yyyy-MM-dd HH:mm:ss" navigator="true" showButtonPanel="true"></p:calendar>
+					<p:calendar id="searchEndTime" value="#{withdrawList.endTime}"
+						pattern="yyyy-MM-dd HH:mm:ss" navigator="true" showButtonPanel="true"></p:calendar>
+					<h:selectOneMenu value="#{withdrawList.example.status}" style="width:135px;">
+                         <f:selectItem itemLabel="请选择提现状态" itemValue=""/> 
+                         <f:selectItem itemLabel="等待审核" itemValue="#{WithdrawStatus.WAIT_VERIFY}"/>
+                         <f:selectItem itemLabel="等待复核" itemValue="#{WithdrawStatus.RECHECK}"/>
+                         <f:selectItem itemLabel="通过" itemValue="#{WithdrawStatus.SUCCESS}"/>
+                         <f:selectItem itemLabel="未通过" itemValue="#{WithdrawStatus.VERIFY_FAIL}"/>
+
+                    </h:selectOneMenu>
+					<h:selectOneMenu value="#{withdrawList.example.source}" style="width:135px;">
+						<f:selectItem itemLabel="请选择来源" itemValue=""/>
+						<f:selectItem itemLabel="WEB" itemValue="WEB"/>
+						<f:selectItem itemLabel="IOS" itemValue="IOS"/>
+						<f:selectItem itemLabel="ANDROID" itemValue="ANDROID"/>
+					</h:selectOneMenu>
+					<p:commandButton process="filters" update="dataTable"
+						value="#{commonMsg.searchLabel}"></p:commandButton>
+				</p:panel>
+				<p:watermark for="searchId" value="#{commonMsg.IDLabel}" />
+				<p:watermark for="searchName" value="用户名"></p:watermark>
+				<p:watermark for="searchStartTime"  value="申请时间&gt;="></p:watermark>
+				<p:watermark for="searchEndTime" value="=&lt;申请时间"></p:watermark>
+				
+				<p:spacer></p:spacer>
+				<o:importConstants
+					type="com.esoft.archer.user.UserConstants.WithdrawStatus"
+					var="withdrawStatus" />
+
+				<p:dataTable id="dataTable" value="#{withdrawList.lazyModel}"
+					var="withdraw" paginator="true" paginatorPosition="bottom"
+					rows="15" lazy="true" emptyMessage="#{commonMsg.noResultMsg}" sortBy="time" sortOrder="descending"
+					currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+					paginatorTemplate="#{commonMsg.paginatorTemplate}">
+					<f:facet name="header">
+						合计提现金额：
+							<h:outputText value="#{withdrawList.getSumMoney()[0]}">
+								<f:convertNumber />
+							</h:outputText>
+						合计提现手续费：
+							<h:outputText value="#{withdrawList.getSumMoney()[1]}">
+								<f:convertNumber />
+							</h:outputText>
+					</f:facet>
+					
+					<p:column sortBy="id">
+						<f:facet name="header">
+							<h:outputText value="提现编号" />
+						</f:facet>
+						<h:outputText value="#{withdraw.id}">
+						</h:outputText>
+					</p:column>
+					<p:column sortBy="time">
+						<f:facet name="header">
+							<h:outputText value="申请时间" />
+						</f:facet>
+						<h:outputText value="#{withdraw.time}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+						</h:outputText>
+					</p:column>
+					<p:column sortBy="verifyTime">
+						<f:facet name="header">
+							<h:outputText value="初审时间" />
+						</f:facet>
+						<h:outputText value="#{withdraw.verifyTime}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+						</h:outputText>
+					</p:column>
+					<p:column sortBy="recheckTime">
+						<f:facet name="header">
+							<h:outputText value="复核时间" />
+						</f:facet>
+						<h:outputText value="#{withdraw.recheckTime}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+						</h:outputText>
+					</p:column>
+					<p:column sortBy="user.username">
+						<f:facet name="header">
+							<h:outputText value="用户名" />
+						</f:facet>
+						<h:outputText value="#{withdraw.user.username}"></h:outputText>
+					</p:column>
+					<p:column sortBy="user.realname">
+						<f:facet name="header">
+							<h:outputText value="真实姓名" />
+						</f:facet>
+						<h:outputText value="#{withdraw.user.realname}"></h:outputText>
+					</p:column>
+					<p:column sortBy="actualMoney" style="text-align:right;">
+						<f:facet name="header">
+							<h:outputText value="提现金额" />
+						</f:facet>
+						<h:outputText value="#{withdraw.money}"></h:outputText>
+					</p:column>
+					<p:column sortBy="fee" style="text-align:right;">
+						<f:facet name="header">
+							<h:outputText value="手续费" />
+						</f:facet>
+						<h:outputText value="#{withdraw.fee}"></h:outputText>
+					</p:column>
+
+<!-- 					<p:column sortBy="cashFine"> -->
+<!-- 						<f:facet name="header"> -->
+<!-- 							<h:outputText value="套现罚金" /> -->
+<!-- 						</f:facet> -->
+<!-- 						<h:outputText value="#{withdraw.cashFine}"></h:outputText> -->
+<!-- 					</p:column> -->
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="管理员提现" />
+						</f:facet>
+						<h:outputText value="是" rendered="#{withdraw.isWithdrawByAdmin}"></h:outputText>
+						<h:outputText value="否" rendered="#{not withdraw.isWithdrawByAdmin}"></h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="银行卡" />
+						</f:facet>
+						<h:outputText
+							value="#{withdraw.bankCard.bank}-#{withdraw.bankCard.name}-#{withdraw.bankCard.bankArea}-#{withdraw.bankCard.cardNo}"></h:outputText>
+					</p:column>
+
+					<p:column sortBy="status" style="width:60px">
+						<f:facet name="header">
+							<h:outputText value="状态" />
+						</f:facet>
+						<h:outputText value="#{dictUtil.getValue('withdraw',withdraw.status)}"></h:outputText>
+					</p:column>
+					<p:column  style="width:60px">
+						<f:facet name="header">
+							<h:outputText value="来源" />
+						</f:facet>
+						<h:outputText value="#{withdraw.source}"></h:outputText>
+					</p:column>
+					<!-- <p:column headerText="#{commonMsg.actionLabel}" exportable="false" style="width:40px;" rendered="#{configHome.getConfigValue('ipspay_enable') != '1'}">
+						<h:link value="审核"
+							rendered="#{withdraw.status == withdrawStatus.WAIT_VERIFY}"
+							outcome="/admin/withdraw/withdrawVerify?id=#{withdraw.id}"></h:link>
+						<h:link value="复核"
+							rendered="#{withdraw.status == withdrawStatus.RECHECK}"
+							outcome="/admin/withdraw/withdrawRecheck?id=#{withdraw.id}"></h:link>
+						<h:link value="查看"
+							rendered="#{withdraw.status == withdrawStatus.SUCCESS or withdraw.status == withdrawStatus.VERIFY_FAIL}"
+							outcome="/admin/withdraw/withdrawInfo?id=#{withdraw.id}"></h:link>
+					</p:column> -->
+					
+					<f:facet name="footer">
+						<p:commandButton value="导出Excel" ajax="false">  
+							<p:dataExporter type="xls" target="dataTable" pageOnly="false" fileName="withdrawList" />  
+						</p:commandButton>
+					</f:facet>
+				</p:dataTable>
+				  
+			</h:form>
+		</div>
+	</ui:define>
+
+</ui:composition>

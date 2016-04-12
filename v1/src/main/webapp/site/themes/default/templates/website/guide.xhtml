@@ -1,0 +1,63 @@
+<ui:composition template="../page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<ui:define name="content">
+		<link type="text/css" rel="stylesheet" href="#{tplVars.themeStylePath}/website.css" />
+		<script type="text/javascript" src="#{tplVars.themeJSPath}/slider.js"></script>
+
+		<div class="newguide_banner"></div>
+		<div class="content">
+			<h3>什么是拓天速贷？</h3>
+
+			<p>拓天速贷是基于互联网的金融信息服务平台，由拓天伟业（北京）资产管理有限公司旗下的拓天伟业（北京）金融信息服务有限公司运营。拓天速贷以透明、公平、高效为原则，为有资金需求的小微企业及有出借需求的个人提供规范、安全、专业的信息服务。拓天速贷秉承用心服务，诚信经营的经营理念，坚持以人为本，日事日毕，正道经营，共存共赢的管理理念，以安全、诚信、专业、创新、长远为核心价值观，坚持兴企安国的公司使命，拓天速贷将成为国内一流的互联网金融信息服务平台。</p>
+		</div>
+		<div class="contentA">
+			<p>
+				<img src="#{tplVars.themeImagePath}/guide_1.jpg" alt=""/>
+				<img src="#{tplVars.themeImagePath}/guide_2.jpg" alt=""/>
+			</p>
+		</div>
+		<div class="contentB">
+			<img src="#{tplVars.themeImagePath}/guide_3.jpg" alt=""/>
+			<img src="#{tplVars.themeImagePath}/guide_4.jpg" alt=""/>
+			<img src="#{tplVars.themeImagePath}/guide_5.jpg" alt=""/>
+		</div>
+		<div class="contentC">
+			<img src="#{tplVars.themeImagePath}/guide_6.jpg" alt=""/>
+			<img src="#{tplVars.themeImagePath}/guide_8.jpg" alt=""/>
+			<img src="#{tplVars.themeImagePath}/guide_7.jpg" alt=""/>
+		</div>
+		<div class="contentD">
+			<img src="#{tplVars.themeImagePath}/guide_9.jpg" alt=""/>
+			<img src="#{tplVars.themeImagePath}/guide_10.jpg" alt=""/>
+			<img src="#{tplVars.themeImagePath}/guide_11.jpg" alt=""/>
+			<img src="#{tplVars.themeImagePath}/guide_12.jpg" alt=""/>
+			<img src="#{tplVars.themeImagePath}/guide_13.jpg" alt=""/>
+		</div>
+		<div class="step">
+			<a href="javascript:;" class="prev"><img src="#{tplVars.themeImagePath}/prev.jpg" alt=""/> </a>
+			<a href="javascript:;" class="next"><img src="#{tplVars.themeImagePath}/next.jpg" alt=""/></a>
+			<ol>
+				<li class="active"><a href="javascript:;">第一步:注册</a></li>
+				<li><a href="javascript:;">第二步骤:实名认证</a></li>
+				<li><a href="javascript:;">第三步:充值</a></li>
+				<li class="m_0"><a href="javascript:;">第四步:投资</a></li>
+			</ol>
+			<ul>
+				<li><img src="#{tplVars.themeImagePath}/step1.jpg" alt=""/></li>
+				<li><img src="#{tplVars.themeImagePath}/step2.jpg" alt=""/></li>
+				<li><img src="#{tplVars.themeImagePath}/step3.jpg" alt=""/></li>
+				<li><img src="#{tplVars.themeImagePath}/step4.jpg" alt=""/></li>
+			</ul>
+			<p>进入我的账户>充值提现，充足您想要的投资金额</p>
+			<span><a href="/register">马上注册</a></span>
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,213 @@
+<ui:composition template="center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="activeCenterMenuUrl" value="/user/recharge"></ui:param>
+	<ui:define name="center_right">
+		<script>
+			//<![CDATA[
+			var mask_clientH=$(window).height();
+
+			function checkRecharge() {
+				var mask_clientH=$(window).height();
+				$('mask_modal').css('height',mask_clientH);
+				var flag = false;
+				var myselect = $(".zhcz_ul a.hover");
+				var regx = /^[1-9]\d*$/;
+				var money = $("#recharge\\:actualMoney").val();
+				if (!regx.test(money)) {
+					$.dialog.tips('请填写正确的整数金额!');
+				}
+				var isOpenFastPayment = document.getElementById("recharge:isOpenFastPayment");
+				if(isOpenFastPayment != null && isOpenFastPayment.checked && regx.test(money)){
+					flag = true;
+					$('.mask_modal').css('height',mask_clientH);
+					$('.mask_modal').css('display','block');
+					$('.mask_main').css('display','block');
+					return flag;
+				}
+				if (myselect.length < 1) {
+					$.dialog.tips('请选择充值方式!');
+				}
+
+				if ((myselect.length >= 1) && regx.test(money)) {
+					flag = true;
+					$('.mask_modal').css('height',mask_clientH);
+					$('.mask_modal').css('display','block');
+                	$('.mask_main').css('display','block');
+				}
+				return flag;
+			}
+
+			$(function() {
+				$('.failure').on('click',function(){
+            		$('.mask_modal').css('display','none');
+                	$('.mask_main').css('display','none');
+                	$('.rechargeAmount').val('');
+           		 });
+
+			    $('.mask_close, .success, .mask_help').on('click',function(){
+                	$('.mask_modal').css('display','none');
+                	$('.mask_main').css('display','none');
+            	});
+			});
+
+			//]]>
+		</script>
+		<!-- 未实名认证 -->
+		<sec:ifNotGranted roles="INVESTOR,LOANER,GUARANTEE">
+			<script>
+				$.dialog
+						.alert(
+								'为了您的账户资金安全，请先进行实名认证!',
+								function() {
+									window.location.href = "#{path}/user/get_investor_permission";
+								});
+			</script>
+		</sec:ifNotGranted>
+		<!-- 已实名认证 -->
+		<sec:ifAnyGranted roles="INVESTOR,LOANER,GUARANTEE">
+			<div class="counterMark">
+				<span class="quickPayment">快捷支付<img src="#{tplVars.themeImagePath}/umpaybanklogo/new.png"/></span>
+				<span class="onlineRecharge">网银充值</span>
+			</div>
+			<div class="center_right">
+				<h:form id="recharge">
+					<h:selectBooleanCheckbox name="isOpenFastPayment" id = "isOpenFastPayment" styleClass="isOpenFastPayment" value="#{rechargeHome.isOpenFastPayment}" style="display: none"
+											 requiredMessage="快捷支付">
+					</h:selectBooleanCheckbox>
+					<ui:fragment rendered="#{rechargeHome.isOpenedQuickPay(loginUserInfo.loginUserId)}">
+						<input value="1" class="isOpenFastPay" name="isOpenFastPay" type="hidden"/>
+						<div class="zhcz_h3 zhcz_h302"></div>
+						<div class="zhcz" style="display: none;">
+							<ul class="zhcz_ul">
+								<h:panelGroup id="rechargeWay">
+									<ui:repeat var="bc" value="#{rechargeList.rechargeBankCards}">
+										<ui:param name="rechargeWarStr" value="#{bc.no}"></ui:param>
+										<li><h:commandLink
+												styleClass="#{rechargeHome.instance.rechargeWay==rechargeWarStr?'hover':''}">
+											<img
+													src="#{tplVars.themeImagePath}/umpaybanklogo/#{bc.no}.png" />
+											<f:ajax execute="@this" render=":recharge:rechargeWay"
+													listener="#{rechargeHome.instance.setRechargeWay(rechargeWarStr)}"></f:ajax>
+										</h:commandLink></li>
+									</ui:repeat>
+								</h:panelGroup>
+								<div class="clear"></div>
+							</ul>
+						</div>
+					</ui:fragment>
+					<ui:fragment rendered="#{!rechargeHome.isOpenedQuickPay(loginUserInfo.loginUserId)}">
+						<input value="0" class="isOpenFastPay" name="isOpenFastPay" type="hidden"/>
+						<div class="zhcz_h3 zhcz_h302"></div>
+						<div class="zhcz">
+							<ul class="zhcz_ul">
+								<h:panelGroup id="rechargeWay1">
+									<ui:repeat var="bc" value="#{rechargeList.rechargeBankCards}">
+										<ui:param name="rechargeWarStr1" value="#{bc.no}"></ui:param>
+										<li><h:commandLink
+												styleClass="#{rechargeHome.instance.rechargeWay==rechargeWarStr1?'hover':''}">
+											<img
+													src="#{tplVars.themeImagePath}/umpaybanklogo/#{bc.no}.png" />
+											<f:ajax execute="@this" render=":recharge:rechargeWay1"
+													listener="#{rechargeHome.instance.setRechargeWay(rechargeWarStr1)}"></f:ajax>
+										</h:commandLink></li>
+									</ui:repeat>
+								</h:panelGroup>
+								<div class="clear"></div>
+							</ul>
+						</div>
+					</ui:fragment>
+					<div class="zhcz_h3 zhcz_h302">填写充值金额</div>
+					<div class="txczje">
+						<div class="txczje02">
+							<div class="txczje_l">账户余额：</div>
+							<div class="txczje_r">
+								<span> <h:outputLabel
+										value="#{billStatistics.getBalanceByUserId(loginUserInfo.loginUserId)}">
+										<f:convertNumber maxFractionDigits="2" minIntegerDigits="1" />
+									</h:outputLabel>
+								</span>元
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="txczje02">
+							<div class="txczje_l">
+								<span>*</span>充值金额：
+							</div>
+							<div class="txczje_r">
+								<h:inputText label="充值金额" styleClass="txt02 money rechargeAmount"
+									id="actualMoney" value="#{rechargeHome.instance.actualMoney}"
+									required="true">
+									<f:validateDoubleRange minimum="0"></f:validateDoubleRange>
+									<f:convertNumber maxFractionDigits="0" minIntegerDigits="1" />
+									<archer:validateNumber precision="0" />
+									<f:ajax render="fee allMoney" event="change"
+										></f:ajax>
+								</h:inputText>
+								元
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="txczje02">
+							<div class="txczje_l">充值费用：</div>
+							<div class="txczje_r">
+								<span> <h:outputLabel
+										value="#{rechargeHome.instance.fee}" id="fee">
+										<f:convertNumber minIntegerDigits="1" minFractionDigits="2" />
+									</h:outputLabel>
+								</span>元<a href="#"><img src="#{tplVars.themeImagePath}/img42.png" /></a>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="txczje02">
+							<div class="txczje_l">实际支付金额：</div>
+							<div class="txczje_r">
+								<span> <h:outputLabel
+										value="#{rechargeHome.formatActualMoney(rechargeHome.instance.actualMoney,rechargeHome.instance.fee)}"
+										id="allMoney"></h:outputLabel>
+								</span>元
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="txczje02">
+							<div class="txczje_l"></div>
+							<div class="txczje_r">
+								<h:commandLink styleClass="txczje02_btn"
+									action="#{rechargeHome.recharge}"
+									onclick="return checkRecharge()" value="充值" target="_blank"></h:commandLink>
+							</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+
+					<div class="mask_modal"></div>
+					<div class="mask_main">
+						<h3>登录到联动优势支付平台充值</h3>
+						<em class="mask_close">关闭</em>
+						<span>请在新打开的联动优势页面充值完成后选择</span>
+						<p><i>充值成功：</i><a href="/user/center" class="success">确认成功</a> </p>
+						<p><i>充值失败：</i><a href="javascript:;" class="failure">重新充值</a>查看<b><a href="/website/helpCenter" class="mask_help"> 帮助中心</a></b> </p>
+						<h4>遇到问题请拨打我们的客服热线：#{configHome.getConfigValue("site_phone")} (9:00-20:00) 节假日无休</h4>
+					</div>
+
+				</h:form>
+				<p class="zhcz_p02">
+					温馨提示<br /> 1、为了您的账户安全，请在充值前进行身份认证、手机绑定以及提现密码设置。<br />
+					2、您的账户资金将通过第三方平台进行充值。<br /> 3、请注意您的银行卡充值限制，以免造成不便。<br />
+					4、禁止洗钱、信用卡套现、虚假交易等行为，一经发现并确认，将终止该账户的使用。<br />
+					5、如果充值金额没有及时到账，请联系客服。
+				</p>
+			</div>
+			<div class="clear"></div>
+		</sec:ifAnyGranted>
+	</ui:define>
+</ui:composition>

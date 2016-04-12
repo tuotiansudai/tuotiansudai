@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+<ui:param name="path" value="#{request.contextPath}"></ui:param>
+
+<f:view contentType="text/html">
+	<h:head>
+		<f:facet name="first">
+			<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+			<meta name="renderer" content="webkit" />
+			<title>#{siteVars.siteName}</title>
+		</f:facet>
+		<h:outputScript library="primefaces" name="jquery/jquery.js"
+			target="head" />
+		<ui:fragment
+			rendered="#{configHome.getConfigValue('enable_mobile_site') eq '1'}">
+			<script type="text/javascript" charset="utf-8">
+			//<![CDATA[
+			if (!!navigator.userAgent.match(/Mobile/)) {
+				location.href = "#{path}/memberLoginMobile";
+			}
+			//]]>
+			</script>
+		</ui:fragment>
+		<script type="text/javascript"
+			src="#{tplVars.themeJSPath}/jquery.artDialog.js?skin=idialog"></script>
+		<script type="text/javascript"
+			src="#{tplVars.themeJSPath}/jquery.SuperSlide.2.1.1.js"></script>
+		<script type="text/javascript" src="#{tplVars.themeJSPath}/common.js"></script>
+		<script type="text/javascript" src="#{tplVars.themeJSPath}/Base64.js"></script>
+		<link type="text/css" rel="stylesheet"
+			href="#{tplVars.themeStylePath}/common.css" />
+		<link type="text/css" rel="stylesheet"
+			href="#{tplVars.themeStylePath}/login.css" />
+		<script type="text/javascript">
+		/**
+		用户名密码Base64加密后台MyAuthenticationManager解密
+	*/
+		$(function(){
+			$("#butt").click(function(){
+				var name=$("#username").val();
+				if(name==""){
+					return ;
+				}
+				var pass=$("#password").val();
+				if(pass==""){
+					return ;
+				}
+				$("#j_username").val(name);
+				$("#j_password").val(pass);
+				//alert(passB64);
+				$("#form").submit();
+			});
+		});
+	</script>
+	</h:head>
+	<h:body style="background:#f3f3f3;">
+		<archer:archerMessages focus="false" showGlobalMessages="true"
+			severity="0,2"></archer:archerMessages>
+
+		<div class="login_header">
+			<div class="login_logo">
+				<a href="#{path}/"><img src="#{tplVars.themeImagePath}/logo.png" /></a>
+			</div>
+			<div class="login_line">
+				<img src="#{tplVars.themeImagePath}/line04.png" />
+			</div>
+			<p>欢迎登录</p>
+		</div>
+		<div class="login">
+			<div class="login_l">
+				<img src="#{tplVars.themeImagePath}/img49.png" />
+			</div>
+			<div class="login_r">
+				<form action="#{request.contextPath}/login"
+					accept-charset="UTF-8" method="post" id="form">
+					<ui:fragment
+						rendered="#{not empty request.getParameter('spring-security-redirect')}">
+						<input type="hidden" name="spring-security-redirect"
+							value="#{request.getParameter('spring-security-redirect')}"></input>
+					</ui:fragment>
+					<h:inputText id="j_username" style="display:none"/>
+					<h:inputText id="j_password" style="display:none" />
+					<div class="login_box">
+						<div class="login_box_l">登录：</div>
+						<div class="login_box_r">
+							<h:inputText id="username" type="text" class="login_txt"
+								maxlength="25" />
+							<p:watermark value="请输入用户名/手机号/邮箱" for="username"></p:watermark>
+							<div class="clear"></div>
+						</div>
+						<div class="login_box">
+							<div class="login_box_l">密码：</div>
+							<div class="login_box_r">
+								<h:inputSecret id="password" type="text"
+									class="login_txt login_txt02" maxlength="16" />
+								<p:watermark value="请输入密码" for="password"></p:watermark>
+								<div class="clear"></div>
+							</div>
+							<ui:fragment
+								rendered="#{sessionScope.need_validate_code or configHome.getConfigValue('login_fail_max_times') eq '0'}">
+								<div class="login_box">
+									<div class="login_box_l">验证码：</div>
+									<div class="login_box_r">
+										<h:inputText id="captcha_input" maxlength="4"
+											styleClass="login_txt login_txt03"></h:inputText>
+										<p:watermark value="请输入验证码" for="captcha_input"></p:watermark>
+										<a class="login_yzm" href="javascript:void(0)"><img
+											alt="点击刷新" id="verifyCode"
+											src="#{request.contextPath}/verifyCodeServlet"
+											onclick="this.src='#{request.contextPath}/verifyCodeServlet?'+new Date().getTime()" /></a>
+										<div class="clear"></div>
+									</div>
+								</div>
+							</ui:fragment>
+							<div class="login_box">
+								<div class="login_box_l"></div>
+								<div class="login_box_r">
+									<p class="yhm">
+										<input name="_spring_security_remember_me" type="checkbox" />下次自动登录
+									</p>
+									<span class="forget"><a
+										href="#{request.contextPath}/find_login-password">忘记密码？</a>| <a
+										href="#{request.contextPath}/register">免费注册</a></span>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="login_box">
+								<div class="login_box_l"></div>
+								<div class="login_box_r">
+									<!-- 									<a href="#" class="login_btn"> <input name="" type="submit" -->
+									<!-- 										value="立即登录"></input> -->
+									<!-- 									</a> -->
+									<input type="submit" class="login_btn pointer" value="立即登录"
+										id="butt"/>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</form>
+				<div style="font-size: 14px; text-align: center; color: red; font-weight: bold">#{request.getAttribute("user_lock")}</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<ui:fragment
+			rendered="#{not empty requestScope['SPRING_SECURITY_LAST_EXCEPTION'] and requestScope['SPRING_SECURITY_LAST_EXCEPTION'].message ne 'Authentication method not supported: GET'}">
+			<script>
+				$.dialog.tips('#{requestScope['SPRING_SECURITY_LAST_EXCEPTION'].message}', 5);
+			</script>
+		</ui:fragment>
+		<ui:include src="footer.xhtml"></ui:include>
+	</h:body>
+</f:view>
+</html>

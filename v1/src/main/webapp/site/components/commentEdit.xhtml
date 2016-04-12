@@ -1,0 +1,58 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<f:event type="preRenderView"
+		listener="#{commentHome.setId(commentId)}" />
+	<ui:fragment rendered="#{not empty nodeId}">
+		<f:event type="preRenderComponent"
+			listener="#{commentHome.instance.node.setId(nodeId)}" />
+	</ui:fragment>
+	<h:form styleClass="comment-form">
+		<div>
+			<div id="edit-author--2" class="form-item form-type-item">
+				<h:inputHidden value="#{commentHome.instance.node.id}"></h:inputHidden>
+				<h:inputHidden value="#{commentHome.instance.id}"></h:inputHidden>
+				<label for="edit-author--2">
+					你的用户名
+				</label>
+				<a href="javascript:void(0)" title="查看用户资料" class="username"> <h:outputText
+						value="#{loginUserInfo.loginUserId}"></h:outputText> </a>
+			</div>
+			<div class="form-item form-type-textfield form-item-subject">
+				<label for="edit-subject">
+					标题
+				</label>
+				<h:inputText value="#{commentHome.instance.title}"
+					styleClass="form-text"></h:inputText>
+			</div>
+			<div
+				class="field-type-text-long field-name-comment-body field-widget-text-textarea form-wrapper"
+				id="edit-comment-body">
+				<div id="comment-body-add-more-wrapper">
+					<div class="text-format-wrapper">
+						<div
+							class="form-item form-type-textarea form-item-comment-body-und-0-value">
+							<label for="edit-comment-body-und-0-value">
+								#{nodeMsg.commentsLabel}
+								<span class="form-required" title="此项必填。">*</span>
+							</label>
+							<div
+								class="form-textarea-wrapper resizable textarea-processed resizable-textarea">
+								<h:inputTextarea value="#{commentHome.instance.filteredBody}"
+									style="height:80px;"></h:inputTextarea>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-actions form-wrapper" id="edit-actions">
+				<h:commandButton value="#{commonMsg.save}"
+					action="#{commentHome.save}" styleClass="form-submit">
+				</h:commandButton>
+			</div>
+		</div>
+	</h:form>
+</f:view>

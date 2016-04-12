@@ -1,0 +1,20 @@
+<ui:composition template="/admin/layout/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+	<ui:define name="main">
+	   <i>+ 添加内容</i>
+          <div class="tian"><a href="#{addHref}">添加内容</a></div>
+          <div class="Project">
+             <strong>只显示符合以下条件的项目:</strong>
+             <ui:insert name="filter">
+                <ui:decorate template="/admin/templates/filterForm.xhtml">
+	               <ui:param name="filterList" value="#{filterList}"></ui:param>
+	            </ui:decorate>  
+             </ui:insert> 
+          </div>
+          <ui:insert name="dataList"></ui:insert>
+    </ui:define>    
+</ui:composition>

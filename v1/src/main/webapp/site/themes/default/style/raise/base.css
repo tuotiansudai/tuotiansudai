@@ -1,0 +1,29 @@
+@charset "utf-8";
+/* CSS Document */
+
+*{margin:0px;padding:0px;}
+body{ font-family:'Microsoft Yahei'; font-size:14px;}
+ul{ list-style:none;}
+a{ text-decoration:none;}
+img{border:0px;}
+input,select,textarea{ outline:none;}
+.fl{ float:left}
+.fr{ float:right}
+.clear:after {content:""; display: block; height: 0; clear: both;}
+.font12{ font-size:12px;}
+.font14{ font-size:14px;}
+.font16{ font-size:16px;}
+.font18{ font-size:18px;}
+.font24{ font-size:24px;}
+.color32{ color:#323232;}
+.colorff{ color:#fff;}
+.color00{ color:#000;}
+.ztmain{width:1180px; margin:0 auto;}
+.main-birder{border:1px solid #dadada;}
+.cm-border{border:1px solid #e9e9e9;}
+.mar-top50{ margin-top:50px;}
+.mar-bot50{ margin-bottom:50px;}
+.tec{ text-align:center;}
+.tel{ text-align:left}
+.ter{ text-align:right}
+.zcol{color:#55acef;}

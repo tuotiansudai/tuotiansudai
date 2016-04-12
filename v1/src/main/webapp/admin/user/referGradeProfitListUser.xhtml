@@ -1,0 +1,72 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+    <ui:define name="content">
+    
+    <div class="entry">
+    	<p:toolbar>
+            <p:toolbarGroup>
+	            <h:outputLabel style="padding-left: 15px;" value="#{commonMsg.currentPositionLabel} #{userMsg.referrerGradePtManLabel}"></h:outputLabel>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:separator />
+                <p:button value="#{userMsg.addReferrerLabel}" outcome="/admin/user/addReferGradePtUser"></p:button>
+            </p:toolbarGroup>
+        </p:toolbar>
+        
+        <h:form id="form"> 
+        	<p:spacer></p:spacer> 
+                <p:panel id="filters">
+                    <h:inputText id="searchTitle" value="#{referGradeProfitUserList.referee}"></h:inputText>
+                    <p:commandButton update="dataTable" process="filters"
+                        value="#{commonMsg.searchLabel}"></p:commandButton>
+                </p:panel>
+
+                <p:watermark for="searchTitle" value="推荐人名称"></p:watermark>
+            
+            <p:spacer></p:spacer> 
+
+            <p:dataTable lazy="true" id="dataTable" value="#{referGradeProfitUserList.lazyModel}" var="referGradProfitUser"
+                paginator="true" paginatorPosition="bottom" rows="15">
+                <p:column headerText="推荐人">
+                    <h:outputText  value="#{referGradProfitUser.referrer.id}"></h:outputText>
+                </p:column>
+                <p:column headerText="推荐层级">
+                    <h:outputText  value="#{referGradProfitUser.grade}"></h:outputText>
+                </p:column>
+                <p:column headerText="收益比例(%)">
+                    <h:outputText  value="#{referGradProfitUser.profitRate}"></h:outputText>
+                </p:column>
+
+                <p:column headerText="#{commonMsg.actionLabel}">
+                    <sec:ifAllGranted roles="USER_EDIT">
+                        <h:link value=" 编辑 | " outcome="/admin/user/referGradeProfitUserEdit?id=#{referGradProfitUser.id }"></h:link>
+                        <a href="javascript:void(0)"
+                           onclick="$('#form\\:deleteId').val('#{referGradProfitUser.id}');confirmDialog.show()">#{commonMsg.deleteLabel}</a>
+                    </sec:ifAllGranted>
+                </p:column>
+            </p:dataTable>
+            <p:confirmDialog width="500" id="confirmDialog"
+                             widgetVar="confirmDialog" severity="alert"
+                             header="#{commonMsg.confirmDetele}"
+                             message="确认要删除该推荐层级吗?">
+                <h:inputHidden value="#{referGradeUserHome.id}" id="deleteId"></h:inputHidden>
+                <p:commandButton id="confirm" value="#{commonMsg.confirmLabel}"
+                                 action="#{referGradeUserHome.delete}" ajax="false"
+                                 style="margin-left:180px;" />
+                <p:commandButton id="decline" value="#{commonMsg.cancelLabel}"
+                                 onclick="confirmDialog.hide()" type="button" />
+            </p:confirmDialog>
+        
+        </h:form>
+      </div>
+    </ui:define>
+</ui:composition>

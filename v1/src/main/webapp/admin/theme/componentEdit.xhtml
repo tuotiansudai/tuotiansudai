@@ -1,0 +1,75 @@
+<ui:composition template="/admin/layout/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <f:metadata>
+        <f:viewParam name="id" value="#{componentHome.id}"></f:viewParam>
+    </f:metadata>
+
+    <ui:define name="main">
+
+			<h:form>
+				<i>#{themeMsg.editComponentLabel}</i>
+                <h:panelGrid columns="2"  columnClasses="col1,col2">
+                    <h:outputLabel value="#{commonMsg.IDLabel}"></h:outputLabel>
+                    <h:inputText value="#{componentHome.instance.id}"
+                        required="true" label="#{commonMsg.IDLabel}"></h:inputText>
+                    
+                    <h:outputLabel value="#{commonMsg.nameLabel}"></h:outputLabel>
+                    <h:inputText required="true" label="#{commonMsg.nameLabel}"
+                        value="#{componentHome.instance.name}">
+                        <f:validateLength minimum="2"></f:validateLength>
+                    </h:inputText>
+                    
+                    <h:outputLabel value="#{themeMsg.scriptUrlLabel}"></h:outputLabel>
+                    <h:inputText 
+                        value="#{componentHome.instance.scriptUrl}">
+                    </h:inputText>
+                    
+                    <h:outputLabel value="#{commonMsg.enableLabel}"></h:outputLabel>
+                    <h:selectOneMenu value="#{componentHome.instance.enable}">
+                        <f:selectItem itemValue="1" itemLabel="#{commonMsg.enableSelectLabel}" />
+                        <f:selectItem itemValue="0" itemLabel="#{commonMsg.disableSelectLabel}"/>
+                    </h:selectOneMenu>
+                    
+                    <h:outputLabel value="#{commonMsg.descriptionLabel}"></h:outputLabel>
+                    <h:inputTextarea value="#{componentHome.instance.description}" style="font-family:Courier New;;width:600px;height:60px;"></h:inputTextarea>
+                   
+                    <h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+                    <ui:fragment>
+                        <p:commandButton action="#{componentHome.save}" update="@form" 
+                            value="#{commonMsg.saveLabel}"></p:commandButton>
+                        <p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+                    </ui:fragment>
+                    
+                </h:panelGrid>
+                
+                <p:dataTable value="#{componentHome.instance.componentParameters}" var="p">
+                    <p:column headerText="#{commonMsg.IDLabel}">
+                        <h:outputText value="#{p.id}" />  
+                    </p:column>
+                    <p:column headerText="#{commonMsg.nameLabel}">
+                        <h:outputText value="#{p.name}" />  
+                    </p:column>
+                    <p:column headerText="#{commonMsg.nameLabel}">
+                        <h:outputText value="#{p.value}" />  
+                    </p:column>
+                    <p:column headerText="#{commonMsg.nameLabel}">
+                        <h:outputText value="#{p.description}" />  
+                    </p:column>
+                    <p:column headerText="#{commonMsg.actionLabel}">
+                        <h:link outcome="/admin/theme/componentParameterEdit?id=#{p.id}&amp;componentId=#{param.id}" value="#{commonMsg.editLabel}"></h:link>
+                    </p:column>
+                    <f:facet name="footer">
+                        <h:link outcome="/admin/theme/componentParameterEdit?componentId=#{param.id}" value="#{commonMsg.addLabel}"/>
+                    </f:facet>
+                </p:dataTable>
+			</h:form>
+		</ui:define>
+</ui:composition>
+

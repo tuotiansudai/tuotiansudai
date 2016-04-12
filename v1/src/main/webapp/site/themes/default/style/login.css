@@ -1,0 +1,412 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*登录*/
+.login_header {
+	width: 1000px;
+	height: 126px;
+	margin: 0 auto;
+	padding-top: 31px;
+}
+
+.login_logo {
+	height: 80px;
+	padding: 10px 10px 0 0px;
+	float: left;
+}
+
+.login_logo img{
+	height: 80px;
+}
+
+
+.login_line {
+	float: left;
+	height: 80px;
+	padding: 10px 10px 0 0px;
+}
+
+.login_line img{
+	height:80px;
+}
+
+.login_header p {
+	font-size: 24px;
+	color: #3f3939;
+	padding-left: 20px;
+	line-height: 70px;
+	float: left;
+}
+
+.login {
+	width: 1000px;
+	min-height: 100px;
+	background: #fbfbfb;
+	margin: 0 auto;
+	margin-bottom: 83px;
+	border: 1px solid #fff;
+}
+
+.login_l {
+	width: 529px;
+	float: left;
+	padding: 51px 0 55px 0;
+}
+
+.login_r {
+	width: 463px;
+	float: left;
+	padding-top: 68px;
+}
+
+.login_box {
+	width: 430px;
+}
+
+.login_box_l {
+	width: 90px;
+	height: 40px;
+	line-height: 40px;
+	color: #000;
+	font-size: 16px;
+	float: left;
+	text-align: right;
+}
+
+.login_box_r {
+	float: left;
+	padding-left: 15px;
+	width: 320px;
+	line-height: 40px;
+}
+
+.login_txt {
+	width: 259px;
+	height: 40px;
+	line-height: 42px;
+	border: 1px solid #d9d9d9;
+	margin-bottom: 15px;
+	background: url(../images/img50.png) left center no-repeat;
+	padding-left: 57px;
+	font-size: 14px;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	float: left;
+}
+
+.login_txt02 {
+	background: url(../images/img51.png) left center no-repeat;
+}
+
+.login_txt03 {
+	background: url(../images/img52.png) left center no-repeat;
+	width: 145px;
+}
+
+.login_yzm {
+	display: block;
+	width: 100px;
+	height: 40px;
+	padding: 1px;
+	border: 1px solid #d9d9d9;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	margin-left: 9px;
+	float: left;
+}
+
+.login_yzm img {
+	width: 100px;
+	height: 40px;
+}
+
+.yhm {
+	display: inline-block;
+	float: left;
+	color: #000;
+}
+
+.forget {
+	float: right;
+	color: #000;
+}
+
+.forget a {
+	color: #C50907;
+}
+
+.login_btn {
+	display: block;
+	width: 185px;
+	height: 47px;
+	background: #C50907;
+	line-height: 47px;
+	text-align: center;
+	font-size: 16px;
+	font-weight: bold;
+	color: #fff;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	margin-top: 10px;
+	margin-bottom: 15px;
+	border:none;
+}
+
+.login_btn:hover {
+	background: #f33735;
+}
+
+.dl {
+	font-size: 14px;
+	color: #000;
+	line-height: 30px;
+}
+
+.dl img {
+	margin: 0 5px -5px 0;
+}
+
+/*注册*/
+.login_l01 {
+	width: 498px;
+	padding-top: 62px;
+	background: url(../images/line05.png) right center no-repeat;
+}
+
+.login_txt05 {
+	background: url(../images/img57.png) left center no-repeat;
+}
+
+.login_txt06 {
+	background: url(../images/img58.png) left center no-repeat;
+}
+
+.hqyzm {
+	color: #fff;
+	background: #C50907;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 10px 15px;
+	margin-left: 10px;
+}
+
+.hqyzm:hover {
+	background: #f33735;
+}
+
+.yhm a {
+	color: #C50907;
+}
+
+.login_box01 {
+	width: 498px;
+}
+
+.login_box_l01 {
+	width: 110px;
+}
+
+.log {
+	padding-left: 46px;
+	line-height: 30px;
+	font-size: 14px;
+	color: #000;
+}
+
+.log a {
+	color: #C50907;
+}
+
+.login_r02 {
+	padding-top: 55px;
+}
+
+/*邮箱激活*/
+.email {
+	width: 660px;
+	margin: 0 auto;
+	line-height: 28px;
+	color: #0d1417;
+	font-size: 16px;
+	padding: 228px 0 330px 0;
+}
+
+.email img {
+	width: 123px;
+	height: 123px;
+	margin-right: 17px;
+	float: left;
+}
+
+.email p {
+	padding-top: 10px;
+}
+
+.email p a {
+	color: #C50907;
+	text-decoration: underline;
+	line-height: 40px;
+}
+
+.email01 {
+	width: 330px;
+}
+
+.email01 p a.cg {
+	text-align: center;
+	display: block;
+	margin-top: 20px;
+	width: 131px;
+	height: 42px;
+	background: #C50907;
+	color: #fff;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	text-decoration: none;
+}
+
+.email01 p {
+	float: left;
+	padding-left: 13px;
+}
+
+/*手机找回密码01*/
+.zhmm {
+	width: 485px;
+	margin: 96px auto;
+}
+
+.zhmm_btn01 {
+	padding: 15px 28px;
+	line-height: 45px;
+	text-align: center;
+	background: #C50907;
+	font-size: 16px;
+	color: #fff;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+}
+
+.zhmm_btn01:hover {
+	background: #f33735;
+}
+
+.zhmm_btn02 {
+	margin-left: 35px;
+	background: #8ab46e;
+}
+
+.zhmm_btn02:hover {
+	background: #96c279;
+}
+
+.zhmm_p {
+	color: #6c6c6c;
+	font-size: 14px;
+	text-align: center;
+	line-height: 75px;
+}
+
+/*手机找回密码02*/
+.login_box03 {
+	margin-top: 33px;
+	width: 485px;
+}
+
+.login_box_l_02 {
+	width: 159px;
+	color: #6c6c6c;
+}
+
+.login_txt_txt {
+	width: 177px;
+	background: #fff;
+	padding: 0;
+}
+
+.login_box_r_02 {
+	width: 310px;
+}
+
+.login_box04 {
+	margin: 0;
+}
+
+.login_yzm_01 {
+	height: 38px;
+}
+
+.login_yzm_01 img {
+	height: 38px;
+}
+
+/*手机找回密码03*/
+.zhmm_p_02 {
+	font-weight: bold;
+	line-height: 40px;
+}
+
+.zhmm_p_02 span {
+	color: #C50907;
+	font-size: 21px;
+}
+
+.yyyz_02 {
+	line-height: 23px;
+	color: #6c6c6c;
+	font-size: 14px;
+}
+
+.yyyz {
+	color: #fff;
+	font-size: 12px;
+	padding: 2px 10px;
+	margin-left: 5px;
+	background: #C50907;
+	border-radius: 20px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+}
+
+.login_btn_02 {
+	margin-top: 35px;
+}
+
+/*手机找回密码04*/
+.zhmm_p_03 {
+	color: #C50907;
+	font-size: 16px;
+}
+
+.login_btn_03 {
+	margin: 0 auto;
+	margin-top: 35px;
+}
+
+.zhmm_p_02 a {
+	font-weight: normal;
+	text-decoration: underline;
+	color: #C50907;
+}
+
+.zhmm_p_04 {
+	font-size: 12px;
+	font-weight: normal;
+}
+
+.login_btn_04 {
+	margin-top: 20px;
+}
+
+.login_box_l_03 {
+	font-size: 14px;
+}
+
+.login_btn_05 {
+	margin-top: 10px;
+}

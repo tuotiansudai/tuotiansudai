@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui">
+	<f:metadata>
+		<f:viewParam name="termId" value="#{categoryTermHome.id}"></f:viewParam>
+	</f:metadata>
+	<ui:param name="term" value="#{categoryTermHome.instance}"></ui:param>
+	<ui:param name="keywords" value="#{term.name}"></ui:param>
+	<ui:param name="description" value="#{term.description}"></ui:param>
+	<ui:param name="pageSize" value="#{empty pageSize ? 7 : pageSize}"></ui:param>
+	<ui:param name="page" value="#{empty param.page ? 1 : param.page}"></ui:param>
+	<ui:param name="pageModel"
+		value="#{nodeList.getNodes(term.id,(page-1)*pageSize ,pageSize)}"></ui:param>
+	<o:importFunctions type="java.lang.Math" var="math" />
+	<div class="content-right fr">
+		<ul class="right-ul">
+			<ui:repeat var="node" value="#{pageModel.data}">
+				<li><a href="#{request.contextPath}/node_app/#{node.id}"
+					class="fontsize18 color3d" title="#{node.title}">#{node.title}</a>
+					<span style="float: right; padding-right: 10px;"> <h:outputText
+							value="#{node.updateTime}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" locale="zh_CN"
+								timeZone="GMT+8"></f:convertDateTime>
+						</h:outputText>
+				</span></li>
+			</ui:repeat>
+		</ul>
+		<ui:include src="#{tplVars.componentsPath}/paging.xhtml">
+			<ui:param name="shortUrl" value="term/#{term.id}/"></ui:param>
+			<ui:param name="count" value="#{pageModel.count}"></ui:param>
+		</ui:include>
+	</div>
+</ui:composition>

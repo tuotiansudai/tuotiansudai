@@ -1,0 +1,113 @@
+<ui:composition template="center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="activeCenterMenuUrl" value="/user/accountSafe"></ui:param>
+	<ui:define name="center_right">
+		<f:event type="preRenderView"
+			listener="#{userInfoHome.setId(loginUserInfo.loginUserId)}"></f:event>
+		<div class="center_right">
+			<div class="zhcz_h3">安全信息</div>
+			<p class="bdsj_p">
+				<span><img src="#{tplVars.themeImagePath}/img73.png" />修改绑定手机</span>
+			</p>
+			<p class="xgmm_p">新手机号不可与原手机号相同。</p>
+
+			<h:form id="form"
+				rendered="#{userInfoHome.step ==1}">
+				<div class="bdsj">
+					<div class="bdsj_l">
+						<span>*</span>原手机号码
+					</div>
+					<div class="bdsj_r">#{userInfoHome.instance.mobileNumber.substring(0,3)}****#{userInfoHome.instance.mobileNumber.substring(7,11)}</div>
+					<div class="clear"></div>
+				</div>
+				<div class="bdsj">
+					<div class="bdsj_l">
+						<span>*</span>验证码
+					</div>
+					<div class="bdsj_r">
+						<h:inputText required="true" label="验证码"
+							value="#{userInfoHome.authCode}" styleClass="bdsj_txt bdsj_txt01">
+							<f:ajax event="blur" render="@this"></f:ajax>
+						</h:inputText>
+						<h:commandButton value="获取验证码" id="sendAuthCodeBtn"
+							styleClass="send-btn bdsj_btn pointer"
+							onclick="$(this).attr('disabled','disabled')">
+							<f:ajax onevent="enableBtn('form\\\\:sendAuthCodeBtn')"
+									listener="#{userInfoHome.sendCurrentBindingMobileNumberSMS('timerCountB(\'form\\\\:sendAuthCodeBtn\')')}"></f:ajax>
+						</h:commandButton>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="bdsj bdsj_02">
+					<div class="bdsj_l"></div>
+					<div class="bdsj_r">
+						<h:commandLink value="提交"
+							actionListener="#{userInfoHome.checkCurrentMobileNumber}"></h:commandLink>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</h:form>
+
+			<h:form id="form2"
+				rendered="#{userInfoHome.step ==2}">
+				<div class="bdsj">
+					<div class="bdsj_l">
+						<span>*</span>新手机号码
+					</div>
+					<div class="bdsj_r">
+						<h:inputText id="newMobileNumber" styleClass="bdsj_txt bdsj_txt01"
+							required="true" label="新手机"
+							value="#{userInfoHome.newMobileNumber}">
+							<archer:validateInputRule ruleId="input.mobile"></archer:validateInputRule>
+							<archer:validateAlreadyExist
+								entityClass="com.esoft.archer.user.model.User"
+								fieldName="mobileNumber"></archer:validateAlreadyExist>
+							<f:ajax event="blur" render="@this"></f:ajax>
+						</h:inputText>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="bdsj">
+					<div class="bdsj_l">
+						<span>*</span>验证码
+					</div>
+					<div class="bdsj_r">
+						<h:inputText required="true" label="验证码"
+							value="#{userInfoHome.authCode}" styleClass="bdsj_txt bdsj_txt01">
+							<f:ajax event="blur" render="@this"></f:ajax>
+						</h:inputText>
+						<h:commandButton value="获取验证码" id="sendAuthCodeBtn"
+							styleClass="send-btn bdsj_btn"
+							onclick="$(this).attr('disabled','disabled')">
+							<f:ajax execute="newMobileNumber" onevent="enableBtn('form2\\\\:sendAuthCodeBtn')"
+									listener="#{userInfoHome.sendNewBindingMobileNumber('timerCountB(\'form2\\\\:sendAuthCodeBtn\')')}"></f:ajax>
+						</h:commandButton>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<div class="bdsj bdsj_02">
+					<div class="bdsj_l"></div>
+					<div class="bdsj_r">
+						<h:commandLink value="提交"
+							action="#{userInfoHome.changeBindingMobileNumber}"></h:commandLink>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</h:form>
+
+		</div>
+		<div class="clear"></div>
+
+	</ui:define>
+</ui:composition>

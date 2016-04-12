@@ -1,0 +1,180 @@
+<ui:composition template="../center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<!-- 我的还款中的投资 -->
+	<ui:param name="activeCenterMenuUrl" value="/user/invest/repaying"></ui:param>
+	<ui:define name="center_right">
+
+		<script>
+			/** 显示还款计划dialog*/
+			function showRepays() {
+				$.artDialog({
+					content : document.getElementById('repaysDialog'),
+					id : 'repays',
+					fixed : true,
+					lock : true,
+				});
+			}
+		</script>
+
+		<div class="center_right">
+			<div class="center_box01">
+				<ui:include src="../userCenterTop.xhtml"></ui:include>
+				<ui:include src="top_include.xhtml"></ui:include>
+			</div>
+			<div class="h20"></div>
+			<h:form>
+				<h:panelGroup id="dataTable">
+					<div class="hd">
+						<ul class="slidings">
+							<li id="four1" class="hover"><h:link
+									outcome="pretty:user_invest_repaying" value="还款中"></h:link></li>
+							<li id="four2"><h:link outcome="pretty:user_invest_finished"
+									value="已结清"></h:link></li>
+							<li id="four3"><h:link outcome="pretty:user_invest_bidding"
+									value="投标中"></h:link></li>
+							<li id="four4" class="last"><h:link
+									outcome="pretty:user_invest_fail" value="未成功"></h:link></li>
+						</ul>
+						<div id="con_four_1" class="slidnr">
+							<table width="786" border="0" cellspacing="0" cellpadding="0"
+								class="tab">
+								<tr>
+									<td class="tab01 tab04">项目名称</td>
+									<td class="tab01">投资时间</td>
+									<td class="tab01">投资金额/待收本息</td>
+									<td class="tab01">下次还款日</td>
+									<td class="tab01">下次还款</td>
+									<td class="tab01">&#160;</td>
+								</tr>
+								<f:event type="preRenderComponent"
+									listener="#{investList.example.user.setUsername(loginUserInfo.loginUserId)}"></f:event>
+								<ui:param name="restriction"
+									value="#{'(invest.status=\''}#{InvestStatus.REPAYING}#{'\' or invest.status=\''}#{InvestStatus.OVERDUE}#{'\')'}"></ui:param>
+								<f:event type="preRenderComponent"
+									listener="#{investList.addRestriction(restriction)}"></f:event>
+								<f:event type="preRenderComponent"
+									listener="#{investList.addOrder('time','desc')}"></f:event>
+								<ui:repeat var="invest" value="#{investList.lazyModelData}"
+									varStatus="status">
+									<tr class="#{status.index%2==0?'tab02':''} bg">
+										<td class="tab02 tab04 tab06" style="width: 200px;"><a
+											href="#{path}/loan/#{invest.loan.id}" target="_blank"
+											title="#{invest.loan.name}(#{invest.id})">#{stringHome.ellipsis(invest.loan.name,10)}</a><br />
+											利率：<h:outputText value="#{invest.rate}">
+												<f:convertNumber type="percent" minFractionDigits="2" />
+											</h:outputText>
+											期数：#{invest.repayRoadmap.paidPeriod}/#{invest.repayRoadmap.repayPeriod}</td>
+										<td class="tab02 tab06"><h:outputText
+												value="#{invest.time}">
+												<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"
+													locale="cn" />
+											</h:outputText><br /> <h:outputText value="#{invest.time}">
+												<f:convertDateTime pattern="HH:mm:ss" timeZone="GMT+8"
+													locale="cn" />
+											</h:outputText></td>
+										<td class="tab02"><h:outputText value="#{invest.money}">
+												<f:convertNumber />
+											</h:outputText>/<h:outputText value="#{invest.repayRoadmap.unPaidMoney}">
+												<f:convertNumber maxFractionDigits="2" />
+											</h:outputText></td>
+										<td class="tab02"><h:outputText
+												value="#{invest.repayRoadmap.nextRepayDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+											</h:outputText></td>
+										<td class="tab02"><h:outputText
+												value="#{invest.repayRoadmap.nextRepayMoney}">
+												<f:convertNumber maxFractionDigits="2" />
+											</h:outputText>元</td>
+										<td class="tab02"><h:commandLink value="回款计划">
+												<p:ajax
+													listener="#{investHome.instance.setInvestRepays(invest.investRepays)}"
+													update=":repays" oncomplete="showRepays()"></p:ajax>
+											</h:commandLink> | <a href="#{path}/user/invest-contract/#{invest.id}" target="_blank">合同</a></td>
+									</tr>
+								</ui:repeat>
+							</table>
+						</div>
+					</div>
+					<div class="page_box">
+						<div class="page_r">
+							<ui:include src="paging_include.xhtml"></ui:include>
+						</div>
+					</div>
+				</h:panelGroup>
+			</h:form>
+		</div>
+		<div class="clear"></div>
+		<!-- 		还款计划 -->
+		<div id="repaysDialog" style="display: none">
+			<h:panelGroup id="repays">
+				<div id="con_four_1" class="slidnr">
+					<table width="786" border="0" cellspacing="0" cellpadding="0"
+						class="tab">
+						<tr>
+							<td class="tab01 tab04">期数</td>
+							<td class="tab01">本金</td>
+							<td class="tab01">利息</td>
+							<td class="tab01">罚息</td>
+							<td class="tab01">手续费</td>
+							<td class="tab01">总额</td>
+							<td class="tab01">还款日</td>
+							<td class="tab01">还款时间</td>
+							<td class="tab01">状态</td>
+						</tr>
+						<ui:repeat var="ir" value="#{investHome.instance.investRepays}"
+							varStatus="status">
+							<tr class="#{status.index%2==0?'tab02':''} bg">
+								<td class="tab02 tab04 tab06">#{ir.period}</td>
+								<td class="tab02 tab06"><h:outputText value="#{ir.corpus}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2"
+											minFractionDigits="2" />
+									</h:outputText></td>
+								<td class="tab02 tab06"><h:outputText
+										value="#{ir.interest}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2"
+											minFractionDigits="2" />
+									</h:outputText></td>
+								<td class="tab02 tab06"><h:outputText
+										value="#{ir.defaultInterest}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2"
+											minFractionDigits="2" />
+									</h:outputText></td>
+								<td class="tab02 tab06"><h:outputText value="#{ir.fee}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2"
+											minFractionDigits="2" />
+									</h:outputText></td>
+								<td class="tab02 tab06"><h:outputText
+										value="#{ir.corpus+ir.interest+ir.defaultInterest-ir.fee}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2"
+											minFractionDigits="2" />
+									</h:outputText></td>
+								<td class="tab02 tab06"><h:outputText
+										value="#{ir.repayDay}">
+										<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+									</h:outputText></td>
+								<td class="tab02 tab06"><h:outputText value="#{ir.time}"
+										rendered="#{not empty ir.time}">
+										<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+											timeZone="GMT+8" />
+									</h:outputText>
+									<h:outputText value="待还" rendered="#{empty ir.time}">
+									</h:outputText></td>
+								<td class="tab02 tab06">#{dictUtil.getValue('repay_status',ir.status)}</td>
+							</tr>
+						</ui:repeat>
+					</table>
+				</div>
+			</h:panelGroup>
+		</div>
+	</ui:define>
+</ui:composition>
+
+
+

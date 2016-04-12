@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd 
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd"
+	xmlns:tx="http://www.springframework.org/schema/tx" default-lazy-init="true">
+
+	<context:property-placeholder location="classpath:jdbc.properties,classpath:sendCloud.properties,classpath:common.properties" />
+	<context:annotation-config />
+	<context:component-scan base-package="com.esoft,com.ttsd" />
+	<tx:annotation-driven transaction-manager="transactionManager"
+		proxy-target-class="true" />
+
+	<task:executor id="executor" pool-size="20" />
+	<task:annotation-driven executor="executor" />
+
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+		<property name="scopes">
+			<map>
+				<entry key="view">
+					<bean class="org.springframework.web.context.request.ViewScope" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<!-- 受spring托管的bean自动切入日志，使用方法： @Logger private static Log log ; -->
+	<bean class="com.esoft.core.bean.factory.config.LogBeanPostProcessor" />
+
+
+	<bean id="dataSource" class="com.esoft.core.dbcp.MyBasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="maxActive" value="${jdbc.maxActive}" />
+		<property name="timeBetweenEvictionRunsMillis" value="3600000" />
+		<property name="minEvictableIdleTimeMillis" value="3600000" />
+	</bean>
+	<!-- <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"> 
+		<property name="configLocation" value="classpath:hibernate.cfg.xml"> </property> 
+		</bean> -->
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
+			<value>
+				hibernate.dialect=com.esoft.core.hibernate.dialect.CustomMySQL5Dialect
+				hibernate.hbm2ddl.auto=none
+				hibernate.show_sql=false
+				hibernate.format_sql=false
+				hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider
+				hibernate.cache.use_second_level_cache=false
+				hibernate.cache.use_query_cache=false
+			</value>
+		</property>
+		<property name="packagesToScan" value="com.esoft.*.*.model">
+
+		</property>
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="nestedTransactionAllowed" value="true" />
+	</bean>
+
+	<bean id="ht" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean id="jt" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+	<!-- quartz持久化存储 -->
+	<bean id="scheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="jobFactory">
+			<bean class="com.esoft.core.quartz.AutowiringSpringBeanJobFactory " />
+			<!-- <bean class="org.springframework.scheduling.quartz.SpringBeanJobFactory" 
+				/> -->
+		</property>
+		<property name="schedulerName" value="Mscheduler" />
+		<property name="configLocation" value="classpath:quartz.properties" />
+		<property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+		<property name="autoStartup" value="true" />
+	</bean>
+
+	<aop:aspectj-autoproxy />
+
+	<!-- 配制事务的传播特性 <tx:advice id="txAdvice" transaction-manager="txManager"> 
+		<tx:attributes> <tx:method name="add*" propagation="REQUIRED" /> <tx:method 
+		name="register*" propagation="REQUIRED" /> <tx:method name="delete*" propagation="REQUIRED" 
+		/> <tx:method name="update*" propagation="REQUIRED" /> <tx:method name="merge*" 
+		propagation="REQUIRED" /> <tx:method name="save*" propagation="REQUIRED" 
+		/> <tx:method name="createOrUpdate*" propagation="REQUIRED" /> <tx:method 
+		name="clearAndSaveOrUpdate*" propagation="REQUIRED" /> <tx:method name="*" 
+		read-only="true" /> </tx:attributes> </tx:advice> <aop:config proxy-target-class="true"> 
+		<aop:advisor advice-ref="txAdvice" pointcut="execution(* com.esoft.archer.*.service.impl.*.*(..))" 
+		/> </aop:config> -->
+</beans>

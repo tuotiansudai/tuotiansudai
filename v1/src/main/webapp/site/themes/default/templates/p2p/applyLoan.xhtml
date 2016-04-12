@@ -1,0 +1,141 @@
+<ui:composition template="../page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="content">
+		<!-- 	未实名认证 -->
+		<sec:ifNotGranted roles="INVESTOR">
+			<script>
+				$.dialog
+						.alert(
+								'为了您的账户资金安全，请先进行实名认证!',
+								function() {
+									window.location.href = "#{path}/user/get_investor_permission";
+								});
+			</script>
+		</sec:ifNotGranted>
+		<!-- 	已实名认证 -->
+		<sec:ifAllGranted roles="INVESTOR">
+			<link href="#{tplVars.themeStylePath}/form.css" type="text/css"
+				rel="stylesheet" />
+			<f:event type="preRenderComponent"
+				listener="#{loanHome.instance.setUser(userList.getEntityById(loginUserInfo.loginUserId))}"></f:event>
+			<div class="form-top">
+				<p>
+					<a class="color9a9393 fontsize18">我要借款</a>&gt;<a
+						class="color57 fontsize14">提交表单申请</a>
+				</p>
+				<div class="jd-bar">
+    	<span class="buzhou1 bz-now"><label class="blueround blueround01">1</label>填写借款申请</span><span class="buzhou2">填写借款信息</span><span class="buzhou3">审核</span><span class="buzhou4">筹集借款</span><span class="buzhou5">获得借款</span>
+    </div>
+			</div>
+			<div class="form-div">
+			<h:form>
+				<h3>借款申请信息填写</h3>
+				<p>
+					<span class="stxt dot-bg">借款标题</span><span class="sinput"> <h:inputText
+							value="#{loanHome.instance.name}" label="借款标题" required="true"
+							maxlength="50">
+							<f:ajax event="blur" render="@this"></f:ajax>
+						</h:inputText></span>
+				</p>
+				<p>
+					<h:panelGroup id="loanType">
+					<span class="stxt dot-bg">标的类型</span><span class="sinput">
+							<h:selectOneMenu value="#{loanHome.instance.type}"
+								required="true" converter="archer.EntityConverter" label="标的类型">
+								<f:selectItem itemLabel="请选择" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{loanTypeList.allResultList}" var="type"
+									itemLabel="#{type.name}" itemValue="#{type}" />
+								<f:ajax render="loanType deadlineUnit"></f:ajax>
+							</h:selectOneMenu>
+						#{loanHome.instance.type.description}
+					</span>
+					</h:panelGroup>
+				</p>
+				<p class="heightp">
+					<span class="stxt">借款用途</span><span class="sinput"> <h:inputText
+							value="#{loanHome.instance.loanPurpose}" maxlength="500">
+						</h:inputText>
+					</span>
+				</p>
+				<p>
+					<span class="stxt dot-bg">借款总金额</span><span class="sinput"><h:inputText
+							id="loanMoney" value="#{loanHome.instance.loanMoney}"
+							label="预计借款金额" required="true">
+							<f:validateDoubleRange minimum="1"></f:validateDoubleRange>
+							<archer:validateNumber precision="0" cardinalNumber="100"></archer:validateNumber>
+							<f:ajax event="blur"></f:ajax>
+						</h:inputText></span>
+				</p>
+				<p>
+					<span class="stxt dot-bg">借款利率</span><span class="sinput"> <h:inputText
+							label="借款利率" required="true"
+							value="#{loanHome.instance.jkRatePercent}"
+							validatorMessage="借款利率精确到小数点后两位">
+							<archer:validateNumber precision="2"></archer:validateNumber>
+							<f:validateDoubleRange minimum="0.01" maximum="100"></f:validateDoubleRange>
+							<f:ajax event="blur" render="@this"></f:ajax>
+						</h:inputText></span>
+				</p>
+				<p class="heightp">
+					<span class="stxt dot-bg">借款期限</span><span class="sinput"> <h:inputText
+							value="#{loanHome.instance.deadline}" label="借款期限"
+							required="true" styleClass="lx">
+							<f:ajax event="blur" render="@this"></f:ajax>
+							<f:validateLongRange minimum="1"></f:validateLongRange>
+						</h:inputText>
+						<h:panelGroup id="deadlineUnit">
+							<h:outputText value="(单位：#{loanHome.instance.type.repayTimePeriod}#{dictUtil.getValue('repay_unit',loanHome.instance.type.repayTimeUnit)})"></h:outputText>
+						</h:panelGroup>
+					</span>
+				</p>
+				<p>
+					<span class="stxt">借款说明</span><span class="tinput"><h:inputTextarea
+							value="#{loanHome.instance.description}" label="项目说明"
+							style="resize:none;">
+						</h:inputTextarea></span>
+				</p>
+<!-- 				<p> -->
+<!-- 					<span class="stxt">每月交借款管理费</span><span class="sinput"><input -->
+<!-- 						type="text" /></span> -->
+<!-- 				</p> -->
+				<p>
+					<span class="stxt">验证码</span><span class="yzminput"><h:inputText
+							id="code" label="验证码" styleClass="text text2" required="true">
+							<archer:validateCaptcha />
+							<f:ajax event="blur" render="@this"></f:ajax>
+						</h:inputText> </span> <img title="点击刷新" alt="点击刷新" class="yzmimg verifyCode"
+						id="verifyCode" width="80" height="30"
+						style="margin-bottom: -11px;"
+						src="#{request.contextPath}/verifyCodeServlet"
+						onclick="nextVerifyCode();" /> <a href="javascript:void(0);"
+						onclick="nextVerifyCode();">换一张 </a>
+				</p>
+				<p>
+					<span class="stxt"></span><span><h:selectBooleanCheckbox
+							id="agree" selected="true" requiredMessage="请阅读并同意《借款协议》!">
+							<f:validator validatorId="omnifaces.RequiredCheckboxValidator" />
+							<f:ajax event="click"></f:ajax>
+						</h:selectBooleanCheckbox><label for="xy">我已阅读并同意签署<a href="#{path}/node/spage/jiekuanxieyi" target="_blank">《借款协议》</a></label></span>
+				</p>
+				<p>
+					<span class="stxt"></span><span>
+					<h:commandLink action="#{loanHome.save}" styleClass="save-btn" value="保存并继续">
+						<f:setPropertyActionListener value="个人借款" target="#{loanHome.instance.businessType}" />
+					</h:commandLink></span>
+				</p>
+				</h:form>
+			</div>
+		</sec:ifAllGranted>
+	</ui:define>
+</ui:composition>

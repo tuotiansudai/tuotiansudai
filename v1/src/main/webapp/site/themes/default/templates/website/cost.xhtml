@@ -1,0 +1,64 @@
+<ui:composition template="../page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<ui:define name="content">
+		<link type="text/css" rel="stylesheet" href="#{tplVars.themeStylePath}/website.css" />
+		<div class="cost_banner"></div>
+		<div class="cost_content">
+			<h4>网站费用<span>Website Cost</span></h4>
+
+			<div></div>
+			<table width="934">
+				<thead style="color:#d84d09;">
+				<tr>
+					<td width="140" height="45" align="center" style="border-collapse:collapse;">费用类型</td>
+					<td width="123" height="45" align="center">收费对象</td>
+					<td width="452" height="45" align="center">收费标准</td>
+					<td width="158" height="45" align="center">收取形式</td>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td width="140" height="45" align="center">服务费</td>
+					<td width="143" height="45" align="center">投资人</td>
+					<td width="502" height="45" align="center">投资所得利息的10%</td>
+					<td width="178" height="45" align="center">项目回款后自动扣除</td>
+				</tr>
+				<tr>
+					<td width="140" height="45" align="center">充值费用</td>
+					<td width="143" height="45" align="center"> </td>
+					<td width="502" height="45" align="center">充值费用全部由平台承担</td>
+					<td width="178" height="45" align="center">充值时自动扣除</td>
+				</tr>
+				<tr>
+					<td width="140" height="45" align="center">提现费用</td>
+					<td width="143" height="45" align="center">投资人</td>
+					<td width="502" height="45" align="center">每笔提现手续费2元，费用由投资人承担</td>
+					<td width="178" height="45" align="center">提现时自动扣除</td>
+				</tr>
+				</tbody>
+			</table>
+            <h4>推荐奖励<span>Referral Bonuses</span><i></i></h4>
+            <p style=" text-indent: 35px;">用户在平台采用2级推荐机制，每级奖励金额为被推荐人投资本金年化的1%，按照标的的周期，每期平均返现。奖励的钱会在标的还款时发放到推荐人的账户。</p>
+			<img src="#{tplVars.themeImagePath}/cast_step.jpg" alt=""/>
+
+			<p>1、小明每次参加投资，小张就会得到投资金额年化的1%作为奖励。例如：小明投资10
+				万元一年期的标的，小张得到的总奖励金额为100000*1%=1000元，放款时一次性发放。</p>
+
+			<p>2、小李每次参加投资，小张和小明分别得到投资金额年化的1%作为奖励。例如：小李
+				投资10万元半年期的标的，他们分别得到的总奖励金额为100000*(1%/12*6)=500元，
+				放款时一次性发放。</p>
+
+			<p>3、而小刘是小李推荐的，小刘每次参加投资，那么小明和小李会分别得到投资金额年化的
+				1%作为奖励，跟小张没有关系了。例如：小刘投资10万元半年期的标的，他们分别得到
+				的总奖励金额为100000*(1%/12x6)=500元，放款时一次性发放。</p>
+		</div>
+	</ui:define>
+</ui:composition>

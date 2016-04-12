@@ -1,0 +1,1 @@
+truncate table globle_refer_grade_profitrate;

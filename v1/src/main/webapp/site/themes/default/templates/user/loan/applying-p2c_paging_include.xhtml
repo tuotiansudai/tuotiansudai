@@ -1,0 +1,126 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:fragment rendered="#{applyEnterpriseLoanList.currentPage-5> 1}">
+		<h:commandLink title="到第一页" value="首页">
+			<f:ajax listener="#{applyEnterpriseLoanList.setCurrentPage(1)}" render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+	<ui:fragment rendered="#{applyEnterpriseLoanList.currentPage > 1}">
+		<h:commandLink title="到上一个页面" styleClass="pre" value="上一页">
+			<f:ajax
+				listener="#{applyEnterpriseLoanList.setCurrentPage(applyEnterpriseLoanList.currentPage-1)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+	<ui:fragment rendered="#{applyEnterpriseLoanList.currentPage-5 > 0}">
+		<h:commandLink title="到第 #{applyEnterpriseLoanList.currentPage-5} 页"
+			value="#{applyEnterpriseLoanList.currentPage-5}">
+			<f:ajax
+				listener="#{applyEnterpriseLoanList.setCurrentPage(applyEnterpriseLoanList.currentPage-5)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+	<ui:fragment rendered="#{applyEnterpriseLoanList.currentPage-4 > 0}">
+		<h:commandLink title="到第 #{applyEnterpriseLoanList.currentPage-4} 页"
+			value="#{applyEnterpriseLoanList.currentPage-4}">
+			<f:ajax
+				listener="#{applyEnterpriseLoanList.setCurrentPage(applyEnterpriseLoanList.currentPage-4)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+	<ui:fragment rendered="#{applyEnterpriseLoanList.currentPage-3 > 0}">
+		<h:commandLink title="到第 #{applyEnterpriseLoanList.currentPage-3} 页"
+			value="#{applyEnterpriseLoanList.currentPage-3}">
+			<f:ajax
+				listener="#{applyEnterpriseLoanList.setCurrentPage(applyEnterpriseLoanList.currentPage-3)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+	<ui:fragment rendered="#{applyEnterpriseLoanList.currentPage-2 > 0}">
+		<h:commandLink title="到第 #{applyEnterpriseLoanList.currentPage-2} 页"
+			value="#{applyEnterpriseLoanList.currentPage-2}">
+			<f:ajax
+				listener="#{applyEnterpriseLoanList.setCurrentPage(applyEnterpriseLoanList.currentPage-2)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+	<ui:fragment rendered="#{applyEnterpriseLoanList.currentPage-1 > 0}">
+		<h:commandLink title="到第 #{applyEnterpriseLoanList.currentPage-1} 页"
+			value="#{applyEnterpriseLoanList.currentPage-1}">
+			<f:ajax
+				listener="#{applyEnterpriseLoanList.setCurrentPage(applyEnterpriseLoanList.currentPage-1)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+	<a class="on">#{applyEnterpriseLoanList.currentPage}</a>
+	<ui:fragment
+		rendered="#{applyEnterpriseLoanList.lazyModel.rowCount/applyEnterpriseLoanList.pageSize > (applyEnterpriseLoanList.currentPage)}">
+		<h:commandLink title="到第 #{applyEnterpriseLoanList.currentPage+1} 页"
+			value="#{applyEnterpriseLoanList.currentPage+1}">
+			<f:ajax
+				listener="#{applyEnterpriseLoanList.setCurrentPage(applyEnterpriseLoanList.currentPage+1)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+	<ui:fragment
+		rendered="#{applyEnterpriseLoanList.lazyModel.rowCount/applyEnterpriseLoanList.pageSize > (applyEnterpriseLoanList.currentPage+1)}">
+		<h:commandLink title="到第 #{applyEnterpriseLoanList.currentPage+2} 页"
+			value="#{applyEnterpriseLoanList.currentPage+2}">
+			<f:ajax
+				listener="#{applyEnterpriseLoanList.setCurrentPage(applyEnterpriseLoanList.currentPage+2)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+	<ui:fragment
+		rendered="#{applyEnterpriseLoanList.lazyModel.rowCount/applyEnterpriseLoanList.pageSize > (applyEnterpriseLoanList.currentPage+2)}">
+		<h:commandLink title="到第 #{applyEnterpriseLoanList.currentPage+3} 页"
+			value="#{applyEnterpriseLoanList.currentPage+3}">
+			<f:ajax
+				listener="#{applyEnterpriseLoanList.setCurrentPage(applyEnterpriseLoanList.currentPage+3)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+	<ui:fragment
+		rendered="#{applyEnterpriseLoanList.lazyModel.rowCount/applyEnterpriseLoanList.pageSize > (applyEnterpriseLoanList.currentPage+3)}">
+		<h:commandLink title="到第 #{applyEnterpriseLoanList.currentPage+4} 页"
+			value="#{applyEnterpriseLoanList.currentPage+4}">
+			<f:ajax
+				listener="#{applyEnterpriseLoanList.setCurrentPage(applyEnterpriseLoanList.currentPage+4)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+	<ui:fragment
+		rendered="#{applyEnterpriseLoanList.lazyModel.rowCount/applyEnterpriseLoanList.pageSize > (applyEnterpriseLoanList.currentPage+4)}">
+		<h:commandLink title="到第 #{applyEnterpriseLoanList.currentPage+5} 页"
+			value="#{applyEnterpriseLoanList.currentPage+5}">
+			<f:ajax
+				listener="#{applyEnterpriseLoanList.setCurrentPage(applyEnterpriseLoanList.currentPage+5)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+	<ui:fragment
+		rendered="#{applyEnterpriseLoanList.lazyModel.rowCount>applyEnterpriseLoanList.pageSize*applyEnterpriseLoanList.currentPage}">
+		<h:commandLink title="去下一个页面" styleClass="next" value="下一页">
+			<f:ajax
+				listener="#{applyEnterpriseLoanList.setCurrentPage(applyEnterpriseLoanList.currentPage+1)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+	<ui:fragment
+		rendered="#{applyEnterpriseLoanList.lazyModel.rowCount/applyEnterpriseLoanList.pageSize > (applyEnterpriseLoanList.currentPage+5)}">
+		<ui:param name="endPage"
+			value="#{math:ceil(applyEnterpriseLoanList.lazyModel.rowCount/applyEnterpriseLoanList.pageSize)}"></ui:param>
+		<h:commandLink title="到最后一页" value="尾页">
+			<f:ajax listener="#{applyEnterpriseLoanList.setCurrentPage(endPage)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+
+
+
+</f:view>

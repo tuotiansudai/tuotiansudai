@@ -1,0 +1,69 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<ui:define name="content">
+		<f:event type="preRenderView"
+			listener="#{motionTrackingGroupByList.example.setFromType(MotionTrackingConstants.FromType.REFERRER)}"></f:event>
+		<f:event type="preRenderView"
+			listener="#{motionTrackingGroupByList.setGroupByField('from')}"></f:event>
+		<div class="entry">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<h:outputLabel style="padding-left: 15px;"
+						value="#{commonMsg.currentPositionLabel}#{userMsg.userManagerLabel}"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button value="用户投资统计"
+						outcome="/admin/user/userEdit"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<h:form id="form">
+				<p:spacer></p:spacer>
+				<p:panel id="filters">
+					<h:inputText id="searchId" value="#{userList.example.id}"></h:inputText>
+					<h:inputText id="searchTitle" value="#{userList.example.username}"></h:inputText>
+					<p:commandButton update="dataTable" process="filters"
+						value="#{commonMsg.searchLabel}"></p:commandButton>
+				</p:panel>
+				<p:watermark for="searchId" value="#{commonMsg.IDLabel}" />
+				<p:watermark for="searchTitle" value="#{userMsg.username}"></p:watermark>
+
+				<p:spacer></p:spacer>
+
+				<p:dataTable lazy="true" id="dataTable"
+					value="#{motionTrackingGroupByList.lazyModel}" var="megb"
+					paginator="true" paginatorPosition="bottom" rows="15"
+					rowsPerPageTemplate="15,50,100"
+					rowStyleClass="#{user.status != '1'?'disable':''}"
+					currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+					paginatorTemplate="#{commonMsg.paginatorTemplate}"
+					emptyMessage="#{commonMsg.noResultMsg}">
+
+					<p:column headerText="#{commonMsg.IDLabel }" sortBy="user.id">
+						<h:outputText value="#{megb.entityClazz}"></h:outputText>
+					</p:column>
+					<p:column headerText="field">
+						<h:outputText value="#{megb.groupByField}"></h:outputText>
+					</p:column>
+					<p:column headerText="field value">
+						<h:outputText value="#{megb.groupByValue}"></h:outputText>
+					</p:column>
+					<p:column headerText="数量">
+						<h:outputText value="#{megb.amount}"></h:outputText>
+					</p:column>
+				</p:dataTable>
+				
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

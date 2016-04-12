@@ -1,0 +1,11 @@
+@charset "UTF-8";
+/**
+ * 
+ * @authors  ()
+ * @date    2015-08-25 12:31:24
+ * @version $Id$
+ */
+.main{ display: block; text-align: center; padding: 10px;}
+.img{  width: 80%; height: 80%;margin: 8% auto;}
+.info{ font-size: 1.2em; color: #f7b291;  margin: 10% 0 0;}
+.btn-success{ margin-top: 10%; font-size: 1.4em; line-height: 42px; border-radius: 5px; color: #fff; background: #fd9b30; text-decoration: none; display: block;}

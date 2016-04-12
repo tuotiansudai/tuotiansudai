@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.AutoInvestPlanMapper">
+
+    <resultMap id="autoInvestPlanResultMap" type="AutoInvestPlanModel">
+        <id column="id" property="id"></id>
+        <result column="login_name" property="loginName"></result>
+        <result column="min_invest_amount" property="minInvestAmount"></result>
+        <result column="max_invest_amount" property="maxInvestAmount"></result>
+        <result column="retention_amount" property="retentionAmount"></result>
+        <result column="auto_invest_periods" property="autoInvestPeriods"></result>
+        <result column="enabled" property="enabled"></result>
+        <result column="created_time" property="createdTime"></result>
+    </resultMap>
+
+    <sql id="columns">
+        id, login_name, min_invest_amount, max_invest_amount, retention_amount, auto_invest_periods, enabled, created_time
+    </sql>
+
+    <insert id="create" parameterType="AutoInvestPlanModel">
+        insert into auto_invest_plan ( <include refid="columns"></include> )
+        value(#{id}, #{loginName}, #{minInvestAmount}, #{maxInvestAmount}, #{retentionAmount}, #{autoInvestPeriods}, #{enabled}, #{createdTime})
+    </insert>
+
+    <update id="update" parameterType="AutoInvestPlanModel">
+        update auto_invest_plan
+        set
+            login_name = #{loginName},
+            min_invest_amount =  #{minInvestAmount},
+            max_invest_amount = #{maxInvestAmount},
+            retention_amount = #{retentionAmount},
+            auto_invest_periods = #{autoInvestPeriods},
+            enabled = #{enabled},
+            created_time = #{createdTime}
+        where
+            id = #{id}
+    </update>
+
+    <update id="enable" parameterType="String">
+        update auto_invest_plan
+        set enabled = TRUE
+        where login_name = #{loginName}
+    </update>
+
+    <update id="disable" parameterType="String">
+        update auto_invest_plan
+        set enabled = FALSE
+        where login_name = #{loginName}
+    </update>
+
+    <select id="findByLoginName" parameterType="String" resultMap="autoInvestPlanResultMap">
+        select <include refid="columns"></include>
+        from auto_invest_plan
+        where login_name = #{loginName}
+    </select>
+
+    <select id="findEnabledPlanByPeriod" parameterType="map" resultMap="autoInvestPlanResultMap">
+        select <include refid="columns"></include>
+        from auto_invest_plan
+        where auto_invest_periods &amp; #{period} = #{period}
+        and created_time &lt; #{endTime}
+        and enabled = TRUE
+        order by created_time asc
+    </select>
+</mapper>

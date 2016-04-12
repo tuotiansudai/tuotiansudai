@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5">
+    <display-name/>
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.htm</welcome-file>
+    </welcome-file-list>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+    </listener>
+    <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value>/WEB-INF/classes/log4j.properties</param-value>
+    </context-param>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext*.xml,classpath*:/spring-config/applicationContext*.xml</param-value>
+    </context-param>
+    <context-param>
+        <param-name>webAppRootKey</param-name>
+        <param-value>jdp2p4.0.root</param-value>
+    </context-param>
+    <context-param>
+        <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+        <param-value>/WEB-INF/archer.taglib.xml;/WEB-INF/spring_security.taglib.xml</param-value>
+    </context-param>
+    <!-- 管理后台皮肤 -->
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>#{adminTheme.theme}</param-value>
+    </context-param>
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter>
+        <filter-name>browserFilter</filter-name>
+        <filter-class>com.ttsd.mobile.mobileFilter.BrowserFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>OpenSessionInViewFilter</filter-name>
+        <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>OpenSessionInViewFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>browserFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- 系统过滤器 -->
+    <!-- <filter> -->
+    <!-- <filter-name>systemFilter</filter-name> -->
+    <!-- <filter-class>com.esoft.archer.system.filter.SystemFilter</filter-class> -->
+    <!-- <init-param> -->
+    <!-- <param-name>filterServices</param-name> -->
+    <!-- <param-value>refreshGrantedAuthoritiesFilterImpl</param-value> -->
+    <!-- <param-value>watchdogFilterImpl,feedFilterImpl,watermarkFilterImpl,refreshGrantedAuthoritiesFilterImpl</param-value> -->
+    <!-- </init-param> -->
+    <!-- </filter> -->
+    <!-- <filter-mapping> -->
+    <!-- <filter-name>systemFilter</filter-name> -->
+    <!-- <url-pattern>/*</url-pattern> -->
+    <!-- </filter-mapping> -->
+    <filter>
+        <filter-name>gzipResponseFilter</filter-name>
+        <filter-class>org.omnifaces.filter.GzipResponseFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>gzipResponseFilter</filter-name>
+        <servlet-name>Faces Servlet</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+    <filter>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <!-- <servlet-name>Faces Servlet</servlet-name> -->
+    </filter-mapping>
+    <!-- Set the project stage to "Development", "UnitTest", "SystemTest", or
+        "Production". -->
+    <context-param>
+        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <param-value>Development</param-value>
+    </context-param>
+    <context-param>
+        <!-- 一个view崩溃以后，重建view，还是抛出ViewExpiredException异常 -->
+        <!-- 一个request生命周期的bean的ajax也是构建view么？view和session有关，request的ajax和session应该没关系吧，为嘛还和view崩溃有关？ -->
+        <!-- primefaces的dataTable，分页时候重建view，可以无缝连接，但是我自己写的ajax请求就不行了，很崩溃。。。 -->
+        <param-name>com.sun.faces.enableRestoreView11Compatibility</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <!--<context-param> <param-name>com.sun.faces.enableGroovyScripting</param-name>
+        <param-value>true</param-value> </context-param> -->
+    <context-param>
+        <param-name>com.sun.faces.expressionFactory</param-name>
+        <param-value>com.sun.el.ExpressionFactoryImpl</param-value>
+    </context-param>
+    <!-- 是否发送 X-Powered-By 信息 -->
+    <context-param>
+        <param-name>com.sun.faces.sendPoweredByHeader</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    <filter>
+        <filter-name>Pretty Filter</filter-name>
+        <!-- <filter-class>com.esoft.archer.system.filter.MyPrettyFilter</filter-class> -->
+        <filter-class>com.ocpsoft.pretty.MyPrettyFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>Pretty Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>Recharge</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>Withdrawal</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>Investment</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>Certification</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>Register</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>BindCard</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.htm</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Recharge</servlet-name>
+        <url-pattern>/site/themes/default/templates/user/recharge.htm</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Withdrawal</servlet-name>
+        <url-pattern>/site/themes/default/templates/user/withdraw.htm</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Investment</servlet-name>
+        <url-pattern>/site/themes/default/templates/p2p/loanDetail.htm</url-pattern>
+        <url-pattern>/site/themes/default/templates/p2p/loanDetail_xsb.htm</url-pattern>
+        <url-pattern>/site/themes/default/templates/p2p/loanDetail_jsb.htm</url-pattern>
+        <url-pattern>/site/themes/default/templates/p2p/loanDetail_dsb.htm</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Certification</servlet-name>
+        <url-pattern>/site/themes/default/templates/user/get_investor_permission.htm</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Register</servlet-name>
+        <url-pattern>/site/themes/default/templates/memberRegister.htm</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>BindCard</servlet-name>
+
+        <url-pattern>/site/themes/default/templates/user/mybankcards.htm</url-pattern>
+    </servlet-mapping>
+
+    <context-param>
+        <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>com.sun.faces.developmentMode</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>com.sun.faces.numberOfViewsInSession</param-name>
+        <param-value>5</param-value>
+    </context-param>
+    <context-param>
+        <param-name>com.ocpsoft.pretty.BASE_PACKAGES</param-name>
+        <param-value>none</param-value>
+    </context-param>
+    <!-- 	<servlet> -->
+    <!-- 		<servlet-name>toHtml</servlet-name> -->
+    <!-- 		<servlet-class>com.esoft.archer.controller.servlet.ToHtml</servlet-class> -->
+    <!-- 	</servlet> -->
+    <servlet>
+        <servlet-name>ImageUpload</servlet-name>
+        <servlet-class>com.esoft.archer.ueditor.servlet.ImageUpload</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ScrawlUp</servlet-name>
+        <servlet-class>com.esoft.archer.ueditor.servlet.ScrawlUp</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FileUp</servlet-name>
+        <servlet-class>com.esoft.archer.ueditor.servlet.FileUp</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetRemoteImage</servlet-name>
+        <servlet-class>com.esoft.archer.ueditor.servlet.GetRemoteImage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ImageManager</servlet-name>
+        <servlet-class>com.esoft.archer.ueditor.servlet.ImageManager</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetMovie</servlet-name>
+        <servlet-class>com.esoft.archer.ueditor.servlet.GetMovie</servlet-class>
+    </servlet>
+    <servlet>
+        <!-- 验证码 -->
+        <servlet-name>verifyCodeServlet</servlet-name>
+        <servlet-class>com.esoft.core.base.DelegatingServletProxy</servlet-class>
+        <init-param>
+            <param-name>targetServletBeanClassName</param-name>
+            <param-value>com.esoft.archer.user.servlet.VerifyCodeServlet</param-value>
+        </init-param>
+    </servlet>
+    <servlet>
+        <!-- 验证码 -->
+        <servlet-name>verifyCodeInRedisServlet</servlet-name>
+        <servlet-class>com.esoft.core.base.DelegatingServletProxy</servlet-class>
+        <init-param>
+            <param-name>targetServletBeanClassName</param-name>
+            <param-value>com.esoft.archer.user.servlet.VerifyCodeInRedisServlet</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet>
+        <servlet-name>activateAccount</servlet-name>
+        <servlet-class>com.esoft.core.base.DelegatingServletProxy</servlet-class>
+        <init-param>
+            <param-name>targetServletBeanClassName</param-name>
+            <param-value>com.esoft.archer.user.servlet.ActivateAccountServlet</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet>
+        <servlet-name>qqAuthCallback</servlet-name>
+        <servlet-class>com.esoft.core.base.DelegatingServletProxy</servlet-class>
+        <init-param>
+            <param-name>targetServletBeanClassName</param-name>
+            <param-value>com.esoft.archer.openauth.servlet.QQAuthCallbackServlet</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>qqAuthCallback</servlet-name>
+        <url-pattern>/qq_auth_return</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>sinaWeiboAuthCallback</servlet-name>
+        <servlet-class>com.esoft.core.base.DelegatingServletProxy</servlet-class>
+        <init-param>
+            <param-name>targetServletBeanClassName</param-name>
+            <param-value>com.esoft.archer.openauth.servlet.SinaWeiboAuthCallbackServlet</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>sinaWeiboAuthCallback</servlet-name>
+        <url-pattern>/sina_weibo_auth</url-pattern>
+    </servlet-mapping>
+
+    <!-- 	<servlet-mapping> -->
+    <!-- 		<servlet-name>toHtml</servlet-name> -->
+    <!-- 		<url-pattern>/toHtml</url-pattern> -->
+    <!-- 	</servlet-mapping> -->
+    <servlet-mapping>
+        <servlet-name>ImageUpload</servlet-name>
+        <url-pattern>/ImageUpload</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ScrawlUp</servlet-name>
+        <url-pattern>/ScrawlUp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FileUp</servlet-name>
+        <url-pattern>/FileUp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetRemoteImage</servlet-name>
+        <url-pattern>/GetRemoteImage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImageManager</servlet-name>
+        <url-pattern>/ImageManager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetMovie</servlet-name>
+        <url-pattern>/GetMovie</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>verifyCodeServlet</servlet-name>
+        <url-pattern>/verifyCodeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>verifyCodeInRedisServlet</servlet-name>
+        <url-pattern>/verifyCodeInRedisServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>activateAccount</servlet-name>
+        <url-pattern>/activateAccount</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/mobile/*</url-pattern>
+        <url-pattern>/special/*</url-pattern>
+    </servlet-mapping>
+
+    <filter>
+        <!-- DO NOT change filter-name , Ref com.ttsd.filter.MobileAppClientStatisticsFilter -->
+        <filter-name>appClientStatisticsFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>appClientStatisticsFilter</filter-name>
+        <url-pattern>/v1.0/*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>appDispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>appDispatcher</servlet-name>
+        <url-pattern>/v1.0/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>appDispatcher</servlet-name>
+        <url-pattern>/ad/*</url-pattern>
+    </servlet-mapping>
+
+    <security-constraint>
+        <display-name>Restrict raw XHTML Documents</display-name>
+        <web-resource-collection>
+            <web-resource-name>XHTML</web-resource-name>
+            <url-pattern>*.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint/>
+    </security-constraint>
+
+    <!--<error-page> <error-code>500</error-code> <location>/error/error.htm</location>
+        </error-page> <error-page> <error-code>404</error-code> <location>/error</location>
+        </error-page> <filter> <filter-name>GroovyFilter</filter-name> <filter-class>com.sun.faces.scripting.GroovySupportFilter</filter-class>
+        </filter> <filter-mapping> <filter-name>GroovyFilter</filter-name> <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher> <dispatcher>FORWARD</dispatcher> <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher> </filter-mapping> -->
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error/404.html</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error/500.html</location>
+    </error-page>
+</web-app>

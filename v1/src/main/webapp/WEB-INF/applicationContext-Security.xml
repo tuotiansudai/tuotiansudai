@@ -1,0 +1,317 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/security
+http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+	<!-- 访问决策管理器，这里使用AffirmativeBased，并加入一个自定义的投票器DynamicRoleVoter -->
+	<beans:bean id="accessDecisionManager"
+		class="com.esoft.archer.user.service.impl.MyUnanimousBased">
+		<beans:property name="decisionVoters">
+			<beans:list>
+<!-- 				<beans:bean class="org.springframework.security.access.vote.RoleVoter"> -->
+<!-- 					<beans:property name="rolePrefix" value="" /> -->
+<!-- 				</beans:bean> -->
+				<beans:bean class="org.springframework.security.web.access.expression.MyWebExpressionVoter" />
+				<beans:ref bean="menuPermissionVoter" />
+				<beans:ref bean="urlMappingPermissionVoter" />
+<!-- 				<beans:bean  -->
+<!-- 					class="org.springframework.security.access.vote.AuthenticatedVoter" /> -->
+			</beans:list>
+		</beans:property>
+<!-- 		<beans:property name="allowIfAllAbstainDecisions" value="true"></beans:property> -->
+	</beans:bean>
+
+	<beans:bean id="accessDeniedHandler" class="com.esoft.archer.user.service.impl.MyAccessDeniedHandler">
+		<beans:property name="accessDeniedUrl" value="/error/403.htm" />
+	</beans:bean>
+
+	<beans:bean id="authenticationTokenProcessingFilter" class="com.ttsd.api.security.AuthenticationTokenProcessingFilter">
+		<beans:property name="loginUrl" value="/login" />
+		<beans:property name="refreshTokenUrl" value="/refresh-token" />
+		<beans:property name="appHeaders">
+			<beans:map key-type="java.lang.String" value-type="java.lang.String">
+				<beans:entry key="MobileApp" value="YES" />
+			</beans:map>
+		</beans:property>
+		<beans:property name="uriPrefixes">
+			<beans:list value-type="java.lang.String">
+				<beans:value>/v1.0</beans:value>
+			</beans:list>
+		</beans:property>
+		<beans:property name="tokenExpiredSeconds" value="3000" />
+	</beans:bean>
+
+	<http entry-point-ref="loginUrlEntryPoint" use-expressions="true"
+		access-decision-manager-ref="accessDecisionManager">
+		<custom-filter ref="authenticationTokenProcessingFilter" position="PRE_AUTH_FILTER" />
+
+<!-- 		是按照顺序加载和过滤么？ 结论：最后一个优先 -->
+		<intercept-url pattern="/re_active" access="hasRole('INACTIVE')" />
+		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN') and not hasRole('INACTIVE')" />
+		<intercept-url pattern="/user/**" access="hasRole('USER') and not hasRole('INACTIVE')" />
+		<intercept-url pattern="/mobile/user/**" access="hasRole('USER') and not hasRole('INACTIVE')" />
+		<intercept-url pattern="/site/**" access="denyAll" />
+		<intercept-url pattern="/**/*.jsp" access="denyAll" />
+		<intercept-url pattern="/spage/**" access="denyAll" />
+		<intercept-url pattern="/javax.faces.resource/**" filters="none" />
+		<intercept-url pattern="/include/**" filters="none" />
+		<intercept-url pattern="/login.jsp" filters="none" />
+		<intercept-url pattern="/**/*.jpg" filters="none" />
+		<intercept-url pattern="/**/*.png" filters="none" />
+		<intercept-url pattern="/**/*.gif" filters="none" />
+		<intercept-url pattern="/**/*.css" filters="none" />
+		<intercept-url pattern="/**/*.js" filters="none" />
+		<intercept-url pattern="/**/*.ico" filters="none" />
+		<intercept-url pattern="/**/*.htc" filters="none" />
+		<intercept-url pattern="/**/*.swf" filters="none" />
+		<intercept-url pattern="/**/*.TTF" filters="none" />
+		<intercept-url pattern="/**/*.eot" filters="none" />
+		<intercept-url pattern="/**/*.svg" filters="none" />
+		<intercept-url pattern="/**/*.woff" filters="none" />
+		
+		<intercept-url pattern="/toHtml/**" filters="none" />
+		<intercept-url pattern="/upload/**" filters="none" />
+		<intercept-url pattern="/ImageUpload/**" filters="none" />
+		<intercept-url pattern="/ScrawlUp/**" filters="none" />
+		<intercept-url pattern="/FileUp/**" filters="none" />
+		<intercept-url pattern="/GetRemoteImage/**" filters="none" />
+		<intercept-url pattern="/ImageManager/**" filters="none" />
+		<intercept-url pattern="/GetMovie/**" filters="none" />
+		<intercept-url pattern="/verifyCodeServlet/**" filters="none" />
+		<intercept-url pattern="/activateAccount/**" access="hasRole('USER')" />
+		<intercept-url pattern="/verifyCodeServlet/**" filters="none" />
+		<intercept-url pattern="/sina_weibo_auth/**" filters="none" />
+		<intercept-url pattern="/qq_auth_return/**" filters="none" />
+		<intercept-url pattern="/payreturn/**" filters="none" />
+		<intercept-url pattern="/pay/**" filters="none" />
+		<intercept-url pattern="/error/**" filters="none" />
+		<intercept-url pattern="/mobile/certification" access="hasRole('USER')" />
+		<intercept-url pattern="/mobile/register" access="not hasRole('USER')" />
+		<intercept-url pattern="/mobile/register/mobileRegisterValidationCode" access="not hasRole('USER')" />
+		<intercept-url pattern="/mobile/register/mobileRegister" access="not hasRole('USER')" />
+		<intercept-url pattern="/mobile/register/userNameValidation" access="not hasRole('USER')" />
+		<intercept-url pattern="/mobile/register/mobilePhoneNumValidation" access="not hasRole('USER')" />
+		<intercept-url pattern="/mobile/register/vCodeValidation" access="not hasRole('USER')" />
+
+
+		<intercept-url pattern="/v1.0/register/sendsms" filters="none" />
+		<intercept-url pattern="/v1.0/retrievepassword/sendsms" filters="none" />
+		<intercept-url pattern="/v1.0/retrievepassword" filters="none" />
+		<intercept-url pattern="/v1.0/validatecaptcha" filters="none" />
+		<intercept-url pattern="/v1.0/get/invests" filters="none" />
+		<intercept-url pattern="/v1.0/get/loans" filters="none" />
+		<intercept-url pattern="/v1.0/get/loan" filters="none" />
+		<intercept-url pattern="/v1.0/get/nodes" filters="none" />
+		<intercept-url pattern="/v1.0/get/node" filters="none" />
+		<intercept-url pattern="/v1.0/get/version" filters="none" />
+		<intercept-url pattern="/v1.0/get/banner" filters="none" />
+		<intercept-url pattern="/v1.0/register" filters="none" />
+		<intercept-url pattern="/v1.0/install-notify" filters="none" />
+		<intercept-url pattern="/v1.0/**" access="hasRole('USER')" />
+
+		<intercept-url pattern="/**" access="MENU_PERMISSION" />
+		<intercept-url pattern="/**" access="URL_MAPPING_PERMISSION" />
+		<intercept-url pattern="/**" access="not hasRole('INACTIVE')" />
+		<session-management
+			session-authentication-strategy-ref="sas" />
+
+		<access-denied-handler ref="accessDeniedHandler" />
+
+		<!--remeberMe 过滤器 -->
+		<custom-filter ref="rememberMeAuthenticationFilter"
+			position="REMEMBER_ME_FILTER" />
+
+		<!-- 登录过滤器 -->
+		<custom-filter before="FORM_LOGIN_FILTER" ref="loginFilter" />
+		<custom-filter position="FORM_LOGIN_FILTER" ref="adminLoginFilter" />
+
+		<custom-filter position="CONCURRENT_SESSION_FILTER" ref="concurrencyFilter" />
+
+		<!-- 注销过滤器 -->
+		<custom-filter before="LOGOUT_FILTER" ref="logoutFilter" />
+		<custom-filter position="LOGOUT_FILTER" ref="adminLogoutFilter" />
+	</http>
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider ref="myAuthenticationManager" />
+		<authentication-provider ref="rememberMeAuthenticationProvider" />
+	</authentication-manager>
+
+	<beans:bean id="sas"
+		class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy">
+		<beans:constructor-arg name="sessionRegistry"
+			ref="sessionRegistry" />
+		<beans:property name="maximumSessions" value="10" />
+	</beans:bean>
+
+	<beans:bean id="concurrencyFilter"
+		class="org.springframework.security.web.session.ConcurrentSessionFilter">
+		<beans:property name="sessionRegistry" ref="sessionRegistry" />
+		<!-- <beans:property name="redirectStrategy" ref="jsfRedirectStrategy" 
+			/> -->
+		<!-- //FIXEM:这里需要制定session过期页面。 -->
+		<beans:property name="expiredUrl" value="/" />
+	</beans:bean>
+
+	<!-- <beans:bean id="jsfRedirectStrategy" class="com.esoft.archer.user.service.impl.JsfRedirectStrategy"/> -->
+
+	<beans:bean id="sessionRegistry"
+		class="org.springframework.security.core.session.SessionRegistryImpl" />
+
+	<!-- 认证切入点，这里使用它的目的是保证当用户登录之前就访问前后台时，会跳转到不同的登录页面 -->
+	<beans:bean id="loginUrlEntryPoint"
+		class="com.esoft.archer.user.service.impl.LoginUrlEntryPoint">
+		<beans:property name="dispatcherRules">
+			<beans:map>
+				<beans:entry key="mobile" value="/memberLoginMobile" />
+				<beans:entry key="admin" value="/loginPage" />
+				<beans:entry key="raise" value="/raise/membersLogin"></beans:entry>
+				<beans:entry key="user" value="/memberLoginPage"></beans:entry>
+			</beans:map>
+		</beans:property>
+		<beans:property name="defaultTargetUrl" value="/memberLoginPage"></beans:property>
+		<beans:property name="useModalBox" value="false"></beans:property>
+	</beans:bean>
+	<!-- 登录过滤器，验证前台用户 -->
+	<beans:bean id="loginFilter"
+		class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+		<beans:property name="sessionAuthenticationStrategy"
+			ref="sas" />
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+		<beans:property name="rememberMeServices" ref="rememberMeServices"></beans:property>
+		<beans:property name="authenticationFailureHandler"
+			ref="failureHandler" />
+		<beans:property name="authenticationSuccessHandler"
+			ref="successHandler" />
+		<beans:property name="filterProcessesUrl" value="/login" />
+	</beans:bean>
+
+	<beans:bean id="failureHandler" class="com.esoft.archer.user.service.impl.MyUrlAuthenticationFailureHandler">
+		<!-- FIXME:登录失败以后的url就变了，如果用户直接访问这个登录失败的url，会提示 Authentication method not 
+			supported: GET -->
+		<beans:property name="useForward" value="true" />
+		<beans:property name="defaultFailureUrl" value="/memberLoginPage?error=true" />
+		<beans:property name="appHeaders">
+			<beans:map key-type="java.lang.String" value-type="java.lang.String">
+				<beans:entry key="MobileApp" value="YES" />
+			</beans:map>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="successHandler" class="com.ttsd.api.security.MySavedRequestAwareAuthenticationSuccessHandler">
+		<beans:property name="defaultTargetUrl" value="/" />
+		<beans:property name="appHeaders">
+			<beans:map key-type="java.lang.String" value-type="java.lang.String">
+				<beans:entry key="MobileApp" value="YES" />
+			</beans:map>
+		</beans:property>
+	</beans:bean>
+
+	<!-- 登录过滤器，验证后台用户 -->
+	<beans:bean id="adminLoginFilter"
+		class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+		<beans:property name="sessionAuthenticationStrategy"
+			ref="sas" />
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+		<beans:property name="rememberMeServices" ref="rememberMeServices"></beans:property>
+		<beans:property name="authenticationFailureHandler"
+			ref="adminFailureHandler" />
+		<beans:property name="authenticationSuccessHandler"
+			ref="adminSuccessHandler" />
+		<beans:property name="filterProcessesUrl" value="/admin-login" />
+	</beans:bean>
+
+	<beans:bean id="adminFailureHandler"
+		class="com.esoft.archer.user.service.impl.MyUrlAuthenticationFailureHandler">
+		<!-- 为了保留错误信息，例如用户名密码错误之类 -->
+		<beans:property name="useForward" value="true" />
+		<beans:property name="defaultFailureUrl" value="/loginPage?error=true" />
+		<beans:property name="useModalBox" value="false" />
+	</beans:bean>
+
+	<beans:bean id="adminSuccessHandler"
+		class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+		<!-- <beans:property name="useReferer" value="true" /> -->
+		<!-- <beans:property name="alwaysUseDefaultTargetUrl" value="false" /> -->
+		<!-- <beans:property name="targetUrlParameter" value="spring-security-redirect"/> -->
+		<beans:property name="defaultTargetUrl" value="/admin/index.htm" />
+	</beans:bean>
+
+	<beans:bean id="mySimpleUrlLogoutSuccessHandler" class="com.ttsd.api.security.MySimpleUrlLogoutSuccessHandler" >
+		<beans:property name="appHeaders">
+			<beans:map key-type="java.lang.String" value-type="java.lang.String">
+				<beans:entry key="MobileApp" value="YES" />
+			</beans:map>
+		</beans:property>
+	</beans:bean>
+
+	<!-- 注销过滤器，完成前台用户注销时的定向功能 -->
+	<beans:bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<beans:constructor-arg ref="mySimpleUrlLogoutSuccessHandler"/>
+		<beans:constructor-arg>
+			<beans:list>
+				<beans:bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+				<beans:ref bean="rememberMeServices" />
+			</beans:list>
+		</beans:constructor-arg>
+		<beans:property name="filterProcessesUrl" value="/usermember/logout" />
+	</beans:bean>
+
+	<!-- 注销过滤器，完成后台用户注销时的定向功能 -->
+	<beans:bean id="adminLogoutFilter"
+		class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<beans:constructor-arg value="/" />
+		<beans:constructor-arg>
+			<beans:list>
+				<beans:bean
+					class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+				<beans:ref bean="rememberMeServices" />
+			</beans:list>
+		</beans:constructor-arg>
+		<beans:property name="filterProcessesUrl" value="/user/logout" />
+	</beans:bean>
+
+	<!-- Automatically receives AuthenticationEvent messages -->
+	<beans:bean id="loggerListener"
+		class="org.springframework.security.authentication.event.LoggerListener" />
+
+	<beans:bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<beans:property name="basename"
+			value="classpath:org/springframework/security/messages/messages_zh_CN" />
+	</beans:bean>
+
+	<beans:bean id="jdbcUserDetailsManager"
+		class="com.esoft.archer.user.service.impl.MyJdbcUserDetailsManager">
+		<beans:property name="dataSource" ref="dataSource"></beans:property>
+		<beans:property name="usersByUsernameQuery"
+			value="select username,password,status from user where username=?"></beans:property>
+		<beans:property name="authoritiesByUsernameQuery"
+			value="select user.username as username,role_permission.permission_id as authority from user left join user_role on user.id=user_role.user_id left join role_permission on user_role.role_id=role_permission.role_id where user.username=?"></beans:property>
+	</beans:bean>
+
+	<!-- remember me Configuration start -->
+	<!-- 记住密码功能(COOKIE方式) -->
+	<beans:bean id="rememberMeAuthenticationFilter"
+		class="com.esoft.archer.user.service.impl.MyRememberMeAuthenticationFilter">
+		<beans:property name="rememberMeServices" ref="rememberMeServices" />
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+	</beans:bean>
+	<beans:bean id="rememberMeServices"
+		class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
+		<beans:property name="userDetailsService" ref="jdbcUserDetailsManager" />
+		<beans:property name="key" value="esoft-archer" />
+		<beans:property name="alwaysRemember" value="false"></beans:property>
+		<beans:property name="tokenValiditySeconds" value="1209600"><!--14天 -->
+		</beans:property>
+		<beans:property name="parameter" value="_spring_security_remember_me"></beans:property>
+	</beans:bean>
+	<beans:bean id="rememberMeAuthenticationProvider"
+		class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+		<beans:property name="key" value="esoft-archer" />
+	</beans:bean>
+
+	<global-method-security pre-post-annotations="enabled" />
+
+</beans:beans>

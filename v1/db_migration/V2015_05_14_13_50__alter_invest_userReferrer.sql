@@ -1,0 +1,1 @@
+ALTER TABLE `invest_userReferrer` ADD CONSTRAINT `invest_userReferrer_fk2` FOREIGN KEY (`referrer_id`) REFERENCES `user` (`id`);

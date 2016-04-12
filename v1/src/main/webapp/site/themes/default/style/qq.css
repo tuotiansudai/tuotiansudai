@@ -1,0 +1,37 @@
+
+.online,.back-to-top,.appDownload{
+    width: 70px;
+    height: 66px;
+    position: fixed;
+    right: 20px;
+    border-radius:5px;
+    -webkit-transition:.3s;
+    -moz-transition:.3s;
+    -ms-transition:.3s;
+    transition:.3s;
+}
+.appDownload {
+    bottom: 160px;
+    background: url("/site/themes/default/images/qq/backtotop.png") no-repeat 0px 0px;
+}
+.online {
+    bottom: 90px;
+    background: url("/site/themes/default/images/qq/backtotop.png") no-repeat 0px -69px;
+}
+.back-to-top {
+    bottom: 20px;
+    background: url("/site/themes/default/images/qq/backtotop.png") no-repeat 0px -138px;
+}
+
+.appDownload:hover {
+    background: url("/site/themes/default/images/qq/backtotop.png") no-repeat 0px -207px;
+    cursor: pointer;
+}
+.online:hover {
+    background: url("/site/themes/default/images/qq/backtotop.png") no-repeat 0px -276px;
+    cursor: pointer;
+}
+.back-to-top:hover {
+    background: url("/site/themes/default/images/qq/backtotop.png") no-repeat 0px -345px;
+    cursor: pointer;
+}

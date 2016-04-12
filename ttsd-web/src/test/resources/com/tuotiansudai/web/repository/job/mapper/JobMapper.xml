@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.web.repository.job.mapper.JobMapper">
+    <resultMap id="jobModelResultMap" type="JobModel">
+        <result column="JOB_NAME" property="jobName"></result>
+        <result column="JOB_GROUP" property="jobGroup"></result>
+        <result column="DESCRIPTION" property="description"></result>
+        <result column="JOB_CLASS_NAME" property="jobClassName"></result>
+        <result column="IS_DURABLE" property="isDurable"></result>
+        <result column="IS_NONCONCURRENT" property="isNonConcurrent"></result>
+        <result column="IS_UPDATE_DATA" property="isUpdateData"></result>
+        <result column="REQUESTS_RECOVERY" property="requestsRecovery"></result>
+        <result column="JOB_DATA" property="jobData"></result>
+    </resultMap>
+
+    <select id="findByKey" parameterType="map" resultMap="jobModelResultMap">
+        select * from QRTZ_JOB_DETAILS
+        where JOB_NAME = #{name} and JOB_GROUP = #{group}
+    </select>
+
+</mapper>

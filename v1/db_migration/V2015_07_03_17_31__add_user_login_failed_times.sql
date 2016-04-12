@@ -1,0 +1,1 @@
+alter table `user` add column(login_failed_times int(10));

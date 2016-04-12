@@ -1,0 +1,94 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<h:outputLabel style="padding-left: 15px;"
+						value="#{commonMsg.currentPositionLabel}费率管理"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+				</p:toolbarGroup>
+			</p:toolbar>
+			<h:form id="form">
+
+				<p:spacer></p:spacer>
+
+				<!--                 <p:panel id="filters"> -->
+				<!--                     <h:inputText id="searchId" value="#{feeConfigList.example.id}"></h:inputText> -->
+				<!--                     <h:inputText id="searchTitle" value="#{feeConfigList.example.name}"></h:inputText> -->
+				<!--                     <p:commandButton update="dataTable" process="filters" -->
+				<!--                         value="#{commonMsg.searchLabel}"></p:commandButton> -->
+				<!--                 </p:panel> -->
+				<!--                 <p:watermark for="searchId" value="#{commonMsg.IDLabel}" />   -->
+				<!--                 <p:watermark for="searchTitle" value="名称"></p:watermark> -->
+
+				<p:spacer></p:spacer>
+
+				<p:dataTable lazy="true" id="dataTable"
+					value="#{feeConfigList.lazyModel}" var="feeConfig" paginator="true"
+					paginatorPosition="bottom" rows="15"
+					currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+					paginatorTemplate="#{commonMsg.paginatorTemplate}"
+					emptyMessage="#{commonMsg.noResultMsg}">
+<!-- 					<p:column headerText="#{commonMsg.IDLabel }" sortBy="feeConfig.id"> -->
+<!-- 						<h:outputText value="#{feeConfig.id}"></h:outputText> -->
+<!-- 					</p:column> -->
+					<p:column headerText="节点" sortBy="feeConfig.feePoint">
+						<h:outputText value="#{feeConfig.feePoint}"></h:outputText>
+					</p:column>
+					<p:column headerText="费用类型" sortBy="feeConfig.feeType">
+						<h:outputText value="#{feeConfig.feeType}"></h:outputText>
+					</p:column>
+					<p:column headerText="影响因子" sortBy="feeConfig.factor">
+						<h:outputText value="#{feeConfig.factor}"></h:outputText>
+					</p:column>
+					<p:column headerText="影响因子值" sortBy="feeConfig.factorValue">
+						<h:outputText value="#{feeConfig.factorValue}"></h:outputText>
+					</p:column>
+					<p:column headerText="费">
+						<h:outputText value="#{feeConfig.fee}">
+							<f:convertNumber minIntegerDigits="1" maxFractionDigits="10"/>
+						</h:outputText>
+					</p:column>
+					<p:column headerText="费用上限">
+						<h:outputText value="#{feeConfig.feeUpperLimit}">
+							<f:convertNumber minIntegerDigits="1" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="区间上限（小于）">
+						<h:outputText value="#{feeConfig.intervalUpperLimit}">
+							<f:convertNumber minIntegerDigits="1" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="区间下限（大于等于）">
+						<h:outputText value="#{feeConfig.intervalLowerLimit}">
+							<f:convertNumber minIntegerDigits="1" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="收费类型">
+						<h:outputText value="#{feeConfig.operateMode}">
+						</h:outputText>
+					</p:column>
+					<p:column headerText="#{commonMsg.descriptionLabel}">
+						<h:outputText value="#{feeConfig.description}"></h:outputText>
+					</p:column>
+					<p:column headerText="#{commonMsg.actionLabel}">
+						<h:link value="#{commonMsg.editLabel}"
+							outcome="/admin/risk/feeConfigEdit?id=#{feeConfig.id}"></h:link>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

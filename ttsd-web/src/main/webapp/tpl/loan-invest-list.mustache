@@ -1,0 +1,30 @@
+<table class="table-striped">
+    <thead>
+    <tr>
+        <th>出借人</th>
+        <th class="tr">出借金额（元）</th>
+        <th class="responsive-hide">出借方式</th>
+        <th class="responsive-hide tr">预期利息（元）</th>
+        <th>出借时间</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#records}}
+        <tr>
+            <td>{{loginName}}</td>
+            <td class="tr">{{amount}}</td>
+            <td class="responsive-hide">
+                {{#autoInvest}}
+                自动
+                {{/autoInvest}}
+                {{^autoInvest}}
+                    手动
+                {{/autoInvest}}
+                <span class="invest-{{source}}"></span>
+            </td>
+            <td class="responsive-hide tr">{{expectedInterest}}</td>
+            <td>{{createdTime}}</td>
+        </tr>
+    {{/records}}
+    </tbody>
+</table>

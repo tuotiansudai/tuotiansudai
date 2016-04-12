@@ -1,0 +1,123 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:fragment rendered="#{referrerRelationList.currentInvestRewardPage-5> 1}">
+        <h:commandLink title="到第一页" value="首页">
+            <f:ajax listener="#{referrerRelationList.setCurrentInvestRewardPage(1)}" render="dataTable2"></f:ajax>
+        </h:commandLink>
+    </ui:fragment>
+    <ui:fragment rendered="#{referrerRelationList.currentInvestRewardPage > 1}">
+        <h:commandLink title="到上一个页面" styleClass="pre" value="上一页">
+            <f:ajax
+                    listener="#{referrerRelationList.setCurrentInvestRewardPage(referrerRelationList.currentInvestRewardPage-1)}"
+                    render="dataTable2"></f:ajax>
+        </h:commandLink>
+    </ui:fragment>
+    <ui:fragment rendered="#{referrerRelationList.currentInvestRewardPage-5 > 0}">
+        <h:commandLink title="到第 #{referrerRelationList.currentInvestRewardPage-5} 页"
+                       value="#{referrerRelationList.currentInvestRewardPage-5}">
+            <f:ajax
+                    listener="#{referrerRelationList.setCurrentInvestRewardPage(referrerRelationList.currentInvestRewardPage-5)}"
+                    render="dataTable2"></f:ajax>
+        </h:commandLink>
+    </ui:fragment>
+    <ui:fragment rendered="#{referrerRelationList.currentInvestRewardPage-4 > 0}">
+        <h:commandLink title="到第 #{referrerRelationList.currentInvestRewardPage-4} 页"
+                       value="#{referrerRelationList.currentInvestRewardPage-4}">
+            <f:ajax
+                    listener="#{referrerRelationList.setCurrentInvestRewardPage(referrerRelationList.currentInvestRewardPage-4)}"
+                    render="dataTable2"></f:ajax>
+        </h:commandLink>
+    </ui:fragment>
+    <ui:fragment rendered="#{referrerRelationList.currentInvestRewardPage-3 > 0}">
+        <h:commandLink title="到第 #{referrerRelationList.currentInvestRewardPage-3} 页"
+                       value="#{referrerRelationList.currentInvestRewardPage-3}">
+            <f:ajax
+                    listener="#{referrerRelationList.setCurrentInvestRewardPage(referrerRelationList.currentInvestRewardPage-3)}"
+                    render="dataTable2"></f:ajax>
+        </h:commandLink>
+    </ui:fragment>
+    <ui:fragment rendered="#{referrerRelationList.currentInvestRewardPage-2 > 0}">
+        <h:commandLink title="到第 #{referrerRelationList.currentInvestRewardPage-2} 页"
+                       value="#{referrerRelationList.currentInvestRewardPage-2}">
+            <f:ajax
+                    listener="#{referrerRelationList.setCurrentInvestRewardPage(referrerRelationList.currentInvestRewardPage-2)}"
+                    render="dataTable2"></f:ajax>
+        </h:commandLink>
+    </ui:fragment>
+    <ui:fragment rendered="#{referrerRelationList.currentInvestRewardPage-1 > 0}">
+        <h:commandLink title="到第 #{referrerRelationList.currentInvestRewardPage-1} 页"
+                       value="#{referrerRelationList.currentInvestRewardPage-1}">
+            <f:ajax
+                    listener="#{referrerRelationList.setCurrentInvestRewardPage(referrerRelationList.currentInvestRewardPage-1)}"
+                    render="dataTable2"></f:ajax>
+        </h:commandLink>
+    </ui:fragment>
+    <a class="on">#{referrerRelationList.currentInvestRewardPage}</a>
+    <ui:fragment
+            rendered="#{referrerRelationList.resultRowCount/referrerRelationList.investRewardPageSize > (referrerRelationList.currentInvestRewardPage)}">
+        <h:commandLink title="到第 #{referrerRelationList.currentInvestRewardPage+1} 页"
+                       value="#{referrerRelationList.currentInvestRewardPage+1}">
+            <f:ajax
+                    listener="#{referrerRelationList.setCurrentInvestRewardPage(referrerRelationList.currentInvestRewardPage+1)}"
+                    render="dataTable2"></f:ajax>
+        </h:commandLink>
+    </ui:fragment>
+    <ui:fragment
+            rendered="#{referrerRelationList.resultRowCount/referrerRelationList.investRewardPageSize > (referrerRelationList.currentInvestRewardPage+1)}">
+        <h:commandLink title="到第 #{referrerRelationList.currentInvestRewardPage+2} 页"
+                       value="#{referrerRelationList.currentInvestRewardPage+2}">
+            <f:ajax
+                    listener="#{referrerRelationList.setCurrentInvestRewardPage(referrerRelationList.currentInvestRewardPage+2)}"
+                    render="dataTable2"></f:ajax>
+        </h:commandLink>
+    </ui:fragment>
+    <ui:fragment
+            rendered="#{referrerRelationList.resultRowCount/referrerRelationList.investRewardPageSize > (referrerRelationList.currentInvestRewardPage+2)}">
+        <h:commandLink title="到第 #{referrerRelationList.currentInvestRewardPage+3} 页"
+                       value="#{referrerRelationList.currentInvestRewardPage+3}">
+            <f:ajax
+                    listener="#{referrerRelationList.setCurrentInvestRewardPage(referrerRelationList.currentInvestRewardPage+3)}"
+                    render="dataTable2"></f:ajax>
+        </h:commandLink>
+    </ui:fragment>
+    <ui:fragment
+            rendered="#{referrerRelationList.resultRowCount/referrerRelationList.investRewardPageSize > (referrerRelationList.currentInvestRewardPage+3)}">
+        <h:commandLink title="到第 #{referrerRelationList.currentInvestRewardPage+4} 页"
+                       value="#{referrerRelationList.currentInvestRewardPage+4}">
+            <f:ajax
+                    listener="#{referrerRelationList.setCurrentInvestRewardPage(referrerRelationList.currentInvestRewardPage+4)}"
+                    render="dataTable2"></f:ajax>
+        </h:commandLink>
+    </ui:fragment>
+    <ui:fragment
+            rendered="#{referrerRelationList.resultRowCount/referrerRelationList.investRewardPageSize > (referrerRelationList.currentInvestRewardPage+4)}">
+        <h:commandLink title="到第 #{referrerRelationList.currentInvestRewardPage+5} 页"
+                       value="#{referrerRelationList.currentInvestRewardPage+5}">
+            <f:ajax
+                    listener="#{referrerRelationList.setCurrentInvestRewardPage(referrerRelationList.currentInvestRewardPage+5)}"
+                    render="dataTable2"></f:ajax>
+        </h:commandLink>
+    </ui:fragment>
+    <ui:fragment
+            rendered="#{referrerRelationList.resultRowCount>referrerRelationList.investRewardPageSize*referrerRelationList.currentInvestRewardPage}">
+        <h:commandLink title="去下一个页面" styleClass="next" value="下一页">
+            <f:ajax
+                    listener="#{referrerRelationList.setCurrentInvestRewardPage(referrerRelationList.currentInvestRewardPage+1)}"
+                    render="dataTable2"></f:ajax>
+        </h:commandLink>
+    </ui:fragment>
+    <ui:fragment
+            rendered="#{referrerRelationList.resultRowCount/referrerRelationList.investRewardPageSize > (referrerRelationList.currentInvestRewardPage+5)}">
+        <ui:param name="endPage"
+                  value="#{math:ceil(referrerRelationList.resultRowCount/referrerRelationList.investRewardPageSize)}"></ui:param>
+        <h:commandLink title="到最后一页" value="尾页">
+            <f:ajax listener="#{referrerRelationList.setCurrentInvestRewardPage(endPage)}"
+                    render="dataTable2"></f:ajax>
+        </h:commandLink>
+    </ui:fragment>
+</f:view>

@@ -1,0 +1,195 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<ui:define name="head">
+		<style>
+			.col1{min-width:0px;}
+		</style>
+	</ui:define>
+	<ui:define name="content">
+
+		<div class="entry">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<h:outputLabel style="padding-left: 15px;"
+						value="#{commonMsg.currentPositionLabel}等级管理"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+		            <h:form>
+			            <p:commandButton value="添加等级">
+			            	<p:ajax event="click" oncomplete="addLevelDialog.show();"></p:ajax>
+			            </p:commandButton>
+		            </h:form>
+            	</p:toolbarGroup>
+			</p:toolbar>
+			
+			<!-- 添加等级模态框 -->
+			<p:dialog id="addLevel" dynamic="true"  header="添加等级" widgetVar="addLevelDialog" modal="true" showEffect="blind" 
+			hideEffect="slide">
+				<h:form id="addLevelForm">
+					<h:panelGrid width="500" columns="2" columnClasses="col1,col2">
+						<h:outputText value="等级" style="text-align:center;"></h:outputText>
+							<h:inputText label="等级" id="level" value="#{levelHome.instance.level}" 
+							validatorMessage="等级不合法，只能为数字！" required="true">
+								<f:validateRegex pattern="^[0-9]*$" ></f:validateRegex>
+							</h:inputText>
+						
+						<h:outputText value="名称"></h:outputText>
+						<h:inputText value="#{levelHome.instance.name}"></h:inputText>
+						
+						<h:outputText value="积分下线"></h:outputText>
+						<ui:fragment>
+							<h:inputText id="minPointLimit" value="#{levelHome.instance.minPointLimit}"></h:inputText>
+							<p:watermark value="达到此下线才能获得该等级" for="minPointLimit"></p:watermark>
+						</ui:fragment>
+						
+						<h:outputText value="积分值"></h:outputText>
+						<ui:fragment>
+							<h:inputText id="pointValue"
+								value="#{levelHome.instance.pointValue}"></h:inputText>
+							<p:watermark value="每个等级对应多少积分值" for="pointValue"></p:watermark>
+						</ui:fragment>
+						
+						<h:outputText value="有效期"></h:outputText>
+						<h:inputText value="#{levelHome.instance.validityPeriod}"></h:inputText>
+					
+						<h:outputText value="描述"></h:outputText>
+						<h:inputText value="#{levelHome.instance.description}"></h:inputText>
+						
+						<h:outputText value="操作"></h:outputText>
+						<p:commandButton value="保 存" update=":form:dataTable" oncomplete="handleLoginRequest(xhr, status, args)" actionListener="#{levelHome.addLevel}">
+						</p:commandButton>
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+			
+			<!-- 修改等级模态框 -->
+			<p:dialog id="updateLevel" dynamic="true"  header="修改等级" widgetVar="updateLevelDialog" modal="true" showEffect="blind" 
+			hideEffect="slide">
+				<h:form id="updateLevelForm">
+				<h:inputHidden value="#{levelHome.instance.id}"></h:inputHidden>
+					<h:panelGrid width="500" columns="2" columnClasses="col1,col2">
+						<h:outputText value="等级" style="text-align:center;"></h:outputText>
+							<h:inputText label="等级" id="level" value="#{levelHome.instance.level}" 
+							validatorMessage="等级不合法，只能为数字！" required="true">
+								<f:validateRegex pattern="^[0-9]*$" ></f:validateRegex>
+							</h:inputText>
+						
+						<h:outputText value="名称"></h:outputText>
+						<h:inputText value="#{levelHome.instance.name}"></h:inputText>
+						
+						<h:outputText value="积分下线"></h:outputText>
+						<ui:fragment>
+							<h:inputText id="minPointLimit" value="#{levelHome.instance.minPointLimit}"></h:inputText>
+							<p:watermark value="达到此下线才能获得该等级" for="minPointLimit"></p:watermark>
+						</ui:fragment>
+						
+						<h:outputText value="积分值"></h:outputText>
+						<ui:fragment>
+							<h:inputText id="pointValue"
+								value="#{levelHome.instance.pointValue}"></h:inputText>
+							<p:watermark value="每个等级对应多少积分值" for="pointValue"></p:watermark>
+						</ui:fragment>
+						
+						<h:outputText value="有效期"></h:outputText>
+						<h:inputText value="#{levelHome.instance.validityPeriod}"></h:inputText>
+					
+						<h:outputText value="描述"></h:outputText>
+						<h:inputText value="#{levelHome.instance.description}"></h:inputText>
+						
+						<h:outputText value="操作"></h:outputText>
+						<p:commandButton value="保 存" update=":form:dataTable" oncomplete="updateLevelRequest(xhr, status, args)" actionListener="#{levelHome.addLevel}">
+						</p:commandButton>
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+			
+			<script type="text/javascript">  
+			    function handleLoginRequest(xhr, status, args) {  
+			        if(args.validationFailed) {  
+			            jQuery('#addLevel').effect("shake", { times:3 }, 100);  
+			        } else {  
+			        	addLevelDialog.hide();  
+			        }  
+			    }  
+			    
+			    //修改等级
+			    function updateLevelRequest(xhr, status, args) {  
+			        if(args.validationFailed) {  
+			            jQuery('#updateLevel').effect("shake", { times:3 }, 100);  
+			        } else {  
+			        	updateLevelDialog.hide();  
+			        }  
+			    }  
+			</script>  
+
+			<h:form id="form">
+				<p:spacer></p:spacer>
+				<p:panel id="filters">
+					<h:inputText id="searchId" value="#{levelList.example.level}"></h:inputText>
+					<h:inputText id="searchTitle"
+						value="#{levelList.example.name}"></h:inputText>
+					<p:commandButton update="dataTable" process="filters"
+						value="#{commonMsg.searchLabel}"></p:commandButton>
+				</p:panel>
+				<p:watermark for="searchId" value="等级" />
+				<p:watermark for="searchTitle" value="名称"></p:watermark>
+
+				<p:spacer></p:spacer>
+
+				<p:dataTable lazy="true" id="dataTable"
+					value="#{levelList.lazyModel}" var="levels" paginator="true"
+					paginatorPosition="bottom" rows="15"
+					rowsPerPageTemplate="15,50,100"
+					sortOrder="DESCENDING" currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+					paginatorTemplate="#{commonMsg.paginatorTemplate}"
+					emptyMessage="#{commonMsg.noResultMsg}">
+
+					<p:column headerText="#{commonMsg.IDLabel }" sortBy="user.id">
+						<h:outputText value="#{levels.id}"></h:outputText>
+					</p:column>
+					
+					<p:column headerText="等级">
+						<h:outputText value="#{levels.level}"></h:outputText>
+					</p:column>
+					
+					<p:column headerText="名称">
+						<h:outputText value="#{levels.name}"></h:outputText>
+					</p:column>
+					
+					<p:column headerText="积分下线">
+						<h:outputText value="#{levels.minPointLimit}"></h:outputText>
+					</p:column>
+					
+					<p:column headerText="积分值">
+						<h:outputText value="#{levels.pointValue}"></h:outputText>
+					</p:column>
+					
+					<p:column headerText="有效期(天)">
+						<h:outputText value="#{levels.validityPeriod}"></h:outputText>
+					</p:column>
+					
+					<p:column headerText="描述">
+						<h:outputText value="#{levels.description}"></h:outputText>
+					</p:column>
+					
+					<p:column headerText="#{commonMsg.actionLabel}">
+						<sec:ifAllGranted roles="USER_EDIT">
+							<h:commandLink value="修改">
+								<p:ajax event="click" listener="#{levelHome.setId(levels.id)}" oncomplete="updateLevelDialog.show();"></p:ajax>
+							</h:commandLink>
+                    </sec:ifAllGranted>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

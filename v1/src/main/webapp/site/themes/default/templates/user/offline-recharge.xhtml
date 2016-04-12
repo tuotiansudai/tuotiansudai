@@ -1,0 +1,164 @@
+<ui:composition template="center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="activeCenterMenuUrl" value="/user/recharge"></ui:param>
+	<ui:define name="center_right">
+<!-- 	未实名认证 -->
+	<sec:ifNotGranted roles="INVESTOR">
+			<script>
+				$.dialog
+						.alert(
+								'为了您的账户资金安全，请先进行实名认证!',
+								function() {
+									window.location.href = "#{path}/user/get_investor_permission";
+								});
+			</script>
+	</sec:ifNotGranted>
+<!-- 	已实名认证 -->
+	<sec:ifAnyGranted roles="INVESTOR">
+	<script>
+	//<![CDATA[
+	function checkRecharge() {
+		var flag = false;
+		var myselect = $(".center_right .zhcz_ul a.hover");
+		var regx = /^[1-9]\d*$/;
+		var money = $("#recharge\\:actualMoney").val();
+		if (!regx.test(money)) {
+			$.dialog.tips('请填写正确的整数金额!');
+		}
+		//if (myselect.length < 1) {
+			//$.dialog.tips('请选择充值方式!');
+		//}
+		if (myselect.length >= 1 && regx.test(money)) {
+			flag = true;
+		}
+		return flag;
+	}
+	//]]>
+		</script>
+		<div class="center_right">
+			<div class="zhcz_h3">线下充值-填写充值信息</div>
+<!-- 			<p class="zhcz_p">最近使用的充值方式</p> -->
+			<h:form id="recharge">
+			<div class="txczje">
+				<div class="txczje02">
+					<div class="txczje_l">账户余额：</div>
+					<div class="txczje_r">
+						<span><h:outputLabel
+								value="#{userBillHome.getBalanceByUserId(loginUserInfo.loginUserId)}">
+								<f:convertNumber maxFractionDigits="2" minIntegerDigits="1" />
+							</h:outputLabel></span>元
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="txczje02">
+					<div class="txczje_l">
+						<span>*</span>充值金额：
+					</div>
+					<div class="txczje_r">
+						<h:inputText label="充值金额" styleClass="txt02 money"
+							id="actualMoney" value="#{rechargeHome.instance.actualMoney}"
+							required="true">
+							<f:validateDoubleRange minimum="1"></f:validateDoubleRange>
+							<f:convertNumber maxFractionDigits="0" minIntegerDigits="1" />
+							<archer:validateNumber precision="0" />
+							<f:ajax render="fee allMoney" event="change"
+								listener="#{rechargeHome.calculateFee}"></f:ajax>
+						</h:inputText>
+						元
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="txczje02">
+					<div class="txczje_l">
+						<span>*</span>充值银行：
+					</div>
+					<div class="txczje_r" style="height: auto;">
+						<h:selectOneRadio value="#{rechargeHome.instance.rechargeWay}" 
+							required="true" label="充值银行" layout="pageDirection">
+							<f:selectItem itemValue="ZhongguoYinhang" itemLabel="中国银行潍坊支行[6226090101728888] 东升财富" />
+							<f:selectItem itemValue="JiansheYinhang" itemLabel="建设银行潍坊支行[6226090101728888] 东升财富"/>
+						</h:selectOneRadio>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="txczje02">
+					<div class="txczje_l">
+						备注说明：
+					</div>
+					<div class="txczje_r">
+						<h:inputText maxlength="500" label="备注说明" styleClass="txt02" style="width:400px;"
+							value="#{rechargeHome.instance.remark}"></h:inputText>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="txczje02">
+					<div class="txczje_l">充值费用：</div>
+					<div class="txczje_r">
+						<span><h:outputLabel value="0"
+								id="fee">
+								<f:convertNumber minIntegerDigits="1" minFractionDigits="2" />
+							</h:outputLabel></span>元<a href="#"><img src="#{tplVars.themeImagePath}/img42.png" /></a>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<div class="txczje02">
+					<div class="txczje_l">
+						实际支付金额：
+					</div>
+					<div class="txczje_r">
+						<span><h:outputLabel value="#{rechargeHome.instance.actualMoney+rechargeHome.instance.fee}"
+								id="allMoney"></h:outputLabel></span>元
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="txczje02">
+					<div class="txczje_l">
+						<span>*</span>验证码：
+					</div>
+						<div class="txczje_r">
+							<h:inputText id="captcha" label="验证码"
+								styleClass="txt02" maxlength="4">
+								<archer:validateCaptcha />
+								<f:ajax event="blur"></f:ajax>
+							</h:inputText>
+							<a class="login_yzm login_yzm_01">
+								<img alt="点击刷新" title="点击刷新"
+									style="cursor: pointer;" id="verifyCode"
+									src="#{request.contextPath}/verifyCodeServlet"
+									onclick="this.src='#{request.contextPath}/verifyCodeServlet?'+new Date().getTime()" /></a>
+						</div>
+					<div class="clear"></div>
+				</div>
+				<div class="txczje02">
+					<div class="txczje_l"></div>
+					<div class="txczje_r">
+					<h:commandLink styleClass="txczje02_btn"
+							action="#{rechargeHome.offlineRecharge}"
+							value="充值" />
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+			</h:form>
+			<p class="zhcz_p02">
+				温馨提示<br /> 1、为了您的账户安全，请在充值前进行身份认证、手机绑定以及提现密码设置。<br />
+				2、您的账户资金将通过第三方平台进行充值。<br /> 3、请注意您的银行卡充值限制，以免造成不便。<br />
+				4、禁止洗钱、信用卡套现、虚假交易等行为，一经发现并确认，将终止该账户的使用。<br />
+				5、如果充值金额没有及时到账，请联系客服，400-027-8080。
+			</p>
+		</div>
+		<div class="clear"></div>
+		</sec:ifAnyGranted>
+	</ui:define>
+</ui:composition>

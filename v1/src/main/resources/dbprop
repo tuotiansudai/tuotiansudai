@@ -1,0 +1,5 @@
+#config
+three_des_base64_key=123456781234567812345678
+three_des_iv=12345678
+three_des_algorithm=DESede/CBC/PKCS5Padding
+is_encrypt=false

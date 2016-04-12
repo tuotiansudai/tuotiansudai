@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html">
+  <h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>403 page</title>
+    <style type="text/css">
+	div.error {
+    	text-align: center;
+    	font-weight: bold;
+	}
+    </style>
+  </h:head>
+  <h:body>
+     <h1 style="font-size:32px;font-weight:bold;border-bottom-color:#cccccc;border-bottom-width:2px;border-bottom-style:solid;padding:0px 4px 0px 0px;text-align:center;margin:0px 0px 20px;" classname="undefined">
+        <strong>
+        <span style="font-family:arial, helvetica, sans-serif;font-size:medium;font-weight:bold;text-align:center;">
+        	Code:403/#{requestScope['SPRING_SECURITY_403_EXCEPTION'].message}<br />
+        	您无权限访问当前页面！
+        </span>
+        </strong><br /><br/>
+    </h1>
+    
+    <p style="text-align:center;">
+        <span style="font-family:arial, helvetica, sans-serif;font-size:medium;font-weight:bold;text-align:center;">Archer.</span><span style="font-family:simsun;font-size:medium;font-weight:bold;text-align:center;"><br />
+        </span>
+    </p>
+  </h:body>
+</html>
+

@@ -1,0 +1,1 @@
+ALTER TABLE coupon ADD COLUMN invest_quota BIGINT(20) NOT NULL;

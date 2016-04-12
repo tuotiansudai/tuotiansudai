@@ -1,0 +1,83 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+		   http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+		   http://www.springframework.org/schema/security
+		   http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+    <beans:bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">
+        <beans:property name="userPropertyToUse" value="salt"/>
+    </beans:bean>
+
+    <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.security.MyAccessDeniedHandler">
+        <beans:property name="errorPage" value="/403"/>
+        <beans:property name="onlyUserAccessDeniedRedirect" value="/register/account" />
+        <beans:property name="errorPageMapping">
+            <beans:map>
+                <beans:entry key="/register/user" value="/"/>
+                <beans:entry key="/login" value="/"/>
+            </beans:map>
+        </beans:property>
+    </beans:bean>
+
+    <beans:bean id="myDaoAuthenticationProvider" class="com.tuotiansudai.security.MyDaoAuthenticationProvider">
+        <beans:property name="passwordEncoder" ref="myShaPasswordEncoder"/>
+        <beans:property name="saltSource" ref="saltSource"/>
+        <beans:property name="userDetailsService" ref="myUserDetailsService"/>
+    </beans:bean>
+
+    <beans:bean id="captchaHelper" class="com.tuotiansudai.util.CaptchaHelper"/>
+
+    <!-- work around test-->
+    <beans:bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <beans:property name="passwordEncoder" ref="myShaPasswordEncoder"/>
+        <beans:property name="saltSource" ref="saltSource"/>
+        <beans:property name="userDetailsService" ref="myUserDetailsService"/>
+    </beans:bean>
+
+    <beans:bean id="webExpressionVoter" class="org.springframework.security.web.access.expression.WebExpressionVoter" />
+
+    <beans:bean id="affirmativeBased" class="com.tuotiansudai.security.MyAffirmativeBased">
+        <beans:constructor-arg ref="webExpressionVoter"/>
+    </beans:bean>
+
+    <beans:bean id="mySimpleUrlAuthenticationSuccessHandler" class="com.tuotiansudai.security.MySimpleUrlAuthenticationSuccessHandler"/>
+    <beans:bean id="mySimpleUrlAuthenticationFailureHandler" class="com.tuotiansudai.security.MySimpleUrlAuthenticationFailureHandler"/>
+
+    <http auto-config="true" use-expressions="true" access-decision-manager-ref="affirmativeBased">
+        <access-denied-handler ref="myAccessDeniedHandler"/>
+        <form-login login-page="/login"
+                    login-processing-url="/login-handler"
+                    authentication-success-handler-ref="mySimpleUrlAuthenticationSuccessHandler"
+                    authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
+        <logout logout-url="/logout" logout-success-url="/"/>
+
+        <intercept-url pattern="/style/**" access="permitAll()"/>
+        <intercept-url pattern="/images/**" access="permitAll()"/>
+        <intercept-url pattern="/js/**" access="permitAll()"/>
+
+        <intercept-url pattern="/" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER', 'ADMIN')"/>
+        <intercept-url pattern="/login/**" access="isAnonymous()"/>
+        <intercept-url pattern="/logout" access="not isAnonymous()"/>
+        <intercept-url pattern="/register/user/**" access="isAnonymous()"/>
+        <intercept-url pattern="/register/account/**" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER', 'ADMIN', 'STAFF')"/>
+        <intercept-url pattern="/monitor" access="permitAll()"/>
+        <intercept-url pattern="/mobile-retrieve-password/**" access="isAnonymous()"/>
+
+        <intercept-url pattern="/login-handler" access="isAnonymous()"/>
+        <intercept-url pattern="/loaner/**" access="hasAnyAuthority('LOANER')"/>
+        <intercept-url pattern="/agreement/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/recharge/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/withdraw/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/bind-card/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+
+        <intercept-url pattern="/**" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <csrf/>
+    </http>
+
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider ref="myDaoAuthenticationProvider"/>
+    </authentication-manager>
+
+</beans:beans>

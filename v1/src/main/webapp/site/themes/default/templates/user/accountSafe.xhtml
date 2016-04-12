@@ -1,0 +1,82 @@
+<ui:composition template="center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="activeCenterMenuUrl" value="/user/accountSafe"></ui:param>
+	<ui:define name="center_right">
+	
+	<f:event type="preRenderView"
+			listener="#{userHome.setId(loginUserInfo.loginUserId)}"></f:event>
+			
+		<div class="center_right">
+			<div class="zhcz_h3">安全信息</div>
+			<table width="746" border="0" cellspacing="0" cellpadding="0"
+				class="aqxx_tab">
+				<tr>
+					<td width="60" align="right"><img src="#{tplVars.themeImagePath}/p2c_img17.png" /></td>
+					<td class="font18" width="196">用户名</td>
+					<td width="322">#{userHome.instance.username}</td>
+					<td width="168">&#160;</td>
+				</tr>
+				<tr>
+					<td align="right"><img src="#{tplVars.themeImagePath}/p2c_img18.png" /></td>
+					<td class="font18">实名认证</td>
+					<sec:ifAnyGranted roles="INVESTOR,LOANER,GUARANTEE">
+						<td>#{fn:substring(userHome.instance.idCard,0,2)}****************</td>
+						<td>#{fn:substring(userHome.instance.realname,0,1)}**</td>
+					</sec:ifAnyGranted>
+					<sec:ifNotGranted roles="INVESTOR,LOANER,GUARANTEE">
+						<td>未认证</td>
+						<td><a href="#{path}/user/get_investor_permission">去认证</a></td>
+					</sec:ifNotGranted>
+				</tr>
+				<tr>
+					<td align="right"><img src="#{tplVars.themeImagePath}/p2c_img19.png" /></td>
+					<td class="font18">登录密码</td>
+					<td>已设置</td>
+					<td><a href="#{path}/user/changePassword">修改</a></td>
+				</tr>
+				<tr>
+					<td align="right"><img src="#{tplVars.themeImagePath}/p2c_img20.png" /></td>
+					<td class="font18">绑定邮箱</td>
+					<ui:fragment rendered="#{userHome.isActivatedByEmail(loginUserInfo.loginUserId,userHome.instance.email)}">
+						<td>#{fn:substring(userHome.instance.email,0,5)}***</td>
+						<td><a href="#{path}/user/change_binding_email">修改</a></td>
+					</ui:fragment>
+					<ui:fragment rendered="#{!userHome.isActivatedByEmail(loginUserInfo.loginUserId,userHome.instance.email)}">
+						<td>#{fn:substring(userHome.instance.email,0,5)}***（未认证）</td>
+						<td><a href="#{path}/user/binding_email">去认证</a></td>
+					</ui:fragment>
+				</tr>
+				<tr>
+					<td align="right"><img src="#{tplVars.themeImagePath}/p2c_img21.png" /></td>
+					<td class="font18">绑定手机</td>
+					<td>#{fn:substring(userHome.instance.mobileNumber,0,3)}****#{fn:substring(userHome.instance.mobileNumber,7,11)}</td>
+				</tr>
+				<ui:fragment rendered="#{configHome.getConfigValue('enable_cash_password') eq '1'}">
+				<tr>
+					<td align="right"><img src="#{tplVars.themeImagePath}/p2c_img22.png" /></td>
+					<td class="font18">交易密码</td>
+					<ui:fragment rendered="#{empty userHome.instance.cashPassword}">
+					<td></td>
+					<td><a href="#{path}/user/changeCashPassword">设置</a></td>
+					</ui:fragment>
+					<ui:fragment rendered="#{not empty userHome.instance.cashPassword}">
+					<td>已设置</td>
+					<td><a href="#{path}/user/changeCashPassword">修改</a>|<a href="#{path}/user/findCashPwd">找回</a></td>
+					</ui:fragment>
+				</tr>
+				</ui:fragment>
+			</table>
+		</div>
+		<div class="clear"></div>
+	</ui:define>
+</ui:composition>

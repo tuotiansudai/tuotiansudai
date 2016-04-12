@@ -1,0 +1,23 @@
+<table class="refer-relation table-striped table-center ">
+    <thead>
+        <tr>
+            <th>被推荐人</th>
+            <th>被推荐人层级</th>
+            <th>时间</th>
+        </tr>
+    </thead>
+    <tbody>
+       {{#records}}
+        <tr>
+            <td>{{loginName}}</td>
+            <td>{{level}}</td>
+            <td>{{registerTime}}</td>
+        </tr>
+        {{/records}}
+
+        {{^records}}
+         <td colspan="3" class="no-data">暂时没有推荐记录</td>
+        {{/records}}
+    </tbody>
+</table>
+

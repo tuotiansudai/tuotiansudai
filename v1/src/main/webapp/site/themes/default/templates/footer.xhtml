@@ -1,0 +1,116 @@
+<ui:component xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<link type="text/css" rel="stylesheet"
+		href="#{tplVars.themeStylePath}/footer.css" />
+
+	<ui:fragment rendered="#{empty loginUserInfo.getLoginUserId()}">
+        <link type="text/css" rel="stylesheet" href="#{tplVars.themeStylePath}/browserVersion.css" />
+        <script type="text/javascript" src="#{tplVars.themeJSPath}/browserVersion.js"></script>
+        <div class="warning_mask"></div>
+        <div class="Warning">
+            <p>警告！</p>
+            <span>您的浏览器版本过低，请用IE9以上版本浏览器浏览本网站！</span>
+        </div>
+    </ui:fragment>
+
+
+	<div class="footer">
+		<div class="ft-con clearfix">
+			<ui:repeat var="menu" value="#{menuList.getNavigationMenus()}" varStatus="status">
+				<div class="ft-top">
+					<span><a href="#{path}#{menu.url}" style="font-size: 14px;">#{menu.label}</a></span>
+					<ul>
+						<ui:repeat var="m2" value="#{menu.children}">
+							<li><a href="#{path}#{m2.url}">#{m2.label}</a></li>
+						</ui:repeat></ul>
+				</div>
+			</ui:repeat>
+			<!-- <div class="ft-top">
+				<span>关于我们</span>
+				<ul>
+					<li><a href="">公司介绍</a></li>
+					<li><a href="">媒体报道</a></li>
+					<li><a href="">招贤纳士</a></li>
+					<li><a href="">联系我们</a></li>
+				</ul>
+			</div>
+			<div class="ft-top">
+				<span>投资安全</span>
+				<ul>
+					<li><a href="">业务体系</a></li>
+					<li><a href="">资金安全</a></li>
+					<li><a href="">法律保障</a></li>
+					<li><a href="">投资报告</a></li>
+				</ul>
+			</div>
+			<div class="ft-top">
+				<span>帮助中心</span>
+				<ul>
+					<li><a href="">新手指引</a></li>
+					<li><a href="">用户协议</a></li>
+					<li><a href="">合同样本</a></li>
+					<li><a href="">平台规则</a></li>
+				</ul>
+			</div> -->
+			<div class="ft-top contact">
+				<h4>联系我们</h4>
+				<ul class="service-contact">
+					<li class="tel">客服电话：#{configHome.getConfigValue("site_phone")}<span>#{configHome.getConfigValue("service_time")}</span></li>
+					<li>客服邮箱：#{configHome.getConfigValue("company_email")}</li>
+					<li>客服QQ： #{configHome.getConfigValue("company_QQ")}</li>
+					<li>公司地址：#{configHome.getConfigValue("company_address")}</li>
+				</ul>
+				<ul>
+					<li>市场合作：010-5716-7320</li>
+					<li>市场邮箱：Amanda.liang@tuotiansudai.com</li>
+				</ul>
+				<ul>
+					<li><img src="#{tplVars.themeImagePath}/appDownload/bottom_ma.png"></img></li>
+				</ul>
+			</div>
+			<!--<div class="ft-top lastwem">-->
+				<!--<p align="center">二维码</p>-->
+				<!--<img class="ewm" src="#{tplVars.themeImagePath}/index/code.png" />-->
+			<!--</div>-->
+	        <div class="clear"></div>
+			<div class="footer_zs">
+				<p class="copyright">拓天伟业（北京）金融信息服务有限公司 版权所有  京ICP备15035567号</p>
+
+				<div class="hide">
+					<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254796373'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1254796373%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>
+					<script type="text/javascript">
+						var _hmt = _hmt || [];
+						(function() {
+							var hm = document.createElement("script");
+							hm.src = "//hm.baidu.com/hm.js?b4205647cc83b405927bd22f70eaf362";
+							var s = document.getElementsByTagName("script")[0];
+							s.parentNode.insertBefore(hm, s);
+						})();
+				</script>
+				</div>
+				<div class="pull-right">
+					<h:outputLink value="http://www.itrust.org.cn/yz/pjwx.asp?wm=1335512526" title="" target="_blank" >
+						<img src="#{tplVars.themeImagePath}/website/itrust_logo.png" alt="" />
+					</h:outputLink>
+					<h:outputLink value="https://search.szfw.org/cert/l/CX20150616010363010507" title="" target="_blank" >
+						<img src="#{tplVars.themeImagePath}/website/chengxin_logo.png" alt="" />
+					</h:outputLink>
+					<h:outputLink value="https://ss.knet.cn/verifyseal.dll?sn=e15071011011759427pzmf000000&amp;pa=500267" title="" target="_blank" >
+						<img src="#{tplVars.themeImagePath}/website/knetSealLogo.png" alt="" />
+					</h:outputLink>
+					<h:outputLink value="https://seal.digicert.com/seals/popup/?tag=dv0vdS8q&amp;url=tuotiansudai.com&amp;lang=en_US" title="" target="_blank" >
+						<img src="#{tplVars.themeImagePath}/website/digicert.png" alt="" />
+					</h:outputLink>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!--footer end-->
+
+</ui:component>
