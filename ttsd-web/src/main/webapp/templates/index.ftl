@@ -208,6 +208,9 @@
 
             <div class="box-radius clearfix">
                 <ul class="media-list fl">
+                    <li><i>●</i><a href="http://mt.sohu.com/20160331/n443005759.shtml?qq-pf-to=pcqq.c2c" target="_blank">拓天速贷第二期全国排行活动正式启动</a>
+                        <time>2016-03-31</time>
+                    </li>
                     <li><i>●</i><a href="http://fj.qq.com/a/20160314/060811.htm" target="_blank">拓天速贷：财富盛宴大平台 感恩豪礼滚滚来</a>
                         <time>2016-03-14</time>
                     </li>
@@ -219,9 +222,6 @@
                     </li>
                     <li><i>●</i><a href="http://toutiao.com/news/6233268186905575938/" target="_blank">拓天速贷以卓越风控打造高效资产平台</a>
                         <time>2015-12-28</time>
-                    </li>
-                    <li><i>●</i><a href="http://house.qq.com/a/20151221/035341.htm" target="_blank">拓天速贷官网全新升级 迈入2.0智能金融信息服务时代</a>
-                        <time>2015-12-21</time>
                     </li>
                 </ul>
                 <div class="media-logo-list fr"></div>
