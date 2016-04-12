@@ -1,0 +1,1 @@
+alter table account add column auto_repay tinyint(1) default false;

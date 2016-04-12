@@ -91,7 +91,6 @@ public class RankingActivityServiceTest {
     }
 
     @Test
-    @Ignore
     public void shouldDrawPrizeSuccess() {
         clearRankingDataInRedis();
 
@@ -168,13 +167,11 @@ public class RankingActivityServiceTest {
     }
 
     @Test
-    @Ignore
     public void shouldDrawPrizeSuccessMultiTimes() {
         clearRankingDataInRedis();
 
         String loginName1 = "test111";
         String mobile1 = "13900001111";
-
 
         String loginName2 = "test222";
 
