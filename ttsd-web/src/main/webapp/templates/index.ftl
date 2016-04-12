@@ -40,9 +40,7 @@
                         <span class="num-unit">倍</span>
                     </p>
                     <b class="h-title">活期存款收益</b>
-                    <p class="welcome-text">
-                        <img src="${staticServer}/images/sign/welcome-text.png" width="100%" alt="welcome">
-                    </p>
+                    <p class="welcome-text"></p>
                     <a class="btn-normal" href="/register/user">免费注册 </a>
                     <i class="clearfix tr">已有账户？<a href="/login"> 立即登录</a></i>
                 </div>
@@ -71,10 +69,7 @@
         <dl>
             <dd>
                 <a href="/about/assurance?aid=1" target="_blank">
-                    <span class="icon-hover">
-                        <img class="icon-off" src="${staticServer}/images/icons/icon-off-1.png" alt="超高收益 最低门槛">
-                        <img class="icon-on" src="${staticServer}/images/icons/icon-on-1.png" alt="超高收益 最低门槛">
-                    </span>
+                    <div class="icon-hover img-icon-off-1"></div>
                     <span class="clearfix">
                          <b class="clearfix">超高收益 最低门槛</b>
                         最高46倍活期存款收益，最低投资门槛50元
@@ -83,10 +78,7 @@
             </dd>
             <dd>
                 <a href="/about/assurance?aid=2" target="_blank">
-                    <span class="icon-hover">
-                        <img class="icon-off" src="${staticServer}/images/icons/icon-off-2.png" alt="三方托管 放心理财">
-                        <img class="icon-on" src="${staticServer}/images/icons/icon-on-2.png" alt="三方托管 放心理财">
-                    </span>
+                    <div class="icon-hover img-icon-off-2"></div>
                     <span class="clearfix">
                         <b class="clearfix">三方托管 放心理财</b>
                         第三方资金托管，第三方支付
@@ -95,10 +87,7 @@
             </dd>
             <dd>
                 <a href="/about/assurance?aid=3" target="_blank">
-                    <span class="icon-hover">
-                        <img class="icon-off" src="${staticServer}/images/icons/icon-off-3.png" alt="实力雄厚 安全保障">
-                        <img class="icon-on" src="${staticServer}/images/icons/icon-on-3.png" alt="实力雄厚 安全保障">
-                    </span>
+                    <div class="icon-hover img-icon-off-3"></div>
                     <span class="clearfix">
                         <b class="clearfix">实力雄厚 安全保障</b>
                         上市企业投资，资金数据均安全
@@ -129,7 +118,7 @@
                         <li class="${productType.name()?lower_case}-text">
                             <a href="/loan-list?productType=${productType.name()}">
                                 <div class="icon-proimg">
-                                    <img class="icon-off" src="${staticServer}/images/icons/${productType.name()?lower_case}-icon.png" alt="${productType.getName()} ${description}">
+                                    <div class="icon-off img-${productType.name()?lower_case}-icon"></div>
                                 </div>
                                 <div class="product-intro">
                                     <span class="text-intro">${description_detail}</span>
@@ -160,7 +149,7 @@
             </div>
             <div class="company-up">
                 <a href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" target="_blank">
-                    <img src="${staticServer}/images/sign/video-images.png" alt="拓天伟业挂牌视频">
+                    <div class="img-video"></div>
                 </a>
             </div>
         </div>
@@ -235,16 +224,7 @@
                         <time>2015-12-21</time>
                     </li>
                 </ul>
-                <ul class="media-logo-list fr">
-                    <li><a href="javascript:void(0)" class="qq"></a></li>
-                    <li><a href="javascript:void(0)" class="yangshi"></a></li>
-                    <li><a href="javascript:void(0)" class="msn"></a></li>
-                    <li><a href="javascript:void(0)" class="sina"></a></li>
-                    <li><a href="javascript:void(0)" class="ifeng"></a></li>
-                    <li><a href="javascript:void(0)" class="wangyi"></a></li>
-                    <li><a href="javascript:void(0)" class="china"></a></li>
-                    <li><a href="javascript:void(0)" class="toutiao"></a></li>
-                </ul>
+                <div class="media-logo-list fr"></div>
             </div>
         </div>
 
@@ -253,10 +233,10 @@
                 <span class="partner-icon"></span>
             </h3>
 
-            <div class="box-radius clearfix">
+            <div class="box-radius clearfix friend-links">
                 <ul>
-                    <li><a href="http://www.king-capital.com/" target="_blank"> <img src="${staticServer}/images/sign/partner/jingdu.png"></a></li>
-                    <li><a href="http://www.umpay.com/umpay_cms/" target="_blank"><img src="${staticServer}/images/sign/partner/liandongyoushi.png"></a></li>
+                    <li><a href="http://www.king-capital.com/" target="_blank"> <i class="img-jingdu"></i></a></li>
+                    <li><a href="http://www.umpay.com/umpay_cms/" target="_blank"><i class="img-ump"></i></a></li>
                 </ul>
             </div>
         </div>

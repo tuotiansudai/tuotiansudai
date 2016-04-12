@@ -233,6 +233,7 @@
       height: 60px;
       cursor: pointer;
       background: url("/images/sign/fix-icon.png") no-repeat;
+      @extend .sprite-global-fix-icon;
       &.icon-phone {
         background-position: 0 0;
       }
