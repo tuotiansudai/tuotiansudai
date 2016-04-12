@@ -28,7 +28,7 @@
         </ul>
         <ul class="last">
             <li class="tc fl">
-                <img src="${staticServer}/images/sign/weixin-img.jpg" width="100" height="100"> <br/>
+                <img src="${staticServer}/images/sign/weixin-img.png" width="100" height="100"> <br/>
                 扫我关注拓天速贷微信
             </li>
             <li class="tc fl">
