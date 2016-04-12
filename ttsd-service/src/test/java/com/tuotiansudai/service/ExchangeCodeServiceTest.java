@@ -220,4 +220,24 @@ public class ExchangeCodeServiceTest {
         assert (exchangeCodeService.toBase31Prefix(100018).equals("DMCN")); // DMCN
     }
 
+    @Test
+    public void shouldGetBase31LongValue() {
+
+        assert (exchangeCodeService.getValueBase31("EFE9") == 124123); // EFE9
+        assert (exchangeCodeService.getValueBase31("AAAA") == 0); // AAAA
+        assert (exchangeCodeService.getValueBase31("AABA") == 31); // AABA
+        assert (exchangeCodeService.getValueBase31("BAAA") == 29791); // BAAA
+        assert (exchangeCodeService.getValueBase31("9999") == 923520); // 9999
+        assert (exchangeCodeService.getValueBase31("DMCH") == 100013); // DMCH
+        assert (exchangeCodeService.getValueBase31("DMCJ") == 100014); // DMCJ
+        assert (exchangeCodeService.getValueBase31("DMCK") == 100015); // DMCK
+        assert (exchangeCodeService.getValueBase31("DMCL") == 100016); // DMCL
+        assert (exchangeCodeService.getValueBase31("DMCM") == 100017); // DMCM
+        assert (exchangeCodeService.getValueBase31("DMCN") == 100018); // DMCN
+
+        assert (exchangeCodeService.getValueBase31("") == 0); // ""
+        assert (exchangeCodeService.getValueBase31(null) == 0); // null
+        assert (exchangeCodeService.getValueBase31("Oa3") == 0); // Oa3 Throw Exception, return 0
+    }
+
 }

@@ -10,4 +10,5 @@ public interface ExchangeCodeService {
 
     String toBase31Prefix(long couponId);
 
+    long getValueBase31(String prefix);
 }

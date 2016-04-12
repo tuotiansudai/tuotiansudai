@@ -118,7 +118,7 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
         BaseDataDto baseDataDto = new BaseDataDto();
         long couponId = 0;
         try {
-            couponId = Long.parseLong(exchangeCode.substring(0, 4));
+            couponId = getValueBase31(exchangeCode.substring(0, 4));
         } catch (Exception e) {
             baseDataDto.setStatus(false);
             baseDataDto.setMessage("请输入正确的兑换码");
@@ -146,6 +146,35 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
             baseDataDto.setMessage("恭喜您兑换成功");
             return baseDataDto;
         }
+    }
+    /**
+     * return the int value of a base 31 input string (especially for exchange code prefix)
+     *
+     * @param prefix
+     * @return
+     */
+    public long getValueBase31(String prefix) {
+        if (prefix == null || prefix.length() == 0) return 0;
+
+        int value = 0;
+        try {
+            for (int i = 0; i < prefix.length(); i++) {
+                char c = prefix.charAt(i);
+                int index = getExchangeCodeCharIndex(c);
+                value = value * 31 + index;
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return 0;
+        }
+        return value;
+    }
+
+    private int getExchangeCodeCharIndex(char c) throws Exception {
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] == c) return i;
+        }
+        throw new Exception("input value '" + c + "' is out of range.");
     }
 
 }
