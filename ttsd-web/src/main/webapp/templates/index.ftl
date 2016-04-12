@@ -55,10 +55,10 @@
             <div class="notice-text scroll-top">
                 <ul>
                     <#list announces as announce>
-                        <#if announce.id = 187>
+                        <#if announce.id == 187>
                             <#assign category = "70首页">
                             <#assign label = "计息调整">
-                        <#elseif announce.id  = 188>
+                        <#elseif announce.id == 188>
                             <#assign category = "69首页">
                             <#assign label = "排行榜">
                         <#else>
@@ -126,17 +126,17 @@
             <div class="product-list">
                 <ul>
                     <#list productTypes as productType>
-                        <#if productType.name() = 'SYL'>
+                        <#if productType.name() == 'SYL'>
                             <#assign description = '快速高效'>
                             <#assign description_detail = '快速投资，高效理财'>
                             <#assign category = "31首页">
                             <#assign label = "速盈利">
-                        <#elseif productType.name() = 'WYX'>
+                        <#elseif productType.name() == 'WYX'>
                             <#assign description = '稳健灵活'>
                             <#assign description_detail = '稳健收益，灵活便捷'>
                             <#assign category = "32首页">
                             <#assign label = "稳盈秀">
-                        <#elseif productType.name() = 'JYF'>
+                        <#elseif productType.name() == 'JYF'>
                             <#assign description = '财富法宝'>
                             <#assign description_detail = '财富积累，普惠法宝'>
                             <#assign category = "33首页">
@@ -188,13 +188,13 @@
             <div class="product-box-list fl">
                 <div class="product-box-inner">
                     <#list loans as loan>
-                        <#if loan.productType.name() = 'SYL'>
+                        <#if loan.productType.name() == 'SYL'>
                             <#assign category = "36首页">
                             <#assign label = "速盈利">
-                        <#elseif loan.productType.name() = 'WYX'>
+                        <#elseif loan.productType.name() == 'WYX'>
                             <#assign category = "37首页">
                             <#assign label = "稳盈秀">
-                        <#elseif loan.productType.name() = 'JYF'>
+                        <#elseif loan.productType.name() == 'JYF'>
                             <#assign category = "38首页">
                             <#assign label = "久赢富">
                         </#if>
