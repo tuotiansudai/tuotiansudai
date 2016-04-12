@@ -23,9 +23,10 @@ require(['jquery', 'coupon-alert'], function($) {
 		});
 
 		$('#submitCode').on('click', function() {
-			var exchangeCode = $('#couponByCode').val();
+			var exchangeCode = $('#couponByCode').val().trim;
 			if (exchangeCode.length == 0) {
-				$(this).append('<p class="tip-text error-color">请输入正确的兑换码</p>');
+				$(this).parent().append('<p class="tip-text error-color">请输入正确的兑换码</p>');
+				$('#couponByCode').val('');
 			} else {
 				$.ajax({
 					url: '/my-treasure/'+exchangeCode+'/exchange',
@@ -35,13 +36,15 @@ require(['jquery', 'coupon-alert'], function($) {
 				}).done(function(data){
 					var message = data.message;
 					if (data.status) {
-						$(this).append('<p class="tip-text success-color">'+message+'</p>');
+						$(this).parent().append('<p class="tip-text success-color">'+message+'</p>');
 						setInterval(function(){location.href="/my-treasure"}, 1000);
 					} else {
-						$(this).append('<p class="tip-text error-color">'+message+'</p>');
+						$(this).parent().append('<p class="tip-text error-color">'+message+'</p>');
+						$('#couponByCode').val('');
 					}
 				}).fail(function() {
-					$(this).append('<p class="tip-text error-color">兑换失败，请重试</p>');
+					$(this).parent().append('<p class="tip-text error-color">兑换失败，请重试</p>');
+					$('#couponByCode').val('');
 				});
 			}
 		});
