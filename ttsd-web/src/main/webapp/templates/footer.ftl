@@ -28,9 +28,8 @@
         </ul>
         <ul class="last">
             <li class="tc">
-                <img src="${staticServer}/images/sign/app-weixin.png"> <br/>
+                <i class="img-app-weixin"></i> <br/>
                 APP下载
-
             </li>
         </ul>
     </div>
