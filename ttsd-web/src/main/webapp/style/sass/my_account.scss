@@ -1891,21 +1891,55 @@ body{
     }
   }
   .filters-list {
-    float: left;
+    float:left;
     width: 100%;
-
+    position: relative;
     li {
-      float: left;
+      float:left;
       color: #4c4c4c;
       font-size: 12px;
       padding: 5px 15px;
       margin-right: 10px;
       cursor: pointer;
-
       &.active {
         color: #fff;
         background: #ff752a;
         border-radius: 5px;
+      }
+    }
+    .get-coupon-code{
+      width:360px;
+      height:35px;
+      position: absolute;
+      top:0;
+      right:0;
+      label{
+        float:right;
+        span{
+          float:left;
+        }
+        .coupon-by-code{
+          float:left;
+        }
+        .submit-code{
+          float:left;
+          margin-left:10px;
+          padding: 6px 35px;
+        }
+        p{
+          &.tip-text{
+            position: absolute;
+            top:35px;
+            left:90px;
+            width:160px;
+          }
+          &.error-color{
+            color:#FF6363;
+          }
+          &.success-color{
+            color:#A5D24C;
+          }
+        }
       }
     }
   }

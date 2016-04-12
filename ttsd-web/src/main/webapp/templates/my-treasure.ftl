@@ -39,6 +39,14 @@
         <li class="active">未使用</li>
         <li>已使用</li>
         <li>已过期</li>
+        <div class="get-coupon-code">
+            <label for="couponByCode">
+                <span>输入兑换码：</span>
+                <input type="text" class="coupon-by-code" id="couponByCode">
+                <button type="button" class="btn btn-primary submit-code" id="submitCode">兑换</button>
+                <p class="tip-text error-color">兑换失败</p>
+            </label>
+        </div>
     </ul>
     <div class="model-list">
 
