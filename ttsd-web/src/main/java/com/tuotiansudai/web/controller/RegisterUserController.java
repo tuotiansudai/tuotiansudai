@@ -48,9 +48,12 @@ public class RegisterUserController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView registerUser(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes) {
+    public ModelAndView registerUser(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         boolean isRegisterSuccess;
         try {
+            if (request.getSession().getAttribute("channel") != null) {
+                registerUserDto.setChannel(String.valueOf(request.getSession().getAttribute("channel")));
+            }
             isRegisterSuccess = this.userService.registerUser(registerUserDto);
         } catch (ReferrerRelationException e) {
             isRegisterSuccess = false;
