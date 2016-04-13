@@ -17,7 +17,9 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         $authorizeAgreementOptions = $('#authorizeAgreementOptions'),
         noPasswordRemind = amountInputElement.data('no-password-remind'),
         noPasswordInvest = amountInputElement.data('no-password-invest'),
-        autoInvestOn = amountInputElement.data('auto-invest-on');
+        autoInvestOn = amountInputElement.data('auto-invest-on'),
+        cnzzPush = new cnzzPush(),
+        $minInvestAmount = $('.text-input-amount').data('min-invest-amount');
 
     layer.ready(function() {
         layer.photos({
@@ -459,6 +461,16 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
             if (!validateInvestAmount()) {
                 showInputErrorTips(investAmount === 0 ? '投资金额不能为0元！' : '投资金额不能大于可投金额！');
+                return false;
+            }
+            var minInvestAmount = parseInt(($minInvestAmount * 100).toFixed(0));
+            if(investAmount < minInvestAmount){
+                var tipContent = '投资金额小于标的最小投资金额！';
+                layer.tips('<i class="fa fa-times-circle"></i>' + tipContent, '.text-input-amount', {
+                    tips: [1, '#ff7200'],
+                    time: 0,
+                    maxWidth : 220
+                });
                 return false;
             }
 

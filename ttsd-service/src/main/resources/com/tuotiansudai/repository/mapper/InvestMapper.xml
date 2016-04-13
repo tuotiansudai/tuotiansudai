@@ -280,6 +280,15 @@
         </where>
     </select>
 
+    <select id="sumInvestAmountRanking" parameterType="map" resultType="long">
+        select IFNULL(sum(amount), 0) as amount
+        from invest
+        where
+            status = 'SUCCESS'
+            and not exists (select 1 from user_role where user_role.login_name=invest.login_name and user_role.role= 'LOANER')
+            and created_time between #{startTime} and #{endTime}
+    </select>
+
     <select id="sumSuccessNewbieInvestCountByLoginName" parameterType="String" resultType="int">
         select count(*)
         from invest
