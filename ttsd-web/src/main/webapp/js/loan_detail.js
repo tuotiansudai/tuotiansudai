@@ -18,7 +18,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         noPasswordRemind = amountInputElement.data('no-password-remind'),
         noPasswordInvest = amountInputElement.data('no-password-invest'),
         autoInvestOn = amountInputElement.data('auto-invest-on'),
-        cnzzPush = new cnzzPush(),
         $minInvestAmount = $('.text-input-amount').data('min-invest-amount');
 
 
