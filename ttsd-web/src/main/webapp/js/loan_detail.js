@@ -1,4 +1,4 @@
-require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper','cnzz-statistics', 'underscore', 'jquery.ajax.extension', 'autoNumeric', 'coupon-alert','red-envelope-float', 'jquery.form'], function ($, pagination, Mustache, investListTemplate, layer,cnzzPush, _) {
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper','underscore', 'jquery.ajax.extension', 'autoNumeric', 'coupon-alert','red-envelope-float', 'jquery.form'], function ($, pagination, Mustache, investListTemplate, layer, _) {
     var $loanDetail = $('.loan-detail-content'),
         loanId = $('.hid-loan').val(),
         amountInputElement = $(".text-input-amount", $loanDetail),
@@ -17,9 +17,19 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         $authorizeAgreementOptions = $('#authorizeAgreementOptions'),
         noPasswordRemind = amountInputElement.data('no-password-remind'),
         noPasswordInvest = amountInputElement.data('no-password-invest'),
+<<<<<<< HEAD
+<<<<<<< HEAD
+        autoInvestOn = amountInputElement.data('auto-invest-on');
+=======
         autoInvestOn = amountInputElement.data('auto-invest-on'),
         cnzzPush = new cnzzPush(),
         $minInvestAmount = $('.text-input-amount').data('min-invest-amount');
+>>>>>>> master
+=======
+        autoInvestOn = amountInputElement.data('auto-invest-on'),
+        cnzzPush = new cnzzPush(),
+        $minInvestAmount = $('.text-input-amount').data('min-invest-amount');
+>>>>>>> 4938aff8530d2e3e1cfb88c028c668fcb96284ae
 
     layer.ready(function() {
         layer.photos({
@@ -492,9 +502,11 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 area: ['300px', '160px'],
                 content: '<p class="pad-m-tb tc">确认投资？</p>',
                 btn1: function(){
+                    cnzzPush.trackClick("67标的详情页","马上投资确认框","取消");
                     layer.closeAll();
                 },
                 btn2:function(){
+                    cnzzPush.trackClick("68标的详情页","马上投资确认框","确认");
                     $investForm.ajaxSubmit({
                         dataType: 'json',
                         url: '/no-password-invest',
