@@ -18,12 +18,18 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         noPasswordRemind = amountInputElement.data('no-password-remind'),
         noPasswordInvest = amountInputElement.data('no-password-invest'),
 <<<<<<< HEAD
+<<<<<<< HEAD
         autoInvestOn = amountInputElement.data('auto-invest-on');
 =======
         autoInvestOn = amountInputElement.data('auto-invest-on'),
         cnzzPush = new cnzzPush(),
         $minInvestAmount = $('.text-input-amount').data('min-invest-amount');
 >>>>>>> master
+=======
+        autoInvestOn = amountInputElement.data('auto-invest-on'),
+        cnzzPush = new cnzzPush(),
+        $minInvestAmount = $('.text-input-amount').data('min-invest-amount');
+>>>>>>> 4938aff8530d2e3e1cfb88c028c668fcb96284ae
 
     layer.ready(function() {
         layer.photos({
