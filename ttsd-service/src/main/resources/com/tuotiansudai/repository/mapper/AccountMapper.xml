@@ -18,6 +18,7 @@
         <result column="point" property="point"></result>
         <result column="register_time" property="registerTime"></result>
         <result column="auto_invest" property="autoInvest"></result>
+        <result column="auto_repay" property="autoRepay"></result>
         <result column="no_password_invest" property="noPasswordInvest"></result>
     </resultMap>
 
@@ -51,6 +52,7 @@
           balance = #{balance},
           freeze = #{freeze},
           auto_invest = #{autoInvest},
+          auto_repay = #{autoRepay},
           no_password_invest = #{noPasswordInvest},
           point = #{point}
         where login_name = #{loginName}

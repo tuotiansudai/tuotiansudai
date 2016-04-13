@@ -8,6 +8,7 @@ import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.dto.JpushReportDto;
 import com.tuotiansudai.jpush.repository.model.*;
+import com.tuotiansudai.repository.model.InvestRepayModel;
 
 import java.util.Date;
 import java.util.List;

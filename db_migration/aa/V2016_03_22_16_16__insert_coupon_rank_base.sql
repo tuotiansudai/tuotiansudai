@@ -1,5 +1,7 @@
 BEGIN ;
 
+insert ignore into user (login_name,password,mobile,register_time,status,salt) values ('sidneygao','e8ba3a39cef651c08fbd7f8df591760f6b7412a4','13810586920',now(),'ACTIVE','083e54eaef1f42afaec76a077f571693');
+
 INSERT INTO coupon
 SELECT
     300,

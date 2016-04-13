@@ -27,10 +27,13 @@
             <li>地址：北京市丰台区洋桥12号天路蓝图大厦8层</li>
         </ul>
         <ul class="last">
-            <li class="tc">
-                <img src="${staticServer}/images/sign/app-weixin.png"> <br/>
-                APP下载
-
+            <li class="tc fl">
+                <i class="img-weixin-img"></i> <br/>
+                扫我关注拓天速贷微信
+            </li>
+            <li class="tc fl">
+                <i class="img-app-download"></i> <br/>
+                扫我下载APP
             </li>
         </ul>
     </div>
@@ -41,25 +44,32 @@
             <li><a href="https://www.zuiyidai.com/" target="_blank">最易贷</a></li>
             <li><a href="http://www.51wangdai.com/" target="_blank">51网贷</a></li>
             <li><a href="http://www.liyedai.cn/" target="_blank">立业贷</a></li>
-            <li><a href="http://www.8ncb.com" target="_blank">农村宝理财</a></li>
             <li><a href="http://www.wdzj.com/" target="_blank">网贷之家</a></li>
             <li><a href="http://www.p2peye.com" target="_blank">网贷天眼</a></li>
             <li><a href="http://www.1yqlg.cc/" target="_blank">1元夺宝</a></li>
+            <li><a href="http://www.wangdaiguancha.com" target="_blank">网贷观察网</a></li>
+            <li><a href="http://www.erongtu.com" target="_blank">融途网</a></li>
+            <li><a href="http://www.p2pjd.com" target="_blank">网贷经典网</a></li>
+            <li><a href="http://www.wangdaijiamen.com" target="_blank">网贷家门</a></li>
+            <li><a href="http://www.p2p265.com" target="_blank">网贷世界</a></li>
+            <li><a href="http://www.wangdaitan.com" target="_blank">网贷谈</a></li>
+            <li><a href="http://www.wddoor88.com" target="_blank">网贷铺子</a></li>
+            <li><a href="http://www.wangdaile.com" target="_blank">网贷乐</a></li>
         </ul>
     </div>
     <div class="copyright page-width">
         <div class="fl">
             <a href="http://www.itrust.org.cn/yz/pjwx.asp?wm=1335512526" target="_blank">
-                <img src="${staticServer}/images/sign/advantage/itrust_logo.png" class="img-gray">
+                <div class="img-gray img-itrust_logo"></div>
             </a>
             <a href="https://search.szfw.org/cert/l/CX20150616010363010507" target="_blank">
-                <img src="${staticServer}/images/sign/advantage/chengxin_logo.png" class="img-gray">
+                <div class="img-gray img-chengxin_logo"></div>
             </a>
             <a href="https://ss.knet.cn/verifyseal.dll?sn=e15071011011759427pzmf000000&pa=500267" target="_blank">
-                <img src="${staticServer}/images/sign/advantage/knetSealLogo.png" class="img-gray">
+                <div class="img-gray img-knetSealLogo"></div>
             </a>
             <a href="https://seal.digicert.com/seals/popup/?tag=7MzpfEHK&url=tuotiansudai.com&lang=en" target="_blank">
-                <img src="${staticServer}/images/sign/advantage/digicert.png" class="img-gray">
+                <div class="img-gray img-digicert"></div>
             </a>
         </div>
         <div class="fr tr">
