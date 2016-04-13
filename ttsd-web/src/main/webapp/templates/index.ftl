@@ -40,9 +40,7 @@
                         <span class="num-unit">倍</span>
                     </p>
                     <b class="h-title">活期存款收益</b>
-                    <p class="welcome-text">
-                        <img src="${staticServer}/images/sign/welcome-text.png" width="100%" alt="welcome">
-                    </p>
+                    <p class="welcome-text"></p>
                     <a class="btn-normal" href="/register/user" onclick="cnzzPush.trackClick('21首页','Banner模块','免费注册')">免费注册 </a>
                     <i class="clearfix tr">已有账户？<a href="/login" onclick="cnzzPush.trackClick('22首页','Banner模块','立即登录')"> 立即登录</a></i>
                 </div>
@@ -81,10 +79,7 @@
         <dl>
             <dd>
                 <a href="/about/assurance?aid=1" onclick="cnzzPush.trackClick('28首页','安全保障模块','1')" target="_blank">
-                    <span class="icon-hover">
-                        <img class="icon-off" src="${staticServer}/images/icons/icon-off-1.png" alt="超高收益 最低门槛">
-                        <img class="icon-on" src="${staticServer}/images/icons/icon-on-1.png" alt="超高收益 最低门槛">
-                    </span>
+                    <div class="icon-hover img-icon-off-1"></div>
                     <span class="clearfix">
                          <b class="clearfix">超高收益 最低门槛</b>
                         最高46倍活期存款收益，最低投资门槛50元
@@ -93,10 +88,7 @@
             </dd>
             <dd>
                 <a href="/about/assurance?aid=2" onclick="cnzzPush.trackClick('29首页','安全保障模块','2')" target="_blank">
-                    <span class="icon-hover">
-                        <img class="icon-off" src="${staticServer}/images/icons/icon-off-2.png" alt="三方托管 放心理财">
-                        <img class="icon-on" src="${staticServer}/images/icons/icon-on-2.png" alt="三方托管 放心理财">
-                    </span>
+                    <div class="icon-hover img-icon-off-2"></div>
                     <span class="clearfix">
                         <b class="clearfix">三方托管 放心理财</b>
                         第三方资金托管，第三方支付
@@ -105,10 +97,7 @@
             </dd>
             <dd>
                 <a href="/about/assurance?aid=3" onclick="cnzzPush.trackClick('30首页','安全保障模块','3')" target="_blank">
-                    <span class="icon-hover">
-                        <img class="icon-off" src="${staticServer}/images/icons/icon-off-3.png" alt="实力雄厚 安全保障">
-                        <img class="icon-on" src="${staticServer}/images/icons/icon-on-3.png" alt="实力雄厚 安全保障">
-                    </span>
+                    <div class="icon-hover img-icon-off-3"></div>
                     <span class="clearfix">
                         <b class="clearfix">实力雄厚 安全保障</b>
                         上市企业投资，资金数据均安全
@@ -145,7 +134,7 @@
                         <li class="${productType.name()?lower_case}-text">
                             <a href="/loan-list?productType=${productType.name()}" onclick="cnzzPush.trackClick('${category}','产品线模块','${label}')">
                                 <div class="icon-proimg">
-                                    <img class="icon-off" src="${staticServer}/images/icons/${productType.name()?lower_case}-icon.png" alt="${productType.getName()} ${description}">
+                                    <div class="icon-off img-${productType.name()?lower_case}-icon"></div>
                                 </div>
                                 <div class="product-intro">
                                     <span class="text-intro">${description_detail}</span>
@@ -175,8 +164,8 @@
                 </ul>
             </div>
             <div class="company-up">
-                <a href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1"  onclick="cnzzPush.trackClick('34首页','上市模块')" target="_blank">
-                    <img src="${staticServer}/images/sign/video-images.png" alt="拓天伟业挂牌视频">
+                <a href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" onclick="cnzzPush.trackClick('34首页','上市模块')" target="_blank">
+                    <div class="img-video"></div>
                 </a>
             </div>
         </div>
@@ -246,6 +235,9 @@
 
             <div class="box-radius clearfix">
                 <ul class="media-list fl">
+                    <li><i>●</i><a href="http://mt.sohu.com/20160331/n443005759.shtml?qq-pf-to=pcqq.c2c" onclick="cnzzPush.trackClick('73首页','媒体报道模块','霸道总裁')"target="_blank">拓天速贷第二期全国排行活动正式启动</a>
+                        <time>2016-03-31</time>
+                    </li>
                     <li><i>●</i><a href="http://fj.qq.com/a/20160314/060811.htm" onclick="cnzzPush.trackClick('40首页','媒体报道模块','财富盛宴大平台')" target="_blank">拓天速贷：财富盛宴大平台 感恩豪礼滚滚来</a>
                         <time>2016-03-14</time>
                     </li>
@@ -258,9 +250,6 @@
                     <li><i>●</i><a href="http://toutiao.com/news/6233268186905575938/" onclick="cnzzPush.trackClick('43首页','媒体报道模块','高效资产平台')" target="_blank">拓天速贷以卓越风控打造高效资产平台</a>
                         <time>2015-12-28</time>
                     </li>
-                    <li><i>●</i><a href="http://house.qq.com/a/20151221/035341.htm" onclick="cnzzPush.trackClick('44首页','媒体报道模块','官网全新升级')" target="_blank">拓天速贷官网全新升级 迈入2.0智能金融信息服务时代</a>
-                        <time>2015-12-21</time>
-                    </li>
                 </ul>
                 <ul class="media-logo-list fr">
                     <li><a href="javascript:void(0)" class="qq"></a></li>
@@ -272,6 +261,7 @@
                     <li><a href="javascript:void(0)" class="china"></a></li>
                     <li><a href="javascript:void(0)" class="toutiao"></a></li>
                 </ul>
+                <div class="media-logo-list fr"></div>
             </div>
         </div>
 
@@ -280,10 +270,10 @@
                 <span class="partner-icon"></span>
             </h3>
 
-            <div class="box-radius clearfix">
+            <div class="box-radius clearfix friend-links">
                 <ul>
-                    <li><a href="http://www.king-capital.com/" onclick="cnzzPush.trackClick('45首页','合作伙伴模块','京都律师所')" target="_blank"> <img src="${staticServer}/images/sign/partner/jingdu.png"></a></li>
-                    <li><a href="http://www.umpay.com/umpay_cms/" onclick="cnzzPush.trackClick('46首页','合作伙伴模块','联动优势')" target="_blank"><img src="${staticServer}/images/sign/partner/liandongyoushi.png"></a></li>
+                    <li><a href="http://www.king-capital.com/" onclick="cnzzPush.trackClick('45首页','合作伙伴模块','京都律师所')" target="_blank"> <i class="img-jingdu"></i></a></li>
+                    <li><a href="http://www.umpay.com/umpay_cms/" onclick="cnzzPush.trackClick('46首页','合作伙伴模块','联动优势')" target="_blank"><i class="img-ump"></i></a></li>
                 </ul>
             </div>
         </div>

@@ -37,11 +37,9 @@
 		<span class="nav-text" onclick="cnzzPush.trackClick('62首页','悬浮窗模块','计算器')">理财<br/>计算器</span>
 	</li>
 	<li>
-		<i class="icon-phone"></i>	
+		<i class="icon-phone"></i>
 		<span class="nav-text" onclick="cnzzPush.trackClick('63首页','悬浮窗模块','手机APP')">APP<br/>下载</span>
-		<div class="fix-nav app-img">
-			<img src="${staticServer}/images/sign/app-img.png" alt="app下载">
-		</div>
+		<div class="fix-nav app-img"></div>
 	</li>
 	<li>
 		<i class="icon-qq"></i>
