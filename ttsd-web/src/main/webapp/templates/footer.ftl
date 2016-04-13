@@ -27,9 +27,13 @@
             <li>地址：北京市丰台区洋桥12号天路蓝图大厦8层</li>
         </ul>
         <ul class="last">
-            <li class="tc">
-                <i class="img-app-weixin"></i> <br/>
-                APP下载
+            <li class="tc fl">
+                <i class="img-weixin-img"></i> <br/>
+                扫我关注拓天速贷微信
+            </li>
+            <li class="tc fl">
+                <i class="img-app-download"></i> <br/>
+                扫我下载APP
             </li>
         </ul>
     </div>
