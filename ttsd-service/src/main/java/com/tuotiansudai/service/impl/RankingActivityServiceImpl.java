@@ -15,7 +15,6 @@ import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
 import com.tuotiansudai.repository.TianDouPrize;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.RankingActivityService;
 import com.tuotiansudai.util.IdGenerator;

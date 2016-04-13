@@ -3,7 +3,7 @@
 
 <!-- content area begin -->
 <div style="margin: 20px 30px 20px 253px">
-    中奖人数：${drawCount!0}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    中奖人数：${winnerCount!0}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </div>
 
     <#if prizeWinnerDtoList ?? && (prizeWinnerDtoList?size>0)>
