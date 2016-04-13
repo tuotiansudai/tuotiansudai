@@ -39,9 +39,7 @@
 	<li>
 		<i class="icon-phone"></i>	
 		<span class="nav-text">APP<br/>下载</span>
-		<div class="fix-nav app-img">
-			<img src="${staticServer}/images/sign/app-img.png" alt="app下载">
-		</div>
+		<div class="fix-nav app-img"></div>
 	</li>
 	<li>
 		<i class="icon-qq"></i>

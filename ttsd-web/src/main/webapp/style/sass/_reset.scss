@@ -1,4 +1,5 @@
 @import 'variables';
+@import "global_png";
 * {
   margin: 0;
   padding: 0;
@@ -202,6 +203,38 @@ form {
   -o-filter: grayscale(100%);
   filter: grayscale(100%);
   filter: gray;
+}
+
+.img-itrust_logo {
+  @extend .sprite-global-itrust_logo;
+  display: inline-block;
+}
+
+.img-chengxin_logo {
+  @extend .sprite-global-chengxin_logo;
+  display: inline-block;
+}
+
+.img-knetSealLogo {
+  @extend .sprite-global-knetSealLogo;
+  display: inline-block;
+}
+
+.img-digicert {
+  @extend .sprite-global-digicert;
+  display: inline-block;
+}
+
+.img-close-tip {
+  @extend .sprite-global-close-tip;
+  background-size: 100%;
+  float: left;
+  margin-top: 18px;
+}
+
+.img-logo-tip {
+  @extend .sprite-global-logo-tip;
+  float: left;
 }
 
 .page-width {

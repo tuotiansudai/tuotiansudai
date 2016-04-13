@@ -1,6 +1,7 @@
 @import 'variables';
 @import 'jquery_fullpage';
 @import "coupon_alert";
+@import "index_png";
 
 #fp-nav ul li {
   width: 25px;
@@ -96,7 +97,8 @@ body {
       height: 300px;
       box-sizing: border-box;
       padding: 50px 50px 10px;
-      background: url("/images/sign/bg-transparent.png") repeat;
+      opacity: 0.9;
+      background-color: white;
       border-radius: 10px;
       .num-text {
         float: left;
@@ -223,16 +225,34 @@ body {
         span {
           float: left;
           width: 100%;
-          &.icon-hover{
-            width: 138px;
-            margin: 0 96px;
-            &:hover .icon-off {
-              display: none;
-            }
-            &:hover .icon-on {
-              display: block;
-            }
-          }
+          //&.icon-hover{
+          //  width: 138px;
+          //  margin: 0 96px;
+            //.img-icon-off-1 {
+            //  @extend .sprite-index-icon-off-1;
+            //  &:hover {
+            //    @extend .sprite-index-icon-on-1;
+            //  }
+            //}
+            //.img-icon-off-1 {
+            //  @extend .sprite-index-icon-off-1;
+            //  &:hover {
+            //    @extend .sprite-index-icon-on-1;
+            //  }
+            //}
+            //.img-icon-off-1 {
+            //  @extend .sprite-index-icon-off-1;
+            //  &:hover {
+            //    @extend .sprite-index-icon-on-1;
+            //  }
+            //}
+            //&:hover .icon-off {
+            //  display: none;
+            //}
+            //&:hover .icon-on {
+            //  display: block;
+            //}
+          //}
           b {
             font-size: 20px;
             display: block;
@@ -240,6 +260,31 @@ body {
             color: #4d4d4d;
           }
         }
+        .icon-hover {
+          width: 138px;
+          margin: 0 96px;
+
+          &.img-icon-off-1 {
+            @extend .sprite-index-icon-off-1;
+            &:hover {
+              @extend .sprite-index-icon-on-1;
+            }
+          }
+          &.img-icon-off-2 {
+            @extend .sprite-index-icon-off-2;
+            &:hover {
+              @extend .sprite-index-icon-on-2;
+            }
+          }
+          &.img-icon-off-3 {
+            @extend .sprite-index-icon-off-3;
+            &:hover {
+              @extend .sprite-index-icon-on-3;
+            }
+          }
+        }
+
+
         a {
           float: left;
           width: 100%;
@@ -309,6 +354,20 @@ body {
         border-radius: 10px;
         padding:20px;
         background: #fff;
+        &.friend-links {
+          li {
+            height: 57px;
+          }
+          i {
+            display: block;
+          }
+          .img-jingdu {
+            @extend .sprite-index-jingdu;
+          }
+          .img-ump {
+            @extend .sprite-index-liandongyoushi;
+          }
+        }
       }
       .product-list {
         float: left;
@@ -345,6 +404,15 @@ body {
                 position: absolute;
                 top: -11px;
                 left: 0;
+                .img-wyx-icon {
+                  @extend .sprite-index-wyx-icon;
+                }
+                .img-syl-icon {
+                  @extend .sprite-index-syl-icon;
+                }
+                .img-jyf-icon {
+                  @extend .sprite-index-jyf-icon;
+                }
               }
               .product-intro {
                 float: left;
@@ -449,6 +517,9 @@ body {
         border-radius: 10px;
         background-color: #fff;
         overflow: hidden;
+        .img-video {
+          @extend .sprite-index-video-images;
+        }
       }
       .invest-total {
         float: left;
@@ -496,9 +567,7 @@ body {
                 position: absolute;
                 left: -4px;
                 top: -5px;
-                width: 71px;
-                height: 71px;
-                background: url("/images/icons/hot-n.png") left top no-repeat;
+                @extend .sprite-index-hot-n;
               }
             }
             &.product-type {
@@ -506,25 +575,19 @@ body {
                 position: absolute;
                 left: -4px;
                 top: -5px;
-                width: 71px;
-                height: 71px;
-                background: url("/images/icons/img-syl.png") left top no-repeat;
+                @extend .sprite-index-img-syl;
               }
               .img-wyx {
                 position: absolute;
                 left: -4px;
                 top: -5px;
-                width: 71px;
-                height: 71px;
-                background: url("/images/icons/img-wyx.png") left top no-repeat;
+                @extend .sprite-index-img-wyx;
               }
               .img-jyf {
                 position: absolute;
                 left: -4px;
                 top: -5px;
-                width: 71px;
-                height: 71px;
-                background: url("/images/icons/img-jyf.png") left top no-repeat;
+                @extend .sprite-index-img-jyf;
               }
             }
             .pr-title {
@@ -677,9 +740,7 @@ body {
         }
       }
       .media-logo-list {
-        width: 367px;
-        height: 220px;
-        background: url("/images/sign/media/bg-media-list.png") right 0 no-repeat;
+        @extend .sprite-index-bg-media;
         li {
           display: inline-block;
           margin-left: 18px;
@@ -691,78 +752,6 @@ body {
             cursor: pointer;
             width:100%;
             height:100%;
-            &.qq:hover {
-              background: url("/images/sign/media/tengxunqq.png") 0px 0px no-repeat;
-              background-size:100%;
-              position: absolute;
-              left:-15px;
-              width:120%;
-              height:120%;
-              top:-5px;
-            }
-            &.yangshi:hover {
-              background: url("/images/sign/media/yangshi.png") 0px 0px no-repeat;
-              background-size:100%;
-              position: absolute;
-              left:-15px;
-              width:120%;
-              height:120%;
-              top:-2px;
-            }
-            &.msn:hover {
-              background: url("/images/sign/media/msn.png") 0px 0px no-repeat;
-              background-size:100%;
-              position: absolute;
-              left:-15px;
-              width:120%;
-              height:120%;
-              top:-2px;
-            }
-            &.sina:hover {
-              background: url("/images/sign/media/tsina.png") 0px 0px no-repeat;
-              background-size:100%;
-              position: absolute;
-              left:-15px;
-              width:120%;
-              height:120%;
-              top:-2px;
-            }
-            &.ifeng:hover {
-              background: url("/images/sign/media/fenghuang.png") 0px 0px no-repeat;
-              background-size:100%;
-              position: absolute;
-              left:-15px;
-              width:120%;
-              height:120%;
-              top:8px;
-            }
-            &.wangyi:hover {
-              background: url("/images/sign/media/wangyi.png") 0px 0px no-repeat;
-              background-size:100%;
-              position: absolute;
-              left:-15px;
-              width:120%;
-              height:120%;
-              top:8px;
-            }
-            &.china:hover {
-              background: url("/images/sign/media/zhonghuawang.png") 0px 0px no-repeat;
-              background-size:100%;
-              position: absolute;
-              left:-15px;
-              width:120%;
-              height:120%;
-              top:8px;
-            }
-            &.toutiao:hover {
-              background: url("/images/sign/media/jinritoutiao.png") 0px 0px no-repeat;
-              background-size:100%;
-              position: absolute;
-              left:-15px;
-              width:120%;
-              height:120%;
-              top:8px;
-            }
           }
         }
       }
@@ -773,7 +762,7 @@ body {
           display: inline-block;
           border: 1px solid #e5e5e5;
           border-radius: 5px;
-          padding:0px 20px;
+          padding:0 20px;
           line-height: 68px;
           margin-right: 20px;
         }
