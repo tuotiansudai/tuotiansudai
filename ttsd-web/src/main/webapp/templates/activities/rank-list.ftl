@@ -99,8 +99,8 @@
                         <script type="text/html" id="rankListTpl">
                         {{each rank}}
                             <span class="order-num"><i class="font-icon">{{$index+1}}</i></span>
-                            <span class="bean-num">{{$value.loginName}}</span>
-                            <span class="bean-user">{{$value.score}}</span>
+                            <span class="bean-num">{{$value.score}}</span>
+                            <span class="bean-user">{{$value.loginName}}</span>
                         {{/each}}
                         </script>
                         </dd>
@@ -507,8 +507,8 @@
             <script type="text/html" id="rankListPhoneTpl">
                 {{each rank}}
                 <span>{{$index+1}}</span>
-                <span>{{$value.loginName}}</span>
                 <span>{{$value.score}}</span>
+                <span>{{$value.loginName}}</span>
                 {{/each}}
             </script>
             </dd>
@@ -636,15 +636,17 @@
         <span class="fl" style="padding:0 30px;"><img src="${staticServer}/images/sign/actor/ranklist/share-button.png" width="100%" class="fl share-btn"></span>
         <img src="${staticServer}/images/sign/actor/ranklist/share-intro-phone.png" width="100%">
     </div>
-    <#if !isAppSource>
+
     <div class="share-list">
+    <#if !isAppSource>
         <p class="bdsharebuttonbox">
             <span class="share-text">分享至：</span>
             <a href="#" class="share-icon icon-weibo" data-cmd="tsina"></a>
             <a href="#" class="share-icon icon-zone" data-cmd="qzone"></a>
         </p>
-    </div>
     </#if>
+    </div>
+
     <div class="bean-rank-list">
         <h3><i class="left-circle"></i><span>奖池直播</span><i class="right-circle"></i></h3>
         <div class="money-online">
