@@ -261,7 +261,6 @@
                     <li><a href="javascript:void(0)" class="china"></a></li>
                     <li><a href="javascript:void(0)" class="toutiao"></a></li>
                 </ul>
-                <div class="media-logo-list fr"></div>
             </div>
         </div>
 
