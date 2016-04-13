@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.full_screen}" pageJavascript="${js.newguide}" activeNav="新手指引" activeLeftNav="" title="新手指引">
+<@global.main pageCss="${css.full_screen}" pageJavascript="${js.newguide}" activeNav="新手指引" activeLeftNav="" title="新手指引_拓天新手理财_拓天速贷" keywords="拓天速贷,新手理财,新手投资,小额理财,拓天速贷888红包" description="拓天速贷是中国P2P金融信息服务平台,为广大理财、投资、贷款的用户,提供多元化的投资选择和优质的综合理财服务,拓天速贷投资理财的用户可通过新手专区领取现金888元大奖,进行散标投资获得稳定收益.">
 <style type="text/css">
     .header-container {
         position: absolute;

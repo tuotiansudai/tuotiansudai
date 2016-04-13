@@ -139,18 +139,28 @@ public class InvestServiceImpl implements InvestService {
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
 
+        long investId = idGenerator.generate();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        InvestModel investModel = new InvestModel(loanId, amount, loginName, source, null);
-        investModel.setId(idGenerator.generate());
-        investModel.setNoPasswordInvest(true);
-        investMapper.create(investModel);
+        try {
+            InvestModel investModel = new InvestModel(loanId, amount, loginName, source, null);
+            investModel.setId(investId);
+            investModel.setNoPasswordInvest(true);
+            investMapper.create(investModel);
+            if (CollectionUtils.isNotEmpty(userCouponIds)) {
+                couponInvestService.invest(investId, userCouponIds);
+            }
+        } catch (Exception e) {
+            logger.error("create no password invest model failed", e);
+            payDataDto.setMessage(e.getLocalizedMessage());
+            return baseDto;
+        }
 
         try {
             ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newInvestNopwdRequest(
                     String.valueOf(loanId),
-                    String.valueOf(investModel.getId()),
+                    String.valueOf(investId),
                     accountModel.getPayUserId(),
-                    String.valueOf(investModel.getAmount()));
+                    String.valueOf(amount));
 
             ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(
                     ProjectTransferNopwdMapper.class,
@@ -159,15 +169,10 @@ public class InvestServiceImpl implements InvestService {
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setCode(responseModel.getRetCode());
             payDataDto.setMessage(responseModel.getRetMsg());
-
-            if (CollectionUtils.isNotEmpty(userCouponIds)) {
-                couponInvestService.invest(investModel.getId(), userCouponIds);
-            }
         } catch (PayException e) {
-            investMapper.updateStatus(investModel.getId(), InvestStatus.FAIL);
-            payDataDto.setStatus(false);
-            payDataDto.setMessage(e.getLocalizedMessage());
             logger.error(e.getLocalizedMessage(), e);
+            investMapper.updateStatus(investId, InvestStatus.FAIL);
+            payDataDto.setMessage(e.getLocalizedMessage());
         }
         return baseDto;
     }
@@ -188,9 +193,9 @@ public class InvestServiceImpl implements InvestService {
                 InvestNotifyRequestMapper.class,
                 InvestNotifyRequestModel.class);
 
-        redisWrapperClient.incr(JOB_TRIGGER_KEY);
-
-        if (callbackRequest == null) {
+        if (callbackRequest != null) {
+            redisWrapperClient.incr(JOB_TRIGGER_KEY);
+        } else {
             return null;
         }
         return callbackRequest.getResponseData();
@@ -284,7 +289,6 @@ public class InvestServiceImpl implements InvestService {
      * @param loginName
      * @param loanId
      */
-    @Transactional
     private boolean overInvestPaybackProcess(long orderId, InvestModel investModel, String loginName, long loanId) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
 
@@ -336,7 +340,6 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    @Transactional
     public BaseDto<PayDataDto> noPasswordInvest(InvestDto dto) {
         return this.invokeNoPassword(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource(), dto.getUserCouponIds());
     }

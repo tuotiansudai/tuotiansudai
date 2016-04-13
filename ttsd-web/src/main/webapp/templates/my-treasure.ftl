@@ -189,12 +189,12 @@
 
                             <p>
                                 <span class="left-text">所投标的： ${record.loanName!}</span>
-                                <span class="right-text">投资金额： ${(record.investAmount/100)?string("0")}元</span>
+                                <span class="right-text">投资金额： ${(record.investAmount/100)?float}元</span>
                             </p>
 
                             <p>
                                 <span class="left-text">使用时间： ${record.usedTime?date}</span>
-                                <span class="right-text">预计收益： ${(record.expectedIncome/100)?string("0")}元</span>
+                                <span class="right-text">预计收益： ${(record.expectedIncome/100)?float}元</span>
                             </p>
                         </div>
                     </li>
