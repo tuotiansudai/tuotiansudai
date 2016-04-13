@@ -46,7 +46,6 @@ public class TransferApplyRequestDto extends BaseParamDto {
     public TransferApplicationDto convertToTransferApplicationDto() {
         TransferApplicationDto transferApplicationDto = new TransferApplicationDto();
         transferApplicationDto.setTransferInvestId(Long.parseLong(this.transferInvestId));
-        transferApplicationDto.setTransferInterest(this.transferInterest);
         transferApplicationDto.setTransferAmount(AmountConverter.convertStringToCent(this.transferAmount));
         return transferApplicationDto;
     }
