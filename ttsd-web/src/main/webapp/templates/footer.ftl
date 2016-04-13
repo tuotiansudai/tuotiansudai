@@ -27,6 +27,7 @@
             <li>地址：北京市丰台区洋桥12号天路蓝图大厦8层</li>
         </ul>
         <ul class="last">
+<<<<<<< HEAD
             <li class="tc fl">
                 <img src="${staticServer}/images/sign/weixin-img.jpg" width="100" height="100"> <br/>
                 扫我关注拓天速贷微信
@@ -34,6 +35,11 @@
             <li class="tc fl">
                 <img src="${staticServer}/images/sign/app-download.png" width="100" height="100"> <br/>
                 扫我下载APP
+=======
+            <li class="tc">
+                <i class="img-app-weixin"></i> <br/>
+                APP下载
+>>>>>>> spriter_images
             </li>
         </ul>
     </div>
@@ -60,16 +66,16 @@
     <div class="copyright page-width">
         <div class="fl">
             <a href="http://www.itrust.org.cn/yz/pjwx.asp?wm=1335512526" target="_blank">
-                <img src="${staticServer}/images/sign/advantage/itrust_logo.png" class="img-gray">
+                <div class="img-gray img-itrust_logo"></div>
             </a>
             <a href="https://search.szfw.org/cert/l/CX20150616010363010507" target="_blank">
-                <img src="${staticServer}/images/sign/advantage/chengxin_logo.png" class="img-gray">
+                <div class="img-gray img-chengxin_logo"></div>
             </a>
             <a href="https://ss.knet.cn/verifyseal.dll?sn=e15071011011759427pzmf000000&pa=500267" target="_blank">
-                <img src="${staticServer}/images/sign/advantage/knetSealLogo.png" class="img-gray">
+                <div class="img-gray img-knetSealLogo"></div>
             </a>
             <a href="https://seal.digicert.com/seals/popup/?tag=7MzpfEHK&url=tuotiansudai.com&lang=en" target="_blank">
-                <img src="${staticServer}/images/sign/advantage/digicert.png" class="img-gray">
+                <div class="img-gray img-digicert"></div>
             </a>
         </div>
         <div class="fr tr">
