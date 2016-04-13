@@ -40,7 +40,6 @@ public class RegisterUserController {
         String channel = request.getParameter("channel");
         ModelAndView modelAndView = new ModelAndView("/register-user");
         modelAndView.addObject("referrer", referrer);
-        modelAndView.addObject("channel", channel);
         modelAndView.addObject("responsive", true);
         return modelAndView;
     }
