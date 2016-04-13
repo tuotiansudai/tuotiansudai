@@ -41,7 +41,6 @@ public class MyUserDetailsService implements UserDetailsService {
     private RedisWrapperClient redisWrapperClient;
 
     @Override
-    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DisabledException {
         UserModel userModel = userMapper.findByLoginNameOrMobile(username);
         if (userModel == null) {
