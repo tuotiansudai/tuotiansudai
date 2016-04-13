@@ -24,7 +24,7 @@ require(['jquery', 'coupon-alert'], function($) {
 
 		$('#submitCode').on('click', function() {
 			var exchangeCode = $('#couponByCode').val().trim;
-			if (exchangeCode.length == 0) {
+			if (exchangeCode.length != 14) {
 				$(this).parent().append('<p class="tip-text error-color">请输入正确的兑换码</p>');
 				$('#couponByCode').val('');
 			} else {

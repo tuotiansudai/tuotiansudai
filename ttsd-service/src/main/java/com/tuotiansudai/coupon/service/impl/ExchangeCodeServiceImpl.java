@@ -160,7 +160,8 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
         return baseDataDto;
     }
 
-    private boolean checkExchangeCodeDailyCount(String loginName) {
+    @Override
+    public boolean checkExchangeCodeDailyCount(String loginName) {
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
         UnmodifiableIterator<UserCouponModel> filter = Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
             @Override
@@ -171,15 +172,18 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
         return Iterators.size(filter) >= DAILY_EXCHANGE_LIMIT;
     }
 
-    private boolean checkExchangeCodeUsed(long couponId, String exchangeCode) {
+    @Override
+    public boolean checkExchangeCodeUsed(long couponId, String exchangeCode) {
         return redisWrapperClient.hget(EXCHANGE_CODE_KEY + couponId, exchangeCode).equals("1");
     }
 
-    private boolean checkExchangeCodeExpire(CouponModel couponModel) {
+    @Override
+    public boolean checkExchangeCodeExpire(CouponModel couponModel) {
         return couponModel.getEndTime().before(new Date());
     }
 
-    private boolean checkExchangeCodeCorrect(String exchangeCode, long couponId, CouponModel couponModel) {
+    @Override
+    public boolean checkExchangeCodeCorrect(String exchangeCode, long couponId, CouponModel couponModel) {
         return  couponModel != null && exchangeCode.length() == EXCHANGE_CODE_LENGTH && redisWrapperClient.hexists(EXCHANGE_CODE_KEY + couponId, exchangeCode);
     }
 
