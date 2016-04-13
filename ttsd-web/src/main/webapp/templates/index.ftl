@@ -251,16 +251,6 @@
                         <time>2015-12-28</time>
                     </li>
                 </ul>
-                <ul class="media-logo-list fr">
-                    <li><a href="javascript:void(0)" class="qq"></a></li>
-                    <li><a href="javascript:void(0)" class="yangshi"></a></li>
-                    <li><a href="javascript:void(0)" class="msn"></a></li>
-                    <li><a href="javascript:void(0)" class="sina"></a></li>
-                    <li><a href="javascript:void(0)" class="ifeng"></a></li>
-                    <li><a href="javascript:void(0)" class="wangyi"></a></li>
-                    <li><a href="javascript:void(0)" class="china"></a></li>
-                    <li><a href="javascript:void(0)" class="toutiao"></a></li>
-                </ul>
                 <div class="media-logo-list fr"></div>
             </div>
         </div>
