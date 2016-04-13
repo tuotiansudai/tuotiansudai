@@ -111,9 +111,11 @@ public class ExchangeCodeServiceTest {
 
         long couponId = exchangeCouponDto.getId();
         String exchangeCode = exchangeCodeService.toBase31Prefix(couponId) + "sdrfujtheg";
+        redisWrapperClient.hset(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId, exchangeCode, "0", 1000000);
         BaseDataDto baseDataDto = exchangeCodeService.exchange("couponTest", exchangeCode);
         assertThat(baseDataDto.getStatus(), is(false));
         assertThat(baseDataDto.getMessage(), is("该兑换码已过期"));
+        redisWrapperClient.del(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY+couponId);
     }
 
     @Test
@@ -223,17 +225,17 @@ public class ExchangeCodeServiceTest {
     @Test
     public void shouldGetBase31LongValue() {
 
-        assert (exchangeCodeService.getValueBase31("EFE9") == 124123); // EFE9
-        assert (exchangeCodeService.getValueBase31("AAAA") == 0); // AAAA
-        assert (exchangeCodeService.getValueBase31("AABA") == 31); // AABA
-        assert (exchangeCodeService.getValueBase31("BAAA") == 29791); // BAAA
-        assert (exchangeCodeService.getValueBase31("9999") == 923520); // 9999
-        assert (exchangeCodeService.getValueBase31("DMCH") == 100013); // DMCH
-        assert (exchangeCodeService.getValueBase31("DMCJ") == 100014); // DMCJ
-        assert (exchangeCodeService.getValueBase31("DMCK") == 100015); // DMCK
-        assert (exchangeCodeService.getValueBase31("DMCL") == 100016); // DMCL
-        assert (exchangeCodeService.getValueBase31("DMCM") == 100017); // DMCM
-        assert (exchangeCodeService.getValueBase31("DMCN") == 100018); // DMCN
+        assert (exchangeCodeService.getValueBase31("EFE9rghtyuiojn") == 124123); // EFE9
+        assert (exchangeCodeService.getValueBase31("AAAArghtyuiojn") == 0); // AAAA
+        assert (exchangeCodeService.getValueBase31("AABArghtyuiojn") == 31); // AABA
+        assert (exchangeCodeService.getValueBase31("BAAArghtyuiojn") == 29791); // BAAA
+        assert (exchangeCodeService.getValueBase31("9999rghtyuiojn") == 923520); // 9999
+        assert (exchangeCodeService.getValueBase31("DMCHrghtyuiojn") == 100013); // DMCH
+        assert (exchangeCodeService.getValueBase31("DMCJrghtyuiojn") == 100014); // DMCJ
+        assert (exchangeCodeService.getValueBase31("DMCKrghtyuiojn") == 100015); // DMCK
+        assert (exchangeCodeService.getValueBase31("DMCLrghtyuiojn") == 100016); // DMCL
+        assert (exchangeCodeService.getValueBase31("DMCMrghtyuiojn") == 100017); // DMCM
+        assert (exchangeCodeService.getValueBase31("DMCNrghtyuiojn") == 100018); // DMCN
 
         assert (exchangeCodeService.getValueBase31("") == 0); // ""
         assert (exchangeCodeService.getValueBase31(null) == 0); // null

@@ -1,19 +1,27 @@
 package com.tuotiansudai.coupon.service.impl;
 
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.google.common.collect.UnmodifiableIterator;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.ExchangeCodeService;
 import com.tuotiansudai.dto.BaseDataDto;
 import org.apache.log4j.Logger;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ExchangeCodeServiceImpl implements ExchangeCodeService {
@@ -27,6 +35,9 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
     private CouponMapper couponMapper;
 
     @Autowired
+    private UserCouponMapper userCouponMapper;
+
+    @Autowired
     private CouponActivationService couponActivationService;
 
     public final static String EXCHANGE_CODE_KEY = "console:exchangeCode:";
@@ -34,6 +45,10 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
     private final static int ONE_MONTH_SECOND = 60 * 60 * 24 * 30;
 
     private final static int RANDOM_SIZE = 10;
+
+    private final static int EXCHANGE_CODE_LENGTH = 14;
+
+    private final static int DAILY_EXCHANGE_LIMIT = 2;
 
     // exclude I,O,R,0,2  26+10-5=31 31^10= 819,6282,8698,0801 819万亿
     private final static char[] chars = {
@@ -116,46 +131,68 @@ public class ExchangeCodeServiceImpl implements ExchangeCodeService {
     @Override
     public BaseDataDto exchange(String loginName, String exchangeCode) {
         BaseDataDto baseDataDto = new BaseDataDto();
-        long couponId = 0;
-        try {
-            couponId = getValueBase31(exchangeCode.substring(0, 4));
-        } catch (Exception e) {
+        long couponId = getValueBase31(exchangeCode);
+        CouponModel couponModel = couponMapper.findById(couponId);
+        if (!checkExchangeCodeCorrect(exchangeCode, couponId, couponModel)) {
             baseDataDto.setStatus(false);
             baseDataDto.setMessage("请输入正确的兑换码");
             return baseDataDto;
         }
-        CouponModel couponModel = couponMapper.findById(couponId);
-        if (couponModel != null && couponModel.getEndTime().before(new Date())) {
+        if (checkExchangeCodeExpire(couponModel)) {
             baseDataDto.setStatus(false);
             baseDataDto.setMessage("该兑换码已过期");
             return baseDataDto;
         }
-        if (couponModel == null || exchangeCode.length() != 14 || !redisWrapperClient.hexists(EXCHANGE_CODE_KEY + couponId, exchangeCode)) {
-            baseDataDto.setStatus(false);
-            baseDataDto.setMessage("请输入正确的兑换码");
-            return baseDataDto;
-        }
-        if (redisWrapperClient.hget(EXCHANGE_CODE_KEY + couponId, exchangeCode).equals("1")) {
+        if (checkExchangeCodeUsed(couponId, exchangeCode)) {
             baseDataDto.setStatus(false);
             baseDataDto.setMessage("该兑换码已被使用");
             return baseDataDto;
-        } else {
-            couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.EXCHANGER_CODE), couponId, exchangeCode);
-            redisWrapperClient.hset(EXCHANGE_CODE_KEY + couponId, exchangeCode, "1");
-            baseDataDto.setStatus(true);
-            baseDataDto.setMessage("恭喜您兑换成功");
+        }
+        if (checkExchangeCodeDailyCount(loginName)) {
+            baseDataDto.setStatus(false);
+            baseDataDto.setMessage("当天兑换次数达到上限");
             return baseDataDto;
         }
+        couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.EXCHANGER_CODE), couponId, exchangeCode);
+        redisWrapperClient.hset(EXCHANGE_CODE_KEY + couponId, exchangeCode, "1");
+        baseDataDto.setStatus(true);
+        baseDataDto.setMessage("恭喜您兑换成功");
+        return baseDataDto;
     }
+
+    private boolean checkExchangeCodeDailyCount(String loginName) {
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
+        UnmodifiableIterator<UserCouponModel> filter = Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
+            @Override
+            public boolean apply(UserCouponModel input) {
+                return input.getExchangeCode() != null && Days.daysBetween(new LocalDate(input.getCreatedTime()), new LocalDate()).getDays() < 1;
+            }
+        });
+        return Iterators.size(filter) >= DAILY_EXCHANGE_LIMIT;
+    }
+
+    private boolean checkExchangeCodeUsed(long couponId, String exchangeCode) {
+        return redisWrapperClient.hget(EXCHANGE_CODE_KEY + couponId, exchangeCode).equals("1");
+    }
+
+    private boolean checkExchangeCodeExpire(CouponModel couponModel) {
+        return couponModel.getEndTime().before(new Date());
+    }
+
+    private boolean checkExchangeCodeCorrect(String exchangeCode, long couponId, CouponModel couponModel) {
+        return  couponModel != null && exchangeCode.length() == EXCHANGE_CODE_LENGTH && redisWrapperClient.hexists(EXCHANGE_CODE_KEY + couponId, exchangeCode);
+    }
+
     /**
      * return the int value of a base 31 input string (especially for exchange code prefix)
      *
-     * @param prefix
+     * @param exchangeCode
      * @return
      */
-    public long getValueBase31(String prefix) {
-        if (prefix == null || prefix.length() == 0) return 0;
+    public long getValueBase31(String exchangeCode) {
 
+        if (exchangeCode == null || exchangeCode.length() != 14) return 0;
+        String prefix = exchangeCode.substring(0, 4);
         int value = 0;
         try {
             for (int i = 0; i < prefix.length(); i++) {
