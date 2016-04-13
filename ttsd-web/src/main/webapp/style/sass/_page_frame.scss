@@ -73,9 +73,9 @@
     height: 210px;
     margin: 0 auto;
     ul {
-      float: left;
-      min-width: 140px;
-      text-align: left;
+      float:left;
+      min-width: 120px;
+      text-align:left;
       li {
         height: 14px;
         margin-top: 14px;
@@ -95,6 +95,9 @@
       &.last {
         margin-top: 40px;
         float:right;
+        li{
+          margin-left:20px;
+        }
       }
     }
   }
