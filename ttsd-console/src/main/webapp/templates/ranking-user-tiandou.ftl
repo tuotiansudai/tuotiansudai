@@ -48,8 +48,8 @@
                     <td>${record.amount/100?float}</td>
                     <td>${record.score!}</td>
                     <td>
-                        <#if record.type=="抽奖">${record.prize.name!}</#if>
-                        <#if record.type=="投资">${record.desc!}</#if>
+                        <#if record.type=="抽奖">${(record.prize.desc)!}</#if>
+                        <#if record.type=="投资">${(record.desc)!}</#if>
                     </td>
                 </tr>
                 </#list>
