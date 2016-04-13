@@ -1,10 +1,10 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.full_screen}" pageJavascript="${js.index}" activeNav="首页" activeLeftNav="">
+<@global.main pageCss="${css.full_screen}" pageJavascript="${js.index}" activeNav="首页" activeLeftNav="" title="拓天速贷-互联网金融信息服务平台" keywords="拓天速贷,互联网金融平台,P2P理财,拓天借贷,网络理财" description="拓天速贷是基于互联网的金融信息服务平台,由拓天伟业(北京)资产管理有限公司旗下的拓天伟业(北京)金融信息服务有限公司运营.">
 <div class="home-page-container">
     <div class="banner-box">
         <div class="banner-img-list">
-            <a href="/announce/188" target="_blank">
-                <img src="${staticServer}/images/sign/actor/top/banner-top.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="pc-img">
+            <a href="/activity/rank-list" target="_blank">
+                <img src="${staticServer}/images/sign/actor/ranklist/rank-list.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="pc-img">
                 <img src="${staticServer}/images/app-banner/app-banner-top.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="iphone-img">
             </a>
             <a href="/activity/birth-month" target="_blank">

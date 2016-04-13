@@ -72,7 +72,7 @@ public class WithdrawServiceImpl implements WithdrawService {
                                       Date startTime,
                                       Date endTime) {
 
-        return withdrawMapper.findSumWithdrawAmount(withdrawId, loginName, status, source, startTime, endTime);
+        return withdrawMapper.findSumWithdrawAmount(withdrawId, loginName, status, source, null, startTime, endTime);
     }
 
     @Override

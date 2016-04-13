@@ -144,6 +144,9 @@ public interface InvestMapper {
                          @Param(value = "investStatus") InvestStatus investStatus,
                          @Param(value = "loanStatus") LoanStatus loanStatus);
 
+    long sumInvestAmountRanking(@Param(value = "startTime") Date startTime,
+                                @Param(value = "endTime") Date endTime);
+
 
     long sumSuccessInvestAmountByLoginName(@Param(value = "loanId") Long loanId, @Param(value = "loginName") String loginName);
 
@@ -164,4 +167,6 @@ public interface InvestMapper {
     long findRegisteredNotInvestCount();
 
     Set<String> findNoInvestInThirtyDay();
+
+    InvestModel findLatestSuccessInvest(@Param(value = "loginName") String loginName);
 }

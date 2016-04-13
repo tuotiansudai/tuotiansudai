@@ -2,6 +2,7 @@ package com.tuotiansudai.client;
 
 import com.sun.mail.smtp.SMTPTransport;
 import com.tuotiansudai.dto.SendCloudType;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.Properties;
 
 @Service
 public class SendCloudClient {
+    static Logger logger = Logger.getLogger(SendCloudClient.class);
 
     @Value("${common.sendcloud.host}")
     private String sendCloudSmtpHost;
@@ -54,33 +56,42 @@ public class SendCloudClient {
         return props;
     }
 
-    public void sendMailBySendCloud(String toAddress, String title, String content, SendCloudType type) throws MessagingException, UnsupportedEncodingException {
-        Session mailSession = getMailSession();
-        SMTPTransport transport = null;
+    public void sendMailBySendCloud(String toAddress, String title, String content, SendCloudType type) throws UnsupportedEncodingException {
+        for (int i = 0; i < 3; i++) {
+            try {
 
-        transport = (SMTPTransport) mailSession.getTransport("smtp");
-        MimeMessage message = new MimeMessage(mailSession);
-        // 发信人
-        message.setFrom(new InternetAddress(sendCloudFrom, "拓天速贷", "UTF-8"));
-        // 收件人地址
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress(toAddress));
-        // 邮件主题
-        message.setSubject(title, "UTF-8");
-        Multipart multipart = new MimeMultipart("alternative");
-        BodyPart contentPart = new MimeBodyPart();
-        contentPart.setHeader("Content-Type", "text/html;charset=UTF-8");
-        contentPart.setHeader("Content-Transfer-Encoding", "base64");
-        if (SendCloudType.TEXT.equals(type)) {
-            contentPart.setText(content);
-        } else {
-            contentPart.setContent(content, "text/html;charset=UTF-8");
+                Session mailSession = getMailSession();
+                SMTPTransport transport = null;
+
+                transport = (SMTPTransport) mailSession.getTransport("smtp");
+                MimeMessage message = new MimeMessage(mailSession);
+                // 发信人
+                message.setFrom(new InternetAddress(sendCloudFrom, "拓天速贷", "UTF-8"));
+                // 收件人地址
+                message.addRecipient(Message.RecipientType.TO, new InternetAddress(toAddress));
+                // 邮件主题
+                message.setSubject(title, "UTF-8");
+                Multipart multipart = new MimeMultipart("alternative");
+                BodyPart contentPart = new MimeBodyPart();
+                contentPart.setHeader("Content-Type", "text/html;charset=UTF-8");
+                contentPart.setHeader("Content-Transfer-Encoding", "base64");
+                if (SendCloudType.TEXT.equals(type)) {
+                    contentPart.setText(content);
+                } else {
+                    contentPart.setContent(content, "text/html;charset=UTF-8");
+                }
+                multipart.addBodyPart(contentPart);
+                message.setContent(multipart);
+                // 连接sendcloud服务器，发送邮件
+                transport.connect();
+                transport.sendMessage(message, message.getRecipients(Message.RecipientType.TO));
+                transport.close();
+                break;
+            } catch (MessagingException e) {
+                logger.debug("send cloud is fail by" + e.getMessage());
+            }
         }
-        multipart.addBodyPart(contentPart);
-        message.setContent(multipart);
-        // 连接sendcloud服务器，发送邮件
-        transport.connect();
-        transport.sendMessage(message, message.getRecipients(Message.RecipientType.TO));
-        transport.close();
+
     }
 
     public void setSendCloudSmtpHost(String sendCloudSmtpHost) {

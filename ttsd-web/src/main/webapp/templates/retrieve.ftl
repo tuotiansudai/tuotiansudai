@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.register}" pageJavascript="${js.forget_password}" activeNav="" activeLeftNav="" title="忘记密码">
+<@global.main pageCss="${css.register}" pageJavascript="${js.forget_password}" activeNav="" activeLeftNav="" title="找回密码_拓天会员_拓天速贷" keywords="拓天速贷,拓天会员,新手理财,拓天速贷用户" description="拓天速贷会员密码找回提供安全、便捷有保障的全球资产配置服务.">
 
     <div class="forget-phone-box tc" id="retrievePasswordBox">
         <form class="retrieve-form" action="">

@@ -1,7 +1,9 @@
 var require = {
+    'baseUrl': staticServer,
     'paths': {
         'text': staticServer + '/js/libs/text-2.0.14',
         'jquery': staticServer + '/js/libs/jquery-1.11.3.min',
+        'csrf': staticServer + '/js/libs/csrf',
         'jqueryPage': staticServer + '/js/libs/jquery.page',
         'jquery.validate': staticServer + '/js/libs/jquery.validate-1.14.0.min',
         'jquery.form': staticServer + '/js/libs/jquery.form-3.51.0.min',
@@ -23,8 +25,11 @@ var require = {
         'swiper':staticServer+'/js/libs/swiper-3.2.7.jquery.min',
         'load-swiper':staticServer+'/js/dest/load_swiper.min',
         'coupon-alert': staticServer+'/js/dest/coupon_alert.min',
+        'cnzz-statistics': staticServer+'/js/dest/cnzz_statistics.min',
         'red-envelope-float': staticServer+'/js/dest/red-envelope-float.min',
-        'drag': staticServer+'/js/libs/drag'
+        'drag': staticServer+'/js/libs/drag',
+        'rotate': staticServer+'/js/libs/jqueryrotate.min',
+        'template':staticServer+'/js/libs/template.min'
     },
     'waitSeconds':0,
     'shim': {
@@ -41,7 +46,16 @@ var require = {
         'fullPage': ['jquery'],
         'swiper':['jquery'],
         'load-swiper':['swiper'],
-        'drag':['jquery']
+        'drag':['jquery'],
+        'rotate':['jquery']
+    },
+
+    config: {
+        text: {
+            useXhr: function (url, protocol, hostname, port) {
+                return true;
+            }
+        }
     }
 };
 

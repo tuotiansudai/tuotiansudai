@@ -4,6 +4,8 @@ import java.util.Map;
 
 public class MerRegisterPersonRequestModel extends BaseSyncRequestModel {
 
+    private String orderId;
+
     private String loginName;
 
     private String userName;
@@ -17,9 +19,10 @@ public class MerRegisterPersonRequestModel extends BaseSyncRequestModel {
     public MerRegisterPersonRequestModel() {
     }
 
-    public MerRegisterPersonRequestModel(String loginName, String userName, String identityNumber, String mobile) {
+    public MerRegisterPersonRequestModel(String orderId, String loginName, String userName, String identityNumber, String mobile) {
         super();
         this.service = "mer_register_person";
+        this.orderId = orderId;
         this.loginName = loginName;
         this.userName = userName;
         this.identityNumber = identityNumber;
@@ -29,6 +32,7 @@ public class MerRegisterPersonRequestModel extends BaseSyncRequestModel {
     @Override
     public Map<String, String> generatePayRequestData() {
         Map<String, String> payRequestData = super.generatePayRequestData();
+        payRequestData.put("order_id", this.orderId);
         payRequestData.put("mer_cust_id", this.loginName);
         payRequestData.put("mer_cust_name", this.userName);
         payRequestData.put("identity_type", this.identityType);

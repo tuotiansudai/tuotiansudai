@@ -49,6 +49,8 @@ public class PayWrapperClient extends BaseClient {
 
     private String autoInvestPath = "/auto-invest";
 
+    private String autoRepayPath = "/auto-repay";
+
     private String agreementPath = "/agreement";
 
     private String repayPath = "/repay";
@@ -56,6 +58,14 @@ public class PayWrapperClient extends BaseClient {
     private String cancelLoanPath = "/loan/{0}/cancel";
 
     private String resetUmpayPassword = "/reset-umpay-password";
+
+    private String noPasswordInvestPath = "/no-password-invest";
+
+    private String transferCashPath = "/transfer-cash";
+
+    public BaseDto<PayDataDto> transferCash(TransferCashDto transferCashDto) {
+        return syncExecute(transferCashDto, transferCashPath, "POST");
+    }
 
     public boolean resetUmpayPassword(ResetUmpayPasswordDto resetUmpayPasswordDto) {
         BaseDto<PayDataDto> baseDto = syncExecute(resetUmpayPasswordDto, resetUmpayPassword, "POST");
@@ -106,6 +116,10 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(String.valueOf(loanId), autoInvestPath, "POST");
     }
 
+    public BaseDto<PayDataDto> autoRepay(long loanRepayId) {
+        return syncExecute(String.valueOf(loanRepayId), autoRepayPath, "POST");
+    }
+
     public BaseDto<PayDataDto> createLoan(LoanDto dto) {
         return syncExecute(dto, loanPath, "POST");
     }
@@ -120,6 +134,10 @@ public class PayWrapperClient extends BaseClient {
 
     public BaseDto<PayDataDto> loanOut(LoanOutDto dto) {
         return syncExecute(dto, loanOutPath, "POST");
+    }
+
+    public BaseDto<PayDataDto> noPasswordInvest(InvestDto dto) {
+        return syncExecute(dto, noPasswordInvestPath, "POST");
     }
 
     public BaseDto<PayDataDto> checkLoanAmount(long loanId) {
@@ -275,6 +293,7 @@ public class PayWrapperClient extends BaseClient {
     }
 
     public BaseDto<PayDataDto> sendRedEnvelopeAfterLoanOut(long loanId){
-        return syncExecute(String.valueOf(loanId), "/job/sed-red-envelope-after-loan-out", "POST");
+        return syncExecute(String.valueOf(loanId), "/job/send-red-envelope-after-loan-out", "POST");
     }
+
 }

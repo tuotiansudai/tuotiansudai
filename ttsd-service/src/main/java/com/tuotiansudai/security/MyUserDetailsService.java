@@ -42,7 +42,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException,DisabledException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DisabledException {
         UserModel userModel = userMapper.findByLoginNameOrMobile(username);
         if (userModel == null) {
             String errorMessage = MessageFormat.format("Login Error: {0} not found!", username);
@@ -71,7 +71,7 @@ public class MyUserDetailsService implements UserDetailsService {
         return new MyUser(loginName, password, enabled, true, true, true, grantedAuthorities, mobile, salt);
     }
 
-    private boolean verifyLoginFailedMaxTimes(String loginName){
+    private boolean verifyLoginFailedMaxTimes(String loginName) {
         String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", loginName);
         return !(redisWrapperClient.exists(redisKey) && Integer.parseInt(redisWrapperClient.get(redisKey)) == times);
     }

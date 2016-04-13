@@ -185,6 +185,39 @@ def versioning_min_files(path):
     log_file.close()
 
 
+def build_versioning_file_mapping(path):
+    import glob
+
+    full_path_files = glob.glob(path + '*.min.js')
+    name2path = {}
+    for full_path_file in full_path_files:
+        file_name = full_path_file.split('/')[-1]
+        name_parts = file_name.split('.')
+        if len(name_parts) == 4:  # config.77248946.min.js
+            key, value = "{}.min".format(name_parts[0]), '.'.join(name_parts[:-1])
+            name2path[key] = value
+    return name2path
+
+
+def replace_versioned_config_file(name2path, path):
+    import re
+
+    try:
+        with open('{}{}.js'.format(path, name2path.get('config.min')), 'r+') as config_file:
+            content = config_file.read()
+            for key, value in name2path.items():
+                content = re.sub(key, value, content)
+            config_file.seek(0)
+            config_file.write(content)
+    except IOError as e:
+        print e
+
+
+def replace_min_files_in_config_js_file(path):
+    name2path = build_versioning_file_mapping(path)
+    replace_versioned_config_file(name2path, path)
+
+
 @task
 def jcversion():
     """
@@ -193,6 +226,7 @@ def jcversion():
     generate_git_log_file()
     versioning_min_files('ttsd-web/src/main/webapp/js/dest/*.min.js')
     versioning_min_files('ttsd-web/src/main/webapp/style/dest/*.min.css')
+    replace_min_files_in_config_js_file('ttsd-web/src/main/webapp/js/dest/')
 
 
 def get_current_dir():
