@@ -136,66 +136,30 @@
         order by period asc
     </select>
 
-    <select id="findEnabledLoanRepayByLoanId" parameterType="long" resultMap="loanRepayResultMap">
-        <![CDATA[
+    <select id="findEnabledLoanRepayByLoanId" parameterType="long" resultMap="loanRepayResultMap" useCache="false">
         select *
         from
             loan_repay enabled_repay
         where
             enabled_repay.loan_id = #{loanId}
-            and (
-                (exists(select 1
-                        from loan
-                        where loan.id = #{loanId} and status = 'REPAYING')
-                 and enabled_repay.status = 'REPAYING'
-                 and enabled_repay.period = (select min(period)
-                                             from loan_repay future_repay
-                                             where future_repay.loan_id = #{loanId} and
-                                                   date(future_repay.repay_date) >= date(now())))
+            and ((exists(select 1 from loan where loan.id = #{loanId} and status = 'REPAYING')
+                 and enabled_repay.status in ('REPAYING', 'WAIT_PAY')
+                 and date(enabled_repay.repay_date) = date(now()))
                 or
-                (exists(select 1
-                        from loan
-                        where loan.id = #{loanId} and status = 'OVERDUE')
-                 and enabled_repay.status <> 'WAIT_PAY'
-                 and enabled_repay.period = (select min(period)
-                                             from loan_repay future_repay
-                                             where future_repay.loan_id = #{loanId} and
-                                                   date(future_repay.repay_date) >= date(now()))
-                 and exists(select 1
-                            from loan_repay future_repay
-                            where future_repay.loan_id = #{loanId}
-                                  and date(future_repay.repay_date) >= date(now())))
-                or
-                (exists(select 1
-                        from loan
-                        where loan.id = #{loanId} and status = 'OVERDUE')
-                 and enabled_repay.status = 'OVERDUE'
-                 and enabled_repay.period = (select count(1) from loan_repay where loan_repay.loan_id = #{loanId})
-                 and not exists(select 1
-                                from loan_repay future_repay
-                                where future_repay.loan_id = #{loanId}
-                                      and date(future_repay.repay_date) >= date(now())))
-            )
-        ]]>
+                 (exists(select 1 from loan where loan.id = #{loanId} and status = 'OVERDUE')
+                 and enabled_repay.status in ('OVERDUE', 'WAIT_PAY')
+                 and enabled_repay.period = (select max(period)
+                                             from loan_repay overdue_repay
+                                             where overdue_repay.loan_id = #{loanId} and
+                                                   overdue_repay.status in ('OVERDUE', 'WAIT_PAY'))))
     </select>
 
     <select id="findByLoanIdAndPeriod" parameterType="map" resultMap="loanRepayResultMap">
         select * from loan_repay where loan_id = #{loanId} and period = #{period}
     </select>
 
-    <select id="findWaitPayLoanRepayByLoanId" parameterType="long" resultMap="loanRepayResultMap">
-        select * from loan_repay where loan_id = #{loanId} and status = 'WAIT_PAY'
-    </select>
-
-    <select id="findCurrentLoanRepayByLoanId" parameterType="long" resultMap="loanRepayResultMap">
-        select *
-        from loan_repay
-        where loan_id = #{loanId}
-              and loan_repay.period = (select min(period)
-                                       from loan_repay future_repay join loan on future_repay.loan_id = loan.id
-                                       where future_repay.loan_id = #{loanId}
-                                             and date(now()) >= date(loan.recheck_time)
-                                             and date(future_repay.repay_date) >= date(now()))
+    <select id="findLastLoanRepay" parameterType="long" resultMap="loanRepayResultMap">
+        select * from loan_repay where loan_id = #{loanId} and period = (select periods from loan where id = #{loanId})
     </select>
 
     <update id="update" parameterType="LoanRepayModel">
@@ -228,7 +192,7 @@
             AND t.`repay_date` BETWEEN #{startTime}
             AND #{endTime}
     </select>
-    
+
     <select id="findByLoginNameAndTimeRepayList" parameterType="map" resultMap="loanRepayResultMapWithLoanResultMap">
         SELECT
           m.`id` as`loan_id`,

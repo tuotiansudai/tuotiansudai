@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.google.common.collect.Maps;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.AgreementBusinessType;
 import com.tuotiansudai.paywrapper.repository.model.UmPayService;
 import com.tuotiansudai.paywrapper.service.*;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
 import java.util.Enumeration;
 import java.util.Map;
 
@@ -35,11 +37,11 @@ public class PayCallbackController {
     @Autowired
     private InvestService investService;
 
-    @Resource(name = "normalRepayServiceImpl")
-    private RepayService normalRepayService;
+    @Autowired
+    private NormalRepayService normalRepayService;
 
-    @Resource(name = "advanceRepayServiceImpl")
-    private RepayService advanceRepayService;
+    @Autowired
+    private AdvanceRepayService advanceRepayService;
 
     @Autowired
     private AgreementService agreementService;
@@ -49,6 +51,9 @@ public class PayCallbackController {
 
     @Autowired
     private SystemRechargeService systemRechargeService;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
@@ -124,18 +129,28 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
-    @RequestMapping(value = "/repay_notify", method = RequestMethod.GET)
+    @RequestMapping(value = "/normal_repay_notify", method = RequestMethod.GET)
     public ModelAndView repayNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = this.normalRepayService.repayCallback(paramsMap, request.getQueryString());
-        return new ModelAndView("/callback_response", "content", responseData);
+        try {
+            String responseData = this.normalRepayService.repayCallback(paramsMap, request.getQueryString());
+            return new ModelAndView("/callback_response", "content", responseData);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[Normal Repay] repay callback is failed (queryString = {0})", request.getQueryString()), e);
+        }
+        return new ModelAndView("/callback_response", "content", "");
     }
 
     @RequestMapping(value = "/repay_payback_notify", method = RequestMethod.GET)
     public ModelAndView repayPaybackNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = this.normalRepayService.investPaybackCallback(paramsMap, request.getQueryString());
-        return new ModelAndView("/callback_response", "content", responseData);
+        try {
+            String responseData = this.normalRepayService.investPaybackCallback(paramsMap, request.getQueryString());
+            return new ModelAndView("/callback_response", "content", responseData);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[Normal Repay] repay payback callback is failed (queryString = {0})", request.getQueryString()), e);
+        }
+        return new ModelAndView("/callback_response", "content", "");
     }
 
     @RequestMapping(value = "/repay_invest_fee_notify", method = RequestMethod.GET)
@@ -148,15 +163,25 @@ public class PayCallbackController {
     @RequestMapping(value = "/advance_repay_notify", method = RequestMethod.GET)
     public ModelAndView advanceRepayNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = this.advanceRepayService.repayCallback(paramsMap, request.getQueryString());
-        return new ModelAndView("/callback_response", "content", responseData);
+        try {
+            String responseData = this.advanceRepayService.repayCallback(paramsMap, request.getQueryString());
+            return new ModelAndView("/callback_response", "content", responseData);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[Advance Repay] repay callback is failed (queryString = {0})", request.getQueryString()), e);
+        }
+        return new ModelAndView("/callback_response", "content", "");
     }
 
     @RequestMapping(value = "/advance_repay_payback_notify", method = RequestMethod.GET)
     public ModelAndView advanceRepayPaybackNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = this.advanceRepayService.investPaybackCallback(paramsMap, request.getQueryString());
-        return new ModelAndView("/callback_response", "content", responseData);
+        try {
+            String responseData = this.advanceRepayService.investPaybackCallback(paramsMap, request.getQueryString());
+            return new ModelAndView("/callback_response", "content", responseData);
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("[Advance Repay] repay payback callback is failed (queryString = {0})", request.getQueryString()), e);
+        }
+        return new ModelAndView("/callback_response", "content", "");
     }
 
     @RequestMapping(value = "/advance_repay_invest_fee_notify", method = RequestMethod.GET)

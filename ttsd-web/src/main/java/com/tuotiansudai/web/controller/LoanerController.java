@@ -3,7 +3,7 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.LoanRepayDataDto;
+import com.tuotiansudai.dto.LoanerLoanRepayDataDto;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.AccountService;
@@ -53,7 +53,8 @@ public class LoanerController {
 
     @RequestMapping(path = "/loan/{loanId:^\\d+$}/repay-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public BaseDto<LoanRepayDataDto> loanRepayData(@PathVariable long loanId) {
+    public BaseDto<LoanerLoanRepayDataDto> loanRepayData(@PathVariable long loanId) {
+        repayService.resetPayExpiredLoanRepay(loanId);
         return repayService.getLoanRepay(LoginUserInfo.getLoginName(), loanId);
     }
 }

@@ -44,9 +44,7 @@ public interface LoanRepayMapper {
 
     long sumSuccessLoanRepayMaxPeriod(@Param(value = "loanId") long loanId);
 
-    LoanRepayModel findWaitPayLoanRepayByLoanId(long loanId);
-
-    LoanRepayModel findCurrentLoanRepayByLoanId(long loanId);
+    LoanRepayModel findLastLoanRepay(long loanId);
 
     long findByLoginNameAndTimeSuccessRepay(@Param(value = "loginName") String loginName,@Param(value = "startTime") Date startTime,@Param(value = "endTime") Date endTime);
 
