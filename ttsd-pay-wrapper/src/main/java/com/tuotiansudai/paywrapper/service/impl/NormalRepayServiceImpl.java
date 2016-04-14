@@ -221,7 +221,6 @@ public class NormalRepayServiceImpl implements RepayService {
     }
 
     @Override
-    @Transactional
     public boolean postRepayCallback(long loanRepayId) {
         LoanRepayJobResultDto jobData;
         try {
