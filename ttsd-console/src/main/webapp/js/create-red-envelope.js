@@ -45,7 +45,7 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
         var rep = /^\d+$/;
         var rep_point2 = /^[0-9]+\.[0-9]*$/;
 
-        $('.coupon-number').blur(function () {
+        $('.coupon-number, .give-number').blur(function () {
             var _this = $(this),
                 text = _this.val(),
                 num = text.replace(rep, "$1");
@@ -74,6 +74,11 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
                 $errorDom.html('');
                 if (periods <= 0) {
                     showErrorMessage('红包金额最小为1', $('.coupon-number', curform));
+                    return false;
+                }
+                var fivenumber = parseInt($('.give-number', curform).val());
+                if (fivenumber <= 0) {
+                    showErrorMessage('发放数量最小为1', $('.give-number', curform));
                     return false;
                 }
                 var len= $('input[name="productTypes"]').filter(function(key,option) {
@@ -115,8 +120,19 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
             $('.coupon-start').val('');
             $('.coupon-end').val('');
             $('.invest-quota').val('');
+            $('.give-number').val('');
             $('.productType').prop('checked',false).eq(0).prop('checked',true);
         }
+
+        $('.userGroup').change(function(){
+            var userGroup = this.value;
+            if (userGroup == "ALL_USER") {
+                $('.coupon-hide').hide();
+            } else {
+                $('.give-number').val('');
+                $('.coupon-hide').show();
+            }
+        });
 
     });
 });

@@ -130,7 +130,6 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
                 $('.userGroup').selectpicker('refresh');
                 $('.user-group-hid').removeAttr("disabled");
             }else{
-                $('.give-number').addClass("invest-coupon-total_count");
                 $('.give-number').attr("readonly",true);
                 $('.user-group-hid').attr('disabled','disabled');
                 $('.userGroup').removeAttr("disabled");
@@ -165,9 +164,13 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
             var userGroup = this.value;
             var couponType = $('.couponType').val();
             if(couponType == "INVEST_COUPON"){
-                $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
-                    $('.give-number').val(data);
-                })
+                if (userGroup != 'EXCHANGER_CODE') {
+                    $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
+                        $('.give-number').val(data).prop('readonly', true);
+                    })
+                } else {
+                    $('.give-number').val('').prop('readonly', false);
+                }
             }
 
         });

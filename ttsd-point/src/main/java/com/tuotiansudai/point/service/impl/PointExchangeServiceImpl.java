@@ -9,7 +9,6 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
-import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 import com.tuotiansudai.point.service.PointBillService;
 import com.tuotiansudai.point.service.PointExchangeService;
@@ -65,7 +64,7 @@ public class PointExchangeServiceImpl implements PointExchangeService {
     @Transactional
     public boolean exchangeCoupon(long couponId, String loginName, long exchangePoint){
         try {
-            couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.EXCHANGER), couponId);
+            couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.EXCHANGER), couponId, null);
             pointBillService.createPointBill(loginName,couponId,PointBusinessType.EXCHANGE,(-exchangePoint));
             return true;
         } catch (Exception e) {

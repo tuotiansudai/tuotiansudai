@@ -121,9 +121,13 @@ require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'j
             var userGroup = this.value;
             var couponType = $('.coupon-type-hid').val();
             if(couponType == "INVEST_COUPON"){
-                $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
-                    $('.give-number').val(data);
-                })
+                if (userGroup != 'EXCHANGER_CODE') {
+                    $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
+                        $('.give-number').val(data).prop('readonly', true);
+                    })
+                } else {
+                    $('.give-number').val('').prop('readonly', false);
+                }
             }
 
         });

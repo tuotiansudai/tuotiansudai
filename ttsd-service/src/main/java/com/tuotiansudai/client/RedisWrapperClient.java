@@ -432,6 +432,15 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         });
     }
 
+    public Map<String, String> hgetAll(final String key) {
+        return execute(new JedisAction<Map<String, String>>() {
+            @Override
+            public Map<String, String> action(Jedis jedis) {
+                return jedis.hgetAll(key);
+            }
+        });
+    }
+
     public List<byte[]> hgetValuesSeri(final String key) {
         return execute(new JedisAction<List<byte[]>>() {
             @Override
