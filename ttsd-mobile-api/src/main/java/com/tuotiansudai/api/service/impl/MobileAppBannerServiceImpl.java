@@ -23,7 +23,7 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
 
     static Logger logger = Logger.getLogger(MobileAppBannerServiceImpl.class);
 
-    private static final String BANNER_CONFIG_FILE = "banner.json";
+    private String BANNER_CONFIG_FILE = "banner.json";
 
     private List<BannerPictureResponseDataDto> banners = null;
 
@@ -44,6 +44,12 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
         baseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         return baseDto;
     }
+
+    @Override
+    public void setBannerConfigFile(String bannerConfigFile) {
+        this.BANNER_CONFIG_FILE = bannerConfigFile;
+    }
+
 
     private BannerResponseDataDto getLatestBannerInfo() {
         if (banners == null) {
