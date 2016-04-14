@@ -29,6 +29,7 @@
                 </property>
             </bean>
         </mvc:message-converters>
+        <mvc:path-matching registered-suffixes-only="true"/>
     </mvc:annotation-driven>
 
     <mvc:interceptors>
