@@ -172,7 +172,7 @@ public class InvestTransferPurchaseServiceTest {
     }
 
     @Test
-    public void shouldSuccessWhenTransferInterestOnFirstPeriodAndLoanIsOnInterestStartLoanOut() throws Exception {
+    public void shouldSuccessOnFirstPeriodAndLoanIsOnInterestStartLoanOut() throws Exception {
         DateTime recheckTime = new DateTime().withDate(2016, 3, 1);
         Date transferTime = new DateTime().withDate(2016, 3, 11).toDate();
         LoanModel fakeLoan = this.createFakeLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
@@ -246,7 +246,7 @@ public class InvestTransferPurchaseServiceTest {
     }
 
     @Test
-    public void shouldSuccessWhenNotTransferInterestOnFirstPeriodAndLoanIsOnInterestStartAtInvest() throws Exception {
+    public void shouldSuccessOnFirstPeriodAndLoanIsOnInterestStartAtInvest() throws Exception {
         DateTime recheckTime = new DateTime().withDate(2016, 3, 1);
         Date transferTime = new DateTime().withDate(2016, 3, 11).toDate();
         LoanModel fakeLoan = this.createFakeLoan(LoanType.INVEST_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
@@ -280,8 +280,8 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(actualTransferrerInvestRepays.size(), is(2));
         assertThat(actualTransferrerInvestRepays.get(0).getPeriod(), is(1));
         assertTrue(actualTransferrerInvestRepays.get(0).isTransferred());
-        assertThat(actualTransferrerInvestRepays.get(0).getExpectedInterest(), is(6557L));
-        assertThat(actualTransferrerInvestRepays.get(0).getExpectedFee(), is(655L));
+        assertThat(actualTransferrerInvestRepays.get(0).getExpectedInterest(), is(0L));
+        assertThat(actualTransferrerInvestRepays.get(0).getExpectedFee(), is(0L));
         assertThat(actualTransferrerInvestRepays.get(0).getCorpus(), is(0L));
         assertThat(actualTransferrerInvestRepays.get(0).getStatus(), is(RepayStatus.COMPLETE));
         assertThat(actualTransferrerInvestRepays.get(1).getPeriod(), is(2));
@@ -295,8 +295,8 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(actualTransfereeInvestRepays.size(), is(2));
         assertThat(actualTransfereeInvestRepays.get(0).getPeriod(), is(1));
         assertFalse(actualTransfereeInvestRepays.get(0).isTransferred());
-        assertThat(actualTransfereeInvestRepays.get(0).getExpectedInterest(), is(6885L));
-        assertThat(actualTransfereeInvestRepays.get(0).getExpectedFee(), is(688L));
+        assertThat(actualTransfereeInvestRepays.get(0).getExpectedInterest(), is(fakeTransferInvestRepay1.getExpectedInterest()));
+        assertThat(actualTransfereeInvestRepays.get(0).getExpectedFee(), is(fakeTransferInvestRepay1.getExpectedFee()));
         assertThat(actualTransfereeInvestRepays.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(actualTransfereeInvestRepays.get(0).getCorpus(), is(0L));
         assertThat(actualTransfereeInvestRepays.get(1).getPeriod(), is(2));
@@ -320,7 +320,7 @@ public class InvestTransferPurchaseServiceTest {
     }
 
     @Test
-    public void shouldSuccessWhenNotTransferInterestOnLastPeriod() throws Exception {
+    public void shouldSuccessOnLastPeriod() throws Exception {
         DateTime recheckTime = new DateTime().withDate(2016, 3, 1);
         Date transferTime = new DateTime().withDate(2016, 4, 11).toDate();
         LoanModel fakeLoan = this.createFakeLoan(LoanType.INVEST_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
@@ -360,8 +360,8 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(actualTransferrerInvestRepays.get(0).getStatus(), is(RepayStatus.COMPLETE));
         assertThat(actualTransferrerInvestRepays.get(1).getPeriod(), is(2));
         assertTrue(actualTransferrerInvestRepays.get(1).isTransferred());
-        assertThat(actualTransferrerInvestRepays.get(1).getExpectedInterest(), is(3278L));
-        assertThat(actualTransferrerInvestRepays.get(1).getExpectedFee(), is(327L));
+        assertThat(actualTransferrerInvestRepays.get(1).getExpectedInterest(), is(0L));
+        assertThat(actualTransferrerInvestRepays.get(1).getExpectedFee(), is(0L));
         assertThat(actualTransferrerInvestRepays.get(1).getStatus(), is(RepayStatus.COMPLETE));
         assertThat(actualTransferrerInvestRepays.get(1).getCorpus(), is(0L));
 
@@ -369,8 +369,8 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(actualTransfereeInvestRepays.size(), is(1));
         assertThat(actualTransfereeInvestRepays.get(0).getPeriod(), is(2));
         assertFalse(actualTransfereeInvestRepays.get(0).isTransferred());
-        assertThat(actualTransfereeInvestRepays.get(0).getExpectedInterest(), is(6557L));
-        assertThat(actualTransfereeInvestRepays.get(0).getExpectedFee(), is(655L));
+        assertThat(actualTransfereeInvestRepays.get(0).getExpectedInterest(), is(fakeTransferInvestRepay2.getExpectedInterest()));
+        assertThat(actualTransfereeInvestRepays.get(0).getExpectedFee(), is(fakeTransferInvestRepay2.getExpectedFee()));
         assertThat(actualTransfereeInvestRepays.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(actualTransfereeInvestRepays.get(0).getCorpus(), is(fakeTransferInvestRepay2.getCorpus()));
 

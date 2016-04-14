@@ -31,6 +31,7 @@ import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.JobManager;
@@ -281,12 +282,14 @@ public class NormalRepayServiceImpl implements RepayService {
         long loanRepayBalance = (isAdvanceRepay ? loanRepayModels.get(loanRepayModels.size() - 1).getCorpus() : loanRepayModel.getCorpus()) + loanRepayModel.getActualInterest() + this.calculateLoanRepayDefaultInterest(loanRepayModels);
 
         for (InvestModel investModel : notTransferredSuccessInvests) {
-
+            InvestModel transferInvestModel = investMapper.findById(investModel.getTransferInvestId());
+            TransferApplicationModel transferApplication = transferApplicationMapper.findByInvestId(investModel.getId());
+            boolean isCurrentPeriodTransfer = transferApplication != null && transferApplication.getPeriod() == loanRepayModel.getPeriod();
             List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
             InvestRepayModel currentInvestRepay = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), loanRepayModel.getPeriod());
 
             long actualInterest = InterestCalculator.calculateInvestRepayInterest(loanModel,
-                    investModel,
+                    isCurrentPeriodTransfer ? transferInvestModel : investModel,
                     lastRepayDate,
                     currentRepayDate);
             long actualFee = new BigDecimal(actualInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).longValue();
