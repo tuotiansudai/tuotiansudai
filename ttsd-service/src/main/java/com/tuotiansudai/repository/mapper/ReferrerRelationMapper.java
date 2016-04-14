@@ -25,5 +25,8 @@ public interface ReferrerRelationMapper {
     void delete(@Param(value = "referrerLoginName") String referrerLoginName,
                 @Param(value = "loginName") String loginName);
 
+    List<ReferrerRelationModel> findByReferrerLoginName(@Param(value = "referrerLoginName") String referrerLoginName);
+
+
 
 }
