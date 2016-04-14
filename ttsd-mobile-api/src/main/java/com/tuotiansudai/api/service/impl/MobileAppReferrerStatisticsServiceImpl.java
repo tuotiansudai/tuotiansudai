@@ -8,7 +8,6 @@ import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.model.ReferrerManageView;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections.CollectionUtils;
-import org.hibernate.validator.internal.metadata.aggregated.rule.ReturnValueMayOnlyBeMarkedOnceAsCascadedPerHierarchyLine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
