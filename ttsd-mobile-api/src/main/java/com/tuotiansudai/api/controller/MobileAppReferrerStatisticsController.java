@@ -17,6 +17,7 @@ public class MobileAppReferrerStatisticsController extends MobileAppBaseControll
 
     @RequestMapping(value = "/get/referrer-statistics", method = RequestMethod.POST)
     public BaseResponseDto getReferrerStatistics(@RequestBody BaseParamDto paramDto){
+        paramDto.getBaseParam().setUserId(getLoginName());
         return mobileAppReferrerStatisticsService.getReferrerStatistics(paramDto);
     }
 }

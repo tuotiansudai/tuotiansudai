@@ -590,7 +590,7 @@
 
     <select id="findReferInvestSumAmount" parameterType="map" resultMap="referrerManageMap" >
         select
-        sum(i.amount) AS invest_amount
+        IFNULL(sum(i.amount),0) AS invest_amount
         from
         invest_referrer_reward irr
         left join invest i

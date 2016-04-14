@@ -1,7 +1,7 @@
 package com.tuotiansudai.api.dto;
 
 
-public class ReferrerStatisticsDto extends BaseResponseDataDto{
+public class ReferrerStatisticsResponseDataDto extends BaseResponseDataDto{
 
     public String rewardAmount;
     public String referrersSum;

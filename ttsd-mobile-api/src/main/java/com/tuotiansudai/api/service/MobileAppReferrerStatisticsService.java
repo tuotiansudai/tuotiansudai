@@ -7,7 +7,7 @@ import com.tuotiansudai.api.dto.BaseResponseDto;
 public interface MobileAppReferrerStatisticsService {
 
 
-    BaseResponseDto getReferrerStatistics(BaseParamDto baseParam);
+    BaseResponseDto getReferrerStatistics(BaseParamDto paramDto);
 
 
 }

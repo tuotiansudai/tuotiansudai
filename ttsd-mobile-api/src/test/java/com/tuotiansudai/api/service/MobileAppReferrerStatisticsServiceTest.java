@@ -1,21 +1,27 @@
-package com.tuotiansudai.api.controller;
+package com.tuotiansudai.api.service;
 
-
+import com.tuotiansudai.api.controller.ControllerTestBase;
+import com.tuotiansudai.api.controller.MobileAppReferrerStatisticsController;
 import com.tuotiansudai.api.dto.BaseParam;
 import com.tuotiansudai.api.dto.BaseParamDto;
 import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.ReturnMessage;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertEquals;
 
-public class MobileAppReferrerStatisticsControllerTest extends ControllerTestBase {
+
+public class MobileAppReferrerStatisticsServiceTest  extends ControllerTestBase {
 
 
+
+    @InjectMocks
+    private MobileAppReferrerStatisticsController controller;
 
     @Autowired
-    private MobileAppReferrerStatisticsController controller;
+    private MobileAppReferrerStatisticsService service;
 
     @Override
     protected Object getControllerObject() {
@@ -31,8 +37,8 @@ public class MobileAppReferrerStatisticsControllerTest extends ControllerTestBas
         baseParam.setUserId("baoxin");
         baseParamDto.setBaseParam(baseParam);
 
-        BaseResponseDto referrerStatistics = controller.getReferrerStatistics(baseParamDto);
-        assertEquals(ReturnMessage.SUCCESS.getCode(), referrerStatistics.getCode());
+        BaseResponseDto baseResponseDto = service.getReferrerStatistics(baseParamDto);
+        assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
     }
 
 }

@@ -7,6 +7,8 @@ import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.model.ReferrerManageView;
 import com.tuotiansudai.util.AmountConverter;
+import org.apache.commons.collections.CollectionUtils;
+import org.hibernate.validator.internal.metadata.aggregated.rule.ReturnValueMayOnlyBeMarkedOnceAsCascadedPerHierarchyLine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,52 +28,30 @@ public class MobileAppReferrerStatisticsServiceImpl implements MobileAppReferrer
 
 
     @Override
-    public BaseResponseDto getReferrerStatistics(BaseParamDto baseParamDto) {
-        BaseParam baseParam = baseParamDto.getBaseParam();
+    public BaseResponseDto getReferrerStatistics(BaseParamDto paramDto) {
+        String referrerLoginName = paramDto.getBaseParam().getUserId();
+        List<ReferrerManageView> referInvestSumAmountList = referrerManageMapper.findReferInvestSumAmount(referrerLoginName);
 
-        ReferrerStatisticsDto referrerStatisticsDto = new ReferrerStatisticsDto();
-        if(!baseParam.getUserId().equals("")){
-            referrerStatisticsDto.setRewardAmount(getTotalAmount(baseParam));
-            referrerStatisticsDto.setReferrersSum(getReferrersSum(baseParam));
-            referrerStatisticsDto.setReferrersInvestAmount(getInvestAmount(baseParam));
-        }else{
-            referrerStatisticsDto.setRewardAmount("0");
-            referrerStatisticsDto.setReferrersSum("0");
-            referrerStatisticsDto.setReferrersInvestAmount("0");
-        }
+        ReferrerStatisticsResponseDataDto referrerStatisticsResponseDataDto = new ReferrerStatisticsResponseDataDto();
 
-        referrerStatisticsDto.setBanner(getBannerResponseDataDto("referrer.json"));
+        referrerStatisticsResponseDataDto.setRewardAmount(AmountConverter.convertCentToString(referrerManageMapper.findReferInvestTotalAmount(referrerLoginName, null, null, null, null)));
+        referrerStatisticsResponseDataDto.setReferrersSum(String.valueOf(referrerRelationMapper.findByReferrerLoginName(referrerLoginName).size()));
+        referrerStatisticsResponseDataDto.setReferrersInvestAmount(CollectionUtils.isNotEmpty(referInvestSumAmountList) ? AmountConverter.convertCentToString(referInvestSumAmountList.get(0).getInvestAmount()) : "0");
+
+        referrerStatisticsResponseDataDto.setBanner(getBannerResponseDataDto("referrer.json"));
 
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
-        baseResponseDto.setData(referrerStatisticsDto);
+        baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        baseResponseDto.setData(referrerStatisticsResponseDataDto);
 
         return baseResponseDto;
-    }
-
-    private String getTotalAmount(BaseParam baseParam){
-        Long totalAmount =  referrerManageMapper.findReferInvestTotalAmount(baseParam.getUserId(), null, null, null, null);
-        return totalAmount != null ? AmountConverter.convertCentToString(totalAmount) : "0";
-    }
-
-    private String getInvestAmount(BaseParam baseParam){
-        Long investAmount = 0L;
-        List<ReferrerManageView> referInvestSumAmountList = referrerManageMapper.findReferInvestSumAmount(baseParam.getUserId());
-
-        if(referInvestSumAmountList.size() > 0){
-            investAmount = referInvestSumAmountList.get(0).getInvestAmount();
-        }
-        return investAmount != null ? AmountConverter.convertCentToString(investAmount) : "0";
-    }
-
-    private String getReferrersSum(BaseParam baseParam){
-        return String.valueOf(referrerRelationMapper.findByReferrerLoginName(baseParam.getUserId()).size());
     }
 
     private BannerPictureResponseDataDto getBannerResponseDataDto(String jsonName){
         mobileAppBannerService.setBannerConfigFile(jsonName);
         BaseResponseDto<BannerResponseDataDto> bannerResponseDataDtoList = mobileAppBannerService.generateBannerList();
-        if(bannerResponseDataDtoList.getData() != null && bannerResponseDataDtoList.getData().getPictures().size() > 0){
+        if(bannerResponseDataDtoList.getData() != null && CollectionUtils.isNotEmpty(bannerResponseDataDtoList.getData().getPictures())){
             return bannerResponseDataDtoList.getData().getPictures().get(0);
         }
         return new BannerPictureResponseDataDto();
