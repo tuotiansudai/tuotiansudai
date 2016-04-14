@@ -54,6 +54,8 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
 
     private String loanType;
 
+    private String transferStatus;
+
     public UserInvestRecordResponseDataDto() {
     }
 
@@ -167,5 +169,13 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
 
     public void setLoanType(String loanType) {
         this.loanType = loanType;
+    }
+
+    public String getTransferStatus() {
+        return transferStatus;
+    }
+
+    public void setTransferStatus(String transferStatus) {
+        this.transferStatus = transferStatus;
     }
 }
