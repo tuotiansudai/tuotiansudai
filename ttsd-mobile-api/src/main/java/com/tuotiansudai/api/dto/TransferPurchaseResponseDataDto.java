@@ -1,13 +1,10 @@
 package com.tuotiansudai.api.dto;
 
-import java.util.List;
-
 public class TransferPurchaseResponseDataDto extends BaseResponseDataDto {
 
     private String balance;
     private String transferAmount;
     private String expectedInterestAmount;
-    private String transferInterestAmount;
 
     public TransferPurchaseResponseDataDto(){}
 
@@ -34,16 +31,4 @@ public class TransferPurchaseResponseDataDto extends BaseResponseDataDto {
     public void setExpectedInterestAmount(String expectedInterestAmount) {
         this.expectedInterestAmount = expectedInterestAmount;
     }
-
-    public String getTransferInterestAmount() {
-        return transferInterestAmount;
-    }
-
-    public void setTransferInterestAmount(String transferInterestAmount) {
-        this.transferInterestAmount = transferInterestAmount;
-    }
-
-
-
-
 }

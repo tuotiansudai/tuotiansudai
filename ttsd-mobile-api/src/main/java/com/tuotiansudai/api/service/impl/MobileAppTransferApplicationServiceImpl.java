@@ -183,8 +183,6 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         transferPurchaseResponseDataDto.setTransferAmount(AmountConverter.convertCentToString((transferApplicationModel.getTransferAmount())));
 
         transferPurchaseResponseDataDto.setExpectedInterestAmount(AmountConverter.convertCentToString(InterestCalculator.estimateExpectedInterest(loanModel, transferApplicationModel.getInvestAmount())*transferInterestDays));
-        transferPurchaseResponseDataDto.setTransferInterestAmount(AmountConverter.convertCentToString(InterestCalculator.estimateExpectedInterest(loanModel, transferApplicationModel.getInvestAmount())*transferApplicationModel.getTransferInterestDays()));
-
 
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
