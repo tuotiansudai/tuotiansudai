@@ -28,7 +28,7 @@
                 </property>
             </bean>
         </mvc:message-converters>
-        <mvc:path-matching registered-suffixes-only="true"/>
+        <mvc:path-matching suffix-pattern="false"/>
     </mvc:annotation-driven>
 
     <context:component-scan base-package="com.tuotiansudai.web"/>
