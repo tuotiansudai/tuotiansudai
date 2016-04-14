@@ -37,7 +37,10 @@
     <div class="link-list page-width clearfix">
         <ul>
             <li class="f-title">友情链接</li>
-            <li><a href="http://www.tuotianzichan.com/" target="_blank">拓天资产</a></li>
+                <#list linkExchangeList as linkExchange>
+                    <li><a href="${linkExchange.linkUrl}" target="_blank">${linkExchange.title}</a></li>
+                </#list>
+            <!--<li><a href="http://www.tuotianzichan.com/" target="_blank">拓天资产</a></li>
             <li><a href="https://www.zuiyidai.com/" target="_blank">最易贷</a></li>
             <li><a href="http://www.51wangdai.com/" target="_blank">51网贷</a></li>
             <li><a href="http://www.liyedai.cn/" target="_blank">立业贷</a></li>
@@ -51,7 +54,7 @@
             <li><a href="http://www.p2p265.com" target="_blank">网贷世界</a></li>
             <li><a href="http://www.wangdaitan.com" target="_blank">网贷谈</a></li>
             <li><a href="http://www.wddoor88.com" target="_blank">网贷铺子</a></li>
-            <li><a href="http://www.wangdaile.com" target="_blank">网贷乐</a></li>
+            <li><a href="http://www.wangdaile.com" target="_blank">网贷乐</a></li>-->
         </ul>
     </div>
     <div class="copyright page-width">
