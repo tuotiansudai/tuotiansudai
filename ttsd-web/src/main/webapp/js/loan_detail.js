@@ -1,4 +1,4 @@
-require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper','cnzz-statistics', 'underscore', 'jquery.ajax.extension', 'autoNumeric', 'coupon-alert','red-envelope-float', 'jquery.form'], function ($, pagination, Mustache, investListTemplate, layer,cnzzPush, _) {
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper','underscore', 'jquery.ajax.extension', 'autoNumeric', 'coupon-alert','red-envelope-float', 'jquery.form'], function ($, pagination, Mustache, investListTemplate, layer, _) {
     var $loanDetail = $('.loan-detail-content'),
         loanId = $('.hid-loan').val(),
         amountInputElement = $(".text-input-amount", $loanDetail),
@@ -18,7 +18,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         noPasswordRemind = amountInputElement.data('no-password-remind'),
         noPasswordInvest = amountInputElement.data('no-password-invest'),
         autoInvestOn = amountInputElement.data('auto-invest-on'),
-        cnzzPush = new cnzzPush();
+        $minInvestAmount = $('.text-input-amount').data('min-invest-amount');
+
 
     layer.ready(function() {
         layer.photos({
@@ -462,6 +463,16 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 showInputErrorTips(investAmount === 0 ? '投资金额不能为0元！' : '投资金额不能大于可投金额！');
                 return false;
             }
+            var minInvestAmount = parseInt(($minInvestAmount * 100).toFixed(0));
+            if(investAmount < minInvestAmount){
+                var tipContent = '投资金额小于标的最小投资金额！';
+                layer.tips('<i class="fa fa-times-circle"></i>' + tipContent, '.text-input-amount', {
+                    tips: [1, '#ff7200'],
+                    time: 0,
+                    maxWidth : 220
+                });
+                return false;
+            }
 
             var accountAmount = parseInt($investForm.find('.account-amount').data("user-balance")) || 0;
             if (investAmount > accountAmount) {
@@ -481,9 +492,11 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 area: ['300px', '160px'],
                 content: '<p class="pad-m-tb tc">确认投资？</p>',
                 btn1: function(){
+                    cnzzPush.trackClick("67标的详情页","马上投资确认框","取消");
                     layer.closeAll();
                 },
                 btn2:function(){
+                    cnzzPush.trackClick("68标的详情页","马上投资确认框","确认");
                     $investForm.ajaxSubmit({
                         dataType: 'json',
                         url: '/no-password-invest',

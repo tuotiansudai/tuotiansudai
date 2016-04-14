@@ -25,18 +25,17 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
     @Autowired
     private UserMapper userMapper;
 
-    private String usernameParameter = "username";
-
     private boolean enableCaptchaVerify = true;
 
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
         super.additionalAuthenticationChecks(userDetails, authentication);
 
-        UserModel userModel = userMapper.findByLoginNameOrMobile(httpServletRequest.getParameter(usernameParameter) != null ? httpServletRequest.getParameter(usernameParameter) : userDetails.getUsername());
+        String loginName = userDetails.getUsername();
+        UserModel userModel = userMapper.findByLoginName(loginName);
         boolean enabled = userModel.isActive();
         if (!enabled) {
-            String errorMessage = MessageFormat.format("Login Error: {0} is locked!", httpServletRequest.getParameter(usernameParameter));
+            String errorMessage = MessageFormat.format("Login Error: {0} is locked!", loginName);
             throw new DisabledException(errorMessage);
         }
 
@@ -53,10 +52,6 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
 
     public void setCaptchaHelper(CaptchaHelper captchaHelper) {
         this.captchaHelper = captchaHelper;
-    }
-
-    public void setUsernameParameter(String usernameParameter) {
-        this.usernameParameter = usernameParameter;
     }
 
     public void setEnableCaptchaVerify(boolean enableCaptchaVerify) {

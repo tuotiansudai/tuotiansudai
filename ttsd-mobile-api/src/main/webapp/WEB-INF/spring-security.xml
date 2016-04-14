@@ -20,7 +20,6 @@
         <beans:property name="passwordEncoder" ref="myShaPasswordEncoder"/>
         <beans:property name="saltSource" ref="saltSource"/>
         <beans:property name="userDetailsService" ref="myUserDetailsService"/>
-        <beans:property name="usernameParameter" value="j_username"/>
         <beans:property name="enableCaptchaVerify" value="false"/>
     </beans:bean>
 
@@ -88,7 +87,7 @@
         <intercept-url pattern="/v1.0/install-notify" access="permitAll()"/>
         <intercept-url pattern="/v1.0/get/banner" access="permitAll()"/>
         <intercept-url pattern="/v1.0/register" access="permitAll()"/>
-        <intercept-url pattern="/v1.0/share-callback" access="permitAll()"/>
+        <intercept-url pattern="/share-callback" access="permitAll()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
     </http>
 
