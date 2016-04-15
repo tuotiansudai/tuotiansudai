@@ -2193,6 +2193,216 @@
     }
   }
 }
+
+/*share-reward page*/
+.share-reward-container{
+  background:#c6eaff;
+  min-height:500px;
+  .wp{
+    width:1000px;
+    margin:0 auto;
+    
+    position:relative;
+    .left-bg{
+      width:200px;
+      height:100%;
+      position:absolute;
+      top:0;
+      left:-200px;
+      background:url("/images/sign/actor/sharereward/bg-left.png") repeat center;
+      background-size:100%;
+    }
+    .right-bg{
+      width:200px;
+      height:100%;
+      position:absolute;
+      top:0;
+      right:-200px;
+      background:url("/images/sign/actor/sharereward/bg-right.png") repeat center;
+      background-size:100%;
+    }
+    .reward-info-title{
+      height:306px;
+      width:100%;
+      background:url("/images/sign/actor/sharereward/reward-info-title.png") no-repeat center;
+      background-size:100%;
+      margin-top:-18px;
+      .title-text{
+        padding-top:100px;
+        padding-bottom: 20px;
+        text-align: center;
+        font-size: 20px;
+        color: #ffd633;
+        
+      }
+      p{
+        padding-left:31%;
+        font-size: 14px;
+        color:#fff;
+        margin-bottom: 0;
+      }
+    }
+    .share-example{
+      height:862px;
+      width:100%;
+      background:url("/images/sign/actor/sharereward/share-example.png") no-repeat center;
+      background-size:100%;
+      margin-top: -50px;
+
+      .example-title{
+        padding-left:90px;
+        padding-top:100px;
+        margin-bottom: 30px;
+        height:43px;
+        
+        span{
+          float:left;
+          height:43px;
+        }
+        .title-mole{
+          width:40px;
+          margin-right: 10px;
+          background:url("/images/sign/actor/sharereward/share-example-mole.png") no-repeat center;
+        }
+        .title-text{
+          width:200px;
+          padding-top:20px;
+          background:url("/images/sign/actor/sharereward/share-example-title.png") no-repeat center;
+        }
+      }
+      p{
+        font-size: 16px;
+        color:#fff;
+        height:30px;
+        padding-left:180px;
+        margin-bottom:0px;
+        span{
+          color:#fff700;
+        }
+      }
+      .example-case{
+        color:#fff700;
+        font-size: 20px;
+        padding-left: 180px;
+        height:70px;
+      }
+      .example-case-detail{
+        height:425px;
+        background:url("/images/sign/actor/sharereward/example-case-detail.png") no-repeat center;
+        
+      }
+    }
+    .share-recommend{
+      height:300px;
+      width:100%;
+      background:url("/images/sign/actor/sharereward/share-recommend.png") no-repeat center;
+      background-size:100%;
+      margin-top: -54px;
+      text-align: center;
+      a{
+        padding: 7px 75px;
+        text-align: center;
+        margin: 0 20px;
+        color: #fff;
+        background-color:#ff9c1b;
+        font-size: 22px;
+        display: inline-block;
+        position: relative;
+        overflow: hidden;
+        margin-top: 135px;
+      }
+    }
+    .share-rules{
+      height:440px;
+      width:100%;
+      background:url("/images/sign/actor/sharereward/share-rules.png") no-repeat center;
+      background-size:100%;
+      margin-top: -40px;
+      margin-bottom: 56px;
+      .rules-title{
+        padding-top:100px;
+        text-align: center;
+        font-size: 20px;
+        color: #ffd633;
+      }
+      .rules-list{
+        padding-left:33%;
+          li{
+            height:30px;
+            font-size: 14px;
+            color:#fff;
+            background:url("/images/sign/actor/sharereward/share-rulues-round.png") no-repeat ;
+            background-position:0 10px;
+            padding-left:20px;
+          }
+              
+      }
+      p.rules-sign{
+            width:100%;
+            color:#fff;
+            padding-left:35%;
+            font-size: 12px;
+          }
+    }
+    .clearfix{
+      clear:both;
+      display: block;
+    }
+  }
+}
+.share-reward-phone{
+  display:none;
+  width:100%;
+  background: #c6eaff;
+  min-height: 500px;
+  .rank-phone-model{
+    width:100%
+
+  }
+  .wp{
+    padding:0 2%;
+    .reward-info-title{
+      height:185px;   
+      background:url("/images/sign/actor/sharereward/share-phone-info.png") no-repeat center;
+      background-size:100% 100%;
+      margin-top:-5px;
+    }
+    .share-example{
+      height:500px;
+      background:url("/images/sign/actor/sharereward/share-phone-example.png") no-repeat center;
+      background-size:100% 100%;
+      margin-top:-16px;
+    }
+    .share-recommend{
+      height:150px;
+      background:url("/images/sign/actor/sharereward/share-phone-recommend.png") no-repeat center;
+      background-size:100% 100%;
+      margin-top:-16px;
+      padding-left:20%;
+      a{
+        width:30%;
+        height:25px;
+        text-align: center;
+        margin-right:10%;
+        color: #fff;
+        background-color:#ff9c1b;
+        font-size: 14px;
+        display: inline-block;
+        position: relative;
+        overflow: hidden;
+        margin-top:72px;
+      }
+    }
+    .share-rules{
+      height:260px;
+      background:url("/images/sign/actor/sharereward/share-phone-rules.png") no-repeat center;
+      background-size:100% 100%;
+      margin-top:-16px;
+    }
+  }
+}
+
+
 @media screen and (max-width:700px) {
   .red-envelope-container {
     .mobile {
@@ -2417,5 +2627,13 @@
   .rank-list-phone{
     display:block;
   }
+  .share-reward-container{
+    display:none;
+  }
+  .share-reward-phone{
+    display:block;
+  }
+
+
 }
 
