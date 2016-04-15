@@ -402,13 +402,11 @@
     </select>
 
     <select id="getExpectedInterestAmountByInvestIdAndPeriod" parameterType="long" resultMap="investRepayResultMap">
-        select IFNULL(SUM(
+        SELECT IFNULL(SUM(
             ir.`corpus` + ir.`expected_interest` - ir.`expected_fee`
           ),0)
-        from invest_repay ir
+        FROM invest_repay ir
         WHERE ir.`invest_id` = ${investId} AND ir.`period` >= ${period}
-
     </select>
-
 
 </mapper>
