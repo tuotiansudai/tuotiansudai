@@ -44,6 +44,7 @@
                 <span>输入兑换码：</span>
                 <input type="text" class="coupon-by-code" id="couponByCode" maxlength="14">
                 <button type="button" class="btn btn-primary submit-code" id="submitCode">兑换</button>
+                <p class="tip-text" id="errorText"><i class="fa fa-times-circle"></i><i class="fa fa-check-circle"></i><span>兑换失败，请重试</span></p>
             </label>
         </div>
     </ul>

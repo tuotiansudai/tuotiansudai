@@ -23,9 +23,10 @@ require(['jquery', 'coupon-alert'], function($) {
 		});
 
 		$('#submitCode').on('click', function() {
-			var exchangeCode = $('#couponByCode').val().trim;
+			var exchangeCode = $('#couponByCode').val().trim,
+				$errorText=$('#errorText');
 			if (exchangeCode.length != 14) {
-				$(this).parent().append('<p class="tip-text error-color">请输入正确的兑换码</p>');
+				$errorText.addClass('error-color').find('span').text('请输入正确的兑换码');
 				$('#couponByCode').val('');
 			} else {
 				$.ajax({
@@ -36,17 +37,21 @@ require(['jquery', 'coupon-alert'], function($) {
 				}).done(function(data){
 					var message = data.message;
 					if (data.status) {
-						$(this).parent().append('<p class="tip-text success-color">'+message+'</p>');
+						$errorText.addClass('success-color').find('span').text(message);
 						setInterval(function(){location.href="/my-treasure"}, 1000);
 					} else {
-						$(this).parent().append('<p class="tip-text error-color">'+message+'</p>');
+						$errorText.addClass('error-color').find('span').text(message);
 						$('#couponByCode').val('');
 					}
 				}).fail(function() {
-					$(this).parent().append('<p class="tip-text error-color">兑换失败，请重试</p>');
+					$errorText.addClass('error-color').find('span').text('兑换失败，请重试');
 					$('#couponByCode').val('');
 				});
 			}
+		});
+		$('#couponByCode').on('focusin', function(event) {
+			event.preventDefault();
+			$('#errorText').hasClass('error-color')?$('#errorText').removeClass('error-color'):false;
 		});
 
 	});

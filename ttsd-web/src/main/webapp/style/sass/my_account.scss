@@ -1917,6 +1917,7 @@ body{
         float:right;
         span{
           float:left;
+          line-height: 33px;
         }
         .coupon-by-code{
           float:left;
@@ -1930,14 +1931,29 @@ body{
           &.tip-text{
             position: absolute;
             top:35px;
-            left:90px;
+            left:100px;
             width:160px;
+            color: #ff1010;
+            display:none;
           }
           &.error-color{
+            display:block;
             color:#FF6363;
+            .fa-times-circle{
+              display:block;
+            }
           }
           &.success-color{
-            color:#A5D24C;
+            display:block;
+            color: #2ac30c;
+            .fa-check-circl{
+              display:block;
+            }
+          }
+          i{
+            float:left;
+            margin-top:10px;
+            display:none;
           }
         }
       }
