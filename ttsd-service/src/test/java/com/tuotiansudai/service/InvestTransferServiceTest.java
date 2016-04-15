@@ -246,5 +246,10 @@ public class InvestTransferServiceTest {
 
         assertFalse(result);
     }
+    @Test
+    public void shouldFindTransferApplicationPaginationListIsSuccess(){
+        
+        investTransferService.findTransferApplicationPaginationList();
+    }
 
 }
