@@ -10,8 +10,6 @@ public class TransferApplicationDto {
 
     private Long transferAmount;
 
-    private Boolean transferInterest;
-
     public TransferApplicationDto() {
     }
 
@@ -29,14 +27,6 @@ public class TransferApplicationDto {
 
     public void setTransferAmount(Long transferAmount) {
         this.transferAmount = transferAmount;
-    }
-
-    public Boolean getTransferInterest() {
-        return transferInterest;
-    }
-
-    public void setTransferInterest(Boolean transferInterest) {
-        this.transferInterest = transferInterest;
     }
 
 }

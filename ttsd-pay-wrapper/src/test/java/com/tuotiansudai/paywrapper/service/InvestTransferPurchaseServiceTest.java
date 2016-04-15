@@ -97,7 +97,7 @@ public class InvestTransferPurchaseServiceTest {
         UserModel transferrer = this.createFakeUser("transferrer", 0, 0);
         UserModel transferee = this.createFakeUser("transferee", 1000000, 0);
         InvestModel fakeTransferInvest = this.createFakeInvest(fakeLoan.getId(), null, 1000000, transferrer.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERRING);
-        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(fakeTransferInvest, 1, 900000, true, 100);
+        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(fakeTransferInvest, 1, 900000, 100);
         InvestRepayModel fakeTransferInvestRepay1 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 1, 0, 10000, 10, new DateTime().withDate(2016, 3, 31).toDate(), null, RepayStatus.REPAYING);
         InvestRepayModel fakeTransferInvestRepay2 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 2, 1000000, 10000, 10, new DateTime().withDate(2016, 4, 30).toDate(), null, RepayStatus.REPAYING);
 
@@ -172,14 +172,14 @@ public class InvestTransferPurchaseServiceTest {
     }
 
     @Test
-    public void shouldSuccessWhenTransferInterestOnFirstPeriodAndLoanIsOnInterestStartLoanOut() throws Exception {
+    public void shouldSuccessOnFirstPeriodAndLoanIsOnInterestStartLoanOut() throws Exception {
         DateTime recheckTime = new DateTime().withDate(2016, 3, 1);
         Date transferTime = new DateTime().withDate(2016, 3, 11).toDate();
         LoanModel fakeLoan = this.createFakeLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
         UserModel transferrer = this.createFakeUser("transferrer", 0, 0);
         UserModel transferee = this.createFakeUser("transferee", 1000000, 0);
         InvestModel fakeTransferInvest = this.createFakeInvest(fakeLoan.getId(), null, 1000000, transferrer.getLoginName(), recheckTime.minusDays(10).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERRING);
-        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(fakeTransferInvest, 1, 900000, true, 100);
+        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(fakeTransferInvest, 1, 900000, 100);
         InvestModel fakeInvest = this.createFakeInvest(fakeLoan.getId(), fakeTransferInvest.getId(), 1000000, transferee.getLoginName(), transferTime, InvestStatus.WAIT_PAY, TransferStatus.TRANSFERABLE);
         InvestRepayModel fakeTransferInvestRepay1 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 1, 0, 10000, 10, new DateTime().withDate(2016, 3, 31).toDate(), null, RepayStatus.REPAYING);
         InvestRepayModel fakeTransferInvestRepay2 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 2, 1000000, 10000, 10, new DateTime().withDate(2016, 4, 30).toDate(), null, RepayStatus.REPAYING);
@@ -246,14 +246,14 @@ public class InvestTransferPurchaseServiceTest {
     }
 
     @Test
-    public void shouldSuccessWhenNotTransferInterestOnFirstPeriodAndLoanIsOnInterestStartAtInvest() throws Exception {
+    public void shouldSuccessOnFirstPeriodAndLoanIsOnInterestStartAtInvest() throws Exception {
         DateTime recheckTime = new DateTime().withDate(2016, 3, 1);
         Date transferTime = new DateTime().withDate(2016, 3, 11).toDate();
         LoanModel fakeLoan = this.createFakeLoan(LoanType.INVEST_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
         UserModel transferrer = this.createFakeUser("transferrer", 0, 0);
         UserModel transferee = this.createFakeUser("transferee", 1000000, 0);
         InvestModel fakeTransferInvest = this.createFakeInvest(fakeLoan.getId(), null, 1000000, transferrer.getLoginName(), new DateTime().withDate(2016, 2, 20).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERRING);
-        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(fakeTransferInvest, 1, 900000, false, 100);
+        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(fakeTransferInvest, 1, 900000, 100);
         InvestModel fakeInvest = this.createFakeInvest(fakeLoan.getId(), fakeTransferInvest.getId(), 1000000, transferee.getLoginName(), transferTime, InvestStatus.WAIT_PAY, TransferStatus.TRANSFERABLE);
         InvestRepayModel fakeTransferInvestRepay1 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 1, 0, 13479, 1347, new DateTime().withDate(2016, 3, 31).toDate(), null, RepayStatus.REPAYING);
         InvestRepayModel fakeTransferInvestRepay2 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 2, 1000000, 9836, 10, new DateTime().withDate(2016, 4, 30).toDate(), null, RepayStatus.REPAYING);
@@ -280,8 +280,8 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(actualTransferrerInvestRepays.size(), is(2));
         assertThat(actualTransferrerInvestRepays.get(0).getPeriod(), is(1));
         assertTrue(actualTransferrerInvestRepays.get(0).isTransferred());
-        assertThat(actualTransferrerInvestRepays.get(0).getExpectedInterest(), is(6557L));
-        assertThat(actualTransferrerInvestRepays.get(0).getExpectedFee(), is(655L));
+        assertThat(actualTransferrerInvestRepays.get(0).getExpectedInterest(), is(0L));
+        assertThat(actualTransferrerInvestRepays.get(0).getExpectedFee(), is(0L));
         assertThat(actualTransferrerInvestRepays.get(0).getCorpus(), is(0L));
         assertThat(actualTransferrerInvestRepays.get(0).getStatus(), is(RepayStatus.COMPLETE));
         assertThat(actualTransferrerInvestRepays.get(1).getPeriod(), is(2));
@@ -295,8 +295,8 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(actualTransfereeInvestRepays.size(), is(2));
         assertThat(actualTransfereeInvestRepays.get(0).getPeriod(), is(1));
         assertFalse(actualTransfereeInvestRepays.get(0).isTransferred());
-        assertThat(actualTransfereeInvestRepays.get(0).getExpectedInterest(), is(6885L));
-        assertThat(actualTransfereeInvestRepays.get(0).getExpectedFee(), is(688L));
+        assertThat(actualTransfereeInvestRepays.get(0).getExpectedInterest(), is(fakeTransferInvestRepay1.getExpectedInterest()));
+        assertThat(actualTransfereeInvestRepays.get(0).getExpectedFee(), is(fakeTransferInvestRepay1.getExpectedFee()));
         assertThat(actualTransfereeInvestRepays.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(actualTransfereeInvestRepays.get(0).getCorpus(), is(0L));
         assertThat(actualTransfereeInvestRepays.get(1).getPeriod(), is(2));
@@ -320,14 +320,14 @@ public class InvestTransferPurchaseServiceTest {
     }
 
     @Test
-    public void shouldSuccessWhenNotTransferInterestOnLastPeriod() throws Exception {
+    public void shouldSuccessOnLastPeriod() throws Exception {
         DateTime recheckTime = new DateTime().withDate(2016, 3, 1);
         Date transferTime = new DateTime().withDate(2016, 4, 11).toDate();
         LoanModel fakeLoan = this.createFakeLoan(LoanType.INVEST_INTEREST_MONTHLY_REPAY, 1000000, 2, 0.12, recheckTime.toDate());
         UserModel transferrer = this.createFakeUser("transferrer", 0, 0);
         UserModel transferee = this.createFakeUser("transferee", 1000000, 0);
         InvestModel fakeTransferInvest = this.createFakeInvest(fakeLoan.getId(), null, 1000000, transferrer.getLoginName(), new DateTime().withDate(2016, 2, 20).toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERRING);
-        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(fakeTransferInvest, 2, 900000, false, 100);
+        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(fakeTransferInvest, 2, 900000, 100);
         InvestModel fakeInvest = this.createFakeInvest(fakeLoan.getId(), fakeTransferInvest.getId(), 1000000, transferee.getLoginName(), transferTime, InvestStatus.WAIT_PAY, TransferStatus.TRANSFERABLE);
         InvestRepayModel fakeTransferInvestRepay1 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 1, 0, 13479, 1347, new DateTime().withDate(2016, 3, 31).toDate(), new DateTime().withDate(2016, 3, 31).toDate(), RepayStatus.COMPLETE);
         InvestRepayModel fakeTransferInvestRepay2 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 2, 1000000, 9836, 983, new DateTime().withDate(2016, 4, 30).toDate(), null, RepayStatus.REPAYING);
@@ -360,8 +360,8 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(actualTransferrerInvestRepays.get(0).getStatus(), is(RepayStatus.COMPLETE));
         assertThat(actualTransferrerInvestRepays.get(1).getPeriod(), is(2));
         assertTrue(actualTransferrerInvestRepays.get(1).isTransferred());
-        assertThat(actualTransferrerInvestRepays.get(1).getExpectedInterest(), is(3278L));
-        assertThat(actualTransferrerInvestRepays.get(1).getExpectedFee(), is(327L));
+        assertThat(actualTransferrerInvestRepays.get(1).getExpectedInterest(), is(0L));
+        assertThat(actualTransferrerInvestRepays.get(1).getExpectedFee(), is(0L));
         assertThat(actualTransferrerInvestRepays.get(1).getStatus(), is(RepayStatus.COMPLETE));
         assertThat(actualTransferrerInvestRepays.get(1).getCorpus(), is(0L));
 
@@ -369,8 +369,8 @@ public class InvestTransferPurchaseServiceTest {
         assertThat(actualTransfereeInvestRepays.size(), is(1));
         assertThat(actualTransfereeInvestRepays.get(0).getPeriod(), is(2));
         assertFalse(actualTransfereeInvestRepays.get(0).isTransferred());
-        assertThat(actualTransfereeInvestRepays.get(0).getExpectedInterest(), is(6557L));
-        assertThat(actualTransfereeInvestRepays.get(0).getExpectedFee(), is(655L));
+        assertThat(actualTransfereeInvestRepays.get(0).getExpectedInterest(), is(fakeTransferInvestRepay2.getExpectedInterest()));
+        assertThat(actualTransfereeInvestRepays.get(0).getExpectedFee(), is(fakeTransferInvestRepay2.getExpectedFee()));
         assertThat(actualTransfereeInvestRepays.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(actualTransfereeInvestRepays.get(0).getCorpus(), is(fakeTransferInvestRepay2.getCorpus()));
 
@@ -444,8 +444,8 @@ public class InvestTransferPurchaseServiceTest {
         return fakeInvestRepayModel;
     }
 
-    private TransferApplicationModel createFakeTransferApplication(InvestModel investModel, int period, long transferAmount, boolean transferInterest, long transferFee) {
-        TransferApplicationModel fakeTransferApplication = new TransferApplicationModel(investModel, "name", period, transferAmount, transferInterest, transferFee, new DateTime().plusDays(1).toDate(),0);
+    private TransferApplicationModel createFakeTransferApplication(InvestModel investModel, int period, long transferAmount, long transferFee) {
+        TransferApplicationModel fakeTransferApplication = new TransferApplicationModel(investModel, "name", period, transferAmount, transferFee, new DateTime().plusDays(1).toDate());
         transferApplicationMapper.create(fakeTransferApplication);
         return fakeTransferApplication;
     }
