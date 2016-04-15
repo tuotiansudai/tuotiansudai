@@ -164,7 +164,7 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
 
     private boolean isAvailableCoupon(CouponModel couponModel,long investMoney) {
         boolean result = false;
-        if(couponModel.getCouponType().equals(CouponType.INTEREST_COUPON) && investMoney <= couponModel.getInvestUpperLimit() && investMoney >= couponModel.getInvestLowerLimit()){
+        if(couponModel.getCouponType().equals(CouponType.INTEREST_COUPON) && investMoney >= couponModel.getInvestLowerLimit()){
             return true;
         }else if(!couponModel.getCouponType().equals(CouponType.INTEREST_COUPON) && investMoney >= couponModel.getInvestLowerLimit()){
             return true;

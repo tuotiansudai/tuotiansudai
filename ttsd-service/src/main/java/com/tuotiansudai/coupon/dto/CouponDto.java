@@ -31,8 +31,6 @@ public class CouponDto implements Serializable {
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String investLowerLimit;
 
-    private String investUpperLimit;
-
     private Double rate;
 
     @NotNull
@@ -42,8 +40,6 @@ public class CouponDto implements Serializable {
     private CouponType couponType;
 
     private boolean smsAlert;
-
-    private Integer deadline;
 
     private UserGroup userGroup;
 
@@ -133,14 +129,6 @@ public class CouponDto implements Serializable {
         this.smsAlert = smsAlert;
     }
 
-    public Integer getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(Integer deadline) {
-        this.deadline = deadline;
-    }
-
     public UserGroup getUserGroup() {
         return userGroup;
     }
@@ -213,14 +201,6 @@ public class CouponDto implements Serializable {
         this.actualAmount = actualAmount;
     }
 
-    public String getInvestUpperLimit() {
-        return investUpperLimit;
-    }
-
-    public void setInvestUpperLimit(String investUpperLimit) {
-        this.investUpperLimit = investUpperLimit;
-    }
-
     public Double getRate() {
         return rate;
     }
@@ -272,11 +252,9 @@ public class CouponDto implements Serializable {
         this.endTime = couponModel.getEndTime();
         this.totalCount = couponModel.getTotalCount();
         this.investLowerLimit = AmountConverter.convertCentToString(couponModel.getInvestLowerLimit());
-        this.investUpperLimit = AmountConverter.convertCentToString(couponModel.getInvestUpperLimit());
         this.productTypes = couponModel.getProductTypes();
         this.couponType = couponModel.getCouponType();
         this.userGroup = couponModel.getUserGroup();
-        this.deadline = couponModel.getDeadline();
         this.smsAlert = couponModel.isSmsAlert();
         this.active = couponModel.isActive();
         this.totalInvestAmount = couponModel.getTotalInvestAmount();

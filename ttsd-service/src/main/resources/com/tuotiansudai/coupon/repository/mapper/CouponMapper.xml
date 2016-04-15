@@ -26,18 +26,16 @@
         <result column="expected_amount" property="expectedAmount"/>
         <result column="actual_amount" property="actualAmount"/>
         <result column="invest_lower_limit" property="investLowerLimit"/>
-        <result column="invest_upper_limit" property="investUpperLimit"/>
         <result column="coupon_type" property="couponType"/>
         <result column="product_types" property="productTypes" typeHandler="com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler"/>
         <result column="deleted" property="deleted"/>
-        <result column="deadline" property="deadline"/>
         <result column="user_group" property="userGroup"/>
         <result column="sms_alert" property="smsAlert"/>
     </resultMap>
 
     <insert id="create" parameterType="CouponModel" useGeneratedKeys="true" keyProperty="id">
-        insert into coupon (amount, rate, birthday_benefit, multiple, start_time, end_time, used_count, total_count, active, shared, created_by, created_time, activated_by, activated_time, issued_count, invest_lower_limit, invest_upper_limit, coupon_type, product_types, deleted, deadline, user_group, sms_alert)
-        value(#{amount}, #{rate}, #{birthdayBenefit}, #{multiple}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{shared}, #{createdBy}, #{createdTime}, #{activatedBy}, #{activatedTime}, #{issuedCount}, #{investLowerLimit}, #{investUpperLimit}, #{couponType}, #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}, #{deleted}, #{deadline}, #{userGroup}, #{smsAlert})
+        insert into coupon (amount, rate, birthday_benefit, multiple, start_time, end_time, used_count, total_count, active, shared, created_by, created_time, activated_by, activated_time, issued_count, invest_lower_limit, coupon_type, product_types, deleted, user_group, sms_alert)
+        value(#{amount}, #{rate}, #{birthdayBenefit}, #{multiple}, #{startTime}, #{endTime}, #{usedCount}, #{totalCount}, #{active}, #{shared}, #{createdBy}, #{createdTime}, #{activatedBy}, #{activatedTime}, #{issuedCount}, #{investLowerLimit}, #{couponType}, #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}, #{deleted}, #{userGroup}, #{smsAlert})
     </insert>
 
     <select id="findById" resultMap="couponResultMap" parameterType="long">
@@ -186,7 +184,6 @@
         issued_count = #{issuedCount},
         activated_by = #{activatedBy},
         activated_time = #{activatedTime},
-        deadline = #{deadline},
         user_group = #{userGroup},
         sms_alert = #{smsAlert},
         updated_by = #{updatedBy},
@@ -194,7 +191,6 @@
         active = #{active},
         shared = #{shared},
         invest_lower_limit = #{investLowerLimit},
-        invest_upper_limit = #{investUpperLimit},
         deleted = #{deleted},
         product_types = #{productTypes, typeHandler=com.tuotiansudai.util.mybatis.ProductTypeListTypeHandler}
         where id = #{id}

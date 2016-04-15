@@ -3,7 +3,6 @@ package com.tuotiansudai.api.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.util.AmountConverter;
@@ -56,7 +55,6 @@ public class BaseCouponResponseDataDto {
         this.investLowerLimit = AmountConverter.convertCentToString(couponModel.getInvestLowerLimit());
         this.productTypes = couponModel.getProductTypes();
         this.rate = decimalFormat.format(couponModel.getRate() * 100);
-        this.investUpperLimit = AmountConverter.convertCentToString(couponModel.getInvestUpperLimit());
         this.shared = couponModel.isShared();
         this.birthdayRate = String.valueOf(couponModel.getBirthdayBenefit());
 

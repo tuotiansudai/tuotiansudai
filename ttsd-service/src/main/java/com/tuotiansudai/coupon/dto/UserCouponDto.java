@@ -29,7 +29,6 @@ public class UserCouponDto implements Serializable {
     private boolean unused;
     private boolean shared;
     private long investLowerLimit;
-    private long investUpperLimit;
     private Date createdTime;
     private List<ProductType> productTypeList;
 
@@ -55,7 +54,6 @@ public class UserCouponDto implements Serializable {
         this.unused = !this.used && this.endTime.after(new Date());
         this.shared = coupon.isShared();
         this.investLowerLimit = coupon.getInvestLowerLimit();
-        this.investUpperLimit = coupon.getInvestUpperLimit();
         this.createdTime = userCoupon.getCreatedTime();
         this.productTypeList = coupon.getProductTypes();
     }
@@ -130,10 +128,6 @@ public class UserCouponDto implements Serializable {
 
     public long getInvestLowerLimit() {
         return investLowerLimit;
-    }
-
-    public long getInvestUpperLimit() {
-        return investUpperLimit;
     }
 
     public Date getCreatedTime() {

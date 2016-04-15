@@ -30,12 +30,6 @@
             总投资金额(元)
         </th>
         <th>
-            投资上限
-        </th>
-        <th>
-            活动期限
-        </th>
-        <th>
             有效期限
         </th>
         <th>
@@ -86,17 +80,7 @@
         ${coupon.totalInvestAmount/100}
         </td>
         <td>
-            ${coupon.investUpperLimit}
-        </td>
-        <td>
-            <#if coupon.active>
-                ${coupon.startTime?string('yyyy-MM-dd')}至${coupon.endTime?string('yyyy-MM-dd')}
-            <#else>
-                -
-            </#if>
-        </td>
-        <td>
-            ${coupon.deadline}
+            ${coupon.startTime?string('yyyy-MM-dd')}至${coupon.endTime?string('yyyy-MM-dd')}
         </td>
         <td>
             <#if coupon.userGroup == 'IMPORT_USER'>

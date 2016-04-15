@@ -8,6 +8,7 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.exception.CreateCouponException;
@@ -30,7 +31,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -57,10 +60,51 @@ public class CouponServiceTest {
     @Autowired
     private UserCouponMapper userCouponMapper;
 
+    @Autowired
+    private CouponActivationService couponActivationService;
 
     @Autowired
     private IdGenerator idGenerator;
 
+    @Test
+    public void shouldAssignUserCoupon() throws Exception{
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+        ExchangeCouponDto exchangeCouponDto = fakeCouponDto();
+        DateTime dateTime = new DateTime().plusDays(1);
+        exchangeCouponDto.setStartTime(dateTime.toDate());
+        exchangeCouponDto.setEndTime(dateTime.toDate());
+        couponService.createCoupon("couponTest", exchangeCouponDto);
+
+        couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.ALL_USER), exchangeCouponDto.getId());
+
+        CouponModel couponModel = couponMapper.findById(exchangeCouponDto.getId());
+        assertThat(couponModel.getIssuedCount(), is(1L));
+
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(exchangeCouponDto.getId());
+
+        assertThat(userCouponModels.get(0).getLoginName(), is("couponTest"));
+    }
+
+    @Test
+    public void shouldAssignUserCouponFailedUserGroup() throws Exception{
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+        ExchangeCouponDto exchangeCouponDto = fakeCouponDto();
+        DateTime dateTime = new DateTime().plusDays(1);
+        exchangeCouponDto.setStartTime(dateTime.toDate());
+        exchangeCouponDto.setEndTime(dateTime.toDate());
+        couponService.createCoupon("couponTest", exchangeCouponDto);
+
+        couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.WINNER), exchangeCouponDto.getId());
+
+        CouponModel couponModel = couponMapper.findById(exchangeCouponDto.getId());
+        assertThat(couponModel.getIssuedCount(), is(0L));
+
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByCouponId(exchangeCouponDto.getId());
+
+        assertThat(userCouponModels.size(), is(0));
+    }
 
     @Test
     public void shouldCreateCouponIsSuccess() throws CreateCouponException {
@@ -71,6 +115,22 @@ public class CouponServiceTest {
         exchangeCouponDto.setStartTime(dateTime.toDate());
         exchangeCouponDto.setEndTime(dateTime.toDate());
         couponService.createCoupon("couponTest", exchangeCouponDto);
+
+    }
+
+    @Test
+    public void shouldCreateInterestCouponSuccess() throws CreateCouponException{
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+        ExchangeCouponDto exchangeCouponDto = fakeCouponDto();
+        exchangeCouponDto.setCouponType(CouponType.INTEREST_COUPON);
+        couponService.createCoupon("couponTest", exchangeCouponDto);
+        List<CouponDto> couponDtos = couponService.findInterestCoupons(1, 1);
+        assertThat(couponDtos.get(0).getCouponType(), is(CouponType.INTEREST_COUPON));
+    }
+
+    @Test
+    public void assignCoupon() {
 
     }
 
@@ -165,6 +225,7 @@ public class CouponServiceTest {
         productTypes.add(ProductType.JYF);
         exchangeCouponDto.setProductTypes(productTypes);
         exchangeCouponDto.setInvestLowerLimit("1000.00");
+        exchangeCouponDto.setUserGroup(UserGroup.ALL_USER);
         return exchangeCouponDto;
     }
 
