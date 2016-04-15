@@ -5,6 +5,7 @@ import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
+import com.tuotiansudai.service.LinkExchangeService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class HomeController {
     @Autowired
     private CouponAlertService couponAlertService;
 
+    @Autowired
+    private LinkExchangeService linkExchangeService;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("/index", "responsive", true);
@@ -32,6 +36,7 @@ public class HomeController {
         modelAndView.addObject("announces", announceService.getAnnouncementList(1, 3).getData().getRecords());
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName()));
+        modelAndView.addObject("linkExchangeList",linkExchangeService.getLinkExchangeListByAsc());
         return modelAndView;
     }
 }
