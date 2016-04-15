@@ -5,7 +5,6 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.ProductType;
-import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.util.Date;

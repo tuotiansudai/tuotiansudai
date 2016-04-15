@@ -7,6 +7,8 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -41,6 +43,9 @@ public class CouponInvestServiceImpl implements CouponInvestService {
 
     @Autowired
     private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private CouponActivationService couponActivationService;
 
     @Autowired
     private UserBirthdayUtil userBirthdayUtil;
@@ -133,5 +138,11 @@ public class CouponInvestServiceImpl implements CouponInvestService {
             model.setExpectedFee(expectedFee);
             userCouponMapper.update(model);
         }
+
+        couponActivationService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER,
+                UserGroup.INVESTED_USER,
+                UserGroup.REGISTERED_NOT_INVESTED_USER,
+                UserGroup.IMPORT_USER),
+                null);
     }
 }
