@@ -1933,12 +1933,11 @@ body{
             top:35px;
             left:100px;
             width:160px;
-            color: #ff1010;
             display:none;
           }
           &.error-color{
             display:block;
-            color:#FF6363;
+            color:#ff1010;
             .fa-times-circle{
               display:block;
             }
@@ -1946,7 +1945,7 @@ body{
           &.success-color{
             display:block;
             color: #2ac30c;
-            .fa-check-circl{
+            .fa-check-circle{
               display:block;
             }
           }
