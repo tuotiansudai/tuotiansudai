@@ -1,6 +1,8 @@
 package com.tuotiansudai.coupon.service;
 
 import com.tuotiansudai.coupon.dto.CouponDto;
+import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
+import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
@@ -11,13 +13,13 @@ import java.util.List;
 
 public interface CouponService {
 
-    void createCoupon(String loginName,CouponDto couponDto) throws CreateCouponException;
+    void createCoupon(String loginName,ExchangeCouponDto exchangeCouponDto) throws CreateCouponException;
 
-    void editCoupon(String loginName,CouponDto couponDto) throws CreateCouponException;
+    void editCoupon(String loginName,ExchangeCouponDto exchangeCouponDto) throws CreateCouponException;
 
-    List<CouponDto> findCoupons(int index, int pageSize);
+    List<CouponDto> findNewbieAndInvestCoupons(int index, int pageSize);
 
-    int findCouponsCount();
+    int findNewbieAndInvestCouponsCount();
 
     CouponModel findCouponById (long couponId);
 
@@ -42,4 +44,10 @@ public interface CouponService {
     int findBirthdayCouponsCount();
 
     long estimateCouponExpectedInterest(long loanId, List<Long> couponIds, long amount);
+
+    List<ExchangeCouponDto> findCouponExchanges(int index, int pageSize);
+
+    int findCouponExchangeCount();
+
+    CouponExchangeModel findCouponExchangeByCouponId(long couponId);
 }

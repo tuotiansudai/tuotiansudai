@@ -6,9 +6,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.CouponDto;
+import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
+import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponUserGroupMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.CouponUserGroupModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
@@ -55,29 +58,26 @@ public class CouponServiceImpl implements CouponService {
     private UserMapper userMapper;
 
     @Autowired
-    private UserRoleMapper userRoleMapper;
-
-    @Autowired
-    private ReferrerRelationMapper referrerRelationMapper;
-
-    @Autowired
     private CouponUserGroupMapper couponUserGroupMapper;
+
+    @Autowired
+    private CouponExchangeMapper couponExchangeMapper;
 
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
     @Override
     @Transactional
-    public void createCoupon(String loginName, CouponDto couponDto) throws CreateCouponException {
-        this.checkCoupon(couponDto);
-        CouponModel couponModel = new CouponModel(couponDto);
+    public void createCoupon(String loginName, ExchangeCouponDto exchangeCouponDto) throws CreateCouponException {
+        this.checkCoupon(exchangeCouponDto);
+        CouponModel couponModel = new CouponModel(exchangeCouponDto);
         couponModel.setCreatedBy(loginName);
         couponModel.setCreatedTime(new Date());
         couponMapper.create(couponModel);
-        couponDto.setId(couponModel.getId());
+        exchangeCouponDto.setId(couponModel.getId());
         if (couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
-            redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "success"));
-            redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "failed"));
-            redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, couponDto.getFile()));
+            redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, exchangeCouponDto.getFile()), "success"));
+            redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, exchangeCouponDto.getFile()), "failed"));
+            redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, exchangeCouponDto.getFile()));
         } else if (Lists.newArrayList(UserGroup.AGENT, UserGroup.CHANNEL).contains(couponModel.getUserGroup())) {
             CouponUserGroupModel couponUserGroupModel = new CouponUserGroupModel();
             couponUserGroupModel.setCouponId(couponModel.getId());
@@ -85,6 +85,13 @@ public class CouponServiceImpl implements CouponService {
             couponUserGroupModel.setUserGroupItems(couponModel.getUserGroup() == UserGroup.AGENT ? couponModel.getAgents() : couponModel.getChannels());
             couponUserGroupMapper.create(couponUserGroupModel);
         }
+        if (exchangeCouponDto.getExchangePoint() != null && exchangeCouponDto.getExchangePoint() > 0) {
+            CouponExchangeModel couponExchangeModel = new CouponExchangeModel();
+            couponExchangeModel.setCouponId(couponModel.getId());
+            couponExchangeModel.setExchangePoint(exchangeCouponDto.getExchangePoint());
+            couponExchangeMapper.create(couponExchangeModel);
+        }
+
     }
 
     private void checkCoupon(CouponDto couponDto) throws CreateCouponException {
@@ -127,41 +134,48 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     @Transactional
-    public void editCoupon(String loginName, CouponDto couponDto) throws CreateCouponException {
-        this.checkCoupon(couponDto);
-        CouponModel couponModel = new CouponModel(couponDto);
-        couponModel.setId(couponDto.getId());
+    public void editCoupon(String loginName, ExchangeCouponDto exchangeCouponDto) throws CreateCouponException {
+        this.checkCoupon(exchangeCouponDto);
+        CouponModel couponModel = new CouponModel(exchangeCouponDto);
+        couponModel.setId(exchangeCouponDto.getId());
         couponModel.setUpdatedBy(loginName);
         couponModel.setUpdatedTime(new Date());
         if (couponModel.getUserGroup() != UserGroup.IMPORT_USER
                 && redisWrapperClient.exists(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())))) {
             redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())));
         }
-        if (couponModel.getUserGroup() == UserGroup.IMPORT_USER && StringUtils.isNotEmpty(couponDto.getFile())) {
-            redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "success"));
-            redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, couponDto.getFile()), "failed"));
-            redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, couponDto.getFile()));
+        if (couponModel.getUserGroup() == UserGroup.IMPORT_USER && StringUtils.isNotEmpty(exchangeCouponDto.getFile())) {
+            redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, exchangeCouponDto.getFile()), "success"));
+            redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, exchangeCouponDto.getFile()), "failed"));
+            redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, exchangeCouponDto.getFile()));
         }
         couponMapper.updateCoupon(couponModel);
         if (Lists.newArrayList(UserGroup.AGENT, UserGroup.CHANNEL).contains(couponModel.getUserGroup())) {
-            CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponDto.getId());
+            CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(exchangeCouponDto.getId());
             if (couponUserGroupModel != null) {
-                couponUserGroupModel.setUserGroup(couponDto.getUserGroup());
-                couponUserGroupModel.setUserGroupItems(couponDto.getUserGroup() == UserGroup.AGENT ? couponDto.getAgents() : couponDto.getChannels());
+                couponUserGroupModel.setUserGroup(exchangeCouponDto.getUserGroup());
+                couponUserGroupModel.setUserGroupItems(exchangeCouponDto.getUserGroup() == UserGroup.AGENT ? exchangeCouponDto.getAgents() : exchangeCouponDto.getChannels());
                 couponUserGroupMapper.update(couponUserGroupModel);
             } else {
                 CouponUserGroupModel couponUserGroup = new CouponUserGroupModel();
-                couponUserGroup.setCouponId(couponDto.getId());
-                couponUserGroup.setUserGroup(couponDto.getUserGroup());
-                couponUserGroup.setUserGroupItems(couponDto.getUserGroup() == UserGroup.AGENT ? couponDto.getAgents() : couponDto.getChannels());
+                couponUserGroup.setCouponId(exchangeCouponDto.getId());
+                couponUserGroup.setUserGroup(exchangeCouponDto.getUserGroup());
+                couponUserGroup.setUserGroupItems(exchangeCouponDto.getUserGroup() == UserGroup.AGENT ? exchangeCouponDto.getAgents() : exchangeCouponDto.getChannels());
                 couponUserGroupMapper.create(couponUserGroup);
             }
         } else {
-            CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponDto.getId());
+            CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(exchangeCouponDto.getId());
             if (couponUserGroupModel != null) {
                 couponUserGroupMapper.delete(couponUserGroupModel.getId());
             }
         }
+        if (exchangeCouponDto.getExchangePoint() != null && exchangeCouponDto.getExchangePoint() > 0) {
+
+            CouponExchangeModel couponExchangeModel = couponExchangeMapper.findByCouponId(exchangeCouponDto.getId());
+            couponExchangeModel.setExchangePoint(exchangeCouponDto.getExchangePoint());
+            couponExchangeMapper.update(couponExchangeModel);
+        }
+
     }
 
     @Override
@@ -229,8 +243,8 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<CouponDto> findCoupons(int index, int pageSize) {
-        List<CouponModel> couponModels = couponMapper.findCoupons((index - 1) * pageSize, pageSize);
+    public List<CouponDto> findNewbieAndInvestCoupons(int index, int pageSize) {
+        List<CouponModel> couponModels = couponMapper.findNewbieAndInvestCoupons((index - 1) * pageSize, pageSize);
         for (CouponModel couponModel : couponModels) {
             couponModel.setTotalInvestAmount(userCouponMapper.findSumInvestAmountByCouponId(couponModel.getId()));
         }
@@ -243,8 +257,8 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public int findCouponsCount() {
-        return couponMapper.findCouponsCount();
+    public int findNewbieAndInvestCouponsCount() {
+        return couponMapper.findNewbieAndInvestCouponsCount();
     }
 
 
@@ -263,9 +277,9 @@ public class CouponServiceImpl implements CouponService {
             case REGISTERED_NOT_INVESTED_USER:
                 return investMapper.findRegisteredNotInvestCount();
             case STAFF:
-                return userRoleMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.STAFF).put("districtName", Lists.newArrayList()).build())).size();
+                return userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.STAFF).put("districtName", Lists.newArrayList()).build())).size();
             case STAFF_RECOMMEND_LEVEL_ONE:
-                return referrerRelationMapper.findAllRecommendation(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList()).build())).size();
+                return userMapper.findAllRecommendation(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList()).build())).size();
             default:
                 return 0;
         }
@@ -318,5 +332,27 @@ public class CouponServiceImpl implements CouponService {
         }
 
         return totalInterest;
+    }
+
+    @Override
+    public List<ExchangeCouponDto> findCouponExchanges(int index, int pageSize) {
+        List<CouponModel> couponModels = couponMapper.findCouponExchanges((index - 1) * pageSize, pageSize);
+        return Lists.transform(couponModels, new Function<CouponModel, ExchangeCouponDto>() {
+            @Override
+            public ExchangeCouponDto apply(CouponModel input) {
+                ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto(input);
+                exchangeCouponDto.setExchangePoint(couponExchangeMapper.findByCouponId(input.getId()).getExchangePoint());
+                return exchangeCouponDto;
+            }
+        });
+    }
+
+    public int findCouponExchangeCount() {
+        return couponMapper.findCouponExchangeCount();
+    }
+
+    @Override
+    public CouponExchangeModel findCouponExchangeByCouponId(long couponId) {
+        return couponExchangeMapper.findByCouponId(couponId);
     }
 }

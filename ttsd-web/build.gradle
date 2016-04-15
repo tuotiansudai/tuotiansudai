@@ -3,6 +3,7 @@ apply from: 'db_migration.gradle'
 
 dependencies {
     compile project(':ttsd-service'),
+            project(':ttsd-point'),
             fileTree(dir: 'libs', include: '**/*.jar'),
             'org.springframework.data:spring-data-redis:1.5.0.RELEASE',
             'org.springframework.session:spring-session:1.0.2.RELEASE'

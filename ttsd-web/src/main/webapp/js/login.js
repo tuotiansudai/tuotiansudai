@@ -1,4 +1,4 @@
-require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
+require(['jquery', 'jquery.ajax.extension', 'jquery.validate', 'jquery.form'], function ($) {
 
         var loginFormElement = $('.form-login'),
             loginSubmitElement = $('.login-submit', loginFormElement),

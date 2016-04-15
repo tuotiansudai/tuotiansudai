@@ -7,20 +7,22 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +45,9 @@ public class CouponInvestServiceImpl implements CouponInvestService {
     private UserCouponMapper userCouponMapper;
 
     @Autowired
+    private CouponActivationService couponActivationService;
+
+    @Autowired
     private UserBirthdayUtil userBirthdayUtil;
 
     @Override
@@ -58,10 +63,9 @@ public class CouponInvestServiceImpl implements CouponInvestService {
                 CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
                 if (InvestStatus.SUCCESS == userCouponModel.getStatus()
                         || (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && !userBirthdayUtil.isBirthMonth(investModel.getLoginName()))
-                        || new DateTime(couponModel.getEndTime()).plusDays(1).withTimeAtStartOfDay().isBeforeNow()
+                        || userCouponModel.getEndTime().before(new Date())
                         || !couponModel.getProductTypes().contains(loanModel.getProductType())
-                        || (couponModel.getInvestLowerLimit() > 0 && investModel.getAmount() < couponModel.getInvestLowerLimit())
-                        || (couponModel.getInvestUpperLimit() > 0 && investModel.getAmount() > couponModel.getInvestUpperLimit())) {
+                        || (couponModel.getInvestLowerLimit() > 0 && investModel.getAmount() < couponModel.getInvestLowerLimit())) {
                     logger.error(MessageFormat.format("user coupon ({0}) is unusable!", String.valueOf(userCouponId)));
                     return;
                 }
@@ -134,5 +138,11 @@ public class CouponInvestServiceImpl implements CouponInvestService {
             model.setExpectedFee(expectedFee);
             userCouponMapper.update(model);
         }
+
+        couponActivationService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER,
+                UserGroup.INVESTED_USER,
+                UserGroup.REGISTERED_NOT_INVESTED_USER,
+                UserGroup.IMPORT_USER),
+                null);
     }
 }

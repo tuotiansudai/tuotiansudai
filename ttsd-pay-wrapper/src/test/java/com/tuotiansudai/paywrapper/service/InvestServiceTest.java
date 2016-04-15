@@ -3,13 +3,13 @@ package com.tuotiansudai.paywrapper.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
 import com.tuotiansudai.util.IdGenerator;
@@ -29,9 +29,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Created by Administrator on 2015/10/14.
- */
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml","classpath:dispatcher-servlet.xml"})
 @Transactional
@@ -55,17 +56,22 @@ public class InvestServiceTest {
     @Autowired
     private InvestMapper investMapper;
 
+    @Autowired
+    private AccountMapper accountMapper;
+
     private ObjectMapper objectMapper;
+
     private MockWebServer mockServer;
 
     @Autowired
     private PaySyncClient paySyncClient;
 
-    private void createAccountByUserId(String userId) {
+    private AccountModel createAccountByUserId(String userId) {
         AccountModel accountModel = new AccountModel(userId,userId,"120101198810012010","","",new Date());
         accountModel.setAutoInvest(true);
         accountModel.setBalance(10000);
-        accountModel.setFreeze(0);
+        accountModel.setFreeze(10000);
+        return accountModel;
     }
 
     private void createUserByUserId(String userId) {
@@ -115,7 +121,7 @@ public class InvestServiceTest {
 
     @Before
     public void setup() throws Exception {
-        this.objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
 
         this.mockServer = mockUmPayService();
 
@@ -230,4 +236,111 @@ public class InvestServiceTest {
 
         assert amount == 100;
     }
+
+    @Test
+    public void shouldNoPasswordInvest() {
+        long loanId = this.idGenerator.generate();
+        this.createUserByUserId("testLoan");
+        LoanDto loanDto = new LoanDto();
+        loanDto.setLoanerLoginName("testLoan");
+        loanDto.setLoanerUserName("借款人");
+        loanDto.setLoanerIdentityNumber("111111111111111111");
+        loanDto.setAgentLoginName("testLoan");
+        loanDto.setBasicRate("16.00");
+        loanDto.setId(loanId);
+        loanDto.setProjectName("店铺资金周转");
+        loanDto.setActivityRate("12");
+        loanDto.setShowOnHome(true);
+        loanDto.setPeriods(1);
+        loanDto.setActivityType(ActivityType.NORMAL);
+        loanDto.setContractId(123);
+        loanDto.setDescriptionHtml("asdfasdf");
+        loanDto.setDescriptionText("asdfasd");
+        loanDto.setFundraisingEndTime(new Date());
+        loanDto.setFundraisingStartTime(new Date());
+        loanDto.setInvestFeeRate("15");
+        loanDto.setInvestIncreasingAmount("1");
+        loanDto.setLoanAmount("1000");
+        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        loanDto.setMaxInvestAmount("100000000000");
+        loanDto.setMinInvestAmount("0");
+        loanDto.setCreatedTime(new Date());
+        loanDto.setLoanStatus(LoanStatus.RAISING);
+        LoanModel loanModel = new LoanModel(loanDto);
+        loanMapper.create(loanModel);
+
+        this.createUserByUserId("testInvest");
+
+        AccountModel accountModel = new AccountModel("testInvest","testInvest","120101198810012010","","",new Date());
+        accountModel.setAutoInvest(true);
+        accountModel.setBalance(10000);
+        accountModel.setFreeze(0);
+        accountMapper.create(accountModel);
+
+        InvestDto investDto = new InvestDto();
+        investDto.setLoginName("testInvest");
+        investDto.setLoanId(String.valueOf(loanId));
+        investDto.setAmount("1.0");
+        investDto.setSource(Source.WEB);
+        BaseDto<PayDataDto> baseDto = investService.noPasswordInvest(investDto);
+        assertTrue(baseDto.isSuccess());
+
+        List<InvestModel> investModels = investMapper.findByLoginName("testInvest", 0, 10);
+        assertThat(investModels.get(0).getAmount(), is(100L));
+        assertThat(investModels.get(0).getLoginName(), is("testInvest"));
+        assertThat(investModels.get(0).getSource(), is(Source.WEB));
+    }
+
+    @Test
+    public void shouldName() throws Exception {
+        long loanId = this.idGenerator.generate();
+        this.createUserByUserId("loaner");
+        this.createUserByUserId("investor");
+
+        createAccountByUserId("loaner");
+        AccountModel investorAccountModel = createAccountByUserId("investor");
+        accountMapper.create(investorAccountModel);
+
+        LoanDto loanDto = new LoanDto();
+        loanDto.setLoanerLoginName("loaner");
+        loanDto.setLoanerUserName("借款人");
+        loanDto.setLoanerIdentityNumber("id");
+        loanDto.setAgentLoginName("loaner");
+        loanDto.setBasicRate("16.00");
+        loanDto.setId(loanId);
+        loanDto.setProjectName("店铺资金周转");
+        loanDto.setActivityRate("12");
+        loanDto.setShowOnHome(true);
+        loanDto.setPeriods(1);
+        loanDto.setActivityType(ActivityType.NORMAL);
+        loanDto.setContractId(123);
+        loanDto.setDescriptionHtml("asdfasdf");
+        loanDto.setDescriptionText("asdfasd");
+        loanDto.setFundraisingEndTime(new Date());
+        loanDto.setFundraisingStartTime(new Date());
+        loanDto.setInvestFeeRate("15");
+        loanDto.setInvestIncreasingAmount("1");
+        loanDto.setLoanAmount("1000");
+        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        loanDto.setMaxInvestAmount("100000000000");
+        loanDto.setMinInvestAmount("0");
+        loanDto.setCreatedTime(new Date());
+        loanDto.setLoanStatus(LoanStatus.RAISING);
+        LoanModel loanModel = new LoanModel(loanDto);
+        loanMapper.create(loanModel);
+
+        InvestModel investModel = new InvestModel();
+        investModel.setAmount(100);
+        investModel.setCreatedTime(new Date());
+        investModel.setId(this.idGenerator.generate());
+        investModel.setIsAutoInvest(false);
+        investModel.setLoginName("investor");
+        investModel.setLoanId(loanId);
+        investModel.setSource(Source.WEB);
+        investModel.setStatus(InvestStatus.WAIT_PAY);
+        investMapper.create(investModel);
+
+        investService.investSuccess(investModel.getId(), investModel, investModel.getLoginName());
+    }
+
 }

@@ -5,7 +5,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppInvestCouponService;
-
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -19,7 +18,6 @@ import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,18 +25,23 @@ import java.util.*;
 
 @Service
 public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponService {
+
     static Logger log = Logger.getLogger(MobileAppInvestCouponServiceImpl.class);
-    @Autowired
-    private UserCouponMapper userCouponMapper;
-    @Autowired
-    private LoanMapper loanMapper;
-    @Autowired
-    private CouponMapper couponMapper;
+
     private HashMap<CouponType, Integer> dicRule = Maps.newHashMap(ImmutableMap.<CouponType, Integer>builder().put(CouponType.RED_ENVELOPE, 100)
             .put(CouponType.BIRTHDAY_COUPON, 99)
             .put(CouponType.NEWBIE_COUPON, 98)
             .put(CouponType.INVEST_COUPON, 97)
             .put(CouponType.INTEREST_COUPON, 96).build());
+
+    @Autowired
+    private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private LoanMapper loanMapper;
+
+    @Autowired
+    private CouponMapper couponMapper;
 
     @Autowired
     private UserBirthdayUtil userBirthdayUtil;
@@ -75,19 +78,18 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
             public boolean apply(UserCouponModel userCouponModel) {
                 CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
                 boolean used = InvestStatus.SUCCESS == userCouponModel.getStatus();
-                boolean expired = !used && new DateTime(couponModel.getEndTime()).plusDays(1).withTimeAtStartOfDay().isBeforeNow();
-                boolean unused = !used && !expired;
-                return unused;
+                boolean expired = !used && userCouponModel.getEndTime().before(new Date());
+                return !used && !expired;
 
             }
         });
-        Iterator<UserCouponResponseDataDto> items = Iterators.transform(filter, new Function<UserCouponModel, UserCouponResponseDataDto>() {
+        Iterator<BaseCouponResponseDataDto> items = Iterators.transform(filter, new Function<UserCouponModel, BaseCouponResponseDataDto>() {
             @Override
-            public UserCouponResponseDataDto apply(UserCouponModel userCouponModel) {
-                UserCouponResponseDataDto dataDto = new UserCouponResponseDataDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel);
-                return dataDto;
+            public BaseCouponResponseDataDto apply(UserCouponModel userCouponModel) {
+                return new BaseCouponResponseDataDto(couponMapper.findById(userCouponModel.getCouponId()), userCouponModel);
             }
         });
+
         BaseResponseDto<UserCouponListResponseDataDto> responseDto = new BaseResponseDto<>();
         responseDto.setCode(ReturnMessage.SUCCESS.getCode());
         responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -162,7 +164,7 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
 
     private boolean isAvailableCoupon(CouponModel couponModel,long investMoney) {
         boolean result = false;
-        if(couponModel.getCouponType().equals(CouponType.INTEREST_COUPON) && investMoney <= couponModel.getInvestUpperLimit() && investMoney >= couponModel.getInvestLowerLimit()){
+        if(couponModel.getCouponType().equals(CouponType.INTEREST_COUPON) && investMoney >= couponModel.getInvestLowerLimit()){
             return true;
         }else if(!couponModel.getCouponType().equals(CouponType.INTEREST_COUPON) && investMoney >= couponModel.getInvestLowerLimit()){
             return true;

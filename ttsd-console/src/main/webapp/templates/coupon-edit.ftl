@@ -23,18 +23,7 @@
                        <#if coupon??>value="${coupon.amount!}"</#if> datatype="*" errormsg="投资体验券金额不能为空">
             </div>
         </div>
-        <#if coupon??&&coupon.couponType.name() == "INVEST_COUPON">
-            <div class="form-group">
-                <label class="col-sm-2 control-label">体验券有效期限(天): </label>
 
-                <div class="col-sm-4">
-                    <input type="text" class="form-control coupon-deadline" name="deadline" placeholder=""
-                           <#if coupon??>value="${coupon.deadline?string('0')!}"</#if> datatype="*"
-                           errormsg="体验券有效期限不能为空">
-                </div>
-            </div>
-
-        </#if>
         <div class="form-group">
             <label class="col-sm-2 control-label">发放对象:</label>
             <#if coupon??&&coupon.couponType.name() == "INVEST_COUPON">
@@ -116,35 +105,32 @@
         </div>
         </#if>
 
-        <#if coupon??&&coupon.couponType.name() != "INVEST_COUPON">
+        <div class="form-group newbie-coupon">
+            <label class="col-sm-2 control-label ">活动期限: </label>
 
-            <div class="form-group newbie-coupon">
-                <label class="col-sm-2 control-label ">活动期限: </label>
-
-                <div class="col-sm-2">
-                    <div class='input-group date' id='startTime'>
-                        <input type='text' class="form-control coupon-start" name="startTime"
-                               <#if coupon??>value="${(coupon.startTime?string("yyyy-MM-dd"))!}"</#if>
-                               datatype="date" errormsg="请选择活动开始时间"/>
-					<span class="input-group-addon">
-					<span class="glyphicon glyphicon-calendar"></span>
-					</span>
-                    </div>
-                </div>
-                <div class="line-size">-</div>
-                <div class="col-sm-2">
-                    <div class='input-group date' id='endTime'>
-                        <input type='text' class="form-control coupon-end" name="endTime"
-                               <#if coupon??>value="${(coupon.endTime?string("yyyy-MM-dd"))!}"</#if>  datatype="date"
-                               errormsg="请选择活动结束时间"/>
-					<span class="input-group-addon">
-					<span class="glyphicon glyphicon-calendar"></span>
-					</span>
-                    </div>
+            <div class="col-sm-2">
+                <div class='input-group date' id='startTime'>
+                    <input type='text' class="form-control coupon-start" name="startTime"
+                           <#if coupon??>value="${(coupon.startTime?string("yyyy-MM-dd"))!}"</#if>
+                           datatype="date" errormsg="请选择活动开始时间"/>
+                <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+                </span>
                 </div>
             </div>
+            <div class="line-size">-</div>
+            <div class="col-sm-2">
+                <div class='input-group date' id='endTime'>
+                    <input type='text' class="form-control coupon-end" name="endTime"
+                           <#if coupon??>value="${(coupon.endTime?string("yyyy-MM-dd"))!}"</#if>  datatype="date"
+                           errormsg="请选择活动结束时间"/>
+                <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                </div>
+            </div>
+        </div>
 
-        </#if>
 
         <div class="form-group">
             <label class="col-sm-2 control-label">使用条件: </label>

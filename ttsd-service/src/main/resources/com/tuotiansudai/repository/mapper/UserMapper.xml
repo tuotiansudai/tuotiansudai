@@ -35,6 +35,7 @@
             <result column="pay_account_id" property="payAccountId"></result>
             <result column="balance" property="balance"></result>
             <result column="freeze" property="freeze"></result>
+            <result column="point" property="point"></result>
             <result column="register_time" property="registerTime"></result>
             <result column="auto_invest" property="autoInvest"></result>
         </association>
@@ -55,6 +56,10 @@
       from user u
       left join auto_invest_plan au on au.login_name = u.login_name and au.enabled=1
       where u.login_name = #{loginName}
+    </select>
+
+    <select id="lockByLoginName" parameterType="java.lang.String" resultMap="userResultMap">
+        select * from user where login_name = #{loginName} for update
     </select>
 
     <select id="findByLoginNameOrMobile" parameterType="java.lang.String" resultMap="userResultMap">
@@ -354,8 +359,8 @@
         AND r.`role` = 'LOANER')
     </select>
 
-    <select id="findAllUsers" resultMap="userResultMap">
-        select * from user
+    <select id="findAllUsers" resultType="java.lang.String">
+        select login_name from user
         <if test="districtName != null and districtName.size != 0">
             where province in
             <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">
@@ -364,9 +369,9 @@
         </if>
     </select>
 
-    <select id="findNaturalUser" resultMap="userResultMap">
+    <select id="findNaturalUser" resultType="java.lang.String">
         SELECT
-          us.*
+          us.login_name
         FROM
           user us
           JOIN invest t
@@ -416,6 +421,39 @@
                 #{item}
             </foreach>
         </if>
+    </select>
+
+    <select id="findAllByRole" parameterType="map" resultType="java.lang.String">
+        SELECT t.login_name FROM user_role t join user u on t.login_name = u.login_name
+        <if test="districtName != null and districtName.size != 0">
+            and u.province in
+            <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        WHERE t.role = #{role};
+    </select>
+
+    <select id="findAllRecommendation" resultType="java.lang.String">
+        SELECT
+        r.login_name
+        FROM
+        referrer_relation r
+        JOIN user_role u
+        ON r.`referrer_login_name` = u.`login_name`
+        AND u.`role` = 'STAFF'
+        <if test="districtName != null and districtName.size != 0">
+            join user ur on ur.login_name = r.login_name
+            and ur.province in
+            <foreach item="item" index="index" collection="districtName" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        WHERE r.`level` = '1'
+    </select>
+
+    <select id="findUsersMobileByLoginName" parameterType="java.lang.String" resultType="java.lang.String">
+       SELECT u.mobile from user u where u.login_name = #{loginName}
     </select>
 
 </mapper>

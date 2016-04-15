@@ -34,7 +34,7 @@ import java.util.List;
 @Component
 @Aspect
 public class CouponAspect {
-    static Logger logger = Logger.getLogger(CouponAspect.class);
+    private static Logger logger = Logger.getLogger(CouponAspect.class);
 
     @Autowired
     private CouponRepayService couponRepayService;
@@ -43,10 +43,10 @@ public class CouponAspect {
     private CouponInvestService couponInvestService;
 
     @Autowired
-    private CouponActivationService couponActivationService;
+    private JobManager jobManager;
 
     @Autowired
-    private JobManager jobManager;
+    private CouponActivationService couponActivationService;
 
     @Around(value = "execution(* com.tuotiansudai.paywrapper.service.RepayService.postRepayCallback(*))")
     public Object aroundRepay(ProceedingJoinPoint proceedingJoinPoint) {
@@ -90,13 +90,11 @@ public class CouponAspect {
         long loanId = (long) joinPoint.getArgs()[0];
         BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
         if (baseDto.getData() != null && baseDto.getData().getStatus()) {
-
             try {
                 couponInvestService.cancelUserCoupon(loanId);
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
-
         }
     }
 
@@ -113,7 +111,7 @@ public class CouponAspect {
                     UserGroup.AGENT,
                     UserGroup.CHANNEL,
                     UserGroup.STAFF,
-                    UserGroup.STAFF_RECOMMEND_LEVEL_ONE));
+                    UserGroup.STAFF_RECOMMEND_LEVEL_ONE),null);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -127,10 +125,7 @@ public class CouponAspect {
         BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
         if (baseDto.getData() != null && baseDto.getData().getStatus()) {
             createSendRedEnvelopeJob(loanId);
-
             createAutoJPushAlertLoanOutJob(loanId);
-
-
         }
     }
 
@@ -161,7 +156,5 @@ public class CouponAspect {
             logger.error("create send red AutoJPushAlertLoanOut job for loan[" + loanId + "] fail", e);
         }
     }
-
-
 }
 

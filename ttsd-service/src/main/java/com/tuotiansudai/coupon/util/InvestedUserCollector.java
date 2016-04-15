@@ -29,6 +29,6 @@ public class InvestedUserCollector implements UserCollector {
 
     @Override
     public boolean contains(long couponId, String loginName) {
-        return investMapper.hasSuccessInvest(loginName);
+        return investMapper.sumSuccessInvestAmountByLoginName(null, loginName) > 0;
     }
 }

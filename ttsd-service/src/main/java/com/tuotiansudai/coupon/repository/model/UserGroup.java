@@ -9,9 +9,9 @@ public enum UserGroup {
     AGENT("代理商"),
     CHANNEL("来源渠道"),
     NEW_REGISTERED_USER("新注册用户"),
-    IMPORT_USER("导入用户名单");
-
-
+    IMPORT_USER("导入用户名单"),
+    EXCHANGER("兑换用户"),
+    WINNER("中奖用户");
 
     private final String description;
 

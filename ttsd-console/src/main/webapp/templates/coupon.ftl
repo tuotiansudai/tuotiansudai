@@ -25,12 +25,6 @@
 				<input type="text" class="form-control coupon-number" name="amount" placeholder="" <#if coupon??>value="${coupon.amount!}"</#if> datatype="*" errormsg="投资体验券金额不能为空">
 			</div>
 		</div>
-        <div class="form-group coupon-hide invest-coupon" >
-            <label  class="col-sm-2 control-label">体验券有效期限(天): </label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control coupon-deadline" name="deadline" placeholder="" <#if coupon??>value="${coupon.deadline!}"</#if> datatype="*" errormsg="体验券有效期限不能为空">
-            </div>
-        </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">发放对象:</label>
             <div class="col-sm-2 coupon-hide invest-coupon">
@@ -78,8 +72,8 @@
             </div>
         </div>
 
-		<div class="form-group newbie-coupon">
-			<label  class="col-sm-2 control-label ">活动期限: </label>
+		<div class="form-group">
+			<label  class="col-sm-2 control-label ">有效期限: </label>
 			<div class="col-sm-2">
 				<div class='input-group date' id='startTime'>
 					<input type='text' class="form-control coupon-start" name="startTime" <#if coupon??>value="${(coupon.startTime?string("yyyy-MM-dd HH:mm"))!}"</#if>  datatype="date" errormsg="请选择活动开始时间"/>

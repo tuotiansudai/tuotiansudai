@@ -11,11 +11,13 @@
     </beans:bean>
 
     <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.security.MyAccessDeniedHandler">
+        <beans:property name="loginUrl" value="/login"/>
         <beans:property name="errorPage" value="/error/404"/>
         <beans:property name="onlyUserAccessDeniedRedirect" value="/register/account"/>
         <beans:property name="errorPageMapping">
             <beans:map>
                 <beans:entry key="/login" value="/"/>
+                <beans:entry key="/logout" value="/"/>
                 <beans:entry key="/register/user" value="/"/>
                 <beans:entry key="/register/account" value="/"/>
             </beans:map>
@@ -65,6 +67,7 @@
         <intercept-url pattern="/robots.txt" access="permitAll()"/>
 
         <intercept-url pattern="/" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/point/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/login/**" access="isAnonymous()"/>
         <intercept-url pattern="/login-handler" access="isAnonymous()"/>
         <intercept-url pattern="/logout" access="not isAnonymous()"/>
@@ -86,7 +89,12 @@
         <intercept-url pattern="/loan/**" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/referrer/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/my-treasure/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
-
+        <intercept-url pattern="/point/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/checkLogin" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/no-password-invest/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/invest-success/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/activity/draw-tiandou" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/activity/point-lottery" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/contract/investor/**" access="hasAuthority('INVESTOR')"/>
         <intercept-url pattern="/contract/loaner/**" access="hasAuthority('LOANER')"/>
 

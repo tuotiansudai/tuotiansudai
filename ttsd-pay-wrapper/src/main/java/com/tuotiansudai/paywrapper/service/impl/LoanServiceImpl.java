@@ -13,7 +13,6 @@ import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AutoLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.LoanOutSuccessHandleJob;
-import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -98,9 +97,6 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
-
-    @Autowired
-    private JPushAlertService jPushAlertService;
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(long loanId) {

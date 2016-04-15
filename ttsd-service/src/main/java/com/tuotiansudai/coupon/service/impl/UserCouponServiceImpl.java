@@ -4,26 +4,29 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
+import com.google.common.primitives.Ints;
+import com.google.common.primitives.Longs;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.CouponUseRecordView;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.coupon.service.UserCouponService;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.CouponType;
+import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.UserBirthdayUtil;
+import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -41,28 +44,43 @@ public class UserCouponServiceImpl implements UserCouponService {
     private CouponMapper couponMapper;
 
     @Autowired
-    private UserBirthdayUtil userBirthdayUtil;
+    private AccountMapper accountMapper;
 
     @Override
-    public List<UserCouponDto> getUserCoupons(String loginName, List<CouponType> couponTypeList) {
-        List<UserCouponModel> modelList = userCouponMapper.findByLoginName(loginName, couponTypeList);
-        List<UserCouponDto> userCouponDtoList = new ArrayList<>();
-        for (UserCouponModel couponModel : modelList) {
-            CouponModel coupon = couponMapper.findById(couponModel.getCouponId());
-            UserCouponDto dto = new UserCouponDto(coupon, couponModel);
-            userCouponDtoList.add(dto);
+    public List<UserCouponView> getUnusedUserCoupons(String loginName) {
+        List<UserCouponView> unusedCoupons = userCouponMapper.findUnusedCoupons(loginName);
+
+        for (int i = unusedCoupons.size() - 1; i >= 0; i--) {
+            if (unusedCoupons.get(i).getCouponType() == CouponType.BIRTHDAY_COUPON) {
+                unusedCoupons.remove(i);
+            }
         }
-        Collections.sort(userCouponDtoList);
-        return userCouponDtoList;
+        Collections.sort(unusedCoupons);
+        return unusedCoupons;
     }
-    @Override
-    public List<UserCouponDto> getUsableCoupons(String loginName, final long loanId) {
-        final LoanModel loanModel = loanMapper.findById(loanId);
-        if (loanModel == null) {
-            return Lists.newArrayList();
-        }
 
+    @Override
+    public List<UserCouponView> findUseRecords(String loginName) {
+        return userCouponMapper.findUseRecords(loginName);
+    }
+
+    @Override
+    public List<UserCouponView> getExpiredUserCoupons(String loginName) {
+        List<UserCouponView> expiredCoupons = userCouponMapper.findExpiredCoupons(loginName);
+
+        for (int i = expiredCoupons.size() - 1; i >= 0; i--) {
+            if (expiredCoupons.get(i).getCouponType() == CouponType.BIRTHDAY_COUPON) {
+                expiredCoupons.remove(i);
+            }
+        }
+        Collections.sort(expiredCoupons);
+        return expiredCoupons;
+    }
+
+    @Override
+    public List<UserCouponDto> getInvestUserCoupons(String loginName, long loanId) {
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
+
         List<UserCouponDto> dtoList = Lists.transform(userCouponModels, new Function<UserCouponModel, UserCouponDto>() {
             @Override
             public UserCouponDto apply(UserCouponModel userCouponModel) {
@@ -73,32 +91,65 @@ public class UserCouponServiceImpl implements UserCouponService {
         return Lists.newArrayList(Iterators.filter(dtoList.iterator(), new Predicate<UserCouponDto>() {
             @Override
             public boolean apply(UserCouponDto dto) {
-                boolean isUsable = dto.getProductTypeList().contains(loanModel.getProductType()) && dto.isUnused();
-                switch (dto.getCouponType()) {
-                    case BIRTHDAY_COUPON:
-                        return isUsable && userBirthdayUtil.isBirthMonth(dto.getLoginName());
-                    default:
-                        return isUsable;
-                }
+                return dto.isUnused();
             }
         }));
     }
 
+    /**
+     * 收益相同时，选择最早即将过期的优惠券。过期时间仍然相同时，按照生日福利、红包、新手体验券、投资体验券、加息券的顺序选择，若券的类别也相同时，任选其一。
+     */
     @Override
-    public BaseDto<BasePaginationDataDto> findUseRecords(List<CouponType> couponTypeList, String loginName, int index, int pageSize) {
-        int count = userCouponMapper.findUseRecordsCount(couponTypeList, loginName);
-        List<CouponUseRecordView> couponUseRecordList = userCouponMapper.findUseRecords(couponTypeList, loginName, (index - 1) * pageSize, pageSize);
+    public UserCouponDto getMaxBenefitUserCoupon(String loginName, long loanId, long amount) {
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
 
-        for (CouponUseRecordView curm : couponUseRecordList) {
-            curm.setExpectedIncomeStr(AmountConverter.convertCentToString(curm.getExpectedIncome()));
-            curm.setInvestAmountStr(AmountConverter.convertCentToString(curm.getInvestAmount()));
-            curm.setCouponAmountStr(AmountConverter.convertCentToString(curm.getCouponAmount()));
+        final LoanModel loanModel = loanMapper.findById(loanId);
+        if (loanModel == null || amount < loanModel.getMinInvestAmount() || amount > loanModel.getMaxInvestAmount()) {
+            return null;
         }
 
-        BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
-        BasePaginationDataDto<CouponUseRecordView> dataDto = new BasePaginationDataDto<>(index, pageSize, count, couponUseRecordList);
-        baseDto.setData(dataDto);
-        dataDto.setStatus(true);
-        return baseDto;
+        List<UserCouponModel> usableUserCoupons = Lists.newArrayList(Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
+            @Override
+            public boolean apply(UserCouponModel userCouponModel) {
+                boolean unused = InvestStatus.SUCCESS != userCouponModel.getStatus() && userCouponModel.getEndTime().after(new Date());
+                boolean productTypeEnable = couponMapper.findById(userCouponModel.getCouponId()).getProductTypes().contains(loanModel.getProductType());
+                return unused && productTypeEnable;
+            }
+        }));
+
+        List<UserCouponModel> maxBenefitUserCoupons = Lists.newArrayList();
+        long maxBenefit = 0;
+        for (UserCouponModel usableUserCoupon : usableUserCoupons) {
+            CouponModel couponModel = couponMapper.findById(usableUserCoupon.getCouponId());
+            long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(loanModel, couponModel, amount);
+            long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount);
+            long actualInterest = expectedInterest - expectedFee;
+            if (maxBenefit < actualInterest) {
+                maxBenefit = actualInterest;
+                maxBenefitUserCoupons = Lists.newArrayList(usableUserCoupon);
+            }
+            if (maxBenefit == actualInterest) {
+                maxBenefitUserCoupons.add(usableUserCoupon);
+            }
+        }
+
+        final List<CouponType> couponTypePriority = Lists.newArrayList(CouponType.BIRTHDAY_COUPON, CouponType.RED_ENVELOPE, CouponType.NEWBIE_COUPON, CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON);
+
+        List<UserCouponModel> orderingMaxBenefitUserCoupons = new Ordering<UserCouponModel>() {
+            @Override
+            public int compare(UserCouponModel left, UserCouponModel right) {
+                int endTimeCompare = Longs.compare(left.getEndTime().getTime(), right.getEndTime().getTime());
+                if (endTimeCompare != 0) {
+                    return endTimeCompare;
+                }
+
+                CouponType leftCouponType = couponMapper.findById(left.getCouponId()).getCouponType();
+                CouponType rightCouponType = couponMapper.findById(right.getCouponId()).getCouponType();
+                return Ints.compare(couponTypePriority.indexOf(leftCouponType), couponTypePriority.indexOf(rightCouponType));
+            }
+        }.sortedCopy(maxBenefitUserCoupons);
+
+        return orderingMaxBenefitUserCoupons.isEmpty() ? null :
+                new UserCouponDto(couponMapper.findById(orderingMaxBenefitUserCoupons.get(0).getCouponId()), orderingMaxBenefitUserCoupons.get(0));
     }
 }

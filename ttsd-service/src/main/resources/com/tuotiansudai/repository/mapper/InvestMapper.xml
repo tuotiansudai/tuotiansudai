@@ -15,6 +15,7 @@
         <result column="source" property="source"></result>
         <result column="is_auto_invest" property="isAutoInvest"></result>
         <result column="channel" property="channel"></result>
+        <result column="is_no_password_invest" property="isNoPasswordInvest"></result>
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
@@ -49,12 +50,12 @@
     </resultMap>
 
     <sql id="columns">
-        id, login_name, loan_id, amount, status, source, is_auto_invest, channel, created_time
+        id, login_name, loan_id, amount, status, source, is_auto_invest, channel, is_no_password_invest, created_time
     </sql>
 
     <insert id="create" parameterType="InvestModel">
         insert into invest ( <include refid="columns"></include> )
-        value(#{id}, #{loginName}, #{loanId}, #{amount}, #{status}, #{source}, #{isAutoInvest}, #{channel}, #{createdTime})
+        value(#{id}, #{loginName}, #{loanId}, #{amount}, #{status}, #{source}, #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime})
     </insert>
 
     <update id="updateStatus" parameterType="map">
@@ -65,6 +66,14 @@
         select <include refid="columns"></include>
         from invest
         where id = #{id}
+    </select>
+
+    <select id="findLatestSuccessInvest" parameterType="string" resultMap="investResultMap">
+        select <include refid="columns"></include>
+        from invest
+        where login_name = #{loginName}
+        order by created_time desc
+        limit 1;
     </select>
 
     <select id="findByLoginName" parameterType="map" resultMap="investResultMap">
@@ -141,7 +150,14 @@
     <select id="sumSuccessInvestAmountByLoginName" parameterType="map" resultType="long">
         select IFNULL(sum(amount),0)
         from invest
-        where loan_id = #{loanId} and login_name = #{loginName}
+        <where>
+            <if test="loanId != null">
+                and loan_id = #{loanId}
+            </if>
+            <if test="loginName != null">
+                and login_name = #{loginName}
+            </if>
+        </where>
         and status = 'SUCCESS'
     </select>
 
@@ -307,15 +323,6 @@
         select count(*) from account a where not exists(select 1 from invest i where a.login_name = i.login_name and i.status='SUCCESS');
     </select>
 
-    <select id="hasSuccessInvest" resultType="boolean" parameterType="string">
-        select case count(1)
-               when 0
-                   then 0
-               else 1
-               end
-        from invest
-        where login_name = #{loginName} and status = 'SUCCESS';
-    </select>
     <select id="findNoInvestInThirtyDay" resultType="string" >
         SELECT
         t.`login_name`

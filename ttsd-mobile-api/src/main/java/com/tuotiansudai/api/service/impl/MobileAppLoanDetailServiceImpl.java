@@ -17,11 +17,13 @@ import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -38,6 +40,10 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     @Value("${web.server}")
     private String domainName;
 
+    private String title = "拓天速贷引领投资热，开启互金新概念";
+
+    private String content = "个人经营借款理财项目，总额{0}元期限{1}{2}，年化利率{3}%，先到先抢！！！";
+
     @Override
     public BaseResponseDto generateLoanDetail(LoanDetailRequestDto loanDetailRequestDto) {
         BaseResponseDto<LoanDetailResponseDataDto> dto = new BaseResponseDto<LoanDetailResponseDataDto>();
@@ -45,8 +51,8 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         LoanModel loan = loanMapper.findById(Long.parseLong(loanId));
 
         if (loan == null) {
-            log.info("标的详情" + ReturnMessage.LOAN_ID_IS_NOT_EXIST.getCode() + ":" + ReturnMessage.LOAN_ID_IS_NOT_EXIST.getMsg());
-            return new BaseResponseDto(ReturnMessage.LOAN_ID_IS_NOT_EXIST.getCode(), ReturnMessage.LOAN_ID_IS_NOT_EXIST.getMsg());
+            log.info("标的详情" + ReturnMessage.LOAN_NOT_FOUND.getCode() + ":" + ReturnMessage.LOAN_NOT_FOUND.getMsg());
+            return new BaseResponseDto(ReturnMessage.LOAN_NOT_FOUND.getCode(), ReturnMessage.LOAN_NOT_FOUND.getMsg());
         }
 
         LoanDetailResponseDataDto loanDetailResponseDataDto = this.convertLoanDetailFromLoan(loan);
@@ -67,10 +73,13 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setRepayTypeCode("");
         loanDetailResponseDataDto.setRepayTypeName(repayTypeName);
         loanDetailResponseDataDto.setInterestPointName(interestPointName);
+        loanDetailResponseDataDto.setPeriods(loan.getPeriods());
         loanDetailResponseDataDto.setDeadline(loan.getPeriods());
         loanDetailResponseDataDto.setRepayUnit(loan.getType().getLoanPeriodUnit().getDesc());
         loanDetailResponseDataDto.setRatePercent(decimalFormat.format((loan.getBaseRate() + loan.getActivityRate()) * 100));
         loanDetailResponseDataDto.setLoanMoney(AmountConverter.convertCentToString(loan.getLoanAmount()));
+        loanDetailResponseDataDto.setTitle(title);
+        loanDetailResponseDataDto.setContent(MessageFormat.format(content,loanDetailResponseDataDto.getLoanMoney(),loanDetailResponseDataDto.getDeadline(),loanDetailResponseDataDto.getRepayUnit(),loanDetailResponseDataDto.getRatePercent()));
         if(LoanStatus.PREHEAT.equals(loan.getStatus())){
             loanDetailResponseDataDto.setLoanStatus(LoanStatus.RAISING.name().toLowerCase());
             loanDetailResponseDataDto.setLoanStatusDesc(LoanStatus.RAISING.getDescription());
@@ -87,7 +96,10 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         }
         loanDetailResponseDataDto.setRemainTime(calculateRemainTime(loan.getFundraisingEndTime(), loan.getStatus()));
         if (loan.getFundraisingStartTime() != null) {
-            loanDetailResponseDataDto.setInvestBeginTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loan.getFundraisingStartTime()));
+            loanDetailResponseDataDto.setInvestBeginTime(new DateTime(loan.getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm:ss"));
+        }
+        if(loan.getFundraisingEndTime() != null){
+            loanDetailResponseDataDto.setFundRaisingEndTime(new DateTime(loan.getFundraisingEndTime()).toString("yyyy-MM-dd HH:mm:ss"));
         }
         loanDetailResponseDataDto.setInvestBeginSeconds(CommonUtils.calculatorInvestBeginSeconds(loan.getFundraisingStartTime()));
         long investedAmount = investMapper.sumSuccessInvestAmount(loan.getId());

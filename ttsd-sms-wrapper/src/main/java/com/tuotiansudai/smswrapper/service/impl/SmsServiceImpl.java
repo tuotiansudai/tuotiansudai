@@ -14,13 +14,11 @@ import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.client.SmsClient;
 import com.tuotiansudai.smswrapper.repository.mapper.*;
 import com.tuotiansudai.smswrapper.service.SmsService;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +60,13 @@ public class SmsServiceImpl implements SmsService {
         Map<String, String> map = ImmutableMap.<String, String>builder().put("captcha", captcha).build();
         String content = SmsTemplate.SMS_MOBILE_CAPTCHA_TEMPLATE.generateContent(map);
         return smsClient.sendSMS(RetrievePasswordCaptchaMapper.class, mobile, content, ip);
+    }
+
+    @Override
+    public BaseDto<SmsDataDto> sendNoPasswordInvestCaptcha(String mobile, String captcha, String ip) {
+        Map<String, String> map = ImmutableMap.<String, String>builder().put("captcha", captcha).build();
+        String content = SmsTemplate.SMS_NO_PASSWORD_INVEST_CAPTCHA_TEMPLATE.generateContent(map);
+        return smsClient.sendSMS(TurnOffNoPasswordInvestCaptchaMapper.class, mobile, content, ip);
     }
 
     @Override
@@ -112,10 +117,9 @@ public class SmsServiceImpl implements SmsService {
         return smsClient.sendSMS(CouponNotifyMapper.class, notifyDto.getMobile(), content, "");
     }
 
-
     @Override
-    public BaseDto<SmsDataDto> loanRepayNotify(String mobile, String loanName, String repayAmount) {
-        Map<String, String> map = ImmutableMap.<String, String>builder().put("loanName", loanName).put("repayAmount", repayAmount).build();
+    public BaseDto<SmsDataDto> loanRepayNotify(String mobile, String repayAmount) {
+        Map<String, String> map = ImmutableMap.<String, String>builder().put("repayAmount", repayAmount).build();
         String content = SmsTemplate.SMS_LOAN_REPAY_NOTIFY_TEMPLATE.generateContent(map);
         return smsClient.sendSMS(LoanRepayNotifyMapper.class, mobile, content, "");
     }

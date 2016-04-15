@@ -3,6 +3,7 @@ package com.tuotiansudai.coupon.service.impl;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -13,11 +14,16 @@ import com.tuotiansudai.coupon.util.UserCollector;
 import com.tuotiansudai.dto.SmsCouponNotifyDto;
 import com.tuotiansudai.job.CouponNotifyJob;
 import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.AuditLogUtil;
 import com.tuotiansudai.util.JobManager;
+import com.tuotiansudai.util.UserBirthdayUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -63,11 +69,20 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     @Resource(name = "staffRecommendLevelOneCollector")
     private UserCollector staffRecommendLevelOneCollector;
 
+    @Resource(name = "exchangerCollector")
+    private UserCollector exchangerCollector;
+
+    @Resource(name = "winnerCollector")
+    private UserCollector winnerCollector;
+
     @Autowired
     private UserMapper userMapper;
 
     @Autowired
     private CouponMapper couponMapper;
+
+    @Autowired
+    private CouponExchangeMapper couponExchangeMapper;
 
     @Autowired
     private UserCouponMapper userCouponMapper;
@@ -78,22 +93,40 @@ public class CouponActivationServiceImpl implements CouponActivationService {
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
+    @Autowired
+    private AccountMapper accountMapper;
+
+    @Autowired
+    private AuditLogUtil auditLogUtil;
+
+    @Autowired
+    private UserBirthdayUtil userBirthdayUtil;
+
     @Transactional
     @Override
-    public void inactive(String loginNameLoginName, long couponId) {
+    public void inactive(String loginName, long couponId, String ip) {
         CouponModel couponModel = couponMapper.findById(couponId);
         if (!couponModel.isActive() || (couponModel.getCouponType() != CouponType.NEWBIE_COUPON && couponModel.getCouponType() != CouponType.RED_ENVELOPE && couponModel.getCouponType() != CouponType.BIRTHDAY_COUPON)) {
             return;
         }
         couponModel.setActive(false);
-        couponModel.setActivatedBy(loginNameLoginName);
+        couponModel.setActivatedBy(loginName);
         couponModel.setActivatedTime(new Date());
         couponMapper.updateCoupon(couponModel);
+
+        AccountModel auditor = accountMapper.findByLoginName(loginName);
+        String auditorRealName = auditor == null ? loginName : auditor.getUserName();
+
+        AccountModel operator = accountMapper.findByLoginName(couponModel.getCreatedBy());
+        String operatorRealName = operator == null ? couponModel.getCreatedBy() : operator.getUserName();
+
+        String description = auditorRealName + " 撤销了 " + operatorRealName + " 创建的 " + couponModel.getCouponType().getName() + "。";
+        auditLogUtil.createAuditLog(loginName, couponModel.getCreatedBy(), OperationType.COUPON, String.valueOf(couponId), description, ip);
     }
 
     @Transactional
     @Override
-    public void active(String operatorLoginName, long couponId, String ip) {
+    public void active(String loginName, long couponId, String ip) {
         CouponModel couponModel = couponMapper.findById(couponId);
         if (couponModel.isActive()) {
             return;
@@ -101,18 +134,23 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
         UserCollector collector = this.getCollector(couponModel.getUserGroup());
 
-        couponModel.setTotalCount(collector.count(couponId));
-
-        if (couponModel.getDeadline() != null) {
-            Date now = new Date();
-            couponModel.setStartTime(new DateTime(now).withTimeAtStartOfDay().toDate());
-            couponModel.setEndTime(new DateTime(now).plusDays(couponModel.getDeadline()).withTimeAtStartOfDay().minusSeconds(1).toDate());
+        if (collector != null && couponModel.getUserGroup() != UserGroup.EXCHANGER) {
+            couponModel.setTotalCount(collector.count(couponId));
         }
 
         couponModel.setActive(true);
-        couponModel.setActivatedBy(operatorLoginName);
+        couponModel.setActivatedBy(loginName);
         couponModel.setActivatedTime(new Date());
         couponMapper.updateCoupon(couponModel);
+
+        AccountModel auditor = accountMapper.findByLoginName(loginName);
+        String auditorRealName = auditor == null ? loginName : auditor.getUserName();
+
+        AccountModel operator = accountMapper.findByLoginName(couponModel.getCreatedBy());
+        String operatorRealName = operator == null ? couponModel.getCreatedBy() : operator.getUserName();
+
+        String description = auditorRealName + " 激活了 " + operatorRealName + " 创建的 " + couponModel.getCouponType().getName() + "。";
+        auditLogUtil.createAuditLog(loginName, couponModel.getCreatedBy(), OperationType.COUPON, String.valueOf(couponId), description, ip);
 
         if (couponModel.isSmsAlert()) {
             this.createSmsNotifyJob(couponId);
@@ -143,27 +181,43 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Override
     @Transactional
-    public void assignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups) {
+    public void assignUserCoupon(String loginNameOrMobile, final List<UserGroup> userGroups, final Long couponId) {
         final String loginName = userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName();
 
-        List<CouponModel> coupons = couponMapper.findAllActiveCoupons();
+        List<CouponModel> coupons  = couponMapper.findById(couponId) == null ? couponMapper.findAllActiveCoupons() : Lists.newArrayList(couponMapper.findById(couponId));
 
         List<CouponModel> couponModels = Lists.newArrayList(Iterators.filter(coupons.iterator(), new Predicate<CouponModel>() {
             @Override
             public boolean apply(CouponModel couponModel) {
                 boolean isInUserGroup = userGroups.contains(couponModel.getUserGroup())
                         && CouponActivationServiceImpl.this.getCollector(couponModel.getUserGroup()).contains(couponModel.getId(), loginName);
-                List<UserCouponModel> existingUserCouponModels = userCouponMapper.findByLoginNameAndCouponId(loginName, couponModel.getId());
-                boolean hasNoUsableCoupon = CollectionUtils.isEmpty(existingUserCouponModels);
+                List<UserCouponModel> existingUserCoupons = userCouponMapper.findByLoginNameAndCouponId(loginName, couponModel.getId());
+
+                boolean isExchangeableCoupon = this.isExchangeableCoupon(couponModel);
+                boolean isAssignableCoupon = this.isAssignableCoupon(couponModel, existingUserCoupons);
+                boolean isLotteryWinner = this.isLotteryWinner(couponModel);
+                return isInUserGroup && (isAssignableCoupon || isExchangeableCoupon || isLotteryWinner);
+            }
+
+            private boolean isLotteryWinner(CouponModel couponModel) {
+                return couponModel.getUserGroup() == UserGroup.WINNER;
+            }
+
+            private boolean isExchangeableCoupon(CouponModel couponModel) {
+                return CouponActivationServiceImpl.this.couponExchangeMapper.findByCouponId(couponModel.getId()) != null;
+            }
+
+            private boolean isAssignableCoupon(CouponModel couponModel, List<UserCouponModel> existingUserCouponModels) {
+                boolean isAssignableCoupon = CollectionUtils.isEmpty(existingUserCouponModels);
                 if (CollectionUtils.isNotEmpty(existingUserCouponModels) && couponModel.isMultiple()) {
-                    hasNoUsableCoupon = Iterables.all(existingUserCouponModels, new Predicate<UserCouponModel>() {
+                    isAssignableCoupon = Iterables.all(existingUserCouponModels, new Predicate<UserCouponModel>() {
                         @Override
                         public boolean apply(UserCouponModel input) {
                             return input.getStatus() == InvestStatus.SUCCESS;
                         }
                     });
                 }
-                return isInUserGroup && hasNoUsableCoupon;
+                return isAssignableCoupon && !this.isExchangeableCoupon(couponModel);
             }
         }));
 
@@ -171,7 +225,14 @@ public class CouponActivationServiceImpl implements CouponActivationService {
             CouponModel lockedCoupon = couponMapper.lockById(couponModel.getId());
             lockedCoupon.setIssuedCount(couponModel.getIssuedCount() + 1);
             couponMapper.updateCoupon(lockedCoupon);
-            UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId());
+            Date startTime = couponModel.getStartTime();
+            Date endTime = couponModel.getEndTime();
+            if (couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON) {
+                DateTime userBirthday = userBirthdayUtil.getUserBirthday(loginName);
+                startTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMinimumValue().withTimeAtStartOfDay().toDate();
+                endTime = new DateTime().withMonthOfYear(userBirthday.getMonthOfYear()).dayOfMonth().withMaximumValue().withTime(23, 59, 59, 0).toDate();
+            }
+            UserCouponModel userCouponModel = new UserCouponModel(loginName, couponModel.getId(), startTime, endTime);
             userCouponMapper.create(userCouponModel);
         }
     }
@@ -187,6 +248,8 @@ public class CouponActivationServiceImpl implements CouponActivationService {
                 .put(UserGroup.CHANNEL, this.channelCollector)
                 .put(UserGroup.STAFF, this.staffCollector)
                 .put(UserGroup.STAFF_RECOMMEND_LEVEL_ONE, this.staffRecommendLevelOneCollector)
+                .put(UserGroup.EXCHANGER, this.exchangerCollector)
+                .put(UserGroup.WINNER, this.winnerCollector)
                 .build()).get(userGroup);
     }
 

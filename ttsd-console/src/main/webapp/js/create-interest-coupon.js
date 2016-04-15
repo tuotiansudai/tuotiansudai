@@ -1,6 +1,8 @@
-require(['jquery','layerWrapper', 'template','bootstrap', 'jquery-ui', 'bootstrapSelect', 'moment', 'Validform', 'Validform_Datatype', 'csrf'], function($,layer) {
+require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstrapSelect', 'moment', 'Validform', 'Validform_Datatype', 'csrf'], function($,layer) {
     $(function() {
         var $selectDom = $('.selectpicker'), //select表单
+            $dateStart = $('#startTime'), //开始时间
+            $dateEnd = $('#endTime'), //结束时间
             $errorDom = $('.form-error'), //错误提示节点
             $submitBtn = $('#btnSave'), //提交按钮
             $couponForm = $('.form-list'),
@@ -10,6 +12,16 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'jquery-ui', 'bootstra
 
         //渲染select表单
         $selectDom.selectpicker();
+
+        $dateStart.datetimepicker({
+            format: 'YYYY-MM-DD'
+        }).on('dp.change', function(e) {
+            $dateEnd.data("DateTimePicker").minDate(e.date);
+        });
+
+        $dateEnd.datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
 
         /**
          * @msg  {[string]} //文字信息
@@ -32,7 +44,7 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'jquery-ui', 'bootstra
         var rep = /^\d+$/;
         var rep_point2 = /^[0-9]+\.[0-9]*$/;
 
-        $('.give-number,.coupon-deadline,.coupon-number').blur(function () {
+        $('.give-number').blur(function () {
             var _this = $(this),
                 text = _this.val(),
                 num = text.replace(rep, "$1");
@@ -75,12 +87,6 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'jquery-ui', 'bootstra
                     showErrorMessage('加息券利率需要大于0', $('.coupon-rate', curform));
                     return false;
                 }
-                var periods = parseInt($('.coupon-number', curform).val());
-                $errorDom.html('');
-                if (periods <= 0) {
-                    showErrorMessage('金额最小为1', $('.coupon-number', curform));
-                    return false;
-                }
                 var fivenumber = parseInt($('.give-number', curform).val());
                 if (fivenumber <= 0) {
                     showErrorMessage('发放数量最小为1', $('.give-number', curform));
@@ -121,8 +127,6 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'jquery-ui', 'bootstra
 
         function iniForm(){
             $errorDom.html('');
-            $('.coupon-number').val('');
-            $('.coupon-deadline').val('');
             $('.give-number').val('');
             $('.invest-quota').val('');
             $('.smsAlert').eq(0).prop('checked',true)

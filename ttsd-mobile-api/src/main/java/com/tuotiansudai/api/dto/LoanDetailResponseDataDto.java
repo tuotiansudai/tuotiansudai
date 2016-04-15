@@ -8,6 +8,7 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
     private String loanName;
     private String repayTypeCode;
     private String repayTypeName;
+    private Integer periods;
     private Integer deadline;
     private String repayUnit;
     private String ratePercent;
@@ -26,12 +27,16 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
     private String remainTime;
     private String investBeginTime;
     private String investBeginSeconds;
+    private String fundRaisingEndTime;
     private String minInvestMoney;
     private String cardinalNumber;
     private String maxInvestMoney;
     private String raiseCompletedTime;
     private String interestPointName;
     private String investFeeRate;
+    private String title;
+    private String content;
+
 
     private List<EvidenceResponseDataDto> evidence;
 
@@ -77,13 +82,12 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
         this.repayTypeName = repayTypeName;
     }
 
-
-    public Integer getDeadline() {
-        return deadline;
+    public Integer getPeriods() {
+        return periods;
     }
 
-    public void setDeadline(Integer deadline) {
-        this.deadline = deadline;
+    public void setPeriods(Integer periods) {
+        this.periods = periods;
     }
 
     public String getRepayUnit() {
@@ -284,5 +288,37 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
 
     public void setInvestFeeRate(String investFeeRate) {
         this.investFeeRate = investFeeRate;
+    }
+
+    public String getFundRaisingEndTime() {
+        return fundRaisingEndTime;
+    }
+
+    public void setFundRaisingEndTime(String fundRaisingEndTime) {
+        this.fundRaisingEndTime = fundRaisingEndTime;
+    }
+
+    public Integer getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Integer deadline) {
+        this.deadline = deadline;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }
