@@ -236,9 +236,9 @@
                                 <#list loan.loanTitles as loanTitleRelation >
                                     <#if loanTitle.id == loanTitleRelation.titleId>
                                         <div class="title">${loanTitle.title}：</div>
-                                        <#list loanTitleRelation.applicationMaterialUrls?split(",") as title>
-                                            <img layer-src="${title}" src="${title}" alt="${loanTitle.title}"/>
-                                        </#list>
+                                            <#list loanTitleRelation.applicationMaterialUrls?split(",") as title>
+                                                <a href="${title}" rel="example_group"><img layer-src="${title}" src="${title}" alt="${loanTitle.title}"/></a>
+                                            </#list>
                                     </#if>
                                 </#list>
                             </#list>
