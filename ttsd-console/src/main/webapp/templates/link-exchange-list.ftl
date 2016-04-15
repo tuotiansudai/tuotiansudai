@@ -1,5 +1,6 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="linkexchange.js" headLab="announce-manage" sideLab="linkexchangeMan" title="友链管理">
+<@global.main pageCss="" pageJavascript="link-exchange.js" headLab="announce-manage" sideLab="linkExchangeMan" title="友链管理">
 <!-- content area begin -->
 
 <div class="col-md-10">
@@ -25,14 +26,18 @@
             </tr>
             </thead>
             <tbody>
-                <#list linkExchangeList as linkexchange>
+                <#list linkExchangeList as linkExchange>
                 <tr>
-                    <td>${linkexchange.title!}</td>
-                    <td>${linkexchange.linkUrl!}</td>
-                    <td>${(linkexchange.updateTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
-                    <td><a href="/linkexchange-manage/linkexchange/edit/${(linkexchange.id?string('0'))!}" class="btn btn-link"> 编辑</a>
+                    <td>${linkExchange.title!}</td>
+                    <td>${linkExchange.linkUrl!}</td>
+                    <td>${(linkExchange.updateTime?string('yyyy-MM-dd HH:mm:ss'))!}</td>
+                    <td>
+                    <@security.authorize access="hasAnyAuthority('OPERATOR','OPERATOR_ADMIN','ADMIN')">
+                        <a href="/link-exchange-manage/link-exchange/edit/${(linkExchange.id?string('0'))!}" class="btn btn-link"> 编辑</a>
                         | <a href="#" class="btn btn-link jq-delete"
-                             data-id="${(linkexchange.id?string('0'))!}">删除</a></td>
+                             data-id="${(linkExchange.id?string('0'))!}">删除</a>
+                    </@security.authorize>
+                    </td>
                 </tr>
                 </#list>
             </tbody>
@@ -46,7 +51,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/linkexchange-manage/linkexchange?title=${title!}&index=${index-1}&pageSize=${pageSize}">
+                    <a href="/link-exchange-manage/link-exchange?title=${title!}&index=${index-1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -56,7 +61,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage>
-                    <a href="/linkexchange-manage/linkexchange?title=${title!}&index=${index+1}&pageSize=${pageSize}">
+                    <a href="/link-exchange-manage/link-exchange?title=${title!}&index=${index+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>

@@ -1,18 +1,18 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="linkexchange-edit.js" headLab="announce-manage" sideLab="linkexchangeMan" title="添加友链">
+<@global.main pageCss="" pageJavascript="linkexchange-edit.js" headLab="announce-manage" sideLab="linkExchangeMan" title="添加友链">
 
 <!-- content area begin -->
 <div class="col-md-10">
     <div class="row">
         <form class="form-horizontal jq-form">
-            <input type="hidden" class="jq-id" value="${(linkexchange.id?string('0'))!}">
+            <input type="hidden" class="jq-id" value="${(linkExchange.id?string('0'))!}">
 
             <div class="form-group">
                 <label class="col-sm-1 control-label">标题: </label>
 
                 <div class="col-sm-4">
                     <input type="text" class="form-control jq-title" placeholder="" datatype="*" errormsg="标题不能为空"
-                           <#if linkexchange??>value="${linkexchange.title!}"</#if>>
+                           <#if linkExchange??>value="${linkExchange.title!}"</#if>>
                 </div>
             </div>
             <div class="form-group">
@@ -20,7 +20,7 @@
 
                 <div class="col-sm-4">
                     <input type="text" class="form-control jq-linkurl" placeholder="" datatype="*" errormsg="链接地址不能为空"
-                           <#if linkexchange??>value="${linkexchange.linkUrl!}"</#if>>
+                           <#if linkExchange??>value="${linkExchange.linkUrl!}"</#if>>
                 </div>
             </div>
             <div class="form-group">
