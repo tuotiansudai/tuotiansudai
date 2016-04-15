@@ -69,6 +69,15 @@ public class MobileAppTransferApplicationControllerTest extends ControllerTestBa
         assertEquals(ReturnMessage.SUCCESS.getCode(), successResponseDto.getCode());
     }
 
+    @Test
+    public void shouldTransferPurchaseIsOk() throws Exception{
+        TransferPurchaseRequestDto transferPurchaseRequestDto = new TransferPurchaseRequestDto();
+        transferPurchaseRequestDto.setTransferApplicationId("123");
+        when(service.transferPurchase(any(TransferPurchaseRequestDto.class))).thenReturn(successResponseDto);
+        doRequestWithServiceMockedTest("/get/transfer-purchase", transferPurchaseRequestDto);
+        assertEquals(ReturnMessage.SUCCESS.getCode(), successResponseDto.getCode());
+    }
+
 
 
 
