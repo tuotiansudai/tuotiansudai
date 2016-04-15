@@ -69,7 +69,7 @@ public class InvestRepayRecordResponseDataDto {
         if (investRepay.getStatus() == RepayStatus.COMPLETE) {
             this.repayDay = sdf.format(investRepay.getActualRepayDate());
         }else{
-            this.repayDay = sdf.format(investRepay.getRepayDate());
+            this.repayDay = sdfDay.format(investRepay.getRepayDate());
         }
         this.corpus = AmountConverter.convertCentToString(investRepay.getCorpus());
         if (RepayStatus.COMPLETE == investRepay.getStatus()) {

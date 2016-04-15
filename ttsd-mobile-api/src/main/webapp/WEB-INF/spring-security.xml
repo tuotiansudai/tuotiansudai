@@ -20,7 +20,6 @@
         <beans:property name="passwordEncoder" ref="myShaPasswordEncoder"/>
         <beans:property name="saltSource" ref="saltSource"/>
         <beans:property name="userDetailsService" ref="myUserDetailsService"/>
-        <beans:property name="usernameParameter" value="j_username"/>
         <beans:property name="enableCaptchaVerify" value="false"/>
     </beans:bean>
 

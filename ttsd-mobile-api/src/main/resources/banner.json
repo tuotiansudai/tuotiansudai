@@ -3,7 +3,7 @@
     "pictureId": "",
     "title": "拓天速贷",
     "url": "{web}/activity/rank-list-app?source=app",
-    "sharedUrl": "{web}/activity/rank-list-app",
+    "sharedUrl": "{web}/activity/rank-list",
     "seqNum": 1,
     "picture": "{static}/images/app-banner/app-banner-top.jpg",
     "noticeId": "",
