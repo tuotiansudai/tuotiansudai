@@ -26,8 +26,12 @@
    			<div class="example-case-detail"></div>
    		</div>
    		<div class="share-recommend">
-   			<a href="javascript:;">点击注册</a>
-   			<a href="javascript:;">推荐好友</a>
+   			<@global.isAnonymous>
+			<a href="/login">denglu</a>
+			</@global.isAnonymous>
+			<@global.isNotAnonymous>
+			<a href="javascript:;">推荐好友</a>
+			</@global.isNotAnonymous>
    		</div>
    		<div class="share-rules">
    			<div class="rules-title">
@@ -48,7 +52,17 @@
 	<div class="rank-phone-model">
         <img src="${staticServer}/images/sign/actor/sharereward/share-phone-top.png" width="100%">
     </div>
-    <div class="wp">
+    <div class="wp clearfix">
+    	<#if isAppSource>
+    	<div id="reward-code" class="reward-code">
+    		<input id="address" class="address" value="http://www.baidu.com" />
+    		<div id="code" class="code"></div>
+    		<div class="code-text">
+				<p>长按二维码</p>
+				<p>轻松注册&nbsp;坐享收益</p>
+    		</div>
+    	</div>
+    	</#if>
 	    <div class="reward-info-title">	</div>
 	    <div class="share-example"></div>
 	    <div class="share-recommend">

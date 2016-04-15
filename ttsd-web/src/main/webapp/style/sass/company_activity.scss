@@ -2361,6 +2361,39 @@
   }
   .wp{
     padding:0 2%;
+    .reward-code{
+      height:80px;
+      width:100%;
+      margin-top:25px;
+      padding-left:24%;
+      position:relative;
+      margin-bottom: -10px;
+      .address{
+        display:none;
+      }
+      table td {
+        padding: 0px 0 0px 0px;
+        color: #666;
+        text-align: center;
+      }
+      .code{
+        width:90px;
+        height:87px;
+        border:2px solid #fff;
+      }
+      .code-text{
+        position:absolute;
+        left:30%;
+        top:30%;
+        width:240px;
+        text-align: center;
+        p{
+          font-size:12px;
+          color:#1ea4f0;
+          margin-bottom: 0px;
+        }
+     }
+    }
     .reward-info-title{
       height:185px;   
       background:url("/images/sign/actor/sharereward/share-phone-info.png") no-repeat center;
@@ -2398,6 +2431,10 @@
       background:url("/images/sign/actor/sharereward/share-phone-rules.png") no-repeat center;
       background-size:100% 100%;
       margin-top:-16px;
+    }
+    .clearfix{
+      clear:both;
+      display: block;
     }
   }
 }
