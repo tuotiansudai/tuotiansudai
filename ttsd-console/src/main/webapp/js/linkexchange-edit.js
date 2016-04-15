@@ -18,7 +18,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'jquery-ui','cs
                 return false;
             }
             if(!IsURL($('.jq-linkurl').val())){
-                showErrorMessage("网址格式不正确,请以http://开始");
+                showErrorMessage("网址格式不正确,请以http://或 https://开始");
                 return false;
             }
             $.ajax({
@@ -71,7 +71,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'jquery-ui','cs
         }
         //验证网址的合法性
         function IsURL(str_url){
-            str_url = str_url.match(/http:\/\/.+/);
+            str_url = str_url.match(/^(https|http)?:\/\/.+/);
             if (str_url == null){
                 return false;
             }else{
