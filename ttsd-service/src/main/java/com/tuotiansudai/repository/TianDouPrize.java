@@ -8,17 +8,17 @@ public enum TianDouPrize {
     Cash20("20元现金"),
     InterestCoupon5("0.5%加息券");
 
-    String name;
+    String desc;
 
-    TianDouPrize(String name) {
-        this.name = name;
+    TianDouPrize(String desc) {
+        this.desc = desc;
     }
 
-    public String getName() {
-        return name;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }

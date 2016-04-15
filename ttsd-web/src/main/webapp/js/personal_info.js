@@ -1,4 +1,4 @@
-require(['jquery', 'layerWrapper','cnzz-statistics','jquery.validate', 'jquery.validate.extension', 'jquery.form','jquery.ajax.extension','csrf'], function ($,layer,cnzzPush) {
+require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension', 'jquery.form','jquery.ajax.extension','csrf'], function ($,layer) {
         var $InfoBox = $('#personInfoBox'),
             $changeEmailLayer = $('.setEmail', $InfoBox),
             $turnOnNoPasswordInvestLayer = $('.setTurnOnNoPasswordInvest', $InfoBox),
@@ -28,11 +28,7 @@ require(['jquery', 'layerWrapper','cnzz-statistics','jquery.validate', 'jquery.v
             $umpayPasswordForm = $('form', $resetUmpayPassDOM),
             $turnOffNoPasswordInvestForm = $('#turnOffNoPasswordInvestForm', $turnOffNoPasswordInvestDOM),
             $imageCaptchaForm = $('#imageCaptchaForm', $turnOffNoPasswordInvestDOM),
-            countTimer,
-            cnzzPush = new cnzzPush();
-
-
-
+            countTimer;
 
         $changeEmailLayer.on('click', function () {
             layer.open({

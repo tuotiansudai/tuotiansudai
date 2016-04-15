@@ -18,7 +18,7 @@ public class WithdrawDetailResponseDataDto extends BaseResponseDataDto {
     }
 
     public WithdrawDetailResponseDataDto(WithdrawModel withdrawModel) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.withdrawId = "" + withdrawModel.getId();
         this.time = sdf.format(withdrawModel.getCreatedTime());
         if (withdrawModel.getNotifyTime() != null) {
