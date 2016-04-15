@@ -12,7 +12,6 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 public class InterestCalculator {
@@ -166,4 +165,5 @@ public class InterestCalculator {
         BigDecimal loanRate = new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate()));
         return new BigDecimal(corpusMultiplyPeriodDays).multiply(loanRate).divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
     }
+
 }

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper">
+
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
+    <resultMap id="transferApplicationResultMap" type="TransferApplicationModel">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="loan_id" property="loanId"></result>
+        <result column="transfer_invest_id" property="transferInvestId"></result>
+        <result column="invest_id" property="investId"></result>
+        <result column="period" property="period"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="invest_amount" property="investAmount"></result>
+        <result column="transfer_amount" property="transferAmount"></result>
+        <result column="transfer_fee" property="transferFee"></result>
+        <result column="status" property="status"></result>
+        <result column="deadline" property="deadline"></result>
+        <result column="transfer_time" property="transferTime"></result>
+        <result column="application_time" property="applicationTime"></result>
+    </resultMap>
+
+    <resultMap id="transferApplicationRecordDtoMap" type="TransferApplicationRecordDto">
+        <result column="id" property="transferApplicationId"></result>
+        <result column="name" property="name"></result>
+        <result column="transfer_amount" property="transferAmount"></result>
+        <result column="invest_amount" property="investAmount"></result>
+        <result column="transfer_time" property="transferTime"></result>
+        <result column="base_rate" property="baseRate"></result>
+        <result column="activity_rate" property="activityRate"></result>
+        <result column="status" property="transferStatus"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="TransferApplicationModel" useGeneratedKeys="true" keyProperty="id">
+        insert into transfer_application (name, loan_id, transfer_invest_id, invest_id, period, login_name, invest_amount, transfer_amount, transfer_fee, status, deadline, transfer_time, application_time)
+        value (#{name}, #{loanId}, #{transferInvestId}, #{investId}, #{period}, #{loginName}, #{investAmount}, #{transferAmount}, #{transferFee}, #{status}, #{deadline}, #{transferTime}, #{applicationTime})
+    </insert>
+
+    <select id="findByTransferInvestId" parameterType="map" resultMap="transferApplicationResultMap">
+        select * from transfer_application
+        <where>
+            <if test="transferInvestId != null">
+                transfer_invest_id = #{transferInvestId}
+            </if>
+            <if test="transferStatusList != null and transferStatusList.size != 0">
+                and status in
+                <foreach item="item" index="index" collection="transferStatusList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+        </where>
+    </select>
+
+    <select id="findTransferApplicationPaginationByLoginName" parameterType="map" resultMap="transferApplicationRecordDtoMap">
+        select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,l.base_rate,l.activity_rate from transfer_application ta JOIN loan l on ta.loan_id = l.id
+        <where>
+            <if test="loginName != null">
+                ta.login_name = #{loginName}
+            </if>
+            <if test="transferStatusList != null and transferStatusList.size != 0">
+                and ta.status in
+                <foreach item="item" index="i" collection="transferStatusList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+        </where>
+        order by case ta.status when 'TRANSFERRING' then '1' when 'SUCCESS' then '2' when 'CANCEL' then '3' else '4' end,ta.application_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountTransferApplicationPaginationByLoginName" parameterType="map" resultType="int">
+        select count(1) from transfer_application ta JOIN loan l on ta.loan_id = l.id
+        <where>
+            <if test="loginName != null">
+                ta.login_name = #{loginName}
+            </if>
+            <if test="transferStatusList != null and transferStatusList.size != 0">
+                and ta.status in
+                <foreach item="item" index="i" collection="transferStatusList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+        </where>
+    </select>
+
+    <select id="findTransfereeApplicationPaginationByLoginName" parameterType="map" resultMap="transferApplicationRecordDtoMap">
+        select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,l.base_rate,l.activity_rate
+        from transfer_application ta JOIN invest i on ta.invest_id = i.id JOIN loan l on l.id = ta.loan_id
+        <where>
+            <if test="loginName != null">
+                i.login_name = #{loginName}
+            </if>
+            AND ta.status = 'SUCCESS'
+        </where>
+        order by ta.transfer_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountTransfereeApplicationPaginationByLoginName" parameterType="map" resultMap="transferApplicationRecordDtoMap">
+        select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,l.base_rate,l.activity_rate
+        from transfer_application ta JOIN invest i on ta.invest_id = i.id JOIN loan l on l.id = ta.loan_id
+        <where>
+            <if test="loginName != null">
+                i.login_name = #{loginName}
+            </if>
+            AND ta.status = 'SUCCESS'
+        </where>
+    </select>
+
+
+
+    <select id="findByInvestId" parameterType="long" resultMap="transferApplicationResultMap">
+        select * from transfer_application where invest_id = #{investId} and status = 'SUCCESS'
+    </select>
+
+    <update id="update" parameterType="TransferApplicationModel">
+        update transfer_application
+        set name = #{name},
+        loan_id = #{loanId},
+        transfer_invest_id = #{transferInvestId},
+        invest_id = #{investId},
+        period = #{period},
+        login_name = #{loginName},
+        invest_amount = #{investAmount},
+        transfer_amount = #{transferAmount},
+        transfer_fee = #{transferFee},
+        status = #{status},
+        deadline = #{deadline},
+        transfer_time = #{transferTime},
+        application_time = #{applicationTime}
+        where id = #{id}
+    </update>
+
+    <select id="findById" parameterType="long" resultMap="transferApplicationResultMap">
+        select * from transfer_application where id = #{id}
+    </select>
+</mapper>

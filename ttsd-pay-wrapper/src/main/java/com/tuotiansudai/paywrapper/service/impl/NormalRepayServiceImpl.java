@@ -30,6 +30,8 @@ import com.tuotiansudai.paywrapper.service.RepayService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.JobManager;
@@ -283,13 +285,12 @@ public class NormalRepayServiceImpl implements RepayService {
             InvestModel transferInvestModel = investMapper.findById(investModel.getTransferInvestId());
             TransferApplicationModel transferApplication = transferApplicationMapper.findByInvestId(investModel.getId());
             boolean isCurrentPeriodTransfer = transferApplication != null && transferApplication.getPeriod() == loanRepayModel.getPeriod();
-
             List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
             InvestRepayModel currentInvestRepay = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), loanRepayModel.getPeriod());
 
             long actualInterest = InterestCalculator.calculateInvestRepayInterest(loanModel,
                     isCurrentPeriodTransfer ? transferInvestModel : investModel,
-                    isCurrentPeriodTransfer && !transferApplication.isTransferInterest() ? new DateTime(transferApplication.getTransferTime()).minusDays(1) : lastRepayDate,
+                    lastRepayDate,
                     currentRepayDate);
             long actualFee = new BigDecimal(actualInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).longValue();
             long defaultInterest = this.calculateInvestRepayDefaultInterest(investRepayModels);
@@ -303,30 +304,6 @@ public class NormalRepayServiceImpl implements RepayService {
                     actualInterest,
                     actualFee,
                     defaultInterest));
-
-            if (isCurrentPeriodTransfer && !transferApplication.isTransferInterest()) {
-                List<InvestRepayModel> transferInvestRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getTransferInvestId());
-
-                long notTransferActualInterest = InterestCalculator.calculateInvestRepayInterest(loanModel,
-                        transferInvestModel,
-                        lastRepayDate,
-                        new DateTime(transferApplication.getTransferTime()).minusDays(1));
-                long notTransferActualFee = new BigDecimal(notTransferActualInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).longValue();
-
-                long notTransferDefaultInterest = this.calculateInvestRepayDefaultInterest(transferInvestRepayModels);
-
-                loanRepayBalance -= notTransferActualInterest + notTransferDefaultInterest;
-
-                InvestRepayModel currentTransferInvestRepay = investRepayMapper.findByInvestIdAndPeriod(transferInvestModel.getId(), loanRepayModel.getPeriod());
-
-                investRepayJobResults.add(new InvestRepayJobResultDto(transferInvestModel.getId(),
-                        currentTransferInvestRepay.getId(),
-                        transferInvestModel.getLoginName(),
-                        currentTransferInvestRepay.getCorpus(),
-                        notTransferActualInterest,
-                        notTransferActualFee,
-                        notTransferDefaultInterest));
-            }
         }
 
         return new LoanRepayJobResultDto(loanModel.getId(),

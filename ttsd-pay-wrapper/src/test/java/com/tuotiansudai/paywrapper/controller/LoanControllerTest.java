@@ -271,7 +271,7 @@ public class LoanControllerTest {
 
         long amount1 = am1.getBalance();
         long amount2 = am2.getBalance();
-
+        Thread.sleep(1000 * 5);
 //        assert amount1 == mockInitAmount - mockInvestAmount + mockCouponAmount;
 //        assert amount2 == mockInitAmount - mockInvestAmount + mockCouponAmount;
     }

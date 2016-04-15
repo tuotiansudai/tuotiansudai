@@ -35,6 +35,15 @@
                 ]
             },
             {
+                "name":"transfer-manage",
+                "header":{"text":"债权转让管理"},
+                "sidebar":
+                [
+                    {"name":"transfer-list","text":"转让项目","link":"/transfer-manage/transfer-list","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN','CUSTOMER_SERVICE'"},
+                    {"name":"transfer-rule","text":"转让规则","link":"/transfer-manage/rule","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
+                ]
+            },
+            {
                 "name":"user-manage",
                 "header":{"text":"用户管理"},
                 "sidebar":[
