@@ -76,8 +76,10 @@ public class RankingActivityController {
     public ModelAndView prizeWinner(String prize) {
         ModelAndView modelAndView = new ModelAndView("/ranking-prize-winner");
 
+        long winnerCount = rankingActivityService.getPrizeWinnerCount(TianDouPrize.valueOf(prize));
         List<PrizeWinnerDto> prizeWinnerDtoList = rankingActivityService.getPrizeWinnerList(prize);
 
+        modelAndView.addObject("winnerCount", winnerCount);
         modelAndView.addObject("prizeWinnerDtoList", prizeWinnerDtoList);
         return modelAndView;
     }
