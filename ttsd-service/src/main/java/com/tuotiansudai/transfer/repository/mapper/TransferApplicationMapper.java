@@ -26,6 +26,16 @@ public interface TransferApplicationMapper {
                                                                                     @Param(value = "index") Integer index,
                                                                                     @Param(value = "pageSize") Integer pageSize);
 
+    List<TransferApplicationRecordDto> findAllTransferApplicationPagination(@Param(value = "index") Integer index,
+                                                                            @Param(value = "pageSize") Integer pageSize,
+                                                                            @Param("rateLower") String rateLower,
+                                                                            @Param("rateUpper") String rateUpper,
+                                                                            @Param("transferStatusList") List<TransferStatus> transferStatusList);
+
+    int findCountAllTransferApplicationPagination(@Param("rateLower") String rateLower,
+                                                 @Param("rateUpper") String rateUpper,
+                                                 @Param("transferStatusList") List<TransferStatus> transferStatusList);
+
     int findCountTransferApplicationPaginationByLoginName(@Param("loginName")String loginName, @Param("transferStatusList")List<TransferStatus> transferStatusList);
 
     List<TransferApplicationRecordDto> findTransfereeApplicationPaginationByLoginName(@Param("loginName")String loginName,

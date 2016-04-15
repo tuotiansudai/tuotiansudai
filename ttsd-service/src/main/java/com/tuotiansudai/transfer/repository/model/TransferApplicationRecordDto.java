@@ -15,15 +15,14 @@ public class TransferApplicationRecordDto implements Serializable {
     private double baseRate;
     private double activityRate;
     private int transferInterestDays;
+    private int remainingInterestDays;
     private TransferStatus transferStatus;
 
     public long getTransferApplicationId() {
         return transferApplicationId;
     }
 
-    public void setTransferApplicationId(long transferApplicationId) {
-        this.transferApplicationId = transferApplicationId;
-    }
+    public void setTransferApplicationId(long transferApplicationId) { this.transferApplicationId = transferApplicationId; }
 
     public String getName() {
         return name;
@@ -80,6 +79,10 @@ public class TransferApplicationRecordDto implements Serializable {
     public void setTransferInterestDays(int transferInterestDays) {
         this.transferInterestDays = transferInterestDays;
     }
+
+    public int getRemainingInterestDays() { return remainingInterestDays; }
+
+    public void setRemainingInterestDays(int remainingInterestDays) { this.remainingInterestDays = remainingInterestDays; }
 
     public TransferStatus getTransferStatus() {
         return transferStatus;
