@@ -19,6 +19,7 @@ import java.util.Map;
 public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLoaderAware {
 
     private static final int PROD_VERSION_LENGTH = 4;
+
     private ResourceLoader resourceLoader = new DefaultResourceLoader();
 
     private String staticServer = "";
@@ -26,9 +27,6 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
     private String javascriptLocation;
 
     private String cssLocation;
-
-    @Autowired
-    private LinkExchangeService linkExchangeService;
 
     @Override
     protected Map<Object, Object> createInstance() {
@@ -41,7 +39,6 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
         map.put("js", buildStaticFiles(javascriptLocation, ".js"));
         map.put("css", buildStaticFiles(cssLocation, ".css"));
 
-        map.put("linkExchangeList", linkExchangeService.getLinkExchangeListByAsc());
         return map;
     }
 
