@@ -2,6 +2,8 @@ package com.tuotiansudai.web.configuration;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.service.LinkExchangeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.MapFactoryBean;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -25,6 +27,9 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
 
     private String cssLocation;
 
+    @Autowired
+    private LinkExchangeService linkExchangeService;
+
     @Override
     protected Map<Object, Object> createInstance() {
         Map<Object, Object> map = super.createInstance();
@@ -36,6 +41,7 @@ public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLo
         map.put("js", buildStaticFiles(javascriptLocation, ".js"));
         map.put("css", buildStaticFiles(cssLocation, ".css"));
 
+        map.put("linkExchangeList", linkExchangeService.getLinkExchangeListByAsc());
         return map;
     }
 

@@ -65,7 +65,7 @@
                 "header":{"text":"内容管理"},
                 "sidebar":[
                     {"name":"announceMan","text":"公告管理","link":"/announce-manage/announce","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
-                    {"name":"linkexchangeMan","text":"友链管理","link":"/linkexchange-manage/linkexchange","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
+                    {"name":"linkExchangeMan","text":"友链管理","link":"/link-exchange-manage/link-exchange","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"},
                     {"name":"feedbackMan","text":"意见反馈","link":"/announce-manage/feedback","role":"'ADMIN','OPERATOR','OPERATOR_ADMIN'"}
                 ]
             },

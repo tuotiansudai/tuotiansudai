@@ -36,7 +36,6 @@ public class HomeController {
         modelAndView.addObject("announces", announceService.getAnnouncementList(1, 3).getData().getRecords());
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName()));
-        modelAndView.addObject("linkExchangeList",linkExchangeService.getLinkExchangeListByAsc());
         return modelAndView;
     }
 }

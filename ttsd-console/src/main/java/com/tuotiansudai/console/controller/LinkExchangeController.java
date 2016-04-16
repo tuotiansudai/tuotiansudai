@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(value = "/linkexchange-manage", method = RequestMethod.GET)
+@RequestMapping(value = "/link-exchange-manage", method = RequestMethod.GET)
 public class LinkExchangeController {
 
     @Autowired
     private LinkExchangeService linkExchangeService;
 
-    @RequestMapping(value = "/linkexchange", method = RequestMethod.GET)
+    @RequestMapping(value = "/link-exchange", method = RequestMethod.GET)
     public ModelAndView linkExchangeManage(@RequestParam(value = "id",required = false) Long id,@RequestParam(value = "title",required = false) String title,
                                                 @RequestParam(value = "index",defaultValue = "1",required = false) int index,
                                                 @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize) {
-        ModelAndView modelAndView = new ModelAndView("/linkexchange-list");
+        ModelAndView modelAndView = new ModelAndView("/link-exchange-list");
         int linkExchangeCount = linkExchangeService.findCountByTitle(title);
         modelAndView.addObject("linkExchangeCount", linkExchangeCount);
         modelAndView.addObject("linkExchangeList", linkExchangeService.getLinkExchangeList(title, (index - 1) * pageSize, pageSize));
@@ -35,19 +35,19 @@ public class LinkExchangeController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/linkexchange/add", method = RequestMethod.GET)
+    @RequestMapping(value = "/link-exchange/add", method = RequestMethod.GET)
     public ModelAndView linkExchange() {
-        return new ModelAndView("/linkexchange-edit");
+        return new ModelAndView("/link-exchange-edit");
     }
 
-    @RequestMapping(value = "/linkexchange/edit/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/link-exchange/edit/{id}", method = RequestMethod.GET)
     public ModelAndView editLinkExchange(@PathVariable String id) {
-        ModelAndView modelAndView = new ModelAndView("/linkexchange-edit");
-        modelAndView.addObject("linkexchange", this.linkExchangeService.getLinkExchangeById(id));
+        ModelAndView modelAndView = new ModelAndView("/link-exchange-edit");
+        modelAndView.addObject("linkExchange", this.linkExchangeService.getLinkExchangeById(id));
         return modelAndView;
     }
 
-    @RequestMapping(value = "/linkexchange/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/link-exchange/create", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> create(@RequestBody LinkExchangeDto linkExchangeDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
@@ -59,7 +59,7 @@ public class LinkExchangeController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/linkexchange/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/link-exchange/update", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> update(@RequestBody LinkExchangeDto linkExchangeDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
@@ -70,7 +70,7 @@ public class LinkExchangeController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/linkexchange/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/link-exchange/delete", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> delete(@RequestBody LinkExchangeDto linkExchangeDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
