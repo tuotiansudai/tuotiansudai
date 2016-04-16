@@ -16,16 +16,18 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MobileAppBannerServiceImpl implements MobileAppBannerService {
 
     static Logger logger = Logger.getLogger(MobileAppBannerServiceImpl.class);
 
-    private String BANNER_CONFIG_FILE = "banner.json";
+    private final String BANNER_CONFIG_FILE = "banner.json";
 
-    private List<BannerPictureResponseDataDto> banners = null;
+    private Map<String,List<BannerPictureResponseDataDto>> jsonFileMap = new HashMap<>();
 
     @Value("${web.server}")
     private String domainName;
@@ -39,21 +41,17 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
     public BaseResponseDto<BannerResponseDataDto> generateBannerList() {
         BaseResponseDto<BannerResponseDataDto> baseDto = new BaseResponseDto<>();
 
-        baseDto.setData(getLatestBannerInfo());
+        baseDto.setData(getLatestBannerInfo(""));
         baseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         return baseDto;
     }
 
     @Override
-    public void setBannerConfigFile(String bannerConfigFile) {
-        this.BANNER_CONFIG_FILE = bannerConfigFile;
-    }
-
-
-    private BannerResponseDataDto getLatestBannerInfo() {
-        if (banners == null) {
-            banners = loadPictureListFromConfigFile();
+    public BannerResponseDataDto getLatestBannerInfo(String jsonName) {
+        jsonName = jsonName.equals("") ? BANNER_CONFIG_FILE : jsonName;
+        if (jsonFileMap.get(jsonName) == null) {
+            List<BannerPictureResponseDataDto> banners = loadPictureListFromConfigFile(jsonName);
             for (BannerPictureResponseDataDto banner : banners) {
                 if (!Strings.isNullOrEmpty(banner.getUrl())) {
                     banner.setUrl(banner.getUrl().replaceFirst("\\{web\\}", domainName));
@@ -67,16 +65,17 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
                     banner.setPicture(banner.getPicture().replaceFirst("\\{static\\}", staticDomainName));
                 }
             }
+            jsonFileMap.put(jsonName,banners);
         }
         BannerResponseDataDto dataDto = new BannerResponseDataDto();
-        dataDto.setPictures(banners);
+        dataDto.setPictures(jsonFileMap.get(jsonName));
         return dataDto;
     }
 
-    private List<BannerPictureResponseDataDto> loadPictureListFromConfigFile() {
+    private List<BannerPictureResponseDataDto> loadPictureListFromConfigFile(String jsonName) {
         try {
             InputStream is = MobileAppBannerController.class.getClassLoader()
-                    .getResourceAsStream(BANNER_CONFIG_FILE);
+                    .getResourceAsStream(jsonName);
             return objectMapper.readValue(is, new TypeReference<List<BannerPictureResponseDataDto>>() {
             });
         } catch (IOException e) {

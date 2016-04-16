@@ -34,8 +34,8 @@
         delete from referrer_relation where referrer_login_name = #{referrerLoginName} and login_name = #{loginName}
     </delete>
 
-    <select id="findByReferrerLoginName" parameterType="map" resultMap="referrerRelationResultMap">
-        select * from referrer_relation where referrer_login_name = #{referrerLoginName}
+    <select id="findReferrerCountByReferrerLoginName" parameterType="map" resultType="int">
+         select count(1) from referrer_relation  where referrer_login_name = #{referrerLoginName}
     </select>
 
 </mapper>

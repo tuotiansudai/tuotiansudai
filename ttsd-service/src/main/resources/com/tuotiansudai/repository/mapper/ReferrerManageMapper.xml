@@ -571,7 +571,6 @@
             <if test="referrerLoginName != null and referrerLoginName != ''" >
                 irr.referrer_login_name = #{referrerLoginName}
             </if>
-            and irr.status='SUCCESS'
             <if test="loginName != null and loginName != ''" >
                 and i.login_name=#{loginName}
             </if>
@@ -584,25 +583,16 @@
             <if test="investEndTime != null">
                 <![CDATA[ and i.`created_time` <= #{investEndTime} ]]>
             </if>
+            and irr.status='SUCCESS'
         </where>
     </select>
 
 
     <select id="findReferInvestSumAmount" parameterType="map" resultMap="referrerManageMap" >
-        select
-        IFNULL(sum(i.amount),0) AS invest_amount
-        from
-        invest_referrer_reward irr
-        left join invest i
-        on i.id = irr.invest_id
-        left join loan l
-        on l.id = i.loan_id
-        left join referrer_relation rr
-        on rr.login_name = i.login_name
-        and rr.referrer_login_name = irr.referrer_login_name
+        select  IFNULL(sum(i.amount),0) AS invest_amount from referrer_relation rr left join invest i on rr.login_name = i.login_name
         <where>
             <if test="referrerLoginName != null and referrerLoginName != ''" >
-                irr.referrer_login_name = #{referrerLoginName}
+                rr.referrer_login_name = #{referrerLoginName}
             </if>
         </where>
     </select>

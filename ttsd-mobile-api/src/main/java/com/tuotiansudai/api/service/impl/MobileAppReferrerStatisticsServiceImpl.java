@@ -24,6 +24,8 @@ public class MobileAppReferrerStatisticsServiceImpl implements MobileAppReferrer
     @Autowired
     private MobileAppBannerService mobileAppBannerService;
 
+    private static final String REFERRER_STATISTICS_FILE = "referrer.json";
+
 
 
     @Override
@@ -34,10 +36,10 @@ public class MobileAppReferrerStatisticsServiceImpl implements MobileAppReferrer
         ReferrerStatisticsResponseDataDto referrerStatisticsResponseDataDto = new ReferrerStatisticsResponseDataDto();
 
         referrerStatisticsResponseDataDto.setRewardAmount(AmountConverter.convertCentToString(referrerManageMapper.findReferInvestTotalAmount(referrerLoginName, null, null, null, null)));
-        referrerStatisticsResponseDataDto.setReferrersSum(String.valueOf(referrerRelationMapper.findByReferrerLoginName(referrerLoginName).size()));
-        referrerStatisticsResponseDataDto.setReferrersInvestAmount(CollectionUtils.isNotEmpty(referInvestSumAmountList) ? AmountConverter.convertCentToString(referInvestSumAmountList.get(0).getInvestAmount()) : "0");
+        referrerStatisticsResponseDataDto.setReferrersSum(String.valueOf(referrerRelationMapper.findReferrerCountByReferrerLoginName(referrerLoginName)));
+        referrerStatisticsResponseDataDto.setReferrersInvestAmount(CollectionUtils.isNotEmpty(referInvestSumAmountList) ? AmountConverter.convertCentToString(referInvestSumAmountList.get(0).getInvestAmount()) : "0.00");
 
-        referrerStatisticsResponseDataDto.setBanner(getBannerResponseDataDto("referrer.json"));
+        referrerStatisticsResponseDataDto.setBanner(getBannerResponseDataDto(REFERRER_STATISTICS_FILE));
 
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -48,12 +50,8 @@ public class MobileAppReferrerStatisticsServiceImpl implements MobileAppReferrer
     }
 
     private BannerPictureResponseDataDto getBannerResponseDataDto(String jsonName){
-        mobileAppBannerService.setBannerConfigFile(jsonName);
-        BaseResponseDto<BannerResponseDataDto> bannerResponseDataDtoList = mobileAppBannerService.generateBannerList();
-        if(bannerResponseDataDtoList.getData() != null && CollectionUtils.isNotEmpty(bannerResponseDataDtoList.getData().getPictures())){
-            return bannerResponseDataDtoList.getData().getPictures().get(0);
-        }
-        return new BannerPictureResponseDataDto();
+        BannerResponseDataDto bannerResponseDataDto = mobileAppBannerService.getLatestBannerInfo(jsonName);
+        return bannerResponseDataDto != null ? bannerResponseDataDto.getPictures().get(0) : new BannerPictureResponseDataDto();
     }
 
 }
