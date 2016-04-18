@@ -8,6 +8,7 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AutoLoanOutJob;
+import com.tuotiansudai.job.InvestCallbackJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -101,8 +102,6 @@ public class InvestServiceImpl implements InvestService {
 
     @Value(value = "${pay.auto.invest.interval.milliseconds}")
     private int autoInvestIntervalMilliseconds;
-
-    public static final String JOB_TRIGGER_KEY = "job:invest:invest_callback_job_trigger";
 
     @Override
     @Transactional
@@ -198,7 +197,7 @@ public class InvestServiceImpl implements InvestService {
                 InvestNotifyRequestMapper.class,
                 InvestNotifyRequestModel.class);
 
-        redisWrapperClient.incr(JOB_TRIGGER_KEY);
+        redisWrapperClient.incr(InvestCallbackJob.INVEST_JOB_TRIGGER_KEY);
 
         if (callbackRequest == null) {
             return null;
@@ -232,7 +231,7 @@ public class InvestServiceImpl implements InvestService {
 
     private boolean updateInvestNotifyRequestStatus(InvestNotifyRequestModel model) {
         try {
-            redisWrapperClient.decr(JOB_TRIGGER_KEY);
+            redisWrapperClient.decr(InvestCallbackJob.INVEST_JOB_TRIGGER_KEY);
             investNotifyRequestMapper.updateStatus(model.getId(), InvestNotifyProcessStatus.DONE);
         } catch (Exception e) {
             fatalLog("update_invest_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId());

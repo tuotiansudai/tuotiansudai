@@ -134,7 +134,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
     }
 
     /**
-     * 撤资后返款(超投后返款)
+     * 超投后返款
      *
      * @param projectId
      * @param orderId
@@ -146,6 +146,25 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL);
         model.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
         model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "over_invest_payback_notify");
+        model.servType = UmPayServType.TRANSFER_OVER_INVEST_PAYBACK.getCode();
+        model.transAction = UmPayTransAction.OUT.getCode();
+        model.particType = UmPayParticType.INVESTOR.getCode();
+        return model;
+    }
+
+    /**
+     * 债权转让超投后返款
+     *
+     * @param projectId
+     * @param orderId
+     * @param userId
+     * @param amount
+     * @return
+     */
+    public static ProjectTransferRequestModel overInvestTransferPaybackRequest(String projectId, String orderId, String userId, String amount) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL);
+        model.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
+        model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "over_invest_transfer_payback_notify");
         model.servType = UmPayServType.TRANSFER_OVER_INVEST_PAYBACK.getCode();
         model.transAction = UmPayTransAction.OUT.getCode();
         model.particType = UmPayParticType.INVESTOR.getCode();

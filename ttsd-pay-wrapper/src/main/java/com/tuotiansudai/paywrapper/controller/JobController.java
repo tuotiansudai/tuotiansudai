@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
 import com.tuotiansudai.paywrapper.service.InvestService;
+import com.tuotiansudai.paywrapper.service.InvestTransferPurchaseService;
 import com.tuotiansudai.paywrapper.service.LoanService;
 import com.tuotiansudai.paywrapper.service.RepayService;
 import org.apache.log4j.Logger;
@@ -30,6 +31,9 @@ public class JobController {
     private InvestService investService;
 
     @Autowired
+    InvestTransferPurchaseService investTransferPurchaseService;
+
+    @Autowired
     private CouponLoanOutService couponLoanOutService;
 
     @Resource(name = "normalRepayServiceImpl")
@@ -43,6 +47,13 @@ public class JobController {
     public BaseDto<PayDataDto> asyncInvestNotify() {
         return this.investService.asyncInvestCallback();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/async_invest_transfer_notify", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> asyncInvestTransferNotify() {
+        return this.investTransferPurchaseService.asyncPurchaseCallback();
+    }
+
 
     @RequestMapping(value = "/post_normal_repay", method = RequestMethod.POST)
     @ResponseBody

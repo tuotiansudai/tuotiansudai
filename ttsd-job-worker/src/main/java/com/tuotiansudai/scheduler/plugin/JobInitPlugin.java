@@ -32,8 +32,11 @@ public class JobInitPlugin implements SchedulerPlugin {
 
     @Override
     public void start() {
-        if (JobType.OverInvestPayBack.name().equalsIgnoreCase(schedulerName)) {
+        if (JobType.InvestCallBack.name().equalsIgnoreCase(schedulerName)) {
             createInvestCallBackJobIfNotExist();
+        }
+        if (JobType.InvestTransferCallBack.name().equalsIgnoreCase(schedulerName)) {
+            createInvestTransferCallBackJobIfNotExist();
         }
         if (JobType.CalculateDefaultInterest.name().equalsIgnoreCase(schedulerName)) {
             createCalculateDefaultInterest();
@@ -47,13 +50,13 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.BirthdayNotify.name().equalsIgnoreCase(schedulerName)) {
             createBirthdayNotifyJob();
         }
-        if(JobType.AutoJPushAlertBirthMonth.name().equalsIgnoreCase(schedulerName)) {
+        if (JobType.AutoJPushAlertBirthMonth.name().equalsIgnoreCase(schedulerName)) {
             createAutoJPushAlertBirthMonth();
         }
-        if(JobType.AutoJPushAlertBirthDay.name().equalsIgnoreCase(schedulerName)){
+        if (JobType.AutoJPushAlertBirthDay.name().equalsIgnoreCase(schedulerName)) {
             createAutoJPushAlertBirthDay();
         }
-        if(JobType.AutoJPushNoInvestAlert.name().equalsIgnoreCase(schedulerName)){
+        if (JobType.AutoJPushNoInvestAlert.name().equalsIgnoreCase(schedulerName)) {
             createAutoJPushNoInvestAlert();
         }
 
@@ -65,14 +68,31 @@ public class JobInitPlugin implements SchedulerPlugin {
     }
 
     private void createInvestCallBackJobIfNotExist() {
-        final JobType jobType = JobType.OverInvestPayBack;
-        final String jobGroup = InvestCallback.JOB_GROUP;
-        final String jobName = InvestCallback.JOB_NAME;
+        final JobType jobType = JobType.InvestCallBack;
+        final String jobGroup = InvestCallbackJob.JOB_GROUP;
+        final String jobName = InvestCallbackJob.JOB_NAME;
         try {
-            jobManager.newJob(jobType, InvestCallback.class)
+            jobManager.newJob(jobType, InvestCallbackJob.class)
                     .replaceExistingJob(true)
                     .runWithSchedule(SimpleScheduleBuilder
-                            .repeatSecondlyForever(InvestCallback.RUN_INTERVAL_SECONDS)
+                            .repeatSecondlyForever(InvestCallbackJob.RUN_INTERVAL_SECONDS)
+                            .withMisfireHandlingInstructionIgnoreMisfires())
+                    .withIdentity(jobGroup, jobName)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createInvestTransferCallBackJobIfNotExist() {
+        final JobType jobType = JobType.InvestTransferCallBack;
+        final String jobGroup = InvestTransferCallbackJob.JOB_GROUP;
+        final String jobName = InvestTransferCallbackJob.JOB_NAME;
+        try {
+            jobManager.newJob(jobType, InvestTransferCallbackJob.class)
+                    .replaceExistingJob(true)
+                    .runWithSchedule(SimpleScheduleBuilder
+                            .repeatSecondlyForever(InvestTransferCallbackJob.RUN_INTERVAL_SECONDS)
                             .withMisfireHandlingInstructionIgnoreMisfires())
                     .withIdentity(jobGroup, jobName)
                     .submit();
@@ -90,7 +110,7 @@ public class JobInitPlugin implements SchedulerPlugin {
             logger.debug(e.getLocalizedMessage(), e);
         }
     }
-    
+
 
     private void createRefreshAreaByMobile() {
         try {
@@ -112,6 +132,7 @@ public class JobInitPlugin implements SchedulerPlugin {
             logger.debug(e.getLocalizedMessage(), e);
         }
     }
+
     private void createAutoJPushAlertBirthDay() {
         try {
             jobManager.newJob(JobType.AutoJPushAlertBirthDay, AutoJPushAlertBirthDayJob.class).replaceExistingJob(true)
@@ -122,6 +143,7 @@ public class JobInitPlugin implements SchedulerPlugin {
             logger.debug(e.getLocalizedMessage(), e);
         }
     }
+
     private void createAutoJPushNoInvestAlert() {
         try {
             jobManager.newJob(JobType.AutoJPushNoInvestAlert, AutoJPushNoInvestAlertJob.class).replaceExistingJob(true)
@@ -132,6 +154,7 @@ public class JobInitPlugin implements SchedulerPlugin {
             logger.debug(e.getLocalizedMessage(), e);
         }
     }
+
     private void createLoanRepayNotifyJob() {
         try {
             jobManager.newJob(JobType.LoanRepayNotify, LoanRepayNotifyJob.class).replaceExistingJob(true)
