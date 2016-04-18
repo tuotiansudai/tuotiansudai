@@ -13,9 +13,9 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,8 +26,12 @@ import java.util.Map;
 
 @Service
 public class MobileAppInvestListServiceImpl implements MobileAppInvestListService {
+
     @Autowired
     private InvestService investService;
+
+    @Autowired
+    private LoanService loanService;
 
     @Autowired
     private InvestMapper investMapper;
@@ -67,7 +71,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
             investRecordResponseDataDto = Lists.transform(investModels, new Function<InvestModel, InvestRecordResponseDataDto>() {
                 @Override
                 public InvestRecordResponseDataDto apply(InvestModel input) {
-                    input.setLoginName(RandomUtils.encryptLoginName(loginName, showRandomLoginNameList, input.getLoginName(), 3));
+                    input.setLoginName(loanService.encryptLoginName(loginName, input.getLoginName(), 3, input.getId()));
                     return new InvestRecordResponseDataDto(input);
                 }
             });

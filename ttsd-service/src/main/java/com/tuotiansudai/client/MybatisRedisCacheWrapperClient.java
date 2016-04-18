@@ -65,7 +65,6 @@ public class MybatisRedisCacheWrapperClient extends AbstractRedisWrapperClient {
     }
 
     public byte[] get(final byte[] key) {
-        this.setJedisPool(getPool());
         return execute(new JedisAction<byte[]>() {
             @Override
             public byte[] action(Jedis jedis) {
@@ -75,7 +74,6 @@ public class MybatisRedisCacheWrapperClient extends AbstractRedisWrapperClient {
     }
 
     public Object expire(final byte[] key, final int seconds) {
-        this.setJedisPool(getPool());
         return execute(new JedisAction<Object>() {
             @Override
             public Object action(Jedis jedis) {
@@ -85,7 +83,6 @@ public class MybatisRedisCacheWrapperClient extends AbstractRedisWrapperClient {
     }
 
     public void set(final byte[] key, final byte[] value) {
-        this.setJedisPool(getPool());
         execute(new JedisActionNoResult() {
             @Override
             public void action(Jedis jedis) {
@@ -95,7 +92,6 @@ public class MybatisRedisCacheWrapperClient extends AbstractRedisWrapperClient {
     }
 
     public Set<byte[]> keys(final byte[] key) {
-        this.setJedisPool(getPool());
         return execute(new JedisAction<Set<byte[]>>() {
             @Override
             public Set<byte[]> action(Jedis jedis) {

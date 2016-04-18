@@ -22,9 +22,11 @@ public interface SmsService {
 
     BaseDto<SmsDataDto> sendFatalNotify(SmsFatalNotifyDto notify);
 
-    BaseDto<SmsDataDto> loanRepayNotify(String mobile, String loanName, String repayAmount);
+    BaseDto<SmsDataDto> loanRepayNotify(String mobile, String repayAmount);
 
     BaseDto<SmsDataDto> couponNotify(SmsCouponNotifyDto notifyDto);
 
     BaseDto<SmsDataDto> birthdayNotify(SmsCouponNotifyDto notifyDto);
+
+    BaseDto<SmsDataDto> sendNoPasswordInvestCaptcha(String mobile, String captcha, String ip) ;
 }

@@ -7,4 +7,6 @@ import com.tuotiansudai.api.dto.InvestRequestDto;
 public interface MobileAppInvestService {
 
     BaseResponseDto invest(InvestRequestDto investRequestDto);
+
+    BaseResponseDto noPasswordInvest(InvestRequestDto investRequestDto);
 }

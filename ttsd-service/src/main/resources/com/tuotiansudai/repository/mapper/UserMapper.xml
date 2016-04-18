@@ -58,6 +58,10 @@
       where u.login_name = #{loginName}
     </select>
 
+    <select id="lockByLoginName" parameterType="java.lang.String" resultMap="userResultMap">
+        select * from user where login_name = #{loginName} for update
+    </select>
+
     <select id="findByLoginNameOrMobile" parameterType="java.lang.String" resultMap="userResultMap">
       select * from user where login_name = #{loginNameOrMobile} or mobile = #{loginNameOrMobile}
     </select>

@@ -136,6 +136,9 @@ require(['jquery', 'moment','mustache', 'layerWrapper', 'text!/tpl/point-bill-ta
                                 case 'EXCHANGE':
                                     item.businessType = '财豆兑换';
                                     break;
+                                case 'LOTTERY':
+                                    item.businessType = '抽奖';
+                                    break;
                             }
                         });
                     }

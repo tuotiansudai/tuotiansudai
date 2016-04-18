@@ -16,6 +16,8 @@ public interface UserMapper {
 
     UserModel findByLoginName(String loginName);
 
+    UserModel lockByLoginName(String loginName);
+
     UserModel findByLoginNameOrMobile(String loginNameOrMobile);
 
     void create(UserModel userModel);
