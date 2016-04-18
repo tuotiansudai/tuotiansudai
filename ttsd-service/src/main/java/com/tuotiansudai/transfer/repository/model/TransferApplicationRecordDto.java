@@ -14,7 +14,6 @@ public class TransferApplicationRecordDto implements Serializable {
     private Date transferTime;
     private double baseRate;
     private double activityRate;
-    private int transferInterestDays;
     private TransferStatus transferStatus;
     private Long loanId;
     private String transferrerLoginName;
@@ -77,14 +76,6 @@ public class TransferApplicationRecordDto implements Serializable {
 
     public void setActivityRate(double activityRate) {
         this.activityRate = activityRate;
-    }
-
-    public int getTransferInterestDays() {
-        return transferInterestDays;
-    }
-
-    public void setTransferInterestDays(int transferInterestDays) {
-        this.transferInterestDays = transferInterestDays;
     }
 
     public TransferStatus getTransferStatus() {

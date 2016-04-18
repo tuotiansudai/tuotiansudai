@@ -20,8 +20,6 @@ import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
-import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -89,13 +87,9 @@ public class InvestTransferServiceImpl implements InvestTransferService{
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(investModel.getLoanId());
-        int transferInterestDays = 0;
-        if(transferApplicationDto.getTransferInterest()){
-            transferInterestDays = InterestCalculator.calculateTransferInterestDays(loanModel,loanRepayModels);
-        }
 
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, this.generateTransferApplyName(), loanRepayModel.getPeriod(), transferApplicationDto.getTransferAmount(),
-                transferApplicationDto.getTransferInterest(), TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel), getDeadlineFromNow(),transferInterestDays);
+                TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel), getDeadlineFromNow());
 
         transferApplicationMapper.create(transferApplicationModel);
 

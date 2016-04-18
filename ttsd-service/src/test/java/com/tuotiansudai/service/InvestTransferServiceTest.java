@@ -148,7 +148,7 @@ public class InvestTransferServiceTest {
         UserModel userModel = createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId("testuser", loanId);
         InvestModel investModel = createInvest("testuser", loanId);
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR20151010-001", 2, 1, false, 1, new Date(),0);
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR20151010-001", 2, 1, 1, new Date());
         transferApplicationMapper.create(transferApplicationModel);
 
         assertTrue(investTransferService.cancelTransferApplication(transferApplicationModel.getId()));
@@ -162,7 +162,7 @@ public class InvestTransferServiceTest {
         UserModel userModel = createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId("testuser", loanId);
         InvestModel investModel = createInvest("testuser", loanId);
-        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR20151010-001", 2, 1, false, 1, new Date(),0);
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, "ZR20151010-001", 2, 1, 1, new Date());
         transferApplicationModel.setStatus(TransferStatus.SUCCESS);
         transferApplicationMapper.create(transferApplicationModel);
 
@@ -189,7 +189,6 @@ public class InvestTransferServiceTest {
         TransferApplicationDto transferApplicationDto = new TransferApplicationDto();
         transferApplicationDto.setTransferInvestId(investModel.getId());
         transferApplicationDto.setTransferAmount(1L);
-        transferApplicationDto.setTransferInterest(true);
         investTransferService.investTransferApply(transferApplicationDto);
 
         List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
@@ -217,7 +216,6 @@ public class InvestTransferServiceTest {
         TransferApplicationDto transferApplicationDto = new TransferApplicationDto();
         transferApplicationDto.setTransferInvestId(investModel.getId());
         transferApplicationDto.setTransferAmount(1L);
-        transferApplicationDto.setTransferInterest(true);
 
         investTransferService.investTransferApply(transferApplicationDto);
 

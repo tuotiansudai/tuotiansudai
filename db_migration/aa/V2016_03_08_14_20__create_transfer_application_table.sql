@@ -8,7 +8,6 @@ CREATE TABLE `aa`.`transfer_application` (
   `login_name`         VARCHAR(25)     NOT NULL,
   `invest_amount`      BIGINT UNSIGNED NOT NULL,
   `transfer_amount`    BIGINT UNSIGNED NOT NULL,
-  `transfer_interest`  BOOLEAN                  DEFAULT FALSE,
   `transfer_fee`       BIGINT UNSIGNED NOT NULL,
   `status`             VARCHAR(100)    NOT NULL,
   `deadline`           DATETIME        NOT NULL,
