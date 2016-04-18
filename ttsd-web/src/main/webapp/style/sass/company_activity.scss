@@ -2300,7 +2300,9 @@
       margin-top: -54px;
       text-align: center;
       a{
-        padding: 7px 75px;
+        width:200px;
+        height:50px;
+        line-height: 50px;
         text-align: center;
         margin: 0 20px;
         color: #fff;
@@ -2411,12 +2413,12 @@
       background:url("/images/sign/actor/sharereward/share-phone-recommend.png") no-repeat center;
       background-size:100% 100%;
       margin-top:-16px;
-      padding-left:20%;
+      text-align: center;
       a{
-        width:30%;
+        width:100px;
         height:25px;
+        line-height: 25px;
         text-align: center;
-        margin-right:10%;
         color: #fff;
         background-color:#ff9c1b;
         font-size: 14px;

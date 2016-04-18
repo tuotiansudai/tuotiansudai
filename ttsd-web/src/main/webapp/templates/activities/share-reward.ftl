@@ -27,10 +27,10 @@
    		</div>
    		<div class="share-recommend">
    			<@global.isAnonymous>
-			<a href="/login">denglu</a>
+			<a href="/login">立即推荐</a>
 			</@global.isAnonymous>
 			<@global.isNotAnonymous>
-			<a href="javascript:;">推荐好友</a>
+			<a href="javascript:;">立即推荐</a>
 			</@global.isNotAnonymous>
    		</div>
    		<div class="share-rules">
@@ -66,8 +66,12 @@
 	    <div class="reward-info-title">	</div>
 	    <div class="share-example"></div>
 	    <div class="share-recommend">
-	    	<a href="javascript:;">点击注册</a>
-   			<a href="javascript:;">推荐好友</a>
+	    	<@global.isAnonymous>
+			<a href="/login">立即推荐</a>
+			</@global.isAnonymous>
+			<@global.isNotAnonymous>
+			<a href="javascript:;">立即推荐</a>
+			</@global.isNotAnonymous>
 	    </div>
 	    <div class="share-rules"></div>
 	</div>
