@@ -13,14 +13,10 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.RechargeDto;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.Source;
-import org.jboss.logging.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.text.MessageFormat;
 
 @Service
 public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
@@ -42,7 +38,7 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
         String loginName = rechargeDto.getLoginName();
         BankCardModel bankCardModel = bankCardMapper.findByLoginNameAndIsFastPayOn(loginName);
         if (bankCardModel == null) {
-            return new BaseResponseDto(ReturnMessage.NOT_OPNE_FAST_PAYMENT.getCode(), ReturnMessage.NOT_OPNE_FAST_PAYMENT.getMsg());
+            return new BaseResponseDto(ReturnMessage.FAST_PAY_OFF.getCode(), ReturnMessage.FAST_PAY_OFF.getMsg());
         }
         rechargeDto.setBankCode(bankCardModel.getBankCode());
         BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();

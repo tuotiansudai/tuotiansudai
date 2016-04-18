@@ -18,7 +18,9 @@ public enum SystemBillDetailTemplate {
 
     PUBLIC_RECHARGE_DETAIL_TEMPLATE("标的代理人({0}), 企业充值({1}分 rechargeId={2})"),
 
-    TRANSFER_FEE_DETAIL_TEMPLATE("债权转让人({0}), 转让债权(transferApplicationId={1}), 管理费({2})");
+    TRANSFER_FEE_DETAIL_TEMPLATE("债权转让人({0}), 转让债权(transferApplicationId={1}), 管理费({2})"),
+
+    LOTTERY_CASH_DETAIL_TEMPLATE("用户{0}抽奖,抽到现金{1}分");
 
     private final String template;
 

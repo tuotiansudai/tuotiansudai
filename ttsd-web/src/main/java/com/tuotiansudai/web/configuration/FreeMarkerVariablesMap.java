@@ -2,6 +2,8 @@ package com.tuotiansudai.web.configuration;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.service.LinkExchangeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.MapFactoryBean;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -17,6 +19,7 @@ import java.util.Map;
 public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLoaderAware {
 
     private static final int PROD_VERSION_LENGTH = 4;
+
     private ResourceLoader resourceLoader = new DefaultResourceLoader();
 
     private String staticServer = "";

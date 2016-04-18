@@ -17,6 +17,7 @@ import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -50,8 +51,8 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         LoanModel loan = loanMapper.findById(Long.parseLong(loanId));
 
         if (loan == null) {
-            log.info("标的详情" + ReturnMessage.LOAN_ID_IS_NOT_EXIST.getCode() + ":" + ReturnMessage.LOAN_ID_IS_NOT_EXIST.getMsg());
-            return new BaseResponseDto(ReturnMessage.LOAN_ID_IS_NOT_EXIST.getCode(), ReturnMessage.LOAN_ID_IS_NOT_EXIST.getMsg());
+            log.info("标的详情" + ReturnMessage.LOAN_NOT_FOUND.getCode() + ":" + ReturnMessage.LOAN_NOT_FOUND.getMsg());
+            return new BaseResponseDto(ReturnMessage.LOAN_NOT_FOUND.getCode(), ReturnMessage.LOAN_NOT_FOUND.getMsg());
         }
 
         LoanDetailResponseDataDto loanDetailResponseDataDto = this.convertLoanDetailFromLoan(loan);
@@ -72,6 +73,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setRepayTypeCode("");
         loanDetailResponseDataDto.setRepayTypeName(repayTypeName);
         loanDetailResponseDataDto.setInterestPointName(interestPointName);
+        loanDetailResponseDataDto.setPeriods(loan.getPeriods());
         loanDetailResponseDataDto.setDeadline(loan.getPeriods());
         loanDetailResponseDataDto.setRepayUnit(loan.getType().getLoanPeriodUnit().getDesc());
         loanDetailResponseDataDto.setRatePercent(decimalFormat.format((loan.getBaseRate() + loan.getActivityRate()) * 100));
@@ -94,7 +96,10 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         }
         loanDetailResponseDataDto.setRemainTime(calculateRemainTime(loan.getFundraisingEndTime(), loan.getStatus()));
         if (loan.getFundraisingStartTime() != null) {
-            loanDetailResponseDataDto.setInvestBeginTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loan.getFundraisingStartTime()));
+            loanDetailResponseDataDto.setInvestBeginTime(new DateTime(loan.getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm:ss"));
+        }
+        if(loan.getFundraisingEndTime() != null){
+            loanDetailResponseDataDto.setFundRaisingEndTime(new DateTime(loan.getFundraisingEndTime()).toString("yyyy-MM-dd HH:mm:ss"));
         }
         loanDetailResponseDataDto.setInvestBeginSeconds(CommonUtils.calculatorInvestBeginSeconds(loan.getFundraisingStartTime()));
         long investedAmount = investMapper.sumSuccessInvestAmount(loan.getId());

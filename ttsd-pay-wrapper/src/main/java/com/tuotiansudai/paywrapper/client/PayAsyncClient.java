@@ -48,6 +48,7 @@ public class PayAsyncClient {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
+    @SuppressWarnings(value = "unchecked")
     public BaseDto<PayFormDataDto> generateFormData(Class<? extends BaseAsyncMapper> baseMapperClass,
                                                     BaseAsyncRequestModel requestModel) throws PayException {
         try {

@@ -1,8 +1,10 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.job.AutoInvestJob;
@@ -37,6 +39,8 @@ import java.util.List;
 public class LoanServiceImpl implements LoanService {
 
     static Logger logger = Logger.getLogger(LoanServiceImpl.class);
+
+    private final static String REDIS_KEY_TEMPLATE = "webmobile:{0}:{1}:showinvestorname";
 
     @Autowired
     private LoanTitleMapper loanTitleMapper;
@@ -76,6 +80,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private InvestService investService;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private JobManager jobManager;
@@ -217,6 +224,9 @@ public class LoanServiceImpl implements LoanService {
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
+            loanDto.setHasRemindInvestNoPassword(investService.isRemindNoPassword(loginName));
+            loanDto.setAutoInvest(accountModel.isAutoInvest());
+            loanDto.setInvestNoPassword(accountModel.isNoPasswordInvest());
             long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), loginName);
             loanDto.setUserBalance(accountModel.getBalance());
             loanDto.setMaxAvailableInvestAmount(AmountConverter.convertCentToString(calculateMaxAvailableInvestAmount(
@@ -440,7 +450,7 @@ public class LoanServiceImpl implements LoanService {
                 @Override
                 public InvestPaginationItemDto apply(InvestModel input) {
                     InvestPaginationItemDto item = new InvestPaginationItemDto();
-                    item.setLoginName(RandomUtils.encryptLoginName(loginName, showRandomLoginNameList, input.getLoginName(), 6));
+                    item.setLoginName(encryptLoginName(loginName, input.getLoginName(), 6, input.getId()));
                     item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
                     item.setSource(input.getSource());
                     item.setAutoInvest(input.isAutoInvest());
@@ -466,6 +476,23 @@ public class LoanServiceImpl implements LoanService {
         baseDto.setData(dataDto);
         dataDto.setStatus(true);
         return baseDto;
+    }
+
+    @Override
+    public String encryptLoginName(String loginName, String investorLoginName, int showLength, long investId) {
+        if (investorLoginName.equalsIgnoreCase(loginName)) {
+            return investorLoginName;
+        }
+
+        String redisKey = MessageFormat.format(REDIS_KEY_TEMPLATE, String.valueOf(investId), investorLoginName);
+
+        if (showRandomLoginNameList.contains(investorLoginName) && !redisWrapperClient.exists(redisKey)) {
+            redisWrapperClient.set(redisKey, RandomUtils.generateLowerString(3) + RandomUtils.showChar(showLength));
+        }
+
+        String encryptLoginName = investorLoginName.substring(0, 3) + RandomUtils.showChar(showLength);
+
+        return redisWrapperClient.exists(redisKey) ? redisWrapperClient.get(redisKey) :encryptLoginName;
     }
 
     @Override
@@ -688,7 +715,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public BaseDto<PayDataDto> applyAuditLoan(LoanDto loanDto){
+    public BaseDto<PayDataDto> applyAuditLoan(LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);

@@ -3,9 +3,12 @@ package com.tuotiansudai.jpush.service;
 
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+
+import com.tuotiansudai.dto.TransferCashDto;
 import com.tuotiansudai.jpush.dto.JPushAlertDto;
 import com.tuotiansudai.jpush.dto.JpushReportDto;
 import com.tuotiansudai.jpush.repository.model.*;
+import com.tuotiansudai.repository.model.InvestRepayModel;
 
 import java.util.Date;
 import java.util.List;
@@ -40,6 +43,18 @@ public interface JPushAlertService {
     void autoJPushNoInvestAlert();
 
     void autoJPushLoanAlert(long loanId);
+
+    void autoJPushRepayAlert(long loanRepayId);
+
+    void autoJPushRechargeAlert(long orderId);
+
+    void autoJPushWithDrawApplyAlert(long orderId);
+
+    void autoJPushWithDrawAlert(long orderId);
+
+    void autoJPushReferrerRewardAlert(long orderId);
+
+    void autoJPushLotteryLotteryObtainCashAlert(TransferCashDto transferCashDto);
 
     BaseDto<BaseDataDto> pass(String loginName, long id, String ip);
 

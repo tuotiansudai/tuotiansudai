@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.dto.AccountItemDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
@@ -86,6 +85,8 @@ public class PointBillServiceImpl implements PointBillService {
             case INVEST:
                 LoanModel loanModel = loanMapper.findById(investMapper.findById(orderId).getLoanId());
                 return MessageFormat.format("投资项目：{0}", loanModel.getName());
+            case LOTTERY:
+                return PointBusinessType.LOTTERY.getDescription();
         }
 
         return null;
