@@ -11,9 +11,11 @@
    			<div class="title-text">
    				天天带领亲朋好友富贵同享，一见钟情月月领佣金。
    			</div>
-   			<p>平台用户邀请好友投资即可享受1%的年化投资额佣金；</p>
-   			<p>好友继续推荐投资用户，仍可享受1%的年化投资额佣金</p>
-   			<p>折合2%的收益率，多多推荐赢取丰厚奖金...&nbsp;...</p>
+   			<p>
+   				平台用户邀请好友投资即可享受1%的年化投资额佣金；
+				好友继续推荐投资用户，仍可享受1%的年化投资额佣金
+				折合2%的收益率，多多推荐赢取丰厚奖金...&nbsp;...
+   			</p>
    		</div>
    		<div class="share-example">
    			<div class="example-title">
@@ -26,12 +28,7 @@
    			<div class="example-case-detail"></div>
    		</div>
    		<div class="share-recommend">
-   			<@global.isAnonymous>
-			<a href="/login">立即推荐</a>
-			</@global.isAnonymous>
-			<@global.isNotAnonymous>
-			<a href="javascript:;">立即推荐</a>
-			</@global.isNotAnonymous>
+			<a href="/referrer/refer-list">立即推荐</a>
    		</div>
    		<div class="share-rules">
    			<div class="rules-title">
@@ -42,7 +39,7 @@
    				<li>推荐好友成功投资享有1%的年化投资额佣金奖励；</li>
    				<li>推荐奖励结算不限买入金额，不限购买笔数；</li>
    				<li>佣金奖励在放款后一次性以现金形式直接发放；</li>
-   				<li>用户可在“我的账户”中查询。</li>
+   				<li>用户可在&nbsp;“我的账户”&nbsp;中查询。</li>
    			</ul>
    			<p class="rules-sign">***活动遵守拓天速贷法律声明，最终解释权归拓天速贷平台所有。</p>
    		</div>
@@ -66,12 +63,7 @@
 	    <div class="reward-info-title">	</div>
 	    <div class="share-example"></div>
 	    <div class="share-recommend">
-	    	<@global.isAnonymous>
-			<a href="/login">立即推荐</a>
-			</@global.isAnonymous>
-			<@global.isNotAnonymous>
-			<a href="javascript:;">立即推荐</a>
-			</@global.isNotAnonymous>
+			<a href="/referrer/refer-list">立即推荐</a>
 	    </div>
 	    <div class="share-rules"></div>
 	</div>
