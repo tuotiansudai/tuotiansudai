@@ -8,6 +8,8 @@ import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.transfer.service.InvestTransferService;
+import com.tuotiansudai.transfer.service.TransferService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,9 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
 
     @Autowired
     private InvestMapper investMapper;
+
+    @Autowired
+    private TransferService transferService;
 
     @Override
     public BaseResponseDto getTransferee(TransferTransfereeRequestDto transferTransfereeRequestDto) {
@@ -44,6 +49,12 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         dto.setData(transferTransfereeResponseDataDto);
         return dto;
+    }
+
+    @Override
+    public BaseResponseDto transferPurchase(TransferPurchaseRequestDto transferPurchaseRequestDto) {
+
+        transferService.transferPurchase()
     }
 
 }

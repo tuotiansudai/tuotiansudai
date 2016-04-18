@@ -2,6 +2,7 @@ package com.tuotiansudai.api.controller;
 
 
 import com.tuotiansudai.api.dto.BaseResponseDto;
+import com.tuotiansudai.api.dto.TransferPurchaseRequestDto;
 import com.tuotiansudai.api.dto.TransferTransfereeRequestDto;
 import com.tuotiansudai.api.service.MobileAppTransferService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,4 +20,9 @@ public class MobileAppTransferController extends MobileAppBaseController {
         return mobileAppTransferService.getTransferee(transferTransfereeRequestDto);
     }
 
+    @RequestMapping(value = "/transfer-purchase", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseResponseDto transferPurchase(@RequestBody TransferPurchaseRequestDto transferPurchaseRequestDto) {
+        return mobileAppTransferService.transferPurchase(transferPurchaseRequestDto);
+    }
 }
