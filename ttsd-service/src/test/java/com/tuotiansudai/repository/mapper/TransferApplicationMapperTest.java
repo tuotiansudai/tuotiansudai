@@ -42,8 +42,8 @@ public class TransferApplicationMapperTest {
     public void shouldFindTransferApplicationListIsSuccess(){
         long loanId = idGenerator.generate();
         UserModel transferrerModel = createUserByUserId("transferrerTestuser");
-        UserModel transfereeModel = createUserByUserId("transfereeTestuser");
-        LoanModel loanModel = createLoanByUserId("transferrerTestuser", loanId);
+        UserModel transfereeModel = createUserByUserId("transfereeTestUser");
+        LoanModel loanModel = createLoanByUserId("transferrerTestUser", loanId);
         InvestModel transferrerInvestModel = createInvest(transferrerModel.getLoginName(), loanId);
         InvestModel transfereeInvestModel = createInvest(transfereeModel.getLoginName(), loanId);
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
