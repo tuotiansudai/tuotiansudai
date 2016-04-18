@@ -56,7 +56,7 @@ public class MobileAppTransferApplicationController extends MobileAppBaseControl
 
     @RequestMapping(value = "get/transfer-application-list", method = RequestMethod.POST)
     @ResponseBody
-    public BaseResponseDto transferApplicationList(@RequestBody TransferApplicationRequestDto requestDto) {
+    public BaseResponseDto transferApplicationList(@RequestBody TransferApplicationListRequestDto requestDto) {
         requestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppTransferApplicationService.transferApplicationList(requestDto);
     }

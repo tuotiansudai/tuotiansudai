@@ -173,6 +173,13 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
     }
 
+    @Test
+    public void sholudTransferApplicationListIsSuccess(){
+
+
+    }
+
+
     private InvestModel createInvest(String loginName, long loanId) {
         InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 10000, loginName, Source.WEB, null);
         model.setCreatedTime(new Date());

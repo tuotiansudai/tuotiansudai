@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppTransferApplicationService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -15,6 +16,7 @@ import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
@@ -46,6 +48,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     private InvestTransferService investTransferService;
     @Autowired
     private TransferRuleMapper transferRuleMapper;
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
 
 
     @Override
@@ -168,8 +172,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         BaseResponseDto<TransferApplicationResponseDataDto> dto = new BaseResponseDto();
         Integer index = requestDto.getIndex();
         Integer pageSize = requestDto.getPageSize();
-        String rateLower = requestDto.getRateLower();
-        String rateUpper = requestDto.getRateUpper();
+        String rateLower = requestDto.getRateLower()==null?"":requestDto.getRateLower();
+        String rateUpper = requestDto.getRateUpper()==null?"":requestDto.getRateUpper();
         List<TransferStatus> transferStatusList = requestDto.getTransferStatus();
         if(index == null || index <= 0){
             index = 1;
@@ -177,6 +181,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         if(pageSize == null || pageSize <= 0){
             pageSize = 10;
         }
+
         List<TransferApplicationRecordDto> transferApplicationRecordDtos = transferApplicationMapper.findAllTransferApplicationPagination(
                 (index - 1) * pageSize,
                 pageSize, rateLower, rateUpper, transferStatusList);
@@ -188,16 +193,21 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
             List<TransferApplicationRecordResponseDataDto> transferApplication = Lists.transform(transferApplicationRecordDtos, new Function<TransferApplicationRecordDto, TransferApplicationRecordResponseDataDto>() {
                 @Override
                 public TransferApplicationRecordResponseDataDto apply(TransferApplicationRecordDto transferApplicationRecordDto) {
+                    transferApplicationRecordDto.setRemainingInterestDays(calculateRemainPeriod(transferApplicationRecordDto.getTransferApplicationId()));
                     return new TransferApplicationRecordResponseDataDto(transferApplicationRecordDto);
                 }
             });
             transferApplicationResponseDataDto.setTransferApplication(transferApplication);
         }
+
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         dto.setData(transferApplicationResponseDataDto);
         return dto;
     }
 
-
+    private String calculateRemainPeriod(long transferApplicationId){
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
+        return transferApplicationModel.getPeriod() + "/" + investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getInvestId()).size();
+    }
 }

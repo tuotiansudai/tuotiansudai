@@ -15,7 +15,7 @@ public class TransferApplicationRecordDto implements Serializable {
     private double baseRate;
     private double activityRate;
     private int transferInterestDays;
-    private int remainingInterestDays;
+    private String remainingInterestDays;
     private TransferStatus transferStatus;
 
     public long getTransferApplicationId() {
@@ -80,9 +80,9 @@ public class TransferApplicationRecordDto implements Serializable {
         this.transferInterestDays = transferInterestDays;
     }
 
-    public int getRemainingInterestDays() { return remainingInterestDays; }
+    public String getRemainingInterestDays() { return remainingInterestDays; }
 
-    public void setRemainingInterestDays(int remainingInterestDays) { this.remainingInterestDays = remainingInterestDays; }
+    public void setRemainingInterestDays(String remainingInterestDays) { this.remainingInterestDays = remainingInterestDays; }
 
     public TransferStatus getTransferStatus() {
         return transferStatus;

@@ -3,9 +3,10 @@ package com.tuotiansudai.transfer.repository.model;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.TransferStatus;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class TransferApplicationModel {
+public class TransferApplicationModel implements Serializable {
 
     private long id;
 

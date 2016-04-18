@@ -79,14 +79,17 @@
     <select id="findAllTransferApplicationPagination" parameterType="map" resultMap="transferApplicationRecordDtoMap">
         select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.transfer_interest_days,ta.status,l.base_rate,l.activity_rate from transfer_application ta JOIN loan l on ta.loan_id = l.id
         <where>
-            <if test="(rateLower != null || rateLower !='') and (rateUpper != null || rateUpper !='')">
+            <if test="rateLower != '' and rateUpper != '' ">
                 l.base_rate BETWEEN #{rateLower} AND #{rateUpper}
             </if>
             <if test="transferStatusList != null and transferStatusList.size != 0">
-                and ta.status in
-                <foreach item="item" index="i" collection="transferStatusList" open="(" separator="," close=")">
-                    #{item}
-                </foreach>
+            and ta.status IN
+            <foreach item="item" index="i" collection="transferStatusList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+            <if test="transferStatusList == null || transferStatusList.size == 0">
+                and ta.status IN ('SUCCESS','TRANSFERRING')
             </if>
         </where>
         order by ta.application_time desc
@@ -96,14 +99,17 @@
     <select id="findCountAllTransferApplicationPagination" parameterType="map" resultType="int">
         select count(1) from transfer_application ta JOIN loan l on ta.loan_id = l.id
         <where>
-            <if test="(rateLower != null || rateLower !='') and (rateUpper != null || rateUpper !='')">
+            <if test="rateLower != '' and rateUpper != '' ">
                 l.base_rate BETWEEN #{rateLower} AND #{rateUpper}
             </if>
             <if test="transferStatusList != null and transferStatusList.size != 0">
-                and ta.status in
+                and ta.status IN
                 <foreach item="item" index="i" collection="transferStatusList" open="(" separator="," close=")">
                     #{item}
                 </foreach>
+            </if>
+            <if test="transferStatusList == null || transferStatusList.size != 0">
+                and ta.status IN ('SUCCESS','TRANSFERRING')
             </if>
         </where>
     </select>
