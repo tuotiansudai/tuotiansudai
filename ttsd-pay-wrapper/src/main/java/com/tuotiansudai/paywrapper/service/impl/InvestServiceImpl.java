@@ -141,7 +141,7 @@ public class InvestServiceImpl implements InvestService {
         long investId = idGenerator.generate();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         try {
-            InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, Source.AUTO, null);
+            InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, source, null);
             investModel.setId(investId);
             investModel.setNoPasswordInvest(true);
             investMapper.create(investModel);
