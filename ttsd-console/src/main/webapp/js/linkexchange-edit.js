@@ -22,7 +22,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'jquery-ui','cs
                 return false;
             }
             $.ajax({
-                url: '/linkexchange-manage/linkexchange/'+operate,
+                url: '/link-exchange-manage/link-exchange/'+operate,
                 type: 'POST',
                 dataType: 'json',
                 data: dataForm,
@@ -30,7 +30,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'jquery-ui','cs
             })
                 .done(function (res) {
                     if(res.data.status){
-                        location.href='/linkexchange-manage/linkexchange';
+                        location.href='/link-exchange-manage/link-exchange';
                     }else{
                         showErrorMessage("保存失败");
                     }
@@ -40,7 +40,6 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'jquery-ui','cs
                     $('.jq-btn-form').removeAttr('disabled');
                 })
         });
-
         var formFlag =false;
         $(".jq-form").Validform({
             btnSubmit:'.jq-btn-form',
@@ -86,7 +85,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'jquery-ui','cs
         });
 
         $('.jq-cancel').click(function () {
-            location.href = "/linkexchange-manage/linkexchange";
+            location.href = "/link-exchange-manage/link-exchange";
         });
 
     });

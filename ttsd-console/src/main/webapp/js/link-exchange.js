@@ -3,11 +3,11 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
 
         $('.search').click(function(){
             var title = $('.jq-title').val();
-            window.location.href = '/linkexchange-manage/linkexchange?title='+title+'&index=1&pageSize=10';
+            window.location.href = '/link-exchange-manage/link-exchange?title='+title+'&index=1&pageSize=10';
         });
 
         $('.publishAD').click(function(){
-            window.location.href = '/linkexchange-manage/linkexchange/add';
+            window.location.href = '/link-exchange-manage/link-exchange/add';
         });
 
         $('.jq-delete').click(function(event) {
@@ -19,7 +19,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
                 "id":$(this).data('id')
             });
             $.ajax({
-                url: '/linkexchange-manage/linkexchange/delete',
+                url: '/link-exchange-manage/link-exchange/delete',
                 type: 'POST',
                 dataType: 'json',
                 data: dataForm,
@@ -27,7 +27,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
             })
             .done(function (res) {
                 if(res.data.status){
-                   location.href='/linkexchange-manage/linkexchange';
+                   location.href='/link-exchange-manage/link-exchange';
                 }else{
                    showErrorMessage("保存失败");
                 }
@@ -59,7 +59,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
                 "showOnHome":showOnHome
             });
             $.ajax({
-                url: '/linkexchange-manage/linkexchange/'+operate,
+                url: '/link-exchange-manage/link-exchange/'+operate,
                 type: 'POST',
                 dataType: 'json',
                 data: dataForm,
@@ -67,7 +67,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
             })
             .done(function (res) {
                 if(res.data.status){
-                    location.href='/linkexchange-manage/linkexchange';
+                    location.href='/link-exchange-manage/link-exchange';
                 }else{
                     showErrorMessage("保存失败");
                 }

@@ -40,9 +40,11 @@
     <div class="link-list page-width clearfix">
         <ul>
             <li class="f-title">友情链接</li>
+            <#if linkExchangeList??>
                 <#list linkExchangeList as linkExchange>
                     <li><a href="${linkExchange.linkUrl}" target="_blank">${linkExchange.title}</a></li>
                 </#list>
+            </#if>
         </ul>
     </div>
     <div class="copyright page-width">
