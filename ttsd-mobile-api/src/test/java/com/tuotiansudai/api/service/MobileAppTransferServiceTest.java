@@ -85,13 +85,17 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
     public void shouldPurchaseSuccess() throws Exception{
         TransferPurchaseRequestDto transferPurchaseRequestDto = new TransferPurchaseRequestDto();
         transferPurchaseRequestDto.setBaseParam(BaseParamTest.getInstance());
+        transferPurchaseRequestDto.setTransferApplicationId(idGenerator.generate());
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         payFormDataDto.setStatus(true);
         payFormDataDto.setUrl("url");
         BaseDto<PayFormDataDto> successResponseDto = new BaseDto<>();
         successResponseDto.setSuccess(true);
         successResponseDto.setData(payFormDataDto);
-
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
+        transferApplicationModel.setTransferAmount(100000);
+        transferApplicationModel.setLoanId(idGenerator.generate());
+        when(transferApplicationMapper.findById(anyLong())).thenReturn(transferApplicationModel);
         when(transferService.transferPurchase(any(InvestDto.class))).thenReturn(successResponseDto);
         when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
 
