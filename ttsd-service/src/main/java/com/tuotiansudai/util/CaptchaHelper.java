@@ -13,6 +13,8 @@ public class CaptchaHelper {
 
     public final static String RETRIEVE_PASSWORD_CAPTCHA = "RETRIEVE_PASSWORD_CAPTCHA";
 
+    public final static String TURN_OFF_NO_PASSWORD_INVEST = "TURN_OFF_NO_PASSWORD_INVEST";
+
     @Autowired
     private HttpServletRequest httpServletRequest;
 
@@ -23,6 +25,6 @@ public class CaptchaHelper {
     public boolean captchaVerify(String attributeKey, String captcha) {
         String actualCaptcha = (String) httpServletRequest.getSession().getAttribute(attributeKey);
         httpServletRequest.getSession().removeAttribute(attributeKey);
-        return !Strings.isNullOrEmpty(captcha) && captcha.equalsIgnoreCase(actualCaptcha);
+        return !Strings.isNullOrEmpty(captcha) && captcha.trim().equalsIgnoreCase(actualCaptcha);
     }
 }

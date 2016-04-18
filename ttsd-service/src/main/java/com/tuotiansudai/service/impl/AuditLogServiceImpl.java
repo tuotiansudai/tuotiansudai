@@ -2,6 +2,7 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.AuditLogPaginationItemDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.AuditLogMapper;
@@ -27,6 +28,9 @@ public class AuditLogServiceImpl implements AuditLogService {
 
     @Autowired
     private IdGenerator idGenerator;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @Autowired
     private AccountService accountService;
@@ -92,6 +96,11 @@ public class AuditLogServiceImpl implements AuditLogService {
         });
 
         return new BasePaginationDataDto<>(index, pageSize, count, records);
+    }
+
+    @Override
+    public String clearMybatisCache() {
+        return redisWrapperClient.clearMybatisCache();
     }
 
 }

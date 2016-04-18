@@ -3,12 +3,11 @@ package com.tuotiansudai.task.aspect;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.AbstractRedisWrapperClient;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
-import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
@@ -35,7 +34,7 @@ import java.util.List;
 public class AuditTaskAspectUser {
 
     @Autowired
-    AbstractRedisWrapperClient redisWrapperClient;
+    RedisWrapperClient redisWrapperClient;
 
     @Autowired
     AccountService accountService;

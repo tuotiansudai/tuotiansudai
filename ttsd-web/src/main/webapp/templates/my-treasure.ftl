@@ -87,7 +87,11 @@
                                     <#elseif coupon.couponType == 'INVEST_COUPON'>
                                         ［单笔投资满 <@amount>${coupon.investLowerLimit?string(0)}</@amount> 元可用］
                                     <#elseif coupon.couponType == 'INTEREST_COUPON'>
-                                        ［限投资 <@amount>${coupon.investUpperLimit?string(0)}</@amount> 元以内可用］
+                                        <#if coupon.investUpperLimit == 0>
+                                            ［投资即可使用］
+                                        <#else>
+                                            ［限投资 <@amount>${coupon.investUpperLimit?string(0)}</@amount> 元以内可用］
+                                        </#if>
                                     </#if>
                                 </p>
 
@@ -185,12 +189,12 @@
 
                             <p>
                                 <span class="left-text">所投标的： ${record.loanName!}</span>
-                                <span class="right-text">投资金额： ${(record.investAmount/100)?string("0")}元</span>
+                                <span class="right-text">投资金额： ${(record.investAmount/100)?float}元</span>
                             </p>
 
                             <p>
                                 <span class="left-text">使用时间： ${record.usedTime?date}</span>
-                                <span class="right-text">预计收益： ${(record.expectedIncome/100)?string("0")}元</span>
+                                <span class="right-text">预计收益： ${(record.expectedIncome/100)?float}元</span>
                             </p>
                         </div>
                     </li>
