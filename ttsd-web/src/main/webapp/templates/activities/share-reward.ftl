@@ -52,7 +52,7 @@
     <div class="wp clearfix">
     	<#if isAppSource>
     	<div id="reward-code" class="reward-code">
-    		<input id="address" class="address" value="http://www.baidu.com" />
+    		<input id="address" class="address" value="http://www.baidu.com" type="hidden" />
     		<div id="code" class="code"></div>
     		<div class="code-text">
 				<p>长按二维码</p>
