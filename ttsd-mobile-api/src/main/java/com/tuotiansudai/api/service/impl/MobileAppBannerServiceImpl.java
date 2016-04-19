@@ -28,8 +28,6 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
 
     private static final String BANNER_CONFIG_FILE = "banner.json";
 
-    private Map<String,BannerResponseDataDto> jsonFileMap = new HashMap<>();
-
     @Value("${web.server}")
     private String domainName;
 
@@ -39,11 +37,7 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
     @Override
     public BaseResponseDto<BannerResponseDataDto> generateBannerList() {
         BaseResponseDto<BannerResponseDataDto> baseDto = new BaseResponseDto<>();
-
-        if(jsonFileMap.get(BANNER_CONFIG_FILE) == null)
-            jsonFileMap.put(BANNER_CONFIG_FILE, BannerUtils.getLatestBannerInfo(BANNER_CONFIG_FILE, domainName, staticDomainName));
-
-        baseDto.setData(jsonFileMap.get(BANNER_CONFIG_FILE) );
+        baseDto.setData(BannerUtils.getLatestBannerInfo(BANNER_CONFIG_FILE, domainName, staticDomainName));
         baseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         return baseDto;

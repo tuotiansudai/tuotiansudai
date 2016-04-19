@@ -12,7 +12,9 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BannerUtils {
 
@@ -21,6 +23,8 @@ public class BannerUtils {
     private static ObjectMapper objectMapper = new ObjectMapper();
 
     private static List<BannerPictureResponseDataDto> banners = null;
+
+    private static Map<String,List<BannerPictureResponseDataDto>> jsonFileMap = new HashMap<>();
 
     public static BannerResponseDataDto getLatestBannerInfo(String jsonName,String domainName,String staticDomainName) {
         if (!jsonName.equals("")) {
@@ -45,11 +49,17 @@ public class BannerUtils {
     }
 
     private static List<BannerPictureResponseDataDto> loadPictureListFromConfigFile(String jsonName) {
+        if(jsonFileMap.get(jsonName) != null){
+            return jsonFileMap.get(jsonName);
+        }
+
         try {
             InputStream is = MobileAppBannerController.class.getClassLoader()
                     .getResourceAsStream(jsonName);
-            return objectMapper.readValue(is, new TypeReference<List<BannerPictureResponseDataDto>>() {
-            });
+
+            List<BannerPictureResponseDataDto> bannerPictureResponseDataDto =  objectMapper.readValue(is, new TypeReference<List<BannerPictureResponseDataDto>>() {});
+            jsonFileMap.put(jsonName,bannerPictureResponseDataDto);
+            return bannerPictureResponseDataDto;
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
