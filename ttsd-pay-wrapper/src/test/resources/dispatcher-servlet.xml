@@ -11,7 +11,9 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven>
+        <mvc:path-matching suffix-pattern="false"/>
+    </mvc:annotation-driven>
 
     <context:component-scan base-package="com.tuotiansudai.paywrapper.controller"/>
 
