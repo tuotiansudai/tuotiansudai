@@ -81,10 +81,11 @@ public class MobileAppSendSmsControllerTest extends ControllerTestBase {
     public void shouldValidateCaptchaIsValid() throws Exception {
         VerifyCaptchaRequestDto verifyCaptchaRequestDto = new VerifyCaptchaRequestDto();
         verifyCaptchaRequestDto.setCaptcha("1234");
+        verifyCaptchaRequestDto.setPhoneNum("13800000098");
         verifyCaptchaRequestDto.setType(CaptchaType.REGISTER_CAPTCHA);
         when(service.validateCaptcha(any(VerifyCaptchaRequestDto.class))).thenReturn(successResponseDto);
         doRequestWithServiceIsOkMockedTest("/validatecaptcha", verifyCaptchaRequestDto)
-                .andExpect(jsonPath("$.code").value("0001"));
+                .andExpect(jsonPath("$.code").value("0009"));
     }
 
 
