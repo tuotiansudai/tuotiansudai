@@ -50,7 +50,7 @@ public class AutoLoanOutJob implements Job {
 
         BaseDto<PayDataDto> dto = payWrapperClient.autoLoanOutAfterRaisingComplete(loanId);
         if (!dto.getData().getStatus() && !this.ALREADY_OUT.equals(dto.getData().getCode())) {
-            throw new JobExecutionException();
+            logger.info("loan has already been outed.[" + loanId + "]");
         }
     }
 }
