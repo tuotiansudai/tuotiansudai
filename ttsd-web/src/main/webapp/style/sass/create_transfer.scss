@@ -1,0 +1,75 @@
+@import 'variables';
+@import 'daterangepicker';
+@import "coupon_alert";
+
+/* create transfer*/
+.create-transfer-content {
+  .column-title {
+    em {
+      &.title-navli {
+        border-bottom: 4px solid #999;
+        color: #999;
+        cursor: pointer;
+        margin-right: 40px;
+      }
+      &.active {
+        border-bottom: 4px solid #ff7200;
+        color: #ff7200;
+      }
+    }
+    span {
+      float: right;
+      border-bottom: none;
+      font-size: 14px;
+      font-weight: normal;
+      color: #666;
+      cursor: pointer;
+      &.rule-show {
+        color: #ff752a;
+      }
+    }
+  }
+  .filters-list {
+    float: left;
+    width: 100%;
+    li {
+      float: left;
+      color: #4c4c4c;
+      font-size: 12px;
+      padding: 5px 15px;
+      margin-right: 10px;
+      cursor: pointer;
+      &.active {
+        color: #fff;
+        background: #ff752a;
+        border-radius: 5px;
+      }
+    }
+  }
+  table.invest-list {
+    td {
+      font-size: 12px;
+      i.birth-icon {
+        float: left;
+        width: 20px;
+        height: 20px;
+        background: url(/images/sign/birthday.png) no-repeat center;
+        background-size: 15px;
+      }
+      .loan-name-col {
+        display: inline-block;
+        width: 170px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .project-name {
+        width: 175px;
+        display: inline-block;
+        @include text-overflow;
+      }
+    }
+  }
+}
+@media screen and (max-width:700px) {
+}

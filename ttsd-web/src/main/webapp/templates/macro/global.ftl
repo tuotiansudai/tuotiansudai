@@ -26,6 +26,7 @@
     {"title":"我的账户", "url":"/account", "leftNavs":[
     {"title":"账户总览", "url":"/account", "role":"'INVESTOR', 'LOANER'"},
     {"title":"我的投资", "url":"/investor/invest-list", "role":"'INVESTOR'"},
+    {"title":"债权转让", "url":"/create-transfer", "role":"'INVESTOR'"},
     {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
     {"title":"资金管理", "url":"/user-bill", "role":"'INVESTOR', 'LOANER'"},
     {"title":"我的财豆", "url":"/point", "role":"'INVESTOR', 'LOANER'"},

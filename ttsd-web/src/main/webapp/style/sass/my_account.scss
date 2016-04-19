@@ -797,6 +797,23 @@ line-height: 30px;
 
 /* I want to invest page*/
 .loan-list-content {
+  .project-type{
+    margin-bottom: 15px;
+    li{
+      margin:0 15px;
+      display: inline-block;
+      a{
+        font-size:18px;
+        color:#0e050a;
+      }
+      &.active{
+        border-bottom:4px solid #ff9c1b;
+        a{
+          color:#ff9c1b;
+        }
+      }
+    }
+  }
 .wrapper-list {
   li {
     border-bottom: 1px solid #e6e6e6;
