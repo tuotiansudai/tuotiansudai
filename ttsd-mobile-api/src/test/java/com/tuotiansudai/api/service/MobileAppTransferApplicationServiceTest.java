@@ -80,7 +80,6 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         assertEquals("10.00", baseResponseDto.getData().getTransferApplication().get(0).getTransferAmount());
         assertEquals("12.00", baseResponseDto.getData().getTransferApplication().get(0).getInvestAmount());
         assertEquals("2016-02-09 00:00:00", baseResponseDto.getData().getTransferApplication().get(0).getTransferTime());
-        assertEquals("25", baseResponseDto.getData().getTransferApplication().get(0).getTransferInterestDays());
 
     }
     @Test
@@ -105,7 +104,6 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         assertEquals("10.00", baseResponseDto.getData().getTransferApplication().get(0).getTransferAmount());
         assertEquals("12.00", baseResponseDto.getData().getTransferApplication().get(0).getInvestAmount());
         assertEquals("2016-02-09 00:00:00", baseResponseDto.getData().getTransferApplication().get(0).getTransferTime());
-        assertEquals("25", baseResponseDto.getData().getTransferApplication().get(0).getTransferInterestDays());
 
     }
 
@@ -117,7 +115,6 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         transferApplicationRecordDto.setTransferTime(new DateTime("2016-02-09").toDate());
         transferApplicationRecordDto.setBaseRate(0.16);
         transferApplicationRecordDto.setActivityRate(0.17);
-        transferApplicationRecordDto.setTransferInterestDays(25);
         transferApplicationRecordDto.setTransferStatus(TransferStatus.TRANSFERRING);
         return transferApplicationRecordDto;
 

@@ -2,29 +2,41 @@ package com.tuotiansudai.console.service;
 
 public interface ConsoleHomeService {
 
-    int getRegisterUserToday();
+    int userToday();
 
-    int getRegisterUser7Days();
+    int user7Days();
 
-    int getRegisterUser30Days();
+    int user30Days();
 
-    long getSumRechargeAmountToday();
+    long rechargeToday_Loaner();
 
-    long getSumRechargeAmount7Days();
+    long recharge7Days_Loaner();
 
-    long getSumRechargeAmount30Days();
+    long recharge30Days_Loaner();
 
-    long getSumWithdrawAmountToday();
+    long rechargeToday_NotLoaner();
 
-    long getSumWithdrawAmount7Days();
+    long recharge7Days_NotLoaner();
 
-    long getSumWithdrawAmount30Days();
+    long recharge30Days_NotLoaner();
 
-    long getSumInvestAmountToday();
+    long withdrawToday_Loaner();
 
-    long getSumInvestAmount7Days();
+    long withdraw7Days_Loaner();
 
-    long getSumInvestAmount30Days();
+    long withdraw30Days_Loaner();
+
+    long withdrawToday_NotLoaner();
+
+    long withdraw7Days_NotLoaner();
+
+    long withdraw30Days_NotLoaner();
+
+    long investToday();
+
+    long invest7Days();
+
+    long invest30Days();
 
     long getSumInvestAmount();
 

@@ -47,6 +47,10 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
     private UserPointTaskMapper userPointTaskMapper;
     public BaseResponseDto signIn(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        if(accountModel == null){
+            return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(),ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
+        }
         SignInPointDto signInPointDto = signInService.signIn(loginName);
 
         SignInResponseDataDto dataDto = new SignInResponseDataDto();
@@ -68,6 +72,10 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
 
     public BaseResponseDto getLastSignInTime(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        if(accountModel == null){
+            return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(),ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
+        }
         SignInPointDto lastSignInPointDto = signInService.getLastSignIn(loginName);
 
         LastSignInTimeResponseDataDto dataDto = new LastSignInTimeResponseDataDto();
@@ -83,8 +91,13 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
 
     @Override
     public BaseResponseDto queryPointBillList(PointBillRequestDto pointBillRequestDto) {
-        BaseResponseDto dto = new BaseResponseDto();
+
         String loginName = pointBillRequestDto.getBaseParam().getUserId();
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        if(accountModel == null){
+            return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(),ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
+        }
+        BaseResponseDto dto = new BaseResponseDto();
         Integer index = pointBillRequestDto.getIndex();
         Integer pageSize = pointBillRequestDto.getPageSize();
         if (index == null || index <= 0) {
@@ -182,6 +195,9 @@ public class MobileAppPointServiceImpl implements MobileAppPointService {
     public BaseResponseDto queryPoint(BaseParamDto baseParamDto) {
         String loginName = baseParamDto.getBaseParam().getUserId();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        if(accountModel == null){
+            return new BaseResponseDto(ReturnMessage.USER_IS_NOT_CERTIFICATED.getCode(),ReturnMessage.USER_IS_NOT_CERTIFICATED.getMsg());
+        }
 
         PointResponseDataDto dataDto = new PointResponseDataDto();
         dataDto.setPoint(accountModel.getPoint());

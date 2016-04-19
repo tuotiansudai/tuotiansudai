@@ -29,7 +29,7 @@ public class MerRegisterPersonMapperTest {
 
     @Test
     public void shouldCreateMerRegisterPersonRequest() {
-        MerRegisterPersonRequestModel model = new MerRegisterPersonRequestModel("loginName", "userName", "identityNumber", "13900000000");
+        MerRegisterPersonRequestModel model = new MerRegisterPersonRequestModel("orderId", "loginName", "userName", "identityNumber", "13900000000");
         model.setSign("sign");
         model.setRequestUrl("url");
         model.setRequestData("requestData");
@@ -41,7 +41,7 @@ public class MerRegisterPersonMapperTest {
 
     @Test
     public void shouldUpdateMerRegisterPersonRequestStatus() {
-        MerRegisterPersonRequestModel model = new MerRegisterPersonRequestModel("loginName", "userName", "identityNumber", "13900000000");
+        MerRegisterPersonRequestModel model = new MerRegisterPersonRequestModel("orderId", "loginName", "userName", "identityNumber", "13900000000");
         model.setSign("sign");
         model.setRequestUrl("url");
         model.setRequestData("requestData");
@@ -57,7 +57,7 @@ public class MerRegisterPersonMapperTest {
 
     @Test
     public void shouldCreateMerRegisterPersonResponse() {
-        MerRegisterPersonRequestModel requestModel = new MerRegisterPersonRequestModel("loginName", "userName", "identityNumber", "13900000000");
+        MerRegisterPersonRequestModel requestModel = new MerRegisterPersonRequestModel("orderId", "loginName", "userName", "identityNumber", "13900000000");
         requestModel.setSign("sign");
         requestModel.setRequestUrl("url");
         requestModel.setRequestData("requestData");

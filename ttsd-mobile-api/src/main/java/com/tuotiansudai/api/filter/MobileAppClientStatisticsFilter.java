@@ -13,7 +13,10 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 @Component("appClientStatisticsFilter")
 public class MobileAppClientStatisticsFilter implements Filter {
@@ -43,7 +46,9 @@ public class MobileAppClientStatisticsFilter implements Filter {
     private void statisticsMobileClientParams(HttpServletRequest request) {
         try {
             BaseParam param = extractBaseParam(request);
-            statistics.statClientParams(param);
+            if(param != null ){
+                statistics.statClientParams(param);
+            }
         } catch (Exception e) {
             log.error(e);
         }
@@ -52,12 +57,15 @@ public class MobileAppClientStatisticsFilter implements Filter {
     private BaseParam extractBaseParam(HttpServletRequest request) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        String requestJson = "";
         try {
-            BaseParamDto dto = objectMapper.readValue(request.getInputStream(), BaseParamDto.class);
+            requestJson = ((BufferedRequestWrapper)request).getInputStreamString();
+            BaseParamDto dto = objectMapper.readValue(requestJson, BaseParamDto.class);
             return dto.getBaseParam();
         } catch (IOException e) {
-            log.error(e);
+            log.error("app client json invalid:" + requestJson + e);
         }
         return null;
     }
+
 }
