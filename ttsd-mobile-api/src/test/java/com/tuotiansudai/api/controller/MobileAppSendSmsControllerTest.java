@@ -1,8 +1,6 @@
 package com.tuotiansudai.api.controller;
 
-import com.tuotiansudai.api.dto.ReturnMessage;
-import com.tuotiansudai.api.dto.SendSmsCompositeRequestDto;
-import com.tuotiansudai.api.dto.SendSmsRequestDto;
+import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppSendSmsService;
 import com.tuotiansudai.repository.model.CaptchaType;
 import org.junit.Test;
@@ -68,5 +66,27 @@ public class MobileAppSendSmsControllerTest extends ControllerTestBase {
         doRequestWithServiceIsOkMockedTest("/sms-captcha/send", sendSmsRequestDto)
                 .andExpect(jsonPath("$.code").value("0001"));
     }
+
+    @Test
+    public void shouldValidateCaptchaIsSuccess() throws Exception {
+        VerifyCaptchaRequestDto verifyCaptchaRequestDto = new VerifyCaptchaRequestDto();
+        verifyCaptchaRequestDto.setCaptcha("123456");
+        verifyCaptchaRequestDto.setType(CaptchaType.REGISTER_CAPTCHA);
+        verifyCaptchaRequestDto.setPhoneNum("13800000098");
+        when(service.validateCaptcha(any(VerifyCaptchaRequestDto.class))).thenReturn(successResponseDto);
+        doRequestWithServiceMockedTest("/validatecaptcha",
+                verifyCaptchaRequestDto);
+    }
+    @Test
+    public void shouldValidateCaptchaIsValid() throws Exception {
+        VerifyCaptchaRequestDto verifyCaptchaRequestDto = new VerifyCaptchaRequestDto();
+        verifyCaptchaRequestDto.setCaptcha("1234");
+        verifyCaptchaRequestDto.setType(CaptchaType.REGISTER_CAPTCHA);
+        when(service.validateCaptcha(any(VerifyCaptchaRequestDto.class))).thenReturn(successResponseDto);
+        doRequestWithServiceIsOkMockedTest("/validatecaptcha", verifyCaptchaRequestDto)
+                .andExpect(jsonPath("$.code").value("0009"));
+    }
+
+
 
 }

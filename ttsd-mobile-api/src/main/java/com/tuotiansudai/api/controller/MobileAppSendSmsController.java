@@ -1,8 +1,6 @@
 package com.tuotiansudai.api.controller;
 
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.ReturnMessage;
-import com.tuotiansudai.api.dto.SendSmsCompositeRequestDto;
+import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppSendSmsService;
 import com.tuotiansudai.api.util.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +31,14 @@ public class MobileAppSendSmsController extends MobileAppBaseController{
             return mobileAppSendSmsService.sendSms(sendSmsCompositeRequestDto,remoteIp);
         }
     }
-
+    @RequestMapping(value = "/validatecaptcha", method = RequestMethod.POST)
+    public BaseResponseDto validateAuthCode(@Valid @RequestBody VerifyCaptchaRequestDto verifyCaptchaRequestDto,BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorCode = bindingResult.getFieldError().getDefaultMessage();
+            String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);
+            return new BaseResponseDto(errorCode, errorMessage);
+        } else {
+            return mobileAppSendSmsService.validateCaptcha(verifyCaptchaRequestDto);
+        }
+    }
 }
