@@ -56,6 +56,4 @@ public interface InvestRepayMapper {
     List<InvestRepayModel> findInvestRepayByLoanIdAndPeriod(@Param(value = "loanId") long loanId, @Param(value = "period") int period);
 
     List<InvestRepayModel> findByLoanId(long loanId);
-
-    long getExpectedInterestAmountByInvestIdAndPeriod(@Param(value = "investId") long InvestId, @Param(value = "period") int period);
 }

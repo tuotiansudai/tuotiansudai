@@ -171,7 +171,13 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         TransferPurchaseResponseDataDto transferPurchaseResponseDataDto = new TransferPurchaseResponseDataDto();
         transferPurchaseResponseDataDto.setBalance(AmountConverter.convertCentToString((accountMapper.findByLoginName(transferApplicationModel.getLoginName()).getBalance())));
         transferPurchaseResponseDataDto.setTransferAmount(AmountConverter.convertCentToString((transferApplicationModel.getTransferAmount())));
-        transferPurchaseResponseDataDto.setExpectedInterestAmount(AmountConverter.convertCentToString(investRepayMapper.getExpectedInterestAmountByInvestIdAndPeriod(transferApplicationModel.getInvestId(), transferApplicationModel.getPeriod())));
+
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getInvestId());
+        long totalExpectedInterestAmount = 0;
+        for(int i = transferApplicationModel.getPeriod() - 1  ; i < investRepayModels.size(); i ++ ){
+            totalExpectedInterestAmount +=  investRepayModels.get(i).getCorpus() + investRepayModels.get(i).getExpectedInterest() - investRepayModels.get(i).getExpectedFee();
+        }
+        transferPurchaseResponseDataDto.setExpectedInterestAmount(AmountConverter.convertCentToString(totalExpectedInterestAmount));
 
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());

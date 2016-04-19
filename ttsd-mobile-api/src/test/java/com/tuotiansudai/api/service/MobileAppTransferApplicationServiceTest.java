@@ -151,11 +151,17 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         transferApplicationModel.setPeriod(2);
         transferApplicationModel.setId(transferApplicationId);
 
-        when(transferApplicationMapper.findById(transferApplicationModel.getId())).thenReturn(transferApplicationModel);
+        InvestRepayModel investRepayModel1 = createInvestRepay("testuser", investId, 0, 1);
+        InvestRepayModel investRepayModel2 = createInvestRepay("testuser", investId, 0, 2);
+        InvestRepayModel investRepayModel3 = createInvestRepay("testuser", investId, 100000, 3);
+        List<InvestRepayModel> investRepayModels = new ArrayList<InvestRepayModel>();
+        investRepayModels.add(investRepayModel1);
+        investRepayModels.add(investRepayModel2);
+        investRepayModels.add(investRepayModel3);
 
-        when(investRepayMapper.getExpectedInterestAmountByInvestIdAndPeriod(investId, transferApplicationModel.getPeriod())).thenReturn(100014L);
-
-        when(accountMapper.findByLoginName(transferApplicationModel.getLoginName())).thenReturn(accountModel);
+        when(transferApplicationMapper.findById(anyLong())).thenReturn(transferApplicationModel);
+        when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
+        when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
 
         BaseResponseDto<TransferPurchaseResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.transferPurchase(transferPurchaseRequestDto);
 
