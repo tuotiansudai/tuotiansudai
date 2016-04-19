@@ -1196,6 +1196,8 @@
               &.own-record{
                 padding:10px 30px;
                 height: 480px;
+                overflow:hidden;
+                overflow-y:scroll;
                 li{
                   float:left;
                   width:100%;
