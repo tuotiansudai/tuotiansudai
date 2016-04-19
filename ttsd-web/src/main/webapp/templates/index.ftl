@@ -17,7 +17,7 @@
             </a>
             <a href="/activity/share-reward" onclick="cnzzPush.trackClick('74首页','Banner模块','推荐奖励')" target="_blank">
                 <img src="${staticServer}/images/sign/actor/sharereward/share-reward.png" alt="推荐奖励：0元投资赚收益，呼朋唤友抢佣金" class="pc-img">
-                <img src="${staticServer}/images/sign/actor/sharereward/share-reward-phone.png" alt="推荐奖励：0元投资赚收益，呼朋唤友抢佣金" class="iphone-img">
+                <img src="${staticServer}/images/sign/actor/sharereward/app-banner-recommend.png" alt="推荐奖励：0元投资赚收益，呼朋唤友抢佣金" class="iphone-img">
             </a>
             <a href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" onclick="cnzzPush.trackClick('25首页','Banner模块','上市')" target="_blank">
                 <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">
