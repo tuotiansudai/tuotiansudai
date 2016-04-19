@@ -24,7 +24,7 @@ public class MobileAppReferrerStatisticsControllerTest extends ControllerTestBas
     }
 
     @Test
-    public void getReferrerStatistics() throws Exception {
+    public void shouldGetReferrerStatisticsSuccess() throws Exception {
         BaseResponseDto dto = new BaseResponseDto();
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
