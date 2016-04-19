@@ -1,6 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -8,7 +9,6 @@ import com.tuotiansudai.security.MyUser;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,11 +20,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.*;
@@ -63,6 +65,8 @@ public class LoanServiceTest {
     @Autowired
     private UserRoleMapper userRoleMapper;
 
+   @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @Before
     public void createLoanTitle(){
@@ -442,5 +446,55 @@ public class LoanServiceTest {
         MyUser user = new MyUser(loginName,"", true, true, true, true, AuthorityUtils.createAuthorityList("ROLE_PATRON"), mobile, "fdafdsa");
         TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user,null);
         SecurityContextHolder.getContext().setAuthentication(testingAuthenticationToken);
+    }
+
+
+    @Test
+    public void shouldShowEncryptLoginNameWhenAnonymousAndExcludeShowRandomLoginNameList() {
+        InvestModel investModel1 = new InvestModel();
+        investModel1.setLoginName("loginName1");
+        investModel1.setId(100000L);
+        assertEquals("log***", loanService.encryptLoginName("", investModel1.getLoginName(), 3, investModel1.getId()));
+    }
+
+    @Test
+    public void shouldShowEncryptLoginNameWhenAnonymousAndIncludeShowRandomLoginNameList() {
+        InvestModel investModel1 = new InvestModel();
+        investModel1.setLoginName("ttdblvjing");
+        investModel1.setId(1000002L);
+
+        assertEquals(this.getDefaultkey(), loanService.encryptLoginName("", investModel1.getLoginName(), 3, investModel1.getId()));
+    }
+
+    @Test
+    public void shouldShowEncryptLoginNameWhenLoginNameSameAsInvestorLoginName() {
+        InvestModel investModel1 = new InvestModel();
+        investModel1.setLoginName("ttdblvjing");
+        investModel1.setId(1000002L);
+
+        assertEquals("ttdblvjing", loanService.encryptLoginName("ttdblvjing", investModel1.getLoginName(), 3, investModel1.getId()));
+    }
+
+    @Test
+    public void shouldShowEncryptLoginNameWhenLoginNameNotSameAsInvestorLoginNameAndIncludeShowRandomLoginNameList() {
+        InvestModel investModel1 = new InvestModel();
+        investModel1.setLoginName("ttdblvjing");
+        investModel1.setId(1000002L);
+
+        assertEquals(this.getDefaultkey(), loanService.encryptLoginName("loginName2", investModel1.getLoginName(), 3, investModel1.getId()));
+    }
+
+    @Test
+    public void shouldShowEncryptLoginNameWhenLoginNameNotSameAsInvestorLoginNameAndExcludeShowRandomLoginNameList() {
+        InvestModel investModel1 = new InvestModel();
+        investModel1.setLoginName("loginName3");
+        investModel1.setId(1000003L);
+
+        assertEquals("log***", loanService.encryptLoginName("loginName2", investModel1.getLoginName(), 3, investModel1.getId()));
+    }
+
+    private String getDefaultkey(){
+        redisWrapperClient.set("webmobile:1000002:ttdblvjing:showinvestorname","bxh***");
+        return redisWrapperClient.get("webmobile:1000002:ttdblvjing:showinvestorname");
     }
 }

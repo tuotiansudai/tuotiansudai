@@ -1,0 +1,125 @@
+/* glue: 0.11.1 hash: 5019dd82ec */
+        .sprite-global-app-pc-top,
+.sprite-global-knetSealLogo,
+.sprite-global-itrust_logo,
+.sprite-global-chengxin_logo,
+.sprite-global-weixin-img,
+.sprite-global-app-download,
+.sprite-global-digicert,
+.sprite-global-qq-icon,
+.sprite-global-mobile-icon,
+.sprite-global-calculator-icon,
+.sprite-global-back-icon,
+.sprite-global-logo-tip,
+.sprite-global-close,
+.sprite-global-close-tip {
+            background-image: url('/images/compress/global_20160413.png');
+            background-repeat: no-repeat;
+        }
+        
+        .sprite-global-app-pc-top {
+            background-position: 0 0;
+            width: 180px;
+            height: 230px;
+        }
+        
+        .sprite-global-knetSealLogo {
+            background-position: -180px 0;
+            width: 128px;
+            height: 47px;
+        }
+        
+        .sprite-global-itrust_logo {
+            background-position: -180px -47px;
+            width: 127px;
+            height: 47px;
+        }
+        
+        .sprite-global-chengxin_logo {
+            background-position: -180px -94px;
+            width: 127px;
+            height: 47px;
+        }
+        
+        .sprite-global-weixin-img {
+            background-position: -308px 0;
+            width: 100px;
+            height: 100px;
+        }
+        
+        .sprite-global-app-download {
+            background-position: -308px -100px;
+            width: 100px;
+            height: 100px;
+        }
+        
+        .sprite-global-digicert {
+            background-position: -180px -141px;
+            width: 80px;
+            height: 47px;
+        }
+        
+        .sprite-global-qq-icon {
+            background-position: 0 -230px;
+            width: 60px;
+            height: 60px;
+        }
+        
+        .sprite-global-mobile-icon {
+            background-position: -60px -230px;
+            width: 60px;
+            height: 60px;
+        }
+        
+        .sprite-global-calculator-icon {
+            background-position: -120px -230px;
+            width: 60px;
+            height: 60px;
+        }
+        
+        .sprite-global-back-icon {
+            background-position: -180px -230px;
+            width: 60px;
+            height: 60px;
+        }
+        
+        .sprite-global-logo-tip {
+            background-position: -240px -230px;
+            width: 50px;
+            height: 50px;
+        }
+        
+        .sprite-global-close {
+            background-position: -308px -200px;
+            width: 24px;
+            height: 24px;
+        }
+        
+        .sprite-global-close-tip {
+            background-position: -332px -200px;
+            width: 16px;
+            height: 16px;
+        }
+        
+        @media screen and (-webkit-min-device-pixel-ratio: 1.0), screen and (min--moz-device-pixel-ratio: 1.0), screen and (-o-min-device-pixel-ratio: 100/100), screen and (min-device-pixel-ratio: 1.0), screen and (min-resolution: 1.0dppx) {
+            .sprite-global-app-pc-top,
+    .sprite-global-knetSealLogo,
+    .sprite-global-itrust_logo,
+    .sprite-global-chengxin_logo,
+    .sprite-global-weixin-img,
+    .sprite-global-app-download,
+    .sprite-global-digicert,
+    .sprite-global-qq-icon,
+    .sprite-global-mobile-icon,
+    .sprite-global-calculator-icon,
+    .sprite-global-back-icon,
+    .sprite-global-logo-tip,
+    .sprite-global-close,
+    .sprite-global-close-tip {
+                background-image: url('/images/compress/global_20160413.png');
+                -webkit-background-size: 408px 290px;
+                -moz-background-size: 408px 290px;
+                background-size: 408px 290px;
+            }
+        }
+        

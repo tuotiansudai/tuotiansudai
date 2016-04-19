@@ -1,9 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.AuditLogPaginationItemDataDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.LoginLogPaginationItemDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.LoginLogService;
 import com.tuotiansudai.task.OperationType;
@@ -14,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.Min;
@@ -92,5 +91,25 @@ public class SecurityLogController {
         modelAndView.addObject("operationTypes", Lists.newArrayList(OperationType.values()));
 
         return modelAndView;
+    }
+
+    @RequestMapping(path = "/clear-db-cache", method = RequestMethod.GET)
+    public ModelAndView clearDbCache() {
+        ModelAndView modelAndView = new ModelAndView("/clear-db-cache");
+        return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/clear-db-cache", method = RequestMethod.POST)
+    public BaseDto<BaseDataDto> clearCache() {
+        String statusCode = auditLogService.clearMybatisCache();
+
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto baseDataDto = new BaseDataDto();
+        baseDto.setData(baseDataDto);
+        baseDataDto.setMessage(statusCode);
+        baseDataDto.setStatus(true);
+        baseDto.setSuccess(true);
+        return baseDto;
     }
 }

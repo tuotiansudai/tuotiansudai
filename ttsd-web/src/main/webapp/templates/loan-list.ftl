@@ -1,5 +1,27 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.my_account}" pageJavascript="${js.loan_list}" activeNav="我要投资" activeLeftNav="" title="投资列表">
+<#switch productType!"">
+    <#case 'SYL'>
+        <#assign title="速盈利_拓天产品_拓天速贷">
+        <#assign keywords="拓天速贷,拓天速盈利,拓天理财">
+        <#assign description="拓天速贷金融精英为您推荐拓天速贷快速理财产品“速盈利”先付利息后还本金,按天计息,放款后生息.">
+        <#break>
+    <#case 'WYX'>
+        <#assign title="稳盈绣_个人资金周转_拓天速贷">
+        <#assign keywords="拓天速贷,拓天稳盈绣,资金周转,稳定收益">
+        <#assign description="拓天速贷P2P金融信息服务平台为您提供个人资金周转,让您获得稳定收益的投资理财产品.">
+        <#break>
+    <#case 'JYF'>
+        <#assign title="久盈富_个人资金借款_拓天速贷">
+        <#assign keywords="拓天速贷,拓天久盈富,拓天高收益,个人借款">
+        <#assign description="拓天速贷个人借款投资产品,年化利率13%起,高收益,高效率,低风险.">
+        <#break>
+    <#default>
+        <#assign title="投资列表_拓天投资_拓天速贷">
+        <#assign keywords="拓天速贷,拓天产品,速盈利,稳盈绣,久盈富">
+        <#assign description="拓天速贷为您提供准确及时的P2P投资项目.投资用户通过拓天速贷平台进行准确投标的方式进行投资,让您的收益速、稳、高.">
+</#switch>
+
+<@global.main pageCss="${css.my_account}" pageJavascript="${js.loan_list}" activeNav="我要投资" activeLeftNav="" title="${title!}" keywords="${keywords!}" description="${description!}">
 <div class="loan-list-content">
     <ul class="project-type">
         <li class="active"><a href="/loan-list">直投项目</a></li>

@@ -106,19 +106,22 @@
     </select>
 
     <select id="findSumRechargeAmount" parameterType="map" resultType="long">
-        select IFNULL(sum(amount),0) as amount from recharge
+        select IFNULL(sum(re.amount),0) as amount from recharge re
+        <if test="role !=null">
+            join user_role ur on re.login_name = ur.login_name and ur.role= #{role}
+        </if>
         <where>
             <if test="rechargeId !=null and rechargeId !='' ">
                 id = #{rechargeId}
             </if>
             <if test="loginName !=null and loginName != '' ">
-                <![CDATA[and login_name like '${loginName}%']]>
+                <![CDATA[and re.login_name like '${loginName}%']]>
             </if>
             <if test="startTime !=null" >
-                and created_time >= #{startTime}
+                and re.created_time >= #{startTime}
             </if>
             <if test="endTime !=null ">
-                and created_time &lt;= #{endTime}
+                and re.created_time &lt;= #{endTime}
             </if>
             <if test="status !=null">
                 and status  = #{status}
@@ -131,4 +134,5 @@
             </if>
         </where>
     </select>
+
 </mapper>

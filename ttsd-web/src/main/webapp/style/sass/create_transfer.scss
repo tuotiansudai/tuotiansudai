@@ -32,6 +32,7 @@
   .filters-list {
     float: left;
     width: 100%;
+    margin-bottom: 20px;
     li {
       float: left;
       color: #4c4c4c;
@@ -46,27 +47,25 @@
       }
     }
   }
-  table.invest-list {
-    td {
-      font-size: 12px;
-      i.birth-icon {
-        float: left;
-        width: 20px;
-        height: 20px;
-        background: url(/images/sign/birthday.png) no-repeat center;
-        background-size: 15px;
+  .list-container{
+    float:left;
+    width:100%;
+    .record-list{
+      float:left;
+      width:100%;
+      display:none;
+      &.active{
+        display:block;
       }
-      .loan-name-col {
-        display: inline-block;
-        width: 170px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      .project-name {
-        width: 175px;
-        display: inline-block;
-        @include text-overflow;
+      .transfer-list {
+        td {
+          font-size: 12px;
+          .project-name {
+            width: 175px;
+            display: inline-block;
+            @include text-overflow;
+          }
+        }
       }
     }
   }

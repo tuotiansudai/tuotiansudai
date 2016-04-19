@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-    <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="关于我们" activeLeftNav="服务费用" title="服务费用详情">
+    <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="关于我们" activeLeftNav="服务费用" title="拓天速贷服务_拓天速贷" keywords="拓天速贷,P2P理财,网络借贷,本金保障,P2P平台" description="拓天速贷为您提供最专业的投资服务,让您的财富稳步增值." >
     <div class="content-container service-fee-container">
         <h2 class="column-title"><em>服务费用</em></h2>
         <table class="table-info clear-blank-m">

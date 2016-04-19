@@ -28,7 +28,9 @@ public enum SystemBillBusinessType {
 
     COUPON("体验券"),
 
-    COUPON_RED_ENVELOPE("红包");
+    COUPON_RED_ENVELOPE("红包"),
+
+    LOTTERY_CASH("抽奖现金");
 
     private final String description;
 
