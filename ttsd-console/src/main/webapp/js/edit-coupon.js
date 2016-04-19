@@ -187,20 +187,20 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                 contentType: false,
                 processData: false
             })
-                .done(function(data){
-                    if (data[0]) {
-                        $('#import-file').val(data[1]);
-                        $('.give-number').val(data[2]);
-                        $('.coupon-table').show();
-                        var names = data[3];
-                        for (var i = 0; i < names.length; i++) {
-                            $('.table-bordered').append('<tr class="name-tr"><td>'+parseInt(i+1)+'</td><td>'+names[i]+'</td></tr>');
-                        }
-                        layer.msg('用户导入成功!');
-                    }  else {
-                        layer.msg('用户导入失败,'+data[1]+'等用户导入有误!');
+            .done(function(data){
+                if (data.status) {
+                    $('#import-file').val(data.fileUuid);
+                    $('.give-number').val(data.totalCount);
+                    $('.coupon-table').show();
+                    var names = data.successLoginNames;
+                    for (var i = 0; i < names.length; i++) {
+                        $('.table-bordered').append('<tr class="name-tr"><td>'+parseInt(i+1)+'</td><td>'+names[i]+'</td></tr>');
                     }
-                });
+                } else {
+                    $('.give-number').val('0');
+                }
+                layer.msg(data.message);
+            });
         });
 
     });

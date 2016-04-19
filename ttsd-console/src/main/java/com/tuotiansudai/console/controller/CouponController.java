@@ -11,6 +11,7 @@ import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.ImportExcelDto;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -361,12 +362,25 @@ public class CouponController {
 
     @RequestMapping(value = "/import-excel", method = RequestMethod.POST)
     @ResponseBody
-    public List<Object> importExcel(HttpServletRequest request) throws Exception {
+    public ImportExcelDto importExcel(HttpServletRequest request) throws Exception {
+        ImportExcelDto importExcelDto = new ImportExcelDto();
         String uuid = UUIDGenerator.generate();
         String redisKey = MessageFormat.format(redisKeyTemplate, uuid);
         MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
         MultipartFile multipartFile = multiRequest.getFile("file");
-        InputStream inputStream = multipartFile.getInputStream();
+        InputStream inputStream = null;
+        try {
+            if (!multipartFile.getOriginalFilename().endsWith(".xls")) {
+                importExcelDto.setStatus(false);
+                importExcelDto.setMessage("上传失败！请使用2003格式的表格进行上传！");
+                return importExcelDto;
+            }
+            inputStream = multipartFile.getInputStream();
+        } catch (NullPointerException e) {
+            importExcelDto.setStatus(false);
+            importExcelDto.setMessage("您已经取消上传！");
+            return importExcelDto;
+        }
         HSSFWorkbook hssfWorkbook = new HSSFWorkbook(inputStream);
         HSSFSheet hssfSheet = hssfWorkbook.getSheetAt(0);
         List<String> listSuccess = new ArrayList<>();
@@ -385,17 +399,18 @@ public class CouponController {
         }
         redisWrapperClient.hset(redisKey, "failed", StringUtils.join(listFailed, ","));
         redisWrapperClient.hset(redisKey, "success", StringUtils.join(listSuccess, ","));
-        List<Object> list = new ArrayList<>();
+
         if (CollectionUtils.isNotEmpty(listFailed)) {
-            list.add(false);
-            list.add(StringUtils.join(listFailed, ","));
+            importExcelDto.setStatus(false);
+            importExcelDto.setMessage("用户导入失败," + StringUtils.join(listFailed, ",") + "等用户导入有误!");
         } else {
-            list.add(true);
-            list.add(uuid);
-            list.add(hssfSheet.getLastRowNum() + 1);
-            list.add(listSuccess);
+            importExcelDto.setStatus(true);
+            importExcelDto.setFileUuid(uuid);
+            importExcelDto.setTotalCount(hssfSheet.getLastRowNum() + 1);
+            importExcelDto.setSuccessLoginNames(listSuccess);
+            importExcelDto.setMessage("用户导入成功!");
         }
-        return list;
+        return importExcelDto;
     }
 
     private String getStringVal(HSSFCell hssfCell) {
