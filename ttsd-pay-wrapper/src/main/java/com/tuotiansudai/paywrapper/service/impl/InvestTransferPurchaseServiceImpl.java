@@ -340,11 +340,11 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 InvestTransferNotifyRequestMapper.class,
                 InvestNotifyRequestModel.class);
 
-        redisWrapperClient.incr(InvestTransferCallbackJob.INVEST_TRANSFER_JOB_TRIGGER_KEY);
-
         if (callbackRequest == null) {
             return null;
         }
+
+        redisWrapperClient.incr(InvestTransferCallbackJob.INVEST_TRANSFER_JOB_TRIGGER_KEY);
         return callbackRequest.getResponseData();
     }
 
@@ -409,7 +409,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             if (transferApplicationModel != null && transferApplicationModel.getStatus() == TransferStatus.SUCCESS) {
                 logger.info(MessageFormat.format("transfer is failed, transfer application(investId={0}, loginName={1}) has already been purchased by another user.",
                         String.valueOf(transferApplicationModel.getId()), loginName));
-                // TODO: pay back money to user
                 overInvestPaybackProcess(investModel);
                 return;
             } else {
