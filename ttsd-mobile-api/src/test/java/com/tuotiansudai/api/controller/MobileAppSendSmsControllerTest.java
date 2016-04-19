@@ -84,7 +84,7 @@ public class MobileAppSendSmsControllerTest extends ControllerTestBase {
         verifyCaptchaRequestDto.setType(CaptchaType.REGISTER_CAPTCHA);
         when(service.validateCaptcha(any(VerifyCaptchaRequestDto.class))).thenReturn(successResponseDto);
         doRequestWithServiceIsOkMockedTest("/validatecaptcha", verifyCaptchaRequestDto)
-                .andExpect(jsonPath("$.code").value("0009"));
+                .andExpect(jsonPath("$.code").value("0001"));
     }
 
 
