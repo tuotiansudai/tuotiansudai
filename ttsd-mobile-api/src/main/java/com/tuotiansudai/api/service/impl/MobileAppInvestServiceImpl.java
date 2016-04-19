@@ -35,12 +35,18 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
     @Override
     public BaseResponseDto noPasswordInvest(InvestRequestDto investRequestDto) {
         BaseResponseDto<InvestNoPassResponseDataDto> responseDto = new BaseResponseDto<>();
-        responseDto.setCode(ReturnMessage.SUCCESS.getCode());
-        responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         InvestDto investDto = convertInvestDto(investRequestDto);
-        try {
-            investService.noPasswordInvest(investDto);
-            responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/callback/project_transfer_invest?ret_code={1}",domainName,ReturnMessage.SUCCESS.getCode())));
+        String code = "";
+        String message = "";
+            try {
+                BaseDto<PayDataDto> payDataDto = investService.noPasswordInvest(investDto);
+            if(payDataDto.getData() != null){
+                code = payDataDto.getData().getCode();
+                message = payDataDto.getData().getMessage();
+            }
+                responseDto.setCode(code);
+                responseDto.setMessage(message);
+                responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/callback/project_transfer_invest?ret_code={1}", domainName,code)));
         } catch (InvestException e) {
             return this.convertExceptionToDto(e);
         }
