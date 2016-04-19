@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.company_activity}" pageJavascript="${js.about_us}" activeNav="" activeLeftNav="" title="推荐奖励_拓天活动_拓天速贷" keywords="拓天速贷,拓天活动.推荐奖励" description="推荐奖励：0元投资赚收益，呼朋唤友抢佣金.">
+<@global.main pageCss="${css.company_activity}" pageJavascript="" activeNav="" activeLeftNav="" title="推荐奖励_拓天活动_拓天速贷" keywords="拓天速贷,拓天活动.推荐奖励" description="推荐奖励：0元投资赚收益，呼朋唤友抢佣金.">
 <div class="share-reward-container">
 	<div class="rank-phone-model">
         <img src="${staticServer}/images/sign/actor/sharereward/share-top-bgg.png" width="100%">
@@ -53,12 +53,11 @@
 	    <div class="reward-info-title">	</div>
 	    <div class="share-example"></div>
 	    <div class="share-recommend">
-			<@global.isAnonymous>
+			<#if referrer??>
+                <a href="/register/user?referrer=${referrer}">立即注册</a>
+			<#else>
                 <a href="/referrer/refer-list">立即推荐</a>
-			</@global.isAnonymous>
-			<@global.isNotAnonymous>
-                <a href="/register/user">立即注册</a>
-			</@global.isNotAnonymous>
+			</#if>
 	    </div>
 	    <div class="share-rules"></div>
 	</div>
