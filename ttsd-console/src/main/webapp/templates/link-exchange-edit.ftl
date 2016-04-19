@@ -32,7 +32,7 @@
                 <label class="col-sm-2 control-label"></label>
                 <div class="col-sm-4">
                     <button type="button" class="btn jq-btn-form btn-primary jq-save">发布</button>
-                    <button type="button" class="btn jq-btn-form btn-primary jq-cancel">取消</button>
+                    <button type="button" class="btn btn-primary jq-cancel">取消</button>
                 </div>
             </div>
         </form>
