@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.company_activity}" pageJavascript="${js.share_reward}" activeNav="" activeLeftNav="" title="推荐奖励_拓天活动_拓天速贷" keywords="拓天速贷,拓天活动.推荐奖励" description="推荐奖励：0元投资赚收益，呼朋唤友抢佣金.">
+<@global.main pageCss="${css.company_activity}" pageJavascript="" activeNav="" activeLeftNav="" title="推荐奖励_拓天活动_拓天速贷" keywords="拓天速贷,拓天活动.推荐奖励" description="推荐奖励：0元投资赚收益，呼朋唤友抢佣金.">
 <div class="share-reward-container">
 	<div class="rank-phone-model">
         <img src="${staticServer}/images/sign/actor/sharereward/share-top-bgg.png" width="100%">
@@ -29,7 +29,7 @@
    		</div>
    		<div class="share-recommend">
 			<a href="/referrer/refer-list">立即推荐</a>
-   		</div>
+        </div>
    		<div class="share-rules">
    			<div class="rules-title">
    				活动规则
@@ -50,19 +50,15 @@
         <img src="${staticServer}/images/sign/actor/sharereward/share-phone-top.png" width="100%">
     </div>
     <div class="wp clearfix">
-    	<#if isAppSource>
-    	<div id="rewardCode" class="reward-code" data-recommend="">
-    		<div id="code" class="code"></div>
-    		<div class="code-text">
-				<p>长按二维码</p>
-				<p>轻松注册&nbsp;坐享收益</p>
-    		</div>
-    	</div>
-    	</#if>
 	    <div class="reward-info-title">	</div>
 	    <div class="share-example"></div>
 	    <div class="share-recommend">
-			<a href="/referrer/refer-list">立即推荐</a>
+			<@global.isAnonymous>
+                <a href="/referrer/refer-list">立即推荐</a>
+			</@global.isAnonymous>
+			<@global.isNotAnonymous>
+                <a href="/register/user">立即注册</a>
+			</@global.isNotAnonymous>
 	    </div>
 	    <div class="share-rules"></div>
 	</div>
