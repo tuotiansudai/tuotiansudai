@@ -130,8 +130,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 var input = $(self.find("input"));
                 var productTypeEnable = self.data("product-type-usable");
                 var investLowerLimit = $(self.find(".ticket-term.lower-limit")).data('invest-lower-limit') || 0;
-                var investUpperLimit = $(self.find(".ticket-term.upper-limit")).data('invest-upper-limit') || 0;
-                var disabled = !productTypeEnable || (investLowerLimit > 0 && investLowerLimit > investAmount) || (investUpperLimit > 0 && investUpperLimit < investAmount);
+                var disabled = !productTypeEnable || (investLowerLimit > 0 && investLowerLimit > investAmount);
                 input.prop("disabled", disabled);
                 disabled ? self.addClass('disabled') : self.removeClass('disabled');
             });

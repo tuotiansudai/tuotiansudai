@@ -94,7 +94,7 @@
                                                     data-coupon-type="${coupon.couponType}"
                                                     data-product-type-usable="${coupon.productTypeList?seq_contains(loan.productType)?string('true', 'false')}"
                                                     data-coupon-created-time="${coupon.createdTime?string("yyyy-MM-dd HH:mm:ss")}"
-                                                    <#if coupon.investLowerLimit!=0 && coupon.investUpperLimit!=0>class="lower-upper-limit"</#if>>
+                                                    <#if coupon.investLowerLimit!=0>class="lower-upper-limit"</#if>>
                                                     <input type="radio"
                                                            id="${coupon.id?string.computer}"
                                                            name="userCouponIds"
@@ -131,13 +131,7 @@
                                                                         [投资满${(coupon.investLowerLimit / 100)?string("0.00")}元可用]
                                                                     </i>
                                                                 </#if>
-                                                                <#if coupon.investUpperLimit!=0>
-                                                                    <br/>
-                                                                    <i class="ticket-term upper-limit" data-invest-upper-limit="${coupon.investUpperLimit?string.computer}">
-                                                                        [投资限${(coupon.investUpperLimit / 100)?string("0.00")}元内可用]
-                                                                    </i>
-                                                                </#if>
-                                                                <#if coupon.investLowerLimit==0 && coupon.investUpperLimit==0>
+                                                                <#if coupon.investLowerLimit==0>
                                                                     <br/>
                                                                     <i class="ticket-term">
                                                                         <#if coupon.couponType=='BIRTHDAY_COUPON'>
@@ -155,7 +149,7 @@
                                         </#list>
                                     </ul>
                                     <#list coupons as coupon>
-                                        <#if (coupon.shared && coupon.investLowerLimit==0 && coupon.investUpperLimit==0)>
+                                        <#if (coupon.shared && coupon.investLowerLimit==0)>
                                             <input type="hidden" id="${coupon.id?string.computer}" name="userCouponIds" value="${coupon.id?string.computer}" data-coupon-id="${coupon.couponId?string.computer}" />
                                             <p class="red-tiptext clearfix">
                                                 <i class="icon-redbag"></i>
