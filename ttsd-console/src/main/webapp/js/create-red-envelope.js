@@ -163,14 +163,15 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
 
         $('.coupon-agent-channel').on('click','.channel', function() {
             var num = 0;
-            $('.channel').each(function(index,item) {
-                if($(item).attr("checked")){
-                    $.get('/user-manage/user/'+$(item).val()+'/channel',function(data) {
-                        num += parseInt(data);
-                    })
-                }
+            $('.channel:checked').each(function(index,item) {
+                $.get('/user-manage/user/'+$(item).val()+'/channel',function(data) {
+                    num += parseInt(data);
+                    $('.give-number').val(num);
+                })
             });
-            $('.give-number').val(num);
+            if($('.channel:checked').length==0) {
+                $('.give-number').val('0');
+            }
         });
 
         $('.file-btn').on('change',function(){

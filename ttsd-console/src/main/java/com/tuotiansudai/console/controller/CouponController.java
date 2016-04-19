@@ -81,6 +81,8 @@ public class CouponController {
         ModelAndView modelAndView = new ModelAndView("/red-envelope");
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
+        long initNum = couponService.findEstimatedCount(UserGroup.ALL_USER);
+        modelAndView.addObject("initNum", initNum);
         return modelAndView;
     }
 
@@ -90,6 +92,8 @@ public class CouponController {
         modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.values()));
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
+        long initNum = couponService.findEstimatedCount(UserGroup.ALL_USER);
+        modelAndView.addObject("initNum", initNum);
         return modelAndView;
     }
 
@@ -146,6 +150,8 @@ public class CouponController {
         ModelAndView modelAndView = new ModelAndView("/interest-coupon");
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
+        long initNum = couponService.findEstimatedCount(UserGroup.ALL_USER);
+        modelAndView.addObject("initNum", initNum);
         return modelAndView;
     }
 
