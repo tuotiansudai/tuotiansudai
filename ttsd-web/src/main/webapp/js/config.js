@@ -30,7 +30,6 @@ var require = {
         'drag': staticServer+'/js/libs/drag',
         'rotate': staticServer+'/js/libs/jqueryrotate.min',
         'template':staticServer+'/js/libs/template.min',
-        'qrcode':staticServer+'/js/libs/jquery.qrcode.min',
         'fancybox':staticServer+'/js/libs/jquery.fancybox.min'
     },
     'waitSeconds':0,
@@ -50,7 +49,6 @@ var require = {
         'load-swiper':['swiper'],
         'drag':['jquery'],
         'rotate':['jquery'],
-        'qrcode':['jquery'],
         'fancybox':['jquery']
     },
 
