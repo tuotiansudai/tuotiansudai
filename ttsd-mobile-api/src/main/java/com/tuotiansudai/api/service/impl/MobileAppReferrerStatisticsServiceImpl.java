@@ -1,9 +1,8 @@
 package com.tuotiansudai.api.service.impl;
 
 import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.MobileAppBannerService;
-import com.tuotiansudai.api.service.MobileAppReferrerBannerService;
 import com.tuotiansudai.api.service.MobileAppReferrerStatisticsService;
+import com.tuotiansudai.api.util.BannerUtils;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.model.ReferrerManageView;
@@ -23,7 +22,9 @@ public class MobileAppReferrerStatisticsServiceImpl implements MobileAppReferrer
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
     @Autowired
-    private MobileAppReferrerBannerService mobileAppReferrerBannerService;
+    private BannerUtils bannerUtils;
+
+    private static final String REFERRER_STATISTICS_FILE = "referrer.json";
 
     @Override
     public BaseResponseDto getReferrerStatistics(BaseParamDto paramDto) {
@@ -47,9 +48,9 @@ public class MobileAppReferrerStatisticsServiceImpl implements MobileAppReferrer
     }
 
     private BannerPictureResponseDataDto getBannerResponseDataDto(){
-        BaseResponseDto<BannerResponseDataDto> bannerResponseDataDtoList = mobileAppReferrerBannerService.generateReferrerBannerList();
-        if(bannerResponseDataDtoList.getData() != null && CollectionUtils.isNotEmpty(bannerResponseDataDtoList.getData().getPictures())){
-            return bannerResponseDataDtoList.getData().getPictures().get(0);
+        BannerResponseDataDto bannerResponseDataDto = bannerUtils.getLatestBannerInfo(REFERRER_STATISTICS_FILE);
+        if(bannerResponseDataDto != null && CollectionUtils.isNotEmpty(bannerResponseDataDto.getPictures())){
+            return bannerResponseDataDto.getPictures().get(0);
         }
         return new BannerPictureResponseDataDto();
     }
