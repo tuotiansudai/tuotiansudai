@@ -185,7 +185,27 @@ public class InvestRepayMapperTest {
         assertEquals(21, repayModelCountPaid);
         assertEquals(9, repayModelCountUnPaid);
     }
+    @Test
+    public void shouldFindLeftPeriodByTransferInvestIdAndPeriodIsSuccess(){
+        InvestModel fakeInvestModel = getFakeInvestModel();
+        investMapper.create(fakeInvestModel);
+        List<InvestRepayModel> investRepayModels = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            InvestRepayModel investRepayModel = new InvestRepayModel();
+            investRepayModel.setId(idGenerator.generate());
+            investRepayModel.setInvestId(fakeInvestModel.getId());
+            investRepayModel.setPeriod(i + 1);
+            investRepayModel.setRepayDate(new DateTime().withDate(2015, 1, i + 1).withTimeAtStartOfDay().toDate());
+            investRepayModel.setStatus(RepayStatus.COMPLETE);
+            investRepayModels.add(investRepayModel);
+        }
+        investRepayMapper.create(investRepayModels);
 
+        int count = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(fakeInvestModel.getId(),2);
+
+        assertEquals(3,count);
+
+    }
     private UserModel getFakeUserModel() {
         UserModel fakeUserModel = new UserModel();
         fakeUserModel.setLoginName("loginName");

@@ -2,7 +2,9 @@ package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
@@ -29,6 +31,7 @@ import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -229,7 +232,6 @@ public class InvestTransferServiceTest {
     @Test
     public void shouldIsTransferableByOverDaysLimit(){
         long loanId = idGenerator.generate();
-        UserModel userModel = createUserByUserId("testuser");
         LoanModel loanModel = createLoanByUserId("testuser", loanId);
         loanModel.setStatus(LoanStatus.REPAYING);
         loanMapper.update(loanModel);
@@ -243,6 +245,42 @@ public class InvestTransferServiceTest {
         boolean result = investTransferService.isTransferable(investModel.getId());
 
         assertFalse(result);
+    }
+    @Test
+    public void shouldFindTransferApplicationPaginationListIsSuccess(){
+        long loanId = idGenerator.generate();
+        UserModel transferrerModel = createUserByUserId("transferrerTestuser");
+        UserModel transfereeModel = createUserByUserId("transfereeTestUser");
+        LoanModel loanModel = createLoanByUserId("transferrerTestUser", loanId);
+        InvestModel transferrerInvestModel = createInvest(transferrerModel.getLoginName(), loanId);
+        InvestModel transfereeInvestModel = createInvest(transfereeModel.getLoginName(), loanId);
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
+        transferApplicationModel.setLoginName(transferrerModel.getLoginName());
+        transferApplicationModel.setName("name");
+        transferApplicationModel.setTransferAmount(1000l);
+        transferApplicationModel.setInvestAmount(1200l);
+        transferApplicationModel.setTransferTime(new DateTime("2016-01-02").toDate());
+        transferApplicationModel.setStatus(TransferStatus.TRANSFERRING);
+        transferApplicationModel.setLoanId(loanModel.getId());
+        transferApplicationModel.setTransferInvestId(transferrerInvestModel.getId());
+        transferApplicationModel.setInvestId(transfereeInvestModel.getId());
+        transferApplicationModel.setDeadline(new Date());
+        transferApplicationModel.setApplicationTime(new Date());
+        transferApplicationMapper.create(transferApplicationModel);
+
+        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto =  investTransferService.findTransferApplicationPaginationList(null, null, null,null,null,transfereeModel.getLoginName(),null,1,10);
+
+        assertTrue(basePaginationDataDto.getStatus());
+        assertNotNull(basePaginationDataDto.getRecords().get(0));
+        assertEquals(1, basePaginationDataDto.getIndex());
+        assertEquals(10,basePaginationDataDto.getPageSize());
+        assertEquals(1,basePaginationDataDto.getCount());
+        assertEquals("10.00", basePaginationDataDto.getRecords().get(0).getTransferAmount());
+        assertEquals("12.00", basePaginationDataDto.getRecords().get(0).getInvestAmount());
+        assertEquals(new DateTime("2016-01-02").toDate(), basePaginationDataDto.getRecords().get(0).getTransferTime());
+        assertEquals(TransferStatus.TRANSFERRING, basePaginationDataDto.getRecords().get(0).getTransferStatus());
+        assertEquals(transfereeInvestModel.getLoginName(), basePaginationDataDto.getRecords().get(0).getTransfereeLoginName());
+        assertEquals(transferrerInvestModel.getLoginName(), basePaginationDataDto.getRecords().get(0).getTransferrerLoginName());
     }
 
 }

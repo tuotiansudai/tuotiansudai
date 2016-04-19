@@ -32,8 +32,14 @@
         <result column="base_rate" property="baseRate"></result>
         <result column="activity_rate" property="activityRate"></result>
         <result column="status" property="transferStatus"></result>
-    </resultMap>
+        <result column="loan_id" property="loanId"></result>
+        <result column="transferrer_loginName" property="transferrerLoginName"></result>
+        <result column="transferee_loginName" property="transfereeLoginName"></result>
+        <result column="transfer_fee" property="transferFee"></result>
+        <result column="transfer_invest_id" property="transferInvestId"></result>
+        <result column="period" property="period"></result>
 
+    </resultMap>
     <insert id="create" parameterType="TransferApplicationModel" useGeneratedKeys="true" keyProperty="id">
         insert into transfer_application (name, loan_id, transfer_invest_id, invest_id, period, login_name, invest_amount, transfer_amount, transfer_fee, status, deadline, transfer_time, application_time)
         value (#{name}, #{loanId}, #{transferInvestId}, #{investId}, #{period}, #{loginName}, #{investAmount}, #{transferAmount}, #{transferFee}, #{status}, #{deadline}, #{transferTime}, #{applicationTime})
@@ -113,6 +119,66 @@
         </where>
     </select>
 
+    <select id="findTransferApplicationPaginationList" parameterType="map" resultMap="transferApplicationRecordDtoMap">
+        select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,ta.loan_id,ta.login_name AS transferrer_loginName,ta.transfer_fee ,
+        ta.transfer_invest_id,ta.period,i.login_name AS transferee_loginName from transfer_application ta left JOIN invest i on ta.invest_id = i.id
+        <where>
+            <if test="transferApplicationId != null">
+                ta.id = #{transferApplicationId}
+            </if>
+            <if test="startTime != null">
+                and ta.transfer_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                <![CDATA[ and ta.transfer_time <= #{endTime} ]]>
+            </if>
+            <if test="status">
+               and ta.status = #{status}
+            </if>
+            <if test="transferrerLoginName != null and transferrerLoginName != '' ">
+              and ta.login_name = #{transferrerLoginName}
+            </if>
+            <if test="transfereeLoginName != null and transfereeLoginName != ''">
+              and i.login_name = #{transfereeLoginName}
+            </if>
+            <if test="loanId != null">
+              and i.loan_id = #{loanId}
+            </if>
+
+        </where>
+        order by transfer_time
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountTransferApplicationPagination" parameterType="map" resultType="int">
+
+        select count(1)
+        from transfer_application ta left JOIN invest i on ta.invest_id = i.id
+        <where>
+            <if test="transferApplicationId != null">
+                ta.id = #{transferApplicationId}
+            </if>
+            <if test="startTime != null">
+                and ta.transfer_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                <![CDATA[ and ta.transfer_time <= #{endTime} ]]>
+            </if>
+            <if test="status != null">
+                and ta.status = #{status}
+            </if>
+            <if test="transferrerLoginName != null and transferrerLoginName != '' ">
+                and ta.login_name = #{transferrerLoginName}
+            </if>
+            <if test="transfereeLoginName != null and transfereeLoginName != ''">
+                and i.login_name = #{transfereeLoginName}
+            </if>
+            <if test="loanId != null">
+                and i.loan_id = #{loanId}
+            </if>
+
+        </where>
+    </select>
 
 
     <select id="findByInvestId" parameterType="long" resultMap="transferApplicationResultMap">
