@@ -7,6 +7,7 @@ import com.tuotiansudai.api.service.MobileAppInvestService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.model.Source;
@@ -45,7 +46,7 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
             }
                 responseDto.setCode(code);
                 responseDto.setMessage(message);
-                responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/callback/project_transfer_invest?ret_code={1}", domainName,code)));
+                responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/callback/project_transfer_invest?ret_code={1}", domainName, code)));
         } catch (InvestException e) {
             return this.convertExceptionToDto(e);
         }
