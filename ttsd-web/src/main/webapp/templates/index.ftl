@@ -3,10 +3,6 @@
 <div class="home-page-container">
     <div class="banner-box">
         <div class="banner-img-list">
-            <a href="/activity/share-reward" onclick="cnzzPush.trackClick('27首页','Banner模块','排行榜')" target="_blank">
-                <img src="${staticServer}/images/sign/actor/sharereward/share-reward.png" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="pc-img">
-                <img src="${staticServer}/images/sign/actor/sharereward/share-reward-phone.png" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="iphone-img">
-            </a>
             <a href="/activity/rank-list" onclick="cnzzPush.trackClick('27首页','Banner模块','排行榜')" target="_blank">
                 <img src="${staticServer}/images/sign/actor/ranklist/rank-list.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="pc-img">
                 <img src="${staticServer}/images/app-banner/app-banner-top.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="iphone-img">
@@ -18,6 +14,10 @@
             <a href="/activity/red-envelope" onclick="cnzzPush.trackClick('24首页','Banner模块','红包')" target="_blank">
                 <img src="${staticServer}/images/sign/actor/redbag/red-bag-pc.png" alt="注册就送现金红包" class="pc-img">
                 <img src="${staticServer}/images/sign/actor/redbag/red-bag-phone.png" alt="注册就送现金红包" class="iphone-img">
+            </a>
+            <a href="/activity/share-reward" onclick="cnzzPush.trackClick('74首页','Banner模块','推荐奖励')" target="_blank">
+                <img src="${staticServer}/images/sign/actor/sharereward/share-reward.png" alt="推荐奖励：0元投资赚收益，呼朋唤友抢佣金" class="pc-img">
+                <img src="${staticServer}/images/sign/actor/sharereward/share-reward-phone.png" alt="推荐奖励：0元投资赚收益，呼朋唤友抢佣金" class="iphone-img">
             </a>
             <a href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" onclick="cnzzPush.trackClick('25首页','Banner模块','上市')" target="_blank">
                 <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">

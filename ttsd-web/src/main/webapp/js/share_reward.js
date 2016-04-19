@@ -1,7 +1,7 @@
 require(['jquery','qrcode'], function($) {
     $(function() {
-    	if($("#reward-code").length > 0){
-	    	var str = toUtf8($("#address").val());
+    	if($("#rewardCode").length > 0){
+	    	var str = toUtf8($("#rewardCode").attr('data-recommend'));
 			$("#code").qrcode({
 				render: "table",
 				width: 90,

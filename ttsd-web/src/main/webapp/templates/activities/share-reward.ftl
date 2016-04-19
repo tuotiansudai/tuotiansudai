@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.company_activity}" pageJavascript="${js.share_reward}" activeNav="" activeLeftNav="" title="推荐奖励_拓天活动_拓天速贷" keywords="拓天速贷,拓天活动.推荐奖励" description="拓天速贷专属生日月特权,生日月投资收益翻倍,拓天速贷专属活动超高收益等你拿.">
+<@global.main pageCss="${css.company_activity}" pageJavascript="${js.share_reward}" activeNav="" activeLeftNav="" title="推荐奖励_拓天活动_拓天速贷" keywords="拓天速贷,拓天活动.推荐奖励" description="推荐奖励：0元投资赚收益，呼朋唤友抢佣金.">
 <div class="share-reward-container">
 	<div class="rank-phone-model">
         <img src="${staticServer}/images/sign/actor/sharereward/share-top-bgg.png" width="100%">
@@ -51,8 +51,7 @@
     </div>
     <div class="wp clearfix">
     	<#if isAppSource>
-    	<div id="reward-code" class="reward-code">
-    		<input id="address" class="address" value="http://www.baidu.com" type="hidden" />
+    	<div id="rewardCode" class="reward-code" data-recommend="">
     		<div id="code" class="code"></div>
     		<div class="code-text">
 				<p>长按二维码</p>
