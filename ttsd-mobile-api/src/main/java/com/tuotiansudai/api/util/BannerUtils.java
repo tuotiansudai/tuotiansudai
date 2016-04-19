@@ -52,11 +52,9 @@ public class BannerUtils {
         if(jsonFileMap.get(jsonName) != null){
             return jsonFileMap.get(jsonName);
         }
-
         try {
             InputStream is = MobileAppBannerController.class.getClassLoader()
                     .getResourceAsStream(jsonName);
-
             List<BannerPictureResponseDataDto> bannerPictureResponseDataDto =  objectMapper.readValue(is, new TypeReference<List<BannerPictureResponseDataDto>>() {});
             jsonFileMap.put(jsonName,bannerPictureResponseDataDto);
             return bannerPictureResponseDataDto;
