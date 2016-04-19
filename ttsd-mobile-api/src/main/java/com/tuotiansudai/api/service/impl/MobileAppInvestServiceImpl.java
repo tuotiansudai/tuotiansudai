@@ -41,8 +41,8 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
             try {
                 BaseDto<PayDataDto> payDataDto = investService.noPasswordInvest(investDto);
             if(payDataDto.getData() != null){
-                code = payDataDto.getData().getCode();
-                message = payDataDto.getData().getMessage();
+                code = payDataDto.getData().getCode() != null ? payDataDto.getData().getCode() : ReturnMessage.SUCCESS.getCode();
+                message = payDataDto.getData().getMessage() != null ? payDataDto.getData().getMessage() : ReturnMessage.SUCCESS.getMsg();
             }
                 responseDto.setCode(code);
                 responseDto.setMessage(message);
