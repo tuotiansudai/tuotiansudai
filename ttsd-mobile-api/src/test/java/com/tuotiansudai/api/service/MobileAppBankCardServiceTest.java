@@ -48,6 +48,8 @@ public class MobileAppBankCardServiceTest extends ServiceTestBase {
     private AccountMapper accountMapper;
     @Test
     public void bindBankCardTest() {
+        AccountModel accountModel = new AccountModel();
+        when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
         when(bindBankCardService.bindBankCard(any(BindBankCardDto.class))).thenReturn(generateMockPayFormData());
         BankCardRequestDto requestDto = new BankCardRequestDto();
         requestDto.setBaseParam(BaseParamTest.getInstance());

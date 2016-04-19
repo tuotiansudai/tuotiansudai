@@ -16,7 +16,6 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
     private String transferTime;
     private String baseRate;
     private String activityRate;
-    private String transferInterestDays;
     private String remainingInterestDays;
     private TransferStatus transferStatus;
 
@@ -74,13 +73,6 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
         this.activityRate = activityRate;
     }
 
-    public String getTransferInterestDays() {
-        return transferInterestDays;
-    }
-
-    public void setTransferInterestDays(String transferInterestDays) {
-        this.transferInterestDays = transferInterestDays;
-    }
     public String getRemainingInterestDays() { return remainingInterestDays; }
 
     public void setRemainingInterestDays(String remainingInterestDays) {this.remainingInterestDays = remainingInterestDays; }
@@ -104,7 +96,6 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
         this.baseRate = decimalFormat.format(transferApplicationRecordDto.getBaseRate() * 100);
         this.activityRate = decimalFormat.format(transferApplicationRecordDto.getActivityRate() * 100);
         this.transferStatus = transferApplicationRecordDto.getTransferStatus();
-        this.transferInterestDays = String.valueOf(transferApplicationRecordDto.getTransferInterestDays());
         this.remainingInterestDays = String.valueOf(transferApplicationRecordDto.getRemainingInterestDays());
     }
 }

@@ -156,7 +156,7 @@ var MyChartsObject={
         // 路径配置
         require.config({
             paths:{
-                echarts: '../libs/echarts/dist'
+                echarts: '/js/libs/echarts/dist'
             }
         });
         //配置主题

@@ -3,6 +3,7 @@ package com.tuotiansudai.repository.mapper;
 import com.tuotiansudai.repository.model.RechargeModel;
 import com.tuotiansudai.repository.model.RechargeSource;
 import com.tuotiansudai.repository.model.RechargeStatus;
+import com.tuotiansudai.repository.model.Role;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -34,6 +35,7 @@ public interface RechargeMapper {
                                @Param(value = "source") RechargeSource source,
                                @Param(value = "status") RechargeStatus status,
                                @Param(value = "channel") String channel,
+                               @Param(value = "role") Role role,
                                @Param(value = "startTime") Date startTime,
                                @Param(value = "endTime") Date endTime);
 
@@ -48,4 +50,5 @@ public interface RechargeMapper {
     long findSumSuccessRechargeByLoginName(String loginName);
 
     List<String> findAllChannels();
+
 }

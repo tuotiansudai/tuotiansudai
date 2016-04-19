@@ -24,12 +24,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.Date;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
 
     static Logger logger = Logger.getLogger(RegisterServiceImpl.class);
+
+    private static final String REGISTER_ORDER_ID_TEMPLATE = "{0}X{1}";
 
     @Autowired
     private UserMapper userMapper;
@@ -43,22 +46,25 @@ public class RegisterServiceImpl implements RegisterService {
     @Autowired
     private PaySyncClient paySyncClient;
 
+    @Override
     @Transactional
     public BaseDto<PayDataDto> register(RegisterAccountDto dto) {
-        MerRegisterPersonRequestModel requestModel = new MerRegisterPersonRequestModel(dto.getLoginName(),
-                dto.getUserName(),
-                dto.getIdentityNumber(),
-                dto.getMobile());
-
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
 
         try {
+            UserModel userModel = userMapper.lockByLoginName(dto.getLoginName());
+
+            MerRegisterPersonRequestModel requestModel = new MerRegisterPersonRequestModel(
+                    MessageFormat.format(REGISTER_ORDER_ID_TEMPLATE, String.valueOf(userModel.getId()), String.valueOf(new Date().getTime())),
+                    dto.getLoginName(),
+                    dto.getUserName(),
+                    dto.getIdentityNumber(),
+                    dto.getMobile());
+
             MerRegisterPersonResponseModel responseModel = paySyncClient.send(MerRegisterPersonMapper.class,
                     requestModel,
                     MerRegisterPersonResponseModel.class);
-
-            UserModel userModel = userMapper.findByLoginName(dto.getLoginName());
 
             if (responseModel.isSuccess()) {
                 if (accountMapper.findByLoginName(userModel.getLoginName()) == null) {

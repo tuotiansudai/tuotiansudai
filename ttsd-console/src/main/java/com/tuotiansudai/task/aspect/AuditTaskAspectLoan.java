@@ -1,6 +1,6 @@
 package com.tuotiansudai.task.aspect;
 
-import com.tuotiansudai.client.AbstractRedisWrapperClient;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanDto;
@@ -27,7 +27,7 @@ import java.util.Date;
 public class AuditTaskAspectLoan {
 
     @Autowired
-    AbstractRedisWrapperClient redisWrapperClient;
+    RedisWrapperClient redisWrapperClient;
 
     @Autowired
     AccountService accountService;

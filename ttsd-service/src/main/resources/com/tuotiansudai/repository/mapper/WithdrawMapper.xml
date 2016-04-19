@@ -141,6 +141,9 @@
     <select id="findSumWithdrawAmount" parameterType="map" resultType="long">
         select IFNULL(SUM(withdraw.amount),0) as amount
         from withdraw join bank_card on withdraw.bank_card_id = bank_card.id
+        <if test="role !=null">
+            join user_role ur on withdraw.login_name = ur.login_name and ur.role= #{role}
+        </if>
         <where>
             <if test="withdrawId != null and withdrawId != ''">
                 and withdraw.id = #{withdrawId}

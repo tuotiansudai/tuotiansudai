@@ -28,6 +28,8 @@ public class InvestDto implements Serializable {
 
     private Source source = Source.WEB;
 
+    private boolean noPassword;
+
     public String getLoanId() {
         return loanId;
     }
@@ -82,5 +84,13 @@ public class InvestDto implements Serializable {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public boolean isNoPassword() {
+        return noPassword;
+    }
+
+    public void setNoPassword(boolean noPassword) {
+        this.noPassword = noPassword;
     }
 }

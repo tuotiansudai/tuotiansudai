@@ -121,7 +121,7 @@ public class InvestTransferNormalRepayServiceTest {
                 InterestCalculator.calculateLoanRepayInterest(fakeLoan, Lists.newArrayList(fakeTransferInvest), repayDate1, repayDate2), repayDate2.toDate(), null, RepayStatus.REPAYING);
 
         DateTime transfereeInvestTime = recheckTime.plusDays(10);
-        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(fakeTransferInvest, null, 1, 9000, true, 100, transfereeInvestTime.toDate(), TransferStatus.SUCCESS);
+        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(fakeTransferInvest, null, 1, 9000, 100, transfereeInvestTime.toDate(), TransferStatus.SUCCESS);
         InvestModel fakeInvest = this.createFakeInvest(fakeLoan.getId(), fakeTransferInvest.getId(), loanAmount, transferee.getLoginName(), transfereeInvestTime.toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
 
         BaseDto<PayFormDataDto> dto = normalRepayService.repay(fakeLoan.getId());
@@ -149,7 +149,7 @@ public class InvestTransferNormalRepayServiceTest {
                 InterestCalculator.calculateLoanRepayInterest(fakeLoan, Lists.newArrayList(fakeTransferInvest), repayDate1, repayDate2), repayDate2.toDate(), null, RepayStatus.REPAYING);
 
         DateTime transfereeInvestTime = repayDate1.plusDays(10);
-        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(fakeTransferInvest, null, 1, 9000, true, 100, transfereeInvestTime.toDate(), TransferStatus.SUCCESS);
+        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(fakeTransferInvest, null, 1, 9000, 100, transfereeInvestTime.toDate(), TransferStatus.SUCCESS);
         InvestModel fakeInvest = this.createFakeInvest(fakeLoan.getId(), fakeTransferInvest.getId(), loanAmount, transferee.getLoginName(), transfereeInvestTime.toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
 
         BaseDto<PayFormDataDto> dto = normalRepayService.repay(fakeLoan.getId());
@@ -160,11 +160,11 @@ public class InvestTransferNormalRepayServiceTest {
     }
 
     @Test
-    public void shouldRepayCallbackFirstPeriodWhenTransferInterest() throws Exception {
+    public void shouldRepayCallbackFirstPeriod() throws Exception {
         DateTime recheckTime = new DateTime().minusDays(30);
         UserModel transferrer = this.createFakeUser("transferrer", 0, 0);
         UserModel transferee = this.createFakeUser("transferee", 0, 0);
-        long loanAmount = 10000L;
+        long loanAmount = 10000;
         LoanModel fakeLoan = this.createFakeLoan(LoanType.INVEST_INTEREST_MONTHLY_REPAY, loanAmount, 2, 0.12, recheckTime.toDate());
         DateTime transferrerInvestTime = recheckTime.minusDays(10);
         InvestModel transferrerInvest = this.createFakeInvest(fakeLoan.getId(), null, loanAmount, transferrer.getLoginName(), transferrerInvestTime.toDate(), InvestStatus.SUCCESS, TransferStatus.SUCCESS);
@@ -181,11 +181,12 @@ public class InvestTransferNormalRepayServiceTest {
 
         DateTime transfereeInvestTime = recheckTime.plusDays(10);
         InvestModel transfereeInvest = this.createFakeInvest(fakeLoan.getId(), transferrerInvest.getId(), loanAmount, transferee.getLoginName(), transfereeInvestTime.toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
-        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(transferrerInvest, transfereeInvest.getId(), 1, 9000, true, 100, transfereeInvestTime.toDate(), TransferStatus.SUCCESS);
         InvestRepayModel transfereeInvestRepay1 = this.createFakeInvestRepay(transfereeInvest.getId(), 1, 0,
-                InterestCalculator.calculateInvestRepayInterest(fakeLoan, transferrerInvest, transfereeInvestTime, repayDate1), 0, repayDate1.toDate(), null, RepayStatus.REPAYING, false);
+                InterestCalculator.calculateInvestRepayInterest(fakeLoan, transferrerInvest, recheckTime.minusDays(1), repayDate1), 0, repayDate1.toDate(), null, RepayStatus.REPAYING, false);
         InvestRepayModel transfereeInvestRepay2 = this.createFakeInvestRepay(transfereeInvest.getId(), 2, loanAmount,
                 InterestCalculator.calculateInvestRepayInterest(fakeLoan, transferrerInvest, repayDate1, repayDate2), 0, repayDate2.toDate(), null, RepayStatus.REPAYING, false);
+
+        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(transferrerInvest, transfereeInvest.getId(), 1, 9000, 100, transfereeInvestTime.toDate(), TransferStatus.SUCCESS);
 
         normalRepayService.repay(fakeLoan.getId());
         normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay1.getId()), "");
@@ -203,7 +204,7 @@ public class InvestTransferNormalRepayServiceTest {
         InvestRepayModel transfereeInvestRepay1Model = investRepayMapper.findByInvestIdAndPeriod(transfereeInvest.getId(), 1);
 
         assertThat(transferrerInvestRepay1Model.getPeriod(), is(1));
-        assertNull(transferrerInvestRepay1Model.getActualRepayDate());
+        assertTrue(transferrerInvestRepay1Model.getActualRepayDate() == null);
         assertThat(transferrerInvestRepay1Model.getActualInterest(), is(0L));
         assertThat(transferrerInvestRepay1Model.getActualFee(), is(0L));
         assertThat(transferrerInvestRepay1Model.getStatus(), is(RepayStatus.COMPLETE));
@@ -232,192 +233,18 @@ public class InvestTransferNormalRepayServiceTest {
         assertThat(transfereeUserBills.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
 
         SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(transferrerInvestRepay1Model.getId(), SystemBillBusinessType.INVEST_FEE);
-        assertNull(systemBillModel1);
+        assertTrue(systemBillModel1 == null);
 
         SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(transfereeInvestRepay1Model.getId(), SystemBillBusinessType.INVEST_FEE);
         assertThat(systemBillModel2.getAmount(), is(transfereeInvestRepay1Model.getActualFee()));
         assertThat(systemBillModel2.getOperationType(), is(SystemBillOperationType.IN));
 
         SystemBillModel systemBillModel3 = systemBillMapper.findByOrderId(loanRepay1.getId(), SystemBillBusinessType.LOAN_REMAINING_INTEREST);
-        assertNull(systemBillModel3);
+        assertTrue(systemBillModel3 == null);
     }
 
     @Test
-    public void shouldRepayCallbackFirstPeriodWhenNotTransferInterest() throws Exception {
-        DateTime recheckTime = new DateTime().minusDays(30);
-        UserModel transferrer = this.createFakeUser("transferrer", 0, 0);
-        UserModel transferee = this.createFakeUser("transferee", 0, 0);
-        long loanAmount = 10000;
-        LoanModel fakeLoan = this.createFakeLoan(LoanType.INVEST_INTEREST_MONTHLY_REPAY, loanAmount, 2, 0.12, recheckTime.toDate());
-        DateTime transferrerInvestTime = recheckTime.minusDays(10);
-        InvestModel transferrerInvest = this.createFakeInvest(fakeLoan.getId(), null, loanAmount, transferrer.getLoginName(), transferrerInvestTime.toDate(), InvestStatus.SUCCESS, TransferStatus.SUCCESS);
-
-        DateTime repayDate1 = new DateTime();
-        DateTime repayDate2 = repayDate1.plusDays(30);
-        LoanRepayModel loanRepay1 = this.createFakeLoanRepay(fakeLoan.getId(), 1, 0,
-                InterestCalculator.calculateLoanRepayInterest(fakeLoan, Lists.newArrayList(transferrerInvest), recheckTime.minusDays(1), repayDate1), repayDate1.toDate(), null, RepayStatus.REPAYING);
-        LoanRepayModel loanRepay2 = this.createFakeLoanRepay(fakeLoan.getId(), 2, loanAmount,
-                InterestCalculator.calculateLoanRepayInterest(fakeLoan, Lists.newArrayList(transferrerInvest), repayDate1, repayDate2), repayDate2.toDate(), null, RepayStatus.REPAYING);
-
-        InvestRepayModel transferrerInvestRepay1 = this.createFakeInvestRepay(transferrerInvest.getId(), 1, 0, 0, 0, repayDate1.toDate(), null, RepayStatus.COMPLETE, true);
-        InvestRepayModel transferrerInvestRepay2 = this.createFakeInvestRepay(transferrerInvest.getId(), 2, 0, 0, 0, repayDate2.toDate(), null, RepayStatus.COMPLETE, true);
-
-        DateTime transfereeInvestTime = recheckTime.plusDays(10);
-        InvestModel transfereeInvest = this.createFakeInvest(fakeLoan.getId(), transferrerInvest.getId(), loanAmount, transferee.getLoginName(), transfereeInvestTime.toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
-        InvestRepayModel transfereeInvestRepay1 = this.createFakeInvestRepay(transfereeInvest.getId(), 1, 0,
-                InterestCalculator.calculateInvestRepayInterest(fakeLoan, transferrerInvest, transfereeInvestTime, repayDate1), 0, repayDate1.toDate(), null, RepayStatus.REPAYING, false);
-        InvestRepayModel transfereeInvestRepay2 = this.createFakeInvestRepay(transfereeInvest.getId(), 2, loanAmount,
-                InterestCalculator.calculateInvestRepayInterest(fakeLoan, transferrerInvest, repayDate1, repayDate2), 0, repayDate2.toDate(), null, RepayStatus.REPAYING, false);
-
-        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(transferrerInvest, transfereeInvest.getId(), 1, 9000, false, 100, transfereeInvestTime.toDate(), TransferStatus.SUCCESS);
-
-        normalRepayService.repay(fakeLoan.getId());
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay1.getId()), "");
-        boolean isSuccess = normalRepayService.postRepayCallback(loanRepay1.getId());
-
-        assertTrue(isSuccess);
-
-        assertThat(loanMapper.findById(fakeLoan.getId()).getStatus(), is(LoanStatus.REPAYING));
-
-        LoanRepayModel loanRepay1Model = loanRepayMapper.findByLoanIdAndPeriod(fakeLoan.getId(), 1);
-        assertThat(loanRepay1Model.getActualInterest(), is(134L));
-        assertThat(loanRepay1Model.getStatus(), is(RepayStatus.COMPLETE));
-
-        InvestRepayModel transferrerInvestRepay1Model = investRepayMapper.findByInvestIdAndPeriod(transferrerInvest.getId(), 1);
-        InvestRepayModel transfereeInvestRepay1Model = investRepayMapper.findByInvestIdAndPeriod(transfereeInvest.getId(), 1);
-
-        assertThat(transferrerInvestRepay1Model.getPeriod(), is(1));
-        assertThat(transferrerInvestRepay1Model.getActualRepayDate().getTime(), is(loanRepay1Model.getActualRepayDate().getTime()));
-        assertThat(transferrerInvestRepay1Model.getActualInterest(), is(65L));
-        assertThat(transferrerInvestRepay1Model.getActualFee(), is(6L));
-        assertThat(transferrerInvestRepay1Model.getStatus(), is(RepayStatus.COMPLETE));
-
-        assertThat(transfereeInvestRepay1Model.getPeriod(), is(1));
-        assertThat(transfereeInvestRepay1Model.getActualRepayDate().getTime(), is(loanRepay1Model.getActualRepayDate().getTime()));
-        assertThat(transfereeInvestRepay1Model.getActualInterest(), is(68L));
-        assertThat(transfereeInvestRepay1Model.getActualFee(), is(6L));
-        assertThat(transfereeInvestRepay1Model.getStatus(), is(RepayStatus.COMPLETE));
-
-        List<UserBillModel> loanerUserBills = userBillMapper.findByLoginName(fakeLoan.getAgentLoginName());
-        assertThat(loanerUserBills.get(0).getAmount(), is(loanRepay1Model.getActualInterest()));
-        assertThat(loanerUserBills.get(0).getBusinessType(), is(UserBillBusinessType.NORMAL_REPAY));
-        assertThat(loanerUserBills.get(0).getOperationType(), is(UserBillOperationType.TO_BALANCE));
-
-        List<UserBillModel> transferrerUserBills = userBillMapper.findByLoginName(transferrer.getLoginName());
-        assertThat(transferrerUserBills.size(), is(2));
-        assertThat(transferrerUserBills.get(0).getAmount(), is(transferrerInvestRepay1Model.getActualInterest()));
-        assertThat(transferrerUserBills.get(0).getBusinessType(), is(UserBillBusinessType.NORMAL_REPAY));
-        assertThat(transferrerUserBills.get(0).getOperationType(), is(UserBillOperationType.TI_BALANCE));
-        assertThat(transferrerUserBills.get(1).getAmount(), is(transferrerInvestRepay1Model.getActualFee()));
-        assertThat(transferrerUserBills.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
-        assertThat(transferrerUserBills.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
-
-        List<UserBillModel> transfereeUserBills = userBillMapper.findByLoginName(transferee.getLoginName());
-        assertThat(transfereeUserBills.size(), is(2));
-        assertThat(transfereeUserBills.get(0).getAmount(), is(transfereeInvestRepay1Model.getActualInterest()));
-        assertThat(transfereeUserBills.get(0).getBusinessType(), is(UserBillBusinessType.NORMAL_REPAY));
-        assertThat(transfereeUserBills.get(0).getOperationType(), is(UserBillOperationType.TI_BALANCE));
-        assertThat(transfereeUserBills.get(1).getAmount(), is(transfereeInvestRepay1Model.getActualFee()));
-        assertThat(transfereeUserBills.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
-        assertThat(transfereeUserBills.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
-
-        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(transferrerInvestRepay1Model.getId(), SystemBillBusinessType.INVEST_FEE);
-        assertThat(systemBillModel1.getAmount(), is(transferrerInvestRepay1Model.getActualFee()));
-        assertThat(systemBillModel1.getOperationType(), is(SystemBillOperationType.IN));
-
-        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(transfereeInvestRepay1Model.getId(), SystemBillBusinessType.INVEST_FEE);
-        assertThat(systemBillModel2.getAmount(), is(transfereeInvestRepay1Model.getActualFee()));
-        assertThat(systemBillModel2.getOperationType(), is(SystemBillOperationType.IN));
-
-        SystemBillModel systemBillModel3 = systemBillMapper.findByOrderId(loanRepay1.getId(), SystemBillBusinessType.LOAN_REMAINING_INTEREST);
-        assertThat(systemBillModel3.getAmount(), is(1L));
-        assertThat(systemBillModel3.getOperationType(), is(SystemBillOperationType.IN));
-    }
-
-    @Test
-    public void shouldRepayCallbackLastPeriodWhenTransferInterest() {
-        DateTime recheckTime = new DateTime().minusDays(60);
-        UserModel transferrer = this.createFakeUser("transferrer", 0, 0);
-        UserModel transferee = this.createFakeUser("transferee", 0, 0);
-        long loanAmount = 10000L;
-        LoanModel fakeLoan = this.createFakeLoan(LoanType.INVEST_INTEREST_MONTHLY_REPAY, loanAmount, 2, 0.12, recheckTime.toDate());
-        DateTime transferrerInvestTime = recheckTime.minusDays(10);
-        InvestModel transferrerInvest = this.createFakeInvest(fakeLoan.getId(), null, loanAmount, transferrer.getLoginName(), transferrerInvestTime.toDate(), InvestStatus.SUCCESS, TransferStatus.SUCCESS);
-
-        DateTime repayDate2 = new DateTime();
-        DateTime repayDate1 = repayDate2.minusDays(30);
-        LoanRepayModel loanRepay1 = this.createFakeLoanRepay(fakeLoan.getId(), 1, 0,
-                InterestCalculator.calculateLoanRepayInterest(fakeLoan, Lists.newArrayList(transferrerInvest), recheckTime.minusDays(1), repayDate1), repayDate1.toDate(), repayDate1.withTimeAtStartOfDay().toDate(), RepayStatus.COMPLETE);
-        LoanRepayModel loanRepay2 = this.createFakeLoanRepay(fakeLoan.getId(), 2, loanAmount,
-                InterestCalculator.calculateLoanRepayInterest(fakeLoan, Lists.newArrayList(transferrerInvest), repayDate1, repayDate2), repayDate2.toDate(), null, RepayStatus.REPAYING);
-
-        InvestRepayModel transferrerInvestRepay1 = this.createFakeInvestRepay(transferrerInvest.getId(), 1, 0,
-                InterestCalculator.calculateInvestRepayInterest(fakeLoan, transferrerInvest, transferrerInvestTime.minusDays(1), repayDate1), 0, repayDate1.toDate(), repayDate1.toDate(), RepayStatus.COMPLETE, false);
-        InvestRepayModel transferrerInvestRepay2 = this.createFakeInvestRepay(transferrerInvest.getId(), 2, 0, 0, 0, repayDate2.toDate(), null, RepayStatus.COMPLETE, true);
-
-        DateTime transfereeInvestTime = repayDate2.minusDays(10);
-        InvestModel transfereeInvest = this.createFakeInvest(fakeLoan.getId(), transferrerInvest.getId(), loanAmount, transferee.getLoginName(), transfereeInvestTime.toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
-        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(transferrerInvest, transfereeInvest.getId(), 2, 9000, true, 100, transfereeInvestTime.toDate(), TransferStatus.SUCCESS);
-        InvestRepayModel transfereeInvestRepay2 = this.createFakeInvestRepay(transfereeInvest.getId(), 2, loanAmount,
-                InterestCalculator.calculateInvestRepayInterest(fakeLoan, transferrerInvest, repayDate1, repayDate2), 0, repayDate2.toDate(), null, RepayStatus.REPAYING, false);
-
-        normalRepayService.repay(fakeLoan.getId());
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay2.getId()), "");
-        boolean isSuccess = normalRepayService.postRepayCallback(loanRepay2.getId());
-
-        assertTrue(isSuccess);
-
-        assertThat(loanMapper.findById(fakeLoan.getId()).getStatus(), is(LoanStatus.COMPLETE));
-
-        LoanRepayModel loanRepay2Model = loanRepayMapper.findByLoanIdAndPeriod(fakeLoan.getId(), 2);
-        assertThat(loanRepay2Model.getActualInterest(), is(98L));
-        assertThat(loanRepay2Model.getStatus(), is(RepayStatus.COMPLETE));
-
-        InvestRepayModel transferrerInvestRepay2Model = investRepayMapper.findByInvestIdAndPeriod(transferrerInvest.getId(), 2);
-        InvestRepayModel transfereeInvestRepay2Model = investRepayMapper.findByInvestIdAndPeriod(transfereeInvest.getId(), 2);
-
-        assertThat(transferrerInvestRepay2Model.getPeriod(), is(2));
-        assertNull(transferrerInvestRepay2Model.getActualRepayDate());
-        assertThat(transferrerInvestRepay2Model.getActualInterest(), is(0L));
-        assertThat(transferrerInvestRepay2Model.getActualFee(), is(0L));
-        assertThat(transferrerInvestRepay2Model.getStatus(), is(RepayStatus.COMPLETE));
-
-        assertThat(transfereeInvestRepay2Model.getPeriod(), is(2));
-        assertThat(transfereeInvestRepay2Model.getActualRepayDate().getTime(), is(loanRepay2Model.getActualRepayDate().getTime()));
-        assertThat(transfereeInvestRepay2Model.getActualInterest(), is(98L));
-        assertThat(transfereeInvestRepay2Model.getActualFee(), is(9L));
-        assertThat(transfereeInvestRepay2Model.getStatus(), is(RepayStatus.COMPLETE));
-
-        List<UserBillModel> loanerUserBills = userBillMapper.findByLoginName(fakeLoan.getAgentLoginName());
-        assertThat(loanerUserBills.get(0).getAmount(), is(loanRepay2Model.getCorpus() + loanRepay2Model.getActualInterest()));
-        assertThat(loanerUserBills.get(0).getBusinessType(), is(UserBillBusinessType.NORMAL_REPAY));
-        assertThat(loanerUserBills.get(0).getOperationType(), is(UserBillOperationType.TO_BALANCE));
-
-        List<UserBillModel> transferrerUserBills = userBillMapper.findByLoginName(transferrer.getLoginName());
-        assertThat(transferrerUserBills.size(), is(0));
-
-        List<UserBillModel> transfereeUserBills = userBillMapper.findByLoginName(transferee.getLoginName());
-        assertThat(transfereeUserBills.size(), is(2));
-        assertThat(transfereeUserBills.get(0).getAmount(), is(transfereeInvestRepay2Model.getCorpus() + transfereeInvestRepay2Model.getActualInterest()));
-        assertThat(transfereeUserBills.get(0).getBusinessType(), is(UserBillBusinessType.NORMAL_REPAY));
-        assertThat(transfereeUserBills.get(0).getOperationType(), is(UserBillOperationType.TI_BALANCE));
-        assertThat(transfereeUserBills.get(1).getAmount(), is(transfereeInvestRepay2Model.getActualFee()));
-        assertThat(transfereeUserBills.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
-        assertThat(transfereeUserBills.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
-
-        SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(transferrerInvestRepay2Model.getId(), SystemBillBusinessType.INVEST_FEE);
-        assertNull(systemBillModel1);
-
-        SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(transfereeInvestRepay2Model.getId(), SystemBillBusinessType.INVEST_FEE);
-        assertThat(systemBillModel2.getAmount(), is(transfereeInvestRepay2Model.getActualFee()));
-        assertThat(systemBillModel2.getOperationType(), is(SystemBillOperationType.IN));
-
-        SystemBillModel systemBillModel3 = systemBillMapper.findByOrderId(loanRepay2.getId(), SystemBillBusinessType.LOAN_REMAINING_INTEREST);
-        assertNull(systemBillModel3);
-    }
-
-    @Test
-    public void shouldRepayCallbackLastPeriodWhenNotTransferInterest() {
+    public void shouldRepayCallbackLastPeriod() {
         DateTime recheckTime = new DateTime().minusDays(60);
         UserModel transferrer = this.createFakeUser("transferrer", 0, 0);
         UserModel transferee = this.createFakeUser("transferee", 0, 0);
@@ -439,9 +266,9 @@ public class InvestTransferNormalRepayServiceTest {
 
         DateTime transfereeInvestTime = repayDate2.minusDays(15);
         InvestModel transfereeInvest = this.createFakeInvest(fakeLoan.getId(), transferrerInvest.getId(), loanAmount, transferee.getLoginName(), transfereeInvestTime.toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
-        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(transferrerInvest, transfereeInvest.getId(), 2, 9000, false, 100, transfereeInvestTime.toDate(), TransferStatus.SUCCESS);
+        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(transferrerInvest, transfereeInvest.getId(), 2, 9000, 100, transfereeInvestTime.toDate(), TransferStatus.SUCCESS);
         InvestRepayModel transfereeInvestRepay2 = this.createFakeInvestRepay(transfereeInvest.getId(), 2, loanAmount,
-                InterestCalculator.calculateInvestRepayInterest(fakeLoan, transferrerInvest, transfereeInvestTime.minusDays(1), repayDate2), 0, repayDate2.toDate(), null, RepayStatus.REPAYING, false);
+                InterestCalculator.calculateInvestRepayInterest(fakeLoan, transferrerInvest, repayDate1, repayDate2), 9, repayDate2.toDate(), null, RepayStatus.REPAYING, false);
 
         normalRepayService.repay(fakeLoan.getId());
         normalRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay2.getId()), "");
@@ -459,15 +286,15 @@ public class InvestTransferNormalRepayServiceTest {
         InvestRepayModel transfereeInvestRepay2Model = investRepayMapper.findByInvestIdAndPeriod(transfereeInvest.getId(), 2);
 
         assertThat(transferrerInvestRepay2Model.getPeriod(), is(2));
-        assertThat(transferrerInvestRepay2Model.getActualRepayDate().getTime(), is(loanRepay2Model.getActualRepayDate().getTime()));
-        assertThat(transferrerInvestRepay2Model.getActualInterest(), is(45L));
-        assertThat(transferrerInvestRepay2Model.getActualFee(), is(4L));
+        assertTrue(transferrerInvestRepay2Model.getActualRepayDate() == null);
+        assertThat(transferrerInvestRepay2Model.getActualInterest(), is(0L));
+        assertThat(transferrerInvestRepay2Model.getActualFee(), is(0L));
         assertThat(transferrerInvestRepay2Model.getStatus(), is(RepayStatus.COMPLETE));
 
         assertThat(transfereeInvestRepay2Model.getPeriod(), is(2));
         assertThat(transfereeInvestRepay2Model.getActualRepayDate().getTime(), is(loanRepay2Model.getActualRepayDate().getTime()));
-        assertThat(transfereeInvestRepay2Model.getActualInterest(), is(52L));
-        assertThat(transfereeInvestRepay2Model.getActualFee(), is(5L));
+        assertThat(transfereeInvestRepay2Model.getActualInterest(), is(transfereeInvestRepay2.getExpectedInterest()));
+        assertThat(transfereeInvestRepay2Model.getActualFee(), is(transfereeInvestRepay2.getExpectedFee()));
         assertThat(transfereeInvestRepay2Model.getStatus(), is(RepayStatus.COMPLETE));
 
         List<UserBillModel> loanerUserBills = userBillMapper.findByLoginName(fakeLoan.getAgentLoginName());
@@ -476,13 +303,7 @@ public class InvestTransferNormalRepayServiceTest {
         assertThat(loanerUserBills.get(0).getOperationType(), is(UserBillOperationType.TO_BALANCE));
 
         List<UserBillModel> transferrerUserBills = userBillMapper.findByLoginName(transferrer.getLoginName());
-        assertThat(transferrerUserBills.size(), is(2));
-        assertThat(transferrerUserBills.get(0).getAmount(), is(transferrerInvestRepay2Model.getCorpus() + transferrerInvestRepay2Model.getActualInterest()));
-        assertThat(transferrerUserBills.get(0).getBusinessType(), is(UserBillBusinessType.NORMAL_REPAY));
-        assertThat(transferrerUserBills.get(0).getOperationType(), is(UserBillOperationType.TI_BALANCE));
-        assertThat(transferrerUserBills.get(1).getAmount(), is(transferrerInvestRepay2Model.getActualFee()));
-        assertThat(transferrerUserBills.get(1).getBusinessType(), is(UserBillBusinessType.INVEST_FEE));
-        assertThat(transferrerUserBills.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
+        assertThat(transferrerUserBills.size(), is(0));
 
         List<UserBillModel> transfereeUserBills = userBillMapper.findByLoginName(transferee.getLoginName());
         assertThat(transfereeUserBills.size(), is(2));
@@ -494,16 +315,14 @@ public class InvestTransferNormalRepayServiceTest {
         assertThat(transfereeUserBills.get(1).getOperationType(), is(UserBillOperationType.TO_BALANCE));
 
         SystemBillModel systemBillModel1 = systemBillMapper.findByOrderId(transferrerInvestRepay2Model.getId(), SystemBillBusinessType.INVEST_FEE);
-        assertThat(systemBillModel1.getAmount(), is(transferrerInvestRepay2Model.getActualFee()));
-        assertThat(systemBillModel1.getOperationType(), is(SystemBillOperationType.IN));
+        assertTrue(systemBillModel1 == null);
 
         SystemBillModel systemBillModel2 = systemBillMapper.findByOrderId(transfereeInvestRepay2Model.getId(), SystemBillBusinessType.INVEST_FEE);
         assertThat(systemBillModel2.getAmount(), is(transfereeInvestRepay2Model.getActualFee()));
         assertThat(systemBillModel2.getOperationType(), is(SystemBillOperationType.IN));
 
         SystemBillModel systemBillModel3 = systemBillMapper.findByOrderId(loanRepay2.getId(), SystemBillBusinessType.LOAN_REMAINING_INTEREST);
-        assertThat(systemBillModel3.getAmount(), is(1L));
-        assertThat(systemBillModel3.getOperationType(), is(SystemBillOperationType.IN));
+        assertTrue(systemBillModel3 == null);
     }
 
     @Test
@@ -528,7 +347,7 @@ public class InvestTransferNormalRepayServiceTest {
 
         DateTime transfereeInvestTime = recheckTime.plusDays(10);
         InvestModel transfereeInvest = this.createFakeInvest(fakeLoan.getId(), transferrerInvest.getId(), loanAmount, transferee.getLoginName(), transfereeInvestTime.toDate(), InvestStatus.SUCCESS, TransferStatus.TRANSFERABLE);
-        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(transferrerInvest, transfereeInvest.getId(), 1, 9000, true, 100, transfereeInvestTime.toDate(), TransferStatus.SUCCESS);
+        TransferApplicationModel fakeTransferApplication = this.createFakeTransferApplication(transferrerInvest, transfereeInvest.getId(), 1, 9000, 100, transfereeInvestTime.toDate(), TransferStatus.SUCCESS);
         InvestRepayModel transfereeInvestRepay1 = this.createFakeInvestRepay(transfereeInvest.getId(), 1, loanAmount,
                 InterestCalculator.calculateInvestRepayInterest(fakeLoan, transferrerInvest, recheckTime.minusDays(1), repayDate1), 0, repayDate1.toDate(), repayDate1.withTimeAtStartOfDay().toDate(), RepayStatus.COMPLETE, false);
         InvestRepayModel transfereeInvestRepay2 = this.createFakeInvestRepay(transfereeInvest.getId(), 2, loanAmount,
@@ -660,8 +479,8 @@ public class InvestTransferNormalRepayServiceTest {
         return fakeLoanRepay;
     }
 
-    private TransferApplicationModel createFakeTransferApplication(InvestModel transferInvestModel, Long investId, int period, long transferAmount, boolean transferInterest, long transferFee, Date transferTime, TransferStatus transferStatus) {
-        TransferApplicationModel fakeTransferApplication = new TransferApplicationModel(transferInvestModel, "name", period, transferAmount, transferInterest, transferFee, new DateTime().plusDays(1).toDate(),0);
+    private TransferApplicationModel createFakeTransferApplication(InvestModel transferInvestModel, Long investId, int period, long transferAmount, long transferFee, Date transferTime, TransferStatus transferStatus) {
+        TransferApplicationModel fakeTransferApplication = new TransferApplicationModel(transferInvestModel, "name", period, transferAmount, transferFee, new DateTime().plusDays(1).toDate());
         fakeTransferApplication.setInvestId(investId);
         fakeTransferApplication.setTransferTime(transferTime);
         fakeTransferApplication.setStatus(transferStatus);

@@ -26,8 +26,6 @@ public class TransferApplicationModel implements Serializable {
 
     private long transferAmount;
 
-    private boolean transferInterest;
-
     private long transferFee;
 
     private TransferStatus status;
@@ -38,12 +36,10 @@ public class TransferApplicationModel implements Serializable {
 
     private Date applicationTime;
 
-    private int transferInterestDays;
-
     public TransferApplicationModel() {
     }
 
-    public TransferApplicationModel(InvestModel transferInvestModel, String name, int period, long transferAmount, boolean transferInterest, long transferFee, Date deadline,int transferInterestDays) {
+    public TransferApplicationModel(InvestModel transferInvestModel, String name, int period, long transferAmount, long transferFee, Date deadline) {
         this.loanId = transferInvestModel.getLoanId();
         this.name = name;
         this.transferInvestId = transferInvestModel.getId();
@@ -51,12 +47,10 @@ public class TransferApplicationModel implements Serializable {
         this.loginName = transferInvestModel.getLoginName();
         this.investAmount = transferInvestModel.getAmount();
         this.transferAmount = transferAmount;
-        this.transferInterest = transferInterest;
         this.transferFee = transferFee;
         this.status = TransferStatus.TRANSFERRING;
         this.deadline = deadline;
         this.applicationTime = new Date();
-        this.transferInterestDays = transferInterestDays;
     }
 
     public long getId() {
@@ -131,14 +125,6 @@ public class TransferApplicationModel implements Serializable {
         this.transferAmount = transferAmount;
     }
 
-    public boolean isTransferInterest() {
-        return transferInterest;
-    }
-
-    public void setTransferInterest(boolean transferInterest) {
-        this.transferInterest = transferInterest;
-    }
-
     public long getTransferFee() {
         return transferFee;
     }
@@ -179,11 +165,4 @@ public class TransferApplicationModel implements Serializable {
         this.applicationTime = applicationTime;
     }
 
-    public int getTransferInterestDays() {
-        return transferInterestDays;
-    }
-
-    public void setTransferInterestDays(int transferInterestDays) {
-        this.transferInterestDays = transferInterestDays;
-    }
 }
