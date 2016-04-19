@@ -44,8 +44,8 @@
 <div class="download-container-phone">
     <div class="wp-img">
         <img src="${staticServer}/images/sign/actor/download/download-phone-top.png" alt="" width="100%">
-        <a href="" class="ios"></a>
-        <a href="" class="android"></a>
+        <a href="http://itunes.apple.com/us/app/id1039233966" class="ios" target="_blank"></a>
+        <a href="/app/tuotiansudai.apk" class="android" target="_blank"></a>
     </div>
     <div class="download-one">
        <img src="${staticServer}/images/sign/actor/download/phone-one.png" alt="" width="100%">
@@ -64,7 +64,7 @@
     </div>
      <div class="download-six">
         <img src="${staticServer}/images/sign/actor/download/phone-six.png" alt="" width="100%">
-       <a href="">立即下载</a>
+       <a href="javascript:void(0)" id="downloadBtn">立即下载</a>
     </div>
 </div>
 </@global.main>
