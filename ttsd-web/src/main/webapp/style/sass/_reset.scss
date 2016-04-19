@@ -1,4 +1,5 @@
 @import 'variables';
+@import "global_png";
 * {
   margin: 0;
   padding: 0;
@@ -138,6 +139,12 @@ p {
 .pad-m {
   padding: 30px;
 }
+.pad-m-tb{
+  padding:10px 0;
+}
+.pad-s-tb{
+  padding:10px 30px;
+}
 .pad-l-15 {
   padding-left: 15px;
 }
@@ -198,6 +205,38 @@ form {
   filter: gray;
 }
 
+.img-itrust_logo {
+  @extend .sprite-global-itrust_logo;
+  display: inline-block;
+}
+
+.img-chengxin_logo {
+  @extend .sprite-global-chengxin_logo;
+  display: inline-block;
+}
+
+.img-knetSealLogo {
+  @extend .sprite-global-knetSealLogo;
+  display: inline-block;
+}
+
+.img-digicert {
+  @extend .sprite-global-digicert;
+  display: inline-block;
+}
+
+.img-close-tip {
+  @extend .sprite-global-close-tip;
+  background-size: 100%;
+  float: left;
+  margin-top: 18px;
+}
+
+.img-logo-tip {
+  @extend .sprite-global-logo-tip;
+  float: left;
+}
+
 .page-width {
   width:1000px;
   @include center-block;
@@ -210,6 +249,7 @@ form {
   border: 0!important;
   text-indent: -9999px;
 }
+
 
 
 

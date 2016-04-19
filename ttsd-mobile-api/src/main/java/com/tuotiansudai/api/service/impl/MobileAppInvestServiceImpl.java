@@ -10,6 +10,7 @@ import com.tuotiansudai.api.service.MobileAppInvestService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.model.Source;
@@ -30,11 +31,23 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
     private MobileAppChannelService mobileAppChannelService;
 
     @Override
+    public BaseResponseDto noPasswordInvest(InvestRequestDto investRequestDto) {
+        BaseResponseDto responseDto = new BaseResponseDto();
+        responseDto.setCode(ReturnMessage.SUCCESS.getCode());
+        responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        InvestDto investDto = convertInvestDto(investRequestDto);
+        try {
+            investService.noPasswordInvest(investDto);
+        } catch (InvestException e) {
+            return this.convertExceptionToDto(e);
+        }
+        return responseDto;
+    }
+
+    @Override
     public BaseResponseDto invest(InvestRequestDto investRequestDto) {
         BaseResponseDto<InvestResponseDataDto> responseDto = new BaseResponseDto<>();
-
         InvestDto investDto = convertInvestDto(investRequestDto);
-
         try {
             BaseDto<PayFormDataDto> formDto = investService.invest(investDto);
             if (formDto.getData().getStatus()) {
@@ -72,8 +85,8 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
         return investDto;
     }
 
-    private BaseResponseDto convertExceptionToDto(InvestException e) {
-        BaseResponseDto baseResponseDto = new BaseResponseDto();
+    private BaseResponseDto<InvestResponseDataDto> convertExceptionToDto(InvestException e) {
+        BaseResponseDto<InvestResponseDataDto> baseResponseDto = new BaseResponseDto<>();
         switch (e.getType()) {
             case EXCEED_MONEY_NEED_RAISED:
                 baseResponseDto.setCode(ReturnMessage.EXCEED_MONEY_NEED_RAISED.getCode());
@@ -86,10 +99,6 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
             case LESS_THAN_MIN_INVEST_AMOUNT:
                 baseResponseDto.setCode(ReturnMessage.LESS_THAN_MIN_INVEST_AMOUNT.getCode());
                 baseResponseDto.setMessage(ReturnMessage.LESS_THAN_MIN_INVEST_AMOUNT.getMsg());
-                break;
-            case UMPAY_INVEST_MESSAGE_INVALID:
-                baseResponseDto.setCode(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode());
-                baseResponseDto.setMessage(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getMsg());
                 break;
             case MORE_THAN_MAX_INVEST_AMOUNT:
                 baseResponseDto.setCode(ReturnMessage.MORE_THAN_MAX_INVEST_AMOUNT.getCode());
@@ -106,6 +115,15 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
             case ILLEGAL_LOAN_STATUS:
                 baseResponseDto.setCode(ReturnMessage.ILLEGAL_LOAN_STATUS.getCode());
                 baseResponseDto.setMessage(ReturnMessage.ILLEGAL_LOAN_STATUS.getMsg());
+            case NOT_ENOUGH_BALANCE:
+                baseResponseDto.setCode(ReturnMessage.NOT_ENOUGH_BALANCE.getCode());
+                baseResponseDto.setMessage(ReturnMessage.NOT_ENOUGH_BALANCE.getMsg());
+            case PASSWORD_INVEST_OFF:
+                baseResponseDto.setCode(ReturnMessage.PASSWORD_INVEST_OFF.getCode());
+                baseResponseDto.setMessage(ReturnMessage.PASSWORD_INVEST_OFF.getMsg());
+            case LOAN_NOT_FOUND:
+                baseResponseDto.setCode(ReturnMessage.LOAN_NOT_FOUND.getCode());
+                baseResponseDto.setMessage(ReturnMessage.LOAN_NOT_FOUND.getMsg());
         }
         return baseResponseDto;
     }

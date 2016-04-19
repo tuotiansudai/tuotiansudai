@@ -95,7 +95,7 @@ public class JobController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/sed-red-envelope-after-loan-out", method = RequestMethod.POST)
+    @RequestMapping(value = "/send-red-envelope-after-loan-out", method = RequestMethod.POST)
     public void sendRedEnvelopeAfterLoanOut(@RequestBody long loanId) {
         couponLoanOutService.sendRedEnvelope(loanId);
     }

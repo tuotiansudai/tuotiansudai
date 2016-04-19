@@ -45,4 +45,10 @@ public class InvestController {
         }
         return baseDto;
     }
+
+    @RequestMapping(value = "/no-password-invest", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> noPasswordInvest(@Valid @RequestBody InvestDto dto) {
+        return investService.noPasswordInvest(dto);
+    }
 }

@@ -1,4 +1,4 @@
-require(['jquery','mustache','text!/tpl/notice-list.mustache','load-swiper','layerWrapper','commonFun','pagination'], function ($,Mustache,ListTemplate,loadSwiper,layer) {
+require(['jquery','mustache','text!tpl/notice-list.mustache','load-swiper','layerWrapper','commonFun','pagination'], function ($,Mustache,ListTemplate,loadSwiper,layer) {
     $(function () {
         var $noticeList=$('#noticeList'),
             $noticeDetail=$('#noticeDetail'),

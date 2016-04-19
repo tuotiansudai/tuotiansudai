@@ -1,6 +1,6 @@
 package com.tuotiansudai.task.aspect;
 
-import com.tuotiansudai.client.AbstractRedisWrapperClient;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
@@ -25,7 +25,7 @@ import java.util.Date;
 public class AuditTaskAspectCoupon {
 
     @Autowired
-    AbstractRedisWrapperClient redisWrapperClient;
+    RedisWrapperClient redisWrapperClient;
 
     @Autowired
     AccountService accountService;

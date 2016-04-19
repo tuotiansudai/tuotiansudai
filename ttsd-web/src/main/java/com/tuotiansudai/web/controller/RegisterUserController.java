@@ -40,7 +40,6 @@ public class RegisterUserController {
         String channel = request.getParameter("channel");
         ModelAndView modelAndView = new ModelAndView("/register-user");
         modelAndView.addObject("referrer", referrer);
-        modelAndView.addObject("channel", channel);
         modelAndView.addObject("responsive", true);
         return modelAndView;
     }
@@ -48,9 +47,12 @@ public class RegisterUserController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView registerUser(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes) {
+    public ModelAndView registerUser(@Valid @ModelAttribute RegisterUserDto registerUserDto, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         boolean isRegisterSuccess;
         try {
+            if (request.getSession().getAttribute("channel") != null) {
+                registerUserDto.setChannel(String.valueOf(request.getSession().getAttribute("channel")));
+            }
             isRegisterSuccess = this.userService.registerUser(registerUserDto);
         } catch (ReferrerRelationException e) {
             isRegisterSuccess = false;

@@ -1,7 +1,6 @@
 package com.tuotiansudai.coupon.service.impl;
 
 import com.google.common.base.Predicate;
-import com.google.common.base.Strings;
 import com.google.common.collect.*;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
@@ -59,6 +58,9 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
     @Resource(name = "exchangerCollector")
     private UserCollector exchangerCollector;
+
+    @Resource(name = "winnerCollector")
+    private UserCollector winnerCollector;
 
     @Autowired
     private UserMapper userMapper;
@@ -184,7 +186,13 @@ public class CouponActivationServiceImpl implements CouponActivationService {
 
                 boolean isExchangeableCoupon = this.isExchangeableCoupon(couponModel);
                 boolean isAssignableCoupon = this.isAssignableCoupon(couponModel, existingUserCouponModels);
-                return isInUserGroup && (isAssignableCoupon || isExchangeableCoupon);
+                boolean isLotteryWinner = this.isLotteryWinner(couponModel);
+                return isInUserGroup && (isAssignableCoupon || isExchangeableCoupon || isLotteryWinner);
+            }
+
+            private boolean isLotteryWinner(CouponModel couponModel) {
+                return couponModel.getUserGroup() == UserGroup.WINNER;
+
             }
 
             private boolean isExchangeableCoupon(CouponModel couponModel) {
@@ -224,6 +232,7 @@ public class CouponActivationServiceImpl implements CouponActivationService {
                 .put(UserGroup.REGISTERED_NOT_INVESTED_USER, this.registeredNotInvestedUserCollector)
                 .put(UserGroup.IMPORT_USER, this.importUserCollector)
                 .put(UserGroup.EXCHANGER, this.exchangerCollector)
+                .put(UserGroup.WINNER, this.winnerCollector)
                 .build()).get(userGroup);
     }
 

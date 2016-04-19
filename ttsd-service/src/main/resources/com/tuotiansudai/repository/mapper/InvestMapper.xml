@@ -17,6 +17,7 @@
         <result column="source" property="source"></result>
         <result column="is_auto_invest" property="isAutoInvest"></result>
         <result column="channel" property="channel"></result>
+        <result column="is_no_password_invest" property="isNoPasswordInvest"></result>
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
@@ -51,12 +52,12 @@
     </resultMap>
 
     <sql id="columns">
-        id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel, created_time
+        id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel, is_no_password_invest, created_time
     </sql>
 
     <insert id="create" parameterType="InvestModel">
         insert into invest ( <include refid="columns"></include> )
-        value(#{id}, #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source}, #{isAutoInvest}, #{channel}, #{createdTime})
+        value(#{id}, #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source}, #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime})
     </insert>
 
     <update id="updateStatus" parameterType="map">
@@ -71,6 +72,14 @@
         select <include refid="columns"></include>
         from invest
         where id = #{id}
+    </select>
+
+    <select id="findLatestSuccessInvest" parameterType="string" resultMap="investResultMap">
+        select <include refid="columns"></include>
+        from invest
+        where login_name = #{loginName}
+        order by created_time desc
+        limit 1;
     </select>
 
     <select id="findByLoginName" parameterType="map" resultMap="investResultMap">
@@ -275,6 +284,15 @@
                 and invest.created_time between #{startTime} and #{endTime}
             </if>
         </where>
+    </select>
+
+    <select id="sumInvestAmountRanking" parameterType="map" resultType="long">
+        select IFNULL(sum(amount), 0) as amount
+        from invest
+        where
+            status = 'SUCCESS'
+            and not exists (select 1 from user_role where user_role.login_name=invest.login_name and user_role.role= 'LOANER')
+            and created_time between #{startTime} and #{endTime}
     </select>
 
     <select id="sumSuccessNewbieInvestCountByLoginName" parameterType="String" resultType="int">
