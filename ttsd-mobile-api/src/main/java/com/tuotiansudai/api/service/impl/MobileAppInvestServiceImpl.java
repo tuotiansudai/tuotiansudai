@@ -1,10 +1,7 @@
 package com.tuotiansudai.api.service.impl;
 
 
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.InvestRequestDto;
-import com.tuotiansudai.api.dto.InvestResponseDataDto;
-import com.tuotiansudai.api.dto.ReturnMessage;
+import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppChannelService;
 import com.tuotiansudai.api.service.MobileAppInvestService;
 import com.tuotiansudai.api.util.CommonUtils;
@@ -19,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.text.MessageFormat;
 import java.util.Locale;
 
 @Service
@@ -32,12 +30,17 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
 
     @Override
     public BaseResponseDto noPasswordInvest(InvestRequestDto investRequestDto) {
-        BaseResponseDto responseDto = new BaseResponseDto();
+        BaseResponseDto<InvestNoPassResponseDataDto> responseDto = new BaseResponseDto<>();
         responseDto.setCode(ReturnMessage.SUCCESS.getCode());
         responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         InvestDto investDto = convertInvestDto(investRequestDto);
         try {
-            investService.noPasswordInvest(investDto);
+            BaseDto<PayDataDto> payDataDto = investService.noPasswordInvest(investDto);
+            String callBackStatusString = "fail";
+            if(payDataDto.getData() != null && payDataDto.isSuccess()){
+                callBackStatusString = "success";
+            }
+            responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("tuotian://invest/{0}", callBackStatusString)));
         } catch (InvestException e) {
             return this.convertExceptionToDto(e);
         }
