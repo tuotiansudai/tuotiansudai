@@ -9,6 +9,8 @@ import com.tuotiansudai.api.dto.BannerPictureResponseDataDto;
 import com.tuotiansudai.api.dto.BannerResponseDataDto;
 import com.tuotiansudai.api.service.impl.MobileAppBannerServiceImpl;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,17 +18,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class BannerUtils {
+
+    @Value("${web.server}")
+    private String domainName;
+
+    @Value("${web.static.server}")
+    private String staticDomainName;
 
     private static Logger logger = Logger.getLogger(MobileAppBannerServiceImpl.class);
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 
-    private static List<BannerPictureResponseDataDto> banners = null;
-
     private static Map<String,List<BannerPictureResponseDataDto>> jsonFileMap = new HashMap<>();
 
-    public static BannerResponseDataDto getLatestBannerInfo(String jsonName,String domainName,String staticDomainName) {
+    public BannerResponseDataDto getLatestBannerInfo(String jsonName) {
+        List<BannerPictureResponseDataDto> banners = null;
         if (!jsonName.equals("")) {
             banners = loadPictureListFromConfigFile(jsonName);
             for (BannerPictureResponseDataDto banner : banners) {

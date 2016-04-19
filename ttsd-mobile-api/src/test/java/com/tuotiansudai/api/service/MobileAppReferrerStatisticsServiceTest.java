@@ -2,15 +2,14 @@ package com.tuotiansudai.api.service;
 
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.impl.MobileAppReferrerStatisticsServiceImpl;
+import com.tuotiansudai.api.util.BannerUtils;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.model.ReferrerManageView;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,20 +25,21 @@ import static org.mockito.Mockito.when;
 
 public class MobileAppReferrerStatisticsServiceTest  extends ServiceTestBase {
 
-    @InjectMocks
+    @Mock
     private MobileAppReferrerStatisticsServiceImpl mobileAppReferrerStatisticsServiceImpl;
     @Mock
     private ReferrerManageMapper referrerManageMapper;
     @Mock
     private ReferrerRelationMapper referrerRelationMapper;
     @Mock
-    private MobileAppReferrerBannerService mobileAppReferrerBannerService;
+    private BannerUtils bannerUtils;
 
     @Test
-    public void getReferrerStatistics() throws Exception {
+    public void shouldGetReferrerStatisticsIsSuccess() throws Exception {
 
-        Long referInvestTotalAmount = 0L;
-        int referrerCountByReferrer = 0;
+        Long referInvestTotalAmount = 18444L;
+        int referrerCountByReferrer = 36;
+        Long findReferInvestSumAmount = 10345L;
         List<ReferrerManageView> referInvestSumAmountList = new ArrayList<>();
         BaseResponseDto dto = new BaseResponseDto();
         dto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -47,7 +47,7 @@ public class MobileAppReferrerStatisticsServiceTest  extends ServiceTestBase {
         ReferrerStatisticsResponseDataDto referrerStatisticsResponseDataDto = new ReferrerStatisticsResponseDataDto();
         referrerStatisticsResponseDataDto.setReferrersInvestAmount(AmountConverter.convertCentToString(referInvestTotalAmount));
         referrerStatisticsResponseDataDto.setReferrersSum(String.valueOf(referInvestSumAmountList.size()));
-        referrerStatisticsResponseDataDto.setRewardAmount(CollectionUtils.isNotEmpty(referInvestSumAmountList) ? AmountConverter.convertCentToString(referInvestSumAmountList.get(0).getInvestAmount()) : "0.00");
+        referrerStatisticsResponseDataDto.setRewardAmount(CollectionUtils.isNotEmpty(referInvestSumAmountList) ? AmountConverter.convertCentToString(referInvestSumAmountList.get(0).getInvestAmount()) : AmountConverter.convertCentToString(findReferInvestSumAmount));
         BannerPictureResponseDataDto bannerPictureResponseDataDto = new BannerPictureResponseDataDto();
         bannerPictureResponseDataDto.setTitle("拓天速贷");
         bannerPictureResponseDataDto.setContent("0元投资赚收益，呼朋唤友抢佣金");
@@ -66,11 +66,12 @@ public class MobileAppReferrerStatisticsServiceTest  extends ServiceTestBase {
         when(referrerManageMapper.findReferInvestTotalAmount(anyString(), anyString(), any(Date.class), any(Date.class), anyString())).thenReturn(referInvestTotalAmount);
         when(referrerRelationMapper.findReferrerCountByReferrerLoginName(anyString())).thenReturn(referrerCountByReferrer);
         when(referrerManageMapper.findReferInvestSumAmount(anyString())).thenReturn(referInvestSumAmountList);
-        when(mobileAppReferrerBannerService.generateReferrerBannerList()).thenReturn(bannerResponseDataDtoList);
+        when(bannerUtils.getLatestBannerInfo(anyString())).thenReturn(bannerResponseDataDto);
+        when(mobileAppReferrerStatisticsServiceImpl.getReferrerStatistics(any(BaseParamDto.class))).thenReturn(dto);
 
-        assertThat(AmountConverter.convertCentToString(referInvestTotalAmount), is(referrerStatisticsResponseDataDto.getReferrersInvestAmount()));
-        assertThat(String.valueOf(referrerCountByReferrer), is(referrerStatisticsResponseDataDto.getReferrersSum()));
-        assertThat(CollectionUtils.isNotEmpty(referInvestSumAmountList) ? AmountConverter.convertCentToString(referInvestSumAmountList.get(0).getInvestAmount()) : "0.00", is(referrerStatisticsResponseDataDto.getRewardAmount()));
+        assertThat(AmountConverter.convertCentToString(referInvestTotalAmount), is(((ReferrerStatisticsResponseDataDto) (dto.getData())).getReferrersInvestAmount()));
+        assertThat(String.valueOf(referInvestSumAmountList.size()), is(((ReferrerStatisticsResponseDataDto) (dto.getData())).getReferrersSum()));
+        assertThat(CollectionUtils.isNotEmpty(referInvestSumAmountList) ? ((ReferrerStatisticsResponseDataDto) (dto.getData())).getRewardAmount() : AmountConverter.convertCentToString(findReferInvestSumAmount), is(referrerStatisticsResponseDataDto.getRewardAmount()));
         assertNotNull(bannerResponseDataDto.getPictures().get(0).getTitle());
         assertNotNull(bannerResponseDataDto.getPictures().get(0).getContent());
         assertNotNull(bannerResponseDataDto.getPictures().get(0).getPicture());

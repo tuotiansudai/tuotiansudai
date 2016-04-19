@@ -10,7 +10,6 @@ import com.tuotiansudai.api.service.MobileAppInvestService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
-import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.model.Source;
