@@ -23,9 +23,14 @@
                 <img src="${staticServer}/images/ttimg/ttimg-home03.png" alt="招募代理" class="pc-img">
                 <img src="${staticServer}/images/ttimg/ph-a03.jpg" alt="招募代理" class="iphone-img">
             </a>
+            <a href="/activity/app-download" onclick="cnzzPush.trackClick('83首页','Banner模块','app')" target="_blank">
+                <img src="${staticServer}/images/sign/actor/download/download-bg.png" alt="App下载" class="pc-img">
+                <img src="${staticServer}/images/app-banner/app-banner-download.png" alt="App下载" class="iphone-img">
+            </a>
         </div>
         <ul class="scroll-num">
             <li class="selected"></li>
+            <li></li>
             <li></li>
             <li></li>
             <li></li>
