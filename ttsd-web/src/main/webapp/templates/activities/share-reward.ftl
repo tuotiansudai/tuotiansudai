@@ -52,6 +52,7 @@
     <div class="wp clearfix">
 	    <div class="reward-info-title">	</div>
 	    <div class="share-example"></div>
+		<#if isAppSource>
 	    <div class="share-recommend">
 			<@global.isAnonymous>
                 <a href="/referrer/refer-list">立即推荐</a>
@@ -60,6 +61,7 @@
                 <a href="/register/user">立即注册</a>
 			</@global.isNotAnonymous>
 	    </div>
+		</#if>
 	    <div class="share-rules"></div>
 	</div>
 </div>
