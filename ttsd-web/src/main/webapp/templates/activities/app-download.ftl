@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.company_activity}" pageJavascript="${js.download_app}" activeNav="" activeLeftNav="" title="生日月特权_拓天活动_拓天速贷" keywords="拓天速贷,拓天活动.生日活动,生日月特权" description="拓天速贷专属生日月特权,生日月投资收益翻倍,拓天速贷专属活动超高收益等你拿.">
+<@global.main pageCss="${css.company_activity}" pageJavascript="${js.download_app}" activeNav="" activeLeftNav="" title="拓天速贷手机客户端_理财客户端_拓天速贷" keywords="拓天速贷,APP理财,移动客户端,网络理财,P2P理财,拓天速贷APP" description="拓天速贷手机客户端为理财,投资,贷款等投融资用户提供安全、专业、便捷的互联网金融理财服务。">
 
 <div class="download-container">
     <div class="wp-img">
