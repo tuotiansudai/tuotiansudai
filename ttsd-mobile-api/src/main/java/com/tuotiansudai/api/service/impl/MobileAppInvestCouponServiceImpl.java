@@ -65,18 +65,13 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
 
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(dto.getBaseParam().getUserId(), null);
 
-        List<UserCouponModel> listDel = filterUserCouponModels(userCouponModels, loanModel.getProductType());
+        List<UserCouponModel> unavailableCouponList = filterUnavailableLoanProductType(userCouponModels, loanModel.getProductType());
 
-        userCouponModels.removeAll(listDel);
-
-//        userCouponModels = filterUserCouponModels(userCouponModels, loanModel.getProductType());
+        userCouponModels.removeAll(unavailableCouponList);
 
         sortCoupons(userCouponModels,investMoneyLong);
 
-        userCouponModels.addAll(listDel);
-
-
-
+        userCouponModels.addAll(unavailableCouponList);
 
         UnmodifiableIterator<UserCouponModel> filter = Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
             @Override
@@ -104,7 +99,7 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
     }
 
     //删除3元红包和项目类型不匹配的券和红包
-    private List<UserCouponModel> filterUserCouponModels(List<UserCouponModel> userCouponModels, ProductType loanProductType) {
+    private List<UserCouponModel> filterUnavailableLoanProductType(List<UserCouponModel> userCouponModels, ProductType loanProductType) {
         ArrayList<UserCouponModel> listDel = new ArrayList<>();
 
         for (int i = 0; i < userCouponModels.size(); i++) {
