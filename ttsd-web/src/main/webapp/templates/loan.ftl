@@ -168,8 +168,9 @@
                             <#if loan.preheatSeconds lte 1800>
                                 <i class="time-clock"></i><strong id="minute_show">00</strong><em>:</em><strong id="second_show">00</strong>以后可投资
                             <#else>
-                            ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
-                                <div data-time="${(loan.fundraisingStartTime?string("yyyy-MM-dd HH:mm"))!}"></div>
+                            <#--${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标-->
+                                <img src="${staticServer}/images/icons/time-clock.png" alt="">
+                                <span id="countdown" data-time="${(loan.fundraisingStartTime?string("yyyy-MM-dd HH:mm"))!}"></span> &nbsp;&nbsp;<span class="allow">后可投资</span>
                             </#if>
                         </dd>
 
