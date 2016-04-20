@@ -21,6 +21,7 @@
         <result column="deadline" property="deadline"></result>
         <result column="transfer_time" property="transferTime"></result>
         <result column="application_time" property="applicationTime"></result>
+        <result column="left_period" property="leftPeriod"></result>
     </resultMap>
 
     <resultMap id="transferApplicationRecordDtoMap" type="TransferApplicationRecordDto">
@@ -38,11 +39,12 @@
         <result column="transfer_fee" property="transferFee"></result>
         <result column="transfer_invest_id" property="transferInvestId"></result>
         <result column="period" property="period"></result>
+        <result column="left_period" property="leftPeriod"></result>
 
     </resultMap>
     <insert id="create" parameterType="TransferApplicationModel" useGeneratedKeys="true" keyProperty="id">
-        insert into transfer_application (name, loan_id, transfer_invest_id, invest_id, period, login_name, invest_amount, transfer_amount, transfer_fee, status, deadline, transfer_time, application_time)
-        value (#{name}, #{loanId}, #{transferInvestId}, #{investId}, #{period}, #{loginName}, #{investAmount}, #{transferAmount}, #{transferFee}, #{status}, #{deadline}, #{transferTime}, #{applicationTime})
+        insert into transfer_application (name, loan_id, transfer_invest_id, invest_id, period, login_name, invest_amount, transfer_amount, transfer_fee, status, deadline, transfer_time, application_time,left_period)
+        value (#{name}, #{loanId}, #{transferInvestId}, #{investId}, #{period}, #{loginName}, #{investAmount}, #{transferAmount}, #{transferFee}, #{status}, #{deadline}, #{transferTime}, #{applicationTime}, #{leftPeriod})
     </insert>
 
     <select id="findByTransferInvestId" parameterType="map" resultMap="transferApplicationResultMap">
@@ -121,7 +123,7 @@
 
     <select id="findTransferApplicationPaginationList" parameterType="map" resultMap="transferApplicationRecordDtoMap">
         select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,ta.loan_id,ta.login_name AS transferrer_loginName,ta.transfer_fee ,
-        ta.transfer_invest_id,ta.period,i.login_name AS transferee_loginName from transfer_application ta left JOIN invest i on ta.invest_id = i.id
+        ta.transfer_invest_id,ta.period,ta.left_period,i.login_name AS transferee_loginName from transfer_application ta left JOIN invest i on ta.invest_id = i.id
         <where>
             <if test="transferApplicationId != null">
                 ta.id = #{transferApplicationId}
@@ -199,7 +201,8 @@
         status = #{status},
         deadline = #{deadline},
         transfer_time = #{transferTime},
-        application_time = #{applicationTime}
+        application_time = #{applicationTime},
+        left_period = #{leftPeriod}
         where id = #{id}
     </update>
 
