@@ -105,7 +105,7 @@
             c.invest_lower_limit as invest_lower_limit,
             uc.status as status
         from user_coupon uc
-        join coupon c on uc.coupon_id=c.id and c.deleted is FALSE
+        join coupon c on uc.coupon_id=c.id
         where
             (uc.status is null or uc.status != 'SUCCESS')
             and uc.end_time > now()
@@ -132,7 +132,7 @@
             c.invest_lower_limit as invest_lower_limit,
             uc.status as status
         from user_coupon uc
-        join coupon c on uc.coupon_id=c.id and c.deleted is FALSE
+        join coupon c on uc.coupon_id=c.id
         join loan l on l.id=uc.loan_id
         join invest i on i.id = uc.invest_id
         where
@@ -153,7 +153,7 @@
             c.invest_lower_limit as invest_lower_limit,
             uc.status as status
         from user_coupon uc
-        join coupon c on uc.coupon_id=c.id and c.deleted is FALSE
+        join coupon c on uc.coupon_id=c.id
         where
             (uc.status is null or uc.status != 'SUCCESS')
             and uc.end_time &lt; now()
