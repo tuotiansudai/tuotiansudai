@@ -5,6 +5,9 @@ import com.aliyun.oss.model.ObjectMetadata;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGEncodeParam;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.tuotiansudai.repository.model.Environment;
 import org.apache.commons.fileupload.util.Streams;
 import org.apache.log4j.Logger;
@@ -146,7 +149,14 @@ public class OssWrapperClient {
                 //水印文件结束
             }
             graphics.dispose();
-            ImageIO.write(image, "jpg", swapStream);
+            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(swapStream);
+            JPEGEncodeParam jep = JPEGCodec.getDefaultJPEGEncodeParam(image);
+            jep.setQuality(0.1f, true);
+            jep.setDensityUnit(1);
+            jep.setXDensity(72);
+            jep.setYDensity(72);
+            encoder.encode(image, jep);
+            ImageIO.write(image, "JPEG", swapStream);
         } catch (Exception e) {
             logger.error("upload oss fail");
             logger.error(e.getLocalizedMessage(), e);
