@@ -6,6 +6,7 @@ import com.tuotiansudai.repository.model.TransferStatus;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -43,6 +44,29 @@ public interface TransferApplicationMapper {
                                                                                     @Param(value = "pageSize") Integer pageSize);
 
     int findCountTransfereeApplicationPaginationByLoginName(@Param("loginName")String loginName);
+
+    List<TransferApplicationRecordDto> findTransferApplicationPaginationList(@Param("transferApplicationId") Long transferApplicationId,
+                                                                   @Param("startTime") Date startTime,
+                                                                   @Param("endTime") Date endTime,
+                                                                   @Param("status") TransferStatus status,
+                                                                   @Param("transferrerLoginName") String transferrerLoginName,
+                                                                   @Param("transfereeLoginName") String transfereeLoginName,
+                                                                   @Param("loanId") Long loanId,
+                                                                   @Param(value = "index") Integer index,
+                                                                   @Param(value = "pageSize") Integer pageSize);
+
+    int findCountTransferApplicationPagination(@Param("transferApplicationId") Long transferApplicationId,
+                                                                   @Param("startTime") Date startTime,
+                                                                   @Param("endTime") Date endTime,
+                                                                   @Param("status") TransferStatus status,
+                                                                   @Param("transferrerLoginName") String transferrerLoginName,
+                                                                   @Param("transfereeLoginName") String transfereeLoginName,
+                                                                   @Param("loanId") Long loanId);
+
+
+
+
+
 
 
 

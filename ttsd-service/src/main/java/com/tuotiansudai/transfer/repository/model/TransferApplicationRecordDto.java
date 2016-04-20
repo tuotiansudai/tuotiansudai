@@ -16,6 +16,12 @@ public class TransferApplicationRecordDto implements Serializable {
     private double activityRate;
     private String remainingInterestDays;
     private TransferStatus transferStatus;
+    private Long loanId;
+    private String transferrerLoginName;
+    private String transfereeLoginName;
+    private long transferFee;
+    private Long transferInvestId;
+    private int period;
 
     public long getTransferApplicationId() {
         return transferApplicationId;
@@ -81,5 +87,53 @@ public class TransferApplicationRecordDto implements Serializable {
 
     public void setTransferStatus(TransferStatus transferStatus) {
         this.transferStatus = transferStatus;
+    }
+
+    public String getTransferrerLoginName() {
+        return transferrerLoginName;
+    }
+
+    public void setTransferrerLoginName(String transferrerLoginName) {
+        this.transferrerLoginName = transferrerLoginName;
+    }
+
+    public String getTransfereeLoginName() {
+        return transfereeLoginName;
+    }
+
+    public void setTransfereeLoginName(String transfereeLoginName) {
+        this.transfereeLoginName = transfereeLoginName;
+    }
+
+    public Long getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(Long loanId) {
+        this.loanId = loanId;
+    }
+
+    public long getTransferFee() {
+        return transferFee;
+    }
+
+    public void setTransferFee(long transferFee) {
+        this.transferFee = transferFee;
+    }
+
+    public Long getTransferInvestId() {
+        return transferInvestId;
+    }
+
+    public void setTransferInvestId(Long transferInvestId) {
+        this.transferInvestId = transferInvestId;
+    }
+
+    public int getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(int period) {
+        this.period = period;
     }
 }

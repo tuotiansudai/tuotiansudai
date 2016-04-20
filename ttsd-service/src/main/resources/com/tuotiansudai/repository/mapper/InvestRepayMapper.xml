@@ -400,4 +400,9 @@
             inner join loan on loan.id = invest.loan_id
         where loan.id = #{loanId}
     </select>
+    <select id="findLeftPeriodByTransferInvestIdAndPeriod" parameterType="map" resultType="int">
+
+        select count(1) from invest_repay where invest_id = #{transferInvestId} and period >= #{period}
+
+    </select>
 </mapper>
