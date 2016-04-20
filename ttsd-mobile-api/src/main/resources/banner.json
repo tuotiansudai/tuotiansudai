@@ -41,7 +41,7 @@
     "picture": "{static}/images/app-banner/app-banner-recommend.png",
     "noticeId": "",
     "content": "推荐奖励：0元投资赚收益，呼朋唤友抢佣金。",
-    "isAuthorized": true
+    "isAuthorized": false
   },
   {
     "pictureId": "",
