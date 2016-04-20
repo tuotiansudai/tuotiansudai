@@ -69,6 +69,8 @@ public class CouponDto implements Serializable {
 
     private List<String> channels;
 
+    private Boolean deleted;
+
     public String getAmount() {
         return amount;
     }
@@ -261,6 +263,14 @@ public class CouponDto implements Serializable {
         this.channels = channels;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
     public CouponDto(){
 
     }
@@ -287,6 +297,7 @@ public class CouponDto implements Serializable {
             this.importIsRight = couponModel.getImportIsRight();
         }
         this.shared = couponModel.isShared();
+        this.deleted = couponModel.isDeleted();
         this.birthdayBenefit = couponModel.getBirthdayBenefit();
         this.multiple = couponModel.isMultiple();
         this.agents = couponModel.getAgents();

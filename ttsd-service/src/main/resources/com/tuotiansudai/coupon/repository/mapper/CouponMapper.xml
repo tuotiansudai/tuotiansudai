@@ -74,7 +74,7 @@
               user_coupon t
             GROUP BY t.coupon_id) temp
             ON c.id = temp.coupon_id
-            where c.deleted is FALSE and c.coupon_type in ('NEWBIE_COUPON','INVEST_COUPON') and c.user_group != 'EXCHANGER'
+            where c.coupon_type in ('NEWBIE_COUPON','INVEST_COUPON') and c.user_group != 'EXCHANGER'
         ORDER BY created_time DESC
         LIMIT #{index},#{pageSize}
     </select>
@@ -99,7 +99,7 @@
         user_coupon t
         GROUP BY t.coupon_id) temp
         ON c.id = temp.coupon_id
-        where c.deleted is FALSE and c.coupon_type = 'INTEREST_COUPON' and c.user_group != 'EXCHANGER'
+        where c.coupon_type = 'INTEREST_COUPON' and c.user_group != 'EXCHANGER'
         ORDER BY created_time DESC
         LIMIT #{index},#{pageSize}
     </select>
@@ -124,7 +124,7 @@
         user_coupon t
         GROUP BY t.coupon_id) temp
         ON c.id = temp.coupon_id
-        where c.deleted is FALSE and c.coupon_type = 'RED_ENVELOPE'
+        where c.coupon_type = 'RED_ENVELOPE'
         ORDER BY created_time DESC
         LIMIT #{index},#{pageSize}
     </select>
@@ -149,25 +149,25 @@
         user_coupon t
         GROUP BY t.coupon_id) temp
         ON c.id = temp.coupon_id
-        where c.deleted is FALSE and c.coupon_type = 'BIRTHDAY_COUPON'
+        where c.coupon_type = 'BIRTHDAY_COUPON'
         ORDER BY created_time DESC
         LIMIT #{index},#{pageSize}
     </select>
 
     <select id="findNewbieAndInvestCouponsCount"  resultType="int">
-        select count(*) from coupon where deleted is FALSE and coupon_type in ('NEWBIE_COUPON','INVEST_COUPON') and user_group != 'EXCHANGER'
+        select count(*) from coupon where coupon_type in ('NEWBIE_COUPON','INVEST_COUPON') and user_group != 'EXCHANGER'
     </select>
 
     <select id="findInterestCouponsCount"  resultType="int">
-        select count(*) from coupon where deleted is FALSE and coupon_type = 'INTEREST_COUPON' and user_group != 'EXCHANGER'
+        select count(*) from coupon where coupon_type = 'INTEREST_COUPON' and user_group != 'EXCHANGER'
     </select>
 
     <select id="findRedEnvelopeCouponsCount"  resultType="int">
-        select count(*) from coupon where deleted is FALSE and coupon_type = 'RED_ENVELOPE'
+        select count(*) from coupon where coupon_type = 'RED_ENVELOPE'
     </select>
 
     <select id="findBirthdayCouponsCount" resultType="int">
-        select count(*) from coupon where deleted is FALSE and coupon_type = 'BIRTHDAY_COUPON'
+        select count(*) from coupon where coupon_type = 'BIRTHDAY_COUPON'
     </select>
 
     <update id="updateCoupon" parameterType="CouponModel">
