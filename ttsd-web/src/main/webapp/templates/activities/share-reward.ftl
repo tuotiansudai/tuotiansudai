@@ -52,7 +52,7 @@
     <div class="wp clearfix">
 	    <div class="reward-info-title">	</div>
 	    <div class="share-example"></div>
-		<#if isAppSource>
+		<#if !isAppSource>
 	    <div class="share-recommend">
 			<#if referrer??>
                 <a href="/register/user?referrer=${referrer}">立即注册</a>
