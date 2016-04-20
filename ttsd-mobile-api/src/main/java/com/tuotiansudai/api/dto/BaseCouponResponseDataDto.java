@@ -33,7 +33,7 @@ public class BaseCouponResponseDataDto {
 
     protected String rate;
 
-    protected String investUpperLimit;
+    protected String investUpperLimit = "1000000.00";
 
     protected boolean shared;
 

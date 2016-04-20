@@ -16,7 +16,7 @@ public class PointExchangeRecordResponseDataDto {
     private String amount;
     private String rate;
     private String investLowerLimit;
-    private String investUpperLimit;
+    private String investUpperLimit = "1000000.00";
     private Integer deadline;
     private long point;
     private List<ProductType> productTypes;
