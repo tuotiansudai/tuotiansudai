@@ -93,7 +93,7 @@
                                                     data-user-coupon-id="${coupon.id?string.computer}"
                                                     data-coupon-type="${coupon.couponType}"
                                                     data-product-type-usable="${coupon.productTypeList?seq_contains(loan.productType)?string('true', 'false')}"
-                                                    data-coupon-created-time="${coupon.createdTime?string("yyyy-MM-dd HH:mm:ss")}"
+                                                    data-coupon-end-time="${coupon.endTime?string("yyyy-MM-dd HH:mm:ss")}"
                                                     <#if coupon.investLowerLimit!=0>class="lower-upper-limit"</#if>>
                                                     <input type="radio"
                                                            id="${coupon.id?string.computer}"

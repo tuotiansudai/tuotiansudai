@@ -160,7 +160,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             if (notSharedRedEnvelopes['enabled']) {
                 $ticketList.append(_.sortBy(notSharedRedEnvelopes['enabled'], function(ticket) {
                     var $ticket = $(ticket);
-                    return new Date($ticket.data("coupon-created-time")).getTime();
+                    return new Date($ticket.data("coupon-end-time")).getTime();
                 }));
             }
 
@@ -171,56 +171,56 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             if (newbieCoupons['enabled']) {
                 $ticketList.append(_.sortBy(newbieCoupons['enabled'], function(ticket) {
                     var $ticket = $(ticket);
-                    return new Date($ticket.data("coupon-created-time")).getTime();
+                    return new Date($ticket.data("coupon-end-time")).getTime();
                 }));
             }
 
             if (investCoupons['enabled']) {
                 $ticketList.append(_.sortBy(investCoupons['enabled'], function(ticket) {
                     var $ticket = $(ticket);
-                    return new Date($ticket.data("coupon-created-time")).getTime();
+                    return new Date($ticket.data("coupon-end-time")).getTime();
                 }));
             }
 
             if (interestCoupons['enabled']) {
                 $ticketList.append(_.sortBy(interestCoupons['enabled'], function(ticket) {
                     var $ticket = $(ticket);
-                    return new Date($ticket.data("coupon-created-time")).getTime();
+                    return new Date($ticket.data("coupon-end-time")).getTime();
                 }));
             }
 
             if (notSharedRedEnvelopes['disabled']) {
                 $ticketList.append(_.sortBy(notSharedRedEnvelopes['disabled'], function(ticket) {
                     var $ticket = $(ticket);
-                    return new Date($ticket.data("coupon-created-time")).getTime();
+                    return new Date($ticket.data("coupon-end-time")).getTime();
                 }));
             }
 
             if (newbieCoupons['disabled']) {
                 $ticketList.append(_.sortBy(newbieCoupons['disabled'], function(ticket) {
                     var $ticket = $(ticket);
-                    return new Date($ticket.data("coupon-created-time")).getTime();
+                    return new Date($ticket.data("coupon-end-time")).getTime();
                 }));
             }
 
             if (investCoupons['disabled']) {
                 $ticketList.append(_.sortBy(investCoupons['disabled'], function(ticket) {
                     var $ticket = $(ticket);
-                    return new Date($ticket.data("coupon-created-time")).getTime();
+                    return new Date($ticket.data("coupon-end-time")).getTime();
                 }));
             }
 
             if (interestCoupons['disabled']) {
                 $ticketList.append(_.sortBy(interestCoupons['disabled'], function(ticket) {
                     var $ticket = $(ticket);
-                    return new Date($ticket.data("coupon-created-time")).getTime();
+                    return new Date($ticket.data("coupon-end-time")).getTime();
                 }));
             }
 
             if (productTypeDisableCoupons.length > 0) {
                 $ticketList.append(_.sortBy(productTypeDisableCoupons['disabled'], function(ticket) {
                     var $ticket = $(ticket);
-                    return new Date($ticket.data("coupon-created-time")).getTime();
+                    return new Date($ticket.data("coupon-end-time")).getTime();
                 }));
             }
 
