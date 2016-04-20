@@ -36,6 +36,7 @@ public class TransferApplicationModel {
     private Date applicationTime;
 
     public TransferApplicationModel() {
+
     }
 
     public TransferApplicationModel(InvestModel transferInvestModel, String name, int period, long transferAmount, long transferFee, Date deadline) {
