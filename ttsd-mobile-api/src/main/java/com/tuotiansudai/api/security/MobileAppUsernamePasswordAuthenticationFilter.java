@@ -42,12 +42,13 @@ public class MobileAppUsernamePasswordAuthenticationFilter extends UsernamePassw
                 return;
             }
         } catch (AuthenticationException failed) {
-            logger.error(
+            logger.warn(
                     "An internal error occurred while trying to authenticate the user.",
                     failed);
             unsuccessfulAuthentication(request, response, failed);
 
             return;
+
         }
 
         // Authentication success
