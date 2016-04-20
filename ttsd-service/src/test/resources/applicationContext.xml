@@ -14,7 +14,7 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <context:property-placeholder location="classpath*:ttsd-env.properties, classpath*:ttsd-biz.properties" ignore-unresolvable="true"/>
+    <context:property-placeholder location="classpath*:ttsd-env.properties, classpath*:ttsd-biz.properties" />
 
     <!-- enable autowire -->
     <context:annotation-config />
