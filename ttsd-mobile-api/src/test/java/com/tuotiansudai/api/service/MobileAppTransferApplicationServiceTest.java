@@ -164,8 +164,6 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         transferApplyQueryRequestDto.setInvestId(String.valueOf(investModel.getId()));
         BaseResponseDto<TransferApplyQueryResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.transferApplyQuery(transferApplyQueryRequestDto);
         assertEquals("100.00", baseResponseDto.getData().getInvestAmount());
-        assertEquals("10", baseResponseDto.getData().getTransferInterestDays());
-        assertEquals("0.76", baseResponseDto.getData().getTransferInterest());
         assertEquals("1.00", baseResponseDto.getData().getTransferFee());
 
     }
