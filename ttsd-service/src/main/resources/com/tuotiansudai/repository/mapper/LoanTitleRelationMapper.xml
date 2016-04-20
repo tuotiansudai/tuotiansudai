@@ -11,6 +11,7 @@
         <result column="loan_id" property="loanId"></result>
         <result column="title_id" property="titleId"></result>
         <result column="application_material_urls" property="applicationMaterialUrls"></result>
+        <result column="title" property="title"></result>
     </resultMap>
 
     <insert id="create" parameterType="LoanTitleModel">
