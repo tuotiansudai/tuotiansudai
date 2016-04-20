@@ -54,9 +54,16 @@ public interface TransferApplicationMapper {
                                                                    @Param("loanId") Long loanId);
 
 
+    List<TransferApplicationRecordDto> findAllTransferApplicationPaginationList(@Param("status") TransferStatus status,
+                                                                             @Param("rateStart") double rateStart,
+                                                                             @Param("rateEnd") double rateEnd,
+                                                                             @Param(value = "index") Integer index,
+                                                                             @Param(value = "pageSize") Integer pageSize);
 
 
-
+    int findCountAllTransferApplicationPagination(@Param("status") TransferStatus status,
+                                                  @Param("rateStart") double rateStart,
+                                                  @Param("rateEnd") double rateEnd);
 
 
 
