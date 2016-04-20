@@ -16,7 +16,7 @@ public class EnvironmentAspect {
 
     @Value("${common.environment}")
     private Environment environment;
-    @Value("${environment.qaValue}")
+    @Value("${common.environment.qa.value}")
     private String environmentQaValue;
 
 
