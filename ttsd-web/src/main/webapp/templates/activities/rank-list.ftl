@@ -694,7 +694,9 @@
     <div class="actor-write">
         <p>活动遵循拓天速贷法律声明，</p>
         <p>最终解释权归拓天速贷平台所有。</p>
+    <#if isAppSource>
         <p>声明&nbsp;:&nbsp;本产品所有抽奖活动与苹果公司（Apple Inc）无关</p>
+    </#if>
     </div>
     <div class="tip-list" id="tipListPhone">
         <div class="tip-dom td-tip-big" id="macbookAirPhone">
