@@ -27,4 +27,9 @@
     <delete id="delete" parameterType="long">
         delete from loan_title_relation where loan_id = #{loanId};
     </delete>
+
+    <select id="findLoanTitleRelationAndTitleByLoanId" parameterType="long" resultMap="loanTitleResultMap">
+        select ltr.*,lt.title from loan_title_relation ltr left join loan_title lt on ltr.title_id = lt.id where ltr.loan_id = #{loanId} order by ltr.title_id
+    </select>
+
 </mapper>

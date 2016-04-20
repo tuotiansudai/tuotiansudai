@@ -138,11 +138,12 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     }
 
     private List<EvidenceResponseDataDto> getEvidenceByLoanId(long loanId) {
-        EvidenceResponseDataDto evidenceResponseDataDto = new EvidenceResponseDataDto();
-        List<LoanTitleRelationModel> loanTitleRelationModels = loanTitleRelationMapper.findByLoanId(loanId);
+        EvidenceResponseDataDto evidenceResponseDataDto;
+        List<LoanTitleRelationModel> loanTitleRelationModels = loanTitleRelationMapper.findLoanTitleRelationAndTitleByLoanId(loanId);
         List<String> imageUrlList = Lists.newArrayList();
         List<EvidenceResponseDataDto> evidenceResponseDataDtos = Lists.newArrayList();
         for (LoanTitleRelationModel loanTitleRelationModel : loanTitleRelationModels) {
+            evidenceResponseDataDto = new EvidenceResponseDataDto();
             String materialUrl = loanTitleRelationModel.getApplicationMaterialUrls();
             if (StringUtils.isNotEmpty(materialUrl)) {
                 for (String url : materialUrl.split(",")) {
@@ -150,10 +151,11 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
                     imageUrlList.add(tempUrl);
                 }
             }
+            evidenceResponseDataDto.setTitle(loanTitleRelationModel.getTitle());
+            evidenceResponseDataDto.setImageUrl(imageUrlList);
+            evidenceResponseDataDtos.add(evidenceResponseDataDto);
         }
-        evidenceResponseDataDto.setTitle("");
-        evidenceResponseDataDto.setImageUrl(imageUrlList);
-        evidenceResponseDataDtos.add(evidenceResponseDataDto);
+
         return evidenceResponseDataDtos;
 
     }
