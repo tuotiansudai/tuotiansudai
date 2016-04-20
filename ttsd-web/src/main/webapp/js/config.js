@@ -29,7 +29,8 @@ var require = {
         'red-envelope-float': staticServer+'/js/dest/red-envelope-float.min',
         'drag': staticServer+'/js/libs/drag',
         'rotate': staticServer+'/js/libs/jqueryrotate.min',
-        'template':staticServer+'/js/libs/template.min'
+        'template':staticServer+'/js/libs/template.min',
+        'fancybox':staticServer+'/js/libs/jquery.fancybox.min'
     },
     'waitSeconds':0,
     'shim': {
@@ -47,7 +48,8 @@ var require = {
         'swiper':['jquery'],
         'load-swiper':['swiper'],
         'drag':['jquery'],
-        'rotate':['jquery']
+        'rotate':['jquery'],
+        'fancybox':['jquery']
     },
 
     config: {
