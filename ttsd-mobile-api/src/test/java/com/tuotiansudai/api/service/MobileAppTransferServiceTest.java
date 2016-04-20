@@ -5,8 +5,10 @@ import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.impl.MobileAppTransferServiceImpl;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.service.AccountService;
@@ -18,14 +20,15 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 
 public class MobileAppTransferServiceTest extends ServiceTestBase {
@@ -50,6 +53,9 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
 
     @Mock
     private AccountService accountService;
+
+    @Value("${pay.callback.app.web.host}")
+    private String domainName;
 
     @Test
     public void shouldGetTransferTransferee() {
@@ -83,7 +89,56 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldTransferNoPasswordPurchaseSuccess() throws Exception {
-        
+        TransferPurchaseRequestDto transferPurchaseRequestDto = new TransferPurchaseRequestDto();
+        transferPurchaseRequestDto.setBaseParam(BaseParamTest.getInstance());
+        transferPurchaseRequestDto.setTransferApplicationId(idGenerator.generate());
+
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
+        transferApplicationModel.setTransferAmount(100000);
+        transferApplicationModel.setLoanId(idGenerator.generate());
+        when(transferApplicationMapper.findById(anyLong())).thenReturn(transferApplicationModel);
+        when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
+
+        AccountModel accountModel = new AccountModel();
+        accountModel.setAutoInvest(true);
+        accountModel.setNoPasswordInvest(true);
+        when(accountService.findByLoginName(anyString())).thenReturn(accountModel);
+
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        baseDto.setSuccess(true);
+        PayDataDto payDataDto = new PayDataDto();
+        payDataDto.setStatus(true);
+        baseDto.setData(payDataDto);
+        when(transferService.transferNoPasswordPurchase(any(InvestDto.class))).thenReturn(baseDto);
+
+        BaseResponseDto<InvestNoPassResponseDataDto> baseResponseDto = mobileAppTransferServiceImpl.transferNoPasswordPurchase(transferPurchaseRequestDto);
+        assertTrue(baseResponseDto.isSuccess());
+        assertThat(baseResponseDto.getCode(), is("0000"));
+    }
+
+    @Test
+    public void shouldTransferNoPasswordPurchaseFailedInvestorNotOpen() throws Exception {
+        TransferPurchaseRequestDto transferPurchaseRequestDto = new TransferPurchaseRequestDto();
+        transferPurchaseRequestDto.setBaseParam(BaseParamTest.getInstance());
+        transferPurchaseRequestDto.setTransferApplicationId(idGenerator.generate());
+
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
+        transferApplicationModel.setTransferAmount(100000);
+        transferApplicationModel.setLoanId(idGenerator.generate());
+        when(transferApplicationMapper.findById(anyLong())).thenReturn(transferApplicationModel);
+        when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
+
+        AccountModel accountModel = new AccountModel();
+        accountModel.setAutoInvest(true);
+        accountModel.setNoPasswordInvest(false);
+        when(accountService.findByLoginName(anyString())).thenReturn(accountModel);
+
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        baseDto.setSuccess(false);
+        when(transferService.transferNoPasswordPurchase(any(InvestDto.class))).thenReturn(baseDto);
+
+        BaseResponseDto<InvestNoPassResponseDataDto> baseResponseDto = mobileAppTransferServiceImpl.transferNoPasswordPurchase(transferPurchaseRequestDto);
+        assertFalse(baseResponseDto.isSuccess());
     }
 
     @Test
