@@ -100,13 +100,13 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
 
     //删除3元红包和项目类型不匹配的券和红包
     private List<UserCouponModel> filterUnavailableLoanProductType(List<UserCouponModel> userCouponModels, ProductType loanProductType) {
-        ArrayList<UserCouponModel> listDel = new ArrayList<>();
+        ArrayList<UserCouponModel> unavailableCouponlist = new ArrayList<>();
 
         for (int i = 0; i < userCouponModels.size(); i++) {
             UserCouponModel item = userCouponModels.get(i);
             CouponModel couponModel = couponMapper.findById(item.getCouponId());
             if(CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType()) && !userBirthdayUtil.isBirthMonth(item.getLoginName())){
-                listDel.add(item);
+                unavailableCouponlist.add(item);
                 continue;
             }
             boolean isSupportedLoanType = false;
@@ -118,11 +118,11 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
             }
 
             if (!isSupportedLoanType) {
-                listDel.add(item);
+                unavailableCouponlist.add(item);
             }
         }
 
-        return listDel;
+        return unavailableCouponlist;
     }
 
     private void sortCoupons(List<UserCouponModel> userCouponModels,final long investMoney) {
