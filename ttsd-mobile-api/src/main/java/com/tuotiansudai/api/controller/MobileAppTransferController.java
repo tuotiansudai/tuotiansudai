@@ -29,7 +29,7 @@ public class MobileAppTransferController extends MobileAppBaseController {
     @RequestMapping(value = "/transfer-no-password-purchase", method = RequestMethod.POST)
     @ResponseBody
     public BaseResponseDto transferNoPasswordPurchase(@RequestBody TransferPurchaseRequestDto transferPurchaseRequestDto) {
-        return null;
+        return mobileAppTransferService.transferNoPasswordPurchase(transferPurchaseRequestDto);
     }
 
 }

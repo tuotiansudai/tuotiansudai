@@ -82,6 +82,11 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
     }
 
     @Test
+    public void shouldTransferNoPasswordPurchaseSuccess() throws Exception {
+        
+    }
+
+    @Test
     public void shouldPurchaseSuccess() throws Exception{
         TransferPurchaseRequestDto transferPurchaseRequestDto = new TransferPurchaseRequestDto();
         transferPurchaseRequestDto.setBaseParam(BaseParamTest.getInstance());

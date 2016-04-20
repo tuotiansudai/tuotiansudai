@@ -3,6 +3,7 @@ package com.tuotiansudai.transfer.service.impl;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
@@ -30,6 +31,13 @@ public class TransferServiceImpl implements TransferService{
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Override
+    public BaseDto<PayDataDto> transferNoPasswordPurchase(InvestDto investDto) throws InvestException {
+        investDto.setNoPassword(true);
+        this.checkTransferPurchase(investDto);
+        return payWrapperClient.noPasswordPurchase(investDto);
+    }
 
     @Override
     public BaseDto<PayFormDataDto> transferPurchase(InvestDto investDto) throws InvestException{

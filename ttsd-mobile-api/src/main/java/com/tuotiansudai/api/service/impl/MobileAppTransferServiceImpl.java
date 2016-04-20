@@ -7,6 +7,7 @@ import com.tuotiansudai.api.service.MobileAppTransferService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -18,9 +19,11 @@ import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.service.TransferService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.text.MessageFormat;
 import java.util.Locale;
 
 @Service
@@ -39,6 +42,9 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
 
     @Autowired
     private MobileAppChannelService mobileAppChannelService;
+
+    @Value("${pay.callback.app.web.host}")
+    private String domainName;
 
     @Override
     public BaseResponseDto getTransferee(TransferTransfereeRequestDto transferTransfereeRequestDto) {
@@ -61,6 +67,27 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         dto.setData(transferTransfereeResponseDataDto);
         return dto;
+    }
+
+    @Override
+    public BaseResponseDto transferNoPasswordPurchase(TransferPurchaseRequestDto transferPurchaseRequestDto) {
+        BaseResponseDto<InvestNoPassResponseDataDto> responseDto = new BaseResponseDto<>();
+        InvestDto investDto = convertInvestDto(transferPurchaseRequestDto);
+        String code = "";
+        String message = "";
+        try {
+            BaseDto<PayDataDto> payDataDto = transferService.transferNoPasswordPurchase(investDto);
+            if(payDataDto.getData() != null){
+                code = payDataDto.getData().getCode() != null ? payDataDto.getData().getCode() : ReturnMessage.SUCCESS.getCode();
+                message = payDataDto.getData().getMessage() != null ? payDataDto.getData().getMessage() : ReturnMessage.SUCCESS.getMsg();
+            }
+            responseDto.setCode(code);
+            responseDto.setMessage(message);
+            responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/callback/project_transfer_invest?ret_code={1}", domainName, code)));
+        } catch (InvestException e) {
+            return this.convertExceptionToDto(e);
+        }
+        return responseDto;
     }
 
     @Override
