@@ -65,9 +65,17 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
 
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(dto.getBaseParam().getUserId(), null);
 
-        userCouponModels = filterUserCouponModels(userCouponModels, loanModel.getProductType());
+        List<UserCouponModel> listDel = filterUserCouponModels(userCouponModels, loanModel.getProductType());
+
+        userCouponModels.removeAll(listDel);
+
+//        userCouponModels = filterUserCouponModels(userCouponModels, loanModel.getProductType());
 
         sortCoupons(userCouponModels,investMoneyLong);
+
+        userCouponModels.addAll(listDel);
+
+
 
 
         UnmodifiableIterator<UserCouponModel> filter = Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
@@ -119,9 +127,7 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
             }
         }
 
-        userCouponModels.removeAll(listDel);
-
-        return userCouponModels;
+        return listDel;
     }
 
     private void sortCoupons(List<UserCouponModel> userCouponModels,final long investMoney) {
