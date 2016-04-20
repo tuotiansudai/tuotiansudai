@@ -139,7 +139,7 @@
                                         </#list>
                                     </ul>
                                     <#list coupons as coupon>
-                                        <#if (coupon.shared && coupon.investLowerLimit==0)>
+                                        <#if (coupon.shared && coupon.investLowerLimit==0 && coupon.productTypeList?seq_contains(loan.productType))>
                                             <input type="hidden" id="${coupon.id?string.computer}" name="userCouponIds" value="${coupon.id?string.computer}" data-coupon-id="${coupon.couponId?string.computer}" />
                                             <p class="red-tiptext clearfix">
                                                 <i class="icon-redbag"></i>

@@ -218,7 +218,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             }
 
             if (productTypeDisableCoupons.length > 0) {
-                $ticketList.append(_.sortBy(productTypeDisableCoupons['disabled'], function(ticket) {
+                $ticketList.append(_.sortBy(productTypeDisableCoupons, function(ticket) {
                     var $ticket = $(ticket);
                     return new Date($ticket.data("coupon-end-time")).getTime();
                 }));
