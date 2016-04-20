@@ -14,6 +14,7 @@ import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
@@ -75,6 +76,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         assertEquals("10.00", baseResponseDto.getData().getTransferApplication().get(0).getTransferAmount());
         assertEquals("12.00", baseResponseDto.getData().getTransferApplication().get(0).getInvestAmount());
         assertEquals("2016-02-09 00:00:00", baseResponseDto.getData().getTransferApplication().get(0).getTransferTime());
+        assertEquals("4", baseResponseDto.getData().getTransferApplication().get(0).getLeftPeriod());
 
     }
     @Test
@@ -99,6 +101,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         assertEquals("10.00", baseResponseDto.getData().getTransferApplication().get(0).getTransferAmount());
         assertEquals("12.00", baseResponseDto.getData().getTransferApplication().get(0).getInvestAmount());
         assertEquals("2016-02-09 00:00:00", baseResponseDto.getData().getTransferApplication().get(0).getTransferTime());
+        assertEquals("4", baseResponseDto.getData().getTransferApplication().get(0).getLeftPeriod());
 
     }
 
@@ -111,6 +114,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         transferApplicationRecordDto.setBaseRate(0.16);
         transferApplicationRecordDto.setActivityRate(0.17);
         transferApplicationRecordDto.setTransferStatus(TransferStatus.TRANSFERRING);
+        transferApplicationRecordDto.setLeftPeriod(4);
         return transferApplicationRecordDto;
 
     }
@@ -152,6 +156,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         transferRuleModel.setDiscount(0.005);
 
         when(investTransferService.isTransferable(anyLong())).thenReturn(true);
+        when(investTransferService.getDeadlineFromNow()).thenReturn(new DateTime().withTimeAtStartOfDay().toDate());
         when(investMapper.findById(anyLong())).thenReturn(investModel);
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(loanRepayMapper.findByLoanIdOrderByPeriodAsc(anyLong())).thenReturn(repayingLoanRepays);
@@ -165,6 +170,9 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         BaseResponseDto<TransferApplyQueryResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.transferApplyQuery(transferApplyQueryRequestDto);
         assertEquals("100.00", baseResponseDto.getData().getInvestAmount());
         assertEquals("1.00", baseResponseDto.getData().getTransferFee());
+        assertEquals(new DateTime().withTimeAtStartOfDay().toString("yyyy/MM/dd HH:mm:ss"),baseResponseDto.getData().getDeadLine());
+        assertEquals("99.49",baseResponseDto.getData().getDiscountLower());
+        assertEquals(AmountConverter.convertCentToString(investModel.getAmount()),baseResponseDto.getData().getDiscountUpper());
 
     }
 
