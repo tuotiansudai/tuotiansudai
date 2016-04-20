@@ -5,16 +5,20 @@ import com.aliyun.oss.model.ObjectMetadata;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.tuotiansudai.repository.model.Environment;
 import org.apache.commons.fileupload.util.Streams;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageTypeSpecifier;
+import javax.imageio.ImageWriter;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.metadata.IIOMetadataNode;
+import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
+import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -133,6 +137,7 @@ public class OssWrapperClient {
 
     private static ByteArrayOutputStream pressImage(String waterImg, InputStream inStream, boolean water) {
         ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
+        ImageOutputStream ios = null;
         try {
             //目标文件
             Image srcTarget = ImageIO.read(inStream);
@@ -141,32 +146,46 @@ public class OssWrapperClient {
             BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             Graphics graphics = image.createGraphics();
             graphics.drawImage(srcTarget, 0, 0, width, height, null);
-            if (water) {
-                //水印文件
-                File waterFile = new File(waterImg);
-                Image waterImage = ImageIO.read(waterFile);
-                graphics.drawImage(waterImage, 0, 0, width, height, null);
-                //水印文件结束
-            }
+//            if (water) {
+//                //水印文件
+//                File waterFile = new File(waterImg);
+//                Image waterImage = ImageIO.read(waterFile);
+//                graphics.drawImage(waterImage, 0, 0, width, height, null);
+//                //水印文件结束
+//            }
             graphics.dispose();
-            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(swapStream);
-            JPEGEncodeParam jep = JPEGCodec.getDefaultJPEGEncodeParam(image);
-            jep.setQuality(0.1f, true);
-            jep.setDensityUnit(1);
-            jep.setXDensity(72);
-            jep.setYDensity(72);
-            encoder.encode(image, jep);
-            ImageIO.write(image, "JPEG", swapStream);
+//            ImageIO.write(image, "JPEG", swapStream);
+            ImageWriter imageWriter = ImageIO.getImageWritersByFormatName("jpeg").next();
+            ios = ImageIO.createImageOutputStream(swapStream);
+            imageWriter.setOutput(ios);
+
+            JPEGImageWriteParam jpegParams = (JPEGImageWriteParam) imageWriter.getDefaultWriteParam();
+            jpegParams.setCompressionMode(JPEGImageWriteParam.MODE_EXPLICIT);
+            jpegParams.setCompressionQuality(0.2f);
+
+            IIOMetadata data = imageWriter.getDefaultImageMetadata(new ImageTypeSpecifier(image), jpegParams);
+            IIOMetadataNode tree = (IIOMetadataNode)data.getAsTree("javax_imageio_jpeg_image_1.0");
+            IIOMetadataNode jfif = (IIOMetadataNode)tree.getElementsByTagName("app0JFIF").item(0);
+            jfif.setAttribute("Xdensity", Integer.toString(72));
+            jfif.setAttribute("Ydensity", Integer.toString(72));
+            jfif.setAttribute("resUnits", "1");
+
+            data.mergeTree(data.getNativeMetadataFormatName(), tree);
+
+            imageWriter.write(null, new IIOImage(image, null, data), jpegParams);
+            imageWriter.dispose();
         } catch (Exception e) {
             logger.error("upload oss fail");
             logger.error(e.getLocalizedMessage(), e);
         } finally {
             try {
                 swapStream.close();
+                ios.close();
             } catch (IOException e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
         }
         return swapStream;
     }
+
 }
