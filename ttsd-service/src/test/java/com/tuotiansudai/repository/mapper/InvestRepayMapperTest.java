@@ -196,7 +196,7 @@ public class InvestRepayMapperTest {
             investRepayModel.setInvestId(fakeInvestModel.getId());
             investRepayModel.setPeriod(i + 1);
             investRepayModel.setRepayDate(new DateTime().withDate(2015, 1, i + 1).withTimeAtStartOfDay().toDate());
-            investRepayModel.setStatus(RepayStatus.COMPLETE);
+            investRepayModel.setStatus(RepayStatus.REPAYING);
             investRepayModels.add(investRepayModel);
         }
         investRepayMapper.create(investRepayModels);
