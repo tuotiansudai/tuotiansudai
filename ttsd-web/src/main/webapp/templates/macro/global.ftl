@@ -85,7 +85,7 @@
     <#include "../top-menus.ftl"/>
 </#if>
 
-<div class="main-frame full-screen">
+<div class="main-frame full-screen clearfix">
     <#if !isAppSource>
         <#include "../left-menus.ftl"/>
     </#if>

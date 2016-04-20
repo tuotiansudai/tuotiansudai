@@ -8,14 +8,6 @@
     <div class="filter-list clearfix">
         <ul class="wrapper-list">
             <li>
-                <span>项目期限: </span>
-                <a class="active" href="#">全部</a>
-                <a href="#">0-1个月</a>
-                <a href="#">1-3个月</a>
-                <a href="#">3-6个月</a>
-                <a href="#">6个月以上</a>
-            </li>
-            <li>
                 <span>项目状态: </span>
                 <a class="active" href="#">全部</a>
                 <a href="#">转让中</a>
