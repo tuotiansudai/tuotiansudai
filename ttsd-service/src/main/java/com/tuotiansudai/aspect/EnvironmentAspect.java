@@ -26,7 +26,7 @@ public class EnvironmentAspect {
             return true;
         }
 
-        if(Environment.DEV == environment && proceedingJoinPoint.getArgs().length == 2
+        if(Environment.QA == environment && proceedingJoinPoint.getArgs().length == 2
                 && proceedingJoinPoint.getArgs()[1].equals(environmentQaValue)){
             return true;
         }
