@@ -54,14 +54,14 @@ public interface TransferApplicationMapper {
                                                                    @Param("loanId") Long loanId);
 
 
-    List<TransferApplicationRecordDto> findAllTransferApplicationPaginationList(@Param("status") TransferStatus status,
+    List<TransferApplicationRecordDto> findAllTransferApplicationPaginationList(@Param("transferStatus") TransferStatus transferStatus,
                                                                              @Param("rateStart") double rateStart,
                                                                              @Param("rateEnd") double rateEnd,
                                                                              @Param(value = "index") Integer index,
                                                                              @Param(value = "pageSize") Integer pageSize);
 
 
-    int findCountAllTransferApplicationPagination(@Param("status") TransferStatus status,
+    int findCountAllTransferApplicationPagination(@Param("transferStatus") TransferStatus transferStatus,
                                                   @Param("rateStart") double rateStart,
                                                   @Param("rateEnd") double rateEnd);
 

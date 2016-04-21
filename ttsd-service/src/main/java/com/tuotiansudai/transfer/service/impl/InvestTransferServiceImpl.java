@@ -87,9 +87,10 @@ public class InvestTransferServiceImpl implements InvestTransferService{
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(investModel.getLoanId());
+        int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(investModel.getTransferInvestId(),loanRepayModel.getPeriod());
 
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, this.generateTransferApplyName(), loanRepayModel.getPeriod(), transferApplicationDto.getTransferAmount(),
-                TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel), getDeadlineFromNow());
+                TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel), getDeadlineFromNow(),leftPeriod);
 
         transferApplicationMapper.create(transferApplicationModel);
 
@@ -212,8 +213,6 @@ public class InvestTransferServiceImpl implements InvestTransferService{
             @Override
             public TransferApplicationPaginationItemDataDto apply(TransferApplicationRecordDto input) {
                 TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(input);
-                int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(input.getTransferInvestId(),input.getPeriod());
-                transferApplicationPaginationItemDataDto.setLeftPeriod(String.valueOf(leftPeriod));
                 return transferApplicationPaginationItemDataDto;
             }
         });

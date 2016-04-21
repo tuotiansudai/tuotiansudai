@@ -11,11 +11,11 @@ public interface TransferService {
 
     BaseDto<PayFormDataDto> transferPurchase(InvestDto investDto) throws InvestException;
 
-    BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findAllTransferApplicationPaginationList(TransferStatus status,
+    BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findAllTransferApplicationPaginationList(TransferStatus transferStatus,
                                                                                                             double rateStart,
                                                                                                             double tateEnd,
                                                                                                             Integer index,
                                                                                                             Integer pageSize);
-    int findCountAllTransferApplicationPaginationList(TransferStatus status, double rateStart, double tateEnd);
+    int findCountAllTransferApplicationPaginationList(TransferStatus transferStatus, double rateStart, double rateEnd);
 
 }

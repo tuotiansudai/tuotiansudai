@@ -35,10 +35,12 @@ public class TransferApplicationModel {
 
     private Date applicationTime;
 
+    private int leftPeriod;
+
     public TransferApplicationModel() {
     }
 
-    public TransferApplicationModel(InvestModel transferInvestModel, String name, int period, long transferAmount, long transferFee, Date deadline) {
+    public TransferApplicationModel(InvestModel transferInvestModel, String name, int period, long transferAmount, long transferFee, Date deadline, int leftPeriod) {
         this.loanId = transferInvestModel.getLoanId();
         this.name = name;
         this.transferInvestId = transferInvestModel.getId();
@@ -50,6 +52,7 @@ public class TransferApplicationModel {
         this.status = TransferStatus.TRANSFERRING;
         this.deadline = deadline;
         this.applicationTime = new Date();
+        this.leftPeriod = leftPeriod;
     }
 
     public long getId() {
@@ -164,4 +167,11 @@ public class TransferApplicationModel {
         this.applicationTime = applicationTime;
     }
 
+    public int getLeftPeriod() {
+        return leftPeriod;
+    }
+
+    public void setLeftPeriod(int leftPeriod) {
+        this.leftPeriod = leftPeriod;
+    }
 }

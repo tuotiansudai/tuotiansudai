@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppTransferApplicationService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -28,6 +29,7 @@ import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -42,6 +44,8 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     private LoanMapper loanMapper;
     @Autowired
     private LoanRepayMapper loanRepayMapper;
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
     @Autowired
     private InvestTransferService investTransferService;
     @Autowired
@@ -109,16 +113,18 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         }
         InvestModel investModel = investMapper.findById(Long.parseLong(investId));
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
-        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(investModel.getLoanId());
-        DateTime currentRepayDate = new DateTime();
-        DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, currentRepayDate);
-        int periodDuration = Days.daysBetween(lastRepayDate.withTimeAtStartOfDay(), currentRepayDate.withTimeAtStartOfDay()).getDays();
+        TransferRuleModel transferRuleModel =  transferRuleMapper.find();
         TransferApplyQueryResponseDataDto transferApplyQueryResponseDataDto = new TransferApplyQueryResponseDataDto();
 
         transferApplyQueryResponseDataDto.setInvestAmount(AmountConverter.convertCentToString(investModel.getAmount()));
-        transferApplyQueryResponseDataDto.setTransferInterestDays(String.valueOf(periodDuration));
-        transferApplyQueryResponseDataDto.setTransferInterest(AmountConverter.convertCentToString(InterestCalculator.calculateInvestRepayInterest(loanModel, investModel, lastRepayDate, currentRepayDate)));
-        TransferRuleModel transferRuleModel =  transferRuleMapper.find();
+        transferApplyQueryResponseDataDto.setDeadLine(new DateTime(investTransferService.getDeadlineFromNow()).toString("yyyy/MM/dd HH:mm:ss"));
+
+        BigDecimal investAmountBig = new BigDecimal(investModel.getAmount());
+        BigDecimal discountBig = new BigDecimal(transferRuleModel.getDiscount());
+
+        long discountLower =  investAmountBig.subtract(discountBig.multiply(investAmountBig)).setScale(0).longValue();
+        transferApplyQueryResponseDataDto.setDiscountLower(AmountConverter.convertCentToString(discountLower));
+        transferApplyQueryResponseDataDto.setDiscountUpper(transferApplyQueryResponseDataDto.getInvestAmount());
         transferApplyQueryResponseDataDto.setTransferFee(AmountConverter.convertCentToString(TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel)));
 
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());

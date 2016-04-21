@@ -71,14 +71,14 @@ public class TransferServiceImpl implements TransferService{
     }
 
     @Override
-    public BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findAllTransferApplicationPaginationList(TransferStatus status, double rateStart, double rateEnd, Integer index, Integer pageSize) {
+    public BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findAllTransferApplicationPaginationList(TransferStatus transferStatus, double rateStart, double rateEnd, Integer index, Integer pageSize) {
 
-        int count = transferApplicationMapper.findCountAllTransferApplicationPagination(status, rateStart, rateEnd);
+        int count = transferApplicationMapper.findCountAllTransferApplicationPagination(transferStatus, rateStart, rateEnd);
         List<TransferApplicationRecordDto> items = Lists.newArrayList();
         if(count > 0){
             int totalPages = count % pageSize > 0 ? count / pageSize + 1 : count / pageSize;
             index = index > totalPages ? totalPages : index;
-            items = transferApplicationMapper.findAllTransferApplicationPaginationList(status, rateStart, rateEnd, (index - 1) * pageSize, pageSize);
+            items = transferApplicationMapper.findAllTransferApplicationPaginationList(transferStatus, rateStart, rateEnd, (index - 1) * pageSize, pageSize);
 
         }
         List<TransferApplicationPaginationItemDataDto> itemDataDtoList = Lists.transform(items, new Function<TransferApplicationRecordDto, TransferApplicationPaginationItemDataDto>() {
@@ -95,8 +95,8 @@ public class TransferServiceImpl implements TransferService{
     }
 
     @Override
-    public int findCountAllTransferApplicationPaginationList(TransferStatus status, double rateStart, double tateEnd) {
-        return transferApplicationMapper.findCountAllTransferApplicationPagination(status, rateStart, tateEnd);
+    public int findCountAllTransferApplicationPaginationList(TransferStatus transferStatus, double rateStart, double tateEnd) {
+        return transferApplicationMapper.findCountAllTransferApplicationPagination(transferStatus, rateStart, tateEnd);
     }
 
 }
