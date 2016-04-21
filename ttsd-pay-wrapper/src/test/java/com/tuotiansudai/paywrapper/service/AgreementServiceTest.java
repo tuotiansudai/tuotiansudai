@@ -4,16 +4,21 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
+import com.tuotiansudai.dto.AgreementBusinessType;
 import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
+import com.tuotiansudai.paywrapper.client.PayAsyncClient;
+import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.AgreementType;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +32,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -42,9 +48,33 @@ public class AgreementServiceTest {
     private AccountMapper accountMapper;
 
     @Autowired
+    private BankCardMapper bankCardMapper;
+
+    @Autowired
     private AgreementService agreementService;
 
     private MockWebServer mockPayServer;
+
+    @Autowired
+    private PaySyncClient paySyncClient;
+
+    @Autowired
+    private PayAsyncClient payAsyncClient;
+
+    @Autowired
+    private IdGenerator idGenerator;
+
+    private BankCardModel createBankCardByUserId(long id, String userId) {
+        BankCardModel bankCardModel = new BankCardModel();
+        bankCardModel.setId(id);
+        bankCardModel.setLoginName(userId);
+        bankCardModel.setCreatedTime(new Date());
+        bankCardModel.setCardNumber("6225880130182016");
+        bankCardModel.setBankCode("ICBC");
+        bankCardModel.setStatus(BankCardStatus.PASSED);
+        bankCardMapper.create(bankCardModel);
+        return bankCardModel;
+    }
 
     private UserModel createUserByUserId(String userId) {
         UserModel userModelTest = new UserModel();
@@ -94,21 +124,57 @@ public class AgreementServiceTest {
                 .put("mer_date", new SimpleDateFormat("yyyyMMdd").format(new Date()))
                 .put("ret_code", "0000")
                 .put("ret_msg", "")
-                .put("user_id", "")
-                .put("user_bind_agreement_lis", agreementType.name())
+                .put("user_id", "payUserId")
+                .put("user_bind_agreement_list", agreementType.name())
                 .build());
+    }
+
+    @Before
+    public void setUp() throws Exception {
+        this.mockPayServer = new MockWebServer();
+        this.mockPayServer.start();
+
+        MockPayGateWrapper.injectInto(paySyncClient);
+        MockPayGateWrapper.injectInto(payAsyncClient);
+        MockPayGateWrapper.setUrl(this.mockPayServer.getUrl("/").toString());
+    }
+
+    @After
+    public void clean() throws Exception {
+        this.mockPayServer.shutdown();
     }
 
     @Test
     public void shouldAgreementFastPay() {
+        String userId = "testAutoInvest";
+        createUserByUserId(userId);
+        createAccountByUserId(userId);
+        long id = idGenerator.generate();
+        createBankCardByUserId(id, userId);
+        AgreementDto agreementDto = new AgreementDto();
+        agreementDto.setLoginName(userId);
+        agreementDto.setFastPay(true);
+        BaseDto<PayFormDataDto> baseDto = agreementService.agreement(agreementDto);
+        assertTrue(baseDto.getData().getStatus());
+        assertThat(baseDto.getData().getFields().get("user_bind_agreement_list"), is(AgreementType.ZKJP0700.name()));
 
+        this.generateMockResponse(10);
+        agreementService.agreementCallback(getFakeCallbackParamsMap(AgreementType.ZKJP0700), "", null);
+
+        AccountModel accountModel = accountMapper.findByLoginName(userId);
+        assertFalse(accountModel.isAutoInvest());
+        assertFalse(accountModel.isAutoRepay());
+        assertFalse(accountModel.isNoPasswordInvest());
+
+        BankCardModel bankCardModel = bankCardMapper.findById(id);
+        assertTrue(bankCardModel.isFastPayOn());
     }
 
     @Test
     public void shouldAgreementAutoInvest() {
         String userId = "testAutoInvest";
-        UserModel userModel = createUserByUserId(userId);
-        AccountModel accountModel = createAccountByUserId(userId);
+        createUserByUserId(userId);
+        createAccountByUserId(userId);
         AgreementDto agreementDto = new AgreementDto();
         agreementDto.setLoginName(userId);
         agreementDto.setAutoInvest(true);
@@ -117,19 +183,55 @@ public class AgreementServiceTest {
         assertThat(baseDto.getData().getFields().get("user_bind_agreement_list"), is(AgreementType.ZTBB0G00.name()));
 
         this.generateMockResponse(10);
-        agreementService.agreementCallback(getFakeCallbackParamsMap(), "", null);
+        agreementService.agreementCallback(getFakeCallbackParamsMap(AgreementType.ZTBB0G00), "", null);
 
-
+        AccountModel accountModel = accountMapper.findByLoginName(userId);
+        assertTrue(accountModel.isAutoInvest());
+        assertFalse(accountModel.isAutoRepay());
+        assertFalse(accountModel.isNoPasswordInvest());
     }
 
     @Test
     public void shouldAgreementNoPasswordInvest() {
+        String userId = "testAutoInvest";
+        createUserByUserId(userId);
+        createAccountByUserId(userId);
+        AgreementDto agreementDto = new AgreementDto();
+        agreementDto.setLoginName(userId);
+        agreementDto.setAutoInvest(true);
+        agreementDto.setNoPasswordInvest(true);
+        BaseDto<PayFormDataDto> baseDto = agreementService.agreement(agreementDto);
+        assertTrue(baseDto.getData().getStatus());
+        assertThat(baseDto.getData().getFields().get("user_bind_agreement_list"), is(AgreementType.ZTBB0G00.name()));
 
+        this.generateMockResponse(10);
+        agreementService.agreementCallback(getFakeCallbackParamsMap(AgreementType.ZTBB0G00), "", AgreementBusinessType.NO_PASSWORD_INVEST);
+
+        AccountModel accountModel = accountMapper.findByLoginName(userId);
+        assertTrue(accountModel.isAutoInvest());
+        assertFalse(accountModel.isAutoRepay());
+        assertTrue(accountModel.isNoPasswordInvest());
     }
 
     @Test
     public void shouldAgreementAutoRepay() {
+        String userId = "testAutoInvest";
+        createUserByUserId(userId);
+        createAccountByUserId(userId);
+        AgreementDto agreementDto = new AgreementDto();
+        agreementDto.setLoginName(userId);
+        agreementDto.setAutoRepay(true);
+        BaseDto<PayFormDataDto> baseDto = agreementService.agreement(agreementDto);
+        assertTrue(baseDto.getData().getStatus());
+        assertThat(baseDto.getData().getFields().get("user_bind_agreement_list"), is(AgreementType.ZHKB0H01.name()));
 
+        this.generateMockResponse(10);
+        agreementService.agreementCallback(getFakeCallbackParamsMap(AgreementType.ZHKB0H01), "", null);
+
+        AccountModel accountModel = accountMapper.findByLoginName(userId);
+        assertFalse(accountModel.isAutoInvest());
+        assertTrue(accountModel.isAutoRepay());
+        assertFalse(accountModel.isNoPasswordInvest());
     }
 
 }
