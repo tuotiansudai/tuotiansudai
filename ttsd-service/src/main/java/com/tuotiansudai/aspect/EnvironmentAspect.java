@@ -16,8 +16,8 @@ public class EnvironmentAspect {
 
     @Value("${common.environment}")
     private Environment environment;
-    @Value("${common.environment.qa.value}")
-    private String environmentQaValue;
+    @Value("${common.fake.captcha}")
+    private String fakeCaptcha;
 
 
     @Around(value = "execution(public boolean com.tuotiansudai.util.CaptchaHelper.captchaVerify(..))")
@@ -27,7 +27,7 @@ public class EnvironmentAspect {
         }
 
         if(Environment.PRODUCTION != environment && proceedingJoinPoint.getArgs().length == 2
-                && proceedingJoinPoint.getArgs()[1].equals(environmentQaValue)){
+                && proceedingJoinPoint.getArgs()[1].equals(fakeCaptcha)){
             return true;
         }
 

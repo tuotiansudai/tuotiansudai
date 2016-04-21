@@ -28,12 +28,12 @@ public class CaptchaHelperTest {
     private CaptchaHelper captchaHelper;
     @Value("${common.environment}")
     private Environment environment;
-    @Value("${common.environment.qa.value}")
-    private String environmentQaValue;
+    @Value("${common.fake.captcha}")
+    private String fakeCaptcha;
 
     @Test
     public void shouldCaptchaVerifyIsOk(){
-        boolean flag = captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA,environmentQaValue);
+        boolean flag = captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA,fakeCaptcha);
         if(Environment.PRODUCTION != environment){
             assertTrue(flag);
         }
