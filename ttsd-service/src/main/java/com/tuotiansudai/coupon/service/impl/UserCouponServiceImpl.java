@@ -100,7 +100,7 @@ public class UserCouponServiceImpl implements UserCouponService {
      * 收益相同时，选择最早即将过期的优惠券。过期时间仍然相同时，按照生日福利、红包、新手体验券、投资体验券、加息券的顺序选择，若券的类别也相同时，任选其一。
      */
     @Override
-    public UserCouponDto getMaxBenefitUserCoupon(String loginName, long loanId, long amount) {
+    public UserCouponDto getMaxBenefitUserCoupon(String loginName, long loanId, final long amount) {
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
 
         final LoanModel loanModel = loanMapper.findById(loanId);
@@ -111,10 +111,12 @@ public class UserCouponServiceImpl implements UserCouponService {
         List<UserCouponModel> usableUserCoupons = Lists.newArrayList(Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
             @Override
             public boolean apply(UserCouponModel userCouponModel) {
-                boolean isShared = couponMapper.findById(userCouponModel.getCouponId()).isShared();
+                CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+                boolean isShared = couponModel.isShared();
                 boolean unused = InvestStatus.SUCCESS != userCouponModel.getStatus() && userCouponModel.getEndTime().after(new Date());
-                boolean productTypeEnable = couponMapper.findById(userCouponModel.getCouponId()).getProductTypes().contains(loanModel.getProductType());
-                return !isShared && unused && productTypeEnable;
+                boolean productTypeEnable = couponModel.getProductTypes().contains(loanModel.getProductType());
+                boolean isGreatThanInvestLowerLimit = couponModel.getInvestLowerLimit() <= amount;
+                return !isShared && unused && productTypeEnable && isGreatThanInvestLowerLimit;
             }
         }));
 
