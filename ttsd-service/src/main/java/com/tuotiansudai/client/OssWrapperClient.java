@@ -146,13 +146,13 @@ public class OssWrapperClient {
             BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             Graphics graphics = image.createGraphics();
             graphics.drawImage(srcTarget, 0, 0, width, height, null);
-//            if (water) {
-//                //水印文件
-//                File waterFile = new File(waterImg);
-//                Image waterImage = ImageIO.read(waterFile);
-//                graphics.drawImage(waterImage, 0, 0, width, height, null);
-//                //水印文件结束
-//            }
+            if (water) {
+                //水印文件
+                File waterFile = new File(waterImg);
+                Image waterImage = ImageIO.read(waterFile);
+                graphics.drawImage(waterImage, 0, 0, width, height, null);
+                //水印文件结束
+            }
             graphics.dispose();
 //            ImageIO.write(image, "JPEG", swapStream);
             ImageWriter imageWriter = ImageIO.getImageWritersByFormatName("jpeg").next();
