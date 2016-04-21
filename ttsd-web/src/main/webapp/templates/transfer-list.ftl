@@ -41,25 +41,30 @@
                     <li data-url="#" class="clearfix">
                         <div class="transfer-info-frame fl">
                             <div class="transfer-top">
-                                <span class="l-title fl">${transferApplicationItem.transferName}</span>
+                                <span class="l-title fl">${transferApplicationItem.transferName!}</span>
                             </div>
                             <div class="transfer-info-dl clearfix">
                                 <dl>
                                     <dt>转让价格</dt>
-                                    <dd><em>${transferApplicationItem.transferAmount}</em>元
+                                    <dd><em><@percentInteger>${transferApplicationItem.transferAmount!}</@percentInteger></em>
+                                        <i><@percentFraction>${transferApplicationItem.transferAmount!}</@percentFraction>
+                                        </i>元
                                     </dd>
                                 </dl>
                                 <dl>
                                     <dt>代收本金</dt>
-                                    <dd><em>${transferApplicationItem.investAmount}</em>元</dd>
+                                    <dd><em><@percentInteger>${transferApplicationItem.investAmount!}</@percentInteger></em>
+                                        <i><@percentFraction>${transferApplicationItem.investAmount!}</@percentFraction>
+                                        </i>元
+                                    </dd>
                                 </dl>
                                 <dl>
                                     <dt>年化收益</dt>
-                                    <dd><em>${transferApplicationItem.baseRate}%</em></dd>
+                                    <dd><em>${transferApplicationItem.baseRate!}%</em></dd>
                                 </dl>
                                 <dl>
                                     <dt>剩余期数</dt>
-                                    <dd><em>${transferApplicationItem.leftPeriod}</em></dd>
+                                    <dd><em>${transferApplicationItem.leftPeriod!}</em></dd>
                                 </dl>
                             </div>
                         </div>
