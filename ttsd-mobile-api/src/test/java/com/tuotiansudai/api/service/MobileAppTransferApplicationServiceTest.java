@@ -3,7 +3,9 @@ package com.tuotiansudai.api.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.impl.MobileAppTransferApplicationServiceImpl;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -16,6 +18,7 @@ import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
+import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.joda.time.DateTime;
@@ -44,6 +47,8 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     private TransferApplicationMapper transferApplicationMapper;
     @Mock
     private InvestTransferService investTransferService;
+    @Mock
+    private TransferService transferService;
     @Mock
     private InvestMapper investMapper;
     @Mock
@@ -169,8 +174,6 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         transferApplyQueryRequestDto.setInvestId(String.valueOf(investModel.getId()));
         BaseResponseDto<TransferApplyQueryResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.transferApplyQuery(transferApplyQueryRequestDto);
         assertEquals("100.00", baseResponseDto.getData().getInvestAmount());
-        assertEquals("10", baseResponseDto.getData().getTransferInterestDays());
-        assertEquals("0.76", baseResponseDto.getData().getTransferInterest());
         assertEquals("1.00", baseResponseDto.getData().getTransferFee());
 
     }
@@ -178,7 +181,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     @Test
     public void sholudTransferApplicationListIsSuccess(){
         TransferApplicationModel transferApplicationModel1 = createTransferAppLication("ZR0001", 100001, 1000001, 10000001, 2, "testuer1", TransferStatus.SUCCESS);
-        List<TransferApplicationRecordDto> transferApplicationRecordDtos = new ArrayList<TransferApplicationRecordDto>();
+        List<TransferApplicationPaginationItemDataDto> transferApplicationRecordDtos = new ArrayList<TransferApplicationPaginationItemDataDto>();
         transferApplicationRecordDtos.add(createTransferApplicationRecordDto(transferApplicationModel1));
         List<InvestRepayModel> investRepayModels = new ArrayList<InvestRepayModel>();
         investRepayModels.add(createInvestRepayModel(10000001,1));
@@ -191,19 +194,18 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         transferApplicationListRequestDto.setIndex(1);
         transferApplicationListRequestDto.setPageSize(10);
 
-        when(transferApplicationMapper.findAllTransferApplicationPagination(anyInt(), anyInt(),anyString(),anyString(),anyList())).thenReturn(transferApplicationRecordDtos);
-        when(transferApplicationMapper.findCountAllTransferApplicationPagination(anyString(),anyString(),anyList())).thenReturn(1);
-        when(transferApplicationMapper.findById(anyLong())).thenReturn(transferApplicationModel1);
-        when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
+        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> transferApplicationRecordDto = new BasePaginationDataDto(1, 10, 1, transferApplicationRecordDtos);
+
+        when(transferService.findAllTransferApplicationPaginationList(any(TransferStatus.class), anyDouble(), anyDouble(), anyInt(), anyInt())).thenReturn(transferApplicationRecordDto);
+        when(transferService.findCountAllTransferApplicationPaginationList(any(TransferStatus.class), anyDouble(), anyDouble())).thenReturn(1);
 
         BaseResponseDto<TransferApplicationResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.transferApplicationList(transferApplicationListRequestDto);
 
         assertEquals("ZR0001", baseResponseDto.getData().getTransferApplication().get(0).getName());
-        assertEquals("5.00", baseResponseDto.getData().getTransferApplication().get(0).getInvestAmount());
-        assertEquals("4.50", baseResponseDto.getData().getTransferApplication().get(0).getTransferAmount());
+        assertEquals("500", baseResponseDto.getData().getTransferApplication().get(0).getInvestAmount());
+        assertEquals("450", baseResponseDto.getData().getTransferApplication().get(0).getTransferAmount());
         assertEquals("1", baseResponseDto.getData().getTransferApplication().get(0).getActivityRate());
         assertEquals("12", baseResponseDto.getData().getTransferApplication().get(0).getBaseRate());
-        assertEquals("2/3", baseResponseDto.getData().getTransferApplication().get(0).getRemainingInterestDays());
         assertEquals(TransferStatus.SUCCESS, baseResponseDto.getData().getTransferApplication().get(0).getTransferStatus());
 
     }
@@ -215,17 +217,17 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         return investRepayModel;
     }
 
-    private TransferApplicationRecordDto createTransferApplicationRecordDto(TransferApplicationModel transferApplicationModel) {
-        TransferApplicationRecordDto transferApplicationRecordDto = new TransferApplicationRecordDto();
-        transferApplicationRecordDto.setTransferApplicationId(transferApplicationModel.getId());
-        transferApplicationRecordDto.setName(transferApplicationModel.getName());
-        transferApplicationRecordDto.setInvestAmount(transferApplicationModel.getInvestAmount());
-        transferApplicationRecordDto.setTransferAmount(transferApplicationModel.getTransferAmount());
-        transferApplicationRecordDto.setBaseRate(0.12);
-        transferApplicationRecordDto.setActivityRate(0.01);
-        transferApplicationRecordDto.setTransferStatus(transferApplicationModel.getStatus());
+    private TransferApplicationPaginationItemDataDto createTransferApplicationRecordDto(TransferApplicationModel transferApplicationModel) {
+        TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto();
+        transferApplicationPaginationItemDataDto.setTransferApplicationId(transferApplicationModel.getId());
+        transferApplicationPaginationItemDataDto.setTransferName(transferApplicationModel.getName());
+        transferApplicationPaginationItemDataDto.setInvestAmount(String.valueOf(transferApplicationModel.getInvestAmount()));
+        transferApplicationPaginationItemDataDto.setTransferAmount(String.valueOf(transferApplicationModel.getTransferAmount()));
+        transferApplicationPaginationItemDataDto.setBaseRate(12);
+        transferApplicationPaginationItemDataDto.setActivityRate(1);
+        transferApplicationPaginationItemDataDto.setTransferStatus(transferApplicationModel.getStatus());
 
-        return transferApplicationRecordDto;
+        return transferApplicationPaginationItemDataDto;
     }
 
     private TransferApplicationModel createTransferAppLication(String name, long loanId, long transferInvestId, long investId,int period, String loginName, TransferStatus transferStatus) {
@@ -242,6 +244,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         transferApplicationModel.setStatus(transferStatus);
         transferApplicationModel.setTransferTime(new Date());
         transferApplicationModel.setApplicationTime(new Date());
+        transferApplicationModel.setLeftPeriod(2);
         return transferApplicationModel;
     }
 

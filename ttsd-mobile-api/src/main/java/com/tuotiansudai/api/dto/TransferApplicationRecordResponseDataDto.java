@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.dto;
 
 
+import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.util.AmountConverter;
@@ -16,8 +17,8 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
     private String transferTime;
     private String baseRate;
     private String activityRate;
-    private String remainingInterestDays;
     private TransferStatus transferStatus;
+    private String leftPeriod;
 
     public String getTransferApplicationId() {
         return transferApplicationId;
@@ -73,14 +74,18 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
         this.activityRate = activityRate;
     }
 
-    public String getRemainingInterestDays() { return remainingInterestDays; }
-
-    public void setRemainingInterestDays(String remainingInterestDays) {this.remainingInterestDays = remainingInterestDays; }
-
     public TransferStatus getTransferStatus() { return transferStatus; }
 
     public void setTransferStatus(TransferStatus transferStatus) {
         this.transferStatus = transferStatus;
+    }
+
+    public String getLeftPeriod() {
+        return leftPeriod;
+    }
+
+    public void setLeftPeriod(String leftPeriod) {
+        this.leftPeriod = leftPeriod;
     }
 
     public TransferApplicationRecordResponseDataDto(){
@@ -96,6 +101,20 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
         this.baseRate = decimalFormat.format(transferApplicationRecordDto.getBaseRate() * 100);
         this.activityRate = decimalFormat.format(transferApplicationRecordDto.getActivityRate() * 100);
         this.transferStatus = transferApplicationRecordDto.getTransferStatus();
-        this.remainingInterestDays = String.valueOf(transferApplicationRecordDto.getRemainingInterestDays());
+        this.leftPeriod = String.valueOf(transferApplicationRecordDto.getLeftPeriod());
+    }
+
+    public TransferApplicationRecordResponseDataDto(TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto){
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
+        this.transferApplicationId = String.valueOf(transferApplicationPaginationItemDataDto.getTransferApplicationId());
+        this.name = transferApplicationPaginationItemDataDto.getTransferName();
+        this.transferAmount = transferApplicationPaginationItemDataDto.getTransferAmount();
+        this.investAmount =  transferApplicationPaginationItemDataDto.getInvestAmount();
+        this.transferTime = transferApplicationPaginationItemDataDto.getTransferTime() == null?"":new DateTime(transferApplicationPaginationItemDataDto.getTransferTime()).toString("yyyy-MM-dd HH:mm:ss");
+        this.baseRate = decimalFormat.format(transferApplicationPaginationItemDataDto.getBaseRate());
+        this.activityRate =  decimalFormat.format(transferApplicationPaginationItemDataDto.getActivityRate());
+        this.transferStatus = transferApplicationPaginationItemDataDto.getTransferStatus();
+        this.leftPeriod = String.valueOf(transferApplicationPaginationItemDataDto.getLeftPeriod());
+
     }
 }
