@@ -34,9 +34,7 @@ public class CaptchaHelperTest {
     @Test
     public void shouldCaptchaVerifyIsOk(){
         boolean flag = captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA,environmentQaValue);
-        if(environment.equals(Environment.DEV)){
-            assertFalse(flag);
-        }else if(environment.equals(Environment.QA)){
+        if(Environment.PRODUCTION != environment){
             assertTrue(flag);
         }
     }
