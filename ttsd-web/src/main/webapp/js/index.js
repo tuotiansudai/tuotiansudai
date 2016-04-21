@@ -78,19 +78,23 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
                 }).find("li:first").appendTo($self);
             })
         }
-
-        var stringTime = $(".preheat").attr("data-time");
-        var timestamp2 = Date.parse(new Date(stringTime));
-        //console.log(timestamp2)
-        var startInterval = timestamp2;//开始销售时间，历史毫秒数
-        var nowInterval = (new Date()).getTime();//当前时间，历史毫秒数
-        //用开始时间 - 当前时间，格式化这个时间差；然后当前时间 + 1s
+        var preheat = $('.preheat');
         function writeTime() {
-            flagInterval = getLastDays(startInterval - nowInterval, true);
-            //这里控制样式比如 xx.innerHtml = flagInterval
-            $(".preheat").html( flagInterval);
+            if(preheat.length > 0){
+                preheat.each(function(index){
+                    var stringTime = $(this).attr("data-time");
+                    //console.log(stringTime);
+                    var timestamp2 = Date.parse(new Date(stringTime));
+                    //console.log(stringTime);
+                    var startInterval = timestamp2;//开始销售时间，历史毫秒数
+                    var nowInterval = (new Date()).getTime();//当前时间，历史毫秒数
+                    //用开始时间 - 当前时间，格式化这个时间差；
+                    flagInterval = getLastDays(startInterval - nowInterval, true);
+                    //这里控制样式比如 xx.innerHtml = flagInterval
+                    $(this).html(flagInterval);
+                });
+            }
 
-            nowInterval = parseInt(nowInterval) + 1000;
         }
         writeTime();
         setInterval(writeTime, 1000);

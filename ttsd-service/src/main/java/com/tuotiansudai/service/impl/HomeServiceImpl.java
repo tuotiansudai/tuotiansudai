@@ -46,7 +46,8 @@ public class HomeServiceImpl implements HomeService {
                         loan.getPeriods(),
                         loan.getLoanAmount(),
                         investAmount,
-                        loan.getStatus());
+                        loan.getStatus(),
+                        loan.getFundraisingStartTime());
             }
         });
     }

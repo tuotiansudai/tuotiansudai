@@ -66,6 +66,8 @@ public class LoanDetailDto extends BaseDataDto {
 
     private boolean hasRemindInvestNoPassword;
 
+    private long raisingPeriod;
+
     public LoanDetailDto() {
     }
 
@@ -292,4 +294,14 @@ public class LoanDetailDto extends BaseDataDto {
     public void setHasRemindInvestNoPassword(boolean hasRemindInvestNoPassword) {
         this.hasRemindInvestNoPassword = hasRemindInvestNoPassword;
     }
+
+    public long getRaisingPeriod() {
+        return raisingPeriod;
+    }
+
+    public void setRaisingPeriod(long raisingPeriod) {
+        this.raisingPeriod = raisingPeriod;
+    }
+
+
 }

@@ -25,7 +25,8 @@ require(['jquery', 'jquery.ajax.extension', 'coupon-alert', 'red-envelope-float'
     function writeTime() {
         if(preheat.length > 0){
             preheat.each(function(index){
-                var stringTime = $(this).attr("data-time").replace('放标','');
+                var stringTime = $(this).attr("data-time");
+                //console.log(stringTime);
                 var timestamp2 = Date.parse(new Date(stringTime));
                 //console.log(stringTime);
                 var startInterval = timestamp2;//开始销售时间，历史毫秒数
@@ -36,6 +37,7 @@ require(['jquery', 'jquery.ajax.extension', 'coupon-alert', 'red-envelope-float'
                 $(this).html(flagInterval);
             });
         }
+
     }
     writeTime();
     setInterval(writeTime, 1000);

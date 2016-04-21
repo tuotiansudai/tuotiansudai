@@ -222,7 +222,7 @@
                             <#elseif loan.status=="PREHEAT">
                                 <div class="time-item">
                                     <img src="${staticServer}/images/icons/time-clock.png" alt="">
-                                    <span  class="preheat" data-time="2016-9-10 15:00"></span> &nbsp;&nbsp;<span class="allow">后可投资</span>
+                                    <span  class="preheat" data-time="${(loan.fundraisingStartTime?string("yyyy-MM-dd HH:mm"))!}"></span> &nbsp;&nbsp;<span class="allow">后可投资</span>
                                 </div>
                                 <a href="/loan/${loan.id?string.computer}" class="btn-normal wait-invest">预热中</a>
                             <#else>

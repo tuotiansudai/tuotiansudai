@@ -109,7 +109,7 @@
                         <#if loanItem.status== 'PREHEAT'>
                             <div class="time-item">
                                 <img src="${staticServer}/images/icons/time-clock.png" alt="">
-                                <span  class="preheat" data-time="${loanItem.alert}"></span> &nbsp;&nbsp;<span class="allow">后可投资</span>
+                                <span  class="preheat" data-time="${(loanItem.fundraisingStartTime?string("yyyy-MM-dd HH:mm"))!}"></span> &nbsp;&nbsp;<span class="allow">后可投资</span>
                             </div>
                             <div class="rest-amount wait-invest">
                                 <i class="btn-wait-invest btn-normal">预热中</i>

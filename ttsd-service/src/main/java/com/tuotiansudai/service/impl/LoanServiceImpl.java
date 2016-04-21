@@ -221,6 +221,7 @@ public class LoanServiceImpl implements LoanService {
 
         loanDto.setDescriptionHtml(loanModel.getDescriptionHtml());
         loanDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
+        loanDto.setRaisingPeriod(new Duration(loanModel.getFundraisingStartTime().getTime(), loanModel.getFundraisingEndTime().getTime()).getStandardDays());
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
@@ -664,6 +665,7 @@ public class LoanServiceImpl implements LoanService {
                         loanItemDto.setAlert(MessageFormat.format("{0} 放标", new DateTime(loanModel.getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm")));
                     }
                     loanItemDto.setProgress(0.0);
+                    loanItemDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
                 }
                 if (LoanStatus.RAISING == loanModel.getStatus()) {
                     loanItemDto.setAlert(MessageFormat.format("{0} 元", AmountConverter.convertCentToString(loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanModel.getId()))));

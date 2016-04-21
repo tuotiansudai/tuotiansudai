@@ -5,6 +5,8 @@ import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.repository.model.ProductType;
 
+import java.util.Date;
+
 public class LoanItemDto {
 
     private long id;
@@ -30,6 +32,8 @@ public class LoanItemDto {
     private double progress;
 
     private ActivityType activityType;
+
+    private Date fundraisingStartTime;
 
     public long getId() {
         return id;
@@ -125,5 +129,13 @@ public class LoanItemDto {
 
     public void setActivityType(ActivityType activityType) {
         this.activityType = activityType;
+    }
+
+    public Date getFundraisingStartTime() {
+        return fundraisingStartTime;
+    }
+
+    public void setFundraisingStartTime(Date fundraisingStartTime) {
+        this.fundraisingStartTime = fundraisingStartTime;
     }
 }
