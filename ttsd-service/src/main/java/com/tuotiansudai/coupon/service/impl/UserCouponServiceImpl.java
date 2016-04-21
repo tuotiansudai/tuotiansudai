@@ -111,9 +111,10 @@ public class UserCouponServiceImpl implements UserCouponService {
         List<UserCouponModel> usableUserCoupons = Lists.newArrayList(Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
             @Override
             public boolean apply(UserCouponModel userCouponModel) {
+                boolean isShared = couponMapper.findById(userCouponModel.getCouponId()).isShared();
                 boolean unused = InvestStatus.SUCCESS != userCouponModel.getStatus() && userCouponModel.getEndTime().after(new Date());
                 boolean productTypeEnable = couponMapper.findById(userCouponModel.getCouponId()).getProductTypes().contains(loanModel.getProductType());
-                return unused && productTypeEnable;
+                return !isShared && unused && productTypeEnable;
             }
         }));
 
@@ -124,12 +125,12 @@ public class UserCouponServiceImpl implements UserCouponService {
             long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(loanModel, couponModel, amount);
             long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount);
             long actualInterest = expectedInterest - expectedFee;
+            if (maxBenefit == actualInterest) {
+                maxBenefitUserCoupons.add(usableUserCoupon);
+            }
             if (maxBenefit < actualInterest) {
                 maxBenefit = actualInterest;
                 maxBenefitUserCoupons = Lists.newArrayList(usableUserCoupon);
-            }
-            if (maxBenefit == actualInterest) {
-                maxBenefitUserCoupons.add(usableUserCoupon);
             }
         }
 
