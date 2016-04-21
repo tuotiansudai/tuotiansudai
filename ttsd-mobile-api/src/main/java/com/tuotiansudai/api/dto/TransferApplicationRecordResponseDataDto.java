@@ -115,6 +115,5 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
         this.activityRate =  decimalFormat.format(transferApplicationPaginationItemDataDto.getActivityRate());
         this.transferStatus = transferApplicationPaginationItemDataDto.getTransferStatus();
         this.leftPeriod = String.valueOf(transferApplicationPaginationItemDataDto.getLeftPeriod());
-
     }
 }

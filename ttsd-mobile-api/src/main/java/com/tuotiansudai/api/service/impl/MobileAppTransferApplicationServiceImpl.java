@@ -117,7 +117,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         BigDecimal investAmountBig = new BigDecimal(investModel.getAmount());
         BigDecimal discountBig = new BigDecimal(transferRuleModel.getDiscount());
 
-        long discountLower =  investAmountBig.subtract(discountBig.multiply(investAmountBig)).setScale(0).longValue();
+        long discountLower =  investAmountBig.subtract(discountBig.multiply(investAmountBig)).setScale(0,BigDecimal.ROUND_DOWN).longValue();
         transferApplyQueryResponseDataDto.setDiscountLower(AmountConverter.convertCentToString(discountLower));
         transferApplyQueryResponseDataDto.setDiscountUpper(transferApplyQueryResponseDataDto.getInvestAmount());
         transferApplyQueryResponseDataDto.setTransferFee(AmountConverter.convertCentToString(TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel)));

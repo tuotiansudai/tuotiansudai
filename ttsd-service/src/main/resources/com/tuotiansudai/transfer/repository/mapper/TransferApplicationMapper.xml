@@ -41,7 +41,6 @@
         <result column="period" property="period"></result>
         <result column="left_period" property="leftPeriod"></result>
         <result column="deadline" property="deadLine"></result>
-
     </resultMap>
     <insert id="create" parameterType="TransferApplicationModel" useGeneratedKeys="true" keyProperty="id">
         insert into transfer_application (name, loan_id, transfer_invest_id, invest_id, period, login_name, invest_amount, transfer_amount, transfer_fee, status, deadline, transfer_time, application_time,left_period)

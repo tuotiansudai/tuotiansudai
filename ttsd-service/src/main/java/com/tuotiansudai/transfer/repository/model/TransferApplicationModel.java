@@ -41,7 +41,7 @@ public class TransferApplicationModel implements Serializable {
     public TransferApplicationModel() {
     }
 
-    public TransferApplicationModel(InvestModel transferInvestModel, String name, int period, long transferAmount, long transferFee, Date deadline, int leftPeriod) {
+    public TransferApplicationModel(InvestModel transferInvestModel, String name, int period, long transferAmount, long transferFee, Date deadline,int leftPeriod) {
         this.loanId = transferInvestModel.getLoanId();
         this.name = name;
         this.transferInvestId = transferInvestModel.getId();
