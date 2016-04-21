@@ -69,6 +69,7 @@ public class InvestTransferServiceTest {
     private LoanModel createLoanByUserId(String userId, long loanId) {
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName(userId);
+        loanDto.setAgentLoginName(userId);
         loanDto.setLoanerUserName("借款人");
         loanDto.setLoanerIdentityNumber("111111111111111111");
         loanDto.setAgentLoginName(userId);
@@ -231,6 +232,7 @@ public class InvestTransferServiceTest {
     }
     @Test
     public void shouldIsTransferableByOverDaysLimit(){
+        UserModel userModel = createUserByUserId("testuser");
         long loanId = idGenerator.generate();
         LoanModel loanModel = createLoanByUserId("testuser", loanId);
         loanModel.setStatus(LoanStatus.REPAYING);

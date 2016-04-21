@@ -87,7 +87,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(investModel.getLoanId());
-        int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(investModel.getTransferInvestId(),loanRepayModel.getPeriod());
+        int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(transferApplicationDto.getTransferInvestId(),loanRepayModel.getPeriod());
 
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, this.generateTransferApplyName(), loanRepayModel.getPeriod(), transferApplicationDto.getTransferAmount(),
                 TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel), getDeadlineFromNow(),leftPeriod);
@@ -154,7 +154,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
             logger.debug(MessageFormat.format("{0} is not REPAYING",investModel.getLoanId()));
             return false;
         }
-        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investId,Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING));
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investId, Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING));
         if (CollectionUtils.isNotEmpty(transferApplicationModels)) {
             logger.debug(MessageFormat.format("{0} is not REPAYING",investModel.getLoanId()));
             return false;
