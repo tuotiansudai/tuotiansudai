@@ -4,8 +4,8 @@
 <div class="download-container">
     <div class="wp-img">
         <img src="${staticServer}/images/sign/actor/download/download-top.png" alt="" width="100%">
-        <a href="" class="ios"></a>
-        <a href="" class="android"></a>
+        <a href="http://itunes.apple.com/us/app/id1039233966" class="ios"></a>
+        <a href="/app/tuotiansudai.apk" class="android"></a>
     </div>
     <div class="download-one">
         <div class="step-one">
