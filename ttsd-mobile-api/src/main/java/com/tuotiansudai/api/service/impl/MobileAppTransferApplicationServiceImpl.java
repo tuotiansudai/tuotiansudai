@@ -8,28 +8,22 @@ import com.tuotiansudai.api.service.MobileAppTransferApplicationService;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanRepayModel;
 import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,9 +46,6 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     private TransferService transferService;
     @Autowired
     private TransferRuleMapper transferRuleMapper;
-    @Autowired
-    private InvestRepayMapper investRepayMapper;
-
 
     @Override
     public BaseResponseDto generateTransferApplication(TransferApplicationRequestDto requestDto) {
@@ -180,7 +171,7 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         Integer pageSize = requestDto.getPageSize();
         String rateLower = requestDto.getRateLower();
         String rateUpper = requestDto.getRateUpper();
-        TransferStatus transferStatus = requestDto.getTransferStatus();
+        List<TransferStatus> transferStatusList = requestDto.getTransferStatus();
         if(index == null || index <= 0){
             index = 1;
         }
@@ -194,12 +185,12 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
             rateUpper = "0";
         }
 
-        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> transferApplicationRecordDto = transferService.findAllTransferApplicationPaginationList(transferStatus, Double.parseDouble(rateLower), Double.parseDouble(rateUpper), index, pageSize);
+        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> transferApplicationRecordDto = transferService.findAllTransferApplicationPaginationList(transferStatusList, Double.parseDouble(rateLower), Double.parseDouble(rateUpper), index, pageSize);
 
         TransferApplicationResponseDataDto transferApplicationResponseDataDto = new TransferApplicationResponseDataDto();
         transferApplicationResponseDataDto.setIndex(index);
         transferApplicationResponseDataDto.setPageSize(pageSize);
-        transferApplicationResponseDataDto.setTotalCount(transferService.findCountAllTransferApplicationPaginationList(transferStatus,Double.parseDouble(rateLower), Double.parseDouble(rateUpper)));
+        transferApplicationResponseDataDto.setTotalCount(transferService.findCountAllTransferApplicationPaginationList(transferStatusList, Double.parseDouble(rateLower), Double.parseDouble(rateUpper)));
 
         if(CollectionUtils.isNotEmpty(transferApplicationRecordDto.getRecords())){
             List<TransferApplicationRecordResponseDataDto> transferApplication = Lists.transform(transferApplicationRecordDto.getRecords(), new Function<TransferApplicationPaginationItemDataDto, TransferApplicationRecordResponseDataDto>() {

@@ -71,7 +71,7 @@ public class TransferServiceImpl implements TransferService{
     }
 
     @Override
-    public BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findAllTransferApplicationPaginationList(TransferStatus transferStatus, double rateStart, double rateEnd, Integer index, Integer pageSize) {
+    public BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findAllTransferApplicationPaginationList(List<TransferStatus> transferStatus, double rateStart, double rateEnd, Integer index, Integer pageSize) {
 
         int count = transferApplicationMapper.findCountAllTransferApplicationPagination(transferStatus, rateStart, rateEnd);
         List<TransferApplicationRecordDto> items = Lists.newArrayList();
@@ -95,7 +95,7 @@ public class TransferServiceImpl implements TransferService{
     }
 
     @Override
-    public int findCountAllTransferApplicationPaginationList(TransferStatus transferStatus, double rateStart, double tateEnd) {
+    public int findCountAllTransferApplicationPaginationList(List<TransferStatus> transferStatus, double rateStart, double tateEnd) {
         return transferApplicationMapper.findCountAllTransferApplicationPagination(transferStatus, rateStart, tateEnd);
     }
 

@@ -196,8 +196,8 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> transferApplicationRecordDto = new BasePaginationDataDto(1, 10, 1, transferApplicationRecordDtos);
 
-        when(transferService.findAllTransferApplicationPaginationList(any(TransferStatus.class), anyDouble(), anyDouble(), anyInt(), anyInt())).thenReturn(transferApplicationRecordDto);
-        when(transferService.findCountAllTransferApplicationPaginationList(any(TransferStatus.class), anyDouble(), anyDouble())).thenReturn(1);
+        when(transferService.findAllTransferApplicationPaginationList(anyList(), anyDouble(), anyDouble(), anyInt(), anyInt())).thenReturn(transferApplicationRecordDto);
+        when(transferService.findCountAllTransferApplicationPaginationList(anyList(), anyDouble(), anyDouble())).thenReturn(1);
 
         BaseResponseDto<TransferApplicationResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.transferApplicationList(transferApplicationListRequestDto);
 

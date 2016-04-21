@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 @Controller
 @RequestMapping(path = "/transfer-list")
 public class TransferListController {
@@ -22,7 +24,7 @@ public class TransferListController {
     private TransferService transferService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView webTransferList(@RequestParam(value = "transferStatus", required = false) TransferStatus transferStatus,
+    public ModelAndView webTransferList(@RequestParam(value = "transferStatus", required = false) List<TransferStatus> transferStatus,
                                         @RequestParam(value = "rateStart", defaultValue = "0", required = false) double rateStart,
                                         @RequestParam(value = "rateEnd", defaultValue = "0", required = false) double rateEnd,
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index,
@@ -38,7 +40,7 @@ public class TransferListController {
         modelAndView.addObject("index", index);
         modelAndView.addObject("rateStart", rateStart);
         modelAndView.addObject("rateEnd", rateEnd);
-        modelAndView.addObject("transferStatus", transferStatus);
+        modelAndView.addObject("transferStatus", (transferStatus == null || transferStatus.size() == 0)?"":transferStatus.get(0).name());
         int maxIndex = count / pageSize + (count % pageSize > 0 ? 1 : 0);
         modelAndView.addObject("hasPreviousPage", index > 1 && index <= maxIndex);
         modelAndView.addObject("hasNextPage", index < maxIndex);

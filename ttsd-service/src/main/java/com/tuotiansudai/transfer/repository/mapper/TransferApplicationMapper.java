@@ -27,7 +27,7 @@ public interface TransferApplicationMapper {
                                                                                     @Param(value = "index") Integer index,
                                                                                     @Param(value = "pageSize") Integer pageSize);
 
-    List<TransferApplicationRecordDto> findAllTransferApplicationPagination(@Param(value = "index") Integer index,
+   /* List<TransferApplicationRecordDto> findAllTransferApplicationPagination(@Param(value = "index") Integer index,
                                                                             @Param(value = "pageSize") Integer pageSize,
                                                                             @Param("rateLower") String rateLower,
                                                                             @Param("rateUpper") String rateUpper,
@@ -36,7 +36,7 @@ public interface TransferApplicationMapper {
     int findCountAllTransferApplicationPagination(@Param("rateLower") String rateLower,
                                                  @Param("rateUpper") String rateUpper,
                                                  @Param("transferStatusList") List<TransferStatus> transferStatusList);
-
+*/
     int findCountTransferApplicationPaginationByLoginName(@Param("loginName")String loginName, @Param("transferStatusList")List<TransferStatus> transferStatusList);
 
     List<TransferApplicationRecordDto> findTransfereeApplicationPaginationByLoginName(@Param("loginName")String loginName,
@@ -64,14 +64,14 @@ public interface TransferApplicationMapper {
                                                                    @Param("loanId") Long loanId);
 
 
-    List<TransferApplicationRecordDto> findAllTransferApplicationPaginationList(@Param("transferStatus") TransferStatus transferStatus,
+    List<TransferApplicationRecordDto> findAllTransferApplicationPaginationList(@Param("transferStatus") List<TransferStatus> transferStatus,
                                                                              @Param("rateStart") double rateStart,
                                                                              @Param("rateEnd") double rateEnd,
                                                                              @Param(value = "index") Integer index,
                                                                              @Param(value = "pageSize") Integer pageSize);
 
 
-    int findCountAllTransferApplicationPagination(@Param("transferStatus") TransferStatus transferStatus,
+    int findCountAllTransferApplicationPagination(@Param("transferStatus") List<TransferStatus> transferStatus,
                                                   @Param("rateStart") double rateStart,
                                                   @Param("rateEnd") double rateEnd);
 
