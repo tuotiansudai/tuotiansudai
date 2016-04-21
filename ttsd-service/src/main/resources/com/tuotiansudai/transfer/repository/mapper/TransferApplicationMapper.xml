@@ -111,7 +111,7 @@
     </select>
 
     <select id="findCountTransfereeApplicationPaginationByLoginName" parameterType="map" resultType="int">
-        select count(1) from transfer_application ta JOIN invest i on ta.invest_id = i.id JOIN loan l on l.id = ta.loan_id
+        select count(*) from transfer_application ta JOIN invest i on ta.invest_id = i.id JOIN loan l on l.id = ta.loan_id
         <where>
             <if test="loginName != null">
                 i.login_name = #{loginName}
