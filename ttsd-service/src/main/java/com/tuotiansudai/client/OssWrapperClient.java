@@ -154,7 +154,6 @@ public class OssWrapperClient {
                 //水印文件结束
             }
             graphics.dispose();
-//            ImageIO.write(image, "JPEG", swapStream);
             ImageWriter imageWriter = ImageIO.getImageWritersByFormatName("jpeg").next();
             ios = ImageIO.createImageOutputStream(swapStream);
             imageWriter.setOutput(ios);
