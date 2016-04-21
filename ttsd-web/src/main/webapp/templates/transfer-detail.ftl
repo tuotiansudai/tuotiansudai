@@ -49,10 +49,12 @@
             </div>
         </div>
         <div class="transfer-operat">
-            <p class="get-money"><span class="name-text">认购金额：</span><span class="money-text"><strong>999,999.00</strong>元</span> </p>
+            <!-- <p class="get-money"><span class="name-text">认购金额：</span><span class="money-text"><strong>999,999.00</strong>元</span> </p>
             <p><span class="name-text">预计收益：</span><span class="money-text"><strong>1200.00</strong>元</span></p>
             <p class="user-money"><span class="name-text">账户余额：200 元</span><span class="money-text"><strong><a href="#">去充值 >></a></strong></span></p>
-            <p><a href="#" class="btn-normal invest-btn">马上投资</a></p>
+            <p><a href="#" class="btn-normal invest-btn">马上投资</a></p> -->
+            <p class="img-status"><img src="${staticServer}/images/sign/loan/transfered.png"></p>
+            <p class="status-text">转让完成时间：2016-03-17 13:23:37</p>
         </div>
     </div>
     <div class="detail-record">
@@ -60,7 +62,7 @@
             <span class="product-name">债权承接记录</span>
         </div>
         <div class="transfer-table">
-            <table>
+            <!-- <table>
                 <thead>
                     <tr>
                         <th>承接人</th>
@@ -83,7 +85,8 @@
                         <td>2016-03-17 13:23:37</td>
                     </tr>
                 </tbody>
-            </table>
+            </table> -->
+            <p class="tc text-b">暂无承接记录</p>
         </div>
     </div>
     <#include "coupon-alert.ftl" />

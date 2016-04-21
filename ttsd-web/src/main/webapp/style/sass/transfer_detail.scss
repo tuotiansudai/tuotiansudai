@@ -107,6 +107,13 @@
           color:#7f7f7f;
           font-size:14px;
         }
+        &.img-status{
+          padding: 20px 10px;
+          text-align: center;
+        }
+        &.status-text{
+          font-size:16px;
+        }
         span{
           &.name-text{
             float:left;
