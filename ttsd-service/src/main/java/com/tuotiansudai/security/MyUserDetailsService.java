@@ -47,13 +47,16 @@ public class MyUserDetailsService implements UserDetailsService {
             String errorMessage = MessageFormat.format("Login Error: {0} not found!", username);
             throw new UsernameNotFoundException(errorMessage);
         }
-        if (verifyLoginFailedMaxTimes(username)) {
-            userModel.setStatus(UserStatus.ACTIVE);
-            userMapper.updateUser(userModel);
-        }
+
         String loginName = userModel.getLoginName();
         String mobile = userModel.getMobile();
         String password = userModel.getPassword();
+
+        if (verifyLoginFailedMaxTimes(loginName)) {
+            userModel.setStatus(UserStatus.ACTIVE);
+            userMapper.updateUser(userModel);
+        }
+
         boolean enabled = userModel.isActive();
 
         String salt = userModel.getSalt();
