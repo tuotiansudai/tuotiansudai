@@ -23,25 +23,23 @@ require(['jquery', 'jquery.ajax.extension', 'coupon-alert', 'red-envelope-float'
     });
 
     function writeTime() {
-
-        for(var i=0; i < preheat.length; i++){
-            var stringTime = $(preheat[i]).attr("data-time").replace('放标','');
-            var timestamp2 = Date.parse(new Date(stringTime));
-            //console.log(stringTime);
-            var startInterval = timestamp2;//开始销售时间，历史毫秒数
-            var nowInterval = (new Date()).getTime();//当前时间，历史毫秒数
-            //用开始时间 - 当前时间，格式化这个时间差；然后当前时间 + 1s
-
-            flagInterval = getLastDays(startInterval - nowInterval, true);
-            //这里控制样式比如 xx.innerHtml = flagInterval
-            $(preheat[i]).html(flagInterval);
-            nowInterval = parseInt(nowInterval) + 1000;
+        if(preheat.length > 0){
+            preheat.each(function(index){
+                var stringTime = $(this).attr("data-time").replace('放标','');
+                var timestamp2 = Date.parse(new Date(stringTime));
+                //console.log(stringTime);
+                var startInterval = timestamp2;//开始销售时间，历史毫秒数
+                var nowInterval = (new Date()).getTime();//当前时间，历史毫秒数
+                //用开始时间 - 当前时间，格式化这个时间差；
+                flagInterval = getLastDays(startInterval - nowInterval, true);
+                //这里控制样式比如 xx.innerHtml = flagInterval
+                $(this).html(flagInterval);
+            });
         }
     }
     writeTime();
     setInterval(writeTime, 1000);
-
-
+    
     function getLastDays(input,isShort) {
         var minSecondsPerDay = 86400 * 1000;
         var minSecondsPerHour = 3600 * 1000;

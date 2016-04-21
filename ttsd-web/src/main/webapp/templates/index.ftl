@@ -204,19 +204,26 @@
                                     <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")} <span>项目期限</span></dd>
                                     <dd class="dl-amount"><i><@amount>${loan.amount}</@amount>元</i><span>项目金额</span></dd>
                                 </dl>
-                                <div class="project-schedule clear-blank clearfix">
-                                    <div class="p-title">
-                                        <span class="fl">项目进度</span>
-                                        <span class="point fr">${loan.progress?string("0.00")}%</span>
+                                <#if loan.status !="PREHEAT">
+                                    <div class="project-schedule clear-blank clearfix">
+                                        <div class="p-title">
+                                            <span class="fl">项目进度</span>
+                                            <span class="point fr">${loan.progress?string("0.00")}%</span>
+                                        </div>
+                                        <div class="process-percent">
+                                            <div class="percent" style="width:${loan.progress}%"></div>
+                                        </div>
                                     </div>
-                                    <div class="process-percent">
-                                        <div class="percent" style="width:${loan.progress}%"></div>
-                                    </div>
-                                </div>
+                                </#if>
+
                             </div>
                             <#if loan.status=="RAISING">
                                 <a href="/loan/${loan.id?string.computer}" class="btn-normal">立即投资</a>
                             <#elseif loan.status=="PREHEAT">
+                                <div class="time-item">
+                                    <img src="${staticServer}/images/icons/time-clock.png" alt="">
+                                    <span  class="preheat" data-time="2016-9-10 15:00"></span> &nbsp;&nbsp;<span class="allow">后可投资</span>
+                                </div>
                                 <a href="/loan/${loan.id?string.computer}" class="btn-normal wait-invest">预热中</a>
                             <#else>
                                 <button type="button" disabled class="btn-normal">已售罄</button>
