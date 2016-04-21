@@ -3,7 +3,7 @@
 "title": "拓天速贷",
 "content": "0元投资赚收益，呼朋唤友抢佣金",
 "picture": "{static}/images/app-banner/app-banner-referrer.jpg",
-"url": "{web}/activities/share-reward",
-"sharedUrl": "{web}/activities/share-reward"
+"url": "{web}/activity/share-reward",
+"sharedUrl": "{web}/activity/share-reward"
 }
 ]
