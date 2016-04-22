@@ -58,8 +58,13 @@ public class InvestorController {
         return dto;
     }
 
-    @RequestMapping(value = "/invest-transfer-list-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/invest-transfer-list", method = RequestMethod.GET)
+    public ModelAndView investTransferList() {
+        return new ModelAndView("/investor-invest-transfer-list");
+    }
+
     @ResponseBody
+    @RequestMapping(value = "/invest-transfer-list-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     public BaseDto<BasePaginationDataDto> investTransferListData(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                                                  @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
                                                                  @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,

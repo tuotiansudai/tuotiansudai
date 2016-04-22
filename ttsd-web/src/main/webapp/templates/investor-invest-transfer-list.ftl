@@ -3,7 +3,7 @@
 <div class="content-container invest-list-content">
     <h4 class="column-title">
         <a href="/investor/invest-list"><em class="tc">投资记录</em></a>
-        <a href="/my-transfer-list"><em class="tc active">转让项目</em></a>
+        <a href="/investor/invest-transfer-list"><em class="tc active">转让项目</em></a>
     </h4>
 
     <div class="item-block date-filter">

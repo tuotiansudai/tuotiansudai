@@ -255,7 +255,7 @@
         limit #{index}, #{pageSize}
     </select>
 
-    <select id="findCountInvestTransferPagination" resultMap="long" parameterType="map">
+    <select id="findCountInvestTransferPagination" resultType="long" parameterType="map">
         select
             count(1)
         from invest i
