@@ -87,11 +87,7 @@
                                     <#elseif coupon.couponType == 'INVEST_COUPON'>
                                         ［单笔投资满 <@amount>${coupon.investLowerLimit?string(0)}</@amount> 元可用］
                                     <#elseif coupon.couponType == 'INTEREST_COUPON'>
-                                        <#if coupon.investUpperLimit == 0>
-                                            ［投资即可使用］
-                                        <#else>
-                                            ［限投资 <@amount>${coupon.investUpperLimit?string(0)}</@amount> 元以内可用］
-                                        </#if>
+                                        ［投资即可使用］
                                     </#if>
                                 </p>
 
@@ -161,7 +157,7 @@
                                     <#elseif record.couponType == 'INVEST_COUPON'>
                                         ［单笔投资满 <@amount>${record.investLowerLimit?string(0)}</@amount> 元可用］
                                     <#elseif record.couponType == 'INTEREST_COUPON'>
-                                        ［限投资 <@amount>${record.investUpperLimit?string(0)}</@amount> 元以内可用］
+                                        ［投资即可使用］
                                     <#elseif record.couponType == 'BIRTHDAY_COUPON'>
                                         ［仅限发券当月使用］
                                     </#if>
@@ -235,7 +231,7 @@
                                     <#elseif coupon.couponType == 'INVEST_COUPON'>
                                         ［单笔投资满 <@amount>${coupon.investLowerLimit?string(0)}</@amount> 元可用］
                                     <#elseif coupon.couponType == 'INTEREST_COUPON'>
-                                        ［限投资 <@amount>${coupon.investUpperLimit?string(0)}</@amount> 元以内可用］
+                                        ［投资即可使用］
                                     </#if>
                                 </p>
 
