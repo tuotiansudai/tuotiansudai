@@ -1,11 +1,23 @@
-require(['jquery', 'template', 'csrf','bootstrap', 'jquery-ui', 'bootstrapSelect', 'moment', 'Validform', 'Validform_Datatype'], function($) {
+require(['jquery', 'template', 'csrf','bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstrapSelect', 'moment', 'Validform', 'Validform_Datatype'], function($) {
     $(function() {
         var $selectDom = $('.selectpicker'),
+            $dateStart = $('#startTime'),
+            $dateEnd = $('#endTime'),
             $errorDom = $('.form-error'),
             $submitBtn = $('#btnSave'),
             $couponForm = $('.form-list');
 
         $selectDom.selectpicker();
+
+        $dateStart.datetimepicker({
+            format: 'YYYY-MM-DD'
+        }).on('dp.change', function(e) {
+            $dateEnd.data("DateTimePicker").minDate(e.date);
+        });
+
+        $dateEnd.datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
 
         function showErrorMessage(msg, obj) {
             currentErrorObj = obj;
@@ -22,7 +34,7 @@ require(['jquery', 'template', 'csrf','bootstrap', 'jquery-ui', 'bootstrapSelect
         var rep = /^\d+$/;
         var rep_point2 = /^[0-9]+\.[0-9]*$/;
 
-        $('.give-number,.coupon-deadline,.coupon-number,.exchange-point').blur(function () {
+        $('.give-number,.exchange-point').blur(function () {
             var _this = $(this),
                 text = _this.val(),
                 num = text.replace(rep, "$1");
@@ -47,15 +59,9 @@ require(['jquery', 'template', 'csrf','bootstrap', 'jquery-ui', 'bootstrapSelect
                 }
             },
             beforeCheck: function(curform) {
-                var periods = parseInt($('.coupon-number', curform).val());
-                $errorDom.html('');
-                if (periods <= 0) {
-                    showErrorMessage('投资体验券金额最小为1', $('.coupon-number', curform));
-                    return false;
-                }
                 var fivenumber = parseInt($('.give-number', curform).val());
                 if (fivenumber <= 0) {
-                    showErrorMessage('最小为1', $('.coupon-number', curform));
+                    showErrorMessage('最小为1', $('.give-number', curform));
                     return false;
                 }
                 var len= $('input[name="productTypes"]').filter(function(key,option) {
@@ -92,8 +98,6 @@ require(['jquery', 'template', 'csrf','bootstrap', 'jquery-ui', 'bootstrapSelect
 
         function iniForm(){
             $errorDom.html('');
-            $('.coupon-number').val('');
-            $('.coupon-deadline').val('');
             $('.give-number').val('');
             $('.invest-quota').val('');
         }

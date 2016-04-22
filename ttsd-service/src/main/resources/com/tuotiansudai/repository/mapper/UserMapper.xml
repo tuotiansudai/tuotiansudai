@@ -409,6 +409,20 @@
         AND iv.`status`='SUCCESS';
     </select>
 
+    <select id="findUsersCountByChannel" parameterType="java.lang.String" resultType="long">
+        select ifnull(count(*),0) from user where channel = #{channel}
+    </select>
+
+    <select id="findUsersByChannel" parameterType="map" resultMap="userResultMap">
+        select * from user where channel is not null
+        <if test="channels != null and channels.size != 0">
+            and channel in
+            <foreach item="item" collection="channels" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
     <select id="findAllByRole" parameterType="map" resultType="java.lang.String">
         SELECT t.login_name FROM user_role t join user u on t.login_name = u.login_name
         <if test="districtName != null and districtName.size != 0">
