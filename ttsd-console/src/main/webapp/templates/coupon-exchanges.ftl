@@ -35,13 +35,10 @@
             所需财豆
         </th>
         <th>
-            有效期限(天)
+            有效期限
         </th>
         <th>
             可投标的
-        </th>
-        <th>
-            投资上限
         </th>
         <th>
             使用条件
@@ -85,19 +82,12 @@
             ${exchangeCoupon.exchangePoint?string('0')}
         </td>
         <td>
-            ${exchangeCoupon.deadline}
+            ${exchangeCoupon.startTime?string('yyyy-MM-dd')}至${exchangeCoupon.endTime?string('yyyy-MM-dd')}
         </td>
         <td>
             <#list exchangeCoupon.productTypes as productType>
                 ${productType.getName()}<#sep>, </#sep>
             </#list>
-        </td>
-        <td>
-            <#if exchangeCoupon.couponType == 'INTEREST_COUPON'>
-                ${exchangeCoupon.investUpperLimit}
-            <#else>
-                -
-            </#if>
         </td>
         <td>
             投资满${exchangeCoupon.investLowerLimit}元
