@@ -118,7 +118,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
     }
 
     private boolean isNeedCalculateDefaultInterestInvestRepay (InvestRepayModel investRepayModel) {
-        long investId = investRepayModel.getId();
+        long investId = investRepayModel.getInvestId();
         int period = investRepayModel.getPeriod();
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndLTPeriod(investId, period);
         return CollectionUtils.isEmpty(investRepayModels) || !Iterators.any(investRepayModels.iterator(), new Predicate<InvestRepayModel>() {
