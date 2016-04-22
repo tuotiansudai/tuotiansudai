@@ -33,6 +33,8 @@ public class TransferRuleModel implements Serializable {
 
     private Date updatedTime;
 
+    private boolean multipleTransferEnabled;
+
     public long getId() {
         return id;
     }
@@ -143,5 +145,13 @@ public class TransferRuleModel implements Serializable {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public boolean isMultipleTransferEnabled() {
+        return multipleTransferEnabled;
+    }
+
+    public void setMultipleTransferEnabled(boolean multipleTransferEnabled) {
+        this.multipleTransferEnabled = multipleTransferEnabled;
     }
 }

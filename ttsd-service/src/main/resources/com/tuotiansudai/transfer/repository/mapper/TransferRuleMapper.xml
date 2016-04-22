@@ -21,6 +21,7 @@
         <result column="days_limit" property="daysLimit"></result>
         <result column="updated_by" property="updatedBy"></result>
         <result column="updated_time" property="updatedTime"></result>
+        <result column="multiple_transfer_enabled" property="multipleTransferEnabled"></result>
     </resultMap>
 
     <update id="update" parameterType="TransferRuleModel">
@@ -31,7 +32,8 @@
             level_three_fee = #{levelThreeFee},
             days_limit = #{daysLimit},
             updated_by = #{updatedBy},
-            updated_time = #{updatedTime}
+            updated_time = #{updatedTime},
+            multiple_transfer_enabled = #{multipleTransferEnabled}
         WHERE id = #{id}
     </update>
 
