@@ -428,6 +428,13 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         String msgIds = Joiner.on(",").join(msgIdList);
         ReceivedsResult result = mobileAppJPushClient.getReportReceived(msgIds);
 
+        if(result == null) {
+            jpushReportDto.setMessage("获取数据失败：链接Jpush服务器失败。");
+            jpushReportDto.setStatus(false);
+            baseDto.setSuccess(false);
+            return baseDto;
+        }
+
         int iosArriveNum = 0;
         int androidArriveNum = 0;
         for (ReceivedsResult.Received received : result.received_list) {
