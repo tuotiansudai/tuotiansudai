@@ -36,26 +36,19 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
     public BaseResponseDto noPasswordInvest(InvestRequestDto investRequestDto) {
         BaseResponseDto<InvestNoPassResponseDataDto> responseDto = new BaseResponseDto<>();
         InvestDto investDto = convertInvestDto(investRequestDto);
-<<<<<<< HEAD
-        String code = "";
-        String message = "";
-            try {
-                BaseDto<PayDataDto> payDataDto = investService.noPasswordInvest(investDto);
-            if(payDataDto.getData() != null){
-                code = payDataDto.getData().getCode() != null ? payDataDto.getData().getCode() : ReturnMessage.SUCCESS.getCode();
-                message = payDataDto.getData().getMessage() != null ? payDataDto.getData().getMessage() : ReturnMessage.SUCCESS.getMsg();
-            }
-                responseDto.setCode(code);
-                responseDto.setMessage(message);
-                responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/callback/project_transfer_invest?ret_code={1}", domainName, code)));
-=======
         try {
             BaseDto<PayDataDto> baseDto = investService.noPasswordInvest(investDto);
             if (!baseDto.getData().getStatus()) {
                 responseDto.setCode(ReturnMessage.INVEST_FAILED.getCode());
                 responseDto.setMessage(ReturnMessage.INVEST_FAILED.getMsg() + ":" + baseDto.getData().getMessage());
+
+            }else{
+                responseDto.setCode(ReturnMessage.SUCCESS.getCode());
+                responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
             }
->>>>>>> master
+
+            responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/callback/project_transfer_invest?ret_code={1}&message={2}", domainName, responseDto.getCode(),responseDto.getMessage())));
+
         } catch (InvestException e) {
             return this.convertExceptionToDto(e);
         }
