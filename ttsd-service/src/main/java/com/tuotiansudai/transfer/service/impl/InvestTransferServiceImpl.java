@@ -143,7 +143,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
     }
     @Override
     public boolean isTransferable(long investId){
-
+        DateTime current = new DateTime().withTimeAtStartOfDay();
         InvestModel investModel = investMapper.findById(investId);
         if(investModel == null){
             logger.debug(MessageFormat.format("{0} is not exist",investId));
@@ -154,10 +154,15 @@ public class InvestTransferServiceImpl implements InvestTransferService{
             logger.debug(MessageFormat.format("{0} is not REPAYING",investModel.getLoanId()));
             return false;
         }
-        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investId, Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING));
-        if (CollectionUtils.isNotEmpty(transferApplicationModels)) {
-            logger.debug(MessageFormat.format("{0} is not REPAYING",investModel.getLoanId()));
-            return false;
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investId, Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING, TransferStatus.CANCEL));
+        for(TransferApplicationModel transferApplicationModelTemp:transferApplicationModels){
+            if(transferApplicationModelTemp.getStatus() != TransferStatus.CANCEL) {
+                logger.debug(MessageFormat.format("{0} is transferred",investModel.getLoanId()));
+                return false;
+            }
+            DateTime transferTime = new DateTime(transferApplicationModelTemp.getTransferTime()).withTimeAtStartOfDay();
+            return transferApplicationModelTemp.getStatus() == TransferStatus.CANCEL && current.compareTo(transferTime) != 0;
+
         }
 
         LoanRepayModel loanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(investModel.getLoanId());
@@ -165,14 +170,16 @@ public class InvestTransferServiceImpl implements InvestTransferService{
             logger.debug(MessageFormat.format("{0} is completed ",loanRepayModel.getLoanId()));
             return false;
         }
-
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investId);
-        if(transferApplicationModel != null && transferApplicationModel.getPeriod() == loanRepayModel.getPeriod()){
-            logger.debug(MessageFormat.format("{0} had been transfer ",investId));
-            return false;
-        }
         TransferRuleModel transferRuleModel =  transferRuleMapper.find();
-        DateTime current = new DateTime().withTimeAtStartOfDay();
+        if(!transferRuleModel.isMultipleTransferEnabled()){
+            TransferApplicationModel transfereeApplicationModel = transferApplicationMapper.findByInvestId(investId);
+            if( transfereeApplicationModel != null){
+                logger.debug(MessageFormat.format("{0} MultipleTransferEnabled is false ",investId));
+                return false;
+            }
+
+        }
+
         int periodDuration = Days.daysBetween(current.withTimeAtStartOfDay(),new DateTime(loanRepayModel.getRepayDate()).withTimeAtStartOfDay()).getDays();
 
         if(periodDuration > transferRuleModel.getDaysLimit()){
