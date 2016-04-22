@@ -3,7 +3,10 @@ package com.tuotiansudai.transfer.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.InvestPaginationDataDto;
+import com.tuotiansudai.dto.InvestPaginationItemDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.TransferApplicationAutoCancelJob;
@@ -17,6 +20,7 @@ import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
+import com.tuotiansudai.transfer.repository.model.TransferInvestDetailDto;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
@@ -220,6 +224,38 @@ public class InvestTransferServiceImpl implements InvestTransferService{
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> dto = new BasePaginationDataDto(index, pageSize, count, records);
         dto.setStatus(true);
         return dto;
+    }
+
+    public BasePaginationDataDto<TransferInvestDetailDto> getInvestTransferList(String investorLoginName,
+                                                               int index,
+                                                               int pageSize,
+                                                               Date startTime,
+                                                               Date endTime,
+                                                               LoanStatus loanStatus) {
+            if (startTime == null) {
+                startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
+            } else {
+                startTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+            }
+
+            if (endTime == null) {
+                endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
+            } else {
+                endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+            }
+
+            List<TransferInvestDetailDto> items = Lists.newArrayList();
+            long count = transferApplicationMapper.findCountInvestTransferPagination(investorLoginName, startTime, endTime, loanStatus);
+
+            if (count > 0) {
+                int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
+                index = index > totalPages ? totalPages : index;
+                items = transferApplicationMapper.findTransferInvestList(investorLoginName, (index - 1) * pageSize, pageSize, startTime, endTime, loanStatus);
+            }
+            BasePaginationDataDto dto = new BasePaginationDataDto(index, pageSize, count, items);
+            dto.setStatus(true);
+            return dto;
+
     }
 
 }
