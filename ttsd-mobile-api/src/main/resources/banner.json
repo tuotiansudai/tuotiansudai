@@ -64,16 +64,5 @@
     "noticeId": "",
     "content": "您准备好成为下一个成功的人吗？",
     "isAuthorized": false
-  },
-  {
-    "pictureId": "",
-    "title": "拓天速贷",
-    "url": "{web}/activity/app-download?source=app",
-    "sharedUrl": "{web}/activity/app-download",
-    "seqNum": 7,
-    "picture": "{static}/images/app-banner/app-banner-download.png",
-    "noticeId": "",
-    "content": "拓天速贷,APP理财,移动客户端,网络理财,P2P理财,拓天速贷APP",
-    "isAuthorized": false
   }
 ]
