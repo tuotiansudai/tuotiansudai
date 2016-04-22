@@ -35,6 +35,8 @@ public class LoanItemDto {
 
     private Date fundraisingStartTime;
 
+    private long preheatSeconds;
+
     public long getId() {
         return id;
     }
@@ -137,5 +139,13 @@ public class LoanItemDto {
 
     public void setFundraisingStartTime(Date fundraisingStartTime) {
         this.fundraisingStartTime = fundraisingStartTime;
+    }
+
+    public long getPreheatSeconds() {
+        return preheatSeconds;
+    }
+
+    public void setPreheatSeconds(long preheatSeconds) {
+        this.preheatSeconds = preheatSeconds;
     }
 }

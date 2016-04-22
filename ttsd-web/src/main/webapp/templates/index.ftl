@@ -220,11 +220,24 @@
                             <#if loan.status=="RAISING">
                                 <a href="/loan/${loan.id?string.computer}" class="btn-normal">立即投资</a>
                             <#elseif loan.status=="PREHEAT">
-                                <div class="time-item">
-                                    <img src="${staticServer}/images/icons/time-clock.png" alt="">
-                                    <span  class="preheat" data-time="${(loan.fundraisingStartTime?string("yyyy-MM-dd HH:mm"))!}"></span> &nbsp;&nbsp;<span class="allow">后可投资</span>
+                                <div class="time-item preheat" data-time="${loan.preheatSeconds?string.computer}">
+                                    <#if loan.preheatSeconds lte 1800>
+                                        <i class="time-clock" ></i><strong class="minute_show">00</strong><em>:</em><strong class="second_show">00</strong>以后可投资
+                                    <#else>
+                                    ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
+                                    </#if>
                                 </div>
-                                <a href="/loan/${loan.id?string.computer}" class="btn-normal wait-invest">预热中</a>
+                                <div class="project-schedule clear-blank clearfix display-none pro">
+                                    <div class="p-title">
+                                        <span class="fl">项目进度</span>
+                                        <span class="point fr">${loan.progress?string("0.00")}%</span>
+                                    </div>
+                                    <div class="process-percent">
+                                        <div class="percent" style="width:${loan.progress}%"></div>
+                                    </div>
+                                </div>
+                                <a href="/loan/${loan.id?string.computer}" class="btn-normal  display-none now" >立即投资</a>
+                                <a href="/loan/${loan.id?string.computer}" class="btn-normal wait-invest will">预热中</a>
                             <#else>
                                 <button type="button" disabled class="btn-normal">已售罄</button>
                             </#if>

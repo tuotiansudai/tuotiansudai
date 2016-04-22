@@ -107,12 +107,29 @@
                     <div class="loan-process project-schedule">
 
                         <#if loanItem.status== 'PREHEAT'>
-                            <div class="time-item">
-                                <img src="${staticServer}/images/icons/time-clock.png" alt="">
-                                <span  class="preheat" data-time="${(loanItem.fundraisingStartTime?string("yyyy-MM-dd HH:mm"))!}"></span> &nbsp;&nbsp;<span class="allow">后可投资</span>
+                            <div class="time-item preheat" data-time="${loanItem.preheatSeconds?string.computer}">
+                                <#if loanItem.preheatSeconds lte 1800>
+                                    <i class="time-clock" ></i><strong class="minute_show">00</strong><em>:</em><strong class="second_show">00</strong>以后可投资
+                                <#else>
+                                ${(loanItem.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
+                                </#if>
                             </div>
-                            <div class="rest-amount wait-invest">
+                            <div class="rest-amount wait-invest will">
                                 <i class="btn-wait-invest btn-normal">预热中</i>
+                            </div>
+
+                            <div class="pro display-none">
+                                <div class="p-title">
+                                    <span class="fl">项目进度</span>
+                                    <span class="point fr">${loanItem.progress?string("0.00")} %</span>
+                                </div>
+                                <div class="process-percent">
+                                    <div class="percent" style="width:${loanItem.progress}%"></div>
+                                </div>
+                                <div class="rest-amount">
+                                    <span>可投额度：<i>${loanItem.alert}</i></span>
+                                    <i class="btn-invest btn-normal">马上投资</i>
+                                </div>
                             </div>
                         </#if>
                         <#if loanItem.status== 'RAISING'>
