@@ -35,7 +35,7 @@ public class CaptchaHelper {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    @Value("${sms.interval.seconds}")
+    @Value("${image.captcha.interval.seconds}")
     private int second;
 
     public void storeCaptcha(String attributeKey, String captcha) {
@@ -59,7 +59,7 @@ public class CaptchaHelper {
     }
 
 
-    public String transferImageToString(BufferedImage bufferedImage){
+    public String transferImageToBase64(BufferedImage bufferedImage){
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         byte[] data = null;
         InputStream in = null;

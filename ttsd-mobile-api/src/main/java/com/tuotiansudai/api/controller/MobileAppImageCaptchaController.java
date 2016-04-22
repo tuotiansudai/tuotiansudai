@@ -2,7 +2,7 @@ package com.tuotiansudai.api.controller;
 
 import com.tuotiansudai.api.dto.BaseParamDto;
 import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.ImageCaptureResponseDataDto;
+import com.tuotiansudai.api.dto.ImageCaptchaResponseDataDto;
 import com.tuotiansudai.api.dto.ReturnMessage;
 import com.tuotiansudai.util.CaptchaGenerator;
 import com.tuotiansudai.util.CaptchaHelper;
@@ -27,12 +27,12 @@ public class MobileAppImageCaptchaController extends MobileAppBaseController{
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         this.captchaHelper.storeCaptcha(CaptchaHelper.LOGIN_CAPTCHA, captcha.getAnswer(), baseParamDto.getBaseParam().getDeviceId());
 
-        String imageCapture = captchaHelper.transferImageToString(captcha.getImage());
+        String imageCaptcha = captchaHelper.transferImageToBase64(captcha.getImage());
         
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
         baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
-        baseResponseDto.setData(new ImageCaptureResponseDataDto(imageCapture));
+        baseResponseDto.setData(new ImageCaptchaResponseDataDto(imageCaptcha));
         return baseResponseDto;
     }
 
