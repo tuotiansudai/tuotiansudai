@@ -1,23 +1,27 @@
 package com.tuotiansudai.coupon.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
 import com.tuotiansudai.coupon.repository.mapper.CouponExchangeMapper;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.CouponUserGroupMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.CouponUserGroupModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.exception.CreateCouponException;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -51,6 +55,12 @@ public class CouponServiceImpl implements CouponService {
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private CouponUserGroupMapper couponUserGroupMapper;
+
+    @Autowired
     private CouponExchangeMapper couponExchangeMapper;
 
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
@@ -64,10 +74,16 @@ public class CouponServiceImpl implements CouponService {
         couponModel.setCreatedTime(new Date());
         couponMapper.create(couponModel);
         exchangeCouponDto.setId(couponModel.getId());
-        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
+        if (couponModel.getUserGroup() == UserGroup.IMPORT_USER) {
             redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, exchangeCouponDto.getFile()), "success"));
             redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, exchangeCouponDto.getFile()), "failed"));
             redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, exchangeCouponDto.getFile()));
+        } else if (Lists.newArrayList(UserGroup.AGENT, UserGroup.CHANNEL).contains(couponModel.getUserGroup())) {
+            CouponUserGroupModel couponUserGroupModel = new CouponUserGroupModel();
+            couponUserGroupModel.setCouponId(couponModel.getId());
+            couponUserGroupModel.setUserGroup(couponModel.getUserGroup());
+            couponUserGroupModel.setUserGroupItems(couponModel.getUserGroup() == UserGroup.AGENT ? couponModel.getAgents() : couponModel.getChannels());
+            couponUserGroupMapper.create(couponUserGroupModel);
         }
         if (exchangeCouponDto.getExchangePoint() != null && exchangeCouponDto.getExchangePoint() > 0) {
             CouponExchangeModel couponExchangeModel = new CouponExchangeModel();
@@ -75,6 +91,7 @@ public class CouponServiceImpl implements CouponService {
             couponExchangeModel.setExchangePoint(exchangeCouponDto.getExchangePoint());
             couponExchangeMapper.create(couponExchangeModel);
         }
+
     }
 
     private void checkCoupon(CouponDto couponDto) throws CreateCouponException {
@@ -123,22 +140,42 @@ public class CouponServiceImpl implements CouponService {
         couponModel.setId(exchangeCouponDto.getId());
         couponModel.setUpdatedBy(loginName);
         couponModel.setUpdatedTime(new Date());
-        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() != UserGroup.IMPORT_USER
+        if (couponModel.getUserGroup() != UserGroup.IMPORT_USER
                 && redisWrapperClient.exists(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())))) {
             redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())));
         }
-        if (couponModel.getCouponType() == CouponType.INTEREST_COUPON && couponModel.getUserGroup() == UserGroup.IMPORT_USER && StringUtils.isNotEmpty(exchangeCouponDto.getFile())) {
+        if (couponModel.getUserGroup() == UserGroup.IMPORT_USER && StringUtils.isNotEmpty(exchangeCouponDto.getFile())) {
             redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, exchangeCouponDto.getFile()), "success"));
             redisWrapperClient.hset(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "failed", redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, exchangeCouponDto.getFile()), "failed"));
             redisWrapperClient.del(MessageFormat.format(redisKeyTemplate, exchangeCouponDto.getFile()));
         }
         couponMapper.updateCoupon(couponModel);
+        if (Lists.newArrayList(UserGroup.AGENT, UserGroup.CHANNEL).contains(couponModel.getUserGroup())) {
+            CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(exchangeCouponDto.getId());
+            if (couponUserGroupModel != null) {
+                couponUserGroupModel.setUserGroup(exchangeCouponDto.getUserGroup());
+                couponUserGroupModel.setUserGroupItems(exchangeCouponDto.getUserGroup() == UserGroup.AGENT ? exchangeCouponDto.getAgents() : exchangeCouponDto.getChannels());
+                couponUserGroupMapper.update(couponUserGroupModel);
+            } else {
+                CouponUserGroupModel couponUserGroup = new CouponUserGroupModel();
+                couponUserGroup.setCouponId(exchangeCouponDto.getId());
+                couponUserGroup.setUserGroup(exchangeCouponDto.getUserGroup());
+                couponUserGroup.setUserGroupItems(exchangeCouponDto.getUserGroup() == UserGroup.AGENT ? exchangeCouponDto.getAgents() : exchangeCouponDto.getChannels());
+                couponUserGroupMapper.create(couponUserGroup);
+            }
+        } else {
+            CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(exchangeCouponDto.getId());
+            if (couponUserGroupModel != null) {
+                couponUserGroupMapper.delete(couponUserGroupModel.getId());
+            }
+        }
         if (exchangeCouponDto.getExchangePoint() != null && exchangeCouponDto.getExchangePoint() > 0) {
 
             CouponExchangeModel couponExchangeModel = couponExchangeMapper.findByCouponId(exchangeCouponDto.getId());
             couponExchangeModel.setExchangePoint(exchangeCouponDto.getExchangePoint());
             couponExchangeMapper.update(couponExchangeModel);
         }
+
     }
 
     @Override
@@ -232,13 +269,20 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public long findEstimatedCount(UserGroup userGroup) {
-        if (userGroup == UserGroup.INVESTED_USER) {
-            return investMapper.findInvestorCount();
+        switch (userGroup) {
+            case ALL_USER:
+                return userMapper.findAllUsers(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList()).build())).size();
+            case INVESTED_USER:
+                return investMapper.findInvestorCount();
+            case REGISTERED_NOT_INVESTED_USER:
+                return investMapper.findRegisteredNotInvestCount();
+            case STAFF:
+                return userMapper.findAllByRole(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("role", Role.STAFF).put("districtName", Lists.newArrayList()).build())).size();
+            case STAFF_RECOMMEND_LEVEL_ONE:
+                return userMapper.findAllRecommendation(Maps.newHashMap(ImmutableMap.<String, Object>builder().put("districtName", Lists.newArrayList()).build())).size();
+            default:
+                return 0;
         }
-        if (userGroup == UserGroup.REGISTERED_NOT_INVESTED_USER) {
-            return investMapper.findRegisteredNotInvestCount();
-        }
-        return 0;
     }
 
     @Override

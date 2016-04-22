@@ -113,7 +113,7 @@
                                             <span class="num-text">${exchangeCouponDto.rate*100}%</span>
                                             <span class="unit-text">年化收益</span>
                                         </p>
-                                        <p>[限投资<@amount>${(exchangeCouponDto.investUpperLimit?number*100)?string('0')}</@amount>元以内可用]</p>
+                                        <p>［投资即可使用］</p>
 									</#if>
 
                                     <p>产品限制：

@@ -37,7 +37,11 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
         responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
         InvestDto investDto = convertInvestDto(investRequestDto);
         try {
-            investService.noPasswordInvest(investDto);
+            BaseDto<PayDataDto> baseDto = investService.noPasswordInvest(investDto);
+            if (!baseDto.getData().getStatus()) {
+                responseDto.setCode(ReturnMessage.INVEST_FAILED.getCode());
+                responseDto.setMessage(ReturnMessage.INVEST_FAILED.getMsg() + ":" + baseDto.getData().getMessage());
+            }
         } catch (InvestException e) {
             return this.convertExceptionToDto(e);
         }
