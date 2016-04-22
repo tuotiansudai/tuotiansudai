@@ -2196,6 +2196,159 @@
   }
 }
 
+.download-container{
+  background-color:#f8f8f8;
+  min-height: 500px;
+  width:100%;
+  overflow:hidden;
+  .wp-img{
+    position:relative;
+    a{
+      width:17%;
+      height:11%;
+      position:absolute;
+      display:block;
+    }
+    .ios{
+      background: url("/images/sign/actor/download/download-ios.png") no-repeat center;
+      left:48%;
+      top:54%;
+      background-size:100%;
+    }
+
+    .android{
+      background: url("/images/sign/actor/download/download-android.png") no-repeat center;
+      left:48%;
+      top:72%;
+      background-size:100%;
+    }
+  }
+  .download-one{
+    height:410px;
+    background: url("/images/sign/actor/download/download-one.png") no-repeat ;
+    background-position:70% 70%;
+    .step-one{
+      padding-top:112px;
+      margin-left:20%
+    }
+  }
+  .download-two{
+    height:568px;
+    margin-top:-148px;
+    background: url("/images/sign/actor/download/download-two.png") no-repeat center;
+    background-size:100%;
+    .step-two{
+      padding-top:192px;
+      margin-left:55%
+    }
+  }
+  .download-three{
+    height:400px;
+    margin-top:-50px;
+    background: url("/images/sign/actor/download/download-three.png") no-repeat ;
+    background-position:70% 70%;
+    .step-three{
+      padding-top:110px;
+      margin-left:20%
+    }
+  }
+  .download-four{
+    height:614px;
+    margin-top:-60px;
+    background: url("/images/sign/actor/download/download-four.png") no-repeat center;
+    background-size:100%;
+    .step-four{
+      padding-top:220px;
+      margin-left:55%
+    }
+  }
+  .download-five{
+    height:420px;
+    margin-top:-50px;
+    background: url("/images/sign/actor/download/download-five.png") no-repeat ;
+    background-position:70% 70%;
+    .step-five{
+      padding-top:100px;
+      margin-left:20%
+    }
+  }
+  .download-six{
+    height:484px;
+    margin-bottom:-60px;
+    background: url("/images/sign/actor/download/download-six.png") no-repeat center;
+    background-size:100%;
+    .step-six{
+      padding-top:94px;
+      margin-left:55%
+    }
+    .now-download{
+      width:240px;
+      height:60px;
+      line-height: 60px;
+      font-size:24px;
+      background-color:#ff9e00;
+      border-radius:10px;
+      text-align: center;
+      margin-left:55%;
+      margin-top:2%;
+      a{
+        color:#fff;
+      }
+    }
+  }
+}
+.download-container-phone{
+  width:100%;
+  background: #f8f8f8;
+  min-height: 500px;
+  display:none;
+    .wp-img{
+    position:relative;
+    a{
+      width:30%;
+      height:12%;
+      position:absolute;
+      display:block;
+    }
+    .ios{
+      background: url("/images/sign/actor/download/download-phone-ios.png") no-repeat center;
+      left:20%;
+      top:47%;
+      background-size:100%;
+    }
+
+    .android{
+      background: url("/images/sign/actor/download/download-phone-android.png") no-repeat center;
+      left:20%;
+      top:64%;
+      background-size:100%;
+    }
+  }
+  .download-one{
+    margin-bottom: -1px;
+  }
+  .download-six{
+    margin-top: -1px;
+    position:relative;
+    text-align: center;
+    a{
+      display:block;
+      width:130px;
+      height:30px;
+      line-height: 30px;
+      background-color:#ff9e00;
+      color:#fff;
+      border-radius:5px;
+      position:absolute;
+      left:50%;
+      top:86%;
+      margin-left:-65px;
+    }
+  }
+
+}
+
+
 /*share-reward page*/
 .share-reward-container{
   background:#c6eaff;
@@ -2634,6 +2787,12 @@
     display:none;
   }
   .rank-list-phone{
+    display:block;
+  }
+  .download-container{
+    display:none;
+  }
+  .download-container-phone{
     display:block;
   }
   .share-reward-container{
