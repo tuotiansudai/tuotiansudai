@@ -7,15 +7,12 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyUser;
 import com.tuotiansudai.util.IdGenerator;
-import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -108,12 +105,6 @@ public class LoanServiceTest {
         loanDto.setFundraisingEndTime(date);
         loanDto.setFundraisingStartTime(date);
         return loanDto;
-    }
-    private List<UserRoleModel> getFakeUserRole(UserModel userModel,Role role) {
-        List<UserRoleModel> userRoleModels = Lists.newArrayList();
-        UserRoleModel userRoleModel = new UserRoleModel(userModel.getLoginName(),role);
-        userRoleModels.add(userRoleModel);
-        return userRoleModels;
     }
 
     private LoanDto getLoanDto(UserModel userModel) {
@@ -431,21 +422,8 @@ public class LoanServiceTest {
     }
 
     private InvestModel getFakeInvestModel(long loanId, String loginName) {
-        InvestModel model = new InvestModel();
-        model.setAmount(50);
-        // 舍弃毫秒数
-        Date currentDate = new Date((new Date().getTime() / 1000) * 1000);
-        model.setCreatedTime(currentDate);
-        model.setId(idGenerator.generate());
-        model.setIsAutoInvest(false);
-        model.setLoginName(loginName);
-        model.setLoanId(loanId);
-        model.setSource(Source.ANDROID);
-        model.setStatus(InvestStatus.WAIT_PAY);
-        model.setCreatedTime(new Date());
-        return model;
+        return new InvestModel(idGenerator.generate(), loanId, null, 50, loginName, Source.WEB, null);
     }
-
 
     public UserModel getFakeUser(String loginName) {
         UserModel userModelTest = new UserModel();

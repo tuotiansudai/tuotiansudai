@@ -8,14 +8,14 @@ import com.google.common.collect.UnmodifiableIterator;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.paywrapper.dto.InvestRepayJobResultDto;
-import com.tuotiansudai.paywrapper.dto.LoanRepayJobResultDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.NormalRepayJob;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
+import com.tuotiansudai.paywrapper.dto.InvestRepayJobResultDto;
+import com.tuotiansudai.paywrapper.dto.LoanRepayJobResultDto;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNopwdMapper;
@@ -33,6 +33,8 @@ import com.tuotiansudai.paywrapper.service.RepayService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.InterestCalculator;
 import com.tuotiansudai.util.JobManager;
@@ -78,6 +80,9 @@ public class NormalRepayServiceImpl implements RepayService {
 
     @Autowired
     protected SystemBillMapper systemBillMapper;
+
+    @Autowired
+    protected TransferApplicationMapper transferApplicationMapper;
 
     @Autowired
     protected AmountTransfer amountTransfer;
@@ -313,29 +318,41 @@ public class NormalRepayServiceImpl implements RepayService {
                 currentRepayDate);
 
         List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanModel.getId());
+        List<InvestModel> notTransferredSuccessInvests = Lists.newArrayList(Iterators.filter(successInvests.iterator(), new Predicate<InvestModel>() {
+            @Override
+            public boolean apply(InvestModel input) {
+                return input.getTransferStatus() == TransferStatus.TRANSFERABLE;
+            }
+        }));
+
 
         List<InvestRepayJobResultDto> investRepayJobResults = Lists.newArrayList();
 
         long loanRepayBalance = (isAdvanceRepay ? loanRepayModels.get(loanRepayModels.size() - 1).getCorpus() : loanRepayModel.getCorpus()) + loanRepayModel.getActualInterest() + this.calculateLoanRepayDefaultInterest(loanRepayModels);
 
-        for (InvestModel investModel : successInvests) {
+        for (InvestModel investModel : notTransferredSuccessInvests) {
+            InvestModel transferInvestModel = investMapper.findById(investModel.getTransferInvestId());
+            TransferApplicationModel transferApplication = transferApplicationMapper.findByInvestId(investModel.getId());
+            boolean isCurrentPeriodTransfer = transferApplication != null && transferApplication.getPeriod() == loanRepayModel.getPeriod();
             List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
-            InvestRepayModel investRepayModel = investRepayModels.get(loanRepayModel.getPeriod() - 1);
+            InvestRepayModel currentInvestRepay = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), loanRepayModel.getPeriod());
 
-            long actualInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, investModel, lastRepayDate, currentRepayDate);
+            long actualInterest = InterestCalculator.calculateInvestRepayInterest(loanModel,
+                    isCurrentPeriodTransfer ? transferInvestModel : investModel,
+                    lastRepayDate,
+                    currentRepayDate);
             long actualFee = new BigDecimal(actualInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).longValue();
             long defaultInterest = this.calculateInvestRepayDefaultInterest(investRepayModels);
-            long corpus = isAdvanceRepay ? investModel.getAmount() : investRepayModel.getCorpus();
+            long corpus = isAdvanceRepay ? investModel.getAmount() : currentInvestRepay.getCorpus();
 
             loanRepayBalance -= corpus + actualInterest + defaultInterest;
             investRepayJobResults.add(new InvestRepayJobResultDto(investModel.getId(),
-                    investRepayModel.getId(),
+                    currentInvestRepay.getId(),
                     investModel.getLoginName(),
                     corpus,
                     actualInterest,
                     actualFee,
                     defaultInterest));
-
         }
 
         return new LoanRepayJobResultDto(loanModel.getId(),
@@ -351,9 +368,9 @@ public class NormalRepayServiceImpl implements RepayService {
         long loanRepayId = loanRepayJobResultDto.getLoanRepayId();
         try {
             if (this.storeJobData(loanRepayJobResultDto) && loanRepayJobResultDto.jobRetry()) {
-                Date temMinutesLater = new DateTime().plusMinutes(delayMinutes).toDate();
+                Date minutesLater = new DateTime().plusMinutes(delayMinutes).toDate();
                 jobManager.newJob(JobType.NormalRepay, NormalRepayJob.class)
-                        .runOnceAt(temMinutesLater)
+                        .runOnceAt(minutesLater)
                         .addJobData(NormalRepayJob.LOAN_REPAY_ID, loanRepayId)
                         .withIdentity(JobType.NormalRepay.name(), MessageFormat.format(REPAY_JOB_NAME_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new DateTime().getMillis())))
                         .submit();

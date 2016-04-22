@@ -41,6 +41,7 @@ public enum JobType {
     GetPushReport("获取推送统计数据"),
     ManualJPushAlert("手动推送"),
     BirthdayNotify("生日月用户短信提醒"),
+    TransferApplyAutoCancel("债权转让申请到期自动取消"),
     LotteryTransferCash("抽奖现金发放"),
     ImitateLottery("模拟抽奖"),
     AutoJPushRepayAlert("用户资金变动推送-还款"),
@@ -48,7 +49,6 @@ public enum JobType {
     AutoJPushWithDrawApplyAlert("用户资金变动推送-申请提现成功"),
     AutoJPushWithDrawAlert("用户资金变动推送-提现成功"),
     AutoJPushReferrerRewardAlert("用户资金变动推送-推荐人奖励");
-
 
     private final String description;
 

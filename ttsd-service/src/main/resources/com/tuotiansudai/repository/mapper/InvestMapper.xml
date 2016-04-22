@@ -8,10 +8,12 @@
 
     <resultMap id="investResultMap" type="InvestModel">
         <id column="id" property="id"></id>
+        <result column="transfer_invest_id" property="transferInvestId"></result>
         <result column="login_name" property="loginName"></result>
         <result column="loan_id" property="loanId"></result>
         <result column="amount" property="amount"></result>
         <result column="status" property="status"></result>
+        <result column="transfer_status" property="transferStatus"></result>
         <result column="source" property="source"></result>
         <result column="is_auto_invest" property="isAutoInvest"></result>
         <result column="channel" property="channel"></result>
@@ -50,16 +52,20 @@
     </resultMap>
 
     <sql id="columns">
-        id, login_name, loan_id, amount, status, source, is_auto_invest, channel, is_no_password_invest, created_time
+        id, transfer_invest_id, login_name, loan_id, amount, status, transfer_status, source, is_auto_invest, channel, is_no_password_invest, created_time
     </sql>
 
     <insert id="create" parameterType="InvestModel">
         insert into invest ( <include refid="columns"></include> )
-        value(#{id}, #{loginName}, #{loanId}, #{amount}, #{status}, #{source}, #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime})
+        value(#{id}, #{transferInvestId}, #{loginName}, #{loanId}, #{amount}, #{status}, #{transferStatus}, #{source}, #{isAutoInvest}, #{channel}, #{isNoPasswordInvest}, #{createdTime})
     </insert>
 
     <update id="updateStatus" parameterType="map">
         update invest set status = #{status} where id = #{id}
+    </update>
+
+    <update id="updateTransferStatus" parameterType="map">
+        update invest set transfer_status = #{transferStatus} where id = #{id}
     </update>
 
     <select id="findById" parameterType="long" resultMap="investResultMap">
@@ -77,7 +83,7 @@
     </select>
 
     <select id="findByLoginName" parameterType="map" resultMap="investResultMap">
-        select invest.id, invest.login_name, invest.loan_id, invest.amount, invest.status, invest.source, invest.is_auto_invest, invest.created_time
+        select invest.id, invest.transfer_invest_id, invest.login_name, invest.loan_id, invest.amount, invest.status, invest.transfer_status, invest.source, invest.is_auto_invest, invest.created_time
         from invest
         inner join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}

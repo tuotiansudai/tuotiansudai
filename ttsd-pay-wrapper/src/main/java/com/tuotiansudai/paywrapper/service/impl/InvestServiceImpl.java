@@ -113,8 +113,7 @@ public class InvestServiceImpl implements InvestService {
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
 
-        InvestModel investModel = new InvestModel(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource(), dto.getChannel());
-        investModel.setId(idGenerator.generate());
+        InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource(), dto.getChannel());
         investMapper.create(investModel);
 
         try {
@@ -142,7 +141,7 @@ public class InvestServiceImpl implements InvestService {
         long investId = idGenerator.generate();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         try {
-            InvestModel investModel = new InvestModel(loanId, amount, loginName, source, null);
+            InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, source, null);
             investModel.setId(investId);
             investModel.setNoPasswordInvest(true);
             investMapper.create(investModel);

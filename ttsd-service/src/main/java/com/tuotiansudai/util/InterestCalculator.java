@@ -3,6 +3,7 @@ package com.tuotiansudai.util;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.google.common.primitives.Ints;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
@@ -22,8 +23,15 @@ public class InterestCalculator {
     public static long calculateLoanRepayInterest(LoanModel loanModel, List<InvestModel> investModels, DateTime lastRepayDate, DateTime currentRepayDate) {
         DateTime loanOutDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
 
+        List<InvestModel> originalInvestModels = Lists.newArrayList(Iterators.filter(investModels.iterator(), new Predicate<InvestModel>() {
+            @Override
+            public boolean apply(InvestModel input) {
+                return input.getTransferInvestId() == null;
+            }
+        }));
+
         long corpusMultiplyPeriodDays = 0;
-        for (InvestModel successInvest : investModels) {
+        for (InvestModel successInvest : originalInvestModels) {
             DateTime lastInvestRepayDate = lastRepayDate;
             if (lastRepayDate.isBefore(loanOutDate) && InterestInitiateType.INTEREST_START_AT_INVEST == loanModel.getType().getInterestInitiateType()) {
                 lastInvestRepayDate = new DateTime(successInvest.getCreatedTime()).withTimeAtStartOfDay().minusDays(1);
@@ -145,9 +153,10 @@ public class InterestCalculator {
         return lastRepayDate;
     }
 
-    private static long calculateInterest(LoanModel loanModel, long corpusMultiplyPeriodDays) {
+    public static long calculateInterest(LoanModel loanModel, long corpusMultiplyPeriodDays) {
         int daysOfYear = DAYS_OF_YEAR;
-        new DateTime(2016, 3, 9, 21, 0, 0);
+
+        //2016-03-09 放款后标的按每期30天一年365天计算利息
         if (loanModel.getRecheckTime() != null && loanModel.getRecheckTime().before(new DateTime(2016, 3, 9, 21, 0, 0).toDate())) {
             DateTime loanDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
             daysOfYear = loanDate.dayOfYear().getMaximumValue();
@@ -156,4 +165,5 @@ public class InterestCalculator {
         BigDecimal loanRate = new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate()));
         return new BigDecimal(corpusMultiplyPeriodDays).multiply(loanRate).divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
     }
+
 }

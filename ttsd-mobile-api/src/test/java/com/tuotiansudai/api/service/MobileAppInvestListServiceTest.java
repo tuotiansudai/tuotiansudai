@@ -10,9 +10,9 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.IdGenerator;
-import com.tuotiansudai.util.RandomUtils;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,7 +23,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 
@@ -48,6 +50,9 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
     @Mock
     private InvestRepayMapper investRepayMapper;
+
+    @Mock
+    private InvestTransferService investTransferService;
 
     private static int INVEST_COUNT = 110;
     private static long INTEREST = 1100L;
@@ -133,6 +138,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         investModel.setSource(Source.IOS);
         investModel.setLoanId(1213L);
         investModel.setStatus(InvestStatus.SUCCESS);
+        investModel.setTransferStatus(TransferStatus.TRANSFERABLE);
         return investModel;
     }
 
@@ -152,11 +158,13 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         when(loanMapper.findById(anyLong())).thenReturn(generateMockedLoanModel());
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(Lists.<InvestRepayModel>newArrayList());
         when(investService.estimateInvestIncome(anyLong(), anyLong())).thenReturn(INTEREST);
+        when(investTransferService.isTransferable(anyLong())).thenReturn(true);
 
         UserInvestListRequestDto requestDto = new UserInvestListRequestDto();
         requestDto.setBaseParam(BaseParamTest.getInstance());
         requestDto.setIndex(1);
         requestDto.setPageSize(10);
+        requestDto.setTransferStatuses(Lists.newArrayList(TransferStatus.TRANSFERABLE, TransferStatus.TRANSFERRING, TransferStatus.SUCCESS));
         BaseResponseDto<UserInvestListResponseDataDto> responseDto = mobileAppInvestListService.generateUserInvestList(requestDto);
         UserInvestListResponseDataDto dataDto = responseDto.getData();
 
@@ -164,5 +172,6 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         assertEquals(10, dataDto.getInvestList().size());
         assertEquals(com.tuotiansudai.api.dto.InvestStatus.BID_SUCCESS.getCode(), dataDto.getInvestList().get(0).getInvestStatus());
         assertEquals(com.tuotiansudai.api.dto.LoanStatus.RAISING.getCode(), dataDto.getInvestList().get(0).getLoanStatus());
+        assertThat(dataDto.getInvestList().get(0).getTransferStatus(), is(TransferStatus.TRANSFERABLE.name()));
     }
 }

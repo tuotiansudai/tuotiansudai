@@ -1,29 +1,26 @@
 package com.tuotiansudai.api.service.impl;
 
 import com.google.common.base.Function;
-import com.google.common.base.Strings;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppInvestListService;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.InvestRepayModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +41,12 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
 
     @Autowired
     private LoanMapper loanMapper;
+
+    @Value("#{'${web.random.investor.list}'.split('\\|')}")
+    private List<String> showRandomLoginNameList;
+
+    @Autowired
+    private InvestTransferService investTransferService;
 
     @Override
     public BaseResponseDto generateInvestList(InvestListRequestDto investListRequestDto) {
@@ -96,7 +99,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
 
         // build InvestList
         UserInvestListResponseDataDto dtoData = new UserInvestListResponseDataDto();
-        dtoData.setInvestList(convertResponseData(investList));
+        dtoData.setInvestList(convertResponseData(investList, requestDto.getTransferStatuses()));
         dtoData.setIndex(requestDto.getIndex());
         dtoData.setPageSize(requestDto.getPageSize());
         dtoData.setTotalCount(investListCount);
@@ -110,7 +113,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         return dto;
     }
 
-    private List<UserInvestRecordResponseDataDto> convertResponseData(List<InvestModel> investList) {
+    private List<UserInvestRecordResponseDataDto> convertResponseData(List<InvestModel> investList, List<TransferStatus> transferStatuses) {
         List<UserInvestRecordResponseDataDto> list = Lists.newArrayList();
         Map<Long, LoanModel> loanMapCache = Maps.newHashMap();
         if (investList != null) {
@@ -136,9 +139,27 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
                 }
 
                 dto.setInvestInterest(AmountConverter.convertCentToString(amount));
+                String transferStatus;
+                if (invest.getTransferStatus() == TransferStatus.TRANSFERABLE) {
+                    transferStatus = investTransferService.isTransferable(invest.getId()) ? invest.getTransferStatus().name() : "";
+                } else if (invest.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
+                    transferStatus = "";
+                } else {
+                    transferStatus = invest.getTransferStatus().name();
+                }
+                dto.setTransferStatus(transferStatus);
                 list.add(dto);
             }
         }
-        return list;
+        if (Lists.newArrayList(TransferStatus.TRANSFERABLE, TransferStatus.SUCCESS, TransferStatus.TRANSFERRING).contains(transferStatuses)) {
+            return list;
+        } else {
+            return Lists.newArrayList(Iterators.filter(list.iterator(), new Predicate<UserInvestRecordResponseDataDto>() {
+                @Override
+                public boolean apply(UserInvestRecordResponseDataDto input) {
+                    return input.getTransferStatus().equals(TransferStatus.TRANSFERABLE.name());
+                }
+            }));
+        }
     }
 }
