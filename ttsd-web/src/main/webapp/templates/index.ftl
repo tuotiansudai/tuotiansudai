@@ -232,7 +232,7 @@
                                     ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
                                     </#if>
                                 </div>
-                                <div class="project-schedule clear-blank clearfix display-none pro">
+                                <div class="project-schedule clear-blank clearfix pro">
                                     <div class="p-title">
                                         <span class="fl">项目进度</span>
                                         <span class="point fr">${loan.progress?string("0.00")}%</span>
@@ -241,7 +241,7 @@
                                         <div class="percent" style="width:${loan.progress}%"></div>
                                     </div>
                                 </div>
-                                <a href="/loan/${loan.id?string.computer}" class="btn-normal  display-none now" >立即投资</a>
+                                <a href="/loan/${loan.id?string.computer}" class="btn-normal now" >立即投资</a>
                                 <a href="/loan/${loan.id?string.computer}" class="btn-normal wait-invest will">预热中</a>
                             <#else>
                                 <button type="button" disabled class="btn-normal">已售罄</button>

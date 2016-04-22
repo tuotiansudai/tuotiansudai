@@ -104,8 +104,7 @@
                         </div>
                     </div>
 
-                    <div class="loan-process project-schedule">
-
+                    <div class="loan-process project-schedule now-active">
                         <#if loanItem.status== 'PREHEAT'>
                             <div class="time-item preheat" data-time="${loanItem.preheatSeconds?string.computer}">
                                 <#if loanItem.preheatSeconds lte 1800>
@@ -118,7 +117,7 @@
                                 <i class="btn-wait-invest btn-normal">预热中</i>
                             </div>
 
-                            <div class="pro display-none">
+                            <div class="pro">
                                 <div class="p-title">
                                     <span class="fl">项目进度</span>
                                     <span class="point fr">${loanItem.progress?string("0.00")} %</span>
