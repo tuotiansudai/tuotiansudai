@@ -1,0 +1,104 @@
+@import 'variables';
+@import 'daterangepicker';
+@import "coupon_alert";
+
+/* create transfer*/
+.create-transfer-detail {
+  .column-title {
+    em {
+      &.title-navli {
+        border-bottom: 4px solid #999;
+        color: #999;
+        cursor: pointer;
+        margin-right: 40px;
+      }
+      &.active {
+        border-bottom: 4px solid #ff7200;
+        color: #ff7200;
+      }
+    }
+    span {
+      float:right;
+      border-bottom: none;
+      font-size: 14px;
+      font-weight: normal;
+      color: #666;
+      cursor: pointer;
+      &.rule-show {
+        color: #ff752a;
+      }
+    }
+  }
+  .create-info-container {
+    float:left;
+    width: 100%;
+    h5 {
+      font-size: 14px;
+      margin:0px 0 18px 0;
+      span {
+        color: #ff7200;
+      }
+    }
+    .transfer-con{
+      ul{
+        float:left;
+        line-height:40px;
+        font-size: 12px;
+        color: #000;
+        &.transfer-list-one{
+          li{
+            width: 118px;
+            text-align:right;
+          }
+        }
+        &.transfer-list-two{
+          margin-left: 10px;
+          li {
+            input{
+              padding:0 0 0 2px;
+              width: 190px;
+              height: 34px;
+              border: 1px solid #808080;
+              border-radius:2px;
+              }
+              span {
+                color: #a1a1a1;
+                margin-left: 28px;
+              }
+              i{
+                color: #f24712;
+              }
+          }
+        }
+      }
+    }
+    p {
+      text-align: center;
+      font-size:12px;
+      b{
+        display: inline-block;
+        width:14px;
+        height: 14px;
+        background: url("/images/icons/btn_icon.png") no-repeat;
+        margin:0 10px -3px;
+        background-position:0 -14px;
+        &.active{
+          background-position:0 0;
+        }
+      }
+      a{
+        color: #f24712;
+      }
+      input{
+        margin: 10px 20px;
+        width: 150px;
+        height: 34px;
+        color:#fff;
+        outline: none;
+       }
+       .reset-btn{
+        background:#ccc;
+       }
+    }
+  }
+}
