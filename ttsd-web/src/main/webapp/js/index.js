@@ -84,7 +84,6 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
                 preheat.each(function () {
                     var $self = $(this);
                     var countdown = $(this).attr("data-time");
-                    console.log(countdown);
                     setInterval(function () {
                         var day = 0,
                             hour = 0,
