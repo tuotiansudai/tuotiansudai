@@ -29,7 +29,7 @@
                   AND title like CONCAT(CONCAT('%', #{title}), '%')
               </if>
           </where>
-          ORDER BY update_time DESC
+          ORDER BY created_time DESC
           limit #{index}, #{pageSize}
     </select>
 
