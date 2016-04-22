@@ -1,9 +1,5 @@
 package com.tuotiansudai.transfer.dto;
 
-import com.tuotiansudai.repository.model.TransferStatus;
-
-import java.util.Date;
-
 public class TransferApplicationDto {
 
     private Long transferInvestId;
