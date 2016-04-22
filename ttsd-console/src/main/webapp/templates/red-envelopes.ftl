@@ -105,6 +105,9 @@
         </td>
         <td><#if coupon.shared>是<#else>否</#if></td>
         <td>
+        <#if coupon.deleted>
+            已删除
+        <#else>
         <#if coupon.active>
             -
         <#else>
@@ -115,8 +118,12 @@
                 <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a> / <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/${coupon.id?string('0')}" >删除</button>
             </@security.authorize>
         </#if>
+        </#if>
         </td>
         <td>
+            <#if coupon.deleted>
+                -
+            <#else>
             <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
                 <#if coupon.active>
                     <label>
@@ -133,6 +140,7 @@
             <@security.authorize access="hasAuthority('OPERATOR')">
                 -
             </@security.authorize>
+            </#if>
         </td>
         <td>
             <a href="/activity-manage/coupon/${coupon.id?string('0')}/detail" class="btn-link">查看详情</a>

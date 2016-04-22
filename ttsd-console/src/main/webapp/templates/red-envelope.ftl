@@ -42,9 +42,40 @@
 
         <div class="form-group">
             <label class="col-sm-2 control-label">发放对象:</label>
+            <div class="col-sm-2">
+                <select class="selectpicker jq-b-type userGroup" name="userGroup">
+                    <#list userGroups as userGroup>
+                        <#if userGroup.name() != 'NEW_REGISTERED_USER'>
+                            <option value="${userGroup.name()}">${userGroup.getDescription()}</option>
+                        </#if>
+                    </#list>
+                </select>
+            </div>
+            <div class="file-btn coupon-hide">
+                <input type="file" id="file-in">
+                重新导入
+            </div>
+            <input type="hidden" name="file" id="import-file">
+        </div>
+
+        <div class="form-group coupon-hide coupon-table">
+            <label class="col-sm-2"></label>
+            <div class="col-sm-4 data-table">
+                <table class="table table-bordered">
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">预计发放数量(张): </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control invest-coupon-total_count"  value="全部用户"  readonly="true">
-                <input type="hidden" class="user-group-hid" name="userGroup" value="ALL_USER"  >
+                <input type="text" readonly class="form-control give-number" name="totalCount" placeholder="" value="${initNum?string('0')!}"  datatype="n" errormsg="发放数量需要填写数字" >
+            </div>
+        </div>
+
+        <div class="form-group coupon-hide coupon-deposit">
+            <label class="col-sm-2"></label>
+            <div class="col-sm-4 coupon-agent-channel">
             </div>
         </div>
 

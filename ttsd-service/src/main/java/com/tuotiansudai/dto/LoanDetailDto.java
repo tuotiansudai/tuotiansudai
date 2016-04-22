@@ -50,7 +50,7 @@ public class LoanDetailDto extends BaseDataDto {
 
     private long amountNeedRaised;
 
-    private String maxAvailableInvestAmount;
+    private String maxAvailableInvestAmount = "0";
 
     private double progress;
 
