@@ -4,6 +4,7 @@ import com.tuotiansudai.exception.CaptchaNotMatchException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.util.CaptchaHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,8 +41,14 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
         }
 
         if (enableCaptchaVerify) {
+            boolean result = false;
             String captcha = httpServletRequest.getParameter("captcha");
-            boolean result = this.captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, captcha);
+            String deviceId = httpServletRequest.getParameter("j_deviceId");
+            if(StringUtils.isNotEmpty(deviceId)){
+                result = this.captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, captcha,deviceId);
+            }else{
+                result = this.captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, captcha);
+            }
 
             if (!result) {
                 logger.debug("Authentication failed: captcha does not match actual value");
