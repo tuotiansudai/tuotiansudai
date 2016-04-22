@@ -1,5 +1,7 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
@@ -12,6 +14,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanRepayService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.DateUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,13 +108,25 @@ public class LoanRepayServiceImpl implements LoanRepayService {
     private boolean isNeedCalculateDefaultInterestLoanRepay (LoanRepayModel loanRepayModel) {
         long loanId = loanRepayModel.getLoanId();
         int period = loanRepayModel.getPeriod();
-        loanRepayMapper
-        return true;
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdAndLTPeriod(loanId, period);
+        return CollectionUtils.isEmpty(loanRepayModels) || !Iterators.any(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
+            @Override
+            public boolean apply(LoanRepayModel input) {
+                return input.getStatus() == RepayStatus.OVERDUE;
+            }
+        });
     }
 
     private boolean isNeedCalculateDefaultInterestInvestRepay (InvestRepayModel investRepayModel) {
-        investRepayMapper
-        return true;
+        long investId = investRepayModel.getId();
+        int period = investRepayModel.getPeriod();
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndLTPeriod(investId, period);
+        return CollectionUtils.isEmpty(investRepayModels) || !Iterators.any(investRepayModels.iterator(), new Predicate<InvestRepayModel>() {
+            @Override
+            public boolean apply(InvestRepayModel input) {
+                return input.getStatus() == RepayStatus.OVERDUE;
+            }
+        });
     }
 
     private void calculateDefaultInterestEveryLoan(LoanRepayModel loanRepayModel) throws Exception{

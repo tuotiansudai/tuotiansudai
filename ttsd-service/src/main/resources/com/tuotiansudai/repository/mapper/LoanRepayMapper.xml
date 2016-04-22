@@ -183,6 +183,10 @@
         select * from loan_repay where loan_id = #{loanId} and period = #{period}
     </select>
 
+    <select id="findByLoanIdAndLTPeriod" parameterType="map" resultMap="loanRepayResultMap">
+        select * from loan_repay where loan_id = #{loanId} and period &lt; #{period}
+    </select>
+
     <select id="findWaitPayLoanRepayByLoanId" parameterType="long" resultMap="loanRepayResultMap">
         select * from loan_repay where loan_id = #{loanId} and status = 'WAIT_PAY'
     </select>
