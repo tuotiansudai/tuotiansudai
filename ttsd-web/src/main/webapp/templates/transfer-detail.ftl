@@ -67,20 +67,20 @@
             <span class="product-name">债权承接记录</span>
         </div>
         <div class="transfer-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th>承接人</th>
-                        <th>转让价格(元)</th>
-                        <th>承接方式</th>
-                        <th>预期收益(元)</th>
-                        <th>待收本金(元)</th>
-                        <th>承接时间</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <#if (transferApplicationReceiver.status?string) == "true">
+            <#if (transferApplicationReceiver.status?string) == "true">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>承接人</th>
+                            <th>转让价格(元)</th>
+                            <th>承接方式</th>
+                            <th>预期收益(元)</th>
+                            <th>待收本金(元)</th>
+                            <th>承接时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
                             <td>${transferApplicationReceiver.transferApplicationReceiver!}</td>
                             <td>${transferApplicationReceiver.receiveAmount!}</td>
                             <td>
@@ -94,12 +94,12 @@
                             <td>${transferApplicationReceiver.expecedInterest!}</td>
                             <td>${transferApplicationReceiver.investAmount!}</td>
                             <td>${transferApplicationReceiver.transferTime?string("yyyy-MM-dd HH:mm:ss")}</td>
-                        <#else >
-                             <p class="tc text-b">暂无承接记录</p>
-                        </#if>
-                    </tr>
-                </tbody>
-            </table>
+                        </tr>
+                    </tbody>
+                </table>
+            <#else >
+                <p class="tc text-b">暂无承接记录</p>
+            </#if>
         </div>
     </div>
     <#include "coupon-alert.ftl" />
