@@ -67,7 +67,7 @@
             <span class="product-name">债权承接记录</span>
         </div>
         <div class="transfer-table">
-            <!-- <table>
+            <table>
                 <thead>
                     <tr>
                         <th>承接人</th>
@@ -80,7 +80,6 @@
                 </thead>
                 <tbody>
                     <tr>
-
                         <#if (transferApplicationReceiver.status?string) == "true">
                             <td>${transferApplicationReceiver.transferApplicationReceiver!}</td>
                             <td>${transferApplicationReceiver.receiveAmount!}</td>
@@ -96,13 +95,11 @@
                             <td>${transferApplicationReceiver.investAmount!}</td>
                             <td>${transferApplicationReceiver.transferTime?string("yyyy-MM-dd HH:mm:ss")}</td>
                         <#else >
-                            <td colspan="6">暂时没有承接记录</td>
+                             <p class="tc text-b">暂无承接记录</p>
                         </#if>
-
                     </tr>
                 </tbody>
-            </table> -->
-            <p class="tc text-b">暂无承接记录</p>
+            </table>
         </div>
     </div>
     <#include "coupon-alert.ftl" />
