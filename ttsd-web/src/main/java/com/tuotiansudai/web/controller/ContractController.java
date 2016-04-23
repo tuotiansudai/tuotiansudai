@@ -45,7 +45,23 @@ public class ContractController {
     public void generateLoanerContract(@PathVariable long loanId,HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException, ServletException {
         String loginName = LoginUserInfo.getLoginName();
         try {
-            String pdfString = contractService.generateInvestorContract(loginName, loanId, ContractType.LOAN);
+//            String pdfString = contractService.generateInvestorContract(loginName, loanId, ContractType.LOAN);
+            String pdfString = contractService.generateTransferContract(1123);
+            if(StringUtils.isEmpty(pdfString)){
+                httpServletRequest.getRequestDispatcher("/error/404").forward(httpServletRequest, response);
+                return;
+            }
+            response.setContentType("application/pdf;charset=UTF-8");
+            contractService.generateContractPdf(pdfString, response.getOutputStream());
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+    }
+
+    @RequestMapping(value = "/transfer/loanId/{transferApplicationId}", method = RequestMethod.GET)
+    public void generateTransferContract(@PathVariable long transferApplicationId,HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException, ServletException {
+        try {
+            String pdfString = contractService.generateTransferContract(transferApplicationId);
             if(StringUtils.isEmpty(pdfString)){
                 httpServletRequest.getRequestDispatcher("/error/404").forward(httpServletRequest, response);
                 return;
