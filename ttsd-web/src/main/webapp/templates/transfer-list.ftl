@@ -38,7 +38,7 @@
         <ul>
             <#if transferApplicationItemList??>
                 <#list transferApplicationItemList as transferApplicationItem>
-                    <li data-url="#" class="clearfix">
+                    <li data-url="/transfer/${(transferApplicationItem.transferApplicationId?string.computer)!}" class="clearfix">
                         <div class="transfer-info-frame fl">
                             <div class="transfer-top">
                                 <span class="l-title fl">${transferApplicationItem.transferName!}</span>

@@ -18,4 +18,9 @@ public interface TransferService {
                                                                                                             Integer pageSize);
     int findCountAllTransferApplicationPaginationList(List<TransferStatus> transferStatus, double rateStart, double rateEnd);
 
+    TransferApplicationDetailDto getTransferApplicationDetailDto(long TransferApplicationId, String loginName);
+
+    TransferApplicationRecodesDto getTransferee(long TransferApplicationId, String loginName);
+
+
 }
