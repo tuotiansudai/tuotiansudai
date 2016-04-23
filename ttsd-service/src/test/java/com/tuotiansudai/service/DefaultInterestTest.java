@@ -21,7 +21,6 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
 public class DefaultInterestTest {
 
     @Autowired
@@ -110,6 +109,7 @@ public class DefaultInterestTest {
     }
 
     @Test
+    @Transactional
     public void shouldDefaultInterestPeriods3Delay2() {
         DateTime today = new DateTime();
         UserModel loaner = this.getFakeUser("loaner");
@@ -184,6 +184,7 @@ public class DefaultInterestTest {
     }
 
     @Test
+    @Transactional
     public void shouldDefaultInterestPeriods3Delay3() {
         DateTime today = new DateTime();
         UserModel loaner = this.getFakeUser("loaner");
@@ -258,6 +259,7 @@ public class DefaultInterestTest {
     }
 
     @Test
+    @Transactional
     public void shouldDefaultInterestPeriods3DelayAll() {
         DateTime today = new DateTime();
         UserModel loaner = this.getFakeUser("loaner");
@@ -332,6 +334,7 @@ public class DefaultInterestTest {
     }
 
     @Test
+    @Transactional
     public void shouldDefaultInterestPeriods3DelayAllAndRepayFirst() {
         DateTime today = new DateTime();
         UserModel loaner = this.getFakeUser("loaner");
