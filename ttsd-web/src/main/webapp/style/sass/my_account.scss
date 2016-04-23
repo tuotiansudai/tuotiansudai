@@ -1132,6 +1132,18 @@ body{
 
 /* refer page */
 .invest-list-content {
+  .column-title {
+    em {
+      border-bottom: none;
+      color: #999;
+      cursor: pointer;
+      margin-right: 40px;
+      &.active {
+        border-bottom: 4px solid #ff7200;
+        color: #ff7200;
+      }
+    }
+  }
   .date-filter {
     margin-bottom: 20px;
 

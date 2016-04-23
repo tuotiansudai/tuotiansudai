@@ -110,9 +110,8 @@
         limit #{index}, #{pageSize}
     </select>
 
-    <select id="findCountTransfereeApplicationPaginationByLoginName" parameterType="map" resultMap="transferApplicationRecordDtoMap">
-        select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,l.base_rate,l.activity_rate
-        from transfer_application ta JOIN invest i on ta.invest_id = i.id JOIN loan l on l.id = ta.loan_id
+    <select id="findCountTransfereeApplicationPaginationByLoginName" parameterType="map" resultType="int">
+        select count(*) from transfer_application ta JOIN invest i on ta.invest_id = i.id JOIN loan l on l.id = ta.loan_id
         <where>
             <if test="loginName != null">
                 i.login_name = #{loginName}

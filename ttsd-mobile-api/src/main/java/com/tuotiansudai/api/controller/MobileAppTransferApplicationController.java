@@ -14,16 +14,16 @@ public class MobileAppTransferApplicationController extends MobileAppBaseControl
     @Autowired
     private MobileAppTransferApplicationService mobileAppTransferApplicationService;
 
-    @RequestMapping(value = "get/transferrer-transfer-application-list", method = RequestMethod.POST)
+    @RequestMapping(value = "/get/transferrer-transfer-application-list", method = RequestMethod.POST)
     @ResponseBody
     public BaseResponseDto generateTransferApplication(@RequestBody TransferApplicationRequestDto requestDto) {
         requestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppTransferApplicationService.generateTransferApplication(requestDto);
     }
 
-    @RequestMapping(value = "get/transferee-transfer-application-list", method = RequestMethod.POST)
+    @RequestMapping(value = "/get/transferee-transfer-application-list", method = RequestMethod.POST)
     @ResponseBody
-    public BaseResponseDto generateTransferApplication(@RequestBody PaginationRequestDto requestDto) {
+    public BaseResponseDto generateTransfereeApplication(@RequestBody PaginationRequestDto requestDto) {
         requestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppTransferApplicationService.generateTransfereeApplication(requestDto);
     }

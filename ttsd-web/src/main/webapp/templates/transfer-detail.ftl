@@ -52,15 +52,14 @@
         </div>
         <div class="transfer-operat">
             <#if (transferApplication.transferStatus.name() == "SUCCESS")>
-                <p>已转让</p>
-                <p>${transferApplication.transferTime?string("yyyy-MM-dd HH:mm:ss")}</p>
+                <p class="img-status"><img src="${staticServer}/images/sign/loan/transfered.png"></p>
+                <p class="status-text">转让完成时间：${transferApplication.transferTime?string("yyyy-MM-dd HH:mm:ss")}</p>
             <#else>
                 <p class="get-money"><span class="name-text">认购金额：</span><span class="money-text"><strong>${transferApplication.transferAmount!}</strong>元</span> </p>
                 <p><span class="name-text">预计收益：</span><span class="money-text"><strong>${transferApplication.expecedInterest!}</strong>元</span></p>
                 <p class="user-money"><span class="name-text">账户余额：${transferApplication.balance!} 元</span><span class="money-text"><strong><a href="#">去充值 >></a></strong></span></p>
                 <p><a href="#" class="btn-normal invest-btn">马上投资</a></p>
             </#if>
-
         </div>
     </div>
     <div class="detail-record">
@@ -68,7 +67,7 @@
             <span class="product-name">债权承接记录</span>
         </div>
         <div class="transfer-table">
-            <table>
+            <!-- <table>
                 <thead>
                     <tr>
                         <th>承接人</th>
@@ -86,9 +85,9 @@
                             <td>${transferApplicationReceiver.transferApplicationReceiver!}</td>
                             <td>${transferApplicationReceiver.receiveAmount!}</td>
                             <td>
-                                <#if transferApplicationReceiver.source == "WEB">手动<i class="fa fa-internet-explorer" aria-hidden="true"></i>
-                                    <#elseif transferApplicationReceiver.source == "ANDROID">手动<i class="fa fa-android" aria-hidden="true">
-                                    <#elseif transferApplicationReceiver.source == "IOS">手动<i class="fa fa-apple" aria-hidden="true"></i>
+                                <#if transferApplicationReceiver.source == "WEB"><i class="fa fa-internet-explorer" aria-hidden="true"></i>
+                                    <#elseif transferApplicationReceiver.source == "ANDROID"><i class="fa fa-android" aria-hidden="true">
+                                    <#elseif transferApplicationReceiver.source == "IOS"><i class="fa fa-apple" aria-hidden="true"></i>
                                     <#elseif transferApplicationReceiver.source == "AUTO">自动
                                     <#else>
                                 </#if>
@@ -102,7 +101,8 @@
 
                     </tr>
                 </tbody>
-            </table>
+            </table> -->
+            <p class="tc text-b">暂无承接记录</p>
         </div>
     </div>
     <#include "coupon-alert.ftl" />

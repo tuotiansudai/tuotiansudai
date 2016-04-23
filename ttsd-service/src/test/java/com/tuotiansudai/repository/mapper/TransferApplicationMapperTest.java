@@ -102,6 +102,8 @@ public class TransferApplicationMapperTest {
         assertEquals(TransferStatus.TRANSFERRING,transferApplicationRecordDto.get(0).getTransferStatus());
 
     }
+
+
     @Test
     public void shouldFindCountTransferApplicationPaginationIsSuccess(){
         long loanId = idGenerator.generate();
@@ -170,6 +172,35 @@ public class TransferApplicationMapperTest {
         assertEquals(0.12d,transferApplicationRecordDto.get(0).getActivityRate(),0);
         assertEquals(0.16d,transferApplicationRecordDto.get(0).getBaseRate(),0);
         assertEquals(TransferStatus.SUCCESS,transferApplicationRecordDto.get(0).getTransferStatus());
+
+    }
+
+    @Test
+    public void shouldFindCountTransfereeApplicationPaginationByLoginNameIsSuccess(){
+        long loanId = idGenerator.generate();
+        UserModel transferModel = createUserByUserId("transfer");
+        UserModel transfereeModel = createUserByUserId("transferee");
+        LoanModel loanModel = createLoanByUserId("transfer", loanId);
+        InvestModel transferInvestModel = createInvest("transfer", loanId);
+        InvestModel transfereeInvestModel = createInvest("transferee", loanId);
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
+        transferApplicationModel.setLoginName(transferModel.getLoginName());
+        transferApplicationModel.setName("name");
+        transferApplicationModel.setTransferAmount(1000l);
+        transferApplicationModel.setInvestAmount(1200l);
+        transferApplicationModel.setTransferTime(new DateTime("2016-01-02").toDate());
+        transferApplicationModel.setStatus(TransferStatus.SUCCESS);
+        transferApplicationModel.setLoanId(loanModel.getId());
+        transferApplicationModel.setInvestId(transfereeInvestModel.getId());
+        transferApplicationModel.setTransferInvestId(transferInvestModel.getId());
+        transferApplicationModel.setDeadline(new Date());
+        transferApplicationModel.setApplicationTime(new Date());
+        transferApplicationMapper.create(transferApplicationModel);
+
+        int count = transferApplicationMapper.findCountTransfereeApplicationPaginationByLoginName(transfereeModel.getLoginName());
+
+        assertEquals(1,count);
+
 
     }
 
