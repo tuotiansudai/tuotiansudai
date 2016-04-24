@@ -196,6 +196,7 @@ public class LoanServiceImpl implements LoanService {
     public BaseDto<PayDataDto> loanOut(long loanId) {
 
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        baseDto.setSuccess(true);
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
 
@@ -234,7 +235,7 @@ public class LoanServiceImpl implements LoanService {
             logger.warn("loan has already been outed. [" + loanId + "]");
             ProjectTransferResponseModel umPayReturn = new ProjectTransferResponseModel();
             umPayReturn.setRetCode(AutoLoanOutJob.ALREADY_OUT);
-            umPayReturn.setRetMsg("loan has already been outed.");
+            umPayReturn.setRetMsg("放款失败：标的已经被自动放款。");
             return umPayReturn;
         }
 

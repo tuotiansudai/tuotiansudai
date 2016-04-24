@@ -5,6 +5,7 @@ import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.service.AnnounceService;
 import com.tuotiansudai.service.HomeService;
+import com.tuotiansudai.service.LinkExchangeService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class HomeController {
 
     @Autowired
     private CouponAlertService couponAlertService;
+
+    @Autowired
+    private LinkExchangeService linkExchangeService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {

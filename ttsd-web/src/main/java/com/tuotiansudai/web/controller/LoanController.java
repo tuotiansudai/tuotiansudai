@@ -1,16 +1,18 @@
 package com.tuotiansudai.web.controller;
 
 
+import com.tuotiansudai.coupon.dto.UserCouponDto;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDetailDto;
 import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,17 +33,32 @@ public class LoanController {
     private UserCouponService userCouponService;
 
     @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
-    public ModelAndView getLoanDetail(@PathVariable long loanId, Model model) {
+    public ModelAndView getLoanDetail(@PathVariable long loanId) {
         LoanDetailDto dto = loanService.getLoanDetail(LoginUserInfo.getLoginName(), loanId);
         if (dto == null) {
             return new ModelAndView("/error/404");
         }
         ModelAndView modelAndView = new ModelAndView("/loan", "responsive", true);
         modelAndView.addObject("loan", dto);
-        modelAndView.addObject("coupons", userCouponService.getUsableCoupons(LoginUserInfo.getLoginName(), loanId));
+        modelAndView.addObject("coupons", userCouponService.getInvestUserCoupons(LoginUserInfo.getLoginName(), loanId));
+        modelAndView.addObject("maxBenefitUserCoupon", this.userCouponService.getMaxBenefitUserCoupon(LoginUserInfo.getLoginName(),
+                loanId,
+                AmountConverter.convertStringToCent(dto.getMaxAvailableInvestAmount())));
         modelAndView.addObject("couponAlert", this.couponAlertService.getCouponAlert(LoginUserInfo.getLoginName()));
         return modelAndView;
     }
+
+    @RequestMapping(value = "/{loanId:^\\d+$}/amount/{amount:^\\d+$}/max-benefit-user-coupon", method = RequestMethod.GET)
+    @ResponseBody
+    public String getMaxBenefitUserCoupon(@PathVariable long loanId, @PathVariable long amount) {
+        UserCouponDto maxBenefitUserCoupon = userCouponService.getMaxBenefitUserCoupon(LoginUserInfo.getLoginName(), loanId, amount);
+        if (maxBenefitUserCoupon != null) {
+            return String.valueOf(maxBenefitUserCoupon.getId());
+        }
+        return "";
+    }
+
+
 
     @RequestMapping(value = "/{loanId:^\\d+$}/invests", method = RequestMethod.GET)
     @ResponseBody

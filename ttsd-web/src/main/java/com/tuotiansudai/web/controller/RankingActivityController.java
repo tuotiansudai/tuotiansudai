@@ -12,6 +12,7 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.RankingActivityService;
+import com.tuotiansudai.web.util.AppTokenParser;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,14 +39,11 @@ public class RankingActivityController {
     private AccountMapper accountMapper;
 
     @Autowired
-    private MyAuthenticationManager myAuthenticationManager;
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private AppTokenParser appTokenParser;
 
     @RequestMapping(value = "/rank-list", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView loadPageData(HttpServletRequest httpServletRequest) {
-        String loginName = this.getLoginName(httpServletRequest);
+        String loginName = appTokenParser.getLoginName(httpServletRequest);
 
         ModelAndView modelAndView = new ModelAndView("/activities/rank-list");
 
@@ -72,7 +70,7 @@ public class RankingActivityController {
     @RequestMapping(value = "/draw-tiandou", method = RequestMethod.POST)
     public BaseDto<DrawLotteryDto> drawTianDouPrize() {
         String loginName = LoginUserInfo.getLoginName();
-        String mobile = LoginUserInfo.getLoginName();
+        String mobile = LoginUserInfo.getMobile();
 
         return rankingActivityService.drawTianDouPrize(loginName, mobile);
     }
@@ -127,22 +125,5 @@ public class RankingActivityController {
     public List<UserScoreDto> getTianDouTop15() {
         List<UserScoreDto> tianDouTop15 = rankingActivityService.getTianDouTop15();
         return tianDouTop15;
-    }
-
-    private String getLoginName(HttpServletRequest httpServletRequest) {
-        if (RequestMethod.GET.name().equalsIgnoreCase(httpServletRequest.getMethod())) {
-            return LoginUserInfo.getLoginName();
-        }
-
-        String token = httpServletRequest.getParameter("token");
-        String loginName = redisWrapperClient.get(token);
-
-        if (Strings.isNullOrEmpty(loginName)) {
-            myAuthenticationManager.removeAuthentication();
-        } else {
-            myAuthenticationManager.createAuthentication(loginName);
-        }
-
-        return loginName;
     }
 }

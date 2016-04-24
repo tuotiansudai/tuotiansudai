@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 
@@ -18,6 +19,7 @@ public class TransferCashController extends BaseController{
     @Autowired
     private TransferCashService transferCashService;
 
+    @ResponseBody
     @RequestMapping(value = "/transfer-cash", method = RequestMethod.POST)
     public BaseDto<PayDataDto> transferCash(@Valid @RequestBody TransferCashDto transferCashDto) {
         return transferCashService.transferCash(transferCashDto);

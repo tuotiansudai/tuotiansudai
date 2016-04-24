@@ -29,10 +29,12 @@
                 </property>
             </bean>
         </mvc:message-converters>
+        <mvc:path-matching suffix-pattern="false"/>
     </mvc:annotation-driven>
 
     <mvc:interceptors>
         <bean class="com.tuotiansudai.web.interceptors.ChannelInterceptor"/>
+        <bean class="com.tuotiansudai.web.interceptors.LinkExchangeInterceptor"/>
     </mvc:interceptors>
 
     <context:component-scan base-package="com.tuotiansudai.web"/>
@@ -45,7 +47,6 @@
     <mvc:resources mapping="/tpl/**" location="/tpl/"/>
     <mvc:resources mapping="/upload/**" location="/upload/"/>
     <mvc:resources mapping="/robots.txt" location="/robots.txt"/>
-
 
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.configuration.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>

@@ -10,9 +10,8 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.job.AutoJPushAlertLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.SendRedEnvelopeJob;
-import com.tuotiansudai.paywrapper.coupon.service.CouponLoanOutService;
-import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
+import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections.CollectionUtils;
@@ -35,7 +34,7 @@ import java.util.List;
 @Component
 @Aspect
 public class CouponAspect {
-    static Logger logger = Logger.getLogger(CouponAspect.class);
+    private static Logger logger = Logger.getLogger(CouponAspect.class);
 
     @Autowired
     private CouponRepayService couponRepayService;
@@ -44,10 +43,10 @@ public class CouponAspect {
     private CouponInvestService couponInvestService;
 
     @Autowired
-    private CouponActivationService couponActivationService;
+    private JobManager jobManager;
 
     @Autowired
-    private JobManager jobManager;
+    private CouponActivationService couponActivationService;
 
     @AfterReturning(value = "execution(* *..NormalRepayService.paybackInvest(*)) || execution(* *..AdvanceRepayService.paybackInvest(*))", returning = "returnValue")
     public void afterReturningPaybackInvest(JoinPoint joinPoint, boolean returnValue) {
@@ -87,13 +86,11 @@ public class CouponAspect {
         long loanId = (long) joinPoint.getArgs()[0];
         BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
         if (baseDto.getData() != null && baseDto.getData().getStatus()) {
-
             try {
                 couponInvestService.cancelUserCoupon(loanId);
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
-
         }
     }
 
@@ -106,7 +103,11 @@ public class CouponAspect {
             couponActivationService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER,
                     UserGroup.INVESTED_USER,
                     UserGroup.REGISTERED_NOT_INVESTED_USER,
-                    UserGroup.IMPORT_USER),null);
+                    UserGroup.IMPORT_USER,
+                    UserGroup.AGENT,
+                    UserGroup.CHANNEL,
+                    UserGroup.STAFF,
+                    UserGroup.STAFF_RECOMMEND_LEVEL_ONE),null);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -120,10 +121,7 @@ public class CouponAspect {
         BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
         if (baseDto.getData() != null && baseDto.getData().getStatus()) {
             createSendRedEnvelopeJob(loanId);
-
             createAutoJPushAlertLoanOutJob(loanId);
-
-
         }
     }
 

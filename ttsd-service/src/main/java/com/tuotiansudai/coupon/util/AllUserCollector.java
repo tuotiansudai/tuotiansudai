@@ -32,6 +32,6 @@ public class AllUserCollector implements UserCollector {
     @Override
     public boolean contains(long couponId, String loginName) {
         CouponModel couponModel = couponMapper.findById(couponId);
-        return !(couponModel.getCouponType() == CouponType.BIRTHDAY_COUPON && !userBirthdayUtil.isBirthMonth(loginName));
+        return couponModel.getCouponType() != CouponType.BIRTHDAY_COUPON || userBirthdayUtil.isBirthMonth(loginName);
     }
 }
