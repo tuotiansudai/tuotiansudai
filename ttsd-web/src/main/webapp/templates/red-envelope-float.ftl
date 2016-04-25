@@ -34,7 +34,7 @@
 <ul class="fix-nav-list">
 	<li class="cal-btn">
 		<i class="icon-calculator"></i>
-		<span class="nav-text" onclick="cnzzPush.trackClick('62首页','悬浮窗模块','计算器')">理财<br/>计算器</span>
+		<span class="nav-text" onclick="cnzzPush.trackClick('62首页','悬浮窗模块','计算器')">投资<br/>计算器</span>
 	</li>
 	<li>
 		<i class="icon-phone"></i>
