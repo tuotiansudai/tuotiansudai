@@ -192,8 +192,10 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                         $('#file-in').trigger('click');
                         $('.file-btn').show();
                     }
+                    $('.smsAlert').prop('disabled',false);
                 } else {
                     $('.give-number').val('').prop('readonly', false);
+                    $('.smsAlert').prop('disabled',true);
                 }
             }
         });

@@ -148,10 +148,12 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
                 $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
                     $('.give-number').val(data).prop('readonly', true);
                 })
+                $('.smsAlert').prop('disabled',false);
             } else if (userGroup == "EXCHANGER_CODE") {
                 $fileBtn.hide();
                 $('.file-btn').find('input').val('');
                 $('.give-number').val('').prop('readonly', false);
+                $('.smsAlert').prop('disabled',true);
             } else if (userGroup == 'AGENT') {
                 $.get('/user-manage/user/agents', function(data) {
                     if (data.length > 0 ) {
@@ -162,6 +164,7 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
                     }
                 })
                 $('.give-number').val('0');
+                $('.smsAlert').prop('disabled',false);
             } else if (userGroup == 'CHANNEL') {
                 $.get('/user-manage/user/channels', function(data) {
                     if (data.length > 0) {
@@ -172,10 +175,12 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
                     }
                 })
                 $('.give-number').val('0');
+                $('.smsAlert').prop('disabled',false);
             } else {
                 $('#file-in').trigger('click');
                 $('.file-btn').show();
                 $('.give-number').val('').prop('readonly', true);
+                $('.smsAlert').prop('disabled',false);
             }
         });
 
