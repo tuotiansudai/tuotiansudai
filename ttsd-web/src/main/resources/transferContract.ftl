@@ -10,7 +10,7 @@
 <body >
 
 <p style="text-align: center;"><span style="font-family: 宋体, SimSun;"><strong><span
-        style="font-family: 宋体, SimSun; font-size: 20px;">债权转让协议（修改1.0）</span></strong><br/></span></p>
+        style="font-family: 宋体, SimSun; font-size: 20px;">债权转让协议</span></strong><br/></span></p>
 
 <p><span style="font-family: 宋体, SimSun;">债权转让协议</span>
 </p>
@@ -74,11 +74,11 @@
 <p>（1）在转让申请日，该借款债权不能处于逾期状态；</p>
 <p>（2）拓天速贷届时合理要求的其他条件。</p>
 
-<p>2.2 债权转让时，单个债权必须全额转让，不可拆分转让，未被购买的债权部分在${hourLimit}后债权
+<p>2.2 债权转让时，单个债权必须全额转让，不可拆分转让，未被购买的债权部分在${daysLimit}后债权
     转让下架时再次回到债权出让人手中。</p>
 
 <p>2.3 债权转让下架限制，满足下面三条中任意一条，系统默认下架转让中债权：交易已完成；债
-    权已清偿；挂出后的${hourLimit}后自动下架</p>
+    权已清偿；挂出后的${daysLimit}后自动下架</p>
 
 <p><br/></p>
 
@@ -89,7 +89,7 @@
 <p>3.1 转让申请日应为一个非还款日/结息日且至少在下一个还款日/结息日的${daysLimit}之前；</p>
 
 <p>3.2 债权出让人在提交转让申请后的转让时效内未达成转让的，债权出让人同意拓天速贷自动撤
-    销该转让申请。转让时效为${hourLimit}。</p>
+    销该转让申请。转让时效为${daysLimit}。</p>
 
 <p>3.3 债权出让人在提交转让申请后，有权在转让未达成前，手动撤销转让申请；</p>
 
