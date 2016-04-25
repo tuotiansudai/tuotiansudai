@@ -29,11 +29,11 @@
         <p class="text-bg">Let's go！！！</p>
         <p class="text-pro">
             <span class="product-left">
-                <img src="${staticServer}/images/sign/actor/birth/product-three.png">
+                <img src="${staticServer}/images/sign/actor/birth/product-three-new.png">
                 <a href="/loan-list?productType=WYX" class="click-btn time-btn"></a>
             </span>
             <span class="product-right">
-                <img src="${staticServer}/images/sign/actor/birth/product-six.png">
+                <img src="${staticServer}/images/sign/actor/birth/product-six-new.png">
                 <a href="/loan-list?productType=JYF" class="click-btn time-btn"></a>
             </span>
         </p>
