@@ -42,7 +42,6 @@ public class MobileAppTransferApplicationControllerTest extends ControllerTestBa
     @Test
     public void shouldTransferApplyIsBadRequest() throws Exception{
         TransferApplyRequestDto transferApplyRequestDto =new TransferApplyRequestDto();
-        transferApplyRequestDto.setTransferInterest(true);
         transferApplyRequestDto.setTransferInvestId("123");
         when(service.transferApply(any(TransferApplyRequestDto.class))).thenReturn(successResponseDto);
         doRequestWithServiceIsOkMockedTest("/transfer-apply", transferApplyRequestDto)
@@ -52,7 +51,6 @@ public class MobileAppTransferApplicationControllerTest extends ControllerTestBa
     @Test
     public void shouldTransferApplyIsOk() throws Exception{
         TransferApplyRequestDto transferApplyRequestDto =new TransferApplyRequestDto();
-        transferApplyRequestDto.setTransferInterest(true);
         transferApplyRequestDto.setTransferAmount("1.00");
         transferApplyRequestDto.setTransferInvestId("123");
         when(service.transferApply(any(TransferApplyRequestDto.class))).thenReturn(successResponseDto);

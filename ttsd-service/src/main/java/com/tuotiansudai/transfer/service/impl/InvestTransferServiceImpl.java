@@ -107,7 +107,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
     public Date getDeadlineFromNow() {
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         DateTime dateTime = new DateTime();
-        return dateTime.plusDays(transferRuleModel.getDaysLimit()).withTimeAtStartOfDay().toDate();
+        return dateTime.plusDays(transferRuleModel.getDaysLimit() + 1).withTimeAtStartOfDay().toDate();
     }
 
     @Override
