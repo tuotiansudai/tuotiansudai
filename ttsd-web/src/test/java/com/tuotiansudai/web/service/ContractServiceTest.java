@@ -16,10 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import static junit.framework.Assert.assertNotNull;
+
 import static org.junit.Assert.assertFalse;
 
 
@@ -60,7 +61,6 @@ public class ContractServiceTest {
 
 
         String pdfStr = contractService.generateTransferContract(transferApplicationModel.getId());
-        assertNotNull(pdfStr);
         if(pdfStr.indexOf("baisong") == -1){
             assertFalse(true);
         }
@@ -76,7 +76,6 @@ public class ContractServiceTest {
     @Test
     public void shouldGenerateTransferAgreementIsOk(){
         String pdfStr = contractService.generateTransferAgreement();
-        assertNotNull(pdfStr);
         if(pdfStr.indexOf("201601") == -1){ assertFalse(true);}
         if(pdfStr.indexOf("张三") == -1){ assertFalse(true);}
         if(pdfStr.indexOf("zhangsan") == -1){ assertFalse(true);}
