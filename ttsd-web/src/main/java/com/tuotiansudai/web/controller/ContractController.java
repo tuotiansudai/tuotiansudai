@@ -45,9 +45,7 @@ public class ContractController {
     public void generateLoanerContract(@PathVariable long loanId,HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException, ServletException {
         String loginName = LoginUserInfo.getLoginName();
         try {
-//            String pdfString = contractService.generateInvestorContract(loginName, loanId, ContractType.LOAN);
-//            String pdfString = contractService.generateTransferContract(1123);
-            String pdfString = contractService.generateTransferAgreement();
+            String pdfString = contractService.generateInvestorContract(loginName, loanId, ContractType.LOAN);
             if(StringUtils.isEmpty(pdfString)){
                 httpServletRequest.getRequestDispatcher("/error/404").forward(httpServletRequest, response);
                 return;
@@ -74,7 +72,7 @@ public class ContractController {
         }
     }
 
-    @RequestMapping(value = "/transfer/loanId", method = RequestMethod.GET)
+    @RequestMapping(value = "/transfer/agreement", method = RequestMethod.GET)
     public void generateTransferAgreement(HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException, ServletException {
         try {
             String pdfString = contractService.generateTransferAgreement();
