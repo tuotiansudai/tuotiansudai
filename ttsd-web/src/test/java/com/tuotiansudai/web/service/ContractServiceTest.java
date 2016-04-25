@@ -83,8 +83,8 @@ public class ContractServiceTest {
         if(pdfStr.indexOf("赵四") == -1){ assertFalse(true);}
         if(pdfStr.indexOf("zhaosi") == -1){ assertFalse(true);}
         if(pdfStr.indexOf("37020319341204601X") == -1){ assertFalse(true);}
-        if(pdfStr.indexOf("5天") == -1){ assertFalse(true);}
-        if(pdfStr.indexOf("0.5%") == -1){ assertFalse(true);}
+        if(pdfStr.indexOf("5") == -1){ assertFalse(true);}
+        if(pdfStr.indexOf("0.5") == -1){ assertFalse(true);}
 
     }
 

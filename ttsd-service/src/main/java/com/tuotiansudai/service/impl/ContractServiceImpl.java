@@ -327,8 +327,8 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("investUserName","赵四");
         dataModel.put("investLoginName","zhaosi");
         dataModel.put("investIdentityNumber","37020319341204601X");
-        dataModel.put("daysLimit", "5天");
-        dataModel.put("percent","0.5%");
+        dataModel.put("daysLimit", "5");
+        dataModel.put("percent","0.5");
         return dataModel;
     }
 
