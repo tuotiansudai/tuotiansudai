@@ -12,6 +12,8 @@ public class LatestInvestView implements Serializable{
 
     private long loanId;
 
+    private long investId;
+
     private Date repayDate;
 
     private long corpus;
@@ -124,5 +126,13 @@ public class LatestInvestView implements Serializable{
 
     public void setBirthdayBenefit(double birthdayBenefit) {
         this.birthdayBenefit = birthdayBenefit;
+    }
+
+    public long getInvestId() {
+        return investId;
+    }
+
+    public void setInvestId(long investId) {
+        this.investId = investId;
     }
 }
