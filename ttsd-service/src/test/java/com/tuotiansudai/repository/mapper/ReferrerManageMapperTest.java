@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -172,6 +173,34 @@ public class ReferrerManageMapperTest {
         fakeLoanModel.setDescriptionText("text");
         fakeLoanModel.setCreatedTime(new Date());
         return fakeLoanModel;
+    }
+
+    @Test
+    public void findReferInvestSumAmount() throws Exception {
+
+        readyDate("testReferInvest");
+        List<ReferrerManageView> referrerManageViews = referrerManageMapper.findReferInvestSumAmount("testReferInvest");
+        assertEquals(referrerManageViews.get(0).getInvestAmount(),1000000);
+
+    }
+
+    private void readyDate(String loginName){
+        ReferrerRelationModel referrerRelationModel = new ReferrerRelationModel();
+        referrerRelationModel.setReferrerLoginName(loginName);
+        referrerRelationModel.setLoginName(loginName);
+        referrerRelationModel.setLevel(1);
+        UserModel  user = new UserModel();
+        user.setId(idGenerator.generate());
+        user.setLoginName(loginName);
+        user.setPassword("123");
+        user.setMobile("13900000000");
+        user.setRegisterTime(new Date());
+        user.setLastModifiedTime(new Date());
+        user.setStatus(UserStatus.ACTIVE);
+        user.setSalt("123");
+        createMockUser(loginName);
+        createMockInvest(loginName, createMockLoan(loginName).getId());
+        referrerRelationMapper.create(referrerRelationModel);
     }
 
 

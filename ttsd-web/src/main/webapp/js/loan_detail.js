@@ -128,54 +128,99 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             $.each($ticketList.find("li"), function(index, ticket) {
                 var self = $(ticket);
                 var input = $(self.find("input"));
+                var productTypeEnable = self.data("product-type-usable");
                 var investLowerLimit = $(self.find(".ticket-term.lower-limit")).data('invest-lower-limit') || 0;
-                var investUpperLimit = $(self.find(".ticket-term.upper-limit")).data('invest-upper-limit') || 0;
-                var disabled = (investLowerLimit > 0 && investLowerLimit > investAmount) || (investUpperLimit > 0 && investUpperLimit < investAmount);
+                var disabled = !productTypeEnable || (investLowerLimit > 0 && investLowerLimit > investAmount);
                 input.prop("disabled", disabled);
                 disabled ? self.addClass('disabled') : self.removeClass('disabled');
             });
 
-            var notSharedRedEnvelopes = _.groupBy($ticketList.find("li[data-coupon-type='RED_ENVELOPE']"), function(ticket) {
+            var notSharedRedEnvelopes = _.groupBy($ticketList.find("li[data-coupon-type='RED_ENVELOPE'][data-product-type-usable='true']"), function(ticket) {
                 return $(ticket).hasClass('disabled') ? "disabled" : "enabled";
             });
 
-            var notSharedCoupons = _.groupBy($ticketList.find("li[data-coupon-type!='RED_ENVELOPE'][data-coupon-type!='BIRTHDAY_COUPON']"), function(ticket) {
+            var birthdayCoupon = $ticketList.find("li[data-coupon-type='BIRTHDAY_COUPON'][data-product-type-usable='true']");
+
+            var newbieCoupons = _.groupBy($ticketList.find("li[data-coupon-type='NEWBIE_COUPON'][data-product-type-usable='true']"), function(ticket) {
                 return $(ticket).hasClass('disabled') ? "disabled" : "enabled";
             });
 
-            var birthdayCoupon = $ticketList.find("li[data-coupon-type='BIRTHDAY_COUPON']");
+            var investCoupons = _.groupBy($ticketList.find("li[data-coupon-type='INVEST_COUPON'][data-product-type-usable='true']"), function(ticket) {
+                return $(ticket).hasClass('disabled') ? "disabled" : "enabled";
+            });
+
+            var interestCoupons = _.groupBy($ticketList.find("li[data-coupon-type='INTEREST_COUPON'][data-product-type-usable='true']"), function(ticket) {
+                return $(ticket).hasClass('disabled') ? "disabled" : "enabled";
+            });
+
+            var productTypeDisableCoupons = $ticketList.find("li[data-product-type-usable='false']");
 
             $ticketList.empty();
+
+            if (notSharedRedEnvelopes['enabled']) {
+                $ticketList.append(_.sortBy(notSharedRedEnvelopes['enabled'], function(ticket) {
+                    var $ticket = $(ticket);
+                    return new Date($ticket.data("coupon-end-time")).getTime();
+                }));
+            }
 
             if (birthdayCoupon.length > 0) {
                 $ticketList.append(birthdayCoupon);
             }
 
-            if (notSharedRedEnvelopes['enabled']) {
-                $ticketList.append(_.sortBy(notSharedRedEnvelopes['enabled'], function(ticket) {
+            if (newbieCoupons['enabled']) {
+                $ticketList.append(_.sortBy(newbieCoupons['enabled'], function(ticket) {
                     var $ticket = $(ticket);
-                    return new Date($ticket.data("coupon-created-time")).getTime();
+                    return new Date($ticket.data("coupon-end-time")).getTime();
                 }));
             }
 
-            if (notSharedCoupons['enabled']) {
-                $ticketList.append(_.sortBy(notSharedCoupons['enabled'], function(ticket) {
+            if (investCoupons['enabled']) {
+                $ticketList.append(_.sortBy(investCoupons['enabled'], function(ticket) {
                     var $ticket = $(ticket);
-                    return new Date($ticket.data("coupon-created-time")).getTime();
+                    return new Date($ticket.data("coupon-end-time")).getTime();
+                }));
+            }
+
+            if (interestCoupons['enabled']) {
+                $ticketList.append(_.sortBy(interestCoupons['enabled'], function(ticket) {
+                    var $ticket = $(ticket);
+                    return new Date($ticket.data("coupon-end-time")).getTime();
                 }));
             }
 
             if (notSharedRedEnvelopes['disabled']) {
                 $ticketList.append(_.sortBy(notSharedRedEnvelopes['disabled'], function(ticket) {
                     var $ticket = $(ticket);
-                    return new Date($ticket.data("coupon-created-time")).getTime();
+                    return new Date($ticket.data("coupon-end-time")).getTime();
                 }));
             }
 
-            if (notSharedCoupons['disabled']) {
-                $ticketList.append(_.sortBy(notSharedCoupons['disabled'], function(ticket) {
+            if (newbieCoupons['disabled']) {
+                $ticketList.append(_.sortBy(newbieCoupons['disabled'], function(ticket) {
                     var $ticket = $(ticket);
-                    return new Date($ticket.data("coupon-created-time")).getTime();
+                    return new Date($ticket.data("coupon-end-time")).getTime();
+                }));
+            }
+
+            if (investCoupons['disabled']) {
+                $ticketList.append(_.sortBy(investCoupons['disabled'], function(ticket) {
+                    var $ticket = $(ticket);
+                    return new Date($ticket.data("coupon-end-time")).getTime();
+                }));
+            }
+
+            if (interestCoupons['disabled']) {
+                $ticketList.append(_.sortBy(interestCoupons['disabled'], function(ticket) {
+                    var $ticket = $(ticket);
+                    return new Date($ticket.data("coupon-end-time")).getTime();
+                }));
+            }
+
+            if (productTypeDisableCoupons.length > 0) {
+                $ticketList.append(_.sortBy(productTypeDisableCoupons, function(ticket) {
+                    var $ticket = $(ticket);
+                    return new Date($ticket.data("coupon-end-time")).getTime();
                 }));
             }
 
@@ -255,26 +300,25 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
 
         amountInputElement.blur(function() {
             calExpectedInterest();
-            calExpectedCouponInterest();
-        });
-
-        amountInputElement.keyup(function(event) {
-            if (isInvestor) {
-                var flag = true;
-                $ticketList.find('li').each(function(index, item) {
-                    if ($(item).attr("data-coupon-type") == 'BIRTHDAY_COUPON') {
-                        flag = false;
-                        $(item).find('input[type="radio"]').prop('checked', true);
-                    } else {
-                        $(item).find('input[type="radio"]').prop('checked', false);
-                    }
-                });
-                if (flag) {
-                    $useExperienceTicket.find('span').text('请选择优惠券');
+            $.ajax({
+                url: '/loan/' + loanId + '/amount/' + getInvestAmount() + "/max-benefit-user-coupon",
+                type: 'get',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8'
+            }).done(function(maxBenefitUserCouponId) {
+                $ticketList.find('input[type="radio"]:checked').prop('checked', false);
+                if (!isNaN(parseInt(maxBenefitUserCouponId))) {
+                    var maxBenefitUserCoupon = $("#" + maxBenefitUserCouponId);
+                    var couponTitle = $.trim($ticketList.find('li[data-user-coupon-id="' + maxBenefitUserCouponId +'"]').find(".ticket-info .ticket-title").text());
+                    $useExperienceTicket.find('span').text(couponTitle);
+                    maxBenefitUserCoupon.prop('checked', true);
                 } else {
-                    $useExperienceTicket.find('span').text('生日福利');
+                    if (!$useExperienceTicket.hasClass("disabled")) {
+                        $useExperienceTicket.find('span').text('请选择优惠券');
+                    }
                 }
-            }
+                calExpectedCouponInterest();
+            });
         });
 
         //click invest submit btn
@@ -286,6 +330,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             }
             location.href = '/login?redirect=' + encodeURIComponent(location.href);
         });
+
         $useExperienceTicket.click(function(event) {
             var $this = $(this);
             if ($this.hasClass('disabled')) {

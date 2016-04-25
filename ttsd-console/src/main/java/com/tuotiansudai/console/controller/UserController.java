@@ -12,10 +12,7 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.service.BindBankCardService;
-import com.tuotiansudai.service.ImpersonateService;
-import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.service.*;
 import com.tuotiansudai.task.OperationTask;
 import com.tuotiansudai.task.OperationType;
 import com.tuotiansudai.task.TaskConstant;
@@ -68,6 +65,9 @@ public class UserController {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private UserRoleService userRoleService;
 
     @Value("${web.server}")
     private String webServer;
@@ -266,6 +266,24 @@ public class UserController {
     public ModelAndView impersonate(@PathVariable String loginName) {
         String securityCode = impersonateService.plantSecurityCode(LoginUserInfo.getLoginName(), loginName);
         return new ModelAndView("redirect:" + webServer + "/impersonate?securityCode=" + securityCode);
+    }
+
+    @RequestMapping(value = "/user/agents", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> queryAllAgent() {
+        return userRoleService.queryAllAgent();
+    }
+
+    @RequestMapping(value = "/user/channels", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> queryAllChannel() {
+        return userMapper.findAllChannels();
+    }
+
+    @RequestMapping(value = "/user/{channel}/channel", method = RequestMethod.GET)
+    @ResponseBody
+    public long queryUserByChannel(@PathVariable String channel) {
+        return userMapper.findUsersCountByChannel(channel);
     }
 
 }

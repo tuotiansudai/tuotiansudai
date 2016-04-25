@@ -19,25 +19,33 @@
         </div>
 
         <div class="form-group">
-            <label  class="col-sm-2 control-label">投资上限(元): </label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control coupon-number" name="investUpperLimit" placeholder="" <#if coupon??>value="${coupon.investUpperLimit!}"</#if> datatype="*" errormsg="加息券投资上限不能为空">
+            <label  class="col-sm-2 control-label ">有效期限: </label>
+            <div class="col-sm-2">
+                <div class='input-group date' id='startTime'>
+                    <input type='text' class="form-control coupon-start" name="startTime" <#if coupon??>value="${(coupon.startTime?string("yyyy-MM-dd HH:mm"))!}"</#if>  datatype="date" errormsg="请选择活动开始时间"/>
+					<span class="input-group-addon">
+					<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+                </div>
+            </div>
+            <div class="line-size">-</div>
+            <div class="col-sm-2">
+                <div class='input-group date' id='endTime'>
+                    <input type='text' class="form-control coupon-end" name="endTime" <#if coupon??>value="${(coupon.endTime?string("yyyy-MM-dd HH:mm"))!}"</#if>  datatype="date" errormsg="请选择活动结束时间"/>
+					<span class="input-group-addon">
+					<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+                </div>
             </div>
         </div>
 
-        <div class="form-group invest-coupon" >
-            <label  class="col-sm-2 control-label">有效期限(天): </label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control coupon-deadline" name="deadline" placeholder="" <#if coupon??>value="${coupon.deadline!}"</#if> datatype="*" errormsg="有效期限不能为空">
-            </div>
-        </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">发放对象:</label>
-            <div class="col-sm-4 invest-coupon">
+            <div class="col-sm-2 invest-coupon">
 
                 <select class="selectpicker jq-b-type userGroup" name="userGroup">
                     <#list userGroups as userGroup>
-                        <#if userGroup.name() != 'NEW_REGISTERED_USER' && userGroup.name() != 'ALL_USER'>
+                        <#if userGroup.name() != 'NEW_REGISTERED_USER'>
                             <option value="${userGroup.name()}"
                                 <#if coupon??&&coupon.userGroup==userGroup>selected</#if>>${userGroup.getDescription()}</option>
                         </#if>
@@ -45,15 +53,46 @@
                 </select>
             </div>
             <div class="file-btn <#if coupon.userGroup != 'IMPORT_USER'>import-hidden</#if>">
-                <input type="file">
-                导入用户名单
+                <input type="file" id="file-in">
+                重新导入
             </div>
             <input type="hidden" name="file" id="import-file" >
         </div>
+
+        <div class="form-group <#if coupon.userGroup != 'IMPORT_USER'>coupon-hide</#if> coupon-table">
+            <label class="col-sm-2"></label>
+            <div class="col-sm-4 data-table">
+                <table class="table table-bordered">
+                    <#if coupon.userGroup == 'IMPORT_USER'>
+                    <#list importUsers as importUser>
+                        <tr class="name-tr"><td>${(importUser_index+1)!}</td><td>${importUser!}</td></tr>
+                    </#list>
+                    </#if>
+                </table>
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="col-sm-2 control-label">预计发放数量(张): </label>
             <div class="col-sm-4">
                 <input type="text" readonly class="form-control give-number" name="totalCount" placeholder="" <#if coupon??>value="${coupon.totalCount?string('0')!}"</#if>  datatype="n" errormsg="发放数量需要填写数字" >
+            </div>
+        </div>
+
+        <div class="form-group coupon-deposit <#if !(agentsOrChannels?? && agentsOrChannels?size gt 0)>coupon-hide</#if>">
+            <label class="col-sm-2"></label>
+            <div class="col-sm-4 coupon-agent-channel">
+                <#if agentsOrChannels?? && agentsOrChannels?size gt 0>
+                <#if coupon.userGroup == 'AGENT'>
+                    <#list agents as agent>
+                    <label><input type="checkbox" class="agent" name="agents" value="${agent!}" <#if agentsOrChannels?seq_contains(agent)>checked</#if>>${agent!}</label>
+                    </#list>
+                <#else>
+                    <#list channels as channel>
+                    <label><input type="checkbox" class="channel" name="channels" value="${channel!}" <#if agentsOrChannels?seq_contains(channel)>checked</#if>>${channel!}</label>
+                    </#list>
+                </#if>
+                </#if>
             </div>
         </div>
 

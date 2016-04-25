@@ -150,21 +150,22 @@
     var imgDom=window.$('iphone-app-img'),
         TopMainMenuList=window.$('TopMainMenuList');
 
-    window.$('iphone-app-pop').onclick=function(e) {
-
-        if(imgDom.style.display == "block") {
-            imgDom.style.display='none';
-        }
-        else {
-            imgDom.style.display='block';
-        }
-        if (event.stopPropagation) {
-            event.stopPropagation();
-        }
-        else if (window.event) {
-            window.event.cancelBubble = true;
-        }
-    };
+    if (window.$('iphone-app-pop')) {
+        window.$('iphone-app-pop').onclick=function(e) {
+            if(imgDom.style.display == "block") {
+                imgDom.style.display='none';
+            }
+            else {
+                imgDom.style.display='block';
+            }
+            if (event.stopPropagation) {
+                event.stopPropagation();
+            }
+            else if (window.event) {
+                window.event.cancelBubble = true;
+            }
+        };
+    }
 
     document.getElementsByTagName("body")[0].onclick=function(e) {
         var userAgent = navigator.userAgent.toLowerCase(),

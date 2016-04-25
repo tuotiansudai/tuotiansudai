@@ -41,7 +41,6 @@
         <result column="expected_income" property="expectedIncome"/>
         <result column="birthday_benefit" property="birthdayBenefit"/>
         <result column="invest_lower_limit" property="investLowerLimit"/>
-        <result column="invest_upper_limit" property="investUpperLimit"/>
         <result column="status" property="status"/>
     </resultMap>
 
@@ -104,10 +103,9 @@
             uc.end_time as end_time,
             (c.birthday_benefit + 1) as birthday_benefit,
             c.invest_lower_limit as invest_lower_limit,
-            c.invest_upper_limit as invest_upper_limit,
             uc.status as status
         from user_coupon uc
-        join coupon c on uc.coupon_id=c.id and c.deleted is FALSE
+        join coupon c on uc.coupon_id=c.id
         where
             (uc.status is null or uc.status != 'SUCCESS')
             and uc.end_time > now()
@@ -132,10 +130,9 @@
             uc.expected_interest - uc.expected_fee as expected_income,
             (c.birthday_benefit + 1) as birthday_benefit,
             c.invest_lower_limit as invest_lower_limit,
-            c.invest_upper_limit as invest_upper_limit,
             uc.status as status
         from user_coupon uc
-        join coupon c on uc.coupon_id=c.id and c.deleted is FALSE
+        join coupon c on uc.coupon_id=c.id
         join loan l on l.id=uc.loan_id
         join invest i on i.id = uc.invest_id
         where
@@ -154,10 +151,9 @@
             uc.end_time as end_time,
             (c.birthday_benefit + 1) as birthday_benefit,
             c.invest_lower_limit as invest_lower_limit,
-            c.invest_upper_limit as invest_upper_limit,
             uc.status as status
         from user_coupon uc
-        join coupon c on uc.coupon_id=c.id and c.deleted is FALSE
+        join coupon c on uc.coupon_id=c.id
         where
             (uc.status is null or uc.status != 'SUCCESS')
             and uc.end_time &lt; now()
