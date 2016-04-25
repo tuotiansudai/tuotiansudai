@@ -132,7 +132,7 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
             $('.file-btn').find('input').val('');
             $('.file-btn').hide();
             var userGroup = this.value;
-            if(userGroup != "IMPORT_USER" && userGroup != 'AGENT' && userGroup != 'CHANNEL') {
+            if(userGroup != "IMPORT_USER" && userGroup != 'AGENT' && userGroup != 'CHANNEL' && userGroup != 'EXCHANGER_CODE') {
                 $.get('/activity-manage/coupon/user-group/' + userGroup + '/estimate', function (data) {
                     $('.give-number').val(data);
                 })

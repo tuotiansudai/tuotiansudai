@@ -139,7 +139,7 @@ public class CouponController {
     public ModelAndView redEnvelope() {
         ModelAndView modelAndView = new ModelAndView("/red-envelope");
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
-        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.ALL_USER, UserGroup.EXCHANGER_CODE));
+        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
         long initNum = couponService.findEstimatedCount(UserGroup.ALL_USER);
         modelAndView.addObject("initNum", initNum);
         return modelAndView;

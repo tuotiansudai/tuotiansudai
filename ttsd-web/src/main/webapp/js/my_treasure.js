@@ -1,4 +1,4 @@
-require(['jquery', 'coupon-alert'], function($) {
+require(['jquery', 'coupon-alert', 'jquery.ajax.extension'], function($) {
 	$(function() {
 		var $body = $('body'),
 			$ruleList = $('#ruleList'),
@@ -23,9 +23,9 @@ require(['jquery', 'coupon-alert'], function($) {
 		});
 
 		$('#submitCode').on('click', function() {
-			var exchangeCode = $('#couponByCode').val().trim,
+			var exchangeCode = $('#couponByCode').val(),
 				$errorText=$('#errorText');
-			if (exchangeCode.length != 14) {
+			if ($.trim(exchangeCode).length != 14) {
 				$errorText.addClass('error-color').find('span').text('请输入正确的兑换码');
 				$('#couponByCode').val('');
 			} else {
