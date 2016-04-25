@@ -214,7 +214,30 @@
                                     <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")} <span>项目期限</span></dd>
                                     <dd class="dl-amount"><i><@amount>${loan.amount}</@amount>元</i><span>项目金额</span></dd>
                                 </dl>
-                                <div class="project-schedule clear-blank clearfix">
+                                <#if loan.status !="PREHEAT">
+                                    <div class="project-schedule clear-blank clearfix">
+                                        <div class="p-title">
+                                            <span class="fl">项目进度</span>
+                                            <span class="point fr">${loan.progress?string("0.00")}%</span>
+                                        </div>
+                                        <div class="process-percent">
+                                            <div class="percent" style="width:${loan.progress}%"></div>
+                                        </div>
+                                    </div>
+                                </#if>
+
+                            </div>
+                            <#if loan.status=="RAISING">
+                                <a href="/loan/${loan.id?string.computer}" class="btn-normal">立即投资</a>
+                            <#elseif loan.status=="PREHEAT">
+                                <div class="time-item preheat" data-time="${loan.preheatSeconds?string.computer}">
+                                    <#if loan.preheatSeconds lte 1800>
+                                        <i class="time-clock" ></i><strong class="minute_show">00</strong><em>:</em><strong class="second_show">00</strong>以后可投资
+                                    <#else>
+                                    ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
+                                    </#if>
+                                </div>
+                                <div class="project-schedule clear-blank clearfix pro">
                                     <div class="p-title">
                                         <span class="fl">项目进度</span>
                                         <span class="point fr">${loan.progress?string("0.00")}%</span>
@@ -223,11 +246,8 @@
                                         <div class="percent" style="width:${loan.progress}%"></div>
                                     </div>
                                 </div>
-                            </div>
-                            <#if loan.status=="RAISING">
-                                <a href="/loan/${loan.id?string.computer}" class="btn-normal">立即投资</a>
-                            <#elseif loan.status=="PREHEAT">
-                                <a href="/loan/${loan.id?string.computer}" class="btn-normal wait-invest">预热中</a>
+                                <a href="/loan/${loan.id?string.computer}" class="btn-normal now" >立即投资</a>
+                                <a href="/loan/${loan.id?string.computer}" class="btn-normal wait-invest will">预热中</a>
                             <#else>
                                 <button type="button" disabled class="btn-normal">已售罄</button>
                             </#if>

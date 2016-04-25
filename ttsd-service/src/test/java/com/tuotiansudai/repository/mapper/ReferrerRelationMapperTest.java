@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -61,5 +62,27 @@ public class ReferrerRelationMapperTest {
         List<ReferrerRelationModel> testModelList = referrerRelationMapper.findByLoginName("test2");
 
         assertNotNull(testModelList.get(0));
+    }
+
+    @Test
+    public void findReferrerCountByReferrerLoginName() throws Exception {
+        ReferrerRelationModel referrerRelationModel = new ReferrerRelationModel();
+        referrerRelationModel.setReferrerLoginName("test11");
+        referrerRelationModel.setLoginName("test11");
+        referrerRelationModel.setLevel(1);
+        UserModel  user1 = new UserModel();
+        user1.setId(idGenerator.generate());
+        user1.setLoginName("test11");
+        user1.setPassword("123");
+        user1.setMobile("13900000000");
+        user1.setRegisterTime(new Date());
+        user1.setLastModifiedTime(new Date());
+        user1.setStatus(UserStatus.ACTIVE);
+        user1.setSalt("123");
+
+        userMapper.create(user1);
+        referrerRelationMapper.create(referrerRelationModel);
+        int count = referrerRelationMapper.findReferrerCountByReferrerLoginName("test11");
+        assertEquals(count,1);
     }
 }

@@ -25,6 +25,7 @@
                 代理人：${loan.agentLoginName}<br/>
                 借款人：${loan.loanerLoginName}<br/>
                 项目期限：${loan.periods}<#if loan.type.getLoanPeriodUnit() == "MONTH"> 月<#else> 天</#if><br/>
+                募集期限：${loan.raisingPeriod}天<br/>
                 还款方式：${loan.type.getName()}<br/>
                 投资要求：<@amount>${loan.minInvestAmount?string.computer}</@amount> 元起投，投资金额为<@amount>${loan.investIncreasingAmount?string.computer}</@amount> 元的整数倍<br/>
                 <a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a>
@@ -162,7 +163,7 @@
                             <#if loan.preheatSeconds lte 1800>
                                 <i class="time-clock"></i><strong id="minute_show">00</strong><em>:</em><strong id="second_show">00</strong>以后可投资
                             <#else>
-                            ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
+                                ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
                             </#if>
                         </dd>
 
