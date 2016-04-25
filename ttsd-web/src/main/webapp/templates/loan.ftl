@@ -16,7 +16,7 @@
                             <b><@percentInteger>${loan.basicRate}</@percentInteger><@percentFraction>${loan.basicRate}</@percentFraction></b>
                             <#if loan.activityRate!=0>+<@percentInteger>${loan.activityRate}</@percentInteger><@percentFraction>${loan.activityRate}</@percentFraction></#if>%
                         </em>
-                        <i>年化收益</i>
+                        <i>预期年化收益</i>
                     </div>
                 </div>
             </div>
@@ -35,7 +35,7 @@
             </#if>
         </div>
         <div class="account-info fl">
-            <h5 class="l-title">拓天速贷提醒您：理财非存款，投资需谨慎！</h5>
+            <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>
             <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
                 <form action="/invest" method="post" id="investForm">
                     <dl class="account-list">
