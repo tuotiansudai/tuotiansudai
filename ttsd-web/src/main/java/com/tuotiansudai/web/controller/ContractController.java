@@ -57,4 +57,35 @@ public class ContractController {
         }
     }
 
+    @RequestMapping(value = "/transfer/loanId/{transferApplicationId}", method = RequestMethod.GET)
+    public void generateTransferContract(@PathVariable long transferApplicationId,HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException, ServletException {
+        try {
+            String pdfString = contractService.generateTransferContract(transferApplicationId);
+            if(StringUtils.isEmpty(pdfString)){
+                httpServletRequest.getRequestDispatcher("/error/404").forward(httpServletRequest, response);
+                return;
+            }
+            response.setContentType("application/pdf;charset=UTF-8");
+            contractService.generateContractPdf(pdfString, response.getOutputStream());
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+    }
+
+    @RequestMapping(value = "/transfer/agreement", method = RequestMethod.GET)
+    public void generateTransferAgreement(HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException, ServletException {
+        try {
+            String pdfString = contractService.generateTransferAgreement();
+            if(StringUtils.isEmpty(pdfString)){
+                httpServletRequest.getRequestDispatcher("/error/404").forward(httpServletRequest, response);
+                return;
+            }
+            response.setContentType("application/pdf;charset=UTF-8");
+            contractService.generateContractPdf(pdfString, response.getOutputStream());
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+    }
+
+
 }

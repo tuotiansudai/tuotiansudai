@@ -14,6 +14,11 @@ import java.math.BigDecimal;
 public class TransferRuleUtil {
 
     public static long getTransferFee(InvestModel investModel, TransferRuleModel transferRuleModel, LoanModel loanModel) {
+        double fee = getTransferFeeRate(investModel, transferRuleModel,loanModel);
+        return new BigDecimal(investModel.getAmount()).multiply(new BigDecimal(fee)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+    }
+
+    public static double getTransferFeeRate(InvestModel investModel, TransferRuleModel transferRuleModel, LoanModel loanModel) {
         DateTime beginDate;
         DateTime endDate = new DateTime();
         if (Lists.newArrayList(LoanType.INVEST_INTEREST_LUMP_SUM_REPAY, LoanType.INVEST_INTEREST_MONTHLY_REPAY).contains(loanModel.getType())){
@@ -30,7 +35,8 @@ public class TransferRuleUtil {
         } else {
             fee = transferRuleModel.getLevelThreeFee();
         }
-        return new BigDecimal(investModel.getAmount()).multiply(new BigDecimal(fee)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        return fee;
     }
+
 
 }
