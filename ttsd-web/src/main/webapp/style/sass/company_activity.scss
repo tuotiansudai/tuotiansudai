@@ -2195,6 +2195,376 @@
     }
   }
 }
+
+.download-container{
+  background-color:#f8f8f8;
+  min-height: 500px;
+  width:100%;
+  overflow:hidden;
+  .wp-img{
+    position:relative;
+    a{
+      width:17%;
+      height:11%;
+      position:absolute;
+      display:block;
+    }
+    .ios{
+      background: url("/images/sign/actor/download/download-ios.png") no-repeat center;
+      left:48%;
+      top:54%;
+      background-size:100%;
+    }
+
+    .android{
+      background: url("/images/sign/actor/download/download-android.png") no-repeat center;
+      left:48%;
+      top:72%;
+      background-size:100%;
+    }
+  }
+  .download-one{
+    height:410px;
+    background: url("/images/sign/actor/download/download-one.png") no-repeat ;
+    background-position:70% 70%;
+    .step-one{
+      padding-top:112px;
+      margin-left:20%
+    }
+  }
+  .download-two{
+    height:568px;
+    margin-top:-148px;
+    background: url("/images/sign/actor/download/download-two.png") no-repeat center;
+    background-size:100%;
+    .step-two{
+      padding-top:192px;
+      margin-left:55%
+    }
+  }
+  .download-three{
+    height:400px;
+    margin-top:-50px;
+    background: url("/images/sign/actor/download/download-three.png") no-repeat ;
+    background-position:70% 70%;
+    .step-three{
+      padding-top:110px;
+      margin-left:20%
+    }
+  }
+  .download-four{
+    height:614px;
+    margin-top:-60px;
+    background: url("/images/sign/actor/download/download-four.png") no-repeat center;
+    background-size:100%;
+    .step-four{
+      padding-top:220px;
+      margin-left:55%
+    }
+  }
+  .download-five{
+    height:420px;
+    margin-top:-50px;
+    background: url("/images/sign/actor/download/download-five.png") no-repeat ;
+    background-position:70% 70%;
+    .step-five{
+      padding-top:100px;
+      margin-left:20%
+    }
+  }
+  .download-six{
+    height:484px;
+    margin-bottom:-60px;
+    background: url("/images/sign/actor/download/download-six.png") no-repeat center;
+    background-size:100%;
+    .step-six{
+      padding-top:94px;
+      margin-left:55%
+    }
+    .now-download{
+      width:240px;
+      height:60px;
+      line-height: 60px;
+      font-size:24px;
+      background-color:#ff9e00;
+      border-radius:10px;
+      text-align: center;
+      margin-left:55%;
+      margin-top:2%;
+      a{
+        color:#fff;
+      }
+    }
+  }
+}
+.download-container-phone{
+  width:100%;
+  background: #f8f8f8;
+  min-height: 500px;
+  display:none;
+    .wp-img{
+    position:relative;
+    a{
+      width:30%;
+      height:12%;
+      position:absolute;
+      display:block;
+    }
+    .ios{
+      background: url("/images/sign/actor/download/download-phone-ios.png") no-repeat center;
+      left:20%;
+      top:47%;
+      background-size:100%;
+    }
+
+    .android{
+      background: url("/images/sign/actor/download/download-phone-android.png") no-repeat center;
+      left:20%;
+      top:64%;
+      background-size:100%;
+    }
+  }
+  .download-one{
+    margin-bottom: -1px;
+  }
+  .download-six{
+    margin-top: -1px;
+    position:relative;
+    text-align: center;
+    a{
+      display:block;
+      width:130px;
+      height:30px;
+      line-height: 30px;
+      background-color:#ff9e00;
+      color:#fff;
+      border-radius:5px;
+      position:absolute;
+      left:50%;
+      top:86%;
+      margin-left:-65px;
+    }
+  }
+
+}
+
+
+/*share-reward page*/
+.share-reward-container{
+  background:#c6eaff;
+  min-height:500px;
+  .wp{
+    width:1000px;
+    margin:0 auto;
+    
+    position:relative;
+    .left-bg{
+      width:200px;
+      height:100%;
+      position:absolute;
+      top:0;
+      left:-200px;
+      background:url("/images/sign/actor/sharereward/bg-left.png") repeat center;
+      background-size:100%;
+    }
+    .right-bg{
+      width:200px;
+      height:100%;
+      position:absolute;
+      top:0;
+      right:-200px;
+      background:url("/images/sign/actor/sharereward/bg-right.png") repeat center;
+      background-size:100%;
+    }
+    .reward-info-title{
+      height:306px;
+      width:100%;
+      background:url("/images/sign/actor/sharereward/reward-info-title.png") no-repeat center;
+      background-size:100%;
+      margin-top:-18px;
+      .title-text{
+        padding-top:100px;
+        padding-bottom: 14px;
+        text-align: center;
+        font-size: 20px;
+        color: #ffd633;
+        
+      }
+      p{
+        width:360px;
+        height:84px;
+        font-size: 14px;
+        color:#fff;
+        margin:0 auto;
+      }
+    }
+    .share-example{
+      height:862px;
+      width:100%;
+      background:url("/images/sign/actor/sharereward/share-example.png") no-repeat center;
+      background-size:100%;
+      margin-top: -50px;
+
+      .example-title{
+        padding-left:90px;
+        padding-top:100px;
+        margin-bottom: 30px;
+        height:43px;
+        
+        span{
+          float:left;
+          height:43px;
+        }
+        .title-mole{
+          width:40px;
+          margin-right: 10px;
+          background:url("/images/sign/actor/sharereward/share-example-mole.png") no-repeat center;
+        }
+        .title-text{
+          width:200px;
+          padding-top:20px;
+          background:url("/images/sign/actor/sharereward/share-example-title.png") no-repeat center;
+        }
+      }
+      p{
+        font-size: 16px;
+        color:#fff;
+        height:30px;
+        padding-left:180px;
+        margin-bottom:0px;
+        span{
+          color:#fff700;
+        }
+      }
+      .example-case{
+        color:#fff700;
+        font-size: 20px;
+        padding-left: 180px;
+        height:70px;
+      }
+      .example-case-detail{
+        height:425px;
+        background:url("/images/sign/actor/sharereward/example-case-detail.png") no-repeat center;
+        
+      }
+    }
+    .share-recommend{
+      height:300px;
+      width:100%;
+      background:url("/images/sign/actor/sharereward/share-recommend.png") no-repeat center;
+      background-size:100%;
+      margin-top: -54px;
+      text-align: center;
+      a{
+        width:200px;
+        height:50px;
+        line-height: 50px;
+        text-align: center;
+        margin: 0 20px;
+        color: #fff;
+        background-color:#ff9c1b;
+        font-size: 22px;
+        display: inline-block;
+        position: relative;
+        overflow: hidden;
+        margin-top: 135px;
+      }
+    }
+    .share-rules{
+      height:440px;
+      width:100%;
+      background:url("/images/sign/actor/sharereward/share-rules.png") no-repeat center;
+      background-size:100%;
+      margin-top: -40px;
+      margin-bottom: 56px;
+      .rules-title{
+        padding-top:100px;
+        text-align: center;
+        font-size: 20px;
+        color: #fff700;
+      }
+      .rules-list{
+        padding-left:33%;
+          li{
+            height:30px;
+            font-size: 14px;
+            color:#fff;
+            background:url("/images/sign/actor/sharereward/share-rulues-round.png") no-repeat ;
+            background-position:0 10px;
+            padding-left:20px;
+          }
+              
+      }
+      p.rules-sign{
+            width:100%;
+            color:#fff;
+            padding-left:35%;
+            font-size: 12px;
+          }
+    }
+    .clearfix{
+      clear:both;
+      display: block;
+    }
+  }
+}
+.share-reward-phone{
+  display:none;
+  width:100%;
+  background: #c6eaff;
+  min-height: 500px;
+  .rank-phone-model{
+    width:100%
+
+  }
+  .wp{
+    padding:0 2%;
+    .reward-info-title{
+      height:185px;   
+      background:url("/images/sign/actor/sharereward/share-phone-info.png") no-repeat center;
+      background-size:100% 100%;
+      margin-top:-5px;
+    }
+    .share-example{
+      height:500px;
+      background:url("/images/sign/actor/sharereward/share-phone-example.png") no-repeat center;
+      background-size:100% 100%;
+      margin-top:-16px;
+    }
+    .share-recommend{
+      height:150px;
+      background:url("/images/sign/actor/sharereward/share-phone-recommend.png") no-repeat center;
+      background-size:100% 100%;
+      margin-top:-16px;
+      text-align: center;
+      a{
+        width:100px;
+        height:25px;
+        line-height: 25px;
+        text-align: center;
+        color: #fff;
+        background-color:#ff9c1b;
+        font-size: 14px;
+        display: inline-block;
+        position: relative;
+        overflow: hidden;
+        margin-top:72px;
+      }
+    }
+    .share-rules{
+      height:260px;
+      background:url("/images/sign/actor/sharereward/share-phone-rules.png") no-repeat center;
+      background-size:100% 100%;
+      margin-top:-16px;
+    }
+    .clearfix{
+      clear:both;
+      display: block;
+    }
+  }
+}
+
+
 @media screen and (max-width:700px) {
   .red-envelope-container {
     .mobile {
@@ -2419,5 +2789,19 @@
   .rank-list-phone{
     display:block;
   }
+  .download-container{
+    display:none;
+  }
+  .download-container-phone{
+    display:block;
+  }
+  .share-reward-container{
+    display:none;
+  }
+  .share-reward-phone{
+    display:block;
+  }
+
+
 }
 

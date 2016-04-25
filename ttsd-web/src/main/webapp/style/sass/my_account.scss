@@ -934,10 +934,27 @@ body{
 
 /* I want to invest page*/
 .loan-list-content {
-  .wrapper-list {
-    li {
-      border-bottom: 1px solid #e6e6e6;
-      padding: 12px;
+  .project-type{
+    margin-bottom: 15px;
+    li{
+      margin:0 15px;
+      display: inline-block;
+      a{
+        font-size:18px;
+        color:#0e050a;
+      }
+      &.active{
+        border-bottom:4px solid #ff9c1b;
+        a{
+          color:#ff9c1b;
+        }
+      }
+    }
+  }
+.wrapper-list {
+  li {
+    border-bottom: 1px solid #e6e6e6;
+    padding: 12px;
 
       span {
         padding-right: 10px;
@@ -1064,11 +1081,37 @@ body{
           }
         }
       }
+
       .loan-process {
         float: left;
         width: 240px;
         margin: 10px 30px 0px 30px;
-
+        &.active-after{
+          .will,.time-item{
+            display:none;
+          }
+          .pro,.now{
+            display:block;
+          }
+        }
+        .will,.time-item{
+          display:block;
+        }
+        .pro,.now{
+          display:none;
+        }
+        .time-item{
+          display: inline-block;
+          border-radius: 20px;
+          border: 1px dashed red;
+          margin-top: 15px;
+          width: 240px;
+          font-size: 15px;
+          height: 42px;
+          line-height: 42px;
+          color: red;
+          text-align:center;
+        }
         .rest-amount {
           color: #ff752a;
           font-size: 13px;
@@ -1087,7 +1130,7 @@ body{
           }
           &.wait-invest {
             color: #999;
-            margin-top: 15px;
+
 
             .btn-normal {
               background: rgba(255, 156, 27, 1);
@@ -1109,12 +1152,25 @@ body{
           }
         }
       }
+
     }
   }
 }
 
 /* refer page */
 .invest-list-content {
+  .column-title {
+    em {
+      border-bottom: none;
+      color: #999;
+      cursor: pointer;
+      margin-right: 40px;
+      &.active {
+        border-bottom: 4px solid #ff7200;
+        color: #ff7200;
+      }
+    }
+  }
   .date-filter {
     margin-bottom: 20px;
 
@@ -1284,7 +1340,7 @@ body{
   }
   .account-info {
     border-left: 1px solid #ccc;
-    padding: 10px;
+    padding: 10px 10px 60px 10px;
     width: 350px;
     text-align: center;
     font-size: 12px;
@@ -1385,7 +1441,6 @@ body{
                 &.lower-upper-limit {
                   .input-use-ticket, label .sign {
                     position: relative;
-                    top: -8px;
                   }
                 }
                 .input-use-ticket {
@@ -1455,11 +1510,20 @@ body{
         }
         &.time-item {
           display: inline-block;
-          border-radius: 10px;
+          border-radius: 20px;
           border: 1px dashed red;
           margin-top: 15px;
-          padding: 1px 40px;
-          font-size: 13px;
+          margin-bottom:30px;
+          width:240px;
+          font-size: 16px;
+          height:42px;
+          line-height:42px;
+          color:red;
+
+          .allow{
+            font-size:14px;
+            color:#949494;
+          }
 
           .time-clock {
             background: url(/images/icons/time-clock.png) center -1px no-repeat;

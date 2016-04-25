@@ -10,14 +10,13 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -164,7 +163,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         requestDto.setBaseParam(BaseParamTest.getInstance());
         requestDto.setIndex(1);
         requestDto.setPageSize(10);
-        requestDto.setTransferStatuses(Lists.newArrayList(TransferStatus.TRANSFERABLE, TransferStatus.TRANSFERRING, TransferStatus.SUCCESS));
+        requestDto.setTransferStatus(Lists.newArrayList(TransferStatus.TRANSFERABLE, TransferStatus.TRANSFERRING, TransferStatus.SUCCESS));
         BaseResponseDto<UserInvestListResponseDataDto> responseDto = mobileAppInvestListService.generateUserInvestList(requestDto);
         UserInvestListResponseDataDto dataDto = responseDto.getData();
 

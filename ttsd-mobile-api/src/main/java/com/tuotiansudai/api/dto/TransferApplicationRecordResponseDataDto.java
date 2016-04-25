@@ -17,6 +17,7 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
     private String baseRate;
     private String activityRate;
     private TransferStatus transferStatus;
+    private String leftPeriod;
 
     public String getTransferApplicationId() {
         return transferApplicationId;
@@ -82,6 +83,14 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
         this.transferStatus = transferStatus;
     }
 
+    public String getLeftPeriod() {
+        return leftPeriod;
+    }
+
+    public void setLeftPeriod(String leftPeriod) {
+        this.leftPeriod = leftPeriod;
+    }
+
     public TransferApplicationRecordResponseDataDto(){
 
     }
@@ -95,5 +104,6 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
         this.baseRate = decimalFormat.format(transferApplicationRecordDto.getBaseRate() * 100);
         this.activityRate = decimalFormat.format(transferApplicationRecordDto.getActivityRate() * 100);
         this.transferStatus = transferApplicationRecordDto.getTransferStatus();
+        this.leftPeriod = String.valueOf(transferApplicationRecordDto.getLeftPeriod());
     }
 }

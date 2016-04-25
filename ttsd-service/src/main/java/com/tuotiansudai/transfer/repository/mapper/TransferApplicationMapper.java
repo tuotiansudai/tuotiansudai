@@ -33,7 +33,7 @@ public interface TransferApplicationMapper {
                                                                                     @Param(value = "index") Integer index,
                                                                                     @Param(value = "pageSize") Integer pageSize);
 
-    int findCountTransfereeApplicationPaginationByLoginName(@Param("loginName")String loginName);
+    int findCountTransfereeApplicationPaginationByLoginName(@Param("loginName") String loginName);
 
     List<TransferApplicationRecordDto> findTransferApplicationPaginationList(@Param("transferApplicationId") Long transferApplicationId,
                                                                    @Param("startTime") Date startTime,

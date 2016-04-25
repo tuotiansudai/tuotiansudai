@@ -31,6 +31,7 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
         this.transfereeLoginName = transferApplicationRecordDto.getTransfereeLoginName();
         this.transferFee = AmountConverter.convertCentToString(transferApplicationRecordDto.getTransferFee());
         this.transferTime = transferApplicationRecordDto.getTransferTime();
+        this.leftPeriod = String.valueOf(transferApplicationRecordDto.getLeftPeriod());
     }
 
 

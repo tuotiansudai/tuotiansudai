@@ -1,11 +1,6 @@
 package com.tuotiansudai.coupon.util;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.util.UserBirthdayUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

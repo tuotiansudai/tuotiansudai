@@ -71,8 +71,12 @@ public class MobileAppAuthenticationFailureHandler extends SimpleUrlAuthenticati
         loginLogService.generateLoginLog(username, source, RequestIPParser.parse(request), deviceId, false);
     }
 
-    private void logUserLoginFail(String username) {
-        String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", username);
+    private void logUserLoginFail(String loginName) {
+        UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
+        if (userModel == null) {
+            return;
+        }
+        String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", userModel.getLoginName());
         if (!redisWrapperClient.exists(redisKey)) {
             redisWrapperClient.set(redisKey, "1");
         } else {
@@ -80,11 +84,8 @@ public class MobileAppAuthenticationFailureHandler extends SimpleUrlAuthenticati
                 redisWrapperClient.set(redisKey, String.valueOf(Integer.parseInt(redisWrapperClient.get(redisKey)) + 1));
             } else if (Integer.parseInt(redisWrapperClient.get(redisKey)) == times - 1) {
                 redisWrapperClient.setex(redisKey, second, String.valueOf(times));
-                UserModel userModel = userMapper.findByLoginName(username);
-                if (userModel != null) {
-                    userModel.setStatus(UserStatus.INACTIVE);
-                    userMapper.updateUser(userModel);
-                }
+                userModel.setStatus(UserStatus.INACTIVE);
+                userMapper.updateUser(userModel);
             }
         }
     }

@@ -70,7 +70,7 @@ public class PayCallbackController {
     @RequestMapping(value = "/mer_bind_agreement_notify", method = RequestMethod.GET)
     public ModelAndView agreementNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = agreementService.agreementCallback(paramsMap, request.getQueryString(), AgreementBusinessType.AUTO_INVEST);
+        String responseData = agreementService.agreementCallback(paramsMap, request.getQueryString(), null);
         return new ModelAndView("/callback_response", "content", responseData);
     }
     @RequestMapping(value = "/no_password_invest_notify", method = RequestMethod.GET)

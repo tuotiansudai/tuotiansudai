@@ -480,7 +480,7 @@ public class InvestTransferNormalRepayServiceTest {
     }
 
     private TransferApplicationModel createFakeTransferApplication(InvestModel transferInvestModel, Long investId, int period, long transferAmount, long transferFee, Date transferTime, TransferStatus transferStatus) {
-        TransferApplicationModel fakeTransferApplication = new TransferApplicationModel(transferInvestModel, "name", period, transferAmount, transferFee, new DateTime().plusDays(1).toDate());
+        TransferApplicationModel fakeTransferApplication = new TransferApplicationModel(transferInvestModel, "name", period, transferAmount, transferFee, new DateTime().plusDays(1).toDate(),3);
         fakeTransferApplication.setInvestId(investId);
         fakeTransferApplication.setTransferTime(transferTime);
         fakeTransferApplication.setStatus(transferStatus);

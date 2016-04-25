@@ -10,8 +10,10 @@
     <div class="header page-width">
         <span class="fl service-time">客服电话：400-169-1188<time>（服务时间：9:00－20:00）</time></span>
         <ul class="fr">
-            <li class="login-pop-app" id="iphone-app-pop"><a href="javascript:" onclick="cnzzPush.trackClick('13顶部导航','手机APP')">手机APP</a>
+            <li class="login-pop-app" id="iphone-app-pop">
+                <a href="javascript:" onclick="cnzzPush.trackClick('13顶部导航','手机APP')">手机APP</a>
                 <div id="iphone-app-img" class="img-app-pc-top"></div>
+            </li>
         <@global.isNotAnonymous>
             <li><a class="personal-info-link" href="${requestContext.getContextPath()}/personal-info"><@global.security.authentication property="principal.username" /></a></li>
             <li><a id="logout-link" href="/logout" class="logout">退出</a>

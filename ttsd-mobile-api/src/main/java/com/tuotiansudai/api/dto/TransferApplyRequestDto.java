@@ -14,8 +14,6 @@ public class TransferApplyRequestDto extends BaseParamDto {
     @NotEmpty(message = "0023")
     private String transferAmount;
 
-    private boolean transferInterest;
-
     public TransferApplyRequestDto() {
     }
 
@@ -33,14 +31,6 @@ public class TransferApplyRequestDto extends BaseParamDto {
 
     public void setTransferAmount(String transferAmount) {
         this.transferAmount = transferAmount;
-    }
-
-    public boolean isTransferInterest() {
-        return transferInterest;
-    }
-
-    public void setTransferInterest(boolean transferInterest) {
-        this.transferInterest = transferInterest;
     }
 
     public TransferApplicationDto convertToTransferApplicationDto() {

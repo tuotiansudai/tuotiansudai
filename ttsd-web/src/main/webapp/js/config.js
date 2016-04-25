@@ -30,7 +30,8 @@ var require = {
         'drag': staticServer+'/js/libs/drag',
         'rotate': staticServer+'/js/libs/jqueryrotate.min',
         'template':staticServer+'/js/libs/template.min',
-        'fancybox':staticServer+'/js/libs/jquery.fancybox.min'
+        'fancybox':staticServer+'/js/libs/jquery.fancybox.min',
+        'count_down': staticServer+'/js/dest/count_down.min',
     },
     'waitSeconds':0,
     'shim': {
