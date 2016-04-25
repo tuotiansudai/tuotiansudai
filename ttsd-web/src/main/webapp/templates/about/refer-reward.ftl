@@ -9,7 +9,7 @@
 <div class="about-us-container company-summary">
     <h2 class="column-title"><em>推荐奖励</em></h2>
     <p>用户在平台采用<span class="give-number">2</span>级推荐机制，</p>
-    <p>每级奖励金额为被推荐人投资本金年化的1%，</p>
+    <p>每级奖励金额为被推荐人投资本金预期年化收益的1%，</p>
     <p class="pc">奖励在标的放款时发放到推荐人账户。</p>
     <h3>推荐案例</h3>
 
@@ -19,20 +19,20 @@
             发生二级以上的推荐，小张不获得奖励
         </div>
         <div class="section-two border-radius">
-            小明每次投资，小张会得到投资金额年化的1%作为奖励。
+            小明每次投资，小张会得到投资本金预期年化收益的1%作为奖励。
             例如：小明投资10万元三个月（90天）标的，小张得到奖励金额为100000×（1%/365×90）=246.57元，放款时一次性发放。
         </div>
         <div class="section-three border-radius">
-            小李每次投资，小张和小明分别得到投资金额年化的1%作为奖励。
+            小李每次投资，小张和小明分别得到投资本金预期年化收益的1%作为奖励。
             例如：小李投资10万元一个月（30天）标的，小张得到奖励金额为100000×（1%/365×30）=82.19元，放款时一次性发放。
         </div>
         <div class="section-four border-radius">
-            小刘是小李推荐的，小刘每次投资，小明和小李会分别得到投资金额年化的1%作为奖励，小张无奖励。
+            小刘是小李推荐的，小刘每次投资，小明和小李会分别得到投资本金预期年化收益的1%作为奖励，小张无奖励。
             例如：小刘投资10万元半年期（180天）标的，他们分别得到奖励金额为100000×（1%/365×180）=493.15元，放款时一次性发放。
         </div>
     </div>
     <div class="refer-reward-box mobile">
-        <img src="${staticServer}/images/sign/aboutus/give-intro-app.png" alt="推荐奖励介绍" class="responsive-width">
+        <img src="${staticServer}/images/sign/aboutus/give-intro-appnew.png" alt="推荐奖励介绍" class="responsive-width">
     </div>
     <p class="tc info">
         <span>小李再推荐投资人，小张无奖励。 </span>
