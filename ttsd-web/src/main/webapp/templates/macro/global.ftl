@@ -19,7 +19,7 @@
     </@security.authorize>
 </#macro>
 
-<#macro main pageCss pageJavascript activeNav="" activeLeftNav="" title="拓天速贷" keywords="" description="">
+<#macro main pageCss pageJavascript="" activeNav="" activeLeftNav="" title="拓天速贷" keywords="" description="">
     <#local menus=[
     {"title":"首页", "url":"/","category":"16顶部导航"},
     {"title":"我要投资", "url":"/loan-list","category":"17顶部导航"},
@@ -195,7 +195,8 @@
 </script>
 
 <script src="${staticServer}${jsPath}${js.config}" type="text/javascript" charset="utf-8"></script>
-<#if pageJavascript??>
+
+<#if pageJavascript?? && pageJavascript?length gt 0>
 <script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
         data-main="${staticServer}${jsPath}${pageJavascript}">
 
