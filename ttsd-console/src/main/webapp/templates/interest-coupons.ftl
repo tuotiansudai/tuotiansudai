@@ -30,12 +30,6 @@
             总投资金额(元)
         </th>
         <th>
-            投资上限
-        </th>
-        <th>
-            活动期限
-        </th>
-        <th>
             有效期限
         </th>
         <th>
@@ -86,17 +80,7 @@
         ${coupon.totalInvestAmount/100}
         </td>
         <td>
-            ${coupon.investUpperLimit}
-        </td>
-        <td>
-            <#if coupon.active>
-                ${coupon.startTime?string('yyyy-MM-dd')}至${coupon.endTime?string('yyyy-MM-dd')}
-            <#else>
-                -
-            </#if>
-        </td>
-        <td>
-            ${coupon.deadline}
+            ${coupon.startTime?string('yyyy-MM-dd')}至${coupon.endTime?string('yyyy-MM-dd')}
         </td>
         <td>
             <#if coupon.userGroup == 'IMPORT_USER'>
@@ -134,6 +118,9 @@
         ${coupon.actualAmount/100}
         </td>
         <td>
+        <#if coupon.deleted>
+            已删除
+        <#else>
         <#if coupon.active>
             -
         <#else>
@@ -144,8 +131,12 @@
                 <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a> / <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/${coupon.id?string('0')}" >删除</button>
             </@security.authorize>
         </#if>
+        </#if>
         </td>
         <td>
+            <#if coupon.deleted>
+                -
+            <#else>
             <@security.authorize access="hasAnyAuthority('OPERATOR_ADMIN','ADMIN')">
                 <#if coupon.active>
                     <label>
@@ -162,6 +153,7 @@
             <@security.authorize access="hasAuthority('OPERATOR')">
                 -
             </@security.authorize>
+            </#if>
         </td>
         <td>
             <a href="/activity-manage/coupon/${coupon.id?string('0')}/detail" class="btn-link">查看详情</a>

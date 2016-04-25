@@ -42,6 +42,32 @@
 
         <div class="form-group">
             <label class="col-sm-2 control-label">发放对象:</label>
+            <div class="col-sm-2">
+                <select class="selectpicker jq-b-type userGroup" name="userGroup">
+                    <#list userGroups as userGroup>
+                        <#if userGroup.name() != 'NEW_REGISTERED_USER'>
+                            <option value="${userGroup.name()}">${userGroup.getDescription()}</option>
+                        </#if>
+                    </#list>
+                </select>
+            </div>
+            <div class="file-btn coupon-hide">
+                <input type="file" id="file-in">
+                重新导入
+            </div>
+            <input type="hidden" name="file" id="import-file">
+        </div>
+
+        <div class="form-group coupon-hide coupon-table">
+            <label class="col-sm-2"></label>
+            <div class="col-sm-4 data-table">
+                <table class="table table-bordered">
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">预计发放数量(张): </label>
             <div class="col-sm-4">
                 <select class="selectpicker jq-b-type userGroup" name="userGroup">
                     <#list userGroups as userGroup>
@@ -54,7 +80,13 @@
         <div class="form-group coupon-hide">
             <label class="col-sm-2 control-label">预计发放数量(张): </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control give-number" name="totalCount" placeholder="" <#if coupon??>value="${coupon.totalCount?string('0')!}"</#if>  datatype="n" errormsg="发放数量需要填写数字" >
+                <input type="text" readonly class="form-control give-number" name="totalCount" placeholder="" value="${initNum?string('0')!}"  datatype="n" errormsg="发放数量需要填写数字" >
+            </div>
+        </div>
+
+        <div class="form-group coupon-hide coupon-deposit">
+            <label class="col-sm-2"></label>
+            <div class="col-sm-4 coupon-agent-channel">
             </div>
         </div>
 

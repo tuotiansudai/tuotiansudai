@@ -6,22 +6,23 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.coupon.dto.CouponDto;
 import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
-import com.tuotiansudai.coupon.repository.model.CouponExchangeModel;
-import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.repository.mapper.CouponUserGroupMapper;
+import com.tuotiansudai.coupon.repository.model.*;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponService;
 import com.tuotiansudai.coupon.service.impl.ExchangeCodeServiceImpl;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.ImportExcelDto;
 import com.tuotiansudai.exception.CreateCouponException;
 import com.tuotiansudai.point.repository.mapper.UserPointPrizeMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.service.UserRoleService;
 import com.tuotiansudai.util.*;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -69,6 +70,12 @@ public class CouponController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private CouponUserGroupMapper couponUserGroupMapper;
+
+    @Autowired
+    private UserRoleService userRoleService;
 
     @Autowired
     private UserPointPrizeMapper userPointPrizeMapper;
@@ -133,6 +140,8 @@ public class CouponController {
         ModelAndView modelAndView = new ModelAndView("/red-envelope");
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.ALL_USER, UserGroup.EXCHANGER_CODE));
+        long initNum = couponService.findEstimatedCount(UserGroup.ALL_USER);
+        modelAndView.addObject("initNum", initNum);
         return modelAndView;
     }
 
@@ -142,6 +151,8 @@ public class CouponController {
         modelAndView.addObject("couponTypes", Lists.newArrayList(CouponType.values()));
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
+        long initNum = couponService.findEstimatedCount(UserGroup.ALL_USER);
+        modelAndView.addObject("initNum", initNum);
         return modelAndView;
     }
 
@@ -198,6 +209,8 @@ public class CouponController {
         ModelAndView modelAndView = new ModelAndView("/interest-coupon");
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
+        long initNum = couponService.findEstimatedCount(UserGroup.ALL_USER);
+        modelAndView.addObject("initNum", initNum);
         return modelAndView;
     }
 
@@ -227,6 +240,16 @@ public class CouponController {
 
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
         modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
+        CouponUserGroupModel couponUserGroupModel = couponUserGroupMapper.findByCouponId(couponModel.getId());
+        if (couponUserGroupModel != null) {
+            modelAndView.addObject("agents", userRoleService.queryAllAgent());
+            modelAndView.addObject("channels",userMapper.findAllChannels());
+            modelAndView.addObject("agentsOrChannels", couponUserGroupModel.getUserGroupItems());
+        }
+        if (couponModel.getUserGroup() == UserGroup.IMPORT_USER && redisWrapperClient.hexists(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success")) {
+            String importUsers = redisWrapperClient.hget(MessageFormat.format(redisKeyTemplate, String.valueOf(couponModel.getId())), "success");
+            modelAndView.addObject("importUsers", Lists.newArrayList(importUsers.split(",")));
+        }
         return modelAndView;
 
     }
@@ -397,12 +420,25 @@ public class CouponController {
 
     @RequestMapping(value = "/import-excel", method = RequestMethod.POST)
     @ResponseBody
-    public List<Object> importExcel(HttpServletRequest request) throws Exception {
+    public ImportExcelDto importExcel(HttpServletRequest request) throws Exception {
+        ImportExcelDto importExcelDto = new ImportExcelDto();
         String uuid = UUIDGenerator.generate();
         String redisKey = MessageFormat.format(redisKeyTemplate, uuid);
         MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
         MultipartFile multipartFile = multiRequest.getFile("file");
-        InputStream inputStream = multipartFile.getInputStream();
+        InputStream inputStream = null;
+        try {
+            if (!multipartFile.getOriginalFilename().endsWith(".xls")) {
+                importExcelDto.setStatus(false);
+                importExcelDto.setMessage("上传失败！请使用2003格式的表格进行上传！");
+                return importExcelDto;
+            }
+            inputStream = multipartFile.getInputStream();
+        } catch (NullPointerException e) {
+            importExcelDto.setStatus(false);
+            importExcelDto.setMessage("您已经取消上传！");
+            return importExcelDto;
+        }
         HSSFWorkbook hssfWorkbook = new HSSFWorkbook(inputStream);
         HSSFSheet hssfSheet = hssfWorkbook.getSheetAt(0);
         List<String> listSuccess = new ArrayList<>();
@@ -421,10 +457,18 @@ public class CouponController {
         }
         redisWrapperClient.hset(redisKey, "failed", StringUtils.join(listFailed, ","));
         redisWrapperClient.hset(redisKey, "success", StringUtils.join(listSuccess, ","));
-        List<Object> list = new ArrayList<>();
-        list.add(uuid);
-        list.add(hssfSheet.getLastRowNum() + 1);
-        return list;
+
+        if (CollectionUtils.isNotEmpty(listFailed)) {
+            importExcelDto.setStatus(false);
+            importExcelDto.setMessage("用户导入失败," + StringUtils.join(listFailed, ",") + "等用户导入有误!");
+        } else {
+            importExcelDto.setStatus(true);
+            importExcelDto.setFileUuid(uuid);
+            importExcelDto.setTotalCount(hssfSheet.getLastRowNum() + 1);
+            importExcelDto.setSuccessLoginNames(listSuccess);
+            importExcelDto.setMessage("用户导入成功!");
+        }
+        return importExcelDto;
     }
 
     private String getStringVal(HSSFCell hssfCell) {

@@ -1,6 +1,7 @@
 @import 'variables';
 @import 'daterangepicker';
 @import "coupon_alert";
+@import "fancybox";
 
 .layui-layer-btn {
   text-align: center !important;
@@ -549,9 +550,14 @@ body{
   white-space: nowrap;
 }
 //auto invest
-.auto-invest {
+.auto-invest, .auto-repay {
   .CertifiedImg {
     background: url('/images/sign/re-s01.png') center top no-repeat;
+    margin: 40px;
+    height: 170px;
+  }
+  .CertifiedImg-repay {
+    background: url('/images/sign/re-s02.png') center top no-repeat;
     margin: 40px;
     height: 170px;
   }
@@ -1379,7 +1385,6 @@ body{
                 &.lower-upper-limit {
                   .input-use-ticket, label .sign {
                     position: relative;
-                    top: -8px;
                   }
                 }
                 .input-use-ticket {
@@ -1536,23 +1541,29 @@ body{
       }
       .loan-material {
         margin-top: 10px;
-
         h3 {
           padding: 10px;
           background: #eaeaea;
           color: #ed9c30;
           font-size: 14px;
         }
-        .title {
-          padding-top: 10px;
-          line-height: 36px;
-        }
         .pic-list {
+          .title {
+            padding-top: 10px;
+            line-height: 36px;
+          }
           img {
             display: inline-block;
             margin: 0px 10px 10px 0;
             height: 100px;
             cursor: pointer;
+          }
+          .gallery-list{
+            float:left;
+            width:100%;
+            li{
+              float:left;
+            }
           }
         }
       }

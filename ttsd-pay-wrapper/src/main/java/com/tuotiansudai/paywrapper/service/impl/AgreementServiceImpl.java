@@ -48,6 +48,8 @@ public class AgreementServiceImpl implements AgreementService {
             agreementType = AgreementType.ZTBB0G00;
         } else if (dto.isFastPay()) {
             agreementType = AgreementType.ZKJP0700;
+        } else if (dto.isAutoRepay()) {
+            agreementType = AgreementType.ZHKB0H01;
         }
 
         PtpMerBindAgreementRequestModel ptpMerBindAgreementRequestModel = new PtpMerBindAgreementRequestModel(accountModel.getPayUserId(), agreementType,dto.getSource(),dto);
@@ -77,9 +79,10 @@ public class AgreementServiceImpl implements AgreementService {
         AgreementNotifyRequestModel agreementNotifyRequestModel = (AgreementNotifyRequestModel) callbackRequestModel;
         AccountModel accountModel = accountMapper.findByPayUserId(agreementNotifyRequestModel.getUserId());
         if (accountModel != null && callbackRequestModel.isSuccess()) {
-            accountModel.setNoPasswordInvest(AgreementBusinessType.NO_PASSWORD_INVEST == agreementBusinessType);
-            accountModel.setAutoInvest(true);
-
+            if (agreementNotifyRequestModel.isAutoInvest()) {
+                accountModel.setNoPasswordInvest(AgreementBusinessType.NO_PASSWORD_INVEST == agreementBusinessType);
+                accountModel.setAutoInvest(true);
+            }
 
             if (agreementNotifyRequestModel.isFastPay()) {
                 String loginName = accountModel.getLoginName();
@@ -87,6 +90,9 @@ public class AgreementServiceImpl implements AgreementService {
                 bankCardModel.setIsFastPayOn(true);
                 bankCardMapper.update(bankCardModel);
 
+            }
+            if (agreementNotifyRequestModel.isAutoRepay()) {
+                accountModel.setAutoRepay(true);
             }
             accountMapper.update(accountModel);
         } else {

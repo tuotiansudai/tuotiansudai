@@ -1,10 +1,7 @@
 package com.tuotiansudai.api.service.impl;
 
 
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.InvestRequestDto;
-import com.tuotiansudai.api.dto.InvestResponseDataDto;
-import com.tuotiansudai.api.dto.ReturnMessage;
+import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppChannelService;
 import com.tuotiansudai.api.service.MobileAppInvestService;
 import com.tuotiansudai.api.util.CommonUtils;
@@ -16,9 +13,11 @@ import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.InvestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.text.MessageFormat;
 import java.util.Locale;
 
 @Service
@@ -30,14 +29,26 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
     @Autowired
     private MobileAppChannelService mobileAppChannelService;
 
+    @Value("${pay.callback.app.web.host}")
+    private String domainName;
+
     @Override
     public BaseResponseDto noPasswordInvest(InvestRequestDto investRequestDto) {
-        BaseResponseDto responseDto = new BaseResponseDto();
-        responseDto.setCode(ReturnMessage.SUCCESS.getCode());
-        responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        BaseResponseDto<InvestNoPassResponseDataDto> responseDto = new BaseResponseDto<>();
         InvestDto investDto = convertInvestDto(investRequestDto);
         try {
-            investService.noPasswordInvest(investDto);
+            BaseDto<PayDataDto> baseDto = investService.noPasswordInvest(investDto);
+            if (!baseDto.getData().getStatus()) {
+                responseDto.setCode(ReturnMessage.INVEST_FAILED.getCode());
+                responseDto.setMessage(ReturnMessage.INVEST_FAILED.getMsg() + ":" + baseDto.getData().getMessage());
+
+            }else{
+                responseDto.setCode(ReturnMessage.SUCCESS.getCode());
+                responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+            }
+
+            responseDto.setData(new InvestNoPassResponseDataDto(MessageFormat.format("{0}/callback/project_transfer_invest?ret_code={1}&message={2}", domainName, responseDto.getCode(),responseDto.getMessage())));
+
         } catch (InvestException e) {
             return this.convertExceptionToDto(e);
         }

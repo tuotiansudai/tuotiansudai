@@ -38,8 +38,6 @@ public class UserCouponView implements Serializable, Comparable<UserCouponView> 
 
     private long investLowerLimit;
 
-    private long investUpperLimit;
-
     private double birthdayBenefit;
 
     private InvestStatus status;
@@ -143,14 +141,6 @@ public class UserCouponView implements Serializable, Comparable<UserCouponView> 
 
     public void setInvestLowerLimit(long investLowerLimit) {
         this.investLowerLimit = investLowerLimit;
-    }
-
-    public long getInvestUpperLimit() {
-        return investUpperLimit;
-    }
-
-    public void setInvestUpperLimit(long investUpperLimit) {
-        this.investUpperLimit = investUpperLimit;
     }
 
     public double getBirthdayBenefit() {

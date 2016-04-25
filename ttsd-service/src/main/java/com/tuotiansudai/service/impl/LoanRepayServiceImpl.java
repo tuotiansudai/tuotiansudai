@@ -1,17 +1,19 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanRepayService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.DateUtil;
 import org.apache.commons.lang.time.DateFormatUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -48,6 +50,9 @@ public class LoanRepayServiceImpl implements LoanRepayService {
 
     @Value("#{'${repay.remind.mobileList}'.split('\\|')}")
     private List<String> repayRemindMobileList;
+
+    @Autowired
+    private PayWrapperClient payWrapperClient;
 
     @Override
     public BaseDto<BasePaginationDataDto> findLoanRepayPagination(int index, int pageSize, Long loanId,
@@ -129,6 +134,15 @@ public class LoanRepayServiceImpl implements LoanRepayService {
         }
 
         for (LoanRepayNotifyModel model : loanRepayNotifyModelList) {
+            try {
+                BaseDto<PayDataDto> response = payWrapperClient.autoRepay(model.getId());
+                if (response.isSuccess() && response.getData().getStatus()) {
+                        continue;
+                }
+            } catch (Exception e) {
+                logger.error(e.getLocalizedMessage(), e);
+                continue;
+            }
             for (String mobile : repayRemindMobileList) {
                 notifyMap.put(mobile, notifyMap.get(mobile) + model.getRepayAmount());
             }
