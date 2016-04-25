@@ -5,7 +5,7 @@
 </div>
 <div class="count-form">
 	<h3 class="hander">
-		<span>理财计算器</span>
+		<span>投资计算器</span>
 		<i class="close-count"></i>
 	</h3>
 	<form id="countForm" action="">
