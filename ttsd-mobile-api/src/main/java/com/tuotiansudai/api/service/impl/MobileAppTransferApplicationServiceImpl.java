@@ -93,6 +93,17 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     @Override
     public BaseResponseDto transferApply(TransferApplyRequestDto requestDto) {
         TransferApplicationDto transferApplicationDto = requestDto.convertToTransferApplicationDto();
+        TransferRuleModel transferRuleModel =  transferRuleMapper.find();
+        InvestModel investModel = investMapper.findById(transferApplicationDto.getTransferInvestId());
+        BigDecimal investAmountBig = new BigDecimal(investModel.getAmount());
+        BigDecimal discountBig = new BigDecimal(transferRuleModel.getDiscount());
+        long transferAmount = AmountConverter.convertStringToCent(requestDto.getTransferAmount());
+        long discountLower =  investAmountBig.subtract(discountBig.multiply(investAmountBig)).setScale(0,BigDecimal.ROUND_DOWN).longValue();
+        long discountUpper = investModel.getAmount();
+        if(transferAmount > discountUpper || transferAmount < discountLower){
+            return new BaseResponseDto(ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getCode(),ReturnMessage.TRANSFER_AMOUNT_OUT_OF_RANGE.getMsg());
+        }
+
         try {
             investTransferService.investTransferApply(transferApplicationDto);
         } catch (Exception e) {

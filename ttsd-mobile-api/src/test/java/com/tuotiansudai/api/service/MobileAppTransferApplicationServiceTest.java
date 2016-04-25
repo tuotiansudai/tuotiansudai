@@ -125,7 +125,6 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         TransferApplyRequestDto transferApplyRequestDto = new TransferApplyRequestDto();
         transferApplyRequestDto.setTransferInvestId("123");
         transferApplyRequestDto.setTransferAmount("1.00");
-        transferApplyRequestDto.setTransferInterest(true);
         BaseResponseDto baseResponseDto = mobileAppTransferApplicationService.transferApply(transferApplyRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
     }
