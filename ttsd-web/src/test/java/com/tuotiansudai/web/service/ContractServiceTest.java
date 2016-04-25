@@ -23,7 +23,6 @@ import java.util.Date;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -48,7 +47,7 @@ public class ContractServiceTest {
     private SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Test
-    public void shouldCollectTransferContractModelIsOk() throws ParseException {
+    public void shouldGenerateTransferContractIsOk() throws ParseException {
         UserModel userModel = getUserModel();
         userMapper.create(userModel);
         LoanModel loanModel = getLoanModel();
@@ -73,6 +72,22 @@ public class ContractServiceTest {
         if(pdfStr.indexOf("0.5%") == -1){
             assertFalse(true);
         }
+    }
+
+    @Test
+    public void shouldGenerateTransferAgreementIsOk(){
+        String pdfStr = contractService.generateTransferAgreement();
+        assertNotNull(pdfStr);
+        if(pdfStr.indexOf("201601") == -1){ assertFalse(true);}
+        if(pdfStr.indexOf("张三") == -1){ assertFalse(true);}
+        if(pdfStr.indexOf("zhangsan") == -1){ assertFalse(true);}
+        if(pdfStr.indexOf("37040319214531243X") == -1){ assertFalse(true);}
+        if(pdfStr.indexOf("赵四") == -1){ assertFalse(true);}
+        if(pdfStr.indexOf("zhaosi") == -1){ assertFalse(true);}
+        if(pdfStr.indexOf("37020319341204601X") == -1){ assertFalse(true);}
+        if(pdfStr.indexOf("5天") == -1){ assertFalse(true);}
+        if(pdfStr.indexOf("0.5%") == -1){ assertFalse(true);}
+
     }
 
     public LoanModel getLoanModel() throws ParseException {

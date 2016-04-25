@@ -13,4 +13,6 @@ public interface ContractService {
     void generateContractPdf(String pdfString, OutputStream outputStream);
 
     String generateTransferContract(long transferApplicationId);
+
+    String generateTransferAgreement();
 }

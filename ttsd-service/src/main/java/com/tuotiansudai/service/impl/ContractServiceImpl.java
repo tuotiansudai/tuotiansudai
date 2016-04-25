@@ -301,5 +301,30 @@ public class ContractServiceImpl implements ContractService {
         return dataModel;
     }
 
+    @Override
+    public String generateTransferAgreement() {
+
+        Map<String, Object> dataModel = this.collectTransferContractModel();
+        if(dataModel.isEmpty()){
+            return "";
+        }
+        String content = getContract("transferContract", dataModel).replace("&nbsp;", "&#160;");
+        return content;
+    }
+
+    private Map<String, Object> collectTransferContractModel(){
+        Map<String, Object> dataModel = new HashMap<>();
+        dataModel.put("loanId", "201601");
+        dataModel.put("loanerUserName", "张三");
+        dataModel.put("loanerLoginName","zhangsan");
+        dataModel.put("loanerIdentityNumber","37040319214531243X");
+        dataModel.put("investUserName","赵四");
+        dataModel.put("investLoginName","zhaosi");
+        dataModel.put("investIdentityNumber","37020319341204601X");
+        dataModel.put("daysLimit", "5天");
+        dataModel.put("percent","0.5%");
+        return dataModel;
+    }
+
 
 }

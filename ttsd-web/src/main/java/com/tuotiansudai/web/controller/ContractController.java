@@ -46,7 +46,8 @@ public class ContractController {
         String loginName = LoginUserInfo.getLoginName();
         try {
 //            String pdfString = contractService.generateInvestorContract(loginName, loanId, ContractType.LOAN);
-            String pdfString = contractService.generateTransferContract(1123);
+//            String pdfString = contractService.generateTransferContract(1123);
+            String pdfString = contractService.generateTransferAgreement();
             if(StringUtils.isEmpty(pdfString)){
                 httpServletRequest.getRequestDispatcher("/error/404").forward(httpServletRequest, response);
                 return;
@@ -72,5 +73,21 @@ public class ContractController {
             logger.error(e.getLocalizedMessage(), e);
         }
     }
+
+    @RequestMapping(value = "/transfer/loanId", method = RequestMethod.GET)
+    public void generateTransferAgreement(HttpServletRequest httpServletRequest, HttpServletResponse response) throws IOException, ServletException {
+        try {
+            String pdfString = contractService.generateTransferAgreement();
+            if(StringUtils.isEmpty(pdfString)){
+                httpServletRequest.getRequestDispatcher("/error/404").forward(httpServletRequest, response);
+                return;
+            }
+            response.setContentType("application/pdf;charset=UTF-8");
+            contractService.generateContractPdf(pdfString, response.getOutputStream());
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+    }
+
 
 }
