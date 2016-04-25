@@ -22,7 +22,7 @@ public class UserCouponResponseDataDto extends BaseCouponResponseDataDto{
 
     private String expectedInterest;
 
-    private String investUpperLimit;
+    private String investUpperLimit = "1000000.00";
 
     private String investAmount;
 
@@ -39,14 +39,12 @@ public class UserCouponResponseDataDto extends BaseCouponResponseDataDto{
         this.productTypes = userCouponView.getProductTypeList();
         this.rate = decimalFormat.format(userCouponView.getRate() * 100);
         this.birthdayRate = String.valueOf(userCouponView.getBirthdayBenefit());
-        this.investUpperLimit = AmountConverter.convertCentToString(userCouponView.getInvestUpperLimit());
         this.shared = userCouponView.isShared();
         this.startDate = userCouponView.getStartTime();
         this.endDate = userCouponView.getEndTime();
         this.investAmount = AmountConverter.convertCentToString(userCouponView.getInvestAmount());
         this.usedTime = userCouponView.getUsedTime();
         this.expectedInterest = AmountConverter.convertCentToString(userCouponView.getExpectedIncome());
-        this.investUpperLimit = AmountConverter.convertCentToString(userCouponView.getInvestUpperLimit());
         this.loanId = String.valueOf(userCouponView.getLoanId());
         this.loanName = userCouponView.getLoanName();
         this.loanProductType = userCouponView.getLoanProductType();

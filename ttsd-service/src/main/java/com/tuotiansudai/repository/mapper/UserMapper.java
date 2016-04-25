@@ -65,5 +65,9 @@ public interface UserMapper {
 
     List<String> findUsersBirthdayMobile();
 
+    long findUsersCountByChannel(String channel);
+
+    List<UserModel> findUsersByChannel(Map<String, Object> params);
+
     String findUsersMobileByLoginName(@Param(value = "loginName") String loginName);
 }
