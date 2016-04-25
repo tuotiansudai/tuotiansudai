@@ -297,11 +297,11 @@ public class ContractServiceImpl implements ContractService {
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         if(transferRuleModel != null){
             int dayLimit = transferRuleModel.getDaysLimit();
-            dataModel.put("daysLimit", dayLimit + "天");
+            dataModel.put("daysLimit", dayLimit);
         }
 
         double fee = TransferRuleUtil.getTransferFeeRate(investModel,transferRuleModel,loanMapper.findById(transferApplicationModel.getLoanId()));
-        dataModel.put("percent",fee > 0 ? (fee * 100) + "%" : "0%");
+        dataModel.put("percent",fee > 0 ? (fee * 100): "0");
 
 
         return dataModel;
