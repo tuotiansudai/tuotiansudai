@@ -61,7 +61,7 @@
                 <img src="${staticServer}/images/sign/assure/wealth.png" class="page-img" />
                 <p class="article-one">
                     拓天速贷由联动优势提供第三方资金托管和交易;<br/>
-                    拓天速贷只撮合理财项目，不经手资金;<br/>
+                    拓天速贷只撮合投资项目，不经手资金;<br/>
                     这样的运营模式让资金去向更明确、更透明、有效隔离风险。
                 </p>
                 <p class="article-two">

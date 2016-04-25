@@ -36,8 +36,8 @@
                 <li><b>我的余额：</b><span id="balance">${((balance/100)?string('0.00'))!}</span>元</li>
                 <li><b>累计预期收益：</b><span>${(((collectedReward+collectedInterest)/100)?string('0.00'))!}</span>元</li>
                 <li><b>待收投资本金：</b><span>${((collectingPrincipal/100)?string('0.00'))!}</span>元</li>
-                <li><b>待收收益：</b><span>${((collectingInterest/100)?string('0.00'))!}</span>元</li>
-                <li><b>已收收益：</b><span>${((collectedInterest/100)?string('0.00'))!}</span>元</li>
+                <li><b>待收预期收益：</b><span>${((collectingInterest/100)?string('0.00'))!}</span>元</li>
+                <li><b>已收预期收益：</b><span>${((collectedInterest/100)?string('0.00'))!}</span>元</li>
                 <li><b>冻结金额：</b><span>${((freeze/100)?string('0.00'))!}</span>元</li>
             </ul>
         </div>
@@ -52,7 +52,7 @@
                 <thead>
                 <tr>
                     <th>项目名称</th>
-                    <th>年利率</th>
+                    <th>预期年化收益率</th>
                     <th>借款周期</th>
                     <th>项目周期</th>
                     <th>预计还款(元)</th>
@@ -92,7 +92,7 @@
             <thead>
             <tr>
                 <th>项目名称</th>
-                <th>年利率</th>
+                <th>预期年化收益率</th>
                 <th>借款周期</th>
                 <th>项目周期</th>
                 <th>预计还款(元)</th>
@@ -128,7 +128,7 @@
             <thead>
             <tr>
                 <th>项目名称</th>
-                <th>年利率</th>
+                <th>预期年化收益率</th>
                 <th>借款周期</th>
                 <th>项目周期</th>
                 <th>预计还款(元)</th>
