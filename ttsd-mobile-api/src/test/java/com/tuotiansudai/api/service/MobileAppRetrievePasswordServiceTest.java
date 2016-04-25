@@ -90,15 +90,6 @@ public class MobileAppRetrievePasswordServiceTest extends ServiceTestBase {
         assert responseDto.isSuccess();
     }
 
-    @Test
-    public void validateAuthCode() {
-        RetrievePasswordRequestDto requestDto = new RetrievePasswordRequestDto();
-        requestDto.setPhoneNum("13800138000");
-        requestDto.setValidateCode("123456");
-        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), eq(CaptchaType.RETRIEVE_PASSWORD_CAPTCHA))).thenReturn(true);
-        BaseResponseDto responseDto = mobileAppRetrievePasswordService.validateAuthCode(requestDto);
-        assert responseDto.isSuccess();
-    }
 
     private UserModel getFakeUser(){
         UserModel user1 = new UserModel();

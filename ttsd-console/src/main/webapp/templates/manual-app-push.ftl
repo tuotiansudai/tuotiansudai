@@ -42,9 +42,9 @@
             <label  class="col-sm-2 control-label">推送地区: </label>
             <div class="col-sm-10">
                 <#if jPushAlert??>
-                    <input type="radio"  class="push_object_choose" value="all" name="pushObjectChoose" <#if jPushAlert??&&!(jPushAlert.pushObjects?has_content)>checked</#if> placeholder=""  datatype="*" >全部
+                    <input type="radio"  class="push_object_choose" value="all" name="pushObjectChoose" <#if jPushAlert??&&!(jPushAlert.pushDistricts?has_content)>checked</#if> placeholder=""  datatype="*" >全部
 
-                    <input type="radio"  class="push_object_choose" value="district" <#if jPushAlert??&&jPushAlert.pushObjects?has_content&&jPushAlert.pushObjects?size gt 0>checked</#if> name="pushObjectChoose" placeholder=""  datatype="*" >地区
+                    <input type="radio"  class="push_object_choose" value="district" <#if jPushAlert??&&jPushAlert.pushDistricts?has_content&&jPushAlert.pushDistricts?size gt 0>checked</#if> name="pushObjectChoose" placeholder=""  datatype="*" >地区
                 <#else>
                     <input type="radio"  class="push_object_choose" value="all" checked name="pushObjectChoose" placeholder=""  datatype="*" >全部
                     <input type="radio"  class="push_object_choose" value="district" name="pushObjectChoose" placeholder=""  datatype="*" >地区
@@ -54,17 +54,17 @@
         </div>
         <div class="form-group">
             <label  class="col-sm-2 control-label"></label>
-            <div class="col-sm-5 province <#if !(jPushAlert??)|| (jPushAlert??&&!(jPushAlert.pushObjects?has_content))>app-push-link</#if>">
+            <div class="col-sm-5 province <#if !(jPushAlert??)|| (jPushAlert??&&!(jPushAlert.pushDistricts?has_content))>app-push-link</#if>">
 
                 <#list provinces?keys as key>
-                    <#if jPushAlert??&&jPushAlert.pushObjects?has_content&&jPushAlert.pushObjects?size gt 0>
-                        <label for="${key}"> <input type="checkbox" name="pushObjects" class="pushObject"
+                    <#if jPushAlert??&&jPushAlert.pushDistricts?has_content&&jPushAlert.pushDistricts?size gt 0>
+                        <label for="${key}"> <input type="checkbox" name="pushDistricts" class="pushObject"
                                id="${key}"
-                               <#if jPushAlert?? && jPushAlert.pushObjects?seq_contains('${key}')>checked="checked"</#if> value="${key}"/>
+                               <#if jPushAlert?? && jPushAlert.pushDistricts?seq_contains('${key}')>checked="checked"</#if> value="${key}"/>
 
                        ${provinces[key]}</label>
                     <#else >
-                        <label for="${key}"><input type="checkbox" name="pushObjects" class="pushObject"  value="${key}" id="${key}"/>
+                        <label for="${key}"><input type="checkbox" name="pushDistricts" class="pushObject"  value="${key}" id="${key}"/>
                         ${provinces[key]}</label>
                     </#if>
 

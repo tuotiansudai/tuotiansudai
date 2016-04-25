@@ -147,10 +147,10 @@
                 ${(pushAlert.pushSource)!}
             </td>
             <td>
-                <#if pushAlert.pushObjects?has_content>
-                    <#list pushAlert.pushObjects as pushObject>
+                <#if pushAlert.pushDistricts?has_content>
+                    <#list pushAlert.pushDistricts as pushDistrict>
                         <#list provinces?keys as key>
-                            <#if pushObject == key>
+                            <#if pushDistrict == key>
                                 ${provinces[key]}
                             </#if>
                         </#list>

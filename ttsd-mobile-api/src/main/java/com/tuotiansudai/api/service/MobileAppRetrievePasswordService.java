@@ -12,13 +12,6 @@ public interface MobileAppRetrievePasswordService {
     BaseResponseDto retrievePassword(RetrievePasswordRequestDto retrievePasswordRequestDto);
 
     /**
-     * @function 校验验证码
-     * @param retrievePasswordRequestDto 校验验证码参数封装类
-     * @return BaseResponseDto
-     */
-    BaseResponseDto validateAuthCode(RetrievePasswordRequestDto retrievePasswordRequestDto);
-
-    /**
      * @function 发送手机验证码
      * @param retrievePasswordRequestDto 发送手机验证码参数封装类
      * @return BaseResponseDto
