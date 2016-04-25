@@ -203,5 +203,18 @@ public class ReferrerManageMapperTest {
         referrerRelationMapper.create(referrerRelationModel);
     }
 
+    private UserModel createMockUser(String loginName) {
+        UserModel userModelTest = new UserModel();
+        userModelTest.setLoginName(loginName);
+        userModelTest.setPassword("123abc");
+        userModelTest.setEmail("12345@abc.com");
+        userModelTest.setMobile("139" + RandomStringUtils.randomNumeric(8));
+        userModelTest.setRegisterTime(new Date());
+        userModelTest.setStatus(UserStatus.ACTIVE);
+        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
+        userMapper.create(userModelTest);
+        return userModelTest;
+    }
+
 
 }

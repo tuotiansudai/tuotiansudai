@@ -280,22 +280,28 @@ public class ContractServiceImpl implements ContractService {
 
         dataModel.put("loanId", String.valueOf(transferApplicationModel.getId()));
         AccountModel loanerAccountModel = accountMapper.findByLoginName(transferApplicationModel.getLoginName());
-        dataModel.put("loanerUserName", loanerAccountModel.getUserName());
-        dataModel.put("loanerLoginName",loanerAccountModel.getLoginName());
-        dataModel.put("loanerIdentityNumber",loanerAccountModel.getIdentityNumber());
+        if(loanerAccountModel != null){
+            dataModel.put("loanerUserName", loanerAccountModel.getUserName());
+            dataModel.put("loanerLoginName",loanerAccountModel.getLoginName());
+            dataModel.put("loanerIdentityNumber",loanerAccountModel.getIdentityNumber());
+        }
 
         InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
         AccountModel investAccountModel = accountMapper.findByLoginName(investModel.getLoginName());
-        dataModel.put("investUserName",investAccountModel.getUserName());
-        dataModel.put("investLoginName",investAccountModel.getLoginName());
-        dataModel.put("investIdentityNumber",investAccountModel.getIdentityNumber());
+        if(investAccountModel != null){
+            dataModel.put("investUserName",investAccountModel.getUserName());
+            dataModel.put("investLoginName",investAccountModel.getLoginName());
+            dataModel.put("investIdentityNumber",investAccountModel.getIdentityNumber());
+        }
 
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
-        int dayLimit = transferRuleModel.getDaysLimit();
-        dataModel.put("daysLimit", dayLimit + "天");
+        if(transferRuleModel != null){
+            int dayLimit = transferRuleModel.getDaysLimit();
+            dataModel.put("daysLimit", dayLimit + "天");
+        }
 
         double fee = TransferRuleUtil.getTransferFeeRate(investModel,transferRuleModel,loanMapper.findById(transferApplicationModel.getLoanId()));
-        dataModel.put("percent",(fee * 100) + "%");
+        dataModel.put("percent",fee > 0 ? (fee * 100) + "%" : "0%");
 
 
         return dataModel;
