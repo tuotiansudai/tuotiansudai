@@ -121,10 +121,28 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldTransferApplyIsSuccess() throws Exception {
+        long loanId = idGenerator.generate();
+        TransferRuleModel transferRuleModel = new TransferRuleModel();
+        transferRuleModel.setLevelOneFee(0.01);
+        transferRuleModel.setLevelOneLower(1);
+        transferRuleModel.setLevelOneUpper(29);
+
+        transferRuleModel.setLevelTwoFee(0.005);
+        transferRuleModel.setLevelTwoLower(30);
+        transferRuleModel.setLevelTwoUpper(90);
+
+        transferRuleModel.setLevelThreeFee(0.005);
+        transferRuleModel.setLevelThreeLower(91);
+        transferRuleModel.setLevelThreeUpper(365);
+
+        transferRuleModel.setDiscount(0.005);
+        InvestModel investModel = createInvest("testuser", loanId);
         doNothing().when(investTransferService).investTransferApply(any(TransferApplicationDto.class));
+        when(investMapper.findById(anyLong())).thenReturn(investModel);
+        when(transferRuleMapper.find()).thenReturn(transferRuleModel);
         TransferApplyRequestDto transferApplyRequestDto = new TransferApplyRequestDto();
         transferApplyRequestDto.setTransferInvestId("123");
-        transferApplyRequestDto.setTransferAmount("1.00");
+        transferApplyRequestDto.setTransferAmount("99.50");
         BaseResponseDto baseResponseDto = mobileAppTransferApplicationService.transferApply(transferApplyRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
     }
