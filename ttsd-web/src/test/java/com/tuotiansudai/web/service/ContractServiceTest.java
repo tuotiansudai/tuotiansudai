@@ -64,11 +64,11 @@ public class ContractServiceTest {
         if(pdfStr.indexOf("baisong") == -1){
             assertFalse(true);
         }
-        if(pdfStr.indexOf("5天") == -1){
+        if(pdfStr.indexOf("5") == -1){
             assertFalse(true);
         }
 
-        if(pdfStr.indexOf("0.5%") == -1){
+        if(pdfStr.indexOf("0.5") == -1){
             assertFalse(true);
         }
     }
