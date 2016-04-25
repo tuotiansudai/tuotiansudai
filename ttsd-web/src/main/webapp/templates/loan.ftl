@@ -16,7 +16,7 @@
                             <b><@percentInteger>${loan.basicRate}</@percentInteger><@percentFraction>${loan.basicRate}</@percentFraction></b>
                             <#if loan.activityRate!=0>+<@percentInteger>${loan.activityRate}</@percentInteger><@percentFraction>${loan.activityRate}</@percentFraction></#if>%
                         </em>
-                        <i>年化收益</i>
+                        <i>预期年化收益</i>
                     </div>
                 </div>
             </div>

@@ -8,8 +8,8 @@
                 <img src="${staticServer}/images/app-banner/app-banner-top.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="iphone-img">
             </a>
             <a href="/activity/birth-month" onclick="cnzzPush.trackClick('23首页','Banner模块','生日月')" target="_blank">
-                <img src="${staticServer}/images/sign/actor/birth/birth-month.jpg" alt="生日月投资收益翻倍" class="pc-img">
-                <img src="${staticServer}/images/sign/actor/birth/birth-month-phone.jpg" alt="生日月投资收益翻倍" class="iphone-img">
+                <img src="${staticServer}/images/sign/actor/birth/birth-month-new.jpg" alt="生日月投资收益翻倍" class="pc-img">
+                <img src="${staticServer}/images/sign/actor/birth/birth-month-phonenew.jpg" alt="生日月投资收益翻倍" class="iphone-img">
             </a>
             <a href="/activity/red-envelope" onclick="cnzzPush.trackClick('24首页','Banner模块','红包')" target="_blank">
                 <img src="${staticServer}/images/sign/actor/redbag/red-bag-pc.png" alt="注册就送现金红包" class="pc-img">
@@ -91,7 +91,7 @@
                 <a href="/about/assurance?aid=1" onclick="cnzzPush.trackClick('28首页','安全保障模块','1')" target="_blank">
                     <div class="icon-hover img-icon-off-1"></div>
                     <span class="clearfix">
-                         <b class="clearfix">超高收益 最低门槛</b>
+                         <b class="clearfix">稳健收益 较低门槛</b>
                         最高46倍活期存款收益，最低投资门槛50元
                     </span>
                 </a>
@@ -100,7 +100,7 @@
                 <a href="/about/assurance?aid=2" onclick="cnzzPush.trackClick('29首页','安全保障模块','2')" target="_blank">
                     <div class="icon-hover img-icon-off-2"></div>
                     <span class="clearfix">
-                        <b class="clearfix">三方托管 放心理财</b>
+                        <b class="clearfix">三方托管 放心投资</b>
                         第三方资金托管，第三方支付
                     </span>
                 </a>
@@ -127,7 +127,7 @@
                     <#list productTypes as productType>
                         <#if productType.name() == 'SYL'>
                             <#assign description = '快速高效'>
-                            <#assign description_detail = '快速投资，高效理财'>
+                            <#assign description_detail = '快速投资，贴心服务'>
                             <#assign category = "31首页">
                             <#assign label = "速盈利">
                         <#elseif productType.name() == 'WYX'>
@@ -165,7 +165,7 @@
                                         <span class="income-month">起</span>
                                     </p>
                                     <p class="income-text-intro">
-                                        年化收益
+                                        预期年化收益
                                     </p>
                                 </div>
                             </a>
@@ -207,7 +207,7 @@
                                         <em><b><@percentInteger>${loan.baseRate}</@percentInteger></b><@percentFraction>${loan.baseRate}</@percentFraction>
                                             <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
                                                 <@percentFraction>${loan.activityRate}</@percentFraction></#if>%</em>
-                                        <i>年化收益</i>
+                                        <i>预期年化收益</i>
                                     </div>
                                 </div>
                                 <dl class="pr-info">
