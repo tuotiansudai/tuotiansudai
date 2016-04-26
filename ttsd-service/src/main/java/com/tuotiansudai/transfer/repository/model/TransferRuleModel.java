@@ -3,7 +3,7 @@ package com.tuotiansudai.transfer.repository.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class TransferRuleModel{
+public class TransferRuleModel implements Serializable{
 
     private long id;
 
