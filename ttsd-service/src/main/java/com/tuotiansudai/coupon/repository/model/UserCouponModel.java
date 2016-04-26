@@ -41,6 +41,8 @@ public class UserCouponModel implements Serializable{
 
     private Long investAmount;
 
+    private String exchangeCode;
+
     public UserCouponModel() {
     }
 
@@ -186,5 +188,13 @@ public class UserCouponModel implements Serializable{
 
     public void setInvestAmount(Long investAmount) {
         this.investAmount = investAmount;
+    }
+
+    public String getExchangeCode() {
+        return exchangeCode;
+    }
+
+    public void setExchangeCode(String exchangeCode) {
+        this.exchangeCode = exchangeCode;
     }
 }
