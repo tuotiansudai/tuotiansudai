@@ -15,4 +15,6 @@ public interface MobileAppTransferApplicationService {
 
     BaseResponseDto transferApplicationCancel(TransferCancelRequestDto transferCancelRequestDto);
 
+    BaseResponseDto transferPurchase(TransferPurchaseRequestDto requestDto);
+
 }

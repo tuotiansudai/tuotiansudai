@@ -5,14 +5,8 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppTransferApplicationService;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanRepayModel;
-import com.tuotiansudai.repository.model.TransferStatus;
+import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
@@ -46,11 +40,13 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     @Autowired
     private LoanRepayMapper loanRepayMapper;
     @Autowired
-    private InvestRepayMapper investRepayMapper;
-    @Autowired
     private InvestTransferService investTransferService;
     @Autowired
     private TransferRuleMapper transferRuleMapper;
+    @Autowired
+    private AccountMapper accountMapper;
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
 
 
     @Override
@@ -182,12 +178,35 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
     }
 
     @Override
-    public BaseResponseDto transferApplicationCancel(TransferCancelRequestDto transferCancelRequestDto){
+    public BaseResponseDto transferApplicationCancel(TransferCancelRequestDto transferCancelRequestDto) {
         boolean isSuccess = investTransferService.cancelTransferApplication(transferCancelRequestDto.getTransferApplicationId());
-        if(isSuccess){
-            return new BaseResponseDto(ReturnMessage.SUCCESS.getCode(),ReturnMessage.SUCCESS.getMsg());
-        }else{
-            return new BaseResponseDto(ReturnMessage.TRANSFER_CANCEL_IS_FAIL.getCode(),ReturnMessage.TRANSFER_CANCEL_IS_FAIL.getMsg());
+        if (isSuccess) {
+            return new BaseResponseDto(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg());
+        } else {
+            return new BaseResponseDto(ReturnMessage.TRANSFER_CANCEL_IS_FAIL.getCode(), ReturnMessage.TRANSFER_CANCEL_IS_FAIL.getMsg());
         }
     }
+
+    @Override
+    public BaseResponseDto transferPurchase(TransferPurchaseRequestDto requestDto){
+        BaseResponseDto<TransferPurchaseResponseDataDto> dto = new BaseResponseDto();
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(requestDto.getTransferApplicationId()));
+
+        TransferPurchaseResponseDataDto transferPurchaseResponseDataDto = new TransferPurchaseResponseDataDto();
+        transferPurchaseResponseDataDto.setBalance(AmountConverter.convertCentToString((accountMapper.findByLoginName(transferApplicationModel.getLoginName()).getBalance())));
+        transferPurchaseResponseDataDto.setTransferAmount(AmountConverter.convertCentToString((transferApplicationModel.getTransferAmount())));
+
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getInvestId());
+        long totalExpectedInterestAmount = 0;
+        for(int i = transferApplicationModel.getPeriod() - 1  ; i < investRepayModels.size(); i ++ ){
+            totalExpectedInterestAmount +=  investRepayModels.get(i).getCorpus() + investRepayModels.get(i).getExpectedInterest() - investRepayModels.get(i).getExpectedFee();
+        }
+        transferPurchaseResponseDataDto.setExpectedInterestAmount(AmountConverter.convertCentToString(totalExpectedInterestAmount));
+
+        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        dto.setData(transferPurchaseResponseDataDto);
+        return dto;
+    }
+
 }

@@ -1,15 +1,15 @@
 package com.tuotiansudai.api.dto;
 
 public class TransferPurchaseRequestDto extends BaseParamDto {
+    private String transferApplicationId;
 
-    private Long transferApplicationId;
+    public TransferPurchaseRequestDto(){}
 
-    public Long getTransferApplicationId() {
+    public String getTransferApplicationId() {
         return transferApplicationId;
     }
 
-    public void setTransferApplicationId(Long transferApplicationId) {
+    public void setTransferApplicationId(String transferApplicationId) {
         this.transferApplicationId = transferApplicationId;
     }
-
 }
