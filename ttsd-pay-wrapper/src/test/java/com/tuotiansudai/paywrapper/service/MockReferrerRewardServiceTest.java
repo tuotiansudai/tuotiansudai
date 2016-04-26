@@ -162,7 +162,7 @@ public class MockReferrerRewardServiceTest {
         loanModel.setActivityRate(12);
         loanModel.setShowOnHome(true);
         loanModel.setPeriods(3);
-        loanModel.setActivityType(ActivityType.EXCLUSIVE);
+        loanModel.setActivityType(ActivityType.NORMAL);
         loanModel.setContractId(123);
         loanModel.setDescriptionHtml("asdfasdf");
         loanModel.setDescriptionText("asdfasd");
@@ -170,9 +170,9 @@ public class MockReferrerRewardServiceTest {
         loanModel.setFundraisingStartTime(new Date());
         loanModel.setInvestFeeRate(15);
         loanModel.setInvestIncreasingAmount(1);
-        loanModel.setLoanAmount(100000l);
-        loanModel.setType(LoanType.INVEST_INTEREST_LUMP_SUM_REPAY);
-        loanModel.setMaxInvestAmount(100000000000l);
+        loanModel.setLoanAmount(100000L);
+        loanModel.setType(LoanType.LOAN_INTEREST_MONTHLY_REPAY);
+        loanModel.setMaxInvestAmount(100000000000L);
         loanModel.setMinInvestAmount(1);
         loanModel.setCreatedTime(new Date());
         loanModel.setStatus(LoanStatus.RAISING);
