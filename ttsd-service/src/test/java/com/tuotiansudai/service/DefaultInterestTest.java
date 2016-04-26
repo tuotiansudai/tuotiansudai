@@ -128,9 +128,9 @@ public class DefaultInterestTest {
         investMapper.create(fakeInvestModel1);
         investMapper.create(fakeInvestModel2);
 
-        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 1, 0, today.minusDays(5).toDate(), null, RepayStatus.REPAYING);
-        LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 2, 0, today.plusDays(10).toDate(), null, RepayStatus.REPAYING);
-        LoanRepayModel fakeLoanRepayModel3 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 3, loanAmount, today.plusDays(20).toDate(), null, RepayStatus.REPAYING);
+        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 1, 0, today.minusDays(5).minusSeconds(30).toDate(), null, RepayStatus.REPAYING);
+        LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 2, 0, today.plusDays(10).minusSeconds(30).toDate(), null, RepayStatus.REPAYING);
+        LoanRepayModel fakeLoanRepayModel3 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 3, loanAmount, today.plusDays(20).minusSeconds(30).toDate(), null, RepayStatus.REPAYING);
         loanRepayMapper.create(Lists.newArrayList(fakeLoanRepayModel1, fakeLoanRepayModel2, fakeLoanRepayModel3));
 
         InvestRepayModel fakeInvest1RepayModel1 = this.getFakeInvestRepayModel(fakeInvestModel1.getId(), 1, 0, fakeLoanRepayModel1.getRepayDate(), null, RepayStatus.REPAYING);
@@ -203,9 +203,9 @@ public class DefaultInterestTest {
         investMapper.create(fakeInvestModel1);
         investMapper.create(fakeInvestModel2);
 
-        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 1, 0, today.minusDays(35).toDate(), null, RepayStatus.OVERDUE);
-        LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 2, 0, today.minusDays(5).toDate(), null, RepayStatus.OVERDUE);
-        LoanRepayModel fakeLoanRepayModel3 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 3, loanAmount, today.plusDays(20).toDate(), null, RepayStatus.REPAYING);
+        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 1, 0, today.minusDays(35).minusSeconds(30).toDate(), null, RepayStatus.OVERDUE);
+        LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 2, 0, today.minusDays(5).minusSeconds(30).toDate(), null, RepayStatus.OVERDUE);
+        LoanRepayModel fakeLoanRepayModel3 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 3, loanAmount, today.plusDays(20).minusSeconds(30).toDate(), null, RepayStatus.REPAYING);
         loanRepayMapper.create(Lists.newArrayList(fakeLoanRepayModel1, fakeLoanRepayModel2, fakeLoanRepayModel3));
 
         InvestRepayModel fakeInvest1RepayModel1 = this.getFakeInvestRepayModel(fakeInvestModel1.getId(), 1, 0, fakeLoanRepayModel1.getRepayDate(), null, RepayStatus.OVERDUE);
@@ -278,8 +278,8 @@ public class DefaultInterestTest {
         investMapper.create(fakeInvestModel1);
         investMapper.create(fakeInvestModel2);
 
-        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 1, 0, today.minusDays(65).toDate(), null, RepayStatus.OVERDUE);
-        LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 2, 0, today.minusDays(35).toDate(), null, RepayStatus.OVERDUE);
+        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 1, 0, today.minusDays(65).minusSeconds(30).toDate(), null, RepayStatus.OVERDUE);
+        LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 2, 0, today.minusDays(35).minusSeconds(30).toDate(), null, RepayStatus.OVERDUE);
         LoanRepayModel fakeLoanRepayModel3 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 3, loanAmount, today.minusDays(5).toDate(), null, RepayStatus.OVERDUE);
         loanRepayMapper.create(Lists.newArrayList(fakeLoanRepayModel1, fakeLoanRepayModel2, fakeLoanRepayModel3));
 
@@ -353,9 +353,9 @@ public class DefaultInterestTest {
         investMapper.create(fakeInvestModel1);
         investMapper.create(fakeInvestModel2);
 
-        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 1, 0, today.minusDays(45).toDate(), null, RepayStatus.COMPLETE);
-        LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 2, 0, today.minusDays(15).toDate(), null, RepayStatus.OVERDUE);
-        LoanRepayModel fakeLoanRepayModel3 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 3, loanAmount, today.plusDays(15).toDate(), null, RepayStatus.REPAYING);
+        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 1, 0, today.minusDays(45).minusSeconds(30).toDate(), null, RepayStatus.COMPLETE);
+        LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 2, 0, today.minusDays(15).minusSeconds(30).toDate(), null, RepayStatus.OVERDUE);
+        LoanRepayModel fakeLoanRepayModel3 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 3, loanAmount, today.plusDays(15).minusSeconds(30).toDate(), null, RepayStatus.REPAYING);
         loanRepayMapper.create(Lists.newArrayList(fakeLoanRepayModel1, fakeLoanRepayModel2, fakeLoanRepayModel3));
 
         InvestRepayModel fakeInvest1RepayModel1 = this.getFakeInvestRepayModel(fakeInvestModel1.getId(), 1, 0, fakeLoanRepayModel1.getRepayDate(), null, RepayStatus.COMPLETE);
