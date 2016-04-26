@@ -1,4 +1,4 @@
-require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache','text!/tpl/transferrer-transfer-application-table.mustache', 'pagination', 'layerWrapper', 'jquery.ajax.extension'], function ($, Mustache, transferableListTemplate, transferrerListTemplate,pagination, layer) {
+require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache','text!/tpl/transferrer-transfer-application-table.mustache','text!/tpl/transferrer-transfer-record-table.mustache', 'pagination', 'layerWrapper', 'jquery.ajax.extension'], function ($, Mustache, transferableListTemplate, transferrerListTemplate,transferrerRecordTemplate,pagination, layer) {
 	$(function() {
 		var $filtersList=$('.filters-list li'),
 			activeIndex=0,
@@ -22,8 +22,10 @@ require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache',
 			paginationElement.loadPagination(requestData, function (data) {
 				if(activeIndex==0){
 					var html = Mustache.render(transferableListTemplate, data);
-				}else{
+				}else if(activeIndex==1){
 					var html = Mustache.render(transferrerListTemplate, data);
+				}else{
+					var html = Mustache.render(transferrerRecordTemplate, data);
 				}
 				$('.list-container .record-list.active').html(html);
 			});
