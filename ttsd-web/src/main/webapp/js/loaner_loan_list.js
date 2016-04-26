@@ -111,13 +111,8 @@ require(['jquery', 'mustache', 'text!tpl/loaner-loan-table.mustache', 'text!tpl/
 
                         if (data.isNormalRepayEnabled) {
                             $('a.normal-repay').click(function () {
-                                if (data.loanerBalance < data.normalRepayAmount) {
-                                    $(".repay-alert").html(Mustache.render('应还金额 {{normalRepayAmount}} 元，账户余额仅有 {{loanerBalance}} 元！',
-                                        {
-                                            'normalRepayAmount': data.normalRepayAmount,
-                                            'loanerBalance': data.loanerBalance
-                                        }
-                                    )).show();
+                                if (parseFloat(data.loanerBalance) < parseFloat(data.normalRepayAmount)) {
+                                    showBalanceNotEnoughAlert(data.loanerBalance, data.normalRepayAmount);
                                     return false;
                                 }
 
@@ -129,13 +124,8 @@ require(['jquery', 'mustache', 'text!tpl/loaner-loan-table.mustache', 'text!tpl/
 
                         if (data.isAdvanceRepayEnabled) {
                             $('a.advanced-repay').click(function () {
-                                if (data.loanerBalance < data.advanceRepayAmount) {
-                                    $(".repay-alert").html(Mustache.render('应还金额 {{advanceRepayAmount}} 元，您的账户余额仅有{{loanerBalance}}元',
-                                        {
-                                            'advanceRepayAmount': data.advanceRepayAmount,
-                                            'loanerBalance': data.loanerBalance
-                                        }
-                                    )).show();
+                                if (parseFloat(data.loanerBalance) < parseFloat(data.advanceRepayAmount)) {
+                                    showBalanceNotEnoughAlert(data.loanerBalance, data.advanceRepayAmount);
                                     return false;
                                 }
                                 $("#advanced-repay-form").submit();
@@ -158,5 +148,26 @@ require(['jquery', 'mustache', 'text!tpl/loaner-loan-table.mustache', 'text!tpl/
         loadLoanData();
         $(".date-filter .select-item").removeClass("current");
     });
+
+    var showBalanceNotEnoughAlert = function (balance, repayAmount) {
+        layer.closeAll();
+        layer.open({
+            type: 1,
+            closeBtn: 0,
+            skin: 'demo-class',
+            shadeClose: false,
+            title: '账户余额不足',
+            btn: ['关闭', '去充值'],
+            area: ['400px', '160px'],
+            content: Mustache.render('<p class="pad-m-tb tc">应还金额 {{repayAmount}} 元，您的账户余额仅有 {{balance}} 元</p>',
+                { 'repayAmount': repayAmount, 'balance': balance}),
+            btn1: function () {
+                layer.closeAll();
+            },
+            btn2: function () {
+                window.location.href = "/recharge";
+            }
+        });
+    }
 });
 
