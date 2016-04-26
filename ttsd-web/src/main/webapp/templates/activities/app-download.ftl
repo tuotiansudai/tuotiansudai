@@ -3,7 +3,7 @@
 
 <div class="download-container">
     <div class="wp-img">
-        <img src="${staticServer}/images/sign/actor/download/download-top.png" alt="" width="100%">
+        <img src="${staticServer}/images/sign/actor/download/download-top-new.png" alt="" width="100%">
         <a href="http://itunes.apple.com/us/app/id1039233966" class="ios"></a>
         <a href="/app/tuotiansudai.apk" class="android"></a>
     </div>
@@ -43,7 +43,7 @@
 </div>
 <div class="download-container-phone">
     <div class="wp-img">
-        <img src="${staticServer}/images/sign/actor/download/download-phone-top.png" alt="" width="100%">
+        <img src="${staticServer}/images/sign/actor/download/download-phone-topnew.png" alt="" width="100%">
         <a href="http://itunes.apple.com/us/app/id1039233966" class="ios" target="_blank"></a>
         <a href="/app/tuotiansudai.apk" class="android" target="_blank"></a>
     </div>
