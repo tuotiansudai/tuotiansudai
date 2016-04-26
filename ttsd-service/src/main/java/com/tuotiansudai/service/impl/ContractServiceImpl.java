@@ -9,6 +9,11 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ContractService;
+import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
+import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.AmountConverter;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -43,6 +48,10 @@ public class ContractServiceImpl implements ContractService {
     private LoanRepayMapper loanRepayMapper;
     @Autowired
     private InvestMapper investMapper;
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
+    @Autowired
+    private TransferRuleMapper transferRuleMapper;
 
     @Override
     public String getContract(String templateName, Map<String, Object> dataModel) {
@@ -249,4 +258,79 @@ public class ContractServiceImpl implements ContractService {
         }
         return  digit;
     }
+
+    @Override
+    public String generateTransferContract(long transferApplicationId) {
+
+        Map<String, Object> dataModel = this.collectTransferContractModel(transferApplicationId);
+        if(dataModel.isEmpty()){
+            return "";
+        }
+        String content = getContract("transferContract", dataModel).replace("&nbsp;", "&#160;");
+        return content;
+    }
+
+    private Map<String, Object> collectTransferContractModel(long transferApplicationId) {
+        Map<String, Object> dataModel = new HashMap<>();
+
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
+        if(transferApplicationModel == null){
+            return dataModel;
+        }
+
+        dataModel.put("loanId", String.valueOf(transferApplicationModel.getId()));
+        AccountModel loanerAccountModel = accountMapper.findByLoginName(transferApplicationModel.getLoginName());
+        if(loanerAccountModel != null){
+            dataModel.put("loanerUserName", loanerAccountModel.getUserName());
+            dataModel.put("loanerLoginName",loanerAccountModel.getLoginName());
+            dataModel.put("loanerIdentityNumber",loanerAccountModel.getIdentityNumber());
+        }
+
+        InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
+        AccountModel investAccountModel = accountMapper.findByLoginName(investModel.getLoginName());
+        if(investAccountModel != null){
+            dataModel.put("investUserName",investAccountModel.getUserName());
+            dataModel.put("investLoginName",investAccountModel.getLoginName());
+            dataModel.put("investIdentityNumber",investAccountModel.getIdentityNumber());
+        }
+
+        TransferRuleModel transferRuleModel = transferRuleMapper.find();
+        if(transferRuleModel != null){
+            int dayLimit = transferRuleModel.getDaysLimit();
+            dataModel.put("daysLimit", dayLimit);
+        }
+
+        double fee = TransferRuleUtil.getTransferFeeRate(investModel,transferRuleModel,loanMapper.findById(transferApplicationModel.getLoanId()));
+        dataModel.put("percent",fee > 0 ? (fee * 100) : "0");
+
+
+        return dataModel;
+    }
+
+    @Override
+    public String generateTransferAgreement() {
+
+        Map<String, Object> dataModel = this.collectTransferContractModel();
+        if(dataModel.isEmpty()){
+            return "";
+        }
+        String content = getContract("transferContract", dataModel).replace("&nbsp;", "&#160;");
+        return content;
+    }
+
+    private Map<String, Object> collectTransferContractModel(){
+        Map<String, Object> dataModel = new HashMap<>();
+        dataModel.put("loanId", "201601");
+        dataModel.put("loanerUserName", "张三");
+        dataModel.put("loanerLoginName","zhangsan");
+        dataModel.put("loanerIdentityNumber","37040319214531243X");
+        dataModel.put("investUserName","赵四");
+        dataModel.put("investLoginName","zhaosi");
+        dataModel.put("investIdentityNumber","37020319341204601X");
+        dataModel.put("daysLimit", "5");
+        dataModel.put("percent","0.5");
+        return dataModel;
+    }
+
+
 }

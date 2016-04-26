@@ -21,7 +21,6 @@ import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.JobManager;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -167,7 +166,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
 
         LoanRepayModel loanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(investModel.getLoanId());
         if(loanRepayModel == null){
-            logger.debug(MessageFormat.format("{0} is completed ",loanRepayModel.getLoanId()));
+            logger.debug(MessageFormat.format("{0} is completed ",investModel.getLoanId()));
             return false;
         }
         TransferRuleModel transferRuleModel =  transferRuleMapper.find();

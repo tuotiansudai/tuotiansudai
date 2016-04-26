@@ -13,5 +13,8 @@ public interface MobileAppTransferApplicationService {
 
     BaseResponseDto generateTransfereeApplication(PaginationRequestDto requestDto);
 
+    BaseResponseDto transferApplicationCancel(TransferCancelRequestDto transferCancelRequestDto);
+
+    BaseResponseDto transferPurchase(TransferPurchaseRequestDto requestDto);
 
 }

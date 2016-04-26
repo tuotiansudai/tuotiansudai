@@ -24,7 +24,10 @@ var require = {
         'echarts': '/js/libs/echarts/dist/echarts.min',
         'loadEcharts':'/js/loadEcharts',
         'underscore': '/js/libs/underscore-1.8.3.min',
-        'pageNumber':'/js/libs/jquery.pageflip'
+        'pageNumber':'/js/libs/jquery.pageflip',
+        'layer': '/js/libs/layer/layer',
+        'layer-extend':'/js/libs/layer/extend/layer.ext',
+        'layerWrapper': '/js/wrapper-layer'
     },
     'waitSeconds':0,
     'shim': {
@@ -38,7 +41,10 @@ var require = {
         'Validform': ['jquery'],
         'Validform_Datatype':['jquery'],
         'autoNumeric': ['jquery'],
-        'pageNumber':['jquery']
+        'pageNumber':['jquery'],
+        'layer': ['jquery'],
+        'layer-extend': ['jquery','layer'],
+        'layerWrapper':['layer','layer-extend']
     }
 };
 

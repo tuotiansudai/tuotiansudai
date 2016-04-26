@@ -37,15 +37,6 @@ public class MobileAppRetrievePasswordController extends MobileAppBaseController
         }
     }
 
-    /**
-     * @param retrievePasswordRequestDto
-     * @return BaseResponseDto
-     * @function 校验手机验证码是否正确
-     */
-    @RequestMapping(value = "/validatecaptcha", method = RequestMethod.POST)
-    public BaseResponseDto validateAuthCode(@RequestBody RetrievePasswordRequestDto retrievePasswordRequestDto) {
-        return retrievePasswordService.validateAuthCode(retrievePasswordRequestDto);
-    }
 
     /**
      * @param retrievePasswordRequestDto

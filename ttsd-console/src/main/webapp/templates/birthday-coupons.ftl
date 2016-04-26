@@ -88,13 +88,20 @@
         </td>
         <td>是</td>
     <td>
+    <#if coupon.deleted>
+        已删除
+    <#else>
     <#if coupon.active>
         -
     <#else>
         <a href="/activity-manage/coupon/${coupon.id?string('0')}/edit" class="btn-link">编辑</a> / <button class="btn-link coupon-delete" data-link="/activity-manage/coupon/${coupon.id?string('0')}" >删除</button>
     </#if>
+    </#if>
     </td>
     <td>
+    <#if coupon.deleted>
+        -
+    <#else>
     <#if coupon.active>
         <label>
             <i class="check-btn add-check"></i>
@@ -105,6 +112,7 @@
             <i class="check-btn"></i>
             <a class="loan_repay confirm-btn" href="javascript:void(0)" data-id="${coupon.id?string('0')}" data-type="${coupon.couponType}">确认生效</a>
         </label>
+    </#if>
     </#if>
     </td>
     <td>

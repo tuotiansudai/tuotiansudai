@@ -8,7 +8,7 @@ public class UserInvestListRequestDto extends BaseParamDto {
     private Integer index;
     private Integer pageSize;
 
-    private List<TransferStatus> transferStatuses;
+    private List<TransferStatus> transferStatus;
 
     public Integer  getIndex() {
         return index;
@@ -26,11 +26,11 @@ public class UserInvestListRequestDto extends BaseParamDto {
         this.pageSize = pageSize;
     }
 
-    public List<TransferStatus> getTransferStatuses() {
-        return transferStatuses;
+    public List<TransferStatus> getTransferStatus() {
+        return transferStatus;
     }
 
-    public void setTransferStatuses(List<TransferStatus> transferStatuses) {
-        this.transferStatuses = transferStatuses;
+    public void setTransferStatus(List<TransferStatus> transferStatus) {
+        this.transferStatus = transferStatus;
     }
 }
