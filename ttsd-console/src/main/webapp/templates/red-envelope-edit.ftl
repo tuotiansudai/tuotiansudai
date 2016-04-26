@@ -41,9 +41,57 @@
 
         <div class="form-group">
             <label class="col-sm-2 control-label">发放对象:</label>
+            <div class="col-sm-2">
+                <select class="selectpicker jq-b-type userGroup" name="userGroup">
+                    <#list userGroups as userGroup>
+                        <#if userGroup.name() != 'NEW_REGISTERED_USER'>
+                            <option value="${userGroup.name()}"
+                                    <#if coupon??&&coupon.userGroup==userGroup>selected</#if>>${userGroup.getDescription()}</option>
+                        </#if>
+                    </#list>
+                </select>
+            </div>
+            <div class="file-btn <#if coupon.userGroup != 'IMPORT_USER'>import-hidden</#if>">
+                <input type="file" id="file-in">
+                重新导入
+            </div>
+            <input type="hidden" name="file" id="import-file" >
+        </div>
+
+        <div class="form-group <#if coupon.userGroup != 'IMPORT_USER'>coupon-hide</#if> coupon-table">
+            <label class="col-sm-2"></label>
+            <div class="col-sm-4 data-table">
+                <table class="table table-bordered">
+                    <#if coupon.userGroup == 'IMPORT_USER'>
+                    <#list importUsers as importUser>
+                        <tr class="name-tr"><td>${(importUser_index+1)!}</td><td>${importUser!}</td></tr>
+                    </#list>
+                    </#if>
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">预计发放数量(张): </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control invest-coupon-total_count"  value="全部用户"  readonly="true">
-                <input type="hidden" class="user-group-hid" name="userGroup" value="ALL_USER"  >
+                <input type="text" readonly class="form-control give-number" name="totalCount" placeholder="" <#if coupon??>value="${coupon.totalCount?string('0')!}"</#if>  datatype="n" errormsg="发放数量需要填写数字" >
+            </div>
+        </div>
+
+        <div class="form-group coupon-deposit <#if !(agentsOrChannels?? && agentsOrChannels?size gt 0)>coupon-hide</#if>">
+            <label class="col-sm-2"></label>
+            <div class="col-sm-4 coupon-agent-channel">
+                <#if agentsOrChannels?? && agentsOrChannels?size gt 0>
+                    <#if coupon.userGroup == 'AGENT'>
+                        <#list agents as agent>
+                            <label><input type="checkbox" class="agent" name="agents" value="${agent!}" <#if agentsOrChannels?seq_contains(agent)>checked</#if>>${agent!}</label>
+                        </#list>
+                    <#else>
+                        <#list channels as channel>
+                            <label><input type="checkbox" class="channel" name="channels" value="${channel!}" <#if agentsOrChannels?seq_contains(channel)>checked</#if>>${channel!}</label>
+                        </#list>
+                    </#if>
+                </#if>
             </div>
         </div>
 

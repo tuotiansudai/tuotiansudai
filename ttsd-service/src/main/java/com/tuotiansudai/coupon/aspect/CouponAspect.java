@@ -54,6 +54,10 @@ public class CouponAspect {
             couponActivationService.assignUserCoupon(request.getParameter("username"), Lists.newArrayList(UserGroup.ALL_USER,
                     UserGroup.INVESTED_USER,
                     UserGroup.REGISTERED_NOT_INVESTED_USER,
+                    UserGroup.AGENT,
+                    UserGroup.CHANNEL,
+                    UserGroup.STAFF,
+                    UserGroup.STAFF_RECOMMEND_LEVEL_ONE,
                     UserGroup.IMPORT_USER),null);
         } catch (Exception e) {
             logger.error("after user login aspect fail ", e);

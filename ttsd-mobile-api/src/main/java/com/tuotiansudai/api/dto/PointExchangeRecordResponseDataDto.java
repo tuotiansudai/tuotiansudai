@@ -16,7 +16,7 @@ public class PointExchangeRecordResponseDataDto {
     private String amount;
     private String rate;
     private String investLowerLimit;
-    private String investUpperLimit;
+    private String investUpperLimit = "1000000.00";
     private Integer deadline;
     private long point;
     private List<ProductType> productTypes;
@@ -108,10 +108,8 @@ public class PointExchangeRecordResponseDataDto {
         this.setAmount(AmountConverter.convertCentToString(couponModel.getAmount()));
         this.setRate(String.valueOf(decimalFormat.format(couponModel.getRate()*100)));
         this.setInvestLowerLimit(AmountConverter.convertCentToString(couponModel.getInvestLowerLimit()));
-        this.setInvestUpperLimit(AmountConverter.convertCentToString(couponModel.getInvestUpperLimit()));
         this.setProductTypes(couponModel.getProductTypes());
         this.setPoint(point);
-        this.setDeadline(couponModel.getDeadline()==null?0:couponModel.getDeadline());
     }
 
 }

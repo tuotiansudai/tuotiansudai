@@ -1,8 +1,9 @@
-require(['jquery', 'jquery.ajax.extension', 'coupon-alert', 'red-envelope-float'], function ($) {
+require(['jquery', 'jquery.ajax.extension', 'coupon-alert', 'red-envelope-float','count_down'], function ($) {
     var $loan = $('.loan-list-box').find('li');
+    //var preheat = $('.preheat');
 
     $loan.click(function () {
-        window.location.href=$(this).data('url');
+        window.location.href = $(this).data('url');
     });
 
     $('.pagination .prev').click(function () {
@@ -20,4 +21,5 @@ require(['jquery', 'jquery.ajax.extension', 'coupon-alert', 'red-envelope-float'
         }
         return false;
     });
+
 });
