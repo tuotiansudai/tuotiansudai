@@ -162,6 +162,25 @@
         select * from loan_repay where loan_id = #{loanId} and period = (select periods from loan where id = #{loanId})
     </select>
 
+    <select id="findByLoanIdAndLTPeriod" parameterType="map" resultMap="loanRepayResultMap">
+        select * from loan_repay where loan_id = #{loanId} and period &lt; #{period}
+    </select>
+
+    <select id="findWaitPayLoanRepayByLoanId" parameterType="long" resultMap="loanRepayResultMap">
+        select * from loan_repay where loan_id = #{loanId} and status = 'WAIT_PAY'
+    </select>
+
+    <select id="findCurrentLoanRepayByLoanId" parameterType="long" resultMap="loanRepayResultMap">
+        select *
+        from loan_repay
+        where loan_id = #{loanId}
+              and loan_repay.period = (select min(period)
+                                       from loan_repay future_repay join loan on future_repay.loan_id = loan.id
+                                       where future_repay.loan_id = #{loanId}
+                                             and date(now()) >= date(loan.recheck_time)
+                                             and date(future_repay.repay_date) >= date(now()))
+    </select>
+
     <update id="update" parameterType="LoanRepayModel">
         update loan_repay
         set expected_interest = #{expectedInterest},
