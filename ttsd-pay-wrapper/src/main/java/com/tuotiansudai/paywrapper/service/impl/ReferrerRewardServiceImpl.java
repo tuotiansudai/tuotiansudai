@@ -155,6 +155,10 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     }
 
     private int calculateLoanDuration(LoanModel loanModel) {
+        if (loanModel.getType().getLoanPeriodUnit() == LoanPeriodUnit.DAY) {
+            return loanModel.getPeriods();
+        }
+
         int periods = loanModel.getPeriods();
         return periods * InterestCalculator.DAYS_OF_MONTH;
     }
