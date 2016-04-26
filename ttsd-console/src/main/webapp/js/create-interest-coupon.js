@@ -153,7 +153,7 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
                 $fileBtn.hide();
                 $('.file-btn').find('input').val('');
                 $('.give-number').val('').prop('readonly', false);
-                $('.smsAlert').prop('disabled',true);
+                $('.smsAlert').prop({disabled:true,checked:false});
             } else if (userGroup == 'AGENT') {
                 $.get('/user-manage/user/agents', function(data) {
                     if (data.length > 0 ) {

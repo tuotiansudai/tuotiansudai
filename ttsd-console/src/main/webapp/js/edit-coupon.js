@@ -159,7 +159,7 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
                     $('.smsAlert').prop('disabled',false);
                 } else {
                     $('.give-number').val('').prop('readonly', false);
-                    $('.smsAlert').prop('disabled',true);
+                    $('.smsAlert').prop({disabled:true,checked:false});
                 }
             }
         });
