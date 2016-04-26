@@ -1,7 +1,7 @@
 require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache','text!/tpl/transferrer-transfer-application-table.mustache', 'pagination', 'layerWrapper', 'jquery.ajax.extension'], function ($, Mustache, transferableListTemplate, transferrerListTemplate,pagination, layer) {
 	$(function() {
 		var $filtersList=$('.filters-list li'),
-			activeIndex=$('.filters-list li.active').index(),
+			activeIndex=0,
 			paginationElement = $('.pagination');
 		$filtersList.on('click', function(event) {
 			event.preventDefault();
@@ -10,9 +10,10 @@ require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache',
 				index=$self.index(),
 				dataStatus=$self.attr('data-status');
 
-			loadLoanData();
 			$self.addClass('active').siblings().removeClass('active');
 			$recordList.find('.record-list:eq('+index+')').addClass('active').siblings().removeClass('active');
+			activeIndex=$('.filters-list li.active').index();
+			loadLoanData();
 		});
     
 		var loadLoanData = function (currentPage) {
@@ -20,11 +21,13 @@ require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache',
 			var requestData = {status: status, index: currentPage || 1};
 			paginationElement.loadPagination(requestData, function (data) {
 				if(activeIndex==0){
+					console.log(activeIndex);
 					var html = Mustache.render(transferableListTemplate, data);
 				}else{
+					console.log(activeIndex);
 					var html = Mustache.render(transferrerListTemplate, data);
 				}
-				$('.list-container 。record-list.active').html(html);
+				$('.list-container .record-list.active').html(html);
 			});
 			$('.list-container').on('mouseenter','.project-name',function() {
 				layer.closeAll('tips');
