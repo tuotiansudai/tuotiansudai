@@ -21,10 +21,8 @@ require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache',
 			var requestData = {status: status, index: currentPage || 1};
 			paginationElement.loadPagination(requestData, function (data) {
 				if(activeIndex==0){
-					console.log(activeIndex);
 					var html = Mustache.render(transferableListTemplate, data);
 				}else{
-					console.log(activeIndex);
 					var html = Mustache.render(transferrerListTemplate, data);
 				}
 				$('.list-container .record-list.active').html(html);
