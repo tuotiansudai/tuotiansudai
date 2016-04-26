@@ -5,12 +5,13 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert','red-envelope-fl
             var $self=$(this),
                 transferApplicationId=$self.attr('data-url-id'),
                 transferStatus=$self.attr('data-url-status'),
+                $transferDetail = $('.transfer-detail-content'),
                 urldata=$self.attr('data-url');
             $.ajax({
-                url: '/transfer/IsPurchase/'+transferApplicationId+'/'+transferStatus,
-                type: 'GET',
-                dataType: 'json'
-            })
+                    url: '/transfer/IsPurchase/'+transferApplicationId+'/'+transferStatus,
+                    type: 'GET',
+                    dataType: 'json'
+                })
                 .done(function(data) {
                     if(data.message == "SUCCESS"){
                         layer.open({
@@ -33,6 +34,11 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert','red-envelope-fl
                             }
                         });
                     }else{
+                        var isInvestor = 'INVESTOR' === $transferDetail.data('user-role');
+                        if (!isInvestor) {
+                            location.href = '/login?redirect=' + encodeURIComponent(location.href);
+                            return false;
+                        }
                         location.href = urldata;
                     }
                 })

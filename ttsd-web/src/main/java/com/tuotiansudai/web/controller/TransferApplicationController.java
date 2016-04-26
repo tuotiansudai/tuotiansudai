@@ -72,7 +72,7 @@ public class TransferApplicationController {
         InvestDto investDto = new InvestDto();
         investDto.setLoanId(String.valueOf(dto.getLoanId()));
         investDto.setTransferInvestId(String.valueOf(dto.getTransferInvestId()));
-        investDto.setAmount(dto.getBalance());
+        investDto.setAmount(dto.getTransferAmount());
         investDto.setSource(Source.WEB);
 
         if(accountModel.isNoPasswordInvest()){
@@ -81,7 +81,7 @@ public class TransferApplicationController {
                 BaseDto<PayDataDto> baseDto = transferService.noPasswordTransferPurchase(investDto);
                 if (baseDto.getData().getStatus()) {
                     httpServletRequest.getSession().setAttribute("noPasswordInvestSuccess", true);
-                    return new ModelAndView("/transfer/purchase-success");
+                    return new ModelAndView("redirect:/invest-success");
                 }
                 if (baseDto.getData() != null) {
                     errorMessage = baseDto.getData().getMessage();
@@ -115,29 +115,5 @@ public class TransferApplicationController {
         }
         return modelAndView;
     }
-
-    @RequestMapping(path = "/purchase-success", method = RequestMethod.GET)
-    public ModelAndView purchaseSuccess(HttpServletRequest httpServletRequest) {
-        ModelAndView modelAndView = new ModelAndView("/error/404", "responsive", true);
-
-        InvestModel latestSuccessInvest = investService.findLatestSuccessInvest(LoginUserInfo.getLoginName());
-        if (latestSuccessInvest == null) {
-            return modelAndView;
-        }
-
-        if (httpServletRequest.getSession().getAttribute("noPasswordInvestSuccess") != null) {
-            httpServletRequest.getSession().removeAttribute("noPasswordInvestSuccess");
-            modelAndView.setViewName("/purchase-success");
-            modelAndView.addObject("amount", AmountConverter.convertCentToString(latestSuccessInvest.getAmount()));
-            return modelAndView;
-        }
-
-        if (latestSuccessInvest.getStatus() == InvestStatus.SUCCESS) {
-            modelAndView.setViewName("/purchase-success");
-            modelAndView.addObject("amount", AmountConverter.convertCentToString(latestSuccessInvest.getAmount()));
-        }
-        return modelAndView;
-    }
-
 
 }

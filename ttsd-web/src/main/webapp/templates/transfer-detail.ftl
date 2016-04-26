@@ -1,6 +1,6 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.transfer_detail}" pageJavascript="${js.transfer_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
-<div class="transfer-detail-content">
+<div class="transfer-detail-content" data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
     <div class="detail-intro">
         <div class="transfer-top">
             <span class="product-name">${transferApplication.name!}</span>
@@ -12,7 +12,7 @@
                 <dl>
                     <dt>转让价格</dt>
                     <dd><em><@percentInteger>${transferApplication.transferAmount!}</@percentInteger></em>
-                    <i><@percentFraction>${transferApplication.transferAmount!}</@percentFraction></i>元
+                        <i><@percentFraction>${transferApplication.transferAmount!}</@percentFraction></i>元
                     </dd>
                 </dl>
                 <dl>
@@ -45,7 +45,7 @@
                         <span>转让截止时间：${transferApplication.deadLine?string("yyyy-MM-dd HH:mm:ss")}</span>
                     </li>
                     <li>
-                       <span><a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">债权转让协议书(范本)</a></span>
+                        <span><a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">债权转让协议书(范本)</a></span>
                     </li>
                 </ul>
             </div>
@@ -70,31 +70,31 @@
             <#if (transferApplicationReceiver.status?string) == "true">
                 <table>
                     <thead>
-                        <tr>
-                            <th>承接人</th>
-                            <th>转让价格(元)</th>
-                            <th>承接方式</th>
-                            <th>预期收益(元)</th>
-                            <th>待收本金(元)</th>
-                            <th>承接时间</th>
-                        </tr>
+                    <tr>
+                        <th>承接人</th>
+                        <th>转让价格(元)</th>
+                        <th>承接方式</th>
+                        <th>预期收益(元)</th>
+                        <th>待收本金(元)</th>
+                        <th>承接时间</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>${transferApplicationReceiver.transferApplicationReceiver!}</td>
-                            <td>${transferApplicationReceiver.receiveAmount!}</td>
-                            <td>
-                                <#if transferApplicationReceiver.source == "WEB"><i class="fa fa-internet-explorer" aria-hidden="true"></i>
-                                    <#elseif transferApplicationReceiver.source == "ANDROID"><i class="fa fa-android" aria-hidden="true">
-                                    <#elseif transferApplicationReceiver.source == "IOS"><i class="fa fa-apple" aria-hidden="true"></i>
-                                    <#elseif transferApplicationReceiver.source == "AUTO">自动
-                                    <#else>
-                                </#if>
-                            </td>
-                            <td>${transferApplicationReceiver.expecedInterest!}</td>
-                            <td>${transferApplicationReceiver.investAmount!}</td>
-                            <td>${transferApplicationReceiver.transferTime?string("yyyy-MM-dd HH:mm:ss")}</td>
-                        </tr>
+                    <tr>
+                        <td>${transferApplicationReceiver.transferApplicationReceiver!}</td>
+                        <td>${transferApplicationReceiver.receiveAmount!}</td>
+                        <td>
+                            <#if transferApplicationReceiver.source == "WEB"><i class="fa fa-internet-explorer" aria-hidden="true"></i>
+                            <#elseif transferApplicationReceiver.source == "ANDROID"><i class="fa fa-android" aria-hidden="true">
+                            <#elseif transferApplicationReceiver.source == "IOS"><i class="fa fa-apple" aria-hidden="true"></i>
+                            <#elseif transferApplicationReceiver.source == "AUTO">自动
+                            <#else>
+                            </#if>
+                        </td>
+                        <td>${transferApplicationReceiver.expecedInterest!}</td>
+                        <td>${transferApplicationReceiver.investAmount!}</td>
+                        <td>${transferApplicationReceiver.transferTime?string("yyyy-MM-dd HH:mm:ss")}</td>
+                    </tr>
                     </tbody>
                 </table>
             <#else >
@@ -104,5 +104,5 @@
     </div>
     <#include "coupon-alert.ftl" />
 </div>
-<#include "red-envelope-float.ftl" />
+    <#include "red-envelope-float.ftl" />
 </@global.main>
