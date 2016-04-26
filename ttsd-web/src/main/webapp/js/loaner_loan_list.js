@@ -74,11 +74,11 @@ require(['jquery', 'mustache', 'text!tpl/loaner-loan-table.mustache', 'text!tpl/
                     contentType: 'application/json; charset=UTF-8'
                 }).success(function (response) {
                     var data = response.data;
-                    data.isLoanCompleted = _.every(data.records, function(item) {
-                            return item.loanRepayStatus === 'COMPLETE';
-                        });
                     data.csrfToken = $("meta[name='_csrf']").attr("content");
                     if (data.status) {
+                        data.isLoanCompleted = _.every(data.records, function(item) {
+                            return item.loanRepayStatus === 'COMPLETE';
+                        });
                         _.each(data.records, function (item) {
                             switch (item.loanRepayStatus) {
                                 case 'REPAYING':
@@ -109,39 +109,42 @@ require(['jquery', 'mustache', 'text!tpl/loaner-loan-table.mustache', 'text!tpl/
                             content: html
                         });
 
-                        $('a.normal-repay').click(function () {
-                            if (data.balance < data.advanceRepayAmount) {
-                                $(".repay-alert").html(Mustache.render('实际需还金额{{advanceRepayAmount}}元，您的账户余额仅有{{balance}}元',
-                                    {
-                                        'advanceRepayAmount': data.advanceRepayAmount,
-                                        'balance': data.balance
-                                    }
-                                )).show();
-                                return false;
-                            }
-
-                            $("#normal-repay-form").submit();
-                            layer.closeAll();
-                            return false;
-                        });
-
-                        $('a.advanced-repay').click(function () {
-                            if (data.isAdvanceRepayEnabled) {
-                                if (data.balance < data.advanceRepayAmount) {
-                                    $(".repay-alert").html(Mustache.render('实际需还金额{{advanceRepayAmount}}元，您的账户余额仅有{{balance}}元',
+                        if (data.isNormalRepayEnabled) {
+                            $('a.normal-repay').click(function () {
+                                if (data.loanerBalance < data.normalRepayAmount) {
+                                    $(".repay-alert").html(Mustache.render('应还金额 {{normalRepayAmount}} 元，账户余额仅有 {{loanerBalance}} 元！',
                                         {
-                                            'advanceRepayAmount': data.advanceRepayAmount,
-                                            'balance': data.balance
+                                            'normalRepayAmount': data.normalRepayAmount,
+                                            'loanerBalance': data.loanerBalance
                                         }
                                     )).show();
                                     return false;
                                 }
 
+                                $("#normal-repay-form").submit();
+                                layer.closeAll();
+                                return false;
+                            });
+                        }
+
+                        if (data.isAdvanceRepayEnabled) {
+                            $('a.advanced-repay').click(function () {
+                                if (data.loanerBalance < data.advanceRepayAmount) {
+                                    $(".repay-alert").html(Mustache.render('应还金额 {{advanceRepayAmount}} 元，您的账户余额仅有{{loanerBalance}}元',
+                                        {
+                                            'advanceRepayAmount': data.advanceRepayAmount,
+                                            'loanerBalance': data.loanerBalance
+                                        }
+                                    )).show();
+                                    return false;
+                                }
                                 $("#advanced-repay-form").submit();
                                 layer.closeAll();
-                            }
-                            return false;
-                        });
+                                return false;
+                            });
+                        }
+
+
                     }
                 });
             });
@@ -150,7 +153,7 @@ require(['jquery', 'mustache', 'text!tpl/loaner-loan-table.mustache', 'text!tpl/
 
     loadLoanData();
 
-//define calendar
+    //define calendar
     $('.apply-btn').click(function () {
         loadLoanData();
         $(".date-filter .select-item").removeClass("current");

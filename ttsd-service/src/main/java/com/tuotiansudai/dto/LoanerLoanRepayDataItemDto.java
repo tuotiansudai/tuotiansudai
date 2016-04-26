@@ -1,6 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tuotiansudai.repository.model.LoanRepayModel;
 import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.util.AmountConverter;
@@ -20,9 +21,9 @@ public class LoanerLoanRepayDataItemDto {
 
     private String expectedInterest;
 
-    private String defaultInterest;
-
     private String expectedRepayAmount;
+
+    private String defaultInterest;
 
     private String actualRepayAmount;
 
@@ -35,8 +36,6 @@ public class LoanerLoanRepayDataItemDto {
 
     private boolean isEnabled;
 
-    private boolean isRepayDate;
-
     public LoanerLoanRepayDataItemDto(LoanRepayModel loanRepayModel, boolean isEnabled) {
         this.loanId = loanRepayModel.getLoanId();
         this.loanRepayId = loanRepayModel.getId();
@@ -46,13 +45,12 @@ public class LoanerLoanRepayDataItemDto {
         this.defaultInterest = AmountConverter.convertCentToString(loanRepayModel.getDefaultInterest());
         this.expectedRepayAmount = AmountConverter.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest());
         if (loanRepayModel.getStatus() == RepayStatus.COMPLETE) {
-            this.actualRepayAmount = AmountConverter.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getActualInterest() + loanRepayModel.getDefaultInterest());
+            this.actualRepayAmount = AmountConverter.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getActualInterest());
         }
         this.repayDate = loanRepayModel.getRepayDate();
         this.actualRepayDate = loanRepayModel.getActualRepayDate();
         this.loanRepayStatus = loanRepayModel.getStatus();
         this.isEnabled = isEnabled;
-        this.isRepayDate = new DateTime(loanRepayModel.getRepayDate()).withTimeAtStartOfDay().isEqual(new DateTime().withTimeAtStartOfDay());
     }
 
     public long getLoanId() {
@@ -143,19 +141,12 @@ public class LoanerLoanRepayDataItemDto {
         this.loanRepayStatus = loanRepayStatus;
     }
 
+    @JsonProperty(value = "isEnabled")
     public boolean isEnabled() {
         return isEnabled;
     }
 
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
-    }
-
-    public boolean isRepayDate() {
-        return isRepayDate;
-    }
-
-    public void setRepayDate(boolean repayDate) {
-        isRepayDate = repayDate;
     }
 }

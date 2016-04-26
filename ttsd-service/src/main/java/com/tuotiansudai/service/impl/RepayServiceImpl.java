@@ -55,34 +55,49 @@ public class RepayServiceImpl implements RepayService {
         LoanerLoanRepayDataDto dataDto = new LoanerLoanRepayDataDto();
         baseDto.setData(dataDto);
 
+        LoanModel loanModel = loanMapper.findById(loanId);
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByAgentAndLoanId(loginName, loanId);
         if (loanRepayModels.isEmpty()) {
-            logger.error(MessageFormat.format("login user({0}) is not agent of loan({1})", loginName, String.valueOf(loanId)));
+            logger.error(MessageFormat.format("login user({0}) is not agent({1}) of loan({2})",
+                    loginName, loanModel.getAgentLoginName(), String.valueOf(loanId)));
             return baseDto;
         }
 
-        LoanModel loanModel = loanMapper.findById(loanId);
-
         final LoanRepayModel enabledLoanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(loanId);
-        final boolean isEnabledLoanRepayExist = enabledLoanRepayModel != null;
-        boolean isWaitPayLoanRepayExist = this.isWaitPayLoanRepayExist(loanRepayModels);
+        boolean isWaitPayLoanRepayExist = Iterators.any(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
+            @Override
+            public boolean apply(LoanRepayModel input) {
+                return input.getStatus() == RepayStatus.WAIT_PAY;
+            }
+        });
 
         dataDto.setLoanId(loanId);
-        dataDto.setLoanRepaying(loanModel.getStatus() == LoanStatus.REPAYING);
-        dataDto.setWaitPayLoanRepayExist(isWaitPayLoanRepayExist);
-        dataDto.setBalance(AmountConverter.convertCentToString(accountMapper.findByLoginName(loginName).getBalance()));
+        dataDto.setLoanerBalance(AmountConverter.convertCentToString(accountMapper.findByLoginName(loginName).getBalance()));
+
+        if (enabledLoanRepayModel != null && !isWaitPayLoanRepayExist) {
+            dataDto.setNormalRepayEnabled(true);
+            long defaultInterest = 0;
+            for (LoanRepayModel loanRepayModel : loanRepayModels) {
+                defaultInterest += loanRepayModel.getDefaultInterest();
+            }
+            dataDto.setNormalRepayAmount(AmountConverter.convertCentToString(enabledLoanRepayModel.getCorpus() + enabledLoanRepayModel.getExpectedInterest() + defaultInterest));
+        }
+
         if (loanModel.getStatus() == LoanStatus.REPAYING && !isWaitPayLoanRepayExist) {
             dataDto.setAdvanceRepayEnabled(true);
             DateTime now = new DateTime();
             DateTime lastSuccessRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, now);
-            long interest = InterestCalculator.calculateLoanRepayInterest(loanModel, investMapper.findSuccessInvestsByLoanId(loanId), lastSuccessRepayDate, now);
-            dataDto.setAdvanceRepayAmount(AmountConverter.convertCentToString(loanRepayModels.get(loanRepayModels.size() - 1).getCorpus() + interest));
+            List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanId);
+            long advanceRepayInterest = InterestCalculator.calculateLoanRepayInterest(loanModel, successInvests, lastSuccessRepayDate, now);
+            long corpus = loanRepayMapper.findLastLoanRepay(loanId).getCorpus();
+            dataDto.setAdvanceRepayAmount(AmountConverter.convertCentToString(corpus + advanceRepayInterest));
         }
 
         List<LoanerLoanRepayDataItemDto> records = Lists.transform(loanRepayModels, new Function<LoanRepayModel, LoanerLoanRepayDataItemDto>() {
             @Override
             public LoanerLoanRepayDataItemDto apply(LoanRepayModel loanRepayModel) {
-                return new LoanerLoanRepayDataItemDto(loanRepayModel, isEnabledLoanRepayExist && loanRepayModel.getId() == enabledLoanRepayModel.getId());
+                boolean isEnabledLoanRepay = enabledLoanRepayModel != null && loanRepayModel.getId() == enabledLoanRepayModel.getId();
+                return new LoanerLoanRepayDataItemDto(loanRepayModel, isEnabledLoanRepay);
             }
         });
 
@@ -126,12 +141,4 @@ public class RepayServiceImpl implements RepayService {
         return baseDto;
     }
 
-    private boolean isWaitPayLoanRepayExist(List<LoanRepayModel> loanRepayModels) {
-        return Iterators.tryFind(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
-            @Override
-            public boolean apply(LoanRepayModel input) {
-                return input.getStatus() == RepayStatus.WAIT_PAY;
-            }
-        }).isPresent();
-    }
 }

@@ -10,15 +10,15 @@ public class LoanerLoanRepayDataDto extends BaseDataDto {
 
     private long loanId;
 
-    private boolean isLoanRepaying;
+    private String loanerBalance = "0";
 
-    private boolean isWaitPayLoanRepayExist;
-
-    private String balance;
+    private boolean isNormalRepayEnabled;
 
     private boolean isAdvanceRepayEnabled;
 
-    private String advanceRepayAmount;
+    private String normalRepayAmount = "0";
+
+    private String advanceRepayAmount = "0";
 
     private List<LoanerLoanRepayDataItemDto> records = Lists.newArrayList();
 
@@ -30,30 +30,21 @@ public class LoanerLoanRepayDataDto extends BaseDataDto {
         this.loanId = loanId;
     }
 
-    @JsonProperty(value = "isLoanRepaying")
-    public boolean isLoanRepaying() {
-        return isLoanRepaying;
+    public String getLoanerBalance() {
+        return loanerBalance;
     }
 
-    public void setLoanRepaying(boolean loanRepaying) {
-        isLoanRepaying = loanRepaying;
+    public void setLoanerBalance(String loanerBalance) {
+        this.loanerBalance = loanerBalance;
     }
 
-    @JsonProperty(value = "isWaitPayLoanRepayExist")
-    public boolean isWaitPayLoanRepayExist() {
-        return isWaitPayLoanRepayExist;
+    @JsonProperty(value = "isNormalRepayEnabled")
+    public boolean isNormalRepayEnabled() {
+        return isNormalRepayEnabled;
     }
 
-    public void setWaitPayLoanRepayExist(boolean isWaitPayLoanRepayExist) {
-        this.isWaitPayLoanRepayExist = isWaitPayLoanRepayExist;
-    }
-
-    public String getBalance() {
-        return balance;
-    }
-
-    public void setBalance(String balance) {
-        this.balance = balance;
+    public void setNormalRepayEnabled(boolean normalRepayEnabled) {
+        isNormalRepayEnabled = normalRepayEnabled;
     }
 
     @JsonProperty(value = "isAdvanceRepayEnabled")
@@ -63,6 +54,14 @@ public class LoanerLoanRepayDataDto extends BaseDataDto {
 
     public void setAdvanceRepayEnabled(boolean advanceRepayEnabled) {
         isAdvanceRepayEnabled = advanceRepayEnabled;
+    }
+
+    public String getNormalRepayAmount() {
+        return normalRepayAmount;
+    }
+
+    public void setNormalRepayAmount(String normalRepayAmount) {
+        this.normalRepayAmount = normalRepayAmount;
     }
 
     public String getAdvanceRepayAmount() {
