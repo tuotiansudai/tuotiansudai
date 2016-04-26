@@ -38,8 +38,21 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         });
     }
 
-    if ($errorTip.length) {
+    if ($errorTip.length > 0 && $errorTip.text() != '' && $errorTip.text() != '新手标投资已超上限') {
         showInputErrorTips($errorTip.text());
+    }
+
+    if ($errorTip.text() == '新手标投资已超上限') {
+        layer.open({
+            shadeClose: false,
+            title: '新手体验特权',
+            btn: ['确认'],
+            area: ['500px', '200px'],
+            content: '<p class="pad-m-tb tc">抱歉，您已购买过新手专享产品，无法再次参加该活动。</p>',
+            btn1: function () {
+                layer.closeAll();
+            }
+        });
     }
 
     var loanProgress = $loanDetail.data('loan-progress');
