@@ -10,6 +10,7 @@
         <result column="created_time" property="investTime"></result>
         <result column="loanName" property="loanName"></result>
         <result column="loanId" property="loanId"></result>
+        <result column="investId" property="investId"></result>
         <result column="repay_date" property="repayDate"></result>
         <result column="corpus" property="corpus"></result>
         <result column="expected_interest" property="expectedInterest"></result>
@@ -255,6 +256,7 @@
           temp.`created_time`,
           temp.`name` AS loanName,
           temp.loanId AS loanId,
+          temp.id AS investId,
           temp2.`repay_date`,
           temp2.`corpus`,
           temp2.`expected_interest`,

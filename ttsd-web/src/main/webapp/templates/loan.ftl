@@ -16,7 +16,7 @@
                             <b><@percentInteger>${loan.basicRate}</@percentInteger><@percentFraction>${loan.basicRate}</@percentFraction></b>
                             <#if loan.activityRate!=0>+<@percentInteger>${loan.activityRate}</@percentInteger><@percentFraction>${loan.activityRate}</@percentFraction></#if>%
                         </em>
-                        <i>年化收益</i>
+                        <i>预期年化收益</i>
                     </div>
                 </div>
             </div>
@@ -25,6 +25,7 @@
                 代理人：${loan.agentLoginName}<br/>
                 借款人：${loan.loanerLoginName}<br/>
                 项目期限：${loan.periods}<#if loan.type.getLoanPeriodUnit() == "MONTH"> 月<#else> 天</#if><br/>
+                募集期限：${loan.raisingPeriod}天<br/>
                 还款方式：${loan.type.getName()}<br/>
                 投资要求：<@amount>${loan.minInvestAmount?string.computer}</@amount> 元起投，投资金额为<@amount>${loan.investIncreasingAmount?string.computer}</@amount> 元的整数倍<br/>
                 <a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a>
@@ -34,7 +35,7 @@
             </#if>
         </div>
         <div class="account-info fl">
-            <h5 class="l-title">拓天速贷提醒您：理财非存款，投资需谨慎！</h5>
+            <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>
             <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
                 <form action="/invest" method="post" id="investForm">
                     <dl class="account-list">
@@ -162,7 +163,7 @@
                             <#if loan.preheatSeconds lte 1800>
                                 <i class="time-clock"></i><strong id="minute_show">00</strong><em>:</em><strong id="second_show">00</strong>以后可投资
                             <#else>
-                            ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
+                                ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
                             </#if>
                         </dd>
 

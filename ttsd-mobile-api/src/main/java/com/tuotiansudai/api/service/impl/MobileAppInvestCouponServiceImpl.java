@@ -68,10 +68,13 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
 
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(dto.getBaseParam().getUserId(), null);
 
-        userCouponModels = filterUserCouponModels(userCouponModels, loanModel.getProductType());
+        List<UserCouponModel> unavailableCouponList = filterUnavailableLoanProductType(userCouponModels, loanModel.getProductType());
+
+        userCouponModels.removeAll(unavailableCouponList);
 
         sortCoupons(userCouponModels,investMoneyLong);
 
+        userCouponModels.addAll(unavailableCouponList);
 
         UnmodifiableIterator<UserCouponModel> filter = Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
             @Override
@@ -98,14 +101,14 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
     }
 
     //删除3元红包和项目类型不匹配的券和红包
-    private List<UserCouponModel> filterUserCouponModels(List<UserCouponModel> userCouponModels, ProductType loanProductType) {
-        ArrayList<UserCouponModel> listDel = new ArrayList<>();
+    private List<UserCouponModel> filterUnavailableLoanProductType(List<UserCouponModel> userCouponModels, ProductType loanProductType) {
+        ArrayList<UserCouponModel> unavailableCouponlist = new ArrayList<>();
 
         for (int i = 0; i < userCouponModels.size(); i++) {
             UserCouponModel item = userCouponModels.get(i);
             CouponModel couponModel = couponMapper.findById(item.getCouponId());
             if(CouponType.BIRTHDAY_COUPON.equals(couponModel.getCouponType()) && !userBirthdayUtil.isBirthMonth(item.getLoginName())){
-                listDel.add(item);
+                unavailableCouponlist.add(item);
                 continue;
             }
             boolean isSupportedLoanType = false;
@@ -117,13 +120,11 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
             }
 
             if (!isSupportedLoanType) {
-                listDel.add(item);
+                unavailableCouponlist.add(item);
             }
         }
 
-        userCouponModels.removeAll(listDel);
-
-        return userCouponModels;
+        return unavailableCouponlist;
     }
 
     private void sortCoupons(List<UserCouponModel> userCouponModels,final long investMoney) {

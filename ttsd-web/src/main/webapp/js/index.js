@@ -1,4 +1,4 @@
-require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-alert','red-envelope-float'], function ($, _) {
+require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-alert','red-envelope-float','count_down'], function ($, _) {
     $(function () {
         var $bannerBox = $('.banner-box'),
             $imgScroll = $('.banner-img-list', $bannerBox),
@@ -78,5 +78,6 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
                 }).find("li:first").appendTo($self);
             })
         }
+
     });
 });
