@@ -8,6 +8,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         $loanList = $('.loan-list', $loanDetail),
         paginationElement = $('.pagination', $loanDetail),
         $errorTip = $('.errorTip'),
+        $errorType = $('.errorType'),
         $investSubmit=$('#investSubmit'),
         $noPasswordTips=$('#noPasswordTips'),
         $authorizeAgreement=$('#goAuthorize'),
@@ -38,16 +39,16 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         });
     }
 
-    if ($errorTip.length > 0 && $errorTip.text() != '' && $errorTip.text() != '新手标投资已超上限') {
+    if ($errorTip.length > 0 && $errorTip.text() != '' && $errorType.val() != 'OUT_OF_NOVICE_INVEST_LIMIT') {
         showInputErrorTips($errorTip.text());
     }
 
-    if ($errorTip.text() == '新手标投资已超上限') {
+    if ($errorType.val() == 'OUT_OF_NOVICE_INVEST_LIMIT') {
         layer.open({
             shadeClose: false,
             title: '新手体验特权',
             btn: ['确认'],
-            area: ['500px', '200px'],
+            area: ['500px', '180px'],
             content: '<p class="pad-m-tb tc">抱歉，您已购买过新手专享产品，无法再次参加该活动。</p>',
             btn1: function () {
                 layer.closeAll();
