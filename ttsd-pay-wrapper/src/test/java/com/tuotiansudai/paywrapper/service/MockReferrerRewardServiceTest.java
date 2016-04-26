@@ -62,7 +62,7 @@ public class MockReferrerRewardServiceTest {
 
     @Test
     public void shouldRewardReferrerExistedInAgentIsSuccess(){
-        when(idGenerator.generate()).thenReturn(90000001l);
+        when(idGenerator.generate()).thenReturn(90000001L);
         UserModel loginNameModel = createFakeUser("loginName");
         UserModel referrerModel = createFakeUser("referrerLoginName");
         UserModel investorModel = createFakeUser("investorLoginName");
@@ -94,7 +94,7 @@ public class MockReferrerRewardServiceTest {
         agentLevelRateModel.setLevel(2);
         agentLevelRateModel.setRate(0.033);
         agentLevelRateModel.setLoginName(loginNameModel.getLoginName());
-        agentLevelRateModel.setId(90000002l);
+        agentLevelRateModel.setId(90000002L);
 
         when(agentLevelRateMapper.findAgentLevelRateByLoginNameAndLevel(anyString(),anyInt())).thenReturn(agentLevelRateModel);
 
@@ -102,7 +102,7 @@ public class MockReferrerRewardServiceTest {
 
         ArgumentCaptor<InvestReferrerRewardModel> investReferrerRewardModelArgumentCaptor = ArgumentCaptor.forClass(InvestReferrerRewardModel.class);
         verify(investReferrerRewardMapper,times(1)).create(investReferrerRewardModelArgumentCaptor.capture());
-        assertEquals(2, investReferrerRewardModelArgumentCaptor.getValue().getAmount());
+        assertEquals(8, investReferrerRewardModelArgumentCaptor.getValue().getAmount());
 
     }
 
@@ -114,7 +114,7 @@ public class MockReferrerRewardServiceTest {
         referrerStaffRoleReward.add(0.3);
         referrerStaffRoleReward.add(0.4);
         ReflectionTestUtils.setField(referrerRewardService, "referrerStaffRoleReward",referrerStaffRoleReward);
-        when(idGenerator.generate()).thenReturn(90000001l);
+        when(idGenerator.generate()).thenReturn(90000001L);
         UserModel loginNameModel = createFakeUser("loginName");
         UserModel referrerModel = createFakeUser("referrerLoginName");
         UserModel investorModel = createFakeUser("investorLoginName");
@@ -148,7 +148,7 @@ public class MockReferrerRewardServiceTest {
 
         ArgumentCaptor<InvestReferrerRewardModel> investReferrerRewardModelArgumentCaptor = ArgumentCaptor.forClass(InvestReferrerRewardModel.class);
         verify(investReferrerRewardMapper,times(1)).create(investReferrerRewardModelArgumentCaptor.capture());
-        assertEquals(18, investReferrerRewardModelArgumentCaptor.getValue().getAmount());
+        assertEquals(49, investReferrerRewardModelArgumentCaptor.getValue().getAmount());
 
     }
 
@@ -161,7 +161,7 @@ public class MockReferrerRewardServiceTest {
         loanModel.setName("店铺资金周转");
         loanModel.setActivityRate(12);
         loanModel.setShowOnHome(true);
-        loanModel.setPeriods(33);
+        loanModel.setPeriods(3);
         loanModel.setActivityType(ActivityType.EXCLUSIVE);
         loanModel.setContractId(123);
         loanModel.setDescriptionHtml("asdfasdf");
@@ -184,7 +184,7 @@ public class MockReferrerRewardServiceTest {
 
     private InvestModel getFakeInvestModel(LoanModel loanModel,UserModel userModel) {
         InvestModel model = new InvestModel();
-        model.setAmount(1000l);
+        model.setAmount(1000L);
         Date currentDate = new Date((new Date().getTime() / 1000) * 1000);
         model.setCreatedTime(currentDate);
         model.setId(idGenerator.generate());
