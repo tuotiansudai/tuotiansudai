@@ -57,8 +57,8 @@
             <#else>
                 <p class="get-money"><span class="name-text">认购金额：</span><span class="money-text"><strong>${transferApplication.transferAmount!}</strong>元</span> </p>
                 <p><span class="name-text">预计收益：</span><span class="money-text"><strong>${transferApplication.expecedInterest!}</strong>元</span></p>
-                <p class="user-money"><span class="name-text">账户余额：${transferApplication.balance!} 元</span><span class="money-text"><strong><a href="#">去充值 >></a></strong></span></p>
-                <p><a href="#" class="btn-normal invest-btn">马上投资</a></p>
+                <p class="user-money"><span class="name-text">账户余额：${transferApplication.balance!} 元</span><span class="money-text"><strong><a href="/recharge">去充值 >></a></strong></span></p>
+                <p><a href="#" class="btn-normal invest-btn" id="transferBtn" data-url="/transfer/purchase/${(transferApplication.id?string.computer)!}" data-url-id="${(transferApplication.id?string.computer)!}" data-url-status="${transferApplication.transferStatus.name()}">马上投资</a></p>
             </#if>
         </div>
     </div>

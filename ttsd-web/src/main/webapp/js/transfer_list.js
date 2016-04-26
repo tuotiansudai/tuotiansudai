@@ -1,32 +1,35 @@
-require(['jquery', 'layerWrapper','coupon-alert','red-envelope-float'], function ($, layer) {
+require(['jquery', 'layerWrapper','coupon-alert','red-envelope-float','jquery.ajax.extension'], function ($, layer) {
     $(function() {
         $('.transfer-list-box ul li').on('click', function(event) {
             event.preventDefault();
             var $self = $(this),
-                urldata = $self.attr('data-url');
+					transferApplicationId = $self.attr('data-url-id'),
+					transferStatus = $self.attr('data-url-status'),
+					urldata = $self.attr('data-url');
 			$.ajax({
-				url: '/transfer/purchare?id',
-				type: 'POST',
-				dataType: 'json',
-				data: {param1: 'value1'},
+				url: '/transfer/IsPurchase/'+transferApplicationId+'/'+transferStatus,
+				type: 'GET',
+				dataType: 'json'
 			})
 			.done(function(data) {
-				if(data==1){
+				if(data.message == "SUCCESS"){
 					layer.open({
 					  title: '温馨提示',
 					  btn: ['确定'],
 					  content: '该项目已被承接，请选择其他项目。',
 					  btn1: function(index, layero){
-					    layer.closeAll();
+					    layer.closeAll()
+						  location.href = "/transfer-list";
 					  }
 					});
-				}else if(data==2){
+				}else if(data.message == "CANCEL"){
 					layer.open({
 					  title: '温馨提示',
 					  btn: ['确定'],
 					  content: '该项目已被取消，请选择其他项目。',
 					  btn1: function(index, layero){
 					    layer.closeAll();
+						  location.href = "/transfer-list";
 					  }
 					});
 				}else{

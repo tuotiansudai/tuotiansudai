@@ -55,6 +55,12 @@ public class TransferServiceImpl implements TransferService {
         return payWrapperClient.purchase(investDto);
     }
 
+    @Override
+    public BaseDto<PayDataDto> noPasswordTransferPurchase(InvestDto investDto) throws InvestException{
+        this.checkTransferPurchase(investDto);
+        return payWrapperClient.noPasswordPurchase(investDto);
+    }
+
     private void checkTransferPurchase(InvestDto investDto) throws InvestException {
         long loanId = Long.parseLong(investDto.getLoanId());
         LoanModel loan = loanMapper.findById(loanId);
@@ -148,6 +154,7 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setTransferInvestId(transferApplicationModel.getTransferInvestId());
         transferApplicationDetailDto.setName(transferApplicationModel.getName());
         transferApplicationDetailDto.setLoanName(loanModel.getName());
+        transferApplicationDetailDto.setLoanId(loanModel.getId());
         transferApplicationDetailDto.setTransferAmount(AmountConverter.convertCentToString(transferApplicationModel.getTransferAmount()));
         transferApplicationDetailDto.setInvestAmount(AmountConverter.convertCentToString(transferApplicationModel.getInvestAmount()));
         transferApplicationDetailDto.setBaseRate(loanModel.getBaseRate() * 100);

@@ -11,6 +11,8 @@ public interface TransferService {
 
     BaseDto<PayFormDataDto> transferPurchase(InvestDto investDto) throws InvestException;
 
+    BaseDto<PayDataDto> noPasswordTransferPurchase(InvestDto investDto) throws InvestException;
+
     BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findAllTransferApplicationPaginationList(List<TransferStatus> transferStatus,
                                                                                                             double rateStart,
                                                                                                             double tateEnd,

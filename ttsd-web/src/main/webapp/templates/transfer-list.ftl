@@ -38,7 +38,7 @@
         <ul>
             <#if transferApplicationItemList??>
                 <#list transferApplicationItemList as transferApplicationItem>
-                    <li data-url="/transfer/${(transferApplicationItem.transferApplicationId?string.computer)!}" class="clearfix">
+                    <li data-url="/transfer/${(transferApplicationItem.transferApplicationId?string.computer)!}" data-url-id="${(transferApplicationItem.transferApplicationId?string.computer)!}" data-url-status="${transferApplicationItem.transferStatus.name()}" class="clearfix">
                         <div class="transfer-info-frame fl">
                             <div class="transfer-top">
                                 <span class="l-title fl">${transferApplicationItem.transferName!}</span>
@@ -69,12 +69,18 @@
                             </div>
                         </div>
                         <div class="transfer-right">
-                            <div class="transfer-time">
-                                <span>截止时间：${transferApplicationItem.deadLine?string("yyyy-MM-dd HH:mm:ss")}</span>
-                            </div>
-                            <div class="rest-amount">
-                                <i class="btn-invest btn-normal">马上投资</i>
-                            </div>
+                            <#if (transferApplicationItem.transferStatus.name() == "SUCCESS")>
+                                <p class="img-status"><img src="${staticServer}/images/sign/loan/transfered.png"></p>
+                                <p class="status-text">转让完成时间：${transferApplicationItem.transferTime?string("yyyy-MM-dd HH:mm:ss")}</p>
+                            <#else>
+                                <div class="transfer-time">
+                                    <span>截止时间：${transferApplicationItem.deadLine?string("yyyy-MM-dd HH:mm:ss")}</span>
+                                </div>
+                                <div class="rest-amount">
+                                    <i class="btn-invest btn-normal">马上投资</i>
+                                </div>
+                            </#if>
+
                         </div>
                     </li>
                 </#list>

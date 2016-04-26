@@ -11,7 +11,7 @@ public class TransferApplicationDetailDto extends BaseDataDto {
 
     private String name;
 
-    private long loan_id;
+    private long loanId;
 
     private String loanName;
 
@@ -64,12 +64,12 @@ public class TransferApplicationDetailDto extends BaseDataDto {
         this.name = name;
     }
 
-    public long getLoan_id() {
-        return loan_id;
+    public long getLoanId() {
+        return loanId;
     }
 
-    public void setLoan_id(long loan_id) {
-        this.loan_id = loan_id;
+    public void setLoanId(long loanId) {
+        this.loanId = loanId;
     }
 
     public String getLoanName() {
