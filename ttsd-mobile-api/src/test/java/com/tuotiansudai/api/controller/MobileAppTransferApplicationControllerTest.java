@@ -67,8 +67,14 @@ public class MobileAppTransferApplicationControllerTest extends ControllerTestBa
         assertEquals(ReturnMessage.SUCCESS.getCode(), successResponseDto.getCode());
     }
 
-
-
+    @Test
+    public void shouldTransferApplicationCancelIsOk() throws Exception{
+        TransferCancelRequestDto transferCancelRequestDto = new TransferCancelRequestDto();
+        transferCancelRequestDto.setTransferApplicationId(1000000L);
+        when(service.transferApplicationCancel(any(TransferCancelRequestDto.class))).thenReturn(successResponseDto);
+        doRequestWithServiceMockedTest("/get/transfer-cancel", transferCancelRequestDto);
+        assertEquals(ReturnMessage.SUCCESS.getCode(), successResponseDto.getCode());
+    }
 
 
 }

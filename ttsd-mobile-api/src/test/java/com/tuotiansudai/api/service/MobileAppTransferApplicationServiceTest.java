@@ -148,6 +148,15 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     }
 
     @Test
+    public void shouldTransferApplicationCancelIsSuccess() throws Exception {
+        TransferCancelRequestDto transferCancelRequestDto = new TransferCancelRequestDto();
+        transferCancelRequestDto.setTransferApplicationId(100000L);
+        when(investTransferService.cancelTransferApplication(transferCancelRequestDto.getTransferApplicationId())).thenReturn(true);
+        BaseResponseDto baseResponseDto = mobileAppTransferApplicationService.transferApplicationCancel(transferCancelRequestDto);
+        assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
+    }
+
+    @Test
     public void shouldTransferApplyQueryIsSuccess() {
         long loanId = idGenerator.generate();
         UserModel userModel = createUserByUserId("testuser");

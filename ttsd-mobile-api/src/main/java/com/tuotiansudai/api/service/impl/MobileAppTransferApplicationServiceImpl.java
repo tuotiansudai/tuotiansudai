@@ -16,6 +16,7 @@ import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
@@ -178,5 +179,15 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         dto.setData(transferApplicationResponseDataDto);
         return dto;
+    }
+
+    @Override
+    public BaseResponseDto transferApplicationCancel(TransferCancelRequestDto transferCancelRequestDto){
+        boolean isSuccess = investTransferService.cancelTransferApplication(transferCancelRequestDto.getTransferApplicationId());
+        if(isSuccess){
+            return new BaseResponseDto(ReturnMessage.SUCCESS.getCode(),ReturnMessage.SUCCESS.getMsg());
+        }else{
+            return new BaseResponseDto(ReturnMessage.TRANSFER_CANCEL_IS_FAIL.getCode(),ReturnMessage.TRANSFER_CANCEL_IS_FAIL.getMsg());
+        }
     }
 }
