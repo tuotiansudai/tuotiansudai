@@ -229,4 +229,28 @@ public class InvestTransferServiceImpl implements InvestTransferService{
         return dto;
     }
 
+    @Override
+    public BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findWebTransferApplicationPaginationList(String transferrerLoginName,List<TransferStatus> statusList ,Integer index, Integer pageSize) {
+
+        int count = transferApplicationMapper.findCountTransferApplicationPaginationByLoginName(transferrerLoginName,statusList);
+        List<TransferApplicationRecordDto> items = Lists.newArrayList();
+        if(count > 0){
+            int totalPages = count % pageSize > 0 ? count / pageSize + 1 : count / pageSize;
+            index = index > totalPages ? totalPages : index;
+            items = transferApplicationMapper.findTransferApplicationPaginationByLoginName(transferrerLoginName,statusList,(index - 1) * pageSize,pageSize);
+
+        }
+        List<TransferApplicationPaginationItemDataDto> records = Lists.transform(items, new Function<TransferApplicationRecordDto, TransferApplicationPaginationItemDataDto>() {
+            @Override
+            public TransferApplicationPaginationItemDataDto apply(TransferApplicationRecordDto input) {
+                TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(input);
+                return transferApplicationPaginationItemDataDto;
+            }
+        });
+
+        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> dto = new BasePaginationDataDto(index, pageSize, count, records);
+        dto.setStatus(true);
+        return dto;
+    }
+
 }

@@ -7,6 +7,7 @@ import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 
 import java.util.Date;
+import java.util.List;
 
 public interface InvestTransferService {
 
@@ -27,6 +28,8 @@ public interface InvestTransferService {
                                                                              Long loanId,
                                                                              Integer index,
                                                                              Integer pageSize);
+
+    BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findWebTransferApplicationPaginationList(String transferrerLoginName,List<TransferStatus> statusList ,Integer index, Integer pageSize);
 
 
 

@@ -22,6 +22,7 @@ public class TransferApplicationRecordDto implements Serializable {
     private Long transferInvestId;
     private int period;
     private int leftPeriod;
+    private Date deadLine;
 
     public long getTransferApplicationId() {
         return transferApplicationId;
@@ -141,5 +142,13 @@ public class TransferApplicationRecordDto implements Serializable {
 
     public void setLeftPeriod(int leftPeriod) {
         this.leftPeriod = leftPeriod;
+    }
+
+    public Date getDeadLine() {
+        return deadLine;
+    }
+
+    public void setDeadLine(Date deadLine) {
+        this.deadLine = deadLine;
     }
 }

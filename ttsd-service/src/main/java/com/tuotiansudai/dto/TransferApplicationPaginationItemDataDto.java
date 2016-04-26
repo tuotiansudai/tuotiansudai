@@ -18,6 +18,7 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
     private String leftPeriod;
     private String transfereeLoginName;
     private String transferFee;
+    private Date deadLine;
 
     public TransferApplicationPaginationItemDataDto(){}
 
@@ -32,6 +33,7 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
         this.transferFee = AmountConverter.convertCentToString(transferApplicationRecordDto.getTransferFee());
         this.transferTime = transferApplicationRecordDto.getTransferTime();
         this.leftPeriod = String.valueOf(transferApplicationRecordDto.getLeftPeriod());
+        this.deadLine = transferApplicationRecordDto.getDeadLine();
     }
 
 
@@ -113,5 +115,13 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
 
     public void setLoanId(long loanId) {
         this.loanId = loanId;
+    }
+
+    public Date getDeadLine() {
+        return deadLine;
+    }
+
+    public void setDeadLine(Date deadLine) {
+        this.deadLine = deadLine;
     }
 }

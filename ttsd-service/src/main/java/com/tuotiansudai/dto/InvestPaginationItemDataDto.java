@@ -10,6 +10,7 @@ import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 public class InvestPaginationItemDataDto implements Serializable {
@@ -52,7 +53,7 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     private Date createdTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "Asia/Shanghai")
     private Date nextRepayDate;
 
     private String nextRepayAmount;
@@ -70,6 +71,14 @@ public class InvestPaginationItemDataDto implements Serializable {
     private double birthdayBenefit;
 
     private String transferStatus;
+
+    private String baseRate;
+
+    private String activityRate;
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "Asia/Shanghai")
+    private Date lastRepayDate;
+
+    private int leftPeriod;
 
     public InvestPaginationItemDataDto(InvestPaginationItemView view) {
         this.investId = view.getId();
@@ -99,6 +108,8 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.city = view.getCity();
         this.birthdayCoupon = view.isBirthdayCoupon();
         this.birthdayBenefit = view.getBirthdayBenefit();
+        this.baseRate = view.getLoanBaseRatePercent();
+        this.activityRate = view.getLoanActivityRatePercent();
     }
 
     public boolean isStaff() {
@@ -287,5 +298,37 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     public void setTransferStatus(String transferStatus) {
         this.transferStatus = transferStatus;
+    }
+
+    public String getBaseRate() {
+        return baseRate;
+    }
+
+    public void setBaseRate(String baseRate) {
+        this.baseRate = baseRate;
+    }
+
+    public String getActivityRate() {
+        return activityRate;
+    }
+
+    public void setActivityRate(String activityRate) {
+        this.activityRate = activityRate;
+    }
+
+    public Date getLastRepayDate() {
+        return lastRepayDate;
+    }
+
+    public void setLastRepayDate(Date lastRepayDate) {
+        this.lastRepayDate = lastRepayDate;
+    }
+
+    public int getLeftPeriod() {
+        return leftPeriod;
+    }
+
+    public void setLeftPeriod(int leftPeriod) {
+        this.leftPeriod = leftPeriod;
     }
 }
