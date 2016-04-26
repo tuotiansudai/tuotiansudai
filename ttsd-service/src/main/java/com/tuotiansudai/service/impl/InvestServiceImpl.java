@@ -149,11 +149,8 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private boolean canInvestNewbieLoan(String loginName) {
-        if (newbieInvestLimit == 0) {
-            return true;
-        }
-        int newbieInvestCount = investMapper.sumSuccessNewbieInvestCountByLoginName(loginName);
-        return (newbieInvestCount < newbieInvestLimit);
+        int newbieInvestCount = investMapper.sumSuccessInvestCountByLoginName(loginName);
+        return newbieInvestLimit == 0 || newbieInvestCount < newbieInvestLimit;
     }
 
     @Override
