@@ -75,6 +75,8 @@ public class InvestPaginationItemDataDto implements Serializable {
     private String baseRate;
 
     private String activityRate;
+
+    private String sumRate;
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "Asia/Shanghai")
     private Date lastRepayDate;
 
@@ -110,6 +112,7 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.birthdayBenefit = view.getBirthdayBenefit();
         this.baseRate = view.getLoanBaseRatePercent();
         this.activityRate = view.getLoanActivityRatePercent();
+        this.sumRate = view.getSumRatePercent();
     }
 
     public boolean isStaff() {
@@ -330,5 +333,13 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     public void setLeftPeriod(int leftPeriod) {
         this.leftPeriod = leftPeriod;
+    }
+
+    public String getSumRate() {
+        return sumRate;
+    }
+
+    public void setSumRate(String sumRate) {
+        this.sumRate = sumRate;
     }
 }

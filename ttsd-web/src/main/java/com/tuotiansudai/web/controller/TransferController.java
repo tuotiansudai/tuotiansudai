@@ -11,12 +11,10 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Min;
 import java.util.List;
 
@@ -32,9 +30,17 @@ public class TransferController {
     @Autowired
     private InvestService investService;
 
-    @RequestMapping(value = "/transfer-application-list",method = RequestMethod.GET)
-    public ModelAndView getTransferrerTransferApplicationList(){
-        return new ModelAndView("/create-transfer");
+    @RequestMapping(value = "/transfer-application-list/{transferStatus}",method = RequestMethod.GET)
+    public ModelAndView getTransferrerTransferApplicationList(@PathVariable String transferStatus){
+        ModelAndView modelAndView = new ModelAndView();
+        if(TransferStatus.TRANSFERRING == TransferStatus.valueOf(transferStatus.toUpperCase())){
+            modelAndView.setViewName("/create-transfer-transferring");
+        }else if(TransferStatus.SUCCESS == TransferStatus.valueOf(transferStatus.toUpperCase())){
+            modelAndView.setViewName("/create-transfer-record");
+        }else{
+            modelAndView.setViewName("/create-transfer-transferable");
+        }
+        return modelAndView;
     }
 
 

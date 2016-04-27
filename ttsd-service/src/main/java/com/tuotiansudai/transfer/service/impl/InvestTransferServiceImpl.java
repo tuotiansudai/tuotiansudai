@@ -243,6 +243,13 @@ public class InvestTransferServiceImpl implements InvestTransferService{
             @Override
             public TransferApplicationPaginationItemDataDto apply(TransferApplicationRecordDto input) {
                 TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(input);
+                if (input.getTransferStatus() == TransferStatus.TRANSFERABLE) {
+                    transferApplicationPaginationItemDataDto.setTransferStatus(isTransferable(input.getTransferApplicationId()) ? input.getTransferStatus().getDescription() : "--");
+                } else if (input.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
+                    transferApplicationPaginationItemDataDto.setTransferStatus("--");
+                } else {
+                    transferApplicationPaginationItemDataDto.setTransferStatus(input.getTransferStatus().getDescription());
+                }
                 return transferApplicationPaginationItemDataDto;
             }
         });

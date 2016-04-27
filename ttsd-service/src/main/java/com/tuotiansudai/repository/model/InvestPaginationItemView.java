@@ -198,8 +198,13 @@ public class InvestPaginationItemView extends InvestModel {
     public void setLoanBaseRate(double loanBaseRate) {
         this.loanBaseRate = loanBaseRate;
     }
+
     public String getLoanActivityRatePercent(){
         return new DecimalFormat("######0.##").format(loanActivityRate * 100);
+    }
+
+    public String getSumRatePercent(){
+        return new DecimalFormat("######0.##").format((loanActivityRate + loanBaseRate) * 100);
     }
     public double getLoanActivityRate() {
         return loanActivityRate;

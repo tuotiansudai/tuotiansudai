@@ -12,13 +12,16 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
     private String transferAmount;
     private String investAmount;
     private Date transferTime;
-    private TransferStatus transferStatus;
+    private String transferStatus;
     private long loanId;
     private String transferrerLoginName;
     private String leftPeriod;
     private String transfereeLoginName;
     private String transferFee;
     private Date deadLine;
+    private String name;
+    private String sumRate;
+
 
     public TransferApplicationPaginationItemDataDto(){}
 
@@ -27,13 +30,14 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
         this.loanId = transferApplicationRecordDto.getLoanId();
         this.transferAmount = AmountConverter.convertCentToString(transferApplicationRecordDto.getTransferAmount());
         this.investAmount = AmountConverter.convertCentToString(transferApplicationRecordDto.getInvestAmount());
-        this.transferStatus = transferApplicationRecordDto.getTransferStatus();
         this.transferrerLoginName = transferApplicationRecordDto.getTransferrerLoginName();
         this.transfereeLoginName = transferApplicationRecordDto.getTransfereeLoginName();
         this.transferFee = AmountConverter.convertCentToString(transferApplicationRecordDto.getTransferFee());
         this.transferTime = transferApplicationRecordDto.getTransferTime();
         this.leftPeriod = String.valueOf(transferApplicationRecordDto.getLeftPeriod());
         this.deadLine = transferApplicationRecordDto.getDeadLine();
+        this.name = transferApplicationRecordDto.getName();
+        this.sumRate = transferApplicationRecordDto.getSumRatePercent();
     }
 
 
@@ -61,11 +65,11 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
         this.transferTime = transferTime;
     }
 
-    public TransferStatus getTransferStatus() {
+    public String getTransferStatus() {
         return transferStatus;
     }
 
-    public void setTransferStatus(TransferStatus transferStatus) {
+    public void setTransferStatus(String transferStatus) {
         this.transferStatus = transferStatus;
     }
 
@@ -123,5 +127,21 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
 
     public void setDeadLine(Date deadLine) {
         this.deadLine = deadLine;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSumRate() {
+        return sumRate;
+    }
+
+    public void setSumRate(String sumRate) {
+        this.sumRate = sumRate;
     }
 }

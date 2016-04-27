@@ -3,9 +3,9 @@
 <div class="content-container create-transfer-content">
     <h4 class="column-title"><em class="tc">债权转让</em></h4>
     <ul class="filters-list">
-        <li data-status="TRANSFERABLE">可转让债权</li>
-        <li data-status="TRANSFERRING">转让中债权</li>
-        <li class="active" data-status="SUCCESS,CANCEL">转让记录</li>
+        <li data-status="TRANSFERABLE"><a href="/transferrer/transfer-application-list/transferable">可转让债权</a></li>
+        <li data-status="TRANSFERRING"><a href="/transferrer/transfer-application-list/transferring">转让中债权</a></li>
+        <li class="active" data-status="SUCCESS,CANCEL"><a href="/transferrer/transfer-application-list/success">转让记录</a></li>
     </ul>
     <div class="list-container">
         <div class="record-list active">

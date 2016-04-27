@@ -4,6 +4,7 @@ package com.tuotiansudai.transfer.repository.model;
 import com.tuotiansudai.repository.model.TransferStatus;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 public class TransferApplicationRecordDto implements Serializable {
@@ -150,5 +151,9 @@ public class TransferApplicationRecordDto implements Serializable {
 
     public void setDeadLine(Date deadLine) {
         this.deadLine = deadLine;
+    }
+
+    public String getSumRatePercent(){
+        return new DecimalFormat("######0.##").format((baseRate + activityRate) * 100);
     }
 }
