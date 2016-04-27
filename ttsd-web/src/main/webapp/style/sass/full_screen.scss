@@ -331,7 +331,7 @@ body {
           &.hot-product {
             width: 722px;
             padding-left: 38px;
-            background: url("/images/sign/home-title.png") -10px -48px no-repeat;
+            background: url("/images/sign/home-title-two.png") no-repeat left center;
           }
           &.media-coverage-icon {
             width: 722px;
@@ -447,7 +447,7 @@ body {
                     font-size: 16px;
                     color: #b2b2b2;
                     text-align: left;
-                    padding-left: 5px;
+                    padding-left: 4px;
                   }
                 }
               }
@@ -557,6 +557,41 @@ body {
             color: #999;
             cursor: pointer;
             background: #fff;
+            &.active-after{
+              .will,.time-item{
+                display:none;
+              }
+              .pro,.now{
+                display:block;
+              }
+            }
+            .will,.time-item{
+              display:block;
+            }
+            .pro,.now{
+              display:none;
+            }
+            .time-item{
+              display: inline-block;
+              border-radius: 20px;
+              border: 1px dashed red;
+              margin-top: -10px;
+              margin-bottom:13px;
+              width: 240px;
+              font-size: 15px;
+              height: 42px;
+              line-height: 42px;
+              color: red;
+              text-align:center;
+              .allow{
+                font-size:13px;
+                color:#949494;
+              }
+            }
+
+           .pro{
+             margin:-4px 20px 20px 20px;
+           }
             &:hover {
               -moz-box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
               -webkit-box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
@@ -590,6 +625,7 @@ body {
                 @extend .sprite-index-img-jyf;
               }
             }
+
             .pr-title {
               font-size: 18px;
               text-overflow: ellipsis;
@@ -1539,6 +1575,7 @@ body {
                 }
               }
             }
+
           }
           &.fl {
             float: none !important;

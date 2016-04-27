@@ -4,8 +4,11 @@ import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanPeriodUnit;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.ProductType;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class HomeLoanDto {
 
@@ -31,7 +34,11 @@ public class HomeLoanDto {
 
     private String status;
 
-    public HomeLoanDto(long loanId, String name, ProductType productType, ActivityType activityType, LoanPeriodUnit periodUnit, double baseRate, double activityRate, int periods, long amount, long investAmount, LoanStatus status) {
+    private Date fundraisingStartTime;
+
+    private long preheatSeconds;
+
+    public HomeLoanDto(long loanId, String name, ProductType productType, ActivityType activityType, LoanPeriodUnit periodUnit, double baseRate, double activityRate, int periods, long amount, long investAmount, LoanStatus status, Date fundraisingStartTime) {
         this.id = loanId;
         this.name = name;
         this.productType = productType;
@@ -45,6 +52,8 @@ public class HomeLoanDto {
         this.isPeriodMonthUnit = periodUnit == LoanPeriodUnit.MONTH;
         this.progress = new BigDecimal(investAmount).divide(new BigDecimal(amount), 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue();
         this.status = status.name();
+        this.fundraisingStartTime = fundraisingStartTime;
+        this.preheatSeconds = (fundraisingStartTime.getTime() - System.currentTimeMillis()) / 1000;
     }
 
     public long getId() {
@@ -133,5 +142,21 @@ public class HomeLoanDto {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Date getFundraisingStartTime() {
+        return fundraisingStartTime;
+    }
+
+    public void setFundraisingStartTime(Date fundraisingStartTime) {
+        this.fundraisingStartTime = fundraisingStartTime;
+    }
+
+    public long getPreheatSeconds() {
+        return preheatSeconds;
+    }
+
+    public void setPreheatSeconds(long preheatSeconds) {
+        this.preheatSeconds = preheatSeconds;
     }
 }

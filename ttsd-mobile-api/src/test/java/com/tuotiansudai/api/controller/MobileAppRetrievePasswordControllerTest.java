@@ -50,13 +50,6 @@ public class MobileAppRetrievePasswordControllerTest extends ControllerTestBase 
     }
 
     @Test
-    public void validateAuthCode() throws Exception {
-        when(service.validateAuthCode(any(RetrievePasswordRequestDto.class))).thenReturn(successResponseDto);
-        doRequestWithServiceMockedTest("/validatecaptcha",
-                new RetrievePasswordRequestDto());
-    }
-
-    @Test
     public void sendSMS() throws Exception {
         when(service.sendSMS(any(RetrievePasswordRequestDto.class), anyString())).thenReturn(successResponseDto);
         doRequestWithServiceMockedTest("/retrievepassword/sendsms",
