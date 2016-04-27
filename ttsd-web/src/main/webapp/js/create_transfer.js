@@ -31,6 +31,25 @@ require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache',
 
 		};
 		loadLoanData();
+
+		$('body').on('click', '.cancle-btn' ,function(event) {
+			event.preventDefault();
+			var $self=$(this),
+				urlData=$self.attr('data-link');
+			$.ajax({
+				url: '/transfer/application/'+urlData+'/cancel',
+				type: 'POST',
+				dataType: 'json'
+			})
+			.done(function(data) {
+				console.log(data);
+			})
+			.fail(function() {
+				layer.msg('请求失败，请重试！');
+			});
+			
+		});
+
 	});
 
 });

@@ -25,8 +25,8 @@ public class InvestTransferController {
 
     @RequestMapping(value = "/application/{transferApplyId}/cancel", method = RequestMethod.POST)
     @ResponseBody
-    public boolean investTransferApplyCancel(@PathVariable long id) {
-         return investTransferService.cancelTransferApplication(id);
+    public boolean investTransferApplyCancel(@PathVariable long transferApplyId) {
+         return investTransferService.cancelTransferApplication(transferApplyId);
     }
 
 }
