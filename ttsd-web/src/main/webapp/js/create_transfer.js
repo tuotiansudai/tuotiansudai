@@ -43,7 +43,7 @@ require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache',
 			  btn:['再想想','确定'],
 			  skin: 'demo-class',
 			  area: ['400px', '180px'],
-			  content: '<p class="tc">该项目即将在X日内回款，暂不可转让，<br />请选择其他项目。</p>',
+			  content: '<p class="tc">您确定取消该笔债权的转让？</p>',
 			  btn1:function(){
 			  	layer.closeAll();
 			  },
