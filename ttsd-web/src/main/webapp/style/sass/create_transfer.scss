@@ -35,15 +35,19 @@
     margin-bottom: 20px;
     li {
       float: left;
-      color: #4c4c4c;
-      font-size: 12px;
       padding: 5px 15px;
       margin-right: 10px;
       cursor: pointer;
+      a{
+        color: #4c4c4c;
+        font-size: 12px;
+      }
       &.active {
-        color: #fff;
         background: #ff752a;
         border-radius: 5px;
+        a{
+          color: #fff;
+        }
       }
     }
   }

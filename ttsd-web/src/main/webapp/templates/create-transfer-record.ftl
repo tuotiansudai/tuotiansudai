@@ -11,12 +11,6 @@
         <div class="record-list active">
             
         </div>
-        <div class="record-list">
-
-        </div>
-        <div class="record-list">
-
-        </div>
         <div class="pagination" data-url="/transferrer/transfer-application-list-data" data-page-size="10"></div>
     </div>
 </div>
