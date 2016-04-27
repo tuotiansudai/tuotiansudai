@@ -150,7 +150,7 @@ public class TransferServiceImpl implements TransferService {
         LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
         InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(), transferApplicationModel.getPeriod());
         transferApplicationDetailDto.setId(transferApplicationModel.getId());
-        transferApplicationDetailDto.setInvestId(transferApplicationModel.getInvestId());
+
         transferApplicationDetailDto.setTransferInvestId(transferApplicationModel.getTransferInvestId());
         transferApplicationDetailDto.setName(transferApplicationModel.getName());
         transferApplicationDetailDto.setLoanName(loanModel.getName());
@@ -171,13 +171,14 @@ public class TransferServiceImpl implements TransferService {
             transferApplicationDetailDto.setExpecedInterest(AmountConverter.convertCentToString(calculateExpectedInterest(transferApplicationModel)));
         }
         else if(transferApplicationModel.getStatus() == TransferStatus.SUCCESS){
+            transferApplicationDetailDto.setInvestId(transferApplicationModel.getInvestId());
             transferApplicationDetailDto.setTransferTime(transferApplicationModel.getTransferTime());
         }
         return transferApplicationDetailDto;
     }
 
     private long calculateExpectedInterest(TransferApplicationModel transferApplicationModel) {
-        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getInvestId());
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(transferApplicationModel.getTransferInvestId());
         long totalExpectedInterestAmount = 0;
         for (int i = transferApplicationModel.getPeriod() - 1; i < investRepayModels.size(); i++) {
             totalExpectedInterestAmount += investRepayModels.get(i).getCorpus() + investRepayModels.get(i).getExpectedInterest() - investRepayModels.get(i).getExpectedFee();
