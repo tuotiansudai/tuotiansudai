@@ -2,57 +2,62 @@
 <@global.main pageCss="${css.landingpage}" pageJavascript="${js.landingpage}" activeNav="" activeLeftNav="" title="拓天速贷手机客户端_理财客户端_拓天速贷" keywords="拓天速贷,APP理财,移动客户端,网络理财,P2P理财,拓天速贷APP" description="拓天速贷手机客户端为理财,投资,贷款等投融资用户提供安全、专业、便捷的互联网金融理财服务。">
 
 <div class="landing-container">
+
 	<div class="landing-top">
-        <img src="${staticServer}/images/sign/actor/landingpage/landing-top.png" width="100%">
-        <div class="register-box">
-            <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate">
-                <ul class="reg-list tl register-step-one">
-                    <li >
-                        <label for="" class="reg-title">用户名:</label>
-                        <input type="text" class="login-name long" name="loginName" placeholder="用户名" maxlength="25" value="">
-                    </li>
-                    <li>
-                        <label for="" class="reg-title">密码:</label>
-                        <input type="password" name="password" placeholder="密码" maxlength="20" class="password long" value="">
-                    </li>
-                    <li>
-                        <label for="" class="reg-title">手机号:</label>
-                        <input type="text" name="mobile" class="mobile long" placeholder="手机号" maxlength="11" value="">
-                    </li>
-                    <li class="code">
-                        <label for="" class="reg-title">验证码:</label>
-                        <input type="text" name="captcha" placeholder="验证码" maxlength="25" class="captcha" value="">
-                        <em class="image-captcha">
-                            <img src="/login/captcha" alt=""/>
-                        </em>
-                        <span class="img-change">换一张</span>
-                    </li>
-                    <li>
-                        <label for="" class="reg-title">手机验证码:</label>
+        <#--<img class="landing-image" src="${staticServer}/images/sign/actor/landingpage/landing-top.png">-->
+        <div class="landing-inner">
+            <div class="register-box">
+                <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate">
+                    <ul class="reg-list tl register-step-one">
+                        <li >
+                            <label for="" class="reg-title">用户名:</label>
+                            <input type="text" class="login-name long" name="loginName" placeholder="用户名" maxlength="25" value="">
+                        </li>
+                        <li>
+                            <label for="" class="reg-title">密码:</label>
+                            <input type="password" name="password" placeholder="密码" maxlength="20" class="password long" value="">
+                        </li>
+                        <li>
+                            <label for="" class="reg-title">手机号:</label>
+                            <input type="text" name="mobile" class="mobile long" placeholder="手机号" maxlength="11" value="">
+                        </li>
+                        <li class="code">
+                            <label for="" class="reg-title">验证码:</label>
+                            <input type="text" name="captcha" placeholder="验证码" maxlength="25" class="captcha" value="">
+                            <em class="image-captcha">
+                                <img src="/login/captcha" alt=""/>
+                            </em>
+                            <span class="img-change">换一张</span>
+                        </li>
+                        <li>
+                            <label for="" class="reg-title">手机验证码:</label>
                     <span class="captcha-tag">
                         <input type="text" name="appCaptcha" class="captcha" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6" value="">
                         <button type="button" class="fetch-captcha btn" disabled="disabled">获取验证码</button>
                     </span>
 
-                    </li>
+                        </li>
 
 
-                    <li class="agree-last">
+                        <li class="agree-last">
 
-                        <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check">
-                        <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
+                            <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check">
+                            <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
 
-                    </li>
-                    <li class="error-box"></li>
-                    <input type="hidden" name="_csrf" value="010e19c3-6b6e-4f43-bbfd-186c3970e9b8">
+                        </li>
+                        <li class="error-box"></li>
+                        <input type="hidden" name="_csrf" value="010e19c3-6b6e-4f43-bbfd-186c3970e9b8">
 
 
-                    <input type="submit" class="register-user" value="立即注册">
-                </ul>
+                        <input type="submit" class="register-user" value="立即注册">
+                    </ul>
 
-            </form>
+                </form>
+            </div>
         </div>
     </div>
+
+
     <div class="content-one">
     	<div class="one-title">
     		拓天速贷的优势

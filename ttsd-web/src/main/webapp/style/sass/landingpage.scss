@@ -18,14 +18,23 @@ form label.error:before {
 .landing-container {
 	min-height: 500px;
    .landing-top{
-	 position:relative;
+	 position: relative;
+	 height:500px;
+	 background: url("/images/sign/actor/landingpage/landing-top.png") center top no-repeat;
+
+	 .landing-inner {
+	   width:1200px;
+	   height:30px;
+	   margin: 0 auto;
+	   position: relative;
+	 }
 	 .register-box {
 	   position:absolute;
+	   right:0;
 	   background-color:#fff;
 	   opacity: 0.9;
 	   border-radius:5px;
 	   top:0;
-	   margin-left: 900px;
 	   height: auto;
 	   overflow: auto;
 	   margin-top:13px;
