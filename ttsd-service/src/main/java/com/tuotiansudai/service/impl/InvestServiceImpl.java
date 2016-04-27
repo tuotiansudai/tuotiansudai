@@ -228,7 +228,7 @@ public class InvestServiceImpl implements InvestService {
             public InvestPaginationItemDataDto apply(InvestPaginationItemView view) {
                 InvestPaginationItemDataDto investPaginationItemDataDto = new InvestPaginationItemDataDto(view);
                 if (view.getTransferStatus() == TransferStatus.TRANSFERABLE) {
-                    investPaginationItemDataDto.setTransferStatus(investTransferService.isTransferable(view.getId()) ? view.getTransferStatus().getDescription() : "--");
+                    investPaginationItemDataDto.setTransferStatus(investTransferService.isTransferable(view.getId()) ? view.getTransferStatus().getDescription() : null);
                 } else if (view.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
                     investPaginationItemDataDto.setTransferStatus("--");
                 } else {
