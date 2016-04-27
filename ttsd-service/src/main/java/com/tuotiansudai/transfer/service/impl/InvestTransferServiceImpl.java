@@ -3,6 +3,7 @@ package com.tuotiansudai.transfer.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.job.JobType;
@@ -65,6 +66,26 @@ public class InvestTransferServiceImpl implements InvestTransferService{
     protected final static String TRANSFER_APPLY_NAME = "ZR{0}-{1}";
 
     public static String redisTransferApplicationNumber = "web:{0}:transferApplicationNumber";
+
+    @Override
+    public BaseDataDto isAllowTransfer(long transferApplicationId) {
+        BaseDataDto baseDataDto = new BaseDataDto();
+        DateTime dateTime = new DateTime();
+        InvestModel investModel = investMapper.findById(transferApplicationId);
+        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+        LoanRepayModel loanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(investModel.getLoanId());
+        TransferRuleModel transferRuleModel = transferRuleMapper.find();
+        if (Days.daysBetween(dateTime, new DateTime(loanRepayModel.getRepayDate())).getDays() <= transferRuleModel.getDaysLimit()) {
+            baseDataDto.setStatus(false);
+            baseDataDto.setMessage("该项目即将在"+transferRuleModel.getDaysLimit()+"日内回款，暂不可转让，请选择其他项目。");
+        } else if (loanModel.getStatus() != LoanStatus.REPAYING){
+            baseDataDto.setStatus(false);
+            baseDataDto.setMessage("该项目已提前回款，不可进行转让。");
+        } else {
+            baseDataDto.setStatus(true);
+        }
+        return baseDataDto;
+    }
 
     @Override
     @Transactional
@@ -233,12 +254,12 @@ public class InvestTransferServiceImpl implements InvestTransferService{
     @Override
     public BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findWebTransferApplicationPaginationList(String transferrerLoginName,List<TransferStatus> statusList ,Integer index, Integer pageSize) {
 
-        int count = transferApplicationMapper.findCountTransferApplicationPaginationByLoginName(transferrerLoginName,statusList);
+        int count = transferApplicationMapper.findCountTransferApplicationPaginationByLoginName(transferrerLoginName, statusList);
         List<TransferApplicationRecordDto> items = Lists.newArrayList();
         if(count > 0){
             int totalPages = count % pageSize > 0 ? count / pageSize + 1 : count / pageSize;
             index = index > totalPages ? totalPages : index;
-            items = transferApplicationMapper.findTransferApplicationPaginationByLoginName(transferrerLoginName,statusList,(index - 1) * pageSize,pageSize);
+            items = transferApplicationMapper.findTransferApplicationPaginationByLoginName(transferrerLoginName, statusList, (index - 1) * pageSize, pageSize);
 
         }
         List<TransferApplicationPaginationItemDataDto> records = Lists.transform(items, new Function<TransferApplicationRecordDto, TransferApplicationPaginationItemDataDto>() {

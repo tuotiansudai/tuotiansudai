@@ -1,6 +1,7 @@
 package com.tuotiansudai.transfer.service;
 
 
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.model.TransferStatus;
@@ -31,8 +32,6 @@ public interface InvestTransferService {
 
     BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findWebTransferApplicationPaginationList(String transferrerLoginName,List<TransferStatus> statusList ,Integer index, Integer pageSize);
 
-
-
-
+    BaseDataDto isAllowTransfer(long transferApplicationId);
 
 }
