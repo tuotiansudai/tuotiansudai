@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -40,6 +41,12 @@ public class MobileAppDaoAuthenticationProvider extends DaoAuthenticationProvide
             throw new DisabledException(errorMessage);
         }
 
+    }
+
+    @Override
+    public Authentication authenticate(Authentication authentication)
+            throws AuthenticationException {
+
         if (enableCaptchaVerify) {
             String captcha = httpServletRequest.getParameter("captcha");
             String deviceId = httpServletRequest.getParameter("j_deviceId");
@@ -50,6 +57,7 @@ public class MobileAppDaoAuthenticationProvider extends DaoAuthenticationProvide
                 throw new CaptchaNotMatchException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.captchaNotMatch", "Captcha Not Match"));
             }
         }
+        return super.authenticate(authentication);
     }
 
     public void setCaptchaHelper(CaptchaHelper captchaHelper) {
