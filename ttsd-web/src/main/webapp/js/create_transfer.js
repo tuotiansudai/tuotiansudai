@@ -3,7 +3,7 @@ require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache',
 		var activeIndex=$('.filters-list li.active').index(),
 			$paginationElement = $('.pagination');
 		
-		function loadLoanData(currentPage) {
+		function loadLoanData(currentPage) { //template data to page and generate pagenumber
 			var status = $('.filters-list li.active').attr('data-status').split(',');
 			var requestData = {status: status, index: currentPage || 1};
 			$paginationElement.loadPagination(requestData, function (data) {
@@ -17,7 +17,7 @@ require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache',
 
 				$('.list-container .record-list.active').html(html);
 			});
-			$('.list-container').on('mouseenter','.project-name',function() {
+			$('.list-container').on('mouseenter','.project-name',function() {// show tip by mouseenter
 				layer.closeAll('tips');
 				if($.trim($(this).text()).length>15){
 					layer.tips($(this).text(), $(this), {
@@ -32,25 +32,74 @@ require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache',
 
 		};
 		loadLoanData();
-
-		$('body').on('click', '.cancel-btn' ,function(event) {
+		
+		$('body').on('click', '.cancel-btn' ,function(event) {//click cancle btn
 			event.preventDefault();
 			var $self=$(this),
 				urlData=$self.attr('data-link');
+
+			layer.open({
+			  title: '温馨提示',
+			  btn:['再想想','确定'],
+			  skin: 'demo-class',
+			  area: ['400px', '180px'],
+			  content: '<p class="tc">该项目即将在X日内回款，暂不可转让，<br />请选择其他项目。</p>',
+			  btn1:function(){
+			  	layer.closeAll();
+			  },
+			  btn2:function(){
+			  	$.ajax({
+					url: '/transfer/application/'+urlData+'/cancel',
+					type: 'POST',
+					dataType: 'json'
+				})
+				.done(function(data) {
+					data==true?location.reload():layer.msg('取消失败，请重试！');
+				})
+				.fail(function() {
+					layer.msg('请求失败，请重试！');
+				});
+			  }
+			});
+		})
+		.on('click', '.apply-transfer', function(event) {//click apply btn
+			event.preventDefault();
+			var $self=$(this),
+				applyId=$self.attr('data-applyId'),
+				urlData=$self.attr('data-link');
 			$.ajax({
-				url: '/transfer/application/'+urlData+'/cancel',
+				url: '/transfer/application/'+urlData+'/isNearRepayDate',
 				type: 'POST',
 				dataType: 'json'
 			})
 			.done(function(data) {
-				console.log(data);
+				if(data.status==true){
+					$.ajax({
+						url: '/transfer/application/'+applyId+'/apply',
+						type: 'POST',
+						dataType: 'json'
+					})
+					.done(function(data) {
+						location.href='/transfer/apply';
+					})
+					.fail(function(data) {
+						layer.msg('申请失败，请重试！');
+					});
+				}else{
+					layer.open({
+					  title: '温馨提示',
+					  btn:['确定'],
+					  area: ['400px', '180px'],
+					  content: '<p class="tc">'+data.message+'</p>',
+					  btn1:function(){
+					  	layer.closeAll();
+					  }
+					});
+				}
 			})
 			.fail(function() {
 				layer.msg('请求失败，请重试！');
 			});
-			
 		});
-
 	});
-
 });
