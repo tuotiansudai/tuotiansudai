@@ -1,5 +1,6 @@
 package com.tuotiansudai.web.controller;
 
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
@@ -35,6 +36,12 @@ public class InvestTransferController {
 
     @Autowired
     private LoanMapper loanMapper;
+
+    @RequestMapping(value = "/application/{transferInvestId}/isAllowTransfer", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDataDto isAllowTransfer(@PathVariable long transferInvestId) {
+        return investTransferService.isAllowTransfer(transferInvestId);
+    }
 
     @RequestMapping(value = "/application/{transferInvestId}/apply", method = RequestMethod.POST)
     public ModelAndView investApply(@PathVariable long transferInvestId) {

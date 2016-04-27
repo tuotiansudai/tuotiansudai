@@ -68,7 +68,7 @@ require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache',
 				applyId=$self.attr('data-applyId'),
 				urlData=$self.attr('data-link');
 			$.ajax({
-				url: '/transfer/application/'+urlData+'/isNearRepayDate',
+				url: '/transfer/application/'+urlData+'/isAllowTransfer',
 				type: 'POST',
 				dataType: 'json'
 			})
