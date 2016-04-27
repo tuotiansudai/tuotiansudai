@@ -120,8 +120,9 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         }
 
         loanRepayModel.setActualInterest(actualInterest);
-        loanRepayModel.setStatus(RepayStatus.WAIT_PAY);
         loanRepayModel.setActualRepayDate(new Date());
+        loanRepayModel.setRepayAmount(repayAmount);
+        loanRepayModel.setStatus(RepayStatus.WAIT_PAY);
         loanRepayMapper.update(loanRepayModel);
 
         ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newRepayNopwdRequest(
@@ -181,6 +182,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
         enabledLoanRepay.setActualInterest(actualInterest);
         enabledLoanRepay.setActualRepayDate(actualRepayDate);
+        enabledLoanRepay.setRepayAmount(repayAmount);
         enabledLoanRepay.setStatus(RepayStatus.WAIT_PAY);
         loanRepayMapper.update(enabledLoanRepay);
         logger.info(MessageFormat.format("[Normal Repay {0}] generate repay form data to update loan repay status to WAIT_PAY", String.valueOf(enabledLoanRepay.getId())));
@@ -229,14 +231,11 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
         LoanModel loanModel = loanMapper.findById(currentLoanRepay.getLoanId());
 
-        //还款金额
-        long repayAmount = currentLoanRepay.getCorpus() + currentLoanRepay.getActualInterest();
-
         // update agent user bill
         UserBillBusinessType businessType = loanModel.getStatus() == LoanStatus.OVERDUE ? UserBillBusinessType.OVERDUE_REPAY : UserBillBusinessType.NORMAL_REPAY;
-        amountTransfer.transferOutBalance(loanModel.getAgentLoginName(), loanRepayId, repayAmount, businessType, null, null);
+        amountTransfer.transferOutBalance(loanModel.getAgentLoginName(), loanRepayId, currentLoanRepay.getRepayAmount(), businessType, null, null);
         logger.info(MessageFormat.format("[Normal Repay {0}] loan repay callback transfer out agent({1}) amount({2}) ",
-                String.valueOf(loanRepayId), loanModel.getAgentLoginName(), String.valueOf(repayAmount)));
+                String.valueOf(loanRepayId), loanModel.getAgentLoginName(), String.valueOf(currentLoanRepay.getRepayAmount())));
 
         // update current loan repay status
         currentLoanRepay.setStatus(RepayStatus.COMPLETE);
@@ -264,14 +263,17 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             long actualInterest = this.calculateInvestRepayActualInterest(investModel.getId(), investRepayModel);
             //实际手续费
             long actualFee = this.calculateInvestRepayActualFee(investModel.getId(), investRepayModel);
+            //实收金额
+            long repayAmount = investRepayModel.getCorpus() + actualInterest - actualFee;
 
             investRepayModel.setActualInterest(actualInterest);
             investRepayModel.setActualFee(actualFee);
+            investRepayModel.setRepayAmount(repayAmount);
             investRepayModel.setActualRepayDate(currentLoanRepay.getActualRepayDate());
             investRepayModel.setStatus(RepayStatus.WAIT_PAY);
             investRepayMapper.update(investRepayModel);
-            logger.info(MessageFormat.format("[Normal Repay {0}] update invest repay({1}) actual interest({2}) actual fee({3}) and status",
-                    String.valueOf(loanRepayId), String.valueOf(investRepayModel.getId()), String.valueOf(actualInterest), String.valueOf(actualFee)));
+            logger.info(MessageFormat.format("[Normal Repay {0}] update invest repay({1}) corpus({2}) actual interest({3}) actual fee({4}) and status",
+                    String.valueOf(loanRepayId), String.valueOf(investRepayModel.getId()), String.valueOf(repayAmount), String.valueOf(actualInterest), String.valueOf(actualFee)));
 
             redisWrapperClient.hset(redisKey, String.valueOf(investRepayModel.getId()), SyncRequestStatus.READY.name());
 
@@ -312,22 +314,19 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
             interestWithoutFee += investRepayModel.getActualInterest() - investRepayModel.getActualFee();
 
-            //投资人实收返款金额
-            long actualAmount = investRepayModel.getCorpus() + investRepayModel.getActualInterest() - investRepayModel.getActualFee();
-
             SyncRequestStatus syncRequestStatus = SyncRequestStatus.valueOf(redisWrapperClient.hget(redisKey, String.valueOf(investRepayModel.getId())));
 
             logger.info(MessageFormat.format("[Normal Repay {0}] invest payback({1}) redis status is {2} and payback amount is {3}",
-                    String.valueOf(loanRepayId), String.valueOf(investRepayModel.getId()), syncRequestStatus.name(), String.valueOf(actualAmount)));
+                    String.valueOf(loanRepayId), String.valueOf(investRepayModel.getId()), syncRequestStatus.name(), String.valueOf(currentLoanRepay.getRepayAmount())));
 
             if (Lists.newArrayList(SyncRequestStatus.READY, SyncRequestStatus.FAILURE).contains(syncRequestStatus)) {
-                if (actualAmount > 0) {
+                if (currentLoanRepay.getRepayAmount() > 0) {
                     // transfer investor interest(callback url: repay_payback_notify)
                     try {
                         ProjectTransferRequestModel repayPaybackRequest = ProjectTransferRequestModel.newRepayPaybackRequest(String.valueOf(loanId),
                                 MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(investRepayModel.getId()), String.valueOf(new Date().getTime())),
                                 accountMapper.findByLoginName(investModel.getLoginName()).getPayUserId(),
-                                String.valueOf(actualAmount));
+                                String.valueOf(currentLoanRepay.getRepayAmount()));
 
                         redisWrapperClient.hset(redisKey, String.valueOf(investRepayModel.getId()), SyncRequestStatus.SENT.name());
                         logger.info(MessageFormat.format("[Normal Repay {0}] invest payback({1}) send payback request",

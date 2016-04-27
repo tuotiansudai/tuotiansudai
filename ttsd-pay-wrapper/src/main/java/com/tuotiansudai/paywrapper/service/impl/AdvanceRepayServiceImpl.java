@@ -153,9 +153,10 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             return baseDto;
         }
 
-        enabledLoanRepay.setStatus(RepayStatus.WAIT_PAY);
         enabledLoanRepay.setActualInterest(actualInterest);
+        enabledLoanRepay.setRepayAmount(repayAmount);
         enabledLoanRepay.setActualRepayDate(currentRepayDate.toDate());
+        enabledLoanRepay.setStatus(RepayStatus.WAIT_PAY);
         loanRepayMapper.update(enabledLoanRepay);
 
         logger.info(MessageFormat.format("[Advance Repay {0}] generate repay form data to update loan repay status to WAIT_PAY", String.valueOf(enabledLoanRepay.getId())));
@@ -207,13 +208,10 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
         DateTime currentRepayDate = new DateTime(currentLoanRepay.getActualRepayDate());
         DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, currentRepayDate);
 
-        //还款金额
-        long repayAmount = loanRepayMapper.findLastLoanRepay(loanModel.getId()).getCorpus() + currentLoanRepay.getActualInterest();
-
         // update agent user bill
-        amountTransfer.transferOutBalance(loanModel.getAgentLoginName(), loanRepayId, repayAmount, UserBillBusinessType.ADVANCE_REPAY, null, null);
+        amountTransfer.transferOutBalance(loanModel.getAgentLoginName(), loanRepayId, currentLoanRepay.getRepayAmount(), UserBillBusinessType.ADVANCE_REPAY, null, null);
         logger.info(MessageFormat.format("[Advance Repay {0}] loan repay callback transfer out agent({1}) amount({2}) ",
-                String.valueOf(loanRepayId), loanModel.getAgentLoginName(), String.valueOf(repayAmount)));
+                String.valueOf(loanRepayId), loanModel.getAgentLoginName(), String.valueOf(currentLoanRepay.getRepayAmount())));
 
         // update other loan repay status
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
@@ -236,9 +234,12 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             long actualInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, investModel, lastRepayDate, currentRepayDate);
             //实际手续费
             long actualFee = new BigDecimal(actualInterest).setScale(0, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(loanModel.getInvestFeeRate())).longValue();
+            //实收金额
+            long repayAmount = investModel.getAmount() + actualInterest - actualFee;
 
             investRepayModel.setActualInterest(actualInterest);
             investRepayModel.setActualFee(actualFee);
+            investRepayModel.setRepayAmount(repayAmount);
             investRepayModel.setActualRepayDate(currentRepayDate.toDate());
             investRepayModel.setStatus(RepayStatus.WAIT_PAY);
             investRepayMapper.update(investRepayModel);
@@ -285,20 +286,17 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
             interestWithoutFee += investRepayModel.getActualInterest() - investRepayModel.getActualFee();
 
-            //投资人实收返款金额
-            long actualAmount = investModel.getAmount() + investRepayModel.getActualInterest() - investRepayModel.getActualFee();
-
             SyncRequestStatus syncRequestStatus = SyncRequestStatus.valueOf(redisWrapperClient.hget(redisKey, String.valueOf(investRepayModel.getId())));
 
             logger.info(MessageFormat.format("[Advance Repay {0}] invest payback({1}) redis status is {2} and payback amount is {3}",
-                    String.valueOf(loanRepayId), String.valueOf(investRepayModel.getId()), syncRequestStatus.name(), String.valueOf(actualAmount)));
+                    String.valueOf(loanRepayId), String.valueOf(investRepayModel.getId()), syncRequestStatus.name(), String.valueOf(investRepayModel.getRepayAmount())));
 
             // transfer investor interest(callback url: advance_repay_payback_notify)
             try {
                 ProjectTransferRequestModel repayPaybackRequest = ProjectTransferRequestModel.newAdvanceRepayPaybackRequest(String.valueOf(loanId),
                         MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(investRepayModel.getId()), String.valueOf(new Date().getTime())),
                         accountMapper.findByLoginName(investModel.getLoginName()).getPayUserId(),
-                        String.valueOf(actualAmount));
+                        String.valueOf(investRepayModel.getRepayAmount()));
 
                 redisWrapperClient.hset(redisKey, String.valueOf(investRepayModel.getId()), SyncRequestStatus.SENT.name());
                 logger.info(MessageFormat.format("[Advance Repay {0}] invest payback({1}) send payback request",

@@ -2,6 +2,7 @@ package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.LoanRepayModel;
 import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.util.AmountConverter;
@@ -44,8 +45,8 @@ public class LoanerLoanRepayDataItemDto {
         this.expectedInterest = AmountConverter.convertCentToString(loanRepayModel.getExpectedInterest());
         this.defaultInterest = AmountConverter.convertCentToString(loanRepayModel.getDefaultInterest());
         this.expectedRepayAmount = AmountConverter.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest());
-        if (loanRepayModel.getStatus() == RepayStatus.COMPLETE) {
-            this.actualRepayAmount = AmountConverter.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getActualInterest());
+        if (Lists.newArrayList(RepayStatus.WAIT_PAY, RepayStatus.COMPLETE).contains(loanRepayModel.getStatus())) {
+            this.actualRepayAmount = AmountConverter.convertCentToString(loanRepayModel.getRepayAmount());
         }
         this.repayDate = loanRepayModel.getRepayDate();
         this.actualRepayDate = loanRepayModel.getActualRepayDate();

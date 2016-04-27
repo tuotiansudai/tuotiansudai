@@ -112,9 +112,10 @@ public class RepayServiceImpl implements RepayService {
         LoanRepayModel enabledLoanRepay = loanRepayMapper.findEnabledLoanRepayByLoanId(loanId);
         if (enabledLoanRepay != null && enabledLoanRepay.getStatus() == RepayStatus.WAIT_PAY &&
                 new DateTime(enabledLoanRepay.getActualRepayDate()).plusMinutes(30).isBefore(new DateTime())) {
-            enabledLoanRepay.setStatus(enabledLoanRepay.getActualRepayDate().before(enabledLoanRepay.getRepayDate()) ? RepayStatus.REPAYING : RepayStatus.OVERDUE);
-            enabledLoanRepay.setActualRepayDate(null);
             enabledLoanRepay.setActualInterest(0);
+            enabledLoanRepay.setRepayAmount(0);
+            enabledLoanRepay.setActualRepayDate(null);
+            enabledLoanRepay.setStatus(enabledLoanRepay.getActualRepayDate().before(enabledLoanRepay.getRepayDate()) ? RepayStatus.REPAYING : RepayStatus.OVERDUE);
             loanRepayMapper.update(enabledLoanRepay);
         }
     }

@@ -53,7 +53,7 @@ public class LoanerController {
 
     @RequestMapping(path = "/loan/{loanId:^\\d+$}/repay-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public BaseDto<LoanerLoanRepayDataDto> loanRepayData(@PathVariable long loanId) {
+    public BaseDto<LoanerLoanRepayDataDto> getLoanRepayData(@PathVariable long loanId) {
         repayService.resetPayExpiredLoanRepay(loanId);
         return repayService.getLoanRepay(LoginUserInfo.getLoginName(), loanId);
     }

@@ -13,6 +13,7 @@
         <result column="expected_interest" property="expectedInterest"/>
         <result column="actual_interest" property="actualInterest"/>
         <result column="default_interest" property="defaultInterest"/>
+        <result column="repay_amount" property="repayAmount"/>
         <result column="period" property="period"/>
         <result column="repay_date" property="repayDate"/>
         <result column="actual_repay_date" property="actualRepayDate"/>
@@ -28,6 +29,7 @@
         <result column="expected_interest" property="expectedInterest"/>
         <result column="actual_interest" property="actualInterest"/>
         <result column="default_interest" property="defaultInterest"/>
+        <result column="repay_amount" property="repayAmount"/>
         <result column="period" property="period"/>
         <result column="repay_date" property="repayDate"/>
         <result column="actual_repay_date" property="actualRepayDate"/>
@@ -64,14 +66,14 @@
     </resultMap>
 
     <sql id="columns">
-        id, loan_id, corpus, default_interest, expected_interest, actual_interest, period, repay_date, actual_repay_date, status, created_time
+        id, loan_id, corpus, default_interest, expected_interest, actual_interest, repay_amount, period, repay_date, actual_repay_date, status, created_time
     </sql>
 
     <insert id="create" parameterType = "java.util.List">
         insert into loan_repay ( <include refid="columns"></include> )
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.id},#{item.loanId},#{item.corpus},#{item.defaultInterest},#{item.expectedInterest},#{item.actualInterest},#{item.period},#{item.repayDate},#{item.actualRepayDate},#{item.status},#{item.createdTime})
+            (#{item.id},#{item.loanId},#{item.corpus},#{item.defaultInterest},#{item.expectedInterest},#{item.actualInterest},#{item.repayAmount},#{item.period},#{item.repayDate},#{item.actualRepayDate},#{item.status},#{item.createdTime})
         </foreach>
     </insert>
 
@@ -187,8 +189,9 @@
             repay_date = #{repayDate},
             actual_interest = #{actualInterest},
             actual_repay_date = #{actualRepayDate},
-            status = #{status},
-            default_interest = #{defaultInterest}
+            default_interest = #{defaultInterest},
+            repay_amount = #{repay_amount},
+            status = #{status}
         where id = #{id}
     </update>
 
@@ -225,6 +228,7 @@
           n.`actual_interest`,
           n.`expected_interest`,
           n.`default_interest`,
+          n.`repay_amount`,
           n.`actual_repay_date`,
           n.`repay_date`,
           n.`id` as `loan_repay_id`,
@@ -241,6 +245,7 @@
               t.`actual_interest`,
               t.`expected_interest`,
               t.`default_interest`,
+              t.`repay_amount`,
               t.`actual_repay_date`,
               t.`repay_date`,
               t.`repay_date` AS `repayTime`
@@ -285,7 +290,7 @@
 
     <select id="findLoanRepayNotifyToday" parameterType="map" resultMap="loanRepayNotifyResultMap" useCache="false">
         select
-            lr.expected_interest + lr.corpus + lr.default_interest as repay_amount,
+            lr.repay_amount as repay_amount,
             l.name as loan_name,
             u.mobile,
             l.id as loan_id,
