@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.controller;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.console.util.LoginUserInfo;
@@ -9,6 +10,7 @@ import com.tuotiansudai.coupon.repository.mapper.CouponUserGroupMapper;
 import com.tuotiansudai.coupon.repository.model.*;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.coupon.service.CouponService;
+import com.tuotiansudai.coupon.service.impl.ExchangeCodeServiceImpl;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.ImportExcelDto;
@@ -19,8 +21,7 @@ import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.ProductType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.UserRoleService;
-import com.tuotiansudai.util.RequestIPParser;
-import com.tuotiansudai.util.UUIDGenerator;
+import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -29,6 +30,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -40,8 +42,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -77,11 +82,64 @@ public class CouponController {
 
     private static String redisKeyTemplate = "console:{0}:importcouponuser";
 
+    @RequestMapping(value = "/coupon/{couponId}/exchange-code", method = RequestMethod.GET)
+    public ModelAndView expertExchangeCode(@PathVariable long couponId, HttpServletResponse response) throws IOException{
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("兑换码"+ new DateTime().toString("yyyyMMdd")+".csv", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        response.setContentType("application/csv");
+        List<List<String>> data = Lists.newArrayList();
+        Map<String, String> map = redisWrapperClient.hgetAll(ExchangeCodeServiceImpl.EXCHANGE_CODE_KEY + couponId);
+        CouponModel couponModel = couponService.findCouponById(couponId);
+        List<String> exchangeCodes = Lists.newArrayList();
+        for (String key : map.keySet()) {
+            exchangeCodes.add(key);
+        }
+        for (int i=0; i<exchangeCodes.size(); i++) {
+            List<String> dataModel = Lists.newArrayList();
+            if (i == 0) {
+                dataModel.add(couponModel.getCouponType().getName());
+                dataModel.add(new DateTime(couponModel.getCreatedTime()).toString("yyyy-MM-dd"));
+                dataModel.add(couponModel.getCouponType() == CouponType.INVEST_COUPON ? AmountConverter.convertCentToString(couponModel.getAmount()) + "元" : "");
+                dataModel.add(couponModel.getCouponType() == CouponType.INTEREST_COUPON ? couponModel.getRate()*100 + "%" : "");
+                dataModel.add(couponModel.getCouponType() == CouponType.RED_ENVELOPE ? AmountConverter.convertCentToString(couponModel.getAmount()) + "元" : "");
+                dataModel.add(new DateTime(couponModel.getStartTime()).toString("yyyy-MM-dd") + "至" + new DateTime(couponModel.getEndTime()).toString("yyyy-MM-dd"));
+                dataModel.add(couponModel.getTotalCount()+"个");
+                dataModel.add("满"+ AmountConverter.convertCentToString(couponModel.getInvestLowerLimit())+"元");
+                dataModel.add(StringUtils.join(Lists.transform(couponModel.getProductTypes(), new Function<ProductType, Object>() {
+                    @Override
+                    public Object apply(ProductType input) {
+                        return input.getName();
+                    }
+                }), ";"));
+                dataModel.add(couponModel.isShared() ? "是" : "否");
+            } else {
+                dataModel.add("");
+                dataModel.add("");
+                dataModel.add("");
+                dataModel.add("");
+                dataModel.add("");
+                dataModel.add("");
+                dataModel.add("");
+                dataModel.add("");
+                dataModel.add("");
+                dataModel.add("");
+            }
+            dataModel.add(exchangeCodes.get(i));
+            data.add(dataModel);
+        }
+        ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ExchangeCodeCsv, data, response.getOutputStream());
+        return null;
+    }
+
     @RequestMapping(value = "/red-envelope", method = RequestMethod.GET)
     public ModelAndView redEnvelope() {
         ModelAndView modelAndView = new ModelAndView("/red-envelope");
-        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
         modelAndView.addObject("productTypes", Lists.newArrayList(ProductType.values()));
+        modelAndView.addObject("userGroups", Lists.newArrayList(UserGroup.values()));
         long initNum = couponService.findEstimatedCount(UserGroup.ALL_USER);
         modelAndView.addObject("initNum", initNum);
         return modelAndView;

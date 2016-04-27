@@ -11,7 +11,8 @@ public enum UserGroup {
     NEW_REGISTERED_USER("新注册用户"),
     IMPORT_USER("导入用户名单"),
     EXCHANGER("兑换用户"),
-    WINNER("中奖用户");
+    WINNER("中奖用户"),
+    EXCHANGER_CODE("兑换码");
 
     private final String description;
 

@@ -87,7 +87,11 @@
         ${coupon.usedCount?string('0')}
         </td>
         <td>
-        ${coupon.userGroup.getDescription()}
+            <#if coupon.userGroup == "EXCHANGER_CODE">
+                <a href="/activity-manage/coupon/${coupon.id?c}/exchange-code" class="btn-link">${coupon.userGroup.getDescription()}</a>
+            <#else>
+                ${coupon.userGroup.getDescription()}
+            </#if>
         </td>
         <td>
             <#list coupon.productTypes as productType>
