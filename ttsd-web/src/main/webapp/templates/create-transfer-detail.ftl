@@ -13,7 +13,7 @@
 						转让价格：
 					</div>
 					<div class="info-right">
-						<input type="text" class="int-number" id="transferAmount" name="price" data-amount="${investAmount?computer}" value="${(investAmount/100)?string('0.00')!}">
+						<input type="text" class="int-number" id="transferAmount" name="price" value="${(investAmount/100)?string('0.00')!}">
 						<input type="hidden" id="transferInvestId" value="${transferInvestId?computer}">
 						<span>元</span>
 					</div>

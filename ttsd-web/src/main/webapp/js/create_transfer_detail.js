@@ -21,7 +21,7 @@ require(['jquery', 'layerWrapper','jquery.validate','coupon-alert','red-envelope
 		    		type: 'POST',
 		    		dataType: 'json',
 		    		data: {
-		    			transferAmount: $('#transferAmount').attr('data-amount'),
+		    			transferAmount: parseFloat($('#transferAmount').val())*100,
 		    			transferInvestId: $('#transferInvestId').val()
 		    		}
 		    	})
