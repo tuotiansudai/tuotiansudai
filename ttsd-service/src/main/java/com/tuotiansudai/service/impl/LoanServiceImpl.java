@@ -23,6 +23,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.joda.time.Duration;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -221,7 +222,8 @@ public class LoanServiceImpl implements LoanService {
 
         loanDto.setDescriptionHtml(loanModel.getDescriptionHtml());
         loanDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
-        loanDto.setRaisingPeriod(new Duration(loanModel.getFundraisingStartTime().getTime(), loanModel.getFundraisingEndTime().getTime()).getStandardDays());
+        loanDto.setRaisingPeriod(Days.daysBetween(new DateTime(loanModel.getFundraisingStartTime()).withTimeAtStartOfDay(),
+                new DateTime(loanModel.getFundraisingEndTime()).withTimeAtStartOfDay()).getDays() + 1);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
