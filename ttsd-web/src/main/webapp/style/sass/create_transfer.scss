@@ -78,12 +78,13 @@ body{
     margin-bottom: 20px;
     li {
       float: left;
-      padding: 5px 15px;
       margin-right: 10px;
       cursor: pointer;
       a{
+        float:left;
         color: #4c4c4c;
         font-size: 12px;
+        padding: 5px 15px;
       }
       &.active {
         background: #ff752a;
