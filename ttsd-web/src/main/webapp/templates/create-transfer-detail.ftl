@@ -13,7 +13,7 @@
 						转让价格：
 					</div>
 					<div class="info-right">
-						<input type="text" class="int-number" name="price"></input>
+						<input type="text" class="int-number" name="price" value="${(investAmount/100)?string('0.00')!}"></input>
 						<span>元</span>
 					</div>
 				</li>
@@ -22,7 +22,7 @@
 						项目本金：
 					</div>
 					<div class="info-right">
-						1000000.00元
+						${(investAmount/100)?string('0.00')!}元
 					</div>
 				</li>
 				<li class="info-list">
@@ -30,7 +30,7 @@
 						转让手续费：
 					</div>
 					<div class="info-right">
-						<span>50.00元</span>
+						<span>${(transferFee/100)?string('0.00')!}元</span>
 						<i class="fa fa-question-circle" aria-hidden="true" title="sfdsfsdfs"></i>
 					</div>
 				</li>
@@ -39,7 +39,7 @@
 						转让截止时间：
 					</div>
 					<div class="info-right">
-						2016-04-13 0点
+						${deadline?string('yyyy-MM-dd')!} 0点
 					</div>
 				</li>
 				<li class="info-list tc">
