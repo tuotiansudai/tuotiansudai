@@ -14,6 +14,7 @@ require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache',
 				}else{
 					var html = Mustache.render(transferrerRecordTemplate, data);
 				}
+
 				$('.list-container .record-list.active').html(html);
 			});
 			$('.list-container').on('mouseenter','.project-name',function() {
@@ -32,7 +33,7 @@ require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache',
 		};
 		loadLoanData();
 
-		$('body').on('click', '.cancle-btn' ,function(event) {
+		$('body').on('click', '.cancel-btn' ,function(event) {
 			event.preventDefault();
 			var $self=$(this),
 				urlData=$self.attr('data-link');

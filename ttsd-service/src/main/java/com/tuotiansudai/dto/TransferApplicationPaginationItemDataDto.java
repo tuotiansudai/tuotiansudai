@@ -1,6 +1,5 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.util.AmountConverter;
 
@@ -8,7 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class TransferApplicationPaginationItemDataDto implements Serializable {
-    private long transferApplicationId;
+    private String transferApplicationId;
     private String transferAmount;
     private String investAmount;
     private Date transferTime;
@@ -26,7 +25,7 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
     public TransferApplicationPaginationItemDataDto(){}
 
     public TransferApplicationPaginationItemDataDto(TransferApplicationRecordDto transferApplicationRecordDto){
-        this.transferApplicationId = transferApplicationRecordDto.getTransferApplicationId();
+        this.transferApplicationId = String.valueOf(transferApplicationRecordDto.getTransferApplicationId());
         this.loanId = transferApplicationRecordDto.getLoanId();
         this.transferAmount = AmountConverter.convertCentToString(transferApplicationRecordDto.getTransferAmount());
         this.investAmount = AmountConverter.convertCentToString(transferApplicationRecordDto.getInvestAmount());
@@ -105,11 +104,11 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
         this.transferFee = transferFee;
     }
 
-    public long getTransferApplicationId() {
+    public String getTransferApplicationId() {
         return transferApplicationId;
     }
 
-    public void setTransferApplicationId(long transferApplicationId) {
+    public void setTransferApplicationId(String transferApplicationId) {
         this.transferApplicationId = transferApplicationId;
     }
 
