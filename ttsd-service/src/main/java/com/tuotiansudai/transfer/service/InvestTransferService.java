@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface InvestTransferService {
 
-    void investTransferApply(TransferApplicationDto transferApplicationDto);
+    boolean investTransferApply(TransferApplicationDto transferApplicationDto);
 
     boolean cancelTransferApplication(long transferApplicationId);
 

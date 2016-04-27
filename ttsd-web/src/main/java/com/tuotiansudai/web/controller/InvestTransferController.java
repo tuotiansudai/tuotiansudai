@@ -49,13 +49,14 @@ public class InvestTransferController {
         modelAndView.addObject("transferAmountLimit", transferAmountLimit);
         modelAndView.addObject("transferFee", transferFee);
         modelAndView.addObject("deadline", deadline);
+        modelAndView.addObject("transferInvestId", transferInvestId);
         return modelAndView;
     }
 
     @RequestMapping(value = "/apply", method = RequestMethod.POST)
-    public ModelAndView investTransferApply(@RequestBody TransferApplicationDto transferApplicationDto) {
-        investTransferService.investTransferApply(transferApplicationDto);
-        return new ModelAndView("");
+    @ResponseBody
+    public boolean investTransferApply(@RequestBody TransferApplicationDto transferApplicationDto) {
+        return investTransferService.investTransferApply(transferApplicationDto);
     }
 
     @RequestMapping(value = "/application/{transferApplyId}/cancel", method = RequestMethod.POST)

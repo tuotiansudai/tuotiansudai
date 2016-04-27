@@ -68,18 +68,18 @@ public class InvestTransferServiceImpl implements InvestTransferService{
 
     @Override
     @Transactional
-    public void investTransferApply(TransferApplicationDto transferApplicationDto) {
+    public boolean investTransferApply(TransferApplicationDto transferApplicationDto) {
 
         InvestModel investModel = investMapper.findById(transferApplicationDto.getTransferInvestId());
 
         if (investModel.getStatus() != InvestStatus.SUCCESS || investModel.getAmount() < transferApplicationDto.getTransferAmount()) {
-            return;
+            return false;
         }
 
         LoanRepayModel loanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(investModel.getLoanId());
 
         if (loanRepayModel == null) {
-            return;
+            return false;
         }
 
 
@@ -96,6 +96,8 @@ public class InvestTransferServiceImpl implements InvestTransferService{
         investMapper.updateTransferStatus(investModel.getId(), TransferStatus.TRANSFERRING);
 
         investTransferApplyJob(transferApplicationModel);
+
+        return true;
     }
 
     @Override
