@@ -24,8 +24,6 @@ import java.util.List;
 public class LoanListController {
 
     static Logger logger = Logger.getLogger(LoanListController.class);
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private SimpleDateFormat definiteDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Autowired
     private LoanService loanService;
@@ -37,7 +35,7 @@ public class LoanListController {
                                         @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                         @RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                         @RequestParam(value = "loanName", required = false) String loanName,
-                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) throws ParseException {
+                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize){
         int loanListCount = loanService.findLoanListCount(status, loanId, loanName,
                 startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
                 endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate());
