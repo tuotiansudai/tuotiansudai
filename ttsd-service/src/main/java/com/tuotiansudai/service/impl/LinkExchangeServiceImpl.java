@@ -64,7 +64,7 @@ public class LinkExchangeServiceImpl implements LinkExchangeService {
     @Override
     public void create(LinkExchangeDto linkExchangeDto) {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(String.valueOf(System.currentTimeMillis()), linkExchangeDto.convertToString());
+        map.put(String.valueOf(linkExchangeDto.getId()), linkExchangeDto.convertToString());
         redisWrapperClient.hmset(LINK_EXCHANGE_KEY, map);
     }
 
