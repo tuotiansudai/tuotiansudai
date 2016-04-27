@@ -11,6 +11,54 @@
   overflow: auto !important;
 }
 
+
+//get mobile captcha
+.image-captcha-dialog {
+  .pad-s {
+    padding:20px;
+  }
+  .image-captcha-form {
+    position: relative;
+    height: 135px;
+    input.image-captcha-text {
+      background: url("/images/icons/register.png") no-repeat 6px -548px;
+      width: 156px;
+      border-radius: 3px;
+      font-size: 12px;
+      padding: 10px 6px 9px 30px;
+      &.error + label.error{
+        display: block!important;
+      }
+    }
+    .image-captcha-inner {
+      padding:20px;
+    }
+    img.image-captcha {
+      width: 60px;
+      height: 29px;
+      border-radius: 3px;
+      background: #e4e4e4;
+      border: #bababa 1px solid;
+      cursor: pointer;
+      position: absolute;
+      left: 150px;
+      top: 22px;
+    }
+    .image-captcha-confirm {
+      position: absolute;
+      bottom: 7px;
+      left: 35%;
+    }
+  }
+
+  .image-captcha-confirm.loading {
+    background: url("/images/icons/loading.gif") no-repeat center center;
+    cursor: default;
+    text-indent: -9999px;
+    border:0px;
+  }
+}
+
 //red bag,will be remove some days
 .red-envelope-box-out {
   background: transparent !important;

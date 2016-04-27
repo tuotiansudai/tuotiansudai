@@ -30,6 +30,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
             }
         });
     });
+
     fetchCaptchaElement.on('click', function () {
         layer.open({
             type: 1,
@@ -143,7 +144,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
                 required: true,
                 regex: /^(?=.*[^\d])(.{6,20})$/
             },
-            captcha: {
+            appCaptcha: {
                 required: true,
                 digits: true,
                 maxlength: 6,
@@ -154,9 +155,6 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
                         return "/register/user/mobile/" + mobile + "/captcha/{0}/verify"
                     }
                 }
-            },
-            referrer: {
-                isNotExist: "/register/user/referrer/{0}/is-exist"
             },
             agreement: {
                 required: true
@@ -180,14 +178,14 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
                 regex: '6位至20位，不能全是数字'
             },
             captcha: {
-                required: '请输入验证码',
+                required: '请输入验证码'
+            },
+            appCaptcha: {
+                required: '请输入手机验证码',
                 digits: '验证码格式不正确',
                 maxlength: '验证码格式不正确',
                 minlength: '验证码格式不正确',
                 captchaVerify: '验证码不正确'
-            },
-            referrer: {
-                isNotExist: "推荐人不存在"
             },
             agreement: {
                 required: "请同意服务协议"
