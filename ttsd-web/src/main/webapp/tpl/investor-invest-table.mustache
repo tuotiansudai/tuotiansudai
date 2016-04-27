@@ -6,7 +6,6 @@
             <th>交易时间</th>
             <th>交易状态</th>
             <th>下次回款(元)</th>
-            <th>详情</th>
             <th>操作</th>
         </tr>
     </thead>
@@ -33,15 +32,11 @@
             {{/hasInvestRepay}}
             {{^hasInvestRepay}} -- {{/hasInvestRepay}}
             </td>
-            <td>
-                <a href="">{{transferStatus}}</a>
-            </td>
         </tr>
         {{/records}}
 
         {{^records}}
-         <td colspan="7" class="no-data">暂时没有投资记录</td>
+         <td colspan="6" class="no-data">暂时没有投资记录</td>
         {{/records}}
     </tbody>
 </table>
-

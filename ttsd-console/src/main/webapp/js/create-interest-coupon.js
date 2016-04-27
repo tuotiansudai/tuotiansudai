@@ -141,10 +141,19 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
             $('.file-btn').find('input').val('');
             $('.file-btn').hide();
             var userGroup = this.value;
-            if(userGroup != "IMPORT_USER" && userGroup != 'AGENT' && userGroup != 'CHANNEL'){
+            var $fileBtn = $('.file-btn');
+            if(userGroup != "IMPORT_USER" && userGroup != "EXCHANGER_CODE" && userGroup != 'AGENT' && userGroup != 'CHANNEL'){
+                $fileBtn.hide();
+                $('.file-btn').find('input').val('');
                 $.get('/activity-manage/coupon/user-group/'+userGroup+'/estimate',function(data){
-                    $('.give-number').val(data);
+                    $('.give-number').val(data).prop('readonly', true);
                 })
+                $('.smsAlert').prop('disabled',false);
+            } else if (userGroup == "EXCHANGER_CODE") {
+                $fileBtn.hide();
+                $('.file-btn').find('input').val('');
+                $('.give-number').val('').prop('readonly', false);
+                $('.smsAlert').prop({disabled:true,checked:false});
             } else if (userGroup == 'AGENT') {
                 $.get('/user-manage/user/agents', function(data) {
                     if (data.length > 0 ) {
@@ -155,6 +164,7 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
                     }
                 })
                 $('.give-number').val('0');
+                $('.smsAlert').prop('disabled',false);
             } else if (userGroup == 'CHANNEL') {
                 $.get('/user-manage/user/channels', function(data) {
                     if (data.length > 0) {
@@ -165,9 +175,12 @@ require(['jquery','layerWrapper', 'template','bootstrap', 'bootstrapDatetimepick
                     }
                 })
                 $('.give-number').val('0');
+                $('.smsAlert').prop('disabled',false);
             } else {
                 $('#file-in').trigger('click');
                 $('.file-btn').show();
+                $('.give-number').val('').prop('readonly', true);
+                $('.smsAlert').prop('disabled',false);
             }
         });
 

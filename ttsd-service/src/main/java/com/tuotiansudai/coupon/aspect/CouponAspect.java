@@ -3,9 +3,6 @@ package com.tuotiansudai.coupon.aspect;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
@@ -39,7 +36,7 @@ public class CouponAspect {
         try {
             if ((boolean) returnValue) {
                 RegisterUserDto registerUserDto = (RegisterUserDto) joinPoint.getArgs()[0];
-                couponActivationService.assignUserCoupon(registerUserDto.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER, UserGroup.NEW_REGISTERED_USER),null);
+                couponActivationService.assignUserCoupon(registerUserDto.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER, UserGroup.NEW_REGISTERED_USER),null, null);
             }
         } catch (Exception e) {
             logger.error("after user register aspect fail ", e);
@@ -58,7 +55,7 @@ public class CouponAspect {
                     UserGroup.CHANNEL,
                     UserGroup.STAFF,
                     UserGroup.STAFF_RECOMMEND_LEVEL_ONE,
-                    UserGroup.IMPORT_USER),null);
+                    UserGroup.IMPORT_USER),null,null);
         } catch (Exception e) {
             logger.error("after user login aspect fail ", e);
         }
