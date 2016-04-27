@@ -320,13 +320,13 @@ public class NormalRepayServiceImpl implements NormalRepayService {
                     String.valueOf(loanRepayId), String.valueOf(investRepayModel.getId()), syncRequestStatus.name(), String.valueOf(currentLoanRepay.getRepayAmount())));
 
             if (Lists.newArrayList(SyncRequestStatus.READY, SyncRequestStatus.FAILURE).contains(syncRequestStatus)) {
-                if (currentLoanRepay.getRepayAmount() > 0) {
+                if (investRepayModel.getRepayAmount() > 0) {
                     // transfer investor interest(callback url: repay_payback_notify)
                     try {
                         ProjectTransferRequestModel repayPaybackRequest = ProjectTransferRequestModel.newRepayPaybackRequest(String.valueOf(loanId),
                                 MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(investRepayModel.getId()), String.valueOf(new Date().getTime())),
                                 accountMapper.findByLoginName(investModel.getLoginName()).getPayUserId(),
-                                String.valueOf(currentLoanRepay.getRepayAmount()));
+                                String.valueOf(investRepayModel.getRepayAmount()));
 
                         redisWrapperClient.hset(redisKey, String.valueOf(investRepayModel.getId()), SyncRequestStatus.SENT.name());
                         logger.info(MessageFormat.format("[Normal Repay {0}] invest payback({1}) send payback request",

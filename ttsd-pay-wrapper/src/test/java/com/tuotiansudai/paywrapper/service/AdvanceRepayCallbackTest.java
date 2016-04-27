@@ -70,6 +70,7 @@ public class AdvanceRepayCallbackTest extends RepayBaseTest {
         long loanRepay2ExpectedInterest = 2000;
         LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 1, 0, loanRepay1ExpectedInterest, recheckTime.plusDays(30).withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.WAIT_PAY);
         loanRepay1.setActualInterest(23L);
+        loanRepay1.setRepayAmount(loan.getLoanAmount() + loanRepay1.getActualInterest());
         LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(60).withTime(23, 59, 59, 0).toDate(), null, RepayStatus.REPAYING);
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));

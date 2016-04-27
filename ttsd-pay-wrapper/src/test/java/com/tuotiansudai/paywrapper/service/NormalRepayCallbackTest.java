@@ -73,6 +73,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         long loanRepay2ExpectedInterest = 2000;
         LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.WAIT_PAY);
         loanRepay1.setActualInterest(loanRepay1ExpectedInterest);
+        loanRepay1.setRepayAmount(loanRepay1ExpectedInterest);
         LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), null, RepayStatus.REPAYING);
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
@@ -121,6 +122,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         loanRepay1.setActualInterest(loanRepay1ExpectedInterest);
         LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.WAIT_PAY);
         loanRepay2.setActualInterest(loanRepay2ExpectedInterest);
+        loanRepay2.setRepayAmount(loanRepay2.getCorpus() + loanRepay2ExpectedInterest);
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
@@ -171,6 +173,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         LoanRepayModel loanRepay1 = this.getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 1, 0, loanRepay1ExpectedInterest, new DateTime().minusDays(1).withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.WAIT_PAY);
         loanRepay1.setDefaultInterest(loanRepay1OverdueInterest);
         loanRepay1.setActualInterest(loanRepay1ExpectedInterest + loanRepay1OverdueInterest);
+        loanRepay1.setRepayAmount(loanRepay1ExpectedInterest + loanRepay1OverdueInterest);
         LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), null, RepayStatus.REPAYING);
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
@@ -222,6 +225,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         loanRepay1.setDefaultInterest(loanRepay1OverdueInterest);
         LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().minusDays(1).withTime(23, 59, 59, 0).toDate(), new DateTime().withMillisOfSecond(0).toDate(), RepayStatus.WAIT_PAY);
         loanRepay2.setActualInterest(loanRepay1ExpectedInterest + loanRepay2ExpectedInterest + loanRepay1OverdueInterest);
+        loanRepay2.setRepayAmount(loanRepay2.getCorpus() + loanRepay2.getActualInterest());
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 

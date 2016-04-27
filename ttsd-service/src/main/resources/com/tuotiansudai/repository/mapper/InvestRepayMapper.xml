@@ -89,7 +89,7 @@
         insert into invest_repay ( <include refid="columns"></include> )
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.id}, #{item.investId}, #{item.corpus}, #{item.defaultInterest}, #{item.expectedInterest}, #{item.actualInterest}, #{item.expectedFee}, #{item.repayAmount}, #{item.actualFee}, #{item.period}, #{item.repayDate}, #{item.actualRepayDate}, #{item.status}, #{item.createdTime})
+            (#{item.id}, #{item.investId}, #{item.corpus}, #{item.defaultInterest}, #{item.expectedInterest}, #{item.actualInterest}, #{item.expectedFee}, #{item.actualFee}, #{item.repayAmount}, #{item.period}, #{item.repayDate}, #{item.actualRepayDate}, #{item.status}, #{item.createdTime})
         </foreach>
     </insert>
 
@@ -266,7 +266,6 @@
           temp2.`expected_interest`,
           temp2.`default_interest`,
           temp2.`expected_fee`,
-          temp2.`repay_amount`,
           temp.`amount`,
           temp2.`status`
         FROM
@@ -290,7 +289,6 @@
               t.`expected_interest`,
               t.`default_interest`,
               t.`expected_fee`,
-              t.`repay_amount`,
               t.`repay_date`,
               t.`status`
             FROM

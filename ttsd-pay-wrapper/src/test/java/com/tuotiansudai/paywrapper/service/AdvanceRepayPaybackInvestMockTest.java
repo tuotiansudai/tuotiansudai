@@ -99,12 +99,14 @@ public class AdvanceRepayPaybackInvestMockTest {
         invest1InvestRepay1.setActualInterest(invest1InvestRepay1.getExpectedInterest());
         invest1InvestRepay1.setActualFee(invest1InvestRepay1.getExpectedFee());
         invest1InvestRepay1.setActualRepayDate(loanRepay1.getActualRepayDate());
+        invest1InvestRepay1.setRepayAmount(invest1.getAmount() + invest1InvestRepay1.getActualInterest() - invest1InvestRepay1.getActualFee());
         when(investRepayMapper.findByInvestIdAndPeriod(invest1.getId(), loanRepay1.getPeriod())).thenReturn(invest1InvestRepay1);
 
         InvestRepayModel invest2InvestRepay1 = new InvestRepayModel(1, invest2.getId(), 1, 6, 1, loanRepay1.getRepayDate(), RepayStatus.WAIT_PAY);
         invest2InvestRepay1.setActualInterest(invest2InvestRepay1.getExpectedInterest());
         invest2InvestRepay1.setActualFee(invest2InvestRepay1.getExpectedFee());
         invest2InvestRepay1.setActualRepayDate(loanRepay1.getActualRepayDate());
+        invest2InvestRepay1.setRepayAmount(invest2.getAmount() + invest2InvestRepay1.getActualInterest() - invest2InvestRepay1.getActualFee());
         when(investRepayMapper.findByInvestIdAndPeriod(invest2.getId(), loanRepay1.getPeriod())).thenReturn(invest2InvestRepay1);
 
         AccountModel investor1Account = new AccountModel(investor1LoginName, "userName", "id", investor1LoginName, investor1LoginName, new Date());
@@ -187,6 +189,7 @@ public class AdvanceRepayPaybackInvestMockTest {
         invest1InvestRepay2.setActualInterest(invest1InvestRepay2.getExpectedInterest());
         invest1InvestRepay2.setActualFee(invest1InvestRepay2.getExpectedFee());
         invest1InvestRepay2.setActualRepayDate(loanRepay2.getActualRepayDate());
+        invest1InvestRepay2.setRepayAmount(invest1.getAmount() + invest1InvestRepay2.getActualInterest() - invest1InvestRepay2.getActualFee());
         when(investRepayMapper.findByInvestIdAndPeriod(invest1.getId(), loanRepay2.getPeriod())).thenReturn(invest1InvestRepay2);
 
         InvestRepayModel invest2InvestRepay2 = new InvestRepayModel(1, invest2.getId(), 1, 6, 1, loanRepay1.getRepayDate(), RepayStatus.WAIT_PAY);
@@ -194,6 +197,7 @@ public class AdvanceRepayPaybackInvestMockTest {
         invest2InvestRepay2.setActualInterest(invest2InvestRepay2.getExpectedInterest());
         invest2InvestRepay2.setActualFee(invest2InvestRepay2.getExpectedFee());
         invest2InvestRepay2.setActualRepayDate(loanRepay1.getActualRepayDate());
+        invest2InvestRepay2.setRepayAmount(invest2.getAmount() + invest2InvestRepay2.getActualInterest() - invest2InvestRepay2.getActualFee());
         when(investRepayMapper.findByInvestIdAndPeriod(invest2.getId(), loanRepay2.getPeriod())).thenReturn(invest2InvestRepay2);
 
         AccountModel investor1Account = new AccountModel(investor1LoginName, "userName", "id", investor1LoginName, investor1LoginName, new Date());

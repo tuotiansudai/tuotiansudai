@@ -80,6 +80,7 @@ public class NormalRepayInvestPaybackCallbackTest extends RepayBaseTest {
         investRepay1.setActualInterest(investRepay1.getExpectedInterest());
         investRepay1.setActualFee(investRepay1.getExpectedFee());
         investRepay1.setActualRepayDate(loanRepay1.getActualRepayDate());
+        investRepay1.setRepayAmount(investRepay1.getActualInterest() - investRepay1.getActualFee());
 
         InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, loanRepay2ExpectedInterest, 100, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
         investRepay2.setCorpus(invest.getAmount());

@@ -190,7 +190,7 @@
             actual_interest = #{actualInterest},
             actual_repay_date = #{actualRepayDate},
             default_interest = #{defaultInterest},
-            repay_amount = #{repay_amount},
+            repay_amount = #{repayAmount},
             status = #{status}
         where id = #{id}
     </update>

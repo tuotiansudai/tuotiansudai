@@ -68,6 +68,7 @@ public class NormalRepayGenerateFormDataTest extends RepayBaseTest {
         LoanRepayModel enabledLoanRepay = loanRepayMapper.findById(loanRepay1.getId());
         assertThat(enabledLoanRepay.getStatus(), is(RepayStatus.WAIT_PAY));
         assertThat(enabledLoanRepay.getActualInterest(), is(loanRepay1.getExpectedInterest()));
+        assertThat(enabledLoanRepay.getRepayAmount(), is(loanRepay1.getExpectedInterest()));
         assertThat(new DateTime(enabledLoanRepay.getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(new DateTime().withTimeAtStartOfDay().getMillis()));
     }
 
@@ -94,6 +95,7 @@ public class NormalRepayGenerateFormDataTest extends RepayBaseTest {
         LoanRepayModel enabledLoanRepay = loanRepayMapper.findById(loanRepay2.getId());
         assertThat(enabledLoanRepay.getStatus(), is(RepayStatus.WAIT_PAY));
         assertThat(enabledLoanRepay.getActualInterest(), is(loanRepay2.getExpectedInterest()));
+        assertThat(enabledLoanRepay.getRepayAmount(), is(loanRepay2.getCorpus() + loanRepay2.getExpectedInterest()));
         assertThat(new DateTime(enabledLoanRepay.getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(new DateTime().withTimeAtStartOfDay().getMillis()));
     }
 
@@ -123,6 +125,7 @@ public class NormalRepayGenerateFormDataTest extends RepayBaseTest {
         LoanRepayModel enabledLoanRepay = loanRepayMapper.findById(loanRepay1.getId());
         assertThat(enabledLoanRepay.getStatus(), is(RepayStatus.WAIT_PAY));
         assertThat(enabledLoanRepay.getActualInterest(), is(loanRepay1.getExpectedInterest() + loanRepay1.getDefaultInterest()));
+        assertThat(enabledLoanRepay.getRepayAmount(), is(loanRepay1.getExpectedInterest() + loanRepay1.getDefaultInterest()));
         assertThat(new DateTime(enabledLoanRepay.getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(new DateTime().withTimeAtStartOfDay().getMillis()));
     }
 
@@ -153,6 +156,7 @@ public class NormalRepayGenerateFormDataTest extends RepayBaseTest {
         LoanRepayModel enabledLoanRepay = loanRepayMapper.findById(loanRepay2.getId());
         assertThat(enabledLoanRepay.getStatus(), is(RepayStatus.WAIT_PAY));
         assertThat(enabledLoanRepay.getActualInterest(), is(actualInterest));
+        assertThat(enabledLoanRepay.getRepayAmount(), is(loanRepay2.getCorpus() + actualInterest));
         assertThat(new DateTime(enabledLoanRepay.getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(new DateTime().withTimeAtStartOfDay().getMillis()));
     }
 }

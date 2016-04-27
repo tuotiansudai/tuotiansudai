@@ -87,6 +87,7 @@ public class AdvanceRepayGenerateFormDataTest extends RepayBaseTest {
         LoanRepayModel enabledLoanRepay = loanRepayMapper.findById(loanRepay1.getId());
         assertThat(enabledLoanRepay.getStatus(), is(RepayStatus.WAIT_PAY));
         assertThat(enabledLoanRepay.getActualInterest(), is(23L));
+        assertThat(enabledLoanRepay.getRepayAmount(), is(10000L + 23L));
         assertThat(new DateTime(enabledLoanRepay.getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(new DateTime().withTimeAtStartOfDay().getMillis()));
     }
 
@@ -132,6 +133,7 @@ public class AdvanceRepayGenerateFormDataTest extends RepayBaseTest {
         LoanRepayModel enabledLoanRepay = loanRepayMapper.findById(loanRepay2.getId());
         assertThat(enabledLoanRepay.getStatus(), is(RepayStatus.WAIT_PAY));
         assertThat(enabledLoanRepay.getActualInterest(), is(0L));
+        assertThat(enabledLoanRepay.getRepayAmount(), is(10000L));
         assertThat(new DateTime(enabledLoanRepay.getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(new DateTime().withTimeAtStartOfDay().getMillis()));
     }
 }
