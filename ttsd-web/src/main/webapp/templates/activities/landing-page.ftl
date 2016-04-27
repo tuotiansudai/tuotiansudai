@@ -1,9 +1,56 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.landingpage}" pageJavascript="${js.download_app}" activeNav="" activeLeftNav="" title="拓天速贷手机客户端_理财客户端_拓天速贷" keywords="拓天速贷,APP理财,移动客户端,网络理财,P2P理财,拓天速贷APP" description="拓天速贷手机客户端为理财,投资,贷款等投融资用户提供安全、专业、便捷的互联网金融理财服务。">
+<@global.main pageCss="${css.landingpage}" pageJavascript="${js.landingpage}" activeNav="" activeLeftNav="" title="拓天速贷手机客户端_理财客户端_拓天速贷" keywords="拓天速贷,APP理财,移动客户端,网络理财,P2P理财,拓天速贷APP" description="拓天速贷手机客户端为理财,投资,贷款等投融资用户提供安全、专业、便捷的互联网金融理财服务。">
 
 <div class="landing-container">
 	<div class="landing-top">
         <img src="${staticServer}/images/sign/actor/landingpage/landing-top.png" width="100%">
+        <div class="register-box">
+            <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate">
+                <ul class="reg-list tl register-step-one">
+                    <li >
+                        <label for="" class="reg-title">用户名:</label>
+                        <input type="text" class="login-name long" name="loginName" placeholder="用户名" maxlength="25" value="">
+                    </li>
+                    <li>
+                        <label for="" class="reg-title">密码:</label>
+                        <input type="password" name="password" placeholder="密码" maxlength="20" class="password long" value="">
+                    </li>
+                    <li>
+                        <label for="" class="reg-title">手机号:</label>
+                        <input type="text" name="mobile" class="mobile long" placeholder="手机号" maxlength="11" value="">
+                    </li>
+                    <li class="code">
+                        <label for="" class="reg-title">验证码:</label>
+                        <input type="text" name="referrer" placeholder="验证码" maxlength="25" class="referrer" value="">
+                        <em class="image-captcha">
+                            <img src="/login/captcha" alt=""/>
+                        </em>
+                        <span class="img-change">换一张</span>
+                    </li>
+                    <li>
+                        <label for="" class="reg-title">手机验证码:</label>
+                    <span class="captcha-tag">
+                        <input type="text" name="captcha" class="captcha" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6" value="">
+                        <button type="button" class="fetch-captcha btn" disabled="disabled">获取验证码</button>
+                    </span>
+
+                    </li>
+
+
+                    <li class="agree-last">
+                        <label for="agreement" class="check-label">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
+                        <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check">
+
+                    </li>
+                    <li class="error-box"></li>
+                    <input type="hidden" name="_csrf" value="010e19c3-6b6e-4f43-bbfd-186c3970e9b8">
+
+
+                    <input type="submit" class="register-user" value="立即注册">
+                </ul>
+
+            </form>
+        </div>
     </div>
     <div class="content-one">
     	<div class="one-title">
@@ -51,8 +98,8 @@
 
                         <div class="product-box tc product-type active-after">
                             <i class="img-syl"></i>
-                            <div class="pad-m" title="预热" data-url="/loan/31020002818144" onclick="cnzzPush.trackClick('36首页','热门产品模块','速盈利')">
-                                <h2 class="pr-title">预热</h2>
+                            <div class="pad-m" title="新手专享" data-url="/loan/31020002818144" onclick="cnzzPush.trackClick('36首页','热门产品模块','速盈利')">
+                                <h2 class="pr-title">新手专享</h2>
                                 <div class="pr-square tc">
                                     <div class="pr-square-in">
                                         <em><b>10</b>
@@ -62,31 +109,23 @@
                                     </div>
                                 </div>
                                 <dl class="pr-info">
-                                    <dd class="dl-month"><i>1</i>个月 <span>项目期限</span></dd>
-                                    <dd class="dl-amount"><i>1000元</i><span>项目金额</span></dd>
+                                    <dd>投资期限30天</dd>
+
                                 </dl>
 
                             </div>
                                 <div class="time-item preheat" data-time="-342358">
                                         <i class="time-clock"></i><strong class="minute_show">00分</strong><em>:</em><strong class="second_show">00秒</strong>以后可投资
                                 </div>
-                                <div class="project-schedule clear-blank clearfix pro">
-                                    <div class="p-title">
-                                        <span class="fl">项目进度</span>
-                                        <span class="point fr">0.00%</span>
-                                    </div>
-                                    <div class="process-percent">
-                                        <div class="percent" style="width:0%"></div>
-                                    </div>
-                                </div>
-                                <a href="/loan/31020002818144" class="btn-normal now">立即投资</a>
+
+                                <a href="/loan/31020002818144" class="btn-normal now">立即查看</a>
                                 <a href="/loan/31020002818144" class="btn-normal wait-invest will">预热中</a>
                         </div>
 
                         <div class="product-box tc product-type active-after">
                             <i class="img-wyx"></i>
-                            <div class="pad-m" title="还款2.0" data-url="/loan/32448033321072" onclick="cnzzPush.trackClick('37首页','热门产品模块','稳盈秀')">
-                                <h2 class="pr-title">还款2.0</h2>
+                            <div class="pad-m" title="稳健灵活" data-url="/loan/32448033321072" onclick="cnzzPush.trackClick('37首页','热门产品模块','稳盈秀')">
+                                <h2 class="pr-title">稳健灵活</h2>
                                 <div class="pr-square tc">
                                     <div class="pr-square-in">
                                         <em><b>12</b>
@@ -95,31 +134,23 @@
                                     </div>
                                 </div>
                                 <dl class="pr-info">
-                                    <dd class="dl-month"><i>3</i>个月 <span>项目期限</span></dd>
-                                    <dd class="dl-amount"><i>10元</i><span>项目金额</span></dd>
+                                    <dd>投资期限90天</dd>
+
                                 </dl>
 
                             </div>
                                 <div class="time-item preheat" data-time="-338758">
                                         <i class="time-clock"></i><strong class="minute_show">00分</strong><em>:</em><strong class="second_show">00秒</strong>以后可投资
                                 </div>
-                                <div class="project-schedule clear-blank clearfix pro">
-                                    <div class="p-title">
-                                        <span class="fl">项目进度</span>
-                                        <span class="point fr">0.00%</span>
-                                    </div>
-                                    <div class="process-percent">
-                                        <div class="percent" style="width:0%"></div>
-                                    </div>
-                                </div>
-                                <a href="/loan/32448033321072" class="btn-normal now">立即投资</a>
+
+                                <a href="/loan/32448033321072" class="btn-normal now">立即查看</a>
                                 <a href="/loan/32448033321072" class="btn-normal wait-invest will">预热中</a>
                         </div>
 
                         <div class="product-box tc product-type active-after">
                             <i class="img-jyf"></i>
-                            <div class="pad-m" title="auto5" data-url="/loan/31903021266032" onclick="cnzzPush.trackClick('38首页','热门产品模块','久赢富')">
-                                <h2 class="pr-title">auto5</h2>
+                            <div class="pad-m" title="财富法宝" data-url="/loan/31903021266032" onclick="cnzzPush.trackClick('38首页','热门产品模块','久赢富')">
+                                <h2 class="pr-title">财富法宝</h2>
                                 <div class="pr-square tc">
                                     <div class="pr-square-in">
                                         <em><b>13</b>
@@ -129,24 +160,16 @@
                                     </div>
                                 </div>
                                 <dl class="pr-info">
-                                    <dd class="dl-month"><i>6</i>个月 <span>项目期限</span></dd>
-                                    <dd class="dl-amount"><i>50元</i><span>项目金额</span></dd>
+                                    <dd>投资期限180天</dd>
+
                                 </dl>
 
                             </div>
                                 <div class="time-item preheat" data-time="-338158">
                                         <i class="time-clock"></i><strong class="minute_show">00分</strong><em>:</em><strong class="second_show">00秒</strong>以后可投资
                                 </div>
-                                <div class="project-schedule clear-blank clearfix pro">
-                                    <div class="p-title">
-                                        <span class="fl">项目进度</span>
-                                        <span class="point fr">0.00%</span>
-                                    </div>
-                                    <div class="process-percent">
-                                        <div class="percent" style="width:0%"></div>
-                                    </div>
-                                </div>
-                                <a href="/loan/31903021266032" class="btn-normal now">立即投资</a>
+
+                                <a href="/loan/31903021266032" class="btn-normal now">立即查看</a>
                                 <a href="/loan/31903021266032" class="btn-normal wait-invest will">预热中</a>
                         </div>
                 </div>
@@ -179,12 +202,50 @@
 			<p>当您在平台完成一系列操作之后，即可将自己的<span>用户名发送给身边的朋友</span>当您的推荐人</p>
 			<p>成功投资后，您即可<span>获得奖励</span></p>
 		</div>
+		<table class="imagetable">
+		    <tr>
+		      <th></th>
+		      <th>投资人</th>
+		      <th>一级推荐人</th>
+		      <th>二级推荐人</th>
+		    </tr>
+		    <tr>
+		      <td>奖励机制</td>
+		      <td></td>
+		      <td>奖励预期年货<span>收益<span class="big">1%</span></span></td>
+		      <td>奖励预期年化<span>收益<span class="big">1%</span></span></td>
+		    </tr>
+		    <tr>
+		      <td>投资实例</td>
+		      <td>投资半年期标的10万元</td>
+		      <td><span>奖励</span>约500元</td>
+		      <td><span>奖励</span>约500元</td>
+		    </tr>
+  		</table>
 	</div>
 	<div class="content-five">
         <div class="five-title">
             主流媒体眼中的我们
         </div>
-		<div class=""></div>
+		<div class="content-wp">
+			<div class="left">
+				<a href="">
+					
+				</a>
+			</div>
+			<div class="right">
+				<ul>
+					<li><img src="${staticServer}/images/sign/actor/landingpage/media-one.png" ></li>
+					<li><img src="${staticServer}/images/sign/actor/landingpage/media-two.png" ></li>
+					<li><img src="${staticServer}/images/sign/actor/landingpage/media-three.png" ></li>					
+				</ul>
+				<div class="title"><span>今日头条</span>拓天速贷以卓越风控打造高效资产平台</div>
+				<p>
+					随着拓天速贷终端产品的不断改进和完善，用户将得到更好的服务体验，在未来持续性优化改进的基础上，拓天速贷将重点把风控体系打造的更加系统性、完善化，使其超越百分之百的为用户做到本金及收益无风险化保障，最终使拓天速贷风控体系成为行业中的典范和标杆，引领行业持续健康的发展... ...<a href="">查看更多</a>
+				</p>
+			</div>
+		</div>
+		<div class="registered"><a href="/register/user">立即注册</a></div>
 	</div>
 </div>
 

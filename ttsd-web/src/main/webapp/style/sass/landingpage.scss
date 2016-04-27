@@ -1,7 +1,13 @@
 
 @import 'variables';
 @import "index_png";
-
+form label.error:before {
+  padding-right: 5px;
+  content: "\f057";
+  font: normal normal normal 14px/1 FontAwesome;
+  display: none;
+  font-size: 16px;
+}
 .footer-container {
   margin-top: 0;
 }
@@ -11,6 +17,153 @@
 }
 .landing-container {
 	min-height: 500px;
+   .landing-top{
+	 position:relative;
+	 .register-box {
+	   position:absolute;
+	   background-color:#fff;
+	   opacity: 0.9;
+	   border-radius:5px;
+	   top:0;
+	   margin-left: 900px;
+	   height: auto;
+	   overflow: auto;
+	   margin-top:13px;
+	   .register-user-form{
+		 width:320px;
+		 height:340px;
+		 padding:5px 0 0 32px;
+
+	   }
+	   .register-step-one {
+		 margin-top: 14px;
+	   }
+	   .register-step-two {
+		 margin-top: 40px;
+	   }
+	   ul.reg-list {
+		 font-size: 12px;
+		 li {
+		   clear: both;
+		   margin-bottom: 5px;
+		   height: auto;
+
+		   .img-change{
+			 cursor: pointer;
+		   }
+		   .reg-title {
+			 width:60px;
+			 padding-right: 3px;
+			 font-size:14px;
+			 color: #333;
+			 text-align: right;
+			 display: none;
+
+		   }
+		   .captcha-tag {
+			 position: relative;
+			 display: inline-block;
+			 width:90%;
+			 .fetch-captcha {
+			   padding: 10px;
+			   letter-spacing: 0;
+			   position: absolute;
+			   right: 0px;
+			   top: 0px;
+			   font-size: 12px;
+			 }
+		   }
+		   .long{
+			 width:260px;
+
+		   }
+		   input[type="text"], input[type="password"] {
+			 color: #999;
+
+			 border: #cecece 1px solid;
+
+			 padding: 10px 2px 10px 30px;
+			 background-color:#fff;
+			 &.mobile {
+			   background: url("/images/sign/actor/landingpage/mobile-icon.png") no-repeat left center;
+			 }
+			 &.captcha {
+			   background: url("/images/sign/actor/landingpage/password-icon.png") no-repeat left center;
+			 }
+			 &.email {
+			   background: url(/images/icons/register.png) no-repeat 6px 9px;
+			 }
+			 &.password {
+			   background: url("/images/sign/actor/landingpage/password-icon.png") no-repeat left center;
+			 }
+			 &.referrer {
+			   background: url("/images/sign/actor/landingpage/test-icon.png") no-repeat left center;
+			 }
+			 &.login-name {
+			   background: url("/images/sign/actor/landingpage/login-name.png") no-repeat left center;
+			 }
+
+			 &.identity-number {
+			   background: url(/images/icons/register.png) no-repeat 6px -724px;
+			 }
+		   }
+
+
+		   .agreement {
+			 display: inline-block;
+			 width:361px;
+		   }
+		   input.valid + .agreement + label.error {
+			 &:before {
+			   content: "\f058";
+			   color: nth($checkValid,2);
+			 }
+		   }
+		   &.agree-last {
+			 position: relative;
+			 margin-left: 0;
+			 .check-label{
+			   position: absolute;
+			   top: 1px;
+			   left: 20px;
+			 }
+			 .agreement-check{
+			   margin-right: 300px;
+			 }
+		   }
+		   &.error-box {
+			 height:20px;
+			 overflow: hidden;
+		   }
+
+
+		 }
+		 .register-account {
+		   display: block;
+		   &.loading {
+			 background: url("/images/icons/loading.gif") no-repeat center center;
+			 cursor: default;
+			 text-indent: -9999px;
+		   }
+		 }
+		 .register-user, .register-account {
+		   width: 150px;
+		   background: #ff0000;
+		   border-radius: 3px;
+		   text-align: center;
+		   margin: 0px 0px 0px 85px;
+		   font-size: 20px;
+		   color: #fff;
+		   border: 0;
+		   cursor: pointer;
+		 }
+	   }
+	   label.error {
+		 display: block;
+	   }
+
+	 }
+   }
 
 	.content-one {
 		width: 100%;
@@ -227,7 +380,8 @@
               text-align: center;
               font-size: 0;
               dd {
-
+				margin-top: 30px;
+				margin-bottom: 10px;
                 display: inline-block;
                 font-size: 14px;
                 line-height: 1.2;
@@ -379,22 +533,128 @@
 				}
 			}
 		}
+		table.imagetable {
+
+			  width:1200px;			  
+			  font-size:18px;
+			  color:#333333;
+			  border-width: 1px;
+			  border-color: #999999;
+			  border-collapse: collapse;
+			  text-align: center;
+			  margin:45px auto ;
+
+			  th {
+				  background:#ccc;
+				  border-width: 1px;
+				  width: 200px;
+				  height:60px;
+				  border-style: solid;
+				  border-color: #999999;
+				}
+			  td {
+				  background:#fff;
+				  border-width: 1px;
+				  width: 200px;
+				  height:60px;
+				  border-style: solid;
+				  border-color: #999999;
+				  span{
+				  	color:red;
+				  	.big{
+				  		font-size:24px;
+				  	}
+				  }
+				}
+			}
 		
 	}
 	.content-five{
 		width:100%;
-		height:700px;
-		color:#fff;
+		height:700px;		
 		background: url("/images/sign/actor/landingpage/content-fivebg.png") no-repeat center;		
 		.five-title{
 			width: 950px;
 			height: 120px;
+			color:#fff;
 			line-height: 120px;
 			font-size: 26px;
 			margin: 0 auto;
 			text-align: center;
 			background: url("/images/sign/actor/landingpage/one-title-bg.png") no-repeat center;
 			
+		}
+		.content-wp{
+			width:1080px;
+			height:300px;
+			margin:0 auto;
+			padding:50px 60px;
+			background-color:#fff;
+			.left{
+				width:526px;
+				height:302px;
+				float:left;
+				a{
+					display: block;
+					width:526px;
+					height:302px;
+					background: url("/images/sign/actor/landingpage/five-media.png") no-repeat center;
+					
+				}
+				
+			}
+			.right{
+				float:right;
+				width:520px;
+				height:302px;
+				ul{
+					height:100px;
+					clear:both;
+					li{
+						width:33.3333%;
+						float:left;
+					}
+				}
+				.title{
+					height:42px;
+					font-size:20px;
+					span{
+						display: inline-block;
+						width:90px;
+						text-align: center;
+						background-color: red;
+						margin-right:10px;
+						color:#fff;
+					}
+				}
+				p{
+					font-size: 16px;
+					position:relative;
+					a{
+						position:absolute;
+						text-decoration: underline;
+						color:red;
+						right: 0;
+						bottom:0;
+					}
+				}
+
+			}
+		}
+		.registered{
+			margin-top:55px;
+			a{
+				display:block;
+				margin:0 auto;
+				width:200px;
+				height:46px;
+				color:#fff;
+				text-align: center;
+				line-height: 46px;
+				background-color:#f1a03f;
+				font-size: 16px;
+				border-radius:5px;
+			}
 		}		
 
 	}
