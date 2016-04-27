@@ -67,4 +67,17 @@ public interface TransferApplicationMapper {
                                            @Param(value = "startTime") Date startTime,
                                            @Param(value = "endTime") Date endTime,
                                            @Param(value = "loanStatus") LoanStatus loanStatus);
+
+
+    List<TransferApplicationRecordDto> findAllTransferApplicationPaginationList(@Param("transferStatus") List<TransferStatus> transferStatus,
+                                                                             @Param("rateStart") double rateStart,
+                                                                             @Param("rateEnd") double rateEnd,
+                                                                             @Param(value = "index") Integer index,
+                                                                             @Param(value = "pageSize") Integer pageSize);
+
+
+    int findCountAllTransferApplicationPagination(@Param("transferStatus") List<TransferStatus> transferStatus,
+                                                  @Param("rateStart") double rateStart,
+                                                  @Param("rateEnd") double rateEnd);
+
 }

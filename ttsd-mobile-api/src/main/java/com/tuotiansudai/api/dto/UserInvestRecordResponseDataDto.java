@@ -56,6 +56,8 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
 
     private String transferStatus;
 
+    private String leftPeriod;
+
     public UserInvestRecordResponseDataDto() {
     }
 
@@ -177,5 +179,13 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
 
     public void setTransferStatus(String transferStatus) {
         this.transferStatus = transferStatus;
+    }
+
+    public String getLeftPeriod() {
+        return leftPeriod;
+    }
+
+    public void setLeftPeriod(String leftPeriod) {
+        this.leftPeriod = leftPeriod;
     }
 }

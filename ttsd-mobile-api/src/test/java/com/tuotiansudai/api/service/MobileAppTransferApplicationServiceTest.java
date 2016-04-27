@@ -3,17 +3,23 @@ package com.tuotiansudai.api.service;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.impl.MobileAppTransferApplicationServiceImpl;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
+import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -23,11 +29,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.*;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.doNothing;
@@ -43,15 +51,21 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     @Mock
     private InvestTransferService investTransferService;
     @Mock
+    private TransferService transferService;
+    @Mock
     private InvestMapper investMapper;
     @Mock
     private LoanMapper loanMapper;
     @Mock
     private LoanRepayMapper loanRepayMapper;
+    @Mock
+    private AccountMapper accountMapper;
     @Autowired
     private IdGenerator idGenerator;
     @Mock
     private TransferRuleMapper transferRuleMapper;
+    @Mock
+    private InvestRepayMapper investRepayMapper;
 
     @Test
     public void shouldGenerateTransferApplicationIsSuccess() {
@@ -121,11 +135,76 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldTransferApplyIsSuccess() throws Exception {
+        long loanId = idGenerator.generate();
+        TransferRuleModel transferRuleModel = new TransferRuleModel();
+        transferRuleModel.setLevelOneFee(0.01);
+        transferRuleModel.setLevelOneLower(1);
+        transferRuleModel.setLevelOneUpper(29);
+
+        transferRuleModel.setLevelTwoFee(0.005);
+        transferRuleModel.setLevelTwoLower(30);
+        transferRuleModel.setLevelTwoUpper(90);
+
+        transferRuleModel.setLevelThreeFee(0.005);
+        transferRuleModel.setLevelThreeLower(91);
+        transferRuleModel.setLevelThreeUpper(365);
+
+        transferRuleModel.setDiscount(0.005);
+        InvestModel investModel = createInvest("testuser", loanId);
         doNothing().when(investTransferService).investTransferApply(any(TransferApplicationDto.class));
+        when(investMapper.findById(anyLong())).thenReturn(investModel);
+        when(transferRuleMapper.find()).thenReturn(transferRuleModel);
         TransferApplyRequestDto transferApplyRequestDto = new TransferApplyRequestDto();
         transferApplyRequestDto.setTransferInvestId("123");
-        transferApplyRequestDto.setTransferAmount("1.00");
+        transferApplyRequestDto.setTransferAmount("99.50");
         BaseResponseDto baseResponseDto = mobileAppTransferApplicationService.transferApply(transferApplyRequestDto);
+        assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
+    }
+
+    @Test
+    public void shouldTransferPurchaseIsSuccess() throws Exception {
+        long transferApplicationId = idGenerator.generate();
+        long investId = idGenerator.generate();
+
+        AccountModel accountModel = createAccountByUserId("testuser");
+        TransferPurchaseRequestDto transferPurchaseRequestDto = new TransferPurchaseRequestDto();
+        transferPurchaseRequestDto.setTransferApplicationId(String.valueOf(transferApplicationId));
+
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
+        transferApplicationModel.setTransferAmount(90000);
+        transferApplicationModel.setInvestAmount(100000);
+        transferApplicationModel.setLoginName("testuser");
+        transferApplicationModel.setInvestId(investId);
+        transferApplicationModel.setPeriod(2);
+        transferApplicationModel.setId(transferApplicationId);
+
+        InvestRepayModel investRepayModel1 = createInvestRepay("testuser", investId, 0, 1);
+        InvestRepayModel investRepayModel2 = createInvestRepay("testuser", investId, 0, 2);
+        InvestRepayModel investRepayModel3 = createInvestRepay("testuser", investId, 100000, 3);
+        List<InvestRepayModel> investRepayModels = new ArrayList<InvestRepayModel>();
+        investRepayModels.add(investRepayModel1);
+        investRepayModels.add(investRepayModel2);
+        investRepayModels.add(investRepayModel3);
+
+        when(transferApplicationMapper.findById(anyLong())).thenReturn(transferApplicationModel);
+        when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
+        when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
+
+        BaseResponseDto<TransferPurchaseResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.transferPurchase(transferPurchaseRequestDto);
+
+        assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
+
+        assertEquals("1000.00", baseResponseDto.getData().getBalance());
+        assertEquals("900.00", baseResponseDto.getData().getTransferAmount());
+        assertEquals("1000.14", baseResponseDto.getData().getExpectedInterestAmount());
+    }
+
+    @Test
+    public void shouldTransferApplicationCancelIsSuccess() throws Exception {
+        TransferCancelRequestDto transferCancelRequestDto = new TransferCancelRequestDto();
+        transferCancelRequestDto.setTransferApplicationId(100000L);
+        when(investTransferService.cancelTransferApplication(transferCancelRequestDto.getTransferApplicationId())).thenReturn(true);
+        BaseResponseDto baseResponseDto = mobileAppTransferApplicationService.transferApplicationCancel(transferCancelRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
     }
 
@@ -175,6 +254,76 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
     }
 
+    @Test
+    public void sholudTransferApplicationListIsSuccess(){
+        TransferApplicationModel transferApplicationModel1 = createTransferAppLication("ZR0001", 100001, 1000001, 10000001, 2, "testuer1", TransferStatus.SUCCESS);
+        List<TransferApplicationPaginationItemDataDto> transferApplicationRecordDtos = new ArrayList<TransferApplicationPaginationItemDataDto>();
+        transferApplicationRecordDtos.add(createTransferApplicationRecordDto(transferApplicationModel1));
+        List<InvestRepayModel> investRepayModels = new ArrayList<InvestRepayModel>();
+        investRepayModels.add(createInvestRepayModel(10000001,1));
+        investRepayModels.add(createInvestRepayModel(10000001,2));
+        investRepayModels.add(createInvestRepayModel(10000001,3));
+
+        TransferApplicationListRequestDto transferApplicationListRequestDto = new TransferApplicationListRequestDto();
+        transferApplicationListRequestDto.setRateLower("");
+        transferApplicationListRequestDto.setRateUpper("");
+        transferApplicationListRequestDto.setIndex(1);
+        transferApplicationListRequestDto.setPageSize(10);
+
+        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> transferApplicationRecordDto = new BasePaginationDataDto(1, 10, 1, transferApplicationRecordDtos);
+
+        when(transferService.findAllTransferApplicationPaginationList(anyList(), anyDouble(), anyDouble(), anyInt(), anyInt())).thenReturn(transferApplicationRecordDto);
+        when(transferService.findCountAllTransferApplicationPaginationList(anyList(), anyDouble(), anyDouble())).thenReturn(1);
+
+        BaseResponseDto<TransferApplicationResponseDataDto> baseResponseDto = mobileAppTransferApplicationService.transferApplicationList(transferApplicationListRequestDto);
+
+        assertEquals("ZR0001", baseResponseDto.getData().getTransferApplication().get(0).getName());
+        assertEquals("500", baseResponseDto.getData().getTransferApplication().get(0).getInvestAmount());
+        assertEquals("450", baseResponseDto.getData().getTransferApplication().get(0).getTransferAmount());
+        assertEquals("1", baseResponseDto.getData().getTransferApplication().get(0).getActivityRate());
+        assertEquals("12", baseResponseDto.getData().getTransferApplication().get(0).getBaseRate());
+        assertEquals(TransferStatus.SUCCESS, baseResponseDto.getData().getTransferApplication().get(0).getTransferStatus());
+
+    }
+
+    private InvestRepayModel createInvestRepayModel(long investId, int period) {
+        InvestRepayModel investRepayModel = new InvestRepayModel();
+        investRepayModel.setInvestId(investId);
+        investRepayModel.setPeriod(period);
+        return investRepayModel;
+    }
+
+    private TransferApplicationPaginationItemDataDto createTransferApplicationRecordDto(TransferApplicationModel transferApplicationModel) {
+        TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto();
+        transferApplicationPaginationItemDataDto.setTransferApplicationId(transferApplicationModel.getId());
+        transferApplicationPaginationItemDataDto.setTransferName(transferApplicationModel.getName());
+        transferApplicationPaginationItemDataDto.setInvestAmount(String.valueOf(transferApplicationModel.getInvestAmount()));
+        transferApplicationPaginationItemDataDto.setTransferAmount(String.valueOf(transferApplicationModel.getTransferAmount()));
+        transferApplicationPaginationItemDataDto.setBaseRate(12);
+        transferApplicationPaginationItemDataDto.setActivityRate(1);
+        transferApplicationPaginationItemDataDto.setTransferStatus(transferApplicationModel.getStatus());
+
+        return transferApplicationPaginationItemDataDto;
+    }
+
+    private TransferApplicationModel createTransferAppLication(String name, long loanId, long transferInvestId, long investId,int period, String loginName, TransferStatus transferStatus) {
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
+        transferApplicationModel.setId(idGenerator.generate());
+        transferApplicationModel.setName(name);
+        transferApplicationModel.setLoanId(loanId);
+        transferApplicationModel.setTransferInvestId(transferInvestId);
+        transferApplicationModel.setInvestId(investId);
+        transferApplicationModel.setPeriod(period);
+        transferApplicationModel.setLoginName(loginName);
+        transferApplicationModel.setInvestAmount(500);
+        transferApplicationModel.setTransferAmount(450);
+        transferApplicationModel.setStatus(transferStatus);
+        transferApplicationModel.setTransferTime(new Date());
+        transferApplicationModel.setApplicationTime(new Date());
+        transferApplicationModel.setLeftPeriod(2);
+        return transferApplicationModel;
+    }
+
     private InvestModel createInvest(String loginName, long loanId) {
         InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 10000, loginName, Source.WEB, null);
         model.setCreatedTime(new Date());
@@ -182,6 +331,17 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         return model;
     }
 
+
+    private InvestRepayModel createInvestRepay(String loginName, long InvestId, long corpus, int period) {
+        InvestRepayModel investRepayModel = new InvestRepayModel();
+        investRepayModel.setId(idGenerator.generate());
+        investRepayModel.setInvestId(InvestId);
+        investRepayModel.setCorpus(corpus);
+        investRepayModel.setExpectedInterest(12);
+        investRepayModel.setExpectedFee(5);
+        investRepayModel.setPeriod(period);
+        return investRepayModel;
+    }
     private UserModel createUserByUserId(String userId) {
         UserModel userModelTest = new UserModel();
         userModelTest.setLoginName(userId);
@@ -192,6 +352,12 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         return userModelTest;
+    }
+
+    private AccountModel createAccountByUserId(String userId) {
+        AccountModel accountModel = new AccountModel();
+        accountModel.setBalance(100000L);
+        return accountModel;
     }
 
     private LoanRepayModel getFakeLoanRepayModel(LoanModel fakeLoanModel,

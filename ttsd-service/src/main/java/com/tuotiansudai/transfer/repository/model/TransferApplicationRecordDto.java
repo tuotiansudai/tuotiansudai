@@ -14,6 +14,7 @@ public class TransferApplicationRecordDto implements Serializable {
     private Date transferTime;
     private double baseRate;
     private double activityRate;
+    private String remainingInterestDays;
     private TransferStatus transferStatus;
     private Long loanId;
     private String transferrerLoginName;
@@ -22,14 +23,13 @@ public class TransferApplicationRecordDto implements Serializable {
     private Long transferInvestId;
     private int period;
     private int leftPeriod;
+    private Date deadLine;
 
     public long getTransferApplicationId() {
         return transferApplicationId;
     }
 
-    public void setTransferApplicationId(long transferApplicationId) {
-        this.transferApplicationId = transferApplicationId;
-    }
+    public void setTransferApplicationId(long transferApplicationId) { this.transferApplicationId = transferApplicationId; }
 
     public String getName() {
         return name;
@@ -78,6 +78,10 @@ public class TransferApplicationRecordDto implements Serializable {
     public void setActivityRate(double activityRate) {
         this.activityRate = activityRate;
     }
+
+    public String getRemainingInterestDays() { return remainingInterestDays; }
+
+    public void setRemainingInterestDays(String remainingInterestDays) { this.remainingInterestDays = remainingInterestDays; }
 
     public TransferStatus getTransferStatus() {
         return transferStatus;
@@ -135,11 +139,16 @@ public class TransferApplicationRecordDto implements Serializable {
         this.period = period;
     }
 
+    public void setLeftPeriod(int leftPeriod) {
+        this.leftPeriod = leftPeriod;
+    }
+
     public int getLeftPeriod() {
         return leftPeriod;
     }
 
-    public void setLeftPeriod(int leftPeriod) {
-        this.leftPeriod = leftPeriod;
-    }
+    public Date getDeadLine() { return deadLine; }
+
+    public void setDeadLine(Date deadLine) { this.deadLine = deadLine; }
+
 }

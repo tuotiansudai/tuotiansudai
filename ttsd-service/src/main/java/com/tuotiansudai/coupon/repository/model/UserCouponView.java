@@ -38,8 +38,6 @@ public class UserCouponView implements Serializable, Comparable<UserCouponView> 
 
     private long investLowerLimit;
 
-    private long investUpperLimit;
-
     private double birthdayBenefit;
 
     private InvestStatus status;
@@ -50,6 +48,8 @@ public class UserCouponView implements Serializable, Comparable<UserCouponView> 
     private boolean shared;
 
     private ProductType loanProductType;
+
+    private UserGroup userGroup;
 
     public UserCouponView() {
     }
@@ -143,14 +143,6 @@ public class UserCouponView implements Serializable, Comparable<UserCouponView> 
         this.investLowerLimit = investLowerLimit;
     }
 
-    public long getInvestUpperLimit() {
-        return investUpperLimit;
-    }
-
-    public void setInvestUpperLimit(long investUpperLimit) {
-        this.investUpperLimit = investUpperLimit;
-    }
-
     public double getBirthdayBenefit() {
         return birthdayBenefit;
     }
@@ -196,6 +188,14 @@ public class UserCouponView implements Serializable, Comparable<UserCouponView> 
 
     public void setStatus(InvestStatus status) {
         this.status = status;
+    }
+
+    public UserGroup getUserGroup() {
+        return userGroup;
+    }
+
+    public void setUserGroup(UserGroup userGroup) {
+        this.userGroup = userGroup;
     }
 
     private int getStatusCode() {

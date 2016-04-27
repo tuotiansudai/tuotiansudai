@@ -23,6 +23,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.joda.time.Duration;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -221,6 +222,8 @@ public class LoanServiceImpl implements LoanService {
 
         loanDto.setDescriptionHtml(loanModel.getDescriptionHtml());
         loanDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
+        loanDto.setRaisingPeriod(Days.daysBetween(new DateTime(loanModel.getFundraisingStartTime()).withTimeAtStartOfDay(),
+                new DateTime(loanModel.getFundraisingEndTime()).withTimeAtStartOfDay()).getDays() + 1);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
@@ -657,13 +660,10 @@ public class LoanServiceImpl implements LoanService {
                 BigDecimal loanAmountBigDecimal = new BigDecimal(loanModel.getLoanAmount());
                 BigDecimal sumInvestAmountBigDecimal = new BigDecimal(investMapper.sumSuccessInvestAmount(loanModel.getId()));
                 if (LoanStatus.PREHEAT == loanModel.getStatus()) {
-                    long intervalMinutes = new Duration(new Date().getTime(), loanModel.getFundraisingStartTime().getTime()).getStandardMinutes();
-                    if (intervalMinutes < 30) {
-                        loanItemDto.setAlert(MessageFormat.format("{0}分钟后 放标", String.valueOf(intervalMinutes)));
-                    } else {
-                        loanItemDto.setAlert(MessageFormat.format("{0} 放标", new DateTime(loanModel.getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm")));
-                    }
+                    loanItemDto.setAlert(MessageFormat.format("{0} 元", AmountConverter.convertCentToString(loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanModel.getId()))));
                     loanItemDto.setProgress(0.0);
+                    loanItemDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
+                    loanItemDto.setPreheatSeconds((loanModel.getFundraisingStartTime().getTime() - System.currentTimeMillis()) / 1000);
                 }
                 if (LoanStatus.RAISING == loanModel.getStatus()) {
                     loanItemDto.setAlert(MessageFormat.format("{0} 元", AmountConverter.convertCentToString(loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanModel.getId()))));

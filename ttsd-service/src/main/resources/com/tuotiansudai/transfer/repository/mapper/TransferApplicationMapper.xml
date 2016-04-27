@@ -40,6 +40,7 @@
         <result column="transfer_invest_id" property="transferInvestId"></result>
         <result column="period" property="period"></result>
         <result column="left_period" property="leftPeriod"></result>
+        <result column="deadline" property="deadLine"></result>
     </resultMap>
 
     <insert id="create" parameterType="TransferApplicationModel" useGeneratedKeys="true" keyProperty="id">
@@ -150,6 +151,69 @@
         order by transfer_time
         limit #{index}, #{pageSize}
     </select>
+
+    <select id="findAllTransferApplicationPaginationList" parameterType="map" resultMap="transferApplicationRecordDtoMap">
+        select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,ta.loan_id,ta.invest_id,ta.deadline,
+        ta.transfer_invest_id,ta.period,ta.left_period, l.base_rate AS baseRate from transfer_application ta left JOIN loan l on ta.loan_id = l.id
+        <where>
+            <if test="transferStatus == null">
+                and ta.status in ('SUCCESS','TRANSFERRING')
+            </if>
+            <if test="transferStatus != null and transferStatus.size != 0">
+                and ta.status in
+                <foreach item="item" index="i" collection="transferStatus" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test="rateStart > 0 and rateStart != 0.14">
+                and l.base_rate >= #{rateStart}
+            </if>
+            <if test="rateStart > 0 and rateStart == 0.14">
+                and l.base_rate > #{rateStart}
+            </if>
+            <if test="rateEnd > 0 and rateEnd != 0.14">
+                <![CDATA[ and l.base_rate  < #{rateEnd} ]]>
+            </if>
+            <if test="rateEnd > 0 and rateEnd == 0.14">
+                <![CDATA[ and l.base_rate  <= #{rateEnd} ]]>
+            </if>
+        </where>
+        order by transfer_time
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountAllTransferApplicationPagination" parameterType="map" resultType="int">
+
+        select count(1)
+        from transfer_application ta left JOIN loan l on ta.loan_id = l.id
+        <where>
+
+            <if test="transferStatus == null">
+                and ta.status in ('SUCCESS','TRANSFERRING')
+            </if>
+            <if test="transferStatus != null and transferStatus.size != 0">
+                and ta.status in
+                <foreach item="item" index="i" collection="transferStatus" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test="rateStart > 0 and rateStart != 0.14">
+                and l.base_rate >= #{rateStart}
+            </if>
+            <if test="rateStart > 0 and rateStart == 0.14">
+                and l.base_rate > #{rateStart}
+            </if>
+            <if test="rateEnd > 0 and rateEnd != 0.14">
+                <![CDATA[ and l.base_rate  < #{rateEnd} ]]>
+            </if>
+            <if test="rateEnd > 0 and rateEnd == 0.14">
+                <![CDATA[ and l.base_rate  <= #{rateEnd} ]]>
+            </if>
+        </where>
+    </select>
+
 
     <select id="findCountTransferApplicationPagination" parameterType="map" resultType="int">
 

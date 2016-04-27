@@ -60,7 +60,7 @@ public class InvestRepayServiceImpl implements InvestRepayService{
             }
         });
         for (InvestRepayDataItemDto investRepayDataItemDto : investRepayDataItemDtoList) {
-            List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndLoanId(loginName, investRepayDataItemDto.getLoan().getId());
+            List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndInvestId(loginName, investRepayDataItemDto.getInvestId());
             investRepayDataItemDto.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
             if (CollectionUtils.isNotEmpty(userCouponModels)) {
                 investRepayDataItemDto.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
@@ -73,7 +73,7 @@ public class InvestRepayServiceImpl implements InvestRepayService{
     public List<LatestInvestView> findLatestInvestByLoginName(String loginName, int startLimit, int endLimit) {
         List<LatestInvestView> latestInvestViews = investRepayMapper.findLatestInvestByLoginName(loginName, startLimit, endLimit);
         for (LatestInvestView latestInvestView : latestInvestViews) {
-            List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndLoanId(loginName, latestInvestView.getLoanId());
+            List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndInvestId(loginName, latestInvestView.getInvestId());
             latestInvestView.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
             if (CollectionUtils.isNotEmpty(userCouponModels)) {
                 latestInvestView.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());

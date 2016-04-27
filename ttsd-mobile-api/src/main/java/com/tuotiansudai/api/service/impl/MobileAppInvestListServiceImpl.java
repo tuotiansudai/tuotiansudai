@@ -10,6 +10,7 @@ import com.tuotiansudai.api.service.MobileAppInvestListService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.service.InvestService;
@@ -38,6 +39,9 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
+
+    @Autowired
+    private LoanRepayMapper loanRepayMapper;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -99,7 +103,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
 
         // build InvestList
         UserInvestListResponseDataDto dtoData = new UserInvestListResponseDataDto();
-        dtoData.setInvestList(convertResponseData(investList, requestDto.getTransferStatuses()));
+        dtoData.setInvestList(convertResponseData(investList, requestDto.getTransferStatus()));
         dtoData.setIndex(requestDto.getIndex());
         dtoData.setPageSize(requestDto.getPageSize());
         dtoData.setTotalCount(investListCount);
@@ -148,10 +152,12 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
                     transferStatus = invest.getTransferStatus().name();
                 }
                 dto.setTransferStatus(transferStatus);
+                LoanRepayModel loanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(invest.getLoanId());
+                dto.setLeftPeriod(loanRepayModel == null ? "0" : String.valueOf(investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(invest.getId(),loanRepayModel.getPeriod())));
                 list.add(dto);
             }
         }
-        if (Lists.newArrayList(TransferStatus.TRANSFERABLE, TransferStatus.SUCCESS, TransferStatus.TRANSFERRING).contains(transferStatuses)) {
+        if (Lists.newArrayList(TransferStatus.TRANSFERABLE, TransferStatus.SUCCESS, TransferStatus.TRANSFERRING).containsAll(transferStatuses)) {
             return list;
         } else {
             return Lists.newArrayList(Iterators.filter(list.iterator(), new Predicate<UserInvestRecordResponseDataDto>() {
