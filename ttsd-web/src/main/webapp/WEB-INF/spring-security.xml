@@ -66,30 +66,38 @@
         <intercept-url pattern="/upload/**" access="permitAll()"/>
         <intercept-url pattern="/robots.txt" access="permitAll()"/>
 
-        <intercept-url pattern="/" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER')"/>
-        <intercept-url pattern="/point/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/login/**" access="isAnonymous()"/>
         <intercept-url pattern="/login-handler" access="isAnonymous()"/>
+
         <intercept-url pattern="/logout" access="not isAnonymous()"/>
+
+        <intercept-url pattern="/" access="permitAll()"/>
+        <intercept-url pattern="/loan-list/**" access="permitAll()"/>
+        <intercept-url pattern="/account/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/investor/**" access="hasAnyAuthority('USER', 'INVESTOR')"/>
+        <intercept-url pattern="/user-bill/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/point/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/personal-info/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
+
         <intercept-url pattern="/register/account/**" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/monitor/**" access="permitAll()"/>
         <intercept-url pattern="/mobile-retrieve-password/**" access="isAnonymous()"/>
-        <intercept-url pattern="/user-bill/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+
         <intercept-url pattern="/loaner/**" access="hasAnyAuthority('LOANER')"/>
         <intercept-url pattern="/invest/**" access="hasAnyAuthority('INVESTOR')"/>
-        <intercept-url pattern="/investor/**" access="hasAnyAuthority('INVESTOR')"/>
+
         <intercept-url pattern="/agreement/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/recharge/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/withdraw/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/bind-card/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
-        <intercept-url pattern="/personal-info/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
-        <intercept-url pattern="/account/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+
+
         <intercept-url pattern="/bind-email/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
-        <intercept-url pattern="/loan-list/**" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER')"/>
+
         <intercept-url pattern="/loan/**" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/referrer/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/my-treasure/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
-        <intercept-url pattern="/point/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+
         <intercept-url pattern="/checkLogin" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/no-password-invest/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/invest-success/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>

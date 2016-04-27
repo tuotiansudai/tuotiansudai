@@ -19,26 +19,26 @@
                     <span class="beans-num">可用财豆：${myPoint?string.computer}</span>
                     <i class="icon-result icon-dou"></i>
                 </div>
+                <#if obtainedPoints?has_content>
                 <div class="beans-list mt-20">
                     <ul class="beans-recent">
-                        <if obtainedPoints??>
-							<#list obtainedPoints as obtainedPoint>
-								<#list obtainedPoint?keys as key>
-                                    <li class="<#if obtainedPoint_index == 0>one-day</#if><#if obtainedPoint_index == 1>two-day</#if><#if obtainedPoint_index == 2>three-day</#if>">
-                                        <p>
-                                            <i class="icon-circle"></i>
-                                            <span class="text-date">${obtainedPoint[key]?string('MM月dd日')}</span>
-                                <span class="text-money">
-                                    <strong>${key}</strong>
-                                    <i class="icon-result icon-sm-dou"></i>
-                                </span>
-                                        </p>
-                                    </li>
-								</#list>
-							</#list>
-                        </if>
+                    <#list obtainedPoints as obtainedPoint>
+                        <#list obtainedPoint?keys as key>
+                            <li class="<#if obtainedPoint_index == 0>one-day</#if><#if obtainedPoint_index == 1>two-day</#if><#if obtainedPoint_index == 2>three-day</#if>">
+                                <p>
+                                    <i class="icon-circle"></i>
+                                    <span class="text-date">${obtainedPoint[key]?string('MM月dd日')}</span>
+                                    <span class="text-money">
+                                        <strong>${key}</strong>
+                                        <i class="icon-result icon-sm-dou"></i>
+                                    </span>
+                                </p>
+                            </li>
+                        </#list>
+                    </#list>
                     </ul>
                 </div>
+                </#if>
 			</div>
             <div class="beans-operat">
                 <h3>赚取财豆</h3>

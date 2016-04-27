@@ -24,15 +24,15 @@
     {"title":"首页", "url":"/","category":"16顶部导航"},
     {"title":"我要投资", "url":"/loan-list","category":"17顶部导航"},
     {"title":"我的账户", "url":"/account", "category":"18顶部导航","leftNavs":[
-    {"title":"账户总览", "url":"/account", "role":"'INVESTOR', 'LOANER'"},
-    {"title":"我的投资", "url":"/investor/invest-list", "role":"'INVESTOR'"},
+    {"title":"账户总览", "url":"/account", "role":"'USER', 'INVESTOR', 'LOANER'"},
+    {"title":"我的投资", "url":"/investor/invest-list", "role":"'USER', 'INVESTOR'"},
     {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
-    {"title":"资金管理", "url":"/user-bill", "role":"'INVESTOR', 'LOANER'"},
-    {"title":"我的财豆", "url":"/point", "role":"'INVESTOR', 'LOANER'"},
-    {"title":"个人资料", "url":"/personal-info", "role":"'INVESTOR', 'LOANER'"},
-    {"title":"自动投标", "url":"/investor/auto-invest", "role":"'INVESTOR'"},
-    {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'INVESTOR', 'LOANER'"},
-    {"title":"我的宝藏", "url":"/my-treasure", "role":"'INVESTOR', 'LOANER'"}
+    {"title":"资金管理", "url":"/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
+    {"title":"我的财豆", "url":"/point", "role":"'USER', 'INVESTOR', 'LOANER'"},
+    {"title":"个人资料", "url":"/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"},
+    {"title":"自动投标", "url":"/investor/auto-invest", "role":"'USER', 'INVESTOR'"},
+    {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
+    {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
     ]},
     {"title":"新手指引", "url":"/about/guide","category":"19顶部导航"},
     {"title":"关于我们", "url":"/about/company","category":"20顶部导航", "leftNavs":[

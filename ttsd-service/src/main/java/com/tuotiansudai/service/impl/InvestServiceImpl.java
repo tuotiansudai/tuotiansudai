@@ -154,7 +154,7 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     public BasePaginationDataDto<InvestPaginationItemDataDto> getInvestPagination(String investorLoginName, int index, int pageSize, Date startTime, Date endTime, LoanStatus loanStatus) {
-        return getInvestPagination(null, investorLoginName, null, null, null, index, pageSize, startTime, endTime, null, loanStatus);
+        return this.getInvestPagination(null, investorLoginName, null, null, null, index, pageSize, startTime, endTime, null, loanStatus);
     }
 
     @Override

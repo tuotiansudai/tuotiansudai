@@ -5,6 +5,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.UserService;
@@ -34,23 +35,25 @@ public class PersonalInfoController {
     private BindBankCardService bindBankCardService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView home() {
+    public ModelAndView personalInfo() {
         String loginName = LoginUserInfo.getLoginName();
         String mobile = LoginUserInfo.getMobile();
+
+        UserModel userModel = userMapper.findByLoginName(loginName);
         AccountModel accountModel = accountService.findByLoginName(loginName);
         BankCardModel bankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
+
         ModelAndView mv = new ModelAndView("/personal-info");
         mv.addObject("loginName", loginName);
         mv.addObject("userName", accountModel.getUserName());
         mv.addObject("identityNumber", accountModel.getIdentityNumber());
         mv.addObject("mobile", mobile);
-        mv.addObject("email", userMapper.findByLoginName(loginName).getEmail());
+        mv.addObject("email", userModel.getEmail());
         if (bankCard != null) {
             mv.addObject("bankCard", bankCard.getCardNumber());
         }
         mv.addObject("noPasswordInvest",accountModel.isNoPasswordInvest());
         mv.addObject("autoInvest",accountModel.isAutoInvest());
-
         return mv;
     }
 
