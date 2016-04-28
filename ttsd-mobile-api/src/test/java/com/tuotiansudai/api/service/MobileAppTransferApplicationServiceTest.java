@@ -5,6 +5,7 @@ import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.impl.MobileAppTransferApplicationServiceImpl;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.dto.TransferApplicationDetailDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -286,6 +287,21 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
     }
 
+    @Test
+    public void sholudTransferApplicationDetailIsSuccess(){
+        TransferApplicationModel transferApplicationModel1 = createTransferAppLication("ZR0001", 100001, 1000001, 10000001, 2, "testuer1", TransferStatus.SUCCESS);
+        TransferApplicationDetailRequestDto transferApplicationDetailRequestDto = new TransferApplicationDetailRequestDto();
+        transferApplicationDetailRequestDto.setTransferApplicationId(String.valueOf(transferApplicationModel1.getId()));
+        LoanModel loanModel = createLoanByUserId("testuser",10001);
+
+        TransferApplicationDetailDto transferApplicationDetailDto = createTransferApplicationDetailDto(transferApplicationModel1, loanModel);
+        when(transferService.getTransferApplicationDetailDto(anyLong(),anyString(), anyInt())).thenReturn(transferApplicationDetailDto);
+
+        BaseResponseDto<TransferApplicationDetailResponseDataDto> transferApplicationDetailResponseDataDto = mobileAppTransferApplicationService.transferApplicationById(transferApplicationDetailRequestDto);
+
+
+    }
+
     private InvestRepayModel createInvestRepayModel(long investId, int period) {
         InvestRepayModel investRepayModel = new InvestRepayModel();
         investRepayModel.setInvestId(investId);
@@ -414,6 +430,16 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         loanModel.setRecheckTime(new Date());
         loanMapper.create(loanModel);
         return loanModel;
+    }
+
+    private TransferApplicationDetailDto createTransferApplicationDetailDto(TransferApplicationModel transferApplicationModel, LoanModel loanModel){
+        TransferApplicationDetailDto transferApplicationDetailDto = new TransferApplicationDetailDto();
+        transferApplicationDetailDto.setLoginName(transferApplicationModel.getLoginName());
+        transferApplicationDetailDto.setLoanName(loanModel.getName());
+        transferApplicationDetailDto.setBalance("100.00");
+        transferApplicationDetailDto.setBaseRate(13.0);
+        transferApplicationDetailDto.setDeadLine(transferApplicationModel.getDeadline());
+        return transferApplicationDetailDto;
     }
 
 }

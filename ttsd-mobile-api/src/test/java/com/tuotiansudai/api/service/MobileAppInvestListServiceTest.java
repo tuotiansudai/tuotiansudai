@@ -13,6 +13,7 @@ import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RandomUtils;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -43,6 +44,9 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
     @Mock
     private LoanService loanService;
+
+    @Mock
+    private RandomUtils randomUtils;
 
     @Mock
     private LoanMapper loanMapper;
@@ -98,7 +102,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
         when(investMapper.findCountByStatus(anyLong(), any(InvestStatus.class))).thenReturn(3L);
 
-        when(loanService.encryptLoginName(anyString(),anyString(),anyInt(),anyLong())).thenReturn("log***");
+        when(randomUtils.encryptLoginName(anyString(),anyString(),anyInt(),anyLong())).thenReturn("log***");
 
         InvestListRequestDto investListRequestDto = new InvestListRequestDto();
         BaseParam baseParam = new BaseParam();

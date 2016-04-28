@@ -92,4 +92,12 @@ public class MobileAppTransferApplicationControllerTest extends ControllerTestBa
         assertEquals(ReturnMessage.SUCCESS.getCode(), successResponseDto.getCode());
     }
 
+    @Test
+    public void shouldTransferApplicationDetailIsOk() throws Exception{
+        TransferApplicationDetailRequestDto transferApplicationDetailRequestDto = new TransferApplicationDetailRequestDto();
+        when(service.transferApplicationById(any(TransferApplicationDetailRequestDto.class))).thenReturn(successResponseDto);
+        doRequestWithServiceMockedTest("/get/transfer-application", transferApplicationDetailRequestDto);
+        assertEquals(ReturnMessage.SUCCESS.getCode(), successResponseDto.getCode());
+    }
+
 }

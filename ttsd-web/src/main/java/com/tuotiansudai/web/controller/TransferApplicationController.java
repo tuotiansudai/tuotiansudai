@@ -35,7 +35,7 @@ public class TransferApplicationController {
     @RequestMapping(value = "/{transferApplicationId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView getTransferApplicationDetail(@PathVariable long transferApplicationId) {
-        TransferApplicationDetailDto dto = transferService.getTransferApplicationDetailDto(transferApplicationId, LoginUserInfo.getLoginName());
+        TransferApplicationDetailDto dto = transferService.getTransferApplicationDetailDto(transferApplicationId, LoginUserInfo.getLoginName(),6);
         if (dto == null) {
             return new ModelAndView("/error/404");
         }
@@ -50,7 +50,7 @@ public class TransferApplicationController {
     public BaseDataDto IsPurchase(@PathVariable long transferApplicationId, @PathVariable String transferStatus) {
         BaseDataDto baseDataDto = new BaseDataDto();
         if(!transferStatus.equals("SUCCESS")){
-            TransferApplicationDetailDto dto = transferService.getTransferApplicationDetailDto(transferApplicationId, LoginUserInfo.getLoginName());
+            TransferApplicationDetailDto dto = transferService.getTransferApplicationDetailDto(transferApplicationId, LoginUserInfo.getLoginName(),6);
             if (dto.getTransferStatus() == TransferStatus.SUCCESS) {
                 baseDataDto.setStatus(false);
                 baseDataDto.setMessage("SUCCESS");
@@ -67,7 +67,7 @@ public class TransferApplicationController {
     public ModelAndView purchase(@PathVariable long transferApplicationId, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
         ModelAndView modelAndView = new ModelAndView("/error/404", "responsive", true);
         String errorMessage = "投资失败，请联系客服！";
-        TransferApplicationDetailDto dto = transferService.getTransferApplicationDetailDto(transferApplicationId, LoginUserInfo.getLoginName());
+        TransferApplicationDetailDto dto = transferService.getTransferApplicationDetailDto(transferApplicationId, LoginUserInfo.getLoginName(),6);
         AccountModel accountModel = accountMapper.findByLoginName(LoginUserInfo.getLoginName());
         InvestDto investDto = new InvestDto();
         investDto.setLoanId(String.valueOf(dto.getLoanId()));
