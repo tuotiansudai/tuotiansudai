@@ -8,7 +8,7 @@
 	<div class="landing-top">
         <div class="landing-inner">
             <div class="register-box">
-                <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate">
+                <form class="register-user-form" action="" method="post" autocomplete="off" novalidate="novalidate">
                     <ul class="reg-list tl register-step-one">
                         <li >
                             <label for="" class="reg-title">用户名:</label>
@@ -56,7 +56,7 @@
                         <input type="hidden" name="_csrf" value="010e19c3-6b6e-4f43-bbfd-186c3970e9b8">
 
 
-                        <input type="submit" class="register-user" value="立即注册">
+                        <input type="submit" class="register-user" data-url="" value="立即注册">
                     </ul>
 
                 </form>

@@ -115,7 +115,9 @@ form label.error {
 			 display: inline-block;
 			 width:90%;
 			 .fetch-captcha {
-			   padding: 7px 18px;
+			   width:100px;
+			   height:32px;
+			   padding-left:18px;
 			   letter-spacing: 0;
 			   position: absolute;
 			   right: 0;

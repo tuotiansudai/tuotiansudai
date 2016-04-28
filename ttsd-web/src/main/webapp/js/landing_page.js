@@ -5,6 +5,10 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
             $fetchCaptcha=$('.fetch-captcha'),
             $changecode=$('.img-change'),
             $registerBtn=$(".registered"),
+            $loginName = $('#login-name'),
+            $password = $('#password'),
+            $registerUser = $('#register-user'),
+            $appCaptcha = $('#appCaptcha'),
             countdown=60;
 
         //form validate
@@ -81,8 +85,47 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
                 agreement: {
                     required: "请同意服务协议"
                 }
+            },
+            submitHandler:function(form){
+                //$(form).ajaxSubmit();
+                var captchaVal=$('#captcha').val(),
+                    mobile=$phoneDom.val(),
+                    password = $password.val(),
+                    loginName = $loginName.val(),
+                    appCaptcha = $appCaptcha.val(),
+                    agreement=$('#agreementInput').val();
+
+                $.ajax({
+                    url: '/register/user',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        imageCaptcha: captchaVal,
+                        mobile:mobile,
+                        loginName:loginName,
+                        password : password,
+                        captcha : appCaptcha,
+                        agreement:agreement
+                    },
+                })
+                    .done(function() {
+
+                        window.location.href = $(this).data("url");
+
+                    })
+                    .fail(function() {
+                        //console.log("error");
+                    });
+
+                return false;
             }
+
         });
+
+        //$registerUser.on('click' ,function(event){
+        //    event.preventDefault();
+        //
+        //});
 
         //phone focusout
         $phoneDom.on('focusout', function(event) {
@@ -112,18 +155,21 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
         
         $fetchCaptcha.on('click', function(event) {
             event.preventDefault();
-            // $.ajax({
-            //     url: '/path/to/file',
-            //     type: 'POST',
-            //     dataType: 'json',
-            //     data: {param1: 'value1'},
-            // })
-            // .done(function() {
+
+            var captchaVal=$('#captcha').val(),
+                mobile=$phoneDom.val();
+             $.ajax({
+                 url: '/register/user/send-register-captcha',
+                 type: 'POST',
+                 dataType: 'json',
+                 data: {imageCaptcha: captchaVal,mobile:mobile},
+             })
+             .done(function() {
                 timer=window.setInterval(getCode, 1000);
-            // })
-            // .fail(function() {
-            //     console.log("error");
-            // });
+             })
+             .fail(function() {
+                 //console.log("error");
+             });
             
         });
         //timer 
@@ -133,7 +179,7 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
                 $fetchCaptcha.prop('disabled',false).text('获取验证码');    
                 countdown = 60; 
             } else { 
-                $fetchCaptcha.prop('disabled', true).text(countdown+'s'); 
+                $fetchCaptcha.prop('disabled', true).text(countdown+'秒后重发');
                 countdown--; 
             } 
         }
