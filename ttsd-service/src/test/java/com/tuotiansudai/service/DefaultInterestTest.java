@@ -105,6 +105,7 @@ public class DefaultInterestTest {
         model.setSource(Source.ANDROID);
         model.setStatus(InvestStatus.SUCCESS);
         model.setCreatedTime(investTime);
+        model.setTransferStatus(TransferStatus.TRANSFERABLE);
         return model;
     }
 
