@@ -196,7 +196,7 @@ public class TransferServiceTest {
         createInvests("testuser", loanId, investId);
         createInvestRepay(investId);
         TransferApplicationModel transferApplicationModel = createTransferApplicationModel(loanId, investId, TransferStatus.TRANSFERRING);
-        TransferApplicationDetailDto  transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(transferApplicationModel.getId(), "testuser");
+        TransferApplicationDetailDto  transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(transferApplicationModel.getId(), "testuser",6);
 
         assertThat(transferApplicationDetailDto.getDueDate(), is(strToDate("2016-06-29 23:59:59")));
         assertThat(transferApplicationDetailDto.getNextRefundDate(), is(strToDate("2016-03-29 23:59:59")));

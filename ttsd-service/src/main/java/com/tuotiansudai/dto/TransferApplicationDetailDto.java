@@ -25,6 +25,10 @@ public class TransferApplicationDetailDto extends BaseDataDto {
 
     private double baseRate;
 
+    private double activityRate;
+
+    private ProductType productType;
+
     private int leftPeriod;
 
     private Date dueDate;
@@ -40,6 +44,8 @@ public class TransferApplicationDetailDto extends BaseDataDto {
     private String expecedInterest;
 
     private String balance;
+
+    private String loginName;
 
     private TransferStatus transferStatus;
 
@@ -120,6 +126,14 @@ public class TransferApplicationDetailDto extends BaseDataDto {
         this.baseRate = baseRate;
     }
 
+    public double getActivityRate() { return activityRate; }
+
+    public void setActivityRate(double activityRate) { this.activityRate = activityRate; }
+
+    public ProductType getProductType() { return productType; }
+
+    public void setProductType(ProductType productType) { this.productType = productType; }
+
     public int getLeftPeriod() {
         return leftPeriod;
     }
@@ -183,6 +197,10 @@ public class TransferApplicationDetailDto extends BaseDataDto {
     public void setBalance(String balance) {
         this.balance = balance;
     }
+
+    public String getLoginName() { return loginName; }
+
+    public void setLoginName(String loginName) { this.loginName = loginName; }
 
     public TransferStatus getTransferStatus() {
         return transferStatus;
