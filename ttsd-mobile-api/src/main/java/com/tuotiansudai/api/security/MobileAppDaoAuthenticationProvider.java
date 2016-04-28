@@ -50,12 +50,15 @@ public class MobileAppDaoAuthenticationProvider extends DaoAuthenticationProvide
         if (enableCaptchaVerify) {
             String captcha = httpServletRequest.getParameter("captcha");
             String deviceId = httpServletRequest.getParameter("j_deviceId");
-            boolean result = this.captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, captcha,deviceId);
+            if(StringUtils.isNotEmpty(captcha)){
+                boolean result = this.captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, captcha, deviceId);
 
-            if (!result) {
-                logger.debug("Authentication failed: captcha does not match actual value");
-                throw new CaptchaNotMatchException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.captchaNotMatch", "Captcha Not Match"));
+                if (!result) {
+                    logger.debug("Authentication failed: captcha does not match actual value");
+                    throw new CaptchaNotMatchException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.captchaNotMatch", "Captcha Not Match"));
+                }
             }
+
         }
         return super.authenticate(authentication);
     }
