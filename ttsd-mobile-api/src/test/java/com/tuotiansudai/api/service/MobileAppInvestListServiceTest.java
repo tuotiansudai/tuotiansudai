@@ -6,6 +6,7 @@ import com.tuotiansudai.api.service.impl.MobileAppInvestListServiceImpl;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
@@ -53,6 +54,9 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
     @Mock
     private InvestRepayMapper investRepayMapper;
+
+    @Mock
+    private LoanRepayMapper loanRepayMapper;
 
     @Mock
     private InvestTransferService investTransferService;
@@ -162,6 +166,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(Lists.<InvestRepayModel>newArrayList());
         when(investService.estimateInvestIncome(anyLong(), anyLong())).thenReturn(INTEREST);
         when(investTransferService.isTransferable(anyLong())).thenReturn(true);
+        when(loanRepayMapper.findEnabledLoanRepayByLoanId(anyLong())).thenReturn(null);
 
         UserInvestListRequestDto requestDto = new UserInvestListRequestDto();
         requestDto.setBaseParam(BaseParamTest.getInstance());
