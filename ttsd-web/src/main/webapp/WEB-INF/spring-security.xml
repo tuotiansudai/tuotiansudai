@@ -78,9 +78,12 @@
         <intercept-url pattern="/user-bill/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/point/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/personal-info/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/auto-invest/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/referrer/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/my-treasure/**" access="hasAnyAuthority('USER', 'INVESTOR', 'LOANER')"/>
 
         <intercept-url pattern="/register/account/**" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER')"/>
-        <intercept-url pattern="/monitor/**" access="permitAll()"/>
+
         <intercept-url pattern="/mobile-retrieve-password/**" access="isAnonymous()"/>
 
         <intercept-url pattern="/loaner/**" access="hasAnyAuthority('LOANER')"/>
@@ -95,8 +98,8 @@
         <intercept-url pattern="/bind-email/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
         <intercept-url pattern="/loan/**" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER')"/>
-        <intercept-url pattern="/referrer/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
-        <intercept-url pattern="/my-treasure/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+
+
 
         <intercept-url pattern="/checkLogin" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/no-password-invest/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>

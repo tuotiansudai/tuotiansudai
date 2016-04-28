@@ -4,89 +4,94 @@
     <h4 class="column-title"><em class="tc">个人资料</em></h4>
 
      <ul class="info-list" id="personInfoBox">
-                <li><span class="info-title"> 用户名</span>
-                    <em class="info">${loginName}</em>
-                </li>
-                <li><span class="info-title"> 姓名</span>
-                    <#if userName??>
-                        <em class="info">${userName}</em>
-                        <span class="binding-set"><i class="fa fa-check-circle ok"></i>已认证</span>
-                    <#else>
-                        <em class="info"></em>
-                        <span class="binding-set">
-                       <i class="fa fa-times-circle no"></i> 未实名 <a class="setlink setEmail" href="/register/account">实名认证</a>
-                    </span>
-                    </#if>
-                </li>
-                <#--<li><span class="info-title"> 身份认证</span>-->
-                    <#--<em class="info">${identityNumber?replace("^\\d{3}(\\d{3}).*$","***$1************","r")}</em>-->
-                    <#--<span class="binding-set">-->
-                       <#--<i class="fa fa-check-circle ok"></i> 已认证-->
-                    <#--</span>-->
-                <#--</li>-->
-                <#--<li><span class="info-title"> 手机</span>-->
-                    <#--<em class="info">${mobile?replace("^(\\d{3}).*(\\d{4})$","$1****$2","r")}</em>-->
-                    <#--<span class="binding-set">-->
-                       <#--<i class="fa fa-check-circle ok"></i> 已绑定-->
-                    <#--</span>-->
-                <#--</li>-->
-                <li><span class="info-title"> 邮箱</span>
-                    <#if email?? && email != "">
-                        <em class="info">${email}</em>
-                    <span class="binding-set">
-                        <i class="fa fa-check-circle ok"></i> 已绑定 <a class="setlink setEmail" href="javascript:">修改</a>
-                    </span>
-                    <#else>
-                        <em class="info">绑定邮箱后，您可及时了解交易情况及拓天速贷的最新动态</em>
-                    <span class="binding-set">
-                       <i class="fa fa-times-circle no"></i> 未绑定 <a class="setlink setEmail" href="javascript:">绑定</a>
-                    </span>
-                    </#if>
-                </li>
-                <li><span class="info-title"> 绑定银行卡</span>
-                    <#if bankCard??>
-                        <em class="info">${bankCard?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}</em>
-                    <span class="binding-set">
-                        <i class="fa fa-check-circle ok"></i> 已绑定 <a class="setlink setBankCard" href="${requestContext.getContextPath()}/bind-card">修改</a>
-                    </span>
-                    <#else>
-                        <em class="info">绑定银行卡后，您可以进行快捷支付和提现操作</em>
-                    <span class="binding-set">
-                        <i class="fa fa-times-circle no"></i> 未绑定 <a class="setlink setBankCard" href="${requestContext.getContextPath()}/bind-card">绑定</a>
-                    </span>
-                    </#if>
-                </li>
-                <li><span class="info-title"> 登录密码</span>
-                    <em class="info">********</em>
-                    <span class="binding-set">
-                       <i class="fa fa-check-circle ok"></i> 已设置 <a class="setlink setPass" href="javascript:void(0);">修改</a>
-                    </span>
-                </li>
-                <li><span class="info-title"> 支付密码</span>
-                    <em class="info">********</em>
-                    <span class="binding-set">
-                       <i class="fa fa-check-circle ok"></i> 已设置 <a class="setlink setUmpayPass" href="javascript:void(0);">重置</a>
-                    </span>
-                </li>
-                <#--<li><span class="info-title"> 免密投资</span>-->
-                    <#--<#if noPasswordInvest>-->
-                        <#--<em class="info">您已开启免密投资，投资理财快人一步</em>-->
-                        <#--<span class="binding-set">-->
-                            <#--<i class="fa fa-check-circle ok"></i> 已开启  <a class="setlink setTurnOffNoPasswordInvest" href="javascript:void(0);">关闭</a>-->
-                        <#--</span>-->
-                    <#--<#elseif autoInvest>-->
-                        <#--<em class="info">您已授权自动投标，可直接开启免密投资，及时选择心仪标的，理财快人一步</em>-->
-                        <#--<span class="binding-set">-->
-                            <#--<i class="fa fa-times-circle no"></i> 未开启  <a class="setlink setNoPasswordInvest" data-url="/no-password-invest/enabled" href="javascript:void(0);">开启</a>-->
-                        <#--</span>-->
-                    <#--<#else>-->
-                        <#--<em class="info">开启免密投资后，您可及时选择心仪标的，理财快人一步</em>-->
-                        <#--<span class="binding-set">-->
-                            <#--<i class="fa fa-times-circle no"></i> 未开启  <a class="setlink setTurnOnNoPasswordInvest" href="javascript:void(0);">开启</a>-->
-                        <#--</span>-->
-                    <#--</#if>-->
-                <#--</li>-->
-            </ul>
+        <li><span class="info-title"> 用户名</span>
+            <em class="info">${loginName}</em>
+        </li>
+        <li><span class="info-title"> 姓名</span>
+            <#if userName??>
+                <em class="info">${userName}</em>
+                <span class="binding-set"><i class="fa fa-check-circle ok"></i>已认证</span>
+            <#else>
+                <em class="info"></em>
+                <span class="binding-set">
+                    <i class="fa fa-times-circle no"></i>未实名<a class="setlink setEmail" href="/register/account">实名认证</a>
+                </span>
+            </#if>
+        </li>
+        <li><span class="info-title"> 身份认证</span>
+            <#if identityNumber??>
+                <em class="info">${identityNumber?replace("^\\d{3}(\\d{3}).*$","***$1************","r")}</em>
+                <span class="binding-set"><i class="fa fa-check-circle ok"></i>已认证</span>
+            <#else>
+                <em class="info"></em>
+                <span class="binding-set">
+                    <i class="fa fa-times-circle no"></i>未实名<a class="setlink setEmail" href="/register/account">实名认证</a>
+                </span>
+            </#if>
+        </li>
+        <li><span class="info-title"> 手机</span>
+            <em class="info">${mobile?replace("^(\\d{3}).*(\\d{4})$","$1****$2","r")}</em>
+            <span class="binding-set"><i class="fa fa-check-circle ok"></i>已绑定</span>
+        </li>
+        <li><span class="info-title"> 邮箱</span>
+            <#if email?? && email != "">
+                <em class="info">${email}</em>
+                <span class="binding-set">
+                    <i class="fa fa-check-circle ok"></i>已绑定<a class="setlink setEmail" href="javascript:">修改</a>
+                </span>
+            <#else>
+                <em class="info">绑定邮箱后，您可及时了解交易情况及拓天速贷的最新动态</em>
+                <span class="binding-set">
+                    <i class="fa fa-times-circle no"></i>未绑定<a class="setlink setEmail" href="javascript:">绑定</a>
+                </span>
+            </#if>
+        </li>
+        <li><span class="info-title"> 绑定银行卡</span>
+            <#if bankCard??>
+                <em class="info">${bankCard?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}</em>
+                <span class="binding-set">
+                    <i class="fa fa-check-circle ok"></i>已绑定<a class="setlink setBankCard" href="${requestContext.getContextPath()}/bind-card">修改</a>
+                </span>
+            <#else>
+                <em class="info">绑定银行卡后，您可以进行快捷支付和提现操作</em>
+                <span class="binding-set">
+                    <i class="fa fa-times-circle no"></i>未绑定<a class="setlink setBankCard" href="${requestContext.getContextPath()}/bind-card">绑定</a>
+                </span>
+            </#if>
+        </li>
+        <li><span class="info-title"> 登录密码</span>
+            <em class="info">********</em>
+            <span class="binding-set">
+               <i class="fa fa-check-circle ok"></i>已设置<a class="setlink setPass" href="javascript:void(0);">修改</a>
+            </span>
+        </li>
+        <#if identityNumber??>
+        <li><span class="info-title"> 支付密码</span>
+            <em class="info">********</em>
+            <span class="binding-set">
+               <i class="fa fa-check-circle ok"></i>已设置<a class="setlink setUmpayPass" href="javascript:void(0);">重置</a>
+            </span>
+        </li>
+        <li><span class="info-title"> 免密投资</span>
+            <#if noPasswordInvest>
+                <em class="info">您已开启免密投资，投资理财快人一步</em>
+                <span class="binding-set">
+                    <i class="fa fa-check-circle ok"></i>已开启<a class="setlink setTurnOffNoPasswordInvest" href="javascript:void(0);">关闭</a>
+                </span>
+            <#elseif autoInvest>
+                <em class="info">您已授权自动投标，可直接开启免密投资，及时选择心仪标的，理财快人一步</em>
+                <span class="binding-set">
+                    <i class="fa fa-times-circle no"></i>未开启<a class="setlink setNoPasswordInvest" data-url="/no-password-invest/enabled" href="javascript:void(0);">开启</a>
+                </span>
+            <#else>
+                <em class="info">开启免密投资后，您可及时选择心仪标的，理财快人一步</em>
+                <span class="binding-set">
+                    <i class="fa fa-times-circle no"></i>未开启<a class="setlink setTurnOnNoPasswordInvest" href="javascript:void(0);">开启</a>
+                </span>
+            </#if>
+        </li>
+        </#if>
+    </ul>
 </div>
 
 <div id="resetUmpayPassDOM" class="pad-m popLayer" style="display: none;">

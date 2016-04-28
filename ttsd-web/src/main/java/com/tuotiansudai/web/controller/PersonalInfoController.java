@@ -36,24 +36,25 @@ public class PersonalInfoController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView personalInfo() {
-        String loginName = LoginUserInfo.getLoginName();
-        String mobile = LoginUserInfo.getMobile();
-
-        UserModel userModel = userMapper.findByLoginName(loginName);
-        AccountModel accountModel = accountService.findByLoginName(loginName);
-        BankCardModel bankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
-
         ModelAndView mv = new ModelAndView("/personal-info");
-        mv.addObject("loginName", loginName);
-        mv.addObject("userName", accountModel.getUserName());
-        mv.addObject("identityNumber", accountModel.getIdentityNumber());
-        mv.addObject("mobile", mobile);
+        UserModel userModel = userMapper.findByLoginName(LoginUserInfo.getLoginName());
+
+        mv.addObject("loginName", userModel.getLoginName());
+        mv.addObject("mobile", userModel.getMobile());
         mv.addObject("email", userModel.getEmail());
-        if (bankCard != null) {
-            mv.addObject("bankCard", bankCard.getCardNumber());
+
+        AccountModel accountModel = accountService.findByLoginName(userModel.getLoginName());
+        if (accountModel != null) {
+            mv.addObject("userName", accountModel.getUserName());
+            mv.addObject("identityNumber", accountModel.getIdentityNumber());
+            mv.addObject("noPasswordInvest",accountModel.isNoPasswordInvest());
+            mv.addObject("autoInvest",accountModel.isAutoInvest());
+            BankCardModel bankCard = bindBankCardService.getPassedBankCard(userModel.getLoginName());
+            if (bankCard != null) {
+                mv.addObject("bankCard", bankCard.getCardNumber());
+            }
         }
-        mv.addObject("noPasswordInvest",accountModel.isNoPasswordInvest());
-        mv.addObject("autoInvest",accountModel.isAutoInvest());
+
         return mv;
     }
 

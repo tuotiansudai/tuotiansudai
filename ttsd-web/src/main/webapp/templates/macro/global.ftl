@@ -30,7 +30,7 @@
     {"title":"资金管理", "url":"/user-bill", "role":"'USER', 'INVESTOR', 'LOANER'"},
     {"title":"我的财豆", "url":"/point", "role":"'USER', 'INVESTOR', 'LOANER'"},
     {"title":"个人资料", "url":"/personal-info", "role":"'USER', 'INVESTOR', 'LOANER'"},
-    {"title":"自动投标", "url":"/investor/auto-invest", "role":"'USER', 'INVESTOR'"},
+    {"title":"自动投标", "url":"/auto-invest", "role":"'USER', 'INVESTOR'"},
     {"title":"推荐管理", "url":"/referrer/refer-list", "role":"'USER', 'INVESTOR', 'LOANER'"},
     {"title":"我的宝藏", "url":"/my-treasure", "role":"'USER', 'INVESTOR', 'LOANER'"}
     ]},
