@@ -11,6 +11,10 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         imageCaptchaSubmitElement = $('.image-captcha-confirm', $imgCaptchaDialog);
 
 
+    $(".registered").on('click', function(event) {
+        event.preventDefault();
+        $('body,html').animate({scrollTop:0},'fast');
+    });
 
     $('input.login-name,input.mobile',registerUserForm).on('focusout',function(option) {
         fetchCaptchaElement.removeClass('btn-normal').addClass('btn').prop('disabled', true);
@@ -125,7 +129,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
     registerUserForm.validate({
         focusInvalid: false,
         errorPlacement: function(error, element) {
-            error.appendTo($('.error-box'));
+            error.appendTo($('#'+ element.attr('id') + 'Err'));
         },
         rules: {
             loginName: {
@@ -143,6 +147,10 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
             password: {
                 required: true,
                 regex: /^(?=.*[^\d])(.{6,20})$/
+            },
+            captcha: {
+                required: true,
+
             },
             appCaptcha: {
                 required: true,

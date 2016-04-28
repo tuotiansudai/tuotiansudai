@@ -11,32 +11,37 @@
                     <ul class="reg-list tl register-step-one">
                         <li >
                             <label for="" class="reg-title">用户名:</label>
-                            <input type="text" class="login-name long" name="loginName" placeholder="用户名" maxlength="25" value="">
+                            <input type="text" id="login-name" class="login-name long" name="loginName" placeholder="用户名" maxlength="25" value="">
                         </li>
+                        <li id="login-nameErr" class="height"></li>
                         <li>
                             <label for="" class="reg-title">密码:</label>
-                            <input type="password" name="password" placeholder="密码" maxlength="20" class="password long" value="">
+                            <input type="password" id="password" name="password" placeholder="密码" maxlength="20" class="password long" value="">
                         </li>
+                        <li id="passwordErr" class="height"></li>
                         <li>
                             <label for="" class="reg-title">手机号:</label>
-                            <input type="text" name="mobile" class="mobile long" placeholder="手机号" maxlength="11" value="">
+                            <input type="text" id="mobile" name="mobile" class="mobile long" placeholder="手机号" maxlength="11" value="">
                         </li>
+                        <li id="mobileErr" class="height"></li>
                         <li class="code">
                             <label for="" class="reg-title">验证码:</label>
-                            <input type="text" name="captcha" placeholder="验证码" maxlength="25" class="captcha" value="">
+                            <input type="text" id="captcha" name="captcha" placeholder="验证码" maxlength="25" class="captcha" value="">
                             <em class="image-captcha">
                                 <img src="/login/captcha" alt=""/>
                             </em>
                             <span class="img-change">换一张</span>
                         </li>
+                        <li id="captchaErr" class="height"></li>
                         <li>
-                            <label for="" class="reg-title">手机验证码:</label>
-                    <span class="captcha-tag">
-                        <input type="text" name="appCaptcha" class="captcha" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6" value="">
-                        <button type="button" class="fetch-captcha btn" disabled="disabled">获取验证码</button>
-                    </span>
+                            <label for="appCaptcha" class="reg-title">手机验证码:</label>
+                            <span class="captcha-tag">
+                                <input type="text" id="appCaptcha" name="appCaptcha" class="appCaptcha" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6" value="">
+                                <button type="button" class="fetch-captcha btn" disabled="disabled">获取验证码</button>
+                            </span>
 
                         </li>
+                        <li id="appCaptchaErr" class="height"></li>
 
 
                         <li class="agree-last">
@@ -45,7 +50,8 @@
                             <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
 
                         </li>
-                        <li class="error-box"></li>
+                        <li id="agreementInputErr" class="height"></li>
+
                         <input type="hidden" name="_csrf" value="010e19c3-6b6e-4f43-bbfd-186c3970e9b8">
 
 
@@ -65,31 +71,25 @@
     	<div class="content-wp">
     		<ul>
     			<li>
-					 <a href="/about/assurance?aid=1" onclick="cnzzPush.trackClick('28首页','安全保障模块','1')" target="_blank">
-						<div class="icon-one"></div>
+                    <div class="icon-one"></div>
 						 <span class="one-text">
 							 <b class="clearfix">稳健收益</b>
 							预期年化收益可达13%
 						</span>
-					</a>
     			</li>
     			<li>
-                    <a href="/about/assurance?aid=2" onclick="cnzzPush.trackClick('29首页','安全保障模块','2')" target="_blank">
-                        <div class="icon-two"></div>
+                    <div class="icon-two"></div>
 						<span class="clearfix">
 							<b class="clearfix">抵押模式</b>
 							公认的安全抵押债权
 						</span>
-                    </a>
 				</li>
     			<li>
-    				<a href="/about/assurance?aid=3" onclick="cnzzPush.trackClick('30首页','安全保障模块','3')" target="_blank">
                     <div class="icon-three"></div>
                     <span class="clearfix">
                         <b class="clearfix">资金透明</b>
                         第三方资金托管
                     </span>
-                </a>
     			</li>
     		</ul>
     	</div>
@@ -99,87 +99,11 @@
             为您精选投资产品
         </div>
 		<div class="product-wp">
-			<div class="product-box-list fl">
-                <div class="product-box-inner">
-
-                        <div class="product-box tc product-type active-after">
-                            <i class="img-syl"></i>
-                            <div class="pad-m" title="新手专享" data-url="/loan/31020002818144" onclick="cnzzPush.trackClick('36首页','热门产品模块','速盈利')">
-                                <h2 class="pr-title">新手专享</h2>
-                                <div class="pr-square tc">
-                                    <div class="pr-square-in">
-                                        <em><b>10</b>
-                                            +1
-                                                %</em>
-                                        <i>预期年化收益</i>
-                                    </div>
-                                </div>
-                                <dl class="pr-info">
-                                    <dd>投资期限30天</dd>
-
-                                </dl>
-
-                            </div>
-                                <div class="time-item preheat" data-time="-342358">
-                                        <i class="time-clock"></i><strong class="minute_show">00分</strong><em>:</em><strong class="second_show">00秒</strong>以后可投资
-                                </div>
-
-                                <a href="/loan/31020002818144" class="btn-normal now">立即查看</a>
-                                <a href="/loan/31020002818144" class="btn-normal wait-invest will">预热中</a>
-                        </div>
-
-                        <div class="product-box tc product-type active-after">
-                            <i class="img-wyx"></i>
-                            <div class="pad-m" title="稳健灵活" data-url="/loan/32448033321072" onclick="cnzzPush.trackClick('37首页','热门产品模块','稳盈秀')">
-                                <h2 class="pr-title">稳健灵活</h2>
-                                <div class="pr-square tc">
-                                    <div class="pr-square-in">
-                                        <em><b>12</b>
-                                            %</em>
-                                        <i>预期年化收益</i>
-                                    </div>
-                                </div>
-                                <dl class="pr-info">
-                                    <dd>投资期限90天</dd>
-
-                                </dl>
-
-                            </div>
-                                <div class="time-item preheat" data-time="-338758">
-                                        <i class="time-clock"></i><strong class="minute_show">00分</strong><em>:</em><strong class="second_show">00秒</strong>以后可投资
-                                </div>
-
-                                <a href="/loan/32448033321072" class="btn-normal now">立即查看</a>
-                                <a href="/loan/32448033321072" class="btn-normal wait-invest will">预热中</a>
-                        </div>
-
-                        <div class="product-box tc product-type active-after">
-                            <i class="img-jyf"></i>
-                            <div class="pad-m" title="财富法宝" data-url="/loan/31903021266032" onclick="cnzzPush.trackClick('38首页','热门产品模块','久赢富')">
-                                <h2 class="pr-title">财富法宝</h2>
-                                <div class="pr-square tc">
-                                    <div class="pr-square-in">
-                                        <em><b>13</b>
-                                            +20
-                                                %</em>
-                                        <i>预期年化收益</i>
-                                    </div>
-                                </div>
-                                <dl class="pr-info">
-                                    <dd>投资期限180天</dd>
-
-                                </dl>
-
-                            </div>
-                                <div class="time-item preheat" data-time="-338158">
-                                        <i class="time-clock"></i><strong class="minute_show">00分</strong><em>:</em><strong class="second_show">00秒</strong>以后可投资
-                                </div>
-
-                                <a href="/loan/31903021266032" class="btn-normal now">立即查看</a>
-                                <a href="/loan/31903021266032" class="btn-normal wait-invest will">预热中</a>
-                        </div>
-                </div>
-            </div>
+            <ul>
+                <li><img src="${staticServer}/images/sign/actor/landingpage/product-one.png" ></li>
+                <li><img src="${staticServer}/images/sign/actor/landingpage/product-two.png" ></li>
+                <li><img src="${staticServer}/images/sign/actor/landingpage/product-three.png" ></li>
+            </ul>
 		</div>
 	</div>
 	<div class="content-three">
@@ -235,23 +159,32 @@
         </div>
 		<div class="content-wp">
 			<div class="left">
-				<a href="">
+				<a href="http://www.iqiyi.com/w_19rt7ygfmh.html" target="_blank">
 					
 				</a>
 			</div>
 			<div class="right">
 				<ul>
-					<li><img src="${staticServer}/images/sign/actor/landingpage/media-one.png" ></li>
-					<li><img src="${staticServer}/images/sign/actor/landingpage/media-two.png" ></li>
-					<li><img src="${staticServer}/images/sign/actor/landingpage/media-three.png" ></li>					
+                    <a href="http://economy.gmw.cn/2016-03/31/content_19527114.htm" target="_blank">
+                        <li><img src="${staticServer}/images/sign/actor/landingpage/media-one.png" ></li>
+                    </a>
+                    <a href="http://news.ifeng.com/a/20151028/46027672_0.shtml" target="_blank">
+                        <li><img src="${staticServer}/images/sign/actor/landingpage/media-two.png" ></li>
+                    </a>
+                    <a href="http://money.china.com/fin/lc/201601/20/2443757.html?qq-pf-to=pcqq.c2c" target="_blank">
+                        <li><img src="${staticServer}/images/sign/actor/landingpage/media-three.png" ></li>
+                    </a>
 				</ul>
 				<div class="title"><span>今日头条</span>拓天速贷以卓越风控打造高效资产平台</div>
 				<p>
-					随着拓天速贷终端产品的不断改进和完善，用户将得到更好的服务体验，在未来持续性优化改进的基础上，拓天速贷将重点把风控体系打造的更加系统性、完善化，使其超越百分之百的为用户做到本金及收益无风险化保障，最终使拓天速贷风控体系成为行业中的典范和标杆，引领行业持续健康的发展... ...<a href="">查看更多</a>
+					随着拓天速贷终端产品的不断改进和完善，用户将得到更好的服务体验，
+                    在未来持续性优化改进的基础上，拓天速贷将重点把风控体系打造的更加系统性、完善化，
+                    使其超越百分之百的为用户做到本金及收益无风险化保障，最终使拓天速贷风控体系成为行业中的典范和标杆，
+                    引领行业持续健康的发展... ...<a href="http://toutiao.com/i6233268186905575938/" target="_blank">查看更多</a>
 				</p>
 			</div>
 		</div>
-		<div class="registered"><a href="/register/user">立即注册</a></div>
+		<div class="registered"><span>立即注册</span></div>
 	</div>
 
 
