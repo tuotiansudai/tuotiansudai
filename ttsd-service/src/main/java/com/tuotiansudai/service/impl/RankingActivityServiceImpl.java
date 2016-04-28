@@ -179,7 +179,7 @@ public class RankingActivityServiceImpl implements RankingActivityService {
     private void sendInterestCoupon5(String loginName) {
         List<UserGroup> userGroups = new ArrayList<>();
         userGroups.add(UserGroup.WINNER);
-        couponActivationService.assignUserCoupon(loginName, userGroups, 300L);
+        couponActivationService.assignUserCoupon(loginName, userGroups, 300L, null);
     }
 
     // reutrn null if not exists

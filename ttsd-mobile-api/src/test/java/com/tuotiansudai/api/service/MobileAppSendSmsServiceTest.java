@@ -1,9 +1,6 @@
 package com.tuotiansudai.api.service;
 
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.ReturnMessage;
-import com.tuotiansudai.api.dto.SendSmsCompositeRequestDto;
-import com.tuotiansudai.api.dto.SendSmsRequestDto;
+import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.impl.MobileAppSendSmsServiceImpl;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
@@ -16,6 +13,7 @@ import org.mockito.Mock;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 public class MobileAppSendSmsServiceTest extends ServiceTestBase{
@@ -104,6 +102,17 @@ public class MobileAppSendSmsServiceTest extends ServiceTestBase{
         BaseResponseDto baseResponseDto = mobileAppSendSmsService.sendSms(sendSmsRequestDto, ip);
 
         assertEquals(ReturnMessage.SUCCESS.getCode(),baseResponseDto.getCode());
+    }
+
+    @Test
+    public void shouldValidateCaptchaIsSuccess() {
+        VerifyCaptchaRequestDto requestDto = new VerifyCaptchaRequestDto();
+        requestDto.setPhoneNum("13800138000");
+        requestDto.setCaptcha("123456");
+        requestDto.setType(CaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
+        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), eq(CaptchaType.RETRIEVE_PASSWORD_CAPTCHA))).thenReturn(true);
+        BaseResponseDto responseDto = mobileAppSendSmsService.validateCaptcha(requestDto);
+        assert responseDto.isSuccess();
     }
 
 
