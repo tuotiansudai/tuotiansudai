@@ -85,6 +85,8 @@
         <td>
             <#if coupon.userGroup == 'IMPORT_USER'>
                 <a href="javascript:void(0)" data-url="/activity-manage/coupon/${coupon.id?string('0')}/redis" class="detail-redis <#if coupon.importIsRight??&&coupon.importIsRight>text-blue<#else>text-red</#if>">查看详情</a>
+            <#elseif coupon.userGroup == "EXCHANGER_CODE">
+                <a href="/activity-manage/coupon/${coupon.id?c}/exchange-code" class="btn-link">${coupon.userGroup.getDescription()}</a>
             <#else>
                 ${coupon.userGroup.getDescription()}
             </#if>

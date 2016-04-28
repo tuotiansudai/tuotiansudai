@@ -2,7 +2,9 @@
 <@global.main pageCss="${css.landing_page}" pageJavascript="${js.landing_page}" activeNav="" activeLeftNav="" title="拓天速贷手机客户端_理财客户端_拓天速贷" keywords="拓天速贷,APP理财,移动客户端,网络理财,P2P理财,拓天速贷APP" description="拓天速贷手机客户端为理财,投资,贷款等投融资用户提供安全、专业、便捷的互联网金融理财服务。">
 
 <div class="landing-container">
-
+    <div class="landing-header">
+        <a href="">访问主页</a>
+    </div>
 	<div class="landing-top">
         <div class="landing-inner">
             <div class="register-box">
@@ -140,7 +142,7 @@
 		    </tr>
 		    <tr>
 		      <td>奖励机制</td>
-		      <td></td>
+		      <td class="slash"></td>
 		      <td>奖励预期年货<span>收益<span class="big">1%</span></span></td>
 		      <td>奖励预期年化<span>收益<span class="big">1%</span></span></td>
 		    </tr>

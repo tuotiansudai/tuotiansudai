@@ -76,7 +76,7 @@ public class CouponServiceTest {
         exchangeCouponDto.setEndTime(dateTime.toDate());
         couponService.createCoupon("couponTest", exchangeCouponDto);
 
-        couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.ALL_USER), exchangeCouponDto.getId());
+        couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.ALL_USER), exchangeCouponDto.getId(), null);
 
         CouponModel couponModel = couponMapper.findById(exchangeCouponDto.getId());
         assertThat(couponModel.getIssuedCount(), is(1L));
@@ -96,7 +96,7 @@ public class CouponServiceTest {
         exchangeCouponDto.setEndTime(dateTime.toDate());
         couponService.createCoupon("couponTest", exchangeCouponDto);
 
-        couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.WINNER), exchangeCouponDto.getId());
+        couponActivationService.assignUserCoupon("couponTest", Lists.newArrayList(UserGroup.WINNER), exchangeCouponDto.getId(), null);
 
         CouponModel couponModel = couponMapper.findById(exchangeCouponDto.getId());
         assertThat(couponModel.getIssuedCount(), is(0L));
