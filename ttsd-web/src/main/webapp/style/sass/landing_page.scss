@@ -16,7 +16,14 @@ form label.error:before {
 }
 .footer-container {
   margin-top: 0;
+  .footer{
+	display:none;
+  }
+  .link-list{
+	display:none;
+  }
 }
+
 
 .full-screen {
 	width: 100% !important;
@@ -31,6 +38,25 @@ form label.error {
 
 .landing-container {
 	min-height: 500px;
+  .landing-header{
+	width:1200px;
+	height:90px;
+	text-align:center;
+	margin:0 auto;
+	background: url("/images/icons/logo-new.png") left center no-repeat;
+	a{
+	  display:inline-block;
+	  float:right;
+	  font-size:16px;
+	  color:#fff;
+	  border-radius:20px;
+	  width:160px;
+	  height:40px;
+	  line-height:40px;
+	  margin-top:25px;
+	  background-color:#f1a03f;
+	}
+  }
    .landing-top{
 	 position: relative;
 	 height:500px;
@@ -45,17 +71,16 @@ form label.error {
 	 .register-box {
 	   position:absolute;
 	   right:0;
-	   background-color:#fff;
-	   opacity: 0.9;
+	   background: rgba(255,255,255,0.8);
 	   border-radius:5px;
-	   top:0;
+	   top:18px;
 	   height: auto;
 	   overflow: auto;
 	   margin-top:13px;
 	   .register-user-form{
 		 width:320px;
-		 height:450px;
-		 padding:5px 0 0 32px;
+		 height:420px;
+		 padding:20px 0 0 32px;
 
 	   }
 	   .register-step-one {
@@ -93,7 +118,7 @@ form label.error {
 			   padding: 7px 18px;
 			   letter-spacing: 0;
 			   position: absolute;
-			   right: -9px;
+			   right: 0;
 			   top: 2px;
 			   font-size: 12px;
 			   border-radius: 15px;
@@ -101,33 +126,31 @@ form label.error {
 			 }
 		   }
 		   .long{
-			 width:260px;
+			 width:230px;
 
 		   }
 		   input[type="text"], input[type="password"] {
 			 color: #999;
-
 			 border: #cecece 1px solid;
-
-			 padding: 10px 2px 10px 30px;
+			 padding: 10px 2px 10px 47px;
 			 background-color:#fff;
 			 &.mobile {
-			   background: url("/images/sign/actor/landingpage/mobile-icon.png") no-repeat left center;
+			   background: url("/images/sign/actor/landingpage/login-icon.png") no-repeat #fff 10px -110px;
 			 }
 			 &.appCaptcha {
-			   background: url("/images/sign/actor/landingpage/appCaptcha-icon.png") no-repeat left center;
+			   background: url("/images/sign/actor/landingpage/login-icon.png") no-repeat #fff 10px -148px;
+			   width:125px;
 			 }
-			 &.email {
-			   background: url(/images/icons/register.png) no-repeat 6px 9px;
-			 }
+
 			 &.password {
-			   background: url("/images/sign/actor/landingpage/password-icon.png") no-repeat left center;
+			   background: url("/images/sign/actor/landingpage/login-icon.png") no-repeat #fff 10px -72px;
 			 }
 			 &.captcha {
-			   background: url("/images/sign/actor/landingpage/test-icon.png") no-repeat left center;
+			   background: url("/images/sign/actor/landingpage/login-icon.png") no-repeat #fff 10px 4px;
+			   width:100px;
 			 }
 			 &.login-name {
-			   background: url("/images/sign/actor/landingpage/login-name.png") no-repeat left center;
+			   background: url("/images/sign/actor/landingpage/login-icon.png") no-repeat #fff 10px -35px;
 			 }
 
 			 &.identity-number {
@@ -368,7 +391,7 @@ form label.error {
 		}
 		table.imagetable {
 
-			  width:1200px;
+			  width:900px;
 			  font-size:18px;
 			  color:#333333;
 			  border-width: 1px;
@@ -376,6 +399,10 @@ form label.error {
 			  border-collapse: collapse;
 			  text-align: center;
 			  margin:45px auto ;
+		  .slash{
+			background:url("/images/sign/actor/landingpage/slash.png") no-repeat center;
+			background-size:100% 100%;
+		  }
 
 			  th {
 				  background:#ccc;
@@ -392,6 +419,7 @@ form label.error {
 				  height:60px;
 				  border-style: solid;
 				  border-color: #999999;
+
 				  span{
 				  	color:red;
 				  	.big{
