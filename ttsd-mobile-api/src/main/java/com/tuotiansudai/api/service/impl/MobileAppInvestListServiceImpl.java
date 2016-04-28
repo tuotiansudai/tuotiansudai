@@ -17,7 +17,9 @@ import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
+import org.aspectj.apache.bcel.classfile.annotation.RuntimeAnnos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -46,8 +48,8 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
     @Autowired
     private LoanMapper loanMapper;
 
-    @Value("#{'${web.random.investor.list}'.split('\\|')}")
-    private List<String> showRandomLoginNameList;
+    @Autowired
+    private RandomUtils randomUtils;
 
     @Autowired
     private InvestTransferService investTransferService;
@@ -75,7 +77,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
             investRecordResponseDataDto = Lists.transform(investModels, new Function<InvestModel, InvestRecordResponseDataDto>() {
                 @Override
                 public InvestRecordResponseDataDto apply(InvestModel input) {
-                    input.setLoginName(loanService.encryptLoginName(loginName, input.getLoginName(), 3, input.getId()));
+                    input.setLoginName(randomUtils.encryptLoginName(loginName, input.getLoginName(), 3, input.getId()));
                     return new InvestRecordResponseDataDto(input);
                 }
             });

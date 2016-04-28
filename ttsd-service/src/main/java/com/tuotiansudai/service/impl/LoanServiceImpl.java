@@ -23,6 +23,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.joda.time.Duration;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,6 @@ public class LoanServiceImpl implements LoanService {
 
     static Logger logger = Logger.getLogger(LoanServiceImpl.class);
 
-    private final static String REDIS_KEY_TEMPLATE = "webmobile:{0}:{1}:showinvestorname";
-
     @Autowired
     private LoanTitleMapper loanTitleMapper;
 
@@ -56,6 +55,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private InvestMapper investMapper;
+
+    @Autowired
+    private RandomUtils randomUtils;
 
     @Autowired
     private IdGenerator idGenerator;
@@ -82,13 +84,7 @@ public class LoanServiceImpl implements LoanService {
     private InvestService investService;
 
     @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    @Autowired
     private JobManager jobManager;
-
-    @Value("#{'${web.random.investor.list}'.split('\\|')}")
-    private List<String> showRandomLoginNameList;
 
     /**
      * @param loanTitleDto
@@ -221,7 +217,8 @@ public class LoanServiceImpl implements LoanService {
 
         loanDto.setDescriptionHtml(loanModel.getDescriptionHtml());
         loanDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
-        loanDto.setRaisingPeriod(new Duration(loanModel.getFundraisingStartTime().getTime(), loanModel.getFundraisingEndTime().getTime()).getStandardDays());
+        loanDto.setRaisingPeriod(Days.daysBetween(new DateTime(loanModel.getFundraisingStartTime()).withTimeAtStartOfDay(),
+                new DateTime(loanModel.getFundraisingEndTime()).withTimeAtStartOfDay()).getDays() + 1);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
@@ -451,7 +448,7 @@ public class LoanServiceImpl implements LoanService {
                 @Override
                 public InvestPaginationItemDto apply(InvestModel input) {
                     InvestPaginationItemDto item = new InvestPaginationItemDto();
-                    item.setLoginName(encryptLoginName(loginName, input.getLoginName(), 6, input.getId()));
+                    item.setLoginName(randomUtils.encryptLoginName(loginName, input.getLoginName(), 6, input.getId()));
                     item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
                     item.setSource(input.getSource());
                     item.setAutoInvest(input.isAutoInvest());
@@ -477,23 +474,6 @@ public class LoanServiceImpl implements LoanService {
         baseDto.setData(dataDto);
         dataDto.setStatus(true);
         return baseDto;
-    }
-
-    @Override
-    public String encryptLoginName(String loginName, String investorLoginName, int showLength, long investId) {
-        if (investorLoginName.equalsIgnoreCase(loginName)) {
-            return investorLoginName;
-        }
-
-        String redisKey = MessageFormat.format(REDIS_KEY_TEMPLATE, String.valueOf(investId), investorLoginName);
-
-        if (showRandomLoginNameList.contains(investorLoginName) && !redisWrapperClient.exists(redisKey)) {
-            redisWrapperClient.set(redisKey, RandomUtils.generateLowerString(3) + RandomUtils.showChar(showLength));
-        }
-
-        String encryptLoginName = investorLoginName.substring(0, 3) + RandomUtils.showChar(showLength);
-
-        return redisWrapperClient.exists(redisKey) ? redisWrapperClient.get(redisKey) :encryptLoginName;
     }
 
     @Override

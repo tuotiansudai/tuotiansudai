@@ -85,7 +85,7 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
     public void shouldPurchaseSuccess() throws Exception{
         TransferPurchaseRequestDto transferPurchaseRequestDto = new TransferPurchaseRequestDto();
         transferPurchaseRequestDto.setBaseParam(BaseParamTest.getInstance());
-        transferPurchaseRequestDto.setTransferApplicationId(idGenerator.generate());
+        transferPurchaseRequestDto.setTransferApplicationId(String.valueOf(idGenerator.generate()));
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         payFormDataDto.setStatus(true);
         payFormDataDto.setUrl("url");

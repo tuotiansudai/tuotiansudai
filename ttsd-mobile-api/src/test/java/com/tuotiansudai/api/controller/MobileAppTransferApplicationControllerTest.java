@@ -67,8 +67,37 @@ public class MobileAppTransferApplicationControllerTest extends ControllerTestBa
         assertEquals(ReturnMessage.SUCCESS.getCode(), successResponseDto.getCode());
     }
 
+    @Test
+    public void shouldTransferApplicationCancelIsOk() throws Exception{
+        TransferCancelRequestDto transferCancelRequestDto = new TransferCancelRequestDto();
+        transferCancelRequestDto.setTransferApplicationId(1000000L);
+        when(service.transferApplicationCancel(any(TransferCancelRequestDto.class))).thenReturn(successResponseDto);
+        doRequestWithServiceMockedTest("/get/transfer-cancel", transferCancelRequestDto);
+        assertEquals(ReturnMessage.SUCCESS.getCode(), successResponseDto.getCode());
+    }
 
+    @Test
+    public void shouldTransferPurchaseIsOk() throws Exception {
+        TransferPurchaseRequestDto transferPurchaseRequestDto = new TransferPurchaseRequestDto();
+        transferPurchaseRequestDto.setTransferApplicationId("123");
+        when(service.transferPurchase(any(TransferPurchaseRequestDto.class))).thenReturn(successResponseDto);
+        doRequestWithServiceMockedTest("/get/transfer-purchase", transferPurchaseRequestDto);
+    }
 
+    @Test
+    public void shouldTransferApplicationListIsOk() throws Exception{
+        TransferApplicationListRequestDto transferApplicationListRequestDto = new TransferApplicationListRequestDto();
+        when(service.transferApplicationList(any(TransferApplicationListRequestDto.class))).thenReturn(successResponseDto);
+        doRequestWithServiceMockedTest("/get/transfer-application-list", transferApplicationListRequestDto);
+        assertEquals(ReturnMessage.SUCCESS.getCode(), successResponseDto.getCode());
+    }
 
+    @Test
+    public void shouldTransferApplicationDetailIsOk() throws Exception{
+        TransferApplicationDetailRequestDto transferApplicationDetailRequestDto = new TransferApplicationDetailRequestDto();
+        when(service.transferApplicationById(any(TransferApplicationDetailRequestDto.class))).thenReturn(successResponseDto);
+        doRequestWithServiceMockedTest("/get/transfer-application", transferApplicationDetailRequestDto);
+        assertEquals(ReturnMessage.SUCCESS.getCode(), successResponseDto.getCode());
+    }
 
 }

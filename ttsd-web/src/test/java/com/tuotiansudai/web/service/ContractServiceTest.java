@@ -74,22 +74,6 @@ public class ContractServiceTest {
         }
     }
 
-    @Test
-    public void shouldGenerateTransferAgreementIsOk(){
-        String pdfStr = contractService.generateTransferAgreement();
-        assertNotNull(pdfStr);
-        if(pdfStr.indexOf("201601") == -1){ assertFalse(true);}
-        if(pdfStr.indexOf("张三") == -1){ assertFalse(true);}
-        if(pdfStr.indexOf("zhangsan") == -1){ assertFalse(true);}
-        if(pdfStr.indexOf("37040319214531243X") == -1){ assertFalse(true);}
-        if(pdfStr.indexOf("赵四") == -1){ assertFalse(true);}
-        if(pdfStr.indexOf("zhaosi") == -1){ assertFalse(true);}
-        if(pdfStr.indexOf("37020319341204601X") == -1){ assertFalse(true);}
-        if(pdfStr.indexOf("5天") == -1){ assertFalse(true);}
-        if(pdfStr.indexOf("0.5%") == -1){ assertFalse(true);}
-
-    }
-
     public LoanModel getLoanModel() throws ParseException {
         LoanModel lm = new LoanModel();
         lm.setId(idGenerator.generate());

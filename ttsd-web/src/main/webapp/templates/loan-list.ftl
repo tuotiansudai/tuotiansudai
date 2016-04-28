@@ -81,7 +81,7 @@
                         </div>
                         <div class="loan-info-dl">
                             <dl>
-                                <dt>年化收益</dt>
+                                <dt>预期年化收益</dt>
                                 <dd><em><@percentInteger>${loanItem.baseRate}</@percentInteger></em>
                                     <i><@percentFraction>${loanItem.baseRate}</@percentFraction>
                                         <#if (loanItem.activityRate > 0)>

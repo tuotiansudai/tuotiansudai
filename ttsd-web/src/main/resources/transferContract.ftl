@@ -15,21 +15,21 @@
 <p><span style="font-family: 宋体, SimSun;">债权转让协议</span>
 </p>
 
-<p><span style="font-family: 宋体, SimSun;">债权出让人：<span style="font-family: 宋体, SimSun;">${loanerUserName}</span></span>
+<p><span style="font-family: 宋体, SimSun;">债权出让人：<span style="font-family: 宋体, SimSun;">${transferrerUserName}</span></span>
 </p>
 
-<p><span style="font-family: 宋体, SimSun;">拓天速贷用户名：<span style="font-family: 宋体, SimSun;">${loanerLoginName}</span></span>
+<p><span style="font-family: 宋体, SimSun;">拓天速贷用户名：<span style="font-family: 宋体, SimSun;">${transferrerLoginName}</span></span>
 </p>
 
-<p><span style="font-family: 宋体, SimSun;">身份证号：<span style="font-family: 宋体, SimSun;">${loanerIdentityNumber}</span></span></p>
+<p><span style="font-family: 宋体, SimSun;">身份证号：<span style="font-family: 宋体, SimSun;">${transferrerIdentityNumber}</span></span></p>
 
 <p><br/></p>
 
-<p><span style="font-family: 宋体, SimSun;">债权受让人：<span style="font-family: 宋体, SimSun;">${investUserName}</span></span></p>
+<p><span style="font-family: 宋体, SimSun;">债权受让人：<span style="font-family: 宋体, SimSun;">${transfereeUserName}</span></span></p>
 
-<p><span style="font-family: 宋体, SimSun;">拓天速贷用户名：<span style="font-family: 宋体, SimSun;">${investLoginName}</span></span></p>
+<p><span style="font-family: 宋体, SimSun;">拓天速贷用户名：<span style="font-family: 宋体, SimSun;">${transfereeLoginName}</span></span></p>
 
-<p><span style="font-family: 宋体, SimSun;">身份证号：<span style="font-family: 宋体, SimSun;">${investIdentityNumber}</span></span></p>
+<p><span style="font-family: 宋体, SimSun;">身份证号：<span style="font-family: 宋体, SimSun;">${transfereeIdentityNumber}</span></span></p>
 
 <p><br/></p>
 
