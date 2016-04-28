@@ -19,13 +19,13 @@
                     </dl>
                     <dl>
                         <dt class="requireOpt">投资金额：</dt>
-                        <dd><input type="text" name="minInvestAmount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" class="autoNumeric" value="${(model.minInvestAmount)!}"> ~
-                            <input type="text" name="maxInvestAmount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" class="autoNumeric" value="${(model.maxInvestAmount)!}"> 元
+                        <dd><input type="text" name="minInvestAmount" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" class="autoNumeric" value="${(model.minInvestAmount)!}"> ~
+                            <input type="text" name="maxInvestAmount" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" class="autoNumeric" value="${(model.maxInvestAmount)!}"> 元
                         </dd>
                     </dl>
                     <dl>
                         <dt class="requireOpt">保留金额：</dt>
-                        <dd><input type="text" name="retentionAmount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" class="autoNumeric" value="${(model.retentionAmount)!}"> 元
+                        <dd><input type="text" name="retentionAmount" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" class="autoNumeric" value="${(model.retentionAmount)!}"> 元
                             （不会加入自动投标的金额）
                         </dd>
                     </dl>
