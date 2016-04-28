@@ -78,31 +78,29 @@ public class AdvanceRepayPaybackInvestMockTest {
     @Test
     public void shouldPaybackFirstPeriod() throws Exception {
         long loanId = 1;
-        LoanRepayModel loanRepay1 = new LoanRepayModel(1, loanId, 1, 10, new DateTime().plusDays(5).withTime(23, 59, 59, 0).toDate(), RepayStatus.COMPLETE);
+        LoanRepayModel loanRepay1 = new LoanRepayModel(1, loanId, 1, 0, 10, new DateTime().plusDays(5).withTime(23, 59, 59, 0).toDate(), RepayStatus.COMPLETE);
         loanRepay1.setActualInterest(10);
         loanRepay1.setActualRepayDate(new DateTime().withMillisOfSecond(0).toDate());
-        LoanRepayModel loanRepay2 = new LoanRepayModel(2, loanId, 2, 10, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), RepayStatus.COMPLETE);
+        LoanRepayModel loanRepay2 = new LoanRepayModel(2, loanId, 2, 0, 10, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), RepayStatus.COMPLETE);
         loanRepay2.setActualRepayDate(new DateTime().withMillisOfSecond(0).toDate());
 
         when(loanRepayMapper.findById(loanRepay1.getId())).thenReturn(loanRepay1);
 
         String investor1LoginName = "investor1";
         String investor2LoginName = "investor2";
-        InvestModel invest1 = new InvestModel(loanId, 10, investor1LoginName, Source.WEB, null);
-        invest1.setId(1);
-        InvestModel invest2 = new InvestModel(loanId, 20, investor2LoginName, Source.WEB, null);
-        invest2.setId(2);
+        InvestModel invest1 = new InvestModel(1, loanId, null, 10, investor1LoginName, Source.WEB, null);
+        InvestModel invest2 = new InvestModel(2, loanId, null, 20, investor2LoginName, Source.WEB, null);
         List<InvestModel> successInvests = Lists.newArrayList(invest1, invest2);
         when(investMapper.findSuccessInvestsByLoanId(loanId)).thenReturn(successInvests);
 
-        InvestRepayModel invest1InvestRepay1 = new InvestRepayModel(1, invest1.getId(), 1, 3, 0, loanRepay1.getRepayDate(), RepayStatus.WAIT_PAY);
+        InvestRepayModel invest1InvestRepay1 = new InvestRepayModel(1, invest1.getId(), 1, 0, 3, 0, loanRepay1.getRepayDate(), RepayStatus.WAIT_PAY);
         invest1InvestRepay1.setActualInterest(invest1InvestRepay1.getExpectedInterest());
         invest1InvestRepay1.setActualFee(invest1InvestRepay1.getExpectedFee());
         invest1InvestRepay1.setActualRepayDate(loanRepay1.getActualRepayDate());
         invest1InvestRepay1.setRepayAmount(invest1.getAmount() + invest1InvestRepay1.getActualInterest() - invest1InvestRepay1.getActualFee());
         when(investRepayMapper.findByInvestIdAndPeriod(invest1.getId(), loanRepay1.getPeriod())).thenReturn(invest1InvestRepay1);
 
-        InvestRepayModel invest2InvestRepay1 = new InvestRepayModel(1, invest2.getId(), 1, 6, 1, loanRepay1.getRepayDate(), RepayStatus.WAIT_PAY);
+        InvestRepayModel invest2InvestRepay1 = new InvestRepayModel(1, invest2.getId(), 1, 0, 6, 1, loanRepay1.getRepayDate(), RepayStatus.WAIT_PAY);
         invest2InvestRepay1.setActualInterest(invest2InvestRepay1.getExpectedInterest());
         invest2InvestRepay1.setActualFee(invest2InvestRepay1.getExpectedFee());
         invest2InvestRepay1.setActualRepayDate(loanRepay1.getActualRepayDate());
@@ -165,35 +163,32 @@ public class AdvanceRepayPaybackInvestMockTest {
     @Test
     public void shouldPaybackLastPeriod() throws Exception {
         long loanId = 1;
-        LoanRepayModel loanRepay1 = new LoanRepayModel(1, loanId, 1, 10, new DateTime().minusDays(30).withTime(23, 59, 59, 0).toDate(), RepayStatus.COMPLETE);
+        LoanRepayModel loanRepay1 = new LoanRepayModel(1, loanId, 1, 0, 10, new DateTime().minusDays(30).withTime(23, 59, 59, 0).toDate(), RepayStatus.COMPLETE);
         loanRepay1.setActualInterest(10);
         loanRepay1.setActualRepayDate(new DateTime().minusDays(30).toDate());
-        LoanRepayModel loanRepay2 = new LoanRepayModel(2, loanId, 2, 10, new DateTime().plusDays(5).withTime(23, 59, 59, 0).toDate(), RepayStatus.COMPLETE);
+        LoanRepayModel loanRepay2 = new LoanRepayModel(2, loanId, 2, 30, 10, new DateTime().plusDays(5).withTime(23, 59, 59, 0).toDate(), RepayStatus.COMPLETE);
         loanRepay2.setActualInterest(10);
-        loanRepay2.setCorpus(30);
         loanRepay2.setActualRepayDate(new DateTime().withMillisOfSecond(0).toDate());
 
         when(loanRepayMapper.findById(loanRepay2.getId())).thenReturn(loanRepay2);
 
         String investor1LoginName = "investor1";
         String investor2LoginName = "investor2";
-        InvestModel invest1 = new InvestModel(loanId, 10, investor1LoginName, Source.WEB, null);
+        InvestModel invest1 = new InvestModel(1, loanId, null, 10, investor1LoginName, Source.WEB, null);
         invest1.setId(1);
-        InvestModel invest2 = new InvestModel(loanId, 20, investor2LoginName, Source.WEB, null);
+        InvestModel invest2 = new InvestModel(2, loanId, null, 20, investor2LoginName, Source.WEB, null);
         invest2.setId(2);
         List<InvestModel> successInvests = Lists.newArrayList(invest1, invest2);
         when(investMapper.findSuccessInvestsByLoanId(loanId)).thenReturn(successInvests);
 
-        InvestRepayModel invest1InvestRepay2 = new InvestRepayModel(1, invest1.getId(), 1, 3, 0, loanRepay1.getRepayDate(), RepayStatus.WAIT_PAY);
-        invest1InvestRepay2.setCorpus(invest1.getAmount());
+        InvestRepayModel invest1InvestRepay2 = new InvestRepayModel(1, invest1.getId(), 1, invest1.getAmount(), 3, 0, loanRepay1.getRepayDate(), RepayStatus.WAIT_PAY);
         invest1InvestRepay2.setActualInterest(invest1InvestRepay2.getExpectedInterest());
         invest1InvestRepay2.setActualFee(invest1InvestRepay2.getExpectedFee());
         invest1InvestRepay2.setActualRepayDate(loanRepay2.getActualRepayDate());
         invest1InvestRepay2.setRepayAmount(invest1.getAmount() + invest1InvestRepay2.getActualInterest() - invest1InvestRepay2.getActualFee());
         when(investRepayMapper.findByInvestIdAndPeriod(invest1.getId(), loanRepay2.getPeriod())).thenReturn(invest1InvestRepay2);
 
-        InvestRepayModel invest2InvestRepay2 = new InvestRepayModel(1, invest2.getId(), 1, 6, 1, loanRepay1.getRepayDate(), RepayStatus.WAIT_PAY);
-        invest2InvestRepay2.setCorpus(invest2.getAmount());
+        InvestRepayModel invest2InvestRepay2 = new InvestRepayModel(1, invest2.getId(), 1, invest2.getAmount(), 6, 1, loanRepay1.getRepayDate(), RepayStatus.WAIT_PAY);
         invest2InvestRepay2.setActualInterest(invest2InvestRepay2.getExpectedInterest());
         invest2InvestRepay2.setActualFee(invest2InvestRepay2.getExpectedFee());
         invest2InvestRepay2.setActualRepayDate(loanRepay1.getActualRepayDate());
