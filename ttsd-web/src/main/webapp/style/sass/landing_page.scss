@@ -98,6 +98,9 @@ form label.error {
 			   font-size: 12px;
 			   border-radius: 15px;
 			   background: #ff0000;
+			   &:hover{
+			   	color:#fff;
+			   }
 			 }
 		   }
 		   .long{

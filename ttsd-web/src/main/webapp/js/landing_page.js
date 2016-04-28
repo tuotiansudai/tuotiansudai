@@ -1,218 +1,154 @@
-require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function (_, $, layer) {
-    var registerUserForm = $(".register-user-form"),
-        fetchCaptchaElement = $('.fetch-captcha', registerUserForm),
-        showAgreement = $('.show-agreement', registerUserForm),
-        $agreement = $('#agreementInput');
-    var $imgCaptchaDialog = $('.image-captcha-dialog'),
-        imageCaptchaForm = $('.image-captcha-form', $imgCaptchaDialog),
-        imageCaptchaElement = $('.image-captcha img'),
-        imageCaptchaTextElement = $('.image-captcha-text', $imgCaptchaDialog),
-        imageChange = $('.img-change'),
-        imageCaptchaSubmitElement = $('.image-captcha-confirm', $imgCaptchaDialog);
+require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function ($, _, layer) {
+    (function(){
+        var $registerForm=$('.register-user-form'),
+            $phoneDom=$('#mobile'),
+            $fetchCaptcha=$('.fetch-captcha'),
+            $changecode=$('.img-change'),
+            $registerBtn=$(".registered"),
+            countdown=60;
 
-
-    $(".registered").on('click', function(event) {
-        event.preventDefault();
-        $('body,html').animate({scrollTop:0},'fast');
-    });
-
-    $('input.login-name,input.mobile',registerUserForm).on('focusout',function(option) {
-        fetchCaptchaElement.removeClass('btn-normal').addClass('btn').prop('disabled', true);
-    });
-
-    showAgreement.click(function () {
-        layer.open({
-            type: 1,
-            title: '拓天速贷服务协议',
-            area: ['950px', '600px'],
-            shadeClose: true,
-            move: false,
-            scrollbar: true,
-            skin:'register-skin',
-            content: $('#agreementBox'),
-            success: function (layero, index) {
-            }
-        });
-    });
-
-    fetchCaptchaElement.on('click', function () {
-        layer.open({
-            type: 1,
-            title: '手机验证',
-            area: ['300px', '190px'],
-            shadeClose: true,
-            content: $('.image-captcha-dialog'),
-            success: function (layero, index) {
-                $('.image-captcha-form label').remove();
-                imageCaptchaTextElement.val('');
-                refreshCaptcha();
-            }
-        });
-        return false;
-    });
-
-    var refreshCaptcha = function () {
-        imageCaptchaElement.attr('src', '/register/user/image-captcha?' + new Date().getTime().toString());
-    };
-
-    imageChange.click(function () {
-        refreshCaptcha();
-    });
-
-    imageCaptchaForm.validate({
-        focusInvalid: false,
-        onfocusout: function (element) {
-            if (!this.checkable(element) && !this.optional(element)) {
-                this.element(element);
-            }
-        },
-        submitHandler: function (form) {
-            var self = this;
-            $(form).ajaxSubmit({
-                data: {mobile: $('.mobile').val()},
-                dataType: 'json',
-                beforeSubmit: function (arr, $form, options) {
-                    imageCaptchaSubmitElement.addClass("loading");
-
+        //form validate
+        $registerForm.validate({
+            focusInvalid: false,
+            errorPlacement: function(error, element) {
+                error.appendTo($('#'+ element.attr('id') + 'Err'));
+            },
+            rules: {
+                loginName: {
+                    required: true,
+                    regex: /(?!^\d+$)^\w{5,25}$/,
+                    isExist: "/register/user/login-name/{0}/is-exist"
                 },
-                success: function (response) {
-                    var data = response.data;
-                    if (data.status && !data.isRestricted) {
-                        layer.closeAll();
-                        var seconds = 60;
-                        var count = setInterval(function () {
-                            fetchCaptchaElement.html(seconds + '秒后重新发送').addClass('btn disable-button').removeClass('btn-normal').prop('disabled',true);
-                            if (seconds == 0) {
-                                clearInterval(count);
-                                fetchCaptchaElement.html('重新发送').removeClass('btn disable-button').addClass('btn-normal').prop('disabled',false);
-                            }
-                            seconds--;
-                        }, 1000);
-                        return;
-                    }
-
-                    if (!data.status && data.isRestricted) {
-                        self.showErrors({imageCaptcha: '短信发送频繁，请稍后再试'});
-                    }
-
-                    if (!data.status && !data.isRestricted) {
-                        self.showErrors({imageCaptcha: '图形验证码不正确'});
-                    }
-                    self.invalid['imageCaptcha'] = true;
-                    refreshCaptcha();
+                mobile: {
+                    required: true,
+                    digits: true,
+                    isPhone:true,
+                    minlength: 11,
+                    maxlength: 11,
+                    isExist: "/register/user/mobile/{0}/is-exist"
                 },
-                error: function () {
-                    self.invalid['imageCaptcha'] = true;
-                    self.showErrors({imageCaptcha: '图形验证码不正确'});
-                    refreshCaptcha();
+                password: {
+                    required: true,
+                    regex: /^(?=.*[^\d])(.{6,20})$/
                 },
-                complete: function () {
-                    imageCaptchaSubmitElement.removeClass("loading");
-
+                captcha: {
+                    required: true
+                },
+                appCaptcha: {
+                    required: true,
+                    digits: true,
+                    maxlength: 6,
+                    minlength: 6,
+                    captchaVerify: {
+                        param: function () {
+                            var mobile = $('input[name="mobile"]').val();
+                            return "/register/user/mobile/" + mobile + "/captcha/{0}/verify"
+                        }
+                    }
+                },
+                agreement: {
+                    required: true
                 }
+            },
+            messages: {
+                loginName: {
+                    required: "请输入用户名",
+                    regex: '5位至25位数字与字母下划线组合，不能全部数字',
+                    isExist: '用户名已存在'
+                },
+                mobile: {
+                    required: '请输入手机号',
+                    digits: '必须是数字',
+                    minlength: '手机格式不正确',
+                    isPhone:'请输入正确的手机号码',
+                    maxlength: '手机格式不正确',
+                    isExist: '手机号已存在'
+                },
+                password: {
+                    required: "请输入密码",
+                    regex: '6位至20位，不能全是数字'
+                },
+                captcha: {
+                    required: '请输入验证码'
+                },
+                appCaptcha: {
+                    required: '请输入手机验证码',
+                    digits: '验证码格式不正确',
+                    maxlength: '验证码格式不正确',
+                    minlength: '验证码格式不正确',
+                    captchaVerify: '验证码不正确'
+                },
+                agreement: {
+                    required: "请同意服务协议"
+                }
+            }
+        });
+
+        //phone focusout
+        $phoneDom.on('focusout', function(event) {
+            event.preventDefault();
+            $(this).val()!='' && /0?(13|14|15|18)[0-9]{9}/.test($(this).val())?$fetchCaptcha.prop('disabled', false):$fetchCaptcha.prop('disabled', true);
+        });
+
+        //change images code
+        $changecode.on('click', function(event) {
+            event.preventDefault();
+            $('.image-captcha img').attr('src', '/register/user/image-captcha?' + new Date().getTime().toString());
+        });
+        //show protocol info
+        $('.show-agreement').on('click', function(event) {
+            event.preventDefault();
+            layer.open({
+                type: 1,
+                title: '拓天速贷服务协议',
+                area: ['950px', '600px'],
+                shadeClose: true,
+                move: false,
+                scrollbar: true,
+                skin:'register-skin',
+                content: $('#agreementBox')
             });
-        },
-        rules: {
-            imageCaptcha: {
-                required: true,
-                regex: /^[a-zA-Z0-9]{5}$/
-            }
-        },
-        messages: {
-            imageCaptcha: {
-                required: "请输入图形验证码",
-                regex: "图形验证码位数不对"
-            }
+        });
+        
+        $fetchCaptcha.on('click', function(event) {
+            event.preventDefault();
+            // $.ajax({
+            //     url: '/path/to/file',
+            //     type: 'POST',
+            //     dataType: 'json',
+            //     data: {param1: 'value1'},
+            // })
+            // .done(function() {
+                timer=window.setInterval(getCode, 1000);
+            // })
+            // .fail(function() {
+            //     console.log("error");
+            // });
+            
+        });
+        //timer 
+        function getCode() { 
+            if (countdown == 0) {
+                window.clearInterval(timer); 
+                $fetchCaptcha.prop('disabled',false).text('获取验证码');    
+                countdown = 60; 
+            } else { 
+                $fetchCaptcha.prop('disabled', true).text(countdown+'s'); 
+                countdown--; 
+            } 
         }
-    });
 
-    registerUserForm.validate({
-        focusInvalid: false,
-        errorPlacement: function(error, element) {
-            error.appendTo($('#'+ element.attr('id') + 'Err'));
-        },
-        rules: {
-            loginName: {
-                required: true,
-                regex: /(?!^\d+$)^\w{5,25}$/,
-                isExist: "/register/user/login-name/{0}/is-exist"
-            },
-            mobile: {
-                required: true,
-                digits: true,
-                minlength: 11,
-                maxlength: 11,
-                isExist: "/register/user/mobile/{0}/is-exist"
-            },
-            password: {
-                required: true,
-                regex: /^(?=.*[^\d])(.{6,20})$/
-            },
-            captcha: {
-                required: true,
+        // phone validate   
+        jQuery.validator.addMethod("isPhone", function(value, element) {   
+            var tel = /0?(13|14|15|18)[0-9]{9}/;
+            return this.optional(element) || (tel.test(value));
+        }, "请正确填写您的手机号码");
 
-            },
-            appCaptcha: {
-                required: true,
-                digits: true,
-                maxlength: 6,
-                minlength: 6,
-                captchaVerify: {
-                    param: function () {
-                        var mobile = $('input[name="mobile"]').val();
-                        return "/register/user/mobile/" + mobile + "/captcha/{0}/verify"
-                    }
-                }
-            },
-            agreement: {
-                required: true
-            }
-        },
-        messages: {
-            loginName: {
-                required: "请输入用户名",
-                regex: '5位至25位数字与字母下划线组合，不能全部数字',
-                isExist: '用户名已存在'
-            },
-            mobile: {
-                required: '请输入手机号',
-                digits: '必须是数字',
-                minlength: '手机格式不正确',
-                maxlength: '手机格式不正确',
-                isExist: '手机号已存在'
-            },
-            password: {
-                required: "请输入密码",
-                regex: '6位至20位，不能全是数字'
-            },
-            captcha: {
-                required: '请输入验证码'
-            },
-            appCaptcha: {
-                required: '请输入手机验证码',
-                digits: '验证码格式不正确',
-                maxlength: '验证码格式不正确',
-                minlength: '验证码格式不正确',
-                captchaVerify: '验证码不正确'
-            },
-            agreement: {
-                required: "请同意服务协议"
-            }
-        },
-        success: function (error, element) {
-            var loginName = $('input.login-name', registerUserForm),
-                mobile = $('input.mobile', registerUserForm),
-                disableButton=$('.disable-button',registerUserForm);
-            if(!disableButton.length) {
-                if (element.name === 'mobile' && loginName.hasClass('valid')) {
-                    fetchCaptchaElement.addClass('btn-normal').removeClass('btn').prop('disabled', false);
-                }
-                if (element.name === 'loginName' && mobile.hasClass('valid')) {
-                    fetchCaptchaElement.addClass('btn-normal').removeClass('btn').prop('disabled', false);
-                }
-            }
-
-        }
-    });
-
+        //register button
+        $registerBtn.on('click', function(event) {
+            event.preventDefault();
+            $('body,html').animate({scrollTop:0},'fast');
+        });
+        
+    })();
 });
