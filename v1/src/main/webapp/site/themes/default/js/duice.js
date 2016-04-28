@@ -39,4 +39,8 @@ function showFImg(il,nl,cs){
 	indx = (++indx) % ($(il).length);
   }
 }
+<<<<<<< HEAD
 //Ò»ï¿½ï¿½ï¿½Ø²ï¿½ï¿½ï¿½www.16sucai.com
+=======
+//Ò»Á÷ËØ²ÄÍøwww.16sucai.com
+>>>>>>> features/zrz/interest_coupon_add_new_register

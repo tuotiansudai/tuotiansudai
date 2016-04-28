@@ -93,7 +93,11 @@ img.right {
 
 #menu li a{
     background-position: center left;
+<<<<<<< HEAD
     background-repeatï¿½ï¿½no-repeat;
+=======
+    background-repeat£ºno-repeat;
+>>>>>>> features/zrz/interest_coupon_add_new_register
 }
 
 #menu .system-home a{
