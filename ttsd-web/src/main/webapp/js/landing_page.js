@@ -110,7 +110,7 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
                 })
                     .done(function() {
 
-                        window.location.href = $(this).data("url");
+                        window.location.href = "/register/account";
 
                     })
                     .fail(function() {
@@ -122,6 +122,11 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
 
         });
 
+
+        var refreshCaptcha = function () {
+            $('.image-captcha img').attr('src', '/register/user/image-captcha?' + new Date().getTime().toString());
+        };
+        refreshCaptcha();
         //$registerUser.on('click' ,function(event){
         //    event.preventDefault();
         //
@@ -136,7 +141,7 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
         //change images code
         $changecode.on('click', function(event) {
             event.preventDefault();
-            $('.image-captcha img').attr('src', '/register/user/image-captcha?' + new Date().getTime().toString());
+            refreshCaptcha();
         });
         //show protocol info
         $('.show-agreement').on('click', function(event) {

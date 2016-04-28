@@ -8,7 +8,7 @@
 	<div class="landing-top">
         <div class="landing-inner">
             <div class="register-box">
-                <form class="register-user-form" action="" method="post" autocomplete="off" novalidate="novalidate">
+                <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate">
                     <ul class="reg-list tl register-step-one">
                         <li >
                             <label for="" class="reg-title">用户名:</label>
@@ -29,7 +29,7 @@
                             <label for="" class="reg-title">验证码:</label>
                             <input type="text" id="captcha" name="captcha" placeholder="验证码" maxlength="25" class="captcha" value="">
                             <em class="image-captcha">
-                                <img src="/login/captcha" alt=""/>
+                                <img src="" alt=""/>
                             </em>
                             <span class="img-change">换一张</span>
                         </li>
