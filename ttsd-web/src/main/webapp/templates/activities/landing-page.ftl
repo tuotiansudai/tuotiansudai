@@ -1,10 +1,9 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.landingpage}" pageJavascript="${js.landingpage}" activeNav="" activeLeftNav="" title="拓天速贷手机客户端_理财客户端_拓天速贷" keywords="拓天速贷,APP理财,移动客户端,网络理财,P2P理财,拓天速贷APP" description="拓天速贷手机客户端为理财,投资,贷款等投融资用户提供安全、专业、便捷的互联网金融理财服务。">
+<@global.main pageCss="${css.landing_page}" pageJavascript="${js.landing_page}" activeNav="" activeLeftNav="" title="拓天速贷手机客户端_理财客户端_拓天速贷" keywords="拓天速贷,APP理财,移动客户端,网络理财,P2P理财,拓天速贷APP" description="拓天速贷手机客户端为理财,投资,贷款等投融资用户提供安全、专业、便捷的互联网金融理财服务。">
 
 <div class="landing-container">
 
 	<div class="landing-top">
-        <#--<img class="landing-image" src="${staticServer}/images/sign/actor/landingpage/landing-top.png">-->
         <div class="landing-inner">
             <div class="register-box">
                 <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate">
