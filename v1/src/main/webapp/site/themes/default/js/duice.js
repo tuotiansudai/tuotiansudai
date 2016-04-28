@@ -39,4 +39,4 @@ function showFImg(il,nl,cs){
 	indx = (++indx) % ($(il).length);
   }
 }
-//Ò»Á÷ËØ²ÄÍøwww.16sucai.com
+//Ò»ï¿½ï¿½ï¿½Ø²ï¿½ï¿½ï¿½www.16sucai.com
