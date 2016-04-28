@@ -23,6 +23,8 @@ public class InvestRepayModel implements Serializable {
 
     private long actualFee;
 
+    private long repayAmount;
+
     private Date repayDate;
 
     private Date actualRepayDate;
@@ -151,6 +153,14 @@ public class InvestRepayModel implements Serializable {
 
     public void setActualFee(long actualFee) {
         this.actualFee = actualFee;
+    }
+
+    public long getRepayAmount() {
+        return repayAmount;
+    }
+
+    public void setRepayAmount(long repayAmount) {
+        this.repayAmount = repayAmount;
     }
 
     public Date getCreatedTime() {
