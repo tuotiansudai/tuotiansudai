@@ -44,10 +44,10 @@ public class MobileAppTransferApplicationController extends MobileAppBaseControl
     @RequestMapping(value = "/transfer-apply", method = RequestMethod.POST)
     @ResponseBody
     public BaseResponseDto generateAgreementRequest(@Valid @RequestBody TransferApplyRequestDto requestDto, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             String errorCode = bindingResult.getFieldError().getDefaultMessage();
             String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);
-            return new BaseResponseDto(errorCode,errorMessage);
+            return new BaseResponseDto(errorCode, errorMessage);
         } else {
             requestDto.getBaseParam().setUserId(getLoginName());
             return mobileAppTransferApplicationService.transferApply(requestDto);
@@ -65,5 +65,20 @@ public class MobileAppTransferApplicationController extends MobileAppBaseControl
         requestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppTransferApplicationService.transferPurchase(requestDto);
     }
+
+    @RequestMapping(value = "/get/transfer-application-list", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseResponseDto transferApplicationList(@RequestBody TransferApplicationListRequestDto requestDto) {
+        requestDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppTransferApplicationService.transferApplicationList(requestDto);
+    }
+
+    @RequestMapping(value = "/get/transfer-application", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseResponseDto transferApplicationDetail(@RequestBody TransferApplicationDetailRequestDto requestDto) {
+        requestDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppTransferApplicationService.transferApplicationById(requestDto);
+    }
+
 
 }

@@ -278,20 +278,20 @@ public class ContractServiceImpl implements ContractService {
             return dataModel;
         }
 
-        dataModel.put("loanId", String.valueOf(transferApplicationModel.getId()));
+        dataModel.put("loanId", String.valueOf(transferApplicationModel.getLoanId()));
         AccountModel loanerAccountModel = accountMapper.findByLoginName(transferApplicationModel.getLoginName());
         if(loanerAccountModel != null){
-            dataModel.put("loanerUserName", loanerAccountModel.getUserName());
-            dataModel.put("loanerLoginName",loanerAccountModel.getLoginName());
-            dataModel.put("loanerIdentityNumber",loanerAccountModel.getIdentityNumber());
+            dataModel.put("transferrerUserName", loanerAccountModel.getUserName());
+            dataModel.put("transferrerLoginName",loanerAccountModel.getLoginName());
+            dataModel.put("transferrerIdentityNumber",loanerAccountModel.getIdentityNumber());
         }
 
         InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
         AccountModel investAccountModel = accountMapper.findByLoginName(investModel.getLoginName());
         if(investAccountModel != null){
-            dataModel.put("investUserName",investAccountModel.getUserName());
-            dataModel.put("investLoginName",investAccountModel.getLoginName());
-            dataModel.put("investIdentityNumber",investAccountModel.getIdentityNumber());
+            dataModel.put("transfereeUserName",investAccountModel.getUserName());
+            dataModel.put("transfereeLoginName",investAccountModel.getLoginName());
+            dataModel.put("transfereeIdentityNumber",investAccountModel.getIdentityNumber());
         }
 
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
@@ -306,31 +306,4 @@ public class ContractServiceImpl implements ContractService {
 
         return dataModel;
     }
-
-    @Override
-    public String generateTransferAgreement() {
-
-        Map<String, Object> dataModel = this.collectTransferContractModel();
-        if(dataModel.isEmpty()){
-            return "";
-        }
-        String content = getContract("transferContract", dataModel).replace("&nbsp;", "&#160;");
-        return content;
-    }
-
-    private Map<String, Object> collectTransferContractModel(){
-        Map<String, Object> dataModel = new HashMap<>();
-        dataModel.put("loanId", "201601");
-        dataModel.put("loanerUserName", "张三");
-        dataModel.put("loanerLoginName","zhangsan");
-        dataModel.put("loanerIdentityNumber","37040319214531243X");
-        dataModel.put("investUserName","赵四");
-        dataModel.put("investLoginName","zhaosi");
-        dataModel.put("investIdentityNumber","37020319341204601X");
-        dataModel.put("daysLimit", "5");
-        dataModel.put("percent","0.5");
-        return dataModel;
-    }
-
-
 }

@@ -15,6 +15,7 @@ public class TransferApplicationRecordDto implements Serializable {
     private Date transferTime;
     private double baseRate;
     private double activityRate;
+    private String remainingInterestDays;
     private TransferStatus transferStatus;
     private Long loanId;
     private String transferrerLoginName;
@@ -29,9 +30,7 @@ public class TransferApplicationRecordDto implements Serializable {
         return transferApplicationId;
     }
 
-    public void setTransferApplicationId(long transferApplicationId) {
-        this.transferApplicationId = transferApplicationId;
-    }
+    public void setTransferApplicationId(long transferApplicationId) { this.transferApplicationId = transferApplicationId; }
 
     public String getName() {
         return name;
@@ -80,6 +79,10 @@ public class TransferApplicationRecordDto implements Serializable {
     public void setActivityRate(double activityRate) {
         this.activityRate = activityRate;
     }
+
+    public String getRemainingInterestDays() { return remainingInterestDays; }
+
+    public void setRemainingInterestDays(String remainingInterestDays) { this.remainingInterestDays = remainingInterestDays; }
 
     public TransferStatus getTransferStatus() {
         return transferStatus;
@@ -145,15 +148,12 @@ public class TransferApplicationRecordDto implements Serializable {
         this.leftPeriod = leftPeriod;
     }
 
-    public Date getDeadLine() {
-        return deadLine;
-    }
-
-    public void setDeadLine(Date deadLine) {
-        this.deadLine = deadLine;
-    }
-
     public String getSumRatePercent(){
         return new DecimalFormat("######0.##").format((baseRate + activityRate) * 100);
     }
+
+    public Date getDeadLine() { return deadLine; }
+
+    public void setDeadLine(Date deadLine) { this.deadLine = deadLine; }
+
 }

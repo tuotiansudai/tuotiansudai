@@ -20,7 +20,9 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
     private Date deadLine;
     private String name;
     private String sumRate;
-
+    private double baseRate;
+    private double activityRate;
+    private String transferName;
 
     public TransferApplicationPaginationItemDataDto(){}
 
@@ -33,12 +35,14 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
         this.transfereeLoginName = transferApplicationRecordDto.getTransfereeLoginName();
         this.transferFee = AmountConverter.convertCentToString(transferApplicationRecordDto.getTransferFee());
         this.transferTime = transferApplicationRecordDto.getTransferTime();
-        this.leftPeriod = String.valueOf(transferApplicationRecordDto.getLeftPeriod());
         this.deadLine = transferApplicationRecordDto.getDeadLine();
+        this.leftPeriod = String.valueOf(transferApplicationRecordDto.getLeftPeriod());
         this.name = transferApplicationRecordDto.getName();
         this.sumRate = transferApplicationRecordDto.getSumRatePercent();
+        this.baseRate = transferApplicationRecordDto.getBaseRate()*100;
+        this.activityRate = transferApplicationRecordDto.getActivityRate()*100;
+        this.transferName = transferApplicationRecordDto.getName();
     }
-
 
     public String getTransferAmount() {
         return transferAmount;
@@ -120,14 +124,6 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
         this.loanId = loanId;
     }
 
-    public Date getDeadLine() {
-        return deadLine;
-    }
-
-    public void setDeadLine(Date deadLine) {
-        this.deadLine = deadLine;
-    }
-
     public String getName() {
         return name;
     }
@@ -143,4 +139,21 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
     public void setSumRate(String sumRate) {
         this.sumRate = sumRate;
     }
+
+    public Date getDeadLine() {return deadLine;}
+
+    public void setDeadLine(Date deadLine) {this.deadLine = deadLine;}
+
+    public double getBaseRate() { return baseRate; }
+
+    public void setBaseRate(double baseRate) { this.baseRate = baseRate; }
+
+    public double getActivityRate() { return activityRate; }
+
+    public void setActivityRate(double activityRate) { this.activityRate = activityRate; }
+
+    public String getTransferName() { return transferName; }
+
+    public void setTransferName(String transferName) { this.transferName = transferName; }
+
 }

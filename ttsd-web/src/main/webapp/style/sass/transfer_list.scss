@@ -3,7 +3,18 @@
 @import "coupon_alert";
 
 
-
+.layui-layer-btn {
+  text-align: center !important;
+  .layui-layer-btn0 {
+    padding: 3px 35px;
+    background: nth($CK1, 2) !important;
+    border-radius: 4px;
+    border: 1px solid nth($CK1, 2) !important;
+    border-color: nth($CK1, 2) !important;
+    letter-spacing: 3px;
+    color: #fff;
+  }
+}
 /*transfer list*/
 .transfer-list-content {
   .project-type{
