@@ -128,7 +128,7 @@ public class PointLotteryServiceImpl implements PointLotteryService{
             pointBillService.createPointBill(loginName, winPointPrize.getId(), PointBusinessType.LOTTERY, LOTTERY_POINT);
 
             if (winPointPrize.getCouponId() != null) {
-                couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.WINNER), winPointPrize.getCouponId());
+                couponActivationService.assignUserCoupon(loginName, Lists.newArrayList(UserGroup.WINNER), winPointPrize.getCouponId(), null);
             }
 
             if (winPointPrize.getCash() != null) {

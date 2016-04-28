@@ -232,6 +232,16 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
         });
     }
 
+    public void hset(final String key, final String hkey, final String value, final int lifeSecond) {
+        execute(new JedisActionNoResult() {
+            @Override
+            public void action(Jedis jedis) {
+                jedis.hset(key, hkey, value);
+                jedis.expire(key, lifeSecond);
+            }
+        });
+    }
+
     public Long hdel(final String key, final String... hkeys) {
         return execute(new JedisAction<Long>() {
             @Override
@@ -418,6 +428,15 @@ public class RedisWrapperClient extends AbstractRedisWrapperClient {
             @Override
             public Map<byte[], byte[]> action(Jedis jedis) {
                 return jedis.hgetAll(key.getBytes());
+            }
+        });
+    }
+
+    public Map<String, String> hgetAll(final String key) {
+        return execute(new JedisAction<Map<String, String>>() {
+            @Override
+            public Map<String, String> action(Jedis jedis) {
+                return jedis.hgetAll(key);
             }
         });
     }

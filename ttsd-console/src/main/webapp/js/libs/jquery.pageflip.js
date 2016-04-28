@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ﻿; (function ($) {
+=======
+; (function ($) {
+>>>>>>> 51f5c4520a24cfba8339413beb2554d18d65a1c7
 
     jQuery.pageflip = {
 
