@@ -292,13 +292,18 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         TransferApplicationModel transferApplicationModel1 = createTransferAppLication("ZR0001", 100001, 1000001, 10000001, 2, "testuer1", TransferStatus.SUCCESS);
         TransferApplicationDetailRequestDto transferApplicationDetailRequestDto = new TransferApplicationDetailRequestDto();
         transferApplicationDetailRequestDto.setTransferApplicationId(String.valueOf(transferApplicationModel1.getId()));
-        LoanModel loanModel = createLoanByUserId("testuser",10001);
-
+        BaseParam baseParam = new BaseParam();
+        baseParam.setUserId("testuer1");
+        transferApplicationDetailRequestDto.setBaseParam(baseParam);
+        LoanModel loanModel = createLoanByUserId("testuer1",10001);
         TransferApplicationDetailDto transferApplicationDetailDto = createTransferApplicationDetailDto(transferApplicationModel1, loanModel);
         when(transferService.getTransferApplicationDetailDto(anyLong(),anyString(), anyInt())).thenReturn(transferApplicationDetailDto);
 
         BaseResponseDto<TransferApplicationDetailResponseDataDto> transferApplicationDetailResponseDataDto = mobileAppTransferApplicationService.transferApplicationById(transferApplicationDetailRequestDto);
 
+        assertEquals("ZR0001", transferApplicationDetailResponseDataDto.getData().getName());
+        assertEquals("10001", transferApplicationDetailResponseDataDto.getData().getLoanId());
+        assertEquals("店铺资金周转", transferApplicationDetailResponseDataDto.getData().getLoanName());
 
     }
 
@@ -337,6 +342,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
         transferApplicationModel.setTransferTime(new Date());
         transferApplicationModel.setApplicationTime(new Date());
         transferApplicationModel.setLeftPeriod(2);
+        transferApplicationModel.setDeadline(new Date());
         return transferApplicationModel;
     }
 
@@ -434,11 +440,21 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
     private TransferApplicationDetailDto createTransferApplicationDetailDto(TransferApplicationModel transferApplicationModel, LoanModel loanModel){
         TransferApplicationDetailDto transferApplicationDetailDto = new TransferApplicationDetailDto();
+        transferApplicationDetailDto.setId(transferApplicationModel.getId());
+        transferApplicationDetailDto.setName(transferApplicationModel.getName());
         transferApplicationDetailDto.setLoginName(transferApplicationModel.getLoginName());
+        transferApplicationDetailDto.setLoanId(loanModel.getId());
+        transferApplicationDetailDto.setProductType(ProductType.JYF);
         transferApplicationDetailDto.setLoanName(loanModel.getName());
-        transferApplicationDetailDto.setBalance("100.00");
-        transferApplicationDetailDto.setBaseRate(13.0);
+        transferApplicationDetailDto.setLoanType(loanModel.getType().getName());
+        transferApplicationDetailDto.setInvestId(transferApplicationModel.getInvestAmount());
+        transferApplicationDetailDto.setTransferAmount(String.valueOf(transferApplicationModel.getTransferAmount()));
+        transferApplicationDetailDto.setBaseRate(loanModel.getBaseRate());
+        transferApplicationDetailDto.setActivityRate(loanModel.getActivityRate());
+        transferApplicationDetailDto.setLeftPeriod(transferApplicationModel.getLeftPeriod());
+        transferApplicationDetailDto.setExpecedInterest("1000");
         transferApplicationDetailDto.setDeadLine(transferApplicationModel.getDeadline());
+        transferApplicationDetailDto.setTransferStatus(transferApplicationModel.getStatus());
         return transferApplicationDetailDto;
     }
 
