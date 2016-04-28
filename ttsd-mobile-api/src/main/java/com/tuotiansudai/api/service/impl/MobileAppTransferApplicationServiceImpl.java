@@ -5,6 +5,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppTransferApplicationService;
+import com.tuotiansudai.dto.TransferApplicationDetailDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.dto.BasePaginationDataDto;
@@ -254,6 +255,18 @@ public class MobileAppTransferApplicationServiceImpl implements MobileAppTransfe
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         dto.setData(transferApplicationResponseDataDto);
+        return dto;
+    }
+
+    public BaseResponseDto transferApplicationById(TransferApplicationDetailRequestDto requestDto){
+        BaseResponseDto<TransferApplicationDetailResponseDataDto> dto = new BaseResponseDto();
+        String transferApplicationId = requestDto.getTransferApplicationId();
+        String loginName = requestDto.getBaseParam().getUserId();
+        TransferApplicationDetailDto transferApplicationDetailDto = transferService.getTransferApplicationDetailDto(Long.parseLong(transferApplicationId),loginName, 3);
+        TransferApplicationDetailResponseDataDto transferApplicationDetailResponseDataDto = new TransferApplicationDetailResponseDataDto(transferApplicationDetailDto);
+        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        dto.setData(transferApplicationDetailResponseDataDto);
         return dto;
     }
 }

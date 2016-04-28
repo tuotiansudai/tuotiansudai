@@ -7,6 +7,7 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyUser;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Before;
@@ -65,8 +66,11 @@ public class LoanServiceTest {
     @Autowired
     private UserRoleMapper userRoleMapper;
 
-   @Autowired
+    @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private RandomUtils randomUtils;
 
     @Before
     public void createLoanTitle(){
@@ -454,7 +458,7 @@ public class LoanServiceTest {
         InvestModel investModel1 = new InvestModel();
         investModel1.setLoginName("loginName1");
         investModel1.setId(100000L);
-        assertEquals("log***", loanService.encryptLoginName("", investModel1.getLoginName(), 3, investModel1.getId()));
+        assertEquals("log***", randomUtils.encryptLoginName("", investModel1.getLoginName(), 3, investModel1.getId()));
     }
 
     @Test
@@ -463,7 +467,7 @@ public class LoanServiceTest {
         investModel1.setLoginName("ttdblvjing");
         investModel1.setId(1000002L);
 
-        assertEquals(this.getDefaultkey(), loanService.encryptLoginName("", investModel1.getLoginName(), 3, investModel1.getId()));
+        assertEquals(this.getDefaultkey(), randomUtils.encryptLoginName("", investModel1.getLoginName(), 3, investModel1.getId()));
     }
 
     @Test
@@ -472,7 +476,7 @@ public class LoanServiceTest {
         investModel1.setLoginName("ttdblvjing");
         investModel1.setId(1000002L);
 
-        assertEquals("ttdblvjing", loanService.encryptLoginName("ttdblvjing", investModel1.getLoginName(), 3, investModel1.getId()));
+        assertEquals("ttdblvjing", randomUtils.encryptLoginName("ttdblvjing", investModel1.getLoginName(), 3, investModel1.getId()));
     }
 
     @Test
@@ -481,7 +485,7 @@ public class LoanServiceTest {
         investModel1.setLoginName("ttdblvjing");
         investModel1.setId(1000002L);
 
-        assertEquals(this.getDefaultkey(), loanService.encryptLoginName("loginName2", investModel1.getLoginName(), 3, investModel1.getId()));
+        assertEquals(this.getDefaultkey(), randomUtils.encryptLoginName("loginName2", investModel1.getLoginName(), 3, investModel1.getId()));
     }
 
     @Test
@@ -490,7 +494,7 @@ public class LoanServiceTest {
         investModel1.setLoginName("loginName3");
         investModel1.setId(1000003L);
 
-        assertEquals("log***", loanService.encryptLoginName("loginName2", investModel1.getLoginName(), 3, investModel1.getId()));
+        assertEquals("log***", randomUtils.encryptLoginName("loginName2", investModel1.getLoginName(), 3, investModel1.getId()));
     }
 
     private String getDefaultkey(){

@@ -66,11 +66,19 @@ public class MobileAppTransferApplicationController extends MobileAppBaseControl
         return mobileAppTransferApplicationService.transferPurchase(requestDto);
     }
 
-    @RequestMapping(value = "get/transfer-application-list", method = RequestMethod.POST)
+    @RequestMapping(value = "/get/transfer-application-list", method = RequestMethod.POST)
     @ResponseBody
     public BaseResponseDto transferApplicationList(@RequestBody TransferApplicationListRequestDto requestDto) {
         requestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppTransferApplicationService.transferApplicationList(requestDto);
     }
+
+    @RequestMapping(value = "/get/transfer-application", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseResponseDto transferApplicationDetail(@RequestBody TransferApplicationDetailRequestDto requestDto) {
+        requestDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppTransferApplicationService.transferApplicationById(requestDto);
+    }
+
 
 }
