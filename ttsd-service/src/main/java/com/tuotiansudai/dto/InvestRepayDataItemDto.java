@@ -10,6 +10,8 @@ import java.util.Date;
 
 public class InvestRepayDataItemDto {
 
+    private long investId;
+
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date repayDate;
 
@@ -64,6 +66,7 @@ public class InvestRepayDataItemDto {
     public InvestRepayDataItemDto generateInvestRepayDataItemDto(InvestRepayModel model) {
         InvestRepayDataItemDto investRepayDataItemDto = new InvestRepayDataItemDto();
         investRepayDataItemDto.setLoan(model.getLoan());
+        investRepayDataItemDto.setInvestId(model.getInvestId());
         investRepayDataItemDto.setPeriod(model.getPeriod());
         investRepayDataItemDto.setActualRepayDate(model.getActualRepayDate());
         investRepayDataItemDto.setRepayDate(model.getRepayDate());
@@ -190,5 +193,13 @@ public class InvestRepayDataItemDto {
 
     public void setLoan(LoanModel loan) {
         this.loan = loan;
+    }
+
+    public long getInvestId() {
+        return investId;
+    }
+
+    public void setInvestId(long investId) {
+        this.investId = investId;
     }
 }

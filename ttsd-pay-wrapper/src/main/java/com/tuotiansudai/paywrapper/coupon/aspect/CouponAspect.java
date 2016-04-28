@@ -111,7 +111,7 @@ public class CouponAspect {
                     UserGroup.AGENT,
                     UserGroup.CHANNEL,
                     UserGroup.STAFF,
-                    UserGroup.STAFF_RECOMMEND_LEVEL_ONE),null);
+                    UserGroup.STAFF_RECOMMEND_LEVEL_ONE),null,null);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }

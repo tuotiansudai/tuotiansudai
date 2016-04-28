@@ -29,18 +29,18 @@
         <p class="text-bg">Let's go！！！</p>
         <p class="text-pro">
             <span class="product-left">
-                <img src="${staticServer}/images/sign/actor/birth/product-three.png">
+                <img src="${staticServer}/images/sign/actor/birth/product-three-new.png">
                 <a href="/loan-list?productType=WYX" class="click-btn time-btn"></a>
             </span>
             <span class="product-right">
-                <img src="${staticServer}/images/sign/actor/birth/product-six.png">
+                <img src="${staticServer}/images/sign/actor/birth/product-six-new.png">
                 <a href="/loan-list?productType=JYF" class="click-btn time-btn"></a>
             </span>
         </p>
         <p class="text-bg">活动规则</p>
         <ul class="rule-list">
             <li>1.本活动适用于平台注册用户生日当月（以绑定的身份证为准）；</li>
-            <li>2.活动期间投资产品享受首月收益加倍福利；</li>
+            <li>2.活动期间投资产品享受首月预期年化收益加倍福利；</li>
             <li>3.翻倍所得收益，体现在该笔投资项目收益中，可在“我的账户”中查询;</li>
             <li>4.本次活动不限买入金额，不限购买笔数，多买多得;</li>
             <li>5.本次活动不可与平台其他优惠券同时使用。</li>

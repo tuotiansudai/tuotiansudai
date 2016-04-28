@@ -16,7 +16,7 @@
                             <b><@percentInteger>${loan.basicRate}</@percentInteger><@percentFraction>${loan.basicRate}</@percentFraction></b>
                             <#if loan.activityRate!=0>+<@percentInteger>${loan.activityRate}</@percentInteger><@percentFraction>${loan.activityRate}</@percentFraction></#if>%
                         </em>
-                        <i>年化收益</i>
+                        <i>预期年化收益</i>
                     </div>
                 </div>
             </div>
@@ -35,7 +35,7 @@
             </#if>
         </div>
         <div class="account-info fl">
-            <h5 class="l-title">拓天速贷提醒您：理财非存款，投资需谨慎！</h5>
+            <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>
             <#if ["PREHEAT", "RAISING"]?seq_contains(loan.loanStatus)>
                 <form action="/invest" method="post" id="investForm">
                     <dl class="account-list">
@@ -49,7 +49,7 @@
                         <dd><span class="fl">每人限投：</span><em class="fr">${loan.maxInvestAmount} 元</em></dd>
                         <dd class="invest-amount tl" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
                             <span class="fl">投资金额：</span>
-                            <input type="text" name="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" data-min-invest-amount="<@amount>${loan.minInvestAmount?string.computer}</@amount>" placeholder="0.00" value="${investAmount!loan.maxAvailableInvestAmount}"
+                            <input type="text" name="amount" data-l-zero="deny" data-v-min="0.00" data-min-invest-amount="<@amount>${loan.minInvestAmount?string.computer}</@amount>" placeholder="0.00" value="${investAmount!loan.maxAvailableInvestAmount}"
                                    data-no-password-remind="${loan.hasRemindInvestNoPassword?c}"
                                    data-no-password-invest="${loan.investNoPassword?c}"
                                    data-auto-invest-on="${loan.autoInvest?c}"

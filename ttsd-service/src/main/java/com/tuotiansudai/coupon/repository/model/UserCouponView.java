@@ -49,6 +49,8 @@ public class UserCouponView implements Serializable, Comparable<UserCouponView> 
 
     private ProductType loanProductType;
 
+    private UserGroup userGroup;
+
     public UserCouponView() {
     }
 
@@ -186,6 +188,14 @@ public class UserCouponView implements Serializable, Comparable<UserCouponView> 
 
     public void setStatus(InvestStatus status) {
         this.status = status;
+    }
+
+    public UserGroup getUserGroup() {
+        return userGroup;
+    }
+
+    public void setUserGroup(UserGroup userGroup) {
+        this.userGroup = userGroup;
     }
 
     private int getStatusCode() {

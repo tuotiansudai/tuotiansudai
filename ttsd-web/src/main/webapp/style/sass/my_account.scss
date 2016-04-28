@@ -1328,7 +1328,7 @@ body{
     .product-type-text {
       position: absolute;
       left: 108px;
-      bottom: 2px;
+      bottom: 10px;
       width: 86px;
       text-align: center;
       border: 1px dashed #ff752a;
@@ -1967,21 +1967,70 @@ body{
     }
   }
   .filters-list {
-    float: left;
+    float:left;
     width: 100%;
-
+    position: relative;
     li {
-      float: left;
+      float:left;
       color: #4c4c4c;
       font-size: 12px;
       padding: 5px 15px;
       margin-right: 10px;
       cursor: pointer;
-
       &.active {
         color: #fff;
         background: #ff752a;
         border-radius: 5px;
+      }
+    }
+    .get-coupon-code{
+      width:375px;
+      height:35px;
+      position: absolute;
+      top:0;
+      right:0;
+      label{
+        float:right;
+        span{
+          float:left;
+          line-height: 33px;
+        }
+        .coupon-by-code{
+          float:left;
+        }
+        .submit-code{
+          float:left;
+          margin-left:10px;
+          padding: 6px 35px;
+        }
+        p{
+          &.tip-text{
+            position: absolute;
+            top:35px;
+            left:100px;
+            width:160px;
+            display:none;
+          }
+          &.error-color{
+            display:block;
+            color:#ff1010;
+            .fa-times-circle{
+              display:block;
+            }
+          }
+          &.success-color{
+            display:block;
+            color: #2ac30c;
+            .fa-check-circle{
+              display:block;
+            }
+          }
+          i{
+            float:left;
+            margin-top:10px;
+            display:none;
+          }
+        }
       }
     }
   }
@@ -2009,11 +2058,10 @@ body{
         }
       }
       li {
-        float: left;
+        float:left;
         width: 285px;
         margin-top: 35px;
         margin-right: 90px;
-
         &.yellow-type {
           .top-com {
             .left-name {
@@ -2213,6 +2261,206 @@ body{
               }
               .see-detail {
                 background: #ff5984;
+              }
+            }
+          }
+        }
+        &.yellow-type-get {
+          .top-com {
+            .left-name {
+              background: #ff752a;
+              color: #fff;
+
+              i {
+                border: 1px solid #ff752a;
+              }
+            }
+            .right-coupon {
+              border: 1px solid #ff752a;
+              background: url("/images/sign/yellow-bg-get.png") no-repeat;
+              background-position: 180px 10px;
+
+              p {
+                color: #ff752a;
+
+                .pro-icon {
+                  border: 1px solid #ff752a;
+
+                  em {
+                    &.circle-com {
+                      background: #ff752a;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .bottom-time {
+            a {
+              background: #ff752a;
+              cursor: pointer;
+            }
+          }
+          .detail-com {
+            p {
+              &.bottom-line {
+                border-bottom: 1px dashed #ff752a;
+              }
+              span {
+                color: #ff752a;
+              }
+              .see-detail {
+                background: #ff752a;
+              }
+            }
+          }
+        }
+        &.new-type-get {
+          .top-com {
+            .left-name {
+              background: #ffae00;
+              color: #fff;
+
+              i {
+                border: 1px solid #ffae00;
+              }
+            }
+            .right-coupon {
+              border: 1px solid #ffae00;
+              background: url("/images/sign/new-bg-get.png") no-repeat;
+              background-position: 180px 10px;
+
+              p {
+                color: #ffae00;
+
+                .pro-icon {
+                  border: 1px solid #ffae00;
+
+                  em {
+                    &.circle-com {
+                      background: #ffae00;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .bottom-time {
+            a {
+              background: #ffae00;
+              cursor: pointer;
+            }
+          }
+          .detail-com {
+            p {
+              &.bottom-line {
+                border-bottom: 1px dashed #ffae00;
+              }
+              span {
+                color: #ffae00;
+              }
+              .see-detail {
+                background: #ffae00;
+              }
+            }
+          }
+        }
+        &.bite-type-get {
+          .top-com {
+            .left-name {
+              background: #ff7b7b;
+              color: #fff;
+
+              i {
+                border: 1px solid #ff7b7b;
+              }
+            }
+            .right-coupon {
+              border: 1px solid #ff7b7b;
+              background: url("/images/sign/bite-bg-get.png") no-repeat;
+              background-position: 180px 10px;
+
+              p {
+                color: #ff7b7b;
+
+                .pro-icon {
+                  border: 1px solid #ff7b7b;
+
+                  em {
+                    &.circle-com {
+                      background: #ff7b7b;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .bottom-time {
+            a {
+              background: #ff7b7b;
+              cursor: pointer;
+            }
+          }
+          .detail-com {
+            p {
+              &.bottom-line {
+                border-bottom: 1px dashed #ff7b7b;
+              }
+              span {
+                color: #ff7b7b;
+              }
+              .see-detail {
+                background: #ff7b7b;
+              }
+            }
+          }
+        }
+        &.default-type-get {
+          .top-com {
+            .left-name {
+              background: #ccc;
+              color: #fff;
+
+              i {
+                border: 1px solid #ccc;
+              }
+            }
+            .right-coupon {
+              border: 1px solid #ccc;
+              background: url("/images/sign/default-type-get.png") no-repeat;
+              background-position: 180px 10px;
+
+              p {
+                color: #ccc;
+
+                .pro-icon {
+                  border: 1px solid #ccc;
+
+                  em {
+                    &.circle-com {
+                      background: #ccc;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .bottom-time {
+            a {
+              background: #ccc;
+              cursor: pointer;
+            }
+          }
+          .detail-com {
+            p {
+              &.bottom-line {
+                border-bottom: 1px dashed #ff752a;
+              }
+              span {
+                color: #ff7b7b;
+              }
+              .see-detail {
+                background: #ff752a;
               }
             }
           }
