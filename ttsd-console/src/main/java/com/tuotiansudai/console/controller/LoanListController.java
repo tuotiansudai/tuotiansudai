@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -32,13 +35,13 @@ public class LoanListController {
                                         @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                         @RequestParam(value = "index", required = false, defaultValue = "1") int index,
                                         @RequestParam(value = "loanName", required = false) String loanName,
-                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize){
         int loanListCount = loanService.findLoanListCount(status, loanId, loanName,
-                startTime == null ? new DateTime(0).toDate() : startTime,
-                endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : endTime);
+                startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
+                endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate());
         List<LoanListDto> loanListDtos = loanService.findLoanList(status, loanId, loanName,
-                startTime == null ? new DateTime(0).toDate() : startTime,
-                endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : endTime,
+                startTime == null ? new DateTime(0).toDate() : new DateTime(startTime).withTimeAtStartOfDay().toDate(),
+                endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate(),
                 index, pageSize);
         ModelAndView modelAndView = new ModelAndView("/loan-list");
         modelAndView.addObject("loanListCount", loanListCount);
@@ -57,5 +60,4 @@ public class LoanListController {
         modelAndView.addObject("endTime", endTime);
         return modelAndView;
     }
-
 }

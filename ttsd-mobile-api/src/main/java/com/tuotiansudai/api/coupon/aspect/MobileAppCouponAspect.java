@@ -36,7 +36,7 @@ public class MobileAppCouponAspect {
                     UserGroup.CHANNEL,
                     UserGroup.STAFF,
                     UserGroup.STAFF_RECOMMEND_LEVEL_ONE,
-                    UserGroup.IMPORT_USER),null);
+                    UserGroup.IMPORT_USER),null,null);
         } catch (Exception e) {
             logger.error("after user login aspect fail ", e);
         }

@@ -22,6 +22,7 @@
         <result column="created_time" property="createdTime"/>
         <result column="invest_id" property="investId"/>
         <result column="status" property="status"/>
+        <result column="exchange_code" property="exchangeCode"/>
     </resultMap>
 
     <resultMap id="useRecordMap" type="UserCouponView">
@@ -42,11 +43,12 @@
         <result column="birthday_benefit" property="birthdayBenefit"/>
         <result column="invest_lower_limit" property="investLowerLimit"/>
         <result column="status" property="status"/>
+        <result column="user_group" property="userGroup"/>
     </resultMap>
 
     <insert id="create" parameterType="UserCouponModel" useGeneratedKeys="true" keyProperty="id">
-        insert into user_coupon (login_name, coupon_id, start_time, end_time, created_time)
-        value(#{loginName}, #{couponId}, #{startTime}, #{endTime}, #{createdTime})
+        insert into user_coupon (login_name, coupon_id, start_time, end_time, created_time, exchange_code)
+        value(#{loginName}, #{couponId}, #{startTime}, #{endTime}, #{createdTime}, #{exchangeCode})
     </insert>
 
     <update id="update" parameterType="UserCouponModel">
@@ -103,7 +105,8 @@
             uc.end_time as end_time,
             (c.birthday_benefit + 1) as birthday_benefit,
             c.invest_lower_limit as invest_lower_limit,
-            uc.status as status
+            uc.status as status,
+            c.user_group
         from user_coupon uc
         join coupon c on uc.coupon_id=c.id
         where
@@ -130,7 +133,8 @@
             uc.expected_interest - uc.expected_fee as expected_income,
             (c.birthday_benefit + 1) as birthday_benefit,
             c.invest_lower_limit as invest_lower_limit,
-            uc.status as status
+            uc.status as status,
+            c.user_group
         from user_coupon uc
         join coupon c on uc.coupon_id=c.id
         join loan l on l.id=uc.loan_id
@@ -151,7 +155,8 @@
             uc.end_time as end_time,
             (c.birthday_benefit + 1) as birthday_benefit,
             c.invest_lower_limit as invest_lower_limit,
-            uc.status as status
+            uc.status as status,
+            c.user_group
         from user_coupon uc
         join coupon c on uc.coupon_id=c.id
         where

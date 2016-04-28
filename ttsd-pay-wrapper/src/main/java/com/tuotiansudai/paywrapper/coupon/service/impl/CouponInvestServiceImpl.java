@@ -143,6 +143,6 @@ public class CouponInvestServiceImpl implements CouponInvestService {
                 UserGroup.INVESTED_USER,
                 UserGroup.REGISTERED_NOT_INVESTED_USER,
                 UserGroup.IMPORT_USER),
-                null);
+                null, null);
     }
 }

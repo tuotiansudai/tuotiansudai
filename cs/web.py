@@ -161,7 +161,8 @@ class InvestHandler(BaseHandler):
            `actual_repay_date`,
            `actual_interest`,
            `actual_fee`,
-           `status`
+           `status`,
+           `id`
       FROM `invest_repay`
      WHERE `invest_id`= %s
     '''
