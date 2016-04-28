@@ -39,6 +39,14 @@
         <li class="active">未使用</li>
         <li>已使用</li>
         <li>已过期</li>
+        <div class="get-coupon-code">
+            <label for="couponByCode">
+                <span>输入兑换码：</span>
+                <input type="text" class="coupon-by-code" id="couponByCode" maxlength="14">
+                <button type="button" class="btn btn-primary submit-code" id="submitCode">兑换</button>
+                <p class="tip-text" id="errorText"><i class="fa fa-times-circle"></i><i class="fa fa-check-circle"></i><span>兑换失败，请重试</span></p>
+            </label>
+        </div>
     </ul>
     <div class="model-list">
 
@@ -48,13 +56,23 @@
                 <#list unusedCoupons as coupon>
                     <#assign unusedCouponClass = ''>
                     <#if coupon.couponType == 'RED_ENVELOPE'>
-                        <#assign unusedCouponClass = 'yellow-type'>
-                    <#elseif coupon.couponType == 'NEWBIE_COUPON'>
-                        <#assign unusedCouponClass = 'new-type'>
-                    <#elseif coupon.couponType == 'INVEST_COUPON'>
-                        <#assign unusedCouponClass = 'new-type'>
+                        <#if coupon.userGroup == 'EXCHANGER_CODE'>
+                            <#assign unusedCouponClass = 'yellow-type-get'>
+                        <#else>
+                            <#assign unusedCouponClass = 'yellow-type'>
+                        </#if>
+                    <#elseif coupon.couponType == 'NEWBIE_COUPON' || coupon.couponType == 'INVEST_COUPON'>
+                        <#if coupon.userGroup == 'EXCHANGER_CODE'>
+                            <#assign unusedCouponClass = 'new-type-get'>
+                        <#else>
+                            <#assign unusedCouponClass = 'new-type'>
+                        </#if>
                     <#elseif coupon.couponType == 'INTEREST_COUPON'>
-                        <#assign unusedCouponClass = 'bite-type'>
+                        <#if coupon.userGroup == 'EXCHANGER_CODE'>
+                            <#assign unusedCouponClass = 'bite-type-get'>
+                        <#else>
+                            <#assign unusedCouponClass = 'bite-type'>
+                        </#if>
                     </#if>
                     <li class="${unusedCouponClass}">
                         <div class="top-com">
@@ -122,13 +140,23 @@
                 <#list useRecords as record>
                     <#assign usedCouponClass = ''>
                     <#if record.couponType == 'RED_ENVELOPE'>
-                        <#assign usedCouponClass = 'yellow-type'>
-                    <#elseif record.couponType == 'NEWBIE_COUPON'>
-                        <#assign usedCouponClass = 'new-type'>
-                    <#elseif record.couponType == 'INVEST_COUPON'>
-                        <#assign usedCouponClass = 'new-type'>
+                        <#if record.userGroup == 'EXCHANGER_CODE'>
+                            <#assign usedCouponClass = 'yellow-type-get'>
+                        <#else>
+                            <#assign usedCouponClass = 'yellow-type'>
+                        </#if>
+                    <#elseif record.couponType == 'NEWBIE_COUPON' || record.couponType == 'INVEST_COUPON'>
+                        <#if record.userGroup == 'EXCHANGER_CODE'>
+                            <#assign usedCouponClass = 'new-type-get'>
+                        <#else>
+                            <#assign usedCouponClass = 'new-type'>
+                        </#if>
                     <#elseif record.couponType == 'INTEREST_COUPON'>
-                        <#assign usedCouponClass = 'bite-type'>
+                        <#if record.userGroup == 'EXCHANGER_CODE'>
+                            <#assign usedCouponClass = 'bite-type-get'>
+                        <#else>
+                            <#assign usedCouponClass = 'bite-type'>
+                        </#if>
                     </#if>
                     <li class="${usedCouponClass}">
                         <div class="top-com">
@@ -204,7 +232,7 @@
         <div class="coupon-com">
             <ul class="coupon-list">
                 <#list expiredCoupons as coupon>
-                    <li>
+                    <li <#if coupon.userGroup == 'EXCHANGER_CODE'>class="default-type-get"</#if> >
                         <div class="top-com">
                             <div class="left-name">
                                 <span>${coupon.couponType.getName()}</span>
