@@ -243,7 +243,7 @@
                             <img src="${staticServer}/images/sign/actor/ranklist/pointer.png" alt="pointer"/>
                         </div>
                         <div class="rotate-btn">
-                            <img id="rotateCd" src="${staticServer}/images/sign/actor/ranklist/gift-list-cd.png"
+                            <img id="rotateCd" src="${staticServer}/images/sign/actor/ranklist/gift-list-cd-new.png"
                                  alt="turntable"/>
                         </div>
                     </div>
@@ -599,7 +599,7 @@
                             <img src="${staticServer}/images/sign/actor/ranklist/pointer.png" width="100%" alt="pointer"/>
                         </div>
                         <div class="rotate-btn">
-                            <img id="rotateCdPhone" src="${staticServer}/images/sign/actor/ranklist/gift-list-cd.png"
+                            <img id="rotateCdPhone" src="${staticServer}/images/sign/actor/ranklist/gift-list-cd-new.png"
                                  width="100%" alt="turntable"/>
                         </div>
                     </div>
