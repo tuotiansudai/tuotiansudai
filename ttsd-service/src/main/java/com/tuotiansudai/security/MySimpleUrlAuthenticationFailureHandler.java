@@ -48,31 +48,30 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         loginLogService.generateLoginLog(request.getParameter("username"), Source.WEB, RequestIPParser.parse(request), null, false);
 
-        if (this.isAjaxRequest(request)) {
-            BaseDto<LoginDto> baseDto = new BaseDto<>();
-            LoginDto loginDto = new LoginDto();
-            baseDto.setData(loginDto);
-            this.updateUserStatus(request.getParameter("username"));
-            loginDto.setLocked(exception instanceof DisabledException);
-            loginDto.setCaptchaNotMatch(exception instanceof CaptchaNotMatchException);
+        BaseDto<LoginDto> baseDto = new BaseDto<>();
+        LoginDto loginDto = new LoginDto();
+        baseDto.setData(loginDto);
+        this.updateUserStatus(request.getParameter("username"));
+        loginDto.setLocked(exception instanceof DisabledException);
+        loginDto.setCaptchaNotMatch(exception instanceof CaptchaNotMatchException);
 
-            String jsonBody = objectMapper.writeValueAsString(baseDto);
-            response.setContentType("application/json; charset=UTF-8");
-            response.setCharacterEncoding("UTF-8");
-            PrintWriter out = response.getWriter();
-            out.print(jsonBody);
-            out.close();
-            return;
+        String jsonBody = objectMapper.writeValueAsString(baseDto);
+        response.setContentType("application/json; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            writer.print(jsonBody);
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
         }
 
-        super.onAuthenticationFailure(request, response, exception);
     }
 
-    private boolean isAjaxRequest(HttpServletRequest request) {
-        return "XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"));
-    }
-
-    @Transactional
     private void updateUserStatus(String loginName) {
         UserModel userModel = userMapper.findByLoginNameOrMobile(loginName);
         if (userModel == null) {
@@ -92,7 +91,7 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
                 userMapper.updateUser(userModel);
             }
         } else {
-            redisWrapperClient.set(redisKey, String.valueOf(1));
+            redisWrapperClient.set(redisKey, "1");
         }
     }
 }

@@ -36,10 +36,10 @@ public class MyAccessDeniedHandler extends AccessDeniedHandlerImpl {
         String requestURI = request.getRequestURI();
         if (!errorPageMapping.containsKey(requestURI)) {
             if (isAjaxRequest(request)) {
-                String header = request.getHeader(HttpHeaders.REFERER);
+                String referer = request.getHeader(HttpHeaders.REFERER);
                 PrintWriter writer = response.getWriter();
-                if (!Strings.isNullOrEmpty(header)) {
-                    writer.print(header);
+                if (!Strings.isNullOrEmpty(referer)) {
+                    writer.print(referer);
                 }
                 response.setStatus(HttpStatus.FORBIDDEN.value());
                 return;
