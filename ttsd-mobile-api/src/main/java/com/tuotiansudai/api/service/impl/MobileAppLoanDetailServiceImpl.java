@@ -140,9 +140,10 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     private List<EvidenceResponseDataDto> getEvidenceByLoanId(long loanId) {
         EvidenceResponseDataDto evidenceResponseDataDto;
         List<LoanTitleRelationModel> loanTitleRelationModels = loanTitleRelationMapper.findLoanTitleRelationAndTitleByLoanId(loanId);
-        List<String> imageUrlList = Lists.newArrayList();
+        List<String> imageUrlList;
         List<EvidenceResponseDataDto> evidenceResponseDataDtos = Lists.newArrayList();
         for (LoanTitleRelationModel loanTitleRelationModel : loanTitleRelationModels) {
+            imageUrlList = Lists.newArrayList();
             evidenceResponseDataDto = new EvidenceResponseDataDto();
             String materialUrl = loanTitleRelationModel.getApplicationMaterialUrls();
             if (StringUtils.isNotEmpty(materialUrl)) {
