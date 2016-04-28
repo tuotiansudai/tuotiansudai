@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MobileAppNoPasswordInvestTurnOnServiceImpl implements MobileAppNoPasswordInvestTurnOnService {
+
     @Autowired
     private AccountMapper accountMapper;
 

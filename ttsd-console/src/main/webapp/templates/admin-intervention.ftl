@@ -29,7 +29,7 @@
             <label for="amount" class="col-sm-1 control-label">金额</label>
 
             <div class="col-sm-8 col-lg-7">
-                <input id="amount" name="amount" type="text" class="form-control" data-d-group="4" data-l-zero="deny"
+                <input id="amount" name="amount" type="text" class="form-control" data-l-zero="deny"
                        data-v-min="0.00" placeholder="0.00" value="${data.amount!}">
             </div>
         </div>
