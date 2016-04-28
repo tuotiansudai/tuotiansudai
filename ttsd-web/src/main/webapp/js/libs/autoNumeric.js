@@ -1,4 +1,4 @@
-﻿/**
+/**
 * autoNumeric.js
 * @author: Bob Knothe
 * @author: Sokolov Yura
