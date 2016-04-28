@@ -17,11 +17,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -75,10 +78,20 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         loanModel.setVerifyTime(new Date());
         loanModel.setUpdateTime(new Date());
         loanModel.setRaisingCompleteTime(new Date());
+        List<LoanTitleRelationModel> loanTitleRelationModels = new ArrayList<>();
+        LoanTitleRelationModel idCardModel = new LoanTitleRelationModel();
+        idCardModel.setTitle("身份证");
+        idCardModel.setApplicationMaterialUrls("upload/20160331/92041459408741525.jpg,upload/20160331/46731459408741726.jpg");
+        LoanTitleRelationModel houseCardModel = new LoanTitleRelationModel();
+        houseCardModel.setTitle("房产证");
+        houseCardModel.setApplicationMaterialUrls("upload/20160331/92041459408741525.jpg,upload/20160331/46731459408741726.jpg");
+        loanTitleRelationModels.add(idCardModel);
+        loanTitleRelationModels.add(houseCardModel);
 
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(investMapper.countSuccessInvest(anyLong())).thenReturn(6L);
         when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(10000L);
+        when(loanTitleRelationMapper.findLoanTitleRelationAndTitleByLoanId(anyLong())).thenReturn(loanTitleRelationModels);
         InvestModel investModel1 = getFakeInvestModel(id, "loginName1");
         investModel1.setStatus(InvestStatus.SUCCESS);
         InvestModel investModel2 = getFakeInvestModel(id, "loginName2");
@@ -110,16 +123,20 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         loanTitleRelationModel.setTitleId(123);
         loanTitleRelationModel.setApplicationMaterialUrls("upload/20151029/20151029092336060.jpg,upload/20151029/20151029092336003.jpg");
         loanTitleRelationModelList.add(loanTitleRelationModel);
-        when(loanTitleRelationMapper.findByLoanId(anyLong())).thenReturn(loanTitleRelationModelList);
+
         LoanDetailRequestDto loanDetailRequestDto = new LoanDetailRequestDto();
-        loanDetailRequestDto.setLoanId("1111");
+        loanDetailRequestDto.setLoanId("300140750356480");
         BaseResponseDto<LoanDetailResponseDataDto> baseResponseDto = mobileAppLoanDetailService.generateLoanDetail(loanDetailRequestDto);
-        assertEquals(ReturnMessage.SUCCESS.getCode(),baseResponseDto.getCode());
-        assertEquals(6L,baseResponseDto.getData().getInvestedCount().longValue());
+
+
+        assertEquals(ReturnMessage.SUCCESS.getCode(), baseResponseDto.getCode());
+        assertEquals(6L, baseResponseDto.getData().getInvestedCount().longValue());
         assertEquals("100.00",baseResponseDto.getData().getInvestedMoney());
         assertEquals(5,baseResponseDto.getData().getInvestRecord().size());
-
-
+        assertEquals(idCardModel.getTitle(),baseResponseDto.getData().getEvidence().get(0).getTitle());
+        assertEquals(houseCardModel.getTitle(),baseResponseDto.getData().getEvidence().get(1).getTitle());
+        assertNotNull(baseResponseDto.getData().getEvidence().get(0).getImageUrl());
+        assertNotNull(baseResponseDto.getData().getEvidence().get(1).getImageUrl());
     }
 
     private InvestModel getFakeInvestModel(long loanId, String loginName) {
