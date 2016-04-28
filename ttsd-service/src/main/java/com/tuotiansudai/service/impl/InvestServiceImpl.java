@@ -235,7 +235,7 @@ public class InvestServiceImpl implements InvestService {
                     investPaginationItemDataDto.setTransferStatus(view.getTransferStatus().getDescription());
                 }
                 investPaginationItemDataDto.setLastRepayDate(loanRepayMapper.findLastRepayDateByLoanId(view.getLoanId()));
-                LoanRepayModel loanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(view.getLoanId());
+                LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(view.getLoanId());
                 int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(view.getId(),loanRepayModel.getPeriod());
                 investPaginationItemDataDto.setLeftPeriod(leftPeriod);
                 return investPaginationItemDataDto;

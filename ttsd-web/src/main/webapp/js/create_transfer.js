@@ -74,17 +74,7 @@ require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache',
 			})
 			.done(function(data) {
 				if(data.status==true){
-					$.ajax({
-						url: '/transfer/application/'+applyId+'/apply',
-						type: 'POST',
-						dataType: 'json'
-					})
-					.done(function(data) {
-						location.href='/transfer/apply';
-					})
-					.fail(function(data) {
-						layer.msg('申请失败，请重试！');
-					});
+					location.href='/transfer/application/apply?investId='+applyId;
 				}else{
 					layer.open({
 					  title: '温馨提示',

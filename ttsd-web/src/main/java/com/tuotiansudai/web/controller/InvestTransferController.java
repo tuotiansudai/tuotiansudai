@@ -43,10 +43,10 @@ public class InvestTransferController {
         return investTransferService.isAllowTransfer(transferInvestId);
     }
 
-    @RequestMapping(value = "/application/{transferInvestId}/apply", method = RequestMethod.POST)
-    public ModelAndView investApply(@PathVariable long transferInvestId) {
+    @RequestMapping(value = "/application/apply", method = RequestMethod.GET)
+    public ModelAndView investApply(@RequestParam(value = "investId", required = true) long investId) {
         ModelAndView modelAndView = new ModelAndView("/create-transfer-detail");
-        InvestModel investModel = investService.findById(transferInvestId);
+        InvestModel investModel = investService.findById(investId);
         Date deadline = investTransferService.getDeadlineFromNow();
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
@@ -56,7 +56,7 @@ public class InvestTransferController {
         modelAndView.addObject("transferAmountLimit", transferAmountLimit);
         modelAndView.addObject("transferFee", transferFee);
         modelAndView.addObject("deadline", deadline);
-        modelAndView.addObject("transferInvestId", transferInvestId);
+        modelAndView.addObject("transferInvestId", investId);
         return modelAndView;
     }
 

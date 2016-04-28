@@ -37,6 +37,8 @@ public interface LoanRepayMapper {
 
     LoanRepayModel findEnabledLoanRepayByLoanId(long loanId);
 
+    LoanRepayModel findCurrentLoanRepayByLoanId(long loanId);
+
     LoanRepayModel findByLoanIdAndPeriod(@Param(value = "loanId") long loanId,
                                          @Param(value = "period") int period);
 

@@ -73,9 +73,9 @@ public class InvestTransferServiceImpl implements InvestTransferService{
         DateTime dateTime = new DateTime();
         InvestModel investModel = investMapper.findById(transferApplicationId);
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
-        LoanRepayModel loanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(investModel.getLoanId());
+        LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(investModel.getLoanId());
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
-        if (Days.daysBetween(dateTime, new DateTime(loanRepayModel.getRepayDate())).getDays() <= transferRuleModel.getDaysLimit()) {
+        if (Days.daysBetween(dateTime, new DateTime(loanRepayModel.getRepayDate())).getDays() < transferRuleModel.getDaysLimit()) {
             baseDataDto.setStatus(false);
             baseDataDto.setMessage("该项目即将在"+transferRuleModel.getDaysLimit()+"日内回款，暂不可转让，请选择其他项目。");
         } else if (loanModel.getStatus() != LoanStatus.REPAYING){
@@ -97,7 +97,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
             return false;
         }
 
-        LoanRepayModel loanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(investModel.getLoanId());
+        LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(investModel.getLoanId());
 
         if (loanRepayModel == null) {
             return false;
@@ -187,7 +187,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
 
         }
 
-        LoanRepayModel loanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(investModel.getLoanId());
+        LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(investModel.getLoanId());
         if(loanRepayModel == null){
             logger.debug(MessageFormat.format("{0} is completed ",investModel.getLoanId()));
             return false;

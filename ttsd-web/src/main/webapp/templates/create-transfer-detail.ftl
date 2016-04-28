@@ -14,7 +14,7 @@
 					</div>
 					<div class="info-right">
 						<input type="text" class="int-number" id="transferAmount" name="price" value="${(investAmount/100)?string('0.00')!}">
-						<input type="hidden" id="transferInvestId" value="${transferInvestId?computer}">
+						<input type="hidden" id="transferInvestId" value="${transferInvestId?string('0')!}">
 						<span>元</span>
 					</div>
 				</li>
