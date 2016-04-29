@@ -40,6 +40,9 @@ public interface LoanRepayMapper {
     LoanRepayModel findByLoanIdAndPeriod(@Param(value = "loanId") long loanId,
                                          @Param(value = "period") int period);
 
+    List<LoanRepayModel> findByLoanIdAndLTPeriod(@Param(value = "loanId") long loanId,
+                                         @Param(value = "period") int period);
+
     void update(LoanRepayModel loanRepayModel);
 
     long sumSuccessLoanRepayMaxPeriod(@Param(value = "loanId") long loanId);

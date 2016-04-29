@@ -110,6 +110,10 @@
         select * from invest_repay where invest_id = #{investId} and period = #{period}
     </select>
 
+    <select id="findByInvestIdAndLTPeriod" parameterType="map" resultMap="investRepayResultMap">
+        select * from invest_repay where invest_id = #{investId} and period &lt; #{period}
+    </select>
+
     <select id="findCompletedInvestRepayByIdAndPeriod" parameterType="map" resultMap="investRepayResultMap">
         select * from invest_repay where invest_id = #{investId} and period = #{period} and status = 'COMPLETE'
     </select>
