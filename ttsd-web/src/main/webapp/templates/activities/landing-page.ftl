@@ -3,7 +3,7 @@
 
 <div class="landing-container">
     <div class="landing-header">
-        <a href="">访问主页</a>
+        <a href="/">访问主页</a>
     </div>
 	<div class="landing-top">
         <div class="landing-inner">
@@ -27,22 +27,22 @@
                         <li id="mobileErr" class="height"></li>
                         <li class="code">
                             <label for="" class="reg-title">验证码:</label>
-                            <input type="text" id="captcha" name="captcha" placeholder="验证码" maxlength="25" class="captcha" value="">
+                            <input type="text" id="appCaptcha" name="" placeholder="验证码" maxlength="25" class="appCaptcha" value="">
                             <em class="image-captcha">
                                 <img src="" alt=""/>
                             </em>
                             <span class="img-change">换一张</span>
                         </li>
-                        <li id="captchaErr" class="height"></li>
+                        <li id="appCaptchaErr" class="height"></li>
                         <li>
                             <label for="appCaptcha" class="reg-title">手机验证码:</label>
                             <span class="captcha-tag">
-                                <input type="text" id="appCaptcha" name="appCaptcha" class="appCaptcha" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6" value="">
+                                <input type="text" id="captcha" name="captcha" class="captcha" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6" value="">
                                 <button type="button" class="fetch-captcha btn" disabled="disabled">获取验证码</button>
                             </span>
 
                         </li>
-                        <li id="appCaptchaErr" class="height"></li>
+                        <li id="captchaErr" class="height"></li>
 
 
                         <li class="agree-last">
@@ -56,7 +56,7 @@
                         <input type="hidden" name="_csrf" value="010e19c3-6b6e-4f43-bbfd-186c3970e9b8">
 
 
-                        <input type="submit" class="register-user" data-url="" value="立即注册">
+                        <input type="submit" class="register-user" value="立即注册">
                     </ul>
 
                 </form>

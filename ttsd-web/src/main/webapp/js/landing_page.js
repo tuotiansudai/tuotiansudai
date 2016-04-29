@@ -8,7 +8,6 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
             $loginName = $('#login-name'),
             $password = $('#password'),
             $registerUser = $('#register-user'),
-            $appCaptcha = $('#appCaptcha'),
             countdown=60;
 
         //form validate
@@ -35,10 +34,10 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
                     required: true,
                     regex: /^(?=.*[^\d])(.{6,20})$/
                 },
-                captcha: {
+                appCaptcha : {
                     required: true
                 },
-                appCaptcha: {
+                captcha : {
                     required: true,
                     digits: true,
                     maxlength: 6,
@@ -72,10 +71,10 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
                     required: "请输入密码",
                     regex: '6位至20位，不能全是数字'
                 },
-                captcha: {
+                appCaptcha: {
                     required: '请输入验证码'
                 },
-                appCaptcha: {
+                captcha: {
                     required: '请输入手机验证码',
                     digits: '验证码格式不正确',
                     maxlength: '验证码格式不正确',
@@ -85,40 +84,8 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
                 agreement: {
                     required: "请同意服务协议"
                 }
-            },
-            submitHandler:function(form){
-                //$(form).ajaxSubmit();
-                var captchaVal=$('#captcha').val(),
-                    mobile=$phoneDom.val(),
-                    password = $password.val(),
-                    loginName = $loginName.val(),
-                    appCaptcha = $appCaptcha.val(),
-                    agreement=$('#agreementInput').val();
-
-                $.ajax({
-                    url: '/register/user',
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {
-                        imageCaptcha: captchaVal,
-                        mobile:mobile,
-                        loginName:loginName,
-                        password : password,
-                        captcha : appCaptcha,
-                        agreement:agreement
-                    },
-                })
-                    .done(function() {
-
-                        window.location.href = "/register/account";
-
-                    })
-                    .fail(function() {
-                        //console.log("error");
-                    });
-
-                return false;
             }
+
 
         });
 
@@ -127,10 +94,7 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
             $('.image-captcha img').attr('src', '/register/user/image-captcha?' + new Date().getTime().toString());
         };
         refreshCaptcha();
-        //$registerUser.on('click' ,function(event){
-        //    event.preventDefault();
-        //
-        //});
+
 
         //phone focusout
         $phoneDom.on('focusout', function(event) {
@@ -161,7 +125,7 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
         $fetchCaptcha.on('click', function(event) {
             event.preventDefault();
 
-            var captchaVal=$('#captcha').val(),
+            var captchaVal=$('#appCaptcha').val(),
                 mobile=$phoneDom.val();
              $.ajax({
                  url: '/register/user/send-register-captcha',
