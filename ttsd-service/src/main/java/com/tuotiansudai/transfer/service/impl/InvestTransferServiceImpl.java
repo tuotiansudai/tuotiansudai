@@ -18,6 +18,7 @@ import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
+import com.tuotiansudai.transfer.repository.model.TransferInvestDetailDto;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
@@ -250,13 +251,13 @@ public class InvestTransferServiceImpl implements InvestTransferService{
         dto.setStatus(true);
         return dto;
     }
-
+    
     @Override
     public BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findWebTransferApplicationPaginationList(String transferrerLoginName,List<TransferStatus> statusList ,Integer index, Integer pageSize) {
 
         int count = transferApplicationMapper.findCountTransferApplicationPaginationByLoginName(transferrerLoginName, statusList);
         List<TransferApplicationRecordDto> items = Lists.newArrayList();
-        if(count > 0){
+        if (count > 0) {
             int totalPages = count % pageSize > 0 ? count / pageSize + 1 : count / pageSize;
             index = index > totalPages ? totalPages : index;
             items = transferApplicationMapper.findTransferApplicationPaginationByLoginName(transferrerLoginName, statusList, (index - 1) * pageSize, pageSize);
@@ -280,6 +281,37 @@ public class InvestTransferServiceImpl implements InvestTransferService{
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> dto = new BasePaginationDataDto(index, pageSize, count, records);
         dto.setStatus(true);
         return dto;
+    }
+
+    public BasePaginationDataDto<TransferInvestDetailDto> getInvestTransferList(String investorLoginName,
+                                                               int index,
+                                                               int pageSize,
+                                                               Date startTime,
+                                                               Date endTime,
+                                                               LoanStatus loanStatus) {
+            if (startTime == null) {
+                startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
+            } else {
+                startTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+            }
+
+            if (endTime == null) {
+                endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
+            } else {
+                endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+            }
+
+            List<TransferInvestDetailDto> items = Lists.newArrayList();
+            long count = transferApplicationMapper.findCountInvestTransferPagination(investorLoginName, startTime, endTime, loanStatus);
+
+            if (count > 0) {
+                int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
+                index = index > totalPages ? totalPages : index;
+                items = transferApplicationMapper.findTransferInvestList(investorLoginName, (index - 1) * pageSize, pageSize, startTime, endTime, loanStatus);
+            }
+            BasePaginationDataDto dto = new BasePaginationDataDto(index, pageSize, count, items);
+            dto.setStatus(true);
+            return dto;
     }
 
 }
