@@ -1,4 +1,4 @@
-require(['jquery', 'jquery.ajax.extension', 'jquery.validate', 'jquery.form'], function ($) {
+require(['jquery', 'underscore', 'jquery.ajax.extension', 'jquery.validate', 'jquery.form'], function ($, _) {
 
         var loginFormElement = $('.form-login'),
             loginSubmitElement = $('.login-submit', loginFormElement),
@@ -74,16 +74,17 @@ require(['jquery', 'jquery.ajax.extension', 'jquery.validate', 'jquery.form'], f
                         loginSubmitElement.addClass('loading');
                     },
                     success: function (response) {
-                        if (response.data.status) {
-                            window.location.href = loginFormElement.data('redirect-url');
+                        var data = response.data;
+                        if (data.status) {
+                            window.location.href = _.difference(data.roles, ['USER']).length > 0 ? loginFormElement.data('redirect-url') : "/register/account";
                         } else {
                             refreshCaptcha();
                             loginSubmitElement.removeClass('loading');
-                            if (response.data.isLocked) {
+                            if (data.isLocked) {
                                 errorElement.text("用户已被锁定").css('visibility', 'visible');
                                 return;
                             }
-                            if (response.data.isCaptchaNotMatch) {
+                            if (data.isCaptchaNotMatch) {
                                 errorElement.text("验证码不正确").css('visibility', 'visible');
                                 return;
                             }

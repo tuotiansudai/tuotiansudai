@@ -255,7 +255,7 @@
                             <#else >
                                 <#switch pointTaskDto.name>
                                     <#case "REGISTER">
-                                        <#assign taskLink="/register/user">
+                                        <#assign taskLink="/register/account">
                                         <#break>
                                     <#case "BIND_EMAIL">
                                         <#assign taskLink="/personal-info">

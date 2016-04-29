@@ -3,7 +3,7 @@
 <div class="content-container auto-height personal-info">
     <h4 class="column-title"><em class="tc">个人资料</em></h4>
 
-     <ul class="info-list" id="personInfoBox">
+    <ul class="info-list" id="personInfoBox">
         <li><span class="info-title"> 用户名</span>
             <em class="info">${loginName}</em>
         </li>
@@ -50,12 +50,12 @@
             <#if bankCard??>
                 <em class="info">${bankCard?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}</em>
                 <span class="binding-set">
-                    <i class="fa fa-check-circle ok"></i>已绑定<a class="setlink setBankCard" href="${requestContext.getContextPath()}/bind-card">修改</a>
+                    <i class="fa fa-check-circle ok"></i>已绑定<a class="setlink setBankCard" href="/bind-card">修改</a>
                 </span>
             <#else>
                 <em class="info">绑定银行卡后，您可以进行快捷支付和提现操作</em>
                 <span class="binding-set">
-                    <i class="fa fa-times-circle no"></i>未绑定<a class="setlink setBankCard" href="${requestContext.getContextPath()}/bind-card">绑定</a>
+                    <i class="fa fa-times-circle no"></i>未绑定<a class="setlink setBankCard" href="/bind-card">绑定</a>
                 </span>
             </#if>
         </li>
@@ -66,12 +66,13 @@
             </span>
         </li>
         <#if identityNumber??>
-        <li><span class="info-title"> 支付密码</span>
-            <em class="info">********</em>
+            <li><span class="info-title"> 支付密码</span>
+                <em class="info">********</em>
             <span class="binding-set">
                <i class="fa fa-check-circle ok"></i>已设置<a class="setlink setUmpayPass" href="javascript:void(0);">重置</a>
             </span>
-        </li>
+            </li>
+        </#if>
         <li><span class="info-title"> 免密投资</span>
             <#if noPasswordInvest>
                 <em class="info">您已开启免密投资，投资理财快人一步</em>
@@ -90,7 +91,6 @@
                 </span>
             </#if>
         </li>
-        </#if>
     </ul>
 </div>
 
@@ -103,7 +103,7 @@
             <dt class="requireOpt">请输入您的身份证号</dt>
             <dd><input type="text" id="identityNumber" name="identityNumber" class="input-control"></dd>
         </dl>
-        <dl class="identityCodeError" >
+        <dl class="identityCodeError">
             <dt>您输入的身份证号与当前账号不符，请重新输入。</dt>
         </dl>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -153,23 +153,23 @@
 </div>
 
 <div id="turnOnNoPasswordInvestDOM" class="pad-m popLayer" style="display: none;">
-    <form name="turnOnNoPasswordInvestForm" action="${requestContext.getContextPath()}/agreement" method="post" target="_blank">
-        <div  class="tc text-m">推荐您开通免密投资功能，简化投资过程，理财快人一步。</div>
+    <form name="turnOnNoPasswordInvestForm" action="${requestContext.getContextPath()}/agreement" method="post"  <@global.role hasRole="'INVESTOR', 'LOANER'">target="_blank"</@global.role>>
+        <div class="tc text-m">推荐您开通免密投资功能，简化投资过程，理财快人一步。</div>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="noPasswordInvest" value="true"/>
         <div class="tc person-info-btn" style="margin-top:50px;">
-            <button class="btn  btn-cancel btn-close btn-close-turn-on" type="button" >取消</button>
-            <button class="btn btn-success btn-turn-on" type="submit" >去联动优势授权</button>
+            <button class="btn  btn-cancel btn-close btn-close-turn-on" type="button">取消</button>
+            <button class="btn btn-success btn-turn-on" type="submit">去联动优势授权</button>
         </div>
     </form>
 </div>
 <div id="turnOffNoPasswordInvestDOM" class="pad-m popLayer" style="display: none; ">
     <form id="imageCaptchaForm" name="imageCaptchaForm" action="${requestContext.getContextPath()}/no-password-invest/send-captcha" method="post">
         <dl>
-            <dt >推荐您开通免密投资功能，简化投资过程，理财快人一步，确认关闭吗？</dt>
+            <dt>推荐您开通免密投资功能，简化投资过程，理财快人一步，确认关闭吗？</dt>
             <dd class="mt-20">
-                <span >图形验证码：</span>
-                <input type="text" class="input-control image-captcha-text"  name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
+                <span>图形验证码：</span>
+                <input type="text" class="input-control image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
                 <img src="/no-password-invest/image-captcha" alt="" class="image-captcha"/>
                 <input type="hidden" name="mobile" value="${mobile}"/>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -178,18 +178,18 @@
     </form>
     <form id="turnOffNoPasswordInvestForm" name="turnOffNoPasswordInvestForm" action="${requestContext.getContextPath()}/no-password-invest/disabled" method="post">
         <dl>
-            <dd class="code-number code-number-hidden" >验证码发送到${mobile?replace("^(\\d{3}).*(\\d{4})$","$1****$2","r")}</dd>
+            <dd class="code-number code-number-hidden">验证码发送到${mobile?replace("^(\\d{3}).*(\\d{4})$","$1****$2","r")}</dd>
             <dd>
-                <span >短信验证码：</span>
+                <span>短信验证码：</span>
                 <input type="captcha" name="captcha" class="input-control captcha" placeholder="请输入短信验证码" maxlength="6">
                 <input type="hidden" name="mobile" value="${mobile}"/>
-                <button type="button" class="btn btn-normal get-captcha" disabled="disabled" data-url= "/no-password-invest/send-captcha">获取验证码</button>
+                <button type="button" class="btn btn-normal get-captcha" disabled="disabled" data-url="/no-password-invest/send-captcha">获取验证码</button>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </dd>
         </dl>
         <div class="error-content" style="visibility: visible; height:30px;text-align:left"></div>
         <div class="tc person-info-btn">
-            <button class="btn btn-success btn-cancel" >取消</button>
+            <button class="btn btn-success btn-cancel">取消</button>
             <button class="btn btn-close btn-close-turn-off" type="submit">我要关闭</button>
         </div>
 

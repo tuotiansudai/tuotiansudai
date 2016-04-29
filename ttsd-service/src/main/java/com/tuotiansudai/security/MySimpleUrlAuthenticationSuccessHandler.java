@@ -40,7 +40,7 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
     @Value("${web.login.max.failed.times}")
     private int times;
 
-
+    // 授权成功后处理
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String loginName = userMapper.findByLoginNameOrMobile(request.getParameter("username")).getLoginName();
@@ -49,6 +49,7 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
 
         String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", loginName);
         redisWrapperClient.del(redisKey);
+
         BaseDto<LoginDto> baseDto = new BaseDto<>();
         LoginDto loginDto = new LoginDto();
         baseDto.setData(loginDto);

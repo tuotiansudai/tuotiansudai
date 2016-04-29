@@ -32,7 +32,7 @@ public class AutoInvestController {
     public String autoInvest() {
         String loginName = LoginUserInfo.getLoginName();
         AccountModel accountModel = accountService.findByLoginName(loginName);
-        if (accountModel.isAutoInvest()) {
+        if (accountModel != null && accountModel.isAutoInvest()) {
             AutoInvestPlanModel autoInvestPlan = investService.findAutoInvestPlan(loginName);
             if (autoInvestPlan == null || (!autoInvestPlan.isEnabled())) {
                 return "redirect:/auto-invest/plan";
@@ -48,7 +48,7 @@ public class AutoInvestController {
     private ModelAndView autoInvestAgreement() {
         String loginName = LoginUserInfo.getLoginName();
         AccountModel accountModel = accountService.findByLoginName(loginName);
-        if (!accountModel.isAutoInvest()) {
+        if (accountModel == null || !accountModel.isAutoInvest()) {
             return new ModelAndView("/auto-invest-agreement");
         } else {
             return new ModelAndView("redirect:/auto-invest");

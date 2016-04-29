@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.text.MessageFormat;
 
 @Controller
 @RequestMapping(path = "/register/account")
@@ -26,8 +27,10 @@ public class RegisterAccountController {
     private AccountService accountService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView registerAccount() {
-        return new ModelAndView("/register-account", "responsive", true);
+    public ModelAndView registerAccount(@RequestParam(name = "redirect", required = false, defaultValue = "/") String redirect) {
+        ModelAndView modelAndView = new ModelAndView("/register-account", "responsive", true);
+        modelAndView.addObject("redirect", redirect);
+        return modelAndView;
     }
 
     @RequestMapping(value = "/identity-number/{identityNumber:^[1-9]\\d{13,16}[a-zA-Z0-9]{1}$}/is-exist", method = RequestMethod.GET)
@@ -43,7 +46,9 @@ public class RegisterAccountController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto, RedirectAttributes redirectAttributes) {
+    public ModelAndView registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto,
+                                        RedirectAttributes redirectAttributes,
+                                        @RequestParam(name = "redirect", required = false, defaultValue = "/") String redirect) {
         registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
         registerAccountDto.setMobile(LoginUserInfo.getMobile());
         BaseDto<PayDataDto> dto = this.userService.registerAccount(registerAccountDto);
@@ -53,6 +58,6 @@ public class RegisterAccountController {
             redirectAttributes.addFlashAttribute("success", false);
         }
 
-        return new ModelAndView(isRegisterSuccess ? "redirect:/loan-list" : "redirect:/register/account");
+        return new ModelAndView(isRegisterSuccess ? MessageFormat.format("redirect:{0}", redirect) : MessageFormat.format("redirect:/register/account?redirect={0}", redirect));
     }
 }

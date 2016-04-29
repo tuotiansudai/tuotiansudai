@@ -2,7 +2,6 @@ package com.tuotiansudai.web.controller;
 
 
 import com.tuotiansudai.coupon.dto.UserCouponDto;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.service.CouponAlertService;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.dto.BaseDto;
@@ -57,8 +56,6 @@ public class LoanController {
         }
         return "";
     }
-
-
 
     @RequestMapping(value = "/{loanId:^\\d+$}/invests", method = RequestMethod.GET)
     @ResponseBody

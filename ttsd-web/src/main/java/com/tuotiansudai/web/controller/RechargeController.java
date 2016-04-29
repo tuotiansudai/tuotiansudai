@@ -36,18 +36,19 @@ public class RechargeController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView recharge() {
-        AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
-        long balance = accountModel.getBalance();
-        ModelAndView modelAndView = new ModelAndView("/recharge");
+        long balance = accountService.getBalance(LoginUserInfo.getLoginName());
         BankCardModel bankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
         boolean isBindCard = bankCard != null;
         boolean isFastPayOn = bankCard != null && bankCard.isFastPayOn();
 
+        ModelAndView modelAndView = new ModelAndView("/recharge");
         modelAndView.addObject("balance", AmountConverter.convertCentToString(balance));
         modelAndView.addObject("banks", BankCardUtil.getRechargeBanks());
         modelAndView.addObject("isBindCard", isBindCard);
         modelAndView.addObject("isFastPayOn", isFastPayOn);
-        if (isBindCard) {
+
+        AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
+        if (accountModel != null && isBindCard) {
             modelAndView.addObject("userName", accountModel.getUserName());
             modelAndView.addObject("identityNumber", accountModel.getIdentityNumber());
             modelAndView.addObject("bankCode", bankCard.getBankCode());

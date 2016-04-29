@@ -3,6 +3,7 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BindBankCardService;
@@ -41,7 +42,10 @@ public class BindBankCardController {
             view.addObject("cardNumber", bankCardModel.getCardNumber());
         }
 
-        view.addObject("userName", accountService.findByLoginName(LoginUserInfo.getLoginName()).getUserName());
+        AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
+        if (accountModel != null) {
+            view.addObject("userName", accountModel.getUserName());
+        }
         view.addObject("isBindCard", isBindCard);
         view.addObject("banks", BankCardUtil.getWithdrawBanks());
 

@@ -44,6 +44,7 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
     @Value("${web.login.max.failed.times}")
     private int loginMaxTimes;
 
+    // 授权失败后处理
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         loginLogService.generateLoginLog(request.getParameter("username"), Source.WEB, RequestIPParser.parse(request), null, false);

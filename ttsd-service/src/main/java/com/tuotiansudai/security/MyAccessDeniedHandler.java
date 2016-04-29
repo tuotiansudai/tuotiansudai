@@ -1,7 +1,10 @@
 package com.tuotiansudai.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
+import com.tuotiansudai.dto.AjaxAccessDeniedDto;
+import com.tuotiansudai.dto.BaseDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -21,31 +24,24 @@ public class MyAccessDeniedHandler extends AccessDeniedHandlerImpl {
 
     private String onlyUserAccessDeniedRedirect;
 
-    private String loginUrl;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         boolean isOnlyUserAccessDenied = accessDeniedException instanceof UserRoleAccessDeniedException;
         if (isOnlyUserAccessDenied) {
-            if (!response.isCommitted()) {
-                response.sendRedirect(onlyUserAccessDeniedRedirect);
+            if (isAjaxRequest(request)) {
+                this.generateAjaxAccessDeniedResponse(request, response);
                 return;
             }
+            response.sendRedirect(onlyUserAccessDeniedRedirect);
+            return;
         }
 
         String requestURI = request.getRequestURI();
         if (!errorPageMapping.containsKey(requestURI)) {
             if (isAjaxRequest(request)) {
-                String referer = request.getHeader(HttpHeaders.REFERER);
-                PrintWriter writer = response.getWriter();
-                if (!Strings.isNullOrEmpty(referer)) {
-                    writer.print(referer);
-                }
-                response.setStatus(HttpStatus.FORBIDDEN.value());
-                return;
-            }
-            if(isAnonymous()){
-                response.sendRedirect(loginUrl);
+                this.generateAjaxAccessDeniedResponse(request, response);
                 return;
             }
             super.handle(request, response, accessDeniedException);
@@ -57,8 +53,36 @@ public class MyAccessDeniedHandler extends AccessDeniedHandlerImpl {
         }
     }
 
-    private boolean isAnonymous() {
-        return SecurityContextHolder.getContext().getAuthentication() == null;
+    private void generateAjaxAccessDeniedResponse(HttpServletRequest request, HttpServletResponse response) {
+        if (response.isCommitted()) {
+            return;
+        }
+
+        BaseDto<AjaxAccessDeniedDto> baseDto = new BaseDto<>();
+        AjaxAccessDeniedDto dataDto = new AjaxAccessDeniedDto();
+        dataDto.setStatus(true);
+        dataDto.setDirectUrl(onlyUserAccessDeniedRedirect);
+        baseDto.setData(dataDto);
+
+        String referer = request.getHeader(HttpHeaders.REFERER);
+
+        if (!Strings.isNullOrEmpty(referer)) {
+            dataDto.setRefererUrl(referer);
+        }
+        response.setContentType("application/json; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setStatus(HttpStatus.FORBIDDEN.value());
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            writer.print(objectMapper.writeValueAsString(baseDto));
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
     }
 
     public void setErrorPageMapping(Map<String, String> errorPageMapping) {
@@ -74,6 +98,5 @@ public class MyAccessDeniedHandler extends AccessDeniedHandlerImpl {
     }
 
     public void setLoginUrl(String loginUrl) {
-        this.loginUrl = loginUrl;
     }
 }
