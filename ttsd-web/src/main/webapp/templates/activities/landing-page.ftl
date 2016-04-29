@@ -53,7 +53,7 @@
                         </li>
                         <li id="agreementInputErr" class="height"></li>
 
-                        <input type="hidden" name="_csrf" value="010e19c3-6b6e-4f43-bbfd-186c3970e9b8">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
 
                         <input type="submit" class="register-user" value="立即注册">
