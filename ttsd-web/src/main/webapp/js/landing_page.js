@@ -8,6 +8,7 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
             $loginName = $('#login-name'),
             $password = $('#password'),
             $registerUser = $('#register-user'),
+            $appCaptcha = $('#appCaptcha');
             countdown=60;
 
         //form validate
@@ -84,7 +85,10 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
                 agreement: {
                     required: "请同意服务协议"
                 }
-            }
+            },
+            submitHandler:function(form){
+                form.submit();
+            }  
 
 
         });
@@ -102,6 +106,9 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
             $(this).val()!='' && /0?(13|14|15|18)[0-9]{9}/.test($(this).val())?$fetchCaptcha.prop('disabled', false):$fetchCaptcha.prop('disabled', true);
         });
 
+        $appCaptcha.on('focus', function(event) {
+            $('#appCaptchaErr').html('');
+        });
         //change images code
         $changecode.on('click', function(event) {
             event.preventDefault();
@@ -133,11 +140,16 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
                  dataType: 'json',
                  data: {imageCaptcha: captchaVal,mobile:mobile},
              })
-             .done(function() {
-                timer=window.setInterval(getCode, 1000);
+             .done(function(data) {
+                 if(data.data.status==true){
+                     timer=window.setInterval(getCode, 1000);
+                 }else{
+                     $('#appCaptchaErr').html('图形验证码错误');
+                 }
              })
              .fail(function() {
-                 //console.log("error");
+                 layer.msg('请求失败，请重试！');
+
              });
             
         });

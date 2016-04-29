@@ -27,13 +27,13 @@
                         <li id="mobileErr" class="height"></li>
                         <li class="code">
                             <label for="" class="reg-title">验证码:</label>
-                            <input type="text" id="appCaptcha" name="" placeholder="验证码" maxlength="25" class="appCaptcha" value="">
+                            <input type="text" id="appCaptcha" name="" placeholder="验证码" maxlength="5" class="appCaptcha" value="">
                             <em class="image-captcha">
                                 <img src="" alt=""/>
                             </em>
                             <span class="img-change">换一张</span>
                         </li>
-                        <li id="appCaptchaErr" class="height"></li>
+                        <li id="appCaptchaErr" class="height appCaptchaErr"></li>
                         <li>
                             <label for="appCaptcha" class="reg-title">手机验证码:</label>
                             <span class="captcha-tag">
