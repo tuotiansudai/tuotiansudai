@@ -16,6 +16,7 @@
 						<input type="text" class="int-number" id="transferAmount" name="price" value="${(investAmount/100)?string('0.00')!}">
 						<input type="hidden" id="transferInvestId" value="${transferInvestId?string('0')!}">
 						<span>元</span>
+						<span class="tip-text" id="tipText">转让价格只能设置在9950.00～10000.00元之间</span>
 					</div>
 				</li>
 				<li class="info-list">
@@ -32,7 +33,7 @@
 					</div>
 					<div class="info-right">
 						<span>${(transferFee/100)?string('0.00')!}元</span>
-						<i class="fa fa-question-circle" aria-hidden="true" title="sfdsfsdfs"></i>
+						<i class="fa fa-question-circle" aria-hidden="true" title="您持有债权不足30天，需支付本金0.5%的手续费。"></i>
 					</div>
 				</li>
 				<li class="info-list">

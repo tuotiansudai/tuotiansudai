@@ -5,15 +5,15 @@ require(['jquery', 'layerWrapper','jquery.validate','coupon-alert','red-envelope
 			rules: {
 		      price: {
 		        required: true,
-		      },
+		        max:10000,
+		        min:9950
+		      }
 		    },
-		    messages: {
-		    	price: {
-			        required: "转让价格只能设置在9950.00～10000.00元之间",
-		     	}
+		    onkeyup:function(){
+		    	$('#tipText').removeClass('active');
 		    },
 	        errorPlacement: function(error, element) {  
-			    error.appendTo(element.parent());  
+			    $('#tipText').addClass('active'); 
 			},
 		    submitHandler:function(form){
 		    	$.ajax({
