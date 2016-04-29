@@ -103,7 +103,7 @@
     <select id="findSuccessInvestsByLoanId" parameterType="long" resultMap="investResultMap">
         select <include refid="columns"></include>
         from invest
-        where loan_id = #{loanId} and status = 'SUCCESS'
+        where loan_id = #{loanId} and status = 'SUCCESS' and transfer_status != 'SUCCESS'
         order by created_time
     </select>
 
