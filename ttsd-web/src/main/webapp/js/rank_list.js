@@ -190,9 +190,6 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                             rotateFnCd(7, 355, '3000元体验金');
                             break;
                     }
-                })
-                .fail(function() {
-                    layer.msg('请求失败');
                 });
         }
     });
@@ -447,9 +444,6 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                         $('#tipListPhone').show();
                         $('#noLoginPhone').show();
                     }
-                })
-                .fail(function() {
-                    layer.msg('请求失败');
                 });
         }
     });
