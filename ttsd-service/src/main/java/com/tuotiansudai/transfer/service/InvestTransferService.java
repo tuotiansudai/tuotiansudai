@@ -3,7 +3,6 @@ package com.tuotiansudai.transfer.service;
 
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.InvestPaginationItemDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.TransferStatus;
