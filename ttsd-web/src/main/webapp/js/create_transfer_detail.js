@@ -1,12 +1,16 @@
-require(['jquery', 'layerWrapper','jquery.validate','coupon-alert','red-envelope-float'], function ($, layer) {
+require(['jquery', 'layerWrapper','jquery.validate','coupon-alert','red-envelope-float','jquery.ajax.extension'], function ($, layer) {
 	$(function() {
+		var dataJson = {
+			'transferAmount': parseFloat($('#transferAmount').val())*100,
+			'transferInvestId': $('#transferInvestId').val()
+		};
 		$("#createForm").validate({
 			debug:true,
 			rules: {
 		      price: {
 		        required: true,
-		        max:10000,
-		        min:9950
+		        max:parseFloat($('#tipText').attr('data-max')),
+		        min:parseFloat($('#tipText').attr('data-min'))
 		      }
 		    },
 		    onkeyup:function(){
@@ -20,10 +24,8 @@ require(['jquery', 'layerWrapper','jquery.validate','coupon-alert','red-envelope
 		    		url: '/transfer/apply',
 		    		type: 'POST',
 		    		dataType: 'json',
-		    		data: {
-		    			transferAmount: parseFloat($('#transferAmount').val())*100,
-		    			transferInvestId: $('#transferInvestId').val()
-		    		}
+					contentType:'application/json',
+					data: JSON.stringify(dataJson)
 		    	})
 		    	.done(function(data) {
 		    		if(data==true){

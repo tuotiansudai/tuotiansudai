@@ -16,7 +16,7 @@
 						<input type="text" class="int-number" id="transferAmount" name="price" value="${(investAmount/100)?string('0.00')!}">
 						<input type="hidden" id="transferInvestId" value="${transferInvestId?string('0')!}">
 						<span>元</span>
-						<span class="tip-text" id="tipText">转让价格只能设置在9950.00～10000.00元之间</span>
+						<span class="tip-text" id="tipText" data-min="${(transferAmountLimit/100)?string('0.00')!}" data-max="${(investAmount/100)?string('0.00')!}">转让价格只能设置在${(transferAmountLimit/100)?string('0.00')!}～${(investAmount/100)?string('0.00')!}元之间</span>
 					</div>
 				</li>
 				<li class="info-list">
