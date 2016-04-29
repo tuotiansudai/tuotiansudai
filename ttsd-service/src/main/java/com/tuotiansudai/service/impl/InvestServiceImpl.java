@@ -10,10 +10,7 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.transfer.service.InvestTransferService;
@@ -72,6 +69,12 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private InvestTransferService investTransferService;
+
+    @Autowired
+    private LoanRepayMapper loanRepayMapper;
+
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
 
     @Override
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
@@ -211,7 +214,7 @@ public class InvestServiceImpl implements InvestService {
             index = index > totalPages ? totalPages : index;
             items = investMapper.findInvestPagination(loanId, investorLoginName, channel, strSource, role, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus);
             for (InvestPaginationItemView investPaginationItemView : items) {
-                List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndLoanId(investorLoginName, investPaginationItemView.getLoanId());
+                List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndInvestId(investorLoginName, investPaginationItemView.getId());
                 investPaginationItemView.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
                 if (CollectionUtils.isNotEmpty(userCouponModels)) {
                     investPaginationItemView.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
@@ -225,11 +228,17 @@ public class InvestServiceImpl implements InvestService {
             public InvestPaginationItemDataDto apply(InvestPaginationItemView view) {
                 InvestPaginationItemDataDto investPaginationItemDataDto = new InvestPaginationItemDataDto(view);
                 if (view.getTransferStatus() == TransferStatus.TRANSFERABLE) {
-                    investPaginationItemDataDto.setTransferStatus(investTransferService.isTransferable(view.getId()) ? view.getTransferStatus().getDescription() : "--");
+                    investPaginationItemDataDto.setTransferStatus(investTransferService.isTransferable(view.getId()) ? view.getTransferStatus().getDescription() : null);
                 } else if (view.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
                     investPaginationItemDataDto.setTransferStatus("--");
                 } else {
                     investPaginationItemDataDto.setTransferStatus(view.getTransferStatus().getDescription());
+                }
+                investPaginationItemDataDto.setLastRepayDate(loanRepayMapper.findLastRepayDateByLoanId(view.getLoanId()));
+                LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(view.getLoanId());
+                if (loanRepayModel != null) {
+                    int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(view.getId(), loanRepayModel.getPeriod());
+                    investPaginationItemDataDto.setLeftPeriod(leftPeriod);
                 }
                 return investPaginationItemDataDto;
             }

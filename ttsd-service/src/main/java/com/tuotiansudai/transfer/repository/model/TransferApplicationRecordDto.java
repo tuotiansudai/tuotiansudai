@@ -4,6 +4,7 @@ package com.tuotiansudai.transfer.repository.model;
 import com.tuotiansudai.repository.model.TransferStatus;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 public class TransferApplicationRecordDto implements Serializable {
@@ -14,6 +15,7 @@ public class TransferApplicationRecordDto implements Serializable {
     private Date transferTime;
     private double baseRate;
     private double activityRate;
+    private String remainingInterestDays;
     private TransferStatus transferStatus;
     private Long loanId;
     private String transferrerLoginName;
@@ -21,14 +23,14 @@ public class TransferApplicationRecordDto implements Serializable {
     private long transferFee;
     private Long transferInvestId;
     private int period;
+    private int leftPeriod;
+    private Date deadLine;
 
     public long getTransferApplicationId() {
         return transferApplicationId;
     }
 
-    public void setTransferApplicationId(long transferApplicationId) {
-        this.transferApplicationId = transferApplicationId;
-    }
+    public void setTransferApplicationId(long transferApplicationId) { this.transferApplicationId = transferApplicationId; }
 
     public String getName() {
         return name;
@@ -77,6 +79,10 @@ public class TransferApplicationRecordDto implements Serializable {
     public void setActivityRate(double activityRate) {
         this.activityRate = activityRate;
     }
+
+    public String getRemainingInterestDays() { return remainingInterestDays; }
+
+    public void setRemainingInterestDays(String remainingInterestDays) { this.remainingInterestDays = remainingInterestDays; }
 
     public TransferStatus getTransferStatus() {
         return transferStatus;
@@ -133,4 +139,21 @@ public class TransferApplicationRecordDto implements Serializable {
     public void setPeriod(int period) {
         this.period = period;
     }
+
+    public int getLeftPeriod() {
+        return leftPeriod;
+    }
+
+    public void setLeftPeriod(int leftPeriod) {
+        this.leftPeriod = leftPeriod;
+    }
+
+    public String getSumRatePercent(){
+        return new DecimalFormat("######0.##").format((baseRate + activityRate) * 100);
+    }
+
+    public Date getDeadLine() { return deadLine; }
+
+    public void setDeadLine(Date deadLine) { this.deadLine = deadLine; }
+
 }

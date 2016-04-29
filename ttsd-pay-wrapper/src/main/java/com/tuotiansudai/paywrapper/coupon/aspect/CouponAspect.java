@@ -34,7 +34,7 @@ import java.util.List;
 @Component
 @Aspect
 public class CouponAspect {
-    static Logger logger = Logger.getLogger(CouponAspect.class);
+    private static Logger logger = Logger.getLogger(CouponAspect.class);
 
     @Autowired
     private CouponRepayService couponRepayService;
@@ -43,27 +43,23 @@ public class CouponAspect {
     private CouponInvestService couponInvestService;
 
     @Autowired
-    private CouponActivationService couponActivationService;
-
-    @Autowired
     private JobManager jobManager;
 
-    @Around(value = "execution(* com.tuotiansudai.paywrapper.service.RepayService.postRepayCallback(*))")
-    public Object aroundRepay(ProceedingJoinPoint proceedingJoinPoint) {
-        logger.debug("after repay pointcut");
-        List<Object> args = Lists.newArrayList(proceedingJoinPoint.getArgs());
-        long loanRepayId = (long) args.get(0);
-        try {
-            boolean isSuccess = (boolean) proceedingJoinPoint.proceed();
-            if (isSuccess) {
-                couponRepayService.repay(loanRepayId);
-            }
-            return isSuccess;
-        } catch (Throwable throwable) {
-            logger.error(MessageFormat.format("Coupon repay aspect is failed (loanRepayId = {0})", String.valueOf(loanRepayId)), throwable);
+    @Autowired
+    private CouponActivationService couponActivationService;
+
+    @AfterReturning(value = "execution(* *..NormalRepayService.paybackInvest(*)) || execution(* *..AdvanceRepayService.paybackInvest(*))", returning = "returnValue")
+    public void afterReturningPaybackInvest(JoinPoint joinPoint, boolean returnValue) {
+        long loanRepayId = (Long) joinPoint.getArgs()[0];
+        logger.info(MessageFormat.format("[Coupon Repay {0}] after returning payback invest({1}) aspect is starting...",
+                String.valueOf(loanRepayId), String.valueOf(returnValue)));
+
+        if (returnValue) {
+            couponRepayService.repay(loanRepayId);
         }
 
-        return false;
+        logger.info(MessageFormat.format("[Coupon Repay {0}] after returning payback invest({1}) aspect is done",
+                String.valueOf(loanRepayId), String.valueOf(returnValue)));
     }
 
     @SuppressWarnings(value = "unchecked")
@@ -90,13 +86,11 @@ public class CouponAspect {
         long loanId = (long) joinPoint.getArgs()[0];
         BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
         if (baseDto.getData() != null && baseDto.getData().getStatus()) {
-
             try {
                 couponInvestService.cancelUserCoupon(loanId);
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
-
         }
     }
 
@@ -109,7 +103,11 @@ public class CouponAspect {
             couponActivationService.assignUserCoupon(investModel.getLoginName(), Lists.newArrayList(UserGroup.ALL_USER,
                     UserGroup.INVESTED_USER,
                     UserGroup.REGISTERED_NOT_INVESTED_USER,
-                    UserGroup.IMPORT_USER),null);
+                    UserGroup.IMPORT_USER,
+                    UserGroup.AGENT,
+                    UserGroup.CHANNEL,
+                    UserGroup.STAFF,
+                    UserGroup.STAFF_RECOMMEND_LEVEL_ONE),null,null);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -123,10 +121,7 @@ public class CouponAspect {
         BaseDto<PayDataDto> baseDto = (BaseDto<PayDataDto>) returnValue;
         if (baseDto.getData() != null && baseDto.getData().getStatus()) {
             createSendRedEnvelopeJob(loanId);
-
             createAutoJPushAlertLoanOutJob(loanId);
-
-
         }
     }
 
@@ -159,7 +154,5 @@ public class CouponAspect {
             logger.error("create send red AutoJPushAlertLoanOut job for loan[" + loanId + "] fail", e);
         }
     }
-
-
 }
 

@@ -6,18 +6,19 @@ import com.tuotiansudai.api.service.impl.MobileAppInvestListServiceImpl;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RandomUtils;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,10 +47,16 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
     private LoanService loanService;
 
     @Mock
+    private RandomUtils randomUtils;
+
+    @Mock
     private LoanMapper loanMapper;
 
     @Mock
     private InvestRepayMapper investRepayMapper;
+
+    @Mock
+    private LoanRepayMapper loanRepayMapper;
 
     @Mock
     private InvestTransferService investTransferService;
@@ -99,7 +106,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
         when(investMapper.findCountByStatus(anyLong(), any(InvestStatus.class))).thenReturn(3L);
 
-        when(loanService.encryptLoginName(anyString(),anyString(),anyInt(),anyLong())).thenReturn("log***");
+        when(randomUtils.encryptLoginName(anyString(),anyString(),anyInt(),anyLong())).thenReturn("log***");
 
         InvestListRequestDto investListRequestDto = new InvestListRequestDto();
         BaseParam baseParam = new BaseParam();
@@ -159,12 +166,13 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(Lists.<InvestRepayModel>newArrayList());
         when(investService.estimateInvestIncome(anyLong(), anyLong())).thenReturn(INTEREST);
         when(investTransferService.isTransferable(anyLong())).thenReturn(true);
+        when(loanRepayMapper.findEnabledLoanRepayByLoanId(anyLong())).thenReturn(null);
 
         UserInvestListRequestDto requestDto = new UserInvestListRequestDto();
         requestDto.setBaseParam(BaseParamTest.getInstance());
         requestDto.setIndex(1);
         requestDto.setPageSize(10);
-        requestDto.setTransferStatuses(Lists.newArrayList(TransferStatus.TRANSFERABLE, TransferStatus.TRANSFERRING, TransferStatus.SUCCESS));
+        requestDto.setTransferStatus(Lists.newArrayList(TransferStatus.TRANSFERABLE, TransferStatus.TRANSFERRING, TransferStatus.SUCCESS));
         BaseResponseDto<UserInvestListResponseDataDto> responseDto = mobileAppInvestListService.generateUserInvestList(requestDto);
         UserInvestListResponseDataDto dataDto = responseDto.getData();
 

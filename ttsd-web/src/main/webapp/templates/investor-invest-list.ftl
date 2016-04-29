@@ -1,7 +1,10 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.my_account}" pageJavascript="${js.investor_invest_list}" activeNav="我的账户" activeLeftNav="我的投资" title="投资记录">
 <div class="content-container invest-list-content">
-    <h4 class="column-title"><em class="tc">投资记录</em></h4>
+    <h4 class="column-title">
+        <a href="/investor/invest-list"><em class="tc active">投资记录</em></a>
+        <a href="/investor/invest-transfer-list"><em class="tc">转让项目</em></a>
+    </h4>
 
     <div class="item-block date-filter">
         <span class="sub-hd">起止时间:</span>

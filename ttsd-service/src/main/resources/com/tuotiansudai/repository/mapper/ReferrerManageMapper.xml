@@ -583,6 +583,18 @@
             <if test="investEndTime != null">
                 <![CDATA[ and i.`created_time` <= #{investEndTime} ]]>
             </if>
+            and irr.status='SUCCESS'
+        </where>
+    </select>
+
+
+    <select id="findReferInvestSumAmount" parameterType="map" resultMap="referrerManageMap" >
+        select  IFNULL(sum(i.amount),0) AS invest_amount from referrer_relation rr left join invest i on rr.login_name = i.login_name
+        <where>
+            <if test="referrerLoginName != null and referrerLoginName != ''" >
+                rr.referrer_login_name = #{referrerLoginName}
+            </if>
+            and i.status='SUCCESS'
         </where>
     </select>
 </mapper>

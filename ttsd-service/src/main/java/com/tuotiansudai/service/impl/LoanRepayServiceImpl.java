@@ -1,21 +1,25 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanRepayService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.DateUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -92,29 +96,61 @@ public class LoanRepayServiceImpl implements LoanRepayService {
     public void calculateDefaultInterest() {
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findNotCompleteLoanRepay();
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
-            calculateDefaultInterestEveryLoan(loanRepayModel);
+            try {
+                calculateDefaultInterestEveryLoan(loanRepayModel);
+            } catch (Exception e) {
+                logger.error(e.getLocalizedMessage(), e);
+                continue;
+            }
         }
     }
 
-    @Transactional
-    private void calculateDefaultInterestEveryLoan(LoanRepayModel loanRepayModel) {
+    private boolean isNeedCalculateDefaultInterestLoanRepay (LoanRepayModel loanRepayModel) {
+        long loanId = loanRepayModel.getLoanId();
+        int period = loanRepayModel.getPeriod();
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdAndLTPeriod(loanId, period);
+        return CollectionUtils.isEmpty(loanRepayModels) || !Iterators.any(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
+            @Override
+            public boolean apply(LoanRepayModel input) {
+                return input.getStatus() == RepayStatus.OVERDUE;
+            }
+        });
+    }
+
+    private boolean isNeedCalculateDefaultInterestInvestRepay (InvestRepayModel investRepayModel) {
+        long investId = investRepayModel.getInvestId();
+        int period = investRepayModel.getPeriod();
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndLTPeriod(investId, period);
+        return CollectionUtils.isEmpty(investRepayModels) || !Iterators.any(investRepayModels.iterator(), new Predicate<InvestRepayModel>() {
+            @Override
+            public boolean apply(InvestRepayModel input) {
+                return input.getStatus() == RepayStatus.OVERDUE;
+            }
+        });
+    }
+
+    private void calculateDefaultInterestEveryLoan(LoanRepayModel loanRepayModel) throws Exception{
         LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
         List<InvestRepayModel> investRepayModels = investRepayMapper.findInvestRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
         for (InvestRepayModel investRepayModel : investRepayModels) {
             if (investRepayModel.getRepayDate().before(new Date())) {
                 investRepayModel.setStatus(RepayStatus.OVERDUE);
-                long investRepayDefaultInterest = new BigDecimal(investMapper.findById(investRepayModel.getInvestId()).getAmount()).multiply(new BigDecimal(overdueFee))
-                        .multiply(new BigDecimal(DateUtil.differenceDay(investRepayModel.getRepayDate(), new Date()) + 1L))
-                        .setScale(0, BigDecimal.ROUND_DOWN).longValue();
-                investRepayModel.setDefaultInterest(investRepayDefaultInterest);
+                if (isNeedCalculateDefaultInterestInvestRepay(investRepayModel)) {
+                    long investRepayDefaultInterest = new BigDecimal(investMapper.findById(investRepayModel.getInvestId()).getAmount()).multiply(new BigDecimal(overdueFee))
+                            .multiply(new BigDecimal(DateUtil.differenceDay(investRepayModel.getRepayDate(), new Date()) + 1L))
+                            .setScale(0, BigDecimal.ROUND_DOWN).longValue();
+                    investRepayModel.setDefaultInterest(investRepayDefaultInterest);
+                }
                 investRepayMapper.update(investRepayModel);
             }
         }
         if (loanRepayModel.getRepayDate().before(new Date())) {
             loanRepayModel.setStatus(RepayStatus.OVERDUE);
-            long loanRepayDefaultInterest = new BigDecimal(loanModel.getLoanAmount()).multiply(new BigDecimal(overdueFee))
-                    .multiply(new BigDecimal(DateUtil.differenceDay(loanRepayModel.getRepayDate(), new Date()) + 1L)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
-            loanRepayModel.setDefaultInterest(loanRepayDefaultInterest);
+            if (isNeedCalculateDefaultInterestLoanRepay(loanRepayModel)) {
+                long loanRepayDefaultInterest = new BigDecimal(loanModel.getLoanAmount()).multiply(new BigDecimal(overdueFee))
+                        .multiply(new BigDecimal(DateUtil.differenceDay(loanRepayModel.getRepayDate(), new Date()) + 1L)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+                loanRepayModel.setDefaultInterest(loanRepayDefaultInterest);
+            }
             loanRepayMapper.update(loanRepayModel);
             loanModel.setStatus(LoanStatus.OVERDUE);
             loanMapper.update(loanModel);

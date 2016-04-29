@@ -15,8 +15,8 @@ require(['jquery', 'echarts', 'commonFun', 'jquery.ajax.extension', 'layerWrappe
         });
 
         var data = [{ name: '可用金额', value: pydata.balance },
-                { name: '待收本金', value: pydata.collectingPrincipal },
-                { name: '待收利息', value: pydata.collectingInterest}],
+                { name: '待收投资本金', value: pydata.collectingPrincipal },
+                { name: '待收预期收益', value: pydata.collectingInterest}],
          option = MyChartsObject.ChartOptionTemplates.Pie(data,'YTTTTT'),
          container = $("#ReportShow")[0],
          opt = MyChartsObject.ChartConfig(container, option);

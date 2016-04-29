@@ -108,11 +108,21 @@ public enum ReturnMessage {
     POINT_EXCHANGE_POINT_INSUFFICIENT("0100","财豆数量不够"),
     POINT_COUPON_NUM_INSUFFICIENT("0101","当前优惠券已兑完，请兑换其他优惠券"),
     POINT_EXCHANGE_FAIL("0103","财豆兑换失败"),
+    /**兑换码兑换**/
+    EXCHANGE_CODE_IS_INVALID("0104","兑换码不正确"),
+    EXCHANGE_CODE_IS_EXPIRE("0105","兑换码已过期"),
+    EXCHANGE_CODE_IS_USED("0106","兑换码已被使用"),
+    EXCHANGE_CODE_OVER_DAILY_COUNT("0107","当天兑换次数达到上限"),
+    USER_COUPON_IS_NOT_EXIST("0108",""),
 
     /******提现******/
     WITHDRAW_AMOUNT_NOT_REACH_FEE("0070","提现金额需大于手续费"),
 
     TRANSFER_APPLY_IS_FAIL("0073","债权转让失败"),
+
+    TRANSFER_AMOUNT_OUT_OF_RANGE("0074","转让价格超出折价范围"),
+    TRANSFER_CANCEL_IS_FAIL("0075","债权转让取消失败"),
+
 
     /******意见反馈******/
     FEEDBACK_CAN_NOT_BE_EMPTY("0080", "内容不能为空"),

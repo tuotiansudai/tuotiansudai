@@ -3,6 +3,7 @@ package com.tuotiansudai.transfer.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.job.JobType;
@@ -17,11 +18,11 @@ import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
+import com.tuotiansudai.transfer.repository.model.TransferInvestDetailDto;
 import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.JobManager;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -68,41 +69,64 @@ public class InvestTransferServiceImpl implements InvestTransferService{
     public static String redisTransferApplicationNumber = "web:{0}:transferApplicationNumber";
 
     @Override
+    public BaseDataDto isAllowTransfer(long transferApplicationId) {
+        BaseDataDto baseDataDto = new BaseDataDto();
+        DateTime dateTime = new DateTime();
+        InvestModel investModel = investMapper.findById(transferApplicationId);
+        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+        LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(investModel.getLoanId());
+        TransferRuleModel transferRuleModel = transferRuleMapper.find();
+        if (Days.daysBetween(dateTime, new DateTime(loanRepayModel.getRepayDate())).getDays() < transferRuleModel.getDaysLimit()) {
+            baseDataDto.setStatus(false);
+            baseDataDto.setMessage("该项目即将在"+transferRuleModel.getDaysLimit()+"日内回款，暂不可转让，请选择其他项目。");
+        } else if (loanModel.getStatus() != LoanStatus.REPAYING){
+            baseDataDto.setStatus(false);
+            baseDataDto.setMessage("该项目已提前回款，不可进行转让。");
+        } else {
+            baseDataDto.setStatus(true);
+        }
+        return baseDataDto;
+    }
+
+    @Override
     @Transactional
-    public void investTransferApply(TransferApplicationDto transferApplicationDto) {
+    public boolean investTransferApply(TransferApplicationDto transferApplicationDto) {
 
         InvestModel investModel = investMapper.findById(transferApplicationDto.getTransferInvestId());
 
         if (investModel.getStatus() != InvestStatus.SUCCESS || investModel.getAmount() < transferApplicationDto.getTransferAmount()) {
-            return;
+            return false;
         }
 
-        LoanRepayModel loanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(investModel.getLoanId());
+        LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(investModel.getLoanId());
 
         if (loanRepayModel == null) {
-            return;
+            return false;
         }
 
 
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(investModel.getLoanId());
+        int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(transferApplicationDto.getTransferInvestId(),loanRepayModel.getPeriod());
 
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel(investModel, this.generateTransferApplyName(), loanRepayModel.getPeriod(), transferApplicationDto.getTransferAmount(),
-                TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel), getDeadlineFromNow());
+                TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel), getDeadlineFromNow(),leftPeriod);
 
         transferApplicationMapper.create(transferApplicationModel);
 
         investMapper.updateTransferStatus(investModel.getId(), TransferStatus.TRANSFERRING);
 
         investTransferApplyJob(transferApplicationModel);
+
+        return true;
     }
 
     @Override
     public Date getDeadlineFromNow() {
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         DateTime dateTime = new DateTime();
-        return dateTime.plusDays(transferRuleModel.getDaysLimit()).withTimeAtStartOfDay().toDate();
+        return dateTime.plusDays(transferRuleModel.getDaysLimit() + 1).withTimeAtStartOfDay().toDate();
     }
 
     @Override
@@ -142,7 +166,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
     }
     @Override
     public boolean isTransferable(long investId){
-
+        DateTime current = new DateTime().withTimeAtStartOfDay();
         InvestModel investModel = investMapper.findById(investId);
         if(investModel == null){
             logger.debug(MessageFormat.format("{0} is not exist",investId));
@@ -153,25 +177,32 @@ public class InvestTransferServiceImpl implements InvestTransferService{
             logger.debug(MessageFormat.format("{0} is not REPAYING",investModel.getLoanId()));
             return false;
         }
-        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investId,Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING));
-        if (CollectionUtils.isNotEmpty(transferApplicationModels)) {
-            logger.debug(MessageFormat.format("{0} is not REPAYING",investModel.getLoanId()));
-            return false;
+        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investId, Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.TRANSFERRING, TransferStatus.CANCEL));
+        for(TransferApplicationModel transferApplicationModelTemp:transferApplicationModels){
+            if(transferApplicationModelTemp.getStatus() != TransferStatus.CANCEL) {
+                logger.debug(MessageFormat.format("{0} is transferred",investModel.getLoanId()));
+                return false;
+            }
+            DateTime transferTime = new DateTime(transferApplicationModelTemp.getTransferTime()).withTimeAtStartOfDay();
+            return transferApplicationModelTemp.getStatus() == TransferStatus.CANCEL && current.compareTo(transferTime) != 0;
+
         }
 
-        LoanRepayModel loanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(investModel.getLoanId());
+        LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(investModel.getLoanId());
         if(loanRepayModel == null){
-            logger.debug(MessageFormat.format("{0} is completed ",loanRepayModel.getLoanId()));
-            return false;
-        }
-
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findByInvestId(investId);
-        if(transferApplicationModel != null && transferApplicationModel.getPeriod() == loanRepayModel.getPeriod()){
-            logger.debug(MessageFormat.format("{0} had been transfer ",investId));
+            logger.debug(MessageFormat.format("{0} is completed ",investModel.getLoanId()));
             return false;
         }
         TransferRuleModel transferRuleModel =  transferRuleMapper.find();
-        DateTime current = new DateTime().withTimeAtStartOfDay();
+        if(!transferRuleModel.isMultipleTransferEnabled()){
+            TransferApplicationModel transfereeApplicationModel = transferApplicationMapper.findByInvestId(investId);
+            if( transfereeApplicationModel != null){
+                logger.debug(MessageFormat.format("{0} MultipleTransferEnabled is false ",investId));
+                return false;
+            }
+
+        }
+
         int periodDuration = Days.daysBetween(current.withTimeAtStartOfDay(),new DateTime(loanRepayModel.getRepayDate()).withTimeAtStartOfDay()).getDays();
 
         if(periodDuration > transferRuleModel.getDaysLimit()){
@@ -212,8 +243,6 @@ public class InvestTransferServiceImpl implements InvestTransferService{
             @Override
             public TransferApplicationPaginationItemDataDto apply(TransferApplicationRecordDto input) {
                 TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(input);
-                int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(input.getTransferInvestId(),input.getPeriod());
-                transferApplicationPaginationItemDataDto.setLeftPeriod(String.valueOf(leftPeriod));
                 return transferApplicationPaginationItemDataDto;
             }
         });
@@ -221,6 +250,68 @@ public class InvestTransferServiceImpl implements InvestTransferService{
         BasePaginationDataDto<TransferApplicationPaginationItemDataDto> dto = new BasePaginationDataDto(index, pageSize, count, records);
         dto.setStatus(true);
         return dto;
+    }
+    
+    @Override
+    public BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findWebTransferApplicationPaginationList(String transferrerLoginName,List<TransferStatus> statusList ,Integer index, Integer pageSize) {
+
+        int count = transferApplicationMapper.findCountTransferApplicationPaginationByLoginName(transferrerLoginName, statusList);
+        List<TransferApplicationRecordDto> items = Lists.newArrayList();
+        if (count > 0) {
+            int totalPages = count % pageSize > 0 ? count / pageSize + 1 : count / pageSize;
+            index = index > totalPages ? totalPages : index;
+            items = transferApplicationMapper.findTransferApplicationPaginationByLoginName(transferrerLoginName, statusList, (index - 1) * pageSize, pageSize);
+
+        }
+        List<TransferApplicationPaginationItemDataDto> records = Lists.transform(items, new Function<TransferApplicationRecordDto, TransferApplicationPaginationItemDataDto>() {
+            @Override
+            public TransferApplicationPaginationItemDataDto apply(TransferApplicationRecordDto input) {
+                TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(input);
+                if (input.getTransferStatus() == TransferStatus.TRANSFERABLE) {
+                    transferApplicationPaginationItemDataDto.setTransferStatus(isTransferable(input.getTransferApplicationId()) ? input.getTransferStatus().getDescription() : "--");
+                } else if (input.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
+                    transferApplicationPaginationItemDataDto.setTransferStatus("--");
+                } else {
+                    transferApplicationPaginationItemDataDto.setTransferStatus(input.getTransferStatus().getDescription());
+                }
+                return transferApplicationPaginationItemDataDto;
+            }
+        });
+
+        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> dto = new BasePaginationDataDto(index, pageSize, count, records);
+        dto.setStatus(true);
+        return dto;
+    }
+
+    public BasePaginationDataDto<TransferInvestDetailDto> getInvestTransferList(String investorLoginName,
+                                                               int index,
+                                                               int pageSize,
+                                                               Date startTime,
+                                                               Date endTime,
+                                                               LoanStatus loanStatus) {
+            if (startTime == null) {
+                startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
+            } else {
+                startTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+            }
+
+            if (endTime == null) {
+                endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
+            } else {
+                endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+            }
+
+            List<TransferInvestDetailDto> items = Lists.newArrayList();
+            long count = transferApplicationMapper.findCountInvestTransferPagination(investorLoginName, startTime, endTime, loanStatus);
+
+            if (count > 0) {
+                int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
+                index = index > totalPages ? totalPages : index;
+                items = transferApplicationMapper.findTransferInvestList(investorLoginName, (index - 1) * pageSize, pageSize, startTime, endTime, loanStatus);
+            }
+            BasePaginationDataDto dto = new BasePaginationDataDto(index, pageSize, count, items);
+            dto.setStatus(true);
+            return dto;
     }
 
 }

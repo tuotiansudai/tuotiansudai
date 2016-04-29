@@ -22,6 +22,7 @@
         <result column="created_time" property="createdTime"/>
         <result column="invest_id" property="investId"/>
         <result column="status" property="status"/>
+        <result column="exchange_code" property="exchangeCode"/>
     </resultMap>
 
     <resultMap id="useRecordMap" type="UserCouponView">
@@ -41,13 +42,13 @@
         <result column="expected_income" property="expectedIncome"/>
         <result column="birthday_benefit" property="birthdayBenefit"/>
         <result column="invest_lower_limit" property="investLowerLimit"/>
-        <result column="invest_upper_limit" property="investUpperLimit"/>
         <result column="status" property="status"/>
+        <result column="user_group" property="userGroup"/>
     </resultMap>
 
     <insert id="create" parameterType="UserCouponModel" useGeneratedKeys="true" keyProperty="id">
-        insert into user_coupon (login_name, coupon_id, start_time, end_time, created_time)
-        value(#{loginName}, #{couponId}, #{startTime}, #{endTime}, #{createdTime})
+        insert into user_coupon (login_name, coupon_id, start_time, end_time, created_time, exchange_code)
+        value(#{loginName}, #{couponId}, #{startTime}, #{endTime}, #{createdTime}, #{exchangeCode})
     </insert>
 
     <update id="update" parameterType="UserCouponModel">
@@ -104,10 +105,10 @@
             uc.end_time as end_time,
             (c.birthday_benefit + 1) as birthday_benefit,
             c.invest_lower_limit as invest_lower_limit,
-            c.invest_upper_limit as invest_upper_limit,
-            uc.status as status
+            uc.status as status,
+            c.user_group
         from user_coupon uc
-        join coupon c on uc.coupon_id=c.id and c.deleted is FALSE
+        join coupon c on uc.coupon_id=c.id
         where
             (uc.status is null or uc.status != 'SUCCESS')
             and uc.end_time > now()
@@ -132,10 +133,10 @@
             uc.expected_interest - uc.expected_fee as expected_income,
             (c.birthday_benefit + 1) as birthday_benefit,
             c.invest_lower_limit as invest_lower_limit,
-            c.invest_upper_limit as invest_upper_limit,
-            uc.status as status
+            uc.status as status,
+            c.user_group
         from user_coupon uc
-        join coupon c on uc.coupon_id=c.id and c.deleted is FALSE
+        join coupon c on uc.coupon_id=c.id
         join loan l on l.id=uc.loan_id
         join invest i on i.id = uc.invest_id
         where
@@ -154,10 +155,10 @@
             uc.end_time as end_time,
             (c.birthday_benefit + 1) as birthday_benefit,
             c.invest_lower_limit as invest_lower_limit,
-            c.invest_upper_limit as invest_upper_limit,
-            uc.status as status
+            uc.status as status,
+            c.user_group
         from user_coupon uc
-        join coupon c on uc.coupon_id=c.id and c.deleted is FALSE
+        join coupon c on uc.coupon_id=c.id
         where
             (uc.status is null or uc.status != 'SUCCESS')
             and uc.end_time &lt; now()
@@ -245,8 +246,8 @@
         select * from user_coupon where login_name = #{loginName} and coupon_id = #{couponId}
     </select>
 
-    <select id="findBirthdaySuccessByLoginNameAndLoanId" parameterType="map" resultMap="userCouponResultMap">
-        select t.* from user_coupon t join coupon m on t.coupon_id = m.id and m.coupon_type = 'BIRTHDAY_COUPON' where t.login_name = #{loginName} and t.loan_id = #{loanId} and t.status = 'SUCCESS'
+    <select id="findBirthdaySuccessByLoginNameAndInvestId" parameterType="map" resultMap="userCouponResultMap">
+        select t.* from user_coupon t join coupon m on t.coupon_id = m.id and m.coupon_type = 'BIRTHDAY_COUPON' where t.login_name = #{loginName} and t.invest_id = #{investId} and t.status = 'SUCCESS'
     </select>
 
 </mapper>

@@ -1,6 +1,5 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.util.AmountConverter;
 
@@ -8,31 +7,42 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class TransferApplicationPaginationItemDataDto implements Serializable {
-    private long transferApplicationId;
+    private String transferApplicationId;
     private String transferAmount;
     private String investAmount;
     private Date transferTime;
-    private TransferStatus transferStatus;
+    private String transferStatus;
     private long loanId;
     private String transferrerLoginName;
     private String leftPeriod;
     private String transfereeLoginName;
     private String transferFee;
+    private Date deadLine;
+    private String name;
+    private String sumRate;
+    private double baseRate;
+    private double activityRate;
+    private String transferName;
 
     public TransferApplicationPaginationItemDataDto(){}
 
     public TransferApplicationPaginationItemDataDto(TransferApplicationRecordDto transferApplicationRecordDto){
-        this.transferApplicationId = transferApplicationRecordDto.getTransferApplicationId();
+        this.transferApplicationId = String.valueOf(transferApplicationRecordDto.getTransferApplicationId());
         this.loanId = transferApplicationRecordDto.getLoanId();
         this.transferAmount = AmountConverter.convertCentToString(transferApplicationRecordDto.getTransferAmount());
         this.investAmount = AmountConverter.convertCentToString(transferApplicationRecordDto.getInvestAmount());
-        this.transferStatus = transferApplicationRecordDto.getTransferStatus();
         this.transferrerLoginName = transferApplicationRecordDto.getTransferrerLoginName();
         this.transfereeLoginName = transferApplicationRecordDto.getTransfereeLoginName();
         this.transferFee = AmountConverter.convertCentToString(transferApplicationRecordDto.getTransferFee());
         this.transferTime = transferApplicationRecordDto.getTransferTime();
+        this.deadLine = transferApplicationRecordDto.getDeadLine();
+        this.leftPeriod = String.valueOf(transferApplicationRecordDto.getLeftPeriod());
+        this.name = transferApplicationRecordDto.getName();
+        this.sumRate = transferApplicationRecordDto.getSumRatePercent();
+        this.baseRate = transferApplicationRecordDto.getBaseRate()*100;
+        this.activityRate = transferApplicationRecordDto.getActivityRate()*100;
+        this.transferName = transferApplicationRecordDto.getName();
     }
-
 
     public String getTransferAmount() {
         return transferAmount;
@@ -58,11 +68,11 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
         this.transferTime = transferTime;
     }
 
-    public TransferStatus getTransferStatus() {
+    public String getTransferStatus() {
         return transferStatus;
     }
 
-    public void setTransferStatus(TransferStatus transferStatus) {
+    public void setTransferStatus(String transferStatus) {
         this.transferStatus = transferStatus;
     }
 
@@ -98,11 +108,11 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
         this.transferFee = transferFee;
     }
 
-    public long getTransferApplicationId() {
+    public String getTransferApplicationId() {
         return transferApplicationId;
     }
 
-    public void setTransferApplicationId(long transferApplicationId) {
+    public void setTransferApplicationId(String transferApplicationId) {
         this.transferApplicationId = transferApplicationId;
     }
 
@@ -113,4 +123,37 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
     public void setLoanId(long loanId) {
         this.loanId = loanId;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSumRate() {
+        return sumRate;
+    }
+
+    public void setSumRate(String sumRate) {
+        this.sumRate = sumRate;
+    }
+
+    public Date getDeadLine() {return deadLine;}
+
+    public void setDeadLine(Date deadLine) {this.deadLine = deadLine;}
+
+    public double getBaseRate() { return baseRate; }
+
+    public void setBaseRate(double baseRate) { this.baseRate = baseRate; }
+
+    public double getActivityRate() { return activityRate; }
+
+    public void setActivityRate(double activityRate) { this.activityRate = activityRate; }
+
+    public String getTransferName() { return transferName; }
+
+    public void setTransferName(String transferName) { this.transferName = transferName; }
+
 }

@@ -91,7 +91,7 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
     public void shouldTransferNoPasswordPurchaseSuccess() throws Exception {
         TransferPurchaseRequestDto transferPurchaseRequestDto = new TransferPurchaseRequestDto();
         transferPurchaseRequestDto.setBaseParam(BaseParamTest.getInstance());
-        transferPurchaseRequestDto.setTransferApplicationId(idGenerator.generate());
+        transferPurchaseRequestDto.setTransferApplicationId(String.valueOf(idGenerator.generate()));
 
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
         transferApplicationModel.setTransferAmount(100000);
@@ -109,7 +109,7 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
         PayDataDto payDataDto = new PayDataDto();
         payDataDto.setStatus(true);
         baseDto.setData(payDataDto);
-        when(transferService.transferNoPasswordPurchase(any(InvestDto.class))).thenReturn(baseDto);
+        when(transferService.noPasswordTransferPurchase(any(InvestDto.class))).thenReturn(baseDto);
 
         BaseResponseDto<InvestNoPassResponseDataDto> baseResponseDto = mobileAppTransferServiceImpl.transferNoPasswordPurchase(transferPurchaseRequestDto);
         assertTrue(baseResponseDto.isSuccess());
@@ -120,7 +120,7 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
     public void shouldTransferNoPasswordPurchaseFailedInvestorNotOpen() throws Exception {
         TransferPurchaseRequestDto transferPurchaseRequestDto = new TransferPurchaseRequestDto();
         transferPurchaseRequestDto.setBaseParam(BaseParamTest.getInstance());
-        transferPurchaseRequestDto.setTransferApplicationId(idGenerator.generate());
+        transferPurchaseRequestDto.setTransferApplicationId(String.valueOf(idGenerator.generate()));
 
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
         transferApplicationModel.setTransferAmount(100000);
@@ -135,7 +135,7 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
 
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         baseDto.setSuccess(false);
-        when(transferService.transferNoPasswordPurchase(any(InvestDto.class))).thenReturn(baseDto);
+        when(transferService.noPasswordTransferPurchase(any(InvestDto.class))).thenReturn(baseDto);
 
         BaseResponseDto<InvestNoPassResponseDataDto> baseResponseDto = mobileAppTransferServiceImpl.transferNoPasswordPurchase(transferPurchaseRequestDto);
         assertFalse(baseResponseDto.isSuccess());
@@ -145,7 +145,7 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
     public void shouldPurchaseSuccess() throws Exception{
         TransferPurchaseRequestDto transferPurchaseRequestDto = new TransferPurchaseRequestDto();
         transferPurchaseRequestDto.setBaseParam(BaseParamTest.getInstance());
-        transferPurchaseRequestDto.setTransferApplicationId(idGenerator.generate());
+        transferPurchaseRequestDto.setTransferApplicationId(String.valueOf(idGenerator.generate()));
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         payFormDataDto.setStatus(true);
         payFormDataDto.setUrl("url");

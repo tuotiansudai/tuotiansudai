@@ -10,13 +10,16 @@ import com.tuotiansudai.api.service.MobileAppInvestListService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
+import org.aspectj.apache.bcel.classfile.annotation.RuntimeAnnos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -40,10 +43,13 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
+    private LoanRepayMapper loanRepayMapper;
+
+    @Autowired
     private LoanMapper loanMapper;
 
-    @Value("#{'${web.random.investor.list}'.split('\\|')}")
-    private List<String> showRandomLoginNameList;
+    @Autowired
+    private RandomUtils randomUtils;
 
     @Autowired
     private InvestTransferService investTransferService;
@@ -71,7 +77,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
             investRecordResponseDataDto = Lists.transform(investModels, new Function<InvestModel, InvestRecordResponseDataDto>() {
                 @Override
                 public InvestRecordResponseDataDto apply(InvestModel input) {
-                    input.setLoginName(loanService.encryptLoginName(loginName, input.getLoginName(), 3, input.getId()));
+                    input.setLoginName(randomUtils.encryptLoginName(loginName, input.getLoginName(), 3, input.getId()));
                     return new InvestRecordResponseDataDto(input);
                 }
             });
@@ -99,7 +105,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
 
         // build InvestList
         UserInvestListResponseDataDto dtoData = new UserInvestListResponseDataDto();
-        dtoData.setInvestList(convertResponseData(investList, requestDto.getTransferStatuses()));
+        dtoData.setInvestList(convertResponseData(investList, requestDto.getTransferStatus()));
         dtoData.setIndex(requestDto.getIndex());
         dtoData.setPageSize(requestDto.getPageSize());
         dtoData.setTotalCount(investListCount);
@@ -148,10 +154,12 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
                     transferStatus = invest.getTransferStatus().name();
                 }
                 dto.setTransferStatus(transferStatus);
+                LoanRepayModel loanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(invest.getLoanId());
+                dto.setLeftPeriod(loanRepayModel == null ? "0" : String.valueOf(investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(invest.getId(),loanRepayModel.getPeriod())));
                 list.add(dto);
             }
         }
-        if (Lists.newArrayList(TransferStatus.TRANSFERABLE, TransferStatus.SUCCESS, TransferStatus.TRANSFERRING).contains(transferStatuses)) {
+        if (Lists.newArrayList(TransferStatus.TRANSFERABLE, TransferStatus.SUCCESS, TransferStatus.TRANSFERRING).containsAll(transferStatuses)) {
             return list;
         } else {
             return Lists.newArrayList(Iterators.filter(list.iterator(), new Predicate<UserInvestRecordResponseDataDto>() {

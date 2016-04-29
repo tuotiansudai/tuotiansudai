@@ -76,7 +76,7 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
         String code = "";
         String message = "";
         try {
-            BaseDto<PayDataDto> payDataDto = transferService.transferNoPasswordPurchase(investDto);
+            BaseDto<PayDataDto> payDataDto = transferService.noPasswordTransferPurchase(investDto);
             if(payDataDto.getData() != null){
                 code = payDataDto.getData().getCode() != null ? payDataDto.getData().getCode() : ReturnMessage.SUCCESS.getCode();
                 message = payDataDto.getData().getMessage() != null ? payDataDto.getData().getMessage() : ReturnMessage.SUCCESS.getMsg();
@@ -120,7 +120,7 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
     }
 
     private InvestDto convertInvestDto(TransferPurchaseRequestDto transferPurchaseRequestDto) {
-        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferPurchaseRequestDto.getTransferApplicationId());
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(transferPurchaseRequestDto.getTransferApplicationId()));
         Source source = Source.valueOf(transferPurchaseRequestDto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH));
         InvestDto investDto = new InvestDto();
         investDto.setSource(source);
