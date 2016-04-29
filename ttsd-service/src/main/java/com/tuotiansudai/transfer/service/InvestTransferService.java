@@ -1,6 +1,7 @@
 package com.tuotiansudai.transfer.service;
 
 
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.InvestPaginationItemDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
@@ -10,10 +11,11 @@ import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.model.TransferInvestDetailDto;
 
 import java.util.Date;
+import java.util.List;
 
 public interface InvestTransferService {
 
-    void investTransferApply(TransferApplicationDto transferApplicationDto);
+    boolean investTransferApply(TransferApplicationDto transferApplicationDto);
 
     boolean cancelTransferApplication(long transferApplicationId);
 
@@ -22,14 +24,18 @@ public interface InvestTransferService {
     boolean isTransferable(long investId);
 
     BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findTransferApplicationPaginationList(Long transferApplicationId,
-                                                                                                          Date startTime,
-                                                                                                          Date endTime,
-                                                                                                          TransferStatus status,
-                                                                                                          String transferrerLoginName,
-                                                                                                          String transfereeLoginName,
-                                                                                                          Long loanId,
-                                                                                                          Integer index,
-                                                                                                          Integer pageSize);
+                                                                             Date startTime,
+                                                                             Date endTime,
+                                                                             TransferStatus status,
+                                                                             String transferrerLoginName,
+                                                                             String transfereeLoginName,
+                                                                             Long loanId,
+                                                                             Integer index,
+                                                                             Integer pageSize);
+
+    BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findWebTransferApplicationPaginationList(String transferrerLoginName,List<TransferStatus> statusList ,Integer index, Integer pageSize);
+
+    BaseDataDto isAllowTransfer(long transferApplicationId);
 
     BasePaginationDataDto<TransferInvestDetailDto> getInvestTransferList(String investorLoginName,
                                                                          int index,
