@@ -43,7 +43,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         showInputErrorTips($errorTip.text());
     }
 
-    if ($errorType.val() == 'OUT_OF_NOVICE_INVEST_LIMIT') {
+    var showLayer = function() {
         layer.open({
             shadeClose: false,
             title: '新手体验特权',
@@ -54,6 +54,10 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 layer.closeAll();
             }
         });
+    }
+
+    if ($errorType.val() == 'OUT_OF_NOVICE_INVEST_LIMIT') {
+        showLayer();
     }
 
     var loanProgress = $loanDetail.data('loan-progress');
@@ -572,6 +576,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                             var data = response.data;
                             if (data.status) {
                                 location.href = "/invest-success";
+                            } else if (data.message == '新手标投资已超上限') {
+                                showLayer();
                             } else {
                                 showInputErrorTips(data.message);
                             }
