@@ -89,7 +89,7 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         LoanRepayModel lastLoanRepayModel = this.getLastLoanRepayModel(currentLoanRepayModel, loanRepayModels);
 
         for (UserCouponModel userCouponModel : userCouponModels) {
-            List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(userCouponModel.getInvestId(),Lists.newArrayList(TransferStatus.SUCCESS))
+            List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(userCouponModel.getInvestId(),Lists.newArrayList(TransferStatus.SUCCESS));
             if(CollectionUtils.isNotEmpty(transferApplicationModels)){
                continue;
             }
