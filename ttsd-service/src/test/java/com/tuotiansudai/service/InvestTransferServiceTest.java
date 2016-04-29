@@ -93,6 +93,7 @@ public class InvestTransferServiceTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.REPAYING);
+        loanDto.setRecheckTime(new Date());
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
         return loanModel;
@@ -280,7 +281,7 @@ public class InvestTransferServiceTest {
         assertEquals("10.00", basePaginationDataDto.getRecords().get(0).getTransferAmount());
         assertEquals("12.00", basePaginationDataDto.getRecords().get(0).getInvestAmount());
         assertEquals(new DateTime("2016-01-02").toDate(), basePaginationDataDto.getRecords().get(0).getTransferTime());
-        assertEquals(TransferStatus.TRANSFERRING, basePaginationDataDto.getRecords().get(0).getTransferStatus());
+        assertEquals(null, basePaginationDataDto.getRecords().get(0).getTransferStatus());
         assertEquals(transfereeInvestModel.getLoginName(), basePaginationDataDto.getRecords().get(0).getTransfereeLoginName());
         assertEquals(transferrerInvestModel.getLoginName(), basePaginationDataDto.getRecords().get(0).getTransferrerLoginName());
     }
@@ -317,7 +318,7 @@ public class InvestTransferServiceTest {
         assertEquals("12.00", basePaginationDataDto.getRecords().get(0).getInvestAmount());
         assertEquals(new DateTime("2016-01-02").toDate(), basePaginationDataDto.getRecords().get(0).getTransferTime());
         assertEquals(new DateTime("2016-01-07").toDate(), basePaginationDataDto.getRecords().get(0).getDeadLine());
-        assertEquals(TransferStatus.TRANSFERRING, basePaginationDataDto.getRecords().get(0).getTransferStatus());
+        assertEquals(TransferStatus.TRANSFERRING.getDescription(), basePaginationDataDto.getRecords().get(0).getTransferStatus());
     }
 
 }
