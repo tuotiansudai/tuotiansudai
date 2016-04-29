@@ -16,6 +16,7 @@ public class EnvironmentAspect {
 
     @Value("${common.environment}")
     private Environment environment;
+
     @Value("${common.fake.captcha}")
     private String fakeCaptcha;
 
