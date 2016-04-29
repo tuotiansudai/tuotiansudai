@@ -24,5 +24,4 @@ public interface TransferService {
 
     TransferApplicationRecodesDto getTransferee(long TransferApplicationId, String loginName);
 
-
 }
