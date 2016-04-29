@@ -3,10 +3,8 @@ package com.tuotiansudai.transfer.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.InvestPaginationDataDto;
-import com.tuotiansudai.dto.InvestPaginationItemDataDto;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.TransferApplicationAutoCancelJob;
@@ -71,19 +69,39 @@ public class InvestTransferServiceImpl implements InvestTransferService{
     public static String redisTransferApplicationNumber = "web:{0}:transferApplicationNumber";
 
     @Override
+    public BaseDataDto isAllowTransfer(long transferApplicationId) {
+        BaseDataDto baseDataDto = new BaseDataDto();
+        DateTime dateTime = new DateTime();
+        InvestModel investModel = investMapper.findById(transferApplicationId);
+        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+        LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(investModel.getLoanId());
+        TransferRuleModel transferRuleModel = transferRuleMapper.find();
+        if (Days.daysBetween(dateTime, new DateTime(loanRepayModel.getRepayDate())).getDays() < transferRuleModel.getDaysLimit()) {
+            baseDataDto.setStatus(false);
+            baseDataDto.setMessage("该项目即将在"+transferRuleModel.getDaysLimit()+"日内回款，暂不可转让，请选择其他项目。");
+        } else if (loanModel.getStatus() != LoanStatus.REPAYING){
+            baseDataDto.setStatus(false);
+            baseDataDto.setMessage("该项目已提前回款，不可进行转让。");
+        } else {
+            baseDataDto.setStatus(true);
+        }
+        return baseDataDto;
+    }
+
+    @Override
     @Transactional
-    public void investTransferApply(TransferApplicationDto transferApplicationDto) {
+    public boolean investTransferApply(TransferApplicationDto transferApplicationDto) {
 
         InvestModel investModel = investMapper.findById(transferApplicationDto.getTransferInvestId());
 
         if (investModel.getStatus() != InvestStatus.SUCCESS || investModel.getAmount() < transferApplicationDto.getTransferAmount()) {
-            return;
+            return false;
         }
 
-        LoanRepayModel loanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(investModel.getLoanId());
+        LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(investModel.getLoanId());
 
         if (loanRepayModel == null) {
-            return;
+            return false;
         }
 
 
@@ -100,6 +118,8 @@ public class InvestTransferServiceImpl implements InvestTransferService{
         investMapper.updateTransferStatus(investModel.getId(), TransferStatus.TRANSFERRING);
 
         investTransferApplyJob(transferApplicationModel);
+
+        return true;
     }
 
     @Override
@@ -168,7 +188,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
 
         }
 
-        LoanRepayModel loanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(investModel.getLoanId());
+        LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(investModel.getLoanId());
         if(loanRepayModel == null){
             logger.debug(MessageFormat.format("{0} is completed ",investModel.getLoanId()));
             return false;
@@ -231,6 +251,37 @@ public class InvestTransferServiceImpl implements InvestTransferService{
         dto.setStatus(true);
         return dto;
     }
+    
+    @Override
+    public BasePaginationDataDto<TransferApplicationPaginationItemDataDto> findWebTransferApplicationPaginationList(String transferrerLoginName,List<TransferStatus> statusList ,Integer index, Integer pageSize) {
+
+        int count = transferApplicationMapper.findCountTransferApplicationPaginationByLoginName(transferrerLoginName, statusList);
+        List<TransferApplicationRecordDto> items = Lists.newArrayList();
+        if (count > 0) {
+            int totalPages = count % pageSize > 0 ? count / pageSize + 1 : count / pageSize;
+            index = index > totalPages ? totalPages : index;
+            items = transferApplicationMapper.findTransferApplicationPaginationByLoginName(transferrerLoginName, statusList, (index - 1) * pageSize, pageSize);
+
+        }
+        List<TransferApplicationPaginationItemDataDto> records = Lists.transform(items, new Function<TransferApplicationRecordDto, TransferApplicationPaginationItemDataDto>() {
+            @Override
+            public TransferApplicationPaginationItemDataDto apply(TransferApplicationRecordDto input) {
+                TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto(input);
+                if (input.getTransferStatus() == TransferStatus.TRANSFERABLE) {
+                    transferApplicationPaginationItemDataDto.setTransferStatus(isTransferable(input.getTransferApplicationId()) ? input.getTransferStatus().getDescription() : "--");
+                } else if (input.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
+                    transferApplicationPaginationItemDataDto.setTransferStatus("--");
+                } else {
+                    transferApplicationPaginationItemDataDto.setTransferStatus(input.getTransferStatus().getDescription());
+                }
+                return transferApplicationPaginationItemDataDto;
+            }
+        });
+
+        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> dto = new BasePaginationDataDto(index, pageSize, count, records);
+        dto.setStatus(true);
+        return dto;
+    }
 
     public BasePaginationDataDto<TransferInvestDetailDto> getInvestTransferList(String investorLoginName,
                                                                int index,
@@ -261,7 +312,6 @@ public class InvestTransferServiceImpl implements InvestTransferService{
             BasePaginationDataDto dto = new BasePaginationDataDto(index, pageSize, count, items);
             dto.setStatus(true);
             return dto;
-
     }
 
 }

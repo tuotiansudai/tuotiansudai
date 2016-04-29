@@ -85,6 +85,13 @@
           padding: 7px 20px;
           border-radius: 3px;
         }
+        .tip-text{
+          color:#7f7f7f;
+          margin-left:20px;
+          &.active{
+            color:#f71010;
+          }
+        }
       }
       .fa-check-square{
         color:#f24712;

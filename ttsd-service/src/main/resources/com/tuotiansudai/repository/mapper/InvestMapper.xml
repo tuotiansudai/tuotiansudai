@@ -37,6 +37,8 @@
         <result column="loan_type" property="loanType"></result>
         <result column="loan_status" property="loanStatus"></result>
         <result column="loan_periods" property="loanPeriods"></result>
+        <result column="loan_base_rate" property="loanBaseRate"></result>
+        <result column="loan_activity_rate" property="loanActivityRate"></result>
         <result column="roles" property="roles"></result>
         <result column="referrer_login_name" property="referrerLoginName"></result>
         <result column="next_repay_date" property="nextRepayDate"></result>
@@ -169,10 +171,13 @@
 
     <select id="findInvestPagination" parameterType="map" resultMap="investPaginationItemView">
         select invest.*,
+        loan.id as loan_id,
         loan.name as loan_name,
         loan.status as loan_status,
         loan.type as loan_type,
         loan.periods as loan_periods,
+        loan.base_rate as loan_base_rate,
+        loan.activity_rate as loan_activity_rate,
         a.user_name as investor_user_name,
         u.mobile as investor_mobile,
         a.identity_number as identity_number,

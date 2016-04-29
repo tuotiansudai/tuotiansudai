@@ -113,7 +113,7 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
         this.transferTime = transferApplicationPaginationItemDataDto.getTransferTime() == null?"":new DateTime(transferApplicationPaginationItemDataDto.getTransferTime()).toString("yyyy-MM-dd HH:mm:ss");
         this.baseRate = decimalFormat.format(transferApplicationPaginationItemDataDto.getBaseRate());
         this.activityRate =  decimalFormat.format(transferApplicationPaginationItemDataDto.getActivityRate());
-        this.transferStatus = transferApplicationPaginationItemDataDto.getTransferStatus();
+        this.transferStatus = TransferStatus.valueOf(transferApplicationPaginationItemDataDto.getTransferStatus());
         this.leftPeriod = String.valueOf(transferApplicationPaginationItemDataDto.getLeftPeriod());
     }
 }
