@@ -1,9 +1,6 @@
 package com.tuotiansudai.api.dto;
 
 public class ReferrerInvestListRequestDto extends BaseParamDto{
-
-    private Integer index;
-    private Integer pageSize;
     private String referrerId;
 
     public String getReferrerId() {
@@ -12,21 +9,5 @@ public class ReferrerInvestListRequestDto extends BaseParamDto{
 
     public void setReferrerId(String referrerId) {
         this.referrerId = referrerId;
-    }
-
-    public Integer getIndex() {
-        return index;
-    }
-
-    public void setIndex(Integer index) {
-        this.index = index;
-    }
-
-    public Integer getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
     }
 }

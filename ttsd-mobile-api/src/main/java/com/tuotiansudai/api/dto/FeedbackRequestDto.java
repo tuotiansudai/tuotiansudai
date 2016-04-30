@@ -3,7 +3,6 @@ package com.tuotiansudai.api.dto;
 import org.hibernate.validator.constraints.NotEmpty;
 
 public class FeedbackRequestDto extends BaseParamDto {
-
     @NotEmpty(message = "0080")
     private String content;
 
