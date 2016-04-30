@@ -3,7 +3,6 @@ package com.tuotiansudai.transfer.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
@@ -20,10 +19,8 @@ import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 @Service
@@ -56,13 +53,14 @@ public class TransferServiceImpl implements TransferService {
 
 
     @Override
-    public BaseDto<PayFormDataDto> transferPurchase(InvestDto investDto) throws InvestException {
+    public BaseDto<PayFormDataDto> transferPurchase(InvestDto investDto) throws InvestException{
         this.checkTransferPurchase(investDto);
         return payWrapperClient.purchase(investDto);
     }
 
     @Override
     public BaseDto<PayDataDto> noPasswordTransferPurchase(InvestDto investDto) throws InvestException{
+        investDto.setNoPassword(true);
         this.checkTransferPurchase(investDto);
         return payWrapperClient.noPasswordPurchase(investDto);
     }
