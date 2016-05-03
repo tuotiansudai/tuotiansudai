@@ -94,4 +94,8 @@ public class UserSearchResponseModel extends BaseSyncResponseModel {
                 )))
                 .build());
     }
+
+    public Long getBalance() {
+        return Strings.isNullOrEmpty(this.balance) ? null : Long.valueOf(this.balance);
+    }
 }

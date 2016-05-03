@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -51,4 +53,39 @@ public class SendCloudMailUtil {
         }
         return false;
     }
+
+
+    public boolean sendUserBalanceCheckingResult(String toAddress, Map<String, Object> map) {
+
+        Map<String, String> headerMap = new HashMap<>();
+        headerMap.put("startTime", (String) map.get("startTime"));
+        headerMap.put("endTime", (String)map.get("endTime"));
+
+        String contentHeader = SendCloudTemplate.USER_BALANCE_CHECK_RESULT_HEADER.generateContent(headerMap);
+
+        StringBuffer bodySb = new StringBuffer();
+        List<String> mismatchUserList = (List<String>) map.get("userList");
+        for (String userInfo : mismatchUserList) {
+            String[] userInfoArr = userInfo.split("-");
+            Map<String, String> bodyLineMap = new HashMap<>();
+            bodyLineMap.put("loginName", userInfoArr[0]);
+            bodyLineMap.put("ttsdBalance", AmountConverter.convertCentToString(Long.parseLong(userInfoArr[1])));
+            bodyLineMap.put("umpayBalance", AmountConverter.convertCentToString(Long.parseLong(userInfoArr[2])));
+            bodySb.append(SendCloudTemplate.USER_BALANCE_CHECK_RESULT_BODY.generateContent(bodyLineMap));
+        }
+
+        String contentTail = SendCloudTemplate.USER_BALANCE_CHECK_RESULT_TAIL.getTemplate();
+
+        try {
+            sendCloudClient.sendMailBySendCloud(toAddress, SendCloudTemplate.USER_BALANCE_CHECK_RESULT_BODY.getTitle(), contentHeader + bodySb.toString() + contentTail, SendCloudType.CONTENT);
+            return true;
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return false;
+    }
+
+
+
+
 }

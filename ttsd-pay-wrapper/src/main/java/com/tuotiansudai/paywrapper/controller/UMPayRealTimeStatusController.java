@@ -25,6 +25,12 @@ public class UMPayRealTimeStatusController {
         return payRealTimeStatusService.getUserStatus(loginName);
     }
 
+    @RequestMapping(path = "/user-balance/{loginName}", method = RequestMethod.GET)
+    @ResponseBody
+    public Long getRealTimeUserBalance(@PathVariable String loginName) {
+        return payRealTimeStatusService.getUserBalance(loginName);
+    }
+
     @RequestMapping(path = "/platform", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, String> getRealTimePlatformStatus() {
