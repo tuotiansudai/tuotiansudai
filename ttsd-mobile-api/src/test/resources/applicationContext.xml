@@ -90,4 +90,6 @@
         <property name="maxTotal" value="300"/>
     </bean>
 
+    <bean id="captchaHelper" class="com.tuotiansudai.util.CaptchaHelper"/>
+
 </beans>
