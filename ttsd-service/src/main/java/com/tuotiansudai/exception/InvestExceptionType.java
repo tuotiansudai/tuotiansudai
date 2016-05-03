@@ -7,7 +7,7 @@ public enum InvestExceptionType {
     EXCEED_MONEY_NEED_RAISED("标的可投金额不足"),
     ILLEGAL_INVEST_AMOUNT("投资金额不符合递增金额要求"),
     LESS_THAN_MIN_INVEST_AMOUNT("投资金额小于标的最小投资金额"),
-    OUT_OF_NOVICE_INVEST_LIMIT("新手标投资已超上限"),
+    OUT_OF_NOVICE_INVEST_LIMIT("您已购买过新手专享产品"),
     PASSWORD_INVEST_OFF("尚未开启免密投资"),
     ILLEGAL_LOAN_STATUS("标的暂不可投资"),
     NOT_ENOUGH_BALANCE("账户余额不足");
