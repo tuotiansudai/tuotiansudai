@@ -61,7 +61,7 @@ public enum ReturnMessage {
     MORE_THAN_MAX_INVEST_AMOUNT("0052","投资金额超过了用户投资限额"),
     LOAN_IS_FULL("0053","标的已满"),
     LESS_THAN_MIN_INVEST_AMOUNT("0054","投资金额小于标的最小投资金额"),
-    OUT_OF_NOVICE_INVEST_LIMIT("0055","新手标投资已超上限"),
+    OUT_OF_NOVICE_INVEST_LIMIT("0055","您已购买过新手专享产品"),
     INVEST_FAILED("0056","投资失败"),
     /******手机端投资******/
 
