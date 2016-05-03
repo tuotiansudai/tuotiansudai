@@ -1,5 +1,7 @@
 require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension'], function (_, $) {
 
+    statisticsCnzzByAccount();
+
     var registerAccountForm = $('.register-step-two .register-account-form');
 
     registerAccountForm.validate({
@@ -41,3 +43,80 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
         }
     });
 });
+
+var visitAddress = [
+    {
+        'function':'/recharge',
+        'category':'75实名认证页',
+        'action':'认证',
+        'label':'充值'
+    },
+    {
+        'function':'/account',
+        'category':'76实名认证页',
+        'action':'认证',
+        'label':'提现'
+    },
+    {
+        'function':'/bind-card',
+        'category':'77实名认证页',
+        'action':'认证',
+        'label':'绑卡'
+    },
+    {
+        'function':'/loan',
+        'category':'78实名认证页',
+        'action':'认证',
+        'label':'马上投资'
+    },
+    {
+        'function':'/point',
+        'category':'79实名认证页',
+        'action':'认证',
+        'label':'签到'
+    },
+    {
+        'function':'/auto-invest/agreement',
+        'category':'80实名认证页',
+        'action':'认证',
+        'label':'授权自动投标'
+    },
+    {
+        'function':'/personal-info',
+        'category':'82实名认证页',
+        'action':'认证',
+        'label':'开启免密'
+    }
+];
+
+function getReferrer() {
+    var referrer = '';
+    try {
+        referrer = window.top.document.referrer;
+    } catch(e) {
+        if(window.parent) {
+            try {
+                referrer = window.parent.document.referrer;
+            } catch(e2) {
+                referrer = '';
+            }
+        }
+    }
+    if(referrer === '') {
+        referrer = document.referrer;
+    }
+    return referrer;
+};
+
+function statisticsCnzzByAccount(){
+    var referrer = getReferrer();
+    for(var index in visitAddress){
+        if(referrer.indexOf(visitAddress[index].function) != -1){
+            cnzzPush.trackClick(visitAddress[index].category,visitAddress[index].action,visitAddress[index].label);
+            break;
+        }
+    }
+}
+
+
+
