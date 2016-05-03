@@ -19,9 +19,7 @@ import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.RandomUtils;
 import org.apache.commons.collections4.CollectionUtils;
-import org.aspectj.apache.bcel.classfile.annotation.RuntimeAnnos;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -154,7 +152,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
                     transferStatus = invest.getTransferStatus().name();
                 }
                 dto.setTransferStatus(transferStatus);
-                LoanRepayModel loanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(invest.getLoanId());
+                LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(invest.getLoanId());
                 dto.setLeftPeriod(loanRepayModel == null ? "0" : String.valueOf(investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(invest.getId(),loanRepayModel.getPeriod())));
                 list.add(dto);
             }

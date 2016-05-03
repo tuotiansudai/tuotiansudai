@@ -74,7 +74,7 @@ require(['jquery', 'mustache', 'text!/tpl/transfer-transferable-table.mustache',
 			})
 			.done(function(data) {
 				if(data.status==true){
-					location.href='/transfer/application/apply?investId='+applyId;
+					location.href='/transfer/application/'+applyId+'/apply';
 				}else{
 					layer.open({
 					  title: '温馨提示',

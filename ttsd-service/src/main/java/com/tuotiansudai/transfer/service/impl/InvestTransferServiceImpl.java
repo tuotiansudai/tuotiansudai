@@ -168,8 +168,8 @@ public class InvestTransferServiceImpl implements InvestTransferService{
     public boolean isTransferable(long investId){
         DateTime current = new DateTime().withTimeAtStartOfDay();
         InvestModel investModel = investMapper.findById(investId);
-        if(investModel == null){
-            logger.debug(MessageFormat.format("{0} is not exist",investId));
+        if(investModel == null || investModel.getStatus() != InvestStatus.SUCCESS){
+            logger.debug(MessageFormat.format("{0} is not exist or invest failed",investId));
             return false;
         }
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
