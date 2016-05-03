@@ -17,7 +17,7 @@
             <label for="amount" class="col-sm-1 control-label system-recharge-label">充值金额</label>
 
             <div class="col-sm-8 col-lg-7 system-recharge-amount">
-                <input id="amount" name="amount" type="text" class="form-control " data-d-group="4" data-l-zero="deny"
+                <input id="amount" name="amount" type="text" class="form-control" data-l-zero="deny"
                        data-v-min="0.00" placeholder="0.00" />
             </div>
         </div>

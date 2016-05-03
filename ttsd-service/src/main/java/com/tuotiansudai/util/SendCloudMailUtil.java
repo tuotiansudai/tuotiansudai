@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +42,7 @@ public class SendCloudMailUtil {
         return false;
     }
 
-    public boolean sendActiveEmail(String toAddress, Map<String, String> map){
+    public boolean sendActiveEmail(String toAddress, Map<String, String> map) {
         try {
             String content = SendCloudTemplate.ACTIVE_EMAIL.generateContent(map);
             sendCloudClient.sendMailBySendCloud(toAddress, SendCloudTemplate.ACTIVE_EMAIL.getTitle(), content, SendCloudType.CONTENT);
@@ -54,12 +53,11 @@ public class SendCloudMailUtil {
         return false;
     }
 
-
     public boolean sendUserBalanceCheckingResult(String toAddress, Map<String, Object> map) {
 
         Map<String, String> headerMap = new HashMap<>();
         headerMap.put("startTime", (String) map.get("startTime"));
-        headerMap.put("endTime", (String)map.get("endTime"));
+        headerMap.put("endTime", (String) map.get("endTime"));
 
         String contentHeader = SendCloudTemplate.USER_BALANCE_CHECK_RESULT_HEADER.generateContent(headerMap);
 
@@ -84,8 +82,4 @@ public class SendCloudMailUtil {
         }
         return false;
     }
-
-
-
-
 }

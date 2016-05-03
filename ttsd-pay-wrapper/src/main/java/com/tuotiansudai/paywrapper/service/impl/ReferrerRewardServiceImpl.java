@@ -79,7 +79,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                     try {
                         Role role = this.getReferrerPriorityRole(referrerLoginName);
                         if (role != null) {
-                            long reward = this.calculateReferrerReward(invest.getAmount(), loanDuration, referrerRelationModel.getLevel(), role,referrerLoginName);
+                            long reward = this.calculateReferrerReward(invest.getAmount(), loanDuration, referrerRelationModel.getLevel(), role, referrerLoginName);
                             InvestReferrerRewardModel model = new InvestReferrerRewardModel(idGenerator.generate(), invest.getId(), reward, referrerLoginName, role);
                             this.transferReferrerReward(model);
                         }
@@ -142,10 +142,10 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         }
     }
 
-    private long calculateReferrerReward(long amount, int loanDuration, int level, Role role,String referrerLoginName) {
+    private long calculateReferrerReward(long amount, int loanDuration, int level, Role role, String referrerLoginName) {
         BigDecimal amountBigDecimal = new BigDecimal(amount);
 
-        double rewardRate = this.getRewardRate(level, Role.STAFF == role,referrerLoginName);
+        double rewardRate = this.getRewardRate(level, Role.STAFF == role, referrerLoginName);
 
         return amountBigDecimal
                 .multiply(new BigDecimal(rewardRate))
@@ -155,17 +155,12 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     }
 
     private int calculateLoanDuration(LoanModel loanModel) {
-        DateTime interestStartTime = new DateTime().withTimeAtStartOfDay();
-        int loanDuration = 0;
-        if (loanModel.getType().getLoanPeriodUnit() == LoanPeriodUnit.MONTH) {
-            for (int index = 0; index < loanModel.getPeriods(); index++) {
-                loanDuration += interestStartTime.plusDays(loanDuration).dayOfMonth().getMaximumValue();
-            }
-        }
         if (loanModel.getType().getLoanPeriodUnit() == LoanPeriodUnit.DAY) {
-            loanDuration = loanModel.getPeriods();
+            return loanModel.getPeriods();
         }
-        return loanDuration;
+
+        int periods = loanModel.getPeriods();
+        return periods * InterestCalculator.DAYS_OF_MONTH;
     }
 
     private Role getReferrerPriorityRole(String referrerLoginName) {
@@ -205,12 +200,12 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         return null;
     }
 
-    private double getRewardRate(int level, boolean isStaff,String referrerLoginName) {
+    private double getRewardRate(int level, boolean isStaff, String referrerLoginName) {
         if (isStaff) {
-            AgentLevelRateModel agentLevelRateModel = agentLevelRateMapper.findAgentLevelRateByLoginNameAndLevel(referrerLoginName,level);
-            if(agentLevelRateModel != null){
+            AgentLevelRateModel agentLevelRateModel = agentLevelRateMapper.findAgentLevelRateByLoginNameAndLevel(referrerLoginName, level);
+            if (agentLevelRateModel != null) {
                 double agentRewardRate = agentLevelRateModel.getRate();
-                if(agentRewardRate > 0){
+                if (agentRewardRate > 0) {
                     return agentRewardRate;
                 }
             }
