@@ -107,7 +107,7 @@ public class TransferApplicationRecordResponseDataDto extends BaseResponseDataDt
     public TransferApplicationRecordResponseDataDto(TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto){
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         this.transferApplicationId = String.valueOf(transferApplicationPaginationItemDataDto.getTransferApplicationId());
-        this.name = transferApplicationPaginationItemDataDto.getTransferName();
+        this.name = transferApplicationPaginationItemDataDto.getName();
         this.transferAmount = transferApplicationPaginationItemDataDto.getTransferAmount();
         this.investAmount =  transferApplicationPaginationItemDataDto.getInvestAmount();
         this.transferTime = transferApplicationPaginationItemDataDto.getTransferTime() == null?"":new DateTime(transferApplicationPaginationItemDataDto.getTransferTime()).toString("yyyy-MM-dd HH:mm:ss");

@@ -310,7 +310,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
     private TransferApplicationPaginationItemDataDto createTransferApplicationRecordDto(TransferApplicationModel transferApplicationModel) {
         TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto();
         transferApplicationPaginationItemDataDto.setTransferApplicationId(String.valueOf(transferApplicationModel.getId()));
-        transferApplicationPaginationItemDataDto.setTransferName(transferApplicationModel.getName());
+        transferApplicationPaginationItemDataDto.setName(transferApplicationModel.getName());
         transferApplicationPaginationItemDataDto.setInvestAmount(String.valueOf(transferApplicationModel.getInvestAmount()));
         transferApplicationPaginationItemDataDto.setTransferAmount(String.valueOf(transferApplicationModel.getTransferAmount()));
         transferApplicationPaginationItemDataDto.setBaseRate(12);

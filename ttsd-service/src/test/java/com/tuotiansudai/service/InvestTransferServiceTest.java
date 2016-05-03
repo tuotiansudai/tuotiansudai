@@ -281,7 +281,7 @@ public class InvestTransferServiceTest {
         assertEquals("10.00", basePaginationDataDto.getRecords().get(0).getTransferAmount());
         assertEquals("12.00", basePaginationDataDto.getRecords().get(0).getInvestAmount());
         assertEquals(new DateTime("2016-01-02").toDate(), basePaginationDataDto.getRecords().get(0).getTransferTime());
-        assertEquals(null, basePaginationDataDto.getRecords().get(0).getTransferStatus());
+        assertEquals("TRANSFERRING", basePaginationDataDto.getRecords().get(0).getTransferStatus());
         assertEquals(transfereeInvestModel.getLoginName(), basePaginationDataDto.getRecords().get(0).getTransfereeLoginName());
         assertEquals(transferrerInvestModel.getLoginName(), basePaginationDataDto.getRecords().get(0).getTransferrerLoginName());
     }
