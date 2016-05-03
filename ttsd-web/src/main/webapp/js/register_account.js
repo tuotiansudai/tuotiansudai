@@ -52,34 +52,22 @@ var visitAddress = [
         'label':'充值'
     },
     {
-        'function':'/user-bill',
-        'category':'75实名认证页',
-        'action':'认证',
-        'label':'充值'
-    },
-    {
         'function':'/account',
         'category':'76实名认证页',
         'action':'认证',
         'label':'提现'
     },
     {
-        'function':'/personal-info',
+        'function':'/bind-card',
         'category':'77实名认证页',
         'action':'认证',
         'label':'绑卡'
     },
     {
-        'function':'/loan-list',
+        'function':'/loan',
         'category':'78实名认证页',
         'action':'认证',
         'label':'马上投资'
-    },
-    {
-        'function':'/account',
-        'category':'79实名认证页',
-        'action':'认证',
-        'label':'签到'
     },
     {
         'function':'/point',
@@ -88,13 +76,13 @@ var visitAddress = [
         'label':'签到'
     },
     {
-        'function':'/personal-info',
+        'function':'/auto-invest/agreement',
         'category':'80实名认证页',
         'action':'认证',
         'label':'授权自动投标'
     },
     {
-        'function':'/no-password-invest/enabled',
+        'function':'/personal-info',
         'category':'82实名认证页',
         'action':'认证',
         'label':'开启免密'
