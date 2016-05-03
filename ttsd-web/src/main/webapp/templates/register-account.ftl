@@ -10,7 +10,7 @@
     <div class="clear-blank"></div>
     <div class="register-box">
         <ul class="reg-list tl register-step-two">
-            <form class="register-account-form" action="/register/account" method="post">
+            <form class="register-account-form" action="/register/account?redirect=${redirect}" method="post">
                 <li>
                     <input type="text" name="userName" placeholder="请输入姓名" class="user-name" value = "${(originalFormData.userName)!}" />
                 </li>
@@ -21,7 +21,7 @@
                 <#if success?? && !success>
                 <label class="error">实名认证失败，请检查您提交的信息是否正确</label>
                 </#if>
-                <input type="submit" class="register-account" value="下一步"/>
+                <input type="submit" class="register-account" value="下一步" onclick="statisticsCnzzByRegister();"/>
             </form>
         </ul>
     </div>

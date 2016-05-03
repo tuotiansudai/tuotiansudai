@@ -1,7 +1,5 @@
 require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension', 'jquery.ajax.extension'], function (_, $) {
 
-    statisticsCnzzByAccount(); 
-
     var registerAccountForm = $('.register-step-two .register-account-form');
 
     registerAccountForm.validate({
@@ -44,7 +42,7 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
     });
 });
 
-var visitAddress = [
+var registerAddress = [
     {
         'function':'/recharge',
         'category':'75实名认证页',
@@ -108,15 +106,13 @@ function getReferrer() {
     return referrer;
 };
 
-function statisticsCnzzByAccount(){
+function statisticsCnzzByRegister(){
     var referrer = getReferrer();
-    for(var index in visitAddress){
-        if(referrer.indexOf(visitAddress[index].function) != -1){
-            cnzzPush.trackClick(visitAddress[index].category,visitAddress[index].action,visitAddress[index].label);
+    alert(referrer);
+    for(var index in registerAddress){
+        if(referrer.indexOf(registerAddress[index].function) != -1){
+            cnzzPush.trackClick(registerAddress[index].category,registerAddress[index].action,registerAddress[index].label);
             break;
         }
     }
 }
-
-
-
