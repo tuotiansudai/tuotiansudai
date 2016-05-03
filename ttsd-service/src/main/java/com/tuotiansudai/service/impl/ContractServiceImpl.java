@@ -9,6 +9,11 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ContractService;
+import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
+import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
+import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import com.tuotiansudai.util.AmountConverter;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -43,6 +48,10 @@ public class ContractServiceImpl implements ContractService {
     private LoanRepayMapper loanRepayMapper;
     @Autowired
     private InvestMapper investMapper;
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
+    @Autowired
+    private TransferRuleMapper transferRuleMapper;
 
     @Override
     public String getContract(String templateName, Map<String, Object> dataModel) {
@@ -248,5 +257,53 @@ public class ContractServiceImpl implements ContractService {
             digit = String.valueOf(digits[serialNo]) ;
         }
         return  digit;
+    }
+
+    @Override
+    public String generateTransferContract(long transferApplicationId) {
+
+        Map<String, Object> dataModel = this.collectTransferContractModel(transferApplicationId);
+        if(dataModel.isEmpty()){
+            return "";
+        }
+        String content = getContract("transferContract", dataModel).replace("&nbsp;", "&#160;");
+        return content;
+    }
+
+    private Map<String, Object> collectTransferContractModel(long transferApplicationId) {
+        Map<String, Object> dataModel = new HashMap<>();
+
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferApplicationId);
+        if(transferApplicationModel == null){
+            return dataModel;
+        }
+
+        dataModel.put("loanId", String.valueOf(transferApplicationModel.getLoanId()));
+        AccountModel loanerAccountModel = accountMapper.findByLoginName(transferApplicationModel.getLoginName());
+        if(loanerAccountModel != null){
+            dataModel.put("transferrerUserName", loanerAccountModel.getUserName());
+            dataModel.put("transferrerLoginName",loanerAccountModel.getLoginName());
+            dataModel.put("transferrerIdentityNumber",loanerAccountModel.getIdentityNumber());
+        }
+
+        InvestModel investModel = investMapper.findById(transferApplicationModel.getInvestId());
+        AccountModel investAccountModel = accountMapper.findByLoginName(investModel.getLoginName());
+        if(investAccountModel != null){
+            dataModel.put("transfereeUserName",investAccountModel.getUserName());
+            dataModel.put("transfereeLoginName",investAccountModel.getLoginName());
+            dataModel.put("transfereeIdentityNumber",investAccountModel.getIdentityNumber());
+        }
+
+        TransferRuleModel transferRuleModel = transferRuleMapper.find();
+        if(transferRuleModel != null){
+            int dayLimit = transferRuleModel.getDaysLimit();
+            dataModel.put("daysLimit", dayLimit);
+        }
+
+        double fee = TransferRuleUtil.getTransferFeeRate(investModel,transferRuleModel,loanMapper.findById(transferApplicationModel.getLoanId()));
+        dataModel.put("percent",fee > 0 ? (fee * 100) : "0");
+
+
+        return dataModel;
     }
 }

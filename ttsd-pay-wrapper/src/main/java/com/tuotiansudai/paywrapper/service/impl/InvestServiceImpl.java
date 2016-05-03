@@ -8,6 +8,7 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.AutoLoanOutJob;
+import com.tuotiansudai.job.InvestCallbackJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -106,15 +107,12 @@ public class InvestServiceImpl implements InvestService {
     @Value(value = "${pay.auto.invest.interval.milliseconds}")
     private int autoInvestIntervalMilliseconds;
 
-    public static final String JOB_TRIGGER_KEY = "job:invest:invest_callback_job_trigger";
-
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
 
-        InvestModel investModel = new InvestModel(Long.parseLong(dto.getLoanId()), AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource(), dto.getChannel());
-        investModel.setId(idGenerator.generate());
+        InvestModel investModel = new InvestModel(idGenerator.generate(), Long.parseLong(dto.getLoanId()), null, AmountConverter.convertStringToCent(dto.getAmount()), dto.getLoginName(), dto.getSource(), dto.getChannel());
         investMapper.create(investModel);
 
         try {
@@ -142,7 +140,7 @@ public class InvestServiceImpl implements InvestService {
         long investId = idGenerator.generate();
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         try {
-            InvestModel investModel = new InvestModel(loanId, amount, loginName, source, null);
+            InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, source, null);
             investModel.setId(investId);
             investModel.setNoPasswordInvest(true);
             investMapper.create(investModel);
@@ -193,11 +191,10 @@ public class InvestServiceImpl implements InvestService {
                 InvestNotifyRequestMapper.class,
                 InvestNotifyRequestModel.class);
 
-        if (callbackRequest != null) {
-            redisWrapperClient.incr(JOB_TRIGGER_KEY);
-        } else {
+        if (callbackRequest == null) {
             return null;
         }
+        redisWrapperClient.incr(InvestCallbackJob.INVEST_JOB_TRIGGER_KEY);
         return callbackRequest.getResponseData();
     }
 
@@ -227,7 +224,7 @@ public class InvestServiceImpl implements InvestService {
 
     private boolean updateInvestNotifyRequestStatus(InvestNotifyRequestModel model) {
         try {
-            redisWrapperClient.decr(JOB_TRIGGER_KEY);
+            redisWrapperClient.decr(InvestCallbackJob.INVEST_JOB_TRIGGER_KEY);
             investNotifyRequestMapper.updateStatus(model.getId(), InvestNotifyProcessStatus.DONE);
         } catch (Exception e) {
             fatalLog("update_invest_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId());

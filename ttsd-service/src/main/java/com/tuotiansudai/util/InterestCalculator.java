@@ -23,8 +23,15 @@ public class InterestCalculator {
     public static long calculateLoanRepayInterest(LoanModel loanModel, List<InvestModel> investModels, DateTime lastRepayDate, DateTime currentRepayDate) {
         DateTime loanOutDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
 
+        List<InvestModel> originalInvestModels = Lists.newArrayList(Iterators.filter(investModels.iterator(), new Predicate<InvestModel>() {
+            @Override
+            public boolean apply(InvestModel input) {
+                return input.getTransferInvestId() == null;
+            }
+        }));
+
         long corpusMultiplyPeriodDays = 0;
-        for (InvestModel successInvest : investModels) {
+        for (InvestModel successInvest : originalInvestModels) {
             DateTime lastInvestRepayDate = lastRepayDate;
             if (lastRepayDate.isBefore(loanOutDate) && InterestInitiateType.INTEREST_START_AT_INVEST == loanModel.getType().getInterestInitiateType()) {
                 lastInvestRepayDate = new DateTime(successInvest.getCreatedTime()).withTimeAtStartOfDay().minusDays(1);
@@ -110,24 +117,19 @@ public class InterestCalculator {
     public static DateTime getLastSuccessRepayDate(LoanModel loanModel, List<LoanRepayModel> loanRepayModels, final DateTime currentRepayDate) {
         DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).minusDays(1);
 
-        Ordering<LoanRepayModel> ordering = new Ordering<LoanRepayModel>() {
+        Ordering<LoanRepayModel> orderingByPeriodDesc = new Ordering<LoanRepayModel>() {
             @Override
             public int compare(LoanRepayModel left, LoanRepayModel right) {
                 return Ints.compare(right.getPeriod(), left.getPeriod());
             }
         };
 
-        List<LoanRepayModel> orderingLoanRepayModels = ordering.sortedCopy(loanRepayModels);
+        List<LoanRepayModel> orderingLoanRepayModels = orderingByPeriodDesc.sortedCopy(loanRepayModels);
 
         Optional<LoanRepayModel> optional = Iterators.tryFind(orderingLoanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
             @Override
             public boolean apply(LoanRepayModel input) {
-                if (input.getStatus() == RepayStatus.COMPLETE) {
-                    DateTime expectedRepayDate = new DateTime(input.getRepayDate());
-                    DateTime actualRepayDate = new DateTime(input.getActualRepayDate());
-                    return actualRepayDate.isBefore(expectedRepayDate) && actualRepayDate.isBefore(currentRepayDate);
-                }
-                return false;
+                return input.getStatus() == RepayStatus.COMPLETE;
             }
         });
 
@@ -138,9 +140,10 @@ public class InterestCalculator {
         return lastRepayDate;
     }
 
-    private static long calculateInterest(LoanModel loanModel, long corpusMultiplyPeriodDays) {
+    public static long calculateInterest(LoanModel loanModel, long corpusMultiplyPeriodDays) {
         int daysOfYear = DAYS_OF_YEAR;
-        new DateTime(2016, 3, 9, 21, 0, 0);
+
+        //2016-03-09 放款后标的按每期30天一年365天计算利息
         if (loanModel.getRecheckTime() != null && loanModel.getRecheckTime().before(new DateTime(2016, 3, 9, 21, 0, 0).toDate())) {
             DateTime loanDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
             daysOfYear = loanDate.dayOfYear().getMaximumValue();
@@ -149,4 +152,5 @@ public class InterestCalculator {
         BigDecimal loanRate = new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate()));
         return new BigDecimal(corpusMultiplyPeriodDays).multiply(loanRate).divide(new BigDecimal(daysOfYear), 0, BigDecimal.ROUND_DOWN).longValue();
     }
+
 }
