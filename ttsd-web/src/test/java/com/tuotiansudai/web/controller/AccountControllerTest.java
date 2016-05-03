@@ -49,10 +49,6 @@ public class AccountControllerTest {
     @Autowired
     private LoanMapper loanMapper;
 
-
-
-
-
     @Test
     public void shouldAccountDetailCountIsOk(){
         UserModel userModel = createUserModelTest("test4");
