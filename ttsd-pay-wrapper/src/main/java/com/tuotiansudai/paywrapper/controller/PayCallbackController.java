@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.util.Enumeration;
@@ -36,6 +35,9 @@ public class PayCallbackController {
 
     @Autowired
     private InvestService investService;
+
+    @Autowired
+    private InvestTransferPurchaseService investTransferPurchaseService;
 
     @Autowired
     private NormalRepayService normalRepayService;
@@ -129,6 +131,13 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
+    @RequestMapping(value = "/invest_transfer_notify", method = RequestMethod.GET)
+    public ModelAndView investTransferNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.investTransferPurchaseService.purchaseCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
     @RequestMapping(value = "/normal_repay_notify", method = RequestMethod.GET)
     public ModelAndView repayNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
@@ -193,10 +202,15 @@ public class PayCallbackController {
 
     @RequestMapping(value = "/over_invest_payback_notify", method = RequestMethod.GET)
     public ModelAndView overInvestPaybackNotify(HttpServletRequest request) {
-        //TODO:remove this log
-        logger.info("into over_invest_payback_notify");
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.investService.overInvestPaybackCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/over_invest_transfer_payback_notify", method = RequestMethod.GET)
+    public ModelAndView overInvestTransferPaybackNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.investTransferPurchaseService.overInvestTransferPaybackCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

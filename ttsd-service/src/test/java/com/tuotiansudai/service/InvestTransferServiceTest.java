@@ -93,6 +93,7 @@ public class InvestTransferServiceTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.REPAYING);
+        loanDto.setRecheckTime(new Date());
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
         return loanModel;
@@ -280,9 +281,44 @@ public class InvestTransferServiceTest {
         assertEquals("10.00", basePaginationDataDto.getRecords().get(0).getTransferAmount());
         assertEquals("12.00", basePaginationDataDto.getRecords().get(0).getInvestAmount());
         assertEquals(new DateTime("2016-01-02").toDate(), basePaginationDataDto.getRecords().get(0).getTransferTime());
-        assertEquals(TransferStatus.TRANSFERRING, basePaginationDataDto.getRecords().get(0).getTransferStatus());
+        assertEquals("TRANSFERRING", basePaginationDataDto.getRecords().get(0).getTransferStatus());
         assertEquals(transfereeInvestModel.getLoginName(), basePaginationDataDto.getRecords().get(0).getTransfereeLoginName());
         assertEquals(transferrerInvestModel.getLoginName(), basePaginationDataDto.getRecords().get(0).getTransferrerLoginName());
+    }
+    @Test
+    public void shouldFindWebTransferApplicationPaginationListIsSuccess(){
+        long loanId = idGenerator.generate();
+        UserModel transferrerModel = createUserByUserId("transferrerTestuser");
+        UserModel transfereeModel = createUserByUserId("transfereeTestUser");
+        LoanModel loanModel = createLoanByUserId("transferrerTestUser", loanId);
+        InvestModel transferrerInvestModel = createInvest(transferrerModel.getLoginName(), loanId);
+        InvestModel transfereeInvestModel = createInvest(transfereeModel.getLoginName(), loanId);
+        TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
+        transferApplicationModel.setLoginName(transferrerModel.getLoginName());
+        transferApplicationModel.setName("name");
+        transferApplicationModel.setTransferAmount(1000l);
+        transferApplicationModel.setInvestAmount(1200l);
+        transferApplicationModel.setTransferTime(new DateTime("2016-01-02").toDate());
+        transferApplicationModel.setStatus(TransferStatus.TRANSFERRING);
+        transferApplicationModel.setLoanId(loanId);
+        transferApplicationModel.setTransferInvestId(transferrerInvestModel.getId());
+        transferApplicationModel.setInvestId(transfereeInvestModel.getId());
+        transferApplicationModel.setDeadline(new DateTime("2016-01-07").toDate());
+        transferApplicationModel.setApplicationTime(new Date());
+        transferApplicationMapper.create(transferApplicationModel);
+
+        BasePaginationDataDto<TransferApplicationPaginationItemDataDto> basePaginationDataDto =  investTransferService.findWebTransferApplicationPaginationList(transferrerInvestModel.getLoginName(), Lists.newArrayList(TransferStatus.TRANSFERRING),1,10);
+
+        assertTrue(basePaginationDataDto.getStatus());
+        assertNotNull(basePaginationDataDto.getRecords().get(0));
+        assertEquals(1, basePaginationDataDto.getIndex());
+        assertEquals(10,basePaginationDataDto.getPageSize());
+        assertEquals(1,basePaginationDataDto.getCount());
+        assertEquals("10.00", basePaginationDataDto.getRecords().get(0).getTransferAmount());
+        assertEquals("12.00", basePaginationDataDto.getRecords().get(0).getInvestAmount());
+        assertEquals(new DateTime("2016-01-02").toDate(), basePaginationDataDto.getRecords().get(0).getTransferTime());
+        assertEquals(new DateTime("2016-01-07").toDate(), basePaginationDataDto.getRecords().get(0).getDeadLine());
+        assertEquals(TransferStatus.TRANSFERRING.getDescription(), basePaginationDataDto.getRecords().get(0).getTransferStatus());
     }
 
 }

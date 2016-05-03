@@ -39,6 +39,7 @@ public class TransferApplicationModel implements Serializable {
     private int leftPeriod;
 
     public TransferApplicationModel() {
+
     }
 
     public TransferApplicationModel(InvestModel transferInvestModel, String name, int period, long transferAmount, long transferFee, Date deadline,int leftPeriod) {

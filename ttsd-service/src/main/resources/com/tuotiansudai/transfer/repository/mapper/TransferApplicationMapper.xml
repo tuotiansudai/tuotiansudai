@@ -42,6 +42,7 @@
         <result column="left_period" property="leftPeriod"></result>
         <result column="deadline" property="deadLine"></result>
     </resultMap>
+
     <insert id="create" parameterType="TransferApplicationModel" useGeneratedKeys="true" keyProperty="id">
         insert into transfer_application (name, loan_id, transfer_invest_id, invest_id, period, login_name, invest_amount, transfer_amount, transfer_fee, status, deadline, transfer_time, application_time,left_period)
         value (#{name}, #{loanId}, #{transferInvestId}, #{investId}, #{period}, #{loginName}, #{investAmount}, #{transferAmount}, #{transferFee}, #{status}, #{deadline}, #{transferTime}, #{applicationTime}, #{leftPeriod})
@@ -64,7 +65,7 @@
     </select>
 
     <select id="findTransferApplicationPaginationByLoginName" parameterType="map" resultMap="transferApplicationRecordDtoMap">
-        select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,l.base_rate,l.activity_rate from transfer_application ta JOIN loan l on ta.loan_id = l.id
+        select ta.id,ta.name,ta.loan_id,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,ta.deadline,l.base_rate,l.activity_rate from transfer_application ta JOIN loan l on ta.loan_id = l.id
         <where>
             <if test="loginName != null">
                 ta.login_name = #{loginName}
@@ -98,7 +99,7 @@
     </select>
 
     <select id="findTransfereeApplicationPaginationByLoginName" parameterType="map" resultMap="transferApplicationRecordDtoMap">
-        select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,l.base_rate,l.activity_rate
+        select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,ta.deadline,l.base_rate,l.activity_rate
         from transfer_application ta JOIN invest i on ta.invest_id = i.id JOIN loan l on l.id = ta.loan_id
         <where>
             <if test="loginName != null">
@@ -122,7 +123,7 @@
 
     <select id="findTransferApplicationPaginationList" parameterType="map" resultMap="transferApplicationRecordDtoMap">
         select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,ta.loan_id,ta.login_name AS transferrer_loginName,ta.transfer_fee ,
-        ta.transfer_invest_id,ta.period,ta.left_period,i.login_name AS transferee_loginName from transfer_application ta left JOIN invest i on ta.invest_id = i.id
+        ta.transfer_invest_id,ta.period,ta.left_period,ta.deadline,i.login_name AS transferee_loginName from transfer_application ta left JOIN invest i on ta.invest_id = i.id
         <where>
             <if test="transferApplicationId != null">
                 ta.id = #{transferApplicationId}
@@ -270,5 +271,67 @@
 
     <select id="findById" parameterType="long" resultMap="transferApplicationResultMap">
         select * from transfer_application where id = #{id}
+    </select>
+
+
+    <resultMap id="transferInvestDetailMap" type="TransferInvestDetailDto">
+        <result column="loan_name" property="loanName"></result>
+        <result column="transfer_amount" property="transferAmount"></result>
+        <result column="invest_amount" property="investAmount"></result>
+        <result column="transfer_time" property="transferTime"></result>
+        <result column="next_repay_date" property="nextRepayDate"></result>
+        <result column="next_repay_amount" property="nextRepayAmount"></result>
+        <result column="invest_id" property="investId"></result>
+        <result column="transfer_invest_id" property="transferInvestId"></result>
+        <result column="transferrer_loginName" property="transferrerLoginName"></result>
+        <result column="transferee_loginName" property="transfereeLoginName"></result>
+        <result column="loan_id" property="loanId"></result>
+    </resultMap>
+
+    <select id="findTransferInvestList" parameterType="map" resultMap="transferInvestDetailMap">
+        select
+            ta.name as loan_name,
+            ta.transfer_amount,
+            ta.invest_amount,
+            ta.transfer_time,
+            (select min(ir.repay_date) from invest_repay ir where ir.invest_id = i.id and ir.status = 'REPAYING') as next_repay_date,
+            (select ir.expected_interest + ir.corpus - ir.expected_fee
+             from invest_repay ir where ir.invest_id = i.id and ir.status = 'REPAYING'
+             and ir.period = (select min(ir.period) from invest_repay ir where ir.invest_id = i.id and ir.status = 'REPAYING')
+            ) as next_repay_amount,
+            i.id as invest_id,
+            ta.transfer_invest_id,
+            ta.login_name as transferrer_loginName,
+            i.login_name as transferee_loginName,
+            ta.loan_id
+        from invest i
+        join transfer_application ta on i.id = ta.invest_id and ta.status = 'SUCCESS'
+        <if test="loanStatus != null">
+        join loan l on l.id = ta.loan_id and l.status = #{loanStatus}
+        </if>
+        <where>
+            i.login_name = #{investorLoginName}
+            <if test="startTime != null &amp;&amp; endTime != null">
+                and i.created_time between #{startTime} and #{endTime}
+            </if>
+        </where>
+        order by i.created_time desc, i.id asc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountInvestTransferPagination" resultType="long" parameterType="map">
+        select
+            count(1)
+        from invest i
+        join transfer_application ta on i.id = ta.invest_id and ta.status = 'SUCCESS'
+        <if test="loanStatus != null">
+            join loan l on l.id = ta.loan_id and l.status = #{loanStatus}
+        </if>
+        <where>
+            i.login_name = #{investorLoginName}
+            <if test="startTime != null &amp;&amp; endTime != null">
+                and i.created_time between #{startTime} and #{endTime}
+            </if>
+        </where>
     </select>
 </mapper>

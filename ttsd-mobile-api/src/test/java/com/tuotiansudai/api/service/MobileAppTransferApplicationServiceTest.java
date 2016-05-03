@@ -6,12 +6,8 @@ import com.tuotiansudai.api.service.impl.MobileAppTransferApplicationServiceImpl
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.TransferApplicationDetailDto;
-import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.dto.TransferApplicationPaginationItemDataDto;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
@@ -36,10 +32,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.*;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 
@@ -152,7 +145,7 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
         transferRuleModel.setDiscount(0.005);
         InvestModel investModel = createInvest("testuser", loanId);
-        doNothing().when(investTransferService).investTransferApply(any(TransferApplicationDto.class));
+        when(investTransferService.investTransferApply(any(TransferApplicationDto.class))).thenReturn(true);
         when(investMapper.findById(anyLong())).thenReturn(investModel);
         when(transferRuleMapper.find()).thenReturn(transferRuleModel);
         TransferApplyRequestDto transferApplyRequestDto = new TransferApplyRequestDto();
@@ -316,13 +309,13 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
     private TransferApplicationPaginationItemDataDto createTransferApplicationRecordDto(TransferApplicationModel transferApplicationModel) {
         TransferApplicationPaginationItemDataDto transferApplicationPaginationItemDataDto = new TransferApplicationPaginationItemDataDto();
-        transferApplicationPaginationItemDataDto.setTransferApplicationId(transferApplicationModel.getId());
-        transferApplicationPaginationItemDataDto.setTransferName(transferApplicationModel.getName());
+        transferApplicationPaginationItemDataDto.setTransferApplicationId(String.valueOf(transferApplicationModel.getId()));
+        transferApplicationPaginationItemDataDto.setName(transferApplicationModel.getName());
         transferApplicationPaginationItemDataDto.setInvestAmount(String.valueOf(transferApplicationModel.getInvestAmount()));
         transferApplicationPaginationItemDataDto.setTransferAmount(String.valueOf(transferApplicationModel.getTransferAmount()));
         transferApplicationPaginationItemDataDto.setBaseRate(12);
         transferApplicationPaginationItemDataDto.setActivityRate(1);
-        transferApplicationPaginationItemDataDto.setTransferStatus(transferApplicationModel.getStatus());
+        transferApplicationPaginationItemDataDto.setTransferStatus(transferApplicationModel.getStatus().name());
 
         return transferApplicationPaginationItemDataDto;
     }

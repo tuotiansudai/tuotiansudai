@@ -1,4 +1,4 @@
-require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text!/tpl/investor-invest-repay-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker', 'jquery.ajax.extension'], function ($, Mustache, investListTemplate, investRepayTemplate, moment, pagination, layer) {
+require(['jquery', 'mustache', 'text!/tpl/investor-invest-transfer-table.mustache', 'text!/tpl/investor-invest-repay-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker', 'jquery.ajax.extension'], function ($, Mustache, investListTemplate, investRepayTemplate, moment, pagination, layer) {
     var today = moment().format('YYYY-MM-DD'), // 今天
         week = moment().subtract(1, 'week').format('YYYY-MM-DD'),
         month = moment().subtract(1, 'month').format('YYYY-MM-DD'),
@@ -94,18 +94,6 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
                     maxWidth: '500'
                 });
             }
-        });
-        $('.invest-list').on('mouseenter','.birth-icon',function() {
-            layer.closeAll('tips');
-            var num = parseFloat($(this).attr('data-benefit'));
-            var benefit = num + 1;
-            layer.tips('您已享受生日福利，首月收益翻'+benefit+'倍', $(this), {
-                tips: [1, '#efbf5c'],
-                time: 2000,
-                tipsMore: true,
-                area: 'auto',
-                maxWidth: '500'
-            });
         });
     };
 

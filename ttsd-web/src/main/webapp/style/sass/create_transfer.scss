@@ -2,6 +2,49 @@
 @import 'daterangepicker';
 @import "coupon_alert";
 
+.layui-layer-btn {
+  text-align: center !important;
+  .layui-layer-btn0 {
+    padding: 3px 35px;
+    background: nth($CK1, 2) !important;
+    border-radius: 4px;
+    border: 1px solid nth($CK1, 2) !important;
+    border-color: nth($CK1, 2) !important;
+    letter-spacing: 3px;
+    color: #fff;
+  }
+  .layui-layer-btn1{
+    padding:3px 35px;
+    color:#808080!important;
+    border: 1px solid #dedede!important;
+    background: #f1f1f1!important;
+    border-radius: 4px;
+  }
+}
+/*layer skin : demo-class*/
+body{
+  .demo-class{
+    .layui-layer-btn {
+      text-align: center !important;
+      .layui-layer-btn1 {
+        padding: 3px 35px;
+        background: nth($CK1, 2) !important;
+        border-radius: 4px;
+        border: 1px solid nth($CK1, 2) !important;
+        border-color: nth($CK1, 2) !important;
+        letter-spacing: 3px;
+        color: #fff!important;
+      }
+      .layui-layer-btn0{
+        padding:3px 35px;
+        color:#808080!important;
+        border: 1px solid #dedede!important;
+        background: #f1f1f1!important;
+        border-radius: 4px;
+      }
+    }
+  }
+}
 /* create transfer*/
 .create-transfer-content {
   .column-title {
@@ -35,15 +78,20 @@
     margin-bottom: 20px;
     li {
       float: left;
-      color: #4c4c4c;
-      font-size: 12px;
-      padding: 5px 15px;
       margin-right: 10px;
       cursor: pointer;
+      a{
+        float:left;
+        color: #4c4c4c;
+        font-size: 12px;
+        padding: 5px 15px;
+      }
       &.active {
-        color: #fff;
         background: #ff752a;
         border-radius: 5px;
+        a{
+          color: #fff;
+        }
       }
     }
   }
@@ -68,7 +116,9 @@
         }
       }
     }
+    .pagination{
+      float:left;
+      width: 725px;
+    }
   }
-}
-@media screen and (max-width:700px) {
 }
