@@ -54,7 +54,7 @@ public class AccountControllerTest {
 
 
     @Test
-    public void account(){
+    public void shouldAccountDetailCountIsOk(){
         UserModel userModel = createUserModelTest("test4");
         AccountModel accountModel = createAccountModel(userModel.getLoginName(),1000L);
         createUserBillModel(userModel.getLoginName());
