@@ -205,7 +205,7 @@ public class InvestTransferServiceImpl implements InvestTransferService{
 
         int periodDuration = Days.daysBetween(current.withTimeAtStartOfDay(),new DateTime(loanRepayModel.getRepayDate()).withTimeAtStartOfDay()).getDays();
 
-        if(periodDuration > transferRuleModel.getDaysLimit()){
+        if(periodDuration < transferRuleModel.getDaysLimit()){
             logger.debug(MessageFormat.format("{0} right away repay ",investId));
             return false;
         }
