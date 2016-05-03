@@ -24,6 +24,7 @@ import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -150,8 +151,8 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         transferApplicationModel.setInvestId(investTransferee.getId());
         transferApplicationMapper.create(transferApplicationModel);
 
-        InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.REPAYING);
-        InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
+        InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.COMPLETE);
+        InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.COMPLETE);
         investRepay2.setCorpus(invest.getAmount());
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
@@ -170,14 +171,18 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
 
         assertThat(loanRepayMapper.findById(loanRepay1.getId()).getStatus(), is(RepayStatus.COMPLETE));
 
-        InvestRepayModel actualInvestRepay1 = investRepayMapper.findById(investRepayTransferee1.getId());
-        InvestModel actualInvest1 = investMapper.findById(investRepayTransferee1.getInvestId());
-        assertThat(actualInvestRepay1.getActualInterest(), is(investRepayTransferee1.getExpectedInterest()));
-        assertThat(actualInvestRepay1.getActualFee(), is(investRepayTransferee1.getExpectedFee()));
-        assertNotNull(actualInvestRepay1.getActualFee());
-        assertThat(actualInvestRepay1.getStatus(), is(RepayStatus.WAIT_PAY));
+        InvestRepayModel actualInvestRepayTransferee1 = investRepayMapper.findById(investRepayTransferee1.getId());
+        assertThat(actualInvestRepayTransferee1.getActualInterest(), is(investRepayTransferee1.getExpectedInterest()));
+        assertThat(actualInvestRepayTransferee1.getActualFee(), is(investRepayTransferee1.getExpectedFee()));
+        assertNotNull(actualInvestRepayTransferee1.getActualFee());
+        assertThat(actualInvestRepayTransferee1.getStatus(), is(RepayStatus.WAIT_PAY));
 
-        assertThat(actualInvest1.getLoginName(),is(investTransferee.getLoginName()));
+        InvestRepayModel actualInvestRepayTransferrer1 = investRepayMapper.findById(investRepay1.getId());
+        assertThat(actualInvestRepayTransferrer1.getActualInterest(), is(0L));
+        assertThat(actualInvestRepayTransferrer1.getActualFee(), is(is(0L)));
+        assertNull(actualInvestRepayTransferrer1.getActualRepayDate());
+        assertThat(actualInvestRepayTransferrer1.getStatus(), is(RepayStatus.COMPLETE));
+
 
     }
 
@@ -267,7 +272,7 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.COMPLETE);
         investRepay1.setActualInterest(loanRepay1ExpectedInterest);
         investRepay1.setActualFee(100);
-        InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
+        InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.COMPLETE);
         investRepay2.setCorpus(invest.getAmount());
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
@@ -297,13 +302,17 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         assertThat(loanRepayMapper.findById(loanRepay2.getId()).getStatus(), is(RepayStatus.COMPLETE));
 
         InvestRepayModel actualInvestRepay2 = investRepayMapper.findById(investRepayTransferee2.getId());
-        InvestModel actualInvest2 = investMapper.findById(investRepayTransferee2.getInvestId());
         assertThat(actualInvestRepay2.getActualInterest(), is(investRepay2.getExpectedInterest()));
         assertThat(actualInvestRepay2.getActualFee(), is(investRepay2.getExpectedFee()));
         assertThat(actualInvestRepay2.getActualRepayDate(), is(loanRepay2.getActualRepayDate()));
         assertThat(actualInvestRepay2.getStatus(), is(RepayStatus.WAIT_PAY));
 
-        assertThat(actualInvest2.getLoginName(),is(investTransferee.getLoginName()));
+        InvestRepayModel actualInvestRepayTransferrer2 = investRepayMapper.findById(investRepay2.getId());
+        assertThat(actualInvestRepayTransferrer2.getActualInterest(), is(0L));
+        assertThat(actualInvestRepayTransferrer2.getActualFee(), is(is(0L)));
+        assertNull(actualInvestRepayTransferrer2.getActualRepayDate());
+        assertThat(actualInvestRepayTransferrer2.getStatus(), is(RepayStatus.COMPLETE));
+
     }
 
     @Test
@@ -389,9 +398,9 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         invest.setStatus(InvestStatus.SUCCESS);
         invest.setTransferStatus(TransferStatus.SUCCESS);
         investMapper.create(invest);
-        InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.OVERDUE);
+        InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.COMPLETE);
         investRepay1.setDefaultInterest(loanRepay1OverdueInterest);
-        InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
+        InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.COMPLETE);
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
         InvestModel investTransferee = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), Source.WEB, null);
@@ -412,13 +421,17 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
 
         assertThat(loanRepayMapper.findById(loanRepay1.getId()).getStatus(), is(RepayStatus.COMPLETE));
 
-        InvestRepayModel actualInvestRepay1 = investRepayMapper.findById(investRepayTransferee1.getId());
-        InvestModel actualInvest1 = investMapper.findById(investRepayTransferee1.getInvestId());
-        assertThat(actualInvestRepay1.getActualInterest(), is(investRepayTransferee1.getExpectedInterest() + investRepayTransferee1.getDefaultInterest()));
-        assertThat(actualInvestRepay1.getActualFee(), is(investRepay1.getExpectedFee()));
-        assertThat(actualInvestRepay1.getActualRepayDate(), is(loanRepay1.getActualRepayDate()));
-        assertThat(actualInvestRepay1.getStatus(), is(RepayStatus.WAIT_PAY));
-        assertThat(actualInvest1.getLoginName(),is(investTransferee.getLoginName()));
+        InvestRepayModel actualInvestRepayTransferrer1 = investRepayMapper.findById(investRepayTransferee1.getId());
+        assertThat(actualInvestRepayTransferrer1.getActualInterest(), is(investRepayTransferee1.getExpectedInterest() + investRepayTransferee1.getDefaultInterest()));
+        assertThat(actualInvestRepayTransferrer1.getActualFee(), is(investRepay1.getExpectedFee()));
+        assertThat(actualInvestRepayTransferrer1.getActualRepayDate(), is(loanRepay1.getActualRepayDate()));
+        assertThat(actualInvestRepayTransferrer1.getStatus(), is(RepayStatus.WAIT_PAY));
+
+        InvestRepayModel actualInvestRepayTransferee1 = investRepayMapper.findById(investRepay1.getId());
+        assertThat(actualInvestRepayTransferee1.getActualInterest(), is(0L));
+        assertThat(actualInvestRepayTransferee1.getActualFee(), is(0L));
+        assertNull(actualInvestRepayTransferee1.getActualRepayDate());
+        assertThat(actualInvestRepayTransferee1.getStatus(), is(RepayStatus.COMPLETE));
     }
 
     @Test
@@ -508,9 +521,9 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         invest.setStatus(InvestStatus.SUCCESS);
         invest.setTransferStatus(TransferStatus.SUCCESS);
         investMapper.create(invest);
-        InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.OVERDUE);
+        InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.COMPLETE);
         investRepay1.setDefaultInterest(loanRepay1OverdueInterest);
-        InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.OVERDUE);
+        InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.COMPLETE);
         investRepay2.setCorpus(invest.getAmount());
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
@@ -535,13 +548,17 @@ public class NormalRepayCallbackTest extends RepayBaseTest {
         assertNotNull(loanRepayMapper.findById(loanRepay1.getId()).getActualRepayDate());
         assertThat(loanRepayMapper.findById(loanRepay2.getId()).getStatus(), is(RepayStatus.COMPLETE));
 
-        InvestRepayModel actualInvestRepay2 = investRepayMapper.findById(investRepayTransferee2.getId());
-        InvestModel actualInvest2 = investMapper.findById(investRepayTransferee2.getInvestId());
-        assertThat(actualInvestRepay2.getActualInterest(), is(investRepayTransferee1.getExpectedInterest() + investRepayTransferee1.getDefaultInterest() + investRepayTransferee2.getExpectedInterest()));
-        assertThat(actualInvestRepay2.getActualFee(), is(investRepayTransferee1.getExpectedFee() + investRepayTransferee2.getExpectedFee()));
-        assertThat(actualInvestRepay2.getActualRepayDate(), is(loanRepay2.getActualRepayDate()));
-        assertThat(actualInvestRepay2.getStatus(), is(RepayStatus.WAIT_PAY));
+        InvestRepayModel actualInvestRepayTransferrer2 = investRepayMapper.findById(investRepayTransferee2.getId());
+        assertThat(actualInvestRepayTransferrer2.getActualInterest(), is(investRepayTransferee1.getExpectedInterest() + investRepayTransferee1.getDefaultInterest() + investRepayTransferee2.getExpectedInterest()));
+        assertThat(actualInvestRepayTransferrer2.getActualFee(), is(investRepayTransferee1.getExpectedFee() + investRepayTransferee2.getExpectedFee()));
+        assertThat(actualInvestRepayTransferrer2.getActualRepayDate(), is(loanRepay2.getActualRepayDate()));
+        assertThat(actualInvestRepayTransferrer2.getStatus(), is(RepayStatus.WAIT_PAY));
 
-        assertThat(actualInvest2.getLoginName(),is(investTransferee.getLoginName()));
+        InvestRepayModel actualInvestRepayTransferee2 = investRepayMapper.findById(investRepay2.getId());
+        assertThat(actualInvestRepayTransferee2.getActualInterest(), is(0l));
+        assertThat(actualInvestRepayTransferee2.getActualFee(), is(0l));
+        assertNull(actualInvestRepayTransferee2.getActualRepayDate());
+        assertThat(actualInvestRepayTransferee2.getStatus(), is(RepayStatus.COMPLETE));
+
     }
 }
