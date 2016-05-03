@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
@@ -147,7 +148,7 @@ public class LoanServiceImpl implements LoanService {
         return  this.updateLoanStatus(loanId,LoanStatus.CANCEL);
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional
     public BaseDto<PayDataDto> updateLoanStatus(long loanId, LoanStatus loanStatus) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
@@ -162,8 +163,8 @@ public class LoanServiceImpl implements LoanService {
         try {
             boolean updateSuccess = Strings.isNullOrEmpty(loanStatus.getCode());
             if (!updateSuccess) {
-                MerUpdateProjectRequestModel merUpdateProjectRequestModel = new MerUpdateProjectRequestModel(String.valueOf(loanModel.getLoanAmount()),
-                        String.valueOf(loanModel.getId()),
+                MerUpdateProjectRequestModel merUpdateProjectRequestModel = new MerUpdateProjectRequestModel(String.valueOf(loanModel.getId()),
+                        String.valueOf(loanModel.getLoanAmount()),
                         loanModel.getName(),
                         loanStatus.getCode());
 
@@ -176,13 +177,13 @@ public class LoanServiceImpl implements LoanService {
             }
 
             if (updateSuccess) {
-                loanModel.setStatus(loanStatus);
-                if(loanStatus == LoanStatus.CANCEL || loanStatus == LoanStatus.REPAYING) {
+                if(Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.CANCEL).contains(loanStatus)) {
                     loanModel.setRecheckTime(new Date());
                 }
+                loanModel.setStatus(loanStatus);
                 loanMapper.update(loanModel);
+                payDataDto.setStatus(true);
             }
-            payDataDto.setStatus(updateSuccess);
         } catch (PayException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
@@ -284,6 +285,7 @@ public class LoanServiceImpl implements LoanService {
             jobManager.newJob(JobType.LoanOut, LoanOutSuccessHandleJob.class)
                     .addJobData(LoanOutSuccessHandleJob.LOAN_ID_KEY, loanId)
                     .withIdentity(JobType.LoanOut.name(), "Loan-" + loanId)
+                    .replaceExistingJob(true)
                     .runOnceAt(triggerTime)
                     .submit();
         } catch (SchedulerException e) {

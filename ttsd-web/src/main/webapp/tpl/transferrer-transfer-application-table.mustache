@@ -1,0 +1,37 @@
+<table class="table-striped transfer-list">
+    <thead>
+    <tr>
+        <th>转让项目名称</th>
+        <th>转让价格(元)</th>
+        <th>代收本金(元)</th>
+        <th>年化收益</th>
+        <th>剩余期数</th>
+        <th>截止时间</th>
+        <th>转让状态</th>
+    </tr>
+    </thead>
+    <tbody>
+        {{#records}}
+            <tr>
+                <td>
+                    <a href="/transfer/{{transferApplicationId}}" class="project-name">{{name}}</a>
+                </td>
+                <td>{{transferAmount}}</td>
+                <td>{{investAmount}}</td>
+                <td>{{sumRate}}%</td>
+                <td>{{leftPeriod}}</td>
+                <td>
+                    {{deadLine}}
+                </td>
+                <td>
+                    <a href="javascript:void(0)" class="cancel-btn" data-link="{{transferApplicationId}}">取消转让</a>
+                </td>
+            </tr>
+        {{/records}}
+
+        {{^records}}
+            <td colspan="7" class="no-data">暂时没有可转让债权记录</td>
+        {{/records}}
+    </tbody>
+</table>
+
