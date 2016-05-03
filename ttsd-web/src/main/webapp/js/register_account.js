@@ -42,7 +42,7 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
     });
 });
 
-var registerAddress = [
+var registerAccountCnzzAddress = [
     {
         'function':'/recharge',
         'category':'75实名认证页',
@@ -108,9 +108,9 @@ function getReferrer() {
 
 function statisticsCnzzByRegister(){
     var referrer = getReferrer();
-    for(var index in registerAddress){
-        if(referrer.indexOf(registerAddress[index].function) != -1){
-            cnzzPush.trackClick(registerAddress[index].category,registerAddress[index].action,registerAddress[index].label);
+    for(var index in registerAccountCnzzAddress){
+        if(referrer.indexOf(registerAccountCnzzAddress[index].function) != -1){
+            cnzzPush.trackClick(registerAccountCnzzAddress[index].category,registerAccountCnzzAddress[index].action,registerAccountCnzzAddress[index].label);
             break;
         }
     }
