@@ -45,7 +45,7 @@ public enum UmPayServType {
     TRANSFER_OUT_TRANSFER("56"),
 
     /**
-     * 超投返款（撤资后返款）
+     * 超投返款，债权转让超投返款（撤资后返款）
      */
     TRANSFER_OVER_INVEST_PAYBACK("57");
 

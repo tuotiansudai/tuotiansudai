@@ -38,10 +38,10 @@
         <ul>
             <#if transferApplicationItemList??>
                 <#list transferApplicationItemList as transferApplicationItem>
-                    <li data-url="/transfer/${(transferApplicationItem.transferApplicationId?string.computer)!}" data-url-id="${(transferApplicationItem.transferApplicationId?string.computer)!}" data-url-status="${transferApplicationItem.transferStatus.name()}" class="clearfix">
+                    <li data-url="/transfer/${(transferApplicationItem.transferApplicationId)!}" data-url-id="${(transferApplicationItem.transferApplicationId)!}" data-url-status="${transferApplicationItem.transferStatus}" class="clearfix">
                         <div class="transfer-info-frame fl">
                             <div class="transfer-top">
-                                <span class="l-title fl">${transferApplicationItem.transferName!}</span>
+                                <span class="l-title fl">${transferApplicationItem.name!}</span>
                             </div>
                             <div class="transfer-info-dl clearfix">
                                 <dl>
@@ -69,7 +69,7 @@
                             </div>
                         </div>
                         <div class="transfer-right">
-                            <#if (transferApplicationItem.transferStatus.name() == "SUCCESS")>
+                            <#if (transferApplicationItem.transferStatus == "SUCCESS")>
                                 <p class="img-status"><img src="${staticServer}/images/sign/loan/transfered.png"></p>
                                 <p class="status-text">转让完成时间：${transferApplicationItem.transferTime?string("yyyy-MM-dd HH:mm:ss")}</p>
                             <#else>
