@@ -108,7 +108,6 @@ function getReferrer() {
 
 function statisticsCnzzByRegister(){
     var referrer = getReferrer();
-    alert(referrer);
     for(var index in registerAddress){
         if(referrer.indexOf(registerAddress[index].function) != -1){
             cnzzPush.trackClick(registerAddress[index].category,registerAddress[index].action,registerAddress[index].label);
