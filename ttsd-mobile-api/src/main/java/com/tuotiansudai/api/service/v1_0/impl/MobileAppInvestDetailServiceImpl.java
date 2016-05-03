@@ -2,7 +2,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.InvestDetailRequestDto;
-import com.tuotiansudai.api.service.MobileAppInvestDetailService;
+import com.tuotiansudai.api.service.v1_0.MobileAppInvestDetailService;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Service;
 

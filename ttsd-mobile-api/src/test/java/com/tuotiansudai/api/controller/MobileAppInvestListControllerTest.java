@@ -1,8 +1,9 @@
 package com.tuotiansudai.api.controller;
 
-import com.tuotiansudai.api.dto.InvestListRequestDto;
-import com.tuotiansudai.api.dto.UserInvestListRequestDto;
-import com.tuotiansudai.api.service.MobileAppInvestListService;
+import com.tuotiansudai.api.controller.v1_0.MobileAppInvestListController;
+import com.tuotiansudai.api.dto.v1_0.InvestListRequestDto;
+import com.tuotiansudai.api.dto.v1_0.UserInvestListRequestDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppInvestListService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

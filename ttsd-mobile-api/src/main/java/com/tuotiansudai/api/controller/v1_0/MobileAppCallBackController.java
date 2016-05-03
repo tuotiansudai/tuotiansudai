@@ -1,7 +1,7 @@
 package com.tuotiansudai.api.controller.v1_0;
 
 import com.google.common.collect.Maps;
-import com.tuotiansudai.api.dto.UmPayFrontService;
+import com.tuotiansudai.api.dto.v1_0.UmPayFrontService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

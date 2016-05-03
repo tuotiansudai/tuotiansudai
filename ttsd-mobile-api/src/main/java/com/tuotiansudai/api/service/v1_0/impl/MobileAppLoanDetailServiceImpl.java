@@ -4,7 +4,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.api.service.MobileAppLoanDetailService;
+import com.tuotiansudai.api.service.v1_0.MobileAppLoanDetailService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;

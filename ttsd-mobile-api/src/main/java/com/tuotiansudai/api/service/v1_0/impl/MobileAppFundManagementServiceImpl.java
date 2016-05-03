@@ -3,7 +3,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.FundManagementResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
-import com.tuotiansudai.api.service.MobileAppFundManagementService;
+import com.tuotiansudai.api.service.v1_0.MobileAppFundManagementService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.InvestRepayService;

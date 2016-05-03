@@ -1,7 +1,7 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
-import com.tuotiansudai.api.service.MobileAppClientStatistics;
+import com.tuotiansudai.api.service.v1_0.MobileAppClientStatistics;
 import com.tuotiansudai.client.RedisWrapperClient;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,7 +3,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.api.service.MobileAppRechargeListService;
+import com.tuotiansudai.api.service.v1_0.MobileAppRechargeListService;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.model.RechargeModel;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,7 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.AgreementOperateRequestDto;
 import com.tuotiansudai.api.dto.v1_0.AgreementOperateResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
-import com.tuotiansudai.api.service.MobileAppAgreementService;
+import com.tuotiansudai.api.service.v1_0.MobileAppAgreementService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.AgreementDto;

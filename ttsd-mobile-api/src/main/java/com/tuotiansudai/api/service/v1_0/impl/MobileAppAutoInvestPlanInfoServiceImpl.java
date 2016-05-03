@@ -4,7 +4,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.api.service.MobileAppAutoInvestPlanInfoService;
+import com.tuotiansudai.api.service.v1_0.MobileAppAutoInvestPlanInfoService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
 import com.tuotiansudai.repository.model.AccountModel;

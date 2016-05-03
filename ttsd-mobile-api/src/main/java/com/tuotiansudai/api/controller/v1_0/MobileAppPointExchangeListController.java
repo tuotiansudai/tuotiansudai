@@ -1,11 +1,11 @@
 package com.tuotiansudai.api.controller.v1_0;
 
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.PointExchangeListRequestDto;
-import com.tuotiansudai.api.dto.PointExchangeRequestDto;
-import com.tuotiansudai.api.dto.ReturnMessage;
-import com.tuotiansudai.api.service.MobileAppPointExchangeListService;
-import com.tuotiansudai.api.service.MobileAppPointExchangeService;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.PointExchangeListRequestDto;
+import com.tuotiansudai.api.dto.v1_0.PointExchangeRequestDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.service.v1_0.MobileAppPointExchangeListService;
+import com.tuotiansudai.api.service.v1_0.MobileAppPointExchangeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;

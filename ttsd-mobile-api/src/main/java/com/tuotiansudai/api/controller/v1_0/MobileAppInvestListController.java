@@ -1,10 +1,10 @@
 package com.tuotiansudai.api.controller.v1_0;
 
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.InvestListRequestDto;
-import com.tuotiansudai.api.dto.ReturnMessage;
-import com.tuotiansudai.api.dto.UserInvestListRequestDto;
-import com.tuotiansudai.api.service.MobileAppInvestListService;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.InvestListRequestDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.dto.v1_0.UserInvestListRequestDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppInvestListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;

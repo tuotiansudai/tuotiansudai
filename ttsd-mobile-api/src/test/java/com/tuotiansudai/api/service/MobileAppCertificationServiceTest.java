@@ -1,7 +1,11 @@
 package com.tuotiansudai.api.service;
 
 import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.impl.MobileAppCertificationServiceImpl;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.CertificationRequestDto;
+import com.tuotiansudai.api.dto.v1_0.CertificationResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppCertificationServiceImpl;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;

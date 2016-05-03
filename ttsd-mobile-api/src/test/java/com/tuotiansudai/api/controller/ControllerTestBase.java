@@ -2,9 +2,9 @@ package com.tuotiansudai.api.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tuotiansudai.api.dto.BaseParamDto;
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
 import com.tuotiansudai.api.dto.BaseParamTest;
-import com.tuotiansudai.api.dto.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

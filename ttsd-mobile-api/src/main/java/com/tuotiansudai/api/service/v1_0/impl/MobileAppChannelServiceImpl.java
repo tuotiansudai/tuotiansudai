@@ -3,7 +3,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.v1_0.AccessSource;
 import com.tuotiansudai.api.dto.v1_0.BaseParam;
-import com.tuotiansudai.api.service.MobileAppChannelService;
+import com.tuotiansudai.api.service.v1_0.MobileAppChannelService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;

@@ -2,7 +2,8 @@ package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.impl.MobileAppInvestListServiceImpl;
+import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppInvestListServiceImpl;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -12,12 +13,10 @@ import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.IdGenerator;
-import com.tuotiansudai.util.RandomUtils;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -162,7 +161,7 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
         assertEquals(INVEST_COUNT, dataDto.getTotalCount().intValue());
         assertEquals(10, dataDto.getInvestList().size());
-        assertEquals(com.tuotiansudai.api.dto.InvestStatus.BID_SUCCESS.getCode(), dataDto.getInvestList().get(0).getInvestStatus());
-        assertEquals(com.tuotiansudai.api.dto.LoanStatus.RAISING.getCode(), dataDto.getInvestList().get(0).getLoanStatus());
+        assertEquals(com.tuotiansudai.api.dto.v1_0.InvestStatus.BID_SUCCESS.getCode(), dataDto.getInvestList().get(0).getInvestStatus());
+        assertEquals(com.tuotiansudai.api.dto.v1_0.LoanStatus.RAISING.getCode(), dataDto.getInvestList().get(0).getLoanStatus());
     }
 }

@@ -3,7 +3,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.JpushRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
-import com.tuotiansudai.api.service.MobileAppJpushService;
+import com.tuotiansudai.api.service.v1_0.MobileAppJpushService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

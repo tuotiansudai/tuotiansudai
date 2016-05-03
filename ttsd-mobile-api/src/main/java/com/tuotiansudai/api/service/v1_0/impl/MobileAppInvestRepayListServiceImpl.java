@@ -1,7 +1,7 @@
 package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.api.service.MobileAppInvestRepayListService;
+import com.tuotiansudai.api.service.v1_0.MobileAppInvestRepayListService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;

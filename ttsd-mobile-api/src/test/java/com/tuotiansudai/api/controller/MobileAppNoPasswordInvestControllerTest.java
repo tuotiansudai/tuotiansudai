@@ -1,9 +1,8 @@
 package com.tuotiansudai.api.controller;
 
-import com.tuotiansudai.api.dto.BaseParamDto;
-import com.tuotiansudai.api.dto.LoanListRequestDto;
-import com.tuotiansudai.api.service.MobileAppLoanListService;
-import com.tuotiansudai.api.service.MobileAppNoPasswordInvestService;
+import com.tuotiansudai.api.controller.v1_0.MobileAppNoPasswordInvestController;
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppNoPasswordInvestService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

@@ -4,7 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.api.service.MobileAppInvestCouponService;
+import com.tuotiansudai.api.service.v1_0.MobileAppInvestCouponService;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;

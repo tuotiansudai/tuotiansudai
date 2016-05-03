@@ -5,7 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.PersonalInfoRequestDto;
 import com.tuotiansudai.api.dto.v1_0.PersonalInfoResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
-import com.tuotiansudai.api.service.MobileAppPersonalInfoService;
+import com.tuotiansudai.api.service.v1_0.MobileAppPersonalInfoService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.api.util.DistrictUtil;
 import com.tuotiansudai.repository.mapper.BankCardMapper;

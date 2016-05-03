@@ -3,7 +3,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.v1_0.ShareCallbackRequestDataDto;
 import com.tuotiansudai.api.dto.v1_0.ShareType;
-import com.tuotiansudai.api.service.MobileAppShareCallbackService;
+import com.tuotiansudai.api.service.v1_0.MobileAppShareCallbackService;
 import com.tuotiansudai.point.service.PointLotteryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

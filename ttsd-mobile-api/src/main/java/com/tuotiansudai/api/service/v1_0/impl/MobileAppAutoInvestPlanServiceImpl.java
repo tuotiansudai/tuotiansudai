@@ -5,7 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.AutoInvestPlanDataDto;
 import com.tuotiansudai.api.dto.v1_0.AutoInvestPlanRequestDto;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
-import com.tuotiansudai.api.service.MobileAppAutoInvestPlanService;
+import com.tuotiansudai.api.service.v1_0.MobileAppAutoInvestPlanService;
 import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 import com.tuotiansudai.util.AmountConverter;

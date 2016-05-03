@@ -1,8 +1,8 @@
 package com.tuotiansudai.api.controller.v1_0;
 
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.InvestRepayListRequestDto;
-import com.tuotiansudai.api.service.MobileAppInvestRepayListService;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.InvestRepayListRequestDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppInvestRepayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

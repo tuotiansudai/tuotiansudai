@@ -1,10 +1,10 @@
 package com.tuotiansudai.api.controller.v1_0;
 
 import com.google.gson.JsonObject;
-import com.tuotiansudai.api.dto.AppVersionResponseDataDto;
-import com.tuotiansudai.api.dto.BaseParamDto;
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.ReturnMessage;
+import com.tuotiansudai.api.dto.v1_0.AppVersionResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.util.GsonUtil;
 import com.tuotiansudai.api.util.HttpClientUtil;
 import com.tuotiansudai.client.RedisWrapperClient;

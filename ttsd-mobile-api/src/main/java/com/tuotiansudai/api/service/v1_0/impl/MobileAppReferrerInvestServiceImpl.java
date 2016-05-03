@@ -4,7 +4,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.api.service.MobileAppReferrerInvestService;
+import com.tuotiansudai.api.service.v1_0.MobileAppReferrerInvestService;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.model.ReferrerManageView;
 import com.tuotiansudai.service.ReferrerManageService;

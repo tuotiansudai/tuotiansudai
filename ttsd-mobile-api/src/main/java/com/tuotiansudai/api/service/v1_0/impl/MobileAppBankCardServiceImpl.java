@@ -2,7 +2,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.api.service.MobileAppBankCardService;
+import com.tuotiansudai.api.service.v1_0.MobileAppBankCardService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;

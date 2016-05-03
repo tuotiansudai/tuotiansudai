@@ -1,9 +1,9 @@
 package com.tuotiansudai.api.controller.v1_0;
 
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.WithdrawListRequestDto;
-import com.tuotiansudai.api.dto.WithdrawOperateRequestDto;
-import com.tuotiansudai.api.service.MobileAppWithdrawService;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.WithdrawListRequestDto;
+import com.tuotiansudai.api.dto.v1_0.WithdrawOperateRequestDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppWithdrawService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

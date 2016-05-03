@@ -3,7 +3,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.api.service.MobileAppUserCouponService;
+import com.tuotiansudai.api.service.v1_0.MobileAppUserCouponService;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import org.apache.commons.collections.CollectionUtils;

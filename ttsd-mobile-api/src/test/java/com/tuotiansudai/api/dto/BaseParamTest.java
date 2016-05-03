@@ -1,5 +1,7 @@
 package com.tuotiansudai.api.dto;
 
+import com.tuotiansudai.api.dto.v1_0.BaseParam;
+
 public class BaseParamTest extends BaseParam {
     private static final BaseParamTest instance = new BaseParamTest();
 

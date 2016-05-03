@@ -5,7 +5,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v1_0.SendSmsCompositeRequestDto;
 import com.tuotiansudai.api.dto.v1_0.VerifyCaptchaRequestDto;
-import com.tuotiansudai.api.service.MobileAppSendSmsService;
+import com.tuotiansudai.api.service.v1_0.MobileAppSendSmsService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.service.SmsCaptchaService;

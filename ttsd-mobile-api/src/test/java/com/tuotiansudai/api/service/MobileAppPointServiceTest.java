@@ -2,8 +2,8 @@ package com.tuotiansudai.api.service;
 
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.impl.MobileAppPointServiceImpl;
+import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppPointServiceImpl;
 import com.tuotiansudai.point.repository.mapper.PointBillMapper;
 import com.tuotiansudai.point.repository.mapper.PointTaskMapper;
 import com.tuotiansudai.point.repository.mapper.UserPointTaskMapper;

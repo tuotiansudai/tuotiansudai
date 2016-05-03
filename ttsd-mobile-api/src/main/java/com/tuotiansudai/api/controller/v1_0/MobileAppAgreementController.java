@@ -1,8 +1,8 @@
 package com.tuotiansudai.api.controller.v1_0;
 
-import com.tuotiansudai.api.dto.AgreementOperateRequestDto;
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.service.MobileAppAgreementService;
+import com.tuotiansudai.api.dto.v1_0.AgreementOperateRequestDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppAgreementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

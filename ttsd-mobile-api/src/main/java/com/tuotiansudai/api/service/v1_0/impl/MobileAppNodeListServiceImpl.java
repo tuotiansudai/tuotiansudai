@@ -4,7 +4,7 @@ package com.tuotiansudai.api.service.v1_0.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.v1_0.*;
-import com.tuotiansudai.api.service.MobileAppNodeListService;
+import com.tuotiansudai.api.service.v1_0.MobileAppNodeListService;
 import com.tuotiansudai.repository.mapper.AnnounceMapper;
 import com.tuotiansudai.repository.model.AnnounceModel;
 import org.springframework.beans.factory.annotation.Autowired;

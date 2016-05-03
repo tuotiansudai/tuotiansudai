@@ -4,7 +4,7 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.RetrievePasswordRequestDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
-import com.tuotiansudai.api.service.MobileAppRetrievePasswordService;
+import com.tuotiansudai.api.service.v1_0.MobileAppRetrievePasswordService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.RetrievePasswordDto;
 import com.tuotiansudai.dto.SmsDataDto;
