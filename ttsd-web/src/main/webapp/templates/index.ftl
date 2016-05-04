@@ -80,6 +80,7 @@
             </div>
         </div>
     </div>
+
     <div class="main-advantage page-width">
         <dl>
             <dd>
@@ -111,6 +112,7 @@
             </dd>
         </dl>
     </div>
+
     <div class="home-content" id="productFrame">
         <div class="page-width clearfix media-hide">
             <h3 class="label-title">

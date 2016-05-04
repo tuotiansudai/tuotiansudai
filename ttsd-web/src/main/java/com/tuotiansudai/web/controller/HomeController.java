@@ -26,9 +26,6 @@ public class HomeController {
     @Autowired
     private CouponAlertService couponAlertService;
 
-    @Autowired
-    private LinkExchangeService linkExchangeService;
-
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView("/index", "responsive", true);
