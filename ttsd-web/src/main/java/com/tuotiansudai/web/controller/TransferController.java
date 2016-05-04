@@ -31,15 +31,15 @@ public class TransferController {
     private InvestService investService;
 
     @RequestMapping(value = "/transfer-application-list/{transferStatus}",method = RequestMethod.GET)
-    public ModelAndView getTransferrerTransferApplicationList(@PathVariable String transferStatus){
-        ModelAndView modelAndView = new ModelAndView();
-        if(TransferStatus.TRANSFERRING == TransferStatus.valueOf(transferStatus.toUpperCase())){
-            modelAndView.setViewName("/create-transfer-transferring");
-        }else if(TransferStatus.SUCCESS == TransferStatus.valueOf(transferStatus.toUpperCase())){
-            modelAndView.setViewName("/create-transfer-record");
-        }else{
-            modelAndView.setViewName("/create-transfer-transferable");
-        }
+    public ModelAndView getTransferrerTransferApplicationList(@PathVariable TransferStatus transferStatus){
+            ModelAndView modelAndView = new ModelAndView("/transfer-record");
+        modelAndView.addObject("transferStatus",transferStatus);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/transfer-application-list",method = RequestMethod.GET)
+    public ModelAndView getTransferrerTransferApplicationList(){
+        ModelAndView modelAndView = new ModelAndView("/transfer-record");
         return modelAndView;
     }
 

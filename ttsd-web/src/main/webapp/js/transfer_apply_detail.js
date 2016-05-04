@@ -37,7 +37,7 @@ require(['jquery', 'layerWrapper','jquery.validate','coupon-alert','red-envelope
 						  success: function(layero, index){
 							    setInterval(function(){
 							    	if($('.layui-layer-content .count-time').text()<2){
-							    		window.location.href='/transferrer/transfer-application-list/transferring';
+							    		window.location.href='/transferrer/transfer-application-list/TRANSFERRING';
 							    	}else{
 							    		$('.layui-layer-content .count-time').text(function(index,num){return parseInt(num)-1});
 							    	}
