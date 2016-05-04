@@ -2,14 +2,14 @@
 <@global.main pageCss="${css.my_account}" pageJavascript="${js.account_overview}" activeNav="我的账户" activeLeftNav="账户总览" title="账户总览">
 <script type="text/javascript">
     var pydata = {
-        balance:'${((balance/100)?string('0.00'))!}',
-        collectingPrincipal:'${((collectingPrincipal/100)?string('0.00'))!}',
-        collectingInterest:'${((collectingInterest/100)?string('0.00'))!}'
+        balance: '${((balance/100)?string('0.00'))!}',
+        collectingPrincipal: '${((collectingPrincipal/100)?string('0.00'))!}',
+        collectingInterest: '${((collectingInterest/100)?string('0.00'))!}'
     };
 </script>
 <div class="content-container account-overview">
     <div class="bRadiusBox spad bg-w clearfix">
-        <img src="${staticServer}/images/sign/profile.jpg" class="fl accountImg" >
+        <img src="${staticServer}/images/sign/profile.jpg" class="fl accountImg">
         <div class="profile-box">
             <span><em>您好：${loginName!}</em></span>
             <ul class="proList">
@@ -41,6 +41,9 @@
                 <li><b>冻结金额：</b><span>${((freeze/100)?string('0.00'))!}</span>元</li>
             </ul>
         </div>
+    </div>
+    <div class="new-user-award">
+        <span>HOT</span>新手注册就送1888体验金，3%加息券，详情请<a href="#" title="点击这里">点击这里</a>
     </div>
     <#if successSumRepay??>
         <div class="LastMonth bRadiusBox clear-blank bg-w">
@@ -88,7 +91,7 @@
             <li class="current"><a href="javascript:void(0);">本月待收回款</a></li>
         </ul>
         <table class="table table-striped">
-            <caption>本月已收回款总额：￥${((successSumInvestRepay/100)?string('0.00'))!}元 <a href="/investor/invest-list" class="fr">更多...</a> </caption>
+            <caption>本月已收回款总额：￥${((successSumInvestRepay/100)?string('0.00'))!}元 <a href="/investor/invest-list" class="fr">更多...</a></caption>
             <thead>
             <tr>
                 <th>项目名称</th>
@@ -124,7 +127,7 @@
         </table>
         <div class="clear-blank"></div>
         <table class="table table-striped">
-            <caption>本月待收回款总额：￥${((notSuccessSumInvestRepay/100)?string('0.00'))!}元<a href="/investor/invest-list" class="fr">更多...</a> </caption>
+            <caption>本月待收回款总额：￥${((notSuccessSumInvestRepay/100)?string('0.00'))!}元<a href="/investor/invest-list" class="fr">更多...</a></caption>
             <thead>
             <tr>
                 <th>项目名称</th>
@@ -162,7 +165,7 @@
     </div>
     <div class="newProjects bRadiusBox clear-blank bg-w">
         <table class="table">
-            <caption>最新投资项目 <a href="/investor/invest-list" class="fr">更多...</a> </caption>
+            <caption>最新投资项目 <a href="/investor/invest-list" class="fr">更多...</a></caption>
             <thead>
             <tr>
                 <th>交易时间</th>
@@ -183,7 +186,7 @@
                         </td>
                         <td>投资成功</td>
                         <td><#if latestInvest.status??>${(latestInvest.repayDate?string('yyyy-MM-dd'))!} /
-                            ${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}<#else>-/-</#if>
+                        ${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}<#else>-/-</#if>
                         </td>
                         <td>￥${((latestInvest.investAmount/100)?string('0.00'))!}</td>
                     </tr>
