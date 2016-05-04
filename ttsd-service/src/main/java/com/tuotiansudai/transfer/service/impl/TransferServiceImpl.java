@@ -66,7 +66,9 @@ public class TransferServiceImpl implements TransferService {
     }
 
     private void checkTransferPurchase(InvestDto investDto) throws InvestException {
+        logger.debug("investDto loanId is =============================================================================" + investDto.getLoanId());
         long loanId = Long.parseLong(investDto.getLoanId());
+        logger.debug("loanId is =============================================================================" + loanId);
         LoanModel loan = loanMapper.findById(loanId);
         if (loan == null) {
             throw new InvestException(InvestExceptionType.LOAN_NOT_FOUND);
@@ -151,8 +153,7 @@ public class TransferServiceImpl implements TransferService {
 
     private TransferApplicationDetailDto convertModelToDto(TransferApplicationModel transferApplicationModel, String loginNme, int showLoginNameLength) {
         TransferApplicationDetailDto transferApplicationDetailDto = new TransferApplicationDetailDto();
-        InvestModel investModelOld = investMapper.findById(transferApplicationModel.getTransferInvestId());
-        LoanModel loanModel = loanMapper.findById(investModelOld.getLoanId());
+        LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
         InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(), transferApplicationModel.getPeriod());
         transferApplicationDetailDto.setId(transferApplicationModel.getId());
         transferApplicationDetailDto.setTransferInvestId(transferApplicationModel.getTransferInvestId());

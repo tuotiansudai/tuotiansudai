@@ -121,12 +121,11 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
 
     private InvestDto convertInvestDto(TransferPurchaseRequestDto transferPurchaseRequestDto) {
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(transferPurchaseRequestDto.getTransferApplicationId()));
-        InvestModel investModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
         Source source = Source.valueOf(transferPurchaseRequestDto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH));
         InvestDto investDto = new InvestDto();
         investDto.setSource(source);
         investDto.setAmount(String.valueOf(transferApplicationModel.getTransferAmount()));
-        investDto.setLoanId(String.valueOf(investModel.getLoanId()));
+        investDto.setLoanId(String.valueOf(transferApplicationModel.getLoanId()));
         investDto.setLoginName(transferPurchaseRequestDto.getBaseParam().getUserId());
         investDto.setChannel(mobileAppChannelService.obtainChannelBySource(transferPurchaseRequestDto.getBaseParam()));
         return investDto;
