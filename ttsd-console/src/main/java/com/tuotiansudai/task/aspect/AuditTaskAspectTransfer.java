@@ -45,7 +45,7 @@ public class AuditTaskAspectTransfer {
     @Autowired
     private AuditLogService auditLogService;
 
-    private final static String AUDIT_LOG_TEMPLATE = "持有30天以内转让手续费:{0}, 持有30天-90天转让手续费:{1}, 持有90天以上转让手续费:{2}, 转让折价金额:{3}, 回款前不可转让天数:{4}";
+    private final static String AUDIT_LOG_TEMPLATE = "持有30天以内转让手续费:{0}, 持有30天-90天转让手续费:{1}, 持有90天以上转让手续费:{2}, 转让折价金额:{3}, 回款前不可转让天数:{4}, 允许多次转让:{5}";
 
     static Logger logger = Logger.getLogger(AuditTaskAspectTransfer.class);
 
@@ -85,13 +85,15 @@ public class AuditTaskAspectTransfer {
                     String.valueOf(transferRuleModel.getLevelTwoFee()),
                     String.valueOf(transferRuleModel.getLevelThreeFee()),
                     String.valueOf(transferRuleModel.getDiscount()),
-                    String.valueOf(transferRuleModel.getDaysLimit()));
+                    String.valueOf(transferRuleModel.getDaysLimit()),
+                    String.valueOf(transferRuleModel.isMultipleTransferEnabled()));
             String afterUpdate = MessageFormat.format(AUDIT_LOG_TEMPLATE,
                     String.valueOf(transferRuleModel.getLevelOneFee()),
                     String.valueOf(transferRuleDto.getLevelTwoFee()),
                     String.valueOf(transferRuleDto.getLevelThreeFee()),
                     String.valueOf(transferRuleDto.getDiscount()),
-                    String.valueOf(transferRuleDto.getDaysLimit()));
+                    String.valueOf(transferRuleDto.getDaysLimit()),
+                    String.valueOf(transferRuleDto.isMultipleTransferEnabled()));
 
             task.setDescription(MessageFormat.format("{0} 修改债权转让规则 [{1}] => [{2}]", accountService.getRealName(operator), beforeUpdate, afterUpdate));
             redisWrapperClient.hsetSeri(taskKey, taskId, task);

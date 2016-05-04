@@ -54,6 +54,19 @@
                 <div class="input-group-addon">天内不可转让</div>
             </div>
         </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 input-group <#if transferRule.updateMultipleTransferEnabled>has-error</#if>">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"
+                               name="multipleTransferEnabled"
+                               <#if transferRule.multipleTransferEnabled>checked="checked"</#if>
+                               value="true"> 允许多次转让
+                    </label>
+                </div>
+            </div>
+        </div>
+
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
         <#if applicationCommit || verificationCommit>

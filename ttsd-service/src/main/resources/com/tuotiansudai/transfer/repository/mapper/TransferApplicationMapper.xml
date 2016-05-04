@@ -65,7 +65,7 @@
     </select>
 
     <select id="findTransferApplicationPaginationByLoginName" parameterType="map" resultMap="transferApplicationRecordDtoMap">
-        select ta.id,ta.name,ta.loan_id,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,ta.deadline,l.base_rate,l.activity_rate from transfer_application ta JOIN loan l on ta.loan_id = l.id
+        select ta.id,ta.name,ta.loan_id,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,ta.deadline,ta.left_period,l.base_rate,l.activity_rate from transfer_application ta JOIN loan l on ta.loan_id = l.id
         <where>
             <if test="loginName != null">
                 ta.login_name = #{loginName}
@@ -99,7 +99,7 @@
     </select>
 
     <select id="findTransfereeApplicationPaginationByLoginName" parameterType="map" resultMap="transferApplicationRecordDtoMap">
-        select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,ta.deadline,l.base_rate,l.activity_rate
+        select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,ta.deadline,ta.left_period,l.base_rate,l.activity_rate
         from transfer_application ta JOIN invest i on ta.invest_id = i.id JOIN loan l on l.id = ta.loan_id
         <where>
             <if test="loginName != null">
