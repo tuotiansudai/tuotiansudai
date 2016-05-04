@@ -128,6 +128,7 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
         investDto.setLoanId(String.valueOf(transferApplicationModel.getLoanId()));
         investDto.setLoginName(transferPurchaseRequestDto.getBaseParam().getUserId());
         investDto.setChannel(mobileAppChannelService.obtainChannelBySource(transferPurchaseRequestDto.getBaseParam()));
+        investDto.setTransferInvestId(transferPurchaseRequestDto.getTransferApplicationId());
         return investDto;
     }
 
