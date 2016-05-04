@@ -83,7 +83,7 @@
 
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxTotal" value="${mobile.jedis.pool.maxTotal}"/>
-        <property name="maxWaitMillis" value="${jedis.pool.maxWaitMillis}"/>
+        <property name="maxWaitMillis" value="${common.jedis.pool.maxWaitMillis}"/>
     </bean>
 
 </beans>
