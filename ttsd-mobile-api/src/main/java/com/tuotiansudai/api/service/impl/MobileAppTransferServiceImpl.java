@@ -137,15 +137,19 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
             case ILLEGAL_LOAN_STATUS:
                 baseResponseDto.setCode(ReturnMessage.ILLEGAL_LOAN_STATUS.getCode());
                 baseResponseDto.setMessage(ReturnMessage.ILLEGAL_LOAN_STATUS.getMsg());
+                break;
             case NOT_ENOUGH_BALANCE:
                 baseResponseDto.setCode(ReturnMessage.NOT_ENOUGH_BALANCE.getCode());
                 baseResponseDto.setMessage(ReturnMessage.NOT_ENOUGH_BALANCE.getMsg());
+                break;
             case PASSWORD_INVEST_OFF:
                 baseResponseDto.setCode(ReturnMessage.PASSWORD_INVEST_OFF.getCode());
                 baseResponseDto.setMessage(ReturnMessage.PASSWORD_INVEST_OFF.getMsg());
+                break;
             case LOAN_NOT_FOUND:
                 baseResponseDto.setCode(ReturnMessage.LOAN_NOT_FOUND.getCode());
                 baseResponseDto.setMessage(ReturnMessage.LOAN_NOT_FOUND.getMsg());
+                break;
         }
         return baseResponseDto;
     }

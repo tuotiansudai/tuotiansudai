@@ -82,7 +82,7 @@ public class TransferServiceImpl implements TransferService {
             throw new InvestException(InvestExceptionType.PASSWORD_INVEST_OFF);
         }
 
-        if (LoanStatus.RAISING != loan.getStatus()) {
+        if (LoanStatus.REPAYING != loan.getStatus()) {
             throw new InvestException(InvestExceptionType.ILLEGAL_LOAN_STATUS);
         }
 
