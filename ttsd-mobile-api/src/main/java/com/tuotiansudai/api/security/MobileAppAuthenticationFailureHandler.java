@@ -1,10 +1,12 @@
 package com.tuotiansudai.api.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.org.apache.bcel.internal.generic.SWITCH;
 import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.LoginResponseDataDto;
 import com.tuotiansudai.api.dto.ReturnMessage;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.exception.CaptchaNotMatchException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
@@ -52,9 +54,12 @@ public class MobileAppAuthenticationFailureHandler extends SimpleUrlAuthenticati
         addLoginLog(request);
         String username = request.getParameter("j_username");
         logUserLoginFail(username);
-
-        ReturnMessage errorMsg = (exception instanceof DisabledException) ?
-                ReturnMessage.USER_IS_DISABLED : ReturnMessage.LOGIN_FAILED;
+        ReturnMessage errorMsg = ReturnMessage.LOGIN_FAILED;
+        if(exception instanceof DisabledException){
+            errorMsg = ReturnMessage.USER_IS_DISABLED;
+        }else if(exception instanceof CaptchaNotMatchException){
+            errorMsg = ReturnMessage.IMAGE_CAPTCHA_IS_WRONG;
+        }
         BaseResponseDto dto = mobileAppTokenProvider.generateResponseDto(errorMsg);
         String jsonBody = objectMapper.writeValueAsString(dto);
         response.setContentType("application/json; charset=UTF-8");

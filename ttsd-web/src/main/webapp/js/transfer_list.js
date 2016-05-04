@@ -6,8 +6,12 @@ require(['jquery', 'layerWrapper','coupon-alert','red-envelope-float','jquery.aj
 					transferApplicationId = $self.attr('data-url-id'),
 					transferStatus = $self.attr('data-url-status'),
 					urldata = $self.attr('data-url');
+			if(transferStatus == "SUCCESS"){
+				location.href = urldata;
+				return;
+			}
 			$.ajax({
-				url: '/transfer/IsPurchase/'+transferApplicationId+'/'+transferStatus,
+				url: '/transfer/'+transferApplicationId+'/purchase-check',
 				type: 'GET',
 				dataType: 'json'
 			})

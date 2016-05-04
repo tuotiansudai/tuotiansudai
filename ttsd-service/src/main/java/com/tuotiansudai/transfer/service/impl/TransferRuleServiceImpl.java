@@ -41,6 +41,7 @@ public class TransferRuleServiceImpl implements TransferRuleService {
         transferRuleModel.setLevelThreeFee(transferRuleDto.getLevelThreeFee() / 100);
         transferRuleModel.setDiscount(transferRuleDto.getDiscount() / 100);
         transferRuleModel.setDaysLimit(transferRuleDto.getDaysLimit());
+        transferRuleModel.setMultipleTransferEnabled(transferRuleDto.isMultipleTransferEnabled());
         transferRuleMapper.update(transferRuleModel);
         return true;
     }

@@ -240,8 +240,8 @@ public class InvestTransferServiceTest {
         loanMapper.update(loanModel);
         InvestModel investModel = createInvest("testuser", loanId);
 
-        LoanRepayModel repayingLoan1Repay1 = this.getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(7).toDate(), new DateTime().plusDays(7).toDate(), 0, 1, 0, 0);
-        LoanRepayModel repayingLoan1Repay2 = this.getFakeLoanRepayModel(loanModel, 2, RepayStatus.REPAYING, new DateTime().plusDays(60).toDate(), new DateTime().plusDays(60).toDate(), 1, 1, 0, 0);
+        LoanRepayModel repayingLoan1Repay1 = this.getFakeLoanRepayModel(loanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(4).toDate(), new DateTime().plusDays(4).toDate(), 0, 1, 0, 0);
+        LoanRepayModel repayingLoan1Repay2 = this.getFakeLoanRepayModel(loanModel, 2, RepayStatus.REPAYING, new DateTime().plusDays(53).toDate(), new DateTime().plusDays(53).toDate(), 1, 1, 0, 0);
 
         loanRepayMapper.create(Lists.newArrayList(repayingLoan1Repay1, repayingLoan1Repay2));
 

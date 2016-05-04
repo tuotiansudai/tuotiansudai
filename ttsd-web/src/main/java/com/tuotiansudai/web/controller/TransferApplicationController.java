@@ -1,18 +1,20 @@
 package com.tuotiansudai.web.controller;
 
-import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.service.TransferService;
-import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -29,13 +31,10 @@ public class TransferApplicationController {
     @Autowired
     private AccountMapper accountMapper;
 
-    @Autowired
-    private InvestService investService;
-
     @RequestMapping(value = "/{transferApplicationId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView getTransferApplicationDetail(@PathVariable long transferApplicationId) {
-        TransferApplicationDetailDto dto = transferService.getTransferApplicationDetailDto(transferApplicationId, LoginUserInfo.getLoginName(),6);
+        TransferApplicationDetailDto dto = transferService.getTransferApplicationDetailDto(transferApplicationId, LoginUserInfo.getLoginName(), 6);
         if (dto == null) {
             return new ModelAndView("/error/404");
         }
@@ -45,20 +44,14 @@ public class TransferApplicationController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/IsPurchase/{transferApplicationId:^\\d+$}/{transferStatus}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{transferApplicationId:^\\d+$}/purchase-check", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDataDto IsPurchase(@PathVariable long transferApplicationId, @PathVariable String transferStatus) {
+    public BaseDataDto IsPurchase(@PathVariable long transferApplicationId) {
         BaseDataDto baseDataDto = new BaseDataDto();
-        if(!transferStatus.equals("SUCCESS")){
-            TransferApplicationDetailDto dto = transferService.getTransferApplicationDetailDto(transferApplicationId, LoginUserInfo.getLoginName(),6);
-            if (dto.getTransferStatus() == TransferStatus.SUCCESS) {
-                baseDataDto.setStatus(false);
-                baseDataDto.setMessage("SUCCESS");
-            }
-            if (dto.getTransferStatus() == TransferStatus.CANCEL) {
-                baseDataDto.setStatus(false);
-                baseDataDto.setMessage("CANCEL");
-            }
+        TransferApplicationDetailDto dto = transferService.getTransferApplicationDetailDto(transferApplicationId, LoginUserInfo.getLoginName(),6);
+        if (Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.CANCEL).contains(dto.getTransferStatus())) {
+            baseDataDto.setStatus(false);
+            baseDataDto.setMessage(dto.getTransferStatus().name());
         }
         return baseDataDto;
     }
@@ -67,7 +60,7 @@ public class TransferApplicationController {
     public ModelAndView purchase(@PathVariable long transferApplicationId, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
         ModelAndView modelAndView = new ModelAndView("/error/404", "responsive", true);
         String errorMessage = "投资失败，请联系客服！";
-        TransferApplicationDetailDto dto = transferService.getTransferApplicationDetailDto(transferApplicationId, LoginUserInfo.getLoginName(),6);
+        TransferApplicationDetailDto dto = transferService.getTransferApplicationDetailDto(transferApplicationId, LoginUserInfo.getLoginName(), 6);
         AccountModel accountModel = accountMapper.findByLoginName(LoginUserInfo.getLoginName());
         InvestDto investDto = new InvestDto();
         investDto.setLoanId(String.valueOf(dto.getLoanId()));
@@ -75,7 +68,7 @@ public class TransferApplicationController {
         investDto.setAmount(dto.getTransferAmount());
         investDto.setSource(Source.WEB);
 
-        if(accountModel.isNoPasswordInvest()){
+        if (accountModel.isNoPasswordInvest()) {
             try {
                 investDto.setLoginName(LoginUserInfo.getLoginName());
                 BaseDto<PayDataDto> baseDto = transferService.noPasswordTransferPurchase(investDto);
@@ -93,8 +86,7 @@ public class TransferApplicationController {
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
             redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());
             modelAndView.setViewName(MessageFormat.format("redirect:/loan/{0}", investDto.getLoanId()));
-        }
-        else{
+        } else {
             try {
                 investDto.setLoginName(LoginUserInfo.getLoginName());
                 BaseDto<PayFormDataDto> baseDto = transferService.transferPurchase(investDto);

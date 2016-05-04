@@ -8,7 +8,7 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert','red-envelope-fl
                 $transferDetail = $('.transfer-detail-content'),
                 urldata=$self.attr('data-url');
             $.ajax({
-                    url: '/transfer/IsPurchase/'+transferApplicationId+'/'+transferStatus,
+                    url: '/transfer/'+transferApplicationId+'/purchase-check',
                     type: 'GET',
                     dataType: 'json'
                 })

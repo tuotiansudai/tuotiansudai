@@ -27,6 +27,10 @@ public class TransferRuleDto implements Serializable {
 
     private boolean updateDaysLimit;
 
+    private boolean multipleTransferEnabled;
+
+    private boolean updateMultipleTransferEnabled;
+
     private boolean hasTask;
 
     private String updatedBy;
@@ -48,7 +52,10 @@ public class TransferRuleDto implements Serializable {
         this.updateDiscount = task != null && task.getObj().getDiscount() != transferRuleModel.getDiscount() * 100;
 
         this.daysLimit = task != null ? task.getObj().getDaysLimit() : transferRuleModel.getDaysLimit();
-        this.updateDaysLimit = task != null && task.getObj().getDaysLimit() != transferRuleModel.getDaysLimit() * 100;
+        this.updateDaysLimit = task != null && task.getObj().getDaysLimit() != transferRuleModel.getDaysLimit();
+
+        this.multipleTransferEnabled = task != null ? task.getObj().isMultipleTransferEnabled() : transferRuleModel.isMultipleTransferEnabled();
+        this.updateMultipleTransferEnabled = task != null && task.getObj().isMultipleTransferEnabled() != transferRuleModel.isMultipleTransferEnabled();
 
         this.updatedBy = task != null ? task.getSender() : null;
 
@@ -133,6 +140,22 @@ public class TransferRuleDto implements Serializable {
 
     public void setUpdateDaysLimit(boolean updateDaysLimit) {
         this.updateDaysLimit = updateDaysLimit;
+    }
+
+    public boolean isMultipleTransferEnabled() {
+        return multipleTransferEnabled;
+    }
+
+    public void setMultipleTransferEnabled(boolean multipleTransferEnabled) {
+        this.multipleTransferEnabled = multipleTransferEnabled;
+    }
+
+    public boolean isUpdateMultipleTransferEnabled() {
+        return updateMultipleTransferEnabled;
+    }
+
+    public void setUpdateMultipleTransferEnabled(boolean updateMultipleTransferEnabled) {
+        this.updateMultipleTransferEnabled = updateMultipleTransferEnabled;
     }
 
     public boolean isHasTask() {
