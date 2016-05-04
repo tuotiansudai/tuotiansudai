@@ -151,7 +151,8 @@ public class TransferServiceImpl implements TransferService {
 
     private TransferApplicationDetailDto convertModelToDto(TransferApplicationModel transferApplicationModel, String loginNme, int showLoginNameLength) {
         TransferApplicationDetailDto transferApplicationDetailDto = new TransferApplicationDetailDto();
-        LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
+        InvestModel investModelOld = investMapper.findById(transferApplicationModel.getTransferInvestId());
+        LoanModel loanModel = loanMapper.findById(investModelOld.getLoanId());
         InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(), transferApplicationModel.getPeriod());
         transferApplicationDetailDto.setId(transferApplicationModel.getId());
         transferApplicationDetailDto.setTransferInvestId(transferApplicationModel.getTransferInvestId());
