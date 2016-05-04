@@ -71,7 +71,7 @@ public class TransferServiceImpl implements TransferService {
         if (loan == null) {
             throw new InvestException(InvestExceptionType.LOAN_NOT_FOUND);
         }
-        long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());
+        long investAmount = Long.parseLong(investDto.getAmount());
 
         AccountModel accountModel = accountMapper.findByLoginName(investDto.getLoginName());
         if (accountModel.getBalance() < investAmount) {
