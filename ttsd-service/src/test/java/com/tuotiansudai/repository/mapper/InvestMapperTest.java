@@ -178,7 +178,7 @@ public class InvestMapperTest {
 
 
     @Test
-    public void shouldSumSuccessNewbieInvestCount(){
+    public void shouldSumSuccessInvestCount(){
         long newbieLoanId = idGenerator.generate();
         createLoan(User_ID, newbieLoanId, ActivityType.NEWBIE);
 
@@ -200,8 +200,8 @@ public class InvestMapperTest {
         investModel3.setCreatedTime(DateUtils.addHours(new Date(), -3));
         investMapper.create(investModel3);
 
-        int newbieInvestCount = investMapper.sumSuccessNewbieInvestCountByLoginName(User_ID2);
-        assert newbieInvestCount == 2;
+        int newbieInvestCount = investMapper.sumSuccessInvestCountByLoginName(User_ID2);
+        assert newbieInvestCount == 3;
     }
 
     @Test

@@ -300,13 +300,11 @@
             and created_time between #{startTime} and #{endTime}
     </select>
 
-    <select id="sumSuccessNewbieInvestCountByLoginName" parameterType="String" resultType="int">
+    <select id="sumSuccessInvestCountByLoginName" parameterType="String" resultType="int">
         select count(*)
         from invest
-        inner join loan on invest.loan_id = loan.id
-        where loan.activity_type = 'NEWBIE'
-        and invest.login_name = #{loginName}
-        and invest.status &lt;&gt; 'FAIL'
+        where invest.login_name = #{loginName}
+        and invest.status = 'SUCCESS'
     </select>
 
     <select id="countSuccessInvest" parameterType="long" resultType="long">
