@@ -68,7 +68,6 @@ public class CouponRepayServiceImpl implements CouponRepayService {
     private SystemBillService systemBillService;
 
     @Override
-    @Transactional
     public void repay(long loanRepayId) {
         LoanRepayModel currentLoanRepayModel = loanRepayMapper.findById(loanRepayId);
         LoanModel loanModel = loanMapper.findById(currentLoanRepayModel.getLoanId());
