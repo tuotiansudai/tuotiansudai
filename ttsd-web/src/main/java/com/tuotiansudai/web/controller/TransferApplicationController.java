@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -45,20 +46,14 @@ public class TransferApplicationController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/IsPurchase/{transferApplicationId:^\\d+$}/{transferStatus}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{transferApplicationId:^\\d+$}/purchase-check", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDataDto IsPurchase(@PathVariable long transferApplicationId, @PathVariable String transferStatus) {
+    public BaseDataDto IsPurchase(@PathVariable long transferApplicationId) {
         BaseDataDto baseDataDto = new BaseDataDto();
-        if(!transferStatus.equals("SUCCESS")){
-            TransferApplicationDetailDto dto = transferService.getTransferApplicationDetailDto(transferApplicationId, LoginUserInfo.getLoginName(),6);
-            if (dto.getTransferStatus() == TransferStatus.SUCCESS) {
-                baseDataDto.setStatus(false);
-                baseDataDto.setMessage("SUCCESS");
-            }
-            if (dto.getTransferStatus() == TransferStatus.CANCEL) {
-                baseDataDto.setStatus(false);
-                baseDataDto.setMessage("CANCEL");
-            }
+        TransferApplicationDetailDto dto = transferService.getTransferApplicationDetailDto(transferApplicationId, LoginUserInfo.getLoginName(),6);
+        if (Lists.newArrayList(TransferStatus.SUCCESS, TransferStatus.CANCEL).contains(dto.getTransferStatus())) {
+            baseDataDto.setStatus(false);
+            baseDataDto.setMessage(dto.getTransferStatus().name());
         }
         return baseDataDto;
     }
