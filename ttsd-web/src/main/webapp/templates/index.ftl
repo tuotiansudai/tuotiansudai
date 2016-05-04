@@ -11,10 +11,6 @@
                 <img src="${staticServer}/images/sign/actor/birth/birth-month-new.jpg" alt="生日月投资收益翻倍" class="pc-img">
                 <img src="${staticServer}/images/sign/actor/birth/birth-month-phonenew.jpg" alt="生日月投资收益翻倍" class="iphone-img">
             </a>
-            <a href="/activity/red-envelope" onclick="cnzzPush.trackClick('24首页','Banner模块','红包')" target="_blank">
-                <img src="${staticServer}/images/sign/actor/redbag/red-bag-pc.png" alt="注册就送现金红包" class="pc-img">
-                <img src="${staticServer}/images/sign/actor/redbag/red-bag-phone.png" alt="注册就送现金红包" class="iphone-img">
-            </a>
             <a href="/activity/share-reward" onclick="cnzzPush.trackClick('74首页','Banner模块','推荐奖励')" target="_blank">
                 <img src="${staticServer}/images/sign/actor/sharereward/share-reward.png" alt="推荐奖励：0元投资赚收益，呼朋唤友抢佣金" class="pc-img">
                 <img src="${staticServer}/images/app-banner/app-banner-recommend.png" alt="推荐奖励：0元投资赚收益，呼朋唤友抢佣金" class="iphone-img">
@@ -34,7 +30,6 @@
         </div>
         <ul class="scroll-num">
             <li class="selected"></li>
-            <li></li>
             <li></li>
             <li></li>
             <li></li>
