@@ -21,8 +21,6 @@ public interface InvestTransferPurchaseService {
 
     BaseDto<PayDataDto> asyncPurchaseCallback();
 
-    void processOneCallback(InvestNotifyRequestModel model) throws AmountTransferException;
-
     String overInvestTransferPaybackCallback(Map<String, String> paramsMap, String queryString);
 
 }

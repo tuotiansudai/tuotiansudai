@@ -60,9 +60,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     private IdGenerator idGenerator;
 
     @Autowired
-    private LoanMapper loanMapper;
-
-    @Autowired
     private InvestMapper investMapper;
 
     @Autowired
@@ -191,6 +188,94 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     }
 
     @Override
+    public String purchaseCallback(Map<String, String> paramsMap, String originalQueryString) {
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
+                paramsMap,
+                originalQueryString,
+                InvestTransferNotifyRequestMapper.class,
+                InvestNotifyRequestModel.class);
+
+        if (callbackRequest == null) {
+            return null;
+        }
+
+        redisWrapperClient.incr(InvestTransferCallbackJob.INVEST_TRANSFER_JOB_TRIGGER_KEY);
+        return callbackRequest.getResponseData();
+    }
+
+    @Override
+    public BaseDto<PayDataDto> asyncPurchaseCallback() {
+        List<InvestNotifyRequestModel> todoList = investTransferNotifyRequestMapper.getTodoList(investProcessListSize);
+
+        for (InvestNotifyRequestModel model : todoList) {
+            if (updateInvestTransferNotifyRequestStatus(model)) {
+                try {
+                    processOneCallback(model);
+                } catch (Exception e) {
+                    String errMsg = MessageFormat.format("invest callback, processOneCallback error. investId:{0}", model.getOrderId());
+                    logger.error(errMsg, e);
+                    sendFatalNotify(MessageFormat.format("债权转让投资回调处理错误。{0},{1}", environment, errMsg));
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        BaseDto<PayDataDto> asyncInvestNotifyDto = new BaseDto<>();
+        PayDataDto baseDataDto = new PayDataDto();
+        baseDataDto.setStatus(true);
+        asyncInvestNotifyDto.setData(baseDataDto);
+
+        return asyncInvestNotifyDto;
+    }
+
+    /**
+     * umpay 债权转让超投返款的回调
+     *
+     * @param paramsMap
+     * @param queryString
+     * @return
+     */
+    @Override
+    public String overInvestTransferPaybackCallback(Map<String, String> paramsMap, String queryString) {
+
+        logger.debug("into over_invest_transfer_payback_callback, queryString: " + queryString);
+
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
+                paramsMap,
+                queryString,
+                ProjectTransferNotifyMapper.class,
+                ProjectTransferNotifyRequestModel.class);
+
+        if (callbackRequest == null) {
+            return null;
+        }
+
+        String orderIdOri = callbackRequest.getOrderId();
+        String orderIdStr = orderIdOri == null ? "" : orderIdOri.split("X")[0];
+        long orderId = Long.parseLong(orderIdStr);
+
+        InvestModel investModel = investMapper.findById(orderId);
+        if (investModel == null) {
+            logger.error(MessageFormat.format("invest callback notify order is not exist (orderId = {0})", orderId));
+            return null;
+        }
+
+        String loginName = investModel.getLoginName();
+        if (callbackRequest.isSuccess()) {
+            // 返款成功
+            // 改 invest 本身状态为超投返款
+            investMapper.updateStatus(investModel.getId(), InvestStatus.OVER_INVEST_PAYBACK);
+        } else {
+            // 返款失败，发报警短信，手动干预
+            String errMsg = MessageFormat.format("invest transfer pay back notify fail. orderId:{0}, amount:{1}, loginName:{2}, loanId:{3}.", orderIdStr, investModel.getAmount(), loginName, investModel.getLoanId());
+            logger.error(errMsg);
+            sendFatalNotify(errMsg);
+        }
+
+        return callbackRequest.getResponseData();
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void postPurchase(long investId) throws AmountTransferException {
         InvestModel investModel = investMapper.findById(investId);
@@ -286,11 +371,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         }
     }
 
-
     private void updateInvestRepay(TransferApplicationModel transferApplicationModel) {
         long transferInvestId = transferApplicationModel.getTransferInvestId();
         long investId = transferApplicationModel.getInvestId();
-        LoanModel loanModel = loanMapper.findById(transferApplicationModel.getLoanId());
 
         final int transferBeginWithPeriod = transferApplicationModel.getPeriod();
 
@@ -326,46 +409,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         investRepayMapper.create(transfereeInvestRepayModels);
     }
 
-
-    public String purchaseCallback(Map<String, String> paramsMap, String originalQueryString) {
-        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
-                paramsMap,
-                originalQueryString,
-                InvestTransferNotifyRequestMapper.class,
-                InvestNotifyRequestModel.class);
-
-        if (callbackRequest == null) {
-            return null;
-        }
-
-        redisWrapperClient.incr(InvestTransferCallbackJob.INVEST_TRANSFER_JOB_TRIGGER_KEY);
-        return callbackRequest.getResponseData();
-    }
-
-    public BaseDto<PayDataDto> asyncPurchaseCallback() {
-        List<InvestNotifyRequestModel> todoList = investTransferNotifyRequestMapper.getTodoList(investProcessListSize);
-
-        for (InvestNotifyRequestModel model : todoList) {
-            if (updateInvestTransferNotifyRequestStatus(model)) {
-                try {
-                    ((InvestTransferPurchaseService) AopContext.currentProxy()).processOneCallback(model);
-                } catch (Exception e) {
-                    String errMsg = MessageFormat.format("invest callback, processOneCallback error. investId:{0}", model.getOrderId());
-                    logger.error(errMsg, e);
-                    sendFatalNotify(MessageFormat.format("债权转让投资回调处理错误。{0},{1}", environment, errMsg));
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        BaseDto<PayDataDto> asyncInvestNotifyDto = new BaseDto<>();
-        PayDataDto baseDataDto = new PayDataDto();
-        baseDataDto.setStatus(true);
-        asyncInvestNotifyDto.setData(baseDataDto);
-
-        return asyncInvestNotifyDto;
-    }
-
     private boolean updateInvestTransferNotifyRequestStatus(InvestNotifyRequestModel model) {
         try {
             redisWrapperClient.decr(InvestTransferCallbackJob.INVEST_TRANSFER_JOB_TRIGGER_KEY);
@@ -379,10 +422,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         return true;
     }
 
-    @Transactional
-    @Override
-    public void processOneCallback(InvestNotifyRequestModel callbackRequestModel) throws AmountTransferException {
-
+    private void processOneCallback(InvestNotifyRequestModel callbackRequestModel) throws AmountTransferException {
         String orderIdStr = callbackRequestModel.getOrderId();
         long investId = Long.parseLong(orderIdStr);
         InvestModel investModel = investMapper.findById(investId);
@@ -396,7 +436,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         }
         String loginName = investModel.getLoginName();
         if (callbackRequestModel.isSuccess()) {
-
             List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getTransferInvestId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
             TransferApplicationModel transferApplicationModel = CollectionUtils.isNotEmpty(transferApplicationModels) ? transferApplicationModels.get(0) : null;
 
@@ -404,10 +443,9 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 logger.info(MessageFormat.format("transfer is failed, transfer application(investId={0}, loginName={1}) has already been purchased by another user.",
                         String.valueOf(transferApplicationModel.getId()), loginName));
                 overInvestPaybackProcess(investModel);
-                return;
             } else {
                 logger.info(MessageFormat.format("invest transfer success. investId:{0}", investId));
-                postPurchase(investId);
+                ((InvestTransferPurchaseService) AopContext.currentProxy()).postPurchase(investId);
             }
         } else {
             // 失败的话：更新 invest 状态为投资失败
@@ -416,12 +454,12 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         }
     }
 
+
     /**
      * 超投处理：返款、更新投资状态为失败
      *
      * @param investModel
      */
-    @Transactional
     private boolean overInvestPaybackProcess(InvestModel investModel) {
         String loginName = investModel.getLoginName();
         long amount = investModel.getAmount();
@@ -471,55 +509,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             investMapper.updateStatus(investId, InvestStatus.OVER_INVEST_PAYBACK_FAIL);
         }
         return paybackSuccess;
-    }
-
-
-    /**
-     * umpay 债权转让超投返款的回调
-     *
-     * @param paramsMap
-     * @param queryString
-     * @return
-     */
-    @Override
-    public String overInvestTransferPaybackCallback(Map<String, String> paramsMap, String queryString) {
-
-        logger.debug("into over_invest_transfer_payback_callback, queryString: " + queryString);
-
-        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
-                paramsMap,
-                queryString,
-                ProjectTransferNotifyMapper.class,
-                ProjectTransferNotifyRequestModel.class);
-
-        if (callbackRequest == null) {
-            return null;
-        }
-
-        String orderIdOri = callbackRequest.getOrderId();
-        String orderIdStr = orderIdOri == null ? "" : orderIdOri.split("X")[0];
-        long orderId = Long.parseLong(orderIdStr);
-
-        InvestModel investModel = investMapper.findById(orderId);
-        if (investModel == null) {
-            logger.error(MessageFormat.format("invest callback notify order is not exist (orderId = {0})", orderId));
-            return null;
-        }
-
-        String loginName = investModel.getLoginName();
-        if (callbackRequest.isSuccess()) {
-            // 返款成功
-            // 改 invest 本身状态为超投返款
-            investMapper.updateStatus(investModel.getId(), InvestStatus.OVER_INVEST_PAYBACK);
-        } else {
-            // 返款失败，发报警短信，手动干预
-            String errMsg = MessageFormat.format("invest transfer pay back notify fail. orderId:{0}, amount:{1}, loginName:{2}, loanId:{3}.", orderIdStr, investModel.getAmount(), loginName, investModel.getLoanId());
-            logger.error(errMsg);
-            sendFatalNotify(errMsg);
-        }
-
-        String respData = callbackRequest.getResponseData();
-        return respData;
     }
 
     private void sendFatalNotify(String message) {
