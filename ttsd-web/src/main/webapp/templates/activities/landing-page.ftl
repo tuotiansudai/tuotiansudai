@@ -109,7 +109,7 @@
 	</div>
 	<div class="content-three">
         <div class="three-title">
-            <span>投资</span>即有豪礼相送
+            <span>投资</span>即有壕礼相送
         </div>
 		<div class="content-wp">
 			<img src="${staticServer}/images/sign/actor/landingpage/three-title.png" />
@@ -126,11 +126,11 @@
 	</div>
 	<div class="content-four">
         <div class="four-title">
-            呼唤朋友<span>赚佣金</span>
+            呼朋唤友<span>赚佣金</span>
         </div>
 		<div class="text">
 			<p>拓天速贷推荐制度是为了广大用户可以在投资的时候，邀请朋友共同赚取奖励的贴心活动。</p>
-			<p>当您在平台完成一系列操作之后，即可将自己的<span>用户名发送给身边的朋友</span>当您的推荐人</p>
+			<p>当您在平台完成一系列操作之后，即可将自己的<span>用户名发送给身边的朋友</span>，当您的推荐人</p>
 			<p>成功投资后，您即可<span>获得奖励</span></p>
 		</div>
 		<table class="imagetable">
@@ -143,7 +143,7 @@
 		    <tr>
 		      <td>奖励机制</td>
 		      <td class="slash"></td>
-		      <td>奖励预期年货<span>收益<span class="big">1%</span></span></td>
+		      <td>奖励预期年化<span>收益<span class="big">1%</span></span></td>
 		      <td>奖励预期年化<span>收益<span class="big">1%</span></span></td>
 		    </tr>
 		    <tr>

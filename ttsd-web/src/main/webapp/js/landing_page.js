@@ -101,9 +101,13 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
 
 
         //phone focusout
-        $phoneDom.on('focusout', function(event) {
+        $('#appCaptcha').on('focusout', function(event) {
             event.preventDefault();
-            $(this).val()!='' && /0?(13|14|15|18)[0-9]{9}/.test($(this).val())?$fetchCaptcha.prop('disabled', false):$fetchCaptcha.prop('disabled', true);
+            if($phoneDom.val()!='' && /0?(13|14|15|18)[0-9]{9}/.test($phoneDom.val()) && $('#appCaptcha').val()!=''){
+                $fetchCaptcha.prop('disabled', false);
+            }else{
+                $fetchCaptcha.prop('disabled', true);
+            }
         });
 
         $appCaptcha.on('focus', function(event) {
