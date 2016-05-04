@@ -57,6 +57,9 @@
                             <#if errorMessage?has_content>
                                 <span class="errorTip hide"><i class="fa fa-times-circle"></i>${errorMessage!}</span>
                             </#if>
+                            <#if errorType?has_content>
+                                <input type="hidden" class="errorType hide" value="${errorType!}"/>
+                            </#if>
                         </dd>
 
                         <dd class="experience-ticket clearfix" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>

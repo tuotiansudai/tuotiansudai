@@ -132,11 +132,14 @@ require(['jquery', 'layerWrapper', 'template', 'csrf','bootstrap', 'bootstrapDat
             $('.file-btn').find('input').val('');
             $('.file-btn').hide();
             var userGroup = this.value;
-            if(userGroup != "IMPORT_USER" && userGroup != 'AGENT' && userGroup != 'CHANNEL' && userGroup != 'EXCHANGER_CODE') {
+            if(userGroup != "IMPORT_USER" && userGroup != 'AGENT' && userGroup != 'CHANNEL' && userGroup != 'EXCHANGER_CODE' && userGroup != 'NEW_REGISTERED_USER') {
                 $.get('/activity-manage/coupon/user-group/' + userGroup + '/estimate', function (data) {
                     $('.give-number').val(data);
                 })
             } else if (userGroup == "EXCHANGER_CODE") {
+                    $('.file-btn').find('input').val('');
+                    $('.give-number').val('').prop('readonly', false);
+            } else if (userGroup == 'NEW_REGISTERED_USER') {
                     $('.file-btn').find('input').val('');
                     $('.give-number').val('').prop('readonly', false);
             } else if (userGroup == 'AGENT') {
