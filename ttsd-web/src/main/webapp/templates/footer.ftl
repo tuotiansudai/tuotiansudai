@@ -40,50 +40,13 @@
     <div class="link-list page-width clearfix">
         <h3>友情链接</h3>
         <ul id="linkList">
-            <li><a href="#">拓天速贷</a></li>
-            <li><a href="#">京东</a></li>
-            <li><a href="#">阿里巴巴</a></li>
-            <li><a href="#">拓天速贷</a></li>
-            <li><a href="#">京东</a></li>
-            <li><a href="#">阿里巴巴</a></li>
-            <li><a href="#">拓天速贷</a></li>
-            <li><a href="#">京东</a></li>
-            <li><a href="#">阿里巴巴</a></li>
-            <li><a href="#">拓天速贷</a></li>
-            <li><a href="#">京东</a></li>
-            <li><a href="#">阿里巴巴</a></li>
-            <li><a href="#">拓天速贷</a></li>
-            <li><a href="#">京东</a></li>
-            <li><a href="#">阿里巴巴</a></li>
-            <li><a href="#">拓天速贷</a></li>
-            <li><a href="#">京东</a></li>
-            <li><a href="#">阿里巴巴</a></li>
-            <li><a href="#">拓天速贷</a></li>
-            <li><a href="#">京东</a></li>
-            <li><a href="#">阿里巴巴</a></li>
-            <li><a href="#">拓天速贷</a></li>
-            <li><a href="#">京东</a></li>
-            <li><a href="#">阿里巴巴</a></li>
-            <li><a href="#">拓天速贷</a></li>
-            <li><a href="#">京东</a></li>
-            <li><a href="#">阿里巴巴</a></li>
-            <li><a href="#">拓天速贷</a></li>
-            <li><a href="#">京东</a></li>
-            <li><a href="#">阿里巴巴</a></li>
-            <li><a href="#">拓天速贷</a></li>
-            <li><a href="#">京东</a></li>
-            <li><a href="#">阿里巴巴</a></li>
-            <li><a href="#">拓天速贷</a></li>
-            <li><a href="#">京东</a></li>
-            <li><a href="#">阿里巴巴</a></li>
-            <li><a href="#">拓天速贷</a></li>
-            <li><a href="#">京东</a></li>
-            <li><a href="#">阿里巴巴</a></li>
-            <li><a href="#">拓天速贷</a></li>
-            <li><a href="#">京东</a></li>
-            <li><a href="#">阿里巴巴</a></li>
+            <#if linkExchangeList??>
+                <#list linkExchangeList as linkExchange>
+                    <li><a href="${linkExchange.linkUrl}" target="_blank">${linkExchange.title}</a></li>
+                </#list>
+            </#if>
         </ul>
-        <div class="get-more">
+        <div class="get-more" id="getMore">
             更多<i class="fa fa-chevron-down" aria-hidden="true"></i><i class="fa fa-chevron-up" aria-hidden="true"></i>
         </div>
     </div>
@@ -117,4 +80,3 @@
         <p>拓天伟业(北京)金融信息服务有限公司 版权所有</p>
     </div>
 </div>
-<script src="${staticServer}/js/libs/footer_link.js"></script>
