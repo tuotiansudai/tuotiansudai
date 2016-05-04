@@ -23,7 +23,6 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.paywrapper.service.InvestTransferPurchaseService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -33,7 +32,6 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections.CollectionUtils;
@@ -113,16 +111,14 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         String loginName = investDto.getLoginName();
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         long transferInvestId = Long.parseLong(investDto.getTransferInvestId());
-        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(transferInvestId, Lists.newArrayList(TransferStatus.TRANSFERRING));
-        if (CollectionUtils.isEmpty(transferApplicationModels) || transferApplicationModels.get(0).getTransferAmount() > accountModel.getBalance()) {
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferInvestId);
+        if (transferApplicationModel == null || transferApplicationModel.getStatus() != TransferStatus.TRANSFERRING|| transferApplicationModel.getTransferAmount() > accountModel.getBalance()) {
             return baseDto;
         }
-        InvestModel transferInvestModel = investMapper.findById(transferInvestId);
-
         InvestModel investModel = new InvestModel(idGenerator.generate(),
-                transferInvestModel.getLoanId(),
-                transferInvestId,
-                transferInvestModel.getAmount(),
+                transferApplicationModel.getLoanId(),
+                transferApplicationModel.getTransferInvestId(),
+                transferApplicationModel.getTransferAmount(),
                 loginName,
                 investDto.getSource(),
                 null);
@@ -132,7 +128,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newPurchaseNopwdRequest(String.valueOf(investModel.getLoanId()),
                 String.valueOf(investModel.getId()),
                 accountModel.getPayUserId(),
-                String.valueOf(transferApplicationModels.get(0).getTransferAmount()));
+                String.valueOf(transferApplicationModel.getTransferAmount()));
 
         try {
 
@@ -164,17 +160,15 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         BaseDto<PayFormDataDto> dto = new BaseDto<>();
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         dto.setData(payFormDataDto);
-        List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(transferInvestId, Lists.newArrayList(TransferStatus.TRANSFERRING));
-        if (CollectionUtils.isEmpty(transferApplicationModels) || transferApplicationModels.get(0).getTransferAmount() > transfereeAccount.getBalance()) {
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferInvestId);
+        if (transferApplicationModel == null || transferApplicationModel.getStatus() != TransferStatus.TRANSFERRING || transferApplicationModel.getTransferAmount() > transfereeAccount.getBalance()) {
             return dto;
         }
 
-        InvestModel transferInvestModel = investMapper.findById(transferInvestId);
-
         InvestModel investModel = new InvestModel(idGenerator.generate(),
-                transferInvestModel.getLoanId(),
-                transferInvestId,
-                transferInvestModel.getAmount(),
+                transferApplicationModel.getLoanId(),
+                transferApplicationModel.getTransferInvestId(),
+                transferApplicationModel.getTransferAmount(),
                 transferee,
                 investDto.getSource(),
                 null);
@@ -186,11 +180,11 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                     String.valueOf(investModel.getLoanId()),
                     String.valueOf(investModel.getId()),
                     transfereeAccount.getPayUserId(),
-                    String.valueOf(transferApplicationModels.get(0).getTransferAmount()),
+                    String.valueOf(transferApplicationModel.getTransferAmount()),
                     investDto.getSource());
             return payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
         } catch (PayException e) {
-            logger.error(MessageFormat.format("{0} purchase transfer(transferApplicationId={1}) is failed", transferee, String.valueOf(transferApplicationModels.get(0).getId())), e);
+            logger.error(MessageFormat.format("{0} purchase transfer(transferApplicationId={1}) is failed", transferee, String.valueOf(transferApplicationModel.getId())), e);
         }
 
         return dto;
