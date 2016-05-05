@@ -30,7 +30,7 @@ public class MobileAppAuthenticationEntryPoint implements AuthenticationEntryPoi
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         BufferedRequestWrapper bufferedRequest = new BufferedRequestWrapper(request);
 
-        log.debug(MessageFormat.format("requestXML:{0},uri:{1}", bufferedRequest.getInputStreamString(),request.getRequestURI()));
+        log.debug(MessageFormat.format("[Authentication Entry Point] uri: {0} body: {1}",request.getRequestURI(),bufferedRequest.getInputStreamString()));
 
         BaseResponseDto dto = mobileAppTokenProvider.generateResponseDto(ReturnMessage.UNAUTHORIZED);
         response.setContentType("application/json; charset=UTF-8");

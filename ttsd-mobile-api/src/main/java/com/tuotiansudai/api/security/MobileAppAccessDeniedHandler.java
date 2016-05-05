@@ -27,7 +27,7 @@ public class MobileAppAccessDeniedHandler extends AccessDeniedHandlerImpl {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         BufferedRequestWrapper bufferedRequest = new BufferedRequestWrapper(request);
 
-        log.debug(MessageFormat.format("requestXML:{0},uri:{1}", bufferedRequest.getInputStreamString(), request.getRequestURI()));
+        log.debug(MessageFormat.format("[Access Denied] uri: {0} body: {1}",request.getRequestURI(),bufferedRequest.getInputStreamString()));
 
         BaseResponseDto dto = mobileAppTokenProvider.generateResponseDto(ReturnMessage.UNAUTHORIZED);
         response.setContentType("application/json; charset=UTF-8");
