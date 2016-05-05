@@ -21,6 +21,7 @@ import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.util.InterestCalculator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -155,13 +156,12 @@ public class UserCouponServiceImpl implements UserCouponService {
     }
 
     @Override
-    public boolean isUsableUserCouponExist(String loginName, List<CouponType> couponTypes, final List<UserGroup> userGroups) {
-        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, couponTypes);
+    public boolean isUsableUserCouponExist(String loginName) {
+        final List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, null);
         return Iterators.tryFind(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
             @Override
             public boolean apply(UserCouponModel input) {
-                CouponModel couponModel = couponMapper.findById(input.getCouponId());
-                return userGroups.contains(couponModel.getUserGroup()) && InvestStatus.SUCCESS != input.getStatus() && input.getEndTime().after(new Date());
+                return InvestStatus.SUCCESS != input.getStatus() && input.getEndTime().after(new Date());
             }
         }).isPresent();
     }

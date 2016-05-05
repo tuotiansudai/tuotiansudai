@@ -20,5 +20,5 @@ public interface UserCouponService {
 
     UserCouponDto getMaxBenefitUserCoupon(String loginName, long loanId, long amount);
 
-    boolean isUsableUserCouponExist(String loginName, List<CouponType> couponTypes, List<UserGroup> userGroups);
+    boolean isUsableUserCouponExist(String loginName);
 }

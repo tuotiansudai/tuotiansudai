@@ -73,7 +73,7 @@ public class AccountController {
         modelAndView.addObject("latestInvestList", investRepayService.findLatestInvestByLoginName(loginName, 0, 6));
         modelAndView.addObject("signedIn",signInService.signInIsSuccess(loginName));
         modelAndView.addObject("myPoint", pointService.getAvailablePoint(loginName));
-        modelAndView.addObject("isUsableNewbieCouponExist", userCouponService.isUsableUserCouponExist(loginName, Lists.newArrayList(CouponType.INTEREST_COUPON, CouponType.RED_ENVELOPE), Lists.newArrayList(UserGroup.NEW_REGISTERED_USER)));
+        modelAndView.addObject("isUsableCouponExist", userCouponService.isUsableUserCouponExist(loginName));
         return modelAndView;
     }
 }

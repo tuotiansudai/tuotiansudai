@@ -44,8 +44,8 @@
     </div>
     <div class="new-user-award">
         <span>HOT</span>
-        <#if isUsableNewbieCouponExist>
-            您还有588元体验金和3%加息券没有使用，<a href="/my-treasure" title="快来使用吧">快来使用吧</a>
+        <#if isUsableCouponExist>
+            您还有优惠券没有使用，<a href="/my-treasure" title="快来使用吧">快来使用吧</a>
         <#else>
             新手注册就送588体验金，3%加息券，<a href="/activity/landing-page" title="详情请点击">详情请点击</a>
         </#if>
