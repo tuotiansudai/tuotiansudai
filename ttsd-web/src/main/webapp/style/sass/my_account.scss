@@ -177,7 +177,21 @@ body{
 //Account Overview
 .account-overview {
   padding: 0 !important;
-
+  .new-user-award {
+    background: #fff1e5;
+    margin-top: 10px;
+    height: 38px;
+    line-height: 38px;
+    border: 1px solid #ff7200;
+    border-radius: 2px;
+      span {
+        background: #ff0000;
+        color: #fff;
+        padding: 3px 8px;
+        border-radius: 10px;
+        margin: 0 10px;
+      }
+  }
   .sign-layer {
     position: fixed;
     top: 0;
@@ -434,7 +448,7 @@ body{
   }
 }
 .assets-box {
-  height: 171px;
+  overflow: hidden;
   box-sizing: border-box;
 
   .assets-report {
