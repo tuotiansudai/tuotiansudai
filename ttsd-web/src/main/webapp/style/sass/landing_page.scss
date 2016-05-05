@@ -1,0 +1,535 @@
+
+@import 'variables';
+@import "index_png";
+form label.error:before {
+  padding-right: 5px;
+  content: "\f057";
+  font: normal normal normal 14px/1 FontAwesome;
+  display: none;
+  font-size: 16px;
+}
+.header-container{
+  display:none;
+}
+.nav-container{
+  display:none;
+}
+.footer-container {
+  margin-top: 0;
+  .footer{
+	display:none;
+  }
+  .link-list{
+	display:none;
+  }
+}
+
+
+.full-screen {
+	width: 100% !important;
+	margin: 0;
+}
+form label.error {
+  font-size: 10px;
+  color: #f71010;
+  padding:0;
+  vertical-align: middle;
+}
+
+.landing-container {
+	min-height: 500px;
+  .landing-header{
+	width:1200px;
+	height:90px;
+	text-align:center;
+	margin:0 auto;
+	background: url("/images/icons/logo-new.png") left center no-repeat;
+	a{
+	  display:inline-block;
+	  float:right;
+	  font-size:16px;
+	  color:#fff;
+	  border-radius:20px;
+	  width:160px;
+	  height:40px;
+	  line-height:40px;
+	  margin-top:25px;
+	  background-color:#f1a03f;
+	}
+  }
+   .landing-top{
+	 position: relative;
+	 height:500px;
+	 background: url("/images/sign/actor/landingpage/landing-top.png") center top no-repeat;
+
+	 .landing-inner {
+	   width:1200px;
+	   height:30px;
+	   margin: 0 auto;
+	   position: relative;
+	 }
+	 .register-box {
+	   position:absolute;
+	   right:0;
+	   background: rgba(255,255,255,0.8);
+	   border-radius:5px;
+	   top:18px;
+	   height: auto;
+	   overflow: auto;
+	   margin-top:13px;
+	   .register-user-form{
+		 width:320px;
+		 height:420px;
+		 padding:20px 0 0 32px;
+
+	   }
+	   .register-step-one {
+		 margin-top: 14px;
+	   }
+	   .register-step-two {
+		 margin-top: 40px;
+	   }
+	   ul.reg-list {
+		 font-size: 12px;
+		 .height{
+		   height:20px;
+		 }
+		 .appCaptchaErr{
+		   font-size: 10px;
+		   color: #f71010;
+		   padding: 0;
+		   vertical-align: middle;
+		 }
+		 li {
+		   clear: both;
+
+
+		   .img-change{
+			 cursor: pointer;
+		   }
+		   .reg-title {
+			 width:60px;
+			 padding-right: 3px;
+			 font-size:14px;
+			 color: #333;
+			 text-align: right;
+			 display: none;
+
+		   }
+		   .captcha-tag {
+			 position: relative;
+			 display: inline-block;
+			 width:90%;
+			 .fetch-captcha {
+			   width:100px;
+			   height:32px;
+			   padding-left:18px;
+			   letter-spacing: 0;
+			   position: absolute;
+			   right: 0;
+			   top: 2px;
+			   font-size: 12px;
+			   border-radius: 15px;
+			   background: #ff0000;
+			   &:hover{
+			   	color:#fff;
+			   }
+			 }
+		   }
+		   .long{
+			 width:230px;
+
+		   }
+		   input[type="text"], input[type="password"] {
+			 color: #999;
+			 border: #cecece 1px solid;
+			 padding: 10px 2px 10px 47px;
+			 background-color:#fff;
+			 &.mobile {
+			   background: url("/images/sign/actor/landingpage/login-icon.png") no-repeat #fff 10px -110px;
+			 }
+			 &.appCaptcha {
+			   background: url("/images/sign/actor/landingpage/login-icon.png") no-repeat #fff 10px -148px;
+			   width:125px;
+			 }
+
+			 &.password {
+			   background: url("/images/sign/actor/landingpage/login-icon.png") no-repeat #fff 10px -72px;
+			 }
+			 &.captcha {
+			   background: url("/images/sign/actor/landingpage/login-icon.png") no-repeat #fff 10px 4px;
+			   width:100px;
+			 }
+			 &.login-name {
+			   background: url("/images/sign/actor/landingpage/login-icon.png") no-repeat #fff 10px -35px;
+			 }
+
+			 &.identity-number {
+			   background: url(/images/icons/register.png) no-repeat 6px -724px;
+			 }
+		   }
+
+
+		   .agreement {
+			 display: inline-block;
+			 width:361px;
+		   }
+		   input.valid + .agreement + label.error {
+			 &:before {
+			   content: "\f058";
+			   color: nth($checkValid,2);
+			 }
+		   }
+		   &.agree-last {
+			 position: relative;
+			 margin-left: 0;
+			 .check-label{
+			   position: absolute;
+			   top: 1px;
+			   left: 20px;
+			 }
+			 .agreement-check{
+			   margin-right: 300px;
+			 }
+		   }
+		   &.error-box {
+			 height:20px;
+			 overflow: hidden;
+		   }
+
+
+		 }
+		 .register-account {
+		   display: block;
+		   &.loading {
+			 background: url("/images/icons/loading.gif") no-repeat center center;
+			 cursor: default;
+			 text-indent: -9999px;
+		   }
+		 }
+		 .register-user, .register-account {
+		   width: 150px;
+		   background: #ff0000;
+		   border-radius: 3px;
+		   text-align: center;
+		   margin: 10px 0px 0px 85px;
+		   font-size: 20px;
+		   color: #fff;
+		   border: 0;
+		   cursor: pointer;
+		 }
+	   }
+	   label.error {
+		 display: block;
+	   }
+
+	 }
+   }
+
+	.content-one {
+		width: 100%;
+		.one-title {
+			width: 950px;
+			height: 120px;
+			line-height: 120px;
+			font-size: 26px;
+			margin: 0 auto;
+			text-align: center;
+			background: url("/images/sign/actor/landingpage/one-title-bg.png") no-repeat center;
+		}
+		.content-wp {
+			width: 1200px;
+			height: 320px;
+			margin: 0 auto;
+
+			ul {
+				text-align: center;
+				height: 320px;
+
+				li {
+					float: left;
+					width: 33.333333%;
+					font-size: 14px;
+					color: #0e050a;
+
+					.icon-one {
+					  height: 180px;
+					  width: 128px;
+					  margin: 0 auto;
+					  background: url("/images/sign/actor/landingpage/icon-one.png") no-repeat center;
+					}
+					.icon-two {
+					  height: 180px;
+					  width: 128px;
+					  margin: 0 auto;
+					  background: url("/images/sign/actor/landingpage/icon-two.png") no-repeat center;
+					}
+					.icon-three {
+					  height: 180px;
+					  width: 128px;
+					  margin: 0 auto;
+					  background: url("/images/sign/actor/landingpage/icon-three.png") no-repeat center;
+					}
+					span {
+						font-size: 18px;
+
+						b {
+							font-size: 26px;
+						}
+					}
+				}
+			}
+		}
+	}
+  	.content-two{
+		width:100%;
+		height:600px;
+		background-color:#f5f5f5;
+		.two-title{
+			width: 950px;
+			height: 120px;
+			line-height: 120px;
+			font-size: 26px;
+			margin: 0 auto;
+			text-align: center;
+			background: url("/images/sign/actor/landingpage/one-title-bg.png") no-repeat center;
+		}
+		.product-wp{
+			width:1200px;
+		  	height:420px;
+			margin:0 auto;
+		  ul{
+			text-align:center;
+			li{
+			  float:left;
+			  width:33.33333%;
+			}
+		  }
+
+		}
+
+	}
+	.content-three{
+		width:100%;
+		height:600px;		
+		.three-title{
+			width: 950px;
+			height: 120px;
+			line-height: 120px;
+			font-size: 26px;
+			margin: 0 auto;
+			text-align: center;
+			background: url("/images/sign/actor/landingpage/one-title-bg.png") no-repeat center;
+			span{
+				color:red;
+			}
+		}
+		.content-wp{
+			width:1200px;
+			height:400px;
+			margin:0 auto;
+			background: url("/images/sign/actor/landingpage/content-threebg.png") no-repeat ;
+			background-position: right center;
+			img{
+				display:block;
+				padding:30px 10px 10px 100px;
+			}
+			.table{
+				width:600px;
+				height:210px;
+				border:1px solid #ff6a4d;
+				border-radius:10px;
+				margin-left:20px;
+				margin-top:25px;
+				box-sizing:border-box;
+				.title{
+					text-align: center;
+					height:70px;
+					line-height: 70px;
+					background-color:#ff6a4d;
+					font-size: 24px;
+					color:#fff;
+					border-radius:9px 9px 0 0;
+					span{
+						font-size: 26px;
+						color:#fff3a3;
+					}
+				}
+				ul{
+					font-size: 16px;
+					color:#ff8d77;
+					padding:0 30px 0 30px;
+					li{
+						height:70px;
+						line-height: 70px;
+						padding-left:15px;
+					}
+					.border{
+						border-bottom:1px solid #ff8d77;
+					}
+
+				}
+			}
+		}		
+
+	}
+	.content-four{
+		width:100%;
+		height:600px;
+		background-color:#f5f5f5;
+		.four-title{
+			width: 950px;
+			height: 120px;
+			line-height: 120px;
+			font-size: 26px;
+			margin: 0 auto;
+			text-align: center;
+			background: url("/images/sign/actor/landingpage/one-title-bg.png") no-repeat center;
+			span{
+				color:red;
+			}
+		}
+		.text{
+			width:1200px;
+			margin:0 auto;
+			text-align: center;
+			font-size: 17px;
+			p{
+				span{
+					color:#ff6a4d;
+				}
+			}
+		}
+		table.imagetable {
+
+			  width:900px;
+			  font-size:18px;
+			  color:#333333;
+			  border-width: 1px;
+			  border-color: #999999;
+			  border-collapse: collapse;
+			  text-align: center;
+			  margin:45px auto ;
+		  .slash{
+			background:url("/images/sign/actor/landingpage/slash.png") no-repeat center;
+			background-size:100% 100%;
+		  }
+
+			  th {
+				  background:#ccc;
+				  border-width: 1px;
+				  width: 200px;
+				  height:60px;
+				  border-style: solid;
+				  border-color: #999999;
+				}
+			  td {
+				  background:#fff;
+				  border-width: 1px;
+				  width: 200px;
+				  height:60px;
+				  border-style: solid;
+				  border-color: #999999;
+
+				  span{
+				  	color:red;
+				  	.big{
+				  		font-size:24px;
+				  	}
+				  }
+				}
+
+			}
+
+	}
+	.content-five{
+		width:100%;
+		height:700px;		
+		background: url("/images/sign/actor/landingpage/content-fivebg.png") no-repeat center;		
+		.five-title{
+			width: 950px;
+			height: 120px;
+			color:#fff;
+			line-height: 120px;
+			font-size: 26px;
+			margin: 0 auto;
+			text-align: center;
+			background: url("/images/sign/actor/landingpage/one-title-bg.png") no-repeat center;
+			
+		}
+		.content-wp{
+			width:1080px;
+			height:300px;
+			margin:0 auto;
+			padding:50px 60px;
+			background-color:#fff;
+			.left{
+				width:526px;
+				height:302px;
+				float:left;
+				a{
+					display: block;
+					width:526px;
+					height:302px;
+					background: url("/images/sign/actor/landingpage/five-media.png") no-repeat center;
+					
+				}
+				
+			}
+			.right{
+				float:right;
+				width:520px;
+				height:302px;
+				ul{
+					height:100px;
+					clear:both;
+					li{
+						width:33.3333%;
+						float:left;
+					}
+				}
+				.title{
+					height:42px;
+					font-size:20px;
+					span{
+						display: inline-block;
+						width:90px;
+						text-align: center;
+						background-color: red;
+						margin-right:10px;
+						color:#fff;
+					}
+				}
+				p{
+					font-size: 16px;
+					position:relative;
+					a{
+						position:absolute;
+						text-decoration: underline;
+						color:red;
+						right: 0;
+						bottom:0;
+					}
+				}
+
+			}
+		}
+		.registered{
+			margin-top:55px;
+			span{
+				display:block;
+				margin:0 auto;
+				width:200px;
+				height:46px;
+				color:#fff;
+				text-align: center;
+				line-height: 46px;
+				background-color:#f1a03f;
+				font-size: 16px;
+				border-radius:5px;
+			    cursor: pointer;
+			}
+		}		
+
+	}
+}

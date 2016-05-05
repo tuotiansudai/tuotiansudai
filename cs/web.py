@@ -89,6 +89,7 @@ class RechargesHandler(BaseHandler):
            `source`,
            `channel`,
            `bank_code`,
+           `status`,
            `amount`
       FROM `recharge`
      WHERE `created_time` BETWEEN %s
