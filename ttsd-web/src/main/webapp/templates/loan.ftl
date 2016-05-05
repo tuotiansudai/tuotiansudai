@@ -49,13 +49,16 @@
                         <dd><span class="fl">每人限投：</span><em class="fr">${loan.maxInvestAmount} 元</em></dd>
                         <dd class="invest-amount tl" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
                             <span class="fl">投资金额：</span>
-                            <input type="text" name="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" data-min-invest-amount="<@amount>${loan.minInvestAmount?string.computer}</@amount>" placeholder="0.00" value="${investAmount!loan.maxAvailableInvestAmount}"
+                            <input type="text" name="amount" data-l-zero="deny" data-v-min="0.00" data-min-invest-amount="<@amount>${loan.minInvestAmount?string.computer}</@amount>" placeholder="0.00" value="${investAmount!loan.maxAvailableInvestAmount}"
                                    data-no-password-remind="${loan.hasRemindInvestNoPassword?c}"
                                    data-no-password-invest="${loan.investNoPassword?c}"
                                    data-auto-invest-on="${loan.autoInvest?c}"
                                    class="text-input-amount fr position-width"/>
                             <#if errorMessage?has_content>
                                 <span class="errorTip hide"><i class="fa fa-times-circle"></i>${errorMessage!}</span>
+                            </#if>
+                            <#if errorType?has_content>
+                                <input type="hidden" class="errorType hide" value="${errorType!}"/>
                             </#if>
                         </dd>
 

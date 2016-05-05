@@ -61,7 +61,7 @@ public enum ReturnMessage {
     MORE_THAN_MAX_INVEST_AMOUNT("0052","投资金额超过了用户投资限额"),
     LOAN_IS_FULL("0053","标的已满"),
     LESS_THAN_MIN_INVEST_AMOUNT("0054","投资金额小于标的最小投资金额"),
-    OUT_OF_NOVICE_INVEST_LIMIT("0055","新手标投资已超上限"),
+    OUT_OF_NOVICE_INVEST_LIMIT("0055","您已购买过新手专享产品"),
     INVEST_FAILED("0056","投资失败"),
     /******手机端投资******/
 
@@ -94,6 +94,7 @@ public enum ReturnMessage {
     PASSWORD_INVEST_OFF("0058", "尚未开启免密投资"),
 
     USER_IS_DISABLED("0049", "用户名或密码错误,账户冻结30分钟,如您着急投资请与拓天速贷客服联系"),
+    IMAGE_CAPTCHA_IS_WRONG("0081", "图形验证码错误"),
     CANNOT_GET_APK_VERSION("0060", "查找不到版本信息"),
     /******自动投标******/
     AUTO_INVEST_PLAN_NOT_EXIST("0061","自动投标计划不存在"),
