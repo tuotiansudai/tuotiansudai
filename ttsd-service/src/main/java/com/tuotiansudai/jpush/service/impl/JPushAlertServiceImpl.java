@@ -527,8 +527,6 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     }
 
-
-
     @Override
     public void autoJPushRechargeAlert(long orderId){
         RechargeModel rechargeModel = rechargeMapper.findById(orderId);

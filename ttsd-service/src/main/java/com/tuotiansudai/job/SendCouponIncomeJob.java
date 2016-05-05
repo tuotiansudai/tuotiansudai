@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AutoJPushCouponIncomeJob implements Job {
-    static Logger logger = Logger.getLogger(AutoJPushCouponIncomeJob.class);
+public class SendCouponIncomeJob implements Job {
+    static Logger logger = Logger.getLogger(SendCouponIncomeJob.class);
 
     public final static String LOAN_REPAY_ID_KEY = "LOAN_REPAY_ID";
 
@@ -25,6 +25,5 @@ public class AutoJPushCouponIncomeJob implements Job {
         long loanRepayId = (long) context.getJobDetail().getJobDataMap().get(LOAN_REPAY_ID_KEY);
         jPushAlertService.autoJPushCouponIncomeAlert(loanRepayId);
         logger.debug("trigger send jPush alert coupon job, loanRepayId : " + loanRepayId);
-
     }
 }
