@@ -126,7 +126,7 @@
                     <span class="product-icon"></span>
                 </h3>
                 <div class="product-list">
-                    <ul>
+                    <ul class="loan-btn">
                         <li data-url="/loan/${loan.id?c}" class="clearfix">
                             <span class="new-user"></span>
                             <div class="loan-info-frame fl">
@@ -228,7 +228,7 @@
                 <a href="/loan-list" onclick="cnzzPush.trackClick('35首页','热门产品模块','更多')" class="hot-more">更多>></a>
             </h3>
             <div class="product-box-list fl">
-                <ul class="product-box-inner">
+                <ul class="product-box-inner loan-btn">
                 <#list loans as loan>
                     <#if loan.periods gt 1>
                         <li data-url="/loan/${(loan.id?string.computer)!}" class="clearfix">

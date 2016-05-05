@@ -79,5 +79,9 @@ require(['jquery', 'underscore', 'jquery.ajax.extension', 'commonFun', 'coupon-a
                 }).find("li:first").appendTo($self);
             })
         }
+        $('.loan-btn li').on('click', function(event) {
+            event.preventDefault();
+            window.location.href=$(this).attr('data-url');
+        });
     });
 });
