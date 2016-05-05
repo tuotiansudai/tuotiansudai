@@ -102,6 +102,7 @@ public class InvestLimitUpTest {
         model.setLoanId(loanId);
         model.setSource(Source.ANDROID);
         model.setStatus(InvestStatus.SUCCESS);
+        model.setTransferStatus(TransferStatus.TRANSFERRING);
         investMapper.create(model);
         return model;
     }

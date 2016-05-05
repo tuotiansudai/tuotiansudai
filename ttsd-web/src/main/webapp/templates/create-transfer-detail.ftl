@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.create_transfer_detail}" pageJavascript="${js.create_transfer_detail}" activeNav="我的账户" activeLeftNav="我的投资" title="投资记录">
+<@global.main pageCss="${css.transfer_apply_detail}" pageJavascript="${js.transfer_apply_detail}" activeNav="我的账户" activeLeftNav="我的投资" title="投资记录">
 <div class="content-container">
     <h4 class="column-title">
         <a href="/investor/invest-list"><em class="tc">债权转让</em></a>
