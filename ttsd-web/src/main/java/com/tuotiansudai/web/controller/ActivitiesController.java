@@ -18,7 +18,6 @@ public class ActivitiesController {
     @Autowired
     private UserService userService;
 
-
     @RequestMapping(path = "/{item:^recruit|birth-month|rank-list-app|share-reward|app-download|landing-page$}", method = RequestMethod.GET)
 
     public ModelAndView activities(HttpServletRequest httpServletRequest, @PathVariable String item) {
