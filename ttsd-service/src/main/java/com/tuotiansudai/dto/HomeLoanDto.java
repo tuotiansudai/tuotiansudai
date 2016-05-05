@@ -1,15 +1,14 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.coupon.repository.model.CouponModel;
-import com.tuotiansudai.repository.model.ActivityType;
-import com.tuotiansudai.repository.model.LoanPeriodUnit;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class HomeLoanDto {
 
@@ -41,7 +40,11 @@ public class HomeLoanDto {
 
     private double newbieInterestCouponRate;
 
-    public HomeLoanDto(CouponModel newbieInterestCouponModel, long loanId, String name, ProductType productType, ActivityType activityType, LoanPeriodUnit periodUnit, double baseRate, double activityRate, int periods, long amount, long investAmount, LoanStatus status, Date fundraisingStartTime) {
+    private String availableInvestAmount;
+
+    private int completedPeriods;
+
+    public HomeLoanDto(CouponModel newbieInterestCouponModel, long loanId, String name, ProductType productType, ActivityType activityType, LoanPeriodUnit periodUnit, double baseRate, double activityRate, int periods, long amount, long investAmount, LoanStatus status, Date fundraisingStartTime, List<LoanRepayModel> loanRepayModels) {
         this.id = loanId;
         this.name = name;
         this.productType = productType;
@@ -59,6 +62,12 @@ public class HomeLoanDto {
         this.preheatSeconds = (fundraisingStartTime.getTime() - System.currentTimeMillis()) / 1000;
         if (newbieInterestCouponModel != null && newbieInterestCouponModel.getProductTypes().contains(productType)) {
             this.newbieInterestCouponRate = newbieInterestCouponModel.getRate();
+        }
+        this.availableInvestAmount = AmountConverter.convertCentToString(amount - investAmount);
+        for (LoanRepayModel loanRepayModel : loanRepayModels) {
+            if (loanRepayModel.getStatus() == RepayStatus.COMPLETE) {
+                completedPeriods++;
+            }
         }
     }
 
@@ -116,5 +125,13 @@ public class HomeLoanDto {
 
     public double getNewbieInterestCouponRate() {
         return newbieInterestCouponRate;
+    }
+
+    public String getAvailableInvestAmount() {
+        return availableInvestAmount;
+    }
+
+    public int getCompletedPeriods() {
+        return completedPeriods;
     }
 }

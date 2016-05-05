@@ -7,10 +7,8 @@ import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.dto.HomeLoanDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +26,9 @@ public class HomeServiceImpl implements HomeService {
 
     @Autowired
     private CouponMapper couponMapper;
+
+    @Autowired
+    private LoanRepayMapper loanRepayMapper;
 
     @Override
     public List<HomeLoanDto> getLoans() {
@@ -52,6 +53,8 @@ public class HomeServiceImpl implements HomeService {
                         newbieInterestCouponModel = activeCoupon;
                     }
                 }
+
+                List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loan.getId());
                 return new HomeLoanDto(newbieInterestCouponModel, loan.getId(),
                         loan.getName(),
                         loan.getProductType(),
@@ -63,7 +66,9 @@ public class HomeServiceImpl implements HomeService {
                         loan.getLoanAmount(),
                         investAmount,
                         loan.getStatus(),
-                        loan.getFundraisingStartTime());
+                        loan.getFundraisingStartTime(),
+                        loanRepayModels
+                        );
             }
         });
     }
