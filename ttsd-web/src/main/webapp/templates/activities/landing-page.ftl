@@ -597,14 +597,14 @@
         <div class="tuotian-advantage-group clearfix">
             <span class="landing-phone-span-left"><img
                     src="${staticServer}/images/sign/actor/landingphone/landing-phone-fund.png" class="img-icon"></span>
-            <span class="landing-phone-span-right">稳健收益<br/><span>第三方资金托管</span></span>
+            <span class="landing-phone-span-right">资金透明<br/><span>第三方资金托管</span></span>
         </div>
     </div>
     <div class="tuotian-products">
         <div class="landing-phone-section-header-left">
         </div>
         <div class="landing-phone-section-header">
-            为您精选理财产品
+            为您精选投资产品
         </div>
         <div class="landing-phone-section-header-right">
         </div>
@@ -694,7 +694,7 @@
         <div class="landing-phone-section-header-left">
         </div>
         <div class="landing-phone-section-header">
-            <span>投资</span>既有豪礼送
+            <span>投资</span>既有壕礼送
         </div>
         <div class="landing-phone-section-header-right">
         </div>
