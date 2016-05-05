@@ -1,0 +1,970 @@
+@import 'variables';
+@import "index_png";
+
+$landingPhoneColorGray: #F2F2F2;
+$landingPhoneColorRed: #FC4333;
+$fontMonster: 26px;
+$fontGiant: 24px;
+$fontUltraHuge: 22px;
+$fontHuge: 20px;
+$fontBig: 18px;
+$fontNormal: 16px;
+$fontSmall: 14px;
+$fontUltraSmall: 12px;
+$fontUltraSmaller: 10px;
+
+form label.error:before {
+  padding-right: 5px;
+  content: "\f057";
+  font: normal normal normal 14px/1 FontAwesome;
+  display: none;
+  font-size: 16px;
+}
+
+.header-container {
+  display: none;
+}
+
+.nav-container {
+  display: none;
+}
+
+.footer-container {
+  margin-top: 0;
+
+  .footer {
+    display: none;
+  }
+  .link-list {
+    display: none;
+  }
+}
+
+.full-screen {
+  width: 100% !important;
+  margin: 0;
+}
+
+form label.error {
+  font-size: 10px;
+  color: #f71010;
+  padding: 0;
+  vertical-align: middle;
+}
+
+.landing-container {
+  min-height: 500px;
+
+  .landing-header {
+    width: 1200px;
+    height: 90px;
+    text-align: center;
+    margin: 0 auto;
+    background: url("/images/icons/logo-new.png") left center no-repeat;
+
+    a {
+      display: inline-block;
+      float: right;
+      font-size: 16px;
+      color: #fff;
+      border-radius: 20px;
+      width: 160px;
+      height: 40px;
+      line-height: 40px;
+      margin-top: 25px;
+      background-color: #f1a03f;
+    }
+  }
+  .landing-top {
+    position: relative;
+    height: 500px;
+    background: url("/images/sign/actor/landingpage/landing-top.png") center top no-repeat;
+
+    .landing-inner {
+      width: 1200px;
+      height: 30px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .register-box {
+      position: absolute;
+      right: 0;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 5px;
+      top: 18px;
+      height: auto;
+      overflow: auto;
+      margin-top: 13px;
+
+      .register-user-form {
+        width: 320px;
+        height: 420px;
+        padding: 20px 0 0 32px;
+      }
+      .register-step-one {
+        margin-top: 14px;
+      }
+      .register-step-two {
+        margin-top: 40px;
+      }
+      ul.reg-list {
+        font-size: 12px;
+
+        .height {
+          height: 20px;
+        }
+        .appCaptchaErr {
+          font-size: 10px;
+          color: #f71010;
+          padding: 0;
+          vertical-align: middle;
+        }
+        li {
+          clear: both;
+
+          .img-change {
+            cursor: pointer;
+          }
+          .reg-title {
+            width: 60px;
+            padding-right: 3px;
+            font-size: 14px;
+            color: #333;
+            text-align: right;
+            display: none;
+          }
+          .captcha-tag {
+            position: relative;
+            display: inline-block;
+            width: 90%;
+
+            .fetch-captcha {
+              width: 100px;
+              height: 32px;
+              padding-left: 18px;
+              letter-spacing: 0;
+              position: absolute;
+              right: 0;
+              top: 2px;
+              font-size: 12px;
+              border-radius: 15px;
+              background: #ff0000;
+
+              &:hover {
+                color: #fff;
+              }
+            }
+          }
+          .long {
+            width: 230px;
+          }
+          input[type="text"], input[type="password"] {
+            color: #999;
+            border: #cecece 1px solid;
+            padding: 10px 2px 10px 47px;
+            background-color: #fff;
+
+            &.mobile {
+              background: url("/images/sign/actor/landingpage/login-icon.png") no-repeat #fff 10px -110px;
+            }
+            &.appCaptcha {
+              background: url("/images/sign/actor/landingpage/login-icon.png") no-repeat #fff 10px -148px;
+              width: 125px;
+            }
+            &.password {
+              background: url("/images/sign/actor/landingpage/login-icon.png") no-repeat #fff 10px -72px;
+            }
+            &.captcha {
+              background: url("/images/sign/actor/landingpage/login-icon.png") no-repeat #fff 10px 4px;
+              width: 100px;
+            }
+            &.login-name {
+              background: url("/images/sign/actor/landingpage/login-icon.png") no-repeat #fff 10px -35px;
+            }
+            &.identity-number {
+              background: url(/images/icons/register.png) no-repeat 6px -724px;
+            }
+          }
+          .agreement {
+            display: inline-block;
+            width: 361px;
+          }
+          input.valid + .agreement + label.error {
+            &:before {
+              content: "\f058";
+              color: nth($checkValid, 2);
+            }
+          }
+          &.agree-last {
+            position: relative;
+            margin-left: 0;
+
+            .check-label {
+              position: absolute;
+              top: 1px;
+              left: 20px;
+            }
+            .agreement-check {
+              margin-right: 300px;
+            }
+          }
+          &.error-box {
+            height: 20px;
+            overflow: hidden;
+          }
+        }
+        .register-account {
+          display: block;
+
+          &.loading {
+            background: url("/images/icons/loading.gif") no-repeat center center;
+            cursor: default;
+            text-indent: -9999px;
+          }
+        }
+        .register-user, .register-account {
+          width: 150px;
+          background: #ff0000;
+          border-radius: 3px;
+          text-align: center;
+          margin: 10px 0px 0px 85px;
+          font-size: 20px;
+          color: #fff;
+          border: 0;
+          cursor: pointer;
+        }
+      }
+      label.error {
+        display: block;
+      }
+    }
+  }
+  .content-one {
+    width: 100%;
+
+    .one-title {
+      width: 950px;
+      height: 120px;
+      line-height: 120px;
+      font-size: 26px;
+      margin: 0 auto;
+      text-align: center;
+      background: url("/images/sign/actor/landingpage/one-title-bg.png") no-repeat center;
+    }
+    .content-wp {
+      width: 1200px;
+      height: 320px;
+      margin: 0 auto;
+
+      ul {
+        text-align: center;
+        height: 320px;
+
+        li {
+          float: left;
+          width: 33.333333%;
+          font-size: 14px;
+          color: #0e050a;
+
+          .icon-one {
+            height: 180px;
+            width: 128px;
+            margin: 0 auto;
+            background: url("/images/sign/actor/landingpage/icon-one.png") no-repeat center;
+          }
+          .icon-two {
+            height: 180px;
+            width: 128px;
+            margin: 0 auto;
+            background: url("/images/sign/actor/landingpage/icon-two.png") no-repeat center;
+          }
+          .icon-three {
+            height: 180px;
+            width: 128px;
+            margin: 0 auto;
+            background: url("/images/sign/actor/landingpage/icon-three.png") no-repeat center;
+          }
+          span {
+            font-size: 18px;
+
+            b {
+              font-size: 26px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .content-two {
+    width: 100%;
+    height: 600px;
+    background-color: #f5f5f5;
+
+    .two-title {
+      width: 950px;
+      height: 120px;
+      line-height: 120px;
+      font-size: 26px;
+      margin: 0 auto;
+      text-align: center;
+      background: url("/images/sign/actor/landingpage/one-title-bg.png") no-repeat center;
+    }
+    .product-wp {
+      width: 1200px;
+      height: 420px;
+      margin: 0 auto;
+
+      ul {
+        text-align: center;
+
+        li {
+          float: left;
+          width: 33.33333%;
+        }
+      }
+    }
+  }
+  .content-three {
+    width: 100%;
+    height: 600px;
+
+    .three-title {
+      width: 950px;
+      height: 120px;
+      line-height: 120px;
+      font-size: 26px;
+      margin: 0 auto;
+      text-align: center;
+      background: url("/images/sign/actor/landingpage/one-title-bg.png") no-repeat center;
+
+      span {
+        color: red;
+      }
+    }
+    .content-wp {
+      width: 1200px;
+      height: 400px;
+      margin: 0 auto;
+      background: url("/images/sign/actor/landingpage/content-threebg.png") no-repeat;
+      background-position: right center;
+
+      img {
+        display: block;
+        padding: 30px 10px 10px 100px;
+      }
+      .table {
+        width: 600px;
+        height: 210px;
+        border: 1px solid #ff6a4d;
+        border-radius: 10px;
+        margin-left: 20px;
+        margin-top: 25px;
+        box-sizing: border-box;
+
+        .title {
+          text-align: center;
+          height: 70px;
+          line-height: 70px;
+          background-color: #ff6a4d;
+          font-size: 24px;
+          color: #fff;
+          border-radius: 9px 9px 0 0;
+
+          span {
+            font-size: 26px;
+            color: #fff3a3;
+          }
+        }
+        ul {
+          font-size: 16px;
+          color: #ff8d77;
+          padding: 0 30px 0 30px;
+
+          li {
+            height: 70px;
+            line-height: 70px;
+            padding-left: 15px;
+          }
+          .border {
+            border-bottom: 1px solid #ff8d77;
+          }
+        }
+      }
+    }
+  }
+  .content-four {
+    width: 100%;
+    height: 600px;
+    background-color: #f5f5f5;
+
+    .four-title {
+      width: 950px;
+      height: 120px;
+      line-height: 120px;
+      font-size: 26px;
+      margin: 0 auto;
+      text-align: center;
+      background: url("/images/sign/actor/landingpage/one-title-bg.png") no-repeat center;
+
+      span {
+        color: red;
+      }
+    }
+    .text {
+      width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+      font-size: 17px;
+
+      p {
+        span {
+          color: #ff6a4d;
+        }
+      }
+    }
+    table.imagetable {
+      width: 900px;
+      font-size: 18px;
+      color: #333333;
+      border-width: 1px;
+      border-color: #999999;
+      border-collapse: collapse;
+      text-align: center;
+      margin: 45px auto;
+
+      .slash {
+        background: url("/images/sign/actor/landingpage/slash.png") no-repeat center;
+        background-size: 100% 100%;
+      }
+      th {
+        background: #ccc;
+        border-width: 1px;
+        width: 200px;
+        height: 60px;
+        border-style: solid;
+        border-color: #999999;
+      }
+      td {
+        background: #fff;
+        border-width: 1px;
+        width: 200px;
+        height: 60px;
+        border-style: solid;
+        border-color: #999999;
+
+        span {
+          color: red;
+
+          .big {
+            font-size: 24px;
+          }
+        }
+      }
+    }
+  }
+  .content-five {
+    width: 100%;
+    height: 700px;
+    background: url("/images/sign/actor/landingpage/content-fivebg.png") no-repeat center;
+
+    .five-title {
+      width: 950px;
+      height: 120px;
+      color: #fff;
+      line-height: 120px;
+      font-size: 26px;
+      margin: 0 auto;
+      text-align: center;
+      background: url("/images/sign/actor/landingpage/one-title-bg.png") no-repeat center;
+    }
+    .content-wp {
+      width: 1080px;
+      height: 300px;
+      margin: 0 auto;
+      padding: 50px 60px;
+      background-color: #fff;
+
+      .left {
+        width: 526px;
+        height: 302px;
+        float: left;
+
+        a {
+          display: block;
+          width: 526px;
+          height: 302px;
+          background: url("/images/sign/actor/landingpage/five-media.png") no-repeat center;
+        }
+      }
+      .right {
+        float: right;
+        width: 520px;
+        height: 302px;
+
+        ul {
+          height: 100px;
+          clear: both;
+
+          li {
+            width: 33.3333%;
+            float: left;
+          }
+        }
+        .title {
+          height: 42px;
+          font-size: 20px;
+
+          span {
+            display: inline-block;
+            width: 90px;
+            text-align: center;
+            background-color: red;
+            margin-right: 10px;
+            color: #fff;
+          }
+        }
+        p {
+          font-size: 16px;
+          position: relative;
+
+          a {
+            position: absolute;
+            text-decoration: underline;
+            color: red;
+            right: 0;
+            bottom: 0;
+          }
+        }
+      }
+    }
+    .registered {
+      margin-top: 55px;
+
+      span {
+        display: block;
+        margin: 0 auto;
+        width: 200px;
+        height: 46px;
+        color: #fff;
+        text-align: center;
+        line-height: 46px;
+        background-color: #f1a03f;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.landing-phone-container {
+  text-align: center;
+  background: #fff;
+  display: none;
+
+  .landing-phone-section-header {
+    float: left;
+    margin-top: 12px;
+    margin-bottom: 35px;
+    width: 40%;
+    font-size: $fontNormal;
+
+    span {
+      color: $landingPhoneColorRed;
+    }
+    span[id] {
+      color: white;
+    }
+  }
+  .landing-phone-section-header-left {
+    float: left;
+    width: 30%;
+    height: 25px;
+    margin-top: 15px;
+    background: url('/images/sign/actor/landingphone/landing-phone-decorate-left.png') center no-repeat;
+    background-size: 100% auto;
+  }
+  .landing-phone-section-header-right {
+    float: left;
+    width: 30%;
+    height: 25px;
+    margin-top: 15px;
+    background: url('/images/sign/actor/landingphone/landing-phone-decorate-right.png') center no-repeat;
+    background-size: 100% auto;
+  }
+  .landing-phone-logo {
+    width: 100%;
+    height: 50px;
+
+    .landing-phone-logo-image {
+      float: left;
+      height: 25px;
+      margin-left: 15px;
+      margin-top: 13px;
+    }
+  }
+  .landing-phone-banner {
+    width: 100%;
+    height: auto;
+  }
+  //拓天速贷的优势
+  .tuotian-advantage {
+    float: left;
+    width: 100%;
+    background: white;
+
+    .tuotian-advantage-group {
+      margin-bottom: 25px;
+
+      .img-icon {
+        margin-right: 15px;
+        width: 63px;
+        height: 69px;
+      }
+      .landing-phone-span-left {
+        float: left;
+        width: 50%;
+        text-align: right;
+      }
+      .landing-phone-span-right {
+        float: left;
+        width: 50%;
+        text-align: left;
+        line-height: 25px;
+        margin-top: 10px;
+        font-size: $fontNormal;
+
+        span {
+          font-size: $fontUltraSmall;
+        }
+      }
+    }
+  }
+  //为您精选理财产品
+  .tuotian-products {
+    float: left;
+    width: 100%;
+    background: $landingPhoneColorGray;
+
+    .products-group {
+      float: left;
+      height: 56px;
+      margin-left: 5%;
+      margin-right: 5%;
+      margin-bottom: 25px;
+
+      p {
+        margin-bottom: 0px;
+      }
+      .products-group-icon {
+        float: left;
+        width: 26%;
+        height: 58px;
+      }
+      .products-group-content {
+        float: left;
+        background-color: white;
+        width: 74%;
+        height: 52px;
+        margin-top: 4px;
+        margin-left: -3px;
+        border: 1px solid #E8E8E8;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+
+        .products-group-content-item0 {
+          float: left;
+          width: 33.33%;
+          text-align: center;
+
+          span {
+            line-height: 54px;
+          }
+          span[id=products-content-item0] {
+            color: #FEBD39;
+          }
+          span[id=products-content-item1] {
+            color: #FC9530;
+          }
+          span[id=products-content-item2] {
+            color: #FC5526;
+          }
+        }
+        .products-group-content-item1 {
+          float: left;
+          width: 33.33%;
+
+          p {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+          p[id] {
+            font-size: $fontSmall;
+          }
+          span {
+            font-size: $fontUltraSmaller;
+          }
+          p[id=products-content-percent0] {
+            color: #FEBD39;
+            margin-top: -2px;
+          }
+          p[id=products-content-percent1] {
+            color: #FC9530;
+            margin-top: -2px;
+          }
+          p[id=products-content-percent2] {
+            color: #FC5526;
+            margin-top: -2px;
+          }
+        }
+        .products-group-content-item2 {
+          float: left;
+          width: 33.33%;
+        }
+      }
+    }
+  }
+  //投资既有豪礼送
+  .tuotian-gifts {
+    float: left;
+    width: 100%;
+    background: white;
+
+    .landing-phone-gift-header {
+      width: 206px;
+      height: auto;
+    }
+    .gifts-content-container {
+      margin-left: 20px;
+      margin-right: 20px;
+      margin-top: 15px;
+      margin-bottom: 20px;
+      border: 0.5px solid $landingPhoneColorRed;
+      border-radius: 5px;
+      -webkit-border-radius: 5px;
+
+      .gifts-content-title {
+        background-color: $landingPhoneColorRed;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        font-size: $fontUltraSmall;
+        color: #fff;
+
+        span {
+          font-size: $fontSmall;
+          color: yellow;
+        }
+      }
+      p {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        font-size: $fontUltraSmall;
+        color: $landingPhoneColorRed;
+      }
+    }
+    .landing-phone-gift-footer {
+      width: 240px;
+      height: auto;
+      margin-bottom: 20px;
+    }
+  }
+  //呼朋唤友赚佣金
+  .tuotian-rewards {
+    float: left;
+    width: 100%;
+    background: $landingPhoneColorGray;
+
+    .rewards-header {
+      float: left;
+      text-align: left;
+      margin-top: 0px;
+      margin-bottom: 25px;
+      margin-left: 20px;
+      margin-right: 20px;
+      font-size: $fontUltraSmall;
+
+      span {
+        color: $landingPhoneColorRed;
+      }
+    }
+    table {
+      background: $landingPhoneColorGray;
+      border-collapse: separate;
+      border-spacing: 1px;
+      margin-left: 3%;
+      margin-right: 3%;
+      width: 94%;
+      margin-bottom: 25px;
+      font-size: $fontUltraSmall;
+
+      td {
+        background: white;
+
+        p {
+          margin-bottom: 0px;
+        }
+        span {
+          color: $landingPhoneColorRed
+        }
+      }
+    }
+  }
+  //主流媒体眼中的我们
+  .tuotian-aboutus {
+    float: left;
+    width: 100%;
+    background: url('/images/sign/actor/landingphone/landing-phone-aboutus-bg.png') center no-repeat;
+
+    .aboutus-content-container {
+      float: left;
+      background: white;
+      margin-top: 0px;
+      margin-left: 5%;
+      margin-right: 5%;
+      margin-bottom: 20px;
+
+      span {
+        float: left;
+        margin-left: 5%;
+        margin-bottom: 10px;
+        background: red;
+        color: white;
+        font-size: $fontUltraSmall;
+        padding-left: 5px;
+        padding-right: 5px;
+        height: 25px;
+      }
+      p {
+        float: left;
+        margin-left: 5%;
+        margin-right: 5%;
+        text-align: left;
+        font-size: $fontUltraSmall;
+      }
+    }
+    .landing-phone-aboutus-header {
+      margin-top: 25px;
+      margin-left: 5%;
+      margin-right: 5%;
+      margin-bottom: 10px;
+      width: 80%;
+      height: auto;
+    }
+  }
+  //现在就注册吧
+  .tuotian-register {
+    float: left;
+    width: 100%;
+    background: $landingPhoneColorGray;
+
+    .tuotian-register-container {
+      float: left;
+      text-align: left;
+      background: white;
+      margin-left: 5%;
+      margin-right: 5%;
+      margin-bottom: 25px;
+      margin-top: 0px;
+      padding: 5%;
+      width: 80%;
+      font-size: $fontUltraSmall;
+      .reg-list {
+        float: left;
+        width: 100%;
+        .int-model {
+          float: left;
+          width: 100%;
+          margin-bottom: 20px;
+          .captcha {
+            width: 40%;
+          }
+          .appCaptcha {
+            width: 40%;
+          }
+        }
+      }
+      input {
+        width: 95%;
+        border-color: $landingPhoneColorGray;
+      }
+      input[id=appCaptcha] {
+        float: left;
+        width: 40%;
+        margin-bottom: 0px;
+      }
+      .image-captchaC {
+        width: 25%;
+        height: 30px;
+        margin-left: 5px;
+        margin-right: 5px;
+      }
+      span[id=img-changeC] {
+        float: left;
+        width: 25%;
+        font-size: $fontUltraSmall;
+        border-color: white;
+      }
+      input[id=captchaPhone] {
+        float: left;
+        width: 60%;
+        margin-bottom: 0px;
+        margin-right: 5px;
+      }
+      .fetch-captchaC {
+        float: left;
+        width: 40%;
+        height: 32px;
+        padding: 8px;
+        font-size: $fontUltraSmall;
+        color: white;
+        background: red;
+        border-color: white;
+        border-radius: 15px;
+        -webkit-border-radius: 15px;
+      }
+
+      input[id=btn-register] {
+        width: 60%;
+        margin-left: 20%;
+        font-size: $fontUltraSmall;
+        margin-top: 10px;
+        margin-bottom: 3px;
+        color: white;
+        background: red;
+        border-color: white;
+      }
+
+      label[id*=error] {
+        float: left;
+        width: 100%;
+        margin-top: -20px;
+      }
+
+      .check-labelC {
+        width: 100%;
+        text-align: center;
+        font-size: $fontUltraSmaller;
+
+        span {
+          color: red;
+        }
+      }
+      .agree-last {
+        text-align: center;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .landing-container {
+    display: none;
+  }
+  .landing-phone-container {
+    display: block;
+  }
+  .footer-container {
+    display: none;
+  }
+}
