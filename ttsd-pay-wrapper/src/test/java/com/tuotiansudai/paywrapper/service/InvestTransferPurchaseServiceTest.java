@@ -103,7 +103,7 @@ public class InvestTransferPurchaseServiceTest {
 
         InvestDto investDto = new InvestDto();
         investDto.setLoginName(transferee.getLoginName());
-        investDto.setTransferInvestId(String.valueOf(fakeTransferInvest.getId()));
+        investDto.setTransferInvestId(String.valueOf(fakeTransferApplication.getId()));
         investDto.setSource(Source.WEB);
         investTransferPurchaseService.noPasswordPurchase(investDto);
 

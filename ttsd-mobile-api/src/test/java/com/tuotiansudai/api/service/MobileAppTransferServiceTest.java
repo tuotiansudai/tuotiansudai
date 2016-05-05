@@ -16,6 +16,7 @@ import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.RandomUtils;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -54,6 +55,9 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
     @Mock
     private AccountService accountService;
 
+    @Mock
+    private RandomUtils randomUtils;
+
     @Value("${pay.callback.app.web.host}")
     private String domainName;
 
@@ -82,9 +86,11 @@ public class MobileAppTransferServiceTest extends ServiceTestBase {
         investModel.setLoginName("testTransferee");
         when(investMapper.findById(anyLong())).thenReturn(investModel);
 
+        when(randomUtils.encryptLoginName(anyString(),anyString(),anyInt(),anyLong())).thenReturn("test***");
+
         BaseResponseDto<TransferTransfereeResponseDataDto> baseResponseDto =  mobileAppTransferServiceImpl.getTransferee(transferTransfereeRequestDto);
         assertThat(baseResponseDto.getData().getTransferee().get(0).getTransferAmount(), is("10.00"));
-        assertThat(baseResponseDto.getData().getTransferee().get(0).getTransfereeLoginName(), is(investModel.getLoginName()));
+        assertThat(baseResponseDto.getData().getTransferee().get(0).getTransfereeLoginName(), is("test***"));
     }
 
     @Test
