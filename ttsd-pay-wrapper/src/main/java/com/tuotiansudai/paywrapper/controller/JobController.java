@@ -53,7 +53,6 @@ public class JobController {
         return this.investTransferPurchaseService.asyncPurchaseCallback();
     }
 
-
     @RequestMapping(value = "/post_normal_repay", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> postNormalRepay(@RequestBody long loanRepayId) {

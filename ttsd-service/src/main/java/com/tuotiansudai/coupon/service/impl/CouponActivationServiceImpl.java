@@ -139,12 +139,6 @@ public class CouponActivationServiceImpl implements CouponActivationService {
             return;
         }
 
-        UserCollector collector = this.getCollector(couponModel.getUserGroup());
-
-        if (collector != null && !Lists.newArrayList(UserGroup.EXCHANGER, UserGroup.EXCHANGER_CODE).contains(couponModel.getUserGroup())) {
-            couponModel.setTotalCount(collector.count(couponId));
-        }
-
         couponModel.setActive(true);
         couponModel.setActivatedBy(loginName);
         couponModel.setActivatedTime(new Date());
