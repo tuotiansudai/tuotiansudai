@@ -106,6 +106,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         } else {
             jPushAlertModel.setCreatedBy(loginName);
             jPushAlertModel.setCreatedTime(new Date());
+            jPushAlertModel.setJumpToLink(jPushAlertModel.getJumpTo() != JumpTo.OTHER?"":jPushAlertModel.getJumpToLink());
             jPushAlertModel.setIsAutomatic(false);
             jPushAlertMapper.create(jPushAlertModel);
             jPushAlertDto.setId(String.valueOf(jPushAlertModel.getId()));
