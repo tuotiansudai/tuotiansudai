@@ -4,6 +4,7 @@ package com.tuotiansudai.jpush.aspect;
  * Created by gengbeijun on 16/3/29.
  */
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.TransferCashDto;
@@ -17,7 +18,9 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.joda.time.DateTime;
@@ -44,6 +47,7 @@ public class JPushAmountNotifyAspect {
     public final static String WITHDRAW = "WithDraw-{0}";
     public final static String REFERRERREWARD = "ReferrerReward-{0}";
     public final static String LOTTERYOBTAINCASH = "LotteryObtainCash-{0}";
+    public final static String COUPONINCOME = "CouponIncome-{0}-{1}";
 
     @Autowired
     private JobManager jobManager;
@@ -78,6 +82,9 @@ public class JPushAmountNotifyAspect {
     @Pointcut("execution(* *..TransferCashService.transferCash(..))")
     public void transferCashPointcut() {}
 
+    @Pointcut("execution(* *..CouponRepayService.repay(..))")
+    public void couponRepayPointcut() {}
+
     @AfterReturning(value = "postRepayCallbackPointcut()", returning = "returnValue")
     public void afterReturningPostRepayCallback(JoinPoint joinPoint, Object returnValue) {
         logger.debug("after repay pointcut");
@@ -85,6 +92,8 @@ public class JPushAmountNotifyAspect {
             long LoanRepayId = (long)joinPoint.getArgs()[0];
             if((boolean)returnValue){
                 createAutoJPushRepayAlertJob(LoanRepayId);
+                createAutoJPushCouponIncomeJob(LoanRepayId);
+
             }
         } catch (Exception e) {
             logger.error("after repay aspect fail ", e);
@@ -160,6 +169,25 @@ public class JPushAmountNotifyAspect {
         logger.debug("after returning transferCash assign completed");
     }
 
+    @Around(value = "couponRepayPointcut()")
+    public Object AroundCouponRepay(ProceedingJoinPoint proceedingJoinPoint) {
+        logger.debug("after returning CouponRepay assign starting...");
+        List<Object> args = Lists.newArrayList(proceedingJoinPoint.getArgs());
+        long loanRepayId = (long) args.get(0);
+        try {
+            boolean isSuccess = (boolean) proceedingJoinPoint.proceed();
+            if (isSuccess) {
+
+               // createAutoJPushCouponIncomeJob(loanRepayId);
+            }
+            return isSuccess;
+        } catch (Throwable throwable) {
+            logger.error(MessageFormat.format("Coupon repay aspect is failed (loanRepayId = {0})", String.valueOf(loanRepayId)), throwable);
+        }
+        return false;
+    }
+
+
     private void createAutoJPushRepayAlertJob(long LoanRepayId) {
         try {
             Date triggerTime = new DateTime().plusMinutes(AutoJPushRepayAlertJob.JPUSH_ALERT_REPAY_DELAY_MINUTES)
@@ -232,6 +260,21 @@ public class JPushAmountNotifyAspect {
                     .submit();
         } catch (SchedulerException e) {
             logger.error("create send AutoJPushReferrerRewardAlert job for orderId[" + orderId + "] fail", e);
+        }
+    }
+
+    private void createAutoJPushCouponIncomeJob(long orderId) {
+        try {
+            Date triggerTime = new DateTime().plusMinutes(AutoJPushCouponIncomeJob.JPUSH_ALERT_COUPON_INCOME_DELAY_MINUTES)
+                    .toDate();
+            jobManager.newJob(JobType.AutoJPushCouponIncome, AutoJPushCouponIncomeJob.class)
+                    .addJobData(AutoJPushCouponIncomeJob.LOAN_REPAY_ID_KEY, orderId)
+                    .withIdentity(JobType.AutoJPushCouponIncome.name(), formatMessage(COUPONINCOME, orderId))
+                    .runOnceAt(triggerTime)
+                    .replaceExistingJob(true)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create send AutoJPushCouponIncome job for loanRepayId[" + orderId + "] fail", e);
         }
     }
 

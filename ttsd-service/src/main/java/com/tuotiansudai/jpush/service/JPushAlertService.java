@@ -56,6 +56,8 @@ public interface JPushAlertService {
 
     void autoJPushLotteryLotteryObtainCashAlert(TransferCashDto transferCashDto);
 
+    void autoJPushCouponIncomeAlert(long loanRepayId);
+
     BaseDto<BaseDataDto> pass(String loginName, long id, String ip);
 
     void reject(String loginName, long id, String ip);

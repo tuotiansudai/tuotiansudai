@@ -11,6 +11,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.TransferCashDto;
@@ -519,6 +520,14 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         }
 
     }
+
+    @Override
+    public void autoJPushCouponIncomeAlert(long loanRepayId){
+
+
+    }
+
+
 
     @Override
     public void autoJPushRechargeAlert(long orderId){
