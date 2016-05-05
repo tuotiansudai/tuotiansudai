@@ -13,6 +13,7 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -42,9 +43,6 @@ public class UserCouponServiceImpl implements UserCouponService {
 
     @Autowired
     private CouponMapper couponMapper;
-
-    @Autowired
-    private AccountMapper accountMapper;
 
     @Override
     public List<UserCouponView> getUnusedUserCoupons(String loginName) {
@@ -154,5 +152,17 @@ public class UserCouponServiceImpl implements UserCouponService {
 
         return orderingMaxBenefitUserCoupons.isEmpty() ? null :
                 new UserCouponDto(couponMapper.findById(orderingMaxBenefitUserCoupons.get(0).getCouponId()), orderingMaxBenefitUserCoupons.get(0));
+    }
+
+    @Override
+    public boolean isUsableUserCouponExist(String loginName, List<CouponType> couponTypes, final List<UserGroup> userGroups) {
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(loginName, couponTypes);
+        return Iterators.tryFind(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
+            @Override
+            public boolean apply(UserCouponModel input) {
+                CouponModel couponModel = couponMapper.findById(input.getCouponId());
+                return userGroups.contains(couponModel.getUserGroup()) && InvestStatus.SUCCESS != input.getStatus() && input.getEndTime().after(new Date());
+            }
+        }).isPresent();
     }
 }

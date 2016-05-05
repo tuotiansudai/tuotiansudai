@@ -43,7 +43,12 @@
         </div>
     </div>
     <div class="new-user-award">
-        <span>HOT</span>新手注册就送1888体验金，3%加息券，详情请<a href="#" title="点击这里">点击这里</a>
+        <span>HOT</span>
+        <#if isUsableNewbieCouponExist>
+            您还有1888元体验金和3%加息券没有使用，<a href="/my-treasure" title="快来使用吧">快来使用吧</a>
+        <#else>
+            新手注册就送1888体验金，3%加息券，<a href="/activity/landing-page" title="详情请点击">详情请点击</a>
+        </#if>
     </div>
     <#if successSumRepay??>
         <div class="LastMonth bRadiusBox clear-blank bg-w">
