@@ -29,7 +29,7 @@
             </a>
             <a href="/activity/landing-page" onclick="cnzzPush.trackClick('83首页','Banner模块','app')" target="_blank">
                 <img src="${staticServer}/images/sign/actor/landingpage/landingpage.png" alt="App下载" class="pc-img">
-                <img src="${staticServer}/images/app-banner/landingpage-phone.png" alt="App下载" class="iphone-img">
+                <img src="${staticServer}/images/app-banner/app-banner-landingpage.png" alt="App下载" class="iphone-img">
             </a>
         </div>
         <ul class="scroll-num">
