@@ -141,8 +141,8 @@ public class InvestTransferControllerTest {
         InvestRepayModel fakeTransferInvestRepay1 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 1, 0, 10000, 10, new DateTime().withDate(2016, 3, 31).toDate(), null, RepayStatus.REPAYING);
         InvestRepayModel fakeTransferInvestRepay2 = this.createFakeInvestRepay(fakeTransferInvest.getId(), 2, 1000000, 10000, 10, new DateTime().withDate(2016, 4, 30).toDate(), null, RepayStatus.REPAYING);
 
-        long investId1 = investOneDeal(transferee1.getLoginName(), fakeTransferInvest.getId());
-        long investId2 = investOneDeal(transferee2.getLoginName(), fakeTransferInvest.getId());
+        long investId1 = investOneDeal(transferee1.getLoginName(), fakeTransferApplication.getId());
+        long investId2 = investOneDeal(transferee2.getLoginName(), fakeTransferApplication.getId());
 
         this.jobAsyncInvestNotify();
 
