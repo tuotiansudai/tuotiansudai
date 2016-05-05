@@ -17,6 +17,7 @@ import com.tuotiansudai.repository.model.TransferStatus;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.service.TransferService;
+import com.tuotiansudai.util.RandomUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,6 +47,9 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
     @Value("${pay.callback.app.web.host}")
     private String domainName;
 
+    @Autowired
+    private RandomUtils randomUtils;
+
     @Override
     public BaseResponseDto getTransferee(TransferTransfereeRequestDto transferTransfereeRequestDto) {
         BaseResponseDto dto = new BaseResponseDto();
@@ -59,7 +63,7 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
         if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS && transferApplicationModel.getInvestId() != null) {
             investModel = investMapper.findById(transferApplicationModel.getInvestId());
         }
-        TransferTransfereeRecordResponseDataDto transferTransfereeRecordResponseDataDto = new TransferTransfereeRecordResponseDataDto(investModel != null ? investModel.getLoginName() : "",
+        TransferTransfereeRecordResponseDataDto transferTransfereeRecordResponseDataDto = new TransferTransfereeRecordResponseDataDto(investModel != null ? randomUtils.encryptLoginName(transferTransfereeRequestDto.getBaseParam().getUserId(), investModel.getLoginName(), 3, investModel.getId()) : "",
                 transferApplicationModel.getTransferAmount(), transferApplicationModel.getTransferTime());
         TransferTransfereeResponseDataDto transferTransfereeResponseDataDto =  new TransferTransfereeResponseDataDto(transferTransfereeRequestDto.getIndex(), transferTransfereeRequestDto.getPageSize(),
                 Lists.newArrayList(transferTransfereeRecordResponseDataDto).size(), Lists.newArrayList(transferTransfereeRecordResponseDataDto));
