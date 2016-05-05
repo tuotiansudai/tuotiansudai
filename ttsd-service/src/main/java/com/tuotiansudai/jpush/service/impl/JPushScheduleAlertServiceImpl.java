@@ -92,14 +92,4 @@ public class JPushScheduleAlertServiceImpl implements JPushScheduleAlertService 
         }
         return scheduleResult;
     }
-
-    public static void main(String args[]){
-
-        Calendar now= Calendar.getInstance();
-
-        now.add(Calendar.HOUR_OF_DAY,24);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        System.out.print(sdf.format(now.getTimeInMillis()));
-    }
 }
