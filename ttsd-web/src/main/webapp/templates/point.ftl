@@ -101,7 +101,7 @@
                                     <i class="circle-bottom"></i>
                                 </div>
                                 <div class="right-coupon">
-                                    <div class="coupon-time">有效期：${(exchangeCouponDto.startTime?string('yyyy-MM-dd'))!}-${(exchangeCouponDto.endTime?string('yyyy-MM-dd'))!}</div>
+
 									<#if exchangeCouponDto.couponType == 'INVEST_COUPON'>
                                         <p class="mt-10">
                                             <span class="num-text"><@amount>${(exchangeCouponDto.amount?number*100)?string('0')}</@amount></span>
