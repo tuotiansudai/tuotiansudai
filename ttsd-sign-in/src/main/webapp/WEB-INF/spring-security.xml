@@ -10,15 +10,6 @@
         <beans:property name="userPropertyToUse" value="salt"/>
     </beans:bean>
 
-    <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.security.MyAccessDeniedHandler">
-        <beans:property name="errorPage" value="/403"/>
-        <beans:property name="errorPageMapping">
-            <beans:map>
-                <beans:entry key="/" value="/login"/>
-            </beans:map>
-        </beans:property>
-    </beans:bean>
-
     <beans:bean id="captchaHelper" class="com.tuotiansudai.util.CaptchaHelper"/>
 
     <beans:bean id="myDaoAuthenticationProvider" class="com.tuotiansudai.security.MyDaoAuthenticationProvider">
@@ -34,55 +25,12 @@
         <headers>
             <frame-options policy="SAMEORIGIN"/>
         </headers>
-        <access-denied-handler ref="myAccessDeniedHandler"/>
-        <form-login login-page="/login"
-                    login-processing-url="/loginHandler"
+        <form-login login-processing-url="/loginHandler"
                     authentication-success-handler-ref="mySimpleUrlAuthenticationSuccessHandler"
                     authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
-        <logout logout-url="/logout" logout-success-url="/"/>
 
-        <intercept-url pattern="/images/**" access="permitAll()" />
-        <intercept-url pattern="/upload/**" access="permitAll()" />
-        <intercept-url pattern="/js/**" access="permitAll()" />
-        <intercept-url pattern="/style/**" access="permitAll()" />
-
-        <intercept-url pattern="/monitor" access="permitAll()" />
-        <intercept-url pattern="/login/**" access="permitAll()"/>
         <intercept-url pattern="/loginHandler" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
-
-        <intercept-url pattern="/" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
-        <intercept-url pattern="/bi/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
-        <intercept-url pattern="/project-manage/loan" access="hasAnyAuthority('ADMIN', 'OPERATOR')"/>
-        <intercept-url pattern="/project-manage/*" access="hasAnyAuthority('ADMIN', 'OPERATOR', 'OPERATOR_ADMIN')"/>
-        <intercept-url pattern="/activity-manage/*" access="hasAnyAuthority('ADMIN', 'OPERATOR', 'CUSTOMER_SERVICE', 'OPERATOR_ADMIN')"/>
-        <intercept-url pattern="/user-manage/account/*/search" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
-        <intercept-url pattern="/user-manage/user/*/search" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
-        <intercept-url pattern="/user-manage/users-search" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
-        <intercept-url pattern="/user-manage/user/*" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
-        <intercept-url pattern="/user-manage/referrer/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
-        <intercept-url pattern="/finance-manage/invests/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
-        <intercept-url pattern="/finance-manage/invest-repay/**" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
-        <intercept-url pattern="/finance-manage/recharge/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
-        <intercept-url pattern="/finance-manage/withdraw/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
-        <intercept-url pattern="/finance-manage/user-funds/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
-        <intercept-url pattern="/finance-manage/account-balance" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
-        <intercept-url pattern="/user-manage/user/*/impersonate" access="hasAuthority('ADMIN')"/>
-        <intercept-url pattern="/security-log/clear-db-cache" access="hasAuthority('ADMIN')"/>
-        <intercept-url pattern="/link-exchange-manage/**" access="hasAnyAuthority('ADMIN','OPERATOR','OPERATOR_ADMIN')"/>
-
-        <intercept-url pattern="/**" access="hasAnyAuthority('ADMIN','OPERATOR','OPERATOR_ADMIN')"/>
-        <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>
     </http>
-
-    <beans:bean id="csrfSecurityRequestMatcher" class="com.tuotiansudai.security.CsrfSecurityRequestMatcher">
-        <beans:property name="excludedUrls">
-            <beans:list>
-                <beans:value>/ueditor/**</beans:value>
-                <beans:value>/upload</beans:value>
-                <beans:value>/activity-manage/import-excel</beans:value>
-            </beans:list>
-        </beans:property>
-    </beans:bean>
 
     <authentication-manager alias="authenticationManager">
         <authentication-provider ref="myDaoAuthenticationProvider"/>

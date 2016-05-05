@@ -48,12 +48,6 @@
         <async-supported>true</async-supported>
     </filter>
 
-    <filter>
-        <filter-name>pageFilter</filter-name>
-        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-    </filter>
-
-
     <filter-mapping>
         <filter-name>characterEncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -73,12 +67,6 @@
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
-    <filter-mapping>
-        <filter-name>pageFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
 
     <servlet>
         <servlet-name>dispatcher</servlet-name>
