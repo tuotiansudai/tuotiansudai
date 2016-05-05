@@ -3,6 +3,10 @@
 <div class="home-page-container">
     <div class="banner-box">
         <div class="banner-img-list">
+            <a href="/activity/landing-page" onclick="cnzzPush.trackClick('83首页','Banner模块','landingpage')" target="_blank">
+                <img src="${staticServer}/images/sign/actor/landingpage/landingpage.png" alt="App下载" class="pc-img">
+                <img src="${staticServer}/images/app-banner/landingpage-phone.png" alt="App下载" class="iphone-img">
+            </a>
             <a href="/activity/rank-list" onclick="cnzzPush.trackClick('27首页','Banner模块','排行榜')" target="_blank">
                 <img src="${staticServer}/images/sign/actor/ranklist/rank-list.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="pc-img">
                 <img src="${staticServer}/images/app-banner/app-banner-top.jpg" alt="霸道总裁第二期即将到来，送钱！送车！还送啥？" class="iphone-img">
@@ -26,10 +30,6 @@
             <a href="/activity/app-download" onclick="cnzzPush.trackClick('83首页','Banner模块','app')" target="_blank">
                 <img src="${staticServer}/images/sign/actor/download/download-bg-new.png" alt="App下载" class="pc-img">
                 <img src="${staticServer}/images/app-banner/app-banner-downloadnew.png" alt="App下载" class="iphone-img">
-            </a>
-            <a href="/activity/landing-page" onclick="cnzzPush.trackClick('83首页','Banner模块','app')" target="_blank">
-                <img src="${staticServer}/images/sign/actor/landingpage/landingpage.png" alt="App下载" class="pc-img">
-                <img src="${staticServer}/images/app-banner/landingpage-phone.png" alt="App下载" class="iphone-img">
             </a>
         </div>
         <ul class="scroll-num">
