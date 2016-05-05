@@ -217,7 +217,7 @@
                     </ul>
                 </div>
                 <div class="company-up">
-                    <a href="#"></a>
+                    <a href="/activity/landing-page" target="_blank"></a>
                 </div>
             </div>
         </#if>
