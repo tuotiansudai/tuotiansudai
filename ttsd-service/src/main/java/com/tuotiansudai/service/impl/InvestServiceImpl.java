@@ -10,12 +10,10 @@ import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.InterestCalculator;
@@ -68,6 +66,15 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private CouponMapper couponMapper;
+
+    @Autowired
+    private InvestTransferService investTransferService;
+
+    @Autowired
+    private LoanRepayMapper loanRepayMapper;
+
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
 
     @Override
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
@@ -228,7 +235,21 @@ public class InvestServiceImpl implements InvestService {
         List<InvestPaginationItemDataDto> records = Lists.transform(items, new Function<InvestPaginationItemView, InvestPaginationItemDataDto>() {
             @Override
             public InvestPaginationItemDataDto apply(InvestPaginationItemView view) {
-                return new InvestPaginationItemDataDto(view);
+                InvestPaginationItemDataDto investPaginationItemDataDto = new InvestPaginationItemDataDto(view);
+                if (view.getTransferStatus() == TransferStatus.TRANSFERABLE) {
+                    investPaginationItemDataDto.setTransferStatus(investTransferService.isTransferable(view.getId()) ? view.getTransferStatus().getDescription() : null);
+                } else if (view.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
+                    investPaginationItemDataDto.setTransferStatus("--");
+                } else {
+                    investPaginationItemDataDto.setTransferStatus(view.getTransferStatus().getDescription());
+                }
+                investPaginationItemDataDto.setLastRepayDate(loanRepayMapper.findLastRepayDateByLoanId(view.getLoanId()));
+                LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(view.getLoanId());
+                if (loanRepayModel != null) {
+                    int leftPeriod = investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(view.getId(), loanRepayModel.getPeriod());
+                    investPaginationItemDataDto.setLeftPeriod(leftPeriod);
+                }
+                return investPaginationItemDataDto;
             }
         });
 

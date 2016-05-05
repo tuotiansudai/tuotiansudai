@@ -75,13 +75,12 @@ public class AdvanceRepayCallbackTest extends RepayBaseTest {
         loanMapper.create(loan);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(loan.getId(), loan.getLoanAmount(), investor.getLoginName(), Source.WEB, null);
+        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, loan.getLoanAmount(), investor.getLoginName(), Source.WEB, null);
         invest.setCreatedTime(recheckTime.minusDays(1).toDate());
         invest.setStatus(InvestStatus.SUCCESS);
         investMapper.create(invest);
-        InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.REPAYING);
-        InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
-        investRepay2.setCorpus(invest.getAmount());
+        InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.REPAYING);
+        InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 200, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
         advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(loanRepay1.getId()), "");

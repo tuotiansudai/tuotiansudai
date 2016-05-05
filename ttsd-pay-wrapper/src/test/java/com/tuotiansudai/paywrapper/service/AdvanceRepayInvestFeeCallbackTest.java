@@ -70,15 +70,14 @@ public class AdvanceRepayInvestFeeCallbackTest extends RepayBaseTest {
         LoanRepayModel loanRepay2 = this.getFakeLoanRepayModel(idGenerator.generate(), loan.getId(), 2, loan.getLoanAmount(), loanRepay2ExpectedInterest, new DateTime().plusDays(30).withTime(23, 59, 59, 0).toDate(), loanRepay1.getActualRepayDate(), RepayStatus.COMPLETE);
         loanRepayMapper.create(Lists.newArrayList(loanRepay1, loanRepay2));
 
-        InvestModel invest = new InvestModel(loan.getId(), 10000, investor.getLoginName(), Source.WEB, null);
+        InvestModel invest = new InvestModel(idGenerator.generate(), loan.getId(), null, 10000, investor.getLoginName(), Source.WEB, null);
         invest.setStatus(InvestStatus.SUCCESS);
         investMapper.create(invest);
-        InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.WAIT_PAY);
+        InvestRepayModel investRepay1 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 1, 0, loanRepay1ExpectedInterest, 100, loanRepay1.getRepayDate(), RepayStatus.WAIT_PAY);
         investRepay1.setActualInterest(loanRepay1ExpectedInterest);
         investRepay1.setActualFee(investRepay1.getActualFee());
 
-        InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, loanRepay2ExpectedInterest, 100, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
-        investRepay2.setCorpus(invest.getAmount());
+        InvestRepayModel investRepay2 = new InvestRepayModel(idGenerator.generate(), invest.getId(), 2, invest.getAmount(), loanRepay2ExpectedInterest, 100, loanRepay2.getRepayDate(), RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(investRepay1, investRepay2));
 
         advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(loanRepay1.getId()), "");
