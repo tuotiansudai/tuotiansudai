@@ -91,6 +91,11 @@ public class CouponRepayServiceImpl implements CouponRepayService {
         for (UserCouponModel userCouponModel : userCouponModels) {
             List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(userCouponModel.getInvestId(),Lists.newArrayList(TransferStatus.SUCCESS));
             if(CollectionUtils.isNotEmpty(transferApplicationModels)){
+                logger.info(MessageFormat.format("ID:{0},LOAN_ID:{1},LOAN_REPAY_ID:{2},INVEST_ID:{3} has transferred",
+                        String.valueOf(userCouponModel.getId()),
+                        userCouponModel.getLoanId() == null?"":userCouponModel.getLoanId(),
+                        String.valueOf(loanRepayId),
+                        userCouponModel.getInvestId() == null?"":userCouponModel.getInvestId()));
                continue;
             }
             CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
