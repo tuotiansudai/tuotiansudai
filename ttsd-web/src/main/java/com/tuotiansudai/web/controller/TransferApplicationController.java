@@ -11,14 +11,12 @@ import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.text.MessageFormat;
 
 @Controller
@@ -56,17 +54,11 @@ public class TransferApplicationController {
         return baseDataDto;
     }
 
-    @RequestMapping(path = "/purchase/{transferApplicationId:^\\d+$}", method = RequestMethod.GET)
-    public ModelAndView purchase(@PathVariable long transferApplicationId, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+    @RequestMapping(path = "/purchase", method = RequestMethod.POST)
+    public ModelAndView purchase(@Valid @ModelAttribute InvestDto investDto, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
         ModelAndView modelAndView = new ModelAndView("/error/404", "responsive", true);
         String errorMessage = "投资失败，请联系客服！";
-        TransferApplicationDetailDto dto = transferService.getTransferApplicationDetailDto(transferApplicationId, LoginUserInfo.getLoginName(), 6);
         AccountModel accountModel = accountMapper.findByLoginName(LoginUserInfo.getLoginName());
-        InvestDto investDto = new InvestDto();
-        investDto.setLoanId(String.valueOf(dto.getLoanId()));
-        investDto.setTransferInvestId(String.valueOf(dto.getTransferInvestId()));
-        investDto.setAmount(dto.getTransferAmount());
-        investDto.setSource(Source.WEB);
 
         if (accountModel.isNoPasswordInvest()) {
             try {

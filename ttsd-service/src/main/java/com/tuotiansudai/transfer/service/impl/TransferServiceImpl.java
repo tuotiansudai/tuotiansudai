@@ -54,6 +54,7 @@ public class TransferServiceImpl implements TransferService {
 
     @Override
     public BaseDto<PayFormDataDto> transferPurchase(InvestDto investDto) throws InvestException{
+        investDto.setAmount(String.valueOf(AmountConverter.convertStringToCent(investDto.getAmount())));
         this.checkTransferPurchase(investDto);
         return payWrapperClient.purchase(investDto);
     }
@@ -61,6 +62,7 @@ public class TransferServiceImpl implements TransferService {
     @Override
     public BaseDto<PayDataDto> noPasswordTransferPurchase(InvestDto investDto) throws InvestException{
         investDto.setNoPassword(true);
+        investDto.setAmount(String.valueOf(AmountConverter.convertStringToCent(investDto.getAmount())));
         this.checkTransferPurchase(investDto);
         return payWrapperClient.noPasswordPurchase(investDto);
     }
@@ -166,7 +168,7 @@ public class TransferServiceImpl implements TransferService {
         transferApplicationDetailDto.setLeftPeriod(transferApplicationModel.getLeftPeriod());
         transferApplicationDetailDto.setDueDate(investRepayMapper.findByInvestIdAndPeriod(transferApplicationModel.getTransferInvestId(),loanModel.getPeriods()).getRepayDate());
         transferApplicationDetailDto.setNextRefundDate(investRepayModel.getRepayDate());
-        transferApplicationDetailDto.setNextExpecedInterest(AmountConverter.convertCentToString(investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee()));
+        transferApplicationDetailDto.setNextExpecedInterest(AmountConverter.convertCentToString(investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee()));
         transferApplicationDetailDto.setLoanType(loanModel.getType().getName());
         transferApplicationDetailDto.setDeadLine(transferApplicationModel.getDeadline());
         transferApplicationDetailDto.setTransferStatus(transferApplicationModel.getStatus());

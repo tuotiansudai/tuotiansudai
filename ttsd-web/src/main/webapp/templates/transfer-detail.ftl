@@ -16,7 +16,7 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt>代收本金</dt>
+                    <dt>待收本金</dt>
                     <dd><em><@percentInteger>${transferApplication.investAmount!}</@percentInteger></em>
                         <i><@percentFraction>${transferApplication.investAmount!}</@percentFraction></i>元
                     </dd>
@@ -55,10 +55,17 @@
                 <p class="img-status"><img src="${staticServer}/images/sign/loan/transfered.png"></p>
                 <p class="status-text">转让完成时间：${transferApplication.transferTime?string("yyyy-MM-dd HH:mm:ss")}</p>
             <#else>
-                <p class="get-money"><span class="name-text">认购金额：</span><span class="money-text"><strong>${transferApplication.transferAmount!}</strong>元</span> </p>
-                <p><span class="name-text">预计收益：</span><span class="money-text"><strong>${transferApplication.expecedInterest!}</strong>元</span></p>
-                <p class="user-money"><span class="name-text">账户余额：${transferApplication.balance!} 元</span><span class="money-text"><strong><a href="/recharge">去充值 >></a></strong></span></p>
-                <p><a href="#" class="btn-normal invest-btn" id="transferBtn" data-url="/transfer/purchase/${(transferApplication.id?string.computer)!}" data-url-id="${(transferApplication.id?string.computer)!}" data-url-status="${transferApplication.transferStatus.name()}">马上投资</a></p>
+                <form action="/transfer/purchase" method="post" id="transferForm">
+                    <p class="get-money"><span class="name-text">认购金额：</span><span class="money-text"><strong>${transferApplication.transferAmount!}</strong>元</span> </p>
+                    <p><span class="name-text">预期收益：</span><span class="money-text"><strong>${transferApplication.expecedInterest!}</strong>元</span></p>
+                    <p class="user-money"><span class="name-text">账户余额：${transferApplication.balance!} 元</span><span class="money-text"><strong><a href="/recharge">去充值 >></a></strong></span></p>
+                    <input type="hidden" id="amount" name="amount" value="${transferApplication.transferAmount}"></input>
+                    <input type="hidden" id="userBalance" name="userBalance" value="${transferApplication.balance!}" ></input>
+                    <input type="hidden" id="loanId" name="loanId" value="${transferApplication.loanId?string.computer}" ></input>
+                    <input type="hidden" id="transferInvestId" name="transferInvestId" value="${transferApplication.id?string.computer}" ></input>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <p><button id="transferSubmit" class="btn-pay btn-normal" type="button">马上投资</button></p>
+                </form>
             </#if>
         </div>
     </div>

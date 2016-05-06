@@ -1,12 +1,11 @@
 require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert','red-envelope-float','jquery.ajax.extension'], function ($, pagination,layer) {
     $(function() {
-        $('#transferBtn').on('click', function(event) {
+        $('#transferSubmit').on('click', function(event) {
             event.preventDefault();
-            var $self=$(this),
-                transferApplicationId=$self.attr('data-url-id'),
-                transferStatus=$self.attr('data-url-status'),
-                $transferDetail = $('.transfer-detail-content'),
-                urldata=$self.attr('data-url');
+            var transferApplicationId=parseInt($("#transferInvestId").val()),
+                transferAmount=$("#amount").val(),
+                userBalance=$("#userBalance").val(),
+                $transferDetail = $('.transfer-detail-content');
             $.ajax({
                     url: '/transfer/'+transferApplicationId+'/purchase-check',
                     type: 'GET',
@@ -34,12 +33,22 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert','red-envelope-fl
                             }
                         });
                     }else{
-                        var isInvestor = 'INVESTOR' === $transferDetail.data('user-role');
-                        if (!isInvestor) {
-                            location.href = '/login?redirect=' + encodeURIComponent(location.href);
-                            return false;
+                        var $transferForm = $('#transferForm');
+                        if ($transferForm.attr('action') === '/transfer/purchase') {
+
+                            var isInvestor = 'INVESTOR' === $transferDetail.data('user-role');
+                            if (!isInvestor) {
+                                location.href = '/login?redirect=' + encodeURIComponent(location.href);
+                                return false;
+                            }
+
+                            var accountAmount = parseInt((userBalance*100).toFixed(0)) || 0;
+                            if (parseInt((transferAmount*100).toFixed(0)) > accountAmount) {
+                                location.href = '/recharge';
+                                return false;
+                            }
                         }
-                        location.href = urldata;
+                        $transferForm.submit();
                     }
                 })
                 .fail(function() {
