@@ -41,6 +41,7 @@
         <result column="period" property="period"></result>
         <result column="left_period" property="leftPeriod"></result>
         <result column="deadline" property="deadLine"></result>
+        <result column="application_time" property="applicationTime"></result>
     </resultMap>
 
     <insert id="create" parameterType="TransferApplicationModel" useGeneratedKeys="true" keyProperty="id">
@@ -123,16 +124,16 @@
 
     <select id="findTransferApplicationPaginationList" parameterType="map" resultMap="transferApplicationRecordDtoMap">
         select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,ta.loan_id,ta.login_name AS transferrer_loginName,ta.transfer_fee ,
-        ta.transfer_invest_id,ta.period,ta.left_period,ta.deadline,i.login_name AS transferee_loginName from transfer_application ta left JOIN invest i on ta.invest_id = i.id
+        ta.transfer_invest_id,ta.period,ta.left_period,ta.deadline,ta.application_time,i.login_name AS transferee_loginName from transfer_application ta left JOIN invest i on ta.invest_id = i.id
         <where>
             <if test="transferApplicationId != null">
                 ta.id = #{transferApplicationId}
             </if>
             <if test="startTime != null">
-                and ta.transfer_time >= #{startTime}
+                and ta.application_time >= #{startTime}
             </if>
             <if test="endTime != null">
-                <![CDATA[ and ta.transfer_time <= #{endTime} ]]>
+                <![CDATA[ and ta.application_time <= #{endTime} ]]>
             </if>
             <if test="status">
                and ta.status = #{status}
@@ -148,7 +149,7 @@
             </if>
 
         </where>
-        order by transfer_time
+        order by application_time
         limit #{index}, #{pageSize}
     </select>
 
@@ -224,10 +225,10 @@
                 ta.id = #{transferApplicationId}
             </if>
             <if test="startTime != null">
-                and ta.transfer_time >= #{startTime}
+                and ta.application_time >= #{startTime}
             </if>
             <if test="endTime != null">
-                <![CDATA[ and ta.transfer_time <= #{endTime} ]]>
+                <![CDATA[ and ta.application_time <= #{endTime} ]]>
             </if>
             <if test="status != null">
                 and ta.status = #{status}

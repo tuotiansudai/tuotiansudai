@@ -22,6 +22,7 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
     private String sumRate;
     private double baseRate;
     private double activityRate;
+    private Date applicationTime;
 
     public TransferApplicationPaginationItemDataDto(){}
 
@@ -41,6 +42,7 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
         this.baseRate = transferApplicationRecordDto.getBaseRate()*100;
         this.activityRate = transferApplicationRecordDto.getActivityRate()*100;
         this.setTransferStatus(transferApplicationRecordDto.getTransferStatus().name());
+        this.applicationTime = transferApplicationRecordDto.getApplicationTime();
     }
 
     public String getTransferAmount() {
@@ -147,8 +149,19 @@ public class TransferApplicationPaginationItemDataDto implements Serializable {
 
     public void setBaseRate(double baseRate) { this.baseRate = baseRate; }
 
+    public Date getApplicationTime() {
+        return applicationTime;
+    }
+
+    public void setApplicationTime(Date applicationTime) {
+        this.applicationTime = applicationTime;
+    }
+
     public double getActivityRate() { return activityRate; }
 
     public void setActivityRate(double activityRate) { this.activityRate = activityRate; }
+
+
+
 
 }

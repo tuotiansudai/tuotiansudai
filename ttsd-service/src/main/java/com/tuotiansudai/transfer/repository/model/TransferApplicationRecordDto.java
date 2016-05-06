@@ -25,6 +25,7 @@ public class TransferApplicationRecordDto implements Serializable {
     private int period;
     private int leftPeriod;
     private Date deadLine;
+    private Date applicationTime;
 
     public long getTransferApplicationId() {
         return transferApplicationId;
@@ -152,8 +153,18 @@ public class TransferApplicationRecordDto implements Serializable {
         return new DecimalFormat("######0.##").format((baseRate + activityRate) * 100);
     }
 
+    public Date getApplicationTime() {
+        return applicationTime;
+    }
+
+    public void setApplicationTime(Date applicationTime) {
+        this.applicationTime = applicationTime;
+    }
+
     public Date getDeadLine() { return deadLine; }
 
     public void setDeadLine(Date deadLine) { this.deadLine = deadLine; }
+
+
 
 }

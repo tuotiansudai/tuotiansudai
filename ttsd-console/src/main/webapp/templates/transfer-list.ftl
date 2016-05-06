@@ -108,7 +108,7 @@
 
                             </#switch>
                     </td>
-                    <td>${transferApplication.transferTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+                    <td>${transferApplication.applicationTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                     <td>${transferApplication.transfereeLoginName!}</td>
                     <td>${transferApplication.transferFee}</td>
                 </tr>
