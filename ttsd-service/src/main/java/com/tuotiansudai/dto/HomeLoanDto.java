@@ -61,7 +61,7 @@ public class HomeLoanDto {
         this.fundraisingStartTime = fundraisingStartTime;
         this.preheatSeconds = (fundraisingStartTime.getTime() - System.currentTimeMillis()) / 1000;
         if (newbieInterestCouponModel != null && newbieInterestCouponModel.getProductTypes().contains(productType)) {
-            this.newbieInterestCouponRate = newbieInterestCouponModel.getRate();
+            this.newbieInterestCouponRate = new BigDecimal(String.valueOf(newbieInterestCouponModel.getRate())).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
         }
         this.availableInvestAmount = AmountConverter.convertCentToString(amount - investAmount);
         for (LoanRepayModel loanRepayModel : loanRepayModels) {

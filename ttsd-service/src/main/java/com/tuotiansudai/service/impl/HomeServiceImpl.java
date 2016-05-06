@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.dto.HomeLoanDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -48,6 +49,7 @@ public class HomeServiceImpl implements HomeService {
                 CouponModel newbieInterestCouponModel = null;
                 for (CouponModel activeCoupon : allActiveCoupons) {
                     if (activeCoupon.getCouponType() == CouponType.INTEREST_COUPON
+                            && activeCoupon.getUserGroup() == UserGroup.NEW_REGISTERED_USER
                             && activeCoupon.getProductTypes().contains(ProductType.SYL)
                             && (newbieInterestCouponModel == null || activeCoupon.getRate() > newbieInterestCouponModel.getRate())) {
                         newbieInterestCouponModel = activeCoupon;
