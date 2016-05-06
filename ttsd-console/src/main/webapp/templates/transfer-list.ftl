@@ -1,6 +1,6 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="transfer-list.js" headLab="transfer-manage" sideLab="transfer-list" title="所有的转让项目">
+<@global.main pageCss="" pageJavascript="transfer_list.js" headLab="transfer-manage" sideLab="transfer-list" title="所有的转让项目">
 
 <!-- content area begin -->
 <div class="col-md-10">
