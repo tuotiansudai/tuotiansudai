@@ -38,14 +38,17 @@
         </ul>
     </div>
     <div class="link-list page-width clearfix">
-        <ul>
-            <li class="f-title">友情链接</li>
+        <h3>友情链接</h3>
+        <ul id="linkList">
             <#if linkExchangeList??>
                 <#list linkExchangeList as linkExchange>
-                    <li><a href="${linkExchange.linkUrl}" target="_blank">${linkExchange.title}</a></li>
+                    <li><a href="${linkExchange.linkUrl}" target="_blank" title="${linkExchange.title}">${linkExchange.title}</a></li>
                 </#list>
             </#if>
         </ul>
+        <div class="get-more" id="getMore">
+            更多<i class="fa fa-chevron-down" aria-hidden="true"></i><i class="fa fa-chevron-up" aria-hidden="true"></i>
+        </div>
     </div>
     <div class="copyright page-width">
         <div class="fl">
