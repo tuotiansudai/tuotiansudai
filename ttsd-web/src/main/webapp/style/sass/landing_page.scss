@@ -858,6 +858,15 @@ form label.error {
     width: 100%;
     background: $landingPhoneColorGray;
 
+    input[id=btn-register-now] {
+      width: 50%;
+      margin-bottom: 20px;
+      font-size: $fontUltraSmall;
+      color: white;
+      background: red;
+      border-color: white;
+    }
+
     .tuotian-register-container {
       float: left;
       text-align: left;
@@ -888,6 +897,7 @@ form label.error {
         width: 95%;
         border-color: $landingPhoneColorGray;
       }
+
       input[id=appCaptcha] {
         float: left;
         width: 40%;
