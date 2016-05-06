@@ -136,10 +136,11 @@
                                 <div class="loan-info-dl">
                                     <dl>
                                         <dt>预期年化收益</dt>
-                                        <dd><em class="active"><@percentInteger>${loan.baseRate}</@percentInteger></em>
+                                        <dd><em class="active"><@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger></em>
                                             <i><@percentFraction>${loan.baseRate}</@percentFraction>
-                                                <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
-                                                    <@percentFraction>${loan.activityRate}</@percentFraction></#if>%
+                                                <#if (loan.newbieInterestCouponRate > 0) >+<@percentInteger>${loan.newbieInterestCouponRate}</@percentInteger>
+                                                    <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
+                                                </#if>%
                                             </i>
                                         </dd>
                                     </dl>
@@ -245,7 +246,8 @@
                                         <dd><em class="active"><@percentInteger>${loan.baseRate}</@percentInteger></em>
                                             <i><@percentFraction>${loan.baseRate}</@percentFraction>
                                                 <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
-                                                    <@percentFraction>${loan.activityRate}</@percentFraction></#if>%
+                                                    <@percentFraction>${loan.activityRate}</@percentFraction>
+                                                </#if>%
                                             </i>
                                         </dd>
                                     </dl>
