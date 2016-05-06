@@ -1,9 +1,5 @@
 require(['jquery', 'layerWrapper','jquery.validate','coupon-alert','red-envelope-float','jquery.ajax.extension'], function ($, layer) {
 	$(function() {
-		var dataJson = {
-			'transferAmount': parseFloat($('#transferAmount').val())*100,
-			'transferInvestId': $('#transferInvestId').val()
-		};
 		$("#createForm").validate({
 			debug:true,
 			rules: {
@@ -25,7 +21,10 @@ require(['jquery', 'layerWrapper','jquery.validate','coupon-alert','red-envelope
 		    		type: 'POST',
 		    		dataType: 'json',
 					contentType:'application/json',
-					data: JSON.stringify(dataJson)
+					data: JSON.stringify({
+						'transferAmount': parseFloat($('#transferAmount').val())*100,
+						'transferInvestId': $('#transferInvestId').val()
+					})
 		    	})
 		    	.done(function(data) {
 		    		if(data==true){
