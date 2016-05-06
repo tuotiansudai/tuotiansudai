@@ -142,6 +142,7 @@
                                                     <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
                                                 </#if>%
                                             </i>
+                                            <span>新手加息券</span>
                                         </dd>
                                     </dl>
                                     <dl>

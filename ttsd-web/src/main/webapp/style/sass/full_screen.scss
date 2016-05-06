@@ -385,6 +385,7 @@ body {
                 }
               }
               .loan-info-dl {
+                float:left;
                 width: 90%;
                 margin: 0px auto;
                 line-height: 1.4;
@@ -405,6 +406,13 @@ body {
                     i {
                       font-size: 16px;
                       color: #ff7200;
+                    }
+                    span{
+                      font-size: 12px;
+                      color: #ff9c1b;
+                      border: 1px solid #ff9c1b;
+                      padding: 2px 5px;
+                      border-radius: 20px;
                     }
                   }
                 }
