@@ -2,6 +2,7 @@ package com.tuotiansudai.jpush.service;
 
 import cn.jpush.api.push.model.PushPayload;
 import cn.jpush.api.schedule.ScheduleResult;
+import cn.jpush.api.schedule.model.SchedulePayload;
 import cn.jpush.api.schedule.model.TriggerPayload;
 
 public interface JPushScheduleAlertService {
@@ -11,4 +12,6 @@ public interface JPushScheduleAlertService {
     void deletePushScheduleAlert(String jPushAlertId);
 
     ScheduleResult findPushScheduleAlert(String jPushAlertId);
+
+    ScheduleResult updatePushScheduleAlert(String jPushAlertId,SchedulePayload payload);
 }

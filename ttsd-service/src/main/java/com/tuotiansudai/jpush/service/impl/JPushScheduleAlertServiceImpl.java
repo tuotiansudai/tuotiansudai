@@ -78,6 +78,19 @@ public class JPushScheduleAlertServiceImpl implements JPushScheduleAlertService 
         return scheduleResult;
     }
 
+    @Override
+    public ScheduleResult updatePushScheduleAlert(String jPushAlertId,SchedulePayload payload){
+        ScheduleResult scheduleResult = null;
+        try {
+            scheduleResult = getScheduleClient().updateSchedule(jPushAlertId,payload);
+        } catch (APIConnectionException e) {
+            e.printStackTrace();
+        } catch (APIRequestException e) {
+            e.printStackTrace();
+        }
+        return scheduleResult;
+    }
+
     private ScheduleResult createSchedule(String jPushAlertId,SchedulePayload schedulePayload,PushPayload payload){
         ScheduleResult scheduleResult = null;
         try {

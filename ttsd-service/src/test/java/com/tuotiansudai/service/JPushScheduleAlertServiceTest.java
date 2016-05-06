@@ -11,6 +11,7 @@ import cn.jpush.api.push.model.notification.AndroidNotification;
 import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
 import cn.jpush.api.schedule.ScheduleResult;
+import cn.jpush.api.schedule.model.SchedulePayload;
 import cn.jpush.api.schedule.model.TriggerPayload;
 import com.tuotiansudai.jpush.service.JPushScheduleAlertService;
 import com.tuotiansudai.repository.model.Environment;
@@ -57,12 +58,13 @@ public class JPushScheduleAlertServiceTest {
         assertNotNull(scheduleResult);
 
         scheduleResult = jPushScheduleAlertService.findPushScheduleAlert(scheduleResult.getSchedule_id());
-        System.out.println(scheduleResult.getName());
+
+        jPushScheduleAlertService.updatePushScheduleAlert(scheduleResult.getSchedule_id(),SchedulePayload.newBuilder().setName("修改测试类").build());
         jPushScheduleAlertService.deletePushScheduleAlert(scheduleResult.getSchedule_id());
     }
 
     @Test
-    public void shoulSendJPushPeriodicalScheduleAlertIsOk(){
+    public void shouldSendJPushPeriodicalScheduleAlertIsOk(){
         PushPayload pushPayload = PushPayload.newBuilder()
                 .setPlatform(Platform.ios())
                 .setAudience(Audience.newBuilder().addAudienceTarget(AudienceTarget.tag("test")).build())
