@@ -28,8 +28,7 @@
         <form-login login-processing-url="/loginHandler"
                     authentication-success-handler-ref="mySimpleUrlAuthenticationSuccessHandler"
                     authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
-
-        <intercept-url pattern="/loginHandler" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
+        <csrf disabled="true"></csrf>
     </http>
 
     <authentication-manager alias="authenticationManager">

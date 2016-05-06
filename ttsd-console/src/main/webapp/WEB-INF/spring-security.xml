@@ -6,10 +6,6 @@
 		   http://www.springframework.org/schema/security
 		   http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-    <beans:bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">
-        <beans:property name="userPropertyToUse" value="salt"/>
-    </beans:bean>
-
     <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.security.MyAccessDeniedHandler">
         <beans:property name="errorPage" value="/403"/>
         <beans:property name="errorPageMapping">
@@ -21,24 +17,12 @@
 
     <beans:bean id="captchaHelper" class="com.tuotiansudai.util.CaptchaHelper"/>
 
-    <beans:bean id="myDaoAuthenticationProvider" class="com.tuotiansudai.security.MyDaoAuthenticationProvider">
-        <beans:property name="passwordEncoder" ref="myShaPasswordEncoder"/>
-        <beans:property name="saltSource" ref="saltSource"/>
-        <beans:property name="userDetailsService" ref="myUserDetailsService"/>
-    </beans:bean>
-
-    <beans:bean id="mySimpleUrlAuthenticationSuccessHandler" class="com.tuotiansudai.security.MySimpleUrlAuthenticationSuccessHandler"/>
-    <beans:bean id="mySimpleUrlAuthenticationFailureHandler" class="com.tuotiansudai.security.MySimpleUrlAuthenticationFailureHandler"/>
-
     <http auto-config="true" use-expressions="true">
         <headers>
             <frame-options policy="SAMEORIGIN"/>
         </headers>
         <access-denied-handler ref="myAccessDeniedHandler"/>
-        <form-login login-page="/login"
-                    login-processing-url="/loginHandler"
-                    authentication-success-handler-ref="mySimpleUrlAuthenticationSuccessHandler"
-                    authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
+        <form-login login-page="/login"/>
         <logout logout-url="/logout" logout-success-url="/"/>
 
         <intercept-url pattern="/images/**" access="permitAll()" />
@@ -48,7 +32,6 @@
 
         <intercept-url pattern="/monitor" access="permitAll()" />
         <intercept-url pattern="/login/**" access="permitAll()"/>
-        <intercept-url pattern="/loginHandler" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
 
         <intercept-url pattern="/" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
         <intercept-url pattern="/bi/**" access="hasAnyAuthority('ADMIN', 'CUSTOMER_SERVICE', 'OPERATOR', 'OPERATOR_ADMIN')"/>
@@ -83,9 +66,5 @@
             </beans:list>
         </beans:property>
     </beans:bean>
-
-    <authentication-manager alias="authenticationManager">
-        <authentication-provider ref="myDaoAuthenticationProvider"/>
-    </authentication-manager>
 
 </beans:beans>

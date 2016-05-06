@@ -15,7 +15,7 @@ public abstract class BaseClient {
 
     static Logger logger = Logger.getLogger(BaseClient.class);
 
-    private final static String URL_TEMPLATE = "http://{host}:{port}{applicationContext}{uri}";
+    protected final static String URL_TEMPLATE = "http://{host}:{port}{applicationContext}{uri}";
 
     private final static MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 

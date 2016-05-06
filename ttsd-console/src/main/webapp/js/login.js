@@ -41,7 +41,7 @@ $(function() {
         }
 
         $.ajax({
-            url: '/loginHandler',
+            url: '/login/sign-in',
             type: 'post',
             data: $('.form-login').serialize()
         }).done(function (response) {
