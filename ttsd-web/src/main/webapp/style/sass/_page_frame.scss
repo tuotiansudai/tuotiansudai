@@ -135,16 +135,16 @@
     }
     ul {
       float:left;
-      width:810px;
+      width:837px;
       height:30px;
       overflow:hidden;
       li {
         float:left;
-        width:90px;
+        width:93px;
         margin: 6px 0;
         font-size: 12px;
         text-align:left;
-        text-overflow: clip;
+        text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
         a {
@@ -157,7 +157,7 @@
     }
     .get-more{
       float:left;
-      width:90px;
+      width:63px;
       margin: 6px 0;
       text-align:center;
       cursor:pointer;
