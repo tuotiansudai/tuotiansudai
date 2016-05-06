@@ -140,12 +140,19 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     }
                     _hidden.val(_options.eq(i).attr('value'));
                     if (_hidden.hasClass('jq-product-type')) {
-                        if (_options.eq(i).attr('value')) {
+                        $('.product-line-period').html('');
+                        if (_options.eq(i).attr('value') && _options.eq(i).attr('value') != 'JYF') {
+                            $('.product-line-period').append('<input type="text" class="form-control jq-timer" placeholder="" datatype="num" errormsg="请选择产品线类型" id="loanPeriod" disabled="disabled">');
                             $('.jq-timer').val(_options.eq(i).data('period'));
-                            $('.jq-base-percent').val(_options.eq(i).data('baserate'));
+                        } else if (_options.eq(i).attr('value') && _options.eq(i).attr('value') == 'JYF') {
+                            $('.product-line-period').append('<select class="selectpicker b-width jq-timer"><option value="6">6</option><option value="12">12</option></select>');
+                            $('.selectpicker').selectpicker({
+                                style: 'btn-default',
+                                size: 8
+                            });
                         } else {
+                            $('.product-line-period').append('<input type="text" class="form-control jq-timer" placeholder="" datatype="num" errormsg="请选择产品线类型" id="loanPeriod" disabled="disabled">');
                             $('.jq-timer').val('');
-                            $('.jq-base-percent').val('');
                         }
                     }
 
@@ -333,7 +340,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     "fundraisingEndTime": new Date(Date.parse(endTime.replace(/-/g, "/"))),
                     "showOnHome": showOnHome,
                     "loanAmount": $('.jq-pay').val(),
-                    "loanTitles": uploadFile,
+                    "loanTitles": uploadFile
                 });
                 $.ajax({
                         url: API_FORM,
