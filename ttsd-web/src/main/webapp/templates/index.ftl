@@ -260,7 +260,7 @@
                                         </dd>
                                     </dl>
                                     <dl>
-                                        <dt>项目金额</dt>
+                                        <dt>项目总额</dt>
                                         <dd><em><@amount>${loan.amount}</@amount></em>元</dd>
                                     </dl>
                                 </div>
