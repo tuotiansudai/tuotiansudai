@@ -16,8 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 @Service
 public class JPushScheduleAlertServiceImpl implements JPushScheduleAlertService {
@@ -59,9 +57,9 @@ public class JPushScheduleAlertServiceImpl implements JPushScheduleAlertService 
         try {
             getScheduleClient().deleteSchedule(jPushAlertId);
         } catch (APIConnectionException e) {
-            e.printStackTrace();
+            logger.error(e.getLocalizedMessage(), e);
         } catch (APIRequestException e) {
-            e.printStackTrace();
+            logger.error(e.getLocalizedMessage(), e);
         }
     }
 
@@ -71,9 +69,9 @@ public class JPushScheduleAlertServiceImpl implements JPushScheduleAlertService 
         try {
             scheduleResult = getScheduleClient().getSchedule(jPushAlertId);
         } catch (APIConnectionException e) {
-            e.printStackTrace();
+            logger.error(e.getLocalizedMessage(), e);
         } catch (APIRequestException e) {
-            e.printStackTrace();
+            logger.error(e.getLocalizedMessage(), e);
         }
         return scheduleResult;
     }
@@ -84,9 +82,9 @@ public class JPushScheduleAlertServiceImpl implements JPushScheduleAlertService 
         try {
             scheduleResult = getScheduleClient().updateSchedule(jPushAlertId,payload);
         } catch (APIConnectionException e) {
-            e.printStackTrace();
+            logger.error(e.getLocalizedMessage(), e);
         } catch (APIRequestException e) {
-            e.printStackTrace();
+            logger.error(e.getLocalizedMessage(), e);
         }
         return scheduleResult;
     }
@@ -99,9 +97,9 @@ public class JPushScheduleAlertServiceImpl implements JPushScheduleAlertService 
             logger.debug(MessageFormat.format("request:{0}:{1} end", jPushAlertId, scheduleResult.getResponseCode()));
             redisClient.sadd(APP_PUSH_MSG_ID_KEY + jPushAlertId, String.valueOf(scheduleResult.getResponseCode()));
         } catch (APIConnectionException e) {
-            e.printStackTrace();
+            logger.error(e.getLocalizedMessage(), e);
         } catch (APIRequestException e) {
-            e.printStackTrace();
+            logger.error(e.getLocalizedMessage(), e);
         }
         return scheduleResult;
     }
