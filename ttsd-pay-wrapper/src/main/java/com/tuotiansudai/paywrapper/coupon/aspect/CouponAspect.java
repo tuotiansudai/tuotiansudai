@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.coupon.aspect;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.dto.BaseDto;
@@ -11,6 +12,7 @@ import com.tuotiansudai.job.AutoJPushAlertLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.SendCouponIncomeJob;
 import com.tuotiansudai.job.SendRedEnvelopeJob;
+import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -82,7 +84,6 @@ public class CouponAspect {
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
-
         }
     }
 
@@ -161,15 +162,15 @@ public class CouponAspect {
 
     private void createSendCouponIncomeJob(long loanRepayId) {
         try {
-            Date triggerTime = new DateTime().plusMinutes(SendCouponIncomeJob.JPUSH_ALERT_COUPON_INCOME_DELAY_MINUTES)
+            Date triggerTime = new DateTime().plusMinutes(SendCouponIncomeJob.SEND_COUPON_INCOME_DELAY_MINUTES)
                     .toDate();
             jobManager.newJob(JobType.SendCouponIncome, SendCouponIncomeJob.class)
                     .addJobData(SendCouponIncomeJob.LOAN_REPAY_ID_KEY, loanRepayId)
-                    .withIdentity(JobType.SendCouponIncome.name(), "LoanRepay-" + loanRepayId)
+                    .withIdentity(JobType.SendCouponIncome.name(), "LoanRepayId-" + loanRepayId)
                     .runOnceAt(triggerTime)
                     .submit();
         } catch (SchedulerException e) {
-            logger.error("create send coupon income job for loanRepay[" + loanRepayId + "] fail", e);
+            logger.error("create send coupon income job for loanRepayId[" + loanRepayId + "] fail", e);
         }
     }
 }

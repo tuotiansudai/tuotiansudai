@@ -2,6 +2,12 @@ package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.coupon.dto.ExchangeCouponDto;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.jpush.client.MobileAppJPushClient;
 import com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper;
@@ -61,6 +67,12 @@ public class JPushAlertServiceTest {
 
     @Mock
     private UserMapper userMapper;
+
+    @Mock
+    private UserCouponMapper userCouponMapper;
+
+    @Mock
+    private CouponMapper couponMapper;
 
     @Mock
     private IdGenerator idGenerator;
@@ -273,4 +285,108 @@ public class JPushAlertServiceTest {
         assertEquals(String.valueOf(createJPushAlert().getId()), argumentJPushAlertId.getValue());
         assertEquals(createJPushAlert().getContent().replace("{0}","2.00"), argumentAlert.getValue());
     }
+
+    @Test
+    public void shouldAutoJPushCouponIncomeAlert(){
+
+        LoanModel loanModel = fakeLoanModel("test123");
+        LoanRepayModel currentLoanRepayModel = new LoanRepayModel();
+
+        currentLoanRepayModel.setId(1000101);
+        currentLoanRepayModel.setLoanId(loanModel.getId());
+        currentLoanRepayModel.setPeriod(1);
+        currentLoanRepayModel.setStatus(RepayStatus.COMPLETE);
+
+        List<LoanRepayModel> loanRepayModels = new ArrayList<LoanRepayModel>();
+
+        for(int i =1; i < 4;i ++){
+            LoanRepayModel loanRepayModel1 = new LoanRepayModel();
+            loanRepayModel1.setLoanId(loanModel.getId());
+            loanRepayModel1.setId(Long.parseLong(10001+"0" +i));
+            loanRepayModel1.setPeriod(i);
+            loanRepayModels.add(loanRepayModel1);
+        }
+
+        CouponModel couponModel = new CouponModel(fakeCouponDto());
+
+        List<UserCouponModel> userCouponModels = new ArrayList<UserCouponModel>();
+
+        UserCouponModel userCouponModel = new UserCouponModel();
+        userCouponModel.setId(idGenerator.generate());
+        userCouponModel.setLoginName("test1");
+        userCouponModel.setCouponId(couponModel.getId());
+        userCouponModel.setLoanId(loanModel.getId());
+        userCouponModel.setStatus(InvestStatus.SUCCESS);
+        userCouponModels.add(userCouponModel);
+
+        UserCouponModel userCouponModel2 = new UserCouponModel();
+        userCouponModel2.setId(idGenerator.generate());
+        userCouponModel2.setLoginName("test2");
+        userCouponModel2.setCouponId(couponModel.getId());
+        userCouponModel2.setLoanId(loanModel.getId());
+        userCouponModel2.setStatus(InvestStatus.SUCCESS);
+        userCouponModels.add(userCouponModel2);
+
+
+        when(loanRepayMapper.findById(anyLong())).thenReturn(currentLoanRepayModel);
+
+        when(loanMapper.findById(anyLong())).thenReturn(loanModel);
+
+        when(loanRepayMapper.findByLoanIdOrderByPeriodAsc(anyLong())).thenReturn(loanRepayModels);
+
+        when(userCouponMapper.findByLoanId(anyLong(),anyList())).thenReturn(userCouponModels);
+
+        when(jPushAlertMapper.findJPushAlertByPushType(any(PushType.class))).thenReturn(createJPushAlert());
+
+        when(couponMapper.findById(anyLong())).thenReturn(couponModel);
+
+        jPushAlertService.autoJPushCouponIncomeAlert(currentLoanRepayModel.getId());
+
+    }
+
+    private LoanModel fakeLoanModel(String loginName) {
+        LoanModel loanModel = new LoanModel();
+        loanModel.setAgentLoginName(loginName);
+        loanModel.setBaseRate(16.00);
+        loanModel.setId(10);
+        loanModel.setName("店铺资金周转");
+        loanModel.setActivityRate(12);
+        loanModel.setShowOnHome(true);
+        loanModel.setPeriods(3);
+        loanModel.setActivityType(ActivityType.EXCLUSIVE);
+        loanModel.setContractId(123);
+        loanModel.setDescriptionHtml("asdfasdf");
+        loanModel.setDescriptionText("asdfasd");
+        loanModel.setFundraisingEndTime(new Date());
+        loanModel.setFundraisingStartTime(new Date());
+        loanModel.setInvestFeeRate(15);
+        loanModel.setInvestIncreasingAmount(1);
+        loanModel.setLoanAmount(10000);
+        loanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        loanModel.setMaxInvestAmount(100000000000L);
+        loanModel.setMinInvestAmount(0);
+        loanModel.setCreatedTime(new Date());
+        loanModel.setStatus(LoanStatus.RAISING);
+        loanModel.setLoanerLoginName(loginName);
+        loanModel.setLoanerUserName("借款人");
+        loanModel.setLoanerIdentityNumber("111111111111111111");
+        return loanModel;
+    }
+
+    private ExchangeCouponDto fakeCouponDto() {
+        ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto();
+        exchangeCouponDto.setAmount("1000.00");
+        exchangeCouponDto.setTotalCount(1000L);
+        exchangeCouponDto.setEndTime(new Date());
+        exchangeCouponDto.setStartTime(new Date());
+        exchangeCouponDto.setInvestLowerLimit("1000.00");
+        exchangeCouponDto.setCouponType(CouponType.INVEST_COUPON);
+        List<ProductType> productTypes = Lists.newArrayList();
+        productTypes.add(ProductType.JYF);
+        exchangeCouponDto.setProductTypes(productTypes);
+        exchangeCouponDto.setInvestLowerLimit("1000.00");
+        exchangeCouponDto.setUserGroup(UserGroup.ALL_USER);
+        return exchangeCouponDto;
+    }
+
 }

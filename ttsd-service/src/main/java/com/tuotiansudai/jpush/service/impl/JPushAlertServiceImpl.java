@@ -6,11 +6,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import com.google.common.base.Predicate;
+import com.google.common.collect.*;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.coupon.dto.UserCouponDto;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
@@ -27,14 +29,12 @@ import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.task.OperationType;
-import com.tuotiansudai.util.AmountConverter;
-import com.tuotiansudai.util.AuditLogUtil;
-import com.tuotiansudai.util.DistrictUtil;
-import com.tuotiansudai.util.JobManager;
+import com.tuotiansudai.util.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +42,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -90,6 +91,15 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     @Autowired
     AuditLogUtil auditLogUtil;
+
+    @Autowired
+    private LoanMapper loanMapper;
+
+    @Autowired
+    private UserCouponMapper userCouponMapper;
+
+    @Autowired
+    private CouponMapper couponMapper;
 
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -523,8 +533,34 @@ public class JPushAlertServiceImpl implements JPushAlertService {
 
     @Override
     public void autoJPushCouponIncomeAlert(long loanRepayId){
+        LoanRepayModel currentLoanRepayModel = loanRepayMapper.findById(loanRepayId);
+        LoanModel loanModel = loanMapper.findById(currentLoanRepayModel.getLoanId());
+        List<LoanRepayModel> loanRepayModels = this.loanRepayMapper.findByLoanIdOrderByPeriodAsc(currentLoanRepayModel.getLoanId());
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByLoanId(loanModel.getId(),
+                Lists.newArrayList(CouponType.NEWBIE_COUPON, CouponType.INVEST_COUPON, CouponType.INTEREST_COUPON, CouponType.BIRTHDAY_COUPON));
 
-
+        JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.COUPON_INCOME_ALERT);
+        if (jPushAlertModel != null) {
+            Map<String, List<String>> loginNameMap = Maps.newHashMap();
+            for(UserCouponModel userCouponModel : userCouponModels){
+                CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
+                long actualInterest = this.calculateActualInterest(couponModel, userCouponModel, loanModel, currentLoanRepayModel, loanRepayModels);
+                if (actualInterest < 0) {
+                    continue;
+                }
+                long actualFee = (long) (actualInterest * loanModel.getInvestFeeRate());
+                long transferAmount = actualInterest - actualFee;
+                if(transferAmount > 0)
+                {
+                    List<String> amountLists = Lists.newArrayList(couponModel.getCouponType().getName(), AmountConverter.convertCentToString(transferAmount));
+                    loginNameMap.put(userCouponModel.getLoginName(), amountLists);
+                    autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
+                    loginNameMap.clear();
+                }
+            }
+        } else {
+            logger.debug("COUPON_INCOME_ALERT is disabled");
+        }
     }
 
     @Override
@@ -682,6 +718,60 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         logger.debug("JPush audit delete, operator:" + loginName + ", JPush id:" + id);
         jobManager.deleteJob(JobType.ManualJPushAlert, JobType.ManualJPushAlert.name(), "JPush-" + id);
         jPushAlertMapper.delete(id);
+    }
+
+    private long calculateActualInterest(CouponModel couponModel, UserCouponModel userCouponModel, LoanModel loanModel, LoanRepayModel currentLoanRepayModel, List<LoanRepayModel> loanRepayModels) {
+        DateTime currentRepayDate = new DateTime(currentLoanRepayModel.getActualRepayDate());
+
+        LoanRepayModel lastLoanRepayModel = null;
+        for (LoanRepayModel loanRepayModel : loanRepayModels) {
+            if (loanRepayModel.getPeriod() < currentLoanRepayModel.getPeriod() && loanRepayModel.getStatus() == RepayStatus.COMPLETE && loanRepayModel.getActualRepayDate().before(currentLoanRepayModel.getActualRepayDate())) {
+                lastLoanRepayModel = loanRepayModel;
+            }
+        }
+
+        DateTime lastRepayDate = new DateTime(loanModel.getType().getInterestInitiateType() == InterestInitiateType.INTEREST_START_AT_INVEST ? userCouponModel.getUsedTime() : loanModel.getRecheckTime()).minusDays(1);
+        if (lastLoanRepayModel != null) {
+            lastRepayDate = new DateTime(lastLoanRepayModel.getActualRepayDate());
+        }
+
+        int periodDuration = Days.daysBetween(lastRepayDate.withTimeAtStartOfDay(), currentRepayDate.withTimeAtStartOfDay()).getDays();
+
+        long expectedInterest = 0;
+        switch (couponModel.getCouponType()) {
+            case NEWBIE_COUPON:
+            case INVEST_COUPON:
+                expectedInterest = new BigDecimal(periodDuration * couponModel.getAmount())
+                        .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
+                        .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
+                break;
+            case INTEREST_COUPON:
+                expectedInterest = new BigDecimal(periodDuration * investMapper.findById(userCouponModel.getInvestId()).getAmount())
+                        .multiply(new BigDecimal(couponModel.getRate()))
+                        .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
+                break;
+            case BIRTHDAY_COUPON:
+                if (lastLoanRepayModel != null) {
+                    return -1;
+                }
+
+                DateTime theFirstRepayDate = new DateTime(Iterators.tryFind(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
+                    @Override
+                    public boolean apply(LoanRepayModel input) {
+                        return input.getPeriod() == 1;
+                    }
+                }).get().getRepayDate());
+
+                periodDuration = Days.daysBetween(lastRepayDate.withTimeAtStartOfDay(), theFirstRepayDate.withTimeAtStartOfDay()).getDays();
+
+                expectedInterest = new BigDecimal(periodDuration * investMapper.findById(userCouponModel.getInvestId()).getAmount())
+                        .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
+                        .multiply(new BigDecimal(couponModel.getBirthdayBenefit()))
+                        .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
+                break;
+        }
+
+        return expectedInterest;
     }
 
 }

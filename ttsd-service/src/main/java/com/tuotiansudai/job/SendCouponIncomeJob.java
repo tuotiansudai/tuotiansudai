@@ -10,20 +10,22 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SendCouponIncomeJob implements Job {
+
     static Logger logger = Logger.getLogger(SendCouponIncomeJob.class);
 
     public final static String LOAN_REPAY_ID_KEY = "LOAN_REPAY_ID";
 
-    public final static int JPUSH_ALERT_COUPON_INCOME_DELAY_MINUTES = 2;
+    public final static int SEND_COUPON_INCOME_DELAY_MINUTES = 1;
 
     @Autowired
     private JPushAlertService jPushAlertService;
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        logger.debug("trigger send jPush alert coupon job, prepare do job");
+        logger.debug("trigger send coupon income job, prepare do job");
         long loanRepayId = (long) context.getJobDetail().getJobDataMap().get(LOAN_REPAY_ID_KEY);
         jPushAlertService.autoJPushCouponIncomeAlert(loanRepayId);
-        logger.debug("trigger send jPush alert coupon job, loanRepayId : " + loanRepayId);
+        logger.debug("trigger send coupon income job, loanRepayId : " + String.valueOf(loanRepayId));
+
     }
 }

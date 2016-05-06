@@ -1,6 +1,7 @@
 package com.tuotiansudai.jpush.service;
 
 
+import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 
