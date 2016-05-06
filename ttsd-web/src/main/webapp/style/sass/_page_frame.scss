@@ -143,7 +143,10 @@
         width:90px;
         margin: 6px 0;
         font-size: 12px;
-        text-align:center;
+        text-align:left;
+        text-overflow: clip;
+        white-space: nowrap;
+        overflow: hidden;
         a {
           color: #c2c2c2;
         }
