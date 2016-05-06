@@ -1,9 +1,11 @@
 package com.tuotiansudai.web.controller;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.transfer.dto.TransferApplicationDto;
 import com.tuotiansudai.transfer.repository.mapper.TransferRuleMapper;
@@ -11,12 +13,15 @@ import com.tuotiansudai.transfer.repository.model.TransferRuleModel;
 import com.tuotiansudai.transfer.service.InvestTransferService;
 import com.tuotiansudai.transfer.util.TransferRuleUtil;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.Date;
 
 @Controller
@@ -36,6 +41,8 @@ public class InvestTransferController {
 
     @Autowired
     private LoanMapper loanMapper;
+
+    private static String MESSAGE_TEMPLATE = "您持有债权{0}天，需支付本金{1}%的手续费。";
 
     @RequestMapping(value = "/application/{transferInvestId}/isAllowTransfer", method = RequestMethod.POST)
     @ResponseBody
@@ -57,6 +64,24 @@ public class InvestTransferController {
         modelAndView.addObject("transferFee", transferFee);
         modelAndView.addObject("deadline", deadline);
         modelAndView.addObject("transferInvestId", investId);
+        DateTime beginDate;
+        DateTime endDate = new DateTime();
+        if (Lists.newArrayList(LoanType.INVEST_INTEREST_LUMP_SUM_REPAY, LoanType.INVEST_INTEREST_MONTHLY_REPAY).contains(loanModel.getType())){
+            beginDate = new DateTime(investModel.getCreatedTime());
+        } else {
+            beginDate = new DateTime(loanModel.getRecheckTime());
+        }
+        int days = Days.daysBetween(beginDate, endDate).getDays();
+        String messageDay;
+        if (days <= transferRuleModel.getLevelOneUpper()) {
+            messageDay = "不足" + transferRuleModel.getLevelTwoLower();
+        } else if (days <= transferRuleModel.getLevelTwoUpper()) {
+            messageDay = "在" + transferRuleModel.getLevelTwoLower() + "至" + transferRuleModel.getLevelTwoUpper();
+        } else {
+            messageDay = "大于" + transferRuleModel.getLevelTwoUpper();
+        }
+        String message = MessageFormat.format(MESSAGE_TEMPLATE, messageDay, TransferRuleUtil.getTransferFeeRate(investModel, transferRuleModel,loanModel));
+        modelAndView.addObject("message", message);
         return modelAndView;
     }
 

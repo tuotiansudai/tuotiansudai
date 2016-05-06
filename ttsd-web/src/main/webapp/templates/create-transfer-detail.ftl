@@ -33,7 +33,7 @@
 					</div>
 					<div class="info-right">
 						<span>${(transferFee/100)?string('0.00')!}元</span>
-						<i class="fa fa-question-circle" aria-hidden="true" title="您持有债权不足30天，需支付本金0.5%的手续费。"></i>
+						<i class="fa fa-question-circle" aria-hidden="true" title="${message!}"></i>
 					</div>
 				</li>
 				<li class="info-list">
