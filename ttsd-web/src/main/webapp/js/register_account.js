@@ -50,12 +50,6 @@ var registerAccountCnzzAddress = [
         'label':'充值'
     },
     {
-        'function':'/account',
-        'category':'76实名认证页',
-        'action':'认证',
-        'label':'提现'
-    },
-    {
         'function':'/bind-card',
         'category':'77实名认证页',
         'action':'认证',
@@ -66,6 +60,12 @@ var registerAccountCnzzAddress = [
         'category':'78实名认证页',
         'action':'认证',
         'label':'马上投资'
+    },
+    {
+        'function':'/account',
+        'category':'79实名认证页',
+        'action':'认证',
+        'label':'签到'
     },
     {
         'function':'/point',
