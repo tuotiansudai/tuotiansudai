@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.transfer_apply_detail}" pageJavascript="${js.transfer_apply_detail}" activeNav="我的账户" activeLeftNav="我的投资" title="投资记录">
+<@global.main pageCss="${css.transfer_apply_detail}" pageJavascript="${js.transfer_apply_detail}" activeNav="我的账户" activeLeftNav="债权转让" title="投资记录">
 <div class="content-container">
     <h4 class="column-title">
         <a href="/investor/invest-list"><em class="tc">债权转让</em></a>
@@ -46,7 +46,7 @@
 				</li>
 				<li class="info-list tc">
 					<i class="fa fa-check-square" aria-hidden="true"></i>
-					<span>我已阅读并同意<a href="#">债权转让协议书（范本）</a></span>
+					<span>我已阅读并同意<a href="${staticServer}/pdf/transferAgreementSample.pdf" target="view">债权转让协议书（范本）</a></span>
 				</li>
 				<li class="info-list tc">
 					<button class="btn btn-normal" type="submit">确定</button>

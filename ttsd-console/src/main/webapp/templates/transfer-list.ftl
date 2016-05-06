@@ -80,7 +80,7 @@
                 <#list data.records as transferApplication>
                 <tr>
                     <td >
-                        <a href="${webServer}/loan/${transferApplication.transferApplicationId?string.computer}" target="_blank"><span class="text-danger">${transferApplication.transferApplicationId?string.computer}</span></a>
+                        <a href="${webServer}/loan/${transferApplication.transferApplicationId}" target="_blank"><span class="text-danger">${transferApplication.transferApplicationId}</span></a>
                     </td>
                     <td >
                         <a href="${webServer}/loan/${transferApplication.loanId?string.computer}" target="_blank"><span class="text-success">${transferApplication.loanId?string.computer}</span></a>
@@ -88,7 +88,26 @@
                     <td>${transferApplication.transferrerLoginName!}</td>
                     <td>${transferApplication.transferAmount}</td>
                     <td>${transferApplication.leftPeriod!}</td>
-                    <td>${transferApplication.transferStatus.description}</td>
+                    <td>
+                            <#switch transferApplication.transferStatus>
+                                <#case "TRANSFERABLE">
+                                    申请转让
+                                    <#break>
+                                <#case "TRANSFERRING">
+                                    转让中
+                                    <#break>
+                                <#case "SUCCESS">
+                                    已转让
+                                    <#break>
+                                <#case "CANCEL">
+                                    取消转让
+                                    <#break>
+                                <#case "NONTRANSFERABLE">
+                                    不可转让
+                                    <#break>
+
+                            </#switch>
+                    </td>
                     <td>${transferApplication.transferTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                     <td>${transferApplication.transfereeLoginName!}</td>
                     <td>${transferApplication.transferFee}</td>

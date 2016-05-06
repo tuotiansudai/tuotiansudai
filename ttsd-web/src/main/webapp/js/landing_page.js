@@ -8,7 +8,7 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
             $loginName = $('#login-name'),
             $password = $('#password'),
             $registerUser = $('#register-user'),
-            $appCaptcha = $('#appCaptcha');
+            $appCaptcha = $('#appCaptcha'),
             countdown=60;
 
         //form validate
@@ -88,7 +88,7 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
             },
             submitHandler:function(form){
                 form.submit();
-            }  
+            }
 
 
         });
@@ -179,6 +179,174 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
         $registerBtn.on('click', function(event) {
             event.preventDefault();
             $('body,html').animate({scrollTop:0},'fast');
+        });
+
+
+
+        var $registerFormC=$('#registerPhoneC'),
+            $mobilePhoneC=$('#mobilePhoneC'),
+            $fetchCaptchaC=$('.fetch-captchaC'),
+            $changecodeC=$('.img-changeC'),
+            $loginNamePhoneC = $('#loginNamePhoneC'),
+            $passwordPhoneC = $('#passwordPhoneC'),
+            $registerUserPhoneC = $('#register-user-phoneC'),
+            $appCaptchaPhoneC = $('#appCaptchaPhoneC');
+
+        //form validate
+        $registerFormC.validate({
+            focusInvalid: false,
+            errorPlacement: function(error, element) {
+                error.appendTo($('#'+ element.attr('id') + 'Err'));
+            },
+            rules: {
+                loginName: {
+                    required: true,
+                    regex: /(?!^\d+$)^\w{5,25}$/,
+                    isExist: "/register/user/login-name/{0}/is-exist"
+                },
+                mobile: {
+                    required: true,
+                    digits: true,
+                    isPhone:true,
+                    minlength: 11,
+                    maxlength: 11,
+                    isExist: "/register/user/mobile/{0}/is-exist"
+                },
+                password: {
+                    required: true,
+                    regex: /^(?=.*[^\d])(.{6,20})$/
+                },
+                appCaptcha : {
+                    required: true
+                },
+                captcha : {
+                    required: true,
+                    digits: true,
+                    maxlength: 6,
+                    minlength: 6,
+                    captchaVerify: {
+                        param: function () {
+                            var mobile = $('input[name="mobile"]').val();
+                            return "/register/user/mobile/" + mobile + "/captcha/{0}/verify"
+                        }
+                    }
+                },
+                agreement: {
+                    required: true
+                }
+            },
+            messages: {
+                loginName: {
+                    required: "请输入用户名",
+                    regex: '5位至25位数字与字母下划线组合，不能全部数字',
+                    isExist: '用户名已存在'
+                },
+                mobile: {
+                    required: '请输入手机号',
+                    digits: '必须是数字',
+                    minlength: '手机格式不正确',
+                    isPhone:'请输入正确的手机号码',
+                    maxlength: '手机格式不正确',
+                    isExist: '手机号已存在'
+                },
+                password: {
+                    required: "请输入密码",
+                    regex: '6位至20位，不能全是数字'
+                },
+                appCaptcha: {
+                    required: '请输入验证码'
+                },
+                captcha: {
+                    required: '请输入手机验证码',
+                    digits: '验证码格式不正确',
+                    maxlength: '验证码格式不正确',
+                    minlength: '验证码格式不正确',
+                    captchaVerify: '验证码不正确'
+                },
+                agreement: {
+                    required: "请同意服务协议"
+                }
+            },
+            submitHandler:function(form){
+                form.submit();
+            }
+
+
+        });
+
+
+        var refreshCaptchaC = function () {
+            $('.image-captchaC img').attr('src', '/register/user/image-captcha?' + new Date().getTime().toString());
+        };
+        refreshCaptchaC();
+
+
+        //phone focusout
+        $('#appCaptchaPhoneC').on('focusout', function(event) {
+            event.preventDefault();
+            if($mobilePhoneC.val()!='' && /0?(13|14|15|18)[0-9]{9}/.test($mobilePhoneC.val()) && $('#appCaptchaPhoneC').val()!=''){
+                $fetchCaptchaC.prop('disabled', false);
+            }else{
+                $fetchCaptchaC.prop('disabled', true);
+            }
+        });
+
+        $appCaptchaPhoneC.on('focus', function(event) {
+            $('#appCaptchaErr').html('');
+        });
+        //change images code
+        $changecodeC.on('click', function(event) {
+            event.preventDefault();
+            refreshCaptchaC();
+        });
+
+        $fetchCaptchaC.on('click', function(event) {
+            event.preventDefault();
+
+            var captchaVal=$('#appCaptchaPhoneC').val(),
+                mobile=$mobilePhoneC.val();
+            $.ajax({
+                url: '/register/user/send-register-captcha',
+                type: 'POST',
+                dataType: 'json',
+                data: {imageCaptcha: captchaVal,mobile:mobile},
+            })
+                .done(function(data) {
+                    if(data.data.status==true){
+                        timer=window.setInterval(getCodeC, 1000);
+                    }else{
+                        $('#appCaptchaPhoneCErr').html('图形验证码错误');
+                    }
+                })
+                .fail(function() {
+                    layer.msg('请求失败，请重试！');
+
+                });
+
+        });
+        //timer
+        function getCodeC() {
+            if (countdown == 0) {
+                window.clearInterval(timer);
+                $fetchCaptchaC.prop('disabled',false).text('获取验证码');
+                countdown = 60;
+            } else {
+                $fetchCaptchaC.prop('disabled', true).text(countdown+'秒后重发');
+                countdown--;
+            }
+        }
+        $('.show-agreement-phone').on('click', function(event) {
+            event.preventDefault();
+            layer.open({
+                type: 1,
+                title: '拓天速贷服务协议',
+                area: ['100%', '100%'],
+                shadeClose: true,
+                move: false,
+                scrollbar: true,
+                skin:'register-skin',
+                content: $('#agreementBoxPhone')
+            });
         });
         
     })();
