@@ -46,7 +46,7 @@
 				</li>
 				<li class="info-list tc">
 					<i class="fa fa-check-square" aria-hidden="true"></i>
-					<span>我已阅读并同意<a href="${staticServer}/pdf/transferAgreementSample.pdf">债权转让协议书（范本）</a></span>
+					<span>我已阅读并同意<a href="${staticServer}/pdf/transferAgreementSample.pdf" target="view">债权转让协议书（范本）</a></span>
 				</li>
 				<li class="info-list tc">
 					<button class="btn btn-normal" type="submit">确定</button>
