@@ -146,7 +146,7 @@
                                         </dd>
                                     </dl>
                                     <dl>
-                                        <dt>投资期限</dt>
+                                        <dt>项目期限</dt>
                                         <dd><em>${loan.periods}</em>
                                         ${loan.isPeriodMonthUnit?string("个月", "天")}
                                         </dd>
@@ -254,13 +254,13 @@
                                     </dl>
 
                                     <dl>
-                                        <dt>投资期限</dt>
+                                        <dt>项目期限</dt>
                                         <dd><em>${loan.periods}</em>
                                         ${loan.isPeriodMonthUnit?string("个月", "天")}
                                         </dd>
                                     </dl>
                                     <dl>
-                                        <dt>募集金额</dt>
+                                        <dt>项目金额</dt>
                                         <dd><em><@amount>${loan.amount}</@amount></em>元</dd>
                                     </dl>
                                 </div>
