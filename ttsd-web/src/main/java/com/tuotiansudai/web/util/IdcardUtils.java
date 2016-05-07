@@ -38,6 +38,9 @@ public class IdcardUtils extends StringUtils {
         if (idCard.length() != CHINA_ID_MIN_LENGTH && idCard.length() != CHINA_ID_MAX_LENGTH) {
             return false;
         }
+        if(!validateFistNumber(idCard)){
+            return false;
+        }
         String code17 = getIdCode17(idCard);
         if (isNumeric(code17) == false) {
             return false;
@@ -53,6 +56,13 @@ public class IdcardUtils extends StringUtils {
 
     public static boolean isNumeric(String val) {
         return val == null || "".equals(val) ? false : val.matches("^[0-9]*$");
+    }
+
+    private static boolean validateFistNumber(String idCard){
+        if(Integer.parseInt(idCard.substring(0, 1)) > 0 && Integer.parseInt(idCard.substring(0, 1)) < 9){
+            return true;
+        }
+        return false;
     }
 
     private static String getIdCode17(String idCard) {
