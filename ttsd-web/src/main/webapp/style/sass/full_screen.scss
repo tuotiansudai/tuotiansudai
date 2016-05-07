@@ -529,9 +529,7 @@ body {
       }
       .loan-list-index {
         width: 100%;
-        padding: 0 10px;
         .loan-box-inner {
-          margin: 0 -20px;
           border: 1px solid #e5e5e5;
           box-sizing: border-box;
           li {
@@ -577,7 +575,7 @@ body {
               top: -6px;
             }
             .loan-info-frame {
-              width: 690px;
+              width: 687px;
               padding-bottom: 10px;
               border-right: 1px solid #ccc;
               text-align: center;
@@ -642,7 +640,7 @@ body {
             .loan-process {
               float: left;
               width: 240px;
-              margin: 10px 51px 0px;
+              margin: 10px 35px 0px;
               &.active-after{
                 .will,.time-item{
                   display:none;
@@ -737,6 +735,14 @@ body {
               -moz-box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
               -webkit-box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
               box-shadow: -1px -1px 15px rgba(0, 0, 0, 0.1), 1px 1px 15px rgba(0, 0, 0, 0.1);
+            }
+            .new-user{
+              position: absolute;
+              width: 40px;
+              height: 50px;
+              top: -4px;
+              background: url("/images/icons/new-user.png") no-repeat;
+              background-size: 80%;
             }
             .hot {
               width: 71px;
@@ -845,6 +851,13 @@ body {
                   width: 50%;
                   i {
                     font-size: 18px;
+                    &.new-user-coupon{
+                      font-size: 12px;
+                      color: #ff9c1b;
+                      border: 1px solid #ff9c1b;
+                      padding: 2px 5px;
+                      border-radius: 20px;
+                    }
                   }
                 }
                 span {
