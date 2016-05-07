@@ -337,10 +337,10 @@
                                 <h2 class="pr-title">${loan.name}</h2>
                                 <div class="pr-square tc">
                                     <div class="pr-square-in">
-                                        <em><b><@percentInteger>${loan.baseRate}</@percentInteger></b>
+                                        <em><b><@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger></b>
                                            <@percentFraction>${loan.baseRate}</@percentFraction>
-                                                <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
-                                                    <@percentFraction>${loan.activityRate}</@percentFraction>
+                                                <#if (loan.newbieInterestCouponRate > 0) >+<@percentInteger>${loan.newbieInterestCouponRate}</@percentInteger>
+                                                    <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
                                                 </#if>%</em>
                                         <i>预期年化收益</i>
                                     </div>
