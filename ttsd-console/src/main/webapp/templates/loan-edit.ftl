@@ -272,8 +272,7 @@
 
             <div class="col-sm-4">
                 <input type="text" class="form-control jq-base-percent jq-money" placeholder="" datatype="money_fl"
-                       errormsg="请选择产品线类型" value="${(loanInfo.baseRate*100)?string('0.00')}"
-                       disabled="disabled">
+                       errormsg="请选择产品线类型" value="${(loanInfo.baseRate*100)?string('0.00')}">
             </div>
         </div>
         <div class="form-group input-append">
