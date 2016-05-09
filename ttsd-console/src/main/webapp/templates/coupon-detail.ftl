@@ -108,7 +108,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/activity-manage/coupon/${couponId?string('0')}/detail?<#if isUsed??>isUsed=${isUsed}&</#if>loginName=${loginName!}&registerStartTime=${(registerStartTime?string('yyyy-MM-dd HH:mm:ss'))!}&registerEndTime=${(registerEndTime?string('yyyy-MM-dd HH:mm:ss'))!}&mobile=${mobile!}&index=${index-1}&pageSize=${pageSize}">
+                    <a href="/activity-manage/coupon/${couponId?string('0')}/detail?<#if isUsed??>isUsed=${isUsed?c}&</#if>loginName=${loginName!}&registerStartTime=${(registerStartTime?string('yyyy-MM-dd HH:mm:ss'))!}&registerEndTime=${(registerEndTime?string('yyyy-MM-dd HH:mm:ss'))!}&mobile=${mobile!}&index=${index-1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -117,7 +117,7 @@
                 <li><a>${index}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="/activity-manage/coupon/${couponId?string('0')}/detail?<#if isUsed??>isUsed=${isUsed}&</#if>loginName=${loginName!}&registerStartTime=${(registerStartTime?string('yyyy-MM-dd HH:mm:ss'))!}&registerEndTime=${(registerEndTime?string('yyyy-MM-dd HH:mm:ss'))!}&mobile=${mobile!}&index=${index+1}&pageSize=${pageSize}">
+                    <a href="/activity-manage/coupon/${couponId?string('0')}/detail?<#if isUsed??>isUsed=${isUsed?c}&</#if>loginName=${loginName!}&registerStartTime=${(registerStartTime?string('yyyy-MM-dd HH:mm:ss'))!}&registerEndTime=${(registerEndTime?string('yyyy-MM-dd HH:mm:ss'))!}&mobile=${mobile!}&index=${index+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
