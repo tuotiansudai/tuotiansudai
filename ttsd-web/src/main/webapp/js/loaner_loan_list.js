@@ -103,7 +103,7 @@ require(['jquery', 'mustache', 'text!tpl/loaner-loan-table.mustache', 'text!tpl/
                         layer.open({
                             type: 1,
                             title: false,
-                            offset: '100px',
+                            offset: 'auto',
                             area: ['850px'],
                             shadeClose: true,
                             content: html
