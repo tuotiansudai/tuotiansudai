@@ -47,28 +47,20 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
         loginLogService.generateLoginLog(loginName, Source.WEB, RequestIPParser.parse(request), null, true);
 
         String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", loginName);
-        boolean isAjaxRequest = this.isAjaxRequest(request);
-        if (isAjaxRequest) {
-            BaseDto<LoginDto> baseDto = new BaseDto<>();
-            LoginDto loginDto = new LoginDto();
-            loginDto.setStatus(true);
-            loginDto.setRoles(userRoleService.findRoleNameByLoginName(loginName));
-            baseDto.setData(loginDto);
-            redisWrapperClient.del(redisKey);
-            String jsonBody = objectMapper.writeValueAsString(baseDto);
-            response.setContentType("application/json; charset=UTF-8");
-            response.setCharacterEncoding("UTF-8");
-            PrintWriter writer = response.getWriter();
-            writer.print(jsonBody);
-            writer.close();
-            clearAuthenticationAttributes(request);
-            return;
-        }
-        super.onAuthenticationSuccess(request, response, authentication);
-    }
-
-    private boolean isAjaxRequest(HttpServletRequest request) {
-        return "XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"));
+        BaseDto<LoginDto> baseDto = new BaseDto<>();
+        LoginDto loginDto = new LoginDto();
+        loginDto.setStatus(true);
+        loginDto.setRoles(userRoleService.findRoleNameByLoginName(loginName));
+        baseDto.setData(loginDto);
+        redisWrapperClient.del(redisKey);
+        String jsonBody = objectMapper.writeValueAsString(baseDto);
+        response.setContentType("application/json; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter writer = response.getWriter();
+        writer.print(jsonBody);
+        writer.close();
+        clearAuthenticationAttributes(request);
+        return;
     }
 
 }

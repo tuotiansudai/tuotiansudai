@@ -6,7 +6,6 @@ import com.squareup.okhttp.*;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoginDto;
 import com.tuotiansudai.dto.SignInDto;
-import com.tuotiansudai.util.CaptchaHelper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 @Component
 public class SignInClient extends BaseClient {
@@ -72,7 +72,7 @@ public class SignInClient extends BaseClient {
                 return objectMapper.readValue(responseString, new TypeReference<BaseDto<LoginDto>>() {
                 });
             }
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
         BaseDto<LoginDto> resultDto = new BaseDto<>();
@@ -81,7 +81,7 @@ public class SignInClient extends BaseClient {
         return resultDto;
     }
 
-    protected String execute(HttpServletRequest httpServletRequest, String path, SignInDto dto, String method) {
+    protected String execute(HttpServletRequest httpServletRequest, String path, SignInDto dto, String method) throws IOException, URISyntaxException {
         String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", path);
         RequestBody requestBody = new FormEncodingBuilder().add("username", dto.getUsername()).add("password", dto.getPassword()).add("captcha", dto.getCaptcha()).build();
         if ("GET".equalsIgnoreCase(method)) {
@@ -90,12 +90,18 @@ public class SignInClient extends BaseClient {
         Request request = new Request.Builder()
                 .url(url)
                 .method(method, requestBody)
-                .addHeader("SESSION", httpServletRequest.getSession().getId())
                 .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-                .addHeader(CaptchaHelper.LOGIN_CAPTCHA, httpServletRequest.getSession().getAttribute(CaptchaHelper.LOGIN_CAPTCHA).toString())
-                .addHeader("X-Requested-With","XMLHttpRequest")
+//                .addHeader(CaptchaHelper.LOGIN_CAPTCHA, httpServletRequest.getSession().getAttribute(CaptchaHelper.LOGIN_CAPTCHA).toString())
                 .build();
-
+//        Cookie[] cookies = httpServletRequest.getCookies();
+//        CookieHandler cookieHandler = okHttpClient.getCookieHandler();
+//        URI uri = new URI(httpServletRequest.getRequestURI());
+//        for (int i = 0; i < cookies.length; i++) {
+//            Map<String, List<String>> cookiesMap = new HashMap<>();
+//            cookiesMap.put(cookies[i].getName(), Lists.newArrayList(cookies[i].getValue()));
+//            cookieHandler.put(uri, cookiesMap);
+//        }
+//        okHttpClient.setCookieHandler(cookieHandler);
         try {
             Response response = okHttpClient.newCall(request).execute();
             if (response.isSuccessful()) {
