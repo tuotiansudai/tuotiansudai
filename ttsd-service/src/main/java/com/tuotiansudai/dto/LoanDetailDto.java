@@ -179,7 +179,7 @@ public class LoanDetailDto extends BaseDataDto {
         this.activityType = activityType;
     }
 
-    public double isNewbieInterestCouponRate() {
+    public double getNewbieInterestCouponRate() {
         return newbieInterestCouponRate;
     }
 

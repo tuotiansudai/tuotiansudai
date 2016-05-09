@@ -222,7 +222,7 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setMinInvestAmount(loanModel.getMinInvestAmount());
         loanDto.setInvestIncreasingAmount(loanModel.getInvestIncreasingAmount());
         loanDto.setProductType(loanModel.getProductType());
-        loanDto.setActivityType(loanDto.getActivityType());
+        loanDto.setActivityType(loanModel.getActivityType());
         loanDto.setLoanStatus(loanModel.getStatus());
         loanDto.setAmountNeedRaised(loanModel.getLoanAmount() - investedAmount);
         loanDto.setMaxInvestAmount(AmountConverter.convertCentToString(loanModel.getMaxInvestAmount()));
