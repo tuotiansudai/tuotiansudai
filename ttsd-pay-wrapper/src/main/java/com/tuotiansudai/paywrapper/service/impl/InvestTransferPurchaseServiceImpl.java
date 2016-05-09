@@ -112,10 +112,11 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         if (transferApplicationModel == null || transferApplicationModel.getStatus() != TransferStatus.TRANSFERRING|| transferApplicationModel.getTransferAmount() > accountModel.getBalance()) {
             return baseDto;
         }
+        InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
         InvestModel investModel = new InvestModel(idGenerator.generate(),
                 transferApplicationModel.getLoanId(),
                 transferApplicationModel.getTransferInvestId(),
-                transferApplicationModel.getTransferAmount(),
+                transferrerModel.getAmount(),
                 loginName,
                 investDto.getSource(),
                 null);
@@ -161,11 +162,11 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         if (transferApplicationModel == null || transferApplicationModel.getStatus() != TransferStatus.TRANSFERRING || transferApplicationModel.getTransferAmount() > transfereeAccount.getBalance()) {
             return dto;
         }
-
+        InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
         InvestModel investModel = new InvestModel(idGenerator.generate(),
                 transferApplicationModel.getLoanId(),
                 transferApplicationModel.getTransferInvestId(),
-                transferApplicationModel.getTransferAmount(),
+                transferrerModel.getAmount(),
                 transferee,
                 investDto.getSource(),
                 null);
