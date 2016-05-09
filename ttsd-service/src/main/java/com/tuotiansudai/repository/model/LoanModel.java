@@ -2,6 +2,7 @@ package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.InterestCalculator;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -38,9 +39,14 @@ public class LoanModel implements Serializable {
      ***/
     private LoanType type;
     /***
-     * 借款期限
+     * 借款期数
      ***/
     private int periods;
+
+    /**
+     * 借款天数
+     */
+    private int duration;
     /***
      * 项目描述（纯文本）
      ***/
@@ -74,6 +80,9 @@ public class LoanModel implements Serializable {
      ***/
     private ActivityType activityType;
 
+    /**
+     * 产品线
+     */
     private ProductType productType;
     /***
      * 活动利率
@@ -182,6 +191,7 @@ public class LoanModel implements Serializable {
         this.maxInvestAmount = AmountConverter.convertStringToCent(loanDto.getMaxInvestAmount());
         this.minInvestAmount = AmountConverter.convertStringToCent(loanDto.getMinInvestAmount());
         this.periods = loanDto.getPeriods();
+        this.duration = loanDto.getPeriods() * InterestCalculator.DAYS_OF_MONTH;
         this.showOnHome = loanDto.isShowOnHome();
         this.type = loanDto.getType();
         this.loanAmount = AmountConverter.convertStringToCent(loanDto.getLoanAmount());
@@ -255,6 +265,14 @@ public class LoanModel implements Serializable {
 
     public void setPeriods(int periods) {
         this.periods = periods;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     public String getDescriptionText() {

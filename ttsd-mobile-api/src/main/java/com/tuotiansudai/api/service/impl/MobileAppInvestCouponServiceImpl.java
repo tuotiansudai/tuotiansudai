@@ -113,7 +113,7 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
             }
             boolean isSupportedLoanType = false;
             for (ProductType type : couponModel.getProductTypes()) {
-                if (type.equals(loanProductType)) {
+                if (loanProductType == type) {
                     isSupportedLoanType = true;
                     break;
                 }

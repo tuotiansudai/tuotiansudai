@@ -2,9 +2,10 @@ package com.tuotiansudai.repository.model;
 
 public enum ProductType {
 
-    SYL("速盈利", 1, 10.00),
-    WYX("稳盈绣", 3, 12.00),
-    JYF("久盈富", 6, 13.00);
+    SYL("30天", 1, 10.00),
+    WYX("90天", 3, 12.00),
+    JYF("180天", 6, 13.00),
+    _360("360天", 12, 13.00);
 
     private String name;
 
