@@ -87,6 +87,7 @@
                                         <em><@percentInteger>${loanItem.baseRate+loanItem.activityRate}</@percentInteger></em>
                                         <i><@percentFraction>${loanItem.baseRate+loanItem.activityRate}</@percentFraction>
                                                 +<@percentInteger>${loanItem.interestCouponRate}</@percentInteger><@percentFraction>${loanItem.interestCouponRate}</@percentFraction>
+                                            %
                                         </i>
                                         <span>新手加息券</span>
                                     <#else>

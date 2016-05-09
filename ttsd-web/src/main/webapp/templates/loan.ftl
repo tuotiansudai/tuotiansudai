@@ -32,7 +32,7 @@
             </div>
             <#if loan.activityType == 'NEWBIE'>
                 <#if loan.newbieInterestCouponRate gt 0>
-                    <div class="product-type-text" data-loan-product-type="${loan.productType!}">新手加息券+${loan.newbieInterestCouponRate}</div>
+                    <div class="product-type-text" data-loan-product-type="${loan.productType!}">新手加息券+${loan.newbieInterestCouponRate}%</div>
                 </#if>
             <#else>
                 <#if loan.productType??>
