@@ -1,6 +1,40 @@
 <#import "../macro/global.ftl" as global>
     <@global.main pageCss="${css.about_us}" pageJavascript="${js.about_us}" activeNav="关于我们" activeLeftNav="团队介绍" title="拓天团队_金融精英_拓天速贷" keywords="拓天速贷,精英团队,安全保障,拓天安全" description="拓天速贷金融精英为您提供规范、安全、专业的互联网金融信息服务.">
     <div class="about-us-container">
+        <h2 class="column-title"><em>公司管理</em></h2>
+        <div class="team-box clearfix">
+            <img src="${staticServer}/images/sign/aboutus/user-one.jpg" width="180" height="220" alt="李显玉先生" class="fl responsive-width">
+            <dl>
+                <dt>李显玉先生 <span>总经理</span></dt>
+                <dd>拓天为海，拓天要做一片海；</dd>
+                <dd>用低姿态海纳百川，用大胸怀孕育万物。</dd>
+                <dd>平静时，我们宁静平和；</dd>
+                <dd>澎湃时，我们大浪滔天，风云变色。</dd>
+                <dd>20岁进入金融行业，2013年创办北京拓天伟业担保有限公司，后转型从事财富管理行业，2014年创办拓天伟业（北京）资产管理有限公司，2015年创办拓天伟业（北京）金融信息服务有限公司，经过艰苦奋战，拓天资产已成为客户认可度高、行业领先、业务规模名列前茅的财富管理公司。</dd>
+            </dl>
+        </div>
+        <div class="team-box clearfix">
+            <img src="${staticServer}/images/sign/aboutus/user-two.jpg" width="180" height="220" alt="杜峥先生" class="fl responsive-width">
+            <dl>
+                <dt>杜峥先生<span>副总经理</span></dt>
+                <dd>拓天为海，拓天要做一片海；</dd>
+                <dd>用低姿态海纳百川，用大胸怀孕育万物。</dd>
+                <dd>平静时，我们宁静平和；</dd>
+                <dd>澎湃时，我们大浪滔天，风云变色。</dd>
+                <dd>20岁进入金融行业，2013年创办北京拓天伟业担保有限公司，后转型从事财富管理行业，2014年创办拓天伟业（北京）资产管理有限公司，2015年创办拓天伟业（北京）金融信息服务有限公司，经过艰苦奋战，拓天资产已成为客户认可度高、行业领先、业务规模名列前茅的财富管理公司。</dd>
+            </dl>
+        </div>
+        <div class="team-box clearfix">
+            <img src="${staticServer}/images/sign/aboutus/user-three.jpg" width="180" height="220" alt="史磊先生" class="fl responsive-width">
+            <dl>
+                <dt>史磊先生<span>执行总监</span></dt>
+                <dd>拓天为海，拓天要做一片海；</dd>
+                <dd>用低姿态海纳百川，用大胸怀孕育万物。</dd>
+                <dd>平静时，我们宁静平和；</dd>
+                <dd>澎湃时，我们大浪滔天，风云变色。</dd>
+                <dd>20岁进入金融行业，2013年创办北京拓天伟业担保有限公司，后转型从事财富管理行业，2014年创办拓天伟业（北京）资产管理有限公司，2015年创办拓天伟业（北京）金融信息服务有限公司，经过艰苦奋战，拓天资产已成为客户认可度高、行业领先、业务规模名列前茅的财富管理公司。</dd>
+            </dl>
+        </div>
         <h2 class="column-title"><em>团队介绍</em></h2>
         <div class="team-box clearfix">
             <img src="${staticServer}/images/sign/aboutus/team1.png" alt="行政团队" class="fl responsive-width">
