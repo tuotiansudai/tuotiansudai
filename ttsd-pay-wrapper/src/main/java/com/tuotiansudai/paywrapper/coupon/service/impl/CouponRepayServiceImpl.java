@@ -78,7 +78,8 @@ public class CouponRepayServiceImpl implements CouponRepayService {
 
         for (UserCouponModel userCouponModel : userCouponModels) {
             CouponModel couponModel = this.couponMapper.findById(userCouponModel.getCouponId());
-            long actualInterest = this.calculateActualInterest(couponModel, userCouponModel, loanModel, currentLoanRepayModel, loanRepayModels);
+            long investAmount = investMapper.findById(userCouponModel.getInvestId()).getAmount();
+            long actualInterest = InterestCalculator.calculateCouponActualInterest(investAmount, couponModel, userCouponModel, loanModel, currentLoanRepayModel, loanRepayModels);
             if (actualInterest < 0) {
                 continue;
             }
@@ -124,59 +125,5 @@ public class CouponRepayServiceImpl implements CouponRepayService {
                 }
             }
         }
-    }
-
-    private long calculateActualInterest(CouponModel couponModel, UserCouponModel userCouponModel, LoanModel loanModel, LoanRepayModel currentLoanRepayModel, List<LoanRepayModel> loanRepayModels) {
-        DateTime currentRepayDate = new DateTime(currentLoanRepayModel.getActualRepayDate());
-
-        LoanRepayModel lastLoanRepayModel = null;
-        for (LoanRepayModel loanRepayModel : loanRepayModels) {
-            if (loanRepayModel.getPeriod() < currentLoanRepayModel.getPeriod() && loanRepayModel.getStatus() == RepayStatus.COMPLETE && loanRepayModel.getActualRepayDate().before(currentLoanRepayModel.getActualRepayDate())) {
-                lastLoanRepayModel = loanRepayModel;
-            }
-        }
-
-        DateTime lastRepayDate = new DateTime(loanModel.getType().getInterestInitiateType() == InterestInitiateType.INTEREST_START_AT_INVEST ? userCouponModel.getUsedTime() : loanModel.getRecheckTime()).minusDays(1);
-        if (lastLoanRepayModel != null) {
-            lastRepayDate = new DateTime(lastLoanRepayModel.getActualRepayDate());
-        }
-
-        int periodDuration = Days.daysBetween(lastRepayDate.withTimeAtStartOfDay(), currentRepayDate.withTimeAtStartOfDay()).getDays();
-
-        long expectedInterest = 0;
-        switch (couponModel.getCouponType()) {
-            case NEWBIE_COUPON:
-            case INVEST_COUPON:
-                expectedInterest = new BigDecimal(periodDuration * couponModel.getAmount())
-                        .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
-                        .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
-                break;
-            case INTEREST_COUPON:
-                expectedInterest = new BigDecimal(periodDuration * investMapper.findById(userCouponModel.getInvestId()).getAmount())
-                        .multiply(new BigDecimal(couponModel.getRate()))
-                        .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
-                break;
-            case BIRTHDAY_COUPON:
-                if (lastLoanRepayModel != null) {
-                    return -1;
-                }
-
-                DateTime theFirstRepayDate = new DateTime(Iterators.tryFind(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
-                    @Override
-                    public boolean apply(LoanRepayModel input) {
-                        return input.getPeriod() == 1;
-                    }
-                }).get().getRepayDate());
-
-                periodDuration = Days.daysBetween(lastRepayDate.withTimeAtStartOfDay(), theFirstRepayDate.withTimeAtStartOfDay()).getDays();
-
-                expectedInterest = new BigDecimal(periodDuration * investMapper.findById(userCouponModel.getInvestId()).getAmount())
-                        .multiply(new BigDecimal(loanModel.getBaseRate()).add(new BigDecimal(loanModel.getActivityRate())))
-                        .multiply(new BigDecimal(couponModel.getBirthdayBenefit()))
-                        .divide(new BigDecimal(InterestCalculator.DAYS_OF_YEAR), 0, BigDecimal.ROUND_DOWN).longValue();
-                break;
-        }
-
-        return expectedInterest;
     }
 }

@@ -24,7 +24,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -124,7 +123,7 @@ public class UserCouponServiceImpl implements UserCouponService {
         long maxBenefit = 0;
         for (UserCouponModel usableUserCoupon : usableUserCoupons) {
             CouponModel couponModel = couponMapper.findById(usableUserCoupon.getCouponId());
-            long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(loanModel, couponModel, amount);
+            long expectedInterest = InterestCalculator.estimateCouponExpectedInterest(amount, loanModel, couponModel);
             long expectedFee = InterestCalculator.estimateCouponExpectedFee(loanModel, couponModel, amount);
             long actualInterest = expectedInterest - expectedFee;
             if (maxBenefit == actualInterest) {
