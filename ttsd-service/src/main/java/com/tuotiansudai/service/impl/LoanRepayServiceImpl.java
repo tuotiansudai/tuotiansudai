@@ -100,7 +100,6 @@ public class LoanRepayServiceImpl implements LoanRepayService {
                 calculateDefaultInterestEveryLoan(loanRepayModel);
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
-                continue;
             }
         }
     }
