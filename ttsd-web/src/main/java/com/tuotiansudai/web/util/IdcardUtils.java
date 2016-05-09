@@ -2,16 +2,16 @@
 package com.tuotiansudai.web.util;
 
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class IdcardUtils extends StringUtils {
+public class IdcardUtils {
+
+    static Logger logger = Logger.getLogger(IdcardUtils.class);
 
     /***
      * 中国公民身份证号码最小长度。
@@ -115,7 +115,7 @@ public class IdcardUtils extends StringUtils {
         try {
             birthDate = new SimpleDateFormat("yyMMdd").parse(birthday);
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.error(e.getLocalizedMessage(), e);
         }
         Calendar cal = Calendar.getInstance();
         if (birthDate != null)
