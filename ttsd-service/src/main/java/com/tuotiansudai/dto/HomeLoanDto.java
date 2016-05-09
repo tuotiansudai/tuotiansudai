@@ -1,14 +1,14 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.ActivityType;
-import com.tuotiansudai.repository.model.LoanPeriodUnit;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.ProductType;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class HomeLoanDto {
 
@@ -18,7 +18,7 @@ public class HomeLoanDto {
 
     private ProductType productType;
 
-    private String activityType;
+    private ActivityType activityType;
 
     private double baseRate;
 
@@ -38,11 +38,17 @@ public class HomeLoanDto {
 
     private long preheatSeconds;
 
-    public HomeLoanDto(long loanId, String name, ProductType productType, ActivityType activityType, LoanPeriodUnit periodUnit, double baseRate, double activityRate, int periods, long amount, long investAmount, LoanStatus status, Date fundraisingStartTime) {
+    private double newbieInterestCouponRate;
+
+    private String availableInvestAmount;
+
+    private int completedPeriods;
+
+    public HomeLoanDto(CouponModel newbieInterestCouponModel, long loanId, String name, ProductType productType, ActivityType activityType, LoanPeriodUnit periodUnit, double baseRate, double activityRate, int periods, long amount, long investAmount, LoanStatus status, Date fundraisingStartTime, List<LoanRepayModel> loanRepayModels) {
         this.id = loanId;
         this.name = name;
         this.productType = productType;
-        this.activityType = activityType.name();
+        this.activityType = activityType;
         this.baseRate = new BigDecimal(String.valueOf(baseRate)).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
         if (activityRate > 0) {
             this.activityRate = new BigDecimal(String.valueOf(activityRate)).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
@@ -54,109 +60,78 @@ public class HomeLoanDto {
         this.status = status.name();
         this.fundraisingStartTime = fundraisingStartTime;
         this.preheatSeconds = (fundraisingStartTime.getTime() - System.currentTimeMillis()) / 1000;
+        if (newbieInterestCouponModel != null && newbieInterestCouponModel.getProductTypes().contains(productType)) {
+            this.newbieInterestCouponRate = new BigDecimal(String.valueOf(newbieInterestCouponModel.getRate())).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
+        }
+        this.availableInvestAmount = AmountConverter.convertCentToString(amount - investAmount);
+        for (LoanRepayModel loanRepayModel : loanRepayModels) {
+            if (loanRepayModel.getStatus() == RepayStatus.COMPLETE) {
+                completedPeriods++;
+            }
+        }
     }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public ProductType getProductType() {
         return productType;
     }
 
-    public void setProductType(ProductType productType) {
-        this.productType = productType;
-    }
-
-    public String getActivityType() {
+    public ActivityType getActivityType() {
         return activityType;
-    }
-
-    public void setActivityType(String activityType) {
-        this.activityType = activityType;
     }
 
     public double getBaseRate() {
         return baseRate;
     }
 
-    public void setBaseRate(double baseRate) {
-        this.baseRate = baseRate;
-    }
-
     public double getActivityRate() {
         return activityRate;
-    }
-
-    public void setActivityRate(double activityRate) {
-        this.activityRate = activityRate;
     }
 
     public int getPeriods() {
         return periods;
     }
 
-    public void setPeriods(int periods) {
-        this.periods = periods;
-    }
-
     public boolean getIsPeriodMonthUnit() {
         return isPeriodMonthUnit;
-    }
-
-    public void setPeriodMonthUnit(boolean periodMonthUnit) {
-        isPeriodMonthUnit = periodMonthUnit;
     }
 
     public String getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
     public double getProgress() {
         return progress;
-    }
-
-    public void setProgress(double progress) {
-        this.progress = progress;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public Date getFundraisingStartTime() {
         return fundraisingStartTime;
-    }
-
-    public void setFundraisingStartTime(Date fundraisingStartTime) {
-        this.fundraisingStartTime = fundraisingStartTime;
     }
 
     public long getPreheatSeconds() {
         return preheatSeconds;
     }
 
-    public void setPreheatSeconds(long preheatSeconds) {
-        this.preheatSeconds = preheatSeconds;
+    public double getNewbieInterestCouponRate() {
+        return newbieInterestCouponRate;
+    }
+
+    public String getAvailableInvestAmount() {
+        return availableInvestAmount;
+    }
+
+    public int getCompletedPeriods() {
+        return completedPeriods;
     }
 }
