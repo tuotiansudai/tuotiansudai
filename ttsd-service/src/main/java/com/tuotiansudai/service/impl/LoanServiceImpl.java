@@ -261,7 +261,7 @@ public class LoanServiceImpl implements LoanService {
                     newbieInterestCouponRate = activeCoupon.getRate();
                 }
             }
-            loanDto.setNewbieInterestCouponRate(new BigDecimal(newbieInterestCouponRate).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue());
+            loanDto.setNewbieInterestCouponRate(new BigDecimal(String.valueOf(newbieInterestCouponRate)).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue());
         }
         return loanDto;
     }
@@ -691,7 +691,7 @@ public class LoanServiceImpl implements LoanService {
                 loanItemDto.setStatus(loanModel.getStatus());
                 loanItemDto.setLoanAmount(loanModel.getLoanAmount());
                 loanItemDto.setActivityType(loanModel.getActivityType());
-                loanItemDto.setInterestCouponRate(new BigDecimal(newbieInterestCouponRate).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue());
+                loanItemDto.setInterestCouponRate(new BigDecimal(String.valueOf(newbieInterestCouponRate)).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue());
                 BigDecimal loanAmountBigDecimal = new BigDecimal(loanModel.getLoanAmount());
                 BigDecimal sumInvestAmountBigDecimal = new BigDecimal(investMapper.sumSuccessInvestAmount(loanModel.getId()));
                 if (LoanStatus.PREHEAT == loanModel.getStatus()) {
