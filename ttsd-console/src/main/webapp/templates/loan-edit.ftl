@@ -61,8 +61,17 @@
             <label class="col-sm-2 control-label">借款项目名称: </label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control jq-user" placeholder="" datatype="*" errormsg="借款项目名称不能为空"
-                       value="${loanInfo.name}" <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if>>
+                <#if loanInfo.status!= "WAITING_VERIFY">
+                    <input type="text" class="form-control jq-user" placeholder="" datatype="*" errormsg="借款项目名称不能为空"
+                           value="${loanInfo.name}" disabled="disabled">
+                <#else>
+                    <select class="selectpicker jq-user">
+                        <option value="">请选择</option>
+                        <option value="房产抵押借款" <#if loanInfo.name == "房产抵押借款">selected</#if>>房产抵押借款</option>
+                        <option value="车辆抵押借款" <#if loanInfo.name == "车辆抵押借款">selected</#if>>车辆抵押借款</option>
+                    </select>
+                </#if>
+
             </div>
         </div>
 
@@ -74,7 +83,7 @@
                     <#list productTypes as productType>
                         <option value="${productType.name()}"
                                 <#if loanInfo.productType?? && productType.name() == loanInfo.productType>selected</#if>
-                                data-period="${productType.getPeriods()}" data-baserate="${productType.getRate()?string('0.00')}">
+                                data-period="${productType.getPeriods()}">
                             ${productType.getName()}
                         </option>
                     </#list>
@@ -138,9 +147,17 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">借款期限: </label>
 
-            <div class="col-sm-4">
-                <input type="text" class="form-control jq-timer" placeholder="" datatype="num" errormsg="请选择产品线类型"
-                       value="${loanInfo.periods}" disabled="disabled">
+            <div class="col-sm-4 product-line-period">
+
+                <#if loanInfo.productType == 'JYF'>
+                    <select class="selectpicker b-width jq-timer">
+                        <option value="6" <#if loanInfo.periods = 6>selected</#if>>6</option>
+                        <option value="12" <#if loanInfo.periods = 12>selected</#if>>12</option>
+                    </select>
+                <#else>
+                    <input type="text" class="form-control jq-timer" placeholder="" datatype="num" errormsg="请选择产品线类型"
+                           value="${loanInfo.periods}" disabled="disabled">
+                </#if>
 
             </div>
             <div class="col-sm-3">
@@ -255,8 +272,7 @@
 
             <div class="col-sm-4">
                 <input type="text" class="form-control jq-base-percent jq-money" placeholder="" datatype="money_fl"
-                       errormsg="请选择产品线类型" value="${(loanInfo.baseRate*100)?string('0.00')}"
-                       disabled="disabled">
+                       errormsg="请选择产品线类型" value="${(loanInfo.baseRate*100)?string('0.00')}">
             </div>
         </div>
         <div class="form-group input-append">

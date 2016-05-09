@@ -191,6 +191,36 @@
 
     phoneLoadFun();
 
+    document.getElementById('getMore').onclick=function(){
+        var obj = document. getElementById('getMore');  
+        toggleClass(obj,"active"); 
+    }
+
+    function hasClass(obj, cls) {  
+        return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));  
+    }  
+      
+    function addClass(obj, cls) {  
+        if (!this.hasClass(obj, cls)) obj.className += " " + cls;  
+    }  
+      
+    function removeClass(obj, cls) {  
+        if (hasClass(obj, cls)) {  
+            var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');  
+            obj.className = obj.className.replace(reg, ' ');  
+        }  
+    }  
+      
+    function toggleClass(obj,cls){  
+        if(hasClass(obj,cls)){  
+            removeClass(obj, cls);
+            document. getElementById('linkList').style.height='30px';  
+        }else{  
+            addClass(obj, cls);
+            document. getElementById('linkList').style.height='auto';  
+        }  
+    } 
+
 
 
 </script>
