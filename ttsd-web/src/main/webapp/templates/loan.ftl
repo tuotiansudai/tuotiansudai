@@ -4,7 +4,11 @@
      data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
     <div class="borderBox bg-w clearfix">
         <div class="news-share fl">
+        <#if loan.periods == 1>
+            <h2 class="title hd new">${loan.name}<span class="new-user"></span></h2>
+        <#else>
             <h2 class="title hd">${loan.name}</h2>
+        </#if>
             <div class="chart-box">
                 <div class="box" title="已投${loan.progress?string("0.00")}%">
                     <div class="bg"></div>
