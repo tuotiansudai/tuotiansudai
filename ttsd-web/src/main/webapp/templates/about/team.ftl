@@ -3,8 +3,8 @@
     <div class="about-us-container">
         <h2 class="column-title"><em>公司管理</em></h2>
         <div class="team-box clearfix">
-            <img src="${staticServer}/images/sign/aboutus/user-one.jpg" width="180" height="220" alt="李显玉先生" class="fl responsive-width">
-            <dl>
+            <img src="${staticServer}/images/sign/aboutus/user-one.jpg" width="180" height="220" alt="李显玉先生" class="com-img responsive-width">
+            <dl class="company-user">
                 <dt>李显玉先生 <span>总经理</span></dt>
                 <dd>拓天为海，拓天要做一片海；</dd>
                 <dd>用低姿态海纳百川，用大胸怀孕育万物。</dd>
@@ -14,8 +14,8 @@
             </dl>
         </div>
         <div class="team-box clearfix">
-            <img src="${staticServer}/images/sign/aboutus/user-two.jpg" width="180" height="220" alt="杜峥先生" class="fl responsive-width">
-            <dl>
+            <img src="${staticServer}/images/sign/aboutus/user-two.jpg" width="180" height="220" alt="杜峥先生" class="com-img responsive-width">
+            <dl class="company-user">
                 <dt>杜峥先生<span>副总经理</span></dt>
                 <dd>拓天为海，拓天要做一片海；</dd>
                 <dd>用低姿态海纳百川，用大胸怀孕育万物。</dd>
@@ -25,8 +25,8 @@
             </dl>
         </div>
         <div class="team-box clearfix">
-            <img src="${staticServer}/images/sign/aboutus/user-three.jpg" width="180" height="220" alt="史磊先生" class="fl responsive-width">
-            <dl>
+            <img src="${staticServer}/images/sign/aboutus/user-three.jpg" width="180" height="220" alt="史磊先生" class="com-img responsive-width">
+            <dl class="company-user">
                 <dt>史磊先生<span>执行总监</span></dt>
                 <dd>拓天为海，拓天要做一片海；</dd>
                 <dd>用低姿态海纳百川，用大胸怀孕育万物。</dd>

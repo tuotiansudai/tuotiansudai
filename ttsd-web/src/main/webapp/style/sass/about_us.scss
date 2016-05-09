@@ -132,11 +132,28 @@
       &.fr {
         margin-left: 80px;
       }
+      &.com-img{
+        float:left;
+        margin-right:20px;
+      }
     }
     dl {
       overflow: hidden;
       margin-top: 20px;
-
+      &.company-user{
+        margin-top:0;
+        dt{
+          padding-bottom:0;
+          span{
+            font-size:12px;
+            color:#ff7200;
+            margin-left: 10px;
+          }
+        }
+        dd{
+          font-size:12px;
+        }
+      }
       dt {
         font-size: 16px;
         font-weight: bold;
@@ -235,25 +252,31 @@
         margin-bottom:0;
       }
     }
-
     &.company-summary {
-      h3 { text-align: center;}
+      h3 {
+        text-align: center;
+      }
       p{
         margin-bottom: 5px;
         font-size: 13px;
       }
       .refer-reward-box {
-      &.pc {
-        display: none;
+        &.pc {
+          display: none;
+        }
+        &.mobile {
+          display: block;
+          height:auto;
+          margin-bottom:15px;
+        }
       }
-      &.mobile {
-        display: block;
-        height:auto;
-        margin-bottom:15px;
-      }
-    }
       .info span {
         display: block;
+      }
+    }
+    .team-box{
+      .com-img{
+        height:auto!important;
       }
     }
   }
