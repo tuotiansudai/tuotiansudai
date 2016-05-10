@@ -336,10 +336,17 @@
         }
       }
       .table{
+        border:1px solid #b3b3b3;
         thead{
           th{
             color:#fff;
             background:#15aacd;
+            border:1px solid #b3b3b3;
+          }
+        }
+        tbody{
+          td{
+            border:1px solid #b3b3b3;
           }
         }
       }
