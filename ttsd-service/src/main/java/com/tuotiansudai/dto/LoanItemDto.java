@@ -19,6 +19,8 @@ public class LoanItemDto {
 
     private double activityRate;
 
+    private double interestCouponRate;
+
     private long periods;
 
     private LoanType type;
@@ -75,6 +77,14 @@ public class LoanItemDto {
 
     public void setActivityRate(double activityRate) {
         this.activityRate = activityRate;
+    }
+
+    public double getInterestCouponRate() {
+        return interestCouponRate;
+    }
+
+    public void setInterestCouponRate(double interestCouponRate) {
+        this.interestCouponRate = interestCouponRate;
     }
 
     public long getPeriods() {

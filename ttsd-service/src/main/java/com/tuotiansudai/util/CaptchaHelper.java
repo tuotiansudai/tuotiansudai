@@ -5,10 +5,10 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.DatatypeConverter;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -69,8 +69,7 @@ public class CaptchaHelper {
             data = new byte[in.available()];
             in.read(data);
             // 对字节数组Base64编码
-            BASE64Encoder encoder = new BASE64Encoder();
-            return encoder.encode(data);// 返回Base64编码过的字节数组字符串
+            return DatatypeConverter.printBase64Binary(data);// 返回Base64编码过的字节数组字符串
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(),e);
         }finally {
