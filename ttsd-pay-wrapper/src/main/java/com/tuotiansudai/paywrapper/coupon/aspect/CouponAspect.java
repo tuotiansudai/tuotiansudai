@@ -7,9 +7,9 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.job.AutoJPushAlertLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.SendRedEnvelopeJob;
+import com.tuotiansudai.jpush.job.AutoJPushAlertLoanOutJob;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -137,6 +137,7 @@ public class CouponAspect {
                     .addJobData(SendRedEnvelopeJob.LOAN_ID_KEY, loanId)
                     .withIdentity(JobType.SendRedEnvelope.name(), "Loan-" + loanId)
                     .runOnceAt(triggerTime)
+                    .replaceExistingJob(true)
                     .submit();
         } catch (SchedulerException e) {
             logger.error("create send red envelope job for loan[" + loanId + "] fail", e);
@@ -151,6 +152,7 @@ public class CouponAspect {
                     .addJobData(AutoJPushAlertLoanOutJob.LOAN_ID_KEY, loanId)
                     .withIdentity(JobType.AutoJPushAlertLoanOut.name(), "Loan-" + loanId)
                     .runOnceAt(triggerTime)
+                    .replaceExistingJob(true)
                     .submit();
         } catch (SchedulerException e) {
             logger.error("create send red AutoJPushAlertLoanOut job for loan[" + loanId + "] fail", e);
