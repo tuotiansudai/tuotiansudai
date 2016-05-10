@@ -1,7 +1,6 @@
 package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.OperationDataDto;
-import com.tuotiansudai.service.impl.OperationDataServiceModel;
 import com.tuotiansudai.service.OperationDataService;
 import com.tuotiansudai.service.InfoPublishService;
 import com.tuotiansudai.util.AmountConverter;
@@ -42,9 +41,9 @@ public class AboutController {
     @RequestMapping(path = "/info-publish", method = RequestMethod.GET)
     @ResponseBody
     public OperationDataDto infoPublishChart() {
-        OperationDataServiceModel operationDataServiceModel = operationDataService.getOperationDataFromRedis();
+        OperationDataDto operationDataDto = operationDataService.getOperationDataFromRedis();
 
-        return operationDataServiceModel.getOperationDataDto();
+        return operationDataDto;
     }
 
     @RequestMapping(path = "/operation-data", method = RequestMethod.GET)
