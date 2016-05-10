@@ -157,7 +157,7 @@
         select ta.id,ta.name,ta.transfer_amount,ta.invest_amount,ta.transfer_time,ta.status,ta.loan_id,ta.invest_id,ta.deadline,
         ta.transfer_invest_id,ta.period,ta.left_period, l.base_rate AS baseRate from transfer_application ta left JOIN loan l on ta.loan_id = l.id
         <where>
-            <if test="transferStatus == null">
+            <if test="transferStatus == null || transferStatus.size == 0">
                 and ta.status in ('SUCCESS','TRANSFERRING')
             </if>
             <if test="transferStatus != null and transferStatus.size != 0">
@@ -190,7 +190,7 @@
         from transfer_application ta left JOIN loan l on ta.loan_id = l.id
         <where>
 
-            <if test="transferStatus == null">
+            <if test="transferStatus == null || transferStatus.size == 0">
                 and ta.status in ('SUCCESS','TRANSFERRING')
             </if>
             <if test="transferStatus != null and transferStatus.size != 0">

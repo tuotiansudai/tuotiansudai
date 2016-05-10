@@ -44,5 +44,21 @@ require(['jquery', 'layerWrapper','coupon-alert','red-envelope-float','jquery.aj
 				layer.msg('请求失败');
 			});
         });
+
+		$('.pagination .prev').click(function () {
+			var self = $(this);
+			if (self.hasClass('active')) {
+				window.location.href = self.data('url');
+			}
+			return false;
+		});
+
+		$('.pagination .next').click(function () {
+			var self = $(this);
+			if (self.hasClass('active')) {
+				window.location.href = self.data('url');
+			}
+			return false;
+		});
     });
 });
