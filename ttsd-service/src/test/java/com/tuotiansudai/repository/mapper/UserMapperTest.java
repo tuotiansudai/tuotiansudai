@@ -16,9 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -201,5 +199,11 @@ public class UserMapperTest {
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         return userModelTest;
+    }
+
+    @Test
+    public void testGetUserAmount(){
+        long userAmount = userMapper.findUsersAmount();
+        assertEquals(40039, userAmount);
     }
 }
