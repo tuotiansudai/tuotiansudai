@@ -92,16 +92,16 @@
                 <span>技术团队</span>
             </li>
             <li>
-                <a href="${staticServer}/images/sign/aboutus/photo_big_04.jpg" title="客服团队" rel="group">
-                    <img src="${staticServer}/images/sign/aboutus/photo_04.jpg">
-                </a>
-                <span>客服团队</span>
-            </li>
-            <li>
                 <a href="${staticServer}/images/sign/aboutus/photo_big_05.jpg" title="运营团队" rel="group">
                     <img src="${staticServer}/images/sign/aboutus/photo_05.jpg">
                 </a>
                 <span>运营团队</span>
+            </li>
+            <li>
+                <a href="${staticServer}/images/sign/aboutus/photo_big_04.jpg" title="客服团队" rel="group">
+                    <img src="${staticServer}/images/sign/aboutus/photo_04.jpg">
+                </a>
+                <span>客服团队</span>
             </li>
         </ul>
     </div>

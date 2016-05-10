@@ -326,13 +326,17 @@ var MyChartsObject={
                     color:['#ff9c1b'],
                     title : {
                         text: bar_datas.title,
-                        subtext: bar_datas.sub
+                        subtext: bar_datas.sub,
+                        textStyle:{
+                            color: '#ff9c1b'
+                        } 
                     },
                     tooltip : {
                         trigger: 'axis'
                     },
                     legend: {
-                        data:[bar_datas.name]
+                        data:[bar_datas.name],
+                        selectedMode:false
                     },
                     toolbox: {
                         show : false,
