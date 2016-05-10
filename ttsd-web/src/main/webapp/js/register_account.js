@@ -84,6 +84,11 @@ var registerAccountCnzzAddress = [
         'category':'82实名认证页',
         'action':'认证',
         'label':'开启免密'
+    },{
+        'function':'/register/user',
+        'category':'84实名认证页',
+        'action':'认证',
+        'label':'注册后'
     }
 ];
 
