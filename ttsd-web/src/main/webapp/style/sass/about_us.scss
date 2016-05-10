@@ -295,6 +295,10 @@
       float:left;
       width:100%;
       margin-bottom:20px;
+      &.chart-dom{
+        width:100%;
+        height:250px;
+      }
       .model-title{
         float:left;
         width:100%;
@@ -328,6 +332,14 @@
             margin-bottom: 0;
             line-height: 30px;
             font-size: 20px;
+          }
+        }
+      }
+      .table{
+        thead{
+          th{
+            color:#fff;
+            background:#15aacd;
           }
         }
       }
@@ -432,6 +444,30 @@
                 font-size:14px;
                 color:#4c4c4c;
               }
+            }
+          }
+        }
+      }
+    }
+    .data-model{
+      &.cheat-model{
+        display:none;
+      }
+      .model-container{
+        .model-title{
+          li{
+            float:left;
+            width:33.333333%;
+            height:auto;
+            padding:10px 0;
+            &.model-one{
+              margin-right:0;
+            }
+            &.model-two{
+              margin-right:0;
+            }
+            p{
+              font-size:12px;
             }
           }
         }

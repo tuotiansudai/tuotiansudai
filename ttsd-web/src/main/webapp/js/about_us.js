@@ -111,9 +111,6 @@ require(['jquery','mustache','text!tpl/notice-list.mustache','load-swiper','laye
                 container = $("#dataRecord")[0],
                 opt = MyChartsObject.ChartConfig(container, option);
                 MyChartsObject.Charts.RenderChart(opt);
-            
-            
-            
         })
         .fail(function() {
             layer.msg('请求数据失败，请刷新页面重试！');
