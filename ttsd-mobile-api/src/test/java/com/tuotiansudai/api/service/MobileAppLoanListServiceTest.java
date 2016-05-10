@@ -45,6 +45,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();
         loanListRequestDto.setIndex(1);
         loanListRequestDto.setPageSize(10);
+        loanListRequestDto.setProductType("SYL");
         BaseResponseDto<LoanListResponseDataDto> dto = mobileAppRegisterService.generateLoanList(loanListRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(),dto.getCode());
         assertEquals(ProductType._30.name(),dto.getData().getLoanList().get(0).getLoanType());

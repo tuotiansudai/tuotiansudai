@@ -107,13 +107,8 @@ public class LoanServiceTest {
         loanDto.setLoanAmount("1000000.00");
         loanDto.setFundraisingEndTime(date);
         loanDto.setFundraisingStartTime(date);
+        loanDto.setProductType(ProductType._30);
         return loanDto;
-    }
-    private List<UserRoleModel> getFakeUserRole(UserModel userModel,Role role) {
-        List<UserRoleModel> userRoleModels = Lists.newArrayList();
-        UserRoleModel userRoleModel = new UserRoleModel(userModel.getLoginName(),role);
-        userRoleModels.add(userRoleModel);
-        return userRoleModels;
     }
 
     private LoanDto getLoanDto(UserModel userModel) {
@@ -129,6 +124,7 @@ public class LoanServiceTest {
         loanDto.setLoanAmount("1000000.00");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
+        loanDto.setProductType(ProductType._30);
         return loanDto;
     }
 

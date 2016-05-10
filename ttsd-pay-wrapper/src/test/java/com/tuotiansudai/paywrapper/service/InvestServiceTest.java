@@ -59,8 +59,6 @@ public class InvestServiceTest {
     @Autowired
     private AccountMapper accountMapper;
 
-    private ObjectMapper objectMapper;
-
     private MockWebServer mockServer;
 
     @Autowired
@@ -217,6 +215,7 @@ public class InvestServiceTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.RAISING);
+        loanDto.setProductType(ProductType._30);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 
@@ -271,6 +270,7 @@ public class InvestServiceTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.RAISING);
+        loanDto.setProductType(ProductType._30);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 
@@ -325,6 +325,7 @@ public class InvestServiceTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.RAISING);
+        loanDto.setProductType(ProductType._30);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 
@@ -376,6 +377,7 @@ public class InvestServiceTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.RAISING);
+        loanDto.setProductType(ProductType._30);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 
@@ -432,6 +434,7 @@ public class InvestServiceTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.RAISING);
+        loanDto.setProductType(ProductType._30);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 

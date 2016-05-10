@@ -66,6 +66,7 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         usedUserCouponView.setLoanId(loanModel.getId());
         usedUserCouponView.setLoanName(loanModel.getName());
         usedUserCouponView.setLoanProductType(loanModel.getProductType());
+        usedUserCouponView.setProductTypeList(Lists.newArrayList(ProductType._30, ProductType._90));
         usedUserCouponView.setCouponType(CouponType.NEWBIE_COUPON);
 
         List<UserCouponView> unusedUserCoupon = Lists.newArrayList();
@@ -132,6 +133,7 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         unUsedUserCouponView.setId(1);
         unUsedUserCouponView.setCouponType(CouponType.NEWBIE_COUPON);
         unUsedUserCouponView.setProductTypeList(Lists.newArrayList(ProductType._30, ProductType._90));
+        unUsedUserCouponView.setLoanProductType(loanModel.getProductType());
         unUsedUserCouponView.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
         unUsedUserCouponView.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
         unUsedUserCouponView.setCouponAmount(100);
