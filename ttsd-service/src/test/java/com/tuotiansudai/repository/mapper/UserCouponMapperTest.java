@@ -5,10 +5,11 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.repository.model.ProductType;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.coupon.repository.model.UserCouponView;
+import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.UUIDGenerator;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,15 @@ public class UserCouponMapperTest {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private LoanMapper loanMapper;
+
+    @Autowired
+    private IdGenerator idGenerator;
+
+    @Autowired
+    private InvestMapper investMapper;
+
 
     @Test
     public void shouldCreateUserCoupon() {
@@ -59,6 +69,24 @@ public class UserCouponMapperTest {
         assertEquals(userCouponModel.getLoginName(), userCouponModelDb.getLoginName());
     }
 
+    @Test
+    public void shouldFindAllSuccessByLoginNameAndInvestIdIsOk(){
+        UserModel userModel = fakeUserModel();
+        userMapper.create(userModel);
+        CouponModel couponModel = fakeCouponModel();
+        couponMapper.create(couponModel);
+        LoanModel lm = createLoanModel(userModel.getLoginName());
+        loanMapper.create(lm);
+        InvestModel model = createInvest(userModel.getLoginName(),lm.getId());
+        investMapper.create(model);
+        UserCouponModel userCouponModel = createUserCouponModel(userModel.getLoginName(),couponModel.getId(),lm.getId(),model.getId());
+        userCouponMapper.create(userCouponModel);
+        userCouponMapper.update(userCouponModel);
+
+        List<UserCouponView> userCouponViewList = userCouponMapper.findAllSuccessByLoginNameAndInvestId(userModel.getLoginName(),model.getId());
+        assertEquals(1, userCouponViewList.size());
+    }
+
     private UserCouponModel fakeUserCouponModel(long couponId) {
         return new UserCouponModel("couponTest", couponId, new Date(), new Date());
     }
@@ -76,6 +104,7 @@ public class UserCouponMapperTest {
         couponModel.setUsedCount(500L);
         couponModel.setCouponType(CouponType.INVEST_COUPON);
         couponModel.setProductTypes(Lists.newArrayList(ProductType.JYF, ProductType.SYL));
+        couponModel.setId(idGenerator.generate());
 
         return couponModel;
     }
@@ -90,6 +119,68 @@ public class UserCouponMapperTest {
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         return userModelTest;
+    }
+
+    private LoanModel createLoanModel(String loanerLoginName) {
+        LoanModel lm = new LoanModel();
+        lm.setId(idGenerator.generate());
+        lm.setName("test loan");
+        lm.setDescriptionHtml("fdjakf");
+        lm.setDescriptionText("fdjakf");
+        lm.setPeriods(1);
+        lm.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        lm.setActivityRate(0.1);
+        lm.setMinInvestAmount(1);
+        lm.setMaxInvestAmount(1000000);
+        lm.setLoanAmount(1);
+        lm.setLoanerLoginName(loanerLoginName);
+        lm.setLoanerUserName("借款人");
+        lm.setLoanerIdentityNumber("111111111111111111");
+        lm.setAgentLoginName(loanerLoginName);
+        lm.setBaseRate(0.2);
+        lm.setActivityType(ActivityType.NORMAL);
+        lm.setCreatedTime(new Date());
+        lm.setFundraisingStartTime(new Date());
+        lm.setFundraisingEndTime(new Date());
+        lm.setStatus(LoanStatus.RAISING);
+        return lm;
+    }
+
+    private InvestModel createInvest(String loginName,long loanId){
+        InvestModel model = new InvestModel();
+        model.setAmount(1000000);
+        // 舍弃毫秒数
+        Date currentDate = new Date((new Date().getTime() / 1000) * 1000);
+        model.setCreatedTime(currentDate);
+        model.setId(idGenerator.generate());
+        model.setIsAutoInvest(false);
+        model.setLoginName(loginName);
+        model.setLoanId(loanId);
+        model.setSource(Source.ANDROID);
+        model.setStatus(InvestStatus.SUCCESS);
+        model.setCreatedTime(DateUtils.addHours(new Date(), -1));
+        return model;
+    }
+
+    private UserCouponModel createUserCouponModel(String loginName,long couponId,long loanId,long investId){
+        UserCouponModel model = new UserCouponModel();
+        model.setId(idGenerator.generate());
+        model.setLoginName(loginName);
+        model.setCouponId(couponId);
+        model.setStartTime(new Date());
+        model.setEndTime(new Date());
+        model.setLoanId(loanId);
+        model.setUsedTime(new Date());
+        model.setExpectedInterest(1);
+        model.setActualInterest(1);
+        model.setDefaultInterest(1);
+        model.setExpectedFee(1);
+        model.setActualFee(1);
+        model.setInvestId(investId);
+        model.setStatus(InvestStatus.SUCCESS);
+        model.setExchangeCode("1");
+        model.setCreatedTime(new Date());
+        return model;
     }
 
 
