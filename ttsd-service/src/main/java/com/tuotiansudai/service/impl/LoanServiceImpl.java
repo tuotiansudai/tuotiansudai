@@ -256,7 +256,7 @@ public class LoanServiceImpl implements LoanService {
             for (CouponModel activeCoupon : allActiveCoupons) {
                 if (activeCoupon.getCouponType() == CouponType.INTEREST_COUPON
                         && activeCoupon.getUserGroup() == UserGroup.NEW_REGISTERED_USER
-                        && activeCoupon.getProductTypes().contains(ProductType.SYL)
+                        && activeCoupon.getProductTypes().contains(ProductType._30)
                         && activeCoupon.getRate() > newbieInterestCouponRate) {
                     newbieInterestCouponRate = activeCoupon.getRate();
                 }
@@ -670,7 +670,7 @@ public class LoanServiceImpl implements LoanService {
         for (CouponModel activeCoupon : allActiveCoupons) {
             if (activeCoupon.getCouponType() == CouponType.INTEREST_COUPON
                     && activeCoupon.getUserGroup() == UserGroup.NEW_REGISTERED_USER
-                    && activeCoupon.getProductTypes().contains(ProductType.SYL)
+                    && activeCoupon.getProductTypes().contains(ProductType._30)
                     && (newbieInterestCouponModel == null || activeCoupon.getRate() > newbieInterestCouponModel.getRate())) {
                 newbieInterestCouponModel = activeCoupon;
             }
