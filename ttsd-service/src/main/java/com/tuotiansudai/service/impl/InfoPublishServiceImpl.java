@@ -1,6 +1,8 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.primitives.Longs;
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.dto.LinkExchangeDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.InvestDataView;
 import com.tuotiansudai.service.InfoPublishService;
@@ -27,6 +29,8 @@ public class InfoPublishServiceImpl implements InfoPublishService {
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
+    private static final int timeOut = 24*60*60;
+
     @Override
     public List<InvestDataView> getInvestDetail() {
         List<InvestDataView> investDataViewList = new ArrayList<InvestDataView>();
@@ -41,11 +45,17 @@ public class InfoPublishServiceImpl implements InfoPublishService {
                 investDataView.setAvgInvestAmount(investDataViewValues[3]);
                 investDataViewList.add(investDataView);
             }
+            Collections.sort(investDataViewList, new Comparator<InvestDataView>(){
+                @Override
+                public int compare(InvestDataView o1, InvestDataView o2) {
+                    return Long.compare(Long.parseLong(o1.getProductName()), Long.parseLong(o2.getProductName()));
+                }
+            });
         }
         else{
             investDataViewList = investMapper.getInvestDetail();
             for(InvestDataView investDataView: investDataViewList){
-                redisWrapperClient.hset(MessageFormat.format(INFO_PUBLISH_KEY_TEMPLATE, String.valueOf(sdf.format(new Date()))), investDataView.getProductName(), investDataView.ConvertInvestDataViewToString(), 60*60*24);
+                redisWrapperClient.hset(MessageFormat.format(INFO_PUBLISH_KEY_TEMPLATE, String.valueOf(sdf.format(new Date()))), investDataView.getProductName(), investDataView.ConvertInvestDataViewToString(), timeOut);
             }
         }
         return investDataViewList;

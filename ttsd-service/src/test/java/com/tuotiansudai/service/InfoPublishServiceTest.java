@@ -12,6 +12,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import javafx.beans.binding.When;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.AssertTrue;
 import java.util.Date;
 import java.util.UUID;
 
@@ -124,10 +126,7 @@ public class InfoPublishServiceTest {
         createInvest("testUserInvest",10003,5000);
         createInvest("testUserInvest",10003,6000);
 
-
-        investMapper.getInvestDetail();
-
-        infoPublishService.getInvestDetail();
+        assertThat(infoPublishService.getInvestDetail().size(), is(3));
     }
 
 }
