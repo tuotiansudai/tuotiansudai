@@ -6,6 +6,9 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.job.AutoInvestJob;
 import com.tuotiansudai.job.DeadlineFundraisingJob;
@@ -87,6 +90,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private JobManager jobManager;
+
+    @Autowired
+    private CouponMapper couponMapper;
 
     @Value("#{'${web.random.investor.list}'.split('\\|')}")
     private List<String> showRandomLoginNameList;
@@ -216,6 +222,7 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setMinInvestAmount(loanModel.getMinInvestAmount());
         loanDto.setInvestIncreasingAmount(loanModel.getInvestIncreasingAmount());
         loanDto.setProductType(loanModel.getProductType());
+        loanDto.setActivityType(loanModel.getActivityType());
         loanDto.setLoanStatus(loanModel.getStatus());
         loanDto.setAmountNeedRaised(loanModel.getLoanAmount() - investedAmount);
         loanDto.setMaxInvestAmount(AmountConverter.convertCentToString(loanModel.getMaxInvestAmount()));
@@ -241,6 +248,20 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setLoanTitleDto(loanTitleMapper.findAll());
         if (loanModel.getStatus() == LoanStatus.PREHEAT) {
             loanDto.setPreheatSeconds((loanModel.getFundraisingStartTime().getTime() - System.currentTimeMillis()) / 1000);
+        }
+
+        if (loanModel.getActivityType() == ActivityType.NEWBIE) {
+            double newbieInterestCouponRate = 0;
+            final List<CouponModel> allActiveCoupons = couponMapper.findAllActiveCoupons();
+            for (CouponModel activeCoupon : allActiveCoupons) {
+                if (activeCoupon.getCouponType() == CouponType.INTEREST_COUPON
+                        && activeCoupon.getUserGroup() == UserGroup.NEW_REGISTERED_USER
+                        && activeCoupon.getProductTypes().contains(ProductType.SYL)
+                        && activeCoupon.getRate() > newbieInterestCouponRate) {
+                    newbieInterestCouponRate = activeCoupon.getRate();
+                }
+            }
+            loanDto.setNewbieInterestCouponRate(new BigDecimal(String.valueOf(newbieInterestCouponRate)).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue());
         }
         return loanDto;
     }
@@ -643,6 +664,19 @@ public class LoanServiceImpl implements LoanService {
 
         List<LoanModel> loanModels = loanMapper.findLoanListWeb(productType, status, rateStart, rateEnd, index);
 
+        final List<CouponModel> allActiveCoupons = couponMapper.findAllActiveCoupons();
+
+        CouponModel newbieInterestCouponModel = null;
+        for (CouponModel activeCoupon : allActiveCoupons) {
+            if (activeCoupon.getCouponType() == CouponType.INTEREST_COUPON
+                    && activeCoupon.getUserGroup() == UserGroup.NEW_REGISTERED_USER
+                    && activeCoupon.getProductTypes().contains(ProductType.SYL)
+                    && (newbieInterestCouponModel == null || activeCoupon.getRate() > newbieInterestCouponModel.getRate())) {
+                newbieInterestCouponModel = activeCoupon;
+            }
+        }
+        final double newbieInterestCouponRate = newbieInterestCouponModel != null ? newbieInterestCouponModel.getRate() : 0;
+
         return Lists.transform(loanModels, new Function<LoanModel, LoanItemDto>() {
             @Override
             public LoanItemDto apply(LoanModel loanModel) {
@@ -657,6 +691,7 @@ public class LoanServiceImpl implements LoanService {
                 loanItemDto.setStatus(loanModel.getStatus());
                 loanItemDto.setLoanAmount(loanModel.getLoanAmount());
                 loanItemDto.setActivityType(loanModel.getActivityType());
+                loanItemDto.setInterestCouponRate(new BigDecimal(String.valueOf(newbieInterestCouponRate)).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue());
                 BigDecimal loanAmountBigDecimal = new BigDecimal(loanModel.getLoanAmount());
                 BigDecimal sumInvestAmountBigDecimal = new BigDecimal(investMapper.sumSuccessInvestAmount(loanModel.getId()));
                 if (LoanStatus.PREHEAT == loanModel.getStatus()) {

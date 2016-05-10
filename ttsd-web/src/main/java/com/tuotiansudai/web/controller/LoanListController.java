@@ -38,9 +38,9 @@ public class LoanListController {
         List<LoanItemDto> loanItemList = loanService.findLoanItems(productType, status, rateStart, rateEnd, index);
 
         ModelAndView modelAndView = new ModelAndView("/loan-list");
+        modelAndView.addObject("index", index);
         modelAndView.addObject("count", count);
         modelAndView.addObject("loanItemList", loanItemList);
-        modelAndView.addObject("index", index);
         modelAndView.addObject("rateStart", rateStart);
         modelAndView.addObject("rateEnd", rateEnd);
         modelAndView.addObject("productType", productType);
