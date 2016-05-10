@@ -5,8 +5,9 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.TransferStatus;
+import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
+import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
 import com.tuotiansudai.transfer.service.TransferService;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class TransferApplicationController {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private TransferApplicationMapper transferApplicationMapper;
 
     @RequestMapping(value = "/{transferApplicationId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
@@ -59,7 +63,8 @@ public class TransferApplicationController {
         ModelAndView modelAndView = new ModelAndView("/error/404", "responsive", true);
         String errorMessage = "投资失败，请联系客服！";
         AccountModel accountModel = accountMapper.findByLoginName(LoginUserInfo.getLoginName());
-
+        TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(Long.parseLong(investDto.getTransferInvestId()));
+        investDto.setAmount(String.valueOf(transferApplicationModel.getTransferAmount()));
         if (accountModel.isNoPasswordInvest()) {
             try {
                 investDto.setLoginName(LoginUserInfo.getLoginName());

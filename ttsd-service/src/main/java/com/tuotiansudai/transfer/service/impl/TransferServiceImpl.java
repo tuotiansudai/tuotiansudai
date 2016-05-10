@@ -54,7 +54,6 @@ public class TransferServiceImpl implements TransferService {
 
     @Override
     public BaseDto<PayFormDataDto> transferPurchase(InvestDto investDto) throws InvestException{
-        investDto.setAmount(String.valueOf(AmountConverter.convertStringToCent(investDto.getAmount())));
         this.checkTransferPurchase(investDto);
         return payWrapperClient.purchase(investDto);
     }
@@ -62,7 +61,6 @@ public class TransferServiceImpl implements TransferService {
     @Override
     public BaseDto<PayDataDto> noPasswordTransferPurchase(InvestDto investDto) throws InvestException{
         investDto.setNoPassword(true);
-        investDto.setAmount(String.valueOf(AmountConverter.convertStringToCent(investDto.getAmount())));
         this.checkTransferPurchase(investDto);
         return payWrapperClient.noPasswordPurchase(investDto);
     }

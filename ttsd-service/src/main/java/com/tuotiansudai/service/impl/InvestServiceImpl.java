@@ -238,10 +238,6 @@ public class InvestServiceImpl implements InvestService {
                 InvestPaginationItemDataDto investPaginationItemDataDto = new InvestPaginationItemDataDto(view);
                 if (view.getTransferStatus() == TransferStatus.TRANSFERABLE) {
                     investPaginationItemDataDto.setTransferStatus(investTransferService.isTransferable(view.getId()) ? view.getTransferStatus().getDescription() : null);
-                } else if (view.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
-                    investPaginationItemDataDto.setTransferStatus("--");
-                } else {
-                    investPaginationItemDataDto.setTransferStatus(view.getTransferStatus().getDescription());
                 }
                 investPaginationItemDataDto.setLastRepayDate(loanRepayMapper.findLastRepayDateByLoanId(view.getLoanId()));
                 LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(view.getLoanId());
