@@ -80,7 +80,7 @@
                 <#list data.records as transferApplication>
                 <tr>
                     <td >
-                        <a href="${webServer}/loan/${transferApplication.transferApplicationId}" target="_blank"><span class="text-danger">${transferApplication.transferApplicationId}</span></a>
+                        <a href="${webServer}/transfer/${transferApplication.transferApplicationId}" target="_blank"><span class="text-danger">${transferApplication.transferApplicationId}</span></a>
                     </td>
                     <td >
                         <a href="${webServer}/loan/${transferApplication.loanId?string.computer}" target="_blank"><span class="text-success">${transferApplication.loanId?string.computer}</span></a>
