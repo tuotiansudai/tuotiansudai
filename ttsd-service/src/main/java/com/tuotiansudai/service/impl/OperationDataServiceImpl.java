@@ -9,6 +9,7 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.service.OperationDataService;
 import com.tuotiansudai.util.AmountConverter;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -189,8 +190,9 @@ public class OperationDataServiceImpl implements OperationDataService {
 
     private String getTotalSuccessAmount()
     {
-        return AmountConverter.convertCentToString(investMapper.sumInvestAmount(null, null, null, null, null, null, null,
-                InvestStatus.SUCCESS, null));
+        return AmountConverter.convertCentToString(investMapper.sumInvestAmount(null, null, null, null, null,
+                new DateTime().withDate(2015, 7, 1).withTimeAtStartOfDay().toDate(),
+                new DateTime().withTimeAtStartOfDay().toDate(), InvestStatus.SUCCESS, null));
     }
 
     private void setMonthOperationData(OperationDataServiceModel operationDataServiceModel)
