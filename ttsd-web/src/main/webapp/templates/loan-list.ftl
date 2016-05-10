@@ -67,8 +67,12 @@
         <ul>
             <#list loanItemList as loanItem>
                 <li data-url="/loan/${(loanItem.id?string.computer)!}" class="clearfix">
-                    <#if loanItem.productType??>
-                        <span class="${loanItem.productType?lower_case}"></span>
+                    <#if loanItem.activityType == 'NEWBIE'>
+                        <span class="new-user"></span>
+                    <#else>
+                        <#if loanItem.productType??>
+                            <span class="${loanItem.productType?lower_case}"></span>
+                        </#if>
                     </#if>
                     <div class="loan-info-frame fl">
                         <div class="loan-top">
@@ -78,12 +82,23 @@
                         <div class="loan-info-dl">
                             <dl>
                                 <dt>预期年化收益</dt>
-                                <dd><em><@percentInteger>${loanItem.baseRate}</@percentInteger></em>
-                                    <i><@percentFraction>${loanItem.baseRate}</@percentFraction>
-                                        <#if (loanItem.activityRate > 0)>
-                                            +<@percentInteger>${loanItem.activityRate}</@percentInteger><@percentFraction>${loanItem.activityRate}</@percentFraction>
-                                        </#if>%
-                                    </i>
+                                <dd>
+                                    <#if loanItem.activityType == 'NEWBIE' && loanItem.interestCouponRate gt 0>
+                                        <em><@percentInteger>${loanItem.baseRate+loanItem.activityRate}</@percentInteger></em>
+                                        <i><@percentFraction>${loanItem.baseRate+loanItem.activityRate}</@percentFraction>
+                                                +<@percentInteger>${loanItem.interestCouponRate}</@percentInteger><@percentFraction>${loanItem.interestCouponRate}</@percentFraction>
+                                            %
+                                        </i>
+                                        <span>新手加息券</span>
+                                    <#else>
+                                        <em><@percentInteger>${loanItem.baseRate}</@percentInteger></em>
+                                        <i><@percentFraction>${loanItem.baseRate}</@percentFraction>
+                                            <#if (loanItem.activityRate > 0)>
+                                                +<@percentInteger>${loanItem.activityRate}</@percentInteger><@percentFraction>${loanItem.activityRate}</@percentFraction>
+                                            </#if>%
+                                        </i>
+                                    </#if>
+
                                 </dd>
                             </dl>
 

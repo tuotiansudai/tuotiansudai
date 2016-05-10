@@ -8,9 +8,7 @@ public enum SystemBillDetailTemplate {
 
     REFERRER_REWARD_DETAIL_TEMPLATE("推荐人({0})推荐用户({1})投资(investId={2})奖励"),
 
-    INVEST_FEE_DETAIL_TEMPLATE("投资人({0})投资返款(investRepayId={1})手续费"),
-
-    LOAN_REMAINING_INTEREST_DETAIL_TEMPLATE("标的(loanRepayId={0})还款完成, 剩余利息({1}分)"),
+    INVEST_FEE_DETAIL_TEMPLATE("标的(loanId = {0})还款(loanRepayId={1})手续费"),
 
     COUPON_INTEREST_DETAIL_TEMPLATE("{0}(userCouponId={1}), 还款(loanRepayId={2}), 发放利息({3}分)"),
 
