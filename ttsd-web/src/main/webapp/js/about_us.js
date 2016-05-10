@@ -1,4 +1,4 @@
-require(['jquery','mustache','text!tpl/notice-list.mustache','load-swiper','layerWrapper','commonFun','pagination','echarts'], function ($,Mustache,ListTemplate,loadSwiper,layer) {
+require(['jquery','mustache','text!tpl/notice-list.mustache','load-swiper','layerWrapper','commonFun','pagination','echarts','fancybox'], function ($,Mustache,ListTemplate,loadSwiper,layer) {
     $(function () {
         var $noticeList=$('#noticeList'),
             $noticeDetail=$('#noticeDetail'),
@@ -82,5 +82,87 @@ require(['jquery','mustache','text!tpl/notice-list.mustache','load-swiper','laye
                 }
             });
         }
+        $("#companyPhoto li a").fancybox({
+            'titlePosition' : 'over',
+            'cyclic'        : false,
+            'showCloseButton':true,
+            'showNavArrows' : true,
+            'titleFormat'   : function(title, currentArray, currentIndex, currentOpts) {
+                return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+            }
+        });
+        $.ajax({
+            url: '/about/info-publish',
+            type: 'GET',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            console.log(data);
+            require.config({
+                paths: {
+                    echarts: './js/dist'
+                }
+            });
+            var option = {
+                      color:['#ff9c1b'],
+                        title : {
+                            text: '拓天速贷',
+                            subtext: '金额'
+                        },
+                        tooltip : {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data:['运营数据']
+                        },
+                        toolbox: {
+                            show : false,
+                            feature : {
+                                mark : {show: true},
+                                dataView : {show: true, readOnly: false},
+                                magicType : {show: true, type: ['line', 'bar']},
+                                restore : {show: true},
+                                saveAsImage : {show: true}
+                            }
+                        },
+                        calculable : true,
+                        xAxis : [
+                            {
+                                type : 'category',
+                                data : data.month
+                            }
+                        ],
+                        yAxis : [
+                            {
+                                type : 'value'
+                            }
+                        ],
+                        series : [
+                            {
+                                name:'交易额',
+                                type:'bar',
+                                data:data.money,
+                                markPoint : {
+                                    data : [
+                                        {type : 'max', name: '最大值'},
+                                        {type : 'min', name: '最小值'}
+                                    ]
+                                },
+                                markLine : {
+                                    data : [
+                                        {type : 'average', name: '平均值'}
+                                    ]
+                                }
+                            }
+                            
+                        ]
+                    };
+                    var myChart = echarts.init(document.getElementById('dataRecord'));
+                    // 为echarts对象加载数据 
+                    myChart.setOption(option); 
+        })
+        .fail(function() {
+            console.log("error");
+        });
     });
 });

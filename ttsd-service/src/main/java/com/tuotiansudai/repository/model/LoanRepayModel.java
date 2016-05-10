@@ -19,6 +19,8 @@ public class LoanRepayModel implements Serializable {
 
     private long defaultInterest;
 
+    private long repayAmount;
+
     private Date repayDate;
 
     private Date actualRepayDate;
@@ -26,6 +28,8 @@ public class LoanRepayModel implements Serializable {
     private RepayStatus status;
 
     private Date createdTime = new Date();
+
+    private LoanModel loan;
 
     public LoanRepayModel() {
     }
@@ -38,8 +42,6 @@ public class LoanRepayModel implements Serializable {
         this.repayDate = repayDate;
         this.status = status;
     }
-
-    private LoanModel loan;
 
     public long getId() {
         return id;
@@ -79,6 +81,14 @@ public class LoanRepayModel implements Serializable {
 
     public void setActualInterest(long actualInterest) {
         this.actualInterest = actualInterest;
+    }
+
+    public long getRepayAmount() {
+        return repayAmount;
+    }
+
+    public void setRepayAmount(long repayAmount) {
+        this.repayAmount = repayAmount;
     }
 
     public int getPeriod() {
