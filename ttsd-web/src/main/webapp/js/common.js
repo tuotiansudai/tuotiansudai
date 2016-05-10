@@ -361,16 +361,8 @@ var MyChartsObject={
                             name:'交易额',
                             type:'bar',
                             data:bar_datas.money,
-                            markPoint : {
-                                data : [
-                                    {type : 'max', name: '最大值'},
-                                    {type : 'min', name: '最小值'}
-                                ]
-                            },
-                            markLine : {
-                                data : [
-                                    {type : 'average', name: '平均值'}
-                                ]
+                            tooltip : {
+                                formatter: "时间:{b}<br/>交易额:{c}"
                             }
                         }
                         
