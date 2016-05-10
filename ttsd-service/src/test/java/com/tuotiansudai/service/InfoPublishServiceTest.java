@@ -1,18 +1,13 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.exception.InvestException;
-import com.tuotiansudai.exception.InvestExceptionType;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
-import javafx.beans.binding.When;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +15,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.AssertTrue;
 import java.util.Date;
 import java.util.UUID;
 
