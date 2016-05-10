@@ -34,6 +34,10 @@ public class AboutController {
         if("service-fee".equals(item)){
             modelAndView.addObject("withdrawFee", AmountConverter.convertCentToString(withdrawFee));
         }
+        if("operational".equals(item))
+        {
+            modelAndView.addObject("investDetailList", infoPublishService.getInvestDetail());
+        }
         return modelAndView;
     }
 
@@ -45,11 +49,4 @@ public class AboutController {
         return operationDataDto;
     }
 
-    @RequestMapping(path = "/operation-data/table", method = RequestMethod.GET)
-    public ModelAndView infoPublishTable(){
-        ModelAndView modelAndView =  new ModelAndView();
-
-        modelAndView.addObject("investDetailList", infoPublishService.getInvestDetail());
-        return modelAndView;
-    }
 }
