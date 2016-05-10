@@ -34,6 +34,10 @@ public class LoanDetailDto extends BaseDataDto {
 
     private ProductType productType;
 
+    private ActivityType activityType;
+
+    private double newbieInterestCouponRate;
+
     private double basicRate;
 
     private double activityRate;
@@ -165,6 +169,22 @@ public class LoanDetailDto extends BaseDataDto {
 
     public void setProductType(ProductType productType) {
         this.productType = productType;
+    }
+
+    public ActivityType getActivityType() {
+        return activityType;
+    }
+
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
+    }
+
+    public double getNewbieInterestCouponRate() {
+        return newbieInterestCouponRate;
+    }
+
+    public void setNewbieInterestCouponRate(double newbieInterestCouponRate) {
+        this.newbieInterestCouponRate = newbieInterestCouponRate;
     }
 
     public double getBasicRate() {

@@ -14,6 +14,8 @@ public class AutoJPushRepayAlertJob implements Job {
 
     public final static String REPAY_ID_KEY = "REPAY_ID";
 
+    public final static String ADVANCE_REPAY_FLAG_KEY = "ADVANCE_REPAY_FLAG";
+
     public final static int JPUSH_ALERT_REPAY_DELAY_MINUTES = 2;
 
     @Autowired
@@ -23,7 +25,8 @@ public class AutoJPushRepayAlertJob implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.debug("trigger send jPush alert repay job, prepare do job");
         long loanRepayId = (long) context.getJobDetail().getJobDataMap().get(REPAY_ID_KEY);
-        jPushAlertService.autoJPushRepayAlert(loanRepayId);
+        boolean isAdvanceRepay = (boolean) context.getJobDetail().getJobDataMap().get(ADVANCE_REPAY_FLAG_KEY);
+        jPushAlertService.autoJPushRepayAlert(loanRepayId, isAdvanceRepay);
         logger.debug("trigger send jPush alert repay job, loanId : " + loanRepayId);
 
     }

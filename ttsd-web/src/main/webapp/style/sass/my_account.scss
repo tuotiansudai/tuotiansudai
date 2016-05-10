@@ -177,7 +177,21 @@ body{
 //Account Overview
 .account-overview {
   padding: 0 !important;
-
+  .new-user-award {
+    background: #fff1e5;
+    margin-top: 10px;
+    height: 38px;
+    line-height: 38px;
+    border: 1px solid #ff7200;
+    border-radius: 2px;
+      span {
+        background: #ff0000;
+        color: #fff;
+        padding: 3px 8px;
+        border-radius: 10px;
+        margin: 0 10px;
+      }
+  }
   .sign-layer {
     position: fixed;
     top: 0;
@@ -434,7 +448,7 @@ body{
   }
 }
 .assets-box {
-  height: 171px;
+  overflow: hidden;
   box-sizing: border-box;
 
   .assets-report {
@@ -959,7 +973,7 @@ body{
     }
   }
   .loan-list-box ul {
-    & li {
+    li {
       border-radius: 8px;
       border: 1px solid #e5e5e5;
       padding: 5px 2px;
@@ -1004,6 +1018,14 @@ body{
         position: absolute;
         left: -5px;
         top: -6px;
+      }
+      .new-user{
+        position: absolute;
+        top: -5px;
+        left: 0;
+        width: 56px;
+        height: 75px;
+        background: url("/images/sign/index_sprites_20160505.png") 0px -170px no-repeat;
       }
       .loan-info-frame {
         width: 690px;
@@ -1059,6 +1081,13 @@ body{
               i {
                 font-size: 16px;
                 color: #ff7200;
+              }
+              span{
+                font-size: 12px;
+                color: #ff9c1b;
+                border: 1px solid #ff9c1b;
+                padding: 2px 5px;
+                border-radius: 20px;
               }
             }
           }
@@ -1206,7 +1235,17 @@ body{
       padding-left: 40px;
       border-bottom: 2px solid #ccc;
       font-size: 14px;
-
+      &.new{
+        padding-left:50px;
+      }
+      .new-user{
+        position: absolute;
+        top: -2px;
+        left: -10px;
+        width: 56px;
+        height: 75px;
+        background: url("/images/sign/index_sprites_20160505.png") 0px -170px no-repeat;
+      }
       .hot {
         width: 55px;
         height: 55px;
@@ -1298,9 +1337,9 @@ body{
     }
     .product-type-text {
       position: absolute;
-      left: 108px;
+      left: 100px;
       bottom: 10px;
-      width: 86px;
+      width: 120px;
       text-align: center;
       border: 1px dashed #ff752a;
       border-radius: 34px;
@@ -3606,6 +3645,10 @@ body{
       margin: 0 !important;
       padding-left: 0 !important;
       text-align: center;
+      .new-user{
+        top:-6px!important;
+        left:0!important;
+      }
     }
     .chart-info {
       display: none;
@@ -3614,7 +3657,8 @@ body{
       left: 50% !important;
       bottom: 55px !important;
       border: none !important;
-      margin-left: -44px !important;
+      margin-left: -58px !important;
+      font-size:12px!important;
     }
     .chart-box {
       position: relative;
