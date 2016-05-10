@@ -199,7 +199,7 @@ public class OperationDataServiceImpl implements OperationDataService {
         Calendar calendar = Calendar.getInstance();
         calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) - monthSize, 1, 0, 0, 0);
         for(int i = 0; i < monthSize; i++) {
-            String month = calendar.get(Calendar.YEAR) + "年" + (calendar.get(Calendar.MONTH) + 1) + "月";
+            String month = calendar.get(Calendar.YEAR) + "." + (calendar.get(Calendar.MONTH) + 1);
             operationDataServiceModel.addInvestMonth(month);
 
             Date startTime = calendar.getTime();

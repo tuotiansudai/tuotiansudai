@@ -1,4 +1,4 @@
-require(['jquery','mustache','text!tpl/notice-list.mustache','load-swiper','layerWrapper','commonFun','pagination','echarts','fancybox'], function ($,Mustache,ListTemplate,loadSwiper,layer) {
+require(['jquery','mustache','text!tpl/notice-list.mustache','load-swiper','layerWrapper','commonFun','pagination','echarts','fancybox','layerWrapper'], function ($,Mustache,ListTemplate,loadSwiper,layer) {
     $(function () {
         var $noticeList=$('#noticeList'),
             $noticeDetail=$('#noticeDetail'),
@@ -98,71 +98,26 @@ require(['jquery','mustache','text!tpl/notice-list.mustache','load-swiper','laye
         })
         .done(function(data) {
             console.log(data);
-            require.config({
-                paths: {
-                    echarts: './js/dist'
-                }
-            });
-            var option = {
-                      color:['#ff9c1b'],
-                        title : {
-                            text: '拓天速贷',
-                            subtext: '金额'
-                        },
-                        tooltip : {
-                            trigger: 'axis'
-                        },
-                        legend: {
-                            data:['运营数据']
-                        },
-                        toolbox: {
-                            show : false,
-                            feature : {
-                                mark : {show: true},
-                                dataView : {show: true, readOnly: false},
-                                magicType : {show: true, type: ['line', 'bar']},
-                                restore : {show: true},
-                                saveAsImage : {show: true}
-                            }
-                        },
-                        calculable : true,
-                        xAxis : [
-                            {
-                                type : 'category',
-                                data : data.month
-                            }
-                        ],
-                        yAxis : [
-                            {
-                                type : 'value'
-                            }
-                        ],
-                        series : [
-                            {
-                                name:'交易额',
-                                type:'bar',
-                                data:data.money,
-                                markPoint : {
-                                    data : [
-                                        {type : 'max', name: '最大值'},
-                                        {type : 'min', name: '最小值'}
-                                    ]
-                                },
-                                markLine : {
-                                    data : [
-                                        {type : 'average', name: '平均值'}
-                                    ]
-                                }
-                            }
-                            
-                        ]
-                    };
-                    var myChart = echarts.init(document.getElementById('dataRecord'));
-                    // 为echarts对象加载数据 
-                    myChart.setOption(option); 
+            $('#operationDays').text(data.operationDays+'天');
+            $('#usersCount').text(data.usersCount+'人');
+            $('#tradeAmount').text(data.tradeAmount+'元');
+            var dataJson = {
+                    title:'拓天速贷',
+                    sub:'金额',
+                    name:'运营数据',
+                    month:data.month,
+                    money:data.money
+                },
+                option = MyChartsObject.ChartOptionTemplates.Bar(dataJson,'YTTTTT'),
+                container = $("#dataRecord")[0],
+                opt = MyChartsObject.ChartConfig(container, option);
+                MyChartsObject.Charts.RenderChart(opt);
+            
+            
+            
         })
         .fail(function() {
-            console.log("error");
+            layer.msg('请求数据失败，请刷新页面重试！');
         });
     });
 });

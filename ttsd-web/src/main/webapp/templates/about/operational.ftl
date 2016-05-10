@@ -7,15 +7,15 @@
             <div class="model-container">
                 <ul class="model-title">
                     <li class="model-one">
-                        <p id="operationDays">337天</p>
+                        <p id="operationDays"></p>
                         <p>安全运营时间</p>
                     </li>
                     <li class="model-two">
-                        <p id="usersCount">196,580人</p>
+                        <p id="usersCount"></p>
                         <p>注册投资用户</p>
                     </li>
                     <li class="model-three">
-                        <p id="tradeAmount">7,227万元</p>
+                        <p id="tradeAmount"></p>
                         <p>累计交易金额</p>
                     </li>
                 </ul>
@@ -23,7 +23,7 @@
         </div>
         <div class="data-model">
             <h3>平台累计投资</h3>
-            <div class="model-container" id="dataRecord">
+            <div class="model-container" id="dataRecord" style="width:765px;height:250px;">
                 
             </div>
         </div>
