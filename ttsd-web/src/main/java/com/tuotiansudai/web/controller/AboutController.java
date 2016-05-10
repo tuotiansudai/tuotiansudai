@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.controller;
 
-import com.tuotiansudai.repository.model.OperationDataModel;
+import com.tuotiansudai.dto.OperationDataDto;
+import com.tuotiansudai.service.impl.OperationDataServiceModel;
 import com.tuotiansudai.service.OperationDataService;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -34,9 +36,10 @@ public class AboutController {
     }
 
     @RequestMapping(path = "/info-publish", method = RequestMethod.GET)
-    public String infoPublishChart(){
-        OperationDataModel operationDataModel = operationDataService.getOperationDataFromRedis();
+    @ResponseBody
+    public OperationDataDto infoPublishChart(){
+        OperationDataServiceModel operationDataServiceModel = operationDataService.getOperationDataFromRedis();
 
-        return operationDataModel.getJSONString();
+        return operationDataServiceModel.getOperationDataDto();
     }
 }

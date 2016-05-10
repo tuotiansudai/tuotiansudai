@@ -4,7 +4,6 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.OperationDataModel;
 import com.tuotiansudai.service.OperationDataService;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,14 +45,14 @@ public class OperationDataServiceImpl implements OperationDataService {
                 InvestStatus.SUCCESS, null));
     }
 
-    private void setMonthOperationData(OperationDataModel operationDataModel)
+    private void setMonthOperationData(OperationDataServiceModel operationDataServiceModel)
     {
-        final int monthSize = operationDataModel.getInvestMonthSize();
+        final int monthSize = operationDataServiceModel.getInvestMonthSize();
         Calendar calendar = Calendar.getInstance();
         calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) - monthSize, 1, 0, 0, 0);
         for(int i = 0; i < monthSize; i++) {
             String month = calendar.get(Calendar.YEAR) + "年" + (calendar.get(Calendar.MONTH) + 1) + "月";
-            operationDataModel.addInvestMonth(month);
+            operationDataServiceModel.addInvestMonth(month);
 
             Date startTime = calendar.getTime();
             calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1);
@@ -61,46 +60,46 @@ public class OperationDataServiceImpl implements OperationDataService {
 
             String amount = AmountConverter.convertCentToString(investMapper.sumInvestAmount(null, null, null, null, null,
                     startTime, endTime, InvestStatus.SUCCESS, null));
-            operationDataModel.addInvestMonthAmount(amount);
+            operationDataServiceModel.addInvestMonthAmount(amount);
         }
     }
 
     @Override
-    public OperationDataModel getOperationDataFromDatabase()
+    public OperationDataServiceModel getOperationDataFromDatabase()
     {
-        OperationDataModel operationDataModel = new OperationDataModel();
-        operationDataModel.setInvestTotalAmount(getTotalSuccessAmount());
-        operationDataModel.setUserCount(userMapper.findUsersCount());
-        setMonthOperationData(operationDataModel);
+        OperationDataServiceModel operationDataServiceModel = new OperationDataServiceModel();
+        operationDataServiceModel.setInvestTotalAmount(getTotalSuccessAmount());
+        operationDataServiceModel.setUserCount(userMapper.findUsersCount());
+        setMonthOperationData(operationDataServiceModel);
 
-        return operationDataModel;
+        return operationDataServiceModel;
     }
 
     @Override
-    public OperationDataModel getOperationDataFromRedis()
+    public OperationDataServiceModel getOperationDataFromRedis()
     {
         final String redisInfoPublishKey = MessageFormat.format(REDIS_INFO_PUBLISH_KEY_TEMPLATE, String.valueOf(simpleDateFormat.format(new Date())));
-        OperationDataModel operationDataModel;
+        OperationDataServiceModel operationDataServiceModel;
         if(redisWrapperClient.exists(redisInfoPublishKey)){
-            operationDataModel = new OperationDataModel();
-            operationDataModel.setUserCount(Integer.parseInt(redisWrapperClient.hget(redisInfoPublishKey, USERS_COUNT)));
-            operationDataModel.setInvestTotalAmount(redisWrapperClient.hget(redisInfoPublishKey, TRADE_AMOUNT));
-            operationDataModel.setInvestMonth(redisWrapperClient.hget(redisInfoPublishKey, OPERATION_DATA_MONTH));
-            operationDataModel.setInvestMonthAmount(redisWrapperClient.hget(redisInfoPublishKey, OPERATION_DATA_MONTH_AMOUNT));
+            operationDataServiceModel = new OperationDataServiceModel();
+            operationDataServiceModel.setUserCount(Integer.parseInt(redisWrapperClient.hget(redisInfoPublishKey, USERS_COUNT)));
+            operationDataServiceModel.setInvestTotalAmount(redisWrapperClient.hget(redisInfoPublishKey, TRADE_AMOUNT));
+            operationDataServiceModel.setInvestMonth(redisWrapperClient.hget(redisInfoPublishKey, OPERATION_DATA_MONTH));
+            operationDataServiceModel.setInvestMonthAmount(redisWrapperClient.hget(redisInfoPublishKey, OPERATION_DATA_MONTH_AMOUNT));
         } else {
-            operationDataModel = getOperationDataFromDatabase();
-            updateRedis(operationDataModel);
+            operationDataServiceModel = getOperationDataFromDatabase();
+            updateRedis(operationDataServiceModel);
         }
-        return operationDataModel;
+        return operationDataServiceModel;
     }
 
     @Override
-    public void updateRedis(OperationDataModel operationDataModel)
+    public void updateRedis(OperationDataServiceModel operationDataServiceModel)
     {
         final String redisInfoPublishKey = MessageFormat.format(REDIS_INFO_PUBLISH_KEY_TEMPLATE, String.valueOf(simpleDateFormat.format(new Date())));
-        redisWrapperClient.hset(redisInfoPublishKey, USERS_COUNT, Long.toString(operationDataModel.getUserCount()), timeout);
-        redisWrapperClient.hset(redisInfoPublishKey, TRADE_AMOUNT, operationDataModel.getInvestTotalAmount(), timeout);
-        redisWrapperClient.hset(redisInfoPublishKey, OPERATION_DATA_MONTH, operationDataModel.getInvestMonthString(), timeout);
-        redisWrapperClient.hset(redisInfoPublishKey, OPERATION_DATA_MONTH_AMOUNT, operationDataModel.getInvestMonthAmountString(), timeout);
+        redisWrapperClient.hset(redisInfoPublishKey, USERS_COUNT, Long.toString(operationDataServiceModel.getUserCount()), timeout);
+        redisWrapperClient.hset(redisInfoPublishKey, TRADE_AMOUNT, operationDataServiceModel.getInvestTotalAmount(), timeout);
+        redisWrapperClient.hset(redisInfoPublishKey, OPERATION_DATA_MONTH, operationDataServiceModel.getInvestMonthString(), timeout);
+        redisWrapperClient.hset(redisInfoPublishKey, OPERATION_DATA_MONTH_AMOUNT, operationDataServiceModel.getInvestMonthAmountString(), timeout);
     }
 }

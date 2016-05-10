@@ -1,14 +1,14 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.repository.model.OperationDataModel;
+import com.tuotiansudai.service.impl.OperationDataServiceModel;
 
 /**
  * Created by huoxuanbo on 16/5/9.
  */
 public interface OperationDataService {
-    OperationDataModel getOperationDataFromDatabase();
+    OperationDataServiceModel getOperationDataFromDatabase();
 
-    OperationDataModel getOperationDataFromRedis();
+    OperationDataServiceModel getOperationDataFromRedis();
 
-    void updateRedis(OperationDataModel operationDataModel);
+    void updateRedis(OperationDataServiceModel operationDataServiceModel);
 }

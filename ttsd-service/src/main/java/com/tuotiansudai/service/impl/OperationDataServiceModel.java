@@ -1,7 +1,9 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import com.tuotiansudai.dto.OperationDataDto;
+import com.tuotiansudai.service.OperationDataService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -13,7 +15,7 @@ import java.util.*;
 /**
  * Created by huoxuanbo on 16/5/9.
  */
-public class OperationDataModel {
+public class OperationDataServiceModel {
     final private String startOperationTime = "2015-07-01";
     private long userCount;
     private String investTotalAmount;
@@ -21,29 +23,20 @@ public class OperationDataModel {
     private List<String> investMonth = new LinkedList<>();
     private int investMonthSize;
 
-    public OperationDataModel() {
+    public OperationDataServiceModel() {
         this.setInvestMonthSize();
     }
 
-    public String getJSONString()
+    public OperationDataDto getOperationDataDto()
     {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("operationDays", this.getOperationTime());
-        jsonObject.put("usersAmount", this.getUserCount());
-        jsonObject.put("TradeAmount", this.getInvestTotalAmount());
-        JSONArray jsonMonthAmount = new JSONArray();
-        for(String number : this.getInvestMonthAmount())
-        {
-            jsonMonthAmount.add(number);
-        }
-        jsonObject.put("money", jsonMonthAmount);
-        JSONArray jsonMonth = new JSONArray();
-        for(String month : this.getInvestMonth())
-        {
-            jsonMonth.add(month);
-        }
-        jsonObject.put("month", jsonMonth);
-        return jsonObject.toString();
+        OperationDataDto operationDataDto = new OperationDataDto();
+        operationDataDto.setUsersCount(this.getOperationTime());
+        operationDataDto.setTradeAmount(this.getInvestTotalAmount());
+        operationDataDto.setOperationDays(this.getOperationTime());
+        operationDataDto.setMonth(this.getInvestMonth());
+        operationDataDto.setMoney(this.getInvestMonthAmount());
+
+        return operationDataDto;
     }
 
     public int getOperationTime() {

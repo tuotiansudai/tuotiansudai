@@ -1,6 +1,6 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.repository.model.OperationDataModel;
+import com.tuotiansudai.service.impl.OperationDataServiceModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,36 +24,25 @@ public class OperationDataServiceTest {
     @Test
     public void testGetOperationDataModelFromDatabase()
     {
-        OperationDataModel operationDataModel = operationDataService.getOperationDataFromDatabase();
-        assertEquals(314, operationDataModel.getOperationTime());
-        assertEquals(operationDataModel.getInvestMonthSize(), operationDataModel.getInvestMonth().size());
-        assertEquals(operationDataModel.getInvestMonthSize(), operationDataModel.getInvestMonthAmount().size());
+        OperationDataServiceModel operationDataServiceModel = operationDataService.getOperationDataFromDatabase();
+        assertEquals(314, operationDataServiceModel.getOperationTime());
+        assertEquals(operationDataServiceModel.getInvestMonthSize(), operationDataServiceModel.getInvestMonth().size());
+        assertEquals(operationDataServiceModel.getInvestMonthSize(), operationDataServiceModel.getInvestMonthAmount().size());
     }
 
     @Test
     public void testUpdateRedisAndGetOperationDataFromRedis()
     {
-        OperationDataModel operationDataModelFromDB = operationDataService.getOperationDataFromDatabase();
-        operationDataService.updateRedis(operationDataModelFromDB);
-        OperationDataModel operationDataModelFromRedis = operationDataService.getOperationDataFromRedis();
-        assertEquals(operationDataModelFromDB.getOperationTime(), operationDataModelFromRedis.getOperationTime());
-        assertEquals(operationDataModelFromDB.getUserCount(), operationDataModelFromRedis.getUserCount());
-        assertTrue(operationDataModelFromRedis.getInvestTotalAmount().equals(operationDataModelFromDB.getInvestTotalAmount()));
-        List<String> investMonthFromDB = operationDataModelFromDB.getInvestMonth();
-        List<String> investMonthFromRedis = operationDataModelFromRedis.getInvestMonth();
+        OperationDataServiceModel operationDataServiceModelFromDB = operationDataService.getOperationDataFromDatabase();
+        operationDataService.updateRedis(operationDataServiceModelFromDB);
+        OperationDataServiceModel operationDataServiceModelFromRedis = operationDataService.getOperationDataFromRedis();
+        assertEquals(operationDataServiceModelFromDB.getOperationTime(), operationDataServiceModelFromRedis.getOperationTime());
+        assertEquals(operationDataServiceModelFromDB.getUserCount(), operationDataServiceModelFromRedis.getUserCount());
+        assertTrue(operationDataServiceModelFromRedis.getInvestTotalAmount().equals(operationDataServiceModelFromDB.getInvestTotalAmount()));
+        List<String> investMonthFromDB = operationDataServiceModelFromDB.getInvestMonth();
+        List<String> investMonthFromRedis = operationDataServiceModelFromRedis.getInvestMonth();
         assertEquals(investMonthFromDB.size(), investMonthFromRedis.size());
-        assertEquals(operationDataModelFromDB.getInvestMonthString(), operationDataModelFromRedis.getInvestMonthString());
-        assertEquals(operationDataModelFromDB.getInvestMonthAmountString(), operationDataModelFromRedis.getInvestMonthAmountString());
-    }
-
-    @Test
-    public void testGetJSONString()
-    {
-        final String exceptJSONString = "{\"operationDays\":314,\"usersAmount\":40039,\"TradeAmount\":\"658.00\",\"money\"" +
-                ":[\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"658.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"0.00\"],\"month\"" +
-                ":[\"2015年7月\",\"2015年8月\",\"2015年9月\",\"2015年10月\",\"2015年11月\",\"2015年12月\",\"2016年1月\",\"" +
-                "2016年2月\",\"2016年3月\",\"2016年4月\"]}";
-        OperationDataModel operationDataModel = operationDataService.getOperationDataFromDatabase();
-        assertEquals(exceptJSONString, operationDataModel.getJSONString());
+        assertEquals(operationDataServiceModelFromDB.getInvestMonthString(), operationDataServiceModelFromRedis.getInvestMonthString());
+        assertEquals(operationDataServiceModelFromDB.getInvestMonthAmountString(), operationDataServiceModelFromRedis.getInvestMonthAmountString());
     }
 }
