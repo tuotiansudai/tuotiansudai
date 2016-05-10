@@ -202,8 +202,8 @@ public class UserMapperTest {
     }
 
     @Test
-    public void testGetUserAmount(){
-        long userAmount = userMapper.findUsersCount();
-        assertEquals(40039, userAmount);
+    public void testGetUserCount(){
+        long userCount = userMapper.findUsersCount();
+        assertTrue(userCount > 0);
     }
 }

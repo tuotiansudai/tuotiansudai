@@ -67,7 +67,7 @@ public class OperationDataServiceImpl implements OperationDataService {
 
         public OperationDataDto getOperationDataDto() {
             OperationDataDto operationDataDto = new OperationDataDto();
-            operationDataDto.setUsersCount(this.getOperationTime());
+            operationDataDto.setUsersCount(this.getUserCount());
             operationDataDto.setTradeAmount(this.getInvestTotalAmount());
             operationDataDto.setOperationDays(this.getOperationTime());
             operationDataDto.setMonth(this.getInvestMonth());
