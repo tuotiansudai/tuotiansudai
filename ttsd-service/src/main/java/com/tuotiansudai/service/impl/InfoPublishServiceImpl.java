@@ -31,9 +31,9 @@ public class InfoPublishServiceImpl implements InfoPublishService {
     public List<InvestDataView> getInvestDetail() {
         List<InvestDataView> investDataViewList = new ArrayList<InvestDataView>();
         if(redisWrapperClient.exists(MessageFormat.format(INFO_PUBLISH_KEY_TEMPLATE, String.valueOf(sdf.format(new Date()))))){
-            List<String>  StringValues = redisWrapperClient.lrange(MessageFormat.format(INFO_PUBLISH_KEY_TEMPLATE, String.valueOf(sdf.format(new Date()))), 0, -1);
-            for(String value: StringValues){
-                String[] investDataViewValues = value.split("\\|");
+            Map<String,String> map = redisWrapperClient.hgetAll(MessageFormat.format(INFO_PUBLISH_KEY_TEMPLATE, String.valueOf(sdf.format(new Date()))));
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                String[] investDataViewValues = entry.getValue().split("\\|");
                 InvestDataView investDataView = new InvestDataView();
                 investDataView.setProductName(investDataViewValues[0]);
                 investDataView.setTotalInvestAmount(investDataViewValues[1]);
@@ -45,19 +45,9 @@ public class InfoPublishServiceImpl implements InfoPublishService {
         else{
             investDataViewList = investMapper.getInvestDetail();
             for(InvestDataView investDataView: investDataViewList){
-                redisWrapperClient.lpush(MessageFormat.format(INFO_PUBLISH_KEY_TEMPLATE, String.valueOf(sdf.format(new Date()))), investDataView.ConvertInvestDataViewToString());
+                redisWrapperClient.hset(MessageFormat.format(INFO_PUBLISH_KEY_TEMPLATE, String.valueOf(sdf.format(new Date()))), investDataView.getProductName(), investDataView.ConvertInvestDataViewToString(), 60*60*24);
             }
         }
         return investDataViewList;
-    }
-
-    @Override
-    public void createInfoPublishInvestDetail(){
-        redisWrapperClient.del(MessageFormat.format(INFO_PUBLISH_KEY_TEMPLATE, String.valueOf(sdf.format(new Date()))));
-
-        List<InvestDataView> investDataViewList = investMapper.getInvestDetail();
-        for(InvestDataView investDataView: investDataViewList){
-            redisWrapperClient.lpush(MessageFormat.format(INFO_PUBLISH_KEY_TEMPLATE, String.valueOf(sdf.format(new Date()))), investDataView.ConvertInvestDataViewToString());
-        }
     }
 }

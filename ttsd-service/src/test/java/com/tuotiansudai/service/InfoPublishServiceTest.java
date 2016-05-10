@@ -10,6 +10,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
+import javafx.beans.binding.When;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -112,19 +113,19 @@ public class InfoPublishServiceTest {
         UserModel userModelInvest = createUserByUserId("testUserInvest");
         UserModel userModelLoaner = createUserByUserId("testUserLoaner");
 
-        createLoanByUserId("testUserLoan",10001,ProductType.SYL);
-        createLoanByUserId("testUserLoan",10002,ProductType.WYX);
-        createLoanByUserId("testUserLoan",10003,ProductType.JYF);
+        createLoanByUserId("testUserLoaner",10001,ProductType.SYL);
+        createLoanByUserId("testUserLoaner",10002,ProductType.WYX);
+        createLoanByUserId("testUserLoaner",10003,ProductType.JYF);
 
-        createInvest("testuserInvest1",10001,1000);
-        createInvest("testuserInvest1",10001,2000);
-        createInvest("testuserInvest1",10002,3000);
-        createInvest("testuserInvest1",10002,4000);
-        createInvest("testuserInvest1",10003,5000);
-        createInvest("testuserInvest1",10003,6000);
+        createInvest("testUserInvest",10001,1000);
+        createInvest("testUserInvest",10001,2000);
+        createInvest("testUserInvest",10002,3000);
+        createInvest("testUserInvest",10002,4000);
+        createInvest("testUserInvest",10003,5000);
+        createInvest("testUserInvest",10003,6000);
 
 
-
+        investMapper.getInvestDetail();
 
         infoPublishService.getInvestDetail();
     }
