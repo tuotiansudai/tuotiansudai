@@ -1,7 +1,11 @@
 package com.tuotiansudai.web.controller;
 
+import com.google.common.collect.Lists;
+import com.tuotiansudai.coupon.repository.model.UserGroup;
+import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.point.service.SignInService;
+import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.*;
 import com.tuotiansudai.util.DateUtil;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/account")
@@ -41,6 +46,9 @@ public class AccountController {
     @Autowired
     private PointService pointService;
 
+    @Autowired
+    private UserCouponService userCouponService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView account() {
         ModelAndView modelAndView = new ModelAndView("/account");
@@ -65,6 +73,7 @@ public class AccountController {
         modelAndView.addObject("latestInvestList", investRepayService.findLatestInvestByLoginName(loginName, 0, 6));
         modelAndView.addObject("signedIn",signInService.signInIsSuccess(loginName));
         modelAndView.addObject("myPoint", pointService.getAvailablePoint(loginName));
+        modelAndView.addObject("isUsableCouponExist", userCouponService.isUsableUserCouponExist(loginName));
         return modelAndView;
     }
 }

@@ -59,7 +59,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.ImitateLottery.name().equals(schedulerName)) {
             createImitateLotteryJob();
         }
-
     }
 
     @Override

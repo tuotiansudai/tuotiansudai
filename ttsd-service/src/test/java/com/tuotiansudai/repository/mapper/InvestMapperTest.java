@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -262,5 +263,11 @@ public class InvestMapperTest {
     public void shouldHasNoSuccessInvest() throws Exception {
         long amount = investMapper.sumSuccessInvestAmountByLoginName(null, User_ID);
         assertTrue(amount == 0);
+    }
+
+    @Test
+    public void shouldGetInvestDetail() throws Exception{
+        List<InvestDataView> investDataViews = investMapper.getInvestDetail();
+        assertTrue(investDataViews.size() ==3 );
     }
 }
