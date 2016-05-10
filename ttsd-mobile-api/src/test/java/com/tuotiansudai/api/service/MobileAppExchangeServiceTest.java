@@ -59,6 +59,7 @@ public class MobileAppExchangeServiceTest extends ServiceTestBase{
 
         assertEquals(ReturnMessage.EXCHANGE_CODE_IS_INVALID.getCode(),baseResponseDto.getCode());
     }
+
     @Test
     public void shouldExchangeIsSuccess(){
         ExchangeRequestDto exchangeRequestDto = new ExchangeRequestDto();
@@ -98,9 +99,6 @@ public class MobileAppExchangeServiceTest extends ServiceTestBase{
         assertEquals(couponModel.getCouponType().getName(),baseResponseDto.getData().getCoupons().get(0).getName());
         assertEquals(String.valueOf(500),baseResponseDto.getData().getCoupons().get(0).getRate());
         assertEquals(AmountConverter.convertCentToString(couponModel.getInvestLowerLimit()),baseResponseDto.getData().getCoupons().get(0).getInvestLowerLimit());
-        assertEquals(couponModel.getProductTypes().get(0),baseResponseDto.getData().getCoupons().get(0).getProductTypes().get(0));
+        assertEquals(baseResponseDto.getData().getCoupons().get(0).getProductTypes().get(0), ProductType._30.getProductLine());
     }
-
-
-
 }
