@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 @Component
 public class SignInClient extends BaseClient {
@@ -61,6 +60,10 @@ public class SignInClient extends BaseClient {
 
     private final static String SIGN_IN_URL = "/loginHandler";
 
+    static {
+
+    }
+
     public BaseDto<LoginDto> sendSignIn(HttpServletRequest httpServletRequest, SignInDto dto) {
         return send(httpServletRequest, dto, SIGN_IN_URL);
     }
@@ -72,7 +75,7 @@ public class SignInClient extends BaseClient {
                 return objectMapper.readValue(responseString, new TypeReference<BaseDto<LoginDto>>() {
                 });
             }
-        } catch (IOException | URISyntaxException e) {
+        } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
         BaseDto<LoginDto> resultDto = new BaseDto<>();
@@ -81,29 +84,19 @@ public class SignInClient extends BaseClient {
         return resultDto;
     }
 
-    protected String execute(HttpServletRequest httpServletRequest, String path, SignInDto dto, String method) throws IOException, URISyntaxException {
+    protected String execute(HttpServletRequest httpServletRequest, String path, SignInDto dto, String method) {
         String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", path);
         RequestBody requestBody = new FormEncodingBuilder().add("username", dto.getUsername()).add("password", dto.getPassword()).add("captcha", dto.getCaptcha()).build();
         if ("GET".equalsIgnoreCase(method)) {
             requestBody = null;
         }
-        Request request = new Request.Builder()
+        Request.Builder request = new Request.Builder()
                 .url(url)
                 .method(method, requestBody)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-//                .addHeader(CaptchaHelper.LOGIN_CAPTCHA, httpServletRequest.getSession().getAttribute(CaptchaHelper.LOGIN_CAPTCHA).toString())
-                .build();
-//        Cookie[] cookies = httpServletRequest.getCookies();
-//        CookieHandler cookieHandler = okHttpClient.getCookieHandler();
-//        URI uri = new URI(httpServletRequest.getRequestURI());
-//        for (int i = 0; i < cookies.length; i++) {
-//            Map<String, List<String>> cookiesMap = new HashMap<>();
-//            cookiesMap.put(cookies[i].getName(), Lists.newArrayList(cookies[i].getValue()));
-//            cookieHandler.put(uri, cookiesMap);
-//        }
-//        okHttpClient.setCookieHandler(cookieHandler);
+                .addHeader("SESSION", httpServletRequest.getSession().getId());
         try {
-            Response response = okHttpClient.newCall(request).execute();
+            Response response = okHttpClient.newCall(request.build()).execute();
             if (response.isSuccessful()) {
                 return response.body().string();
             }

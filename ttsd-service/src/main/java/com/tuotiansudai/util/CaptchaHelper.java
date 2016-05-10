@@ -53,12 +53,7 @@ public class CaptchaHelper {
         return !Strings.isNullOrEmpty(captcha) && captcha.trim().equalsIgnoreCase(actualCaptcha);
     }
     public boolean captchaVerify(String attributeKey, String captcha) {
-        String actualCaptcha;
-        if (attributeKey.equalsIgnoreCase(CaptchaHelper.LOGIN_CAPTCHA)) {
-            actualCaptcha = httpServletRequest.getHeader(attributeKey);
-        } else {
-            actualCaptcha = (String) httpServletRequest.getSession().getAttribute(attributeKey);
-        }
+        String actualCaptcha = (String) httpServletRequest.getSession().getAttribute(attributeKey);
         httpServletRequest.getSession().removeAttribute(attributeKey);
         return !Strings.isNullOrEmpty(captcha) && captcha.trim().equalsIgnoreCase(actualCaptcha);
     }
