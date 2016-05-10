@@ -33,12 +33,10 @@ public class AboutController {
         if("service-fee".equals(item)){
             modelAndView.addObject("withdrawFee", AmountConverter.convertCentToString(withdrawFee));
         }
-        else if("operation-data".equals(item)) {
-        }
         return modelAndView;
     }
 
-    @RequestMapping(path = "/info-publish", method = RequestMethod.GET)
+    @RequestMapping(path = "/operation-data/chart", method = RequestMethod.GET)
     @ResponseBody
     public OperationDataDto infoPublishChart() {
         OperationDataDto operationDataDto = operationDataService.getOperationDataFromRedis();
@@ -46,7 +44,7 @@ public class AboutController {
         return operationDataDto;
     }
 
-    @RequestMapping(path = "/operation-data", method = RequestMethod.GET)
+    @RequestMapping(path = "/operation-data/table", method = RequestMethod.GET)
     public ModelAndView infoPublishTable(){
         ModelAndView modelAndView =  new ModelAndView();
 
