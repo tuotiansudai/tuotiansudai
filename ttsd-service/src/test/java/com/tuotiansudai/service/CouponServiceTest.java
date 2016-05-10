@@ -222,7 +222,7 @@ public class CouponServiceTest {
         exchangeCouponDto.setInvestLowerLimit("1000.00");
         exchangeCouponDto.setCouponType(CouponType.INVEST_COUPON);
         List<ProductType> productTypes = Lists.newArrayList();
-        productTypes.add(ProductType.JYF);
+        productTypes.add(ProductType._180);
         exchangeCouponDto.setProductTypes(productTypes);
         exchangeCouponDto.setInvestLowerLimit("1000.00");
         exchangeCouponDto.setUserGroup(UserGroup.ALL_USER);
@@ -238,33 +238,4 @@ public class CouponServiceTest {
         return registerUserDto;
     }
 
-    private LoanModel fakeLoanModel(String loginName) {
-        LoanModel loanModel = new LoanModel();
-        loanModel.setAgentLoginName(loginName);
-        loanModel.setBaseRate(16.00);
-        long id = idGenerator.generate();
-        loanModel.setId(id);
-        loanModel.setName("店铺资金周转");
-        loanModel.setActivityRate(12);
-        loanModel.setShowOnHome(true);
-        loanModel.setPeriods(30);
-        loanModel.setActivityType(ActivityType.EXCLUSIVE);
-        loanModel.setContractId(123);
-        loanModel.setDescriptionHtml("asdfasdf");
-        loanModel.setDescriptionText("asdfasd");
-        loanModel.setFundraisingEndTime(new Date());
-        loanModel.setFundraisingStartTime(new Date());
-        loanModel.setInvestFeeRate(15);
-        loanModel.setInvestIncreasingAmount(1);
-        loanModel.setLoanAmount(10000);
-        loanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
-        loanModel.setMaxInvestAmount(100000000000L);
-        loanModel.setMinInvestAmount(0);
-        loanModel.setCreatedTime(new Date());
-        loanModel.setStatus(LoanStatus.RAISING);
-        loanModel.setLoanerLoginName(loginName);
-        loanModel.setLoanerUserName("借款人");
-        loanModel.setLoanerIdentityNumber("111111111111111111");
-        return loanModel;
-    }
 }

@@ -52,7 +52,7 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         LoanModel loanModel = new LoanModel();
         loanModel.setId(1);
         loanModel.setName("name");
-        loanModel.setProductType(ProductType.JYF);
+        loanModel.setProductType(ProductType._30);
         InvestModel investModel = new InvestModel();
         investModel.setId(1);
         investModel.setLoanId(1);
@@ -73,7 +73,7 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         unusedUserCoupon.add(unUsedUserCouponView);
         unUsedUserCouponView.setId(1);
         unUsedUserCouponView.setCouponType(CouponType.NEWBIE_COUPON);
-        unUsedUserCouponView.setProductTypeList(Lists.newArrayList(ProductType.SYL, ProductType.WYX));
+        unUsedUserCouponView.setProductTypeList(Lists.newArrayList(ProductType._30, ProductType._90));
         unUsedUserCouponView.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
         unUsedUserCouponView.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
         unUsedUserCouponView.setCouponAmount(100);
@@ -83,7 +83,7 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         expiredUserCoupon.add(expiredUserCouponView);
         expiredUserCouponView.setId(1);
         expiredUserCouponView.setCouponType(CouponType.BIRTHDAY_COUPON);
-        expiredUserCouponView.setProductTypeList(Lists.newArrayList(ProductType.SYL, ProductType.WYX));
+        expiredUserCouponView.setProductTypeList(Lists.newArrayList(ProductType._30, ProductType._90));
         expiredUserCouponView.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
         expiredUserCouponView.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
         expiredUserCouponView.setCouponAmount(200);
@@ -102,7 +102,7 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         assertThat(responseDto.getData().getCoupons().size(), is(1));
         assertThat(((UserCouponResponseDataDto)(responseDto.getData().getCoupons().get(0))).getLoanId(), is(String.valueOf(loanModel.getId())));
         assertThat(((UserCouponResponseDataDto)responseDto.getData().getCoupons().get(0)).getLoanName(), is(String.valueOf(loanModel.getName())));
-        assertThat(((UserCouponResponseDataDto)responseDto.getData().getCoupons().get(0)).getLoanProductType(), is(loanModel.getProductType()));
+        assertThat(((UserCouponResponseDataDto)responseDto.getData().getCoupons().get(0)).getLoanProductType(), is(loanModel.getProductType().getProductLine()));
     }
 
     @Test
@@ -110,7 +110,7 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         LoanModel loanModel = new LoanModel();
         loanModel.setId(1);
         loanModel.setName("name");
-        loanModel.setProductType(ProductType.JYF);
+        loanModel.setProductType(ProductType._30);
         InvestModel investModel = new InvestModel();
         investModel.setId(1);
         investModel.setLoanId(1);
@@ -131,7 +131,7 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         unusedUserCoupon.add(unUsedUserCouponView);
         unUsedUserCouponView.setId(1);
         unUsedUserCouponView.setCouponType(CouponType.NEWBIE_COUPON);
-        unUsedUserCouponView.setProductTypeList(Lists.newArrayList(ProductType.SYL, ProductType.WYX));
+        unUsedUserCouponView.setProductTypeList(Lists.newArrayList(ProductType._30, ProductType._90));
         unUsedUserCouponView.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
         unUsedUserCouponView.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
         unUsedUserCouponView.setCouponAmount(100);
@@ -141,7 +141,7 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         expiredUserCoupon.add(expiredUserCouponView);
         expiredUserCouponView.setId(1);
         expiredUserCouponView.setCouponType(CouponType.BIRTHDAY_COUPON);
-        expiredUserCouponView.setProductTypeList(Lists.newArrayList(ProductType.SYL, ProductType.WYX));
+        expiredUserCouponView.setProductTypeList(Lists.newArrayList(ProductType._30, ProductType._90));
         expiredUserCouponView.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
         expiredUserCouponView.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
         expiredUserCouponView.setCouponAmount(200);
@@ -158,7 +158,7 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         BaseResponseDto<UserCouponListResponseDataDto> responseDto = mobileAppUserCouponService.getUserCoupons(requestDto);
 
         assertThat(responseDto.getData().getCoupons().size(), is(1));
-        assertThat(((UserCouponResponseDataDto)(responseDto.getData().getCoupons().get(0))).getType(), is(CouponType.NEWBIE_COUPON));
+        assertThat(responseDto.getData().getCoupons().get(0).getType(), is(CouponType.NEWBIE_COUPON));
     }
 
     @Test
@@ -166,7 +166,7 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         LoanModel loanModel = new LoanModel();
         loanModel.setId(1);
         loanModel.setName("name");
-        loanModel.setProductType(ProductType.JYF);
+        loanModel.setProductType(ProductType._30);
         InvestModel investModel = new InvestModel();
         investModel.setId(1);
         investModel.setLoanId(1);
@@ -187,7 +187,7 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         unusedUserCoupon.add(unUsedUserCouponView);
         unUsedUserCouponView.setId(1);
         unUsedUserCouponView.setCouponType(CouponType.NEWBIE_COUPON);
-        unUsedUserCouponView.setProductTypeList(Lists.newArrayList(ProductType.SYL, ProductType.WYX));
+        unUsedUserCouponView.setProductTypeList(Lists.newArrayList(ProductType._30, ProductType._90));
         unUsedUserCouponView.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
         unUsedUserCouponView.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
         unUsedUserCouponView.setCouponAmount(100);
@@ -197,7 +197,7 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         expiredUserCoupon.add(expiredUserCouponView);
         expiredUserCouponView.setId(1);
         expiredUserCouponView.setCouponType(CouponType.BIRTHDAY_COUPON);
-        expiredUserCouponView.setProductTypeList(Lists.newArrayList(ProductType.SYL, ProductType.WYX));
+        expiredUserCouponView.setProductTypeList(Lists.newArrayList(ProductType._30, ProductType._90));
         expiredUserCouponView.setStartTime(new DateTime().withTimeAtStartOfDay().toDate());
         expiredUserCouponView.setEndTime(new DateTime().withTimeAtStartOfDay().plusDays(1).toDate());
         expiredUserCouponView.setCouponAmount(200);
@@ -214,6 +214,6 @@ public class MobileAppUserCouponServiceTest extends ServiceTestBase {
         BaseResponseDto<UserCouponListResponseDataDto> responseDto = mobileAppUserCouponService.getUserCoupons(requestDto);
 
         assertThat(responseDto.getData().getCoupons().size(), is(1));
-        assertThat(((UserCouponResponseDataDto)(responseDto.getData().getCoupons().get(0))).getType(), is(CouponType.BIRTHDAY_COUPON));
+        assertThat(responseDto.getData().getCoupons().get(0).getType(), is(CouponType.BIRTHDAY_COUPON));
     }
 }

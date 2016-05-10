@@ -190,8 +190,8 @@ public class LoanModel implements Serializable {
         this.investIncreasingAmount = AmountConverter.convertStringToCent(loanDto.getInvestIncreasingAmount());
         this.maxInvestAmount = AmountConverter.convertStringToCent(loanDto.getMaxInvestAmount());
         this.minInvestAmount = AmountConverter.convertStringToCent(loanDto.getMinInvestAmount());
-        this.periods = loanDto.getPeriods();
-        this.duration = loanDto.getPeriods() * InterestCalculator.DAYS_OF_MONTH;
+        this.periods = loanDto.getType().getLoanPeriodUnit() == LoanPeriodUnit.DAY ? 1 : loanDto.getProductType().getPeriods();
+        this.duration = loanDto.getProductType().getDuration();
         this.showOnHome = loanDto.isShowOnHome();
         this.type = loanDto.getType();
         this.loanAmount = AmountConverter.convertStringToCent(loanDto.getLoanAmount());
@@ -485,10 +485,6 @@ public class LoanModel implements Serializable {
     private String rateStrDivideOneHundred(String rate) {
         BigDecimal rateBigDecimal = new BigDecimal(rate);
         return String.valueOf(rateBigDecimal.divide(new BigDecimal(100), 4, BigDecimal.ROUND_DOWN).doubleValue());
-    }
-
-    public int calculateLoanRepayTimes() {
-        return LoanPeriodUnit.DAY == this.type.getLoanPeriodUnit() ? 1 : this.periods;
     }
 
     public Date getUpdateTime() {

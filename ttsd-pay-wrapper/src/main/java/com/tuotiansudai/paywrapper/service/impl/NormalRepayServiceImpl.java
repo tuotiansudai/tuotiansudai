@@ -343,7 +343,7 @@ public class NormalRepayServiceImpl implements RepayService {
                 loanModel.getStatus() == LoanStatus.OVERDUE,
                 loanRepayBalance,
                 loanRepayModel.getActualRepayDate(),
-                loanModel.calculateLoanRepayTimes() == loanRepayModel.getPeriod(),
+                loanModel.getPeriods() == loanRepayModel.getPeriod(),
                 investRepayJobResults);
     }
 

@@ -76,7 +76,7 @@ public class MobileAppExchangeServiceTest extends ServiceTestBase{
         couponModel.setCouponType(CouponType.INTEREST_COUPON);
         couponModel.setRate(5);
         couponModel.setInvestLowerLimit(100);
-        couponModel.setProductTypes(Lists.newArrayList(ProductType.JYF));
+        couponModel.setProductTypes(Lists.newArrayList(ProductType._30));
 
         when(exchangeCodeService.getValueBase31(anyString())).thenReturn(123L);
         when(exchangeCodeService.checkExchangeCodeCorrect(anyString(), anyLong(), any(CouponModel.class))).thenReturn(true);

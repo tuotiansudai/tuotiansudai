@@ -49,7 +49,7 @@ public class MobileAppExchangeControllerTest extends ControllerTestBase{
         item.setStartDate(new Date());
         item.setEndDate(new Date());
         item.setInvestLowerLimit("1.00");
-        item.setProductTypes(Lists.newArrayList(ProductType.JYF, ProductType.WYX, ProductType.SYL));
+        item.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180));
         UserCouponListResponseDataDto userCouponListResponseDataDto = new UserCouponListResponseDataDto(Lists.newArrayList(item));
         responseDto.setCode(ReturnMessage.SUCCESS.getCode());
         responseDto.setMessage(ReturnMessage.SUCCESS.getMsg());

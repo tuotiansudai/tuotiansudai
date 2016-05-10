@@ -15,7 +15,7 @@ public class UserCouponResponseDataDto extends BaseCouponResponseDataDto{
 
     private String loanName;
 
-    private ProductType loanProductType;
+    private String loanProductType;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date usedTime;
@@ -47,12 +47,10 @@ public class UserCouponResponseDataDto extends BaseCouponResponseDataDto{
         this.expectedInterest = AmountConverter.convertCentToString(userCouponView.getExpectedIncome());
         this.loanId = String.valueOf(userCouponView.getLoanId());
         this.loanName = userCouponView.getLoanName();
-        this.loanProductType = userCouponView.getLoanProductType();
+        this.loanProductType = userCouponView.getLoanProductType().getProductLine();
         this.investAmount = AmountConverter.convertCentToString(userCouponView.getInvestAmount());
 
     }
-
-
 
     public String getLoanId() {
         return loanId;
@@ -70,11 +68,11 @@ public class UserCouponResponseDataDto extends BaseCouponResponseDataDto{
         this.loanName = loanName;
     }
 
-    public ProductType getLoanProductType() {
+    public String getLoanProductType() {
         return loanProductType;
     }
 
-    public void setLoanProductType(ProductType loanProductType) {
+    public void setLoanProductType(String loanProductType) {
         this.loanProductType = loanProductType;
     }
 

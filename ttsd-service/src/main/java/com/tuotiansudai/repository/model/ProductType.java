@@ -2,32 +2,39 @@ package com.tuotiansudai.repository.model;
 
 public enum ProductType {
 
-    SYL("30天", 1, 10.00),
-    WYX("90天", 3, 12.00),
-    JYF("180天", 6, 13.00),
-    _360("360天", 12, 13.00);
+    _30("30天", "SYL", 1, 30),
+    _90("90天", "WYX", 3, 90),
+    _180("180天", "JYF", 6, 180),
+    _360("360天", "JYF", 12, 360);
 
     private String name;
 
+    private String productLine;
+
     private int periods;
 
-    private double rate;
+    private int duration;
 
     public String getName() {
         return name;
+    }
+
+    public String getProductLine() {
+        return productLine;
     }
 
     public int getPeriods() {
         return periods;
     }
 
-    public double getRate() {
-        return rate;
+    public int getDuration() {
+        return duration;
     }
 
-    ProductType(String name, int periods, double rate) {
+    ProductType(String name, String productLine, int periods, int duration) {
         this.name = name;
+        this.productLine = productLine;
         this.periods = periods;
-        this.rate = rate;
+        this.duration = duration;
     }
 }

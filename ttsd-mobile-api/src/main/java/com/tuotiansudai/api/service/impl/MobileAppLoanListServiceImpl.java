@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppLoanListService;
 import com.tuotiansudai.api.util.CommonUtils;
+import com.tuotiansudai.api.util.ProductTypeConvertor;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.LoanModel;
@@ -28,15 +29,15 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
 
 
     @Override
-    public BaseResponseDto generateLoanList(LoanListRequestDto loanListRequestDto) {
-        BaseResponseDto dto = new BaseResponseDto();
+    public BaseResponseDto<LoanListResponseDataDto> generateLoanList(LoanListRequestDto loanListRequestDto) {
+        BaseResponseDto<LoanListResponseDataDto> dto = new BaseResponseDto<>();
         Integer index = loanListRequestDto.getIndex();
         Integer pageSize = loanListRequestDto.getPageSize();
-        if (index == null || pageSize == null || index.intValue() <=0 || pageSize.intValue() <=0) {
-            return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(),ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+        if (index == null || pageSize == null || index <=0 || pageSize <=0) {
+            return new BaseResponseDto<>(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(),ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
         index = (loanListRequestDto.getIndex() - 1) * pageSize;
-        List<LoanModel> loanModels = loanMapper.findLoanListWeb(loanListRequestDto.getProductType(), loanListRequestDto.getLoanStatus(),loanListRequestDto.getRateLower(),loanListRequestDto.getRateUpper(), index);
+        List<LoanModel> loanModels = loanMapper.findLoanListWeb(ProductTypeConvertor.stringConvertTo(loanListRequestDto.getProductType()), loanListRequestDto.getLoanStatus(),loanListRequestDto.getRateLower(),loanListRequestDto.getRateUpper(), index);
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(loanModels)) {
             loanDtoList = convertLoanDto(loanModels);
@@ -47,7 +48,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         LoanListResponseDataDto loanListResponseDataDto = new LoanListResponseDataDto();
         loanListResponseDataDto.setIndex(loanListRequestDto.getIndex());
         loanListResponseDataDto.setPageSize(loanListRequestDto.getPageSize());
-        loanListResponseDataDto.setTotalCount(loanMapper.findLoanListCountWeb(loanListRequestDto.getProductType(), loanListRequestDto.getLoanStatus(),loanListRequestDto.getRateLower(),loanListRequestDto.getRateUpper()));
+        loanListResponseDataDto.setTotalCount(loanMapper.findLoanListCountWeb(ProductTypeConvertor.stringConvertTo(loanListRequestDto.getProductType()), loanListRequestDto.getLoanStatus(),loanListRequestDto.getRateLower(),loanListRequestDto.getRateUpper()));
 
         if(CollectionUtils.isNotEmpty(loanDtoList)){
             loanListResponseDataDto.setLoanList(loanDtoList);

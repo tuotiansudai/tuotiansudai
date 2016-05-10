@@ -297,7 +297,7 @@ public class LoanControllerTest {
         couponModel.setCreatedBy(loginName);
         couponModel.setCreatedTime(new Date());
         couponModel.setCouponType(CouponType.RED_ENVELOPE);
-        couponModel.setProductTypes(Lists.newArrayList(ProductType.JYF, ProductType.WYX, ProductType.SYL));
+        couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180));
         couponMapper.create(couponModel);
         return couponModel.getId();
     }

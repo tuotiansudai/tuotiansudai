@@ -1335,7 +1335,7 @@ public class NormalRepayServiceTest {
         couponModel.setEndTime(new DateTime().plusDays(1).toDate());
         couponModel.setCreatedBy(loginName);
         couponModel.setCreatedTime(new Date());
-        couponModel.setProductTypes(Lists.newArrayList(ProductType.JYF));
+        couponModel.setProductTypes(Lists.newArrayList(ProductType._180));
         couponModel.setCouponType(CouponType.INVEST_COUPON);
         return couponModel;
     }
@@ -1348,7 +1348,7 @@ public class NormalRepayServiceTest {
         couponModel.setActive(true);
         couponModel.setCreatedBy(loginName);
         couponModel.setCreatedTime(new Date());
-        couponModel.setProductTypes(Lists.newArrayList(ProductType.JYF, ProductType.SYL, ProductType.WYX));
+        couponModel.setProductTypes(Lists.newArrayList(ProductType._30, ProductType._90, ProductType._180));
         couponModel.setCouponType(CouponType.BIRTHDAY_COUPON);
         return couponModel;
     }

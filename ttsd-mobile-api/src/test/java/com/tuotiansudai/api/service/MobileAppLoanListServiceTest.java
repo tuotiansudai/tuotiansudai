@@ -47,7 +47,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
         loanListRequestDto.setPageSize(10);
         BaseResponseDto<LoanListResponseDataDto> dto = mobileAppRegisterService.generateLoanList(loanListRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(),dto.getCode());
-        assertEquals(ProductType.JYF.name(),dto.getData().getLoanList().get(0).getLoanType());
+        assertEquals(ProductType._30.name(),dto.getData().getLoanList().get(0).getLoanType());
 
     }
 
@@ -78,7 +78,7 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
         loanModel.setLoanerLoginName(fakeUserName);
         loanModel.setLoanerUserName("借款人");
         loanModel.setLoanerIdentityNumber("111111111111111111");
-        loanModel.setProductType(ProductType.JYF);
+        loanModel.setProductType(ProductType._30);
 
         return loanModel;
     }

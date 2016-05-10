@@ -52,13 +52,7 @@ public class InterestCalculator {
     }
 
     public static long estimateExpectedInterest(LoanModel loanModel, long amount) {
-        int repayTimes = loanModel.calculateLoanRepayTimes();
-
-        int duration = loanModel.getPeriods();
-        if (loanModel.getType().getLoanPeriodUnit() == LoanPeriodUnit.MONTH) {
-            duration = repayTimes * InterestCalculator.DAYS_OF_MONTH;
-        }
-        return InterestCalculator.calculateInterest(loanModel, amount * duration);
+        return InterestCalculator.calculateInterest(loanModel, amount * loanModel.getDuration());
     }
 
     public static long estimateCouponExpectedInterest(LoanModel loanModel, CouponModel couponModel, long amount) {
@@ -66,11 +60,7 @@ public class InterestCalculator {
             return 0;
         }
 
-        int repayTimes = loanModel.calculateLoanRepayTimes();
-        int duration = loanModel.getPeriods();
-        if (loanModel.getType().getLoanPeriodUnit() == LoanPeriodUnit.MONTH) {
-            duration = repayTimes * DAYS_OF_MONTH;
-        }
+        int duration = loanModel.getDuration();
 
         long expectedInterest = 0;
         switch (couponModel.getCouponType()) {
