@@ -74,34 +74,34 @@
         <h2 class="column-title"><em>工作环境</em></h2>
         <ul class="com-place" id="companyPhoto">
             <li>
-                <a href="${staticServer}/images/sign/aboutus/photo_01.jpg" title="办公大楼" rel="group">
+                <a href="${staticServer}/images/sign/aboutus/photo_big_01.jpg" title="办公大楼" rel="group">
                     <img src="${staticServer}/images/sign/aboutus/photo_01.jpg">
                 </a>
                 <span>办公大楼</span>
             </li>
             <li>
-                <a href="${staticServer}/images/sign/aboutus/photo_02.jpg" title="公司前台" rel="group">
+                <a href="${staticServer}/images/sign/aboutus/photo_big_02.jpg" title="公司前台" rel="group">
                     <img src="${staticServer}/images/sign/aboutus/photo_02.jpg">
                 </a>
                 <span>公司前台</span>
             </li>
             <li>
-                <a href="${staticServer}/images/sign/aboutus/photo_03.jpg" title="技术团队" rel="group">
+                <a href="${staticServer}/images/sign/aboutus/photo_big_03.jpg" title="技术团队" rel="group">
                     <img src="${staticServer}/images/sign/aboutus/photo_03.jpg">
                 </a>
                 <span>技术团队</span>
             </li>
             <li>
-                <a href="${staticServer}/images/sign/aboutus/photo_04.jpg" title="客服团队" rel="group">
-                    <img src="${staticServer}/images/sign/aboutus/photo_04.jpg">
-                </a>
-                <span>客服团队</span>
-            </li>
-            <li>
-                <a href="${staticServer}/images/sign/aboutus/photo_05.jpg" title="运营团队" rel="group">
+                <a href="${staticServer}/images/sign/aboutus/photo_big_05.jpg" title="运营团队" rel="group">
                     <img src="${staticServer}/images/sign/aboutus/photo_05.jpg">
                 </a>
                 <span>运营团队</span>
+            </li>
+            <li>
+                <a href="${staticServer}/images/sign/aboutus/photo_big_04.jpg" title="客服团队" rel="group">
+                    <img src="${staticServer}/images/sign/aboutus/photo_04.jpg">
+                </a>
+                <span>客服团队</span>
             </li>
         </ul>
     </div>
