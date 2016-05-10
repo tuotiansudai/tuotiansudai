@@ -92,12 +92,11 @@ require(['jquery','mustache','text!tpl/notice-list.mustache','load-swiper','laye
             }
         });
         $.ajax({
-            url: '/about/info-publish',
+            url: '/about/operation-data/chart',
             type: 'GET',
             dataType: 'json'
         })
         .done(function(data) {
-            console.log(data);
             $('#operationDays').text(data.operationDays+'天');
             $('#usersCount').text(data.usersCount+'人');
             $('#tradeAmount').text(data.tradeAmount+'元');
