@@ -9,9 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class IdcardUtils {
+public class IdentityNumberValidator {
 
-    static Logger logger = Logger.getLogger(IdcardUtils.class);
+    static Logger logger = Logger.getLogger(IdentityNumberValidator.class);
 
     /***
      * 中国公民身份证号码最小长度。

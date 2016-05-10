@@ -6,7 +6,7 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.web.util.IdcardUtils;
+import com.tuotiansudai.web.util.IdentityNumberValidator;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,12 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Hashtable;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping(path = "/register/account")
@@ -53,7 +47,7 @@ public class RegisterAccountController {
     public ModelAndView registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto, RedirectAttributes redirectAttributes) {
         boolean isRegisterSuccess = false;
 
-        if(IdcardUtils.validateIdentity(registerAccountDto.getIdentityNumber())){
+        if(IdentityNumberValidator.validateIdentity(registerAccountDto.getIdentityNumber())){
             registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
             registerAccountDto.setMobile(LoginUserInfo.getMobile());
             BaseDto<PayDataDto> dto = this.userService.registerAccount(registerAccountDto);
