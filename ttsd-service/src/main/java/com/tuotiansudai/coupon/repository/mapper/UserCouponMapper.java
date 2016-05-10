@@ -47,4 +47,6 @@ public interface UserCouponMapper {
 
     List<UserCouponModel> findBirthdaySuccessByLoginNameAndInvestId(@Param("loginName") String loginName, @Param("investId") long investId);
 
+    List<UserCouponView> findAllSuccessByLoginNameAndInvestId(@Param("loginName") String loginName, @Param("investId") long investId);
+
 }

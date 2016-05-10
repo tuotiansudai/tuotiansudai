@@ -250,4 +250,8 @@
         select t.* from user_coupon t join coupon m on t.coupon_id = m.id and m.coupon_type = 'BIRTHDAY_COUPON' where t.login_name = #{loginName} and t.invest_id = #{investId} and t.status = 'SUCCESS'
     </select>
 
+    <select id="findAllSuccessByLoginNameAndInvestId" parameterType="map" resultMap="useRecordMap">
+        select m.coupon_type as coupon_type from user_coupon t join coupon m on t.coupon_id = m.id where t.login_name = #{loginName} and t.invest_id = #{investId} and t.status = 'SUCCESS'
+    </select>
+
 </mapper>

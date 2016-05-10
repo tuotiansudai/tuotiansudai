@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
+import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.dto.InvestRepayDataItemDto;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.model.InvestRepayModel;
@@ -15,6 +16,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,17 +55,26 @@ public class InvestRepayServiceImpl implements InvestRepayService{
     }
 
     private List<InvestRepayDataItemDto> investRepayAddBirthday(List<InvestRepayModel> investRepayModels, String loginName) {
-        List<InvestRepayDataItemDto> investRepayDataItemDtoList = Lists.transform(investRepayModels, new Function<InvestRepayModel, InvestRepayDataItemDto>() {
-            @Override
-            public InvestRepayDataItemDto apply(InvestRepayModel input) {
-                return new InvestRepayDataItemDto().generateInvestRepayDataItemDto(input);
-            }
-        });
+        List<InvestRepayDataItemDto> investRepayDataItemDtoList = Lists.newArrayList();
+        for(InvestRepayModel investRepayModel :investRepayModels){
+            investRepayDataItemDtoList.add(new InvestRepayDataItemDto().generateInvestRepayDataItemDto(investRepayModel));
+        }
+
         for (InvestRepayDataItemDto investRepayDataItemDto : investRepayDataItemDtoList) {
             List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndInvestId(loginName, investRepayDataItemDto.getInvestId());
             investRepayDataItemDto.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
             if (CollectionUtils.isNotEmpty(userCouponModels)) {
                 investRepayDataItemDto.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
+            }
+
+            List<UserCouponView> userCouponlist = userCouponMapper.findAllSuccessByLoginNameAndInvestId(loginName,investRepayDataItemDto.getInvestId());
+            List<Integer> couponTypeList;
+            if (CollectionUtils.isNotEmpty(userCouponlist)){
+                couponTypeList = new ArrayList<>();
+                for(UserCouponView userCouponView : userCouponlist){
+                    couponTypeList.add(userCouponView.getCouponType().getOrder());
+                }
+                investRepayDataItemDto.setCouponTypeList(couponTypeList);
             }
         }
         return investRepayDataItemDtoList;

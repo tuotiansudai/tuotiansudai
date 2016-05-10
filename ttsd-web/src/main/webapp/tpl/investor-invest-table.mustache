@@ -1,6 +1,7 @@
 <table class="invest-list table-striped">
     <thead>
         <tr>
+            <th></th>
             <th>项目名称</th>
             <th class="tr">我的投资(元)</th>
             <th>交易时间</th>
@@ -13,7 +14,12 @@
        {{#records}}
         <tr>
             <td>
-                <i {{#birthdayCoupon}}class="birth-icon" data-benefit="{{birthdayBenefit}}" {{/birthdayCoupon}}></i>
+                {{#couponTypeList}}
+                    {{.}}
+                    <i {{#birthdayCoupon}}class="birth-icon" data-benefit="{{birthdayBenefit}}" {{/birthdayCoupon}}></i>
+                {{/couponTypeList}}
+            </td>
+            <td>
                 <a href="/loan/{{loanId}}" class="project-name">{{loanName}}
             </td>
             <td class="tr">{{amount}}</td>

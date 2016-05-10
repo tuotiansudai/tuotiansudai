@@ -7,6 +7,7 @@ import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.util.Date;
+import java.util.List;
 
 public class InvestRepayDataItemDto {
 
@@ -42,6 +43,8 @@ public class InvestRepayDataItemDto {
     private double birthdayBenefit;
 
     private LoanModel loan;
+
+    private List<Integer> couponTypeList;
 
     public InvestRepayDataItemDto() {
     }
@@ -201,5 +204,13 @@ public class InvestRepayDataItemDto {
 
     public void setInvestId(long investId) {
         this.investId = investId;
+    }
+
+    public List<Integer> getCouponTypeList() {
+        return couponTypeList;
+    }
+
+    public void setCouponTypeList(List<Integer> couponTypeList) {
+        this.couponTypeList = couponTypeList;
     }
 }
