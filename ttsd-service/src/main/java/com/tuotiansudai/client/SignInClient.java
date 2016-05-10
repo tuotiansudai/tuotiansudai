@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -90,11 +91,12 @@ public class SignInClient extends BaseClient {
         if ("GET".equalsIgnoreCase(method)) {
             requestBody = null;
         }
+        Cookie[] cookies = httpServletRequest.getCookies();
         Request.Builder request = new Request.Builder()
                 .url(url)
                 .method(method, requestBody)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-                .addHeader("SESSION", httpServletRequest.getSession().getId());
+                .addHeader("Cookie", "SESSION=" + httpServletRequest.getSession().getId());
         try {
             Response response = okHttpClient.newCall(request.build()).execute();
             if (response.isSuccessful()) {
