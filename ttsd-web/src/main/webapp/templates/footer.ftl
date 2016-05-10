@@ -12,6 +12,7 @@
             <li><a href="/about/assurance" onclick="cnzzPush.trackClick('51底部导航','安全保障')">安全保障</a></li>
             <li><a href="/about/team" onclick="cnzzPush.trackClick('52底部导航','团队介绍')">团队介绍</a></li>
             <li><a href="/about/refer-reward" onclick="cnzzPush.trackClick('53底部导航','推荐奖励')">推荐奖励</a></li>
+            <li><a href="/about/operational">运营数据</a></li>
         </ul>
         <ul>
             <li class="f-title">帮助中心</li>
