@@ -1,6 +1,8 @@
 package com.tuotiansudai.web.controller;
 
+import com.tuotiansudai.service.InfoPublishService;
 import com.tuotiansudai.util.AmountConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +17,9 @@ public class AboutController {
     @Value("${pay.withdraw.fee}")
     private long withdrawFee;
 
+    @Autowired
+    private InfoPublishService infoPublishService;
+
     @RequestMapping(path = "/{item:^assurance|company|contact|guide|notice|media|notice-detail|service-fee|qa|refer-reward|team$}", method = RequestMethod.GET)
     public ModelAndView about(@PathVariable String item){
         ModelAndView modelAndView =  new ModelAndView("/about/" + item);
@@ -23,6 +28,14 @@ public class AboutController {
             modelAndView.addObject("withdrawFee", AmountConverter.convertCentToString(withdrawFee));
 
         }
+        return modelAndView;
+    }
+
+    @RequestMapping(path = "/operation", method = RequestMethod.GET)
+    public ModelAndView infoPublishTable(){
+        ModelAndView modelAndView =  new ModelAndView();
+
+        modelAndView.addObject("investDetailList", infoPublishService.getInvestDetail());
         return modelAndView;
     }
 }

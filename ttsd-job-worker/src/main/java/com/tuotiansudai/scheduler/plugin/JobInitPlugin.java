@@ -60,6 +60,9 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.ImitateLottery.name().equals(schedulerName)) {
             createImitateLotteryJob();
         }
+        if (JobType.InfoPublish.name().equals(schedulerName)) {
+            createInfoPublishJob();
+        }
 
     }
 
@@ -161,6 +164,16 @@ public class JobInitPlugin implements SchedulerPlugin {
             jobManager.newJob(JobType.BirthdayNotify, BirthdayNotifyJob.class).replaceExistingJob(true)
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 12 5 * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
                     .withIdentity(JobType.BirthdayNotify.name(), JobType.BirthdayNotify.name()).submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(), e);
+        }
+    }
+
+    private void createInfoPublishJob() {
+        try {
+            jobManager.newJob(JobType.InfoPublish, InfoPublishJob.class).replaceExistingJob(true)
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 3 1/1 * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+                    .withIdentity(JobType.InfoPublish.name(), JobType.InfoPublish.name()).submit();
         } catch (SchedulerException e) {
             logger.debug(e.getLocalizedMessage(), e);
         }
