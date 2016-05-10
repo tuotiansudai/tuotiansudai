@@ -1,5 +1,6 @@
 package com.tuotiansudai.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.jpush.client.MobileAppJPushClient;
 import com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper;
