@@ -47,8 +47,7 @@ public enum JobType {
     AutoJPushRechargeAlert("用户资金变动推送-充值"),
     AutoJPushWithDrawApplyAlert("用户资金变动推送-申请提现成功"),
     AutoJPushWithDrawAlert("用户资金变动推送-提现成功"),
-    AutoJPushReferrerRewardAlert("用户资金变动推送-推荐人奖励"),
-    InfoPublish("信息披露");
+    AutoJPushReferrerRewardAlert("用户资金变动推送-推荐人奖励");
 
 
     private final String description;
