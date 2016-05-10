@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.model;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -13,25 +15,24 @@ import java.util.*;
  */
 public class OperationDataModel {
     final private String startOperationTime = "2015-07-01";
-    private long userAmount;
-    private BigDecimal investTotalAmount;
-    private List<BigDecimal> investMonthAmount;
-    private List<String> investMonth;
-    final private int investMonthSize = 10;
+    private long userCount;
+    private String investTotalAmount;
+    private List<String> investMonthAmount = new LinkedList<>();
+    private List<String> investMonth = new LinkedList<>();
+    private int investMonthSize;
 
     public OperationDataModel() {
-        investMonthAmount = new LinkedList<>();
-        investMonth = new LinkedList<>();
+        this.setInvestMonthSize();
     }
 
     public String getJSONString()
     {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("operationDays", this.getOperationTime());
-        jsonObject.put("usersAmount", this.getUserAmount());
+        jsonObject.put("usersAmount", this.getUserCount());
         jsonObject.put("TradeAmount", this.getInvestTotalAmount());
         JSONArray jsonMonthAmount = new JSONArray();
-        for(BigDecimal number : this.getInvestMonthAmount())
+        for(String number : this.getInvestMonthAmount())
         {
             jsonMonthAmount.add(number);
         }
@@ -64,31 +65,41 @@ public class OperationDataModel {
         return startOperationTime;
     }
 
-    public long getUserAmount() {
-        return userAmount;
+    public long getUserCount() {
+        return userCount;
     }
 
-    public void setUserAmount(long userAmount) {
-        this.userAmount = userAmount;
+    public void setUserCount(long userCount) {
+        this.userCount = userCount;
     }
 
-    public BigDecimal getInvestTotalAmount() {
+    public String getInvestTotalAmount() {
         return investTotalAmount;
     }
 
-    public void setInvestTotalAmount(BigDecimal investTotalAmount) {
+    public void setInvestTotalAmount(String investTotalAmount) {
         this.investTotalAmount = investTotalAmount;
     }
 
-    public List<BigDecimal> getInvestMonthAmount() {
-        List<BigDecimal> investMonthAmountCopy = new LinkedList<>();
-        for (BigDecimal number : investMonthAmount) {
+    public List<String> getInvestMonthAmount() {
+        List<String> investMonthAmountCopy = new LinkedList<>();
+        for (String number : investMonthAmount) {
             investMonthAmountCopy.add(number);
         }
         return investMonthAmountCopy;
     }
 
-    public void addInvestMonthAmount(BigDecimal number) {
+    public String getInvestMonthAmountString()
+    {
+        return Joiner.on(",").join(investMonthAmount);
+    }
+
+    public void setInvestMonthAmount(String listString)
+    {
+        investMonthAmount = Splitter.on(",").splitToList(listString);
+    }
+
+    public void addInvestMonthAmount(String number) {
         if (investMonthAmount.size() >= investMonthSize) {
             throw new IndexOutOfBoundsException();
         }
@@ -103,6 +114,15 @@ public class OperationDataModel {
         return investMonthCopy;
     }
 
+    public String getInvestMonthString()
+    {
+        return Joiner.on(",").join(investMonth);
+    }
+
+    public void setInvestMonth(String listString) {
+        investMonth = Splitter.on(",").splitToList(listString);
+    }
+
     public void addInvestMonth(String month) {
         if (investMonth.size() >= investMonthSize) {
             throw new IndexOutOfBoundsException();
@@ -112,5 +132,22 @@ public class OperationDataModel {
 
     public int getInvestMonthSize() {
         return investMonthSize;
+    }
+
+    private void setInvestMonthSize() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date startTime = new Date();
+        try {
+            startTime = simpleDateFormat.parse(this.startOperationTime);
+        } catch (ParseException e) {
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startTime);
+        int startYear = calendar.get(Calendar.YEAR);
+        int startMonth = calendar.get(Calendar.MONTH);
+        calendar.setTime(new Date());
+        int endYear = calendar.get(Calendar.YEAR);
+        int endMonth = calendar.get(Calendar.MONTH);
+        investMonthSize = (endYear - startYear) * 12 + (endMonth - startMonth);
     }
 }

@@ -29,10 +29,14 @@ public class AboutController {
             modelAndView.addObject("withdrawFee", AmountConverter.convertCentToString(withdrawFee));
         }
         else if("operation-data".equals(item)) {
-            OperationDataModel operationDataModel = operationDataService.getOperationDataFromRedis();
-            String jsonString = operationDataModel.getJSONString();
-            modelAndView.addObject("informationJSON", jsonString);
         }
         return modelAndView;
+    }
+
+    @RequestMapping(path = "/info-publish", method = RequestMethod.GET)
+    public String infoPublishChart(){
+        OperationDataModel operationDataModel = operationDataService.getOperationDataFromRedis();
+
+        return operationDataModel.getJSONString();
     }
 }

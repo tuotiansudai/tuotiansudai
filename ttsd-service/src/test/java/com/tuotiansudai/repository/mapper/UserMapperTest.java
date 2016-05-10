@@ -203,7 +203,7 @@ public class UserMapperTest {
 
     @Test
     public void testGetUserAmount(){
-        long userAmount = userMapper.findUsersAmount();
+        long userAmount = userMapper.findUsersCount();
         assertEquals(40039, userAmount);
     }
 }

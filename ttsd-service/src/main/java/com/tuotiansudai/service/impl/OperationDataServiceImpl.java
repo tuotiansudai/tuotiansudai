@@ -6,10 +6,12 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.OperationDataModel;
 import com.tuotiansudai.service.OperationDataService;
+import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -27,14 +29,21 @@ public class OperationDataServiceImpl implements OperationDataService {
     @Autowired
     RedisWrapperClient redisWrapperClient;
 
-    final String REDIS_KEY_USERS_AMOUNT = "REDIS_USERS_AMOUNT";
-    final String REDIS_KEY_TRADE_AMOUNT = "REDIS_TRADE_AMOUNT";
-    final String REDIS_KEY_OPERATION_DATA_MONTH = "REDIS_OPERATION_DATA_MONTH";
-    final String REDIS_KEY_OPERATION_DATA_MONTH_AMOUNT = "REDIS_OPERATION_DATA_MONTH_AMOUNT";
+    private final String REDIS_INFO_PUBLISH_KEY_TEMPLATE = "web:info:publish:chart:{0}";
 
-    private BigDecimal getTotalSuccessAmount()
+    private final String USERS_COUNT = "userCount";
+    private final String TRADE_AMOUNT = "tradeAmount";
+    private final String OPERATION_DATA_MONTH = "operationDataMonth";
+    private final String OPERATION_DATA_MONTH_AMOUNT = "operationDataMonthAmount";
+
+    private final int timeout = 60 * 60 * 24;
+
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyMMdd");
+
+    private String getTotalSuccessAmount()
     {
-        return new BigDecimal(investMapper.sumInvestAmount(null, null, null, null, null, null, null, InvestStatus.SUCCESS, null));
+        return AmountConverter.convertCentToString(investMapper.sumInvestAmount(null, null, null, null, null, null, null,
+                InvestStatus.SUCCESS, null));
     }
 
     private void setMonthOperationData(OperationDataModel operationDataModel)
@@ -50,8 +59,8 @@ public class OperationDataServiceImpl implements OperationDataService {
             calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1);
             Date endTime = calendar.getTime();
 
-            BigDecimal amount = new BigDecimal(investMapper.sumInvestAmount(null, null, null, null, null, startTime,
-                    endTime, InvestStatus.SUCCESS, null));
+            String amount = AmountConverter.convertCentToString(investMapper.sumInvestAmount(null, null, null, null, null,
+                    startTime, endTime, InvestStatus.SUCCESS, null));
             operationDataModel.addInvestMonthAmount(amount);
         }
     }
@@ -61,7 +70,7 @@ public class OperationDataServiceImpl implements OperationDataService {
     {
         OperationDataModel operationDataModel = new OperationDataModel();
         operationDataModel.setInvestTotalAmount(getTotalSuccessAmount());
-        operationDataModel.setUserAmount(userMapper.findUsersAmount());
+        operationDataModel.setUserCount(userMapper.findUsersCount());
         setMonthOperationData(operationDataModel);
 
         return operationDataModel;
@@ -70,35 +79,28 @@ public class OperationDataServiceImpl implements OperationDataService {
     @Override
     public OperationDataModel getOperationDataFromRedis()
     {
-        OperationDataModel operationDataModel = new OperationDataModel();
-        operationDataModel.setUserAmount(Integer.parseInt(redisWrapperClient.get(REDIS_KEY_USERS_AMOUNT)));
-        operationDataModel.setInvestTotalAmount(new BigDecimal(redisWrapperClient.get(REDIS_KEY_TRADE_AMOUNT)));
-        for(String month : redisWrapperClient.lrange(REDIS_KEY_OPERATION_DATA_MONTH, 0, operationDataModel.getInvestMonthSize()))
-        {
-            operationDataModel.addInvestMonth(month);
-        }
-        for(String number : redisWrapperClient.lrange(REDIS_KEY_OPERATION_DATA_MONTH_AMOUNT, 0, operationDataModel.getInvestMonthSize()))
-        {
-            operationDataModel.addInvestMonthAmount(new BigDecimal(number));
+        final String redisInfoPublishKey = MessageFormat.format(REDIS_INFO_PUBLISH_KEY_TEMPLATE, String.valueOf(simpleDateFormat.format(new Date())));
+        OperationDataModel operationDataModel;
+        if(redisWrapperClient.exists(redisInfoPublishKey)){
+            operationDataModel = new OperationDataModel();
+            operationDataModel.setUserCount(Integer.parseInt(redisWrapperClient.hget(redisInfoPublishKey, USERS_COUNT)));
+            operationDataModel.setInvestTotalAmount(redisWrapperClient.hget(redisInfoPublishKey, TRADE_AMOUNT));
+            operationDataModel.setInvestMonth(redisWrapperClient.hget(redisInfoPublishKey, OPERATION_DATA_MONTH));
+            operationDataModel.setInvestMonthAmount(redisWrapperClient.hget(redisInfoPublishKey, OPERATION_DATA_MONTH_AMOUNT));
+        } else {
+            operationDataModel = getOperationDataFromDatabase();
+            updateRedis(operationDataModel);
         }
         return operationDataModel;
     }
 
     @Override
-    public void updateRedis()
+    public void updateRedis(OperationDataModel operationDataModel)
     {
-        OperationDataModel operationDataModel = getOperationDataFromDatabase();
-        redisWrapperClient.set(REDIS_KEY_USERS_AMOUNT, Long.toString(operationDataModel.getUserAmount()));
-        redisWrapperClient.set(REDIS_KEY_TRADE_AMOUNT, operationDataModel.getInvestTotalAmount().toString());
-        redisWrapperClient.del(REDIS_KEY_OPERATION_DATA_MONTH);
-        for(String month : operationDataModel.getInvestMonth())
-        {
-            redisWrapperClient.rpush(REDIS_KEY_OPERATION_DATA_MONTH, month);
-        }
-        redisWrapperClient.del(REDIS_KEY_OPERATION_DATA_MONTH_AMOUNT);
-        for(BigDecimal number : operationDataModel.getInvestMonthAmount())
-        {
-            redisWrapperClient.rpush(REDIS_KEY_OPERATION_DATA_MONTH_AMOUNT, number.toString());
-        }
+        final String redisInfoPublishKey = MessageFormat.format(REDIS_INFO_PUBLISH_KEY_TEMPLATE, String.valueOf(simpleDateFormat.format(new Date())));
+        redisWrapperClient.hset(redisInfoPublishKey, USERS_COUNT, Long.toString(operationDataModel.getUserCount()), timeout);
+        redisWrapperClient.hset(redisInfoPublishKey, TRADE_AMOUNT, operationDataModel.getInvestTotalAmount(), timeout);
+        redisWrapperClient.hset(redisInfoPublishKey, OPERATION_DATA_MONTH, operationDataModel.getInvestMonthString(), timeout);
+        redisWrapperClient.hset(redisInfoPublishKey, OPERATION_DATA_MONTH_AMOUNT, operationDataModel.getInvestMonthAmountString(), timeout);
     }
 }

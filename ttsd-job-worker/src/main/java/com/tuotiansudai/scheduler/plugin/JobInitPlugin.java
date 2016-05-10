@@ -59,9 +59,6 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.ImitateLottery.name().equals(schedulerName)) {
             createImitateLotteryJob();
         }
-        if (JobType.RefreshInformationInRedis.name().equals(schedulerName)){
-            createRefreshInformationInRedisJob();
-        }
 
     }
 
@@ -164,17 +161,6 @@ public class JobInitPlugin implements SchedulerPlugin {
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 12 5 * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
                     .withIdentity(JobType.BirthdayNotify.name(), JobType.BirthdayNotify.name()).submit();
         } catch (SchedulerException e) {
-            logger.debug(e.getLocalizedMessage(), e);
-        }
-    }
-
-    private void createRefreshInformationInRedisJob(){
-        try{
-            jobManager.newJob(JobType.RefreshInformationInRedis, RefreshInformationInRedisJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("10 0 * * * ? *").inTimeZone(TimeZone.getTimeZone(TIMEZONE_SHANGHAI)))
-                    .withIdentity(JobType.RefreshInformationInRedis.name(), JobType.RefreshInformationInRedis.name()).submit();
-        }catch (SchedulerException e)
-        {
             logger.debug(e.getLocalizedMessage(), e);
         }
     }

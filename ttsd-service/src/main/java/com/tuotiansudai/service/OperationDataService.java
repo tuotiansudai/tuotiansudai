@@ -10,5 +10,5 @@ public interface OperationDataService {
 
     OperationDataModel getOperationDataFromRedis();
 
-    void updateRedis();
+    void updateRedis(OperationDataModel operationDataModel);
 }
