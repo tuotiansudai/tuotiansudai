@@ -51,7 +51,7 @@ public class TransferController {
         String loginName = LoginUserInfo.getLoginName();
         BasePaginationDataDto dataDto;
         if(CollectionUtils.isNotEmpty(statusList) && statusList.contains(TransferStatus.TRANSFERABLE)){
-            dataDto = investService.getInvestPagination(loginName, index, pageSize, null, null, LoanStatus.REPAYING);
+            dataDto = investService.getTransferApplicationTransferablePagination(loginName, index, pageSize, null, null, LoanStatus.REPAYING);
         }else{
             dataDto = investTransferService.findWebTransferApplicationPaginationList(loginName,statusList,index,pageSize);
         }

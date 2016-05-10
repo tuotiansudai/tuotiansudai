@@ -157,15 +157,16 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
                 list.add(dto);
             }
         }
-        if (Lists.newArrayList(TransferStatus.TRANSFERABLE, TransferStatus.SUCCESS, TransferStatus.TRANSFERRING).containsAll(transferStatuses)) {
-            return list;
-        } else {
+        if(CollectionUtils.isNotEmpty(transferStatuses) && transferStatuses.size() == 1 && transferStatuses.contains(TransferStatus.TRANSFERABLE)){
             return Lists.newArrayList(Iterators.filter(list.iterator(), new Predicate<UserInvestRecordResponseDataDto>() {
                 @Override
                 public boolean apply(UserInvestRecordResponseDataDto input) {
                     return input.getTransferStatus().equals(TransferStatus.TRANSFERABLE.name());
                 }
             }));
+        }else{
+            return list;
         }
+
     }
 }

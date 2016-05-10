@@ -58,7 +58,7 @@ public class InvestTransferController {
         TransferRuleModel transferRuleModel = transferRuleMapper.find();
         LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
         long transferFee = TransferRuleUtil.getTransferFee(investModel, transferRuleModel, loanModel);
-        long transferAmountLimit = new BigDecimal(1).subtract(new BigDecimal(transferRuleModel.getDiscount())).multiply(new BigDecimal(investModel.getAmount())).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+        long transferAmountLimit = new BigDecimal(1).subtract(new BigDecimal(transferRuleModel.getDiscount())).multiply(new BigDecimal(investModel.getAmount())).setScale(0, BigDecimal.ROUND_UP).longValue();
         modelAndView.addObject("investAmount", investModel.getAmount());
         modelAndView.addObject("transferAmountLimit", transferAmountLimit);
         modelAndView.addObject("transferFee", transferFee);
@@ -73,14 +73,18 @@ public class InvestTransferController {
         }
         int days = Days.daysBetween(beginDate, endDate).getDays();
         String messageDay;
+        double feeRate = 0L;
         if (days <= transferRuleModel.getLevelOneUpper()) {
-            messageDay = "不足" + transferRuleModel.getLevelTwoLower();
+            feeRate = transferRuleModel.getLevelOneFee();
+            messageDay = "不足" + transferRuleModel.getLevelTwoLower() ;
         } else if (days <= transferRuleModel.getLevelTwoUpper()) {
-            messageDay = "在" + transferRuleModel.getLevelTwoLower() + "至" + transferRuleModel.getLevelTwoUpper();
+            feeRate = transferRuleModel.getLevelTwoFee();
+            messageDay = "在" + transferRuleModel.getLevelTwoLower()  + "至" + transferRuleModel.getLevelTwoUpper() ;
         } else {
-            messageDay = "大于" + transferRuleModel.getLevelTwoUpper();
+            feeRate = transferRuleModel.getLevelThreeFee();
+            messageDay = "大于" + transferRuleModel.getLevelTwoUpper() ;
         }
-        String message = MessageFormat.format(MESSAGE_TEMPLATE, messageDay, TransferRuleUtil.getTransferFeeRate(investModel, transferRuleModel,loanModel));
+        String message = MessageFormat.format(MESSAGE_TEMPLATE, messageDay, feeRate * 100 );
         modelAndView.addObject("message", message);
         return modelAndView;
     }

@@ -1,7 +1,10 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.google.common.collect.UnmodifiableIterator;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
@@ -28,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -174,6 +178,19 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
+    public BasePaginationDataDto<InvestPaginationItemDataDto> getTransferApplicationTransferablePagination(String investorLoginName, int index, int pageSize, Date startTime, Date endTime, LoanStatus loanStatus) {
+        InvestPaginationDataDto investPaginationDataDto = getInvestPagination(null, investorLoginName, null, null, null, index, pageSize, startTime, endTime, null, loanStatus);
+        UnmodifiableIterator<InvestPaginationItemDataDto> filter = Iterators.filter(investPaginationDataDto.getRecords().iterator(),new Predicate<InvestPaginationItemDataDto>(){
+            @Override
+            public boolean apply(InvestPaginationItemDataDto input) {
+                return TransferStatus.TRANSFERABLE.getDescription().equals(input.getTransferStatus()) && investTransferService.isTransferable(input.getInvestId());
+            }
+        });
+        investPaginationDataDto.setRecords(Lists.newArrayList(filter));
+        return investPaginationDataDto;
+    }
+
+    @Override
     public long findCountInvestPagination(Long loanId, String investorLoginName,
                                           String channel, Source source, String role,
                                           Date startTime, Date endTime,
@@ -236,9 +253,7 @@ public class InvestServiceImpl implements InvestService {
             @Override
             public InvestPaginationItemDataDto apply(InvestPaginationItemView view) {
                 InvestPaginationItemDataDto investPaginationItemDataDto = new InvestPaginationItemDataDto(view);
-                if (view.getTransferStatus() == TransferStatus.TRANSFERABLE) {
-                    investPaginationItemDataDto.setTransferStatus(investTransferService.isTransferable(view.getId()) ? view.getTransferStatus().getDescription() : null);
-                }
+                investPaginationItemDataDto.setTransferStatus(view.getTransferStatus().getDescription());
                 investPaginationItemDataDto.setLastRepayDate(loanRepayMapper.findLastRepayDateByLoanId(view.getLoanId()));
                 LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(view.getLoanId());
                 if (loanRepayModel != null) {
