@@ -21,6 +21,8 @@
     <beans:bean id="mySimpleUrlAuthenticationSuccessHandler" class="com.tuotiansudai.security.MySimpleUrlAuthenticationSuccessHandler"/>
     <beans:bean id="mySimpleUrlAuthenticationFailureHandler" class="com.tuotiansudai.security.MySimpleUrlAuthenticationFailureHandler"/>
 
+    <beans:bean id="mySuccessHandler" class="com.tuotiansudai.security.MySuccessHandler"/>
+
     <http auto-config="true" use-expressions="true">
         <headers>
             <frame-options policy="SAMEORIGIN"/>
@@ -28,6 +30,7 @@
         <form-login login-processing-url="/loginHandler"
                     authentication-success-handler-ref="mySimpleUrlAuthenticationSuccessHandler"
                     authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
+        <logout logout-url="/logout" success-handler-ref="mySuccessHandler"/>
         <csrf disabled="true"></csrf>
     </http>
 

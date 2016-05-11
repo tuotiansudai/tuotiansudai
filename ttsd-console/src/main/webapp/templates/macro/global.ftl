@@ -174,8 +174,8 @@
             </a>
         </div>
         <div class="collapse navbar-collapse">
-            <p class="navbar-text navbar-right"><a id="logout-link" href="/logout">注销</a>【<@global.security.authentication property="principal.username" />】</p>
-            <form id="logout-form" action="/logout" method="post">
+            <p class="navbar-text navbar-right"><a id="logout-link" href="/login/sign-out">注销</a>【<@global.security.authentication property="principal.username" />】</p>
+            <form id="logout-form" action="/login/sign-out" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </form>
         </div>

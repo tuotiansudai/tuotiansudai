@@ -65,9 +65,25 @@ public class SignInClient extends BaseClient {
         return send(oldSessionId, dto, SIGN_IN_URL);
     }
 
+    public boolean sendSignOut(String oldSessionId) {
+        String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", SIGN_OUT_URL);
+        RequestBody requestBody = new FormEncodingBuilder().add("Cookie", "SESSION=" + oldSessionId).build();
+        Request.Builder request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+                .addHeader("Cookie", "SESSION=" + oldSessionId);
+        try {
+            return okHttpClient.newCall(request.build()).execute().isSuccessful();
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return false;
+    }
+
     private BaseDto<LoginDto> send(String oldSessionId, SignInDto dto, String requestPath) {
         try {
-            String responseString = this.execute(oldSessionId, requestPath, dto, "POST");
+            String responseString = this.execute(oldSessionId, requestPath, dto);
             if (!Strings.isNullOrEmpty(responseString)) {
                 return objectMapper.readValue(responseString, new TypeReference<BaseDto<LoginDto>>() {
                 });
@@ -81,15 +97,12 @@ public class SignInClient extends BaseClient {
         return resultDto;
     }
 
-    protected String execute(String oldSessionId, String path, SignInDto dto, String method) {
+    protected String execute(String oldSessionId, String path, SignInDto dto) {
         String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", path);
         RequestBody requestBody = new FormEncodingBuilder().add("username", dto.getUsername()).add("password", dto.getPassword()).add("captcha", dto.getCaptcha()).build();
-        if ("GET".equalsIgnoreCase(method)) {
-            requestBody = null;
-        }
         Request.Builder request = new Request.Builder()
                 .url(url)
-                .method(method, requestBody)
+                .post(requestBody)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
                 .addHeader("Cookie", "SESSION=" + oldSessionId);
         try {

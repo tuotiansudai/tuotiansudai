@@ -23,7 +23,6 @@
         </headers>
         <access-denied-handler ref="myAccessDeniedHandler"/>
         <form-login login-page="/login"/>
-        <logout logout-url="/logout" logout-success-url="/"/>
 
         <intercept-url pattern="/images/**" access="permitAll()" />
         <intercept-url pattern="/upload/**" access="permitAll()" />
