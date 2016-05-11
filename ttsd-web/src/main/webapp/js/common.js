@@ -182,6 +182,9 @@ var MyChartsObject={
             }
             return { category: categories, data: datas };
         },
+        FormateBarGroupData: function (data) {
+            return {title:data.title,sub:data.sub,name:data.name,month:data.month,money:data.money}
+        },
         FormateGroupData: function (data, type, is_stack) {
             var chart_type = 'line';
             if (type)
@@ -315,6 +318,61 @@ var MyChartsObject={
                 ]
             };
             return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonOption, option);
+        },
+        Bar: function (data, name) {
+            var bar_datas = MyChartsObject.ChartDataFormate.FormateBarGroupData(data),
+                option = {
+                    backgroundColor:'#f7f7f7',
+                    color:['#ff9c1b'],
+                    title : {
+                        text: bar_datas.title,
+                        subtext: bar_datas.sub,
+                        textStyle:{
+                            color: '#ff9c1b'
+                        } 
+                    },
+                    tooltip : {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data:[bar_datas.name],
+                        selectedMode:false
+                    },
+                    toolbox: {
+                        show : false,
+                        feature : {
+                            mark : {show: true},
+                            dataView : {show: true, readOnly: false},
+                            magicType : {show: true, type: ['line', 'bar']},
+                            restore : {show: true},
+                            saveAsImage : {show: true}
+                        }
+                    },
+                    calculable : true,
+                    xAxis : [
+                        {
+                            type : 'category',
+                            data : bar_datas.month
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value'
+                        }
+                    ],
+                    series : [
+                        {
+                            name:'交易额',
+                            type:'bar',
+                            data:bar_datas.money,
+                            tooltip : {
+                                formatter: "时间:{b}<br/>交易额:{c}"
+                            }
+                        }
+                        
+                    ]
+            };
+            return $.extend({}, MyChartsObject.ChartOptionTemplates.CommonOption, option);
         }
     },
 
@@ -323,7 +381,8 @@ var MyChartsObject={
             require(
                 [
                     'echarts',
-                    'echarts/chart/pie'
+                    'echarts/chart/pie',
+                    'echarts/chart/bar'
                 ],
                 function (ec) {
                     var echarts = ec;
