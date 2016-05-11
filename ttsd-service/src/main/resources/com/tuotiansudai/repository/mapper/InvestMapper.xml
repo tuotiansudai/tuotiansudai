@@ -350,14 +350,14 @@
     <select id="getInvestDetail" resultMap="investDataView">
         <![CDATA[
          select case
-            when loan.product_type ='SYL' then 30
-            when loan.product_type ='WYX' then 90
-            when loan.product_type ='JYF' then 180
+            when loan.periods ='1' then 30
+            when loan.periods ='3' then 90
+            when loan.periods ='6' then 180
             ELSE 360 END as productName,
           IFNULL(sum(invest.amount), 0) as totalInvestAmount, COUNT(invest.id) as countInvest, ROUND(IFNULL(sum(invest.amount), 0)/ COUNT(invest.id)) as avgInvestAmount
           from invest join loan on invest.loan_id = loan.id
-          where invest.status='SUCCESS' and invest.created_time <= date_sub(curdate(),interval 1 day)
-          group by loan.product_type
+          where invest.status='SUCCESS' and invest.created_time <= date_add(curdate()-1, interval '23:59:59' hour_second)
+          group by loan.periods
           ORDER BY productName
           ]]>
     </select>
