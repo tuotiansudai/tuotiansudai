@@ -54,7 +54,7 @@
                 <div class="input-group-addon">天内不可转让</div>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="display: none">
             <div class="col-sm-offset-2 input-group <#if transferRule.updateMultipleTransferEnabled>has-error</#if>">
                 <div class="checkbox">
                     <label>
