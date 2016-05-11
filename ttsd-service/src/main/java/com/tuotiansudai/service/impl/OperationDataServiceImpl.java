@@ -190,7 +190,8 @@ public class OperationDataServiceImpl implements OperationDataService {
 
     private String getTotalSuccessAmount()
     {
-        return AmountConverter.convertCentToString(investMapper.sumInvestAmount(null, null, null, null, null, null,
+        return AmountConverter.convertCentToString(investMapper.sumInvestAmount(null, null, null, null, null,
+                new DateTime().withDate(2015, 7, 1).withTimeAtStartOfDay().toDate(),
                 new DateTime().withTimeAtStartOfDay().toDate(), InvestStatus.SUCCESS, null));
     }
 
