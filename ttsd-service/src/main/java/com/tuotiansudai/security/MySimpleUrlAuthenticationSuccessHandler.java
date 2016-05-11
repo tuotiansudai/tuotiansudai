@@ -51,6 +51,7 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
         LoginDto loginDto = new LoginDto();
         loginDto.setStatus(true);
         loginDto.setRoles(userRoleService.findRoleNameByLoginName(loginName));
+        loginDto.setNewSessionId(request.getSession().getId());
         baseDto.setData(loginDto);
         redisWrapperClient.del(redisKey);
         String jsonBody = objectMapper.writeValueAsString(baseDto);

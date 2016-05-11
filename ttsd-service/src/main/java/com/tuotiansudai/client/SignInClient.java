@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Component
@@ -61,17 +59,15 @@ public class SignInClient extends BaseClient {
 
     private final static String SIGN_IN_URL = "/loginHandler";
 
-    static {
+    private final static String SIGN_OUT_URL = "/logout";
 
+    public BaseDto<LoginDto> sendSignIn(String oldSessionId, SignInDto dto) {
+        return send(oldSessionId, dto, SIGN_IN_URL);
     }
 
-    public BaseDto<LoginDto> sendSignIn(HttpServletRequest httpServletRequest, SignInDto dto) {
-        return send(httpServletRequest, dto, SIGN_IN_URL);
-    }
-
-    private BaseDto<LoginDto> send(HttpServletRequest httpServletRequest, SignInDto dto, String requestPath) {
+    private BaseDto<LoginDto> send(String oldSessionId, SignInDto dto, String requestPath) {
         try {
-            String responseString = this.execute(httpServletRequest, requestPath, dto, "POST");
+            String responseString = this.execute(oldSessionId, requestPath, dto, "POST");
             if (!Strings.isNullOrEmpty(responseString)) {
                 return objectMapper.readValue(responseString, new TypeReference<BaseDto<LoginDto>>() {
                 });
@@ -85,21 +81,21 @@ public class SignInClient extends BaseClient {
         return resultDto;
     }
 
-    protected String execute(HttpServletRequest httpServletRequest, String path, SignInDto dto, String method) {
+    protected String execute(String oldSessionId, String path, SignInDto dto, String method) {
         String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", path);
         RequestBody requestBody = new FormEncodingBuilder().add("username", dto.getUsername()).add("password", dto.getPassword()).add("captcha", dto.getCaptcha()).build();
         if ("GET".equalsIgnoreCase(method)) {
             requestBody = null;
         }
-        Cookie[] cookies = httpServletRequest.getCookies();
         Request.Builder request = new Request.Builder()
                 .url(url)
                 .method(method, requestBody)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-                .addHeader("Cookie", "SESSION=" + httpServletRequest.getSession().getId());
+                .addHeader("Cookie", "SESSION=" + oldSessionId);
         try {
             Response response = okHttpClient.newCall(request.build()).execute();
             if (response.isSuccessful()) {
+
                 return response.body().string();
             }
         } catch (IOException e) {
