@@ -112,7 +112,6 @@
                     <#list successSumInvestRepayList as successSumInvestRepay>
                     <tr>
                         <td>
-
                             <#if successSumInvestRepay.couponTypeList??>
                                 <#list successSumInvestRepay.couponTypeList as couponType>
                                     <i <#if successSumInvestRepay.birthdayCoupon>class="birth-icon" data-benefit="${successSumInvestRepay.birthdayBenefit}"</#if>></i>

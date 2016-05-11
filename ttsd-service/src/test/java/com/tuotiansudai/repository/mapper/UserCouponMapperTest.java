@@ -70,7 +70,7 @@ public class UserCouponMapperTest {
     }
 
     @Test
-    public void shouldFindAllSuccessByLoginNameAndInvestIdIsOk(){
+    public void shouldFindUseCouponByInvestIddIsOk(){
         UserModel userModel = fakeUserModel();
         userMapper.create(userModel);
         CouponModel couponModel = fakeCouponModel();
@@ -83,7 +83,7 @@ public class UserCouponMapperTest {
         userCouponMapper.create(userCouponModel);
         userCouponMapper.update(userCouponModel);
 
-        List<UserCouponView> userCouponViewList = userCouponMapper.findAllSuccessByLoginNameAndInvestId(userModel.getLoginName(),model.getId());
+        List<UserCouponModel> userCouponViewList = userCouponMapper.findUseCouponByInvestId(userModel.getLoginName(),model.getId());
         assertEquals(1, userCouponViewList.size());
     }
 

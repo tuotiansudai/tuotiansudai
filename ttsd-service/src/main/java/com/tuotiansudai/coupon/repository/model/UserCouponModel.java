@@ -1,5 +1,6 @@
 package com.tuotiansudai.coupon.repository.model;
 
+import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
 
 import java.io.Serializable;
@@ -42,6 +43,8 @@ public class UserCouponModel implements Serializable{
     private Long investAmount;
 
     private String exchangeCode;
+
+    private CouponType couponType;
 
     public UserCouponModel() {
     }
@@ -196,5 +199,13 @@ public class UserCouponModel implements Serializable{
 
     public void setExchangeCode(String exchangeCode) {
         this.exchangeCode = exchangeCode;
+    }
+
+    public CouponType getCouponType() {
+        return couponType;
+    }
+
+    public void setCouponType(CouponType couponType) {
+        this.couponType = couponType;
     }
 }

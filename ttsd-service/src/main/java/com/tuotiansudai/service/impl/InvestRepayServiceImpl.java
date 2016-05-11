@@ -67,11 +67,11 @@ public class InvestRepayServiceImpl implements InvestRepayService{
                 investRepayDataItemDto.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
             }
 
-            List<UserCouponView> userCouponlist = userCouponMapper.findAllSuccessByLoginNameAndInvestId(loginName,investRepayDataItemDto.getInvestId());
+            List<UserCouponModel> userCouponlist = userCouponMapper.findUseCouponByInvestId(loginName,investRepayDataItemDto.getInvestId());
             List<Integer> couponTypeList;
             if (CollectionUtils.isNotEmpty(userCouponlist)){
                 couponTypeList = new ArrayList<>();
-                for(UserCouponView userCouponView : userCouponlist){
+                for(UserCouponModel userCouponView : userCouponlist){
                     couponTypeList.add(userCouponView.getCouponType().getOrder());
                 }
                 investRepayDataItemDto.setCouponTypeList(couponTypeList);

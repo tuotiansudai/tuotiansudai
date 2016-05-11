@@ -5,6 +5,8 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -43,6 +45,11 @@ public class RepayServiceImpl implements RepayService {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private UserCouponMapper userCouponMapper;
+
+    private static String CONPON_MESSAGE = "{0}的利息为:{1}";
 
     @Override
     public BaseDto<PayFormDataDto> repay(RepayDto repayDto) {
@@ -133,6 +140,7 @@ public class RepayServiceImpl implements RepayService {
         InvestRepayDataDto dataDto = new InvestRepayDataDto();
         dataDto.setStatus(true);
         dataDto.setRecords(Lists.<InvestRepayDataItemDto>newArrayList());
+        dataDto.setCouponDescription(getCouponDescription(loginName,investId));
         baseDto.setData(dataDto);
 
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(loginName, investId);
@@ -147,6 +155,23 @@ public class RepayServiceImpl implements RepayService {
         }
 
         return baseDto;
+    }
+
+    private String getCouponDescription(String loginName,long investId){
+        List<UserCouponModel> userCouponModels = userCouponMapper.findUseCouponByInvestId(loginName,investId);
+        StringBuffer sb = new StringBuffer();
+        long couponMoney = 0L;
+        if(CollectionUtils.isNotEmpty(userCouponModels)){
+            for(UserCouponModel userCouponModel : userCouponModels){
+                sb.append(MessageFormat.format(CONPON_MESSAGE, userCouponModel.getCouponType().getName(),(AmountConverter.convertCentToString(userCouponModel.getExpectedInterest()))) + ",");
+                couponMoney += userCouponModel.getExpectedInterest();
+            }
+        }
+
+        if(couponMoney > 0){
+            sb.append(MessageFormat.format(CONPON_MESSAGE,"总",AmountConverter.convertCentToString(couponMoney)));
+        }
+        return sb.toString();
     }
 
 }
