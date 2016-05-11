@@ -8,16 +8,13 @@ import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
-import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.jpush.client.MobileAppJPushClient;
 import com.tuotiansudai.jpush.repository.mapper.JPushAlertMapper;
 import com.tuotiansudai.jpush.repository.model.*;
-import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.jpush.service.impl.JPushAlertServiceImpl;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +22,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,11 +29,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
-import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -307,12 +301,14 @@ public class JPushAlertServiceTest {
             loanRepayModels.add(loanRepayModel1);
         }
 
+        InvestModel investModel = new InvestModel(loanModel.getId(), 1000, "test123", Source.WEB, "");
         CouponModel couponModel = new CouponModel(fakeCouponDto());
 
         List<UserCouponModel> userCouponModels = new ArrayList<UserCouponModel>();
 
         UserCouponModel userCouponModel = new UserCouponModel();
         userCouponModel.setId(idGenerator.generate());
+        userCouponModel.setInvestId(1001L);
         userCouponModel.setLoginName("test1");
         userCouponModel.setCouponId(couponModel.getId());
         userCouponModel.setLoanId(loanModel.getId());
@@ -321,6 +317,7 @@ public class JPushAlertServiceTest {
 
         UserCouponModel userCouponModel2 = new UserCouponModel();
         userCouponModel2.setId(idGenerator.generate());
+        userCouponModel2.setInvestId(1001L);
         userCouponModel2.setLoginName("test2");
         userCouponModel2.setCouponId(couponModel.getId());
         userCouponModel2.setLoanId(loanModel.getId());
@@ -340,7 +337,9 @@ public class JPushAlertServiceTest {
 
         when(couponMapper.findById(anyLong())).thenReturn(couponModel);
 
-        jPushAlertService.autoJPushCouponIncomeAlert(currentLoanRepayModel.getId());
+        when(investMapper.findById(anyLong())).thenReturn(investModel);
+
+        assertNotNull(jPushAlertService.autoJPushCouponIncomeAlert(currentLoanRepayModel.getId());
 
     }
 
@@ -375,6 +374,7 @@ public class JPushAlertServiceTest {
 
     private ExchangeCouponDto fakeCouponDto() {
         ExchangeCouponDto exchangeCouponDto = new ExchangeCouponDto();
+        exchangeCouponDto.setId(1001L);
         exchangeCouponDto.setAmount("1000.00");
         exchangeCouponDto.setTotalCount(1000L);
         exchangeCouponDto.setEndTime(new Date());
