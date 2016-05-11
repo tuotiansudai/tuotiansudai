@@ -1,4 +1,4 @@
-require(['jquery','mustache','text!tpl/notice-list.mustache','load-swiper','layerWrapper','commonFun','pagination'], function ($,Mustache,ListTemplate,loadSwiper,layer) {
+require(['jquery','mustache','text!tpl/notice-list.mustache','load-swiper','layerWrapper','commonFun','pagination','echarts','fancybox','layerWrapper'], function ($,Mustache,ListTemplate,loadSwiper,layer) {
     $(function () {
         var $noticeList=$('#noticeList'),
             $noticeDetail=$('#noticeDetail'),
@@ -82,5 +82,38 @@ require(['jquery','mustache','text!tpl/notice-list.mustache','load-swiper','laye
                 }
             });
         }
+        $("#companyPhoto li a").fancybox({
+            'titlePosition' : 'over',
+            'cyclic'        : false,
+            'showCloseButton':true,
+            'showNavArrows' : true,
+            'titleFormat'   : function(title, currentArray, currentIndex, currentOpts) {
+                return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+            }
+        });
+        $.ajax({
+            url: '/about/operation-data/chart',
+            type: 'GET',
+            dataType: 'json'
+        })
+        .done(function(data) {
+            $('#operationDays').text(data.operationDays+'天');
+            $('#usersCount').text(data.usersCount+'人');
+            $('#tradeAmount').text(data.tradeAmount+'元');
+            var dataJson = {
+                    title:'拓天速贷',
+                    sub:'金额',
+                    name:'运营数据',
+                    month:data.month,
+                    money:data.money
+                },
+                option = MyChartsObject.ChartOptionTemplates.Bar(dataJson,'YTTTTT'),
+                container = $("#dataRecord")[0],
+                opt = MyChartsObject.ChartConfig(container, option);
+                MyChartsObject.Charts.RenderChart(opt);
+        })
+        .fail(function() {
+            layer.msg('请求数据失败，请刷新页面重试！');
+        });
     });
 });

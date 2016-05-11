@@ -30,6 +30,23 @@
     <h2 class="column-title"><em>拓天资质</em></h2>
     <div class="clear-blank-m">
     </div>
-    <img src="${staticServer}/images/sign/aptitude.jpg" class="responsive-width" alt="拓天资质" title="拓天资质"/>
+    <img src="${staticServer}/images/sign/aptitude_new.jpg" class="responsive-width" alt="拓天资质" title="拓天资质"/>
+    <h2 class="column-title"><em>合作伙伴</em></h2>
+    <ul class="partner-list">
+        <li>
+            <p class="icon-logo logo-one"></p>
+            <p class="partner-intro">
+                <span class="partner-name">联动优势</span>
+                <span>联动优势是由中国移动、中国银联于2003年联合发起成立。作为专业的移动电子商务服务提供商，为普通个人用户提供安全、便捷、易用的移动电子商务服务。2011年8月31日成功入选央行公布的第二批第三方支付牌照名单。联动优势作为拓天速贷的资金安全保障方，为拓天速贷的用户提供安全稳健的资金托管保障，避免用户资金的流失及其他不良事件的发生。</span>
+            </p>
+        </li>
+        <li>
+            <p class="icon-logo logo-two"></p>
+            <p class="partner-intro">
+                <span class="partner-name">京都律师事务所</span>
+                <span>北京市京都律师事务所成立于1995年，是国内较早设立的合伙制律师事务所之一，并在刑事诉讼领域居于全国领先地位。京都律师事务所作为拓天速贷的法律服务保障方，为拓天速贷及其用户提供专业高效的法律保障及法律援助服务，确保您拥有坚实的法律保障。</span>
+            </p>
+        </li>
+    </ul>
 </div>
 </@global.main>

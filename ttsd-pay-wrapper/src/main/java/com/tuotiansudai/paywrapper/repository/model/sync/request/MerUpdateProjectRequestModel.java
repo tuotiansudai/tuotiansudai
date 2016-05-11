@@ -14,7 +14,7 @@ public class MerUpdateProjectRequestModel extends BaseSyncRequestModel {
     private String projectExpireDate;
 
 
-    public MerUpdateProjectRequestModel(String loanAmount, String projectId, String projectName, String projectState) {
+    public MerUpdateProjectRequestModel(String projectId, String loanAmount, String projectName, String projectState) {
         this.service = "mer_update_project";
         this.projectId = projectId;
         this.projectName = projectName;
