@@ -91,7 +91,9 @@
         where invest.login_name = #{loginName}
         and loan.status &lt;&gt; 'CANCEL'
         order by invest.created_time desc
-        limit #{index}, #{pageSize}
+        <if test=" isPagination == true">
+            limit #{index}, #{pageSize}
+        </if>
     </select>
 
     <select id="findCountByLoginName" parameterType="map" resultType="long">
@@ -226,7 +228,9 @@
             </if>
         </where>
         order by invest.created_time desc, invest.id asc
-        limit #{index}, #{pageSize}
+        <if test="isPagination == true">
+            limit #{index}, #{pageSize}
+        </if>
     </select>
 
     <select id="findCountInvestPagination" parameterType="map" resultType="long">

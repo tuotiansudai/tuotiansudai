@@ -5,8 +5,10 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.UnmodifiableIterator;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppInvestListService;
+import com.tuotiansudai.dto.InvestPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -97,10 +99,31 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         String loginName = requestDto.getBaseParam().getUserId();
         int pageSize = requestDto.getPageSize();
         int index = (requestDto.getIndex() - 1) * pageSize;
-
-        List<InvestModel> investList = investMapper.findByLoginName(loginName, index, pageSize);
-        int investListCount = (int) investMapper.findCountByLoginName(loginName);
-
+        List<InvestModel> investList;
+        int investListCount;
+        if(isTransferApplicationTransferable(requestDto)){
+            investList = investMapper.findByLoginName(loginName, index, pageSize, false);
+            UnmodifiableIterator<InvestModel> filter = Iterators.filter(investList.iterator(), new Predicate<InvestModel>() {
+                @Override
+                public boolean apply(InvestModel input) {
+                    return TransferStatus.TRANSFERABLE == input.getTransferStatus() && investTransferService.isTransferable(input.getId());
+                }
+            });
+            investList = Lists.newArrayList(filter);
+            int fromIndex = index;
+            int toIndex = fromIndex + pageSize;
+            investListCount = investList.size();
+            if(fromIndex >= investList.size()){
+                fromIndex = investList.size();
+            }
+            if(toIndex >= investList.size()){
+                toIndex = investList.size();
+            }
+            investList = investList.subList(fromIndex,toIndex);
+        }else{
+            investList = investMapper.findByLoginName(loginName, index, pageSize, true);
+            investListCount = (int) investMapper.findCountByLoginName(loginName);
+        }
         // build InvestList
         UserInvestListResponseDataDto dtoData = new UserInvestListResponseDataDto();
         dtoData.setInvestList(convertResponseData(investList, requestDto.getTransferStatus()));
@@ -115,6 +138,11 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         dto.setData(dtoData);
 
         return dto;
+    }
+
+    private boolean isTransferApplicationTransferable(UserInvestListRequestDto requestDto) {
+        return org.apache.commons.collections.CollectionUtils.isNotEmpty(requestDto.getTransferStatus())
+                && requestDto.getTransferStatus().size() == 1 && requestDto.getTransferStatus().contains(TransferStatus.TRANSFERABLE);
     }
 
     private List<UserInvestRecordResponseDataDto> convertResponseData(List<InvestModel> investList, List<TransferStatus> transferStatuses) {
@@ -143,30 +171,13 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
                 }
 
                 dto.setInvestInterest(AmountConverter.convertCentToString(amount));
-                String transferStatus;
-                if (invest.getTransferStatus() == TransferStatus.TRANSFERABLE) {
-                    transferStatus = investTransferService.isTransferable(invest.getId()) ? invest.getTransferStatus().name() : "";
-                } else if (invest.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
-                    transferStatus = "";
-                } else {
-                    transferStatus = invest.getTransferStatus().name();
-                }
-                dto.setTransferStatus(transferStatus);
+                dto.setTransferStatus(invest.getTransferStatus().name());
                 LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(invest.getLoanId());
-                dto.setLeftPeriod(loanRepayModel == null ? "0" : String.valueOf(investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(invest.getId(),loanRepayModel.getPeriod())));
+                dto.setLeftPeriod(loanRepayModel == null ? "0" : String.valueOf(investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(invest.getId(), loanRepayModel.getPeriod())));
                 list.add(dto);
             }
         }
-        if(CollectionUtils.isNotEmpty(transferStatuses) && transferStatuses.size() == 1 && transferStatuses.contains(TransferStatus.TRANSFERABLE)){
-            return Lists.newArrayList(Iterators.filter(list.iterator(), new Predicate<UserInvestRecordResponseDataDto>() {
-                @Override
-                public boolean apply(UserInvestRecordResponseDataDto input) {
-                    return input.getTransferStatus().equals(TransferStatus.TRANSFERABLE.name());
-                }
-            }));
-        }else{
-            return list;
-        }
+        return list;
 
     }
 }

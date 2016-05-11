@@ -50,7 +50,8 @@ public interface InvestMapper {
      */
     List<InvestModel> findByLoginName(@Param(value = "loginName") String loginName,
                                       @Param(value = "index") Integer index,
-                                      @Param(value = "pageSize") Integer pageSize);
+                                      @Param(value = "pageSize") Integer pageSize,
+                                      @Param(value = "isPagination") boolean isPagination);
 
     long findCountByLoginName(@Param(value = "loginName") String loginName);
 
@@ -140,7 +141,8 @@ public interface InvestMapper {
                                                         @Param(value = "startTime") Date startTime,
                                                         @Param(value = "endTime") Date endTime,
                                                         @Param(value = "investStatus") InvestStatus investStatus,
-                                                        @Param(value = "loanStatus") LoanStatus loanStatus);
+                                                        @Param(value = "loanStatus") LoanStatus loanStatus,
+                                                        @Param(value = "isPagination") boolean isPagination);
 
     long sumInvestAmount(@Param(value = "loanId") Long loanId,
                          @Param(value = "investorLoginName") String investorLoginName,

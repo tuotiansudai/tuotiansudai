@@ -44,7 +44,7 @@ public interface InvestService {
                                                                            Date startTime,
                                                                            Date endTime,
                                                                            InvestStatus investStatus,
-                                                                           LoanStatus loanStatus);
+                                                                           LoanStatus loanStatus,boolean isPagination);
 
 
     void turnOnAutoInvest(AutoInvestPlanModel model);

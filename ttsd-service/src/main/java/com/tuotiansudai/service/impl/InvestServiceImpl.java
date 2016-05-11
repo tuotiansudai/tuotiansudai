@@ -174,20 +174,28 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     public BasePaginationDataDto<InvestPaginationItemDataDto> getInvestPagination(String investorLoginName, int index, int pageSize, Date startTime, Date endTime, LoanStatus loanStatus) {
-        return getInvestPagination(null, investorLoginName, null, null, null, index, pageSize, startTime, endTime, null, loanStatus);
+        return getInvestPagination(null, investorLoginName, null, null, null, index, pageSize, startTime, endTime, null, loanStatus,true);
     }
 
     @Override
     public BasePaginationDataDto<InvestPaginationItemDataDto> getTransferApplicationTransferablePagination(String investorLoginName, int index, int pageSize, Date startTime, Date endTime, LoanStatus loanStatus) {
-        InvestPaginationDataDto investPaginationDataDto = getInvestPagination(null, investorLoginName, null, null, null, index, pageSize, startTime, endTime, null, loanStatus);
-        UnmodifiableIterator<InvestPaginationItemDataDto> filter = Iterators.filter(investPaginationDataDto.getRecords().iterator(),new Predicate<InvestPaginationItemDataDto>(){
+        InvestPaginationDataDto investPaginationDataDto = getInvestPagination(null, investorLoginName, null, null, null, index, pageSize, startTime, endTime, null, loanStatus,false);
+        UnmodifiableIterator<InvestPaginationItemDataDto> filter = Iterators.filter(investPaginationDataDto.getRecords().iterator(), new Predicate<InvestPaginationItemDataDto>() {
             @Override
             public boolean apply(InvestPaginationItemDataDto input) {
                 return TransferStatus.TRANSFERABLE.getDescription().equals(input.getTransferStatus()) && investTransferService.isTransferable(input.getInvestId());
             }
         });
-        investPaginationDataDto.setRecords(Lists.newArrayList(filter));
-        return investPaginationDataDto;
+        List<InvestPaginationItemDataDto>  items = Lists.newArrayList(filter);
+        int fromIndex = (index - 1) * pageSize;
+        int toIndex = fromIndex + pageSize;
+        if(fromIndex >= items.size()){
+            fromIndex = items.size();
+        }
+        if(toIndex >= items.size()){
+            toIndex = items.size();
+        }
+        return new InvestPaginationDataDto(index,pageSize,items.size(),items.subList(fromIndex, toIndex));
     }
 
     @Override
@@ -215,7 +223,7 @@ public class InvestServiceImpl implements InvestService {
                                                        String channel, Source source, String role,
                                                        int index, int pageSize,
                                                        Date startTime, Date endTime,
-                                                       InvestStatus investStatus, LoanStatus loanStatus) {
+                                                       InvestStatus investStatus, LoanStatus loanStatus,boolean isPagination) {
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
@@ -238,7 +246,7 @@ public class InvestServiceImpl implements InvestService {
         if (count > 0) {
             int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
-            items = investMapper.findInvestPagination(loanId, investorLoginName, channel, strSource, role, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus);
+            items = investMapper.findInvestPagination(loanId, investorLoginName, channel, strSource, role, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus,isPagination);
             for (InvestPaginationItemView investPaginationItemView : items) {
                 List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndInvestId(investorLoginName, investPaginationItemView.getId());
                 investPaginationItemView.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));

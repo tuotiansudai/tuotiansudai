@@ -207,7 +207,7 @@ public class InvestMapperTest {
     @Test
     public void shouldFindByLoginName() {
         createTestInvests();
-        List<InvestModel> investModelList = investMapper.findByLoginName(User_ID2, 0, Integer.MAX_VALUE);
+        List<InvestModel> investModelList = investMapper.findByLoginName(User_ID2, 0, Integer.MAX_VALUE,true);
         assertEquals(4, investModelList.size());
         long investCount = investMapper.findCountByLoginName(User_ID2);
         assertEquals(4, investCount);
