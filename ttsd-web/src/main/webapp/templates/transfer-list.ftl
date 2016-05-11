@@ -52,7 +52,7 @@
                                     </dd>
                                 </dl>
                                 <dl>
-                                    <dt>代收本金</dt>
+                                    <dt>待收本金</dt>
                                     <dd><em><@percentInteger>${transferApplicationItem.investAmount!}</@percentInteger></em>
                                         <i><@percentFraction>${transferApplicationItem.investAmount!}</@percentFraction>
                                         </i>元

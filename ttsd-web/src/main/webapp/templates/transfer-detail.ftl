@@ -4,7 +4,7 @@
     <div class="detail-intro">
         <div class="transfer-top">
             <span class="product-name">${transferApplication.name!}</span>
-            <span class="product-type">原始项目：${transferApplication.loanName!}</span>
+            <span class="product-type">原始项目：<a href="/loan/${transferApplication.loanId?string.computer}" target="_blank">${transferApplication.loanName!}</a></span>
             <span class="product-tip">拓天速贷提醒您：理财非存款，投资需谨慎！</span>
         </div>
         <div class="transfer-info">
@@ -54,10 +54,13 @@
             <#if (transferApplication.transferStatus.name() == "SUCCESS")>
                 <p class="img-status"><img src="${staticServer}/images/sign/loan/transfered.png"></p>
                 <p class="status-text">转让完成时间：${transferApplication.transferTime?string("yyyy-MM-dd HH:mm:ss")}</p>
+            <#elseif (transferApplication.transferStatus.name() == "CANCEL")>
+                <p class="img-status">已取消</p>
+                <p class="status-text"></p>
             <#else>
                 <form action="/transfer/purchase" method="post" id="transferForm">
                     <p class="get-money"><span class="name-text">认购金额：</span><span class="money-text"><strong>${transferApplication.transferAmount!}</strong>元</span> </p>
-                    <p><span class="name-text">预期收益：</span><span class="money-text"><strong>${transferApplication.expecedInterest!}</strong>元</span></p>
+                    <p><span class="name-text">预计收益：</span><span class="money-text"><strong>${transferApplication.expecedInterest!}</strong>元</span></p>
                     <p class="user-money"><span class="name-text">账户余额：${transferApplication.balance!} 元</span><span class="money-text"><strong><a href="/recharge">去充值 >></a></strong></span></p>
                     <input type="hidden" id="amount" name="amount" value="${transferApplication.transferAmount}"></input>
                     <input type="hidden" id="userBalance" name="userBalance" value="${transferApplication.balance!}" ></input>
@@ -81,7 +84,7 @@
                         <th>承接人</th>
                         <th>转让价格(元)</th>
                         <th>承接方式</th>
-                        <th>预期收益(元)</th>
+                        <th>预计收益(元)</th>
                         <th>待收本金(元)</th>
                         <th>承接时间</th>
                     </tr>
