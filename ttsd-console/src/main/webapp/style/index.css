@@ -575,3 +575,10 @@ td.td {
     overflow: hidden;
     overflow-y: scroll;
 }
+.text-overflow{
+    width: 500px;
+    float: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

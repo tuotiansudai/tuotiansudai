@@ -54,7 +54,7 @@ public class InvestRepayDataItemDto {
             this.actualFee = AmountConverter.convertCentToString(model.getActualFee());
             this.actualInterest = AmountConverter.convertCentToString(model.getActualInterest());
             this.actualRepayDate = model.getActualRepayDate();
-            this.actualAmount = AmountConverter.convertCentToString(model.getCorpus() + model.getActualInterest() + model.getDefaultInterest() - model.getActualFee());
+            this.actualAmount = AmountConverter.convertCentToString(model.getRepayAmount());
             this.defaultInterest = AmountConverter.convertCentToString(model.getDefaultInterest());
         }
         this.corpus = AmountConverter.convertCentToString(model.getCorpus());
@@ -74,7 +74,7 @@ public class InvestRepayDataItemDto {
         investRepayDataItemDto.setActualRepayDate(model.getActualRepayDate());
         investRepayDataItemDto.setRepayDate(model.getRepayDate());
         investRepayDataItemDto.setAmount(AmountConverter.convertCentToString(model.getCorpus() + model.getExpectedInterest() - model.getExpectedFee()));
-        investRepayDataItemDto.setActualAmount(AmountConverter.convertCentToString(model.getCorpus() + model.getActualInterest() + model.getDefaultInterest() - model.getActualFee()));
+        investRepayDataItemDto.setActualAmount(AmountConverter.convertCentToString(model.getRepayAmount()));
         return investRepayDataItemDto;
     }
 
