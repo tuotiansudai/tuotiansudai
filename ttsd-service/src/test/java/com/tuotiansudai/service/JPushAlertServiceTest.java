@@ -31,7 +31,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -309,6 +308,7 @@ public class JPushAlertServiceTest {
         UserCouponModel userCouponModel = new UserCouponModel();
         userCouponModel.setId(idGenerator.generate());
         userCouponModel.setInvestId(1001L);
+        userCouponModel.setActualInterest(10);
         userCouponModel.setLoginName("test1");
         userCouponModel.setCouponId(couponModel.getId());
         userCouponModel.setLoanId(loanModel.getId());
@@ -324,7 +324,6 @@ public class JPushAlertServiceTest {
         userCouponModel2.setStatus(InvestStatus.SUCCESS);
         userCouponModels.add(userCouponModel2);
 
-
         when(loanRepayMapper.findById(anyLong())).thenReturn(currentLoanRepayModel);
 
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
@@ -339,7 +338,22 @@ public class JPushAlertServiceTest {
 
         when(investMapper.findById(anyLong())).thenReturn(investModel);
 
-        assertNotNull(jPushAlertService.autoJPushCouponIncomeAlert(currentLoanRepayModel.getId());
+        when(redisWrapperClient.hexists(anyString(), anyString())).thenReturn(true);
+
+        when(redisWrapperClient.hget(anyString(), anyString())).thenReturn("test123");
+
+        jPushAlertService.autoJPushCouponIncomeAlert(currentLoanRepayModel.getId());
+
+        ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor argumentAlert = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor argumentextraKey = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor argumentextraValue = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<PushSource> argumentPushSource = ArgumentCaptor.forClass(PushSource.class);
+        ArgumentCaptor<ArrayList<String>> argumentRegistrationIds = ArgumentCaptor.forClass((Class<ArrayList<String>>) new ArrayList<String>().getClass());
+
+        verify(mobileAppJPushClient, times(2)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
+
+        assertEquals(String.valueOf(createJPushAlert().getId()), argumentJPushAlertId.getValue());
 
     }
 
@@ -358,7 +372,7 @@ public class JPushAlertServiceTest {
         loanModel.setDescriptionText("asdfasd");
         loanModel.setFundraisingEndTime(new Date());
         loanModel.setFundraisingStartTime(new Date());
-        loanModel.setInvestFeeRate(15);
+        loanModel.setInvestFeeRate(0.15);
         loanModel.setInvestIncreasingAmount(1);
         loanModel.setLoanAmount(10000);
         loanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
