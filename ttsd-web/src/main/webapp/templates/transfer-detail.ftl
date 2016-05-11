@@ -59,7 +59,15 @@
                 <p class="status-text"></p>
             <#else>
                 <form action="/transfer/purchase" method="post" id="transferForm">
-                    <p class="get-money"><span class="name-text">认购金额：</span><span class="money-text"><strong>${transferApplication.transferAmount!}</strong>元</span> </p>
+                    <p class="get-money">
+                        <span class="name-text" id="tipLayer">认购金额：</span>
+                        <span class="money-text">
+                            <strong>${transferApplication.transferAmount!}</strong>元
+                        </span>
+                        <#if errorMessage?has_content>
+                            <span class="errorTip hide"><i class="fa fa-times-circle"></i>${errorMessage!}</span>
+                        </#if>
+                    </p>
                     <p><span class="name-text">预计收益：</span><span class="money-text"><strong>${transferApplication.expecedInterest!}</strong>元</span></p>
                     <p class="user-money"><span class="name-text">账户余额：${transferApplication.balance!} 元</span><span class="money-text"><strong><a href="/recharge">去充值 >></a></strong></span></p>
                     <input type="hidden" id="amount" name="amount" value="${transferApplication.transferAmount}"></input>

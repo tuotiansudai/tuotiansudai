@@ -1,5 +1,17 @@
 require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert','red-envelope-float','jquery.ajax.extension'], function ($, pagination,layer) {
+
     $(function() {
+
+        var $errorTip = $('.errorTip');
+
+        function showInputErrorTips(message) {
+            layer.msg(message);
+        }
+
+        if ($errorTip.length > 0 && $errorTip.text() != '') {
+            showInputErrorTips($errorTip.text());
+        }
+
         $('#transferSubmit').on('click', function(event) {
             event.preventDefault();
             var transferApplicationId=parseInt($("#transferInvestId").val()),

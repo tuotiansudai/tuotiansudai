@@ -82,7 +82,7 @@ public class TransferApplicationController {
 
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
             redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());
-            modelAndView.setViewName(MessageFormat.format("redirect:/loan/{0}", investDto.getLoanId()));
+            modelAndView.setViewName(MessageFormat.format("redirect:/transfer/{0}", investDto.getTransferInvestId()));
         } else {
             try {
                 investDto.setLoginName(LoginUserInfo.getLoginName());
@@ -99,7 +99,7 @@ public class TransferApplicationController {
 
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
             redirectAttributes.addFlashAttribute("investAmount", investDto.getAmount());
-            modelAndView.setViewName(MessageFormat.format("redirect:/loan/{0}", investDto.getLoanId()));
+            modelAndView.setViewName(MessageFormat.format("redirect:/transfer/{0}", investDto.getTransferInvestId()));
 
         }
         return modelAndView;
