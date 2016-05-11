@@ -40,12 +40,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>30天标的</td>
-                            <td>37,825,000</td>
-                            <td>3,841</td>
-                            <td>9,847.70</td>
-                        </tr>
+                    <#if investDetailList??>
+                        <#list investDetailList as investDetailItem>
+                            <tr>
+                                <td>${investDetailItem.productName!}天标的</td>
+                                <td>${investDetailItem.totalInvestAmount!}</td>
+                                <td>${investDetailItem.countInvest!}</td>
+                                <td>${investDetailItem.avgInvestAmount!}</td>
+                            </tr>
+                        </#list>
+                    </#if>
                     </tbody>
                 </table>
             </div>
