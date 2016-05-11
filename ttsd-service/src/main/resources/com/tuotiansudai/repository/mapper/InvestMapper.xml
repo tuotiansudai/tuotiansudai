@@ -49,6 +49,13 @@
         <result column="city" property="city"></result>
     </resultMap>
 
+    <resultMap id="investDataView" type="InvestDataView">
+        <result column="productName" property="productName"></result>
+        <result column="totalInvestAmount" property="totalInvestAmount"></result>
+        <result column="countInvest" property="countInvest"></result>
+        <result column="avgInvestAmount" property="avgInvestAmount"></result>
+    </resultMap>
+
     <sql id="columns">
         id, login_name, loan_id, amount, status, source, is_auto_invest, channel, is_no_password_invest, created_time
     </sql>
@@ -340,4 +347,19 @@
         HAVING MAX(t.`created_time`) &lt; DATE_SUB(curdate(), INTERVAL 30 DAY)
     </select>
 
+    <select id="getInvestDetail" resultMap="investDataView">
+        <![CDATA[
+         select case
+            when loan.periods ='1' then 30
+            when loan.periods ='3' then 90
+            when loan.periods ='6' then 180
+            ELSE 360 END as productName,
+          IFNULL(sum(invest.amount), 0) as totalInvestAmount, COUNT(invest.id) as countInvest, ROUND(IFNULL(sum(invest.amount), 0)/ COUNT(invest.id)) as avgInvestAmount
+          from invest join loan on invest.loan_id = loan.id
+          where invest.status='SUCCESS'
+          and invest.created_time between '2015-07-01 00:00:00' and date_add(curdate(), interval '00:00:00' hour_second)
+          group by loan.periods
+          ORDER BY productName
+          ]]>
+    </select>
 </mapper>

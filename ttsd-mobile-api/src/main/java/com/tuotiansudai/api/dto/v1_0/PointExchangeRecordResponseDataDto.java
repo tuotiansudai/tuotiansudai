@@ -17,7 +17,6 @@ public class PointExchangeRecordResponseDataDto {
     private String rate;
     private String investLowerLimit;
     private String investUpperLimit = "1000000.00";
-    private Integer deadline;
     private long point;
     private List<ProductType> productTypes;
 
@@ -87,14 +86,6 @@ public class PointExchangeRecordResponseDataDto {
 
     public void setPoint(long point) {
         this.point = point;
-    }
-
-    public Integer getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(Integer deadline) {
-        this.deadline = deadline;
     }
 
     public PointExchangeRecordResponseDataDto(){
