@@ -3,7 +3,7 @@
 
 <div class="landing-container">
     <div class="landing-header">
-        <a href="/">访问主页</a>
+        <a href="/">访问首页</a>
     </div>
     <div class="landing-top">
         <div class="landing-inner">
@@ -105,7 +105,7 @@
     </div>
     <div class="content-two">
         <div class="two-title">
-            为您精选投资产品
+            为您精选理财产品
         </div>
         <div class="product-wp">
             <ul>
