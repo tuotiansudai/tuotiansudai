@@ -356,7 +356,8 @@
             ELSE 360 END as productName,
           IFNULL(sum(invest.amount), 0) as totalInvestAmount, COUNT(invest.id) as countInvest, ROUND(IFNULL(sum(invest.amount), 0)/ COUNT(invest.id)) as avgInvestAmount
           from invest join loan on invest.loan_id = loan.id
-          where invest.status='SUCCESS' and invest.created_time <= date_add(curdate()-1, interval '23:59:59' hour_second)
+          where invest.status='SUCCESS'
+          and invest.created_time between '2015-07-01 00:00:00' and date_add(curdate(), interval '00:00:00' hour_second)
           group by loan.periods
           ORDER BY productName
           ]]>
