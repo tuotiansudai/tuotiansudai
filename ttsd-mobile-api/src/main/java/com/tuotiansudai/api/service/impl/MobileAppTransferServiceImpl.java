@@ -155,6 +155,10 @@ public class MobileAppTransferServiceImpl implements MobileAppTransferService{
                 baseResponseDto.setCode(ReturnMessage.LOAN_NOT_FOUND.getCode());
                 baseResponseDto.setMessage(ReturnMessage.LOAN_NOT_FOUND.getMsg());
                 break;
+            case APPLICATION_IS_HIS_OWN:
+                baseResponseDto.setCode(ReturnMessage.APPLICATION_IS_HIS_OWN.getCode());
+                baseResponseDto.setMessage(ReturnMessage.APPLICATION_IS_HIS_OWN.getMsg());
+                break;
         }
         return baseResponseDto;
     }

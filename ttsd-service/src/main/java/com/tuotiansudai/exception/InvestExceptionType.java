@@ -10,6 +10,7 @@ public enum InvestExceptionType {
     OUT_OF_NOVICE_INVEST_LIMIT("新手标投资已超上限"),
     PASSWORD_INVEST_OFF("尚未开启免密投资"),
     ILLEGAL_LOAN_STATUS("标的暂不可投资"),
+    APPLICATION_IS_HIS_OWN("您不能接受手自己的债权"),
     NOT_ENOUGH_BALANCE("账户余额不足");
 
     private final String description;
