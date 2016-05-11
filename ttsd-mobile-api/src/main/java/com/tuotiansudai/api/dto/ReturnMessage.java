@@ -63,6 +63,7 @@ public enum ReturnMessage {
     LESS_THAN_MIN_INVEST_AMOUNT("0054","投资金额小于标的最小投资金额"),
     OUT_OF_NOVICE_INVEST_LIMIT("0055","您已购买过新手专享产品"),
     INVEST_FAILED("0056","投资失败"),
+    APPLICATION_IS_HIS_OWN("0057","您不能接手自己的债权"),
     /******手机端投资******/
 
 
