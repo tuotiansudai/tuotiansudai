@@ -97,6 +97,7 @@ public class InfoPublishServiceTest {
         model.setAmount(amount);
         model.setCreatedTime(new Date());
         model.setId(idGenerator.generate());
+        model.setTransferStatus(TransferStatus.TRANSFERABLE);
         model.setIsAutoInvest(false);
         model.setLoginName(loginName);
         model.setLoanId(loanId);
