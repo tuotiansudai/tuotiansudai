@@ -3,7 +3,7 @@
         <tr>
             <th>转让项目名称</th>
             <th>转让价格(元)</th>
-            <th>代收本金(元)</th>
+            <th>待收本金(元)</th>
             <th>承接时间</th>
             <th>下次回款(元)</th>
             <th>详情</th>
@@ -15,11 +15,11 @@
             <td>
                 <a href="/loan/{{loanId}}" class="project-name">{{loanName}}
             </td>
-            <td>{{transferAmount}}</td>
-            <td>{{investAmount}}</td>
+            <td>{{transferAmountStr}}</td>
+            <td>{{investAmountStr}}</td>
             <td>{{transferTime}}</td>
             <td>
-                {{nextRepayDate}} / {{nextRepayAmount}}
+                {{nextRepayDate}} / {{nextRepayAmountStr}}
             </td>
             <td>
             <a class="show-invest-repay" data-url="/investor/invest/{{investId}}/repay-data">回款记录</a> |

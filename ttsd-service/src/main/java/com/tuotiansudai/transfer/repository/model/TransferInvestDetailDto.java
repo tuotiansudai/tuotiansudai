@@ -1,5 +1,7 @@
 package com.tuotiansudai.transfer.repository.model;
 
+import com.tuotiansudai.util.AmountConverter;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -113,5 +115,17 @@ public class TransferInvestDetailDto implements Serializable {
 
     public void setLoanId(long loanId) {
         this.loanId = loanId;
+    }
+
+    public String getInvestAmountStr() {
+        return AmountConverter.convertCentToString(investAmount);
+    }
+    public String getTransferAmountStr() {
+
+        return AmountConverter.convertCentToString(transferAmount);
+    }
+    public String getNextRepayAmountStr() {
+
+        return  AmountConverter.convertCentToString(nextRepayAmount);
     }
 }
