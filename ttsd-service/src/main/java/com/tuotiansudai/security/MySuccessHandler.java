@@ -28,19 +28,6 @@ public class MySuccessHandler extends SimpleUrlLogoutSuccessHandler implements L
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            String session = "";
-            for (Cookie cookie : cookies) {
-                if ("SESSION".equalsIgnoreCase(cookie.getName())) {
-                    session = cookie.getValue();
-                }
-            }
-            String redisSessionKey = MessageFormat.format(SPRING_SESSION_TEMPLATE, session);
-            if (redisWrapperClient.exists(redisSessionKey)) {
-                redisWrapperClient.del(redisSessionKey);
-            }
-        }
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         PrintWriter writer = response.getWriter();

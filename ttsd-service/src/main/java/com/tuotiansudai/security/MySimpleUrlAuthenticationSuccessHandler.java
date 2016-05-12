@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -40,6 +41,7 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
     @Value("${web.login.max.failed.times}")
     private int times;
 
+    private static String SPRING_SESSION_TEMPLATE = "spring:session:sessions:{0}";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {

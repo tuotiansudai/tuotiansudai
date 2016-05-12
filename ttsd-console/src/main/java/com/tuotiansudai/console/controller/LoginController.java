@@ -58,7 +58,7 @@ public class LoginController {
     @RequestMapping(value = "/sign-out", method = RequestMethod.POST)
     public ModelAndView loginOut(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         signInClient.sendSignOut(httpServletRequest.getSession().getId());
-        return new ModelAndView("/");
+        return new ModelAndView("redirect:/");
     }
 
     private static String cookiePath(HttpServletRequest request) {
