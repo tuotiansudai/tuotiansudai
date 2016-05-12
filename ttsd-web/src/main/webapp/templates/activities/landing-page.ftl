@@ -109,104 +109,67 @@
         </div>
         <div class="product-wp">
             <ul class="clearfix">
-                <li class="new-product">
-                    <i class="new-user"></i>
-                    <div class="product-left">
-                        <h3>房产抵押借款</h3>
-                        <div class="loan-info-dl clearfix">
-                            <dl>
-                                <dt>预期年化收益</dt>
-                                <dd><em class="active">10</em>
-                                    <i>
-                                        +3%
-                                    </i>
-                                    <span>新手加息券</span>
-                                </dd>
-                            </dl>
+                <#list loans as loan>
+                    <#if loan.periods == 1>
+                        <li class="new-product">
+                            <i class="new-user"></i>
+                            <div class="product-left">
+                                <h3>${loan.name}</h3>
+                                <div class="loan-info-dl clearfix">
+                                    <dl>
+                                        <dt>预期年化收益</dt>
+                                        <dd><em class="active"><@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger></em>
+                                            <i>
+                                                <@percentFraction>${loan.baseRate+loan.activityRate}</@percentFraction>
+                                                <#if (loan.newbieInterestCouponRate > 0) >+<@percentInteger>${loan.newbieInterestCouponRate}</@percentInteger>
+                                                    <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
+                                                </#if>%
+                                            </i>
+                                            <span>新手加息券</span>
+                                        </dd>
+                                    </dl>
 
-                            <dl>
-                                <dt>项目期限</dt>
-                                <dd>30天</dd>
-                            </dl>
-                        </div>
-                    </div>
-                    <div class="product-right">
-                        <a href="#">立即查看</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="product-left">
-                        <h3>房产抵押借款</h3>
-                        <div class="loan-info-dl clearfix">
-                            <dl>
-                                <dt>预期年化收益</dt>
-                                <dd><em class="active">12</em>
-                                    <i>%</i>
-                                </dd>
-                            </dl>
+                                    <dl>
+                                        <dt>项目期限</dt>
+                                        <dd>${loan.periods}${loan.isPeriodMonthUnit?string("个月", "天")}</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="product-right">
+                                <a href="${isAppSource?string('/loan-list', '/loan/${(loan.id?string.computer)}')}" class="active">立即查看</a>
+                            </div>
+                        </li>
+                    <#else>
+                        <li>
+                            <div class="product-left">
+                                <h3>${loan.name}</h3>
+                                <div class="loan-info-dl clearfix">
+                                    <dl>
+                                        <dt>预期年化收益</dt>
+                                        <dd><em class="active"><@percentInteger>${loan.baseRate}</@percentInteger></em>
+                                            <i><@percentFraction>${loan.baseRate}</@percentFraction>
+                                                <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
+                                                    <@percentFraction>${loan.activityRate}</@percentFraction>
+                                                </#if>%
+                                            </i>
+                                        </dd>
+                                    </dl>
 
-                            <dl>
-                                <dt>项目期限</dt>
-                                <dd>
-                                90天
-                                </dd>
-                            </dl>
-                        </div>
-                    </div>
-                    <div class="product-right">
-                        <a href="#" class="active">立即查看</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="product-left">
-                        <h3>房产抵押借款</h3>
-                        <div class="loan-info-dl clearfix">
-                            <dl>
-                                <dt>预期年化收益</dt>
-                                <dd><em class="active">13</em>
-                                    <i>
-                                        %
-                                    </i>
-                                </dd>
-                            </dl>
+                                    <dl>
+                                        <dt>项目期限</dt>
+                                        <dd>
+                                        ${loan.periods}${loan.isPeriodMonthUnit?string("个月", "天")}
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="product-right">
+                                <a href="${isAppSource?string('/loan-list', '/loan/${(loan.id?string.computer)}')}" class="active">立即查看</a>
+                            </div>
+                        </li>
+                    </#if>
 
-                            <dl>
-                                <dt>项目期限</dt>
-                                <dd>
-                                180天
-                                </dd>
-                            </dl>
-                        </div>
-                    </div>
-                    <div class="product-right">
-                        <a href="#" class="active">立即查看</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="product-left">
-                        <h3>房产抵押借款</h3>
-                        <div class="loan-info-dl clearfix">
-                            <dl>
-                                <dt>预期年化收益</dt>
-                                <dd><em class="active">14</em>
-                                    <i>
-                                        %
-                                    </i>
-                                </dd>
-                            </dl>
-
-                            <dl>
-                                <dt>项目期限</dt>
-                                <dd>
-                                360天
-                                </dd>
-                            </dl>
-                        </div>
-                    </div>
-                    <div class="product-right">
-                        <a href="#" class="active">立即查看</a>
-                    </div>
-                </li>
+                </#list>
             </ul>
         </div>
     </div>
@@ -705,70 +668,54 @@
         </div>
         <div class="product-box-list fl">
             <div class="product-box-inner">
-                <div class="product-box tc product-type">
-                    <i class="new-user"></i>
-                    <div class="pad-m">
-                        <h2 class="pr-title">房产抵押借款</h2>
-                        <div class="pr-square tc">
-                            <div class="pr-square-in">
-                                <em><b>10</b>+3%</em>
-                                <i>预期年化收益</i>
+                <#list loans as loan>
+                    <#if loan.periods == 1>
+                        <div class="product-box tc product-type">
+                            <i class="new-user"></i>
+                            <div class="pad-m">
+                                <h2 class="pr-title">${loan.name}</h2>
+                                <div class="pr-square tc">
+                                    <div class="pr-square-in">
+                                        <em>
+                                            <b><@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger></b>
+                                            <@percentFraction>${loan.baseRate+loan.activityRate}</@percentFraction>
+                                            <#if (loan.newbieInterestCouponRate > 0) >+<@percentInteger>${loan.newbieInterestCouponRate}</@percentInteger>
+                                                <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
+                                            </#if>%
+                                        </em>
+                                        <i>预期年化收益</i>
+                                    </div>
+                                </div>
+                                <dl class="pr-info">
+                                    <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")}</dd>
+                                </dl>
                             </div>
+                            <a href="${isAppSource?string('/loan-list', '/loan/${(loan.id?string.computer)}')}" class="active">立即查看</a>
                         </div>
-                        <dl class="pr-info">
-                            <dd class="dl-month"><i>30</i>天</dd>
-                        </dl>
-                    </div>
-                    <a href="#" class="btn-normal active">立即查看</a>
-                </div>
-                <div class="product-box tc product-type">
-                    <i class="wyx"></i>
-                    <div class="pad-m">
-                        <h2 class="pr-title">房产抵押借款</h2>
-                        <div class="pr-square tc">
-                            <div class="pr-square-in">
-                                <em><b>12</b>%</em>
-                                <i>预期年化收益</i>
+                    <#else>
+                        <div class="product-box tc product-type">
+                            <div class="pad-m">
+                                <h2 class="pr-title">${loan.name}</h2>
+                                <div class="pr-square tc">
+                                    <div class="pr-square-in">
+                                        <em>
+                                            <b><@percentInteger>${loan.baseRate}</@percentInteger></b>
+                                            <@percentFraction>${loan.baseRate}</@percentFraction>
+                                            <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
+                                            <@percentFraction>${loan.activityRate}</@percentFraction>
+                                            </#if>%
+                                        </em>
+                                        <i>预期年化收益</i>
+                                    </div>
+                                </div>
+                                <dl class="pr-info">
+                                    <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")}</dd>
+                                </dl>
                             </div>
+                            <a href="${isAppSource?string('/loan-list', '/loan/${(loan.id?string.computer)}')}" class="active">立即查看</a>
                         </div>
-                        <dl class="pr-info">
-                            <dd class="dl-month"><i>90</i>天</dd>
-                        </dl>
-                    </div>
-                    <a href="#" class="btn-normal">立即查看</a>
-                </div>
-                <div class="product-box tc product-type">
-                    <i class="jyf"></i>
-                    <div class="pad-m">
-                        <h2 class="pr-title">房产抵押借款</h2>
-                        <div class="pr-square tc">
-                            <div class="pr-square-in">
-                                <em><b>13</b>%</em>
-                                <i>预期年化收益</i>
-                            </div>
-                        </div>
-                        <dl class="pr-info">
-                            <dd class="dl-month"><i>180</i>天</dd>
-                        </dl>
-                    </div>
-                    <a href="#" class="btn-normal">立即查看</a>
-                </div>
-                <div class="product-box tc product-type">
-                    <i class="jyf"></i>
-                    <div class="pad-m">
-                        <h2 class="pr-title">房产抵押借款</h2>
-                        <div class="pr-square tc">
-                            <div class="pr-square-in">
-                                <em><b>13</b>%</em>
-                                <i>预期年化收益</i>
-                            </div>
-                        </div>
-                        <dl class="pr-info">
-                            <dd class="dl-month"><i>360</i>天</dd>
-                        </dl>
-                    </div>
-                    <a href="#" class="btn-normal">立即查看</a>
-                </div>
+                    </#if>
+                </#list>
             </div>
         </div>
     </div>
@@ -944,7 +891,6 @@
 
                         </li>
                         <li id="captchaPhoneErr" class="height"></li>
-
 
 
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
