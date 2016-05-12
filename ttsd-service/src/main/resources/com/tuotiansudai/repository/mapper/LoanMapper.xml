@@ -117,7 +117,16 @@
             <![CDATA[ and (l.base_rate + l.activity_rate) <= #{rateEnd} ]]>
         </if>
         ) temp
-        order by case temp.status when 'RAISING' then '1' when 'PREHEAT' then '2' when 'RECHECK' then '3' when 'REPAYING' then '4' when 'COMPLETE' then '5' else '6' end,temp.verify_time desc,temp.created_time desc
+        order by case temp.status when 'RAISING' then '1'
+                                  when 'PREHEAT' then '2'
+                                  when 'RECHECK' then '3'
+                                  when 'REPAYING' then '4'
+                                  when 'COMPLETE' then '5'
+                                  else '6' end,
+                      duration,
+                      temp.verify_time desc,
+                      temp.created_time desc
+                      raising_complete_time desc
         limit #{index} , 10
     </select>
 
