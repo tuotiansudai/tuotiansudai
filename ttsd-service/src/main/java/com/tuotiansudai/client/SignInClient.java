@@ -11,7 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Map;
 
 @Component
 public class SignInClient extends BaseClient {
@@ -62,28 +66,18 @@ public class SignInClient extends BaseClient {
     private final static String SIGN_OUT_URL = "/logout";
 
     public BaseDto<LoginDto> sendSignIn(String oldSessionId, SignInDto dto) {
-        return send(oldSessionId, dto, SIGN_IN_URL);
+        RequestBody requestBody = new FormEncodingBuilder().add("username", dto.getUsername()).add("password", dto.getPassword()).add("captcha", dto.getCaptcha()).build();
+        return send(oldSessionId, SIGN_IN_URL, requestBody);
     }
 
-    public boolean sendSignOut(String oldSessionId) {
-        String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", SIGN_OUT_URL);
+    public BaseDto<LoginDto> sendSignOut(String oldSessionId) {
         RequestBody requestBody = new FormEncodingBuilder().add("Cookie", "SESSION=" + oldSessionId).build();
-        Request.Builder request = new Request.Builder()
-                .url(url)
-                .post(requestBody)
-                .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-                .addHeader("Cookie", "SESSION=" + oldSessionId);
-        try {
-            return okHttpClient.newCall(request.build()).execute().isSuccessful();
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        return false;
+        return send(oldSessionId, SIGN_OUT_URL, requestBody);
     }
 
-    private BaseDto<LoginDto> send(String oldSessionId, SignInDto dto, String requestPath) {
+    private BaseDto<LoginDto> send(String oldSessionId, String requestPath, RequestBody requestBody) {
         try {
-            String responseString = this.execute(oldSessionId, requestPath, dto);
+            String responseString = this.execute(oldSessionId, requestPath, requestBody);
             if (!Strings.isNullOrEmpty(responseString)) {
                 return objectMapper.readValue(responseString, new TypeReference<BaseDto<LoginDto>>() {
                 });
@@ -97,9 +91,8 @@ public class SignInClient extends BaseClient {
         return resultDto;
     }
 
-    protected String execute(String oldSessionId, String path, SignInDto dto) {
+    protected String execute(String oldSessionId, String path, RequestBody requestBody) {
         String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", path);
-        RequestBody requestBody = new FormEncodingBuilder().add("username", dto.getUsername()).add("password", dto.getPassword()).add("captcha", dto.getCaptcha()).build();
         Request.Builder request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
@@ -108,13 +101,41 @@ public class SignInClient extends BaseClient {
         try {
             Response response = okHttpClient.newCall(request.build()).execute();
             if (response.isSuccessful()) {
-
                 return response.body().string();
             }
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
         return null;
+    }
+
+    private static String cookiePath(HttpServletRequest request) {
+        return request.getContextPath() + "/";
+    }
+
+    public Cookie createSessionCookie(HttpServletRequest request,
+                                       Map<String, String> sessionIds) {
+        Cookie sessionCookie = new Cookie("SESSION","");
+        if(this.isServlet3()) {
+            sessionCookie.setHttpOnly(true);
+        }
+        sessionCookie.setSecure(request.isSecure());
+        sessionCookie.setPath(cookiePath(request));
+        if(sessionIds.isEmpty()) {
+            sessionCookie.setMaxAge(0);
+            return sessionCookie;
+        }
+        String cookieValue = sessionIds.values().iterator().next();
+        sessionCookie.setValue(cookieValue);
+        return sessionCookie;
+    }
+
+    private boolean isServlet3() {
+        try {
+            ServletRequest.class.getMethod("startAsync");
+            return true;
+        } catch(NoSuchMethodException e) {}
+        return false;
     }
 
 }
