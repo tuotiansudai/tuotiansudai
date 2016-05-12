@@ -136,7 +136,7 @@
                                 </div>
                             </div>
                             <div class="product-right">
-                                <a href="${isAppSource?string('/loan-list', '/loan/${(loan.id?string.computer)}')}" class="active">立即查看</a>
+                                <a href="${isAppSource?string('/loan-list', '/loan/${(loan.id?string.computer)}')}">立即查看</a>
                             </div>
                         </li>
                     <#else>
@@ -712,7 +712,7 @@
                                     <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")}</dd>
                                 </dl>
                             </div>
-                            <a href="${isAppSource?string('/loan-list', '/loan/${(loan.id?string.computer)}')}" class="active">立即查看</a>
+                            <a href="${isAppSource?string('/loan-list', '/loan/${(loan.id?string.computer)}')}">立即查看</a>
                         </div>
                     </#if>
                 </#list>

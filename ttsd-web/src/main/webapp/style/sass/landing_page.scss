@@ -731,7 +731,8 @@ form label.error {
     background: $landingPhoneColorGray;
 
     .product-box-list {
-      padding: 0 10px;
+      width:96%;
+      padding: 0 2%;
       .product-box-inner {
         width:100%;
         box-sizing: border-box;
@@ -851,13 +852,13 @@ form label.error {
               margin-top:18px;
             }
           }
-          .btn-normal {
+          a{
             width: auto;
             border: 1px solid #ff6400;
             background: #fff;
             color: #ff6400!important;
             letter-spacing: 0;
-            padding: 7px 11px;
+            padding: 3px 10px;
             position: absolute;
             right: 11px;
             top: 38px;
