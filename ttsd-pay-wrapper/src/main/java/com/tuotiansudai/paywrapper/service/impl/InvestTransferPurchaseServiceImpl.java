@@ -28,7 +28,6 @@ import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
@@ -109,7 +108,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         long transferInvestId = Long.parseLong(investDto.getTransferInvestId());
         TransferApplicationModel transferApplicationModel = transferApplicationMapper.findById(transferInvestId);
-        if (transferApplicationModel == null || transferApplicationModel.getStatus() != TransferStatus.TRANSFERRING|| transferApplicationModel.getTransferAmount() > accountModel.getBalance()) {
+        if (transferApplicationModel == null || transferApplicationModel.getStatus() != TransferStatus.TRANSFERRING || transferApplicationModel.getTransferAmount() > accountModel.getBalance()) {
             return baseDto;
         }
         InvestModel transferrerModel = investMapper.findById(transferApplicationModel.getTransferInvestId());
@@ -209,6 +208,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         List<InvestNotifyRequestModel> todoList = investTransferNotifyRequestMapper.getTodoList(investProcessListSize);
 
         for (InvestNotifyRequestModel model : todoList) {
+            logger.info(MessageFormat.format("[Invest Transfer Callback {0}] starting...", model.getOrderId()));
             if (updateInvestTransferNotifyRequestStatus(model)) {
                 try {
                     processOneCallback(model);
@@ -216,7 +216,6 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                     String errMsg = MessageFormat.format("invest callback, processOneCallback error. investId:{0}", model.getOrderId());
                     logger.error(errMsg, e);
                     sendFatalNotify(MessageFormat.format("债权转让投资回调处理错误。{0},{1}", environment, errMsg));
-                    e.printStackTrace();
                 }
             }
         }
@@ -280,43 +279,34 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
     @Transactional(rollbackFor = Exception.class)
     public void postPurchase(long investId) throws AmountTransferException {
         InvestModel investModel = investMapper.findById(investId);
-        if (investModel == null || investModel.getStatus() != InvestStatus.WAIT_PAY) {
-            logger.error(MessageFormat.format("transfer is failed, invest(investId={0}) is null or status is not WAIT_PAY", String.valueOf(investId)));
-            return;
-        }
-
         InvestModel transferInvestModel = investMapper.findById(investModel.getTransferInvestId());
-        if (transferInvestModel == null || transferInvestModel.getTransferStatus() != TransferStatus.TRANSFERRING) {
-            logger.error(MessageFormat.format("transfer is failed, transfer invest(transferInvestId={0}) is null or transfer status is not TRANSFERRING",
-                    String.valueOf(investModel.getTransferInvestId() != null ? investModel.getTransferInvestId() : null)));
-            return;
-        }
         List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getTransferInvestId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
-        if (CollectionUtils.isEmpty(transferApplicationModels) || transferApplicationModels.get(0).getStatus() != TransferStatus.TRANSFERRING) {
-            logger.error(MessageFormat.format("transfer is failed, transfer application(investId={0}) is null or transfer status is not TRANSFERRING",
-                    String.valueOf(transferApplicationModels.get(0) != null ? transferApplicationModels.get(0).getId() : null)));
-            return;
-        }
         TransferApplicationModel transferApplicationModel = transferApplicationModels.get(0);
+
         // update transferee invest status
         investMapper.updateStatus(investId, InvestStatus.SUCCESS);
+        logger.info(MessageFormat.format("[Invest Transfer Callback {0}] update invest status to SUCCESS", String.valueOf(investId)));
+
         // generate transferee balance
-        amountTransfer.transferOutBalance(investModel.getLoginName(), investId, transferApplicationModels.get(0).getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_IN, null, null);
+        amountTransfer.transferOutBalance(investModel.getLoginName(), investId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_IN, null, null);
+        logger.info(MessageFormat.format("[Invest Transfer Callback {0}] update transferee balance and user bill", String.valueOf(investId)));
 
         // update transferrer invest transfer status
         investMapper.updateTransferStatus(transferInvestModel.getId(), TransferStatus.SUCCESS);
+        logger.info(MessageFormat.format("[Invest Transfer Callback {0}] update transferrer invest transfer status to SUCCESS", String.valueOf(investId)));
 
         // update transfer application
         transferApplicationModel.setInvestId(investModel.getId());
         transferApplicationModel.setStatus(TransferStatus.SUCCESS);
         transferApplicationModel.setTransferTime(investModel.getCreatedTime());
         transferApplicationMapper.update(transferApplicationModel);
+        logger.info(MessageFormat.format("[Invest Transfer Callback {0}] update transfer application", String.valueOf(investId)));
 
         try {
             this.updateInvestRepay(transferApplicationModel);
         } catch (Exception e) {
-            logger.error(MessageFormat.format("update invest repay failed when post purchase(transferApplicationId={0})", String.valueOf(transferApplicationModel.getId())), e);
-            this.sendFatalNotify(MessageFormat.format("债权转让更新回款计划失败(transferApplicationId={0})", String.valueOf(transferApplicationModel.getId())));
+            logger.error(MessageFormat.format("[Invest Transfer Callback {0}] update invest repay failed", String.valueOf(investModel.getId())), e);
+            this.sendFatalNotify(MessageFormat.format("债权转让({0})更新回款计划失败", String.valueOf(investId)));
         }
 
         this.transferPayback(transferInvestModel, transferApplicationModel);
@@ -338,11 +328,12 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             if (feeResponseModel.isSuccess()) {
                 systemBillService.transferIn(transferApplicationId, transferFee, SystemBillBusinessType.TRANSFER_FEE,
                         MessageFormat.format(SystemBillDetailTemplate.TRANSFER_FEE_DETAIL_TEMPLATE.getTemplate(), transferInvestModel.getLoginName(), String.valueOf(transferApplicationId), String.valueOf(transferFee)));
+                logger.error(MessageFormat.format("[Invest Transfer Callback {0}] transfer fee is success", String.valueOf(transferApplicationModel.getInvestId())));
             }
         } catch (PayException e) {
-            logger.error(MessageFormat.format("transfer fee is failed (transferApplicationId={0})", String.valueOf(transferApplicationId)), e);
+            logger.error(MessageFormat.format("[Invest Transfer Callback {0}] transfer fee is failed", String.valueOf(transferApplicationModel.getInvestId())), e);
             //sms notify
-            this.sendFatalNotify(MessageFormat.format("债权转让收取服务费失败(transferApplicationId={0})", String.valueOf(transferApplicationId)));
+            this.sendFatalNotify(MessageFormat.format("债权转让({0})服务费收取失败", String.valueOf(transferApplicationModel.getInvestId())));
         }
     }
 
@@ -364,11 +355,12 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
             if (paybackResponseModel.isSuccess()) {
                 amountTransfer.transferInBalance(transferInvestModel.getLoginName(), transferApplicationId, transferApplicationModel.getTransferAmount(), UserBillBusinessType.INVEST_TRANSFER_OUT, null, null);
                 amountTransfer.transferOutBalance(transferInvestModel.getLoginName(), transferApplicationId, transferFee, UserBillBusinessType.TRANSFER_FEE, null, null);
+                logger.error(MessageFormat.format("[Invest Transfer Callback {0}] transfer payback transferrer is success", String.valueOf(transferApplicationModel.getInvestId())));
             }
         } catch (PayException | AmountTransferException e) {
-            logger.error(MessageFormat.format("transfer payback is failed (transferApplicationId={0})", String.valueOf(transferApplicationId)), e);
+            logger.error(MessageFormat.format("[Invest Transfer Callback {0}] transfer payback transferrer is failed", String.valueOf(transferApplicationModel.getInvestId())), e);
             //sms notify
-            this.sendFatalNotify(MessageFormat.format("债权转让返款失败(transferApplicationId={0})", String.valueOf(transferApplicationId)));
+            this.sendFatalNotify(MessageFormat.format("债权转让(0)返款转让人失败", String.valueOf(transferApplicationModel.getInvestId())));
         }
     }
 
@@ -414,43 +406,46 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
         try {
             redisWrapperClient.decr(InvestTransferCallbackJob.INVEST_TRANSFER_JOB_TRIGGER_KEY);
             investTransferNotifyRequestMapper.updateStatus(model.getId(), InvestNotifyProcessStatus.DONE);
+            logger.info(MessageFormat.format("[Invest Transfer Callback {0}] decrease request count and update request status to DONE", model.getOrderId()));
         } catch (Exception e) {
-            String errMsg = MessageFormat.format("update_invest_transfer_notify_status_fail, orderId:{0}, id:{1}", model.getOrderId(), model.getId());
-            logger.error(errMsg, e);
-            sendFatalNotify(MessageFormat.format("债权转让投资回调状态更新错误。{0},{1}", environment, errMsg));
+            logger.error(MessageFormat.format("[Invest Transfer Callback {0}] update request status is failed", model.getOrderId()), e);
+            this.sendFatalNotify(MessageFormat.format("债权转让投资({0})回调状态更新错误", model.getOrderId()));
             return false;
         }
         return true;
     }
 
     private void processOneCallback(InvestNotifyRequestModel callbackRequestModel) throws AmountTransferException {
-        String orderIdStr = callbackRequestModel.getOrderId();
-        long investId = Long.parseLong(orderIdStr);
+        long investId = Long.parseLong(callbackRequestModel.getOrderId());
         InvestModel investModel = investMapper.findById(investId);
         if (investModel == null) {
-            logger.error(MessageFormat.format("invest transfer callback order is not exist (orderId = {0})", callbackRequestModel.getOrderId()));
+            logger.error(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer callback order is not exist", callbackRequestModel.getOrderId()));
             return;
         }
-        if (investModel.getStatus() == InvestStatus.SUCCESS) {
-            logger.error(MessageFormat.format("invest transfer callback process fail, because this invest has already succeed. (orderId = {0})", callbackRequestModel.getOrderId()));
+        if (investModel.getStatus() != InvestStatus.WAIT_PAY) {
+            logger.error(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer status({1}) is not WAIT_PAY", callbackRequestModel.getOrderId(), investModel.getStatus()));
             return;
         }
-        String loginName = investModel.getLoginName();
+
         if (callbackRequestModel.isSuccess()) {
             List<TransferApplicationModel> transferApplicationModels = transferApplicationMapper.findByTransferInvestId(investModel.getTransferInvestId(), Lists.newArrayList(TransferStatus.TRANSFERRING));
-            TransferApplicationModel transferApplicationModel = CollectionUtils.isNotEmpty(transferApplicationModels) ? transferApplicationModels.get(0) : null;
+            if (CollectionUtils.isEmpty(transferApplicationModels)) {
+                logger.error(MessageFormat.format("[Invest Transfer Callback {0}] transfer application is not exist", String.valueOf(investId)));
+                return;
+            }
 
-            if (transferApplicationModel != null && transferApplicationModel.getStatus() == TransferStatus.SUCCESS) {
-                logger.info(MessageFormat.format("transfer is failed, transfer application(investId={0}, loginName={1}) has already been purchased by another user.",
-                        String.valueOf(transferApplicationModel.getId()), loginName));
-                overInvestPaybackProcess(investModel);
+            TransferApplicationModel transferApplicationModel = transferApplicationModels.get(0);
+
+            if (transferApplicationModel.getStatus() == TransferStatus.SUCCESS) {
+                logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer is over invest", String.valueOf(investId)));
+                this.overInvestPaybackProcess(transferApplicationModel, investModel);
             } else {
-                logger.info(MessageFormat.format("invest transfer success. investId:{0}", investId));
+                logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer is success", String.valueOf(investId)));
                 ((InvestTransferPurchaseService) AopContext.currentProxy()).postPurchase(investId);
             }
         } else {
             // 失败的话：更新 invest 状态为投资失败
-            logger.info(MessageFormat.format("invest transfer call back failed. investId:{0}", investId));
+            logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer callback is failed", String.valueOf(investId)));
             investMapper.updateStatus(investModel.getId(), InvestStatus.FAIL);
         }
     }
@@ -461,60 +456,40 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
      *
      * @param investModel
      */
-    private boolean overInvestPaybackProcess(InvestModel investModel) {
-        String loginName = investModel.getLoginName();
-        long amount = investModel.getAmount();
-        long loanId = investModel.getLoanId();
+    private void overInvestPaybackProcess(TransferApplicationModel transferApplicationModel, InvestModel investModel) {
+        long transferAmount = transferApplicationModel.getTransferAmount();
         long investId = investModel.getId();
 
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-
-        boolean paybackSuccess = false;
-
-        String newOrderId = investId + "X" + System.currentTimeMillis();
-
-        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.overInvestPaybackRequest(
-                String.valueOf(loanId), newOrderId, accountModel.getPayUserId(), String.valueOf(amount));
-
         try {
-            ProjectTransferResponseModel responseModel = paySyncClient.send(
-                    ProjectTransferMapper.class,
+            String overInvestPaybackOrderId = MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(investId), String.valueOf(System.currentTimeMillis()));
+            AccountModel accountModel = accountMapper.findByLoginName(investModel.getLoginName());
+            ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.overInvestPaybackRequest(String.valueOf(investModel.getLoanId()),
+                    overInvestPaybackOrderId,
+                    accountModel.getPayUserId(),
+                    String.valueOf(transferAmount));
+            ProjectTransferResponseModel responseModel = paySyncClient.send(ProjectTransferMapper.class,
                     requestModel,
                     ProjectTransferResponseModel.class);
 
             if (responseModel.isSuccess()) {
                 // 超投返款成功
-                logger.info(MessageFormat.format("invest transfer pay back success. orderId:{0}, amount:{1}, loginName:{2}, loanId:{3}.", newOrderId, amount, loginName, loanId));
-                paybackSuccess = true;
-            } else {
-                // 联动优势返回返款失败，但是标记此条请求已经处理完成，记录日志，在异步notify中进行投资成功处理
-                String errMsg = MessageFormat.format("invest transfer pay back fail. orderId:{0}, amount:{1}, loginName:{2}, loanId:{3}.", newOrderId, amount, loginName, loanId);
-                logger.error(errMsg);
-                sendFatalNotify(errMsg);
+                logger.info(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer over invest payback({1}) is success", String.valueOf(investId), String.valueOf(transferAmount)));
+                return;
             }
-        } catch (PayException e) {
-            // 调用umpay时出现异常(可能已经返款成功了)。发短信通知管理员
-            String errMsg = MessageFormat.format("invest transfer pay back PayException. orderId:{0}, amount:{1}, loginName:{2}, loanId:{3}.", newOrderId, amount, loginName, loanId);
-            logger.error(errMsg, e);
-            sendFatalNotify(errMsg);
         } catch (Exception e) {
             // 所有其他异常，包括数据库链接，网络异常，记录日志，发短信通知管理员，抛出异常，事务回滚。
-            String errMsg = MessageFormat.format("invest transfer pay back other exceptions. orderId:{0}, amount:{1}, loginName:{2}, loanId:{3}.", newOrderId, amount, loginName, loanId);
-            logger.error(errMsg, e);
-            sendFatalNotify(errMsg);
-            throw e;
+            logger.error(e.getLocalizedMessage() ,e);
         }
 
-        if (!paybackSuccess) {
-            // 如果返款失败，则记录本次投资为 超投返款失败
-            investMapper.updateStatus(investId, InvestStatus.OVER_INVEST_PAYBACK_FAIL);
-        }
-        return paybackSuccess;
+        // 联动优势返回返款失败，但是标记此条请求已经处理完成，记录日志，在异步notify中进行投资成功处理
+        logger.error(MessageFormat.format("[Invest Transfer Callback {0}] invest transfer over invest payback({1}) is failed", String.valueOf(investId), String.valueOf(transferAmount)));
+        // 如果返款失败，则记录本次投资为 超投返款失败
+        investMapper.updateStatus(investId, InvestStatus.OVER_INVEST_PAYBACK_FAIL);
+        sendFatalNotify(MessageFormat.format("债权转让购买({0})超投返款失败", String.valueOf(investId)));
     }
 
     private void sendFatalNotify(String message) {
         SmsFatalNotifyDto fatalNotifyDto = new SmsFatalNotifyDto(message);
         smsWrapperClient.sendFatalNotify(fatalNotifyDto);
     }
-
 }
