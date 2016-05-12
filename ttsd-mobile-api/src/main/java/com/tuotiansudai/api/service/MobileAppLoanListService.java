@@ -1,9 +1,9 @@
 package com.tuotiansudai.api.service;
 
-import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.repository.model.LoanModel;
-
-import java.util.List;
+import com.tuotiansudai.api.dto.v1_0.BaseParamDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.LoanListRequestDto;
+import com.tuotiansudai.api.dto.v1_0.LoanListResponseDataDto;
 
 public interface MobileAppLoanListService {
 

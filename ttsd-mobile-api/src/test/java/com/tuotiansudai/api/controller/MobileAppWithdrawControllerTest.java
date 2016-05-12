@@ -1,10 +1,9 @@
 package com.tuotiansudai.api.controller;
 
-import com.tuotiansudai.api.dto.BankCardRequestDto;
-import com.tuotiansudai.api.dto.WithdrawListRequestDto;
-import com.tuotiansudai.api.dto.WithdrawOperateRequestDto;
-import com.tuotiansudai.api.service.MobileAppRechargeService;
-import com.tuotiansudai.api.service.MobileAppWithdrawService;
+import com.tuotiansudai.api.controller.v1_0.MobileAppWithdrawController;
+import com.tuotiansudai.api.dto.v1_0.WithdrawListRequestDto;
+import com.tuotiansudai.api.dto.v1_0.WithdrawOperateRequestDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppWithdrawService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
