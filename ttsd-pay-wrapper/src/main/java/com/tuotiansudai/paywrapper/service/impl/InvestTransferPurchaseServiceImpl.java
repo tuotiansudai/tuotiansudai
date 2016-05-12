@@ -119,7 +119,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 transferrerModel.getAmount(),
                 loginName,
                 investDto.getSource(),
-                null);
+                investDto.getChannel());
 
         investMapper.create(investModel);
 
@@ -169,7 +169,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 transferrerModel.getAmount(),
                 transferee,
                 investDto.getSource(),
-                null);
+                investDto.getChannel());
 
         investMapper.create(investModel);
 

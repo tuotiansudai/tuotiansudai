@@ -76,7 +76,7 @@ public class TransferControllerTest {
 
 
 
-        when(investService.getInvestPagination(anyString(), anyInt(), anyInt(), any(Date.class), any(Date.class), any(LoanStatus.class))).thenReturn(basePaginationDataDto);
+        when(investService.getTransferApplicationTransferablePagination(anyString(), anyInt(), anyInt(), any(Date.class), any(Date.class), any(LoanStatus.class))).thenReturn(basePaginationDataDto);
         mockLoginUser("investor", "13900000000");
         this.mockMvc.perform(get("/transferrer/transfer-application-list-data").param("index", "1").param("pageSize", "10").param("status", TransferStatus.TRANSFERABLE.name()).contentType("application/json;charset=UTF-8"))
                         .andExpect(status().isOk())
