@@ -14,6 +14,8 @@ public class FundManagementResponseDataDto extends BaseResponseDataDto {
     private String frozenMoney;
     private String paidRechargeMoney;
     private String successWithdrawMoney;
+    private String usableUserCouponCount;
+    private String point;
 
     public String getTotalAssets() {
         return totalAssets;
@@ -35,9 +37,7 @@ public class FundManagementResponseDataDto extends BaseResponseDataDto {
         return expectedTotalInterest;
     }
 
-    public void setExpectedTotalInterest(String expectedTotalInterest) {
-        this.expectedTotalInterest = expectedTotalInterest;
-    }
+    public void setExpectedTotalInterest(String expectedTotalInterest) { this.expectedTotalInterest = expectedTotalInterest; }
 
     public String getReceivedCorpus() {
         return receivedCorpus;
@@ -75,9 +75,7 @@ public class FundManagementResponseDataDto extends BaseResponseDataDto {
         return receivableCorpusInterest;
     }
 
-    public void setReceivableCorpusInterest(String receivableCorpusInterest) {
-        this.receivableCorpusInterest = receivableCorpusInterest;
-    }
+    public void setReceivableCorpusInterest(String receivableCorpusInterest) { this.receivableCorpusInterest = receivableCorpusInterest; }
 
     public String getAccountBalance() {
         return accountBalance;
@@ -115,7 +113,13 @@ public class FundManagementResponseDataDto extends BaseResponseDataDto {
         return successWithdrawMoney;
     }
 
-    public void setSuccessWithdrawMoney(String successWithdrawMoney) {
-        this.successWithdrawMoney = successWithdrawMoney;
-    }
+    public void setSuccessWithdrawMoney(String successWithdrawMoney) { this.successWithdrawMoney = successWithdrawMoney; }
+
+    public String getUsableUserCouponCount() { return usableUserCouponCount; }
+
+    public void setUsableUserCouponCount(String usableUserCouponCount) { this.usableUserCouponCount = usableUserCouponCount; }
+
+    public String getPoint() { return point; }
+
+    public void setPoint(String point) { this.point = point; }
 }

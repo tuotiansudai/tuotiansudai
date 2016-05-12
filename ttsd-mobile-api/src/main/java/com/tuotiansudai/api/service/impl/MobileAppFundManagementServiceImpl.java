@@ -4,6 +4,9 @@ import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.FundManagementResponseDataDto;
 import com.tuotiansudai.api.dto.ReturnMessage;
 import com.tuotiansudai.api.service.MobileAppFundManagementService;
+import com.tuotiansudai.coupon.repository.model.UserCouponView;
+import com.tuotiansudai.coupon.service.UserCouponService;
+import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.InvestRepayService;
@@ -11,8 +14,11 @@ import com.tuotiansudai.service.RechargeService;
 import com.tuotiansudai.service.UserBillService;
 import com.tuotiansudai.service.WithdrawService;
 import com.tuotiansudai.util.AmountConverter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MobileAppFundManagementServiceImpl implements MobileAppFundManagementService {
@@ -26,7 +32,10 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
     private InvestRepayService investRepayService;
     @Autowired
     private UserBillService userBillService;
-
+    @Autowired
+    private PointService pointService;
+    @Autowired
+    private UserCouponService userCouponService;
 
     public BaseResponseDto queryFundByUserId(String userId) {
         AccountModel accountModel = accountMapper.findByLoginName(userId);
@@ -43,6 +52,8 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
         long receivedInterest = investRepayService.findSumRepaidInterestByLoginName(userId);
         long receivedCorpus = investRepayService.findSumRepaidCorpusByLoginName(userId);
         long receivedReward = userBillService.findSumRewardByLoginName(userId);
+        long myPoint = pointService.getAvailablePoint(userId);
+        List<UserCouponView> unusedUserCoupons = userCouponService.getUnusedUserCoupons(userId);
         //资产总额＝账户余额 ＋ 冻结金额 ＋ 应收本金 ＋ 应收利息
         long totalAssets = accountBalance + frozenMoney + receivableCorpus + receivableInterest;
         //累计投资额 = 已收本金 ＋ 应收本金
@@ -66,6 +77,8 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
         fundManagementResponseDataDto.setReceivableInterest(AmountConverter.convertCentToString(receivableInterest));
         fundManagementResponseDataDto.setReceivableCorpus(AmountConverter.convertCentToString(receivableCorpus));
         fundManagementResponseDataDto.setReceivableCorpusInterest(AmountConverter.convertCentToString(receivableCorpusInterest));
+        fundManagementResponseDataDto.setUsableUserCouponCount(CollectionUtils.isNotEmpty(unusedUserCoupons) ? String.valueOf(unusedUserCoupons.size()) : "0");
+        fundManagementResponseDataDto.setPoint(String.valueOf(myPoint));
 
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setData(fundManagementResponseDataDto);
