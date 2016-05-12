@@ -4,7 +4,7 @@
      data-user-role="<@global.role hasRole="'INVESTOR'">INVESTOR</@global.role>">
     <div class="borderBox bg-w clearfix">
         <div class="news-share fl">
-            <h2 class="title hd">${loan.name}</h2>
+            <h2 class="title hd <#if loan.activityType == 'NEWBIE'>new</#if>">${loan.name}<#if loan.activityType == 'NEWBIE'><span class="new-user"></span></#if></h2>
             <div class="chart-box">
                 <div class="box" title="已投${loan.progress?string("0.00")}%">
                     <div class="bg"></div>
@@ -30,9 +30,16 @@
                 投资要求：<@amount>${loan.minInvestAmount?string.computer}</@amount> 元起投，投资金额为<@amount>${loan.investIncreasingAmount?string.computer}</@amount> 元的整数倍<br/>
                 <a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a>
             </div>
-            <#if loan.productType??>
-                <div class="product-type-text" data-loan-product-type="${loan.productType}">${loan.productType.getName()}</div>
+            <#if loan.activityType == 'NEWBIE'>
+                <#if loan.newbieInterestCouponRate gt 0>
+                    <div class="product-type-text" data-loan-product-type="${loan.productType!}">新手加息券+${loan.newbieInterestCouponRate}%</div>
+                </#if>
+            <#else>
+                <#if loan.productType??>
+                    <div class="product-type-text" data-loan-product-type="${loan.productType}">${loan.productType.getName()}</div>
+                </#if>
             </#if>
+
         </div>
         <div class="account-info fl">
             <h5 class="l-title">拓天速贷提醒您：投资非存款，投资需谨慎！</h5>
@@ -56,6 +63,9 @@
                                    class="text-input-amount fr position-width"/>
                             <#if errorMessage?has_content>
                                 <span class="errorTip hide"><i class="fa fa-times-circle"></i>${errorMessage!}</span>
+                            </#if>
+                            <#if errorType?has_content>
+                                <input type="hidden" class="errorType hide" value="${errorType!}"/>
                             </#if>
                         </dd>
 

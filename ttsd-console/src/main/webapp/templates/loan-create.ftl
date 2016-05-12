@@ -46,11 +46,13 @@
             <label class="col-sm-2 control-label">借款项目名称: </label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control jq-user" placeholder="" datatype="*" errormsg="借款项目名称不能为空" maxlength="6">
+                <select class="selectpicker b-width jq-user">
+                    <option value="">请选择</option>
+                    <option value="房产抵押借款">房产抵押借款</option>
+                    <option value="车辆抵押借款">车辆抵押借款</option>
+                </select>
             </div>
-            <div class="col-sm-6">
-                <div class="form-control-static"> 限制6个字以内,不可写标的总额、期数、天数以及标点符号。</div>
-            </div>
+
         </div>
 
         <div class="form-group">
@@ -59,7 +61,7 @@
                 <select class="selectpicker b-width">
                     <option value="">请选择</option>
                     <#list productTypes as productType>
-                        <option value="${productType.name()}" data-period="${productType.getPeriods()}" data-baserate="${productType.getRate()?string('0.00')}">
+                        <option value="${productType.name()}" data-period="${productType.getPeriods()}">
                         ${productType.getName()}
                         </option>
                     </#list>
@@ -118,7 +120,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">借款期限: </label>
 
-            <div class="col-sm-4">
+            <div class="col-sm-4 product-line-period">
                 <input type="text" class="form-control jq-timer" placeholder="" datatype="num" errormsg="请选择产品线类型" id="loanPeriod" disabled="disabled">
             </div>
             <div class="col-sm-3">
@@ -219,8 +221,7 @@
             <label class="col-sm-2 control-label">基本利率（%）: </label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control jq-base-percent jq-money" placeholder="" id="baseRate" datatype="money_fl" disabled="disabled"
-                       errormsg="请选择产品线类型">
+                <input type="text" class="form-control jq-base-percent jq-money" placeholder="" id="baseRate" datatype="money_fl" errormsg="请选择产品线类型">
             </div>
         </div>
         <div class="form-group input-append">

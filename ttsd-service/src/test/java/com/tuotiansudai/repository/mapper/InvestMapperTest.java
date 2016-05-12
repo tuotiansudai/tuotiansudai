@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -214,7 +215,7 @@ public class InvestMapperTest {
 
 
     @Test
-    public void shouldSumSuccessNewbieInvestCount(){
+    public void shouldSumSuccessInvestCount(){
         long newbieLoanId = idGenerator.generate();
         createLoan(User_ID, newbieLoanId, ActivityType.NEWBIE);
 
@@ -236,8 +237,8 @@ public class InvestMapperTest {
         investModel3.setCreatedTime(DateUtils.addHours(new Date(), -3));
         investMapper.create(investModel3);
 
-        int newbieInvestCount = investMapper.sumSuccessNewbieInvestCountByLoginName(User_ID2);
-        assert newbieInvestCount == 2;
+        int newbieInvestCount = investMapper.sumSuccessInvestCountByLoginName(User_ID2);
+        assert newbieInvestCount == 3;
     }
 
     @Test
@@ -262,5 +263,11 @@ public class InvestMapperTest {
     public void shouldHasNoSuccessInvest() throws Exception {
         long amount = investMapper.sumSuccessInvestAmountByLoginName(null, User_ID);
         assertTrue(amount == 0);
+    }
+
+    @Test
+    public void shouldGetInvestDetail() throws Exception{
+        List<InvestDataView> investDataViews = investMapper.getInvestDetail();
+        assertTrue(investDataViews.size() >=0 );
     }
 }
