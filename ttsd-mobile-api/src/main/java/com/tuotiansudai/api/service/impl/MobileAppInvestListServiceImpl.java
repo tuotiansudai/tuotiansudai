@@ -8,7 +8,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.UnmodifiableIterator;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppInvestListService;
-import com.tuotiansudai.dto.InvestPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -171,7 +170,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
                 }
 
                 dto.setInvestInterest(AmountConverter.convertCentToString(amount));
-                dto.setTransferStatus(invest.getTransferStatus().name());
+                dto.setTransferStatus(invest.getStatus() == InvestStatus.SUCCESS ? invest.getTransferStatus().name() : "");
                 LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(invest.getLoanId());
                 dto.setLeftPeriod(loanRepayModel == null ? "0" : String.valueOf(investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(invest.getId(), loanRepayModel.getPeriod())));
                 list.add(dto);
