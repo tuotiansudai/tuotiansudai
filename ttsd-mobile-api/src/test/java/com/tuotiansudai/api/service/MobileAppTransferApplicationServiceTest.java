@@ -162,7 +162,11 @@ public class MobileAppTransferApplicationServiceTest extends ServiceTestBase {
 
         AccountModel accountModel = createAccountByUserId("testuser");
         TransferPurchaseRequestDto transferPurchaseRequestDto = new TransferPurchaseRequestDto();
+        BaseParam baseParam = new BaseParam();
+        baseParam.setUserId("testuser");
+        transferPurchaseRequestDto.setBaseParam(baseParam);
         transferPurchaseRequestDto.setTransferApplicationId(String.valueOf(transferApplicationId));
+
 
         TransferApplicationModel transferApplicationModel = new TransferApplicationModel();
         transferApplicationModel.setTransferAmount(90000);
