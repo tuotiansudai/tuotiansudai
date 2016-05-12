@@ -1,3 +1,11 @@
+sign-in:
+  image: "leoshi/ttsd-java7:UTC8"
+  ports:
+    - "20001:8080"
+  volumes:
+    - ./ttsd-sign-in/war:/webapps
+  links:
+    - "redis-server"
 web:
   image: "leoshi/ttsd-tomcat8-java7:UTC8"
   ports:
@@ -9,6 +17,7 @@ web:
     - "sms-wrapper"
     - "redis-server"
     - "static-server"
+    - "sign-in"
 console:
   image: "leoshi/ttsd-tomcat8-java7:UTC8"
   ports:
@@ -20,6 +29,7 @@ console:
     - "sms-wrapper"
     - "redis-server"
     - "static-server"
+    - "sign-in"
 pay-wrapper:
   image: "leoshi/ttsd-tomcat8-java7:UTC8"
   ports:
@@ -91,3 +101,4 @@ static-server:
     - ./scripts/docker/ttsd-test-nginx.conf:/etc/nginx/conf.d/default.conf
   ports:
     - "20020:80"
+
