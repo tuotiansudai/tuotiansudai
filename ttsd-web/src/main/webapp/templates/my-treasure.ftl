@@ -109,17 +109,21 @@
                                     </#if>
                                 </p>
 
-                                <p>产品限制：
-                                    <#list coupon.productTypeList as productType>
-                                        <#if productType == 'SYL'><i class="pro-icon">速<em class="bg-com"></em><em
-                                                class="circle-com"></em></i>
-                                        <#elseif productType == 'WYX'><i class="pro-icon">稳<em class="bg-com"></em><em
-                                                class="circle-com"></em></i>
-                                        <#elseif productType == 'JYF'><i class="pro-icon">久<em class="bg-com"></em><em
-                                                class="circle-com"></em></i>
-                                        </#if>
-                                    </#list>
-                                    产品线可用
+                                <p>
+                                    <#if (coupon.productTypeList?size)  == 4>
+                                        全部产品均可使用
+                                    <#elseif (coupon.productTypeList?size)  == 1 && coupon.productTypeList?seq_contains("_30")>
+                                        新手专享产品专用
+                                    <#else>
+                                        <#list coupon.productTypeList as productType>
+                                            <#if productType_index == (coupon.productTypeList?size - 1)>
+                                            ${productType.getName()}
+                                            <#else>
+                                            ${productType.getName()()},
+                                            </#if>
+                                        </#list>
+                                        产品可用
+                                    </#if>
                                 </p>
                             </div>
                         </div>
@@ -191,17 +195,21 @@
                                     </#if>
                                 </p>
 
-                                <p>产品限制：
-                                    <#list record.productTypeList as productType>
-                                        <#if productType == 'SYL'><i class="pro-icon">速<em class="bg-com"></em><em
-                                                class="circle-com"></em></i>
-                                        <#elseif productType == 'WYX'><i class="pro-icon">稳<em class="bg-com"></em><em
-                                                class="circle-com"></em></i>
-                                        <#elseif productType == 'JYF'><i class="pro-icon">久<em class="bg-com"></em><em
-                                                class="circle-com"></em></i>
-                                        </#if>
-                                    </#list>
-                                    产品线可用
+                                <p>
+                                    <#if (coupon.productTypeList?size)  == 4>
+                                        全部产品均可使用
+                                    <#elseif (coupon.productTypeList?size)  == 1 && coupon.productTypeList?seq_contains("_30")>
+                                        新手专享产品专用
+                                    <#else>
+                                        <#list coupon.productTypeList as productType>
+                                            <#if productType_index == (coupon.productTypeList?size - 1)>
+                                            ${productType.getName()}
+                                            <#else>
+                                            ${productType.getName()},
+                                            </#if>
+                                        </#list>
+                                        产品可用
+                                    </#if>
                                 </p>
                             </div>
                         </div>
@@ -263,17 +271,21 @@
                                     </#if>
                                 </p>
 
-                                <p>产品限制：
-                                    <#list coupon.productTypeList as productType>
-                                        <#if productType == 'SYL'><i class="pro-icon">速<em class="bg-com"></em><em
-                                                class="circle-com"></em></i>
-                                        <#elseif productType == 'WYX'><i class="pro-icon">稳<em class="bg-com"></em><em
-                                                class="circle-com"></em></i>
-                                        <#elseif productType == 'JYF'><i class="pro-icon">久<em class="bg-com"></em><em
-                                                class="circle-com"></em></i>
-                                        </#if>
-                                    </#list>
-                                    产品线可用
+                                <p>
+                                    <#if (coupon.productTypeList?size)  == 4>
+                                        全部产品均可使用
+                                    <#elseif (coupon.productTypeList?size)  == 1 && coupon.productTypeList?seq_contains("_30")>
+                                        新手专享产品专用
+                                    <#else>
+                                        <#list coupon.productTypeList as productType>
+                                            <#if productType_index == (coupon.productTypeList?size - 1)>
+                                            ${productType.getName()}
+                                            <#else>
+                                            ${productType.getName()},
+                                            </#if>
+                                        </#list>
+                                        产品可用
+                                    </#if>
                                 </p>
                             </div>
                         </div>
