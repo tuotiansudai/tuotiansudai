@@ -8,7 +8,7 @@
         <#if transferRule.updatedBy??>
             <div class="form-group">
                 <div class="col-sm-2 alert alert-danger" role="alert">
-                    该用户正在被[${transferRule.updatedBy}]修改
+                    正在被[${transferRule.updatedBy}]修改
                 </div>
             </div>
         </#if>
