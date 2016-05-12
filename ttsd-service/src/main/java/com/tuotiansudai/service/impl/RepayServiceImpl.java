@@ -121,8 +121,8 @@ public class RepayServiceImpl implements RepayService {
                 new DateTime(enabledLoanRepay.getActualRepayDate()).plusMinutes(30).isBefore(new DateTime())) {
             enabledLoanRepay.setActualInterest(0);
             enabledLoanRepay.setRepayAmount(0);
-            enabledLoanRepay.setActualRepayDate(null);
             enabledLoanRepay.setStatus(enabledLoanRepay.getActualRepayDate().before(enabledLoanRepay.getRepayDate()) ? RepayStatus.REPAYING : RepayStatus.OVERDUE);
+            enabledLoanRepay.setActualRepayDate(null);
             loanRepayMapper.update(enabledLoanRepay);
         }
     }

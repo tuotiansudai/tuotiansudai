@@ -1,6 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.OperationDataDto;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by huoxuanbo on 16/5/9.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 public class OperationDataServiceTest {
@@ -22,6 +20,7 @@ public class OperationDataServiceTest {
     OperationDataService operationDataService;
 
     @Test
+    @Ignore
     public void testGetOperationDataModelFromDatabase()
     {
         OperationDataDto operationDataDto = operationDataService.getOperationDataFromDatabase();
