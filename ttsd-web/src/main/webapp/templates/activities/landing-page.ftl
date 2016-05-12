@@ -108,10 +108,105 @@
             为您精选理财产品
         </div>
         <div class="product-wp">
-            <ul>
-                <li><img src="${staticServer}/images/sign/actor/landingpage/product-one.png"></li>
-                <li><img src="${staticServer}/images/sign/actor/landingpage/product-two.png"></li>
-                <li><img src="${staticServer}/images/sign/actor/landingpage/product-three.png"></li>
+            <ul class="clearfix">
+                <li class="new-product">
+                    <i class="new-user"></i>
+                    <div class="product-left">
+                        <h3>房产抵押借款</h3>
+                        <div class="loan-info-dl clearfix">
+                            <dl>
+                                <dt>预期年化收益</dt>
+                                <dd><em class="active">10</em>
+                                    <i>
+                                        +3%
+                                    </i>
+                                    <span>新手加息券</span>
+                                </dd>
+                            </dl>
+
+                            <dl>
+                                <dt>项目期限</dt>
+                                <dd>30天</dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="product-right">
+                        <a href="#">立即查看</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="product-left">
+                        <h3>房产抵押借款</h3>
+                        <div class="loan-info-dl clearfix">
+                            <dl>
+                                <dt>预期年化收益</dt>
+                                <dd><em class="active">12</em>
+                                    <i>%</i>
+                                </dd>
+                            </dl>
+
+                            <dl>
+                                <dt>项目期限</dt>
+                                <dd>
+                                90天
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="product-right">
+                        <a href="#" class="active">立即查看</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="product-left">
+                        <h3>房产抵押借款</h3>
+                        <div class="loan-info-dl clearfix">
+                            <dl>
+                                <dt>预期年化收益</dt>
+                                <dd><em class="active">13</em>
+                                    <i>
+                                        %
+                                    </i>
+                                </dd>
+                            </dl>
+
+                            <dl>
+                                <dt>项目期限</dt>
+                                <dd>
+                                180天
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="product-right">
+                        <a href="#" class="active">立即查看</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="product-left">
+                        <h3>房产抵押借款</h3>
+                        <div class="loan-info-dl clearfix">
+                            <dl>
+                                <dt>预期年化收益</dt>
+                                <dd><em class="active">14</em>
+                                    <i>
+                                        %
+                                    </i>
+                                </dd>
+                            </dl>
+
+                            <dl>
+                                <dt>项目期限</dt>
+                                <dd>
+                                360天
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="product-right">
+                        <a href="#" class="active">立即查看</a>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>
@@ -608,84 +703,71 @@
         </div>
         <div class="landing-phone-section-header-right">
         </div>
-        <div class="products-group">
-            <img class="products-group-icon" src="/images/sign/actor/landingphone/product_suyingli.png">
-
-            <div class="products-group-content">
-                <div class="products-group-content-item0">
-                    <span id="products-content-item0">新手专项</span>
+        <div class="product-box-list fl">
+            <div class="product-box-inner">
+                <div class="product-box tc product-type">
+                    <i class="new-user"></i>
+                    <div class="pad-m">
+                        <h2 class="pr-title">房产抵押借款</h2>
+                        <div class="pr-square tc">
+                            <div class="pr-square-in">
+                                <em><b>10</b>+3%</em>
+                                <i>预期年化收益</i>
+                            </div>
+                        </div>
+                        <dl class="pr-info">
+                            <dd class="dl-month"><i>30</i>天</dd>
+                        </dl>
+                    </div>
+                    <a href="#" class="btn-normal active">立即查看</a>
                 </div>
-                <div class="products-group-content-item1">
-                    <p id="products-content-percent0">
-                        10<span>%</span>
-                    </p>
-
-                    <p>
-                        预期年化收益
-                    </p>
+                <div class="product-box tc product-type">
+                    <i class="wyx"></i>
+                    <div class="pad-m">
+                        <h2 class="pr-title">房产抵押借款</h2>
+                        <div class="pr-square tc">
+                            <div class="pr-square-in">
+                                <em><b>12</b>%</em>
+                                <i>预期年化收益</i>
+                            </div>
+                        </div>
+                        <dl class="pr-info">
+                            <dd class="dl-month"><i>90</i>天</dd>
+                        </dl>
+                    </div>
+                    <a href="#" class="btn-normal">立即查看</a>
                 </div>
-                <div class="products-group-content-item2">
-                    <p>
-                        30天
-                    </p>
-
-                    <p>
-                        投资收益
-                    </p>
+                <div class="product-box tc product-type">
+                    <i class="jyf"></i>
+                    <div class="pad-m">
+                        <h2 class="pr-title">房产抵押借款</h2>
+                        <div class="pr-square tc">
+                            <div class="pr-square-in">
+                                <em><b>13</b>%</em>
+                                <i>预期年化收益</i>
+                            </div>
+                        </div>
+                        <dl class="pr-info">
+                            <dd class="dl-month"><i>180</i>天</dd>
+                        </dl>
+                    </div>
+                    <a href="#" class="btn-normal">立即查看</a>
                 </div>
-            </div>
-        </div>
-        <div class="products-group">
-            <img class="products-group-icon" src="/images/sign/actor/landingphone/product_wenyingxiu.png">
-
-            <div class="products-group-content">
-                <div class="products-group-content-item0">
-                    <span id="products-content-item1">稳健收益</span>
-                </div>
-                <div class="products-group-content-item1">
-                    <p id="products-content-percent1">
-                        12<span>%</span>
-                    </p>
-
-                    <p>
-                        预期年化收益
-                    </p>
-                </div>
-                <div class="products-group-content-item2">
-                    <p>
-                        90天
-                    </p>
-
-                    <p>
-                        投资收益
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="products-group">
-            <img class="products-group-icon" src="/images/sign/actor/landingphone/product_jiuyingfu.png">
-
-            <div class="products-group-content">
-                <div class="products-group-content-item0">
-                    <span id="products-content-item2">财富积累</span>
-                </div>
-                <div class="products-group-content-item1">
-                    <p id="products-content-percent2">
-                        13<span>%</span>
-                    </p>
-
-                    <p>
-                        预期年化收益
-                    </p>
-                </div>
-                <div class="products-group-content-item2">
-                    <p>
-                        180天
-                    </p>
-
-                    <p>
-                        投资收益
-                    </p>
+                <div class="product-box tc product-type">
+                    <i class="jyf"></i>
+                    <div class="pad-m">
+                        <h2 class="pr-title">房产抵押借款</h2>
+                        <div class="pr-square tc">
+                            <div class="pr-square-in">
+                                <em><b>13</b>%</em>
+                                <i>预期年化收益</i>
+                            </div>
+                        </div>
+                        <dl class="pr-info">
+                            <dd class="dl-month"><i>360</i>天</dd>
+                        </dl>
+                    </div>
+                    <a href="#" class="btn-normal">立即查看</a>
                 </div>
             </div>
         </div>
