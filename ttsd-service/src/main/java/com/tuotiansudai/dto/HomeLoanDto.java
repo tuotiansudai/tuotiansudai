@@ -44,7 +44,9 @@ public class HomeLoanDto {
 
     private int completedPeriods;
 
-    public HomeLoanDto(CouponModel newbieInterestCouponModel, long loanId, String name, ProductType productType, ActivityType activityType, LoanPeriodUnit periodUnit, double baseRate, double activityRate, int periods, long amount, long investAmount, LoanStatus status, Date fundraisingStartTime, List<LoanRepayModel> loanRepayModels) {
+    private int duration;
+
+    public HomeLoanDto(CouponModel newbieInterestCouponModel, long loanId, String name, ProductType productType, ActivityType activityType, int duration, double baseRate, double activityRate, int periods, long amount, long investAmount, LoanStatus status, Date fundraisingStartTime, List<LoanRepayModel> loanRepayModels) {
         this.id = loanId;
         this.name = name;
         this.productType = productType;
@@ -54,8 +56,8 @@ public class HomeLoanDto {
             this.activityRate = new BigDecimal(String.valueOf(activityRate)).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
         }
         this.periods = periods;
+        this.duration = duration;
         this.amount = new BigDecimal(amount).toString();
-        this.isPeriodMonthUnit = periodUnit == LoanPeriodUnit.MONTH;
         this.progress = new BigDecimal(investAmount).divide(new BigDecimal(amount), 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue();
         this.status = status.name();
         this.fundraisingStartTime = fundraisingStartTime;
@@ -133,5 +135,13 @@ public class HomeLoanDto {
 
     public int getCompletedPeriods() {
         return completedPeriods;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 }

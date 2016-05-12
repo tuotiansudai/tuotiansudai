@@ -1,7 +1,6 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
@@ -27,7 +26,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
-import org.joda.time.Duration;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -659,10 +657,10 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public List<LoanItemDto> findLoanItems(ProductType productType, LoanStatus status, double rateStart, double rateEnd, int index) {
+    public List<LoanItemDto> findLoanItems(String name, LoanStatus status, double rateStart, double rateEnd,int durationStart,int durationEnd, int index) {
         index = (index - 1) * 10;
 
-        List<LoanModel> loanModels = loanMapper.findLoanListWeb(productType, status, rateStart, rateEnd, index);
+        List<LoanModel> loanModels = loanMapper.findLoanListWeb(name, status, rateStart, rateEnd,durationStart,durationEnd, index);
 
         final List<CouponModel> allActiveCoupons = couponMapper.findAllActiveCoupons();
 
@@ -712,6 +710,7 @@ public class LoanServiceImpl implements LoanService {
                     loanItemDto.setAlert(MessageFormat.format("还款进度：{0}/{1}期", loanRepayMapper.sumSuccessLoanRepayMaxPeriod(loanModel.getId()), loanModel.getPeriods()));
                     loanItemDto.setProgress(100);
                 }
+                loanItemDto.setDuration(loanModel.getDuration());
 
                 return loanItemDto;
             }
@@ -719,8 +718,8 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public int findLoanListCountWeb(ProductType productType, LoanStatus status, double rateStart, double rateEnd) {
-        return loanMapper.findLoanListCountWeb(productType, status, rateStart, rateEnd);
+    public int findLoanListCountWeb(String name, LoanStatus status, double rateStart, double rateEnd,int durationStart,int durationEnd) {
+        return loanMapper.findLoanListCountWeb(name, status, rateStart, rateEnd,durationStart,durationEnd);
     }
 
     private void createDeadLineFundraisingJob(LoanModel loanModel) {

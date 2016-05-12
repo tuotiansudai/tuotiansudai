@@ -61,7 +61,7 @@ public class HomeServiceImpl implements HomeService {
                         loan.getName(),
                         loan.getProductType(),
                         loan.getActivityType(),
-                        loan.getType().getLoanPeriodUnit(),
+                        loan.getDuration(),
                         loan.getBaseRate(),
                         loan.getActivityRate(),
                         loan.getPeriods(),
