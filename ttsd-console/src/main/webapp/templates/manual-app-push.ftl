@@ -98,7 +98,7 @@
             <label  class="col-sm-2 control-label">预设推送时间: </label>
             <div class="col-sm-3">
                 <div class='input-group date' id='datetimepicker6'>
-                    <input type='text' class="form-control jq-star-date" datatype="date" errormsg="筹款启动时间需要正确填写" name="expectPushTime" <#if jPushAlert??>value="${jPushAlert.expectPushTime!}" </#if>/>
+                    <input type='text' class="form-control jq-star-date" datatype="date" errormsg="预设推送时间需要正确填写" name="expectPushTime" <#if jPushAlert??>value="${jPushAlert.expectPushTime!}" </#if>/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>

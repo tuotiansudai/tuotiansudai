@@ -122,6 +122,10 @@ require(['jquery', 'template', 'csrf', 'bootstrap', 'bootstrapDatetimepicker', '
             beforeCheck: function (curform) {
                 $errorDom.html('');
                 var content = $('.content').val();
+                if ($('.user-type').find('input[type="checkbox"]:checked').length==0) {
+                    showErrorMessage('请选择用户类型', $('.jump-link-text', curform));
+                    return false;
+                }
                 if(typeof content == 'undefined' || content == '' ){
                     showErrorMessage('推送模板不能为空', $('.content', curform));
                     return false;
@@ -137,6 +141,7 @@ require(['jquery', 'template', 'csrf', 'bootstrap', 'bootstrapDatetimepicker', '
                     showErrorMessage('链接地址输入不正确', $('.jump-link-text', curform));
                     return false;
                 }
+
 
 
             },
