@@ -19,12 +19,7 @@ import java.text.MessageFormat;
 
 public class MySuccessHandler extends SimpleUrlLogoutSuccessHandler implements LogoutSuccessHandler{
 
-    private static String SPRING_SESSION_TEMPLATE = "spring:session:sessions:{0}";
-
     private ObjectMapper objectMapper = new ObjectMapper();
-
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {

@@ -41,8 +41,6 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
     @Value("${web.login.max.failed.times}")
     private int times;
 
-    private static String SPRING_SESSION_TEMPLATE = "spring:session:sessions:{0}";
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String loginName =  userMapper.findByLoginNameOrMobile(request.getParameter("username")).getLoginName();
