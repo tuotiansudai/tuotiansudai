@@ -690,7 +690,7 @@
                                     <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")}</dd>
                                 </dl>
                             </div>
-                            <a href="${isAppSource?string('/loan-list', '/loan/${(loan.id?string.computer)}')}" class="active">立即查看</a>
+                            <a href="${isAppSource?string('/loan-list?productType=', '/loan/${(loan.id?string.computer)}')}" class="active">立即查看</a>
                         </div>
                     <#else>
                         <div class="product-box tc product-type">
@@ -712,7 +712,7 @@
                                     <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")}</dd>
                                 </dl>
                             </div>
-                            <a href="${isAppSource?string('/loan-list', '/loan/${(loan.id?string.computer)}')}">立即查看</a>
+                            <a href="${isAppSource?string('/loan-list?productType=', '/loan/${(loan.id?string.computer)}')}">立即查看</a>
                         </div>
                     </#if>
                 </#list>
