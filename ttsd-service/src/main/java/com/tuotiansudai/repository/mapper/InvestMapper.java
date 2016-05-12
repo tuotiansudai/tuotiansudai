@@ -179,4 +179,6 @@ public interface InvestMapper {
     Set<String> findNoInvestInThirtyDay();
 
     InvestModel findLatestSuccessInvest(@Param(value = "loginName") String loginName);
+
+    List<InvestDataView> getInvestDetail();
 }
