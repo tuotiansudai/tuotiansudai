@@ -1,25 +1,51 @@
-CREATE TABLE `aa`.`article_list` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `article_id` bigint(20) unsigned NOT NULL COMMENT '文章内容ID',
-  `creator` varchar(30) NOT NULL COMMENT '创建人',
-  `checker` varchar(30) NOT NULL COMMENT '审核人',
-  `like_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点赞数',
-  `read_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '阅读数',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_time` datetime NOT NULL COMMENT '更新时间',
+CREATE TABLE `aa`.`licaiquan_article` (
+  `id`                 BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT
+  COMMENT '主键',
+  `title`              VARCHAR(50)         NOT NULL DEFAULT ''
+  COMMENT '文章标题',
+  `creator_login_name` VARCHAR(25)         NOT NULL
+  COMMENT '文章创建者登录名',
+  `checker_login_name` VARCHAR(25)         NOT NULL DEFAULT ''
+  COMMENT '文章审核员登录名',
+  `author`             VARCHAR(30)         NOT NULL DEFAULT ''
+  COMMENT '文章作者',
+  `section`            VARCHAR(20)         NOT NULL DEFAULT ''
+  COMMENT '所属栏目',
+  `source`             VARCHAR(60)                  DEFAULT ''
+  COMMENT '文章来源',
+  `carousel`           TINYINT(1)          NOT NULL DEFAULT '0'
+  COMMENT '是否轮播，0-不轮播，1-轮播',
+  `content`            TEXT                NOT NULL
+  COMMENT '文章内容',
+  `favourite_count`    INT(10) UNSIGNED    NOT NULL DEFAULT '0'
+  COMMENT '点赞数',
+  `read_count`         INT(10) UNSIGNED    NOT NULL DEFAULT '0'
+  COMMENT '阅读数',
+  `created_time`       DATETIME            NOT NULL
+  COMMENT '创建时间',
+  `updated_time`       DATETIME            NOT NULL
+  COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  KEY `idx_article_id` (`article_id`),
-  KEY `idx_create_time` (`create_time`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='已发布文章详情列表';
+  CONSTRAINT FK_LICAIQUAN_ARTICLE_CREATOR_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`creator_login_name`) REFERENCES `aa`.`user` (`login_name`),
+  CONSTRAINT FK_LICAIQUAN_ARTICLE_CHECKER_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`checker_login_name`) REFERENCES `aa`.`user` (`login_name`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COMMENT '理财圈文章列表';
 
-CREATE TABLE `aa`.`article_content` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `title` varchar(50) NOT NULL DEFAULT '' COMMENT '文章标题',
-  `author` varchar(30) NOT NULL DEFAULT '' COMMENT '文章作者',
-  `source` varchar(60) DEFAULT '' COMMENT '文章来源',
-  `content` longblob NOT NULL COMMENT '文章内容',
-  `section` tinyint(4) NOT NULL COMMENT '文章所属栏目，0-平台活动，1-平台新闻，2-行业资讯',
-  `carousel` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否轮播，0-不轮播，1-轮播',
+CREATE TABLE `aa`.`licaiquan_article_check_comment` (
+  `id`           BIGINT UNSIGNED NOT NULL AUTO_INCREMENT
+  COMMENT '主键',
+  `article_id`   BIGINT UNSIGNED NOT NULL
+  COMMENT '理财圈文章ID',
+  `comment`      TEXT            NOT NULL
+  COMMENT '审核评论',
+  `created_time` DATETIME        NOT NULL
+  COMMENT '创建时间',
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_id_refer_article_id` FOREIGN KEY (`id`) REFERENCES `article_list` (`article_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章内容详情';
+  CONSTRAINT FK_THIS_ARTICLE_ID_REF_LICAIQUAN_ARTICLE_ID
+  FOREIGN KEY (`article_id`) REFERENCES `aa`.`licaiquan_article` (`id`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COMMENT '理财圈文章审核意见';
