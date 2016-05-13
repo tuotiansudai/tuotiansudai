@@ -4,6 +4,6 @@ import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v2_0.BaseResponseDto;
 
 
-public interface MobileAppLoanListService {
+public interface MobileAppLoanListV2Service {
     BaseResponseDto generateIndexLoan(BaseParamDto baseParamDto);
 }

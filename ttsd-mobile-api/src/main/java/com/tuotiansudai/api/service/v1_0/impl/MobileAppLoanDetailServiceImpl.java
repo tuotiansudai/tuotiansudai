@@ -133,6 +133,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
             loanDetailResponseDataDto.setRaiseCompletedTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loan.getRaisingCompleteTime()));
         }
         loanDetailResponseDataDto.setInvestFeeRate("" + loan.getInvestFeeRate());
+        loanDetailResponseDataDto.setDuration("" + loan.getDuration());
         return loanDetailResponseDataDto;
 
     }

@@ -1,13 +1,12 @@
 package com.tuotiansudai.api.service.v2_0.impl;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.v1_0.LoanStatus;
 import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v2_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v2_0.ReturnMessage;
 import com.tuotiansudai.api.dto.v2_0.LoanListResponseDataDto;
 import com.tuotiansudai.api.dto.v2_0.LoanResponseDataDto;
-import com.tuotiansudai.api.service.v2_0.MobileAppLoanListService;
+import com.tuotiansudai.api.service.v2_0.MobileAppLoanListV2Service;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -20,10 +19,11 @@ import org.springframework.stereotype.Service;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service("com.tuotiansudai.api.service.v2_0.impl.MobileAppLoanListServiceImpl")
-public class MobileAppLoanListServiceImpl implements MobileAppLoanListService{
+public class MobileAppLoanListV2V2ServiceImpl implements MobileAppLoanListV2Service {
 
     @Autowired
     private LoanMapper loanMapper;
@@ -37,6 +37,11 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService{
             loanModels = loanMapper.findHomeLoanByProductType("notContainNEWBIE");
         }else{
             loanModels = loanMapper.findHomeLoanByProductType(null);
+            if(CollectionUtils.isNotEmpty(loanModels)){
+                for(LoanModel loanModel : loanModels){
+
+                }
+            }
         }
 
         BaseResponseDto dto = new BaseResponseDto();

@@ -4,6 +4,7 @@ import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
 import com.tuotiansudai.api.dto.v1_0.FundManagementResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.impl.MobileAppFundManagementServiceImpl;
+import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.coupon.service.UserCouponService;
 import com.tuotiansudai.point.service.PointService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -15,6 +16,9 @@ import com.tuotiansudai.service.WithdrawService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyString;
@@ -49,7 +53,9 @@ public class MobileAppFundManagementServiceTest extends ServiceTestBase{
         when(investRepayService.findSumRepaidCorpusByLoginName(anyString())).thenReturn(1600l);
         when(userBillService.findSumRewardByLoginName(anyString())).thenReturn(1700l);
         when(pointService.getAvailablePoint(anyString())).thenReturn(1700l);
-        when(userCouponService.getUnusedUserCoupons(anyString())).thenReturn(null);
+        List<UserCouponView> userCouponViews = new ArrayList<>();
+        userCouponViews.add(new UserCouponView());
+        when(userCouponService.getUnusedUserCoupons(anyString())).thenReturn(userCouponViews);
 
 
         BaseResponseDto<FundManagementResponseDataDto> baseResponseDto = mobileAppFundManagementService.queryFundByUserId("admin");
@@ -69,6 +75,7 @@ public class MobileAppFundManagementServiceTest extends ServiceTestBase{
         assertEquals(baseResponseDto.getData().getReceivableInterest(), "14.00");
         assertEquals(baseResponseDto.getData().getReceivableCorpusInterest(), "27.00");
         assertEquals(baseResponseDto.getData().getPoint(), "1700");
+        assertEquals(baseResponseDto.getData().getUsableUserCouponCount(), "1");
     }
 
     private AccountModel fakeUserModel(){
