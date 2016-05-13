@@ -37,14 +37,14 @@ public class FeedbackMapperTest {
         feedbackMapper.create(feedbackModel);
         assertNotNull(feedbackModel.getId());
 
-        long findCount = feedbackMapper.findAllCount(fakeUser.getLoginName());
+        long findCount = feedbackMapper.findAllCount(fakeUser.getLoginName(), null, null, null, null, null);
         assertEquals(1, findCount);
 
-        List<FeedbackModel> models = feedbackMapper.findAll(fakeUser.getLoginName(), 0, 3);
+        List<FeedbackModel> models = feedbackMapper.findAll(fakeUser.getLoginName(), null, null, null, null, null, 0, 3);
         assertEquals(1, models.size());
         assertEquals("content", models.get(0).getContent());
 
-        List<FeedbackModel> modelsEmpty = feedbackMapper.findAll(fakeUser.getLoginName(), 3, 3);
+        List<FeedbackModel> modelsEmpty = feedbackMapper.findAll(fakeUser.getLoginName(), null, null, null, null, null, 3, 3);
         assertEquals(0, modelsEmpty.size());
     }
 

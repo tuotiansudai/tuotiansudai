@@ -2,9 +2,7 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.FeedbackModel;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.repository.model.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +32,11 @@ public class FeedbackServiceTest {
         UserModel fakeUser = getFakeUser("loginname");
         userMapper.create(fakeUser);
 
-        FeedbackModel model = feedbackService.create(fakeUser.getLoginName(), "content");
+        FeedbackModel model = feedbackService.create(fakeUser.getLoginName(), "13811112222", Source.IOS, FeedbackType.opinion, "content");
         assertNotNull(model.getId());
         assertNotNull(model.getCreatedTime());
 
-        BasePaginationDataDto<FeedbackModel> paginationDataDto = feedbackService.getFeedbackPagination(fakeUser.getLoginName(), 1, 3);
+        BasePaginationDataDto<FeedbackModel> paginationDataDto = feedbackService.getFeedbackPagination(fakeUser.getLoginName(), null, null, null, null, null, 1, 3);
 
         long findCount = paginationDataDto.getCount();
         assertEquals(1, findCount);
