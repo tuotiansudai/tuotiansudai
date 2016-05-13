@@ -15,6 +15,10 @@ CREATE TABLE `aa`.`licaiquan_article` (
   COMMENT '文章来源',
   `carousel`           TINYINT(1)          NOT NULL DEFAULT '0'
   COMMENT '是否轮播，0-不轮播，1-轮播',
+  `small_picture`      TEXT                NOT NULL
+  COMMENT '缩略图',
+  `show_picture`       TEXT                NOT NULL
+  COMMENT '展示图',
   `content`            TEXT                NOT NULL
   COMMENT '文章内容',
   `favourite_count`    INT(10) UNSIGNED    NOT NULL DEFAULT '0'
