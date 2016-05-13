@@ -1028,11 +1028,15 @@ form label.error {
       .reg-list {
         float: left;
         width: 100%;
+        .height{
+          clear:both;
+          color: #f71010;
+        }
         .int-model {
           float: left;
           width: 100%;
           margin-bottom: 20px;
-          .captcha {
+          .captcha{
             width: 40%;
           }
           .appCaptcha {
@@ -1062,7 +1066,7 @@ form label.error {
         font-size: $fontUltraSmall;
         border-color: white;
       }
-      input[id=captchaPhone] {
+      .captcha {
         float: left;
         width: 60%;
         margin-bottom: 0px;

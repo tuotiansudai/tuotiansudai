@@ -8,8 +8,7 @@
     <div class="landing-top">
         <div class="landing-inner">
             <div class="register-box">
-                <form class="register-user-form" action="/register/user" method="post" autocomplete="off"
-                      novalidate="novalidate">
+                <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate">
                     <ul class="reg-list tl register-step-one">
                         <li>
                             <label for="" class="reg-title">用户名:</label>
@@ -40,33 +39,24 @@
                         </li>
                         <li id="appCaptchaErr" class="height appCaptchaErr"></li>
                         <li>
-                            <label for="appCaptcha" class="reg-title">手机验证码:</label>
-                            <span class="captcha-tag">
-                                <input type="text" id="captcha" name="captcha" class="captcha" autocomplete="off"
+                            <label for="captcha" class="reg-title">手机验证码:</label>
+                            <span class="captcha-tag" id="pcCaptcha">
+                                <input type="text" class="captcha" autocomplete="off"
                                        autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6"
                                        value="">
                                 <button type="button" class="fetch-captcha btn" disabled="disabled">获取验证码</button>
                             </span>
 
                         </li>
-                        <li id="captchaErr" class="height"></li>
-
-
+                        <li class="height captcha-error"></li>
                         <li class="agree-last">
-
                             <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check">
-                            <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);"
-                                                                                     class="show-agreement">《服务协议》</a></label>
-
+                            <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
                         </li>
                         <li id="agreementInputErr" class="height"></li>
-
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
-
                         <input type="submit" class="register-user" value="立即注册">
                     </ul>
-
                 </form>
             </div>
         </div>
@@ -882,29 +872,21 @@
                         </li>
                         <li id="appCaptchaPhoneCErr" class="height"></li>
                         <li class="int-model">
-                            <span class="captcha-tag">
-                                <input type="text" id="captchaPhone" name="captcha" class="captcha" autocomplete="off"
+                            <span class="captcha-tag" id="phoneCaptcha">
+                                <input type="text"  class="captcha" autocomplete="off"
                                        autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6"
                                        value="">
                                 <button type="button" id="btn-get-phone-captcha" class="fetch-captchaC btn" disabled="disabled">获取验证码</button>
                             </span>
 
                         </li>
-                        <li id="captchaPhoneErr" class="height"></li>
-
-
+                        <li class="height captcha-phone-error"></li>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
-
+                        <input type="hidden" name="agreement" value="true">
                         <input type="submit" id="btn-register" class="register-user-phoneC" value="立即注册">
                         <li class="agree-last">
-
-                            <label for="agreementInput" class="check-labelC">点击立即注册即同意拓天速贷<a href="javascript:void(0);"
-                                                                                             class="show-agreement-phone">《服务协议》</a></label>
-
+                            <label for="agreementInput" class="check-labelC">点击立即注册即同意拓天速贷<a href="javascript:void(0);" class="show-agreement-phone">《服务协议》</a></label>
                         </li>
-                        <li id="agreementInputErr" class="height"></li>
-
                     </ul>
 
                 </form>
