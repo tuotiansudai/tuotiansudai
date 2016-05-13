@@ -19,7 +19,7 @@
                 <img src="${staticServer}/images/sign/actor/sharereward/share-reward.png" alt="推荐奖励：0元投资赚收益，呼朋唤友抢佣金" class="pc-img">
                 <img src="${staticServer}/images/app-banner/app-banner-recommend.png" alt="推荐奖励：0元投资赚收益，呼朋唤友抢佣金" class="iphone-img">
             </a>
-            <a href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" onclick="cnzzPush.trackClick('25首页','Banner模块','上市')" target="_blank">
+            <a rel="nofollow" href="http://www.iqiyi.com/w_19rt7ygfmh.html#vfrm=8-8-0-1" onclick="cnzzPush.trackClick('25首页','Banner模块','上市')" target="_blank">
                 <img src="${staticServer}/images/ttimg/ttimg-home-list.jpg" alt="拓天上市" class="pc-img">
                 <img src="${staticServer}/images/ttimg/ph-a04.jpg" alt="拓天上市" class="iphone-img">
             </a>
@@ -471,19 +471,19 @@
 
             <div class="box-radius clearfix">
                 <ul class="media-list fl">
-                    <li><i>●</i><a href="http://mt.sohu.com/20160331/n443005759.shtml?qq-pf-to=pcqq.c2c" onclick="cnzzPush.trackClick('73首页','媒体报道模块','霸道总裁')"target="_blank">拓天速贷第二期全国排行活动正式启动</a>
+                    <li><i>●</i><a rel="nofollow" href="http://mt.sohu.com/20160331/n443005759.shtml?qq-pf-to=pcqq.c2c" onclick="cnzzPush.trackClick('73首页','媒体报道模块','霸道总裁')"target="_blank">拓天速贷第二期全国排行活动正式启动</a>
                         <time>2016-03-31</time>
                     </li>
-                    <li><i>●</i><a href="http://fj.qq.com/a/20160314/060811.htm" onclick="cnzzPush.trackClick('40首页','媒体报道模块','财富盛宴大平台')" target="_blank">拓天速贷：财富盛宴大平台 感恩豪礼滚滚来</a>
+                    <li><i>●</i><a rel="nofollow" href="http://fj.qq.com/a/20160314/060811.htm" onclick="cnzzPush.trackClick('40首页','媒体报道模块','财富盛宴大平台')" target="_blank">拓天速贷：财富盛宴大平台 感恩豪礼滚滚来</a>
                         <time>2016-03-14</time>
                     </li>
-                    <li><i>●</i><a href="http://help.3g.163.com/0414/16/0201/14/BEOCI8PP041403U2.html" onclick="cnzzPush.trackClick('41首页','媒体报道模块','现金红包')" target="_blank">拓天速贷：新年贺岁嗨翻天，全民领取888元现金红包</a>
+                    <li><i>●</i><a rel="nofollow" href="http://help.3g.163.com/0414/16/0201/14/BEOCI8PP041403U2.html" onclick="cnzzPush.trackClick('41首页','媒体报道模块','现金红包')" target="_blank">拓天速贷：新年贺岁嗨翻天，全民领取888元现金红包</a>
                         <time>2016-02-01</time>
                     </li>
-                    <li><i>●</i><a href="http://money.china.com/fin/lc/201601/20/2443757.html?qq-pf-to=pcqq.c2c" onclick="cnzzPush.trackClick('42首页','媒体报道模块','宝马名花有主')" target="_blank">拓天速贷：宝马名花有主，猴年豪礼来袭</a>
+                    <li><i>●</i><a rel="nofollow" href="http://money.china.com/fin/lc/201601/20/2443757.html?qq-pf-to=pcqq.c2c" onclick="cnzzPush.trackClick('42首页','媒体报道模块','宝马名花有主')" target="_blank">拓天速贷：宝马名花有主，猴年豪礼来袭</a>
                         <time>2016-01-20</time>
                     </li>
-                    <li><i>●</i><a href="http://toutiao.com/news/6233268186905575938/" onclick="cnzzPush.trackClick('43首页','媒体报道模块','高效资产平台')" target="_blank">拓天速贷以卓越风控打造高效资产平台</a>
+                    <li><i>●</i><a rel="nofollow" href="http://toutiao.com/news/6233268186905575938/" onclick="cnzzPush.trackClick('43首页','媒体报道模块','高效资产平台')" target="_blank">拓天速贷以卓越风控打造高效资产平台</a>
                         <time>2015-12-28</time>
                     </li>
                 </ul>
@@ -498,8 +498,8 @@
 
             <div class="box-radius clearfix friend-links">
                 <ul>
-                    <li><a href="http://www.king-capital.com/" onclick="cnzzPush.trackClick('45首页','合作伙伴模块','京都律师所')" target="_blank"> <i class="img-jingdu"></i></a></li>
-                    <li><a href="http://www.umpay.com/umpay_cms/" onclick="cnzzPush.trackClick('46首页','合作伙伴模块','联动优势')" target="_blank"><i class="img-ump"></i></a></li>
+                    <li><a rel="nofollow" href="http://www.king-capital.com/" onclick="cnzzPush.trackClick('45首页','合作伙伴模块','京都律师所')" target="_blank"> <i class="img-jingdu"></i></a></li>
+                    <li><a rel="nofollow" href="http://www.umpay.com/" onclick="cnzzPush.trackClick('46首页','合作伙伴模块','联动优势')" target="_blank"><i class="img-ump"></i></a></li>
                 </ul>
             </div>
         </div>
