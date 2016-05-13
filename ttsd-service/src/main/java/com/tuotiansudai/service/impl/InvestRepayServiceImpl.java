@@ -57,26 +57,27 @@ public class InvestRepayServiceImpl implements InvestRepayService{
     }
 
     private List<InvestRepayDataItemDto> investRepayCouponAll(List<InvestRepayModel> investRepayModels, String loginName) {
-        List<InvestRepayDataItemDto> investRepayDataItemDtoList = Lists.newArrayList();
-        for(InvestRepayModel investRepayModel :investRepayModels){
-            investRepayDataItemDtoList.add(new InvestRepayDataItemDto().generateInvestRepayDataItemDto(investRepayModel));
-        }
 
-        for (InvestRepayDataItemDto investRepayDataItemDto : investRepayDataItemDtoList) {
-
-            List<UserCouponModel> userCouponList = userCouponMapper.findByInvestId(investRepayDataItemDto.getInvestId());
-            List<CouponType> couponTypeList;
-            if (CollectionUtils.isNotEmpty(userCouponList)){
-                couponTypeList = new ArrayList<>();
-                for(UserCouponModel userCouponView : userCouponList){
-                    CouponModel couponModel = couponMapper.findById(userCouponView.getCouponId());
-                    if(couponModel != null && couponModel.getCouponType() != null){
-                        couponTypeList.add(couponModel.getCouponType());
+        List<InvestRepayDataItemDto> investRepayDataItemDtoList = Lists.transform(investRepayModels, new Function<InvestRepayModel, InvestRepayDataItemDto>() {
+            @Override
+            public InvestRepayDataItemDto apply(InvestRepayModel input) {
+                InvestRepayDataItemDto investRepayDataItemDto =  new InvestRepayDataItemDto().generateInvestRepayDataItemDto(input);
+                List<UserCouponModel> userCouponList = userCouponMapper.findByInvestId(investRepayDataItemDto.getInvestId());
+                List<CouponType> couponTypeList;
+                if (CollectionUtils.isNotEmpty(userCouponList)){
+                    couponTypeList = new ArrayList<>();
+                    for(UserCouponModel userCouponView : userCouponList){
+                        CouponModel couponModel = couponMapper.findById(userCouponView.getCouponId());
+                        if(couponModel != null && couponModel.getCouponType() != null){
+                            couponTypeList.add(couponModel.getCouponType());
+                        }
                     }
+                    investRepayDataItemDto.setCouponTypeList(couponTypeList);
                 }
-                investRepayDataItemDto.setCouponTypeList(couponTypeList);
+                return investRepayDataItemDto;
             }
-        }
+        });
+
         return investRepayDataItemDtoList;
     }
 
