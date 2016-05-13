@@ -1,10 +1,10 @@
-CREATE TABLE `aa`.`article_list` (
-  `id` bigint(20) NOT NULL COMMENT '主键',
+CREATE TABLE `aa`.``article_list` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `article_id` bigint(20) unsigned NOT NULL COMMENT '文章内容ID',
   `creator` varchar(30) NOT NULL COMMENT '创建人',
   `checker` varchar(30) NOT NULL COMMENT '审核人',
   `like_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '点赞数',
-  `read_count` int(10) unsigned NOT NULL COMMENT '阅读数',
+  `read_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '阅读数',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
@@ -12,7 +12,7 @@ CREATE TABLE `aa`.`article_list` (
   KEY `idx_create_time` (`create_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='已发布文章详情列表';
 
-CREATE TABLE `aa`.`article_content` (
+CREATE TABLE `aa`.``article_content` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `title` varchar(50) NOT NULL DEFAULT '' COMMENT '文章标题',
   `author` varchar(30) NOT NULL DEFAULT '' COMMENT '文章作者',
