@@ -67,7 +67,7 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     private double birthdayBenefit;
 
-    private List<Integer> couponTypeList;
+    private List<CouponType> couponTypeList;
 
     public InvestPaginationItemDataDto(InvestPaginationItemView view) {
         this.investId = view.getId();
@@ -280,12 +280,7 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.birthdayBenefit = birthdayBenefit;
     }
 
-    public List<Integer> getCouponTypeList() { return couponTypeList; }
+    public List<CouponType> getCouponTypeList() { return couponTypeList; }
 
-    public void setCouponTypeList(List<Integer> couponTypeList) { this.couponTypeList = couponTypeList; }
-
-    class CouponInfo{
-        private int coupon;
-        private String tippath;
-    }
+    public void setCouponTypeList(List<CouponType> couponTypeList) { this.couponTypeList = couponTypeList; }
 }

@@ -7,7 +7,6 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.exception.InvestExceptionType;
@@ -220,9 +219,9 @@ public class InvestServiceImpl implements InvestService {
             for (InvestPaginationItemView investPaginationItemView : items) {
                 List<UserCouponModel> userCouponlist = userCouponMapper.findUseCouponByInvestId(investPaginationItemView.getLoginName(),investPaginationItemView.getId());
                 if (CollectionUtils.isNotEmpty(userCouponlist)) {
-                    List<Integer> couponTypeList = new ArrayList<>();
+                    List<CouponType> couponTypeList = new ArrayList<>();
                     for(UserCouponModel userCouponView : userCouponlist){
-                        couponTypeList.add(userCouponView.getCouponType().getOrder());
+                        couponTypeList.add(userCouponView.getCouponType());
                     }
                     investPaginationItemView.setCouponTypeList(couponTypeList);
                 }

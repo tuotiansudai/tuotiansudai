@@ -41,7 +41,7 @@ public class InvestPaginationItemView extends InvestModel {
 
     private double birthdayBenefit;
 
-    private List<Integer> couponTypeList;
+    private List<CouponType> couponTypeList;
 
     public String getLoanName() {
         return loanName;
@@ -187,7 +187,7 @@ public class InvestPaginationItemView extends InvestModel {
         this.birthdayBenefit = birthdayBenefit;
     }
 
-    public List<Integer> getCouponTypeList() { return couponTypeList; }
+    public List<CouponType> getCouponTypeList() { return couponTypeList; }
 
-    public void setCouponTypeList(List<Integer> couponTypeList) { this.couponTypeList = couponTypeList; }
+    public void setCouponTypeList(List<CouponType> couponTypeList) { this.couponTypeList = couponTypeList; }
 }
