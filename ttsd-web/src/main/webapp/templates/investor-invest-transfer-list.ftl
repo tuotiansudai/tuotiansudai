@@ -2,7 +2,7 @@
 <@global.main pageCss="${css.my_account}" pageJavascript="${js.my_transfer_list}" activeNav="我的账户" activeLeftNav="我的投资" title="投资记录">
 <div class="content-container invest-list-content">
     <h4 class="column-title">
-        <a href="/investor/invest-list"><em class="tc">投资记录</em></a>
+        <a href="/investor/invest-list"><em class="tc">直投项目</em></a>
         <a href="/investor/invest-transfer-list"><em class="tc active">转让项目</em></a>
     </h4>
 
