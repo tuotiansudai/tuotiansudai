@@ -5,7 +5,9 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.*;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -49,7 +52,10 @@ public class RepayServiceImpl implements RepayService {
     @Autowired
     private UserCouponMapper userCouponMapper;
 
-    private static String CONPON_MESSAGE = "{0}的利息为:{1}";
+    @Autowired
+    private CouponMapper couponMapper;
+
+    private static String COUPON_MESSAGE = "{0}的利息为:{1}";
 
     @Override
     public BaseDto<PayFormDataDto> repay(RepayDto repayDto) {
@@ -140,7 +146,7 @@ public class RepayServiceImpl implements RepayService {
         InvestRepayDataDto dataDto = new InvestRepayDataDto();
         dataDto.setStatus(true);
         dataDto.setRecords(Lists.<InvestRepayDataItemDto>newArrayList());
-        dataDto.setCouponDescription(getCouponDescription(loginName,investId));
+        dataDto.setCouponDescriptionList(getCouponDescription(investId));
         baseDto.setData(dataDto);
 
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(loginName, investId);
@@ -157,21 +163,24 @@ public class RepayServiceImpl implements RepayService {
         return baseDto;
     }
 
-    private String getCouponDescription(String loginName,long investId){
-        List<UserCouponModel> userCouponModels = userCouponMapper.findUseCouponByInvestId(loginName,investId);
-        StringBuffer sb = new StringBuffer();
+    private List<String> getCouponDescription(long investId){
+        List<UserCouponModel> userCouponModels = userCouponMapper.findByInvestId(investId);
+        List<String> couponList = new ArrayList<>();
         long couponMoney = 0L;
         if(CollectionUtils.isNotEmpty(userCouponModels)){
             for(UserCouponModel userCouponModel : userCouponModels){
-                sb.append(MessageFormat.format(CONPON_MESSAGE, userCouponModel.getCouponType().getName(),(AmountConverter.convertCentToString(userCouponModel.getExpectedInterest()))) + ",");
-                couponMoney += userCouponModel.getExpectedInterest();
+                CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
+                if(couponModel != null && couponModel.getCouponType() != null){
+                    couponList.add(MessageFormat.format(COUPON_MESSAGE, couponModel.getCouponType().getName(),(AmountConverter.convertCentToString(userCouponModel.getExpectedInterest()))));
+                    couponMoney += userCouponModel.getExpectedInterest();
+                }
             }
         }
 
         if(couponMoney > 0){
-            sb.append(MessageFormat.format(CONPON_MESSAGE,"总",AmountConverter.convertCentToString(couponMoney)));
+            couponList.add(MessageFormat.format(COUPON_MESSAGE,"总",AmountConverter.convertCentToString(couponMoney)));
         }
-        return sb.toString();
+        return couponList;
     }
 
 }

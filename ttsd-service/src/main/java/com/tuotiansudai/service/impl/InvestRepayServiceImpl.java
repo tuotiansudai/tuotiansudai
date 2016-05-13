@@ -5,10 +5,12 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponView;
 import com.tuotiansudai.dto.InvestRepayDataItemDto;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
+import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.LatestInvestView;
 import com.tuotiansudai.service.InvestRepayService;
@@ -45,34 +47,32 @@ public class InvestRepayServiceImpl implements InvestRepayService{
     @Override
     public List<InvestRepayDataItemDto> findByLoginNameAndTimeSuccessInvestRepayList(String loginName, Date startTime, Date endTime, int startLimit, int endLimit) {
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndTimeSuccessInvestRepayList(loginName, startTime, endTime, startLimit, endLimit);
-        return investRepayAddBirthday(investRepayModels, loginName);
+        return investRepayCouponAll(investRepayModels, loginName);
     }
 
     @Override
     public List<InvestRepayDataItemDto> findByLoginNameAndTimeNotSuccessInvestRepayList(String loginName, Date startTime, Date endTime, int startLimit, int endLimit) {
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndTimeNotSuccessInvestRepayList(loginName, startTime, endTime, startLimit, endLimit);
-        return investRepayAddBirthday(investRepayModels, loginName);
+        return investRepayCouponAll(investRepayModels, loginName);
     }
 
-    private List<InvestRepayDataItemDto> investRepayAddBirthday(List<InvestRepayModel> investRepayModels, String loginName) {
+    private List<InvestRepayDataItemDto> investRepayCouponAll(List<InvestRepayModel> investRepayModels, String loginName) {
         List<InvestRepayDataItemDto> investRepayDataItemDtoList = Lists.newArrayList();
         for(InvestRepayModel investRepayModel :investRepayModels){
             investRepayDataItemDtoList.add(new InvestRepayDataItemDto().generateInvestRepayDataItemDto(investRepayModel));
         }
 
         for (InvestRepayDataItemDto investRepayDataItemDto : investRepayDataItemDtoList) {
-            List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndInvestId(loginName, investRepayDataItemDto.getInvestId());
-            investRepayDataItemDto.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
-            if (CollectionUtils.isNotEmpty(userCouponModels)) {
-                investRepayDataItemDto.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
-            }
 
-            List<UserCouponModel> userCouponlist = userCouponMapper.findUseCouponByInvestId(loginName,investRepayDataItemDto.getInvestId());
-            List<Integer> couponTypeList;
-            if (CollectionUtils.isNotEmpty(userCouponlist)){
+            List<UserCouponModel> userCouponList = userCouponMapper.findByInvestId(investRepayDataItemDto.getInvestId());
+            List<CouponType> couponTypeList;
+            if (CollectionUtils.isNotEmpty(userCouponList)){
                 couponTypeList = new ArrayList<>();
-                for(UserCouponModel userCouponView : userCouponlist){
-                    couponTypeList.add(userCouponView.getCouponType().getOrder());
+                for(UserCouponModel userCouponView : userCouponList){
+                    CouponModel couponModel = couponMapper.findById(userCouponView.getCouponId());
+                    if(couponModel != null && couponModel.getCouponType() != null){
+                        couponTypeList.add(couponModel.getCouponType());
+                    }
                 }
                 investRepayDataItemDto.setCouponTypeList(couponTypeList);
             }

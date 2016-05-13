@@ -8,7 +8,7 @@ public class InvestRepayDataDto extends BaseDataDto {
 
     private List<InvestRepayDataItemDto> records = Lists.newArrayList();
 
-    private String couponDescription;
+    private List<String> couponDescriptionList;
 
     public List<InvestRepayDataItemDto> getRecords() {
         return records;
@@ -18,11 +18,7 @@ public class InvestRepayDataDto extends BaseDataDto {
         this.records = records;
     }
 
-    public String getCouponDescription() {
-        return couponDescription;
-    }
+    public List<String> getCouponDescriptionList() { return couponDescriptionList; }
 
-    public void setCouponDescription(String couponDescription) {
-        this.couponDescription = couponDescription;
-    }
+    public void setCouponDescriptionList(List<String> couponDescriptionList) { this.couponDescriptionList = couponDescriptionList; }
 }

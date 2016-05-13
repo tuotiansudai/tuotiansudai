@@ -44,8 +44,6 @@ public class UserCouponModel implements Serializable{
 
     private String exchangeCode;
 
-    private CouponType couponType;
-
     public UserCouponModel() {
     }
 
@@ -199,13 +197,5 @@ public class UserCouponModel implements Serializable{
 
     public void setExchangeCode(String exchangeCode) {
         this.exchangeCode = exchangeCode;
-    }
-
-    public CouponType getCouponType() {
-        return couponType;
-    }
-
-    public void setCouponType(CouponType couponType) {
-        this.couponType = couponType;
     }
 }

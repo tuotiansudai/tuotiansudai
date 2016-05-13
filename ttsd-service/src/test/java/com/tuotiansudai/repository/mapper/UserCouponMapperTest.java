@@ -39,14 +39,7 @@ public class UserCouponMapperTest {
     private UserMapper userMapper;
 
     @Autowired
-    private LoanMapper loanMapper;
-
-    @Autowired
     private IdGenerator idGenerator;
-
-    @Autowired
-    private InvestMapper investMapper;
-
 
     @Test
     public void shouldCreateUserCoupon() {
@@ -67,24 +60,6 @@ public class UserCouponMapperTest {
         UserCouponModel userCouponModelDb = userCouponModelList.get(0);
         assertEquals(userCouponModel.getCouponId(), userCouponModelDb.getCouponId());
         assertEquals(userCouponModel.getLoginName(), userCouponModelDb.getLoginName());
-    }
-
-    @Test
-    public void shouldFindUseCouponByInvestIddIsOk(){
-        UserModel userModel = fakeUserModel();
-        userMapper.create(userModel);
-        CouponModel couponModel = fakeCouponModel();
-        couponMapper.create(couponModel);
-        LoanModel lm = createLoanModel(userModel.getLoginName());
-        loanMapper.create(lm);
-        InvestModel model = createInvest(userModel.getLoginName(),lm.getId());
-        investMapper.create(model);
-        UserCouponModel userCouponModel = createUserCouponModel(userModel.getLoginName(),couponModel.getId(),lm.getId(),model.getId());
-        userCouponMapper.create(userCouponModel);
-        userCouponMapper.update(userCouponModel);
-
-        List<UserCouponModel> userCouponViewList = userCouponMapper.findUseCouponByInvestId(userModel.getLoginName(),model.getId());
-        assertEquals(1, userCouponViewList.size());
     }
 
     private UserCouponModel fakeUserCouponModel(long couponId) {
@@ -120,68 +95,4 @@ public class UserCouponMapperTest {
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         return userModelTest;
     }
-
-    private LoanModel createLoanModel(String loanerLoginName) {
-        LoanModel lm = new LoanModel();
-        lm.setId(idGenerator.generate());
-        lm.setName("test loan");
-        lm.setDescriptionHtml("fdjakf");
-        lm.setDescriptionText("fdjakf");
-        lm.setPeriods(1);
-        lm.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
-        lm.setActivityRate(0.1);
-        lm.setMinInvestAmount(1);
-        lm.setMaxInvestAmount(1000000);
-        lm.setLoanAmount(1);
-        lm.setLoanerLoginName(loanerLoginName);
-        lm.setLoanerUserName("借款人");
-        lm.setLoanerIdentityNumber("111111111111111111");
-        lm.setAgentLoginName(loanerLoginName);
-        lm.setBaseRate(0.2);
-        lm.setActivityType(ActivityType.NORMAL);
-        lm.setCreatedTime(new Date());
-        lm.setFundraisingStartTime(new Date());
-        lm.setFundraisingEndTime(new Date());
-        lm.setStatus(LoanStatus.RAISING);
-        return lm;
-    }
-
-    private InvestModel createInvest(String loginName,long loanId){
-        InvestModel model = new InvestModel();
-        model.setAmount(1000000);
-        // 舍弃毫秒数
-        Date currentDate = new Date((new Date().getTime() / 1000) * 1000);
-        model.setCreatedTime(currentDate);
-        model.setId(idGenerator.generate());
-        model.setIsAutoInvest(false);
-        model.setLoginName(loginName);
-        model.setLoanId(loanId);
-        model.setSource(Source.ANDROID);
-        model.setStatus(InvestStatus.SUCCESS);
-        model.setCreatedTime(DateUtils.addHours(new Date(), -1));
-        return model;
-    }
-
-    private UserCouponModel createUserCouponModel(String loginName,long couponId,long loanId,long investId){
-        UserCouponModel model = new UserCouponModel();
-        model.setId(idGenerator.generate());
-        model.setLoginName(loginName);
-        model.setCouponId(couponId);
-        model.setStartTime(new Date());
-        model.setEndTime(new Date());
-        model.setLoanId(loanId);
-        model.setUsedTime(new Date());
-        model.setExpectedInterest(1);
-        model.setActualInterest(1);
-        model.setDefaultInterest(1);
-        model.setExpectedFee(1);
-        model.setActualFee(1);
-        model.setInvestId(investId);
-        model.setStatus(InvestStatus.SUCCESS);
-        model.setExchangeCode("1");
-        model.setCreatedTime(new Date());
-        return model;
-    }
-
-
 }
