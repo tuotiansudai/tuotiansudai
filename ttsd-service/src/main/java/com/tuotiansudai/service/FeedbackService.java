@@ -23,5 +23,14 @@ public interface FeedbackService {
                                                                Date endTime,
                                                                int index,
                                                                int pageSize);
+
+
+    long getFeedbackCount(String loginName,
+                          Source source,
+                          FeedbackType type,
+                          ProcessStatus status,
+                          Date startTime,
+                          Date endTime);
+
     void updateStatus(long feedbackId, ProcessStatus status);
 }

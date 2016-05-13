@@ -48,5 +48,11 @@ require(['jquery', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstr
             console.log("error");
             alert("提交失败");
         });
-    })
+    });
+
+
+    $('.down-load').click(function () {
+        location.href = "/announce-manage/feedback?"+$('form').serialize()+"&export=csv";
+    });
+
 });

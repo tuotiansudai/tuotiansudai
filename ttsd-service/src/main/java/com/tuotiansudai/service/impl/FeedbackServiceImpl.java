@@ -45,6 +45,16 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
+    public long getFeedbackCount(String loginName,
+                                 Source source,
+                                 FeedbackType type,
+                                 ProcessStatus status,
+                                 Date startTime,
+                                 Date endTime) {
+        return feedbackMapper.findAllCount(loginName, source, type, status, startTime, endTime);
+    }
+
+    @Override
     public void updateStatus(long feedbackId, ProcessStatus status) {
         feedbackMapper.updateStatus(feedbackId, status);
     }
