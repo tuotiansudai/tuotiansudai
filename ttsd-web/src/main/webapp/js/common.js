@@ -348,7 +348,7 @@ var MyChartsObject={
                             saveAsImage : {show: true}
                         }
                     },
-                    calculable : true,
+                    calculable : false,
                     xAxis : [
                         {
                             type : 'category',

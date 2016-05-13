@@ -65,7 +65,7 @@
         </div>
 
         <div class="team-box last clearfix">
-            <img src="${staticServer}/images/sign/aboutus/team5.png" alt="客服团队" class="fl responsive-width">
+            <img src="${staticServer}/images/sign/aboutus/team5_new.jpg" alt="客服团队" class="fl responsive-width">
             <dl>
                 <dt>客服团队</dt>
                 <dd>客服团队通过电话(400-169-1188)、QQ、微信和微博等信息化手段，一对一服务用户。</dd>
@@ -98,8 +98,8 @@
                 <span>运营团队</span>
             </li>
             <li>
-                <a href="${staticServer}/images/sign/aboutus/photo_big_04.jpg" title="客服团队" rel="group">
-                    <img src="${staticServer}/images/sign/aboutus/photo_04.jpg">
+                <a href="${staticServer}/images/sign/aboutus/photo_big_04_new.jpg" title="客服团队" rel="group">
+                    <img src="${staticServer}/images/sign/aboutus/photo_04_new.jpg">
                 </a>
                 <span>客服团队</span>
             </li>
