@@ -16,9 +16,7 @@
                     <div class="card-num tc">${cardNumber?replace("^(\\d{4}).*(\\d{4})$","$1****$2","r")}</div>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div class="card-link clearfix">
-                        <#if replaceCardAvailable>
-                            <a class="card-edit fl" href="/bind-card/replace">换卡</a>
-                        </#if>
+                        <a class="card-edit fl" href="/bind-card/replace">换卡</a>
                         <#if openFastPayAvailable>
                             <input type="hidden" name="fastPay" value="true"/>
                             <a class="open-fast-pay fr" href="javascript:">开通快捷支付</a>

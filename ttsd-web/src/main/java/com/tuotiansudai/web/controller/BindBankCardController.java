@@ -36,7 +36,6 @@ public class BindBankCardController {
         boolean isBindCard = bankCardModel != null;
         if (isBindCard) {
             view.addObject("openFastPayAvailable", !bankCardModel.isFastPayOn() && BankCardUtil.getFastPayBanks().contains(bankCardModel.getBankCode().toUpperCase()));
-            view.addObject("replaceCardAvailable", !bankCardModel.isFastPayOn());
             view.addObject("bankCode", bankCardModel.getBankCode().toUpperCase());
             view.addObject("cardNumber", bankCardModel.getCardNumber());
         }
