@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.AmountTransfer;
 
 import java.io.Serializable;
 
