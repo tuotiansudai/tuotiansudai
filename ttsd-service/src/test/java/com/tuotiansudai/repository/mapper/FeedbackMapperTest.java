@@ -32,6 +32,9 @@ public class FeedbackMapperTest {
         FeedbackModel feedbackModel = new FeedbackModel();
         feedbackModel.setLoginName(fakeUser.getLoginName());
         feedbackModel.setContent("content");
+        feedbackModel.setSource(Source.IOS);
+        feedbackModel.setType(FeedbackType.opinion);
+        feedbackModel.setStatus(ProcessStatus.NOT_DONE);
         feedbackModel.setCreatedTime(new Date());
 
         feedbackMapper.create(feedbackModel);
