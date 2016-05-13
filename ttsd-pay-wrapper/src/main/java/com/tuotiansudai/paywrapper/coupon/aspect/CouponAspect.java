@@ -1,7 +1,6 @@
 package com.tuotiansudai.paywrapper.coupon.aspect;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.coupon.repository.model.UserGroup;
 import com.tuotiansudai.coupon.service.CouponActivationService;
 import com.tuotiansudai.dto.BaseDto;
@@ -12,7 +11,6 @@ import com.tuotiansudai.job.AutoJPushAlertLoanOutJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.job.SendCouponIncomeJob;
 import com.tuotiansudai.job.SendRedEnvelopeJob;
-import com.tuotiansudai.jpush.service.JPushAlertService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponInvestService;
 import com.tuotiansudai.paywrapper.coupon.service.CouponRepayService;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -20,10 +18,8 @@ import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
@@ -32,7 +28,6 @@ import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 import java.util.Date;
-import java.util.List;
 
 @Component
 @Aspect
@@ -51,24 +46,6 @@ public class CouponAspect {
     @Autowired
     private CouponActivationService couponActivationService;
 
-    @Around(value = "execution(* com.tuotiansudai.paywrapper.service.RepayService.postRepayCallback(*))")
-    public Object aroundRepay(ProceedingJoinPoint proceedingJoinPoint) {
-        logger.debug("after repay pointcut");
-        List<Object> args = Lists.newArrayList(proceedingJoinPoint.getArgs());
-        long loanRepayId = (long) args.get(0);
-        try {
-            boolean isSuccess = (boolean) proceedingJoinPoint.proceed();
-            if (isSuccess) {
-                couponRepayService.repay(loanRepayId);
-                createSendCouponIncomeJob(loanRepayId);
-            }
-            return isSuccess;
-        } catch (Throwable throwable) {
-            logger.error(MessageFormat.format("Coupon repay aspect is failed (loanRepayId = {0})", String.valueOf(loanRepayId)), throwable);
-        }
-        return false;
-    }
-
     @AfterReturning(value = "execution(* *..NormalRepayService.paybackInvest(*)) || execution(* *..AdvanceRepayService.paybackInvest(*))", returning = "returnValue")
     public void afterReturningPaybackInvest(JoinPoint joinPoint, boolean returnValue) {
         long loanRepayId = (Long) joinPoint.getArgs()[0];
@@ -77,6 +54,7 @@ public class CouponAspect {
 
         if (returnValue) {
             couponRepayService.repay(loanRepayId);
+            createSendCouponIncomeJob(loanRepayId);
         }
 
         logger.info(MessageFormat.format("[Coupon Repay {0}] after returning payback invest({1}) aspect is done",
