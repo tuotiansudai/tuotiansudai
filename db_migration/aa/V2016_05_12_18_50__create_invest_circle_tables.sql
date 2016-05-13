@@ -1,4 +1,4 @@
-CREATE TABLE `aa`.``article_list` (
+CREATE TABLE `aa`.`article_list` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `article_id` bigint(20) unsigned NOT NULL COMMENT '文章内容ID',
   `creator` varchar(30) NOT NULL COMMENT '创建人',
@@ -12,7 +12,7 @@ CREATE TABLE `aa`.``article_list` (
   KEY `idx_create_time` (`create_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='已发布文章详情列表';
 
-CREATE TABLE `aa`.``article_content` (
+CREATE TABLE `aa`.`article_content` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `title` varchar(50) NOT NULL DEFAULT '' COMMENT '文章标题',
   `author` varchar(30) NOT NULL DEFAULT '' COMMENT '文章作者',
