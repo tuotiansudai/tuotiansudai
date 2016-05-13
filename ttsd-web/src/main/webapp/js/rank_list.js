@@ -155,48 +155,48 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
         } else {
             if (bRotateCd) return;
             $.ajax({
-                    url: '/activity/point-lottery',
-                    type: 'POST',
-                    dataType: 'json'
-                })
-                .done(function(data) {
-                    if (bRotateCd) return;
-                    switch (data) {
-                        case 'PointNotEnough'://财豆不足
-                            $('#tipList').show();
-                            $('#NoCdbean').show();
-                            break;
-                        case 'TtsdUDisk':
-                            rotateFnCd(1, 80, '拓天速贷U盘');
-                            break;
-                        case 'InsulationCup':
-                            rotateFnCd(2, 32, '青花瓷保温杯');
-                            break;
-                        case 'AlreadyLotteryNotShare':
-                            $('#tipList').show();
-                            $('#oneDay').show();
-                            break;
-                        case 'RedEnvelope2':
-                            rotateFnCd(3, 173, '现金2元');
-                            break;
-                        case 'MangoTravel100':
-                            rotateFnCd(4, 210, '100元芒果旅游卡');
-                            break;
-                        case 'InterestCoupon2':
-                            rotateFnCd(5, 255, '0.2%加息券');
-                            break;
-                        case 'AlreadyLotteryShare':
-                            $('#tipList').show();
-                            $('#onlyTwice').show();
-                            break;
-                        case 'InterestCoupon2':
-                            rotateFnCd(7, 355, '2%加息券');
-                            break;
-                    }
-                })
-                .fail(function() {
-                    layer.msg('请求失败');
-                });
+                url: '/activity/point-lottery',
+                type: 'POST',
+                dataType: 'json'
+            })
+            .done(function(data) {
+                if (bRotateCd) return;
+                switch (data) {
+                    case 'PointNotEnough':
+                        $('#tipList').show();
+                        $('#NoCdbean').show();
+                        break;
+                    case 'TtsdUDisk':
+                        rotateFnCd(1, 80, '拓天速贷U盘');
+                        break;
+                    case 'InsulationCup':
+                        rotateFnCd(2, 32, '青花瓷保温杯');
+                        break;
+                    case 'AlreadyLotteryNotShare':
+                        $('#tipList').show();
+                        $('#oneDay').show();
+                        break;
+                    case 'RedEnvelope2':
+                        rotateFnCd(3, 173, '现金2元');
+                        break;
+                    case 'MangoTravel100':
+                        rotateFnCd(4, 210, '100元芒果旅游卡');
+                        break;
+                    case 'InterestCoupon0.2':
+                        rotateFnCd(5, 255, '0.2%加息券');
+                        break;
+                    case 'AlreadyLotteryShare':
+                        $('#tipList').show();
+                        $('#onlyTwice').show();
+                        break;
+                    case 'InterestCoupon2':
+                        rotateFnCd(7, 355, '2%加息券');
+                        break;
+                }
+            })
+            .fail(function() {
+                layer.msg('请求失败');
+            });
         }
     });
 
@@ -215,7 +215,7 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                         $('#cdFive').show();
                         break;
                     case 2:
-                        $('#thankYou').show();
+                        $('#cdBaowen').show();
                         break;
                     case 3:
                         $('#thankYou').show();
@@ -516,28 +516,31 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                             $('#tipListPhone').show();
                             $('#NoCdbeanPhone').show();
                             break;
-                        case 'Cash5':
-                            rotateFnCdPhone(1, 80, '现金5元');
+                        case 'TtsdUDisk':
+                            rotateFnCdPhone(1, 80, '拓天速贷U盘');
+                            break;
+                        case 'InsulationCup':
+                            rotateFnCd(2, 32, '青花瓷保温杯');
                             break;
                         case 'AlreadyLotteryNotShare':
                             $('#tipListPhone').show();
                             $('#oneDayPhone').show();
                             break;
-                        case 'ThankYou':
-                            rotateFnCdPhone(3, 173, '谢谢参与');
+                        case 'RedEnvelope2':
+                            rotateFnCdPhone(3, 173, '现金2元');
                             break;
-                        case 'Cash2':
-                            rotateFnCdPhone(4, 210, '现金2元');
+                        case 'MangoTravel100':
+                            rotateFnCdPhone(4, 210, '100元芒果旅游卡');
                             break;
-                        case 'InterestCoupon2':
+                        case 'InterestCoupon0.2':
                             rotateFnCdPhone(5, 255, '0.2%加息券');
                             break;
                         case 'AlreadyLotteryShare':
                             $('#tipListPhone').show();
                             $('#onlyTwicePhone').show();
                             break;
-                        case 'InvestCoupon3000':
-                            rotateFnCdPhone(7, 355, '3000元体验金');
+                        case 'InterestCoupon2':
+                            rotateFnCdPhone(7, 355, '2%加息券');
                             break;
                     }
                 })
@@ -560,6 +563,9 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                 switch (awards) {
                     case 1:
                         $('#cdFivePhone').show();
+                        break;
+                    case 2:
+                        $('#cdBaowenPhone').show();
                         break;
                     case 3:
                         $('#thankYouPhone').show();

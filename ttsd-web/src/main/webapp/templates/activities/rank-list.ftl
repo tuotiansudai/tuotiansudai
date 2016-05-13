@@ -432,21 +432,22 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/images/sign/actor/ranklist/2rmb.png" width="50%"></p>
-                <p>奖金已发放到您的账户！</p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/mangguo.png" width="50%"></p>
+                <p>拓天客服将会在7个工作日内联系您发放奖品</p>
             </div>
             <div class="btn-list">
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
             </div>
         </div>
-        <div class="tip-dom td-tip-thank" id="thankYou">
+        <div class="tip-dom td-tip-small" id="thankYou">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
-                <p>谢谢参与</p>
-                <p>很遗憾没有中奖,再接再励！</p>
+                <p>恭喜你抽中了</p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/2rmb.png" width="50%"></p>
+                <p>奖金已发放到您的账户！</p>
             </div>
             <div class="btn-list">
-                <a href="/" class="go-on-big">去看看其他活动</a>
+                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
             </div>
         </div>
         <div class="tip-dom td-tip-small" id="percentCoupon">
@@ -465,11 +466,12 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/images/sign/actor/ranklist/coupon.png" width="50%"></p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/percentTwo.png" width="50%"></p>
                 <p>奖金已发放至“我的宝藏”当中</p>
             </div>
             <div class="btn-list">
-                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
+                <a href="/my-treasure" class="double-btn first-btn">去查看</a>
+                <a href="javascript:void(0)" class="double-btn go-close">继续抽奖</a>
             </div>
         </div>
 	</div>
@@ -819,7 +821,29 @@
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
             </div>
         </div>
+        <div class="tip-dom td-tip-small" id="cdBaowenPhone">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p>恭喜你抽中了</p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/baowen.png" width="50%"></p>
+                <p>拓天客服将会在7个工作日内联系您发放奖品</p>
+            </div>
+            <div class="btn-list">
+                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
+            </div>
+        </div>
         <div class="tip-dom td-tip-small" id="cdTwoPhone">
+            <div class="close-btn go-close"></div>
+            <div class="text-tip">
+                <p>恭喜你抽中了</p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/mangguo.png" width="50%"></p>
+                <p>奖金已发放到您的账户！</p>
+            </div>
+            <div class="btn-list">
+                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
+            </div>
+        </div>
+        <div class="tip-dom td-tip-small" id="thankYouPhone">
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
@@ -828,13 +852,6 @@
             </div>
             <div class="btn-list">
                 <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
-            </div>
-        </div>
-        <div class="tip-dom td-tip-thank" id="thankYouPhone">
-            <div class="close-btn go-close"></div>
-            <div class="text-tip">
-                <p>谢谢参与</p>
-                <p>很遗憾没有中奖,再接再励！</p>
             </div>
         </div>
         <div class="tip-dom td-tip-small" id="percentCouponPhone">
@@ -852,11 +869,12 @@
             <div class="close-btn go-close"></div>
             <div class="text-tip">
                 <p>恭喜你抽中了</p>
-                <p><img src="${staticServer}/images/sign/actor/ranklist/coupon.png" width="50%"></p>
+                <p><img src="${staticServer}/images/sign/actor/ranklist/percentTwo.png" width="50%"></p>
                 <p>奖金已发放至“我的宝藏”当中</p>
             </div>
             <div class="btn-list">
-                <a href="javascript:void(0)" class="go-on go-close">继续抽奖</a>
+                <a href="/my-treasure" class="double-btn first-btn">去查看</a>
+                <a href="javascript:void(0)" class="double-btn go-close">继续抽奖</a>
             </div>
         </div>
     </div>
