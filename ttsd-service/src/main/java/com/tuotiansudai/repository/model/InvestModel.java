@@ -55,11 +55,16 @@ public class InvestModel implements Serializable {
      */
     private Date createdTime = new Date();
 
+    /**
+     * 投资时间
+     */
+    private Date investTime;
+
     public InvestModel(){
 
     }
 
-    public InvestModel(long id, long loanId, Long transferInvestId, long amount, String loginName, Source source, String channel) {
+    public InvestModel(long id, long loanId, Long transferInvestId, long amount, String loginName, Date investTime, Source source, String channel) {
         this.id = id;
         this.transferInvestId = transferInvestId;
         this.loginName = loginName;
@@ -69,6 +74,7 @@ public class InvestModel implements Serializable {
         this.channel = channel;
         this.status = InvestStatus.WAIT_PAY;
         this.isAutoInvest = Source.AUTO == source;
+        this.investTime = investTime;
         this.createdTime = new Date();
         this.transferStatus = TransferStatus.TRANSFERABLE;
     }
@@ -151,6 +157,14 @@ public class InvestModel implements Serializable {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public Date getInvestTime() {
+        return investTime;
+    }
+
+    public void setInvestTime(Date investTime) {
+        this.investTime = investTime;
     }
 
     public String getChannel() {

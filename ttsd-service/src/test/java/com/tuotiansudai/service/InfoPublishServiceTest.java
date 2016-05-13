@@ -95,7 +95,7 @@ public class InfoPublishServiceTest {
     private InvestModel createInvest(String loginName, long loanId,long amount) {
         InvestModel model = new InvestModel();
         model.setAmount(amount);
-        model.setCreatedTime(new Date());
+        model.setInvestTime(new Date());
         model.setId(idGenerator.generate());
         model.setTransferStatus(TransferStatus.TRANSFERABLE);
         model.setIsAutoInvest(false);

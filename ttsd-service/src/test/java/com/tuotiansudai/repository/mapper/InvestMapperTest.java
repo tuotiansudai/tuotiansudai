@@ -15,7 +15,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -83,14 +82,13 @@ public class InvestMapperTest {
             if (i % 2 == 1) {
                 investModel.setLoginName(User_ID2);
             }
-            investModel.setCreatedTime(DateUtils.addHours(new Date(), -i));
+            investModel.setInvestTime(DateUtils.addHours(new Date(), -i));
             investMapper.create(investModel);
         }
     }
 
     private InvestModel getFakeInvestModel() {
-        InvestModel model = new InvestModel(idGenerator.generate(), Loan_ID, null, 1000000L, User_ID, Source.WEB, null);
-        model.setCreatedTime(new DateTime().withTimeAtStartOfDay().toDate());
+        InvestModel model = new InvestModel(idGenerator.generate(), Loan_ID, null, 1000000L, User_ID, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null);
         model.setStatus(InvestStatus.SUCCESS);
         return model;
     }
@@ -186,19 +184,19 @@ public class InvestMapperTest {
         InvestModel investModel = this.getFakeInvestModel();
         investModel.setLoanId(newbieLoanId);
         investModel.setLoginName(User_ID2);
-        investModel.setCreatedTime(DateUtils.addHours(new Date(), -1));
+        investModel.setInvestTime(DateUtils.addHours(new Date(), -1));
         investMapper.create(investModel);
 
         InvestModel investModel2 = this.getFakeInvestModel();
         investModel2.setLoanId(Loan_ID2);
         investModel2.setLoginName(User_ID2);
-        investModel2.setCreatedTime(DateUtils.addHours(new Date(), -2));
+        investModel2.setInvestTime(DateUtils.addHours(new Date(), -2));
         investMapper.create(investModel2);
 
         InvestModel investModel3 = this.getFakeInvestModel();
         investModel3.setLoanId(newbieLoanId);
         investModel3.setLoginName(User_ID2);
-        investModel3.setCreatedTime(DateUtils.addHours(new Date(), -3));
+        investModel3.setInvestTime(DateUtils.addHours(new Date(), -3));
         investMapper.create(investModel3);
 
         int newbieInvestCount = investMapper.sumSuccessInvestCountByLoginName(User_ID2);

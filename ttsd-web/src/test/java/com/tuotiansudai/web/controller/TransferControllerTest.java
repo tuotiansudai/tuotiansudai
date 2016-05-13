@@ -59,10 +59,10 @@ public class TransferControllerTest {
     @Test
     public void shouldTransferrerListDataIsSuccess() throws Exception {
         InvestPaginationItemView investPaginationItemView = new InvestPaginationItemView();
-        investPaginationItemView.setCreatedTime(new Date());
-        investPaginationItemView.setAmount(10000l);
+        investPaginationItemView.setInvestTime(new Date());
+        investPaginationItemView.setAmount(10000L);
         investPaginationItemView.setNextRepayDate(new DateTime(2016, 8, 8, 0, 0, 0).toDate());
-        investPaginationItemView.setNextRepayAmount(12000l);
+        investPaginationItemView.setNextRepayAmount(12000L);
         investPaginationItemView.setLoanBaseRate(0.12);
         investPaginationItemView.setLoanActivityRate(0.01);
         investPaginationItemView.setSource(Source.IOS);
@@ -72,9 +72,6 @@ public class TransferControllerTest {
         investPaginationItemDataDto.setLastRepayDate(new DateTime("2017-01-01").toDate());
         investPaginationItemDataDto.setLeftPeriod(3);
         BasePaginationDataDto<InvestPaginationItemDataDto> basePaginationDataDto = new BasePaginationDataDto<>(1,10,5,Lists.newArrayList(investPaginationItemDataDto));
-
-
-
 
         when(investService.getTransferApplicationTransferablePagination(anyString(), anyInt(), anyInt(), any(Date.class), any(Date.class), any(LoanStatus.class))).thenReturn(basePaginationDataDto);
         mockLoginUser("investor", "13900000000");

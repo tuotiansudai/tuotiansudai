@@ -218,7 +218,7 @@ public class InvestServiceTest {
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 100L, "testInvest", Source.WEB, null);
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 100L, "testInvest", new Date(), Source.WEB, null);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
 
@@ -426,7 +426,7 @@ public class InvestServiceTest {
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 
-        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 100L, "investor", Source.WEB, null);
+        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 100L, "investor", new Date(), Source.WEB, null);
         investMapper.create(investModel);
 
         investService.investSuccess(investModel.getId(), investModel, investModel.getLoginName());

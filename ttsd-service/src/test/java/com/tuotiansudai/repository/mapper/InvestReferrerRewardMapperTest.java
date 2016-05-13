@@ -46,8 +46,7 @@ public class InvestReferrerRewardMapperTest {
     }
 
     private InvestModel createMockInvest(String loginName, long loanId) {
-        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, Source.WEB, null);
-        model.setCreatedTime(new DateTime().withTimeAtStartOfDay().toDate());
+        InvestModel model = new InvestModel(idGenerator.generate(), loanId, null, 1, loginName, new DateTime().withTimeAtStartOfDay().toDate(), Source.WEB, null);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         return model;

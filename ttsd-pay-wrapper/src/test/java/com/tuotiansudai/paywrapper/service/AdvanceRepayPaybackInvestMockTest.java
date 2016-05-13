@@ -10,7 +10,6 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.impl.AdvanceRepayServiceImpl;
-import com.tuotiansudai.paywrapper.service.impl.NormalRepayServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
@@ -88,8 +87,8 @@ public class AdvanceRepayPaybackInvestMockTest {
 
         String investor1LoginName = "investor1";
         String investor2LoginName = "investor2";
-        InvestModel invest1 = new InvestModel(1, loanId, null, 10, investor1LoginName, Source.WEB, null);
-        InvestModel invest2 = new InvestModel(2, loanId, null, 20, investor2LoginName, Source.WEB, null);
+        InvestModel invest1 = new InvestModel(1, loanId, null, 10, investor1LoginName, new Date(), Source.WEB, null);
+        InvestModel invest2 = new InvestModel(2, loanId, null, 20, investor2LoginName, new Date(), Source.WEB, null);
         List<InvestModel> successInvests = Lists.newArrayList(invest1, invest2);
         when(investMapper.findSuccessInvestsByLoanId(loanId)).thenReturn(successInvests);
 
@@ -174,9 +173,9 @@ public class AdvanceRepayPaybackInvestMockTest {
 
         String investor1LoginName = "investor1";
         String investor2LoginName = "investor2";
-        InvestModel invest1 = new InvestModel(1, loanId, null, 10, investor1LoginName, Source.WEB, null);
+        InvestModel invest1 = new InvestModel(1, loanId, null, 10, investor1LoginName, new Date(), Source.WEB, null);
         invest1.setId(1);
-        InvestModel invest2 = new InvestModel(2, loanId, null, 20, investor2LoginName, Source.WEB, null);
+        InvestModel invest2 = new InvestModel(2, loanId, null, 20, investor2LoginName, new Date(), Source.WEB, null);
         invest2.setId(2);
         List<InvestModel> successInvests = Lists.newArrayList(invest1, invest2);
         when(investMapper.findSuccessInvestsByLoanId(loanId)).thenReturn(successInvests);

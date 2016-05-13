@@ -21,7 +21,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -351,7 +350,7 @@ public class LoanServiceTest {
             InvestModel investModel = this.getFakeInvestModel(idGenerator.generate(), loginName);
             investModel.setLoanId(loanId);
             investModel.setStatus(InvestStatus.SUCCESS);
-            investModel.setCreatedTime(DateUtils.addHours(new Date(), -i));
+            investModel.setInvestTime(DateUtils.addHours(new Date(), -i));
             investMapper.create(investModel);
         }
     }
@@ -426,7 +425,7 @@ public class LoanServiceTest {
     }
 
     private InvestModel getFakeInvestModel(long loanId, String loginName) {
-        return new InvestModel(idGenerator.generate(), loanId, null, 50, loginName, Source.WEB, null);
+        return new InvestModel(idGenerator.generate(), loanId, null, 50, loginName, new Date(), Source.WEB, null);
     }
 
     public UserModel getFakeUser(String loginName) {

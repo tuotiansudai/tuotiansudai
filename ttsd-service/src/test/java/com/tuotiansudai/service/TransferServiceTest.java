@@ -5,12 +5,8 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.transfer.repository.mapper.TransferApplicationMapper;
 import com.tuotiansudai.transfer.repository.model.TransferApplicationModel;
-import com.tuotiansudai.transfer.repository.model.TransferApplicationRecordDto;
 import com.tuotiansudai.transfer.service.TransferService;
-import com.tuotiansudai.util.AutoInvestMonthPeriod;
-import com.tuotiansudai.util.DateUtil;
 import com.tuotiansudai.util.IdGenerator;
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Before;
@@ -129,13 +125,13 @@ public class TransferServiceTest {
     }
 
     private void createInvests(String loginName, long loanId, long investId) {
-        InvestModel model = new InvestModel(investId, loanId, null, 1, loginName, Source.WEB, null);
+        InvestModel model = new InvestModel(investId, loanId, null, 1, loginName, new Date(), Source.WEB, null);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
     }
 
     private void createInvestsTransferSuccess(String loginName, long loanId, long investId) {
-        InvestModel model = new InvestModel(investId, loanId, null, 1, loginName, Source.WEB, null);
+        InvestModel model = new InvestModel(investId, loanId, null, 1, loginName, new Date(), Source.WEB, null);
         model.setTransferStatus(TransferStatus.SUCCESS);
         investMapper.create(model);
     }

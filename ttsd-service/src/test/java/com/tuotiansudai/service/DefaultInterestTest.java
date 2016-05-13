@@ -104,7 +104,7 @@ public class DefaultInterestTest {
         model.setLoginName(loginName);
         model.setSource(Source.ANDROID);
         model.setStatus(InvestStatus.SUCCESS);
-        model.setCreatedTime(investTime);
+        model.setInvestTime(investTime);
         model.setTransferStatus(TransferStatus.TRANSFERABLE);
         return model;
     }

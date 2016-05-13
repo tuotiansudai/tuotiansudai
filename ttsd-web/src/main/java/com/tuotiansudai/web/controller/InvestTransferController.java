@@ -73,7 +73,7 @@ public class InvestTransferController {
         }
         int days = Days.daysBetween(beginDate, endDate).getDays();
         String messageDay;
-        double feeRate = 0L;
+        double feeRate;
         if (days <= transferRuleModel.getLevelOneUpper()) {
             feeRate = transferRuleModel.getLevelOneFee();
             messageDay = "不足" + transferRuleModel.getLevelTwoLower() ;

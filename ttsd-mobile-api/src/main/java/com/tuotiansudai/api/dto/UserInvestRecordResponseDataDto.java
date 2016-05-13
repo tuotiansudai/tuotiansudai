@@ -70,7 +70,7 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
         this.loanStatusDesc = loanStatus.getMessage();
         this.investId = String.valueOf(invest.getId());
         this.investMoney = AmountConverter.convertCentToString(invest.getAmount());
-        this.investTime = new SimpleDateFormat("yyyy-MM-dd").format(invest.getCreatedTime());
+        this.investTime = new SimpleDateFormat("yyyy-MM-dd").format(invest.getInvestTime());
         this.investStatus = investStatus.getCode();
         this.investStatusDesc = investStatus.getMessage();
         this.investRate = String.format("%.1f", loan.getActivityRate() + loan.getBaseRate());

@@ -143,7 +143,7 @@ public class AccountServiceTest {
         InvestModel investModel = new InvestModel();
         investModel.setId(idGenerator.generate());
         investModel.setAmount(1000);
-        investModel.setCreatedTime(new Date());
+        investModel.setInvestTime(new Date());
         investModel.setLoginName(loginName);
         investModel.setSource(Source.IOS);
         investModel.setLoanId(loanId);

@@ -68,7 +68,8 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
     public void shouldGenerateInvestListIsOk() {
         InvestModel investModel1 = new InvestModel();
         investModel1.setAmount(1000000L);
-        investModel1.setCreatedTime(new Date());
+        investModel1.setInvestTime(new Date());
+        investModel1.setInvestTime(new Date());
         investModel1.setId(idGenerator.generate());
         investModel1.setIsAutoInvest(false);
         investModel1.setLoginName("loginName1");
@@ -78,7 +79,8 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
         InvestModel investModel2 = new InvestModel();
         investModel2.setAmount(1100000L);
-        investModel2.setCreatedTime(new Date());
+        investModel2.setInvestTime(new Date());
+        investModel2.setInvestTime(new Date());
         investModel2.setId(idGenerator.generate());
         investModel2.setIsAutoInvest(false);
         investModel2.setLoginName("loginName2");
@@ -88,7 +90,8 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
         InvestModel investModel3 = new InvestModel();
         investModel3.setAmount(1200000L);
-        investModel3.setCreatedTime(new Date());
+        investModel3.setInvestTime(new Date());
+        investModel3.setInvestTime(new Date());
         investModel3.setId(idGenerator.generate());
         investModel3.setIsAutoInvest(false);
         investModel3.setLoginName("loginName3");
@@ -140,7 +143,8 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
         InvestModel investModel = new InvestModel();
         investModel.setId(idGenerator.generate());
         investModel.setAmount(1000);
-        investModel.setCreatedTime(new Date());
+        investModel.setInvestTime(new Date());
+        investModel.setInvestTime(new Date());
         investModel.setLoginName("loginName");
         investModel.setSource(Source.IOS);
         investModel.setLoanId(1213L);

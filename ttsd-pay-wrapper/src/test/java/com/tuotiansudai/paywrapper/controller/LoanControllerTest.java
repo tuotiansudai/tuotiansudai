@@ -368,7 +368,7 @@ public class LoanControllerTest {
     }
 
     private long mockInvest(long loanId, String loginName, long amount) throws AmountTransferException {
-        InvestModel im = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, Source.WEB, null);
+        InvestModel im = new InvestModel(idGenerator.generate(), loanId, null, amount, loginName, new Date(), Source.WEB, null);
         im.setStatus(InvestStatus.SUCCESS);
         investMapper.create(im);
 

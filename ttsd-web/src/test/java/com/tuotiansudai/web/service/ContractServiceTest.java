@@ -119,7 +119,7 @@ public class ContractServiceTest {
         im.setTransferStatus(TransferStatus.NONTRANSFERABLE);
         im.setSource(Source.ANDROID);
         im.setIsAutoInvest(false);
-        im.setCreatedTime(df.parse("2016-03-09 17:52:38"));
+        im.setInvestTime(df.parse("2016-03-09 17:52:38"));
         im.setChannel("tuotiansudai");
         return im;
     }

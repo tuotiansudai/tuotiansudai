@@ -117,6 +117,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 transferApplicationModel.getTransferInvestId(),
                 transferrerModel.getAmount(),
                 loginName,
+                transferrerModel.getInvestTime(),
                 investDto.getSource(),
                 investDto.getChannel());
 
@@ -167,7 +168,7 @@ public class InvestTransferPurchaseServiceImpl implements InvestTransferPurchase
                 transferApplicationModel.getTransferInvestId(),
                 transferrerModel.getAmount(),
                 transferee,
-                investDto.getSource(),
+                transferrerModel.getInvestTime(), investDto.getSource(),
                 investDto.getChannel());
 
         investMapper.create(investModel);
