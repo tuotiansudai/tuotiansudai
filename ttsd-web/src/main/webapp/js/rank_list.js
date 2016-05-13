@@ -162,22 +162,25 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                 .done(function(data) {
                     if (bRotateCd) return;
                     switch (data) {
-                        case 'PointNotEnough':
+                        case 'PointNotEnough'://财豆不足
                             $('#tipList').show();
                             $('#NoCdbean').show();
                             break;
-                        case 'Cash5':
-                            rotateFnCd(1, 80, '现金5元');
+                        case 'TtsdUDisk':
+                            rotateFnCd(1, 80, '拓天速贷U盘');
+                            break;
+                        case 'InsulationCup':
+                            rotateFnCd(2, 32, '青花瓷保温杯');
                             break;
                         case 'AlreadyLotteryNotShare':
                             $('#tipList').show();
                             $('#oneDay').show();
                             break;
-                        case 'ThankYou':
-                            rotateFnCd(3, 173, '谢谢参与');
+                        case 'RedEnvelope2':
+                            rotateFnCd(3, 173, '现金2元');
                             break;
-                        case 'Cash2':
-                            rotateFnCd(4, 210, '现金2元');
+                        case 'MangoTravel100':
+                            rotateFnCd(4, 210, '100元芒果旅游卡');
                             break;
                         case 'InterestCoupon2':
                             rotateFnCd(5, 255, '0.2%加息券');
@@ -186,8 +189,8 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                             $('#tipList').show();
                             $('#onlyTwice').show();
                             break;
-                        case 'InvestCoupon3000':
-                            rotateFnCd(7, 355, '3000元体验金');
+                        case 'InterestCoupon2':
+                            rotateFnCd(7, 355, '2%加息券');
                             break;
                     }
                 })
@@ -210,6 +213,9 @@ require(['jquery', 'rotate', 'layerWrapper','template', 'jquery.validate', 'jque
                 switch (awards) {
                     case 1:
                         $('#cdFive').show();
+                        break;
+                    case 2:
+                        $('#thankYou').show();
                         break;
                     case 3:
                         $('#thankYou').show();
