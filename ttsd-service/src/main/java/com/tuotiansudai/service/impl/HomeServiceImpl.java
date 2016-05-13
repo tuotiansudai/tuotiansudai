@@ -57,19 +57,7 @@ public class HomeServiceImpl implements HomeService {
                 }
 
                 List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loan.getId());
-                return new HomeLoanDto(newbieInterestCouponModel, loan.getId(),
-                        loan.getName(),
-                        loan.getProductType(),
-                        loan.getActivityType(),
-                        loan.getDuration(),
-                        loan.getBaseRate(),
-                        loan.getActivityRate(),
-                        loan.getPeriods(),
-                        loan.getLoanAmount(),
-                        investAmount,
-                        loan.getStatus(),
-                        loan.getFundraisingStartTime(),
-                        loanRepayModels
+                return new HomeLoanDto(newbieInterestCouponModel,loan,investAmount,loanRepayModels
                         );
             }
         });

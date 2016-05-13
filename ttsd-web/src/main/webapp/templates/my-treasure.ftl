@@ -112,8 +112,6 @@
                                 <p>
                                     <#if (coupon.productTypeList?size)  == 4>
                                         全部产品均可使用
-                                    <#elseif (coupon.productTypeList?size)  == 1 && coupon.productTypeList?seq_contains("_30")>
-                                        新手专享产品专用
                                     <#else>
                                         <#list coupon.productTypeList as productType>
                                             <#if productType_index == (coupon.productTypeList?size - 1)>
@@ -198,8 +196,6 @@
                                 <p>
                                     <#if (coupon.productTypeList?size)  == 4>
                                         全部产品均可使用
-                                    <#elseif (coupon.productTypeList?size)  == 1 && coupon.productTypeList?seq_contains("_30")>
-                                        新手专享产品专用
                                     <#else>
                                         <#list coupon.productTypeList as productType>
                                             <#if productType_index == (coupon.productTypeList?size - 1)>
@@ -274,8 +270,6 @@
                                 <p>
                                     <#if (coupon.productTypeList?size)  == 4>
                                         全部产品均可使用
-                                    <#elseif (coupon.productTypeList?size)  == 1 && coupon.productTypeList?seq_contains("_30")>
-                                        新手专享产品专用
                                     <#else>
                                         <#list coupon.productTypeList as productType>
                                             <#if productType_index == (coupon.productTypeList?size - 1)>
