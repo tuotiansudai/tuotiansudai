@@ -137,7 +137,7 @@
                                     <dl>
                                         <dt>预期年化收益</dt>
                                         <dd><em class="active"><@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger></em>
-                                            <i><@percentFraction>${loan.baseRate}</@percentFraction>
+                                            <i><@percentFraction>${loan.baseRate+loan.activityRate}</@percentFraction>
                                                 <#if (loan.newbieInterestCouponRate > 0) >+<@percentInteger>${loan.newbieInterestCouponRate}</@percentInteger>
                                                     <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
                                                 </#if>%
@@ -147,8 +147,8 @@
                                     </dl>
                                     <dl>
                                         <dt>项目期限</dt>
-                                        <dd><em>${loan.periods}</em>
-                                        ${loan.isPeriodMonthUnit?string("个月", "天")}
+                                        <dd><em>${loan.duration}</em>天
+
                                         </dd>
                                     </dl>
                                 </div>
@@ -234,9 +234,6 @@
                 <#list loans as loan>
                     <#if loan.periods gt 1>
                         <li data-url="/loan/${(loan.id?string.computer)!}" class="clearfix">
-                            <#if loan.productType??>
-                                <span class="${loan.productType.name()?lower_case}"></span>
-                            </#if>
                             <div class="loan-info-frame fl">
                                 <div class="loan-top">
                                     <span class="l-title fl">${loan.name}</span>
@@ -255,8 +252,8 @@
 
                                     <dl>
                                         <dt>项目期限</dt>
-                                        <dd><em>${loan.periods}</em>
-                                        ${loan.isPeriodMonthUnit?string("个月", "天")}
+                                        <dd><em>${loan.duration}</em>天
+
                                         </dd>
                                     </dl>
                                     <dl>
@@ -346,7 +343,7 @@
                                     </div>
                                 </div>
                                 <dl class="pr-info">
-                                    <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")} <span>项目期限</span></dd>
+                                    <dd class="dl-month"><i>${loan.duration}</i>天 <span>项目期限</span></dd>
                                     <dd class="dl-amount"><i class="new-user-coupon">新手加息券</i></dd>
                                 </dl>
                                 <div class="project-schedule clear-blank clearfix">
@@ -411,7 +408,7 @@
                                     </div>
                                 </div>
                                 <dl class="pr-info">
-                                    <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")} <span>项目期限</span></dd>
+                                    <dd class="dl-month"><i>${loan.duration}</i>天 <span>项目期限</span></dd>
                                     <dd class="dl-amount"><i><@amount>${loan.amount}</@amount>元</i><span>项目总额</span></dd>
                                 </dl>
                                 <div class="project-schedule clear-blank clearfix">

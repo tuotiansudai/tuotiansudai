@@ -44,26 +44,28 @@ public class HomeLoanDto {
 
     private int completedPeriods;
 
-    public HomeLoanDto(CouponModel newbieInterestCouponModel, long loanId, String name, ProductType productType, ActivityType activityType, LoanPeriodUnit periodUnit, double baseRate, double activityRate, int periods, long amount, long investAmount, LoanStatus status, Date fundraisingStartTime, List<LoanRepayModel> loanRepayModels) {
-        this.id = loanId;
-        this.name = name;
-        this.productType = productType;
-        this.activityType = activityType;
-        this.baseRate = new BigDecimal(String.valueOf(baseRate)).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
+    private int duration;
+
+    public HomeLoanDto(CouponModel newbieInterestCouponModel,LoanModel loan,long investAmount ,List<LoanRepayModel> loanRepayModels) {
+        this.id = loan.getId();
+        this.name = loan.getName();
+        this.productType = loan.getProductType();
+        this.activityType = loan.getActivityType();
+        this.baseRate = new BigDecimal(String.valueOf(loan.getBaseRate())).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
         if (activityRate > 0) {
-            this.activityRate = new BigDecimal(String.valueOf(activityRate)).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
+            this.activityRate = new BigDecimal(String.valueOf(loan.getActivityRate())).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
         }
-        this.periods = periods;
-        this.amount = new BigDecimal(amount).toString();
-        this.isPeriodMonthUnit = periodUnit == LoanPeriodUnit.MONTH;
-        this.progress = new BigDecimal(investAmount).divide(new BigDecimal(amount), 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue();
-        this.status = status.name();
-        this.fundraisingStartTime = fundraisingStartTime;
-        this.preheatSeconds = (fundraisingStartTime.getTime() - System.currentTimeMillis()) / 1000;
-        if (newbieInterestCouponModel != null && newbieInterestCouponModel.getProductTypes().contains(productType)) {
+        this.periods = loan.getPeriods();
+        this.duration = loan.getDuration();
+        this.amount = new BigDecimal(loan.getLoanAmount()).toString();
+        this.progress = new BigDecimal(investAmount).divide(new BigDecimal(loan.getLoanAmount()), 4, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue();
+        this.status = loan.getStatus().name();
+        this.fundraisingStartTime = loan.getFundraisingStartTime();
+        this.preheatSeconds = (loan.getFundraisingStartTime().getTime() - System.currentTimeMillis()) / 1000;
+        if (newbieInterestCouponModel != null && newbieInterestCouponModel.getProductTypes().contains(loan.getProductType())) {
             this.newbieInterestCouponRate = new BigDecimal(String.valueOf(newbieInterestCouponModel.getRate())).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
         }
-        this.availableInvestAmount = AmountConverter.convertCentToString(amount - investAmount);
+        this.availableInvestAmount = AmountConverter.convertCentToString(loan.getLoanAmount() - investAmount);
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
             if (loanRepayModel.getStatus() == RepayStatus.COMPLETE) {
                 completedPeriods++;
@@ -133,5 +135,13 @@ public class HomeLoanDto {
 
     public int getCompletedPeriods() {
         return completedPeriods;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 }
