@@ -74,7 +74,7 @@ public class ContractServiceTest {
         }
     }
 
-    public LoanModel getLoanModel() throws ParseException {
+    private LoanModel getLoanModel() throws ParseException {
         LoanModel lm = new LoanModel();
         lm.setId(idGenerator.generate());
         lm.setName("12标的");
@@ -109,22 +109,14 @@ public class ContractServiceTest {
         return lm;
     }
 
-    public InvestModel getInvest(long loanId) throws ParseException {
-        InvestModel im = new InvestModel();
-        im.setId(idGenerator.generate());
-        im.setLoginName("baisong");
-        im.setLoanId(loanId);
-        im.setAmount(2577);
-        im.setStatus(InvestStatus.SUCCESS);
-        im.setTransferStatus(TransferStatus.NONTRANSFERABLE);
-        im.setSource(Source.ANDROID);
-        im.setIsAutoInvest(false);
-        im.setInvestTime(df.parse("2016-03-09 17:52:38"));
-        im.setChannel("tuotiansudai");
-        return im;
+    private InvestModel getInvest(long loanId) throws ParseException {
+        InvestModel investModel = new InvestModel(idGenerator.generate(), loanId, null, 2577, "baisong", df.parse("2016-03-09 17:52:38"), Source.ANDROID, null);
+        investModel.setCreatedTime(df.parse("2016-03-09 17:52:38"));
+        return investModel;
+
     }
 
-    public UserModel getUserModel() throws ParseException {
+    private UserModel getUserModel() throws ParseException {
         UserModel um = new UserModel();
         um.setId(idGenerator.generate());
         um.setLoginName("baisong");

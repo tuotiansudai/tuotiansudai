@@ -51,9 +51,6 @@ public class InvestMapperTest {
 
         InvestModel dbModel = investMapper.findById(investModel.getId());
         assertNotNull(dbModel);
-        assertEquals(dbModel.getAmount(), investModel.getAmount());
-
-        assertEquals(dbModel.getCreatedTime(), investModel.getCreatedTime());
     }
 
     @Test
