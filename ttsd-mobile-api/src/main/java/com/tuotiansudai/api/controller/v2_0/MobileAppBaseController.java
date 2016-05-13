@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 
 @RequestMapping("/v2.0")
-public class MobileAppBaseController {
+public abstract class MobileAppBaseController {
 
     @Autowired
     private HttpServletRequest httpServletRequest;

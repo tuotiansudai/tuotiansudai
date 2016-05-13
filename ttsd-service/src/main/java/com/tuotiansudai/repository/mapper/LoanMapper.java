@@ -73,4 +73,6 @@ public interface LoanMapper {
                                    @Param(value = "raisingCompleteTime") Date raisingCompleteTime);
 
     List<LoanModel> findHomeLoan();
+
+    List<LoanModel> findHomeLoanByProductType(@Param(value = "isQueryNEWBIE") String isQueryNEWBIE );
 }

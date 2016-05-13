@@ -39,6 +39,7 @@
     <filter-mapping>
         <filter-name>appClientStatisticsFilter</filter-name>
         <url-pattern>/v1.0/*</url-pattern>
+        <url-pattern>/v2.0/*</url-pattern>
     </filter-mapping>
 
     <filter>
