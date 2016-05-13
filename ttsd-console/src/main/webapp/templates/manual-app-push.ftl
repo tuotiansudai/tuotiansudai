@@ -114,7 +114,7 @@
                         <option value="${jumpTo.name()}" <#if jPushAlert?? && jPushAlert.jumpTo == jumpTo>selected</#if>> ${jumpTo.getDescription()}</option>
                     </#list>
                 </select>
-                <div class="app-push-link jump-to-link">链接地址:<input type="text" class="form-control jump-link-text" name="jumpToLink" <#if jPushAlert??>value="${jPushAlert.jumpToLink}"</#if> placeholder=""  datatype="*" errormsg="链接地址不能为空"></div>
+                <div class="app-push-link jump-to-link">链接地址:<input type="text" class="form-control jump-link-text" name="jumpToLink" <#if jPushAlert??>value="${jPushAlert.jumpToLink}"</#if> placeholder=""  maxlength="100" datatype="*" errormsg="链接地址不能为空"></div>
             </div>
         </div>
 
