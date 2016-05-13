@@ -29,6 +29,8 @@ CREATE TABLE `aa`.`licaiquan_article` (
   COMMENT '创建时间',
   `updated_time`       DATETIME            NOT NULL
   COMMENT '更新时间',
+  `deleted`            TINYINT(1)          NOT NULL DEFAULT '0'
+  COMMENT '是否已删除，0-未删除，1-已删除',
   PRIMARY KEY (`id`),
   CONSTRAINT FK_LICAIQUAN_ARTICLE_CREATOR_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`creator_login_name`) REFERENCES `aa`.`user` (`login_name`),
   CONSTRAINT FK_LICAIQUAN_ARTICLE_CHECKER_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`checker_login_name`) REFERENCES `aa`.`user` (`login_name`)
