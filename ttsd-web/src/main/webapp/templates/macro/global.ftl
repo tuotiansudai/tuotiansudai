@@ -43,7 +43,8 @@
     {"title":"推荐奖励", "url":"/about/refer-reward"},
     {"title":"服务费用", "url":"/about/service-fee"},
     {"title":"常见问题", "url":"/about/qa"},
-    {"title":"联系我们", "url":"/about/contact"}
+    {"title":"联系我们", "url":"/about/contact"},
+    {"title":"运营数据", "url":"/about/operational"}
     ]}]/>
 
 <!DOCTYPE html>
@@ -189,6 +190,36 @@
     };
 
     phoneLoadFun();
+
+    document.getElementById('getMore').onclick=function(){
+        var obj = document. getElementById('getMore');  
+        toggleClass(obj,"active"); 
+    }
+
+    function hasClass(obj, cls) {  
+        return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));  
+    }  
+      
+    function addClass(obj, cls) {  
+        if (!this.hasClass(obj, cls)) obj.className += " " + cls;  
+    }  
+      
+    function removeClass(obj, cls) {  
+        if (hasClass(obj, cls)) {  
+            var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');  
+            obj.className = obj.className.replace(reg, ' ');  
+        }  
+    }  
+      
+    function toggleClass(obj,cls){  
+        if(hasClass(obj,cls)){  
+            removeClass(obj, cls);
+            document. getElementById('linkList').style.height='30px';  
+        }else{  
+            addClass(obj, cls);
+            document. getElementById('linkList').style.height='auto';  
+        }  
+    } 
 
 
 

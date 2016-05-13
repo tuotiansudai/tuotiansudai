@@ -66,8 +66,21 @@ public class CouponAspect {
         } catch (Throwable throwable) {
             logger.error(MessageFormat.format("Coupon repay aspect is failed (loanRepayId = {0})", String.valueOf(loanRepayId)), throwable);
         }
-
         return false;
+    }
+
+    @AfterReturning(value = "execution(* *..NormalRepayService.paybackInvest(*)) || execution(* *..AdvanceRepayService.paybackInvest(*))", returning = "returnValue")
+    public void afterReturningPaybackInvest(JoinPoint joinPoint, boolean returnValue) {
+        long loanRepayId = (Long) joinPoint.getArgs()[0];
+        logger.info(MessageFormat.format("[Coupon Repay {0}] after returning payback invest({1}) aspect is starting...",
+                String.valueOf(loanRepayId), String.valueOf(returnValue)));
+
+        if (returnValue) {
+            couponRepayService.repay(loanRepayId);
+        }
+
+        logger.info(MessageFormat.format("[Coupon Repay {0}] after returning payback invest({1}) aspect is done",
+                String.valueOf(loanRepayId), String.valueOf(returnValue)));
     }
 
     @SuppressWarnings(value = "unchecked")

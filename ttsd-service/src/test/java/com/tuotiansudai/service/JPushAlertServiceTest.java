@@ -97,11 +97,10 @@ public class JPushAlertServiceTest {
         investRepayModel.setStatus(repayStatus);
         investRepayModel.setCorpus(100);
         investRepayModel.setExpectedInterest(100);
-        investRepayModel.setActualInterest(100);
         investRepayModel.setDefaultInterest(100);
-        investRepayModel.setExpectedInterest(100);
-        investRepayModel.setExpectedFee(100);
-        investRepayModel.setActualFee(100);
+        investRepayModel.setActualInterest(100);
+        investRepayModel.setExpectedFee(0);
+        investRepayModel.setActualFee(0);
         investRepayModel.setPeriod(period);
         investRepayModel.setRepayDate(new Date());
         investRepayModel.setActualRepayDate(new Date());
@@ -186,7 +185,6 @@ public class JPushAlertServiceTest {
         investRepayModel.setCorpus(100);
         investRepayModel.setActualInterest(100);
         investRepayModel.setActualFee(100);
-
         when(investRepayMapper.findByInvestIdAndPeriod(anyInt(), anyInt())).thenReturn(investRepayModel);
 
         when(mobileAppJPushClient.sendPushAlertByRegistrationIds(anyString(), anyList(), anyString(), anyString(), anyString(), any(PushSource.class))).thenReturn(true);
@@ -197,7 +195,6 @@ public class JPushAlertServiceTest {
 
     @Test
     public void shouldGetDefaultInterestWhenHasDefaultInterest() {
-
         publicMockMethod(loanId, 3, "testuser123", investId, "abdisierieruis123");
 
         List<InvestRepayModel> investRepayModels = new ArrayList<InvestRepayModel>();
@@ -354,6 +351,7 @@ public class JPushAlertServiceTest {
         verify(mobileAppJPushClient, times(2)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
 
         assertEquals(String.valueOf(createJPushAlert().getId()), argumentJPushAlertId.getValue());
+        assertEquals(createJPushAlert().getContent().replace("{0}", "投资体验券").replace("{1}","65.21"), argumentAlert.getValue());
 
     }
 

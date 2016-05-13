@@ -468,10 +468,10 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private void autoJPushByRegistrationId(JPushAlertModel jPushAlertModel, Map<String, List<String>> pushObjects) {
         JPushAlertDto jPushAlertDto = new JPushAlertDto(jPushAlertModel);
         String[] jumpToOrLink = chooseJumpToOrLink(jPushAlertDto);
-        Iterator iterator = pushObjects.entrySet().iterator();
+        Iterator<Map.Entry<String, List<String>>> iterator = pushObjects.<String, List<String>>entrySet().iterator();
         List<String> registrationIds = Lists.newArrayList();
         while (iterator.hasNext()) {
-            Map.Entry<String, List<String>> entry = (Map.Entry<String, List<String>>) iterator.next();
+            Map.Entry<String, List<String>> entry = iterator.next();
             String loginName = entry.getKey();
             if (redisWrapperClient.hexists(JPUSH_ID_KEY, loginName)) {
                 String registrationId = redisWrapperClient.hget(JPUSH_ID_KEY, loginName);
@@ -494,32 +494,20 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     }
 
     @Override
-    public void autoJPushRepayAlert(long loanRepayId) {
+    public void autoJPushRepayAlert(long loanRepayId, boolean isAdvanceRepay) {
         LoanRepayModel loanRepayModel = loanRepayMapper.findById(loanRepayId);
-        List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(loanRepayModel.getLoanId());
+        List<InvestNotifyInfo> notifyInfoList = investMapper.findSuccessInvestMobileEmailAndAmount(loanRepayModel.getLoanId());
         JPushAlertModel jPushAlertModel = jPushAlertMapper.findJPushAlertByPushType(PushType.REPAY_ALERT);
         if (jPushAlertModel != null) {
-            if (CollectionUtils.isEmpty(notifyInfos)) {
-                logger.debug("repay notifyInfos without data");
+            if (CollectionUtils.isEmpty(notifyInfoList)) {
+                logger.debug("repay notifyInfoList without data");
                 return;
             }
             Map<String, List<String>> loginNameMap = Maps.newHashMap();
-
-            for (InvestNotifyInfo notifyInfo : notifyInfos) {
+            for (InvestNotifyInfo notifyInfo : notifyInfoList) {
                 InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(notifyInfo.getInvestId(), loanRepayModel.getPeriod());
-                List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(notifyInfo.getInvestId());
-                long defaultInterest = 0;
-                if (investRepayModels.size() == 1) {
-                    defaultInterest = investRepayModel.getDefaultInterest();
-                } else {
-                    for (int i = loanRepayModel.getPeriod() - 2; i >= 0; i--) {
-                        defaultInterest += investRepayModels.get(i).getDefaultInterest();
-                        if (investRepayModels.get(i).getDefaultInterest() == 0) {
-                            break;
-                        }
-                    }
-                }
-                List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(investRepayModel.getCorpus() + investRepayModel.getActualInterest() + defaultInterest - investRepayModel.getActualFee()));
+                long amount = (isAdvanceRepay ? notifyInfo.getAmount() : investRepayModel.getCorpus()) + investRepayModel.getActualInterest() - investRepayModel.getActualFee();
+                List<String> amountLists = Lists.newArrayList(AmountConverter.convertCentToString(amount));
                 loginNameMap.put(notifyInfo.getLoginName(), amountLists);
                 autoJPushByRegistrationId(jPushAlertModel, loginNameMap);
                 loginNameMap.clear();
@@ -527,7 +515,6 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         } else {
             logger.debug("REPAY_ALERT is disabled");
         }
-
     }
 
     @Override

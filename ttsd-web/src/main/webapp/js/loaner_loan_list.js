@@ -74,16 +74,15 @@ require(['jquery', 'mustache', 'text!tpl/loaner-loan-table.mustache', 'text!tpl/
                     contentType: 'application/json; charset=UTF-8'
                 }).success(function (response) {
                     var data = response.data;
-                    data.isLoanCompleted = status == 'COMPLETE' || _.every(data.records, function(item) {
-                            return item.loanRepayStatus === 'COMPLETE';
-                        });
                     data.csrfToken = $("meta[name='_csrf']").attr("content");
                     if (data.status) {
+                        data.isLoanCompleted = _.every(data.records, function(item) {
+                            return item.loanRepayStatus === 'COMPLETE';
+                        });
                         _.each(data.records, function (item) {
-                            data.loanId = item.loanId;
                             switch (item.loanRepayStatus) {
                                 case 'REPAYING':
-                                    item.status = '待还';
+                                    item.status = item.isEnabled ? '还款' : '待还';
                                     break;
                                 case 'COMPLETE':
                                     item.status = '完成';
@@ -95,55 +94,47 @@ require(['jquery', 'mustache', 'text!tpl/loaner-loan-table.mustache', 'text!tpl/
                                     item.status = '等待支付';
                                     break;
                                 case 'OVERDUE':
-                                    item.status = item.isEnabled ? '待还' : '逾期';
+                                    item.status = item.isEnabled ? '逾期还款' : '逾期';
                                     break;
                             }
                         });
-                        data.expectedAdvanceRepayDisplayAmount = data.expectedAdvanceRepayAmount / 100;
                         var html = Mustache.render(loanRepayTemplate, data);
 
                         layer.open({
                             type: 1,
                             title: false,
-                            offset: '100px',
+                            offset: 'auto',
                             area: ['850px'],
                             shadeClose: true,
                             content: html
                         });
 
-                        $('a.normal-repay').click(function () {
-                            if (data.loanAgentBalance < data.expectedNormalRepayAmount) {
-                                $(".repay-alert").html(Mustache.render('实际需还金额{{expectedNormalRepayAmount}}元，您的账户余额仅有{{loanAgentBalance}}元',
-                                    {
-                                        'expectedNormalRepayAmount': data.expectedNormalRepayAmount / 100,
-                                        'loanAgentBalance': data.loanAgentBalance / 100
-                                    }
-                                )).show();
-                                return false;
-                            }
-
-                            $("#normal-repay-form").submit();
-                            layer.closeAll();
-                            return false;
-                        });
-
-                        $('a.advanced-repay').click(function () {
-                            if (!data.hasWaitPayLoanRepay) {
-                                if (data.loanAgentBalance < data.expectedAdvanceRepayAmount) {
-                                    $(".repay-alert").html(Mustache.render('实际需还金额{{expectedAdvanceRepayAmount}}元，您的账户余额仅有{{loanAgentDisplayBalance}}元',
-                                        {
-                                            'expectedAdvanceRepayAmount': data.expectedAdvanceRepayAmount / 100,
-                                            'loanAgentDisplayBalance': data.loanAgentBalance / 100
-                                        }
-                                    )).show();
+                        if (data.isNormalRepayEnabled) {
+                            $('a.normal-repay').click(function () {
+                                if (parseFloat(data.loanerBalance) < parseFloat(data.normalRepayAmount)) {
+                                    showBalanceNotEnoughAlert(data.loanerBalance, data.normalRepayAmount);
                                     return false;
                                 }
 
+                                $("#normal-repay-form").submit();
+                                layer.closeAll();
+                                return false;
+                            });
+                        }
+
+                        if (data.isAdvanceRepayEnabled) {
+                            $('a.advanced-repay').click(function () {
+                                if (parseFloat(data.loanerBalance) < parseFloat(data.advanceRepayAmount)) {
+                                    showBalanceNotEnoughAlert(data.loanerBalance, data.advanceRepayAmount);
+                                    return false;
+                                }
                                 $("#advanced-repay-form").submit();
                                 layer.closeAll();
-                            }
-                            return false;
-                        });
+                                return false;
+                            });
+                        }
+
+
                     }
                 });
             });
@@ -152,10 +143,31 @@ require(['jquery', 'mustache', 'text!tpl/loaner-loan-table.mustache', 'text!tpl/
 
     loadLoanData();
 
-//define calendar
+    //define calendar
     $('.apply-btn').click(function () {
         loadLoanData();
         $(".date-filter .select-item").removeClass("current");
     });
+
+    var showBalanceNotEnoughAlert = function (balance, repayAmount) {
+        layer.closeAll();
+        layer.open({
+            type: 1,
+            closeBtn: 0,
+            skin: 'demo-class',
+            shadeClose: false,
+            title: '账户余额不足',
+            btn: ['关闭', '去充值'],
+            area: ['400px', '160px'],
+            content: Mustache.render('<p class="pad-m-tb tc">应还金额 {{repayAmount}} 元，您的账户余额仅有 {{balance}} 元</p>',
+                { 'repayAmount': repayAmount, 'balance': balance}),
+            btn1: function () {
+                layer.closeAll();
+            },
+            btn2: function () {
+                window.location.href = "/recharge";
+            }
+        });
+    }
 });
 
