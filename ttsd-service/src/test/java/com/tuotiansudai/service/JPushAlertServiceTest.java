@@ -204,7 +204,7 @@ public class JPushAlertServiceTest {
 
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
 
-        jPushAlertService.autoJPushRepayAlert(loanRepayId);
+        jPushAlertService.autoJPushRepayAlert(loanRepayId,false);
 
         ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor argumentAlert = ArgumentCaptor.forClass(String.class);
@@ -216,7 +216,7 @@ public class JPushAlertServiceTest {
         verify(mobileAppJPushClient, times(1)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
 
         assertEquals(String.valueOf(createJPushAlert().getId()), argumentJPushAlertId.getValue());
-        assertEquals(createJPushAlert().getContent().replace("{0}", "3.00"), argumentAlert.getValue());
+        assertEquals(createJPushAlert().getContent().replace("{0}", "1.00"), argumentAlert.getValue());
     }
 
     @Test
@@ -231,7 +231,7 @@ public class JPushAlertServiceTest {
 
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
 
-        jPushAlertService.autoJPushRepayAlert(loanRepayId2);
+        jPushAlertService.autoJPushRepayAlert(loanRepayId2,false);
 
         ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor argumentAlert = ArgumentCaptor.forClass(String.class);
@@ -261,7 +261,7 @@ public class JPushAlertServiceTest {
 
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(investRepayModels);
 
-        jPushAlertService.autoJPushRepayAlert(loanRepayId3);
+        jPushAlertService.autoJPushRepayAlert(loanRepayId3,false);
 
         ArgumentCaptor argumentJPushAlertId = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor argumentAlert = ArgumentCaptor.forClass(String.class);
@@ -273,7 +273,7 @@ public class JPushAlertServiceTest {
         verify(mobileAppJPushClient, times(1)).sendPushAlertByRegistrationIds((String) argumentJPushAlertId.capture(), argumentRegistrationIds.capture(), (String) argumentAlert.capture(), (String) argumentextraKey.capture(), (String) argumentextraValue.capture(), argumentPushSource.capture());
 
         assertEquals(String.valueOf(createJPushAlert().getId()), argumentJPushAlertId.getValue());
-        assertEquals(createJPushAlert().getContent().replace("{0}", "2.00"), argumentAlert.getValue());
+        assertEquals(createJPushAlert().getContent().replace("{0}", "1.00"), argumentAlert.getValue());
     }
 
     @Test
