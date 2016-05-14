@@ -295,10 +295,10 @@
             ta.transfer_amount,
             ta.invest_amount,
             ta.transfer_time,
-            (select min(ir.repay_date) from invest_repay ir where ir.invest_id = i.id and ir.status = 'REPAYING') as next_repay_date,
+            (select min(ir.repay_date) from invest_repay ir where ir.invest_id = i.id and ir.status in ('REPAYING', 'OVERDUE')) as next_repay_date,
             (select ir.expected_interest + ir.corpus - ir.expected_fee
-             from invest_repay ir where ir.invest_id = i.id and ir.status = 'REPAYING'
-             and ir.period = (select min(ir.period) from invest_repay ir where ir.invest_id = i.id and ir.status = 'REPAYING')
+             from invest_repay ir where ir.invest_id = i.id and ir.status in ('REPAYING', 'OVERDUE')
+             and ir.period = (select min(ir.period) from invest_repay ir where ir.invest_id = i.id and ir.status in ('REPAYING', 'OVERDUE'))
             ) as next_repay_amount,
             i.id as invest_id,
             ta.transfer_invest_id,
