@@ -47,13 +47,13 @@ public class JobInitPlugin implements SchedulerPlugin {
         if (JobType.BirthdayNotify.name().equalsIgnoreCase(schedulerName)) {
             createBirthdayNotifyJob();
         }
-        if(JobType.AutoJPushAlertBirthMonth.name().equalsIgnoreCase(schedulerName)) {
+        if (JobType.AutoJPushAlertBirthMonth.name().equalsIgnoreCase(schedulerName)) {
             createAutoJPushAlertBirthMonth();
         }
-        if(JobType.AutoJPushAlertBirthDay.name().equalsIgnoreCase(schedulerName)){
+        if (JobType.AutoJPushAlertBirthDay.name().equalsIgnoreCase(schedulerName)) {
             createAutoJPushAlertBirthDay();
         }
-        if(JobType.AutoJPushNoInvestAlert.name().equalsIgnoreCase(schedulerName)){
+        if (JobType.AutoJPushNoInvestAlert.name().equalsIgnoreCase(schedulerName)) {
             createAutoJPushNoInvestAlert();
         }
         if (JobType.ImitateLottery.name().equals(schedulerName)) {
@@ -102,7 +102,7 @@ public class JobInitPlugin implements SchedulerPlugin {
             logger.debug(e.getLocalizedMessage(), e);
         }
     }
-    
+
 
     private void createRefreshAreaByMobile() {
         try {
@@ -124,6 +124,7 @@ public class JobInitPlugin implements SchedulerPlugin {
             logger.debug(e.getLocalizedMessage(), e);
         }
     }
+
     private void createAutoJPushAlertBirthDay() {
         try {
             jobManager.newJob(JobType.AutoJPushAlertBirthDay, AutoJPushAlertBirthDayJob.class).replaceExistingJob(true)
@@ -134,6 +135,7 @@ public class JobInitPlugin implements SchedulerPlugin {
             logger.debug(e.getLocalizedMessage(), e);
         }
     }
+
     private void createAutoJPushNoInvestAlert() {
         try {
             jobManager.newJob(JobType.AutoJPushNoInvestAlert, AutoJPushNoInvestAlertJob.class).replaceExistingJob(true)
@@ -144,6 +146,7 @@ public class JobInitPlugin implements SchedulerPlugin {
             logger.debug(e.getLocalizedMessage(), e);
         }
     }
+
     private void createLoanRepayNotifyJob() {
         try {
             jobManager.newJob(JobType.LoanRepayNotify, LoanRepayNotifyJob.class).replaceExistingJob(true)

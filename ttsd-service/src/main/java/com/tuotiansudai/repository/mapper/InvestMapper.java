@@ -18,13 +18,9 @@ public interface InvestMapper {
     void create(InvestModel investModel);
 
     /**
-     * 更新投资记录的状态
-     *
-     * @param id
-     * @param status
+     * 更新投资记录
      */
-    void updateStatus(@Param(value = "id") long id,
-                      @Param(value = "status") InvestStatus status);
+    void update(InvestModel investModel);
 
     /**
      * 根据ID查找对应的投资
@@ -171,4 +167,9 @@ public interface InvestMapper {
     InvestModel findLatestSuccessInvest(@Param(value = "loginName") String loginName);
 
     List<InvestDataView> getInvestDetail();
+
+    int countAchievementTimesByLoginName(@Param(value = "loginName") String loginName,
+                                         @Param(value = "achievement") InvestAchievement achievement,
+                                         @Param(value = "startTime") Date startTime,
+                                         @Param(value = "endTime") Date endTime);
 }
