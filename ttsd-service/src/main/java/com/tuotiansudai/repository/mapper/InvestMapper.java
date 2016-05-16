@@ -27,12 +27,20 @@ public interface InvestMapper {
                       @Param(value = "status") InvestStatus status);
 
     /**
+     * 更新转让记录的状态
+     *
+     * @param id
+     * @param transferStatus
+     */
+    void updateTransferStatus(@Param(value = "id") long id, @Param(value = "transferStatus") TransferStatus transferStatus);
+
+    /**
      * 根据ID查找对应的投资
      *
      * @param id
      * @return
      */
-    InvestModel findById(@Param(value = "id") long id);
+    InvestModel findById(@Param(value = "id") Long id);
 
     /**
      * 查找用户的投资记录
@@ -42,7 +50,8 @@ public interface InvestMapper {
      */
     List<InvestModel> findByLoginName(@Param(value = "loginName") String loginName,
                                       @Param(value = "index") Integer index,
-                                      @Param(value = "pageSize") Integer pageSize);
+                                      @Param(value = "pageSize") Integer pageSize,
+                                      @Param(value = "isPagination") boolean isPagination);
 
     long findCountByLoginName(@Param(value = "loginName") String loginName);
 
@@ -132,7 +141,8 @@ public interface InvestMapper {
                                                         @Param(value = "startTime") Date startTime,
                                                         @Param(value = "endTime") Date endTime,
                                                         @Param(value = "investStatus") InvestStatus investStatus,
-                                                        @Param(value = "loanStatus") LoanStatus loanStatus);
+                                                        @Param(value = "loanStatus") LoanStatus loanStatus,
+                                                        @Param(value = "isPagination") boolean isPagination);
 
     long sumInvestAmount(@Param(value = "loanId") Long loanId,
                          @Param(value = "investorLoginName") String investorLoginName,
