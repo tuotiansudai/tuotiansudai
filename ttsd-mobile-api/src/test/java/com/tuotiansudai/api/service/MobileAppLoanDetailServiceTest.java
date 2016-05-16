@@ -136,6 +136,7 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         assertEquals(houseCardModel.getTitle(),baseResponseDto.getData().getEvidence().get(1).getTitle());
         assertNotNull(baseResponseDto.getData().getEvidence().get(0).getImageUrl());
         assertNotNull(baseResponseDto.getData().getEvidence().get(1).getImageUrl());
+        assertNotNull(baseResponseDto.getData().getRaisingPeriod());
     }
 
     private InvestModel getFakeInvestModel(long loanId, String loginName) {

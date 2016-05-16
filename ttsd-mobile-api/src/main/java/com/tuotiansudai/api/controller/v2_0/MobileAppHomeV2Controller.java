@@ -17,7 +17,7 @@ public class MobileAppHomeV2Controller extends MobileAppBaseController {
 
     @RequestMapping(value = "/get/index", method = RequestMethod.POST)
     public BaseResponseDto index(@RequestBody BaseParamDto baseParamDto) {
-        baseParamDto.getBaseParam().setUserId("she11njiaojiao111");
+        baseParamDto.getBaseParam().setUserId(getLoginName());
         return mobileAppLoanListV2Service.generateIndexLoan(baseParamDto);
     }
 

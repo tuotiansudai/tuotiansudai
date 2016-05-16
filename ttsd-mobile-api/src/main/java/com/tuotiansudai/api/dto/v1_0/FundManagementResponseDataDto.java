@@ -16,6 +16,7 @@ public class FundManagementResponseDataDto extends BaseResponseDataDto {
     private String successWithdrawMoney;
     private String usableUserCouponCount;
     private String point;
+    private String rewardAmount;
 
     public String getTotalAssets() {
         return totalAssets;
@@ -122,4 +123,8 @@ public class FundManagementResponseDataDto extends BaseResponseDataDto {
     public String getPoint() { return point; }
 
     public void setPoint(String point) { this.point = point; }
+
+    public String getRewardAmount() { return rewardAmount; }
+
+    public void setRewardAmount(String rewardAmount) { this.rewardAmount = rewardAmount; }
 }

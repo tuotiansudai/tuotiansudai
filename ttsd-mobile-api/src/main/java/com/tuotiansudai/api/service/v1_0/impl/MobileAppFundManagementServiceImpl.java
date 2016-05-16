@@ -8,6 +8,7 @@ import com.tuotiansudai.api.dto.v1_0.FundManagementResponseDataDto;
 import com.tuotiansudai.api.dto.v1_0.ReturnMessage;
 import com.tuotiansudai.api.service.v1_0.MobileAppFundManagementService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.InvestRepayService;
 import com.tuotiansudai.service.RechargeService;
@@ -36,6 +37,8 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
     private PointService pointService;
     @Autowired
     private UserCouponService userCouponService;
+    @Autowired
+    private ReferrerManageMapper referrerManageMapper;
 
     public BaseResponseDto queryFundByUserId(String userId) {
         AccountModel accountModel = accountMapper.findByLoginName(userId);
@@ -54,6 +57,7 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
         long receivedReward = userBillService.findSumRewardByLoginName(userId);
         long myPoint = pointService.getAvailablePoint(userId);
         List<UserCouponView> unusedUserCoupons = userCouponService.getUnusedUserCoupons(userId);
+        long rewardAmount = referrerManageMapper.findReferInvestTotalAmount(userId, null, null, null, null);
         //资产总额＝账户余额 ＋ 冻结金额 ＋ 应收本金 ＋ 应收利息
         long totalAssets = accountBalance + frozenMoney + receivableCorpus + receivableInterest;
         //累计投资额 = 已收本金 ＋ 应收本金
@@ -79,6 +83,7 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
         fundManagementResponseDataDto.setReceivableCorpusInterest(AmountConverter.convertCentToString(receivableCorpusInterest));
         fundManagementResponseDataDto.setUsableUserCouponCount(CollectionUtils.isNotEmpty(unusedUserCoupons) ? String.valueOf(unusedUserCoupons.size()) : "0");
         fundManagementResponseDataDto.setPoint(String.valueOf(myPoint));
+        fundManagementResponseDataDto.setRewardAmount(AmountConverter.convertCentToString(rewardAmount));
 
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setData(fundManagementResponseDataDto);
