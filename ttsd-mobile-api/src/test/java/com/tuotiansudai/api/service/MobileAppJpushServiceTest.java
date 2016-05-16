@@ -1,9 +1,9 @@
 package com.tuotiansudai.api.service;
 
 
-import com.tuotiansudai.api.dto.BaseParam;
-import com.tuotiansudai.api.dto.BaseParamDto;
-import com.tuotiansudai.api.dto.JpushRequestDto;
+import com.tuotiansudai.api.dto.v1_0.BaseParam;
+import com.tuotiansudai.api.dto.v1_0.JpushRequestDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppJpushService;
 import com.tuotiansudai.client.RedisWrapperClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;

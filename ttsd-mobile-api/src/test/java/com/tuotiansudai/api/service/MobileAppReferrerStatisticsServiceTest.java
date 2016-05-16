@@ -1,7 +1,7 @@
 package com.tuotiansudai.api.service;
 
-import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.impl.MobileAppReferrerStatisticsServiceImpl;
+import com.tuotiansudai.api.dto.v1_0.*;
+import com.tuotiansudai.api.service.v1_0.impl.MobileAppReferrerStatisticsServiceImpl;
 import com.tuotiansudai.api.util.BannerUtils;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;

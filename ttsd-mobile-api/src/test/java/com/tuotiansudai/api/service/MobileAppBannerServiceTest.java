@@ -1,7 +1,8 @@
 package com.tuotiansudai.api.service;
 
-import com.tuotiansudai.api.dto.BannerResponseDataDto;
-import com.tuotiansudai.api.dto.BaseResponseDto;
+import com.tuotiansudai.api.dto.v1_0.BannerResponseDataDto;
+import com.tuotiansudai.api.dto.v1_0.BaseResponseDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppBannerService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;

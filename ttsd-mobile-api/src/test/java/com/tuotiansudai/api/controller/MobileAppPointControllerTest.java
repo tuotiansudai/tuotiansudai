@@ -1,9 +1,10 @@
 package com.tuotiansudai.api.controller;
 
 
-import com.tuotiansudai.api.dto.PointBillRequestDto;
-import com.tuotiansudai.api.dto.PointTaskRequestDto;
-import com.tuotiansudai.api.service.MobileAppPointService;
+import com.tuotiansudai.api.controller.v1_0.MobileAppPointController;
+import com.tuotiansudai.api.dto.v1_0.PointBillRequestDto;
+import com.tuotiansudai.api.dto.v1_0.PointTaskRequestDto;
+import com.tuotiansudai.api.service.v1_0.MobileAppPointService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
