@@ -24,7 +24,7 @@
                 项目金额：<@amount>${loan.loanAmount?string.computer}</@amount> 元<br/>
                 代理人：${loan.agentLoginName}<br/>
                 借款人：${loan.loanerLoginName}<br/>
-                项目期限：${loan.periods}<#if loan.type.getLoanPeriodUnit() == "MONTH"> 月<#else> 天</#if><br/>
+                项目期限：${loan.duration}天<br/>
                 募集期限：${loan.raisingPeriod}天<br/>
                 还款方式：${loan.type.getName()}<br/>
                 投资要求：<@amount>${loan.minInvestAmount?string.computer}</@amount> 元起投，投资金额为<@amount>${loan.investIncreasingAmount?string.computer}</@amount> 元的整数倍<br/>
