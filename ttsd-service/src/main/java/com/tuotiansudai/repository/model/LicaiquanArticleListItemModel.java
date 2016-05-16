@@ -3,9 +3,9 @@ package com.tuotiansudai.repository.model;
 import java.util.Date;
 
 /**
- * Created by huoxuanbo on 16/5/13.
+ * Created by huoxuanbo on 16/5/16.
  */
-public class LicaiquanArticleModel {
+public class LicaiquanArticleListItemModel {
     /**
      * 主键，文章列表ID
      */
@@ -23,33 +23,9 @@ public class LicaiquanArticleModel {
      */
     private String checker;
     /**
-     * 文章作者
-     */
-    private String author;
-    /**
      * 文章所属栏目
      */
     private ArticleSectionType articleSection;
-    /**
-     * 文章来源
-     */
-    private String source;
-    /**
-     * 是否轮播
-     */
-    private boolean carousel;
-    /**
-     * 缩略图
-     */
-    private String thumbnail;
-    /**
-     * 展示图
-     */
-    private String showPicture;
-    /**
-     * 文章内容，html5格式
-     */
-    private String content;
     /**
      * 点赞数
      */
@@ -71,20 +47,15 @@ public class LicaiquanArticleModel {
      */
     private boolean isDeleted;
 
-    public LicaiquanArticleModel(){};
+    public LicaiquanArticleListItemModel() {
+    }
 
-    public LicaiquanArticleModel(long id, String title, String creator, String checker, String author, ArticleSectionType articleSection, String source, boolean carousel, String thumbnail, String showPicture, String content, int likeCount, int readCount, Date createTime, Date updateTime, boolean isDeleted) {
+    public LicaiquanArticleListItemModel(long id, String title, String creator, String checker, ArticleSectionType articleSection, int likeCount, int readCount, Date createTime, Date updateTime, boolean isDeleted) {
         this.id = id;
         this.title = title;
         this.creator = creator;
         this.checker = checker;
-        this.author = author;
         this.articleSection = articleSection;
-        this.source = source;
-        this.carousel = carousel;
-        this.thumbnail = thumbnail;
-        this.showPicture = showPicture;
-        this.content = content;
         this.likeCount = likeCount;
         this.readCount = readCount;
         this.createTime = createTime;
@@ -124,60 +95,12 @@ public class LicaiquanArticleModel {
         this.checker = checker;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public ArticleSectionType getArticleSection() {
         return articleSection;
     }
 
     public void setArticleSection(ArticleSectionType articleSection) {
         this.articleSection = articleSection;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public boolean isCarousel() {
-        return carousel;
-    }
-
-    public void setCarousel(boolean carousel) {
-        this.carousel = carousel;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
-    public String getShowPicture() {
-        return showPicture;
-    }
-
-    public void setShowPicture(String showPicture) {
-        this.showPicture = showPicture;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public int getLikeCount() {

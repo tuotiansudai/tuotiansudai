@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.LicaiquanArticleContentModel;
+import com.tuotiansudai.repository.model.LicaiquanArticleListItemModel;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -17,15 +18,17 @@ public interface LicaiquanArticleMapper {
 
     void deleteArticle(@Param("id")long id);
 
-    void updateArticleContent(LicaiquanArticleModel licaiquanArticleModel);
+    void updateArticle(LicaiquanArticleModel licaiquanArticleModel);
 
     void updateLikeCount(@Param("id")long id, @Param("likeCount") int likeCount);
 
     void updateReadCount(@Param("id")long id, @Param("readCount") int readCount);
 
-    LicaiquanArticleContentModel findArticelContentById(@Param("id") long id);
+    LicaiquanArticleContentModel findArticleContentById(@Param("id") long id);
 
-    List<LicaiquanArticleModel> findExistedArticlesOrderByUpdateTime(@Param("startId") long startId, @Param("size") int size);
+    LicaiquanArticleModel findArticleById(@Param("id") long id);
 
-    List<LicaiquanArticleModel> findDeletedArticlesOrderByUpdateTime(@Param("startId") long startId, @Param("size") int size);
+    List<LicaiquanArticleListItemModel> findExistedArticleListOrderByUpdateTime(@Param("startId") long startId, @Param("size") int size);
+
+    List<LicaiquanArticleListItemModel> findDeletedArticleListOrderByUpdateTime(@Param("startId") long startId, @Param("size") int size);
 }
