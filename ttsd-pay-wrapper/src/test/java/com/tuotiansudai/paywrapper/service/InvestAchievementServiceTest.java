@@ -1,4 +1,4 @@
-package com.tuotiansudai.service;
+package com.tuotiansudai.paywrapper.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -6,6 +6,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,21 +94,21 @@ public class InvestAchievementServiceTest {
         UserModel investor1 = getFakeUser("investor1");
         InvestModel loan1InvestModel = new InvestModel(fakeLoan1.getId(), 1, investor1.getLoginName(), Source.WEB, null);
         loan1InvestModel.setId(idGenerator.generate());
-        loan1InvestModel.setTradingTime(new Date());
+        loan1InvestModel.setTradingTime(new DateTime().dayOfMonth().withMinimumValue().plusHours(1).toDate());
         loan1InvestModel.setStatus(InvestStatus.SUCCESS);
         loan1InvestModel.setAchievements(Lists.newArrayList(InvestAchievement.FIRST_INVEST));
         investMapper.create(loan1InvestModel);
 
         InvestModel loan2InvestModel = new InvestModel(fakeLoan2.getId(), 1, investor1.getLoginName(), Source.WEB, null);
         loan2InvestModel.setId(idGenerator.generate());
-        loan2InvestModel.setTradingTime(new Date());
+        loan2InvestModel.setTradingTime(new DateTime().dayOfMonth().withMinimumValue().plusHours(2).toDate());
         loan2InvestModel.setStatus(InvestStatus.SUCCESS);
         loan2InvestModel.setAchievements(Lists.newArrayList(InvestAchievement.FIRST_INVEST));
         investMapper.create(loan2InvestModel);
 
         InvestModel loan3InvestModel = new InvestModel(fakeLoan3.getId(), 1, investor1.getLoginName(), Source.WEB, null);
         loan3InvestModel.setId(idGenerator.generate());
-        loan3InvestModel.setTradingTime(new Date());
+        loan3InvestModel.setTradingTime(new DateTime().dayOfMonth().withMinimumValue().plusHours(3).toDate());
         loan3InvestModel.setStatus(InvestStatus.SUCCESS);
         loan3InvestModel.setAchievements(Lists.newArrayList(InvestAchievement.FIRST_INVEST));
         investMapper.create(loan3InvestModel);

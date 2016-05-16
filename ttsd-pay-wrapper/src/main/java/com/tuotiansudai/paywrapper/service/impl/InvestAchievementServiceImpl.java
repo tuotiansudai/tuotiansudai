@@ -1,4 +1,4 @@
-package com.tuotiansudai.service.impl;
+package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -10,7 +10,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.InvestAchievement;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.service.InvestAchievementService;
+import com.tuotiansudai.paywrapper.service.InvestAchievementService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,6 @@ public class InvestAchievementServiceImpl implements InvestAchievementService {
         List<InvestModel> successInvestModels = investMapper.findSuccessInvestsByLoanId(investModel.getLoanId());
 
         if (isFirstInvestAchievement(investModel, successInvestModels)) {
-
             investModel.getAchievements().add(InvestAchievement.FIRST_INVEST);
         }
 
