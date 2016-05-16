@@ -436,9 +436,9 @@
         loan
         WHERE
         loan.status = 'RAISING'
-        <if test="IsContainNewBie == 'true'">
+        <if test="IsContainNewBie == 'false'">
             and  <![CDATA[ loan.activity_type <> 'NEWBIE' ]]>
         </if>
-        ORDER BY duration , loan.created_time DESC
+        ORDER BY duration ,loan.verify_time DESC, loan.created_time DESC
     </select>
 </mapper>

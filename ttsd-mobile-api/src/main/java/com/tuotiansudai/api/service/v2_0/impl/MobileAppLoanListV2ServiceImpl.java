@@ -1,53 +1,48 @@
 package com.tuotiansudai.api.service.v2_0.impl;
 
-import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
-import com.tuotiansudai.api.dto.v2_0.BaseResponseDto;
-import com.tuotiansudai.api.dto.v2_0.ReturnMessage;
-import com.tuotiansudai.api.dto.v2_0.LoanListResponseDataDto;
-import com.tuotiansudai.api.dto.v2_0.LoanResponseDataDto;
+import com.tuotiansudai.api.dto.v2_0.*;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanListV2Service;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-@Service("com.tuotiansudai.api.service.v2_0.impl.MobileAppLoanListServiceImpl")
-public class MobileAppLoanListV2V2ServiceImpl implements MobileAppLoanListV2Service {
+@Service
+public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Service {
 
     @Autowired
     private LoanMapper loanMapper;
     @Autowired
     private InvestMapper investMapper;
 
+
     @Override
     public BaseResponseDto generateIndexLoan(BaseParamDto baseParamDto) {
         List<LoanModel> loanModels;
         if(investMapper.sumSuccessInvestCountByLoginName(baseParamDto.getBaseParam().getUserId()) > 0){
-            loanModels = loanMapper.findHomeLoanByIsContainNewBie("true");
-            if(CollectionUtils.isEmpty(loanModels)){
-
-            }
-        }else{
             loanModels = loanMapper.findHomeLoanByIsContainNewBie("false");
-            if(CollectionUtils.isNotEmpty(loanModels)){
+        }else{
+            loanModels = loanMapper.findHomeLoanByIsContainNewBie("true");
+        }
+        if(CollectionUtils.isEmpty(loanModels)){
+            List<LoanModel> completeLoanModels = loanMapper.findLoanListWeb(null, LoanStatus.COMPLETE, 0, 0, 0);
+            if(CollectionUtils.isNotEmpty(completeLoanModels)){
+                loanModels.add(completeLoanModels.get(0));
             }
         }
 
         BaseResponseDto dto = new BaseResponseDto();
         LoanListResponseDataDto loanListResponseDataDto = new LoanListResponseDataDto();
-
-        List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
+        List<LoanResponseDataDto> loanDtoList;
         if (CollectionUtils.isNotEmpty(loanModels)) {
             loanDtoList = convertLoanDto(loanModels);
             loanListResponseDataDto.setLoanList(loanDtoList);
