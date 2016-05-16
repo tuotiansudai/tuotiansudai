@@ -9,7 +9,7 @@ CREATE TABLE `aa`.`licaiquan_article` (
   COMMENT '文章审核员登录名',
   `author`             VARCHAR(30)         NOT NULL DEFAULT ''
   COMMENT '文章作者',
-  `section`            VARCHAR(20)         NOT NULL DEFAULT ''
+  `section`            VARCHAR(30)         NOT NULL DEFAULT ''
   COMMENT '所属栏目',
   `source`             VARCHAR(60)                  DEFAULT ''
   COMMENT '文章来源',
