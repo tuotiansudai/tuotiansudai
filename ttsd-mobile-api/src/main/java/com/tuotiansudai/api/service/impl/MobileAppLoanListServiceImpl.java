@@ -33,11 +33,11 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         BaseResponseDto<LoanListResponseDataDto> dto = new BaseResponseDto<>();
         Integer index = loanListRequestDto.getIndex();
         Integer pageSize = loanListRequestDto.getPageSize();
-        if (index == null || pageSize == null || index <=0 || pageSize <=0) {
-            return new BaseResponseDto<>(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(),ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+        if (index == null || pageSize == null || index <= 0 || pageSize <= 0) {
+            return new BaseResponseDto<>(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
         index = (loanListRequestDto.getIndex() - 1) * pageSize;
-        List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConvertor.stringConvertTo(loanListRequestDto.getProductType()), loanListRequestDto.getLoanStatus(),loanListRequestDto.getRateLower(),loanListRequestDto.getRateUpper(), index);
+        List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConvertor.stringConvertTo(loanListRequestDto.getProductType()), loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index);
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(loanModels)) {
             loanDtoList = convertLoanDto(loanModels);
@@ -48,9 +48,9 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         LoanListResponseDataDto loanListResponseDataDto = new LoanListResponseDataDto();
         loanListResponseDataDto.setIndex(loanListRequestDto.getIndex());
         loanListResponseDataDto.setPageSize(loanListRequestDto.getPageSize());
-        loanListResponseDataDto.setTotalCount(loanMapper.findLoanListCountMobileApp(ProductTypeConvertor.stringConvertTo(loanListRequestDto.getProductType()), loanListRequestDto.getLoanStatus(),loanListRequestDto.getRateLower(),loanListRequestDto.getRateUpper()));
+        loanListResponseDataDto.setTotalCount(loanMapper.findLoanListCountMobileApp(ProductTypeConvertor.stringConvertTo(loanListRequestDto.getProductType()), loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper()));
 
-        if(CollectionUtils.isNotEmpty(loanDtoList)){
+        if (CollectionUtils.isNotEmpty(loanDtoList)) {
             loanListResponseDataDto.setLoanList(loanDtoList);
             dto.setData(loanListResponseDataDto);
         } else {
@@ -70,7 +70,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanDtoList = convertLoanDto(loanModels);
             loanListResponseDataDto.setLoanList(loanDtoList);
             dto.setData(loanListResponseDataDto);
-        }else{
+        } else {
             loanListResponseDataDto.setLoanList(new ArrayList<LoanResponseDataDto>());
             dto.setData(loanListResponseDataDto);
         }
@@ -95,17 +95,17 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setRepayUnit(loan.getType().getLoanPeriodUnit().getDesc());
             loanResponseDataDto.setRatePercent(decimalFormat.format((loan.getBaseRate() + loan.getActivityRate()) * 100));
             loanResponseDataDto.setLoanMoney(AmountConverter.convertCentToString(loan.getLoanAmount()));
-            if(LoanStatus.PREHEAT.equals(loan.getStatus())){
+            if (LoanStatus.PREHEAT.equals(loan.getStatus())) {
                 loanResponseDataDto.setLoanStatus(LoanStatus.RAISING.name().toLowerCase());
                 loanResponseDataDto.setLoanStatusDesc(LoanStatus.RAISING.getDescription());
-            }else{
+            } else {
                 loanResponseDataDto.setLoanStatus(loan.getStatus().name().toLowerCase());
                 loanResponseDataDto.setLoanStatusDesc(loan.getStatus().getDescription());
             }
             loanResponseDataDto.setMinInvestMoney(AmountConverter.convertCentToString(loan.getMinInvestAmount()));
             loanResponseDataDto.setMaxInvestMoney(AmountConverter.convertCentToString(loan.getMaxInvestAmount()));
             loanResponseDataDto.setCardinalNumber(AmountConverter.convertCentToString(loan.getInvestIncreasingAmount()));
-            if(loan.getFundraisingStartTime() != null){
+            if (loan.getFundraisingStartTime() != null) {
                 loanResponseDataDto.setInvestBeginTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loan.getFundraisingStartTime()));
             }
             loanResponseDataDto.setInvestBeginSeconds(CommonUtils.calculatorInvestBeginSeconds(loan.getFundraisingStartTime()));
@@ -120,4 +120,4 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     }
 
 
- }
+}
