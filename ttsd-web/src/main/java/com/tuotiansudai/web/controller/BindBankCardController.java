@@ -61,7 +61,14 @@ public class BindBankCardController {
     public ModelAndView replaceBankCard() {
         ModelAndView view = new ModelAndView("/replace-card");
         view.addObject("userName", accountService.findByLoginName(LoginUserInfo.getLoginName()).getUserName());
-        view.addObject("banks", BankCardUtil.getWithdrawBanks());
+
+        BankCardModel bankCardModel = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
+        if (bankCardModel != null && bankCardModel.isFastPayOn()) {
+            view.addObject("banks", BankCardUtil.getFastPayBanks());
+        } else {
+            view.addObject("banks", BankCardUtil.getWithdrawBanks());
+        }
+
         return view;
     }
 
