@@ -71,7 +71,7 @@ public class RepayServiceImpl implements RepayService {
             }
         });
 
-        boolean isLoanRepaying = Iterators.any(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
+        boolean isRepayingLoanRepayExist = Iterators.any(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
             @Override
             public boolean apply(LoanRepayModel input) {
                 return input.getStatus() == RepayStatus.REPAYING;
@@ -90,7 +90,7 @@ public class RepayServiceImpl implements RepayService {
             dataDto.setNormalRepayAmount(AmountConverter.convertCentToString(enabledLoanRepayModel.getCorpus() + enabledLoanRepayModel.getExpectedInterest() + defaultInterest));
         }
 
-        if (isLoanRepaying && !isWaitPayLoanRepayExist) {
+        if (loanModel.getStatus() != LoanStatus.OVERDUE && isRepayingLoanRepayExist && !isWaitPayLoanRepayExist) {
             dataDto.setAdvanceRepayEnabled(true);
             DateTime now = new DateTime();
             DateTime lastSuccessRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, now);

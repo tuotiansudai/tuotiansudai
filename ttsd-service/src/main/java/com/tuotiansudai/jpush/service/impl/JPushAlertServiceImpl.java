@@ -90,11 +90,7 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     @Autowired
     AuditLogUtil auditLogUtil;
 
-
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    @Value("${web.server}")
-    private String domainName;
-
 
     @Override
     @Transactional
@@ -103,11 +99,14 @@ public class JPushAlertServiceImpl implements JPushAlertService {
         if (StringUtils.isNotEmpty(jPushAlertDto.getId())) {
             jPushAlertModel.setUpdatedBy(loginName);
             jPushAlertModel.setUpdatedTime(new Date());
+            if(jPushAlertModel.getJumpTo() != JumpTo.OTHER){
+                jPushAlertModel.setJumpToLink("");
+            }
             jPushAlertMapper.update(jPushAlertModel);
-
         } else {
             jPushAlertModel.setCreatedBy(loginName);
             jPushAlertModel.setCreatedTime(new Date());
+            jPushAlertModel.setJumpToLink(jPushAlertModel.getJumpTo() != JumpTo.OTHER?"":jPushAlertModel.getJumpToLink());
             jPushAlertModel.setIsAutomatic(false);
             jPushAlertMapper.create(jPushAlertModel);
             jPushAlertDto.setId(String.valueOf(jPushAlertModel.getId()));
@@ -337,16 +336,13 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private String[] chooseJumpToOrLink(JPushAlertDto jPushAlertDto) {
         String[] jumpToOrLink = new String[]{"", ""};
         JumpTo jumpTo = jPushAlertDto.getJumpTo();
-        String jumpToLink = jPushAlertDto.getJumpToLink();
-        if (StringUtils.isNotEmpty(jumpToLink)) {
+        if(jumpTo == JumpTo.OTHER){
             jumpToOrLink[0] = "jumpToLink";
-            jumpToOrLink[1] = domainName + jumpToLink;
-            return jumpToOrLink;
+            jumpToOrLink[1] = jPushAlertDto.getJumpToLink();
         }
-        if (jumpTo != null) {
+        else{
             jumpToOrLink[0] = "jumpTo";
             jumpToOrLink[1] = jumpTo.getIndex();
-            return jumpToOrLink;
         }
         return jumpToOrLink;
     }
