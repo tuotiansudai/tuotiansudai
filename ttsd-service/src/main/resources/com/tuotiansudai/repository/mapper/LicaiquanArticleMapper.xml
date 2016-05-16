@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.LicaiquanArticleMapper">
 
-    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache"/>
 
     <resultMap id="licaiquanArticleModel" type="LicaiquanArticleModel">
         <id column="id" property="id"/>
@@ -59,7 +59,7 @@
         #{content}, #{likeCount}, #{readCount}, #{createTime}, #{updateTime}, #{isDeleted})
     </insert>
 
-    <update id="deleteArticle" >
+    <update id="deleteArticle">
         UPDATE `aa`.`licaiquan_article` SET deleted = TRUE WHERE id = #{id}
     </update>
 
@@ -105,4 +105,27 @@
         LIMIT #{size}
     </select>
 
+    <resultMap id="articleReviewComment" type="ArticleReviewComment">
+        <id column="id" property="id"/>
+        <result column="article_id" property="articleId"/>
+        <result column="comment" property="comment"/>
+        <result column="created_time" property="createTime"/>
+    </resultMap>
+
+    <insert id="createComment" parameterType="articleReviewComment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `aa`.`licaiquan_article_check_comment` (article_id, comment, created_time) VALUE (#{articleId}, #{comment},
+        #{createTime})
+    </insert>
+
+    <select id="findCommentsByArticleId" resultMap="articleReviewComment">
+        SELECT id, article_id, comment, created_time FROM `aa`.`licaiquan_article_check_comment` WHERE article_id = #{articleId}
+    </select>
+
+    <delete id="deleteCommentById">
+        DELETE FROM `aa`.`licaiquan_article_check_comment` WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteCommentsByArticleId">
+        DELETE FROM `aa`.`licaiquan_article_check_comment` WHERE article_id = #{articleId}
+    </delete>
 </mapper>

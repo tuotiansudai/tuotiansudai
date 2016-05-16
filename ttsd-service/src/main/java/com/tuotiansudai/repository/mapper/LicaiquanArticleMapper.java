@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.repository.model.ArticleReviewComment;
 import com.tuotiansudai.repository.model.LicaiquanArticleContentModel;
 import com.tuotiansudai.repository.model.LicaiquanArticleListItemModel;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
@@ -14,15 +15,16 @@ import java.util.List;
 
 @Repository
 public interface LicaiquanArticleMapper {
+    //文章相关部分
     void createArticle(LicaiquanArticleModel licaiquanArticleModel);
 
-    void deleteArticle(@Param("id")long id);
+    void deleteArticle(@Param("id") long id);
 
     void updateArticle(LicaiquanArticleModel licaiquanArticleModel);
 
-    void updateLikeCount(@Param("id")long id, @Param("likeCount") int likeCount);
+    void updateLikeCount(@Param("id") long id, @Param("likeCount") int likeCount);
 
-    void updateReadCount(@Param("id")long id, @Param("readCount") int readCount);
+    void updateReadCount(@Param("id") long id, @Param("readCount") int readCount);
 
     LicaiquanArticleContentModel findArticleContentById(@Param("id") long id);
 
@@ -31,4 +33,13 @@ public interface LicaiquanArticleMapper {
     List<LicaiquanArticleListItemModel> findExistedArticleListOrderByUpdateTime(@Param("startId") long startId, @Param("size") int size);
 
     List<LicaiquanArticleListItemModel> findDeletedArticleListOrderByUpdateTime(@Param("startId") long startId, @Param("size") int size);
+
+    //文章驳回意见部分
+    void createComment(ArticleReviewComment articleReviewComment);
+
+    List<ArticleReviewComment> findCommentsByArticleId(@Param("articleId") long articleId);
+
+    void deleteCommentById(@Param("id") long id);
+
+    void deleteCommentsByArticleId(@Param("articleId") long articleId);
 }
