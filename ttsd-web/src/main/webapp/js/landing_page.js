@@ -1,5 +1,18 @@
 require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'jquery.ajax.extension'], function ($, _, layer) {
     (function(){
+        if($(window).width()<700){
+            $('#phoneCaptcha').find('.captcha').attr({
+                'id':'captcha',
+                'name':'captcha'
+            });
+            $('#phoneCaptcha').parent().siblings('.captcha-phone-error').attr('id','captchaErr');
+        }else{
+            $('#pcCaptcha').find('.captcha').attr({
+                'id':'captcha',
+                'name':'captcha'
+            });
+            $('#pcCaptcha').parent().siblings('.captcha-error').attr('id','captchaErr');
+        }
         var $registerForm=$('.register-user-form'),
             $phoneDom=$('#mobile'),
             $fetchCaptcha=$('.fetch-captcha'),
@@ -7,7 +20,6 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
             $registerBtn=$(".registered"),
             $loginName = $('#login-name'),
             $password = $('#password'),
-            $registerUser = $('#register-user'),
             $appCaptcha = $('#appCaptcha'),
             countdown=60;
 
@@ -45,7 +57,7 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
                     minlength: 6,
                     captchaVerify: {
                         param: function () {
-                            var mobile = $('input[name="mobile"]').val();
+                            var mobile = $('#mobile').val();
                             return "/register/user/mobile/" + mobile + "/captcha/{0}/verify"
                         }
                     }
@@ -95,7 +107,9 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
 
 
         var refreshCaptcha = function () {
-            $('.image-captcha img').attr('src', '/register/user/image-captcha?' + new Date().getTime().toString());
+            $('.image-captcha img').each(function(index, el) {
+                $(this).attr('src', '/register/user/image-captcha?' + new Date().getTime().toString());
+            });
         };
         refreshCaptcha();
 
@@ -189,7 +203,6 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
             $changecodeC=$('.img-changeC'),
             $loginNamePhoneC = $('#loginNamePhoneC'),
             $passwordPhoneC = $('#passwordPhoneC'),
-            $registerUserPhoneC = $('#register-user-phoneC'),
             $appCaptchaPhoneC = $('#appCaptchaPhoneC');
 
         //form validate
@@ -226,13 +239,10 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
                     minlength: 6,
                     captchaVerify: {
                         param: function () {
-                            var mobile = $('input[name="mobile"]').val();
+                            var mobile = $('#mobilePhoneC').val();
                             return "/register/user/mobile/" + mobile + "/captcha/{0}/verify"
                         }
                     }
-                },
-                agreement: {
-                    required: true
                 }
             },
             messages: {
@@ -262,9 +272,6 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
                     maxlength: '验证码格式不正确',
                     minlength: '验证码格式不正确',
                     captchaVerify: '验证码不正确'
-                },
-                agreement: {
-                    required: "请同意服务协议"
                 }
             },
             submitHandler:function(form){
@@ -292,7 +299,7 @@ require(['jquery','underscore', 'layerWrapper', 'jquery.validate', 'jquery.valid
         });
 
         $appCaptchaPhoneC.on('focus', function(event) {
-            $('#appCaptchaErr').html('');
+            $('#appCaptchaPhoneCErr').html('');
         });
         //change images code
         $changecodeC.on('click', function(event) {
