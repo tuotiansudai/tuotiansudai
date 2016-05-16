@@ -74,5 +74,5 @@ public interface LoanMapper {
 
     List<LoanModel> findHomeLoan();
 
-    List<LoanModel> findHomeLoanByProductType(@Param(value = "isQueryNEWBIE") String isQueryNEWBIE );
+    List<LoanModel> findHomeLoanByIsContainNewBie(@Param(value = "IsContainNewBie") String IsContainNewBie );
 }

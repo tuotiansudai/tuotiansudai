@@ -34,13 +34,13 @@ public class MobileAppLoanListV2V2ServiceImpl implements MobileAppLoanListV2Serv
     public BaseResponseDto generateIndexLoan(BaseParamDto baseParamDto) {
         List<LoanModel> loanModels;
         if(investMapper.sumSuccessInvestCountByLoginName(baseParamDto.getBaseParam().getUserId()) > 0){
-            loanModels = loanMapper.findHomeLoanByProductType("notContainNEWBIE");
-        }else{
-            loanModels = loanMapper.findHomeLoanByProductType(null);
-            if(CollectionUtils.isNotEmpty(loanModels)){
-                for(LoanModel loanModel : loanModels){
+            loanModels = loanMapper.findHomeLoanByIsContainNewBie("true");
+            if(CollectionUtils.isEmpty(loanModels)){
 
-                }
+            }
+        }else{
+            loanModels = loanMapper.findHomeLoanByIsContainNewBie("false");
+            if(CollectionUtils.isNotEmpty(loanModels)){
             }
         }
 
