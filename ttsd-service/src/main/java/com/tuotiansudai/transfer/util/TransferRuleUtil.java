@@ -21,7 +21,7 @@ public class TransferRuleUtil {
     public static double getTransferFeeRate(InvestModel investModel, TransferRuleModel transferRuleModel, LoanModel loanModel) {
         DateTime beginDate;
         DateTime endDate = new DateTime();
-        if (Lists.newArrayList(LoanType.INVEST_INTEREST_LUMP_SUM_REPAY, LoanType.INVEST_INTEREST_MONTHLY_REPAY).contains(loanModel.getType())){
+        if (Lists.newArrayList(LoanType.INVEST_INTEREST_LUMP_SUM_REPAY, LoanType.INVEST_INTEREST_MONTHLY_REPAY).contains(loanModel.getType()) || investModel.getTransferInvestId() != null){
             beginDate = new DateTime(investModel.getCreatedTime());
         } else {
             beginDate = new DateTime(loanModel.getRecheckTime());
