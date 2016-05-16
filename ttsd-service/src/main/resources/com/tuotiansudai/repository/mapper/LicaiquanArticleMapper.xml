@@ -89,19 +89,33 @@
         FROM `aa`.`licaiquan_article` WHERE id = #{id}
     </select>
 
-    <select id="findExistedArticleListOrderByUpdateTime" resultMap="licaiquanArticleListItemModel">
+    <select id="findExistedArticleListOrderByCreateTime" resultMap="licaiquanArticleListItemModel">
         SELECT id, title, creator_login_name, checker_login_name, section, favourite_count, read_count, created_time,
         updated_time, deleted
         FROM `aa`.`licaiquan_article`
         WHERE id >= #{startId} AND deleted = FALSE
+        <if test="title != null">
+            AND title = #{title}
+        </if>
+        <if test="section != null">
+            AND section = #{section}
+        </if>
+        ORDER BY created_time DESC
         LIMIT #{size}
     </select>
 
-    <select id="findDeletedArticleListOrderByUpdateTime" resultMap="licaiquanArticleListItemModel">
+    <select id="findDeletedArticleListOrderByCreateTime" resultMap="licaiquanArticleListItemModel">
         SELECT id, title, creator_login_name, checker_login_name, section, favourite_count, read_count, created_time,
         updated_time, deleted
         FROM `aa`.`licaiquan_article`
         WHERE id >= #{startId} AND deleted = TRUE
+        <if test="title != null">
+            AND title = #{title}
+        </if>
+        <if test="section != null">
+            AND section = #{section}
+        </if>
+        ORDER BY created_time DESC
         LIMIT #{size}
     </select>
 
@@ -118,7 +132,8 @@
     </insert>
 
     <select id="findCommentsByArticleId" resultMap="articleReviewComment">
-        SELECT id, article_id, comment, created_time FROM `aa`.`licaiquan_article_check_comment` WHERE article_id = #{articleId}
+        SELECT id, article_id, comment, created_time FROM `aa`.`licaiquan_article_check_comment`
+        WHERE article_id = #{articleId} ORDER BY created_time DESC
     </select>
 
     <delete id="deleteCommentById">

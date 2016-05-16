@@ -1,9 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.ArticleReviewComment;
-import com.tuotiansudai.repository.model.LicaiquanArticleContentModel;
-import com.tuotiansudai.repository.model.LicaiquanArticleListItemModel;
-import com.tuotiansudai.repository.model.LicaiquanArticleModel;
+import com.tuotiansudai.repository.model.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -30,9 +27,15 @@ public interface LicaiquanArticleMapper {
 
     LicaiquanArticleModel findArticleById(@Param("id") long id);
 
-    List<LicaiquanArticleListItemModel> findExistedArticleListOrderByUpdateTime(@Param("startId") long startId, @Param("size") int size);
+    List<LicaiquanArticleListItemModel> findExistedArticleListOrderByCreateTime(@Param("title") String title,
+                                                                                @Param("section") ArticleSectionType sectionType,
+                                                                                @Param("startId") long startId,
+                                                                                @Param("size") int size);
 
-    List<LicaiquanArticleListItemModel> findDeletedArticleListOrderByUpdateTime(@Param("startId") long startId, @Param("size") int size);
+    List<LicaiquanArticleListItemModel> findDeletedArticleListOrderByCreateTime(@Param("title") String title,
+                                                                                @Param("section") ArticleSectionType sectionType,
+                                                                                @Param("startId") long startId,
+                                                                                @Param("size") int size);
 
     //文章驳回意见部分
     void createComment(ArticleReviewComment articleReviewComment);

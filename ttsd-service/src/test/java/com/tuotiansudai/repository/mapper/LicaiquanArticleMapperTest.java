@@ -9,9 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -30,8 +28,7 @@ public class LicaiquanArticleMapperTest {
 
     private final static int articleId = 1;
 
-    private void prepareUsers()
-    {
+    private void prepareUsers() {
         UserModel userModel = new UserModel();
         userModel.setLoginName("testCreator");
         userModel.setPassword("e8ba3a39cef651c08fbd7f8df591760f6b7412a4");
@@ -99,7 +96,7 @@ public class LicaiquanArticleMapperTest {
     private long prepareArticleData() {
         prepareUsers();
         licaiquanArticleMapper.createArticle(createLicaiquanArticleModel());
-        List<LicaiquanArticleListItemModel> existedArticleModels = licaiquanArticleMapper.findExistedArticleListOrderByUpdateTime(articleId, 1);
+        List<LicaiquanArticleListItemModel> existedArticleModels = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime(null, null, articleId, 1);
         return existedArticleModels.get(0).getId();
     }
 
@@ -108,13 +105,13 @@ public class LicaiquanArticleMapperTest {
         ArticleReviewComment articleReviewComment = new ArticleReviewComment();
         articleReviewComment.setArticleId(articleId);
         articleReviewComment.setComment("testComment1");
-        articleReviewComment.setCreateTime(new DateTime().parse("2016-4-5").withTimeAtStartOfDay().toDate());
+        articleReviewComment.setCreateTime(new DateTime().parse("2016-4-6").withTimeAtStartOfDay().toDate());
         articleReviewComments.add(articleReviewComment);
 
         ArticleReviewComment articleReviewComment1 = new ArticleReviewComment();
         articleReviewComment1.setArticleId(articleId);
         articleReviewComment1.setComment("testComment2");
-        articleReviewComment1.setCreateTime(new DateTime().parse("2016-4-6").withTimeAtStartOfDay().toDate());
+        articleReviewComment1.setCreateTime(new DateTime().parse("2016-4-5").withTimeAtStartOfDay().toDate());
         articleReviewComments.add(articleReviewComment1);
 
         return articleReviewComments;
@@ -130,12 +127,12 @@ public class LicaiquanArticleMapperTest {
     }
 
     @Test
-    public void testCreateArticle_findExistedArticleListOrderByUpdateTime_findArticleById() {
+    public void testCreateArticle_findArticleById() {
         prepareUsers();
         LicaiquanArticleModel licaiquanArticleModel = createLicaiquanArticleModel();
         licaiquanArticleMapper.createArticle(licaiquanArticleModel);
         List<LicaiquanArticleListItemModel> licaiquanArticleListItemModels =
-                licaiquanArticleMapper.findExistedArticleListOrderByUpdateTime(articleId, 1);
+                licaiquanArticleMapper.findExistedArticleListOrderByCreateTime(null, null, articleId, 1);
         assertTrue(licaiquanArticleListItemModels.size() > 0);
         final long testId = licaiquanArticleListItemModels.get(0).getId();
 
@@ -158,13 +155,40 @@ public class LicaiquanArticleMapperTest {
     }
 
     @Test
-    public void testDeleteArticle_findDeletedArticleListOrderByUpdateTime() {
+    public void testDeleteArticle() {
         long testId = prepareArticleData();
 
         licaiquanArticleMapper.deleteArticle(testId);
-        List<LicaiquanArticleListItemModel> licaiquanArticleModels = licaiquanArticleMapper.findDeletedArticleListOrderByUpdateTime(testId, 1);
+        List<LicaiquanArticleListItemModel> licaiquanArticleModels = licaiquanArticleMapper.findDeletedArticleListOrderByCreateTime(null, null, testId, 1);
         assertTrue(licaiquanArticleModels.size() > 0);
         assertEquals(testId, licaiquanArticleModels.get(0).getId());
+    }
+
+    @Test
+    public void testFindExistedArticleListOrderByCreateTime() {
+        long testId = prepareArticleData();
+        List<LicaiquanArticleListItemModel> licaiquanArticleListItemModels = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime(null, null, testId, 1);
+        assertTrue(licaiquanArticleListItemModels.size() > 0);
+        licaiquanArticleListItemModels = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime("testTitle", ArticleSectionType.PLATFORM_ACTIVITY, testId, 1);
+        assertTrue(licaiquanArticleListItemModels.size() == 0);
+        licaiquanArticleListItemModels = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime("", ArticleSectionType.INDUSTRY_NEWS, testId, 1);
+        assertTrue(licaiquanArticleListItemModels.size() == 0);
+        licaiquanArticleListItemModels = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime("testTitle", ArticleSectionType.INDUSTRY_NEWS, testId, 1);
+        assertTrue(licaiquanArticleListItemModels.size() > 0);
+    }
+
+    @Test
+    public void testFindDeletedArticleListOrderByCreateTime() {
+        long testId = prepareArticleData();
+        licaiquanArticleMapper.deleteArticle(testId);
+        List<LicaiquanArticleListItemModel> licaiquanArticleListItemModels = licaiquanArticleMapper.findDeletedArticleListOrderByCreateTime(null, null, testId, 1);
+        assertTrue(licaiquanArticleListItemModels.size() > 0);
+        licaiquanArticleListItemModels = licaiquanArticleMapper.findDeletedArticleListOrderByCreateTime("testTitle", ArticleSectionType.PLATFORM_ACTIVITY, testId, 1);
+        assertTrue(licaiquanArticleListItemModels.size() == 0);
+        licaiquanArticleListItemModels = licaiquanArticleMapper.findDeletedArticleListOrderByCreateTime("", ArticleSectionType.INDUSTRY_NEWS, testId, 1);
+        assertTrue(licaiquanArticleListItemModels.size() == 0);
+        licaiquanArticleListItemModels = licaiquanArticleMapper.findDeletedArticleListOrderByCreateTime("testTitle", ArticleSectionType.INDUSTRY_NEWS, testId, 1);
+        assertTrue(licaiquanArticleListItemModels.size() > 0);
     }
 
     @Test
