@@ -101,11 +101,11 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         List<InvestModel> investList;
         int investListCount;
         if(isTransferApplicationTransferable(requestDto)){
-            investList = investMapper.findByLoginName(loginName, index, pageSize, false);
+            investList = investMapper.findByLoginNameExceptTransfer(loginName, index, pageSize, false);
             UnmodifiableIterator<InvestModel> filter = Iterators.filter(investList.iterator(), new Predicate<InvestModel>() {
                 @Override
                 public boolean apply(InvestModel input) {
-                    return TransferStatus.TRANSFERABLE == input.getTransferStatus() && investTransferService.isTransferable(input.getId()) && input.getTransferInvestId() == null;
+                    return TransferStatus.TRANSFERABLE == input.getTransferStatus() && investTransferService.isTransferable(input.getId());
                 }
             });
             investList = Lists.newArrayList(filter);
@@ -120,8 +120,8 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
             }
             investList = investList.subList(fromIndex,toIndex);
         }else{
-            investList = investMapper.findByLoginName(loginName, index, pageSize, true);
-            investListCount = (int) investMapper.findCountByLoginName(loginName);
+            investList = investMapper.findByLoginNameExceptTransfer(loginName, index, pageSize, true);
+            investListCount = (int) investMapper.findCountByLoginNameExceptTransfer(loginName);
         }
         // build InvestList
         UserInvestListResponseDataDto dtoData = new UserInvestListResponseDataDto();

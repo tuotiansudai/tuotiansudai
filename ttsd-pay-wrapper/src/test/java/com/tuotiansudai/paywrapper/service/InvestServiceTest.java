@@ -281,7 +281,7 @@ public class InvestServiceTest {
         BaseDto<PayDataDto> baseDto = investService.noPasswordInvest(investDto);
         assertTrue(baseDto.isSuccess());
 
-        List<InvestModel> investModels = investMapper.findByLoginName("testInvest", 0, 10,true);
+        List<InvestModel> investModels = investMapper.findByLoginName("testInvest", 0, 10);
         assertThat(investModels.get(0).getAmount(), is(100L));
         assertThat(investModels.get(0).getLoginName(), is("testInvest"));
         assertThat(investModels.get(0).getSource(), is(Source.WEB));

@@ -164,8 +164,8 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase {
 
     @Test
     public void shouldGenerateUserInvestList() {
-        when(investMapper.findByLoginName(anyString(), anyInt(), anyInt(),anyBoolean())).thenReturn(generateMockedInvestList());
-        when(investMapper.findCountByLoginName(anyString())).thenReturn((long) INVEST_COUNT);
+        when(investMapper.findByLoginNameExceptTransfer(anyString(), anyInt(), anyInt(),anyBoolean())).thenReturn(generateMockedInvestList());
+        when(investMapper.findCountByLoginNameExceptTransfer(anyString())).thenReturn((long) INVEST_COUNT);
         when(loanMapper.findById(anyLong())).thenReturn(generateMockedLoanModel());
         when(investRepayMapper.findByInvestIdAndPeriodAsc(anyLong())).thenReturn(Lists.<InvestRepayModel>newArrayList());
         when(investService.estimateInvestIncome(anyLong(), anyLong())).thenReturn(INTEREST);

@@ -236,7 +236,7 @@ public class InvestControllerTest {
         // 超投返款
         overInvestPaybackNotify(orderId4, "0000");
 
-        List<InvestModel> investModelList4 = investMapper.findByLoginName(mockInvestLoginName4, 0, Integer.MAX_VALUE,true);
+        List<InvestModel> investModelList4 = investMapper.findByLoginName(mockInvestLoginName4, 0, Integer.MAX_VALUE);
         assert investModelList4.size() > 0;
         InvestModel investModel4 = investModelList4.get(0);
         assertThat(investModel4.getStatus(), is(InvestStatus.OVER_INVEST_PAYBACK));
@@ -295,12 +295,12 @@ public class InvestControllerTest {
         this.overInvestPaybackNotify(orderId4, "0000");
         this.overInvestPaybackNotify(orderId5, "0000");
 
-        List<InvestModel> investModelList4 = investMapper.findByLoginName(mockInvestLoginName4, 0, Integer.MAX_VALUE,true);
+        List<InvestModel> investModelList4 = investMapper.findByLoginName(mockInvestLoginName4, 0, Integer.MAX_VALUE);
         assert investModelList4.size() > 0;
         InvestModel investModel4 = investModelList4.get(0);
         assertThat(investModel4.getStatus(), is(InvestStatus.OVER_INVEST_PAYBACK));
 
-        List<InvestModel> investModelList5 = investMapper.findByLoginName(mockInvestLoginName5, 0, Integer.MAX_VALUE,true);
+        List<InvestModel> investModelList5 = investMapper.findByLoginName(mockInvestLoginName5, 0, Integer.MAX_VALUE);
         assert investModelList5.size() > 0;
         InvestModel investModel5 = investModelList5.get(0);
         assertThat(investModel5.getStatus(), is(InvestStatus.OVER_INVEST_PAYBACK));
@@ -358,12 +358,12 @@ public class InvestControllerTest {
         this.overInvestPaybackNotify(orderId4, "0000");
 //        this.overInvestPaybackNotify(orderId5, "0000");
 
-        List<InvestModel> investModelList4 = investMapper.findByLoginName(mockInvestLoginName4, 0, Integer.MAX_VALUE,true);
+        List<InvestModel> investModelList4 = investMapper.findByLoginName(mockInvestLoginName4, 0, Integer.MAX_VALUE);
         assert investModelList4.size() > 0;
         InvestModel investModel4 = investModelList4.get(0);
         assertThat(investModel4.getStatus(), is(InvestStatus.OVER_INVEST_PAYBACK));
 
-        List<InvestModel> investModelList5 = investMapper.findByLoginName(mockInvestLoginName5, 0, Integer.MAX_VALUE,true);
+        List<InvestModel> investModelList5 = investMapper.findByLoginName(mockInvestLoginName5, 0, Integer.MAX_VALUE);
         assert investModelList5.size() > 0;
         InvestModel investModel5 = investModelList5.get(0);
         assertThat(investModel5.getStatus(), is(InvestStatus.SUCCESS));
@@ -401,7 +401,7 @@ public class InvestControllerTest {
         this.generateMockResponse_fail(1);
         this.jobAsyncInvestNotify();
 
-        InvestModel investModel4_b = investMapper.findByLoginName(mockInvestLoginName4, 0, Integer.MAX_VALUE,true).get(0);
+        InvestModel investModel4_b = investMapper.findByLoginName(mockInvestLoginName4, 0, Integer.MAX_VALUE).get(0);
         assertThat(investModel4_b.getStatus(), is(InvestStatus.OVER_INVEST_PAYBACK_FAIL));
 
         verifyInvestorAmount_success(mockInitAmount, mockInvestAmount1, mockInvestLoginName1);
@@ -419,7 +419,7 @@ public class InvestControllerTest {
         // 超投返款回调－失败，order4当作投资成功处理
         this.overInvestPaybackNotify(orderId4, "0001");
 
-        InvestModel investModel4_a = investMapper.findByLoginName(mockInvestLoginName4, 0, Integer.MAX_VALUE,true).get(0);
+        InvestModel investModel4_a = investMapper.findByLoginName(mockInvestLoginName4, 0, Integer.MAX_VALUE).get(0);
         assertThat(investModel4_a.getStatus(), is(InvestStatus.SUCCESS));
 
         // check loan status
@@ -483,7 +483,7 @@ public class InvestControllerTest {
                 .andExpect(jsonPath("$.data.status").value(true));
 
 
-        List<InvestModel> investModelList = investMapper.findByLoginName(mockInvestLoginName, 0, Integer.MAX_VALUE,true);
+        List<InvestModel> investModelList = investMapper.findByLoginName(mockInvestLoginName, 0, Integer.MAX_VALUE);
         assert investModelList.size() > 0;
         InvestModel investModel = investModelList.get(0);
         assert investModel.getAmount() == mockInvestAmount;
