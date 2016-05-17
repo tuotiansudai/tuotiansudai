@@ -15,17 +15,17 @@ public interface LicaiquanArticleMapper {
     //文章相关部分
     void createArticle(LicaiquanArticleModel licaiquanArticleModel);
 
-    void deleteArticle(@Param("id") long id);
+    void deleteArticle(@Param("articleId") long articleId);
 
     void updateArticle(LicaiquanArticleModel licaiquanArticleModel);
 
-    void updateLikeCount(@Param("id") long id, @Param("likeCount") int likeCount);
+    void updateLikeCount(@Param("articleId") long articleId, @Param("likeCount") int likeCount);
 
-    void updateReadCount(@Param("id") long id, @Param("readCount") int readCount);
+    void updateReadCount(@Param("articleId") long articleId, @Param("readCount") int readCount);
 
-    LicaiquanArticleContentModel findArticleContentById(@Param("id") long id);
+    LicaiquanArticleContentModel findArticleContentByArticleId(@Param("articleId") long articleId);
 
-    LicaiquanArticleModel findArticleById(@Param("id") long id);
+    LicaiquanArticleModel findArticleByArticleId(@Param("articleId") long articleId);
 
     List<LicaiquanArticleListItemModel> findExistedArticleListOrderByCreateTime(@Param("title") String title,
                                                                                 @Param("section") ArticleSectionType sectionType,

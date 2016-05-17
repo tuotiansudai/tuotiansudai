@@ -1,6 +1,8 @@
 CREATE TABLE `aa`.`licaiquan_article` (
   `id`                 BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT
   COMMENT '主键',
+  `article_id`         BIGINT(20) UNSIGNED NOT NULL
+  COMMENT '文章ID',
   `title`              VARCHAR(50)         NOT NULL DEFAULT ''
   COMMENT '文章标题',
   `creator_login_name` VARCHAR(25)         NOT NULL
@@ -32,6 +34,7 @@ CREATE TABLE `aa`.`licaiquan_article` (
   `deleted`            TINYINT(1)          NOT NULL DEFAULT '0'
   COMMENT '是否已删除，0-未删除，1-已删除',
   PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQUE_LICAIQUAN_ARTICLE_ARTICLE_ID` (`article_id`),
   CONSTRAINT FK_LICAIQUAN_ARTICLE_CREATOR_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`creator_login_name`) REFERENCES `aa`.`user` (`login_name`),
   CONSTRAINT FK_LICAIQUAN_ARTICLE_CHECKER_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`checker_login_name`) REFERENCES `aa`.`user` (`login_name`)
 )
@@ -50,7 +53,7 @@ CREATE TABLE `aa`.`licaiquan_article_check_comment` (
   COMMENT '创建时间',
   PRIMARY KEY (`id`),
   CONSTRAINT FK_THIS_ARTICLE_ID_REF_LICAIQUAN_ARTICLE_ID
-  FOREIGN KEY (`article_id`) REFERENCES `aa`.`licaiquan_article` (`id`)
+  FOREIGN KEY (`article_id`) REFERENCES `aa`.`licaiquan_article` (`article_id`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8
