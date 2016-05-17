@@ -51,7 +51,7 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert','red-envelope-fl
                             skin: 'demo-class',
                             title: '投资提示',
                             shadeClose:false,
-                            btn:['取消', '确认'],
+                            btn:[ '取消','确认'],
                             area: ['300px', '160px'],
                             content: '<p class="pad-m-tb tc">确认投资？</p>',
                             btn1: function(){
