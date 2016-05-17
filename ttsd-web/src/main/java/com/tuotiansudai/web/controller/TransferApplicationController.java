@@ -71,7 +71,7 @@ public class TransferApplicationController {
                 BaseDto<PayDataDto> baseDto = transferService.noPasswordTransferPurchase(investDto);
                 if (baseDto.getData().getStatus()) {
                     httpServletRequest.getSession().setAttribute("noPasswordInvestSuccess", true);
-                    return new ModelAndView("redirect:/transfer-invest-success");
+                    return new ModelAndView("redirect:/transfer/transfer-invest-success");
                 }
                 if (baseDto.getData() != null) {
                     errorMessage = baseDto.getData().getMessage();
@@ -102,6 +102,13 @@ public class TransferApplicationController {
             modelAndView.setViewName(MessageFormat.format("redirect:/transfer/{0}", investDto.getTransferInvestId()));
 
         }
+        return modelAndView;
+    }
+
+    @RequestMapping(path = "/transfer-invest-success", method = RequestMethod.GET)
+    public ModelAndView transferInvestSuccess() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/transfer-invest-success");
         return modelAndView;
     }
 
