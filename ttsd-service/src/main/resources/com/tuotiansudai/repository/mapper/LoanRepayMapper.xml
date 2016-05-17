@@ -223,6 +223,7 @@
           m.`base_rate`,
           m.`activity_rate`,
           m.`periods`,
+          m.`duration`,
           n.`period`,
           n.`status` AS `loan_repay_status`,
           n.`corpus`,
