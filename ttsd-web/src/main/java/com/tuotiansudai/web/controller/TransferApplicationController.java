@@ -71,7 +71,7 @@ public class TransferApplicationController {
                 BaseDto<PayDataDto> baseDto = transferService.noPasswordTransferPurchase(investDto);
                 if (baseDto.getData().getStatus()) {
                     httpServletRequest.getSession().setAttribute("noPasswordInvestSuccess", true);
-                    return new ModelAndView("redirect:/invest-success");
+                    return new ModelAndView("redirect:/transfer-invest-success");
                 }
                 if (baseDto.getData() != null) {
                     errorMessage = baseDto.getData().getMessage();
