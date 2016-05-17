@@ -71,7 +71,8 @@ public class LicaiquanArticleModel {
      */
     private boolean isDeleted;
 
-    public LicaiquanArticleModel(){};
+    public LicaiquanArticleModel() {
+    }
 
     public LicaiquanArticleModel(long id, String title, String creator, String checker, String author, ArticleSectionType articleSection, String source, boolean carousel, String thumbnail, String showPicture, String content, int likeCount, int readCount, Date createTime, Date updateTime, boolean isDeleted) {
         this.id = id;

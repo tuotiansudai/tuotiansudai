@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.repository.model.ArticleReviewComment;
 import com.tuotiansudai.repository.model.LicaiquanArticleContentModel;
 import com.tuotiansudai.repository.model.LicaiquanArticleListItemModel;
 import com.tuotiansudai.repository.model.LicaiquanArticleModel;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Repository
 public interface LicaiquanArticleMapper {
+    //文章相关部分
     void createArticle(LicaiquanArticleModel licaiquanArticleModel);
 
     void deleteArticle(@Param("id") long id);
@@ -35,4 +37,12 @@ public interface LicaiquanArticleMapper {
     List<LicaiquanArticleListItemModel> findArticleListByTitleAndSection(@Param(value = "title") String title,
                                                                          @Param(value = "section") String section,
                                                                          @Param(value = "index") Integer index);
+    //文章驳回意见部分
+    void createComment(ArticleReviewComment articleReviewComment);
+
+    List<ArticleReviewComment> findCommentsByArticleId(@Param("articleId") long articleId);
+
+    void deleteCommentById(@Param("id") long id);
+
+    void deleteCommentsByArticleId(@Param("articleId") long articleId);
 }
