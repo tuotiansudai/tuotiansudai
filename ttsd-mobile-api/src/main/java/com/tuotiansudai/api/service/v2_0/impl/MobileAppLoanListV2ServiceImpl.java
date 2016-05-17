@@ -78,6 +78,9 @@ public class MobileAppLoanListV2ServiceImpl implements MobileAppLoanListV2Servic
             }
             loanResponseDataDto.setFundraisingStartTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loan.getFundraisingStartTime()));
             loanResponseDataDto.setFundraisingCountDown(CommonUtils.calculatorInvestBeginSeconds(loan.getFundraisingStartTime()));
+            loanResponseDataDto.setMinInvestMoney(loan.getMinInvestAmount() + "");
+            loanResponseDataDto.setMaxInvestMoney(loan.getMaxInvestAmount() + "");
+            loanResponseDataDto.setCardinalNumber(loan.getInvestIncreasingAmount() + "");
             loanDtoList.add(loanResponseDataDto);
         }
         return loanDtoList;

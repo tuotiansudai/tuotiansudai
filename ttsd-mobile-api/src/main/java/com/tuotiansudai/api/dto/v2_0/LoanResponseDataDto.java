@@ -13,6 +13,9 @@ public class LoanResponseDataDto {
     private String loanStatusDesc;
     private String fundraisingStartTime;
     private String fundraisingCountDown;
+    private String minInvestMoney;
+    private String cardinalNumber;
+    private String maxInvestMoney;
 
     public String getLoanId() { return loanId; }
 
@@ -61,4 +64,16 @@ public class LoanResponseDataDto {
     public String getFundraisingCountDown() { return fundraisingCountDown; }
 
     public void setFundraisingCountDown(String fundraisingCountDown) { this.fundraisingCountDown = fundraisingCountDown; }
+
+    public String getMinInvestMoney() { return minInvestMoney; }
+
+    public void setMinInvestMoney(String minInvestMoney) { this.minInvestMoney = minInvestMoney; }
+
+    public String getCardinalNumber() { return cardinalNumber; }
+
+    public void setCardinalNumber(String cardinalNumber) { this.cardinalNumber = cardinalNumber; }
+
+    public String getMaxInvestMoney() { return maxInvestMoney; }
+
+    public void setMaxInvestMoney(String maxInvestMoney) { this.maxInvestMoney = maxInvestMoney; }
 }
