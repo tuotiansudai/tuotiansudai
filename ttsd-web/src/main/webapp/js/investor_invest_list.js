@@ -100,9 +100,9 @@ require(['jquery','template', 'mustache', 'text!/tpl/investor-invest-repay-table
     })
     .on('mouseenter','.birth-icon',function() {//birth icon event
         layer.closeAll('tips');
-        var num = parseFloat($(this).parent().attr('data-benefit'));
+        var num = parseFloat($(this).data('benefit'));
         var benefit = num + 1;
-        layer.tips('您已享受生日福利，首月收益翻'+benefit+'倍', $(this), {
+        layer.tips('您已享受生日福利，首月收益翻'+ benefit +'倍', $(this), {
             tips: [1, '#efbf5c'],
             time: 2000,
             tipsMore: true,
@@ -112,9 +112,8 @@ require(['jquery','template', 'mustache', 'text!/tpl/investor-invest-repay-table
     })
     .on('mouseenter','.coupon-icon',function() {//coupon icon event
         layer.closeAll('tips');
-        var num = parseFloat($(this).parent().attr('data-benefit'));
-        var benefit = num + 1;
-        layer.tips('您已享受加息福利，首月收益翻'+benefit+'倍', $(this), {
+        var num = parseFloat($(this).data('benefit')).toFixed(0);
+        layer.tips('您使用了' + num + '%加息券', $(this), {
             tips: [1, '#efbf5c'],
             time: 2000,
             tipsMore: true,
@@ -124,9 +123,8 @@ require(['jquery','template', 'mustache', 'text!/tpl/investor-invest-repay-table
     })
     .on('mouseenter','.money-icon',function() {//money icon event
         layer.closeAll('tips');
-        var num = parseFloat($(this).parent().attr('data-benefit'));
-        var benefit = num + 1;
-        layer.tips('您已享受现金红包福利，首月收益翻'+benefit+'倍', $(this), {
+        var num = parseFloat($(this).data('benefit')).toFixed(0);
+        layer.tips('您使用了' + num + '元红包', $(this), {
             tips: [1, '#efbf5c'],
             time: 2000,
             tipsMore: true,
@@ -136,9 +134,8 @@ require(['jquery','template', 'mustache', 'text!/tpl/investor-invest-repay-table
     })
     .on('mouseenter','.newbie-icon',function() {//ticket icon event
         layer.closeAll('tips');
-        var num = parseFloat($(this).parent().attr('data-benefit'));
-        var benefit = num + 1;
-        layer.tips('您已享受新手体验福利，首月收益翻'+benefit+'倍', $(this), {
+        var num = parseFloat($(this).data('benefit')).toFixed(0);
+        layer.tips('您使用了' + num + '元体验金', $(this), {
             tips: [1, '#efbf5c'],
             time: 2000,
             tipsMore: true,
@@ -148,9 +145,8 @@ require(['jquery','template', 'mustache', 'text!/tpl/investor-invest-repay-table
     })
     .on('mouseenter','.ticket-icon',function() {//ticket icon event
         layer.closeAll('tips');
-        var num = parseFloat($(this).parent().attr('data-benefit'));
-        var benefit = num + 1;
-        layer.tips('您已享受投资体验福利，首月收益翻'+benefit+'倍', $(this), {
+        var num = parseFloat($(this).data('benefit')).toFixed(0);
+        layer.tips('您使用了' + num + '元体验金', $(this), {
             tips: [1, '#efbf5c'],
             time: 2000,
             tipsMore: true,

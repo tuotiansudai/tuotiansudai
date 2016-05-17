@@ -235,8 +235,46 @@
                 and invest.created_time between #{startTime} and #{endTime}
             </if>
         </where>
-        order by case trading_time when null then created_time else trading_time end desc, invest.id asc
+        order by case invest.trading_time when null then invest.created_time else invest.trading_time end desc, invest.id asc
         limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findInvestorInvestPagination" parameterType="map" resultMap="investResultMap">
+        select invest.*
+        from invest
+        join loan on invest.loan_id = loan.id
+        <where>
+            and invest.login_name = #{loginName}
+            <if test="startTime != null">
+                and invest.created_time &gt; #{startTime}
+            </if>
+            <if test="endTime != null">
+                and invest.created_time &lt; #{endTime}
+            </if>
+            <if test="loanStatus != null">
+                and loan.status = #{loanStatus}
+            </if>
+        </where>
+        order by case invest.trading_time when null then invest.created_time else invest.trading_time end desc, invest.id asc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="countInvestorInvestPagination" parameterType="map" resultType="long">
+        select count(1)
+        from invest
+        join loan on invest.loan_id = loan.id
+        <where>
+            and invest.login_name = #{loginName}
+            <if test="startTime != null">
+                and invest.created_time &gt; #{startTime}
+            </if>
+            <if test="endTime != null">
+                and invest.created_time &lt; #{endTime}
+            </if>
+            <if test="loanStatus != null">
+                and loan.status = #{loanStatus}
+            </if>
+        </where>
     </select>
 
     <select id="findCountInvestPagination" parameterType="map" resultType="long">

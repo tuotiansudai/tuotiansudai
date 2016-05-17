@@ -111,7 +111,7 @@ public interface InvestMapper {
     long findCountInvestPagination(@Param(value = "loanId") Long loanId,
                                    @Param(value = "investorLoginName") String investorLoginName,
                                    @Param(value = "channel") String channel,
-                                   @Param(value = "source") String source,
+                                   @Param(value = "source") Source source,
                                    @Param(value = "role") String role,
                                    @Param(value = "startTime") Date startTime,
                                    @Param(value = "endTime") Date endTime,
@@ -121,7 +121,7 @@ public interface InvestMapper {
     List<InvestPaginationItemView> findInvestPagination(@Param(value = "loanId") Long loanId,
                                                         @Param(value = "investorLoginName") String investorLoginName,
                                                         @Param(value = "channel") String channel,
-                                                        @Param(value = "source") String source,
+                                                        @Param(value = "source") Source source,
                                                         @Param(value = "role") String role,
                                                         @Param(value = "index") int index,
                                                         @Param(value = "pageSize") int pageSize,
@@ -133,7 +133,7 @@ public interface InvestMapper {
     long sumInvestAmount(@Param(value = "loanId") Long loanId,
                          @Param(value = "investorLoginName") String investorLoginName,
                          @Param(value = "channel") String channel,
-                         @Param(value = "source") String source,
+                         @Param(value = "source") Source source,
                          @Param(value = "role") String role,
                          @Param(value = "startTime") Date startTime,
                          @Param(value = "endTime") Date endTime,
@@ -172,4 +172,16 @@ public interface InvestMapper {
                                          @Param(value = "achievement") InvestAchievement achievement,
                                          @Param(value = "startTime") Date startTime,
                                          @Param(value = "endTime") Date endTime);
+
+    List<InvestModel> findInvestorInvestPagination(@Param(value = "loginName") String loginName,
+                                                   @Param(value = "loanStatus") LoanStatus loanStatus,
+                                                   @Param(value = "index") int index,
+                                                   @Param(value = "pageSize") int pageSize,
+                                                   @Param(value = "startTime") Date startTime,
+                                                   @Param(value = "endTime") Date endTime);
+
+    long countInvestorInvestPagination(@Param(value = "loginName") String loginName,
+                                       @Param(value = "loanStatus") LoanStatus loanStatus,
+                                       @Param(value = "startTime") Date startTime,
+                                       @Param(value = "endTime") Date endTime);
 }

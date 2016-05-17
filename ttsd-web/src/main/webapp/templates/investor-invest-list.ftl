@@ -40,22 +40,34 @@
             {{each records}}
                 <tr>
                     <td>
-                        <span class="icon-list" data-benefit="{{$value.birthdayBenefit}}">
-                            {{each $value.couponTypeList}}
-                            {{if $value=='BIRTHDAY_COUPON'}}
+                        <span class="icon-list">
+                            {{each $value.userCoupons}}
+                            {{if $value.couponType=='BIRTHDAY_COUPON'}}
+                            <i class="birth-icon" data-benefit="{{$value.birthdayBenefit}}"></i>
+                            {{/if}}
+                            {{if $value.couponType=='INTEREST_COUPON'}}
+                            <i class="coupon-icon" data-benefit="{{$value.rate * 100}}"></i>
+                            {{/if}}
+                            {{if $value.couponType=='RED_ENVELOPE'}}
+                            <i class="money-icon" data-benefit="{{$value.amount / 100}}"></i>
+                            {{/if}}
+                            {{if $value.couponType=='NEWBIE_COUPON'}}
+                            <i class="newbie-icon" data-benefit="{{$value.amount / 100}}"></i>
+                            {{/if}}
+                            {{if $value.couponType=='INVEST_COUPON'}}
+                            <i class="ticket-icon" data-benefit="{{$value.amount / 100}}"></i>
+                            {{/if}}
+                            {{/each}}
+
+                            {{each $value.achievements}}
+                            {{if $value=='FIRST_INVEST'}}
                             <i class="birth-icon"></i>
                             {{/if}}
-                            {{if $value=='INTEREST_COUPON'}}
+                            {{if $value=='LAST_INVEST'}}
                             <i class="coupon-icon"></i>
                             {{/if}}
-                            {{if $value=='RED_ENVELOPE'}}
+                            {{if $value=='MAX_AMOUNT'}}
                             <i class="money-icon"></i>
-                            {{/if}}
-                            {{if $value=='NEWBIE_COUPON'}}
-                            <i class="newbie-icon"></i>
-                            {{/if}}
-                            {{if $value=='INVEST_COUPON'}}
-                            <i class="ticket-icon"></i>
                             {{/if}}
                             {{/each}}
                         </span>
@@ -72,7 +84,7 @@
                     {{/if}}
                     </td>
                     <td>
-                    {{if $value.hasInvestRepay}}
+                    {{if $value.investRepayExist}}
                     <a class="show-invest-repay" data-url="/investor/invest/{{$value.investId}}/repay-data">回款记录</a> |
                     <a class="red" href="/contract/investor/loanId/{{$value.loanId}}" target="_blank">合同</a>
                     {{else}}
