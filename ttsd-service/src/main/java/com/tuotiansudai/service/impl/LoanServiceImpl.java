@@ -491,6 +491,7 @@ public class LoanServiceImpl implements LoanService {
 
                     item.setExpectedInterest(AmountConverter.convertCentToString(amount));
                     item.setCreatedTime(input.getTradingTime() == null ? input.getCreatedTime() : input.getTradingTime());
+                    item.setAchievements(input.getAchievements());
                     return item;
                 }
             });
