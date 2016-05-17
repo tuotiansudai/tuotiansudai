@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -53,7 +54,7 @@ public class LicaiquanArticleMapperTest {
 
     private LicaiquanArticleModel createLicaiquanArticleModel() {
         LicaiquanArticleModel licaiquanArticleModel = new LicaiquanArticleModel();
-        licaiquanArticleModel.setId(articleId);
+        licaiquanArticleModel.setArticleId(articleId);
         licaiquanArticleModel.setArticleSection(ArticleSectionType.INDUSTRY_NEWS);
         licaiquanArticleModel.setAuthor("testAuthor");
         licaiquanArticleModel.setCarousel(false);
@@ -74,7 +75,7 @@ public class LicaiquanArticleMapperTest {
 
     private LicaiquanArticleModel createModifiedLicaiquanArticleModel(long id) {
         LicaiquanArticleModel licaiquanArticleModel = new LicaiquanArticleModel();
-        licaiquanArticleModel.setId(id);
+        licaiquanArticleModel.setArticleId(id);
         licaiquanArticleModel.setChecker("modifyChecker");
         licaiquanArticleModel.setCreator("modifyCreator");
         licaiquanArticleModel.setLikeCount(20);
@@ -127,16 +128,12 @@ public class LicaiquanArticleMapperTest {
     }
 
     @Test
-    public void testCreateArticle_findArticleById() {
+    public void testCreateArticle_findArticleByArticleId() {
         prepareUsers();
         LicaiquanArticleModel licaiquanArticleModel = createLicaiquanArticleModel();
         licaiquanArticleMapper.createArticle(licaiquanArticleModel);
-        List<LicaiquanArticleListItemModel> licaiquanArticleListItemModels =
-                licaiquanArticleMapper.findExistedArticleListOrderByCreateTime(null, null, articleId, 1);
-        assertTrue(licaiquanArticleListItemModels.size() > 0);
-        final long testId = licaiquanArticleListItemModels.get(0).getId();
 
-        LicaiquanArticleModel testLicaiquanArticleModle = licaiquanArticleMapper.findArticleById(testId);
+        LicaiquanArticleModel testLicaiquanArticleModle = licaiquanArticleMapper.findArticleByArticleId(articleId);
 
         assertEquals(licaiquanArticleModel.getArticleSection(), testLicaiquanArticleModle.getArticleSection());
         assertEquals(licaiquanArticleModel.getAuthor(), testLicaiquanArticleModle.getAuthor());
@@ -156,12 +153,10 @@ public class LicaiquanArticleMapperTest {
 
     @Test
     public void testDeleteArticle() {
-        long testId = prepareArticleData();
-
-        licaiquanArticleMapper.deleteArticle(testId);
-        List<LicaiquanArticleListItemModel> licaiquanArticleModels = licaiquanArticleMapper.findDeletedArticleListOrderByCreateTime(null, null, testId, 1);
-        assertTrue(licaiquanArticleModels.size() > 0);
-        assertEquals(testId, licaiquanArticleModels.get(0).getId());
+        prepareArticleData();
+        assertFalse(licaiquanArticleMapper.findArticleByArticleId(articleId).isDeleted());
+        licaiquanArticleMapper.deleteArticle(articleId);
+        assertTrue(licaiquanArticleMapper.findArticleByArticleId(articleId).isDeleted());
     }
 
     @Test
@@ -180,7 +175,7 @@ public class LicaiquanArticleMapperTest {
     @Test
     public void testFindDeletedArticleListOrderByCreateTime() {
         long testId = prepareArticleData();
-        licaiquanArticleMapper.deleteArticle(testId);
+        licaiquanArticleMapper.deleteArticle(articleId);
         List<LicaiquanArticleListItemModel> licaiquanArticleListItemModels = licaiquanArticleMapper.findDeletedArticleListOrderByCreateTime(null, null, testId, 1);
         assertTrue(licaiquanArticleListItemModels.size() > 0);
         licaiquanArticleListItemModels = licaiquanArticleMapper.findDeletedArticleListOrderByCreateTime("testTitle", ArticleSectionType.PLATFORM_ACTIVITY, testId, 1);
@@ -193,9 +188,9 @@ public class LicaiquanArticleMapperTest {
 
     @Test
     public void testFindArticleContentById() {
-        long testId = prepareArticleData();
+        prepareArticleData();
 
-        LicaiquanArticleContentModel licaiquanArticleContentModel = licaiquanArticleMapper.findArticleContentById(testId);
+        LicaiquanArticleContentModel licaiquanArticleContentModel = licaiquanArticleMapper.findArticleContentByArticleId(articleId);
         assertEquals(ArticleSectionType.INDUSTRY_NEWS, licaiquanArticleContentModel.getArticleSection());
         assertEquals(false, licaiquanArticleContentModel.isCarousel());
         assertEquals("testContent", licaiquanArticleContentModel.getContent());
@@ -210,11 +205,11 @@ public class LicaiquanArticleMapperTest {
 
     @Test
     public void testUpdateArticleContent() {
-        long testId = prepareArticleData();
+        prepareArticleData();
 
-        LicaiquanArticleModel licaiquanArticleModel = createModifiedLicaiquanArticleModel(testId);
+        LicaiquanArticleModel licaiquanArticleModel = createModifiedLicaiquanArticleModel(articleId);
         licaiquanArticleMapper.updateArticle(licaiquanArticleModel);
-        LicaiquanArticleModel modifiedLicaiquanArticleModel = licaiquanArticleMapper.findArticleById(testId);
+        LicaiquanArticleModel modifiedLicaiquanArticleModel = licaiquanArticleMapper.findArticleByArticleId(articleId);
         assertEquals(licaiquanArticleModel.getChecker(), modifiedLicaiquanArticleModel.getChecker());
         assertEquals(licaiquanArticleModel.getCreator(), modifiedLicaiquanArticleModel.getCreator());
         assertEquals(licaiquanArticleModel.getLikeCount(), modifiedLicaiquanArticleModel.getLikeCount());
@@ -233,32 +228,32 @@ public class LicaiquanArticleMapperTest {
 
     @Test
     public void testUpdateLikeCount() {
-        long testId = prepareArticleData();
+        prepareArticleData();
 
-        licaiquanArticleMapper.updateLikeCount(testId, 300);
-        LicaiquanArticleModel licaiquanArticleModel = licaiquanArticleMapper.findArticleById(testId);
+        licaiquanArticleMapper.updateLikeCount(articleId, 300);
+        LicaiquanArticleModel licaiquanArticleModel = licaiquanArticleMapper.findArticleByArticleId(articleId);
         assertEquals(300, licaiquanArticleModel.getLikeCount());
     }
 
     @Test
     public void testUpdateReadCount() {
-        long testId = prepareArticleData();
+        prepareArticleData();
 
-        licaiquanArticleMapper.updateReadCount(testId, 600);
-        LicaiquanArticleModel licaiquanArticleModel = licaiquanArticleMapper.findArticleById(testId);
+        licaiquanArticleMapper.updateReadCount(articleId, 600);
+        LicaiquanArticleModel licaiquanArticleModel = licaiquanArticleMapper.findArticleByArticleId(articleId);
         assertEquals(600, licaiquanArticleModel.getReadCount());
     }
 
     @Test
     public void testCreateComment_findCommentByArticleId() {
-        long testId = prepareArticleData();
+        prepareArticleData();
 
-        List<ArticleReviewComment> articleReviewComments = createComments(testId);
+        List<ArticleReviewComment> articleReviewComments = createComments(articleId);
         for (ArticleReviewComment articleReviewComment : articleReviewComments) {
             licaiquanArticleMapper.createComment(articleReviewComment);
         }
 
-        List<ArticleReviewComment> testComments = licaiquanArticleMapper.findCommentsByArticleId(testId);
+        List<ArticleReviewComment> testComments = licaiquanArticleMapper.findCommentsByArticleId(articleId);
         assertEquals(articleReviewComments.size(), testComments.size());
         for (int i = 0; i < articleReviewComments.size(); ++i) {
             assertEquals(articleReviewComments.get(i).getArticleId(), testComments.get(i).getArticleId());
@@ -269,23 +264,23 @@ public class LicaiquanArticleMapperTest {
 
     @Test
     public void testDeleteCommentById() {
-        long testId = prepareArticleData();
-        List<ArticleReviewComment> articleReviewComments = prepareCommentData(testId);
+        prepareArticleData();
+        List<ArticleReviewComment> articleReviewComments = prepareCommentData(articleId);
 
-        List<ArticleReviewComment> testComments = licaiquanArticleMapper.findCommentsByArticleId(testId);
+        List<ArticleReviewComment> testComments = licaiquanArticleMapper.findCommentsByArticleId(articleId);
         final long testCommentId = testComments.get(0).getId();
         licaiquanArticleMapper.deleteCommentById(testCommentId);
-        testComments = licaiquanArticleMapper.findCommentsByArticleId(testId);
+        testComments = licaiquanArticleMapper.findCommentsByArticleId(articleId);
         assertEquals(articleReviewComments.size() - 1, testComments.size());
     }
 
     @Test
     public void testDeleteCommentsByArticleId() {
-        long testId = prepareArticleData();
-        prepareCommentData(testId);
+        prepareArticleData();
+        prepareCommentData(articleId);
 
-        licaiquanArticleMapper.deleteCommentsByArticleId(testId);
-        List<ArticleReviewComment> testComments = licaiquanArticleMapper.findCommentsByArticleId(testId);
+        licaiquanArticleMapper.deleteCommentsByArticleId(articleId);
+        List<ArticleReviewComment> testComments = licaiquanArticleMapper.findCommentsByArticleId(articleId);
         assertEquals(0, testComments.size());
     }
 }

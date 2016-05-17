@@ -8,6 +8,7 @@
 
     <resultMap id="licaiquanArticleModel" type="LicaiquanArticleModel">
         <id column="id" property="id"/>
+        <result column="article_id" property="articleId"/>
         <result column="title" property="title"/>
         <result column="creator_login_name" property="creator"/>
         <result column="checker_login_name" property="checker"/>
@@ -27,6 +28,7 @@
 
     <resultMap id="licaiquanArticleListItemModel" type="LicaiquanArticleListItemModel">
         <id column="id" property="id"/>
+        <result column="article_id" property="articleId"/>
         <result column="title" property="title"/>
         <result column="creator_login_name" property="creator"/>
         <result column="checker_login_name" property="checker"/>
@@ -39,7 +41,7 @@
     </resultMap>
 
     <resultMap id="licaiquanArticleContentModel" type="LicaiquanArticleContentModel">
-        <id column="id" property="id"/>
+        <id column="article_id" property="articleId"/>
         <result column="title" property="title"/>
         <result column="author" property="author"/>
         <result column="section" property="articleSection"/>
@@ -53,44 +55,44 @@
     </resultMap>
 
     <insert id="createArticle" parameterType="LicaiquanArticleModel" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `aa`.`licaiquan_article` (title, creator_login_name, checker_login_name, author, section, source, carousel,
-        thumbnail, show_picture, content, favourite_count, read_count, created_time, updated_time, deleted) VALUE
-        (#{title}, #{creator}, #{checker}, #{author}, #{articleSection}, #{source}, #{carousel}, #{thumbnail}, #{showPicture},
-        #{content}, #{likeCount}, #{readCount}, #{createTime}, #{updateTime}, #{isDeleted})
+        INSERT INTO `aa`.`licaiquan_article` (article_id, title, creator_login_name, checker_login_name, author, section,
+        source, carousel, thumbnail, show_picture, content, favourite_count, read_count, created_time, updated_time, deleted)
+        VALUE (#{articleId}, #{title}, #{creator}, #{checker}, #{author}, #{articleSection}, #{source}, #{carousel},
+        #{thumbnail}, #{showPicture}, #{content}, #{likeCount}, #{readCount}, #{createTime}, #{updateTime}, #{isDeleted})
     </insert>
 
     <update id="deleteArticle">
-        UPDATE `aa`.`licaiquan_article` SET deleted = TRUE WHERE id = #{id}
+        UPDATE `aa`.`licaiquan_article` SET deleted = TRUE WHERE article_id = #{articleId}
     </update>
 
-    <select id="findArticleById" resultMap="licaiquanArticleModel">
+    <select id="findArticleByArticleId" resultMap="licaiquanArticleModel">
         SELECT title, creator_login_name, checker_login_name, author, section, source, carousel,
         thumbnail, show_picture, content, favourite_count, read_count, created_time, updated_time, deleted
-        FROM `aa`.`licaiquan_article` WHERE id = #{id}
+        FROM `aa`.`licaiquan_article` WHERE article_id = #{articleId}
     </select>
 
     <update id="updateArticle" parameterType="LicaiquanArticleModel">
         UPDATE `aa`.`licaiquan_article` SET title = #{title}, creator_login_name = #{creator}, checker_login_name = #{checker},
         author = #{author}, section = #{articleSection}, source = #{source}, carousel = #{carousel}, thumbnail = #{thumbnail},
         show_picture = #{showPicture}, content = #{content}, favourite_count = #{likeCount}, read_count = #{readCount},
-        created_time = #{createTime}, updated_time = #{updateTime} WHERE id = #{id}
+        created_time = #{createTime}, updated_time = #{updateTime} WHERE article_id = #{articleId}
     </update>
 
     <update id="updateLikeCount">
-        UPDATE `aa`.`licaiquan_article` SET favourite_count = #{likeCount} WHERE id = #{id}
+        UPDATE `aa`.`licaiquan_article` SET favourite_count = #{likeCount} WHERE article_id = #{articleId}
     </update>
 
     <update id="updateReadCount">
-        UPDATE `aa`.`licaiquan_article` SET read_count = #{readCount} WHERE id = #{id}
+        UPDATE `aa`.`licaiquan_article` SET read_count = #{readCount} WHERE article_id = #{articleId}
     </update>
 
-    <select id="findArticleContentById" resultMap="licaiquanArticleContentModel">
-        SELECT id, title, author, section, source, carousel, thumbnail, show_picture, content, created_time, updated_time
-        FROM `aa`.`licaiquan_article` WHERE id = #{id}
+    <select id="findArticleContentByArticleId" resultMap="licaiquanArticleContentModel">
+        SELECT article_id, title, author, section, source, carousel, thumbnail, show_picture, content, created_time, updated_time
+        FROM `aa`.`licaiquan_article` WHERE article_id = #{articleId}
     </select>
 
     <select id="findExistedArticleListOrderByCreateTime" resultMap="licaiquanArticleListItemModel">
-        SELECT id, title, creator_login_name, checker_login_name, section, favourite_count, read_count, created_time,
+        SELECT id, article_id, title, creator_login_name, checker_login_name, section, favourite_count, read_count, created_time,
         updated_time, deleted
         FROM `aa`.`licaiquan_article`
         WHERE id >= #{startId} AND deleted = FALSE
@@ -105,7 +107,7 @@
     </select>
 
     <select id="findDeletedArticleListOrderByCreateTime" resultMap="licaiquanArticleListItemModel">
-        SELECT id, title, creator_login_name, checker_login_name, section, favourite_count, read_count, created_time,
+        SELECT id, article_id, title, creator_login_name, checker_login_name, section, favourite_count, read_count, created_time,
         updated_time, deleted
         FROM `aa`.`licaiquan_article`
         WHERE id >= #{startId} AND deleted = TRUE

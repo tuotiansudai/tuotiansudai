@@ -7,9 +7,13 @@ import java.util.Date;
  */
 public class LicaiquanArticleListItemModel {
     /**
-     * 主键，文章列表ID
+     * 主键
      */
     private long id;
+    /**
+     * 文章ID
+     */
+    private long articleId;
     /**
      * 文章标题
      */
@@ -50,8 +54,9 @@ public class LicaiquanArticleListItemModel {
     public LicaiquanArticleListItemModel() {
     }
 
-    public LicaiquanArticleListItemModel(long id, String title, String creator, String checker, ArticleSectionType articleSection, int likeCount, int readCount, Date createTime, Date updateTime, boolean isDeleted) {
+    public LicaiquanArticleListItemModel(long id, long articleId, String title, String creator, String checker, ArticleSectionType articleSection, int likeCount, int readCount, Date createTime, Date updateTime, boolean isDeleted) {
         this.id = id;
+        this.articleId = articleId;
         this.title = title;
         this.creator = creator;
         this.checker = checker;
@@ -69,6 +74,14 @@ public class LicaiquanArticleListItemModel {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(long articleId) {
+        this.articleId = articleId;
     }
 
     public String getTitle() {

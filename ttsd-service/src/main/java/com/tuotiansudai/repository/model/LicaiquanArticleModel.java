@@ -11,6 +11,10 @@ public class LicaiquanArticleModel {
      */
     private long id;
     /**
+     * 文章ID
+     */
+    private long articleId;
+    /**
      * 文章标题
      */
     private String title;
@@ -74,8 +78,9 @@ public class LicaiquanArticleModel {
     public LicaiquanArticleModel() {
     }
 
-    public LicaiquanArticleModel(long id, String title, String creator, String checker, String author, ArticleSectionType articleSection, String source, boolean carousel, String thumbnail, String showPicture, String content, int likeCount, int readCount, Date createTime, Date updateTime, boolean isDeleted) {
+    public LicaiquanArticleModel(long id, long articleId, String title, String creator, String checker, String author, ArticleSectionType articleSection, String source, boolean carousel, String thumbnail, String showPicture, String content, int likeCount, int readCount, Date createTime, Date updateTime, boolean isDeleted) {
         this.id = id;
+        this.articleId = articleId;
         this.title = title;
         this.creator = creator;
         this.checker = checker;
@@ -99,6 +104,14 @@ public class LicaiquanArticleModel {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(long articleId) {
+        this.articleId = articleId;
     }
 
     public String getTitle() {
