@@ -23,15 +23,8 @@ public class InterestCalculator {
     public static long calculateLoanRepayInterest(LoanModel loanModel, List<InvestModel> investModels, DateTime lastRepayDate, DateTime currentRepayDate) {
         DateTime loanOutDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
 
-        List<InvestModel> originalInvestModels = Lists.newArrayList(Iterators.filter(investModels.iterator(), new Predicate<InvestModel>() {
-            @Override
-            public boolean apply(InvestModel input) {
-                return input.getTransferInvestId() == null;
-            }
-        }));
-
         long corpusMultiplyPeriodDays = 0;
-        for (InvestModel successInvest : originalInvestModels) {
+        for (InvestModel successInvest : investModels) {
             DateTime lastInvestRepayDate = lastRepayDate;
             if (lastRepayDate.isBefore(loanOutDate) && InterestInitiateType.INTEREST_START_AT_INVEST == loanModel.getType().getInterestInitiateType()) {
                 lastInvestRepayDate = new DateTime(successInvest.getInvestTime()).withTimeAtStartOfDay().minusDays(1);
