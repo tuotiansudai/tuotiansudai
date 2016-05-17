@@ -6,7 +6,6 @@ import com.tuotiansudai.api.dto.LoanListRequestDto;
 import com.tuotiansudai.api.dto.LoanListResponseDataDto;
 import com.tuotiansudai.api.dto.ReturnMessage;
 import com.tuotiansudai.api.service.impl.MobileAppLoanListServiceImpl;
-import com.tuotiansudai.api.util.ProductTypeConvertor;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;

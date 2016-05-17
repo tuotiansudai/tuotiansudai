@@ -55,16 +55,10 @@ public class CouponServiceTest {
     private UserService userService;
 
     @Autowired
-    private LoanMapper loanMapper;
-
-    @Autowired
     private UserCouponMapper userCouponMapper;
 
     @Autowired
     private CouponActivationService couponActivationService;
-
-    @Autowired
-    private IdGenerator idGenerator;
 
     @Test
     public void shouldAssignUserCoupon() throws Exception{
@@ -127,11 +121,6 @@ public class CouponServiceTest {
         couponService.createCoupon("couponTest", exchangeCouponDto);
         List<CouponDto> couponDtos = couponService.findInterestCoupons(1, 1);
         assertThat(couponDtos.get(0).getCouponType(), is(CouponType.INTEREST_COUPON));
-    }
-
-    @Test
-    public void assignCoupon() {
-
     }
 
     @Test

@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppLoanListService;
 import com.tuotiansudai.api.util.CommonUtils;
-import com.tuotiansudai.api.util.ProductTypeConvertor;
+import com.tuotiansudai.api.util.ProductTypeConverter;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.LoanModel;
@@ -37,7 +37,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             return new BaseResponseDto<>(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
         index = (loanListRequestDto.getIndex() - 1) * pageSize;
-        List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConvertor.stringConvertTo(loanListRequestDto.getProductType()), loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index);
+        List<LoanModel> loanModels = loanMapper.findLoanListMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()), loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper(), index);
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(loanModels)) {
             loanDtoList = convertLoanDto(loanModels);
@@ -48,7 +48,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         LoanListResponseDataDto loanListResponseDataDto = new LoanListResponseDataDto();
         loanListResponseDataDto.setIndex(loanListRequestDto.getIndex());
         loanListResponseDataDto.setPageSize(loanListRequestDto.getPageSize());
-        loanListResponseDataDto.setTotalCount(loanMapper.findLoanListCountMobileApp(ProductTypeConvertor.stringConvertTo(loanListRequestDto.getProductType()), loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper()));
+        loanListResponseDataDto.setTotalCount(loanMapper.findLoanListCountMobileApp(ProductTypeConverter.stringConvertTo(loanListRequestDto.getProductType()), loanListRequestDto.getLoanStatus(), loanListRequestDto.getRateLower(), loanListRequestDto.getRateUpper()));
 
         if (CollectionUtils.isNotEmpty(loanDtoList)) {
             loanListResponseDataDto.setLoanList(loanDtoList);

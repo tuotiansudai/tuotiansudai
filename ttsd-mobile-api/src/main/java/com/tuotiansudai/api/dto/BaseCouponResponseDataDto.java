@@ -3,7 +3,6 @@ package com.tuotiansudai.api.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.util.ProductTypeConvertor;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.model.CouponType;

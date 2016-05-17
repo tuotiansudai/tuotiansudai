@@ -3,7 +3,7 @@ package com.tuotiansudai.api.util;
 import com.google.common.base.Strings;
 import com.tuotiansudai.repository.model.ProductType;
 
-public class ProductTypeConvertor {
+public class ProductTypeConverter {
 
     public static ProductType stringConvertTo(String s) {
         if (Strings.isNullOrEmpty(s)) {
