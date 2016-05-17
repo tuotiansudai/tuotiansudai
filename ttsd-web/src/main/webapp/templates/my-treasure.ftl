@@ -194,7 +194,7 @@
                                 </p>
 
                                 <p>
-                                    <#if (coupon.productTypeList?size)  == 4>
+                                    <#if (record.productTypeList?size)  == 4>
                                         全部产品均可使用
                                     <#else>
                                         <#list coupon.productTypeList as productType>
