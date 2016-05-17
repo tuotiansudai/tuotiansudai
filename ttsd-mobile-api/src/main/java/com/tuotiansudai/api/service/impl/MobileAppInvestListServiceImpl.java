@@ -105,7 +105,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
             UnmodifiableIterator<InvestModel> filter = Iterators.filter(investList.iterator(), new Predicate<InvestModel>() {
                 @Override
                 public boolean apply(InvestModel input) {
-                    return TransferStatus.TRANSFERABLE == input.getTransferStatus() && investTransferService.isTransferable(input.getId());
+                    return TransferStatus.TRANSFERABLE == input.getTransferStatus() && investTransferService.isTransferable(input.getId()) && input.getTransferInvestId() == null;
                 }
             });
             investList = Lists.newArrayList(filter);
