@@ -22,9 +22,73 @@
         <span class="select-item" data-status="COMPLETE">回款完毕</span>
     </div>
     <div class="clear-blank"></div>
-    <div class="invest-list">
-
-    </div>
+    <div class="invest-list" id="investList"></div>
+    <script type="text/html" id="investListTpl">
+        <table class="invest-list table-striped">
+            <thead>
+                <tr>
+                    <th>项目名称</th>
+                    <th class="tr">我的投资(元)</th>
+                    <th>交易时间</th>
+                    <th>交易状态</th>
+                    <th>下次回款(元)</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            {{if records.length>0}}
+            {{each records}}
+                <tr>
+                    <td>
+                        <span class="icon-list" data-benefit="{{$value.birthdayBenefit}}">
+                            {{each $value.couponTypeList}}
+                            {{if $value=='BIRTHDAY_COUPON'}}
+                            <i class="birth-icon"></i>
+                            {{/if}}
+                            {{if $value=='INTEREST_COUPON'}}
+                            <i class="coupon-icon"></i>
+                            {{/if}}
+                            {{if $value=='RED_ENVELOPE'}}
+                            <i class="money-icon"></i>
+                            {{/if}}
+                            {{if $value=='NEWBIE_COUPON'}}
+                            <i class="newbie-icon"></i>
+                            {{/if}}
+                            {{if $value=='INVEST_COUPON'}}
+                            <i class="ticket-icon"></i>
+                            {{/if}}
+                            {{/each}}
+                        </span>
+                        <a href="/loan/{{$value.loanId}}" class="project-name">{{$value.loanName}}</a>
+                    </td>
+                    <td>{{$value.amount}}</td>
+                    <td>{{$value.createdTime}}</td>
+                    <td>{{$value.status}}</td>
+                    <td>
+                    {{if $value.nextRepayDate}}
+                        {{$value.nextRepayDate}} / {{$value.nextRepayAmount}}
+                    {{else}}
+                     -- 
+                    {{/if}}
+                    </td>
+                    <td>
+                    {{if $value.hasInvestRepay}}
+                    <a class="show-invest-repay" data-url="/investor/invest/{{$value.investId}}/repay-data">回款记录</a> |
+                    <a class="red" href="/contract/investor/loanId/{{$value.loanId}}" target="_blank">合同</a>
+                    {{else}}
+                    --
+                    {{/if}}
+                    </td>
+                </tr>
+            {{/each}}
+            {{else}}
+            <td colspan="6" class="no-data">暂时没有投资记录</td>
+            {{/if}}
+            </tbody>
+        </table>
+    </script>
+        
+    
     <div class="pagination" data-url="/investor/invest-list-data" data-page-size="10">
     </div>
 </div>

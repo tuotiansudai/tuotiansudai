@@ -112,7 +112,11 @@
                     <#list successSumInvestRepayList as successSumInvestRepay>
                     <tr>
                         <td>
-                            <i <#if successSumInvestRepay.birthdayCoupon>class="birth-icon" data-benefit="${successSumInvestRepay.birthdayBenefit}"</#if>></i>
+                            <#if successSumInvestRepay.couponTypeList??>
+                                <#list successSumInvestRepay.couponTypeList as couponType>
+                                    <i <#if successSumInvestRepay.birthdayCoupon>class="birth-icon" data-benefit="${successSumInvestRepay.birthdayBenefit}"</#if>></i>
+                                </#list>
+                            </#if>
                             <a href="/loan/${successSumInvestRepay.loan.id?string('0')}" class="month-title">${successSumInvestRepay.loan.name!}</a>
                         </td>
                         <td>${(((successSumInvestRepay.loan.activityRate+successSumInvestRepay.loan.baseRate)*100)?string('0.00'))!}%</td>
@@ -148,7 +152,11 @@
                     <#list notSuccessSumInvestRepayList as notSuccessSumInvestRepay>
                     <tr>
                         <td>
-                            <i <#if notSuccessSumInvestRepay.birthdayCoupon>class="birth-icon" data-benefit="${notSuccessSumInvestRepay.birthdayBenefit}"</#if>></i>
+                            <#if notSuccessSumInvestRepay.couponTypeList??>
+                                <#list notSuccessSumInvestRepay.couponTypeList as couponType>
+                                    <i <#if notSuccessSumInvestRepay.birthdayCoupon>class="birth-icon" data-benefit="${notSuccessSumInvestRepay.birthdayBenefit}"</#if>></i>
+                                </#list>
+                            </#if>
                             <a href="/loan/${notSuccessSumInvestRepay.loan.id?string('0')}" class="month-title">${notSuccessSumInvestRepay.loan.name!}</a>
                         </td>
                         <td>${(((notSuccessSumInvestRepay.loan.activityRate+notSuccessSumInvestRepay.loan.baseRate)*100)?string('0.00'))!}%</td>

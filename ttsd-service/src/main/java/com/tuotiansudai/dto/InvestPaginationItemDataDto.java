@@ -2,15 +2,13 @@ package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.repository.model.InvestPaginationItemView;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class InvestPaginationItemDataDto implements Serializable {
 
@@ -69,6 +67,8 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     private double birthdayBenefit;
 
+    private List<CouponType> couponTypeList;
+
     public InvestPaginationItemDataDto(InvestPaginationItemView view) {
         this.investId = view.getId();
         this.loanId = view.getLoanId();
@@ -97,6 +97,7 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.city = view.getCity();
         this.birthdayCoupon = view.isBirthdayCoupon();
         this.birthdayBenefit = view.getBirthdayBenefit();
+        this.couponTypeList = view.getCouponTypeList();
     }
 
     public boolean isStaff() {
@@ -278,4 +279,8 @@ public class InvestPaginationItemDataDto implements Serializable {
     public void setBirthdayBenefit(double birthdayBenefit) {
         this.birthdayBenefit = birthdayBenefit;
     }
+
+    public List<CouponType> getCouponTypeList() { return couponTypeList; }
+
+    public void setCouponTypeList(List<CouponType> couponTypeList) { this.couponTypeList = couponTypeList; }
 }

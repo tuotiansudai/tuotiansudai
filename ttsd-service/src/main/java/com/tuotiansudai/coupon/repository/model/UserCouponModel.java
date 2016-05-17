@@ -1,5 +1,6 @@
 package com.tuotiansudai.coupon.repository.model;
 
+import com.tuotiansudai.repository.model.CouponType;
 import com.tuotiansudai.repository.model.InvestStatus;
 
 import java.io.Serializable;

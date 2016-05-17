@@ -6,6 +6,7 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
+import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -216,6 +218,17 @@ public class InvestServiceImpl implements InvestService {
             index = index > totalPages ? totalPages : index;
             items = investMapper.findInvestPagination(loanId, investorLoginName, channel, strSource, role, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus);
             for (InvestPaginationItemView investPaginationItemView : items) {
+                List<UserCouponModel> userCouponList = userCouponMapper.findByInvestId(investPaginationItemView.getId());
+                if (CollectionUtils.isNotEmpty(userCouponList)) {
+                    List<CouponType> couponTypeList = new ArrayList<>();
+                    for(UserCouponModel userCouponView : userCouponList){
+                        CouponModel couponModel = couponMapper.findById(userCouponView.getCouponId());
+                        if(couponModel != null && couponModel.getCouponType() != null){
+                            couponTypeList.add(couponModel.getCouponType());
+                        }
+                    }
+                    investPaginationItemView.setCouponTypeList(couponTypeList);
+                }
                 List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndInvestId(investorLoginName, investPaginationItemView.getId());
                 investPaginationItemView.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
                 if (CollectionUtils.isNotEmpty(userCouponModels)) {
