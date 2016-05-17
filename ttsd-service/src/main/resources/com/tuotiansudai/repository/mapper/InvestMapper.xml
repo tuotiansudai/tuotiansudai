@@ -116,7 +116,7 @@
         inner join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
         and loan.status &lt;&gt; 'CANCEL'
-        and transfer_invest_id is null
+        and invest.transfer_invest_id is null
         order by invest.created_time desc
         <if test=" isPagination == true">
             limit #{index}, #{pageSize}
@@ -127,7 +127,7 @@
         from invest
         inner join loan on invest.loan_id = loan.id
         where invest.login_name = #{loginName}
-        and transfer_invest_id is null
+        and invest.transfer_invest_id is null
         and loan.status &lt;&gt; 'CANCEL'
     </select>
 

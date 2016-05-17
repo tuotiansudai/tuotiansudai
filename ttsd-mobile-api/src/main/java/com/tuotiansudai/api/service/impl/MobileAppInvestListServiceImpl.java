@@ -170,7 +170,15 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
                 }
 
                 dto.setInvestInterest(AmountConverter.convertCentToString(amount));
-                dto.setTransferStatus(invest.getStatus() == InvestStatus.SUCCESS ? invest.getTransferStatus().name() : "");
+                String transferStatus;
+                if (invest.getTransferStatus() == TransferStatus.TRANSFERABLE) {
+                    transferStatus = investTransferService.isTransferable(invest.getId()) ? invest.getTransferStatus().name() : "";
+                } else if (invest.getTransferStatus() == TransferStatus.NONTRANSFERABLE) {
+                    transferStatus = "";
+                } else {
+                    transferStatus = invest.getTransferStatus().name();
+                }
+                dto.setTransferStatus(transferStatus);
                 LoanRepayModel loanRepayModel = loanRepayMapper.findCurrentLoanRepayByLoanId(invest.getLoanId());
                 dto.setLeftPeriod(loanRepayModel == null ? "0" : String.valueOf(investRepayMapper.findLeftPeriodByTransferInvestIdAndPeriod(invest.getId(), loanRepayModel.getPeriod())));
                 list.add(dto);
