@@ -62,6 +62,7 @@
             <result column="recheck_time" property="recheckTime"></result>
             <result column="loan_status" property="status"></result>
             <result column="loan_amount" property="loanAmount"></result>
+            <result column="duration" property="duration"></result>
         </association>
     </resultMap>
 

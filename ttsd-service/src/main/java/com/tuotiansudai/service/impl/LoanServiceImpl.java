@@ -224,7 +224,7 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setLoanStatus(loanModel.getStatus());
         loanDto.setAmountNeedRaised(loanModel.getLoanAmount() - investedAmount);
         loanDto.setMaxInvestAmount(AmountConverter.convertCentToString(loanModel.getMaxInvestAmount()));
-
+        loanDto.setDuration(loanModel.getDuration());
         loanDto.setDescriptionHtml(loanModel.getDescriptionHtml());
         loanDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
         loanDto.setRaisingPeriod(Days.daysBetween(new DateTime(loanModel.getFundraisingStartTime()).withTimeAtStartOfDay(),
