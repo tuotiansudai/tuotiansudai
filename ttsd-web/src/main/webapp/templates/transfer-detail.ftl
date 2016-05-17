@@ -55,7 +55,7 @@
                 <p class="img-status"><img src="${staticServer}/images/sign/loan/transfered.png"></p>
                 <p class="status-text">转让完成时间：${transferApplication.transferTime?string("yyyy-MM-dd HH:mm:ss")}</p>
             <#elseif (transferApplication.transferStatus.name() == "CANCEL")>
-                <p class="img-status">已取消</p>
+                <p class="img-status"><img src="${staticServer}/images/sign/loan/transfercancel.png"></p>
                 <p class="status-text"></p>
             <#else>
                 <form action="/transfer/purchase" method="post" id="transferForm">
