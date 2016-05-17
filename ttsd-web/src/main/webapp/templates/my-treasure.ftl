@@ -197,8 +197,8 @@
                                     <#if (record.productTypeList?size)  == 4>
                                         全部产品均可使用
                                     <#else>
-                                        <#list coupon.productTypeList as productType>
-                                            <#if productType_index == (coupon.productTypeList?size - 1)>
+                                        <#list record.productTypeList as productType>
+                                            <#if productType_index == (record.productTypeList?size - 1)>
                                             ${productType.getName()}
                                             <#else>
                                             ${productType.getName()},
