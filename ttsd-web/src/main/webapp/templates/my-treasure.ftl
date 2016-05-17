@@ -117,7 +117,7 @@
                                             <#if productType_index == (coupon.productTypeList?size - 1)>
                                             ${productType.getName()}
                                             <#else>
-                                            ${productType.getName()()},
+                                            ${productType.getName()},
                                             </#if>
                                         </#list>
                                         产品可用
