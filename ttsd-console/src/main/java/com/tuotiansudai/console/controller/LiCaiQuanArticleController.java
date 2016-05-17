@@ -5,7 +5,6 @@ import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.repository.model.ArticleSectionType;
-import com.tuotiansudai.service.LiCaiQuanArticleService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
