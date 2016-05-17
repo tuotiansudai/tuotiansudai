@@ -168,8 +168,8 @@ public class CouponServiceTest {
         smsCaptchaMapper.create(smsCaptchaModel);
 
         CouponDto couponDto = fakeCouponDto();
-        DateTime startDateTime = new DateTime().plusDays(-1);
-        DateTime endDateTime = new DateTime().plusDays(1);
+        DateTime startDateTime = new DateTime().plusDays(-10);
+        DateTime endDateTime = new DateTime().plusDays(10);
         couponDto.setStartTime(startDateTime.toDate());
         couponDto.setEndTime(endDateTime.toDate());
         CouponModel couponModel = new CouponModel(couponDto);
@@ -185,8 +185,8 @@ public class CouponServiceTest {
 
         List<UserCouponModel> userCouponModels = userCouponMapper.findByLoginName(registerUserDto.getLoginName(), null);
         CouponModel couponModel1 = couponMapper.findById(couponModel.getId());
-//        assertEquals(, CollectionUtils.isNotEmpty(userCouponModels));
-//        assertEquals(1, couponModel1.getIssuedCount());
+        assertEquals(true, CollectionUtils.isNotEmpty(userCouponModels));
+        assertEquals(1, couponModel1.getIssuedCount());
 
     }
 
