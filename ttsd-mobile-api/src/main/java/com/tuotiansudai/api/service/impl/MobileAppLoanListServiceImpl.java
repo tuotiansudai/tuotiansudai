@@ -61,19 +61,13 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     }
 
     @Override
-    public BaseResponseDto generateIndexLoan(BaseParamDto baseParamDto) {
-        BaseResponseDto dto = new BaseResponseDto();
+    public BaseResponseDto<LoanListResponseDataDto> generateIndexLoan(BaseParamDto baseParamDto) {
+        BaseResponseDto<LoanListResponseDataDto> dto = new BaseResponseDto<>();
         LoanListResponseDataDto loanListResponseDataDto = new LoanListResponseDataDto();
         List<LoanModel> loanModels = loanMapper.findHomeLoan();
-        List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(loanModels)) {
-            loanDtoList = convertLoanDto(loanModels);
-            loanListResponseDataDto.setLoanList(loanDtoList);
-            dto.setData(loanListResponseDataDto);
-        } else {
-            loanListResponseDataDto.setLoanList(new ArrayList<LoanResponseDataDto>());
-            dto.setData(loanListResponseDataDto);
-        }
+        List<LoanResponseDataDto> loanDtoList = convertLoanDto(loanModels);
+        loanListResponseDataDto.setLoanList(loanDtoList);
+        dto.setData(loanListResponseDataDto);
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         return dto;
@@ -86,8 +80,8 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         for (LoanModel loan : loanList) {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());
-            loanResponseDataDto.setLoanType(loan.getProductType() != null ? loan.getProductType().name() : "");
-            loanResponseDataDto.setLoanTypeName(loan.getProductType() != null ? loan.getProductType().getName() : "");
+            loanResponseDataDto.setLoanType(loan.getProductType() != null ? loan.getProductType().getProductLine() : "");
+            loanResponseDataDto.setLoanTypeName(loan.getProductType() != null ? loan.getProductType().getProductLineName() : "");
             loanResponseDataDto.setLoanName(loan.getName());
             loanResponseDataDto.setRepayTypeCode("");
             loanResponseDataDto.setRepayTypeName(loan.getType().getName());
