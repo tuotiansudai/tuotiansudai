@@ -16,13 +16,13 @@ import java.util.List;
 public interface LicaiquanArticleMapper {
     void createArticle(LicaiquanArticleModel licaiquanArticleModel);
 
-    void deleteArticle(@Param("id")long id);
+    void deleteArticle(@Param("id") long id);
 
     void updateArticle(LicaiquanArticleModel licaiquanArticleModel);
 
-    void updateLikeCount(@Param("id")long id, @Param("likeCount") int likeCount);
+    void updateLikeCount(@Param("id") long id, @Param("likeCount") int likeCount);
 
-    void updateReadCount(@Param("id")long id, @Param("readCount") int readCount);
+    void updateReadCount(@Param("id") long id, @Param("readCount") int readCount);
 
     LicaiquanArticleContentModel findArticleContentById(@Param("id") long id);
 
@@ -31,4 +31,8 @@ public interface LicaiquanArticleMapper {
     List<LicaiquanArticleListItemModel> findExistedArticleListOrderByUpdateTime(@Param("startId") long startId, @Param("size") int size);
 
     List<LicaiquanArticleListItemModel> findDeletedArticleListOrderByUpdateTime(@Param("startId") long startId, @Param("size") int size);
+
+    List<LicaiquanArticleListItemModel> findArticleListByTitleAndSection(@Param(value = "title") String title,
+                                                                         @Param(value = "section") String section,
+                                                                         @Param(value = "index") Integer index);
 }

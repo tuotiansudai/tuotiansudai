@@ -105,4 +105,17 @@
         LIMIT #{size}
     </select>
 
+    <select id="findArticleListByTitleAndSection" resultMap="licaiquanArticleModel" parameterType="map" >
+        select * from licaiquan_article t
+        <where>
+            <if test="title != null">
+                t.title = #{title}
+            </if>
+            <if test="section != null">
+                and t.section = #{section}
+            </if>
+        </where>
+        order by updated_time desc,created_time desc
+    </select>
+
 </mapper>
