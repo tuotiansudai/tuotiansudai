@@ -120,7 +120,7 @@
 
     <div class="home-content" id="productFrame">
         <#list loans as loan>
-            <#if loan.periods == 1>
+            <#if loan.activityType == "NEWBIE">
             <div class="page-width clearfix media-hide">
                 <h3 class="label-title">
                     <span class="product-icon"></span>
@@ -232,7 +232,7 @@
             <div class="loan-list-index fl">
                 <ul class="loan-box-inner loan-btn">
                 <#list loans as loan>
-                    <#if loan.periods gt 1>
+                    <#if loan.activityType != "NEWBIE">
                         <li data-url="/loan/${(loan.id?string.computer)!}" class="clearfix">
                             <div class="loan-info-frame fl">
                                 <div class="loan-top">
@@ -325,7 +325,7 @@
             <div class="product-box-list fl">
                 <div class="product-box-inner">
                 <#list loans as loan>
-                    <#if loan.periods == 1>
+                    <#if loan.activityType == "NEWBIE">
                         <div class="product-box tc product-type">
                         <#if loan.productType??>
                             <i class="new-user"></i>
@@ -390,7 +390,7 @@
                             </#if>
                         </div>
                     </#if>
-                    <#if loan.periods gt 1>
+                    <#if loan.activityType != "NEWBIE">
                         <div class="product-box tc product-type">
                         <#if loan.productType??>
                             <i class="${loan.productType.name()?lower_case}"></i>
