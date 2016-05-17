@@ -33,7 +33,7 @@ public interface UserService {
      * @param newPassword      新密码（明文）
      * @return 修改成功返回 true , 修改失败返回 false
      */
-    boolean changePassword(String loginName, String originalPassword, String newPassword);
+    boolean changePassword(String loginName, String originalPassword, String newPassword, String ip, String platform, String deviceId);
 
     void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException, ReferrerRelationException;
 

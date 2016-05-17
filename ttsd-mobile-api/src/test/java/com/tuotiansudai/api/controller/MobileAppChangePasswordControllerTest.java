@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -31,7 +32,7 @@ public class MobileAppChangePasswordControllerTest extends ControllerTestBase {
         requestDto.setBaseParam(BaseParamTest.getInstance());
         requestDto.setOriginPassword("123");
         requestDto.setNewPassword("123abc");
-        when(service.changePassword(any(ChangePasswordRequestDto.class))).thenReturn(successResponseDto);
+        when(service.changePassword(any(ChangePasswordRequestDto.class), anyString())).thenReturn(successResponseDto);
         doRequestWithServiceMockedTest("/changepassword", requestDto);
     }
 
@@ -41,7 +42,7 @@ public class MobileAppChangePasswordControllerTest extends ControllerTestBase {
         requestDto.setBaseParam(BaseParamTest.getInstance());
         requestDto.setOriginPassword("123");
         requestDto.setNewPassword("12bc");
-        when(service.changePassword(any(ChangePasswordRequestDto.class))).thenReturn(successResponseDto);
+        when(service.changePassword(any(ChangePasswordRequestDto.class), anyString())).thenReturn(successResponseDto);
         doRequestWithServiceIsOkMockedTest("/changepassword", requestDto)
                 .andExpect(jsonPath("$.code").value(ReturnMessage.PASSWORD_IS_INVALID.getCode()));
     }

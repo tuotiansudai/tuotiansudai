@@ -43,7 +43,7 @@ public interface InvestService {
 
     void turnOnAutoInvest(AutoInvestPlanModel model);
 
-    void turnOffAutoInvest(String loginName);
+    void turnOffAutoInvest(String loginName, String ip);
 
     AutoInvestPlanModel findAutoInvestPlan(String loginName);
 
@@ -57,7 +57,7 @@ public interface InvestService {
 
     BaseDto<PayDataDto> noPasswordInvest(InvestDto investDto) throws InvestException;
 
-    boolean switchNoPasswordInvest(String loginName, boolean isTurnOn);
+    boolean switchNoPasswordInvest(String loginName, boolean isTurnOn, String ip);
 
     void markNoPasswordRemind(String loginName);
 

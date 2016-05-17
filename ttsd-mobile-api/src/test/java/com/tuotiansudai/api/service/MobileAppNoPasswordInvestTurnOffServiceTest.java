@@ -54,7 +54,7 @@ public class MobileAppNoPasswordInvestTurnOffServiceTest extends ServiceTestBase
         noPasswordInvestTurnOffRequestDto.setBaseParam(baseParam);
         noPasswordInvestTurnOffRequestDto.setCaptcha("123456");
         when(accountMapper.findByLoginName(anyString())).thenReturn(accountModel);
-        baseResponseDto = mobileAppNoPasswordInvestTurnOffService.noPasswordInvestTurnOff(noPasswordInvestTurnOffRequestDto);
+        baseResponseDto = mobileAppNoPasswordInvestTurnOffService.noPasswordInvestTurnOff(noPasswordInvestTurnOffRequestDto, "127.0.0.1");
 
         assertEquals("0000",baseResponseDto.getCode());
         assertEquals("",baseResponseDto.getMessage());

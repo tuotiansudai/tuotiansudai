@@ -131,7 +131,7 @@ public class InvestServiceTest {
         assert dbModel.getLoginName().equals(loginName);
         assert dbModel.isEnabled();
 
-        investService.turnOffAutoInvest(loginName);
+        investService.turnOffAutoInvest(loginName, "127.0.0.1");
 
         dbModel = investService.findAutoInvestPlan(loginName);
         assert dbModel != null;

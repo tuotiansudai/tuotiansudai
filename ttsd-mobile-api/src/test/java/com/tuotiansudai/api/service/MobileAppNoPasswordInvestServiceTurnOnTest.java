@@ -38,7 +38,7 @@ public class MobileAppNoPasswordInvestServiceTurnOnTest extends ServiceTestBase{
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("loginName");
         baseParamDto.setBaseParam(baseParam);
-        BaseResponseDto baseResponseDto = mobileAppNoPasswordInvestTurnOnService.noPasswordInvestTurnOn(baseParamDto);
+        BaseResponseDto baseResponseDto = mobileAppNoPasswordInvestTurnOnService.noPasswordInvestTurnOn(baseParamDto, "127.0.0.1");
 
         assertEquals("0000",baseResponseDto.getCode());
         assertEquals("",baseResponseDto.getMessage());

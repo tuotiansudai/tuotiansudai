@@ -12,6 +12,7 @@ public class AutoInvestPlanModel implements Serializable {
     private int autoInvestPeriods;
     private boolean enabled;
     private Date createdTime;
+    private String ip;
 
     public long getId() {
         return id;
@@ -77,5 +78,11 @@ public class AutoInvestPlanModel implements Serializable {
         this.enabled = enabled;
     }
 
+    public String getIp() {
+        return ip;
+    }
 
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
 }

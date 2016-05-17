@@ -260,7 +260,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public void turnOffAutoInvest(String loginName) {
+    public void turnOffAutoInvest(String loginName, String ip) {
         autoInvestPlanMapper.disable(loginName);
     }
 
@@ -296,7 +296,7 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     @Transactional
-    public boolean switchNoPasswordInvest(String loginName, boolean isTurnOn) {
+    public boolean switchNoPasswordInvest(String loginName, boolean isTurnOn, String ip) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         accountModel.setNoPasswordInvest(isTurnOn);
         accountMapper.update(accountModel);

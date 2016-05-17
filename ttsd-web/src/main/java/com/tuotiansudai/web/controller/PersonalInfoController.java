@@ -5,9 +5,12 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserOpLogModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.util.RequestIPParser;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping(path = "/personal-info")
@@ -48,8 +53,8 @@ public class PersonalInfoController {
         if (bankCard != null) {
             mv.addObject("bankCard", bankCard.getCardNumber());
         }
-        mv.addObject("noPasswordInvest",accountModel.isNoPasswordInvest());
-        mv.addObject("autoInvest",accountModel.isAutoInvest());
+        mv.addObject("noPasswordInvest", accountModel.isNoPasswordInvest());
+        mv.addObject("autoInvest", accountModel.isAutoInvest());
 
         return mv;
     }
@@ -78,12 +83,13 @@ public class PersonalInfoController {
 
     @RequestMapping(value = "/change-password", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> changePassword(String originalPassword, String newPassword, String newPasswordConfirm) {
+    public BaseDto<BaseDataDto> changePassword(String originalPassword, String newPassword, String newPasswordConfirm, HttpServletRequest request) {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
 
-        dataDto.setStatus(newPassword.equals(newPasswordConfirm) && userService.changePassword(LoginUserInfo.getLoginName(), originalPassword, newPassword));
+        dataDto.setStatus(newPassword.equals(newPasswordConfirm) && userService.changePassword(LoginUserInfo.getLoginName(),
+                originalPassword, newPassword, RequestIPParser.parse(request), "WEB", ""));
 
         return baseDto;
     }

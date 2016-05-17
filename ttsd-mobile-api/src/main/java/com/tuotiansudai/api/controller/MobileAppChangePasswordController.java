@@ -4,6 +4,7 @@ import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.ChangePasswordRequestDto;
 import com.tuotiansudai.api.dto.ReturnMessage;
 import com.tuotiansudai.api.service.MobileAppChangePasswordService;
+import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -20,13 +22,13 @@ public class MobileAppChangePasswordController extends MobileAppBaseController {
     private MobileAppChangePasswordService service;
 
     @RequestMapping(value = "/changepassword", method = RequestMethod.POST)
-    public BaseResponseDto registerUser(@Valid @RequestBody ChangePasswordRequestDto requestDto, BindingResult bindingResult) {
+    public BaseResponseDto registerUser(@Valid @RequestBody ChangePasswordRequestDto requestDto, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             String errorCode = bindingResult.getFieldError().getDefaultMessage();
             String errorMessage = ReturnMessage.getErrorMsgByCode(errorCode);
             return new BaseResponseDto(errorCode, errorMessage);
         } else {
-            return service.changePassword(requestDto);
+            return service.changePassword(requestDto, RequestIPParser.parse(request));
         }
     }
 }

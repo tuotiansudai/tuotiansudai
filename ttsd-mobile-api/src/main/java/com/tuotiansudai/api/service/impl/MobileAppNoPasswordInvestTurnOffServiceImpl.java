@@ -24,7 +24,7 @@ public class MobileAppNoPasswordInvestTurnOffServiceImpl implements MobileAppNoP
     private SmsCaptchaService smsCaptchaService;
 
     @Override
-    public BaseResponseDto noPasswordInvestTurnOff(NoPasswordInvestTurnOffRequestDto noPasswordInvestTurnOffRequestDto) {
+    public BaseResponseDto noPasswordInvestTurnOff(NoPasswordInvestTurnOffRequestDto noPasswordInvestTurnOffRequestDto, String ip) {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         String loginName = noPasswordInvestTurnOffRequestDto.getBaseParam().getUserId();
         UserModel userModel = userMapper.findByLoginName(loginName);

@@ -9,6 +9,7 @@ import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
+import com.tuotiansudai.util.RequestIPParser;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Min;
 import java.util.Date;
 
@@ -135,8 +137,9 @@ public class InvestorController {
 
     @RequestMapping(value = "/auto-invest/turn-off", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto turnOffAutoInvestPlan() {
-        investService.turnOffAutoInvest(LoginUserInfo.getLoginName());
+    public BaseDto turnOffAutoInvestPlan(HttpServletRequest request) {
+        String ip = RequestIPParser.parse(request);
+        investService.turnOffAutoInvest(LoginUserInfo.getLoginName(), ip);
         return new BaseDto();
     }
 }

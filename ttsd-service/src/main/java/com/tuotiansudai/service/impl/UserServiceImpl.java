@@ -160,7 +160,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean changePassword(String loginName, String originalPassword, String newPassword) {
+    public boolean changePassword(String loginName, String originalPassword, String newPassword, String ip, String platform, String deviceId) {
 
         boolean correct = this.verifyPasswordCorrect(loginName, originalPassword);
 

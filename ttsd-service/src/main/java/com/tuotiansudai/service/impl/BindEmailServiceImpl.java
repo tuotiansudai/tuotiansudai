@@ -62,7 +62,7 @@ public class BindEmailServiceImpl implements BindEmailService {
 
     @Override
     @Transactional
-    public String verifyEmail(String loginName, String uuid)  {
+    public String verifyEmail(String loginName, String uuid, String ip, String platform, String deviceId)  {
         if (StringUtils.isEmpty(uuid)) {
             return null;
         }

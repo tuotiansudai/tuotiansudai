@@ -4,6 +4,7 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.service.BindEmailService;
+import com.tuotiansudai.util.RequestIPParser;
 import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,8 +37,9 @@ public class BindEmailController {
     }
 
     @RequestMapping(value = "/verify/{sign}", method = RequestMethod.GET)
-    public ModelAndView verifyEmail(@PathVariable String sign) {
-        return new ModelAndView("/bind-email", "email", bindEmailService.verifyEmail(LoginUserInfo.getLoginName(), sign));
+    public ModelAndView verifyEmail(@PathVariable String sign, HttpServletRequest request) {
+        String ip = RequestIPParser.parse(request);
+        return new ModelAndView("/bind-email", "email", bindEmailService.verifyEmail(LoginUserInfo.getLoginName(), sign, ip, "WEB", ""));
     }
 
 

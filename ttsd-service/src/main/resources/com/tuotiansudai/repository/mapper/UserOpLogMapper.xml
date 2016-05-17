@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.UserOpLogMapper">
+
+    <resultMap id="userOpLogModelResultMap" type="UserOpLogModel">
+        <id column="id" property="id"></id>
+        <result column="login_name" property="loginName"></result>
+        <result column="op_type" property="opType"></result>
+        <result column="ip" property="ip"></result>
+        <result column="device_id" property="deviceId"></result>
+        <result column="source" property="source"></result>
+        <result column="description" property="description"></result>
+        <result column="created_time" property="createdTime"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="UserOpLogModel">
+        insert into user_op_log (login_name, op_type, ip, device_id, source, description, created_time)
+        value(#{loginName}, #{opType}, #{ip}, #{deviceId}, #{source}, #{description}, #{createdTime})
+    </insert>
+
+</mapper>

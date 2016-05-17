@@ -27,6 +27,8 @@ public class AutoInvestPlanRequestDto extends BaseParamDto {
 
     private boolean enabled;
 
+    private String ip;
+
     public String getAutoPlanId() {
         return autoPlanId;
     }
@@ -77,6 +79,14 @@ public class AutoInvestPlanRequestDto extends BaseParamDto {
         this.enabled = enabled;
     }
 
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
     public AutoInvestPlanModel convertDtoToModel(){
         AutoInvestPlanModel autoInvestPlanModel = new AutoInvestPlanModel();
         if(StringUtils.isNotEmpty(this.getAutoPlanId())){
@@ -96,6 +106,7 @@ public class AutoInvestPlanRequestDto extends BaseParamDto {
             }
             autoInvestPlanModel.setAutoInvestPeriods(autoInvestPeriods);
         }
+        autoInvestPlanModel.setIp(this.getIp());
         return autoInvestPlanModel;
 
     }

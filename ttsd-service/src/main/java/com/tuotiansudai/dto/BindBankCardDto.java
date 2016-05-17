@@ -16,6 +16,10 @@ public class BindBankCardDto implements Serializable {
 
     private Source source = Source.WEB;
 
+    private String deviceId;
+
+    private String ip;
+
     private boolean fastPay = false;
 
     public String getLoginName() {
@@ -40,6 +44,22 @@ public class BindBankCardDto implements Serializable {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     public boolean isFastPay() {
