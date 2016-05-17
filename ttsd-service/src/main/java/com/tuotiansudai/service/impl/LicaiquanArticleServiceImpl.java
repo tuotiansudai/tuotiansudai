@@ -70,10 +70,4 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService{
 
         return articleModelList;
     }
-
-    public static void main(String args[]){
-        IdGenerator idGenerator = new IdGenerator();
-        System.out.print(idGenerator.generate());
-    }
-
 }
