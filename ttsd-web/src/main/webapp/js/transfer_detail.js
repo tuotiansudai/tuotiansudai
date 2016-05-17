@@ -45,7 +45,6 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert','red-envelope-fl
                             }
                         });
                     }else{
-
                         layer.open({
                             type: 1,
                             closeBtn: 0,
