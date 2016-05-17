@@ -45,22 +45,38 @@ require(['jquery', 'pagination', 'layerWrapper', 'coupon-alert','red-envelope-fl
                             }
                         });
                     }else{
-                        var $transferForm = $('#transferForm');
-                        if ($transferForm.attr('action') === '/transfer/purchase') {
 
-                            var isInvestor = 'INVESTOR' === $transferDetail.data('user-role');
-                            if (!isInvestor) {
-                                location.href = '/login?redirect=' + encodeURIComponent(location.href);
-                                return false;
-                            }
+                        layer.open({
+                            type: 1,
+                            closeBtn: 0,
+                            skin: 'demo-class',
+                            title: '投资提示',
+                            shadeClose:false,
+                            btn:['取消', '确认'],
+                            area: ['300px', '160px'],
+                            content: '<p class="pad-m-tb tc">确认投资？</p>',
+                            btn1: function(){
+                                layer.closeAll();
+                            },
+                            btn2:function(){
+                                var $transferForm = $('#transferForm');
+                                if ($transferForm.attr('action') === '/transfer/purchase') {
 
-                            var accountAmount = parseInt((userBalance*100).toFixed(0)) || 0;
-                            if (parseInt((transferAmount*100).toFixed(0)) > accountAmount) {
-                                location.href = '/recharge';
-                                return false;
+                                    var isInvestor = 'INVESTOR' === $transferDetail.data('user-role');
+                                    if (!isInvestor) {
+                                        location.href = '/login?redirect=' + encodeURIComponent(location.href);
+                                        return false;
+                                    }
+
+                                    var accountAmount = parseInt((userBalance*100).toFixed(0)) || 0;
+                                    if (parseInt((transferAmount*100).toFixed(0)) > accountAmount) {
+                                        location.href = '/recharge';
+                                        return false;
+                                    }
+                                }
+                                $transferForm.submit();
                             }
-                        }
-                        $transferForm.submit();
+                        });
                     }
                 })
                 .fail(function() {

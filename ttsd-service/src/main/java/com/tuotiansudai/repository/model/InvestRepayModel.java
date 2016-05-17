@@ -35,6 +35,8 @@ public class InvestRepayModel implements Serializable {
 
     private Date createdTime = new Date();
 
+    private TransferStatus transferStatus;
+
     public InvestRepayModel() {
     }
 
@@ -47,6 +49,18 @@ public class InvestRepayModel implements Serializable {
         this.expectedFee = expectedFee;
         this.repayDate = repayDate;
         this.status = status;
+    }
+
+    public InvestRepayModel(long id, long investId, int period, long corpus, long expectedInterest, long expectedFee, Date repayDate, RepayStatus status, TransferStatus transferStatus) {
+        this.id = id;
+        this.investId = investId;
+        this.period = period;
+        this.corpus = corpus;
+        this.expectedInterest = expectedInterest;
+        this.expectedFee = expectedFee;
+        this.repayDate = repayDate;
+        this.status = status;
+        this.transferStatus = transferStatus;
     }
 
     private LoanModel loan;
@@ -179,4 +193,11 @@ public class InvestRepayModel implements Serializable {
         this.loan = loan;
     }
 
+    public TransferStatus getTransferStatus() {
+        return transferStatus;
+    }
+
+    public void setTransferStatus(TransferStatus transferStatus) {
+        this.transferStatus = transferStatus;
+    }
 }

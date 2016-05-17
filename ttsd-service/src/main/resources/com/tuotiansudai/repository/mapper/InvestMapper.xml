@@ -210,6 +210,7 @@
         left join user ru on ru.login_name = u.referrer
         left join account ra on ra.login_name = u.referrer
         <where>
+            invest.transfer_invest_id is null
             <if test="loanId != null">
                 and loan.id = #{loanId}
             </if>
@@ -245,6 +246,7 @@
         select count(1)
         from invest join loan on invest.loan_id = loan.id
         <where>
+            invest.transfer_invest_id is null
             <if test="loanId != null">
                 and loan.id = #{loanId}
             </if>

@@ -36,6 +36,7 @@
         <result column="actual_repay_date" property="actualRepayDate"></result>
         <result column="status" property="status"></result>
         <result column="is_transferred" property="isTransferred"></result>
+        <result column="transfer_status" property="transferStatus"></result>
     </resultMap>
 
     <resultMap id="investRepayResultMapWithLoanResultMap" type="InvestRepayModel">
@@ -103,7 +104,7 @@
     </select>
 
     <select id="findByLoginNameAndInvestId" parameterType="map" resultMap="investRepayResultMap">
-        select invest_repay.*
+        select invest_repay.*, invest.transfer_status AS transfer_status
         from invest_repay join invest on invest_repay.invest_id = invest.id
         where invest_id = #{investId}
         and invest.login_name = #{loginName}
