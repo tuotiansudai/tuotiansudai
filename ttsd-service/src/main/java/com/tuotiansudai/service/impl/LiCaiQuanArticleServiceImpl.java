@@ -1,14 +1,16 @@
 package com.tuotiansudai.service.impl;
 
-import com.google.common.primitives.Longs;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.ArticleStatus;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.LiCaiQuanArticleDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.repository.mapper.LicaiquanArticleMapper;
 import com.tuotiansudai.repository.model.ArticleSectionType;
-import com.tuotiansudai.repository.model.LicaiquanArticleListItemModel;
+import com.tuotiansudai.repository.model.LicaiquanArticleModel;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
 import com.tuotiansudai.util.IdGenerator;
-import org.apache.ibatis.annotations.Param;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,14 +73,14 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
 
     @Override
     public List<LiCaiQuanArticleDto> findLiCaiQuanArticleDto(String title, ArticleSectionType articleSectionType,long startId, int size){
-        List<LiCaiQuanArticleDto> liCaiQuanArticleDtoList = new ArrayList<>();
-        List<LicaiquanArticleListItemModel> licaiquanArticleListItemModelList = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime(title,articleSectionType,startId,size);
-        Map<byte[],byte[]> liCaiQuanArticleDtoListHkey = redisWrapperClient.hgetAllSeri(articleRedisKey);
-        for (byte[] key : liCaiQuanArticleDtoListHkey.keySet()) {
+        List<LiCaiQuanArticleDto> articleDtoList = new ArrayList<>();
+        List<LicaiquanArticleModel> articleListItemModelList = licaiquanArticleMapper.findExistedArticleListOrderByCreateTime(title,articleSectionType,startId,size);
+        Map<byte[],byte[]> articleDtoListHkey = redisWrapperClient.hgetAllSeri(articleRedisKey);
+        for (byte[] key : articleDtoListHkey.keySet()) {
             String linkListHValue = "";
             LiCaiQuanArticleDto liCaiQuanArticleDto = new LiCaiQuanArticleDto();
             try {
-                linkListHValue = new String(liCaiQuanArticleDtoListHkey.get(key),"UTF-8");
+                linkListHValue = new String(articleDtoListHkey.get(key),"UTF-8");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -92,17 +94,23 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
             liCaiQuanArticleDto.setContent(values[6]);
             liCaiQuanArticleDto.setCreateTime(strToDate(values[7]));
             liCaiQuanArticleDto.setArticleStatus(ArticleStatus.valueOf(values[8]));
-            liCaiQuanArticleDtoList.add(liCaiQuanArticleDto);
+            articleDtoList.add(liCaiQuanArticleDto);
         }
 
-        Collections.sort(liCaiQuanArticleDtoList, new Comparator<LiCaiQuanArticleDto>(){
+        if(CollectionUtils.isNotEmpty(articleListItemModelList)){
+            for(LicaiquanArticleModel model : articleListItemModelList){
+                articleDtoList.add(new LiCaiQuanArticleDto(model,ArticleStatus.PUBLISH));
+            }
+        }
+
+        Collections.sort(articleDtoList, new Comparator<LiCaiQuanArticleDto>(){
             @Override
             public int compare(LiCaiQuanArticleDto o1, LiCaiQuanArticleDto o2) {
                 return o2.getCreateTime().after(o1.getCreateTime()) ? 1 : 0;
             }
         });
 
-        return liCaiQuanArticleDtoList;
+        return articleDtoList;
     }
 
     private Date strToDate(String strDate){

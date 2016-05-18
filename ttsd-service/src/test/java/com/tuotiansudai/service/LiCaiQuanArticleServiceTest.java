@@ -67,4 +67,10 @@ public class LiCaiQuanArticleServiceTest {
         liCaiQuanArticleDto.setCreateTime(new Date());
         return liCaiQuanArticleDto;
     }
+
+    @Test
+    public void shouldFindLiCaiQuanArticleDtoIsOk(){
+        LiCaiQuanArticleDto liCaiQuanArticleDto = fakeLiCaiQuanArticleDto();
+        liCaiQuanArticleService.createArticle(liCaiQuanArticleDto);
+    }
 }
