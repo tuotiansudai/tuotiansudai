@@ -2,20 +2,16 @@ package com.tuotiansudai.repository.model;
 
 import java.util.Date;
 
-/**
- * Created by huoxuanbo on 16/5/16.
- */
-public class ArticleReviewComment {
+public class LicaiquanArticleCommentModel {
     private long id;
     private long articleId;
     private String comment;
     private Date createTime;
 
-    public ArticleReviewComment() {
+    public LicaiquanArticleCommentModel() {
     }
 
-    public ArticleReviewComment(long id, long articleId, String comment, Date createTime) {
-        this.id = id;
+    public LicaiquanArticleCommentModel(long articleId, String comment, Date createTime) {
         this.articleId = articleId;
         this.comment = comment;
         this.createTime = createTime;

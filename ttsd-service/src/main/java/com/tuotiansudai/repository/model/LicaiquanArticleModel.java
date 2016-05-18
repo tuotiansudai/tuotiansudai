@@ -7,13 +7,9 @@ import java.util.Date;
  */
 public class LicaiquanArticleModel {
     /**
-     * 主键，文章列表ID
+     * 文章ID, 主键
      */
     private long id;
-    /**
-     * 文章ID
-     */
-    private long articleId;
     /**
      * 文章标题
      */
@@ -45,7 +41,7 @@ public class LicaiquanArticleModel {
     /**
      * 缩略图
      */
-    private String thumbnail;
+    private String thumb;
     /**
      * 展示图
      */
@@ -54,14 +50,6 @@ public class LicaiquanArticleModel {
      * 文章内容，html5格式
      */
     private String content;
-    /**
-     * 点赞数
-     */
-    private int likeCount;
-    /**
-     * 阅读数
-     */
-    private int readCount;
     /**
      * 创建时间
      */
@@ -78,9 +66,8 @@ public class LicaiquanArticleModel {
     public LicaiquanArticleModel() {
     }
 
-    public LicaiquanArticleModel(long id, long articleId, String title, String creator, String checker, String author, ArticleSectionType articleSection, String source, boolean carousel, String thumbnail, String showPicture, String content, int likeCount, int readCount, Date createTime, Date updateTime, boolean isDeleted) {
+    public LicaiquanArticleModel(long id, String title, String creator, String checker, String author, ArticleSectionType articleSection, String source, boolean carousel, String thumb, String showPicture, String content, Date createTime) {
         this.id = id;
-        this.articleId = articleId;
         this.title = title;
         this.creator = creator;
         this.checker = checker;
@@ -88,14 +75,10 @@ public class LicaiquanArticleModel {
         this.articleSection = articleSection;
         this.source = source;
         this.carousel = carousel;
-        this.thumbnail = thumbnail;
+        this.thumb = thumb;
         this.showPicture = showPicture;
         this.content = content;
-        this.likeCount = likeCount;
-        this.readCount = readCount;
         this.createTime = createTime;
-        this.updateTime = updateTime;
-        this.isDeleted = isDeleted;
     }
 
     public long getId() {
@@ -104,14 +87,6 @@ public class LicaiquanArticleModel {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getArticleId() {
-        return articleId;
-    }
-
-    public void setArticleId(long articleId) {
-        this.articleId = articleId;
     }
 
     public String getTitle() {
@@ -170,12 +145,12 @@ public class LicaiquanArticleModel {
         this.carousel = carousel;
     }
 
-    public String getThumbnail() {
-        return thumbnail;
+    public String getThumb() {
+        return thumb;
     }
 
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setThumb(String thumb) {
+        this.thumb = thumb;
     }
 
     public String getShowPicture() {
@@ -192,22 +167,6 @@ public class LicaiquanArticleModel {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public int getLikeCount() {
-        return likeCount;
-    }
-
-    public void setLikeCount(int likeCount) {
-        this.likeCount = likeCount;
-    }
-
-    public int getReadCount() {
-        return readCount;
-    }
-
-    public void setReadCount(int readCount) {
-        this.readCount = readCount;
     }
 
     public Date getCreateTime() {
