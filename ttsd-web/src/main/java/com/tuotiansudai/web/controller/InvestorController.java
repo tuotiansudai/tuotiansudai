@@ -116,7 +116,7 @@ public class InvestorController {
 
     @RequestMapping(value = "/auto-invest/turn-on", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto turnOnAutoInvestPlan(@RequestBody AutoInvestPlanDto autoInvestPlanDto) {
+    public BaseDto turnOnAutoInvestPlan(@RequestBody AutoInvestPlanDto autoInvestPlanDto, HttpServletRequest request) {
         BaseDto baseDto = new BaseDto();
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
@@ -128,6 +128,7 @@ public class InvestorController {
         model.setMaxInvestAmount(AmountConverter.convertStringToCent(autoInvestPlanDto.getMaxInvestAmount()));
         model.setRetentionAmount(AmountConverter.convertStringToCent(autoInvestPlanDto.getRetentionAmount()));
         model.setAutoInvestPeriods(autoInvestPlanDto.getAutoInvestPeriods());
+        model.setIp(RequestIPParser.parse(request));
         if (model.getMaxInvestAmount() < model.getMaxInvestAmount()) {
             dataDto.setStatus(false);
         }

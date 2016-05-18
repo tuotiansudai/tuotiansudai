@@ -13,6 +13,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.Locale;
 
 @Aspect
@@ -32,6 +33,7 @@ public class UserOpLogAspect {
         logModel.setDeviceId(dto.getBaseParam().getDeviceId());
         logModel.setSource(Source.valueOf(dto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)));
         logModel.setOpType(UserOpType.AUTO_INVEST);
+        logModel.setCreatedTime(new Date());
         logModel.setDescription(dto.isEnabled() ? "Turn On" : "Turn Off");
 
         userOpLogMapper.create(logModel);
@@ -48,6 +50,7 @@ public class UserOpLogAspect {
         logModel.setDeviceId(dto.getBaseParam().getDeviceId());
         logModel.setSource(Source.valueOf(dto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)));
         logModel.setOpType(UserOpType.INVEST_NO_PASSWORD);
+        logModel.setCreatedTime(new Date());
         logModel.setDescription("Turn On");
 
         userOpLogMapper.create(logModel);
@@ -66,7 +69,8 @@ public class UserOpLogAspect {
         logModel.setDeviceId(dto.getBaseParam().getDeviceId());
         logModel.setSource(Source.valueOf(dto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)));
         logModel.setOpType(UserOpType.INVEST_NO_PASSWORD);
-        logModel.setDescription("Turn Off. " + (retDto.isSuccess() ? "Success" : "Faild"));
+        logModel.setCreatedTime(new Date());
+        logModel.setDescription("Turn Off. " + (retDto.isSuccess() ? "Success" : "Fail"));
 
         userOpLogMapper.create(logModel);
     }

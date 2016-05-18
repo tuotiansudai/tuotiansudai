@@ -13,7 +13,7 @@ public class UserOpLogServiceImpl implements UserOpLogService {
     private UserOpLogMapper userOpLogMapper;
 
     @Override
-    public UserOpLogModel create(UserOpLogModel model) {
-        return userOpLogMapper.create(model);
+    public void create(UserOpLogModel model) {
+        userOpLogMapper.create(model);
     }
 }

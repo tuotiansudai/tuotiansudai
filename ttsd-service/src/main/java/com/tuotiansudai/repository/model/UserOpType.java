@@ -4,8 +4,7 @@ package com.tuotiansudai.repository.model;
 public enum UserOpType {
 
     CHANGE_PASSWORD("修改密码"),
-    BIND_EMAIL("绑定邮箱"),
-    CHANGE_EMAIL("修改邮箱"),
+    BIND_CHANGE_EMAIL("绑定/修改邮箱"),
     BIND_CARD("绑卡"),
     REPLACE_CARD("换卡"),
     FAST_PAY_AGREEMENT("开通快捷支付协议"),
