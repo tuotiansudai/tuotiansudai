@@ -1645,6 +1645,13 @@ body{
       width:100%;
       margin-bottom:25px;
       text-align:center;
+      font-size:20px;
+      color:#4c4c4c;
+      a{
+        font-size:14px;
+        color:#4c4c4c;
+        margin-left:5px;
+      }
     }
     .design-table{
       border:1px solid #ccc;
@@ -1672,6 +1679,36 @@ body{
           }
         }
       }
+    }
+    .first-icon {
+      display: inline-block;
+      position: relative;
+      margin-right: 5px;
+      top: 5px;
+      width: 20px;
+      height: 20px;
+      background: url(/images/sign/icon_result.png) no-repeat center;
+      background-position: 2px -98px;
+    }
+    .max-icon {
+      display: inline-block;
+      position: relative;
+      margin-right: 5px;
+      top: 5px;
+      width: 20px;
+      height: 20px;
+      background: url(/images/sign/icon_result.png) no-repeat center;
+      background-position: 0px -126px;
+    }
+    .last-icon {
+      display: inline-block;
+      position: relative;
+      margin-right: 5px;
+      top: 5px;
+      width: 20px;
+      height: 20px;
+      background: url(/images/sign/icon_result.png) no-repeat center;
+      background-position: 0px -151px;
     }
   }
   .loan-nav {
@@ -3780,6 +3817,9 @@ body{
     .account-list {
       margin-left: 0 !important;
     }
+  }
+  .loan-designation{
+    display:none;
   }
   .loan-nav {
     li {

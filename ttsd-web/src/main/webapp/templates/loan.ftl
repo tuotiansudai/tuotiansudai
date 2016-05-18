@@ -227,9 +227,9 @@
                 <thead>
                     <tr>
                         <th class="title">称号</th>
-                        <th><i class="fa fa-home"></i>拓荒先锋</th>
-                        <th><i class="fa fa-home"></i>拓天标王</th>
-                        <th><i class="fa fa-home"></i>一锤定音</th>
+                        <th><i class="max-icon"></i>拓荒先锋</th>
+                        <th><i class="first-icon"></i>拓天标王</th>
+                        <th><i class="last-icon"></i>一锤定音</th>
                     </tr>
                 </thead>
                 <tbody>
