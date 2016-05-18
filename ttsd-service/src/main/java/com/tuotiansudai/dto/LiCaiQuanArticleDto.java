@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class LiCaiQuanArticleDto implements Serializable{
-    private long id;
+    private Long articleId;
     private String title;
     private String author;
     private String thumbPicture;
@@ -19,12 +19,12 @@ public class LiCaiQuanArticleDto implements Serializable{
     private ArticleStatus articleStatus;
     private String source;
 
-    public long getId() {
-        return id;
+    public Long getArticleId() {
+        return articleId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setArticleId(Long articleId) {
+        this.articleId = articleId;
     }
 
     public String getTitle() {
@@ -110,7 +110,7 @@ public class LiCaiQuanArticleDto implements Serializable{
     public LiCaiQuanArticleDto(){};
 
     public LiCaiQuanArticleDto(LicaiquanArticleModel licaiquanArticleModel){
-        this.id = licaiquanArticleModel.getId();
+        this.articleId = licaiquanArticleModel.getId();
         this.title = licaiquanArticleModel.getTitle();
         this.author = licaiquanArticleModel.getAuthor();
         this.thumbPicture = licaiquanArticleModel.getThumb();

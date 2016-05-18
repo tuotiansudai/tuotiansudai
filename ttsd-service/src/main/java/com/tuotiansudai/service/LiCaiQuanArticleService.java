@@ -7,7 +7,7 @@ import com.tuotiansudai.dto.PayDataDto;
 public interface LiCaiQuanArticleService {
     BaseDto<PayDataDto> retrace(long articleId);
 
-    void createArticle(LiCaiQuanArticleDto liCaiQuanArticleDto);
+    void createAndEditArticle(LiCaiQuanArticleDto liCaiQuanArticleDto);
 
     LiCaiQuanArticleDto obtainEditArticleDto(long articleId);
 }

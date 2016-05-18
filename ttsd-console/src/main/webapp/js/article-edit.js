@@ -104,13 +104,6 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
             if (boolFlag) {
                 if (confirm("确认提交审核?")) {
                     $('.article-content').val(getContent());
-                    var articleId = $('.articleId').val();
-                    console.log(articleId);
-                    if(articleId != ''){
-                        $articleForm[0].action = "/announce-manage/article/edit/"+articleId;
-                    }else{
-                        $articleForm[0].action = "/announce-manage/article/create";
-                    }
                     $self.attr('disabled', 'disabled');
                     $articleForm[0].submit();
                 }

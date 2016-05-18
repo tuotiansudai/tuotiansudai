@@ -54,12 +54,14 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService{
     }
 
     @Override
-    public void createArticle(LiCaiQuanArticleDto liCaiQuanArticleDto) {
-        long articleId = idGenerator.generate();
-        liCaiQuanArticleDto.setId(articleId);
+    public void createAndEditArticle(LiCaiQuanArticleDto liCaiQuanArticleDto) {
+        if(liCaiQuanArticleDto.getArticleId() == null ){
+            long articleId = idGenerator.generate();
+            liCaiQuanArticleDto.setArticleId(articleId);
+        }
         liCaiQuanArticleDto.setArticleStatus(ArticleStatus.TO_APPROVE);
         liCaiQuanArticleDto.setCreateTime(new Date());
-        redisWrapperClient.hsetSeri(articleRedisKey, String.valueOf(articleId), liCaiQuanArticleDto);
+        redisWrapperClient.hsetSeri(articleRedisKey, String.valueOf(liCaiQuanArticleDto.getArticleId()), liCaiQuanArticleDto);
     }
 
     @Override

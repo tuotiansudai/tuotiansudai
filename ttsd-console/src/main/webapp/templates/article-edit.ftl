@@ -7,7 +7,7 @@
         <form class="form-horizontal article-form" action="/announce-manage/article/create" method="post">
             <div class="form-group">
                 <label class="col-sm-1 control-label">标题: </label>
-                <input type="hidden" name="articleId" class="articleId" value="<#if dto??>${dto.id!}</#if>">
+                <input type="hidden" name="articleId" class="articleId" value="<#if dto??>${dto.articleId?c!}</#if>">
                 <div class="col-sm-4">
                     <input type="text" name="title"  class="form-control article-title" value="<#if dto??>${dto.title!}</#if>" placeholder="" datatype="*" errormsg="标题不能为空">
                 </div>

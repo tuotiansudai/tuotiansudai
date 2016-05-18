@@ -39,7 +39,7 @@ public class LiCaiQuanArticleController {
     public ModelAndView createArticle(@ModelAttribute LiCaiQuanArticleDto liCaiQuanArticleDto) {
         ModelAndView mv = new ModelAndView("/article-edit");
         mv.addObject("sectionList", Lists.newArrayList(ArticleSectionType.values()));
-        liCaiQuanArticleService.createArticle(liCaiQuanArticleDto);
+        liCaiQuanArticleService.createAndEditArticle(liCaiQuanArticleDto);
         return mv;
     }
 
