@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -61,11 +62,13 @@ public class InvestMapperTest {
         investModel.setStatus(InvestStatus.WAIT_PAY);
         investMapper.create(investModel);
 
-        investMapper.updateStatus(investModel.getId(), InvestStatus.SUCCESS);
+        investModel.setStatus(InvestStatus.SUCCESS);
+        investMapper.update(investModel);
         InvestModel investModel1 = investMapper.findById(investModel.getId());
         assertEquals(investModel1.getStatus(), InvestStatus.SUCCESS);
 
-        investMapper.updateStatus(investModel.getId(), InvestStatus.FAIL);
+        investModel.setStatus(InvestStatus.FAIL);
+        investMapper.update(investModel);
         InvestModel investModel2 = investMapper.findById(investModel.getId());
         assertEquals(investModel2.getStatus(), InvestStatus.FAIL);
     }
@@ -262,5 +265,11 @@ public class InvestMapperTest {
     public void shouldHasNoSuccessInvest() throws Exception {
         long amount = investMapper.sumSuccessInvestAmountByLoginName(null, User_ID);
         assertTrue(amount == 0);
+    }
+
+    @Test
+    public void shouldGetInvestDetail() throws Exception{
+        List<InvestDataView> investDataViews = investMapper.getInvestDetail();
+        assertTrue(investDataViews.size() >=0 );
     }
 }

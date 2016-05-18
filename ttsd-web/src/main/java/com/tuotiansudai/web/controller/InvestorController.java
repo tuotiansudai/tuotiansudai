@@ -45,8 +45,7 @@ public class InvestorController {
                                                          @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                                          @RequestParam(name = "status", required = false) LoanStatus status) {
         String loginName = LoginUserInfo.getLoginName();
-        BasePaginationDataDto<InvestPaginationItemDataDto> dataDto = investService.getInvestPagination(loginName, index, pageSize, startTime, endTime, status);
-        dataDto.setStatus(true);
+        BasePaginationDataDto<InvestorInvestPaginationItemDataDto> dataDto = investService.getInvestPagination(loginName, index, pageSize, startTime, endTime, status);
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
         dto.setData(dataDto);
 

@@ -1,15 +1,14 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.landing_page}" pageJavascript="${js.landing_page}" activeNav="" activeLeftNav="" title="拓天速贷手机客户端_理财客户端_拓天速贷" keywords="拓天速贷,APP理财,移动客户端,网络理财,P2P理财,拓天速贷APP" description="拓天速贷手机客户端为理财,投资,贷款等投融资用户提供安全、专业、便捷的互联网金融理财服务。">
+<@global.main pageCss="${css.landing_page}" pageJavascript="${js.landing_page}" activeNav="" activeLeftNav="" title="新手福利_拓天新手理财_拓天速贷" keywords="拓天速贷,新手理财,新手投资,新手加息券,新手红包" description="拓天速贷是中国P2P互联网金融信息服务平台,为广大理财、投资、贷款的用户提供多元化的投资选择和优质的综合理财服务,新手注册可领取588红包大奖和3%的新手加息券.">
 
 <div class="landing-container">
     <div class="landing-header">
-        <a href="/">访问主页</a>
+        <a href="/">访问首页</a>
     </div>
     <div class="landing-top">
         <div class="landing-inner">
             <div class="register-box">
-                <form class="register-user-form" action="/register/user" method="post" autocomplete="off"
-                      novalidate="novalidate">
+                <form class="register-user-form" action="/register/user" method="post" autocomplete="off" novalidate="novalidate">
                     <ul class="reg-list tl register-step-one">
                         <li>
                             <label for="" class="reg-title">用户名:</label>
@@ -40,33 +39,24 @@
                         </li>
                         <li id="appCaptchaErr" class="height appCaptchaErr"></li>
                         <li>
-                            <label for="appCaptcha" class="reg-title">手机验证码:</label>
-                            <span class="captcha-tag">
-                                <input type="text" id="captcha" name="captcha" class="captcha" autocomplete="off"
+                            <label for="captcha" class="reg-title">手机验证码:</label>
+                            <span class="captcha-tag" id="pcCaptcha">
+                                <input type="text" class="captcha" autocomplete="off"
                                        autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6"
                                        value="">
                                 <button type="button" class="fetch-captcha btn" disabled="disabled">获取验证码</button>
                             </span>
 
                         </li>
-                        <li id="captchaErr" class="height"></li>
-
-
+                        <li class="height captcha-error"></li>
                         <li class="agree-last">
-
                             <input type="checkbox" name="agreement" id="agreementInput" class="agreement-check">
-                            <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);"
-                                                                                     class="show-agreement">《服务协议》</a></label>
-
+                            <label for="agreementInput" class="check-label">同意拓天速贷<a href="javascript:void(0);" class="show-agreement">《服务协议》</a></label>
                         </li>
                         <li id="agreementInputErr" class="height"></li>
-
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
-
                         <input type="submit" class="register-user" value="立即注册">
                     </ul>
-
                 </form>
             </div>
         </div>
@@ -105,13 +95,71 @@
     </div>
     <div class="content-two">
         <div class="two-title">
-            为您精选投资产品
+            为您精选理财产品
         </div>
         <div class="product-wp">
-            <ul>
-                <li><img src="${staticServer}/images/sign/actor/landingpage/product-one.png"></li>
-                <li><img src="${staticServer}/images/sign/actor/landingpage/product-two.png"></li>
-                <li><img src="${staticServer}/images/sign/actor/landingpage/product-three.png"></li>
+            <ul class="clearfix">
+                <#list loans as loan>
+                    <#if loan.periods == 1>
+                        <li class="new-product">
+                            <i class="new-user"></i>
+                            <div class="product-left">
+                                <h3>${loan.name}</h3>
+                                <div class="loan-info-dl clearfix">
+                                    <dl>
+                                        <dt>预期年化收益</dt>
+                                        <dd><em class="active"><@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger></em>
+                                            <i>
+                                                <@percentFraction>${loan.baseRate+loan.activityRate}</@percentFraction>
+                                                <#if (loan.newbieInterestCouponRate > 0) >+<@percentInteger>${loan.newbieInterestCouponRate}</@percentInteger>
+                                                    <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
+                                                </#if>%
+                                            </i>
+                                            <span>新手加息券</span>
+                                        </dd>
+                                    </dl>
+
+                                    <dl>
+                                        <dt>项目期限</dt>
+                                        <dd>${loan.periods}${loan.isPeriodMonthUnit?string("个月", "天")}</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="product-right">
+                                <a href="${isAppSource?string('/loan-list', '/loan/${(loan.id?string.computer)}')}">立即查看</a>
+                            </div>
+                        </li>
+                    <#else>
+                        <li>
+                            <div class="product-left">
+                                <h3>${loan.name}</h3>
+                                <div class="loan-info-dl clearfix">
+                                    <dl>
+                                        <dt>预期年化收益</dt>
+                                        <dd><em class="active"><@percentInteger>${loan.baseRate}</@percentInteger></em>
+                                            <i><@percentFraction>${loan.baseRate}</@percentFraction>
+                                                <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
+                                                    <@percentFraction>${loan.activityRate}</@percentFraction>
+                                                </#if>%
+                                            </i>
+                                        </dd>
+                                    </dl>
+
+                                    <dl>
+                                        <dt>项目期限</dt>
+                                        <dd>
+                                        ${loan.periods}${loan.isPeriodMonthUnit?string("个月", "天")}
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="product-right">
+                                <a href="${isAppSource?string('/loan-list', '/loan/${(loan.id?string.computer)}')}" class="active">立即查看</a>
+                            </div>
+                        </li>
+                    </#if>
+
+                </#list>
             </ul>
         </div>
     </div>
@@ -608,85 +656,56 @@
         </div>
         <div class="landing-phone-section-header-right">
         </div>
-        <div class="products-group">
-            <img class="products-group-icon" src="/images/sign/actor/landingphone/product_suyingli.png">
-
-            <div class="products-group-content">
-                <div class="products-group-content-item0">
-                    <span id="products-content-item0">新手专项</span>
-                </div>
-                <div class="products-group-content-item1">
-                    <p id="products-content-percent0">
-                        10<span>%</span>
-                    </p>
-
-                    <p>
-                        预期年化收益
-                    </p>
-                </div>
-                <div class="products-group-content-item2">
-                    <p>
-                        30天
-                    </p>
-
-                    <p>
-                        投资收益
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="products-group">
-            <img class="products-group-icon" src="/images/sign/actor/landingphone/product_wenyingxiu.png">
-
-            <div class="products-group-content">
-                <div class="products-group-content-item0">
-                    <span id="products-content-item1">稳健收益</span>
-                </div>
-                <div class="products-group-content-item1">
-                    <p id="products-content-percent1">
-                        12<span>%</span>
-                    </p>
-
-                    <p>
-                        预期年化收益
-                    </p>
-                </div>
-                <div class="products-group-content-item2">
-                    <p>
-                        90天
-                    </p>
-
-                    <p>
-                        投资收益
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="products-group">
-            <img class="products-group-icon" src="/images/sign/actor/landingphone/product_jiuyingfu.png">
-
-            <div class="products-group-content">
-                <div class="products-group-content-item0">
-                    <span id="products-content-item2">财富积累</span>
-                </div>
-                <div class="products-group-content-item1">
-                    <p id="products-content-percent2">
-                        13<span>%</span>
-                    </p>
-
-                    <p>
-                        预期年化收益
-                    </p>
-                </div>
-                <div class="products-group-content-item2">
-                    <p>
-                        180天
-                    </p>
-
-                    <p>
-                        投资收益
-                    </p>
-                </div>
+        <div class="product-box-list fl">
+            <div class="product-box-inner">
+                <#list loans as loan>
+                    <#if loan.periods == 1>
+                        <div class="product-box tc product-type">
+                            <i class="new-user"></i>
+                            <div class="pad-m">
+                                <h2 class="pr-title">${loan.name}</h2>
+                                <div class="pr-square tc">
+                                    <div class="pr-square-in">
+                                        <em>
+                                            <b><@percentInteger>${loan.baseRate+loan.activityRate}</@percentInteger></b>
+                                            <@percentFraction>${loan.baseRate+loan.activityRate}</@percentFraction>
+                                            <#if (loan.newbieInterestCouponRate > 0) >+<@percentInteger>${loan.newbieInterestCouponRate}</@percentInteger>
+                                                <@percentFraction>${loan.newbieInterestCouponRate}</@percentFraction>
+                                            </#if>%
+                                        </em>
+                                        <i>预期年化收益</i>
+                                    </div>
+                                </div>
+                                <dl class="pr-info">
+                                    <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")}</dd>
+                                </dl>
+                            </div>
+                            <a href="${isAppSource?string('/loan-list?productType=', '/loan/${(loan.id?string.computer)}')}" class="active">立即查看</a>
+                        </div>
+                    <#else>
+                        <div class="product-box tc product-type">
+                            <div class="pad-m">
+                                <h2 class="pr-title">${loan.name}</h2>
+                                <div class="pr-square tc">
+                                    <div class="pr-square-in">
+                                        <em>
+                                            <b><@percentInteger>${loan.baseRate}</@percentInteger></b>
+                                            <@percentFraction>${loan.baseRate}</@percentFraction>
+                                            <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
+                                            <@percentFraction>${loan.activityRate}</@percentFraction>
+                                            </#if>%
+                                        </em>
+                                        <i>预期年化收益</i>
+                                    </div>
+                                </div>
+                                <dl class="pr-info">
+                                    <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")}</dd>
+                                </dl>
+                            </div>
+                            <a href="${isAppSource?string('/loan-list?productType=', '/loan/${(loan.id?string.computer)}')}">立即查看</a>
+                        </div>
+                    </#if>
+                </#list>
             </div>
         </div>
     </div>
@@ -853,30 +872,21 @@
                         </li>
                         <li id="appCaptchaPhoneCErr" class="height"></li>
                         <li class="int-model">
-                            <span class="captcha-tag">
-                                <input type="text" id="captchaPhone" name="captcha" class="captcha" autocomplete="off"
+                            <span class="captcha-tag" id="phoneCaptcha">
+                                <input type="text"  class="captcha" autocomplete="off"
                                        autocorrect="off" autocapitalize="off" placeholder="手机验证码" maxlength="6"
                                        value="">
                                 <button type="button" id="btn-get-phone-captcha" class="fetch-captchaC btn" disabled="disabled">获取验证码</button>
                             </span>
 
                         </li>
-                        <li id="captchaPhoneErr" class="height"></li>
-
-
-
+                        <li class="height captcha-phone-error"></li>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
-
+                        <input type="hidden" name="agreement" value="true">
                         <input type="submit" id="btn-register" class="register-user-phoneC" value="立即注册">
                         <li class="agree-last">
-
-                            <label for="agreementInput" class="check-labelC">点击立即注册即同意拓天速贷<a href="javascript:void(0);"
-                                                                                             class="show-agreement-phone">《服务协议》</a></label>
-
+                            <label for="agreementInput" class="check-labelC">点击立即注册即同意拓天速贷<a href="javascript:void(0);" class="show-agreement-phone">《服务协议》</a></label>
                         </li>
-                        <li id="agreementInputErr" class="height"></li>
-
                     </ul>
 
                 </form>

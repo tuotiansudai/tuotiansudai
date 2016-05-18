@@ -1192,13 +1192,49 @@ body{
   table.invest-list {
     td {
       font-size: 12px;
-
-      i.birth-icon {
-        float: left;
-        width: 20px;
+      position:relative;
+      span.icon-list{
+        position: absolute;
+        width: 40px;
         height: 20px;
-        background: url(/images/sign/birthday.png) no-repeat center;
-        background-size: 15px;
+        left: 0;
+        top: 50%;
+        margin-top: -10px;
+        .birth-icon {
+          float: left;
+          width: 20px;
+          height: 20px;
+          background: url(/images/sign/icon_result.png) no-repeat;
+          background-position: 0px 0px;
+        }
+        .coupon-icon {
+          float: left;
+          width: 20px;
+          height: 20px;
+          background: url(/images/sign/icon_result.png) no-repeat center;
+          background-position: 2px -22px;
+        }
+        .money-icon {
+          float: left;
+          width: 20px;
+          height: 20px;
+          background: url(/images/sign/icon_result.png) no-repeat center;
+          background-position: 2px -46px;
+        }
+        .newbie-icon {
+          float: left;
+          width: 20px;
+          height: 20px;
+          background: url(/images/sign/icon_result.png) no-repeat center;
+          background-position: 2px -72px;
+        }
+        .ticket-icon {
+          float: left;
+          width: 20px;
+          height: 20px;
+          background: url(/images/sign/icon_result.png) no-repeat center;
+          background-position: 2px -72px;
+        }
       }
       .loan-name-col {
         display: inline-block;
@@ -1210,6 +1246,7 @@ body{
       .project-name {
         width: 175px;
         display: inline-block;
+        margin-left:20px;
         @include text-overflow;
       }
     }
@@ -1227,7 +1264,7 @@ body{
     width: 620px;
     padding-bottom: 15px;
     position: relative;
-
+    border-right: 1px solid #ccc;
     .hd {
       margin: -3px 10px 0;
       position: relative;
@@ -1349,13 +1386,11 @@ body{
     }
   }
   .account-info {
-    border-left: 1px solid #ccc;
-    padding: 10px 10px 60px 10px;
+    padding: 10px;
     width: 350px;
     text-align: center;
     font-size: 12px;
     color: #949494;
-
     .l-title {
       padding: 10px 0;
       border-bottom: 2px solid #ccc;

@@ -54,7 +54,7 @@ public class PointTaskAspect {
     public void afterReturningInvestSuccess(JoinPoint joinPoint) {
         logger.debug("after returning invest, point task aspect starting...");
 
-        InvestModel investModel = (InvestModel) joinPoint.getArgs()[1];
+        InvestModel investModel = (InvestModel) joinPoint.getArgs()[0];
         pointTaskService.completeTask(PointTask.FIRST_INVEST, investModel.getLoginName());
         pointTaskService.completeTask(PointTask.SUM_INVEST_10000, investModel.getLoginName());
         pointService.obtainPointInvest(investModel);

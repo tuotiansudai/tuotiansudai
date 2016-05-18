@@ -87,7 +87,7 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.isAutoInvest = view.isAutoInvest();
         this.loanType = view.getLoanType().getName();
         this.loanPeriods = view.getLoanPeriods();
-        this.createdTime = view.getCreatedTime();
+        this.createdTime = view.getTradingTime() == null ? view.getCreatedTime() : view.getTradingTime();
         this.status = view.getStatus().getDescription();
         this.nextRepayDate = view.getNextRepayDate();
         this.nextRepayAmount = AmountConverter.convertCentToString(view.getNextRepayAmount());

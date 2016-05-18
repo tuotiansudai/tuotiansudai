@@ -59,8 +59,6 @@ public class InvestServiceTest {
     @Autowired
     private AccountMapper accountMapper;
 
-    private ObjectMapper objectMapper;
-
     private MockWebServer mockServer;
 
     @Autowired
@@ -446,7 +444,7 @@ public class InvestServiceTest {
         investModel.setStatus(InvestStatus.WAIT_PAY);
         investMapper.create(investModel);
 
-        investService.investSuccess(investModel.getId(), investModel, investModel.getLoginName());
+        investService.investSuccess(investModel);
     }
 
 }

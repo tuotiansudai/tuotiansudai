@@ -21,6 +21,7 @@
         <result column="login_name" property="loginName"></result>
         <result column="mobile" property="mobile"></result>
         <result column="identity_number" property="identityNumber"></result>
+        <result column="active" property="active"></result>
     </resultMap>
 
 
@@ -51,6 +52,7 @@
         SELECT
           p.`id`,
           p.description,
+          p.active,
           ifnull(temp.num,0) as num
         FROM
           point_prize p

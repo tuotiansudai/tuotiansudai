@@ -1,10 +1,10 @@
 package com.tuotiansudai.repository.model;
 
-import com.tuotiansudai.dto.InvestDto;
-import com.tuotiansudai.util.AmountConverter;
+import com.google.common.collect.Lists;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class InvestModel implements Serializable {
     /**
@@ -48,7 +48,18 @@ public class InvestModel implements Serializable {
      */
     private Date createdTime = new Date();
 
-    public InvestModel(){
+    /**
+     * 交易完成时间
+     */
+    private Date tradingTime;
+
+    /**
+     * 成就
+     */
+    private List<InvestAchievement> achievements = Lists.newArrayList();
+
+
+    public InvestModel() {
 
     }
 
@@ -135,7 +146,27 @@ public class InvestModel implements Serializable {
         this.channel = channel;
     }
 
-    public boolean isNoPasswordInvest() { return isNoPasswordInvest; }
+    public boolean isNoPasswordInvest() {
+        return isNoPasswordInvest;
+    }
 
-    public void setNoPasswordInvest(boolean noPasswordInvest) { isNoPasswordInvest = noPasswordInvest; }
+    public void setNoPasswordInvest(boolean noPasswordInvest) {
+        isNoPasswordInvest = noPasswordInvest;
+    }
+
+    public Date getTradingTime() {
+        return tradingTime;
+    }
+
+    public void setTradingTime(Date tradingTime) {
+        this.tradingTime = tradingTime;
+    }
+
+    public List<InvestAchievement> getAchievements() {
+        return achievements;
+    }
+
+    public void setAchievements(List<InvestAchievement> achievements) {
+        this.achievements = achievements;
+    }
 }
