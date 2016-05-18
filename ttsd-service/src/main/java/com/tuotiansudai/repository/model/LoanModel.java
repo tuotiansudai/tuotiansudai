@@ -128,6 +128,21 @@ public class LoanModel implements Serializable {
      ***/
     private LoanStatus status;
 
+    /**
+     * FIRST_INVEST_ACHIEVEMENT
+     */
+    private Long firstInvestAchievementId;
+
+    /**
+     * MAX_INVEST_ACHIEVEMENT
+     */
+    private Long maxAmountAchievementId;
+
+    /**
+     * LAST_INVEST_ACHIEVEMENT
+     */
+    private Long lastInvestAchievementId;
+
     /***
      * 申请材料
      ***/
@@ -407,6 +422,30 @@ public class LoanModel implements Serializable {
 
     public void setStatus(LoanStatus status) {
         this.status = status;
+    }
+
+    public Long getFirstInvestAchievementId() {
+        return firstInvestAchievementId;
+    }
+
+    public void setFirstInvestAchievementId(Long firstInvestAchievementId) {
+        this.firstInvestAchievementId = firstInvestAchievementId;
+    }
+
+    public Long getMaxAmountAchievementId() {
+        return maxAmountAchievementId;
+    }
+
+    public void setMaxAmountAchievementId(Long maxAmountAchievementId) {
+        this.maxAmountAchievementId = maxAmountAchievementId;
+    }
+
+    public Long getLastInvestAchievementId() {
+        return lastInvestAchievementId;
+    }
+
+    public void setLastInvestAchievementId(Long lastInvestAchievementId) {
+        this.lastInvestAchievementId = lastInvestAchievementId;
     }
 
     public List<LoanTitleRelationModel> getLoanTitles() {

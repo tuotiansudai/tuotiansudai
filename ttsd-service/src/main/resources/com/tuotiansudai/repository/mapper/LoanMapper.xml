@@ -44,6 +44,11 @@
         <result column="recheck_login_name" property="recheckLoginName"></result>
 
         <result column="status" property="status"></result>
+        <result column="first_invest_achievement_id" property="firstInvestAchievementId"/>
+        <result column="max_amount_achievement_id" property="maxAmountAchievementId"/>
+        <result column="last_invest_achievement_id" property="lastInvestAchievementId"/>
+
+
 
         <result column="next_repay_date" property="nextRepayDate"></result>
         <result column="completed_date" property="completedDate"></result>
@@ -329,6 +334,15 @@
             </if>
             <if test="status !=null">
                 status = #{status},
+            </if>
+            <if test="firstInvestAchievementId !=null">
+                first_invest_achievement_id = #{firstInvestAchievementId},
+            </if>
+            <if test="maxAmountAchievementId !=null">
+                max_amount_achievement_id = #{maxAmountAchievementId},
+            </if>
+            <if test="lastInvestAchievementId !=null">
+                last_invest_achievement_id = #{lastInvestAchievementId},
             </if>
             <if test="updateTime != null">
                 update_time = #{updateTime}
