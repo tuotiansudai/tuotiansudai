@@ -1,0 +1,45 @@
+<table class="table-striped transfer-list">
+    <thead>
+    <tr>
+        <th>项目名称</th>
+        <th class="tr">待收本金(元)</th>
+        <th>年化收益</th>
+        <th>剩余期数</th>
+        <th>到期时间</th>
+        <th>下次回款(元)</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+        {{#records}}
+            <tr>
+                <td>
+                    <a href="/loan/{{loanId}}" class="project-name">{{loanName}}
+                </td>
+                <td>{{amount}}</td>
+                <td>{{sumRate}}%</td>
+                <td>{{leftPeriod}}</td>
+                <td>{{lastRepayDate}}</td>
+                <td>
+                     {{#nextRepayDate}}
+                        {{nextRepayDate}} / {{nextRepayAmount}}
+                     {{/nextRepayDate}}
+                      {{^nextRepayDate}} -- {{/nextRepayDate}}
+                </td>
+                <td>
+                    {{#transferStatus}}
+                        <a href="javascript:void(0)" class="apply-transfer" data-applyId="{{investId}}" data-link="{{investId}}">{{transferStatus}}</a>
+                    {{/transferStatus}}
+                    {{^transferStatus}}
+                        --
+                    {{/transferStatus}}
+                </td>
+            </tr>
+        {{/records}}
+
+        {{^records}}
+            <td colspan="7" class="no-data">暂时没有可转让债权记录</td>
+        {{/records}}
+    </tbody>
+</table>
+
