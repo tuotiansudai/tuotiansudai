@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class InvestPaginationItemView extends InvestModel {
 
@@ -39,6 +40,8 @@ public class InvestPaginationItemView extends InvestModel {
     private boolean birthdayCoupon;
 
     private double birthdayBenefit;
+
+    private List<CouponType> couponTypeList;
 
     public String getLoanName() {
         return loanName;
@@ -183,4 +186,8 @@ public class InvestPaginationItemView extends InvestModel {
     public void setBirthdayBenefit(double birthdayBenefit) {
         this.birthdayBenefit = birthdayBenefit;
     }
+
+    public List<CouponType> getCouponTypeList() { return couponTypeList; }
+
+    public void setCouponTypeList(List<CouponType> couponTypeList) { this.couponTypeList = couponTypeList; }
 }

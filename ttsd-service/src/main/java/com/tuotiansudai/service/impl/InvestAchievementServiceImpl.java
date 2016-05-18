@@ -60,7 +60,9 @@ public class InvestAchievementServiceImpl implements InvestAchievementService{
             loanModels.clear();
             loanModels.addAll(hashSet);
             sortLoanModel(loanModels);
-            loanModels = loanModels.subList((index - 1) * pageSize, (index - 1) * pageSize + pageSize);
+            if (loanModels.size() >= pageSize) {
+                loanModels = loanModels.subList((index - 1) * pageSize, (index - 1) * pageSize + pageSize);
+            }
             for (LoanModel loanModel : loanModels) {
                 investModels = investMapper.findInvestAchievement(loginName, loanModel.getId());
                 investAchievementDtos.add(convertToInvestAchievementDto(loanModel, investModels));

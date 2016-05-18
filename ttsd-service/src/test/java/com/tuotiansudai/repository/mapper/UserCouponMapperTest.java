@@ -5,10 +5,11 @@ import com.tuotiansudai.coupon.repository.mapper.CouponMapper;
 import com.tuotiansudai.coupon.repository.mapper.UserCouponMapper;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
-import com.tuotiansudai.repository.model.CouponType;
-import com.tuotiansudai.repository.model.ProductType;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.coupon.repository.model.UserCouponView;
+import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.UUIDGenerator;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,8 @@ public class UserCouponMapperTest {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private IdGenerator idGenerator;
 
     @Test
     public void shouldCreateUserCoupon() {
@@ -76,6 +79,7 @@ public class UserCouponMapperTest {
         couponModel.setUsedCount(500L);
         couponModel.setCouponType(CouponType.INVEST_COUPON);
         couponModel.setProductTypes(Lists.newArrayList(ProductType.JYF, ProductType.SYL));
+        couponModel.setId(idGenerator.generate());
 
         return couponModel;
     }
@@ -91,6 +95,4 @@ public class UserCouponMapperTest {
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         return userModelTest;
     }
-
-
 }
