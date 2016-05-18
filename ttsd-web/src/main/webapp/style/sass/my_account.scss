@@ -1468,6 +1468,11 @@ body{
 
                   .ticket-term {
                     font-size: 10px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    width: 175px;
+                    display: inline-block;
                   }
                 }
                 &:hover {
