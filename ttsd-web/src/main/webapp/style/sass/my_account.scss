@@ -1710,6 +1710,14 @@ body{
       background: url(/images/sign/icon_result.png) no-repeat center;
       background-position: 0px -151px;
     }
+    span{
+      &.text-lighter{
+        color:#ff6400;
+      }
+      &.text-reward{
+        color:#ff9d1a;
+      }
+    }
   }
   .loan-nav {
     overflow: hidden;

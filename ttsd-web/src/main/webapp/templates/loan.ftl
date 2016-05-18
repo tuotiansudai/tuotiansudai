@@ -236,8 +236,8 @@
                     <tr>
                         <td class="title">获得者</td>
                         <td>yyh008</td>
-                        <td>yyh008（待定）</td>
-                        <td>虚位以待</td>
+                        <td>yyh008<span class="text-lighter">（待定）</span></td>
+                        <td><span class="text-lighter">虚位以待</span></td>
                     </tr>
                     <tr>
                         <td class="title">战况</td>
@@ -248,7 +248,7 @@
                     <tr>
                         <td class="title">奖励</td>
                         <td>0.2％加息券＋50元红包</td>
-                        <td>0.5％加息券＋100元红包</td>
+                        <td><span class="text-reward">0.5％加息券＋100元红包</span></td>
                         <td>0.2％加息券＋50元红包</td>
                     </tr>
                 </tbody>
