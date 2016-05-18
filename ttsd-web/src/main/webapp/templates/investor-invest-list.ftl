@@ -61,13 +61,13 @@
 
                             {{each $value.achievements}}
                             {{if $value=='FIRST_INVEST'}}
-                            <i class="birth-icon"></i>
+                            <i class="first-icon"></i>
                             {{/if}}
                             {{if $value=='LAST_INVEST'}}
-                            <i class="coupon-icon"></i>
+                            <i class="last-icon"></i>
                             {{/if}}
                             {{if $value=='MAX_AMOUNT'}}
-                            <i class="money-icon"></i>
+                            <i class="max-icon"></i>
                             {{/if}}
                             {{/each}}
                         </span>

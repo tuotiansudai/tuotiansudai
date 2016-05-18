@@ -153,6 +153,36 @@ require(['jquery','template', 'mustache', 'text!/tpl/investor-invest-repay-table
             area: 'auto',
             maxWidth: '500'
         });
+    })
+    .on('mouseenter','.first-icon',function() {//first icon event
+        layer.closeAll('tips');
+        layer.tips('我获得了0.2%加息券和50元红包', $(this), {
+            tips: [1, '#efbf5c'],
+            time: 2000,
+            tipsMore: true,
+            area: 'auto',
+            maxWidth: '500'
+        });
+    })
+    .on('mouseenter','.max-icon',function() {//max icon event
+        layer.closeAll('tips');
+        layer.tips('我获得了0.5%加息券和100元红包', $(this), {
+            tips: [1, '#efbf5c'],
+            time: 2000,
+            tipsMore: true,
+            area: 'auto',
+            maxWidth: '500'
+        });
+    })
+    .on('mouseenter','.last-icon',function() {//last icon event
+        layer.closeAll('tips');
+        layer.tips('我获得了0.2%加息券和50元红包', $(this), {
+            tips: [1, '#efbf5c'],
+            time: 2000,
+            tipsMore: true,
+            area: 'auto',
+            maxWidth: '500'
+        });
     });
 
     changeDatePicker();
