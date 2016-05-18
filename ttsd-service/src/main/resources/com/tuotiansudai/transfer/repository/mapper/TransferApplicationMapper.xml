@@ -276,6 +276,7 @@
 
 
     <resultMap id="transferInvestDetailMap" type="TransferInvestDetailDto">
+        <result column="id" property="id"></result>
         <result column="loan_name" property="loanName"></result>
         <result column="transfer_amount" property="transferAmount"></result>
         <result column="invest_amount" property="investAmount"></result>
@@ -291,6 +292,7 @@
 
     <select id="findTransferInvestList" parameterType="map" resultMap="transferInvestDetailMap">
         select
+            ta.id as id,
             ta.name as loan_name,
             ta.transfer_amount,
             ta.invest_amount,

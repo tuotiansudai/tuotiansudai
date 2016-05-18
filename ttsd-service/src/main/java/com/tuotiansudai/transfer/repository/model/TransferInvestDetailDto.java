@@ -1,11 +1,14 @@
 package com.tuotiansudai.transfer.repository.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
 import java.util.Date;
 
 public class TransferInvestDetailDto implements Serializable {
+
+    private Integer id;
 
     private String loanName;
 
@@ -15,6 +18,7 @@ public class TransferInvestDetailDto implements Serializable {
 
     private Date transferTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "Asia/Shanghai")
     private Date nextRepayDate;
 
     private long nextRepayAmount;
@@ -28,6 +32,14 @@ public class TransferInvestDetailDto implements Serializable {
     private String transfereeLoginName;
 
     private long loanId;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getLoanName() {
         return loanName;

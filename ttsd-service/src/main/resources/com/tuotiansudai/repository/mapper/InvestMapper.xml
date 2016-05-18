@@ -149,6 +149,7 @@
         select <include refid="columns"></include>
         from invest
         where loan_id = #{loanId}
+        and transfer_invest_id is null
         and status = '${status}'
         order by created_time desc
         limit #{index}, #{pageSize}
@@ -158,6 +159,7 @@
         select count(1)
         from invest
         where loan_id = #{loanId}
+        and transfer_invest_id is null
         and status = '${status}'
     </select>
 
