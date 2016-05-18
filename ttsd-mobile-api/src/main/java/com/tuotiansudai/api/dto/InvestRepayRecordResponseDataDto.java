@@ -62,12 +62,15 @@ public class InvestRepayRecordResponseDataDto {
         this.loanName = loan.getName();
         this.investId = String.valueOf(invest.getId());
         this.investMoney = AmountConverter.convertCentToString(invest.getAmount());
-        this.investTime = sdf.format(invest.getCreatedTime());
+        this.investTime = sdf.format(invest.getInvestTime());
         this.repayDay = sdfDay.format(investRepay.getRepayDate());
         this.status = investRepay.getStatus().name();
         this.statusDesc = investRepay.getStatus().getDescription();
         if (investRepay.getStatus() == RepayStatus.COMPLETE) {
-            this.repayDay = sdf.format(investRepay.getActualRepayDate());
+            if(investRepay.getActualRepayDate() != null){
+
+                this.repayDay = sdf.format(investRepay.getActualRepayDate());
+            }
         }else{
             this.repayDay = sdfDay.format(investRepay.getRepayDate());
         }

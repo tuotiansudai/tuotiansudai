@@ -63,6 +63,7 @@ public enum ReturnMessage {
     LESS_THAN_MIN_INVEST_AMOUNT("0054","投资金额小于标的最小投资金额"),
     OUT_OF_NOVICE_INVEST_LIMIT("0055","您已购买过新手专享产品"),
     INVEST_FAILED("0056","投资失败"),
+    APPLICATION_IS_HIS_OWN("0057","您不能接手自己的债权"),
     /******手机端投资******/
 
 
@@ -119,6 +120,12 @@ public enum ReturnMessage {
     /******提现******/
     WITHDRAW_AMOUNT_NOT_REACH_FEE("0070","提现金额需大于手续费"),
 
+    TRANSFER_APPLY_IS_FAIL("0073","债权转让失败"),
+
+    TRANSFER_AMOUNT_OUT_OF_RANGE("0074","转让价格超出折价范围"),
+    TRANSFER_CANCEL_IS_FAIL("0075","债权转让取消失败"),
+
+
     /******意见反馈******/
     FEEDBACK_CAN_NOT_BE_EMPTY("0080", "内容不能为空"),
 
@@ -127,6 +134,8 @@ public enum ReturnMessage {
 
     /******签到******/
     MULTIPLE_SIGN_IN("0100", "今日已经签到过，不可重复签到"),
+    /******债权转让******/
+    TRANSFER_IS_NOT_EXIST("0071", "该债权不能申请转让"),
 
     BAD_REQUEST("0400", "非法请求"),
     UNAUTHORIZED("0401", "未授权");
