@@ -87,6 +87,14 @@
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="multiple" value="1">
         <input type="hidden" name="userGroup" value="EXCHANGER">
+        <div class="form-group ">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-4 form-error">
+                <#if errorMessage?has_content>
+                    <div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><span class="txt">创建失败：${errorMessage!}</span></div>
+                </#if>
+            </div>
+        </div>
         <div class="form-group">
             <label  class="col-sm-2 control-label">操作: </label>
             <div class="col-sm-4">
