@@ -15,7 +15,7 @@ import java.text.MessageFormat;
 import java.util.Date;
 
 @Service
-public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService{
+public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService {
     static Logger logger = Logger.getLogger(LiCaiQuanArticleServiceImpl.class);
 
     private final static String articleRedisKey = "console:article:key";
@@ -31,20 +31,20 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService{
         PayDataDto payDataDto = new PayDataDto();
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         baseDto.setData(payDataDto);
-        if(!redisWrapperClient.hexistsSeri(articleRedisKey,String.valueOf(articleId))){
+        if (!redisWrapperClient.hexistsSeri(articleRedisKey, String.valueOf(articleId))) {
             payDataDto.setStatus(false);
-            payDataDto.setMessage(MessageFormat.format("id:{0}不存在,请核实!",articleId));
+            payDataDto.setMessage(MessageFormat.format("id:{0}不存在,请核实!", articleId));
             return baseDto;
         }
-        LiCaiQuanArticleDto liCaiQuanArticleDto = (LiCaiQuanArticleDto)redisWrapperClient.hgetSeri(articleRedisKey,String.valueOf(articleId));
-        if(liCaiQuanArticleDto != null && liCaiQuanArticleDto.getArticleStatus() == ArticleStatus.APPROVING){
+        LiCaiQuanArticleDto liCaiQuanArticleDto = (LiCaiQuanArticleDto) redisWrapperClient.hgetSeri(articleRedisKey, String.valueOf(articleId));
+        if (liCaiQuanArticleDto != null && liCaiQuanArticleDto.getArticleStatus() == ArticleStatus.APPROVING) {
             payDataDto.setStatus(false);
-            payDataDto.setMessage(MessageFormat.format("id:{0}正在审核!",articleId));
+            payDataDto.setMessage(MessageFormat.format("id:{0}正在审核!", articleId));
             return baseDto;
         }
         liCaiQuanArticleDto.setArticleStatus(ArticleStatus.RETRACED);
         liCaiQuanArticleDto.setCreateTime(new Date());
-        redisWrapperClient.hsetSeri(articleRedisKey,String.valueOf(articleId), liCaiQuanArticleDto);
+        redisWrapperClient.hsetSeri(articleRedisKey, String.valueOf(articleId), liCaiQuanArticleDto);
         return baseDto;
     }
 
@@ -55,6 +55,22 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService{
         liCaiQuanArticleDto.setArticleStatus(ArticleStatus.TO_APPROVE);
         liCaiQuanArticleDto.setCreateTime(new Date());
         redisWrapperClient.hsetSeri(articleRedisKey, String.valueOf(articleId), liCaiQuanArticleDto);
+    }
+
+    @Override
+    public LiCaiQuanArticleDto getArticleContent(long articleId) {
+        LiCaiQuanArticleDto liCaiQuanArticleDto;
+        if (redisWrapperClient.hexists(articleRedisKey, String.valueOf(articleId))) {
+            liCaiQuanArticleDto = (LiCaiQuanArticleDto) redisWrapperClient.hgetSeri(articleRedisKey, String.valueOf(articleId));
+        } else {
+            liCaiQuanArticleDto = new LiCaiQuanArticleDto();
+            liCaiQuanArticleDto.setId(-1);
+            liCaiQuanArticleDto.setTitle("");
+            liCaiQuanArticleDto.setCreateTime(new Date());
+            liCaiQuanArticleDto.setContent("");
+            liCaiQuanArticleDto.setAuthor("");
+        }
+        return liCaiQuanArticleDto;
     }
 
 }
