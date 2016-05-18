@@ -78,7 +78,7 @@
             and t.status = #{status}
         </if>
         <if test="status == null">
-            and t.status != 'WAITING_VERIFY'
+            and t.status != 'WAITING_VERIFY' and t.status != 'CANCEL'
         </if>
         <if test="rateStart != 0">
             <if test="rateEnd !=0">
@@ -112,7 +112,7 @@
             and t.status = #{status}
         </if>
         <if test="status == null">
-            and t.status != 'WAITING_VERIFY'
+            and t.status != 'WAITING_VERIFY'  and t.status != 'CANCEL'
         </if>
         <if test="rateStart != 0">
             <if test="rateEnd !=0">
