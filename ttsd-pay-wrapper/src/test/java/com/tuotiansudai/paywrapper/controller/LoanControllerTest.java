@@ -296,6 +296,7 @@ public class LoanControllerTest {
         couponModel.setActive(true);
         couponModel.setCreatedBy(loginName);
         couponModel.setCreatedTime(new Date());
+        couponModel.setDeadline(5);
         couponModel.setCouponType(CouponType.RED_ENVELOPE);
         couponModel.setProductTypes(Lists.newArrayList(ProductType.JYF, ProductType.WYX, ProductType.SYL));
         couponMapper.create(couponModel);
