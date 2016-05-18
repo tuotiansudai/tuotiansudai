@@ -1,7 +1,7 @@
 package com.tuotiansudai.point.service;
 
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.point.repository.dto.PointBillPaginationItemDataDto;
+import com.tuotiansudai.point.dto.PointBillPaginationItemDataDto;
 import com.tuotiansudai.point.repository.model.PointBusinessType;
 
 import java.util.Date;
