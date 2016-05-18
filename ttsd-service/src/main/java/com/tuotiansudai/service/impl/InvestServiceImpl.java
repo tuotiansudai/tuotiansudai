@@ -169,7 +169,7 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     public BasePaginationDataDto<InvestorInvestPaginationItemDataDto> getInvestPagination(String loginName, int index, int pageSize, Date startTime, Date endTime, LoanStatus loanStatus) {
-        startTime = new DateTime(startTime == null ? 0 : startTime).withTimeAtStartOfDay().toDate();
+        startTime = new DateTime(startTime == null ? 0L : startTime).withTimeAtStartOfDay().toDate();
         if (endTime == null) {
             endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
         } else {
@@ -216,7 +216,7 @@ public class InvestServiceImpl implements InvestService {
                                           String channel, Source source, String role,
                                           Date startTime, Date endTime,
                                           InvestStatus investStatus, LoanStatus loanStatus) {
-        startTime = new DateTime(startTime == null ? 0 : startTime).withTimeAtStartOfDay().toDate();
+        startTime = new DateTime(startTime == null ? 0L : startTime).withTimeAtStartOfDay().toDate();
 
         if (endTime == null) {
             endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
