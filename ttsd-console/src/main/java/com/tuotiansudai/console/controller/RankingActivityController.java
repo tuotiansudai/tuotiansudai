@@ -1,14 +1,17 @@
 package com.tuotiansudai.console.controller;
 
+import com.tuotiansudai.dto.InvestAchievementDto;
 import com.tuotiansudai.dto.ranking.PrizeWinnerDto;
 import com.tuotiansudai.dto.ranking.UserTianDouRecordDto;
 import com.tuotiansudai.repository.TianDouPrize;
+import com.tuotiansudai.service.InvestAchievementService;
 import com.tuotiansudai.service.RankingActivityService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -19,6 +22,9 @@ public class RankingActivityController {
 
     @Autowired
     private RankingActivityService rankingActivityService;
+
+    @Autowired
+    private InvestAchievementService investAchievementService;
 
     static Logger logger = Logger.getLogger(RankingActivityController.class);
 
@@ -81,6 +87,25 @@ public class RankingActivityController {
 
         modelAndView.addObject("winnerCount", winnerCount);
         modelAndView.addObject("prizeWinnerDtoList", prizeWinnerDtoList);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/invest-achievement", method = RequestMethod.GET)
+    public ModelAndView investAchievement(@RequestParam(value = "index", required = false, defaultValue = "1") int index,
+                                           @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
+                                           @RequestParam(value = "loginName", required = false) String loginName) {
+        List<InvestAchievementDto> investAchievementDtos = investAchievementService.findInvestAchievementManage(index, pageSize, loginName);
+        ModelAndView modelAndView = new ModelAndView("/invest-achievement");
+        modelAndView.addObject("investAchievementDtos", investAchievementDtos);
+        modelAndView.addObject("index", index);
+        modelAndView.addObject("pageSize", pageSize);
+        modelAndView.addObject("loginName", loginName);
+        long investAchievementCount = investAchievementService.findInvestAchievementManageCount(loginName);
+        long totalPages = investAchievementCount / pageSize + (investAchievementCount % pageSize > 0 ? 1 : 0);
+        boolean hasPreviousPage = index > 1 && index <= totalPages;
+        boolean hasNextPage = index < totalPages;
+        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
+        modelAndView.addObject("hasNextPage", hasNextPage);
         return modelAndView;
     }
 

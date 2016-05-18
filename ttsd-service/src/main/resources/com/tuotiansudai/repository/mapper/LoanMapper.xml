@@ -417,4 +417,33 @@
         order by case loan.status when 'RAISING' then '1' when 'PREHEAT' then '2' when 'RECHECK' then '3' when 'REPAYING' then '4' when 'COMPLETE' then '5' else '6' end, loan.verify_time desc,loan.created_time desc, loan.id desc
         limit 0, 1)
     </select>
+
+    <select id="findLoanAchievement" resultMap="loanResultMap" parameterType="map">
+        SELECT
+          *
+        FROM
+          loan
+        WHERE STATUS IN (
+            'RAISING',
+            'RECHECK',
+            'REPAYING',
+            'COMPLETE'
+          )
+        ORDER BY created_time DESC
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findLoanAchievementCount" resultType="long">
+        SELECT
+          count(*)
+        FROM
+          loan
+        WHERE STATUS IN (
+            'RAISING',
+            'RECHECK',
+            'REPAYING',
+            'COMPLETE'
+          )
+    </select>
+
 </mapper>

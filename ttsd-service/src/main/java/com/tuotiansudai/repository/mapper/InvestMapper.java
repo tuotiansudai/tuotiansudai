@@ -172,4 +172,9 @@ public interface InvestMapper {
                                          @Param(value = "achievement") InvestAchievement achievement,
                                          @Param(value = "startTime") Date startTime,
                                          @Param(value = "endTime") Date endTime);
+
+    List<InvestModel> findInvestAchievement(@Param(value = "loginName") String loginName, @Param(value = "loanId") Long loanId);
+
+    long findInvestAchievementCount(@Param(value = "loginName") String loginName);
+
 }

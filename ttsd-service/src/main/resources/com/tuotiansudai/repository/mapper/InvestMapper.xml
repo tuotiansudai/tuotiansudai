@@ -58,6 +58,12 @@
         <result column="avgInvestAmount" property="avgInvestAmount"></result>
     </resultMap>
 
+    <resultMap id="investAchievementDto" type="InvestAchievementDto">
+        <result column="" property=""></result>
+        <result column="" property=""></result>
+        <result column="" property=""></result>
+    </resultMap>
+
     <sql id="columns">
         id, login_name, loan_id, amount, status, source, is_auto_invest, channel, is_no_password_invest, created_time, trading_time, achievements
     </sql>
@@ -384,4 +390,34 @@
         and achievements like CONCAT('%', #{achievement}, '%')
         and trading_time between #{startTime} and #{endTime}
     </select>
+
+    <select id="findInvestAchievement" parameterType="map" resultMap="investResultMap">
+        SELECT
+          *
+        FROM
+          invest
+        WHERE achievements IS NOT NULL
+          AND status = 'SUCCESS'
+          <if test="loanId != null">
+          AND loan_id = #{loanId}
+          </if>
+          <if test="loginName != null and loginName != ''">
+          AND login_name = #{loginName}
+          </if>
+    </select>
+
+    <select id="findInvestAchievementCount" parameterType="map" resultType="long">
+        SELECT
+          COUNT(*)
+        FROM
+          (SELECT
+            loan_id
+          FROM
+            invest
+          WHERE login_name = #{loginName}
+            AND achievements IS NOT NULL
+            AND status = 'SUCCESS'
+          GROUP BY loan_id) temp
+    </select>
+
 </mapper>

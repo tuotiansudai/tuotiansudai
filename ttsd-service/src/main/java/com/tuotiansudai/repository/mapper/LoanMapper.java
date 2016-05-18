@@ -73,4 +73,9 @@ public interface LoanMapper {
                                    @Param(value = "raisingCompleteTime") Date raisingCompleteTime);
 
     List<LoanModel> findHomeLoan();
+
+    List<LoanModel> findLoanAchievement(@Param(value = "index") int index, @Param(value = "pageSize") int pageSize);
+
+    long findLoanAchievementCount();
+
 }
