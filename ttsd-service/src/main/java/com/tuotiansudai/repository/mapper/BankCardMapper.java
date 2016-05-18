@@ -2,6 +2,8 @@ package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.BankCardModel;
 
+import java.util.List;
+
 public interface BankCardMapper {
 
     void create(BankCardModel model);
@@ -15,4 +17,6 @@ public interface BankCardMapper {
     void update(BankCardModel bankCardModel);
 
     BankCardModel findPassedBankCardByBankCode(String bankCode);
+
+    List<BankCardModel> findApplyBankCardByLoginName(String loginName);
 }

@@ -68,7 +68,7 @@ public class BindBankCardController {
         } else {
             view.addObject("banks", BankCardUtil.getWithdrawBanks());
         }
-
+        view.addObject("isFastPayOn", bankCardModel != null && bankCardModel.isFastPayOn());
         return view;
     }
 
@@ -80,6 +80,13 @@ public class BindBankCardController {
         ModelAndView view = new ModelAndView("/pay");
         view.addObject("pay", baseDto);
         return view;
+    }
+
+    @RequestMapping(value = "/is-replacing", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean isReplacing() {
+        String loginName = LoginUserInfo.getLoginName();
+        return bindBankCardService.isReplacing(loginName);
     }
 
 }

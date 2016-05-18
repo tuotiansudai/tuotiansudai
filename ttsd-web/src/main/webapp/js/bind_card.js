@@ -49,4 +49,9 @@ require(['jquery', 'layerWrapper', 'jquery.ajax.extension'], function ($, layer)
                 content: $('#pop-replace-card')
             });
         });
+
+        $('#pop-replace-card .close-btn').on('click',function(){
+            layer.closeAll();
+        });
+
     });

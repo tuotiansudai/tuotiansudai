@@ -12,4 +12,6 @@ public interface BindBankCardService {
     BaseDto<PayFormDataDto> bindBankCard(BindBankCardDto dto);
 
     BaseDto<PayFormDataDto> replaceBankCard(BindBankCardDto dto);
+
+    boolean isReplacing(String loginName);
 }

@@ -9,6 +9,7 @@ import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.service.BindBankCardService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,5 +49,10 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     @Override
     public BankCardModel getPassedBankCard(String loginName) {
         return bankCardMapper.findPassedBankCardByLoginName(loginName);
+    }
+
+    @Override
+    public boolean isReplacing(String loginName) {
+        return CollectionUtils.isNotEmpty(bankCardMapper.findApplyBankCardByLoginName(loginName));
     }
 }
