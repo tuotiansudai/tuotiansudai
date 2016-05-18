@@ -55,20 +55,24 @@ public class InvestAchievementServiceImpl implements InvestAchievementService {
 
         if (isFirstInvestAchievement(investModel, successInvestModels)) {
             investModel.getAchievements().add(InvestAchievement.FIRST_INVEST);
+            loanModel.setFirstInvestAchievementId(investModel.getId());
             logger.info(MessageFormat.format("{0} get the FIRST_INVEST of loan({1})", investModel.getLoginName(), String.valueOf(investModel.getLoanId())));
         }
 
         if (isMaxAmountAchievement(investModel, successInvestModels)) {
             investModel.getAchievements().add(InvestAchievement.MAX_AMOUNT);
+            loanModel.setMaxAmountAchievementId(investModel.getId());
             logger.info(MessageFormat.format("{0} get the MAX_AMOUNT of loan({1})", investModel.getLoginName(), String.valueOf(investModel.getLoanId())));
         }
 
         if (isLastInvestAchievement(investModel, successInvestModels)) {
             investModel.getAchievements().add(InvestAchievement.LAST_INVEST);
+            loanModel.setLastInvestAchievementId(investModel.getId());
             logger.info(MessageFormat.format("{0} get the LAST_INVEST of loan({1})", investModel.getLoginName(), String.valueOf(investModel.getLoanId())));
         }
 
         investMapper.update(investModel);
+        loanMapper.update(loanModel);
     }
 
     private boolean isFirstInvestAchievement(InvestModel investModel, List<InvestModel> successInvestModels) {
