@@ -3,6 +3,7 @@ package com.tuotiansudai.api.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.tuotiansudai.coupon.repository.model.CouponModel;
 import com.tuotiansudai.coupon.repository.model.UserCouponModel;
 import com.tuotiansudai.repository.model.CouponType;
@@ -11,7 +12,9 @@ import com.tuotiansudai.util.AmountConverter;
 
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 public class BaseCouponResponseDataDto {
 
@@ -55,12 +58,13 @@ public class BaseCouponResponseDataDto {
         this.startDate = userCouponModel.getStartTime();
         this.endDate = userCouponModel.getEndTime();
         this.investLowerLimit = AmountConverter.convertCentToString(couponModel.getInvestLowerLimit());
-        this.productTypes = Lists.transform(couponModel.getProductTypes(), new Function<ProductType, String>() {
+        Lists.newArrayList(Sets.newLinkedHashSet(couponModel.getProductTypes()));
+        this.productTypes = Lists.transform(Lists.newArrayList(Sets.newLinkedHashSet(couponModel.getProductTypes())), new Function<ProductType, String>() {
             @Override
             public String apply(ProductType input) {
                 return input.getProductLine();
             }
-        }) ;
+        });
         this.rate = decimalFormat.format(couponModel.getRate() * 100);
         this.shared = couponModel.isShared();
         this.birthdayRate = String.valueOf(couponModel.getBirthdayBenefit());

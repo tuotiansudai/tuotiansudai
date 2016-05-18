@@ -75,7 +75,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
 
 
     private List<LoanResponseDataDto> convertLoanDto(List<LoanModel> loanList) {
-        List<LoanResponseDataDto> loanDtoList = new ArrayList<LoanResponseDataDto>();
+        List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         for (LoanModel loan : loanList) {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
