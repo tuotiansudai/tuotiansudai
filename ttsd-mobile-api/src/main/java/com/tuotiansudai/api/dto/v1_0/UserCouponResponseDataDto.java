@@ -61,7 +61,7 @@ public class UserCouponResponseDataDto extends BaseCouponResponseDataDto {
         this.productNewTypes = Lists.transform(userCouponView.getProductTypeList(), new Function<ProductType, String>() {
             @Override
             public String apply(ProductType input) {
-                return input.getName();
+                return input.name();
             }
         });
 

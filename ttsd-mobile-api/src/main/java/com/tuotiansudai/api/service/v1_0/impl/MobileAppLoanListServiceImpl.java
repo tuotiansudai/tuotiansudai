@@ -115,7 +115,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setActivityRatePercent(decimalFormat.format(loan.getActivityRate() * 100));
             loanResponseDataDto.setInvestFeeRate("" + loan.getInvestFeeRate());
             loanResponseDataDto.setDuration(String.valueOf(loan.getDuration()));
-            loanResponseDataDto.setLoanNewType(loan.getProductType().getName());
+            loanResponseDataDto.setLoanNewType(loan.getProductType() != null ? loan.getProductType().name(): "");
             loanDtoList.add(loanResponseDataDto);
         }
         return loanDtoList;

@@ -70,7 +70,7 @@ public class BaseCouponResponseDataDto {
         this.productNewTypes = Lists.transform(couponModel.getProductTypes(), new Function<ProductType, String>() {
             @Override
             public String apply(ProductType input) {
-                return input.getName();
+                return input.name();
             }
         });
 
