@@ -248,6 +248,7 @@ public class TransferApplicationMapperTest {
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
+        loanDto.setProductType(ProductType._180);
         loanDto.setLoanStatus(LoanStatus.REPAYING);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
