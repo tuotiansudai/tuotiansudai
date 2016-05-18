@@ -250,7 +250,19 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             beforeCheck: function(curform){
                 $('.form-error').html('');
 
-                var loanAmount = parseFloat($('.jq-pay',curform).val());
+                var projectName = $('.jq-user', curform).val();
+                if (projectName == '') {
+                    showErrorMessage('请选择借款项目名称', $('.jq-user', curform));
+                    return false;
+                }
+
+                var duration = $('.jq-duration', curform).val();
+                if (duration == '') {
+                    showErrorMessage('请选择借款期限', $('.jq-duration', curform));
+                    return false;
+                }
+
+                var loanAmount = parseFloat($('.jq-pay', curform).val());
                 if(loanAmount <= 0){
                     showErrorMessage('预计出借金额应大于0',$('.jq-pay',curform));
                     return false;
