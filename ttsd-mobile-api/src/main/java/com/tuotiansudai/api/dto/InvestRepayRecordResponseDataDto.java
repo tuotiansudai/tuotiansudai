@@ -67,7 +67,10 @@ public class InvestRepayRecordResponseDataDto {
         this.status = investRepay.getStatus().name();
         this.statusDesc = investRepay.getStatus().getDescription();
         if (investRepay.getStatus() == RepayStatus.COMPLETE) {
-            this.repayDay = sdf.format(investRepay.getActualRepayDate());
+            if(investRepay.getActualRepayDate() != null){
+
+                this.repayDay = sdf.format(investRepay.getActualRepayDate());
+            }
         }else{
             this.repayDay = sdfDay.format(investRepay.getRepayDate());
         }
