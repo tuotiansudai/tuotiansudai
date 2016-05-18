@@ -17,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.UUID;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -53,10 +53,16 @@ public class InvestAchievementServiceTest {
 
         investAchievementService.awardAchievement(investModel);
 
-        InvestModel actualInvestModel1 = investMapper.findById(investModel.getId());
+        InvestModel actualInvestModel = investMapper.findById(investModel.getId());
 
-        assertTrue(actualInvestModel1.getAchievements().contains(InvestAchievement.FIRST_INVEST));
-        assertTrue(actualInvestModel1.getAchievements().contains(InvestAchievement.MAX_AMOUNT));
+        assertTrue(actualInvestModel.getAchievements().contains(InvestAchievement.FIRST_INVEST));
+        assertTrue(actualInvestModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT));
+
+        LoanModel actualLoanModel = loanMapper.findById(fakeLoan.getId());
+        assertThat(actualLoanModel.getFirstInvestAchievementId(), is(investModel.getId()));
+        assertThat(actualLoanModel.getMaxAmountAchievementId(), is(investModel.getId()));
+        assertNull(actualLoanModel.getLastInvestAchievementId());
+
     }
 
     @Test
@@ -135,21 +141,24 @@ public class InvestAchievementServiceTest {
 
         InvestModel actualInvest4Model2 = investMapper.findById(loan4InvestModel2.getId());
         assertTrue(actualInvest4Model2.getAchievements().contains(InvestAchievement.FIRST_INVEST));
+
+        LoanModel actualLoanModel = loanMapper.findById(fakeLoan4.getId());
+        assertThat(actualLoanModel.getFirstInvestAchievementId(), is(loan4InvestModel2.getId()));
     }
 
     @Test
     public void shouldAwardMaxAmountAchievement() throws Exception {
-        LoanModel fakeLoan1 = getFakeLoan(getFakeUser("loaner"));
+        LoanModel fakeLoan = getFakeLoan(getFakeUser("loaner"));
 
         UserModel investor = getFakeUser("investor");
-        InvestModel investModel1 = new InvestModel(fakeLoan1.getId(), 1, investor.getLoginName(), Source.WEB, null);
+        InvestModel investModel1 = new InvestModel(fakeLoan.getId(), 1, investor.getLoginName(), Source.WEB, null);
         investModel1.setId(idGenerator.generate());
         investModel1.setTradingTime(new Date());
         investModel1.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel1);
         investAchievementService.awardAchievement(investModel1);
 
-        InvestModel investModel2 = new InvestModel(fakeLoan1.getId(), 2, investor.getLoginName(), Source.WEB, null);
+        InvestModel investModel2 = new InvestModel(fakeLoan.getId(), 2, investor.getLoginName(), Source.WEB, null);
         investModel2.setId(idGenerator.generate());
         investModel2.setTradingTime(new Date());
         investModel2.setStatus(InvestStatus.SUCCESS);
@@ -161,21 +170,24 @@ public class InvestAchievementServiceTest {
 
         InvestModel actualInvestModel2 = investMapper.findById(investModel2.getId());
         assertTrue(actualInvestModel2.getAchievements().contains(InvestAchievement.MAX_AMOUNT));
+
+        LoanModel actualLoanModel = loanMapper.findById(fakeLoan.getId());
+        assertThat(actualLoanModel.getMaxAmountAchievementId(), is(investModel2.getId()));
     }
 
     @Test
     public void shouldAwardMaxAmountAchievementWhenEarlierInvest() throws Exception {
-        LoanModel fakeLoan1 = getFakeLoan(getFakeUser("loaner"));
+        LoanModel fakeLoan = getFakeLoan(getFakeUser("loaner"));
 
         UserModel investor = getFakeUser("investor");
-        InvestModel investModel1 = new InvestModel(fakeLoan1.getId(), 1, investor.getLoginName(), Source.WEB, null);
+        InvestModel investModel1 = new InvestModel(fakeLoan.getId(), 1, investor.getLoginName(), Source.WEB, null);
         investModel1.setId(idGenerator.generate());
         investModel1.setTradingTime(new Date());
         investModel1.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel1);
         investAchievementService.awardAchievement(investModel1);
 
-        InvestModel investModel2 = new InvestModel(fakeLoan1.getId(), 1, investor.getLoginName(), Source.WEB, null);
+        InvestModel investModel2 = new InvestModel(fakeLoan.getId(), 1, investor.getLoginName(), Source.WEB, null);
         investModel2.setId(idGenerator.generate());
         investModel2.setTradingTime(new Date());
         investModel2.setStatus(InvestStatus.SUCCESS);
@@ -187,21 +199,24 @@ public class InvestAchievementServiceTest {
 
         InvestModel actualInvestModel2 = investMapper.findById(investModel2.getId());
         assertFalse(actualInvestModel2.getAchievements().contains(InvestAchievement.MAX_AMOUNT));
+
+        LoanModel actualLoanModel = loanMapper.findById(fakeLoan.getId());
+        assertThat(actualLoanModel.getMaxAmountAchievementId(), is(investModel1.getId()));
     }
 
     @Test
     public void shouldAwardLastInvestAchievement() throws Exception {
-        LoanModel fakeLoan1 = getFakeLoan(getFakeUser("loaner"));
+        LoanModel fakeLoan = getFakeLoan(getFakeUser("loaner"));
 
         UserModel investor = getFakeUser("investor");
-        InvestModel investModel1 = new InvestModel(fakeLoan1.getId(), fakeLoan1.getLoanAmount() - 1, investor.getLoginName(), Source.WEB, null);
+        InvestModel investModel1 = new InvestModel(fakeLoan.getId(), fakeLoan.getLoanAmount() - 1, investor.getLoginName(), Source.WEB, null);
         investModel1.setId(idGenerator.generate());
         investModel1.setTradingTime(new Date());
         investModel1.setStatus(InvestStatus.SUCCESS);
         investMapper.create(investModel1);
         investAchievementService.awardAchievement(investModel1);
 
-        InvestModel investModel2 = new InvestModel(fakeLoan1.getId(), 1, investor.getLoginName(), Source.WEB, null);
+        InvestModel investModel2 = new InvestModel(fakeLoan.getId(), 1, investor.getLoginName(), Source.WEB, null);
         investModel2.setId(idGenerator.generate());
         investModel2.setTradingTime(new Date());
         investModel2.setStatus(InvestStatus.SUCCESS);
@@ -213,14 +228,17 @@ public class InvestAchievementServiceTest {
 
         InvestModel actualInvestModel2 = investMapper.findById(investModel2.getId());
         assertTrue(actualInvestModel2.getAchievements().contains(InvestAchievement.LAST_INVEST));
+
+        LoanModel actualLoanModel = loanMapper.findById(fakeLoan.getId());
+        assertThat(actualLoanModel.getLastInvestAchievementId(), is(investModel2.getId()));
     }
 
     @Test
     public void shouldAwardThreeInvestAchievement() throws Exception {
-        LoanModel fakeLoan1 = getFakeLoan(getFakeUser("loaner"));
+        LoanModel fakeLoan = getFakeLoan(getFakeUser("loaner"));
 
         UserModel investor = getFakeUser("investor");
-        InvestModel investModel = new InvestModel(fakeLoan1.getId(), fakeLoan1.getLoanAmount(), investor.getLoginName(), Source.WEB, null);
+        InvestModel investModel = new InvestModel(fakeLoan.getId(), fakeLoan.getLoanAmount(), investor.getLoginName(), Source.WEB, null);
         investModel.setId(idGenerator.generate());
         investModel.setTradingTime(new Date());
         investModel.setStatus(InvestStatus.SUCCESS);
@@ -231,6 +249,11 @@ public class InvestAchievementServiceTest {
         assertTrue(actualInvestModel.getAchievements().contains(InvestAchievement.FIRST_INVEST));
         assertTrue(actualInvestModel.getAchievements().contains(InvestAchievement.MAX_AMOUNT));
         assertTrue(actualInvestModel.getAchievements().contains(InvestAchievement.LAST_INVEST));
+
+        LoanModel actualLoanModel = loanMapper.findById(fakeLoan.getId());
+        assertThat(actualLoanModel.getFirstInvestAchievementId(), is(investModel.getId()));
+        assertThat(actualLoanModel.getMaxAmountAchievementId(), is(investModel.getId()));
+        assertThat(actualLoanModel.getLastInvestAchievementId(), is(investModel.getId()));
     }
 
     protected UserModel getFakeUser(String loginName) {
