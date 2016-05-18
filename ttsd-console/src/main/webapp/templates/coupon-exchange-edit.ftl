@@ -57,6 +57,12 @@
         </div>
 
         <div class="form-group">
+            <label  class="col-sm-2 control-label">有效期限（天): </label>
+            <div class="col-sm-8">
+                <div class="item-invest">优惠券发放后</div><input type="text" class="form-control invest-quota coupon-deadline" name="deadline" placeholder="" <#if exchangeCouponDto??>value="${exchangeCouponDto.deadline!}"</#if> datatype="n"  errormsg="有效天数需要填写数字"><div class="item-invest">天内有效</div>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="col-sm-2 control-label">所需财豆</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control exchange-point" name="exchangePoint" <#if exchangeCouponDto??>value="${exchangeCouponDto.exchangePoint?string('0')!}"</#if> placeholder="" data-type="n" errormsg="所需财豆需要填写数字">
