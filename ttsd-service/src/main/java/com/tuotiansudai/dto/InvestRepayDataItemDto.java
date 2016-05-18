@@ -45,8 +45,6 @@ public class InvestRepayDataItemDto {
 
     private LoanModel loan;
 
-    private List<CouponType> couponTypeList;
-
     public InvestRepayDataItemDto() {
     }
 
@@ -207,11 +205,4 @@ public class InvestRepayDataItemDto {
         this.investId = investId;
     }
 
-    public List<CouponType> getCouponTypeList() {
-        return couponTypeList;
-    }
-
-    public void setCouponTypeList(List<CouponType> couponTypeList) {
-        this.couponTypeList = couponTypeList;
-    }
 }

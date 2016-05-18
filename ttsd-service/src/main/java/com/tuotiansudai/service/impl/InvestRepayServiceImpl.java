@@ -57,27 +57,19 @@ public class InvestRepayServiceImpl implements InvestRepayService{
     }
 
     private List<InvestRepayDataItemDto> investRepayCouponAll(List<InvestRepayModel> investRepayModels, String loginName) {
-
         List<InvestRepayDataItemDto> investRepayDataItemDtoList = Lists.transform(investRepayModels, new Function<InvestRepayModel, InvestRepayDataItemDto>() {
             @Override
             public InvestRepayDataItemDto apply(InvestRepayModel input) {
-                InvestRepayDataItemDto investRepayDataItemDto =  new InvestRepayDataItemDto().generateInvestRepayDataItemDto(input);
-                List<UserCouponModel> userCouponList = userCouponMapper.findByInvestId(investRepayDataItemDto.getInvestId());
-                List<CouponType> couponTypeList;
-                if (CollectionUtils.isNotEmpty(userCouponList)){
-                    couponTypeList = new ArrayList<>();
-                    for(UserCouponModel userCouponView : userCouponList){
-                        CouponModel couponModel = couponMapper.findById(userCouponView.getCouponId());
-                        if(couponModel != null && couponModel.getCouponType() != null){
-                            couponTypeList.add(couponModel.getCouponType());
-                        }
-                    }
-                    investRepayDataItemDto.setCouponTypeList(couponTypeList);
-                }
-                return investRepayDataItemDto;
+                return new InvestRepayDataItemDto().generateInvestRepayDataItemDto(input);
             }
         });
-
+        for (InvestRepayDataItemDto investRepayDataItemDto : investRepayDataItemDtoList) {
+            List<UserCouponModel> userCouponModels = userCouponMapper.findBirthdaySuccessByLoginNameAndInvestId(loginName, investRepayDataItemDto.getInvestId());
+            investRepayDataItemDto.setBirthdayCoupon(CollectionUtils.isNotEmpty(userCouponModels));
+            if (CollectionUtils.isNotEmpty(userCouponModels)) {
+                investRepayDataItemDto.setBirthdayBenefit(couponMapper.findById(userCouponModels.get(0).getCouponId()).getBirthdayBenefit());
+            }
+        }
         return investRepayDataItemDtoList;
     }
 
