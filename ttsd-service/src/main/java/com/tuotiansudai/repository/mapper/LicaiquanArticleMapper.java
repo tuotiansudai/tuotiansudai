@@ -12,40 +12,5 @@ import java.util.List;
 
 @Repository
 public interface LicaiquanArticleMapper {
-    //文章相关部分
-    void createArticle(LicaiquanArticleModel licaiquanArticleModel);
-
-    void deleteArticle(@Param("articleId") long articleId);
-
-    void updateArticle(LicaiquanArticleModel licaiquanArticleModel);
-
-    void updateLikeCount(@Param("articleId") long articleId, @Param("likeCount") int likeCount);
-
-    void updateReadCount(@Param("articleId") long articleId, @Param("readCount") int readCount);
-
-    LicaiquanArticleContentModel findArticleContentByArticleId(@Param("articleId") long articleId);
-
-    LicaiquanArticleModel findArticleByArticleId(@Param("articleId") long articleId);
-
-    List<LicaiquanArticleListItemModel> findExistedArticleListOrderByCreateTime(@Param("title") String title,
-                                                                                @Param("section") ArticleSectionType sectionType,
-                                                                                @Param("startId") long startId,
-                                                                                @Param("size") int size);
-
-    List<LicaiquanArticleListItemModel> findDeletedArticleListOrderByCreateTime(@Param("title") String title,
-                                                                                @Param("section") ArticleSectionType sectionType,
-                                                                                @Param("startId") long startId,
-                                                                                @Param("size") int size);
-
-    List<LicaiquanArticleListItemModel> findArticleListByTitleAndSection(@Param(value = "title") String title,
-                                                                         @Param(value = "section") String section,
-                                                                         @Param(value = "index") Integer index);
-    //文章驳回意见部分
-    void createComment(ArticleReviewComment articleReviewComment);
-
-    List<ArticleReviewComment> findCommentsByArticleId(@Param("articleId") long articleId);
-
-    void deleteCommentById(@Param("id") long id);
-
-    void deleteCommentsByArticleId(@Param("articleId") long articleId);
+    
 }
