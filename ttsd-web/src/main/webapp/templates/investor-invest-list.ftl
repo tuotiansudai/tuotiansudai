@@ -59,17 +59,15 @@
                             {{/if}}
                             {{/each}}
 
-                            {{each $value.achievements}}
-                            {{if $value=='FIRST_INVEST'}}
+                            {{if $value.achievement=='FIRST_INVEST'}}
                             <i class="first-icon"></i>
                             {{/if}}
-                            {{if $value=='LAST_INVEST'}}
+                            {{if $value.achievement=='LAST_INVEST'}}
                             <i class="last-icon"></i>
                             {{/if}}
-                            {{if $value=='MAX_AMOUNT'}}
+                            {{if $value.achievement=='MAX_AMOUNT'}}
                             <i class="max-icon"></i>
                             {{/if}}
-                            {{/each}}
                         </span>
                         <a href="/loan/{{$value.loanId}}" class="project-name">{{$value.loanName}}</a>
                     </td>

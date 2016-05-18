@@ -1,11 +1,14 @@
 package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.google.common.collect.Ordering;
+import com.google.common.primitives.Ints;
 import com.tuotiansudai.coupon.dto.UserCouponDto;
 import com.tuotiansudai.repository.model.InvestAchievement;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.util.AmountConverter;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -31,7 +34,7 @@ public class InvestorInvestPaginationItemDataDto {
 
     private List<UserCouponDto> userCoupons;
 
-    private List<InvestAchievement> achievements;
+    private InvestAchievement achievement;
 
     private boolean investRepayExist;
 
@@ -46,7 +49,14 @@ public class InvestorInvestPaginationItemDataDto {
         this.nextRepayAmount = AmountConverter.convertCentToString(investRepayModel != null ?
                 investRepayModel.getCorpus() + investRepayModel.getExpectedInterest() + investRepayModel.getDefaultInterest() - investRepayModel.getExpectedFee() : 0);
         this.userCoupons = userCouponDtoList;
-        this.achievements = investModel.getAchievements();
+        if (CollectionUtils.isNotEmpty(investModel.getAchievements())) {
+            this.achievement =  new Ordering<InvestAchievement>() {
+                @Override
+                public int compare(InvestAchievement left, InvestAchievement right) {
+                    return Ints.compare(left.getPriority(), right.getPriority());
+                }
+            }.min(investModel.getAchievements());
+        }
         this.investRepayExist = investRepayExist;
     }
 
@@ -82,8 +92,8 @@ public class InvestorInvestPaginationItemDataDto {
         return nextRepayAmount;
     }
 
-    public List<InvestAchievement> getAchievements() {
-        return achievements;
+    public InvestAchievement getAchievement() {
+        return achievement;
     }
 
     public List<UserCouponDto> getUserCoupons() {
