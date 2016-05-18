@@ -58,6 +58,12 @@ public class UserCouponResponseDataDto extends BaseCouponResponseDataDto {
             this.loanProductType = userCouponView.getLoanProductType().getProductLine();
         }
         this.investAmount = AmountConverter.convertCentToString(userCouponView.getInvestAmount());
+        this.productNewTypes = Lists.transform(userCouponView.getProductTypeList(), new Function<ProductType, String>() {
+            @Override
+            public String apply(ProductType input) {
+                return input.getName();
+            }
+        });
 
     }
 

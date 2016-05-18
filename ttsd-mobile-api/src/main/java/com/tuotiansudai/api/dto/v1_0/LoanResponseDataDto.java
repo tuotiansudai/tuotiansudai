@@ -24,6 +24,7 @@ public class LoanResponseDataDto {
     private String raiseCompletedTime;
     private String investFeeRate;
     private String duration;
+    private String loanNewType;
 
     public String getLoanId() {
         return loanId;
@@ -204,4 +205,8 @@ public class LoanResponseDataDto {
     public String getDuration() { return duration; }
 
     public void setDuration(String duration) { this.duration = duration; }
+
+    public String getLoanNewType() { return loanNewType; }
+
+    public void setLoanNewType(String loanNewType) { this.loanNewType = loanNewType; }
 }

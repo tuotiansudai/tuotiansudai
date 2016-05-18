@@ -44,6 +44,8 @@ public class BaseCouponResponseDataDto {
 
     protected String birthdayRate;
 
+    protected List<String> productNewTypes;
+
     public BaseCouponResponseDataDto() {
     }
 
@@ -65,6 +67,12 @@ public class BaseCouponResponseDataDto {
         this.rate = decimalFormat.format(couponModel.getRate() * 100);
         this.shared = couponModel.isShared();
         this.birthdayRate = String.valueOf(couponModel.getBirthdayBenefit());
+        this.productNewTypes = Lists.transform(couponModel.getProductTypes(), new Function<ProductType, String>() {
+            @Override
+            public String apply(ProductType input) {
+                return input.getName();
+            }
+        });
 
     }
     public String getUserCouponId() {
@@ -170,4 +178,8 @@ public class BaseCouponResponseDataDto {
     public void setBirthdayRate(String birthdayRate) {
         this.birthdayRate = birthdayRate;
     }
+
+    public List<String> getProductNewTypes() { return productNewTypes; }
+
+    public void setProductNewTypes(List<String> productNewTypes) { this.productNewTypes = productNewTypes; }
 }
