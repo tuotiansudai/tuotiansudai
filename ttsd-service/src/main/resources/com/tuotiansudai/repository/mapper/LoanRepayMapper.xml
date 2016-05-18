@@ -303,4 +303,7 @@
             lr.status='REPAYING'
             and date_format(lr.repay_date,'%Y-%m-%d') = #{today};
     </select>
+    <select id="findLastRepayDateByLoanId" parameterType="map" resultType="date">
+        select max(repay_date) from loan_repay where loan_id = #{loanId};
+    </select>
 </mapper>
