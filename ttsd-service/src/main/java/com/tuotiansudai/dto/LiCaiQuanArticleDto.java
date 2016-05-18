@@ -1,6 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.ArticleSectionType;
+import com.tuotiansudai.repository.model.LicaiquanArticleListItemModel;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -16,6 +17,14 @@ public class LiCaiQuanArticleDto implements Serializable{
     private String content;
     private Date createTime;
     private ArticleStatus articleStatus;
+
+    LiCaiQuanArticleDto(){}
+
+    LiCaiQuanArticleDto(LicaiquanArticleListItemModel model){
+        this.id = model.getId();
+        this.title = model.getTitle();
+        this.author = model.getCreator();
+    }
 
     public long getId() {
         return id;
