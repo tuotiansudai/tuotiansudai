@@ -1,9 +1,7 @@
 package com.tuotiansudai.api.controller.v2_0;
 
-import com.tuotiansudai.api.dto.v1_0.UserCouponRequestDto;
 import com.tuotiansudai.api.dto.v2_0.BaseParamDto;
 import com.tuotiansudai.api.dto.v2_0.BaseResponseDto;
-import com.tuotiansudai.api.service.v1_0.MobileAppUserCouponService;
 import com.tuotiansudai.api.service.v2_0.MobileAppLoanListV2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,18 +14,10 @@ public class MobileAppHomeV2Controller extends MobileAppBaseController {
 
     @Autowired
     private MobileAppLoanListV2Service mobileAppLoanListV2Service;
-    @Autowired
-    private MobileAppUserCouponService mobileAppUserCouponService;
 
     @RequestMapping(value = "/get/index", method = RequestMethod.POST)
     public BaseResponseDto index(@RequestBody BaseParamDto baseParamDto) {
         baseParamDto.getBaseParam().setUserId(getLoginName());
-        UserCouponRequestDto dto = new UserCouponRequestDto();
-        dto.setBaseParam(baseParamDto.getBaseParam());
-        dto.setExpired(false);
-        dto.setUnused(false);
-        dto.setUsed(true);
-        mobileAppUserCouponService.getUserCoupons(dto);
         return mobileAppLoanListV2Service.generateIndexLoan(baseParamDto);
     }
 
