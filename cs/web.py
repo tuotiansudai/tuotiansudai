@@ -162,6 +162,7 @@ class InvestHandler(BaseHandler):
            `actual_repay_date`,
            `actual_interest`,
            `actual_fee`,
+           `default_interest`,
            `status`,
            `id`
       FROM `invest_repay`

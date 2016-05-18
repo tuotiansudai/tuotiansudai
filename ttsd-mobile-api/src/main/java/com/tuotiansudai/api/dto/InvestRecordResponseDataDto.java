@@ -41,6 +41,6 @@ public class InvestRecordResponseDataDto {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.setUserName(input.getLoginName());
         this.setInvestMoney(AmountConverter.convertCentToString(input.getAmount()));
-        this.setInvestTime(simpleDateFormat.format(input.getCreatedTime()));
+        this.setInvestTime(simpleDateFormat.format(input.getInvestTime()));
     }
 }
