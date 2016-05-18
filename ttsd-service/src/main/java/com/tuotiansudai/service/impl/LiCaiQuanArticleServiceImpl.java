@@ -5,6 +5,8 @@ import com.tuotiansudai.dto.LiCaiQuanArticleDto;
 import com.tuotiansudai.dto.ArticleStatus;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.repository.mapper.LicaiquanArticleMapper;
+import com.tuotiansudai.repository.model.LicaiquanArticleModel;
 import com.tuotiansudai.service.LiCaiQuanArticleService;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
@@ -25,6 +27,9 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService{
 
     @Autowired
     private IdGenerator idGenerator;
+
+    @Autowired
+    private LicaiquanArticleMapper licaiquanArticleMapper;
 
     @Override
     public BaseDto<PayDataDto> retrace(long articleId) {
@@ -55,6 +60,21 @@ public class LiCaiQuanArticleServiceImpl implements LiCaiQuanArticleService{
         liCaiQuanArticleDto.setArticleStatus(ArticleStatus.TO_APPROVE);
         liCaiQuanArticleDto.setCreateTime(new Date());
         redisWrapperClient.hsetSeri(articleRedisKey, String.valueOf(articleId), liCaiQuanArticleDto);
+    }
+
+    @Override
+    public LiCaiQuanArticleDto obtainEditArticleDto(long articleId) {
+        if(redisWrapperClient.hexistsSeri(articleRedisKey,String.valueOf(articleId))){
+            return (LiCaiQuanArticleDto)redisWrapperClient.hgetSeri(articleRedisKey,String.valueOf(articleId));
+        }else{
+            LicaiquanArticleModel licaiquanArticleModel = licaiquanArticleMapper.findArticleById(articleId);
+            if(licaiquanArticleModel != null){
+                return new LiCaiQuanArticleDto(licaiquanArticleModel);
+            }
+        }
+
+        return null;
+
     }
 
 }

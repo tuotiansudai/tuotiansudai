@@ -42,10 +42,15 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
             .done(function(data){
                 if(data.state){
                     if($self.hasClass('thumbPicture')){
-                        $('.article-thumbPicture').val(data.url)
+                        $('.article-thumbPicture').val(data.url);
+                        $('.thumbPictureImage').html('');
+                        $('.thumbPictureImage').append('<img style="width:100%" src="/upload/' + data.url + '" alt="缩略图">');
+
                     }
                     if($self.hasClass('showPicture')){
                         $('.article-showPicture').val(data.url)
+                        $('.showPictureImage').html('');
+                        $('.showPictureImage').append('<img style="width:100%" src="/upload/' + data.url + '" alt="展示图">');
                     }
                 }
             });
@@ -99,6 +104,13 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'bootstrapSelec
             if (boolFlag) {
                 if (confirm("确认提交审核?")) {
                     $('.article-content').val(getContent());
+                    var articleId = $('.articleId').val();
+                    console.log(articleId);
+                    if(articleId != ''){
+                        $articleForm[0].action = "/announce-manage/article/edit/"+articleId;
+                    }else{
+                        $articleForm[0].action = "/announce-manage/article/create";
+                    }
                     $self.attr('disabled', 'disabled');
                     $articleForm[0].submit();
                 }

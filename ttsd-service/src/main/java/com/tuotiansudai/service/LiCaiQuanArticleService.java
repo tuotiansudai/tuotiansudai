@@ -8,4 +8,6 @@ public interface LiCaiQuanArticleService {
     BaseDto<PayDataDto> retrace(long articleId);
 
     void createArticle(LiCaiQuanArticleDto liCaiQuanArticleDto);
+
+    LiCaiQuanArticleDto obtainEditArticleDto(long articleId);
 }
