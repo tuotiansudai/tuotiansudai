@@ -7,20 +7,26 @@ import com.google.common.collect.Ordering;
 import com.google.common.primitives.Longs;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.InvestAchievement;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.paywrapper.service.InvestAchievementService;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class InvestAchievementServiceImpl implements InvestAchievementService {
+
+    private static Logger logger = Logger.getLogger(InvestAchievementServiceImpl.class);
 
     @Autowired
     private LoanMapper loanMapper;
@@ -28,21 +34,38 @@ public class InvestAchievementServiceImpl implements InvestAchievementService {
     @Autowired
     private InvestMapper investMapper;
 
+    @Value(value = "#{new java.text.SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").parse(\"${invest.achievement.start.time}\")}")
+    private Date achievementStartTime;
+
     @Override
     @Transactional
     public void awardAchievement(InvestModel investModel) {
+        LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+
+        if (loanModel.getFundraisingStartTime().before(achievementStartTime)) {
+            return;
+        }
+
+
+        if (loanModel.getActivityType() == ActivityType.NEWBIE) {
+            return;
+        }
+
         List<InvestModel> successInvestModels = investMapper.findSuccessInvestsByLoanId(investModel.getLoanId());
 
         if (isFirstInvestAchievement(investModel, successInvestModels)) {
             investModel.getAchievements().add(InvestAchievement.FIRST_INVEST);
+            logger.info(MessageFormat.format("{0} get the FIRST_INVEST of loan({1})", investModel.getLoginName(), String.valueOf(investModel.getLoanId())));
         }
 
         if (isMaxAmountAchievement(investModel, successInvestModels)) {
             investModel.getAchievements().add(InvestAchievement.MAX_AMOUNT);
+            logger.info(MessageFormat.format("{0} get the MAX_AMOUNT of loan({1})", investModel.getLoginName(), String.valueOf(investModel.getLoanId())));
         }
 
         if (isLastInvestAchievement(investModel, successInvestModels)) {
             investModel.getAchievements().add(InvestAchievement.LAST_INVEST);
+            logger.info(MessageFormat.format("{0} get the LAST_INVEST of loan({1})", investModel.getLoginName(), String.valueOf(investModel.getLoanId())));
         }
 
         investMapper.update(investModel);
