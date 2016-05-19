@@ -51,10 +51,6 @@ public interface LoanService {
 
     BaseDto<PayDataDto> loanOut(LoanDto loanDto);
 
-    LoanDetailDto getLoanDetail(String loginName, long loanId);
-
-    BaseDto<BasePaginationDataDto> getInvests(String loginName, long loanId, int index, int pageSize);
-
     BaseDto<BasePaginationDataDto> getLoanerLoanData(String loginName, int index, int pageSize, LoanStatus status, Date startTime, Date endTime);
 
     int findLoanListCount(LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime);
@@ -63,5 +59,4 @@ public interface LoanService {
 
     BaseDto<PayDataDto> applyAuditLoan(LoanDto loanDto);
 
-    String encryptLoginName(String loginName, String recordsLoginName, int showLength, long investId);
 }

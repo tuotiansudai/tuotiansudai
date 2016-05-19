@@ -25,6 +25,13 @@ public interface InvestService {
                                                                                    Date endTime,
                                                                                    LoanStatus loanStatus);
 
+    BasePaginationDataDto<InvestPaginationItemDataDto> getTransferApplicationTransferablePagination(String investorLoginName,
+                                                                                                    int index,
+                                                                                                    int pageSize,
+                                                                                                    Date startTime,
+                                                                                                    Date endTime,
+                                                                                                    LoanStatus loanStatus);
+
     long findCountInvestPagination(Long loanId, String investorLoginName,
                                    String channel, Source source, String role,
                                    Date startTime, Date endTime,
@@ -39,8 +46,7 @@ public interface InvestService {
                                                 Date startTime,
                                                 Date endTime,
                                                 InvestStatus investStatus,
-                                                LoanStatus loanStatus);
-
+                                                LoanStatus loanStatus, boolean isPagination);
 
     void turnOnAutoInvest(AutoInvestPlanModel model);
 
@@ -61,6 +67,4 @@ public interface InvestService {
     boolean switchNoPasswordInvest(String loginName, boolean isTurnOn);
 
     void markNoPasswordRemind(String loginName);
-
-    boolean isRemindNoPassword(String loginName);
 }

@@ -95,13 +95,14 @@ public class InvestLimitUpTest {
     private InvestModel createInvest(String loginName, long loanId) {
         InvestModel model = new InvestModel();
         model.setAmount(10);
-        model.setCreatedTime(new Date());
+        model.setInvestTime(new Date());
         model.setId(idGenerator.generate());
         model.setIsAutoInvest(false);
         model.setLoginName(loginName);
         model.setLoanId(loanId);
         model.setSource(Source.ANDROID);
         model.setStatus(InvestStatus.SUCCESS);
+        model.setTransferStatus(TransferStatus.TRANSFERRING);
         investMapper.create(model);
         return model;
     }

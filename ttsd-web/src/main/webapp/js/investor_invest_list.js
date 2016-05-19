@@ -41,7 +41,6 @@ require(['jquery','template', 'mustache', 'text!/tpl/investor-invest-repay-table
         var requestData = {startTime: startTime, endTime: endTime, status: status, index: currentPage || 1};
 
         paginationElement.loadPagination(requestData, function (data) {
-            console.log(data);
             $('#investList').html(tpl('investListTpl', data));
         });
     };

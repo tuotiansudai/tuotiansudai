@@ -28,7 +28,7 @@
                     项目期限：${loan.periods}<#if loan.type.getLoanPeriodUnit() == "MONTH"> 月<#else> 天</#if><br/>
                     募集期限：${loan.raisingPeriod}天<br/>
                     还款方式：${loan.type.getName()}<br/>
-                    投资要求：<@amount>${loan.minInvestAmount?string.computer}</@amount> 元起投，投资金额为<@amount>${loan.investIncreasingAmount?string.computer}</@amount> 元的整数倍<br/>
+                    投资要求：${loan.minInvestAmount} 元起投，投资金额为 ${loan.investIncreasingAmount} 元的整数倍<br/>
                     <a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a>
                 </div>
                 <#if loan.activityType == 'NEWBIE'>
@@ -56,7 +56,7 @@
                             <dd><span class="fl">每人限投：</span><em class="fr">${loan.maxInvestAmount} 元</em></dd>
                             <dd class="invest-amount tl" <#if loan.loanStatus == "PREHEAT">style="display: none"</#if>>
                                 <span class="fl">投资金额：</span>
-                                <input type="text" name="amount" data-l-zero="deny" data-v-min="0.00" data-min-invest-amount="<@amount>${loan.minInvestAmount?string.computer}</@amount>" placeholder="0.00" value="${investAmount!loan.maxAvailableInvestAmount}"
+                                <input type="text" name="amount" data-l-zero="deny" data-v-min="0.00" data-min-invest-amount="${loan.minInvestAmount}" placeholder="0.00" value="${investAmount!loan.maxAvailableInvestAmount}"
                                        data-no-password-remind="${loan.hasRemindInvestNoPassword?c}"
                                        data-no-password-invest="${loan.investNoPassword?c}"
                                        data-auto-invest-on="${loan.autoInvest?c}"
@@ -218,32 +218,62 @@
             借款人：${loan.loanerLoginName}<br/>
             项目期限：${loan.periods}<#if loan.type.getLoanPeriodUnit() == "MONTH"> 月<#else> 天</#if><br/>
             还款方式：${loan.type.getName()}<br/>
-            投资要求：<@amount>${loan.minInvestAmount?string.computer}</@amount> 元起投，投资金额为<@amount>${loan.investIncreasingAmount?string.computer}</@amount> 元的整数倍<br/>
+            投资要求：${loan.minInvestAmount} 元起投，投资金额为 ${loan.investIncreasingAmount} 元的整数倍<br/>
             <a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_blank">借款协议样本</a>
         </div>
-        <div class="loan-designation bg-w clearfix borderBox">
-            <h3>称号争夺大作战<a href="#">查看活动详情>></a></h3>
-            <table class="table design-table">
-                <thead>
+
+        <#if loan.achievement??>
+            <div class="loan-designation bg-w clearfix borderBox">
+                <h3>称号争夺大作战<a href="#">查看活动详情>></a></h3>
+                <table class="table design-table">
+                    <thead>
                     <tr>
                         <th class="title">称号</th>
                         <th><i class="max-icon"></i>拓荒先锋</th>
                         <th><i class="first-icon"></i>拓天标王</th>
                         <th><i class="last-icon"></i>一锤定音</th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
                     <tr>
                         <td class="title">获得者</td>
-                        <td>yyh008</td>
-                        <td>yyh008<span class="text-lighter">（待定）</span></td>
-                        <td><span class="text-lighter">虚位以待</span></td>
+                        <td>${loan.achievement.firstInvestAchievementLoginName!('<span class="text-lighter">虚位以待</span>')}</td>
+                        <td>
+                            <#if loan.achievement.maxAmountAchievementLoginName??>
+                                ${loan.achievement.maxAmountAchievementLoginName}
+                                <#if loan.loanStatus == 'RAISING'>
+                                    <span class="text-lighter">(待定)</span>
+                                </#if>
+                            <#else>
+                                <span class="text-lighter">虚位以待</span>
+                            </#if>
+                        </td>
+                        <td>${loan.achievement.lastInvestAchievementLoginName!('<span class="text-lighter">虚位以待</span>')}</td>
                     </tr>
                     <tr>
                         <td class="title">战况</td>
-                        <td>2016-05-23 18:37:37占领先锋</td>
-                        <td>以累积投资1,210,000.00元夺得标王<br /> </td>
-                        <td>目前项目剩余93,230,340.00元<br />快来一锤定音吧</td>
+                        <td>
+                            <#if loan.achievement.firstInvestAchievementLoginName??>
+                                ${loan.achievement.firstInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 占领先锋
+                            <#else>
+                                --
+                            </#if>
+                        </td>
+                        <td>
+                            <#if loan.achievement.maxAmountAchievementLoginName??>
+                                以累积投资${loan.achievement.maxAmountAchievementAmount}元 夺得标王
+                            <#else>
+                                --
+                            </#if>
+                        </td>
+                        <td>
+                            <#if loan.achievement.lastInvestAchievementLoginName??>
+                                以累积投资${loan.achievement.maxAmountAchievementAmount}元夺得标王
+                                ${loan.achievement.lastInvestAchievementDate?string("yyyy-MM-dd HH:mm:dd")} 一锤定音
+                            <#else>
+                                目前项目剩余${loan.achievement.loanRemainingAmount}元<br/>快来一锤定音吧
+                            </#if>
+                        </td>
                     </tr>
                     <tr>
                         <td class="title">奖励</td>
@@ -251,9 +281,11 @@
                         <td><span class="text-reward">0.5％加息券＋100元红包</span></td>
                         <td>0.2％加息券＋50元红包</td>
                     </tr>
-                </tbody>
-            </table>
-        </div>
+                    </tbody>
+                </table>
+            </div>
+        </#if>
+
         <div class="bg-w clear-blank borderBox loan-detail">
             <div class="loan-nav">
                 <ul>
@@ -261,7 +293,7 @@
                     <li>出借记录<i class="fa fa-caret-up"></i></li>
                 </ul>
             </div>
-            <div class="loan-list pad-s">
+            <div class="loan-list pad-s invest-list-content">
                 <div class="loan-list-con">
                     <div class="borderBox">
                         <h3 class="b-title">借款详情：</h3>
@@ -284,10 +316,9 @@
                     </div>
                 </div>
                 <div class="loan-list-con">
-                <table class="table-striped">
+                <table class="table-striped invest-list">
                 </table>
                 <div class="pagination" data-url="/loan/${loan.id?string.computer}/invests" data-page-size="10">
-                    
                 </div>
             </div>
         </div>
