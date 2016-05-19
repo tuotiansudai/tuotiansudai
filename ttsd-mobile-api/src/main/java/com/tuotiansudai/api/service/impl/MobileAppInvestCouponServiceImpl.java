@@ -49,14 +49,9 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
     @Override
     public BaseResponseDto getInvestCoupons(InvestRequestDto dto) {
         String loanId = dto.getLoanId();
-        String investMoney = dto.getInvestMoney();
         if (StringUtils.isEmpty(loanId)) {
             return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(), ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
-        if(StringUtils.isEmpty(investMoney)){
-            investMoney = "0.00";
-        }
-
 
         LoanModel loanModel = loanMapper.findById(Long.parseLong(loanId));
 
@@ -79,7 +74,6 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
         UnmodifiableIterator<UserCouponModel> filter = Iterators.filter(userCouponModels.iterator(), new Predicate<UserCouponModel>() {
             @Override
             public boolean apply(UserCouponModel userCouponModel) {
-                CouponModel couponModel = couponMapper.findById(userCouponModel.getCouponId());
                 boolean used = InvestStatus.SUCCESS == userCouponModel.getStatus();
                 boolean expired = !used && userCouponModel.getEndTime().before(new Date());
                 return !used && !expired;
@@ -113,7 +107,7 @@ public class MobileAppInvestCouponServiceImpl implements MobileAppInvestCouponSe
             }
             boolean isSupportedLoanType = false;
             for (ProductType type : couponModel.getProductTypes()) {
-                if (type.equals(loanProductType)) {
+                if (loanProductType == type) {
                     isSupportedLoanType = true;
                     break;
                 }
