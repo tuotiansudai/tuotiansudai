@@ -85,9 +85,6 @@ public class JPushAlertServiceImpl implements JPushAlertService {
     private WithdrawMapper withdrawMapper;
 
     @Autowired
-    private ReferrerRelationMapper referrerRelationMapper;
-
-    @Autowired
     private JobManager jobManager;
 
     @Autowired

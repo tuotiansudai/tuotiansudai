@@ -234,7 +234,7 @@ public class JPushAmountNotifyAspect {
                     .replaceExistingJob(true)
                     .submit();
         } catch (SchedulerException e) {
-            logger.error("create send AutoJPushReferrerRewardAlert job for orderId[" + loanId + "] fail", e);
+            logger.error("create send AutoJPushReferrerRewardAlert job for loanId[" + loanId + "] fail", e);
         }
     }
 
