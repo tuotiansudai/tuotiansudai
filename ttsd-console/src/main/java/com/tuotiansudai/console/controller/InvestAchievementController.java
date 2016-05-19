@@ -68,8 +68,8 @@ public class InvestAchievementController {
                     dataModel.add("/");
                 }
                 dataModel.add(loanAchievementView.getRaisingCompleteTime() != null ? new DateTime(loanAchievementView.getRaisingCompleteTime()).toString("yyyy-MM-dd HH:mm:ss") : "");
-                dataModel.add(loanAchievementView.getWhenFirstInvest());
-                dataModel.add(loanAchievementView.getWhenCompleteInvest());
+                dataModel.add(loanAchievementView.getFirstInvestDuration());
+                dataModel.add(loanAchievementView.getCompleteInvestDuration());
                 data.add(dataModel);
             }
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.InvestAchievementHeader, data, response.getOutputStream());

@@ -34,12 +34,12 @@ public class InvestAchievementServiceImpl implements InvestAchievementService {
             @Override
             public LoanAchievementView apply(LoanAchievementView input) {
                 if (input.getRaisingCompleteTime() == null) {
-                    input.setWhenCompleteInvest("/");
+                    input.setCompleteInvestDuration("/");
                 } else {
-                    input.setWhenCompleteInvest(duration(new DateTime(input.getFundraisingStartTime()), new DateTime(input.getRaisingCompleteTime())));
+                    input.setCompleteInvestDuration(duration(new DateTime(input.getFundraisingStartTime()), new DateTime(input.getRaisingCompleteTime())));
                 }
                 Date firstInvestDate = investMapper.findFirstTradeTimeInvestByLoanId(input.getLoanId());
-                input.setWhenFirstInvest(duration(new DateTime(input.getFundraisingStartTime()), new DateTime(firstInvestDate)));
+                input.setFirstInvestDuration(duration(new DateTime(input.getFundraisingStartTime()), new DateTime(firstInvestDate)));
                 return input;
             }
         });

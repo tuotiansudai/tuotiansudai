@@ -20,9 +20,9 @@ public class LoanAchievementView implements Serializable{
 
     private Date raisingCompleteTime;
 
-    private String whenFirstInvest;
+    private String firstInvestDuration;
 
-    private String whenCompleteInvest;
+    private String completeInvestDuration;
 
     private Long firstInvestAchievementId;
 
@@ -82,20 +82,20 @@ public class LoanAchievementView implements Serializable{
         this.raisingCompleteTime = raisingCompleteTime;
     }
 
-    public String getWhenFirstInvest() {
-        return whenFirstInvest;
+    public String getFirstInvestDuration() {
+        return firstInvestDuration;
     }
 
-    public void setWhenFirstInvest(String whenFirstInvest) {
-        this.whenFirstInvest = whenFirstInvest;
+    public void setFirstInvestDuration(String firstInvestDuration) {
+        this.firstInvestDuration = firstInvestDuration;
     }
 
-    public String getWhenCompleteInvest() {
-        return whenCompleteInvest;
+    public String getCompleteInvestDuration() {
+        return completeInvestDuration;
     }
 
-    public void setWhenCompleteInvest(String whenCompleteInvest) {
-        this.whenCompleteInvest = whenCompleteInvest;
+    public void setCompleteInvestDuration(String completeInvestDuration) {
+        this.completeInvestDuration = completeInvestDuration;
     }
 
     public String getFirstInvestLoginName() {

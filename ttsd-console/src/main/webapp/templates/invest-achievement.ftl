@@ -53,8 +53,8 @@
                         <#else>
                             <td>/</td>
                         </#if>
-                        <td>${loanAchievementView.whenFirstInvest!}</td>
-                        <td>${loanAchievementView.whenCompleteInvest!}</td>
+                        <td>${loanAchievementView.firstInvestDuration!}</td>
+                        <td>${loanAchievementView.completeInvestDuration!}</td>
                     </tr>
                 </#list>
             </tbody>
